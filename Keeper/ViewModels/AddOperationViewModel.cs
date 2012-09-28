@@ -9,5 +9,11 @@ namespace Keeper.ViewModels
 {
   public class AddOperationViewModel : Screen
   {
+
+    public AddOperationViewModel()
+    {
+      
+    }
+
   }
 }

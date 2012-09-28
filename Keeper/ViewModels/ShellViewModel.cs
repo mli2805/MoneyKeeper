@@ -39,6 +39,16 @@ namespace Keeper.ViewModels
 
     public void RunOperationsForm()
     {
+      ShowTransactionsForm();
+    }
+
+    public void ShowTransactions()
+    {
+      ShowTransactionsForm();
+    }
+
+    private void ShowTransactionsForm()
+    {
       String arcMessage = Message;
       Message = "Input operations";
       MyWindowManager.ShowDialog(new AddOperationViewModel());
@@ -47,9 +57,11 @@ namespace Keeper.ViewModels
 
     public void CloseProgram()
     {
-      if (MessageBox.Show("Are you sure?","",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes )
+      if (MessageBox.Show("Are you sure?","Confirm",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes )
         TryClose();
     }
+
+    
 
   }
 }

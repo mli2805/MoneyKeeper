@@ -1,8 +1,37 @@
 ﻿<Window x:Class="Keeper.Views.AddOperationView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AddOperationView" Height="300" Width="300">
-    <Grid>
-        
-    </Grid>
+        Title="AddOperationView" Height="328" Width="511" ResizeMode="NoResize" Background="#FFFFF7F5">
+    <Grid Margin="0,0,0,4">
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="29,90,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+    <Label Content="Дата" HorizontalAlignment="Left" Margin="29,59,0,0" VerticalAlignment="Top"/>
+    <ComboBox HorizontalAlignment="Left" Margin="181,90,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox HorizontalAlignment="Left" Margin="181,150,0,0" VerticalAlignment="Top" Width="120"/>
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="353,90,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+    <Label Content="Сумма" HorizontalAlignment="Left" Margin="353,57,0,0" VerticalAlignment="Top"/>
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="29,210,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="444"/>
+    <Label Content="Кошелек" HorizontalAlignment="Left" Margin="182,57,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+      <Label.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform/>
+          <SkewTransform/>
+          <RotateTransform Angle="0.139"/>
+          <TranslateTransform/>
+        </TransformGroup>
+      </Label.RenderTransform>
+    </Label>
+    <Label Content="Статья / Кошелек 2" HorizontalAlignment="Left" Margin="181,120,0,0" VerticalAlignment="Top"/>
+    <Button Content="РАСХОД" HorizontalAlignment="Left" Margin="46,21,0,0" VerticalAlignment="Top" Width="75" Background="{x:Null}" BorderBrush="{x:Null}"/>
+    <Button Content="ДОХОД" HorizontalAlignment="Left" Margin="167,21,0,0" VerticalAlignment="Top" Width="75" Background="{x:Null}" BorderBrush="{x:Null}"/>
+    <Button Content="(ОБМЕН)" HorizontalAlignment="Left" Margin="370,21,0,0" VerticalAlignment="Top" Width="75" Background="{x:Null}" BorderBrush="{x:Null}"/>
+    <Button Content="ПЕРЕНОС" HorizontalAlignment="Left" Margin="295,21,0,0" VerticalAlignment="Top" Width="75" Background="{x:Null}" BorderBrush="{x:Null}"/>
+    <Button Content="Отклонить" HorizontalAlignment="Left" Margin="280,254,0,0" VerticalAlignment="Top" Width="75"/>
+    <Button Content="Принять" HorizontalAlignment="Left" Margin="150,254,0,0" VerticalAlignment="Top" Width="75"/>
+    <Label Content="Сумма 2" HorizontalAlignment="Left" Margin="353,120,0,0" VerticalAlignment="Top"/>
+    <Label Content="Курс обмена" HorizontalAlignment="Left" Margin="29,120,0,0" VerticalAlignment="Top"/>
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="29,150,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="353,150,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+    <Label Content="Комментарий" HorizontalAlignment="Left" Margin="29,180,0,0" VerticalAlignment="Top"/>
+
+  </Grid>
 </Window>

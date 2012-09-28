@@ -14,19 +14,20 @@
       <ColumnDefinition Width="8*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition Height="5*"/>
-      <RowDefinition Height="73*"/>
+      <RowDefinition Height="13*"/>
+      <RowDefinition Height="12*"/>
+      <RowDefinition Height="213*"/>
       <RowDefinition Height="48"/>
       <RowDefinition Height="8"/>
     </Grid.RowDefinitions>
-    <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" />
-    <Button x:Name="RunOperationsForm" Content="Operations" Margin="13" VerticalAlignment="Center" Width="74" Height="22" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" />
-    <Button x:Name="CloseProgram" Content="Close" Grid.Column="2" HorizontalAlignment="Center" Margin="10,13,16,13" Grid.Row="2" VerticalAlignment="Center" Width="74" RenderTransformOrigin="0.392,0.682" Height="22" Background="{x:Null}" BorderBrush="{x:Null}"/>
+    <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0" Width="222" FontSize="11" Height="22" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
+    <Button x:Name="RunOperationsForm" Content="Operations" Margin="13" VerticalAlignment="Center" Width="74" Height="22" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" />
+    <Button x:Name="CloseProgram" Content="Close" Grid.Column="2" HorizontalAlignment="Center" Margin="10,13,16,13" Grid.Row="3" VerticalAlignment="Center" Width="74" RenderTransformOrigin="0.392,0.682" Height="22" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
     <!-- jyghjgyjy -->
-    <Menu HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Background="{x:Null}">
+    <Menu HorizontalAlignment="Left" Margin="10,6,0,2" VerticalAlignment="Center" Background="{x:Null}" Height="18" Width="128">
       <MenuItem Header="OPERATIONS" Background="{x:Null}" Foreground="#FF0F0FFF">
-        <MenuItem Header="TRANSACTIONS"/>
+        <MenuItem x:Name="ShowTransactions" Header="TRANSACTIONS"/>
         <MenuItem Header="DIAGRAMS"/>
       </MenuItem>
       <MenuItem Header="HELP" Foreground="#FF0F0FFF">
