@@ -65,6 +65,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DomainModel\Account.cs" />
+    <Compile Include="DomainModel\CurrencyCodes.cs" />
+    <Compile Include="DomainModel\OperationType.cs" />
+    <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="ViewModels\AddOperationViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\AddOperationView.xaml.cs">
