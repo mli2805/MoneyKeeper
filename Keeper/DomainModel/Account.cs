@@ -2,9 +2,10 @@ using System;
 
 namespace Keeper.DomainModel
 {
-  public class Account
+  public class Account  // соответствует "кошельку"
   {
     private String _name;
+    private CurrencyCodes _currency;
     private decimal _balance;
     private Account _parent;
 
@@ -18,9 +19,13 @@ namespace Keeper.DomainModel
       get { return _balance; }
     }
 
+    public CurrencyCodes Currency { get { return _currency; } }
+
+
     public Account()
     {
       _name = "";
+      _currency = CurrencyCodes.BYR;
       _balance = 0;
       _parent = null;
     }
