@@ -15,18 +15,14 @@ using System.Windows.Shapes;
 namespace Keeper.Views
 {
   /// <summary>
-  /// Interaction logic for AddOperationView.xaml
+  /// Interaction logic for AddExpenseView.xaml
   /// </summary>
-  public partial class AddOperationView : Window
+  public partial class AddExpenseView : Window
   {
-    public AddOperationView()
+    public AddExpenseView()
     {
       InitializeComponent();
     }
 
-    private void Button_Click_1(object sender, RoutedEventArgs e)
-    {
-
-    }
   }
 }

@@ -70,17 +70,25 @@
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
+    <Compile Include="ViewModels\AddExchangeViewModel.cs" />
     <Compile Include="ViewModels\AddIncomeViewModel.cs" />
-    <Compile Include="ViewModels\AddExpenceViewModel.cs" />
+    <Compile Include="ViewModels\AddExpenseViewModel.cs" />
+    <Compile Include="ViewModels\AddTransferViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="Views\AddTransferView.xaml.cs">
+      <DependentUpon>AddTransferView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddIncomeView.xaml.cs">
       <DependentUpon>AddIncomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddExpenceView.xaml.cs">
-      <DependentUpon>AddExpenceView.xaml</DependentUpon>
+    <Compile Include="Views\AddExpenseView.xaml.cs">
+      <DependentUpon>AddExpenseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddExchangeView.xaml.cs">
+      <DependentUpon>AddExchangeView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -117,15 +125,23 @@
     <Resource Include="Resources\Checkout.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AddTransferView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddIncomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddExpenceView.xaml">
+    <Page Include="Views\AddExpenseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddExchangeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

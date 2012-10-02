@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Keeper.ViewModels
 {
-  class AddExpenceViewModel
+  class AddExchangeViewModel
   {
   }
 }
