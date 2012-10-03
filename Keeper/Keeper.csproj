@@ -70,24 +70,28 @@
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
-    <Compile Include="ViewModels\AddExchangeViewModel.cs" />
-    <Compile Include="ViewModels\AddIncomeViewModel.cs" />
-    <Compile Include="ViewModels\AddExpenseViewModel.cs" />
-    <Compile Include="ViewModels\AddTransferViewModel.cs" />
+    <Compile Include="ViewModels\AddAccountViewModel.cs" />
+    <Compile Include="ViewModels\TransactionsViewModels\AddExchangeViewModel.cs" />
+    <Compile Include="ViewModels\TransactionsViewModels\AddIncomeViewModel.cs" />
+    <Compile Include="ViewModels\TransactionsViewModels\AddExpenseViewModel.cs" />
+    <Compile Include="ViewModels\TransactionsViewModels\AddTransferViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="Views\AddTransferView.xaml.cs">
+    <Compile Include="Views\AddAccountView.xaml.cs">
+      <DependentUpon>AddAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransactionsViews\AddTransferView.xaml.cs">
       <DependentUpon>AddTransferView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddIncomeView.xaml.cs">
+    <Compile Include="Views\TransactionsViews\AddIncomeView.xaml.cs">
       <DependentUpon>AddIncomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddExpenseView.xaml.cs">
+    <Compile Include="Views\TransactionsViews\AddExpenseView.xaml.cs">
       <DependentUpon>AddExpenseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddExchangeView.xaml.cs">
+    <Compile Include="Views\TransactionsViews\AddExchangeView.xaml.cs">
       <DependentUpon>AddExchangeView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -125,15 +129,19 @@
     <Resource Include="Resources\Checkout.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AddTransferView.xaml">
+    <Page Include="Views\AddAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddIncomeView.xaml">
+    <Page Include="Views\TransactionsViews\AddTransferView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddExpenseView.xaml">
+    <Page Include="Views\TransactionsViews\AddIncomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TransactionsViews\AddExpenseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,7 +149,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddExchangeView.xaml">
+    <Page Include="Views\TransactionsViews\AddExchangeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -149,6 +157,7 @@
   <ItemGroup>
     <Resource Include="Resources\Money.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

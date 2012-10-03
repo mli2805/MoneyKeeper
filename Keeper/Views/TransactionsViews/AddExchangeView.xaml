@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
         mc:Ignorable="d"
-        Title="Обмен валюты" Height="253" Width="593" ResizeMode="NoResize" Background="White"
+        Title="Обмен валюты" Height="253" Width="603" ResizeMode="NoResize" Background="White"
         d:DataContext="{d:DesignInstance ViewModels:AddIncomeViewModel}">
   <Grid Margin="0,0,0,4" >
     <Grid.ColumnDefinitions>
@@ -18,16 +18,15 @@
         </DataTemplate>
       </ComboBox.Resources>
     </ComboBox>
-    <ComboBox HorizontalAlignment="Left" Margin="449,70,0,0" VerticalAlignment="Top" Width="120" Background="White" BorderBrush="Black" Height="22"/>
-    <TextBox HorizontalAlignment="Left" Height="23" Margin="191,69,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-    <TextBox HorizontalAlignment="Left" Height="24" Margin="29,119,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="540"/>
-    <Label Content="В" HorizontalAlignment="Left" Margin="28,69,0,0" 
+    <ComboBox HorizontalAlignment="Left" Margin="449,69,0,0" VerticalAlignment="Top" Width="120" Background="White" BorderBrush="Black" Height="22"/>
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="191,68,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+    <TextBox HorizontalAlignment="Left" Height="24" Margin="29,109,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="540"/>
+    <Label Content="В" HorizontalAlignment="Left" Margin="29,65,0,0" 
            VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="26" Width="17"/>
-
-    <Label Content="по статье" HorizontalAlignment="Left" Margin="384,69,0,0" VerticalAlignment="Top" Height="26" Width="60"/>
+    <Label Content="по статье" HorizontalAlignment="Left" Margin="384,65,0,0" VerticalAlignment="Top" Height="26" Width="60"/>
     <Button Content="Отклонить" HorizontalAlignment="Left" Margin="267,173,0,0" VerticalAlignment="Top" Width="75" Height="22"/>
     <Button Content="Принять" HorizontalAlignment="Left" Margin="142,173,0,0" VerticalAlignment="Top" Width="75" Height="22"/>
     <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Margin="51,18,0,0" Width="110" Height="24"/>
-    <Label Content="USD" HorizontalAlignment="Left" Margin="316,69,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
+    <Label Content="USD" HorizontalAlignment="Left" Margin="325,66,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
   </Grid>
 </Window>

@@ -1,38 +1,31 @@
 using System;
+using System.Collections.Generic;
 
 namespace Keeper.DomainModel
 {
   public class Account  // соответствует "кошельку"
   {
-    private String _name;
-    private CurrencyCodes _currency;
-    private decimal _balance;
-    private Account _parent;
+    // свойства (properties) класса
+    public string Name { get; set; }
+    public CurrencyCodes Currency { get; set; }
+    public decimal Balance { get; set; }
+    public Account Parent;
+    public List<Account> Children { get; set; }
 
-    public string Name
-    {
-      get { return _name; }
-    }
-
-    public decimal Balance
-    {
-      get { return _balance; }
-    }
-
-    public CurrencyCodes Currency { get { return _currency; } }
-
-
+    // конструкторы
     public Account()
     {
-      _name = "";
-      _currency = CurrencyCodes.BYR;
-      _balance = 0;
-      _parent = null;
+      Name = "";
+      Currency = CurrencyCodes.BYR;
+      Balance = 0;
+      Parent = null;
+      Children = new List<Account>();
     }
 
     public Account(string name)
+      :this()  // т.е. вызвать конструктор без параметров, а затем исполнить свой код
     {
-      _name = name;
+      Name = name;
     }
   }
 }
