@@ -23,12 +23,17 @@ namespace Keeper.ViewModels
       _message = "Keeper is running (On Debug)";
 
       PrepareAccountsTree();
+      PrepareIncomesCategoriesTree();
+      PrepareExpensesCategoriesTree();
+
     }
 
     // во ViewModel создается public property к которому будет биндиться компонент из View
     // далее содержимое этого свойства изменяется и это должно быть отображено на экране
     // поэтому вместо обычного свойства решарпером создаем свойство с нотификацией
     public ObservableCollection<Account> AccountsRoots { get; set; }
+    public ObservableCollection<Category> IncomesRoots { get; set; }
+    public ObservableCollection<Category> ExpensesRoots { get; set; }
 
     private void PrepareAccountsTree()
     {
@@ -41,9 +46,35 @@ namespace Keeper.ViewModels
       account1.Children.Add(new Account("АСБ \"Ваш выбор\" 14.01.2012 -"));
       AccountsRoots.Add(account);
 
-//      IncomesRoots = new IObservableCollection<>
     }
 
+    private void PrepareIncomesCategoriesTree()
+    {
+      IncomesRoots = new ObservableCollection<Category>();
+      var category = new Category("Зарплата");
+      IncomesRoots.Add(category);
+      var category1 = new Category("Зарплата моя официальная");
+      category.Children.Add(category1);
+      category1 = new Category("Зарплата моя 2я часть");
+      category.Children.Add(category1);
+      category1 = new Category("Процентные доходы");
+      IncomesRoots.Add(category1);
+    }
+
+    private void PrepareExpensesCategoriesTree()
+    {
+      ExpensesRoots = new ObservableCollection<Category>();
+      var category = new Category("Все расходы");
+      ExpensesRoots.Add(category);
+      var category1 = new Category("Продукты");
+      category.Children.Add(category1);
+      category1 = new Category("Автомобиль");
+      category.Children.Add(category1);
+      category1 = new Category("Коммунальные платежи");
+      category.Children.Add(category1);
+
+    }
+    
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Keeper 2012";

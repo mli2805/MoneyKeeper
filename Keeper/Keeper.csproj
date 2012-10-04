@@ -66,6 +66,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainModel\Account.cs" />
+    <Compile Include="DomainModel\Category.cs" />
     <Compile Include="DomainModel\KeeperDB.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />

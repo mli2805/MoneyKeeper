@@ -11,29 +11,29 @@
       <TextBlock Text="{Binding Name}"/>
     </HierarchicalDataTemplate>
   </Window.Resources>
-  <Grid Margin="0">
+  <Grid Margin="5">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="357*"/>
+      <ColumnDefinition Width="80*"/>
+      <ColumnDefinition Width="95*"/>
       <ColumnDefinition Width="100"/>
       <ColumnDefinition Width="100"/>
-      <ColumnDefinition Width="8*"/>
+      <ColumnDefinition Width="4*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition Height="15*"/>
-      <RowDefinition Height="206*"/>
-      <RowDefinition Height="17*"/>
-      <RowDefinition Height="48"/>
+      <RowDefinition Height="41"/>
+      <RowDefinition/>
+      <RowDefinition Height="41"/>
       <RowDefinition Height="8"/>
     </Grid.RowDefinitions>
-    <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0,4" Width="222" FontSize="11" Height="22" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
-    <Button x:Name="RunOperationsForm" Content="Operations" Margin="13" 
-            VerticalAlignment="Center" Width="74" Height="22" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" />
+    <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0,6,0,13" Width="222" FontSize="11" Height="22" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Column="1" />
+    <Button x:Name="RunOperationsForm" Content="Operations" 
+            VerticalAlignment="Center" Width="74" Height="22" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" />
     <Button x:Name="AddAccount" Content="+" HorizontalAlignment="Left" 
-            Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="147" Height="22"/>
-    <Button x:Name="CloseProgram" Content="Close" Grid.Column="2" HorizontalAlignment="Center" Margin="10,13,16,13" Grid.Row="3" VerticalAlignment="Center" Width="74" RenderTransformOrigin="0.392,0.682" Height="22" Background="{x:Null}" BorderBrush="{x:Null}"/>
+            Margin="0" Grid.Row="1" VerticalAlignment="Bottom" Width="158" Height="22" Background="White"/>
+    <Button x:Name="CloseProgram" Content="Close" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Width="74" RenderTransformOrigin="0.392,0.682" Height="22" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
     <!-- jyghjgyjy -->
-    <Menu HorizontalAlignment="Left" Margin="10,8,0,4" VerticalAlignment="Center" Background="{x:Null}" Height="18" Width="128">
+    <Menu HorizontalAlignment="Left" Margin="10,10,0,13" VerticalAlignment="Center" Background="{x:Null}" Height="18" Width="128">
       <MenuItem Header="OPERATIONS" Background="{x:Null}" Foreground="#FF0F0FFF">
         <MenuItem x:Name="ShowTransactions" Header="TRANSACTIONS"/>
         <MenuItem Header="DIAGRAMS"/>
@@ -44,16 +44,18 @@
         <MenuItem Header="ABOUT"/>
       </MenuItem>
     </Menu>
-    <TabControl HorizontalAlignment="Left" Height="386" Margin="10,16,0,10" Grid.Row="1" VerticalAlignment="Center" Width="309">
-      <TabItem Header="Счета">
+    <TabControl Margin="0,0,0,23" Grid.Row="1" MinHeight="350" MinWidth="250">
+      <TabItem Header="Счета" Background="{x:Null}">
         <TreeView x:Name="AccountsTreeView" ItemsSource="{Binding AccountsRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
       </TabItem>
-      <TabItem Header="Доходы">
-        <TreeView/>
+      <TabItem Header="Доходы" Background="{x:Null}">
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
       </TabItem>
-      <TabItem Header="Расходы"/>
+      <TabItem Header="Расходы" Background="{x:Null}">
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
+      </TabItem>
     </TabControl>
-    <Button Content="-" HorizontalAlignment="Left" Margin="171,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="148" Height="22"/>
+    <Button Content="-" HorizontalAlignment="Right" Margin="0" Grid.Row="1" VerticalAlignment="Bottom" Width="157" Height="22" Background="White"/>
 
   </Grid>
 </Window>

@@ -1,14 +1,14 @@
 ﻿<Window x:Class="Keeper.Views.AddAccountView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AddAccountView" Height="148.973" Width="476.712">
+        Title="AddAccountView" Height="142.973" Width="476.712">
     <Grid>
-    <Button Content="Ok" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="75" IsCancel="True"/>
+    <Button Content="Ok" HorizontalAlignment="Left" Margin="133,81,0,0" VerticalAlignment="Top" Width="75" IsCancel="True"/>
     <TextBox HorizontalAlignment="Right" Height="23" Margin="0,10,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="367"/>
     <ComboBox HorizontalAlignment="Left" Margin="92,38,0,0" VerticalAlignment="Top" Width="75"/>
     <Label Content="Название" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
     <Label Content="Валюта" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-    <Button Content="Cancel" HorizontalAlignment="Left" Margin="92,85,0,0" VerticalAlignment="Top" Width="75"/>
+    <Button Content="Cancel" HorizontalAlignment="Left" Margin="246,81,0,0" VerticalAlignment="Top" Width="75"/>
 
   </Grid>
 </Window>
