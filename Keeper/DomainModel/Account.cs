@@ -1,31 +1,61 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Caliburn.Micro;
+using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
-  public class Account  // соответствует "кошельку"
+  public class Account : PropertyChangedBase // соответствует "кошельку"
   {
-    // свойства (properties) класса
+
+    #region // свойства (properties) класса
+
     public string Name { get; set; }
     public CurrencyCodes Currency { get; set; }
     public decimal Balance { get; set; }
-    public Account Parent;
-    public List<Account> Children { get; set; }
+    public Account Parent { get; set; }
+    public ObservableCollection<Account> Children { get; set; }
 
-    // конструкторы
+    #endregion
+
+    #region ' _isSelected '
+
+    private bool _isSelected;
+
+    public bool IsSelected
+    {
+      get { return _isSelected; }
+      set
+      {
+        if (value.Equals(_isSelected)) return;
+        _isSelected = value;
+        NotifyOfPropertyChange(() => IsSelected);
+        IoC.Get<ShellViewModel>().SelectedAccount = this;
+      }
+    }
+
+    #endregion
+
+    #region // конструкторы
+
     public Account()
     {
       Name = "";
       Currency = CurrencyCodes.BYR;
       Balance = 0;
       Parent = null;
-      Children = new List<Account>();
+      Children = new ObservableCollection<Account>();
+      _isSelected = false;
     }
 
     public Account(string name)
-      :this()  // т.е. вызвать конструктор без параметров, а затем исполнить свой код
+      : this() // т.е. вызвать конструктор без параметров, а затем исполнить свой код
     {
       Name = name;
     }
+
+    #endregion
+
   }
 }

@@ -8,7 +8,10 @@
         Title="Доход" Height="246" Width="609" ResizeMode="NoResize" Background="White"
         d:DataContext="{d:DesignInstance ViewModels:AddIncomeViewModel}">
   <Grid Margin="0,0,0,4" Background="{Binding FormBackground}">
-    <ComboBox x:Name="Account1" HorizontalAlignment="Left" Margin="63,79,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding AccountsList}" ItemTemplate="{DynamicResource DataTemplate1}" SelectedItem="{Binding SelectedAccount}" Background="White" BorderBrush="Black">
+    <ComboBox x:Name="Account1" HorizontalAlignment="Left" Margin="63,79,0,0" VerticalAlignment="Top" Width="120" Background="White" BorderBrush="Black"
+              ItemsSource="{Binding AccountsList}" 
+              SelectedItem="{Binding SelectedAccount}"
+              ItemTemplate="{DynamicResource DataTemplate1}">
       <ComboBox.Resources>
         <DataTemplate x:Key="DataTemplate1" DataType="DomainModel:Account">
           <TextBlock Text="{Binding Name}"/>

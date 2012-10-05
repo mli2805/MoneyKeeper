@@ -13,6 +13,7 @@ using Keeper.DomainModel;
 namespace Keeper.ViewModels
 {
   [Export(typeof(IShell))]
+  [Export(typeof(ShellViewModel)),PartCreationPolicy(CreationPolicy.Shared)]
   public class ShellViewModel : Screen, IShell
   {
     [Import]
@@ -27,6 +28,8 @@ namespace Keeper.ViewModels
       PrepareExpensesCategoriesTree();
 
     }
+
+    public Account SelectedAccount { get; set; }
 
     // во ViewModel создается public property к которому будет биндиться компонент из View
     // далее содержимое этого свойства изменяется и это должно быть отображено на экране
@@ -43,9 +46,10 @@ namespace Keeper.ViewModels
       account.Children.Add(new Account("Кошельки"));
       account.Children.Add(account1);
       account1.Parent = account;
-      account1.Children.Add(new Account("АСБ \"Ваш выбор\" 14.01.2012 -"));
+      var account2 = new Account("АСБ \"Ваш выбор\" 14.01.2012 -");
+      account1.Children.Add(account2);
+      account2.Parent = account1;
       AccountsRoots.Add(account);
-
     }
 
     private void PrepareIncomesCategoriesTree()
@@ -93,9 +97,14 @@ namespace Keeper.ViewModels
       }
     }
 
+    public void RemoveAccount()
+    {
+      SelectedAccount.Parent.Children.Remove(SelectedAccount);
+    }
+    
     public void AddAccount()
     {
-      MyWindowManager.ShowDialog(new AddAccountViewModel());
+      MyWindowManager.ShowDialog(new AddAccountViewModel(SelectedAccount));
     }
 
     public void RunOperationsForm()

@@ -3,8 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="Keeper.Views.ShellView"
-        mc:Ignorable="d" Title="Keeper 2012" Height="562" Width="924" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/Checkout.ico"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+        xmlns:cal="http://www.caliburnproject.org" x:Class="Keeper.Views.ShellView"
+        mc:Ignorable="d" Title="Keeper 2012" Height="562" Width="924" ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
         d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}">
   <Window.Resources>
     <HierarchicalDataTemplate x:Key="AccountTemplate" ItemsSource="{Binding Children}">
@@ -28,12 +31,10 @@
     <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0,6,0,13" Width="222" FontSize="11" Height="22" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Column="1" />
     <Button x:Name="RunOperationsForm" Content="Operations" 
             VerticalAlignment="Center" Width="74" Height="22" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" />
-    <Button x:Name="AddAccount" Content="+" HorizontalAlignment="Left" 
-            Margin="0" Grid.Row="1" VerticalAlignment="Bottom" Width="158" Height="22" Background="White"/>
-    <Button x:Name="CloseProgram" Content="Close" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Width="74" RenderTransformOrigin="0.392,0.682" Height="22" Background="{x:Null}" BorderBrush="{x:Null}"/>
-
-    <!-- jyghjgyjy -->
-    <Menu HorizontalAlignment="Left" Margin="10,10,0,13" VerticalAlignment="Center" Background="{x:Null}" Height="18" Width="128">
+    <Button x:Name="CloseProgram" Content="Close" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="2" 
+            VerticalAlignment="Center" Width="74" RenderTransformOrigin="0.392,0.682" Height="22" 
+            Background="{x:Null}" BorderBrush="{x:Null}"/>
+    <Menu Name="MainMenu"  HorizontalAlignment="Left" Margin="10,10,0,13" VerticalAlignment="Center" Background="{x:Null}" Height="18" Width="128">
       <MenuItem Header="OPERATIONS" Background="{x:Null}" Foreground="#FF0F0FFF">
         <MenuItem x:Name="ShowTransactions" Header="TRANSACTIONS"/>
         <MenuItem Header="DIAGRAMS"/>
@@ -44,9 +45,30 @@
         <MenuItem Header="ABOUT"/>
       </MenuItem>
     </Menu>
-    <TabControl Margin="0,0,0,23" Grid.Row="1" MinHeight="350" MinWidth="250">
+    <TabControl Margin="0" Grid.Row="1" MinHeight="350" MinWidth="250">
       <TabItem Header="Счета" Background="{x:Null}">
-        <TreeView x:Name="AccountsTreeView" ItemsSource="{Binding AccountsRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
+        <TreeView x:Name="AccountsTreeView" ItemsSource="{Binding AccountsRoots}" 
+                  ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="TreeViewItem">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
       </TabItem>
       <TabItem Header="Доходы" Background="{x:Null}">
         <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
@@ -55,7 +77,6 @@
         <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
       </TabItem>
     </TabControl>
-    <Button Content="-" HorizontalAlignment="Right" Margin="0" Grid.Row="1" VerticalAlignment="Bottom" Width="157" Height="22" Background="White"/>
 
   </Grid>
 </Window>
