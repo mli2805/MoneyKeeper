@@ -11,7 +11,7 @@
         d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}">
   <Window.Resources>
     <HierarchicalDataTemplate x:Key="AccountTemplate" ItemsSource="{Binding Children}">
-      <TextBlock Text="{Binding Name}"/>
+      <TextBlock Text="{Binding FullName}"/>
     </HierarchicalDataTemplate>
   </Window.Resources>
   <Grid Margin="5">

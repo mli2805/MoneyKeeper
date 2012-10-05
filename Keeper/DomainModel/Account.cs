@@ -13,9 +13,11 @@ namespace Keeper.DomainModel
 
     public string Name { get; set; }
     public CurrencyCodes Currency { get; set; }
+    public string FullName { get { if (IsAggregate) return Name; else return Name + "  (" + Currency + ")";   } }
     public decimal Balance { get; set; }
     public Account Parent { get; set; }
     public ObservableCollection<Account> Children { get; set; }
+    public bool IsAggregate { get; set; }
 
     #endregion
 
