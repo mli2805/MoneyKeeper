@@ -1,0 +1,8 @@
+﻿<Window x:Name="TransactionsForm" x:Class="Keeper.Views.TransactionsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="500" Width="700" MinHeight="450" MinWidth="600" Title="Ежедневные операции" Icon="/Keeper;component/Resources/transactions.ico" ShowInTaskbar="True">
+    <Grid>
+    <Button Content="Добавить" HorizontalAlignment="Left" Margin="35,418,0,0" VerticalAlignment="Top" Width="75"/>
+
+  </Grid>
+</Window>

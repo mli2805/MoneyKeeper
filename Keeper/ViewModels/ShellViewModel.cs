@@ -19,42 +19,61 @@ namespace Keeper.ViewModels
     [Import]
     public IWindowManager MyWindowManager { get; set; }
 
-    public ShellViewModel()
+    #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
+
+    // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
+    private string _message;
+    public String Message
     {
-      _message = "Keeper is running (On Debug)";
-
-      PrepareAccountsTree();
-      PrepareIncomesCategoriesTree();
-      PrepareExpensesCategoriesTree();
-
+      get { return _message; }
+      set
+      {
+        if (value == _message) return;
+        _message = value;
+        NotifyOfPropertyChange(() => Message);
+      }
     }
-
-    public Account SelectedAccount { get; set; }
 
     // во ViewModel создается public property к которому будет биндиться компонент из View
     // далее содержимое этого свойства изменяется и это должно быть отображено на экране
-    // поэтому вместо обычного свойства решарпером создаем свойство с нотификацией
+    // поэтому вместо обычного List создаем ObservableCollection
     public ObservableCollection<Account> AccountsRoots { get; set; }
     public ObservableCollection<Category> IncomesRoots { get; set; }
     public ObservableCollection<Category> ExpensesRoots { get; set; }
 
+    public Account SelectedAccount { get; set; }
+    public Category SelectedCategory { get; set; }
+
+    #endregion
+
+    public ShellViewModel()
+    {
+      _message = "Keeper is running (On Debug)";
+      AccountsRoots = new ObservableCollection<Account>();
+      IncomesRoots = new ObservableCollection<Category>();
+      ExpensesRoots = new ObservableCollection<Category>();
+    }
+
+
+    #region // подготовка списков счетов и категорий
     private void PrepareAccountsTree()
     {
-      AccountsRoots = new ObservableCollection<Account>();
       var account = new Account("Все");
       var account1 = new Account("Депозиты");
       account.Children.Add(new Account("Кошельки"));
       account.Children.Add(account1);
+      account.IsAggregate = true;
       account1.Parent = account;
       var account2 = new Account("АСБ \"Ваш выбор\" 14.01.2012 -");
       account1.Children.Add(account2);
+      account1.IsAggregate = true;
       account2.Parent = account1;
       AccountsRoots.Add(account);
+      account.IsSelected = true;
     }
 
     private void PrepareIncomesCategoriesTree()
     {
-      IncomesRoots = new ObservableCollection<Category>();
       var category = new Category("Зарплата");
       IncomesRoots.Add(category);
       var category1 = new Category("Зарплата моя официальная");
@@ -67,7 +86,6 @@ namespace Keeper.ViewModels
 
     private void PrepareExpensesCategoriesTree()
     {
-      ExpensesRoots = new ObservableCollection<Category>();
       var category = new Category("Все расходы");
       ExpensesRoots.Add(category);
       var category1 = new Category("Продукты");
@@ -78,28 +96,21 @@ namespace Keeper.ViewModels
       category.Children.Add(category1);
 
     }
-    
+    #endregion
+
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Keeper 2012";
+      PrepareAccountsTree();
+      PrepareIncomesCategoriesTree();
+      PrepareExpensesCategoriesTree();
     }
 
-    private string _message;
-
-    public String Message
-    {
-      get { return _message; }
-      set
-      {
-        if (value == _message) return;
-        _message = value;
-        NotifyOfPropertyChange(() => Message);
-      }
-    }
-
+    #region // методы реализации контекстного меню на дереве счетов
     public void RemoveAccount()
     {
-      SelectedAccount.Parent.Children.Remove(SelectedAccount);
+      if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        SelectedAccount.Parent.Children.Remove(SelectedAccount);
     }
     
     public void AddAccount()
@@ -107,31 +118,19 @@ namespace Keeper.ViewModels
       MyWindowManager.ShowDialog(new AddAccountViewModel(SelectedAccount));
     }
 
-    public void RunOperationsForm()
+    public void ChangeAccount()
     {
-      ShowTransactionsForm();
+      MyWindowManager.ShowDialog(new AddAccountViewModel(SelectedAccount));
     }
+    #endregion
 
-    public void ShowTransactions()
-    {
-      ShowTransactionsForm();
-    }
-
-    private void ShowTransactionsForm()
+    public void ShowTransactionsForm()
     {
       String arcMessage = Message;
       Message = "Input operations";
-      MyWindowManager.ShowDialog(new AddIncomeViewModel());
+      MyWindowManager.ShowDialog(new TransactionsViewModel());
       Message = arcMessage;
     }
-
-    public void CloseProgram()
-    {
-      if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-        TryClose();
-    }
-
-
 
   }
 }

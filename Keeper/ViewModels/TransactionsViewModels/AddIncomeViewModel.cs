@@ -14,9 +14,7 @@ namespace Keeper.ViewModels
   public class AddIncomeViewModel : Screen
   {
 
-    //**************************************************** 
     private readonly List<Account> _accountsList = new List<Account>();
-
     public List<Account> AccountsList
     {
       get { return _accountsList; }
@@ -24,15 +22,12 @@ namespace Keeper.ViewModels
 
     public Account SelectedAccount { get; set; }
 
-    //**************************************************** 
     private List<CurrencyCodes> _currencyList = new List<CurrencyCodes>();
-
     public List<CurrencyCodes> CurrencyList
     {
       get { return _currencyList; }
     }
 
-    //**************************************************** 
     private Visibility _exchangeVisibility;
     public Visibility ExchangeVisibility
     {
@@ -45,9 +40,7 @@ namespace Keeper.ViewModels
       }
     }
 
-    //**************************************************** 
     private Brush _formBackground;
-
     public Brush FormBackground
     {
       get { return _formBackground; }
@@ -59,7 +52,6 @@ namespace Keeper.ViewModels
       }
     }
 
-    //**************************************************** 
     public void ChangeFormForIncome()
     {
       ExchangeVisibility = Visibility.Hidden;
@@ -90,8 +82,6 @@ namespace Keeper.ViewModels
     public AddIncomeViewModel()
     {
       PrepareAccountComboBox();
-
-//      FormBackground = 0xFFFFFFFF;
     }
 
   }

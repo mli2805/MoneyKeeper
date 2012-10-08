@@ -13,6 +13,9 @@
     <HierarchicalDataTemplate x:Key="AccountTemplate" ItemsSource="{Binding Children}">
       <TextBlock Text="{Binding FullName}"/>
     </HierarchicalDataTemplate>
+    <HierarchicalDataTemplate x:Key="CategoryTemplate" ItemsSource="{Binding Children}">
+      <TextBlock Text="{Binding Name}"/>
+    </HierarchicalDataTemplate>
   </Window.Resources>
   <Grid Margin="5">
     <Grid.ColumnDefinitions>
@@ -23,29 +26,25 @@
       <ColumnDefinition Width="4*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition Height="41"/>
+      <RowDefinition Height="32"/>
       <RowDefinition/>
-      <RowDefinition Height="41"/>
-      <RowDefinition Height="8"/>
+      <RowDefinition Height="23"/>
     </Grid.RowDefinitions>
-    <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0,6,0,13" Width="222" FontSize="11" Height="22" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Column="1" />
-    <Button x:Name="RunOperationsForm" Content="Operations" 
-            VerticalAlignment="Center" Width="74" Height="22" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" />
-    <Button x:Name="CloseProgram" Content="Close" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="2" 
-            VerticalAlignment="Center" Width="74" RenderTransformOrigin="0.392,0.682" Height="22" 
-            Background="{x:Null}" BorderBrush="{x:Null}"/>
-    <Menu Name="MainMenu"  HorizontalAlignment="Left" Margin="10,10,0,13" VerticalAlignment="Center" Background="{x:Null}" Height="18" Width="128">
-      <MenuItem Header="OPERATIONS" Background="{x:Null}" Foreground="#FF0F0FFF">
-        <MenuItem x:Name="ShowTransactions" Header="TRANSACTIONS"/>
-        <MenuItem Header="DIAGRAMS"/>
+    <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0,6,0,4" Width="222" FontSize="11" Height="22" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Column="1" />
+    <Menu Name="MainMenu"  HorizontalAlignment="Left" Margin="10,8,0,6" VerticalAlignment="Center" 
+          Background="{x:Null}" Height="18" Width="120" Grid.ColumnSpan="2">
+      <MenuItem Header="ФОРМЫ" Background="{x:Null}" Foreground="#FF0F0FFF" Padding="7,0,8,0">
+        <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
+        <MenuItem Header="ДИАГРАММЫ"/>
+        <MenuItem Header="ДЕПОЗИТЫ"/>
       </MenuItem>
-      <MenuItem Header="HELP" Foreground="#FF0F0FFF">
+      <MenuItem Header="HELP" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem Header="TO DO" />
         <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem Header="ABOUT"/>
       </MenuItem>
     </Menu>
-    <TabControl Margin="0" Grid.Row="1" MinHeight="350" MinWidth="250">
+    <TabControl Margin="0,0,0,5" Grid.Row="1" MinHeight="350" MinWidth="250">
       <TabItem Header="Счета" Background="{x:Null}">
         <TreeView x:Name="AccountsTreeView" ItemsSource="{Binding AccountsRoots}" 
                   ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
@@ -61,22 +60,29 @@
                   <Image Source="..\Resources/minus16.ico" Width="16"/>
                 </MenuItem.Icon>
               </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
             </ContextMenu>
           </TreeView.ContextMenu>
           <TreeView.ItemContainerStyle>
             <Style TargetType="TreeViewItem">
               <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="True"/>
             </Style>
           </TreeView.ItemContainerStyle>
         </TreeView>
       </TabItem>
       <TabItem Header="Доходы" Background="{x:Null}">
-        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoots}" ItemTemplate="{DynamicResource CategoryTemplate}"/>
       </TabItem>
       <TabItem Header="Расходы" Background="{x:Null}">
-        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoots}" ItemTemplate="{DynamicResource AccountTemplate}"/>
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoots}" ItemTemplate="{DynamicResource CategoryTemplate}"/>
       </TabItem>
     </TabControl>
+    <StatusBar Margin="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" Background="White" BorderBrush="Gray"/>
 
   </Grid>
 </Window>

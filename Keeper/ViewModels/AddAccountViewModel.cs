@@ -11,8 +11,8 @@ namespace Keeper.ViewModels
   class AddAccountViewModel:Screen
   {
     public Account AccountUnderCreation { get; set; }
-    public List<string> CurrencyList { get; set; }
-    public string SelectedCurrency { get; set; }
+    public List<CurrencyCodes> CurrencyList { get; set; }
+    public CurrencyCodes SelectedCurrency { get; set; }
 
     public AddAccountViewModel(Account parentAccount)
     {
@@ -24,16 +24,13 @@ namespace Keeper.ViewModels
 
     private void PrepareCurrencyComboBox()
     {
-      CurrencyList = new List<string>();
-      CurrencyList.Add("BYR");
-      CurrencyList.Add("RUB");
-      CurrencyList.Add("USD");
-      CurrencyList.Add("EUR");
+      CurrencyList = Enum.GetValues(typeof (CurrencyCodes)).OfType<CurrencyCodes>().ToList();
       SelectedCurrency = CurrencyList[0];
     }
 
     public void Accept()
     {
+      AccountUnderCreation.Currency = SelectedCurrency;
       AccountUnderCreation.Parent.Children.Add(AccountUnderCreation);
       TryClose(true);
     }

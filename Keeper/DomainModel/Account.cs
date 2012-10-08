@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using Caliburn.Micro;
 using Keeper.ViewModels;
 
@@ -16,14 +17,29 @@ namespace Keeper.DomainModel
     public string FullName { get { if (IsAggregate) return Name; else return Name + "  (" + Currency + ")";   } }
     public decimal Balance { get; set; }
     public Account Parent { get; set; }
-    public ObservableCollection<Account> Children { get; set; }
-    public bool IsAggregate { get; set; }
+    public ObservableCollection<Account> Children { get; private set; }
+    public bool IsAggregate
+    {
+      get { return _isAggregate; }
+      set
+      {
+        if (value.Equals(_isAggregate)) return;
+        _isAggregate = value;
+        NotifyOfPropertyChange(() => IsAggregate);
+        NotifyOfPropertyChange(() => FullName);
+      }
+    }
 
-    #endregion
+    private void ChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+    {
+      IsAggregate |= Children.Count != 0;
+
+    }
+
 
     #region ' _isSelected '
-
     private bool _isSelected;
+    private bool _isAggregate;
 
     public bool IsSelected
     {
@@ -36,8 +52,10 @@ namespace Keeper.DomainModel
         IoC.Get<ShellViewModel>().SelectedAccount = this;
       }
     }
+    #endregion
 
     #endregion
+
 
     #region // конструкторы
 
@@ -48,7 +66,9 @@ namespace Keeper.DomainModel
       Balance = 0;
       Parent = null;
       Children = new ObservableCollection<Account>();
+      Children.CollectionChanged+=ChildrenOnCollectionChanged;
       _isSelected = false;
+      IsAggregate = false;
     }
 
     public Account(string name)
