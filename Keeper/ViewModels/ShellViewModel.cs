@@ -127,12 +127,13 @@ namespace Keeper.ViewModels
     
     public void AddAccount()
     {
-      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount),FormMode.Create);
+      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount,FormMode.Create));
     }
 
     public void ChangeAccount()
     {
-      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount),FormMode.Edit);
+
+      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount,FormMode.Edit));
     }
     #endregion
 
