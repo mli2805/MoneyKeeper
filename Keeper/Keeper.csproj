@@ -70,17 +70,22 @@
     <Compile Include="DomainModel\KeeperDB.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
+    <Compile Include="DomainModel\SomeEnums.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
-    <Compile Include="ViewModels\AddAccountViewModel.cs" />
+    <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddExchangeViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddIncomeViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddExpenseViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddTransferViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\TransactionsViewModel.cs" />
-    <Compile Include="Views\AddAccountView.xaml.cs">
-      <DependentUpon>AddAccountView.xaml</DependentUpon>
+    <Compile Include="Views\AccountView.xaml.cs">
+      <DependentUpon>AccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CategoryView.xaml.cs">
+      <DependentUpon>CategoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TransactionsViews\AddTransferView.xaml.cs">
       <DependentUpon>AddTransferView.xaml</DependentUpon>
@@ -135,7 +140,11 @@
     <Resource Include="Resources\keeper.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AddAccountView.xaml">
+    <Page Include="Views\AccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

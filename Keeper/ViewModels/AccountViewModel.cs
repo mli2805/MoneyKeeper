@@ -8,13 +8,13 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
-  class AddAccountViewModel:Screen
+  class AccountViewModel:Screen
   {
     public Account AccountUnderCreation { get; set; }
     public List<CurrencyCodes> CurrencyList { get; set; }
     public CurrencyCodes SelectedCurrency { get; set; }
 
-    public AddAccountViewModel(Account parentAccount)
+    public AccountViewModel(Account parentAccount)
     {
       AccountUnderCreation = new Account();
       AccountUnderCreation.Parent = parentAccount;

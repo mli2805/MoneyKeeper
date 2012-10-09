@@ -45,6 +45,7 @@
       </MenuItem>
     </Menu>
     <TabControl Margin="0,0,0,5" Grid.Row="1" MinHeight="350" MinWidth="250">
+      
       <TabItem Header="Счета" Background="{x:Null}">
         <TreeView x:Name="AccountsTreeView" ItemsSource="{Binding AccountsRoots}" 
                   ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
@@ -75,11 +76,67 @@
           </TreeView.ItemContainerStyle>
         </TreeView>
       </TabItem>
+      
       <TabItem Header="Доходы" Background="{x:Null}">
-        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoots}" ItemTemplate="{DynamicResource CategoryTemplate}"/>
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoots}" 
+                  ItemTemplate="{DynamicResource CategoryTemplate}">
+          <TreeView.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Добавить" cal:Message.Attach="AddCategory" BorderBrush="{x:Null}" Background="White" >
+              <MenuItem.Icon>
+                <Image Source="..\Resources/plus16.ico" Width="16"/>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Удалить" cal:Message.Attach="RemoveCategory" BorderBrush="{x:Null}" Background="White">
+              <MenuItem.Icon>
+                <Image Source="..\Resources/minus16.ico" Width="16"/>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Изменить" cal:Message.Attach="ChangeCategory" BorderBrush="{x:Null}" Background="White">
+              <MenuItem.Icon>
+                <Image Source="..\Resources/edit16.ico" Width="16"/>
+              </MenuItem.Icon>
+            </MenuItem>
+          </ContextMenu>
+        </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+          <Style TargetType="TreeViewItem">
+            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+            <Setter Property="IsExpanded" Value="True"/>
+          </Style>
+        </TreeView.ItemContainerStyle>
+        </TreeView>
       </TabItem>
+      
       <TabItem Header="Расходы" Background="{x:Null}">
-        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoots}" ItemTemplate="{DynamicResource CategoryTemplate}"/>
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoots}" 
+                  ItemTemplate="{DynamicResource CategoryTemplate}">
+          <TreeView.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Добавить" cal:Message.Attach="AddCategory" BorderBrush="{x:Null}" Background="White" >
+              <MenuItem.Icon>
+                <Image Source="..\Resources/plus16.ico" Width="16"/>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Удалить" cal:Message.Attach="RemoveCategory" BorderBrush="{x:Null}" Background="White">
+              <MenuItem.Icon>
+                <Image Source="..\Resources/minus16.ico" Width="16"/>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Изменить" cal:Message.Attach="ChangeCategory" BorderBrush="{x:Null}" Background="White">
+              <MenuItem.Icon>
+                <Image Source="..\Resources/edit16.ico" Width="16"/>
+              </MenuItem.Icon>
+            </MenuItem>
+          </ContextMenu>
+        </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+          <Style TargetType="TreeViewItem">
+            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+            <Setter Property="IsExpanded" Value="True"/>
+          </Style>
+        </TreeView.ItemContainerStyle>
+        </TreeView>
       </TabItem>
     </TabControl>
     <StatusBar Margin="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" Background="White" BorderBrush="Gray"/>

@@ -7,14 +7,14 @@
         xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Utils="clr-namespace:Keeper.Utils"
         mc:Ignorable="d" Title="AddAccountView" Height="142.973" Width="476.712"
-        d:DataContext="{d:DesignInstance ViewModels:AddAccountViewModel}">
+        d:DataContext="{d:DesignInstance ViewModels:AccountViewModel}">
     <Grid>
     <Button cal:Message.Attach="Accept" Content="Ok" HorizontalAlignment="Left" Margin="133,81,0,0" VerticalAlignment="Top" Width="75" />
     <TextBox HorizontalAlignment="Right" Height="23" Margin="0,10,10,0" 
              TextWrapping="Wrap" VerticalAlignment="Top" Width="367"
              Text="{Binding AccountUnderCreation.Name}">
       <i:Interaction.Behaviors>
-        <Utils:SetFocusOnLoadBehavior/>
+        <Utils:SetFocusOnLoadBehavior />
       </i:Interaction.Behaviors>
     </TextBox>
       <ComboBox HorizontalAlignment="Left" Margin="92,38,0,0" VerticalAlignment="Top" Width="75"

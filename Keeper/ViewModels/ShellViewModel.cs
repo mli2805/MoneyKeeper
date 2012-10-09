@@ -74,14 +74,23 @@ namespace Keeper.ViewModels
 
     private void PrepareIncomesCategoriesTree()
     {
-      var category = new Category("Зарплата");
+      var category = new Category("Все доходы");
       IncomesRoots.Add(category);
-      var category1 = new Category("Зарплата моя официальная");
+
+      var category1 = new Category("Зарплата");
       category.Children.Add(category1);
-      category1 = new Category("Зарплата моя 2я часть");
-      category.Children.Add(category1);
+      category1.Parent = category;
+
+      category = new Category("Зарплата моя официальная");
+      category1.Children.Add(category);
+      category.Parent = category1;
+
+      category = new Category("Зарплата моя 2я часть");
+      category1.Children.Add(category);
+      category.Parent = category1;
+
       category1 = new Category("Процентные доходы");
-      IncomesRoots.Add(category1);
+      category.Parent.Parent.Children.Add(category1);
     }
 
     private void PrepareExpensesCategoriesTree()
@@ -115,12 +124,30 @@ namespace Keeper.ViewModels
     
     public void AddAccount()
     {
-      MyWindowManager.ShowDialog(new AddAccountViewModel(SelectedAccount));
+      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount));
     }
 
     public void ChangeAccount()
     {
-      MyWindowManager.ShowDialog(new AddAccountViewModel(SelectedAccount));
+      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount));
+    }
+    #endregion
+
+    #region // методы реализации контекстного меню на дереве категорий
+    public void RemoveCategory()
+    {
+      if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        SelectedCategory.Parent.Children.Remove(SelectedCategory);
+    }
+
+    public void AddCategory()
+    {
+      MyWindowManager.ShowDialog(new CategoryViewModel(SelectedCategory,FormMode.Create));
+    }
+
+    public void ChangeCategory()
+    {
+      MyWindowManager.ShowDialog(new CategoryViewModel(SelectedCategory,FormMode.Edit));
     }
     #endregion
 

@@ -18,6 +18,7 @@ namespace Keeper.DomainModel
     public decimal Balance { get; set; }
     public Account Parent { get; set; }
     public ObservableCollection<Account> Children { get; private set; }
+    private bool _isAggregate;
     public bool IsAggregate
     {
       get { return _isAggregate; }
@@ -36,11 +37,8 @@ namespace Keeper.DomainModel
 
     }
 
-
     #region ' _isSelected '
     private bool _isSelected;
-    private bool _isAggregate;
-
     public bool IsSelected
     {
       get { return _isSelected; }

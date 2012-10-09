@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
   public class Category : PropertyChangedBase
   {
+    #region // свойства класса , включая IsSelected
     public string Name { get; set; }
     public Category Parent { get; set; }
     public List<Category> Children { get; set; }
 
-    #region ' _isSelected '
+    #region // _isSelected 
 
     private bool _isSelected;
 
@@ -25,10 +27,13 @@ namespace Keeper.DomainModel
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
         NotifyOfPropertyChange(() => IsSelected);
+        IoC.Get<ShellViewModel>().SelectedCategory = this;
       }
     }
 
     #endregion
+    #endregion
+
 
     public Category()
     {
