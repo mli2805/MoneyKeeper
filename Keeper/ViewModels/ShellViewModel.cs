@@ -58,9 +58,9 @@ namespace Keeper.ViewModels
     #region // подготовка списков счетов и категорий
     private void PrepareAccountsTree()
     {
-      var account = new Account("Все");
-      var account1 = new Account("Депозиты");
-      account.Children.Add(new Account("Кошельки"));
+      var account = new Account("Все",true);
+      var account1 = new Account("Депозиты",true);
+      account.Children.Add(new Account("Кошельки",true));  //  не назначен родитель
       account.Children.Add(account1);
       account.IsAggregate = true;
       account1.Parent = account;
@@ -99,10 +99,13 @@ namespace Keeper.ViewModels
       ExpensesRoots.Add(category);
       var category1 = new Category("Продукты");
       category.Children.Add(category1);
+      category1.Parent = category;
       category1 = new Category("Автомобиль");
       category.Children.Add(category1);
+      category1.Parent = category;
       category1 = new Category("Коммунальные платежи");
       category.Children.Add(category1);
+      category1.Parent = category;
 
     }
     #endregion
@@ -124,12 +127,12 @@ namespace Keeper.ViewModels
     
     public void AddAccount()
     {
-      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount));
+      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount),FormMode.Create);
     }
 
     public void ChangeAccount()
     {
-      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount));
+      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount),FormMode.Edit);
     }
     #endregion
 

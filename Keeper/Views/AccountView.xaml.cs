@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Keeper.Views
 {
   /// <summary>
-  /// Interaction logic for AddAccountView.xaml
+  /// Interaction logic for AccountView.xaml
   /// </summary>
-  public partial class AddAccountView : Window
+  public partial class AccountView : Window
   {
-    public AddAccountView()
+    public AccountView()
     {
       InitializeComponent();
     }

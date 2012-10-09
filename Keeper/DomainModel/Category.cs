@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Keeper.DomainModel
     #region // свойства класса , включая IsSelected
     public string Name { get; set; }
     public Category Parent { get; set; }
-    public List<Category> Children { get; set; }
+    public ObservableCollection<Category> Children { get; set; }
 
     #region // _isSelected 
 
@@ -39,7 +40,7 @@ namespace Keeper.DomainModel
     {
       Name = "";
       Parent = null;
-      Children = new List<Category>();
+      Children = new ObservableCollection<Category>();
       _isSelected = false;
     }
 

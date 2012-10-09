@@ -75,6 +75,12 @@ namespace Keeper.DomainModel
       Name = name;
     }
 
+    public Account(string name, bool isAggregate)
+      : this() // т.е. вызвать конструктор без параметров, а затем исполнить свой код
+    {
+      Name = name;
+      IsAggregate = isAggregate;
+    }
     #endregion
 
   }

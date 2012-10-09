@@ -35,7 +35,8 @@ namespace Keeper.ViewModels
 
     public void Accept()
     {
-      if (CurrentMode == FormMode.Create) CategoryInWork.Parent.Children.Add(CategoryInWork);
+      if (CurrentMode == FormMode.Create) 
+        CategoryInWork.Parent.Children.Add(CategoryInWork);
       TryClose(true);
     }
 
