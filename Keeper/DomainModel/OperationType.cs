@@ -3,6 +3,8 @@ namespace Keeper.DomainModel
   internal enum OperationType
   {
     Income,
-    Expense
+    Expense,
+    Transfer,
+    Excange
   };
 }

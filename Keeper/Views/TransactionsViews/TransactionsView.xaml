@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="500" Width="700" MinHeight="450" MinWidth="600" Title="Ежедневные операции" Icon="/Keeper;component/Resources/transactions.ico" ShowInTaskbar="True">
     <Grid>
     <Button Content="Добавить" HorizontalAlignment="Left" Margin="35,418,0,0" VerticalAlignment="Top" Width="75"/>
+    <DataGrid HorizontalAlignment="Left" Margin="35,35,0,0" VerticalAlignment="Top"/>
 
   </Grid>
 </Window>
