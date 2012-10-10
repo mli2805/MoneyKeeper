@@ -53,14 +53,10 @@ namespace Keeper.ViewModels
       Database.SetInitializer(new DbInitializer());
     }
 
-
-
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Keeper 2012";
-
-
-      var db = new KeeperDb();
+      var db = new KeeperDb();  // база данных в оперативной памяти
 
       db.Accounts.Load();
       AccountsRoots = new ObservableCollection<Account>(from account in db.Accounts

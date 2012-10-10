@@ -16,8 +16,8 @@ namespace Keeper.DomainModel
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Category>()
-                  .Map<ExpenseCategory>(m => m.Requires("CatTy").HasValue("e"))
-                  .Map<IncomeCategory>(m => m.Requires("CatTy").HasValue("i"));
+                  .Map<ExpenseCategory>(m => m.Requires("CategoryType").HasValue("expense"))
+                  .Map<IncomeCategory>(m => m.Requires("CategoryType").HasValue("income"));
     }
   }
 }
