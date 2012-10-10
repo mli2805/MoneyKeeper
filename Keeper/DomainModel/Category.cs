@@ -9,14 +9,47 @@ using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
-  public class Category : PropertyChangedBase
+  public class IncomeCategory : Category
+  {
+    public IncomeCategory()
+    {
+    }
+
+    public IncomeCategory(string name) : base(name)
+    {
+    }
+
+    public override Category NewPrototype()
+    {
+      return new IncomeCategory();
+    }
+  }
+
+  public class ExpenseCategory : Category
+  {
+    public ExpenseCategory()
+    {
+    }
+
+    public ExpenseCategory(string name) : base(name)
+    {
+    }
+
+    public override Category NewPrototype()
+    {
+      return new ExpenseCategory();
+    }
+  }
+
+  public abstract class Category : PropertyChangedBase
   {
     #region // свойства класса , включая IsSelected
+    public int Id { get; set; }
     public string Name { get; set; }
     public Category Parent { get; set; }
-    public ObservableCollection<Category> Children { get; set; }
+    public virtual ICollection<Category> Children { get; set; }
 
-    #region // _isSelected 
+    #region // _isSelected
 
     private bool _isSelected;
 
@@ -35,8 +68,7 @@ namespace Keeper.DomainModel
     #endregion
     #endregion
 
-
-    public Category()
+    protected Category()
     {
       Name = "";
       Parent = null;
@@ -44,11 +76,13 @@ namespace Keeper.DomainModel
       _isSelected = false;
     }
 
-    public Category(string name) : this()
+    protected Category(string name)
+      : this()
     {
       Name = name;
     }
 
+    public abstract Category NewPrototype();
   }
 
 }

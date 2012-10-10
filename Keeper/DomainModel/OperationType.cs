@@ -1,6 +1,6 @@
 namespace Keeper.DomainModel
 {
-  internal enum OperationType
+  public enum OperationType
   {
     Income,
     Expense,

@@ -16,7 +16,7 @@ namespace Keeper.ViewModels
 
     public void PrepareForCreate(Category parentCategory)
     {
-      CategoryInWork = new Category();
+      CategoryInWork = parentCategory is ExpenseCategory ? (Category)new ExpenseCategory() : new IncomeCategory();
       CategoryInWork.Parent = parentCategory;
     }
 

@@ -2,14 +2,21 @@ using System;
 
 namespace Keeper.DomainModel
 {
-  class Transaction
+  public class Transaction
   {
-    private DateTime _timestamp;
-    private OperationType _operationType;
-    private decimal _amount;
-    private CurrencyCodes _currency;
-    private Account _account;
-    private Account _article;
-    private String _comment;
+    public int Id { get; set; }
+    public DateTime Timestamp { get; set; }
+
+    public OperationType OperationType { get; set; }
+
+    public decimal Amount { get; set; }
+
+    public CurrencyCodes Currency { get; set; }
+
+    public Account Account { get; set; }
+
+    public Account Article { get; set; }
+
+    public string Comment { get; set; }
   }
 }

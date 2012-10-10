@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,8 +39,8 @@ namespace Keeper.ViewModels
     // далее содержимое этого свойства изменяется и это должно быть отображено на экране
     // поэтому вместо обычного List создаем ObservableCollection
     public ObservableCollection<Account> AccountsRoots { get; set; }
-    public ObservableCollection<Category> IncomesRoots { get; set; }
-    public ObservableCollection<Category> ExpensesRoots { get; set; }
+    public ObservableCollection<IncomeCategory> IncomesRoots { get; set; }
+    public ObservableCollection<ExpenseCategory> ExpensesRoots { get; set; }
 
     public Account SelectedAccount { get; set; }
     public Category SelectedCategory { get; set; }
@@ -49,73 +50,37 @@ namespace Keeper.ViewModels
     public ShellViewModel()
     {
       _message = "Keeper is running (On Debug)";
-      AccountsRoots = new ObservableCollection<Account>();
-      IncomesRoots = new ObservableCollection<Category>();
-      ExpensesRoots = new ObservableCollection<Category>();
+      Database.SetInitializer(new DbInitializer());
+
+      var db = new KeeperDb();
+
+      AccountsRoots = new ObservableCollection<Account>(from account in db.Accounts.Include("Children")
+                                                        where account.Parent == null 
+                                                        select account);
+      IncomesRoots = new ObservableCollection<IncomeCategory>(from incomeCategory in db.Incomes.Include("Children")
+                                                              where incomeCategory.Parent == null
+                                                              select incomeCategory);
+      ExpensesRoots = new ObservableCollection<ExpenseCategory>(from expenseCategory in db.Expenses.Include("Children")
+                                                                where expenseCategory.Parent == null
+                                                                select expenseCategory);
+      db.Dispose();
     }
 
 
-    #region // подготовка списков счетов и категорий
-    private void PrepareAccountsTree()
-    {
-      var account = new Account("Все",true);
-      var account1 = new Account("Депозиты",true);
-      account.Children.Add(new Account("Кошельки",true));  //  не назначен родитель
-      account.Children.Add(account1);
-      account.IsAggregate = true;
-      account1.Parent = account;
-      var account2 = new Account("АСБ \"Ваш выбор\" 14.01.2012 -");
-      account1.Children.Add(account2);
-      account1.IsAggregate = true;
-      account2.Parent = account1;
-      AccountsRoots.Add(account);
-      account.IsSelected = true;
-    }
-
-    private void PrepareIncomesCategoriesTree()
-    {
-      var category = new Category("Все доходы");
-      IncomesRoots.Add(category);
-
-      var category1 = new Category("Зарплата");
-      category.Children.Add(category1);
-      category1.Parent = category;
-
-      category = new Category("Зарплата моя официальная");
-      category1.Children.Add(category);
-      category.Parent = category1;
-
-      category = new Category("Зарплата моя 2я часть");
-      category1.Children.Add(category);
-      category.Parent = category1;
-
-      category1 = new Category("Процентные доходы");
-      category.Parent.Parent.Children.Add(category1);
-    }
-
-    private void PrepareExpensesCategoriesTree()
-    {
-      var category = new Category("Все расходы");
-      ExpensesRoots.Add(category);
-      var category1 = new Category("Продукты");
-      category.Children.Add(category1);
-      category1.Parent = category;
-      category1 = new Category("Автомобиль");
-      category.Children.Add(category1);
-      category1.Parent = category;
-      category1 = new Category("Коммунальные платежи");
-      category.Children.Add(category1);
-      category1.Parent = category;
-
-    }
-    #endregion
 
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Keeper 2012";
-      PrepareAccountsTree();
-      PrepareIncomesCategoriesTree();
-      PrepareExpensesCategoriesTree();
+ 
+//      PrepareAccountsTree();
+//      PrepareIncomesCategoriesTree();
+//      PrepareExpensesCategoriesTree();
+/*
+      var db = new KeeperDB();
+      db.Accounts.Add(AccountsRoots[0]);
+      db.SaveChanges();
+      db.Dispose();
+ */
     }
 
     #region // методы реализации контекстного меню на дереве счетов

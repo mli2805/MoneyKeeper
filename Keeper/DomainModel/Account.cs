@@ -12,12 +12,13 @@ namespace Keeper.DomainModel
 
     #region // свойства (properties) класса
 
+    public int Id { get; set; }
     public string Name { get; set; }
     public CurrencyCodes Currency { get; set; }
     public string FullName { get { if (IsAggregate) return Name; else return Name + "  (" + Currency + ")";   } }
     public decimal Balance { get; set; }
     public Account Parent { get; set; }
-    public ObservableCollection<Account> Children { get; private set; }
+    public virtual ICollection<Account> Children { get; private set; }
     private bool _isAggregate;
     public bool IsAggregate
     {
@@ -64,7 +65,7 @@ namespace Keeper.DomainModel
       Balance = 0;
       Parent = null;
       Children = new ObservableCollection<Account>();
-      Children.CollectionChanged+=ChildrenOnCollectionChanged;
+ //     Children.CollectionChanged+=ChildrenOnCollectionChanged;
       _isSelected = false;
       IsAggregate = false;
     }
