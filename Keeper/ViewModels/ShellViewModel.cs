@@ -51,19 +51,6 @@ namespace Keeper.ViewModels
     {
       _message = "Keeper is running (On Debug)";
       Database.SetInitializer(new DbInitializer());
-
-      var db = new KeeperDb();
-
-      AccountsRoots = new ObservableCollection<Account>(from account in db.Accounts.Include("Children")
-                                                        where account.Parent == null 
-                                                        select account);
-      IncomesRoots = new ObservableCollection<IncomeCategory>(from incomeCategory in db.Incomes.Include("Children")
-                                                              where incomeCategory.Parent == null
-                                                              select incomeCategory);
-      ExpensesRoots = new ObservableCollection<ExpenseCategory>(from expenseCategory in db.Expenses.Include("Children")
-                                                                where expenseCategory.Parent == null
-                                                                select expenseCategory);
-      db.Dispose();
     }
 
 
@@ -71,16 +58,26 @@ namespace Keeper.ViewModels
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Keeper 2012";
- 
-//      PrepareAccountsTree();
-//      PrepareIncomesCategoriesTree();
-//      PrepareExpensesCategoriesTree();
-/*
-      var db = new KeeperDB();
-      db.Accounts.Add(AccountsRoots[0]);
-      db.SaveChanges();
+
+
+      var db = new KeeperDb();
+
+      db.Accounts.Load();
+      AccountsRoots = new ObservableCollection<Account>(from account in db.Accounts
+                                                        where account.Parent == null
+                                                        select account);
+      IncomesRoots = new ObservableCollection<IncomeCategory>(from incomeCategory in db.Incomes.Include("Children")
+                                                              where incomeCategory.Parent == null
+                                                              select incomeCategory);
+      ExpensesRoots = new ObservableCollection<ExpenseCategory>(from expenseCategory in db.Expenses.Include("Children")
+                                                                where expenseCategory.Parent == null
+                                                                select expenseCategory);
+
+      NotifyOfPropertyChange(() => AccountsRoots);
+      NotifyOfPropertyChange(() => IncomesRoots);
+      NotifyOfPropertyChange(() => ExpensesRoots);
+
       db.Dispose();
- */
     }
 
     #region // методы реализации контекстного меню на дереве счетов
