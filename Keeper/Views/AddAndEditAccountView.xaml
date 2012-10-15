@@ -1,0 +1,42 @@
+﻿<Window x:Class="Keeper.Views.AddAndEditAccountView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:cal="http://www.caliburnproject.org"
+        xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Utils="clr-namespace:Keeper.Utils"
+        mc:Ignorable="d" Title="{Binding Title}" Height="205.973" Width="476.712"
+        d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}">
+    <Grid>
+    <TextBox Height="23" Margin="92,51,10,0" 
+             TextWrapping="Wrap" VerticalAlignment="Top"
+             Text="{Binding AccountInWork.Name}">
+      <i:Interaction.Behaviors>
+        <Utils:SetFocusOnLoadBehavior />
+      </i:Interaction.Behaviors>
+    </TextBox>
+    <ComboBox Margin="92,14,10,0" VerticalAlignment="Top"
+                  ItemsSource="{Binding AccountsForParentList}" SelectedItem="{Binding SelectedParent}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate DataType="DomainModel:Account" >
+          <TextBlock Text="{Binding FullName}"/>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
+
+
+      <ComboBox HorizontalAlignment="Left" Margin="92,85,0,0" VerticalAlignment="Top" Width="75"
+              ItemsSource="{Binding CurrencyList}" SelectedItem="{Binding SelectedCurrency}"/>
+    <CheckBox Content="Агрегатный" HorizontalAlignment="Left" Margin="269,87,0,0" VerticalAlignment="Top"
+             IsChecked="{Binding IsAggregateCombobox}" />
+
+    <Label Content="Название" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top"/>
+    <Label Content="Валюта" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top"/>
+    <Button cal:Message.Attach="Accept" Content="Ok" HorizontalAlignment="Left" Margin="149,128,0,0" 
+            VerticalAlignment="Top" Width="75" />
+    <Button Content="Cancel" HorizontalAlignment="Left" Margin="262,128,0,0" 
+            VerticalAlignment="Top" Width="75" IsCancel="True"/>
+
+  </Grid>
+</Window>

@@ -85,10 +85,15 @@ namespace Keeper.DomainModel
       var expenseCategory2 = new ExpenseCategory("Обслуживание");
       expenseCategory2.Parent = expenseCategory;
 
-      var transaction = new Transaction {OperationType = OperationType.Income,AccountFrom = account2,AmountFrom = 450,Article = incomeCategory};
-      context.Transactions.Add(transaction);
-      transaction = new Transaction {OperationType = OperationType.Expense,AccountFrom = accountForExpense, AmountFrom = 10000,Article = expenseCategory2,Comment = "Лампочка левого стопа"};
-      context.Transactions.Add(transaction);
+      context.Transactions.Add(new Transaction
+                                 {
+                                   OperationType = OperationType.Income,
+                                   AccountFrom = account2,
+                                   AmountFrom = 450,
+                                   Article = incomeCategory
+                                 });
+      var transaction2 = new Transaction {OperationType = OperationType.Expense,AccountFrom = accountForExpense, AmountFrom = 10000,Article = expenseCategory2,Comment = "Лампочка левого стопа"};
+      context.Transactions.Add(transaction2);
 //      transaction = new Transaction{OperationType = OperationType.Transfer,AccountFrom = ,AccountTo = ,AmountFrom = 500,AmountTo = 500};
 //      transaction = new Transaction{OperationType = OperationType.Excange,AccountFrom = ,AmountFrom = 100,AccountTo = ,AmountTo = 861000,Comment = "В БелПСБ по 8610"};
 

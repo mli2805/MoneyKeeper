@@ -13,7 +13,18 @@ namespace Keeper.DomainModel
     #region // свойства (properties) класса
 
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string Name
+    {
+      get { return _name; }
+      set
+      {
+        if (value == _name) return;
+        _name = value;
+        NotifyOfPropertyChange(() => Name);
+        NotifyOfPropertyChange(() => FullName);
+      }
+    }
+
     public CurrencyCodes Currency { get; set; }
     public string FullName { get { if (IsAggregate) return Name; else return Name + "  (" + Currency + ")";   } }
     public decimal Balance { get; set; }
@@ -40,6 +51,8 @@ namespace Keeper.DomainModel
 
     #region ' _isSelected '
     private bool _isSelected;
+    private string _name;
+
     public bool IsSelected
     {
       get { return _isSelected; }
@@ -55,7 +68,6 @@ namespace Keeper.DomainModel
 
     #endregion
 
-
     #region // конструкторы
 
     public Account()
@@ -64,8 +76,9 @@ namespace Keeper.DomainModel
       Currency = CurrencyCodes.BYR;
       Balance = 0;
       Parent = null;
-      Children = new ObservableCollection<Account>();
- //     Children.CollectionChanged+=ChildrenOnCollectionChanged;
+      var observableCollection = new ObservableCollection<Account>();
+      Children = observableCollection;
+      observableCollection.CollectionChanged += ChildrenOnCollectionChanged;
       _isSelected = false;
       IsAggregate = false;
     }
@@ -84,5 +97,13 @@ namespace Keeper.DomainModel
     }
     #endregion
 
+   
+    public static void CopyForEdit(Account destination, Account source)
+    {
+      destination.Name = source.Name;
+      destination.Currency = source.Currency;
+      destination.Parent = source.Parent;
+      destination.IsAggregate = source.IsAggregate;
+    }
   }
 }

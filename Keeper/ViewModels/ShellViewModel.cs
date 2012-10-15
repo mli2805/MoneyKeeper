@@ -19,6 +19,8 @@ namespace Keeper.ViewModels
   {
     [Import]
     public IWindowManager MyWindowManager { get; set; }
+    [Import]
+    public KeeperDb Db { get; set; }
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -53,19 +55,24 @@ namespace Keeper.ViewModels
       Database.SetInitializer(new DbInitializer());
     }
 
+    public override void CanClose(Action<bool> callback)
+    {
+      Db.SaveChanges();
+      Db.Dispose();
+      callback(true);
+    }
+
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Keeper 2012";
-      var db = new KeeperDb();  // база данных в оперативной памяти
 
-      db.Accounts.Load();
-      AccountsRoots = new ObservableCollection<Account>(from account in db.Accounts
+      AccountsRoots = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
                                                         where account.Parent == null
                                                         select account);
-      IncomesRoots = new ObservableCollection<IncomeCategory>(from incomeCategory in db.Incomes.Include("Children")
+      IncomesRoots = new ObservableCollection<IncomeCategory>(from incomeCategory in Db.Incomes.Include("Children")
                                                               where incomeCategory.Parent == null
                                                               select incomeCategory);
-      ExpensesRoots = new ObservableCollection<ExpenseCategory>(from expenseCategory in db.Expenses.Include("Children")
+      ExpensesRoots = new ObservableCollection<ExpenseCategory>(from expenseCategory in Db.Expenses.Include("Children")
                                                                 where expenseCategory.Parent == null
                                                                 select expenseCategory);
 
@@ -73,25 +80,49 @@ namespace Keeper.ViewModels
       NotifyOfPropertyChange(() => IncomesRoots);
       NotifyOfPropertyChange(() => ExpensesRoots);
 
-      db.Dispose();
     }
 
     #region // методы реализации контекстного меню на дереве счетов
     public void RemoveAccount()
     {
-      if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-        SelectedAccount.Parent.Children.Remove(SelectedAccount);
+      if (MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+      {
+        if (SelectedAccount.Parent != null)
+          SelectedAccount.Parent.Children.Remove(SelectedAccount);
+        else
+        {
+          Db.Accounts.Remove(SelectedAccount);
+          AccountsRoots.Remove(SelectedAccount);
+        }
+      }
     }
     
     public void AddAccount()
     {
-      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount,FormMode.Create));
+      var accountInWork = new Account();
+      accountInWork.Parent = SelectedAccount;
+      if (MyWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
+
+      SelectedAccount.Children.Add(accountInWork);
     }
 
     public void ChangeAccount()
     {
+      var accountInWork = new Account();
+      Account.CopyForEdit(accountInWork, SelectedAccount);
+      if (MyWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork,"Редактировать")) != true) return;
 
-      MyWindowManager.ShowDialog(new AccountViewModel(SelectedAccount,FormMode.Edit));
+      if (SelectedAccount.Parent != accountInWork.Parent)
+      {
+//        обязательно в таком порядке - сначала добавить в новое место потом удалить из старого, 
+//        если сначала удалить у старого родителя, то инстанс пропадает из памяти и новому добавляется null
+        if (accountInWork.Parent != null)  accountInWork.Parent.Children.Add(SelectedAccount);
+        else AccountsRoots.Add(SelectedAccount);                                                     
+        if (SelectedAccount.Parent != null) SelectedAccount.Parent.Children.Remove(SelectedAccount); 
+        else AccountsRoots.Remove(SelectedAccount);
+      }
+      Account.CopyForEdit(SelectedAccount, accountInWork); 
+
     }
     #endregion
 
@@ -117,6 +148,14 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Input operations";
+      MyWindowManager.ShowDialog(new TransactionsViewModel());
+      Message = arcMessage;
+    }
+
+    public void ShowCurrencyRatesForm()
+    {
+      String arcMessage = Message;
+      Message = "Currency rates";
       MyWindowManager.ShowDialog(new TransactionsViewModel());
       Message = arcMessage;
     }

@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-        xmlns:cal="http://www.caliburnproject.org" x:Class="Keeper.Views.ShellView"
+        xmlns:cal="http://www.caliburnproject.org" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
+        x:Class="Keeper.Views.ShellView"
         mc:Ignorable="d" Title="Keeper 2012" Height="562" Width="924" ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
         d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}">
   <Window.Resources>
-    <HierarchicalDataTemplate x:Key="AccountTemplate" ItemsSource="{Binding Children}">
-      <TextBlock Text="{Binding FullName}"/>
+    <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
+      <TextBlock Text="{Binding FullName}" Margin="0,0,20,0"/>
     </HierarchicalDataTemplate>
     <HierarchicalDataTemplate x:Key="CategoryTemplate" ItemsSource="{Binding Children}">
       <TextBlock Text="{Binding Name}"/>
@@ -19,11 +20,11 @@
   </Window.Resources>
   <Grid Margin="5">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="80*"/>
-      <ColumnDefinition Width="95*"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="297*"/>
       <ColumnDefinition Width="100"/>
       <ColumnDefinition Width="100"/>
-      <ColumnDefinition Width="4*"/>
+      <ColumnDefinition Width="16*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="32"/>
@@ -35,6 +36,7 @@
           Background="{x:Null}" Height="18"  Grid.ColumnSpan="2">
       <MenuItem Header="ФОРМЫ" Background="{x:Null}" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
+        <MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
         <MenuItem Header="ДИАГРАММЫ"/>
         <MenuItem Header="ДЕПОЗИТЫ"/>
       </MenuItem>
