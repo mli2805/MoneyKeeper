@@ -1,12 +1,6 @@
 namespace Keeper.DomainModel
 {
-  /*
-  public enum CurrencyCodes
-  { 
-    "MLT", "BYR"
-  };
-   */
-  
+ 
   public enum CurrencyCodes
   {
     BYR = 974,

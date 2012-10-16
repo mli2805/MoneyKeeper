@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Properties;
 
 namespace Keeper.ViewModels
 {
@@ -98,7 +99,7 @@ namespace Keeper.ViewModels
           SelectedAccount.Parent.Children.Remove(SelectedAccount);
         else
         {
-          Db.Accounts.Remove(SelectedAccount);
+          RemoveAccountFromDatabase(SelectedAccount);
           AccountsRoots.Remove(SelectedAccount);
         }
       }
@@ -170,6 +171,7 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
+    #region // методы выгрузки / загрузки БД в текстовый файл
 
     public void DumpAccount(Account account, List<string> content)
     {
@@ -182,7 +184,7 @@ namespace Keeper.ViewModels
 
     public void ExportToTxt()
     {
-      if (!Directory.Exists("DumpFolder")) Directory.CreateDirectory("DumpFolder");
+      if (!Directory.Exists(Settings.Default.DumpPath)) Directory.CreateDirectory(Settings.Default.DumpPath);
       DumpAllAccounts();
       MessageBox.Show("Выгрузка завершена успешно!", "Экспорт");
     }
@@ -194,7 +196,7 @@ namespace Keeper.ViewModels
       {
         DumpAccount(accountsRoot, content);
       }
-      File.WriteAllLines(@"DumpFolder\Accounts.txt", content);
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath,"Accounts.txt"), content);
     }
 
     public void ImportFromTxt()
@@ -202,10 +204,74 @@ namespace Keeper.ViewModels
       RestoreAllAccounts();
     }
 
+    private Account AccoutFromString(string s, out int parentId)
+    {
+      var account = new Account();
+      int prev = s.IndexOf(',');
+      account.Id = Convert.ToInt32(s.Substring(0, prev));
+      int next = s.IndexOf(',', prev + 2);
+      account.Name = s.Substring(prev + 2, next-prev-3);
+      prev = next;
+      account.Currency = (CurrencyCodes) Enum.Parse(typeof(CurrencyCodes), s.Substring(prev + 2, 3));
+      prev += 6;
+      next = s.IndexOf(',', prev + 2);
+      parentId = Convert.ToInt32(s.Substring(prev + 2, next - prev - 3));
+      prev = next;
+      account.IsAggregate = Convert.ToBoolean(s.Substring(prev + 2));
+      return account;
+    }
+
+    private void BuildBranchFromRoot(Account root, string[] content)
+    {
+      foreach (var s in content)
+      {
+        int parentId;
+        var account = AccoutFromString(s, out parentId);
+        if (parentId == root.Id)
+        {
+          account.Parent = root;
+          root.Children.Add(account);
+          BuildBranchFromRoot(account, content);
+        }
+      }
+    }
+
     public void RestoreAllAccounts()
     {
-      string[] content = File.ReadAllLines(@"DumpFolder\Accounts.txt");
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath,"Accounts.txt"));
+      foreach (var s in content)
+      {
+        Console.WriteLine(s);
+        int parentId;
+        var account = AccoutFromString(s, out parentId);
+        if (parentId == 0)
+        {
+          BuildBranchFromRoot(account, content);
+          AccountsRoots.Add(account);
+          Db.Accounts.Add(account);
+        }
+      }
     }
+
+    public void RemoveAccountFromDatabase(Account account)
+    {
+      foreach (var child in account.Children.ToArray())
+      {
+        RemoveAccountFromDatabase(child);
+      }
+      Db.Accounts.Remove(account);
+    }
+
+    public void ClearDatabase()
+    {
+      foreach (var accountsRoot in AccountsRoots)
+      {
+        RemoveAccountFromDatabase(accountsRoot);
+      }
+      AccountsRoots.Clear();
+    }
+
+    #endregion
 
   }
 }
