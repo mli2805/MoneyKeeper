@@ -105,5 +105,16 @@ namespace Keeper.DomainModel
       destination.Parent = source.Parent;
       destination.IsAggregate = source.IsAggregate;
     }
+
+    private int ParentForDump()
+    {
+      if (Parent == null) return 0;
+      else return Parent.Id;
+    }
+
+    public string ToDump()
+    {
+      return Id + " , " + Name + " , " + Currency + " , " + ParentForDump() + " , " + IsAggregate;
+    }
   }
 }

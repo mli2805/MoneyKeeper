@@ -40,6 +40,9 @@
         <MenuItem Header="ДИАГРАММЫ"/>
         <MenuItem Header="ДЕПОЗИТЫ"/>
       </MenuItem>
+      <MenuItem Header="TOOLS" Foreground="#FF0F0FFF" Padding="7,0,8,0">
+        <MenuItem x:Name="ExportToTxt" Header="ВЫГРУЗИТЬ"/>
+      </MenuItem>
       <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem Header="СДЕЛАТЬ" />
         <Separator Style="{DynamicResource SeparatorStyle}"/>

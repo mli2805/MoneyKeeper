@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
-  [Export(typeof(IShell))]
-  [Export(typeof(ShellViewModel)),PartCreationPolicy(CreationPolicy.Shared)]
+  [Export(typeof (IShell))]
+  [Export(typeof (ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class ShellViewModel : Screen, IShell
   {
     [Import]
     public IWindowManager MyWindowManager { get; set; }
+
     [Import]
     public KeeperDb Db { get; set; }
 
@@ -26,6 +29,7 @@ namespace Keeper.ViewModels
 
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
     private string _message;
+
     public String Message
     {
       get { return _message; }
@@ -83,9 +87,12 @@ namespace Keeper.ViewModels
     }
 
     #region // методы реализации контекстного меню на дереве счетов
+
     public void RemoveAccount()
     {
-      if (MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+      if (
+        MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
       {
         if (SelectedAccount.Parent != null)
           SelectedAccount.Parent.Children.Remove(SelectedAccount);
@@ -96,7 +103,7 @@ namespace Keeper.ViewModels
         }
       }
     }
-    
+
     public void AddAccount()
     {
       var accountInWork = new Account();
@@ -110,38 +117,41 @@ namespace Keeper.ViewModels
     {
       var accountInWork = new Account();
       Account.CopyForEdit(accountInWork, SelectedAccount);
-      if (MyWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork,"Редактировать")) != true) return;
+      if (MyWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Редактировать")) != true) return;
 
       if (SelectedAccount.Parent != accountInWork.Parent)
       {
-//        обязательно в таком порядке - сначала добавить в новое место потом удалить из старого, 
-//        если сначала удалить у старого родителя, то инстанс пропадает из памяти и новому добавляется null
-        if (accountInWork.Parent != null)  accountInWork.Parent.Children.Add(SelectedAccount);
-        else AccountsRoots.Add(SelectedAccount);                                                     
-        if (SelectedAccount.Parent != null) SelectedAccount.Parent.Children.Remove(SelectedAccount); 
+        //        обязательно в таком порядке - сначала добавить в новое место потом удалить из старого, 
+        //        если сначала удалить у старого родителя, то инстанс пропадает из памяти и новому добавляется null
+        if (accountInWork.Parent != null) accountInWork.Parent.Children.Add(SelectedAccount);
+        else AccountsRoots.Add(SelectedAccount);
+        if (SelectedAccount.Parent != null) SelectedAccount.Parent.Children.Remove(SelectedAccount);
         else AccountsRoots.Remove(SelectedAccount);
       }
-      Account.CopyForEdit(SelectedAccount, accountInWork); 
-
+      Account.CopyForEdit(SelectedAccount, accountInWork);
     }
+
     #endregion
 
     #region // методы реализации контекстного меню на дереве категорий
+
     public void RemoveCategory()
     {
-      if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+      if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+          MessageBoxResult.Yes)
         SelectedCategory.Parent.Children.Remove(SelectedCategory);
     }
 
     public void AddCategory()
     {
-      MyWindowManager.ShowDialog(new CategoryViewModel(SelectedCategory,FormMode.Create));
+      MyWindowManager.ShowDialog(new CategoryViewModel(SelectedCategory, FormMode.Create));
     }
 
     public void ChangeCategory()
     {
-      MyWindowManager.ShowDialog(new CategoryViewModel(SelectedCategory,FormMode.Edit));
+      MyWindowManager.ShowDialog(new CategoryViewModel(SelectedCategory, FormMode.Edit));
     }
+
     #endregion
 
     public void ShowTransactionsForm()
@@ -158,6 +168,43 @@ namespace Keeper.ViewModels
       Message = "Currency rates";
       MyWindowManager.ShowDialog(new TransactionsViewModel());
       Message = arcMessage;
+    }
+
+
+    public void DumpAccount(Account account, List<string> content)
+    {
+      foreach (var child in account.Children)
+      {
+        DumpAccount(child, content);
+      }
+      content.Add(account.ToDump());
+    }
+
+    public void ExportToTxt()
+    {
+      if (!Directory.Exists("DumpFolder")) Directory.CreateDirectory("DumpFolder");
+      DumpAllAccounts();
+      MessageBox.Show("Выгрузка завершена успешно!", "Экспорт");
+    }
+
+    public void DumpAllAccounts()
+    {
+      var content = new List<string>();
+      foreach (var accountsRoot in AccountsRoots)
+      {
+        DumpAccount(accountsRoot, content);
+      }
+      File.WriteAllLines(@"DumpFolder\Accounts.txt", content);
+    }
+
+    public void ImportFromTxt()
+    {
+      RestoreAllAccounts();
+    }
+
+    public void RestoreAllAccounts()
+    {
+      string[] content = File.ReadAllLines(@"DumpFolder\Accounts.txt");
     }
 
   }
