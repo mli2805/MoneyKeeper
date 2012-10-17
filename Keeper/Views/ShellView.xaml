@@ -41,8 +41,8 @@
         <MenuItem Header="ДЕПОЗИТЫ"/>
       </MenuItem>
       <MenuItem Header="TOOLS" Foreground="#FF0F0FFF" Padding="7,0,8,0">
-        <MenuItem x:Name="ExportToTxt" Header="ВЫГРУЗИТЬ"/>
-        <MenuItem x:Name="ImportFromTxt" Header="ЗАГРУЗИТЬ"/>
+        <MenuItem x:Name="DumpDatabaseToTxt" Header="ВЫГРУЗИТЬ"/>
+        <MenuItem x:Name="RestoreDatabaseFromTxt" Header="ЗАГРУЗИТЬ"/>
         <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ"/>
       </MenuItem>
       <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
