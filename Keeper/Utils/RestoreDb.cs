@@ -11,7 +11,7 @@ using Keeper.Properties;
 
 namespace Keeper.Utils
 {
-  class Restore
+  class RestoreDb
   {
     [Import]
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
@@ -19,6 +19,7 @@ namespace Keeper.Utils
     public static void RestoreAllTables()
     {
       RestoreCurrencyRates();
+      RestoreCategories();
       RestoreAccounts();
     }
 
@@ -44,6 +45,47 @@ namespace Keeper.Utils
       return rate;
     }
 
+    public static void RestoreCategories()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "Categories.txt"));
+      foreach (var s in content)
+      {
+        int parentId;
+        var category = CategoryFromString(s, out parentId);
+        if (parentId == 0)
+        {
+          BuildBranchFromRoot(category, content);
+          Db.Categories.Add(category);
+        }
+      }
+    }
+
+    private static Category CategoryFromString(string s, out int parentId)
+    {
+      var category = new Category();
+      int prev = s.IndexOf(',');
+      category.Id = Convert.ToInt32(s.Substring(0, prev));
+      int next = s.IndexOf(',', prev + 2);
+      category.Name = s.Substring(prev + 2, next - prev - 3);
+      parentId = Convert.ToInt32(s.Substring(next + 2));
+      return category;
+    }
+
+    private static void BuildBranchFromRoot(Category root, string[] content)
+    {
+      foreach (var s in content)
+      {
+        int parentId;
+        var category = CategoryFromString(s, out parentId);
+        if (parentId == root.Id)
+        {
+          category.Parent = root;
+          root.Children.Add(category);
+          BuildBranchFromRoot(category, content);
+        }
+      }
+    }
+
     public static void RestoreAccounts()
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "Accounts.txt"));
@@ -54,7 +96,6 @@ namespace Keeper.Utils
         if (parentId == 0)
         {
           BuildBranchFromRoot(account, content);
-//          AccountsRoots.Add(account);
           Db.Accounts.Add(account);
         }
       }

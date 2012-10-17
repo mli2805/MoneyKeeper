@@ -100,7 +100,7 @@ namespace Keeper.ViewModels
           SelectedAccount.Parent.Children.Remove(SelectedAccount);
         else
         {
-          RemoveAccountFromDatabase(SelectedAccount);
+          ClearDb.RemoveAccountFromDatabase(SelectedAccount);
           AccountsRoots.Remove(SelectedAccount);
         }
       }
@@ -194,59 +194,38 @@ namespace Keeper.ViewModels
     #region // методы выгрузки / загрузки БД в текстовый файл
     public void DumpDatabaseToTxt()
     {
-      Dump.DumpAllTables();
+      DumpDb.DumpAllTables();
     }
     public void RestoreDatabaseFromTxt()
     {
-      Restore.RestoreAllTables();
+      RestoreDb.RestoreAllTables();
       // и зачитать их для визуального отображения
       AccountsRoots = new ObservableCollection<Account>(from account in Db.Accounts.Local
                                                         where account.Parent == null
                                                         select account);
+      IncomesRoots = new ObservableCollection<Category>(from category in Db.Categories.Local
+                                                        //                                                        where category.Parent == null 
+                                                        where category.Name == "Все доходы"
+                                                        select category);
+      ExpensesRoots = new ObservableCollection<Category>(from category in Db.Categories.Local
+                                                         where category.Name == "Все расходы"
+                                                         select category);
+
       NotifyOfPropertyChange(() => AccountsRoots);
+      NotifyOfPropertyChange(() => IncomesRoots);
+      NotifyOfPropertyChange(() => ExpensesRoots);
     }
 
     #region //  очистка 3 таблиц в БД (кроме категорий доходов-расходов)
-    public void RemoveAccountFromDatabase(Account account)
-    {
-      foreach (var child in account.Children.ToArray())
-      {
-        RemoveAccountFromDatabase(child);
-      }
-      Db.Accounts.Remove(account);
-    }
-
     public void ClearDatabase()
     {
-      ClearCurrencyRatesTable();
-      ClearTransactionsTable();
-      ClearAccountsTable();
-    }
+      ClearDb.ClearAllTables();
 
-    private void ClearCurrencyRatesTable()
-    {
-      foreach (var currencyRate in Db.CurrencyRates.ToArray())
-      {
-        Db.CurrencyRates.Remove(currencyRate);
-      }
-    }
-
-    private void ClearTransactionsTable()
-    {
-      foreach (var transaction in Db.Transactions.ToArray())
-      {
-        Db.Transactions.Remove(transaction);
-      }
-    }
-
-    private void ClearAccountsTable()
-    {
-      foreach (var accountsRoot in AccountsRoots)
-      {
-        RemoveAccountFromDatabase(accountsRoot);
-      }
+      IncomesRoots.Clear();
+      ExpensesRoots.Clear();
       AccountsRoots.Clear();
     }
+
     #endregion
 
     #endregion

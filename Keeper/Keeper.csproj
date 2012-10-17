@@ -77,10 +77,10 @@
     <Compile Include="DomainModel\KeeperDB.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
-    <Compile Include="DomainModel\SomeEnums.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
-    <Compile Include="Utils\Dump.cs" />
-    <Compile Include="Utils\Restore.cs" />
+    <Compile Include="Utils\ClearDb.cs" />
+    <Compile Include="Utils\DumpDb.cs" />
+    <Compile Include="Utils\RestoreDb.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\AddAndEditCategoryViewModel.cs" />
