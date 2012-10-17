@@ -13,6 +13,7 @@ namespace Keeper.DomainModel
     #region // свойства (properties) класса
 
     public int Id { get; set; }
+    private string _name;
     public string Name
     {
       get { return _name; }
@@ -51,7 +52,6 @@ namespace Keeper.DomainModel
 
     #region ' _isSelected '
     private bool _isSelected;
-    private string _name;
 
     public bool IsSelected
     {

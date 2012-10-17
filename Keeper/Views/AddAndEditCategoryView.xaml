@@ -1,0 +1,32 @@
+﻿<Window x:Class="Keeper.Views.AddAndEditCategoryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Utils="clr-namespace:Keeper.Utils"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="176.233" Width="446.918"
+        d:DataContext="{d:DesignInstance ViewModels:AddAndEditCategoryViewModel}">
+    <Grid>
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="75,53,0,0" TextWrapping="Wrap" 
+             VerticalAlignment="Top" Width="344"
+             Text="{Binding CategoryInWork.Name}">
+    <i:Interaction.Behaviors>
+      <Utils:SetFocusOnLoadBehavior />
+      </i:Interaction.Behaviors>
+    </TextBox>
+    <Button x:Name="Accept" Content="Принять" HorizontalAlignment="Left" Margin="97,108,0,0" VerticalAlignment="Top" Width="75"/>
+    <Button x:Name="Decline" Content="Отклонить" HorizontalAlignment="Left" Margin="216,108,0,0" VerticalAlignment="Top" Width="75" IsCancel="True" RenderTransformOrigin="0.493,-1.682"/>
+    <Label Content="Название" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top"/>
+    <ComboBox HorizontalAlignment="Left" Margin="75,15,0,0" VerticalAlignment="Top" Width="344"
+              ItemsSource="{Binding CategoriesForParentList}" SelectedItem="{Binding SelectedParent}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate DataType="DomainModel:Category">
+          <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
+
+    </Grid>
+</Window>

@@ -72,7 +72,7 @@
     </Compile>
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\Category.cs" />
-    <Compile Include="DomainModel\CurrencyRates.cs" />
+    <Compile Include="DomainModel\CurrencyRate.cs" />
     <Compile Include="DomainModel\DbInitializer.cs" />
     <Compile Include="DomainModel\KeeperDB.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
@@ -81,7 +81,7 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
-    <Compile Include="ViewModels\CategoryViewModel.cs" />
+    <Compile Include="ViewModels\AddAndEditCategoryViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddExchangeViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddIncomeViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddExpenseViewModel.cs" />
@@ -91,8 +91,8 @@
     <Compile Include="Views\AddAndEditAccountView.xaml.cs">
       <DependentUpon>AddAndEditAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CategoryView.xaml.cs">
-      <DependentUpon>CategoryView.xaml</DependentUpon>
+    <Compile Include="Views\AddAndEditCategoryView.xaml.cs">
+      <DependentUpon>AddAndEditCategoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TransactionsViews\AddTransferView.xaml.cs">
       <DependentUpon>AddTransferView.xaml</DependentUpon>
@@ -151,7 +151,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CategoryView.xaml">
+    <Page Include="Views\AddAndEditCategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
