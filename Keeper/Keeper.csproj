@@ -84,6 +84,7 @@
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\AddAndEditCategoryViewModel.cs" />
+    <Compile Include="ViewModels\RatesViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddExchangeViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddIncomeViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModels\AddExpenseViewModel.cs" />
@@ -113,6 +114,9 @@
     </Compile>
     <Compile Include="Views\TransactionsViews\TransactionsView.xaml.cs">
       <DependentUpon>TransactionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RatesView.xaml.cs">
+      <DependentUpon>RatesView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TransactionsViews\TransactionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

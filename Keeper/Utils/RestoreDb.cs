@@ -36,12 +36,11 @@ namespace Keeper.Utils
     private static CurrencyRate CurrencyRateFromString(string s)
     {
       var rate = new CurrencyRate();
-      int prev = s.IndexOf(',');
-      rate.BankDay = Convert.ToDateTime(s.Substring(0, prev));
-      prev = s.IndexOf(',', prev + 2);
-      rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(prev + 2, 3));
-      prev += 6;
-      rate.Rate = Convert.ToDecimal(s.Substring(prev));
+      int next = s.IndexOf(',');
+      rate.BankDay = Convert.ToDateTime(s.Substring(0, next));
+      rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
+      next += 6;
+      rate.Rate = Convert.ToDecimal(s.Substring(next+2));
       return rate;
     }
 

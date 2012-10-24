@@ -96,13 +96,9 @@ namespace Keeper.ViewModels
         MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
       {
-        if (SelectedAccount.Parent != null)
-          SelectedAccount.Parent.Children.Remove(SelectedAccount);
-        else
-        {
-          ClearDb.RemoveAccountFromDatabase(SelectedAccount);
+        ClearDb.RemoveAccountFromDatabase(SelectedAccount);
+        if (SelectedAccount.Parent == null)
           AccountsRoots.Remove(SelectedAccount);
-        }
       }
     }
 
@@ -142,9 +138,8 @@ namespace Keeper.ViewModels
       if (SelectedCategory.Parent != null)
       {
         if (MessageBox.Show("Удаление категории <<" + SelectedCategory.Name + ">>\n\n          Вы уверены?", "Confirm",
-          MessageBoxButton.YesNo, MessageBoxImage.Question) ==
-            MessageBoxResult.Yes)
-          SelectedCategory.Parent.Children.Remove(SelectedCategory);
+              MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+          ClearDb.RemoveCategoryFromDatabase(SelectedCategory);
       }
       else MessageBox.Show("Корневую категорию нельзя удалять!", "Отказ!");
     }
@@ -187,24 +182,27 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Currency rates";
-      MyWindowManager.ShowDialog(new TransactionsViewModel());
+      MyWindowManager.ShowDialog(new RatesViewModel());
       Message = arcMessage;
     }
 
     #region // методы выгрузки / загрузки БД в текстовый файл
     public void DumpDatabaseToTxt()
     {
-      DumpDb.DumpAllTables();
+      Db.SaveChanges(); // сначала сохранить текущие изменения из ОЗУ на винт, при этом новые записи получат ID,
+      DumpDb.DumpAllTables();  // затем уже выгрузить
     }
+
     public void RestoreDatabaseFromTxt()
     {
       RestoreDb.RestoreAllTables();
+      Db.SaveChanges();
       // и зачитать их для визуального отображения
       AccountsRoots = new ObservableCollection<Account>(from account in Db.Accounts.Local
                                                         where account.Parent == null
                                                         select account);
       IncomesRoots = new ObservableCollection<Category>(from category in Db.Categories.Local
-                                                        //                                                        where category.Parent == null 
+                                                        //                                   where category.Parent == null 
                                                         where category.Name == "Все доходы"
                                                         select category);
       ExpensesRoots = new ObservableCollection<Category>(from category in Db.Categories.Local
@@ -216,17 +214,16 @@ namespace Keeper.ViewModels
       NotifyOfPropertyChange(() => ExpensesRoots);
     }
 
-    #region //  очистка 3 таблиц в БД (кроме категорий доходов-расходов)
     public void ClearDatabase()
     {
       ClearDb.ClearAllTables();
+      Db.SaveChanges();
 
       IncomesRoots.Clear();
       ExpensesRoots.Clear();
       AccountsRoots.Clear();
     }
 
-    #endregion
 
     #endregion
 

@@ -8,13 +8,18 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Utils="clr-namespace:Keeper.Utils"
         mc:Ignorable="d" Title="{Binding Title}" Height="205.973" Width="476.712"
         d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}">
-    <Grid>
+  <Grid>
     <TextBox Height="23" Margin="92,51,10,0" 
              TextWrapping="Wrap" VerticalAlignment="Top"
              Text="{Binding AccountInWork.Name}">
       <i:Interaction.Behaviors>
         <Utils:SetFocusOnLoadBehavior />
       </i:Interaction.Behaviors>
+<!--      <i:Interaction.Triggers>-->
+<!--        <ei:KeyTrigger Key="Enter">-->
+          
+<!--        </ei:KeyTrigger>-->
+<!--      </i:Interaction.Triggers>-->
     </TextBox>
     <ComboBox Margin="92,14,10,0" VerticalAlignment="Top"
                   ItemsSource="{Binding AccountsForParentList}" SelectedItem="{Binding SelectedParent}">
@@ -34,7 +39,7 @@
     <Label Content="Название" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top"/>
     <Label Content="Валюта" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top"/>
     <Button cal:Message.Attach="Accept" Content="Ok" HorizontalAlignment="Left" Margin="149,128,0,0" 
-            VerticalAlignment="Top" Width="75" />
+            VerticalAlignment="Top" Width="75" IsDefault="True" />
     <Button Content="Cancel" HorizontalAlignment="Left" Margin="262,128,0,0" 
             VerticalAlignment="Top" Width="75" IsCancel="True"/>
 

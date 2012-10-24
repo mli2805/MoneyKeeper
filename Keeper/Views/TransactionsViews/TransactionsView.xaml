@@ -1,9 +1,27 @@
-﻿<Window x:Name="TransactionsForm" x:Class="Keeper.Views.TransactionsView"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="500" Width="700" MinHeight="450" MinWidth="600" Title="Ежедневные операции" Icon="/Keeper;component/Resources/transactions.ico" ShowInTaskbar="True">
-    <Grid>
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
+        xmlns:cal="http://www.caliburnproject.org" 
+        x:Name="TransactionsForm" x:Class="Keeper.Views.TransactionsView" 
+        Height="500" Width="700" MinHeight="450" MinWidth="600" Title="Ежедневные операции" 
+        Icon="/Keeper;component/Resources/transactions.ico" ShowInTaskbar="True"
+        >
+  <Grid>
     <Button Content="Добавить" HorizontalAlignment="Left" Margin="35,418,0,0" VerticalAlignment="Top" Width="75"/>
-    <DataGrid HorizontalAlignment="Left" Margin="35,35,0,0" VerticalAlignment="Top"/>
+    <ListView HorizontalAlignment="Left" Height="317" Margin="35,55,0,0" VerticalAlignment="Top" Width="314" Tag="1" >
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Width="50" Header="Дата" />
+          <GridViewColumn Width="50"/>
+          <GridViewColumn Width="50"/>
+        </GridView>
+      </ListView.View>
+      <ListView.DataContext>
+        <ViewModels:TransactionsViewModel/>
+      </ListView.DataContext>
+    </ListView>
+    <ListBox HorizontalAlignment="Left" Height="326" Margin="387,55,0,0" VerticalAlignment="Top" Width="257"/>
 
   </Grid>
 </Window>
