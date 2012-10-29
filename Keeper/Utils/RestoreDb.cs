@@ -40,7 +40,7 @@ namespace Keeper.Utils
       rate.BankDay = Convert.ToDateTime(s.Substring(0, next));
       rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
       next += 6;
-      rate.Rate = Convert.ToDecimal(s.Substring(next+2));
+      rate.Rate = Convert.ToDouble(s.Substring(next+2));
       return rate;
     }
 

@@ -32,7 +32,7 @@ namespace Keeper.ViewModels
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
     private string _message;
 
-    public String Message
+    public string Message
     {
       get { return _message; }
       set

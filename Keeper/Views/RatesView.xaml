@@ -3,36 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Title="RatesView" Height="400" Width="840.226"
+        mc:Ignorable="d" Title="RatesView" Height="600" Width="840.226"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
         d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}" SizeToContent="Height"
         >
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="200*"/>
-      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="133"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
-    <DataGrid x:Name="Grid"  Margin="5" Padding="5" ItemsSource="{Binding Rates}" AutoGenerateColumns="False" 
+    <DataGrid x:Name="Grid"  Margin="5" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <DataGrid.Columns>
         <DataGridTextColumn Header="  Дата" SortDirection="Ascending"
-                            Binding="{Binding BankDay, StringFormat=\{0:D\}}" 
-                            
-                            >
+                            Binding="{Binding BankDay, StringFormat=\{0:D\}}">
         </DataGridTextColumn>
         <DataGridComboBoxColumn Header="Валюта" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
                                 SelectedItemBinding ="{Binding CurrencyLeft}"
                                 ItemsSource="{x:Static ViewModels:AllCurrencyCodes.CurrencyList}">
-
         </DataGridComboBoxColumn>
         <DataGridTextColumn Header="  Курс" Width="70"
-                            Binding="{Binding RateOnScreen, StringFormat=\{0:F3\}}" />
+                            Binding="{Binding RateOnScreen, StringFormat=\{0:F\}}" />
         <DataGridTextColumn Header="Валюта " Width="30" Binding="{Binding ForOne}"/>
         <DataGridComboBoxColumn SelectedItemBinding ="{Binding CurrencyRight}"
                                 ItemsSource="{x:Static ViewModels:AllCurrencyCodes.CurrencyList}">
