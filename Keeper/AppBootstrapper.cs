@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Caliburn.Micro;
 
 namespace Keeper
@@ -24,6 +27,13 @@ namespace Keeper
       batch.AddExportedValue(_container);
       
       _container.Compose(batch);
+    }
+
+    protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
+    {
+      Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
+      CultureInfo.CurrentCulture.ToString();
+      base.OnStartup(sender, e);
     }
 
     protected override object GetInstance(Type serviceType, string key)

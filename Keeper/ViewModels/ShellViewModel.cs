@@ -170,6 +170,8 @@ namespace Keeper.ViewModels
 
     #endregion
 
+    #region // вызовы дочерних окон
+
     public void ShowTransactionsForm()
     {
       String arcMessage = Message;
@@ -185,6 +187,8 @@ namespace Keeper.ViewModels
       MyWindowManager.ShowDialog(new RatesViewModel());
       Message = arcMessage;
     }
+
+    #endregion
 
     #region // методы выгрузки / загрузки БД в текстовый файл
     public void DumpDatabaseToTxt()

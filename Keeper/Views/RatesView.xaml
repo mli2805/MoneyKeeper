@@ -3,29 +3,67 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Title="RatesView" Height="300" Width="540.226"
+        mc:Ignorable="d" Title="RatesView" Height="400" Width="840.226"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
-        d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}"
+        d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}" SizeToContent="Height"
         >
-    <Grid>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="200*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="238"/>
+      <ColumnDefinition Width="Auto"/>
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
-    <DataGrid x:Name="Grid"  Margin="5" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
+    <DataGrid x:Name="Grid"  Margin="5" Padding="5" ItemsSource="{Binding Rates}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
-              CellStyle="{StaticResource cellTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <DataGrid.Columns>
-        <DataGridTextColumn Header="  Дата" Width="70"
-                            Binding="{Binding BankDay, StringFormat=\{0:d\}}" />
-        <DataGridComboBoxColumn Header="  Валюта" Width="70"
-                                SelectedItemBinding ="{Binding Currency}"
-                                ItemsSource="{x:Static ViewModels:AllCurrencyCodes.CurrencyList}"/>
+        <DataGridTextColumn Header="  Дата" SortDirection="Ascending"
+                            Binding="{Binding BankDay, StringFormat=\{0:D\}}" 
+                            
+                            >
+        </DataGridTextColumn>
+        <DataGridComboBoxColumn Header="Валюта" 
+                                ElementStyle="{StaticResource ComboBoxCellTextStyle}"
+                                SelectedItemBinding ="{Binding CurrencyLeft}"
+                                ItemsSource="{x:Static ViewModels:AllCurrencyCodes.CurrencyList}">
+
+        </DataGridComboBoxColumn>
         <DataGridTextColumn Header="  Курс" Width="70"
-                            Binding="{Binding Rate}" />
+                            Binding="{Binding RateOnScreen, StringFormat=\{0:F3\}}" />
+        <DataGridTextColumn Header="Валюта " Width="30" Binding="{Binding ForOne}"/>
+        <DataGridComboBoxColumn SelectedItemBinding ="{Binding CurrencyRight}"
+                                ItemsSource="{x:Static ViewModels:AllCurrencyCodes.CurrencyList}">
+        </DataGridComboBoxColumn>
       </DataGrid.Columns>
     </DataGrid>
+    <Expander Header="Удобный ввод новых курсов" HorizontalAlignment="Stretch"
+              BorderBrush="CornflowerBlue" BorderThickness="1"
+              IsExpanded="False" ExpandDirection="Down"
+              Grid.Row="1" Margin="5"   >
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="37*"/>
+          <ColumnDefinition Width="197*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Button Margin="5" Height="20" Width="30" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0">
+          <Polygon Points="5,15 15,15 10,8" Fill="Black"></Polygon>
+        </Button>
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+
+        </TextBox>
+        <Button Margin="64.632,5,102,5"   Height="20" Width="30" Grid.Row="2" Grid.Column="0">
+          <Polygon Points="5,5 15,5 10,12" Fill="Black"></Polygon>
+        </Button>
+      </Grid>
+    </Expander>
 
   </Grid>
 </Window>

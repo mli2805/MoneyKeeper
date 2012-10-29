@@ -12,13 +12,14 @@
         </ResourceDictionary>
         <ResourceDictionary>
           <!-- ресурсы вставлять сюда-->
-          <Style x:Key="headerTextStyle">
-            <Setter Property="Label.FontWeight" Value="Bold"/>
-<!--            <Setter Property="Label.HorizontalAlignment" Value="Center"/>-->
-<!--            <Setter Property="Brush" Value="Red"/>-->
+          <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="FontWeight" Value="Bold"/>
           </Style>
-          <Style x:Key="cellTextStyle">
-<!--            <Setter Property="Label.HorizontalAlignment" Value="Right"/>-->
+          <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+          </Style>
+          <Style x:Key="TextBoxCellTextStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
           </Style>
         </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
