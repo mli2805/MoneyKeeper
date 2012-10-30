@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace Keeper.DomainModel
 {
-  public class CurrencyRate
+  public class CurrencyRate : PropertyChangedBase
   {
-//    Все курсы валют хранятся относительно USD (дата - валюта - курс к доллару)
+    //    Все курсы валют хранятся относительно USD (дата - валюта - курс к доллару)
     public int Id { get; set; }
     public DateTime BankDay { get; set; }
     public CurrencyCodes Currency { get; set; }
@@ -24,21 +25,26 @@ namespace Keeper.DomainModel
 
     public string ToDump()
     {
-      return BankDay + " , " + Currency + " , " + Math.Round(Rate,4);
+      return BankDay + " , " + Currency + " , " + Math.Round(Rate, 4);
     }
 
 
     #region Поля для показа на форме "Курсы валют"
 
     [NotMapped]
-    public double RateOnScreen
+    public string RateOnScreen
     {
       get
       {
-        if (Currency == CurrencyCodes.EUR) return Math.Round(1 / Rate, 3);
-         else return Math.Round(Rate,0);
+        if (Currency == CurrencyCodes.EUR) return Math.Round(1 / Rate, 3).ToString();
+        else return Math.Round(Rate, 0).ToString();
       }
-      set { if (Currency == CurrencyCodes.EUR) Rate = 1 / value; else Rate = value; }
+      set
+      {
+        double rate;
+        if (!Double.TryParse(value, out rate)) return;
+        Rate = Currency == CurrencyCodes.EUR ? 1/rate : rate;
+      }
     }
 
     private CurrencyCodes _currencyLeft;
