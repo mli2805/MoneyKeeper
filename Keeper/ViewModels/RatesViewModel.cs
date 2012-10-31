@@ -106,8 +106,6 @@ namespace Keeper.ViewModels
       Db.CurrencyRates.Load();
       Rows = Db.CurrencyRates.Local;
       SelectedFilter = AllFilters.FilterList.First(f => !f.IsTurnOn);
-      Console.WriteLine(SelectedFilter.ToString());
-      Console.WriteLine(SelectedFilter);
 
       var view = CollectionViewSource.GetDefaultView(Rows);
 

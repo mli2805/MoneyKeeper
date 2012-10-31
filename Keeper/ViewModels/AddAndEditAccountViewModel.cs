@@ -56,7 +56,8 @@ namespace Keeper.ViewModels
       // TODO вместо отдельных свойств прибиндиться к полям Account
       AccountInWork.Currency = SelectedCurrency;
       AccountInWork.IsAggregate = IsAggregateCombobox;
-      AccountInWork.Parent = SelectedParent.Id == 0 ? null : SelectedParent; // если Id = 0 то присвоить null иначе можно SelectedParent
+ //     AccountInWork.Parent = SelectedParent.Id == 0 ? null : SelectedParent; // если Id = 0 то присвоить null иначе можно SelectedParent
+      AccountInWork.Parent = SelectedParent;
       TryClose(true);
     }
   }

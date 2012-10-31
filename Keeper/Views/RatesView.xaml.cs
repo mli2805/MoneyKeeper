@@ -22,13 +22,7 @@ namespace Keeper.Views
     public RatesView()
     {
       InitializeComponent();
-      Loaded +=OnLoaded;
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-    {
-      
-
-    }
+    
   }
 }
