@@ -70,22 +70,13 @@
         </Button>
       </Grid>
     </Expander>
-    <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="31,32,0,0" VerticalAlignment="Top" Width="172" RenderTransformOrigin="0.39,0.35">
-      <Grid Height="121">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="36*"/>
-          <RowDefinition Height="36*"/>
-        </Grid.RowDefinitions>
-        <CheckBox  HorizontalAlignment="Center" VerticalAlignment="Center" Height="36" Width="90"
-                   IsChecked="{Binding IsFilterChecked}" Margin="41,14,41,10">
-          <CheckBox.Content>
-            <TextBlock Text="Показать одну валюту" TextWrapping="Wrap" Height="32"/></CheckBox.Content>
-        </CheckBox>
-        <ComboBox  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120"
-    			ItemsSource="{x:Static ViewModels:CurrencyCodesForFilter.CurrencyList}"
-    			SelectedItem="{Binding SelectedCurrencyFilter}" Height="22"/>
-      </Grid>
-    </StackPanel>
+
+    <ComboBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,35" Width="110"
+              ItemsSource="{x:Static ViewModels:AllFilters.FilterList}"
+              SelectedItem="{Binding SelectedFilter}">
+
+    </ComboBox>
+    <Label Content="Фильтр по валюте" Grid.Column="1" HorizontalAlignment="Left" Margin="7,5" VerticalAlignment="Top"/>
 
   </Grid>
 </Window>
