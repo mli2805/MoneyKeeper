@@ -7,29 +7,9 @@ using System.Threading.Tasks;
 
 namespace Keeper.DomainModel
 {
-  public class DbInitializer:CreateDatabaseIfNotExists<KeeperDb>
+  public class DbInitializer : CreateDatabaseIfNotExists<KeeperDb>
   {
-    #region // подготовка списков счетов и категорий
-    private Account PrepareAccountsTree()
-    {
-      var account = new Account("Мои");
-      account.IsAggregate = true;
-
-      var account1 = new Account("Депозиты", true);
-      account.Children.Add(account1);
-      account1.Parent = account;
-
-      var account2 = new Account("АСБ \"Ваш выбор\" 14.01.2012 -");
-      account1.Children.Add(account2);
-      account2.Parent = account1;
-
-      account.Children.Add(new Account("Кошельки", true));
-
-      account.IsSelected = true;
-
-      return account2;
-    }
-
+    #region // подготовка  категорий
     private Category PrepareIncomesCategoriesTree()
     {
       var category = new Category("Все доходы");
@@ -71,43 +51,78 @@ namespace Keeper.DomainModel
 
     protected override void Seed(KeeperDb context)
     {
-      var accountForExpense = PrepareAccountsTree();
-      context.Accounts.Add(accountForExpense);
-      var account = new Account("Внешние", true);
-      var account2 = new Account("ОптикСофт");
-      account2.Parent = account;
-      context.Accounts.Add(account2);
 
-      var incomeCategory = PrepareIncomesCategoriesTree();
-      context.Categories.Add(incomeCategory);
+      #region // счета
+      var accountMine = new Account("Мои");
+      accountMine.IsAggregate = true;
+//      account.IsSelected = true;
 
-      var expenseCategory = PrepareExpensesCategoriesTree();
-      context.Categories.Add(expenseCategory);
-//      var expenseCategory2 = new ExpenseCategory("Обслуживание");
-//      expenseCategory2.Parent = expenseCategory;
+      var accountHands = new Account("На руках", true);
+      accountMine.Children.Add(accountHands);
+      accountHands.Parent = accountMine;
+      var accountDeposites = new Account("Депозиты", true);
+      accountMine.Children.Add(accountDeposites);
+      accountDeposites.Parent = accountMine;
 
+      var accountCash = new Account("Кошельки", true);
+      accountHands.Children.Add(accountCash);
+      accountCash.Parent = accountHands;
+      var accountMyWallet = new Account("Мой бумажник", false);
+      accountCash.Children.Add(accountMyWallet);
+      accountMyWallet.Parent = accountCash;
+
+      context.Accounts.Add(accountMine);
+
+      var accountExternals = new Account("Внешние", true);
+      var accountOptixsoft = new Account("ОптикСофт",false);
+      accountExternals.Children.Add(accountOptixsoft);
+      accountOptixsoft.Parent = accountExternals;
+      var accountShops = new Account("Магазины",false);
+      accountExternals.Children.Add(accountShops);
+      accountShops.Parent = accountExternals;
+
+      context.Accounts.Add(accountExternals);
+      #endregion
+
+      #region // категории
+      var incomeCategorySalarySecondPart = PrepareIncomesCategoriesTree();
+      context.Categories.Add(incomeCategorySalarySecondPart);
+
+      var expenseCategoryCar = PrepareExpensesCategoriesTree();
+      context.Categories.Add(expenseCategoryCar);
+      #endregion
+
+      #region // транзакции
       context.Transactions.Add(new Transaction
-                                 {
-                                   OperationType = OperationType.Income,
-                                   AccountFrom = account2,
-                                   AmountFrom = 450,
-                                   Article = incomeCategory
+                                 { Timestamp = DateTime.Now,
+                                   Operation = OperationType.Income,
+                                   Debet = accountOptixsoft,
+                                   Credit = accountMyWallet,
+                                   Amount = 450,
+                                   Currency = CurrencyCodes.USD,
+                                   Article = incomeCategorySalarySecondPart,
+                                   Comment = "за август"
                                  });
+
       var transaction2 = new Transaction 
       {
-        OperationType = OperationType.Expense,
-        AccountFrom = accountForExpense, 
-        AmountFrom = 10000,
-        Article = expenseCategory,
+        Timestamp = DateTime.Now,
+        Operation = OperationType.Expense,
+        Debet = accountMyWallet, 
+        Credit = accountShops,
+        Amount = 10000,
+        Currency = CurrencyCodes.BYR,
+        Article = expenseCategoryCar,
         Comment = "Лампочка левого стопа"
       };
       context.Transactions.Add(transaction2);
-//      transaction = new Transaction{OperationType = OperationType.Transfer,AccountFrom = ,AccountTo = ,AmountFrom = 500,AmountTo = 500};
-//      transaction = new Transaction{OperationType = OperationType.Excange,AccountFrom = ,AmountFrom = 100,AccountTo = ,AmountTo = 861000,Comment = "В БелПСБ по 8610"};
+      #endregion
 
+      #region // курсы валют
       var currencyRate = new CurrencyRate();
       currencyRate.Rate = 8540;
       context.CurrencyRates.Add(currencyRate);
+      #endregion
 
       context.SaveChanges();
 
