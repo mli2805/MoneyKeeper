@@ -19,7 +19,6 @@ namespace Keeper.Utils
     public static void RestoreAllTables()
     {
       RestoreCurrencyRates();
-      RestoreCategories();
       RestoreAccounts();
     }
 
@@ -44,54 +43,13 @@ namespace Keeper.Utils
       return rate;
     }
 
-    public static void RestoreCategories()
-    {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "Categories.txt"));
-      foreach (var s in content)
-      {
-        int parentId;
-        var category = CategoryFromString(s, out parentId);
-        if (parentId == 0)
-        {
-          BuildBranchFromRoot(category, content);
-          Db.Categories.Add(category);
-        }
-      }
-    }
-
-    private static Category CategoryFromString(string s, out int parentId)
-    {
-      var category = new Category();
-      int prev = s.IndexOf(',');
-      category.Id = Convert.ToInt32(s.Substring(0, prev));
-      int next = s.IndexOf(',', prev + 2);
-      category.Name = s.Substring(prev + 2, next - prev - 3);
-      parentId = Convert.ToInt32(s.Substring(next + 2));
-      return category;
-    }
-
-    private static void BuildBranchFromRoot(Category root, string[] content)
-    {
-      foreach (var s in content)
-      {
-        int parentId;
-        var category = CategoryFromString(s, out parentId);
-        if (parentId == root.Id)
-        {
-          category.Parent = root;
-          root.Children.Add(category);
-          BuildBranchFromRoot(category, content);
-        }
-      }
-    }
-
     public static void RestoreAccounts()
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "Accounts.txt"));
       foreach (var s in content)
       {
         int parentId;
-        var account = AccoutFromString(s, out parentId);
+        var account = AccountFromString(s, out parentId);
         if (parentId == 0)
         {
           BuildBranchFromRoot(account, content);
@@ -100,20 +58,14 @@ namespace Keeper.Utils
       }
     }
 
-    private static Account AccoutFromString(string s, out int parentId)
+    private static Account AccountFromString(string s, out int parentId)
     {
       var account = new Account();
       int prev = s.IndexOf(',');
       account.Id = Convert.ToInt32(s.Substring(0, prev));
       int next = s.IndexOf(',', prev + 2);
       account.Name = s.Substring(prev + 2, next - prev - 3);
-      prev = next;
-      account.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(prev + 2, 3));
-      prev += 6;
-      next = s.IndexOf(',', prev + 2);
-      parentId = Convert.ToInt32(s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      account.IsAggregate = Convert.ToBoolean(s.Substring(prev + 2));
+      parentId = Convert.ToInt32(s.Substring(next + 2));
       return account;
     }
 
@@ -122,7 +74,7 @@ namespace Keeper.Utils
       foreach (var s in content)
       {
         int parentId;
-        var account = AccoutFromString(s, out parentId);
+        var account = AccountFromString(s, out parentId);
         if (parentId == root.Id)
         {
           account.Parent = root;
@@ -132,5 +84,5 @@ namespace Keeper.Utils
       }
     }
 
-  }
+ }
 }

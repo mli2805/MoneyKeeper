@@ -18,7 +18,6 @@ namespace Keeper.Utils
     {
       ClearCurrencyRates();
       ClearTransactions();
-      ClearCategories();
       ClearAccounts();
     }
     
@@ -36,27 +35,6 @@ namespace Keeper.Utils
       {
         Db.CurrencyRates.Remove(currencyRate);
       }
-    }
-
-    private static void ClearCategories()
-    {
-      var roots = new List<Category>(from category in Db.Categories.Include("Children")
-                                     where category.Parent == null
-                                     select category);
-      foreach (var root in roots)
-      {
-        RemoveCategoryFromDatabase(root);
-      }
-
-    }
-
-    public static void RemoveCategoryFromDatabase(Category category)
-    {
-      foreach (var child in category.Children.ToArray())
-      {
-        RemoveCategoryFromDatabase(child);
-      }
-      Db.Categories.Remove(category);
     }
 
     private static void ClearAccounts()

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations.Schema;
 using Caliburn.Micro;
 using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
-  public class Account : PropertyChangedBase // соответствует "кошельку"
+  public class Account : PropertyChangedBase 
   {
 
     #region // свойства (properties) класса
@@ -22,37 +23,15 @@ namespace Keeper.DomainModel
         if (value == _name) return;
         _name = value;
         NotifyOfPropertyChange(() => Name);
-        NotifyOfPropertyChange(() => FullName);
       }
     }
 
-    public CurrencyCodes Currency { get; set; }
-    public string FullName { get { if (IsAggregate) return Name; else return Name + "  (" + Currency + ")";   } }
-    public decimal Balance { get; set; }
     public Account Parent { get; set; }
     public virtual ICollection<Account> Children { get; private set; }
-    private bool _isAggregate;
-    public bool IsAggregate
-    {
-      get { return _isAggregate; }
-      set
-      {
-        if (value.Equals(_isAggregate)) return;
-        _isAggregate = value;
-        NotifyOfPropertyChange(() => IsAggregate);
-        NotifyOfPropertyChange(() => FullName);
-      }
-    }
-
-    private void ChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-    {
-      IsAggregate |= Children.Count != 0;
-
-    }
 
     #region ' _isSelected '
     private bool _isSelected;
-
+    [NotMapped]
     public bool IsSelected
     {
       get { return _isSelected; }
@@ -73,14 +52,10 @@ namespace Keeper.DomainModel
     public Account()
     {
       Name = "";
-      Currency = CurrencyCodes.BYR;
-      Balance = 0;
       Parent = null;
       var observableCollection = new ObservableCollection<Account>();
       Children = observableCollection;
-      observableCollection.CollectionChanged += ChildrenOnCollectionChanged;
       _isSelected = false;
-      IsAggregate = false;
     }
 
     public Account(string name)
@@ -89,30 +64,13 @@ namespace Keeper.DomainModel
       Name = name;
     }
 
-    public Account(string name, bool isAggregate)
-      : this() // т.е. вызвать конструктор без параметров, а затем исполнить свой код
-    {
-      Name = name;
-      IsAggregate = isAggregate;
-    }
-
-    public Account(string name, CurrencyCodes currency, bool isAggregate)
-      : this() // т.е. вызвать конструктор без параметров, а затем исполнить свой код
-    {
-      Name = name;
-      Currency = currency;
-      IsAggregate = isAggregate;
-    }
-
     #endregion
 
    
     public static void CopyForEdit(Account destination, Account source)
     {
       destination.Name = source.Name;
-      destination.Currency = source.Currency;
       destination.Parent = source.Parent;
-      destination.IsAggregate = source.IsAggregate;
     }
 
     private int ParentForDump()
@@ -123,7 +81,12 @@ namespace Keeper.DomainModel
 
     public string ToDump()
     {
-      return Id + " , " + Name + " , " + Currency + " , " + ParentForDump() + " , " + IsAggregate;
+      return Id + " , " + Name + " , " + ParentForDump();
+    }
+
+    public override string ToString()
+    {
+      return Name;
     }
   }
 }

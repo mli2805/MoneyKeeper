@@ -71,7 +71,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainModel\Account.cs" />
-    <Compile Include="DomainModel\Category.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
     <Compile Include="DomainModel\DbInitializer.cs" />
     <Compile Include="DomainModel\KeeperDB.cs" />
@@ -83,40 +82,20 @@
     <Compile Include="Utils\RestoreDb.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
-    <Compile Include="ViewModels\AddAndEditCategoryViewModel.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsViewModels\AddExchangeViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsViewModels\AddIncomeViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsViewModels\AddExpenseViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsViewModels\AddTransferViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsViewModels\TransactionsViewModel.cs" />
+    <Compile Include="ViewModels\TransactionsViewModel.cs" />
     <Compile Include="Views\AddAndEditAccountView.xaml.cs">
       <DependentUpon>AddAndEditAccountView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddAndEditCategoryView.xaml.cs">
-      <DependentUpon>AddAndEditCategoryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TransactionsViews\AddTransferView.xaml.cs">
-      <DependentUpon>AddTransferView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TransactionsViews\AddIncomeView.xaml.cs">
-      <DependentUpon>AddIncomeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TransactionsViews\AddExpenseView.xaml.cs">
-      <DependentUpon>AddExpenseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TransactionsViews\AddExchangeView.xaml.cs">
-      <DependentUpon>AddExchangeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TransactionsViews\TransactionsView.xaml.cs">
-      <DependentUpon>TransactionsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\RatesView.xaml.cs">
       <DependentUpon>RatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransactionsView.xaml.cs">
+      <DependentUpon>TransactionsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -157,35 +136,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddAndEditCategoryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TransactionsViews\AddTransferView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TransactionsViews\AddIncomeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TransactionsViews\AddExpenseView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TransactionsViews\AddExchangeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TransactionsViews\TransactionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\RatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TransactionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

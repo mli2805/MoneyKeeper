@@ -13,15 +13,14 @@ namespace Keeper.DomainModel
   public class KeeperDb : DbContext
   {
     public DbSet<Account> Accounts { get; set; }
-    public DbSet<Category> Categories { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<CurrencyRate> CurrencyRates { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Account>().Ignore(x => x.IsNotifying);
-      modelBuilder.Entity<Category>().Ignore(x => x.IsNotifying);
       modelBuilder.Entity<CurrencyRate>().Ignore(x => x.IsNotifying);
+//      modelBuilder.Entity<Transaction>().Ignore(x => x.IsNotifying);
     }
   }
 }

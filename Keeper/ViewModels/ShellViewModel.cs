@@ -22,7 +22,7 @@ namespace Keeper.ViewModels
   public class ShellViewModel : Screen, IShell
   {
     [Import]
-    public IWindowManager MyWindowManager { get; set; }
+    public IWindowManager WindowManager { get; set; }
 
     [Import]
     public KeeperDb Db { get; set; }
@@ -46,12 +46,12 @@ namespace Keeper.ViewModels
     // во ViewModel создается public property к которому будет биндиться компонент из View
     // далее содержимое этого свойства изменяется и это должно быть отображено на экране
     // поэтому вместо обычного List создаем ObservableCollection
-    public ObservableCollection<Account> AccountsRoots { get; set; }
-    public ObservableCollection<Category> IncomesRoots { get; set; }
-    public ObservableCollection<Category> ExpensesRoots { get; set; }
+    public ObservableCollection<Account> MineAccountsRoot { get; set; }
+    public ObservableCollection<Account> ExternalAccountsRoot { get; set; }
+    public ObservableCollection<Account> IncomesRoot { get; set; }
+    public ObservableCollection<Account> ExpensesRoot { get; set; }
 
     public Account SelectedAccount { get; set; }
-    public Category SelectedCategory { get; set; }
 
     #endregion
 
@@ -72,100 +72,60 @@ namespace Keeper.ViewModels
     {
       DisplayName = "Keeper 2012";
 
-      AccountsRoots = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
-                                                        where account.Parent == null
+      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
+                                                           where account.Name == "Мои"
                                                         select account);
-      IncomesRoots = new ObservableCollection<Category>(from category in Db.Categories.Include("Children")
-                                                        //                                                        where category.Parent == null 
-                                                        where category.Name == "Все доходы"
-                                                        select category);
-      ExpensesRoots = new ObservableCollection<Category>(from category in Db.Categories.Include("Children")
-                                                         where category.Name == "Все расходы"
-                                                         select category);
+      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
+                                                           where account.Name == "Внешние"
+                                                           select account);
+      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
+                                                        where account.Name == "Все доходы"
+                                                        select account);
+      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
+                                                         where account.Name == "Все расходы"
+                                                         select account);
 
-      NotifyOfPropertyChange(() => AccountsRoots);
-      NotifyOfPropertyChange(() => IncomesRoots);
-      NotifyOfPropertyChange(() => ExpensesRoots);
+      NotifyOfPropertyChange(() => MineAccountsRoot);
+      NotifyOfPropertyChange(() => ExternalAccountsRoot);
+      NotifyOfPropertyChange(() => IncomesRoot);
+      NotifyOfPropertyChange(() => ExpensesRoot);
     }
 
     #region // методы реализации контекстного меню на дереве счетов
 
     public void RemoveAccount()
     {
-      if (
-        MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
-                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+      if (SelectedAccount.Parent != null)
       {
-        ClearDb.RemoveAccountFromDatabase(SelectedAccount);
-        if (SelectedAccount.Parent == null)
-          AccountsRoots.Remove(SelectedAccount);
+        if (MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
+              MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+          ClearDb.RemoveAccountFromDatabase(SelectedAccount);
       }
+      else MessageBox.Show("Корневой счет нельзя удалять!", "Отказ!");
     }
 
     public void AddAccount()
     {
       var accountInWork = new Account();
       accountInWork.Parent = SelectedAccount;
-      if (MyWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
+      if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
       SelectedAccount.Children.Add(accountInWork);
+      Db.Accounts.Add(accountInWork);
     }
 
     public void ChangeAccount()
     {
       var accountInWork = new Account();
       Account.CopyForEdit(accountInWork, SelectedAccount);
-      if (MyWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Редактировать")) != true) return;
+      if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Редактировать")) != true) return;
 
       if (SelectedAccount.Parent != accountInWork.Parent)
       {
-        //        обязательно в таком порядке - сначала добавить в новое место потом удалить из старого, 
-        //        если сначала удалить у старого родителя, то инстанс пропадает из памяти и новому добавляется null
-        if (accountInWork.Parent != null) accountInWork.Parent.Children.Add(SelectedAccount);
-        else AccountsRoots.Add(SelectedAccount);
-        if (SelectedAccount.Parent != null) SelectedAccount.Parent.Children.Remove(SelectedAccount);
-        else AccountsRoots.Remove(SelectedAccount);
+        accountInWork.Parent.Children.Add(SelectedAccount);
+        SelectedAccount.Parent.Children.Remove(SelectedAccount);
       }
       Account.CopyForEdit(SelectedAccount, accountInWork);
-    }
-
-    #endregion
-
-    #region // методы реализации контекстного меню на дереве категорий
-
-    public void RemoveCategory()
-    {
-      if (SelectedCategory.Parent != null)
-      {
-        if (MessageBox.Show("Удаление категории <<" + SelectedCategory.Name + ">>\n\n          Вы уверены?", "Confirm",
-              MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-          ClearDb.RemoveCategoryFromDatabase(SelectedCategory);
-      }
-      else MessageBox.Show("Корневую категорию нельзя удалять!", "Отказ!");
-    }
-
-    public void AddCategory()
-    {
-      var categoryInWork = new Category();
-      categoryInWork.Parent = SelectedCategory;
-      if (MyWindowManager.ShowDialog(new AddAndEditCategoryViewModel(categoryInWork, "Добавить")) != true) return;
-
-      SelectedCategory.Children.Add(categoryInWork);
-      Db.Categories.Add(categoryInWork);
-    }
-
-    public void ChangeCategory()
-    {
-      var categoryInWork = new Category();
-      Category.CopyForEdit(categoryInWork, SelectedCategory);
-      if (MyWindowManager.ShowDialog(new AddAndEditCategoryViewModel(categoryInWork, "Редактировать")) != true) return;
-
-      if (SelectedCategory.Parent != categoryInWork.Parent)
-      {
-        categoryInWork.Parent.Children.Add(SelectedCategory);
-        SelectedCategory.Parent.Children.Remove(SelectedCategory);
-      }
-      Category.CopyForEdit(SelectedCategory, categoryInWork);
     }
 
     #endregion
@@ -176,7 +136,7 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Input operations";
-      MyWindowManager.ShowDialog(new TransactionsViewModel());
+      WindowManager.ShowDialog(new TransactionsViewModel());
       Message = arcMessage;
     }
 
@@ -184,7 +144,7 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Currency rates";
-      MyWindowManager.ShowDialog(new RatesViewModel());
+      WindowManager.ShowDialog(new RatesViewModel());
       Message = arcMessage;
     }
 
@@ -202,20 +162,23 @@ namespace Keeper.ViewModels
       RestoreDb.RestoreAllTables();
       Db.SaveChanges();
       // и зачитать их для визуального отображения
-      AccountsRoots = new ObservableCollection<Account>(from account in Db.Accounts.Local
-                                                        where account.Parent == null
-                                                        select account);
-      IncomesRoots = new ObservableCollection<Category>(from category in Db.Categories.Local
-                                                        //                                   where category.Parent == null 
-                                                        where category.Name == "Все доходы"
-                                                        select category);
-      ExpensesRoots = new ObservableCollection<Category>(from category in Db.Categories.Local
-                                                         where category.Name == "Все расходы"
-                                                         select category);
+      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+                                                           where account.Name == "Мои"
+                                                           select account);
+      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+                                                               where account.Name == "Внешние"
+                                                               select account);
+      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+                                                      where account.Name == "Все доходы"
+                                                      select account);
+      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+                                                       where account.Name == "Все расходы"
+                                                       select account);
 
-      NotifyOfPropertyChange(() => AccountsRoots);
-      NotifyOfPropertyChange(() => IncomesRoots);
-      NotifyOfPropertyChange(() => ExpensesRoots);
+      NotifyOfPropertyChange(() => MineAccountsRoot);
+      NotifyOfPropertyChange(() => ExternalAccountsRoot);
+      NotifyOfPropertyChange(() => IncomesRoot);
+      NotifyOfPropertyChange(() => ExpensesRoot);
     }
 
     public void ClearDatabase()
@@ -223,9 +186,10 @@ namespace Keeper.ViewModels
       ClearDb.ClearAllTables();
       Db.SaveChanges();
 
-      IncomesRoots.Clear();
-      ExpensesRoots.Clear();
-      AccountsRoots.Clear();
+      IncomesRoot.Clear();
+      ExpensesRoot.Clear();
+      ExternalAccountsRoot.Clear();
+      MineAccountsRoot.Clear();
     }
 
 

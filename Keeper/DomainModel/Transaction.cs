@@ -10,10 +10,17 @@ namespace Keeper.DomainModel
 
     public Account Debet { get; set; }
     public Account Credit { get; set; }
-    public Category Article { get; set; }
+    public Account Article { get; set; }
 
     public decimal Amount { get; set; }
     public CurrencyCodes Currency { get; set; }
     public string Comment { get; set; }
+
+    public string ToDump()
+    {
+      return Timestamp + " , " + Operation + " , " + 
+             Debet.Id + " , " + Credit.Id + " , " + Article.Id + " , " + 
+             Amount + " , " + Currency + " , " + Comment;
+    }
   }
 }

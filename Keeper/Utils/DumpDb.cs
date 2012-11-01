@@ -21,7 +21,7 @@ namespace Keeper.Utils
     {
       if (!Directory.Exists(Settings.Default.DumpPath)) Directory.CreateDirectory(Settings.Default.DumpPath);
       DumpAccounts();
-      DumpCategories();
+      DumpTransactions();
       DumpCurrencyRates();
       // TODO  DumpTransactions();
       MessageBox.Show("Выгрузка завершена успешно!", "Экспорт");
@@ -49,26 +49,14 @@ namespace Keeper.Utils
       content.Add(account.ToDump());
     }
 
-    public static void DumpCategories()
+  public static void DumpTransactions()
     {
       var content = new List<string>();
-      var roots = new List<Category>(from category in Db.Categories.Include("Children")
-                                     where category.Parent == null
-                                     select category);
-      foreach (var root in roots)
+      foreach (var transaction in Db.Transactions)
       {
-        DumpCategory(root, content);
+        content.Add(transaction.ToDump());
+        File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "Transactions.txt"), content);
       }
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "Categories.txt"), content);
-    }
-
-    public static void DumpCategory(Category category, List<string> context)
-    {
-      foreach (var child in category.Children)
-      {
-        DumpCategory(child, context);
-      }
-      context.Add(category.ToDump());
     }
 
     public static void DumpCurrencyRates()
