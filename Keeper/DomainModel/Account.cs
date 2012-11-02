@@ -81,7 +81,7 @@ namespace Keeper.DomainModel
 
     public string ToDump()
     {
-      return Id + " , " + Name + " , " + ParentForDump();
+      return Id + " ; " + Name + " ; " + ParentForDump();
     }
 
     public override string ToString()

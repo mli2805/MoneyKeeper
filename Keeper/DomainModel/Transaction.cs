@@ -18,9 +18,9 @@ namespace Keeper.DomainModel
 
     public string ToDump()
     {
-      return Timestamp + " , " + Operation + " , " + 
-             Debet.Id + " , " + Credit.Id + " , " + Article.Id + " , " + 
-             Amount + " , " + Currency + " , " + Comment;
+      return Timestamp + " ; " + Operation + " ; " + 
+             Debet.Id + " ; " + Credit.Id + " ; " + Article.Id + " ; " + 
+             Amount + " ; " + Currency + " ; " + Comment;
     }
   }
 }

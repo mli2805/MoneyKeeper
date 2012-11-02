@@ -25,7 +25,7 @@ namespace Keeper.DomainModel
 
     public string ToDump()
     {
-      return BankDay + " , " + Currency + " , " + Math.Round(Rate, 4);
+      return BankDay + " ; " + Currency + " ; " + Math.Round(Rate, 4);
     }
 
 

@@ -49,7 +49,7 @@ namespace Keeper.Utils
       content.Add(account.ToDump());
     }
 
-  public static void DumpTransactions()
+    public static void DumpTransactions()
     {
       var content = new List<string>();
       foreach (var transaction in Db.Transactions)
