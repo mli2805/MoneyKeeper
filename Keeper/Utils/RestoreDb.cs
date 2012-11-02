@@ -102,11 +102,10 @@ namespace Keeper.Utils
     private static Account AccountFromString(string s, out int parentId)
     {
       var account = new Account();
-      int prev = s.IndexOf(';');
-      account.Id = Convert.ToInt32(s.Substring(0, prev));
-      int next = s.IndexOf(';', prev + 2);
-      account.Name = s.Substring(prev + 2, next - prev - 3);
-      parentId = Convert.ToInt32(s.Substring(next + 2));
+      var substrings = s.Split(';');
+      account.Id = Convert.ToInt32(substrings[0]);
+      account.Name = substrings[1].Trim();
+      parentId = Convert.ToInt32(substrings[2]);
       return account;
     }
 

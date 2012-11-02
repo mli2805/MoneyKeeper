@@ -72,18 +72,22 @@ namespace Keeper.ViewModels
     {
       DisplayName = "Keeper 2012";
 
-      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
+      Db.Accounts.Load();  // загрузка с диска в оперативную
+      Db.Transactions.Load();
+      Db.CurrencyRates.Load();
+
+      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local  // из копии в оперативке
                                                            where account.Name == "Мои"
-                                                        select account);
-      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
-                                                           where account.Name == "Внешние"
                                                            select account);
-      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
-                                                        where account.Name == "Все доходы"
-                                                        select account);
-      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Include("Children")
-                                                         where account.Name == "Все расходы"
-                                                         select account);
+      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+                                                               where account.Name == "Внешние"
+                                                               select account);
+      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+                                                      where account.Name == "Все доходы"
+                                                      select account);
+      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+                                                       where account.Name == "Все расходы"
+                                                       select account);
 
       NotifyOfPropertyChange(() => MineAccountsRoot);
       NotifyOfPropertyChange(() => ExternalAccountsRoot);
@@ -97,9 +101,20 @@ namespace Keeper.ViewModels
     {
       if (SelectedAccount.Parent != null)
       {
-        if (MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
-              MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-          ClearDb.RemoveAccountFromDatabase(SelectedAccount);
+        // такой запрос возвращает не коллекцию, а энумератор
+        IEnumerable<Transaction> tr = from transaction in Db.Transactions.Local
+                                      where transaction.Debet == SelectedAccount || transaction.Credit == SelectedAccount
+                                      select transaction;
+
+        // Any() пытается двинуться по этому энумератору двинутся и если может, то true
+        if (tr.Any()) MessageBox.Show("Этот счет используется в проводках!", "Отказ!");
+        else
+        {
+          if (MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
+                              MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            ClearDb.RemoveAccountFromDatabase(SelectedAccount);
+        }
+
       }
       else MessageBox.Show("Корневой счет нельзя удалять!", "Отказ!");
     }
@@ -110,6 +125,7 @@ namespace Keeper.ViewModels
       accountInWork.Parent = SelectedAccount;
       if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
+      SelectedAccount = accountInWork.Parent;
       SelectedAccount.Children.Add(accountInWork);
       Db.Accounts.Add(accountInWork);
     }

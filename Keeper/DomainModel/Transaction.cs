@@ -22,5 +22,21 @@ namespace Keeper.DomainModel
              Debet.Id + " ; " + Credit.Id + " ; " + Article.Id + " ; " + 
              Amount + " ; " + Currency + " ; " + Comment;
     }
+
+    public Transaction Clone()
+    {
+      var cloneTransaction = new Transaction();
+
+      cloneTransaction.Timestamp = Timestamp;
+      cloneTransaction.Operation = Operation;
+      cloneTransaction.Debet = Debet;
+      cloneTransaction.Credit = Credit;
+      cloneTransaction.Article = Article;
+      cloneTransaction.Amount = Amount;
+      cloneTransaction.Currency = Currency;
+      cloneTransaction.Comment = Comment;
+
+      return cloneTransaction;
+    }
   }
 }

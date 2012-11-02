@@ -79,9 +79,11 @@ namespace Keeper.DomainModel
       else return Parent.Id;
     }
 
-    public string ToDump()
+    public string ToDump(int offset)
     {
-      return Id + " ; " + Name + " ; " + ParentForDump();
+
+      string shiftedName = Name.PadLeft(Name.Length+offset);
+      return Id + " ; " + shiftedName + " ; " + ParentForDump();
     }
 
     public override string ToString()

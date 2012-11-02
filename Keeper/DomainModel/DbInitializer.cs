@@ -117,12 +117,12 @@ namespace Keeper.DomainModel
         Comment = "Лампочка левого стопа"
       };
       context.Transactions.Add(transaction2);
-      context.Transactions.Add(transaction2);
+      context.Transactions.Add(transaction2.Clone());
       context.Transactions.Add(transaction);
-      context.Transactions.Add(transaction2);
-      context.Transactions.Add(transaction2);
-      context.Transactions.Add(transaction);
-      context.Transactions.Add(transaction);
+      context.Transactions.Add(transaction2.Clone());
+      context.Transactions.Add(transaction2.Clone());
+      context.Transactions.Add(transaction.Clone());
+      context.Transactions.Add(transaction.Clone());
       #endregion
 
       #region // курсы валют

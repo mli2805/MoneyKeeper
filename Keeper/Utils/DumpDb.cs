@@ -21,6 +21,7 @@ namespace Keeper.Utils
     {
       if (!Directory.Exists(Settings.Default.DumpPath)) Directory.CreateDirectory(Settings.Default.DumpPath);
       DumpAccounts();
+//      DumpAccountsTree();
       DumpTransactions();
       DumpCurrencyRates();
       // TODO  DumpTransactions();
@@ -35,18 +36,18 @@ namespace Keeper.Utils
                                                         select account);
       foreach (var accountsRoot in roots)
       {
-        DumpAccount(accountsRoot, content);
+        DumpAccount(accountsRoot, content, 0);
       }
       File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "Accounts.txt"), content);
     }
 
-    public static void DumpAccount(Account account, List<string> content)
+    public static void DumpAccount(Account account, List<string> content, int offset)
     {
+      content.Add(account.ToDump(offset));
       foreach (var child in account.Children)
       {
-        DumpAccount(child, content);
+        DumpAccount(child, content, offset+2);
       }
-      content.Add(account.ToDump());
     }
 
     public static void DumpTransactions()
