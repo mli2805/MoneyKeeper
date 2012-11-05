@@ -9,7 +9,8 @@
         x:Class="Keeper.Views.ShellView"
         mc:Ignorable="d" Title="Keeper 2012" Height="562" Width="924" ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
-        d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}">
+        d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}"
+        TextOptions.TextFormattingMode="Display">
   <Window.Resources>
     <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
       <TextBlock Text="{Binding Name}" Margin="0,0,20,0"/>
@@ -173,7 +174,9 @@
         </TreeView>
       </TabItem>
     </TabControl>
-    <StatusBar Margin="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" Background="White" BorderBrush="Gray"/>
+    
+    <StatusBar Margin="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" 
+               Background="White" BorderBrush="Gray"/>
 
   </Grid>
 </Window>

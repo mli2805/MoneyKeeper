@@ -96,7 +96,7 @@ namespace Keeper.DomainModel
       var transaction = new Transaction
       {
         Timestamp = DateTime.Now, 
-        Operation = OperationType.Income, 
+        Operation = OperationType.Доход, 
         Debet = accountOptixsoft, 
         Credit = accountMyWallet, 
         Amount = 450, 
@@ -108,7 +108,7 @@ namespace Keeper.DomainModel
       var transaction2 = new Transaction 
       {
         Timestamp = DateTime.Now,
-        Operation = OperationType.Expense,
+        Operation = OperationType.Расход,
         Debet = accountMyWallet, 
         Credit = accountShops,
         Amount = 10000,

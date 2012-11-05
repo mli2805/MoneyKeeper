@@ -21,10 +21,8 @@ namespace Keeper.Utils
     {
       if (!Directory.Exists(Settings.Default.DumpPath)) Directory.CreateDirectory(Settings.Default.DumpPath);
       DumpAccounts();
-//      DumpAccountsTree();
       DumpTransactions();
       DumpCurrencyRates();
-      // TODO  DumpTransactions();
       MessageBox.Show("Выгрузка завершена успешно!", "Экспорт");
     }
 

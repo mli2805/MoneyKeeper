@@ -71,12 +71,22 @@ namespace Keeper.ViewModels
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Keeper 2012";
+      Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
 
       Db.Accounts.Load();  // загрузка с диска в оперативную
-      Db.Transactions.Load();
-      Db.CurrencyRates.Load();
+      Db.Transactions.Load();  // это должно происходить при загрузке главной формы
+      Db.CurrencyRates.Load(); // пока эта форма главная
 
-      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local  // из копии в оперативке
+      InitVariablesToShowAccounts();
+    }
+
+    private void InitVariablesToShowAccounts()
+    {
+      // из копии в оперативке загружаем в переменные типа  ObservableCollection<Account>
+      // при этом никакой загрузки не происходит - коллекция получает указатель на корневой Account
+      // (могло быть несколько указателей на несколько корней дерева)
+      // который при этом продолжает лежать в Db.Accounts.Local и ссылаться на своих потомков
+      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
                                                            where account.Name == "Мои"
                                                            select account);
       ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
@@ -175,26 +185,12 @@ namespace Keeper.ViewModels
 
     public void RestoreDatabaseFromTxt()
     {
+      // загружает из текстовых файлов данные в копии таблиц БД в оперативке (db.xxxxx.local)
       RestoreDb.RestoreAllTables();
+      // записывает эти данные в БД на винт
       Db.SaveChanges();
-      // и зачитать их для визуального отображения
-      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
-                                                           where account.Name == "Мои"
-                                                           select account);
-      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
-                                                               where account.Name == "Внешние"
-                                                               select account);
-      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
-                                                      where account.Name == "Все доходы"
-                                                      select account);
-      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
-                                                       where account.Name == "Все расходы"
-                                                       select account);
-
-      NotifyOfPropertyChange(() => MineAccountsRoot);
-      NotifyOfPropertyChange(() => ExternalAccountsRoot);
-      NotifyOfPropertyChange(() => IncomesRoot);
-      NotifyOfPropertyChange(() => ExpensesRoot);
+      // инициализирует переменные для визуального отображения деревьев счетов
+      InitVariablesToShowAccounts();
     }
 
     public void ClearDatabase()
@@ -207,8 +203,6 @@ namespace Keeper.ViewModels
       ExternalAccountsRoot.Clear();
       MineAccountsRoot.Clear();
     }
-
-
     #endregion
 
   }

@@ -1,6 +1,6 @@
 ﻿<Window x:Class="Keeper.Views.RatesView"
         Title="RatesView" Height="600" Width="1050" MaxHeight="700"
-
+xml:lang="ru-RU"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -23,7 +23,7 @@
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <DataGrid.Columns>
         <DataGridTextColumn Header="  Дата" SortDirection="Ascending"
-                            Binding="{Binding BankDay, StringFormat=\{0:D\}}">
+                            Binding="{Binding BankDay, StringFormat='dddd, dd MMMM yyyy'}">
         </DataGridTextColumn>
         <DataGridComboBoxColumn Header="Валюта" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
