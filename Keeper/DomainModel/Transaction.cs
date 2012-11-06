@@ -1,10 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
+using Caliburn.Micro;
+using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
-  public class Transaction
+  public class Transaction : PropertyChangedBase
   {
     public int Id { get; set; }
     public DateTime Timestamp { get; set; }
@@ -18,6 +20,22 @@ namespace Keeper.DomainModel
     public CurrencyCodes Currency { get; set; }
     public string Comment { get; set; }
 
+    #region ' _isSelected '
+    private bool _isSelected;
+    [NotMapped]
+    public bool IsSelected
+    {
+      get { return _isSelected; }
+      set
+      {
+        if (value.Equals(_isSelected)) return;
+        _isSelected = value;
+        NotifyOfPropertyChange(() => IsSelected);
+        IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
+      }
+    }
+    #endregion
+    
     #region // два вычислимых поля содержащих цвет шрифта и фона для отображения транзакции
     private Brush _dayBackgroundColor;
     [NotMapped]
@@ -47,10 +65,17 @@ namespace Keeper.DomainModel
     }
     #endregion
 
-    public string ToDump()
+    public string ToDumpWithIds()
     {
       return Timestamp + " ; " + Operation + " ; " + 
              Debet.Id + " ; " + Credit.Id + " ; " + Article.Id + " ; " + 
+             Amount + " ; " + Currency + " ; " + Comment;
+    }
+
+    public string ToDumpWithNames()
+    {
+      return Timestamp + " ; " + Operation + " ; " +
+             Debet + " ; " + Credit + " ; " + Article + " ; " +
              Amount + " ; " + Currency + " ; " + Comment;
     }
 

@@ -39,7 +39,7 @@ namespace Keeper.Utils
 
     private static void ClearAccounts()
     {
-      var roots = new List<Account>(from account in Db.Accounts.Include("Children")
+      var roots = new List<Account>(from account in Db.Accounts.Local
                                     where account.Parent == null
                                     select account);
       foreach (var root in roots)

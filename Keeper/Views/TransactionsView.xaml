@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:GridLines="clr-namespace:Keeper.Utils"
         mc:Ignorable="d"
-        Title="TransactionsView" Height="500" Width="Auto"
+        Title="Daily transactions" Height="500" Width="Auto"
         Icon="/Keeper;component/Resources/transactions.ico"
         d:DataContext="{d:DesignInstance ViewModels:TransactionsViewModel}" 
         SizeToContent="Width" WindowStartupLocation="CenterScreen"
@@ -51,13 +51,13 @@
       </ListView.ItemContainerStyle>
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Timestamp, StringFormat='yyyy MMM dd, ddd'}" />
-          <GridViewColumn Header="Дебет" DisplayMemberBinding="{Binding Debet}" />
-          <GridViewColumn Header="Кредит" DisplayMemberBinding="{Binding Credit}" />
-          <GridViewColumn Header="Категория" DisplayMemberBinding="{Binding Article}" />
+          <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='yyyy MMM dd, ddd'}" />
+          <GridViewColumn Header="Дебет" Width="150" DisplayMemberBinding="{Binding Debet}" />
+          <GridViewColumn Header="Кредит" Width="150" DisplayMemberBinding="{Binding Credit}" />
+          <GridViewColumn Header="Категория" Width="100" DisplayMemberBinding="{Binding Article}" />
           <GridViewColumn Header="Валюта" DisplayMemberBinding="{Binding Currency}" />
-          <GridViewColumn Header="Сумма" DisplayMemberBinding="{Binding Amount}" />
-          <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" />
+          <GridViewColumn Header="Сумма" Width="100" DisplayMemberBinding="{Binding Amount}" />
+          <GridViewColumn Header="Примечание" Width="180" DisplayMemberBinding="{Binding Comment}" />
         </GridView>
       </ListView.View>
     </ListView>

@@ -90,7 +90,7 @@ namespace Keeper.ViewModels
                                                            where account.Name == "Мои"
                                                            select account);
       ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
-                                                               where account.Name == "Внешние"
+                                                               where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков"
                                                                select account);
       IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
                                                       where account.Name == "Все доходы"

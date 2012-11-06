@@ -8,6 +8,9 @@ using System.Windows.Shapes;
 
 namespace Keeper.Utils
 {
+  // http://blog.bulatgafurov.name/   ListView Horizontal and Vertical Gridlines
+  // используется в TransactionsView
+
     public class GridViewRowPresenterWithGridLines : GridViewRowPresenter
     {
         private static readonly Style DefaultSeparatorStyle;

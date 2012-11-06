@@ -10,7 +10,7 @@
         mc:Ignorable="d" Title="Keeper 2012" Height="562" Width="924" ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
         d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}"
-        TextOptions.TextFormattingMode="Display">
+        TextOptions.TextFormattingMode="Display"> <!--attached property для сглаживания шрифтов-->
   <Window.Resources>
     <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
       <TextBlock Text="{Binding Name}" Margin="0,0,20,0"/>
@@ -112,8 +112,8 @@
           </TreeView.ItemContainerStyle>
         </TreeView>
       </TabItem>
-      <TabItem Header="Расходы" Background="{x:Null}">
-        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoot}" 
+      <TabItem Header="Доходы" Background="{x:Null}">
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -142,10 +142,9 @@
           </TreeView.ItemContainerStyle>
         </TreeView>
       </TabItem>
-
-      <TabItem Header="Доходы" Background="{x:Null}">
-        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoot}" 
-                  ItemTemplate="{DynamicResource AccountTemplate}">
+      <TabItem Header="Расходы" Background="{x:Null}">
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoot}" 
+      		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
               <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" Background="White" >

@@ -1,5 +1,5 @@
 ﻿<Window x:Class="Keeper.Views.RatesView"
-        Title="RatesView" Height="600" Width="1050" MaxHeight="700"
+        Title="Курсы валют" Height="600" Width="1050" MaxHeight="700"
 xml:lang="ru-RU"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,8 +7,8 @@ xml:lang="ru-RU"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
-        d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}" SizeToContent="Height"
-        >
+        Icon="/Keeper;component/Resources/currency_rates.ico" 
+        d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}" SizeToContent="Height">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="200*"/>
