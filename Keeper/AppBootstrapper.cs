@@ -29,13 +29,6 @@ namespace Keeper
       _container.Compose(batch);
     }
 
-    protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
-    {
-      Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
-      CultureInfo.CurrentCulture.ToString();
-      base.OnStartup(sender, e);
-    }
-
     protected override object GetInstance(Type serviceType, string key)
     {
       var contract = string.IsNullOrEmpty(key) 

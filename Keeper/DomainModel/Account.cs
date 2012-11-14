@@ -39,7 +39,8 @@ namespace Keeper.DomainModel
       {
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
-        NotifyOfPropertyChange(() => IsSelected);
+//        NotifyOfPropertyChange(() => IsSelected);
+        if (_isSelected)
         IoC.Get<ShellViewModel>().SelectedAccount = this;
       }
     }
@@ -66,7 +67,6 @@ namespace Keeper.DomainModel
 
     #endregion
 
-   
     public static void CopyForEdit(Account destination, Account source)
     {
       destination.Name = source.Name;
@@ -89,6 +89,17 @@ namespace Keeper.DomainModel
     public override string ToString()
     {
       return Name;
+    }
+
+    public string GetRootName()
+    {
+      return Parent == null ? Name : Parent.GetRootName();
+    }
+
+    public bool IsDescendantOf(string ancestor)  // Descendant - потомок ; Ancestor - предок
+    {
+      if (Parent == null) return false;
+      else return Parent.Name == ancestor ? true : Parent.IsDescendantOf(ancestor);
     }
   }
 }

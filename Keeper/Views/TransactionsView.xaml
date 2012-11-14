@@ -6,17 +6,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:GridLines="clr-namespace:Keeper.Utils"
         mc:Ignorable="d"
-        Title="Daily transactions" Height="500" Width="Auto"
+        Title="Daily transactions" Height="800" Width="Auto"
         Icon="/Keeper;component/Resources/transactions.ico"
         d:DataContext="{d:DesignInstance ViewModels:TransactionsViewModel}" 
         SizeToContent="Width" WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
     <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="19*"/>
-      <RowDefinition Height="28*"/>
+      <RowDefinition Height="29*"/>
+      <RowDefinition Height="200"/>
     </Grid.RowDefinitions>
-    <ListView HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" ItemsSource="{Binding Rows}" >
+    <ListView HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" 
+              ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTransaction}" >
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">
           <Setter Property="Margin" Value="2,0,0,0"/>
@@ -39,6 +40,7 @@
               </ControlTemplate>
             </Setter.Value>
           </Setter>
+          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
           <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
               <Setter Property="Background" Value="#FFB0E0FF"/>
@@ -52,18 +54,49 @@
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='yyyy MMM dd, ddd'}" />
-          <GridViewColumn Header="Дебет" Width="150" DisplayMemberBinding="{Binding Debet}" />
-          <GridViewColumn Header="Кредит" Width="150" DisplayMemberBinding="{Binding Credit}" />
-          <GridViewColumn Header="Категория" Width="100" DisplayMemberBinding="{Binding Article}" />
-          <GridViewColumn Header="Валюта" DisplayMemberBinding="{Binding Currency}" />
+          <GridViewColumn Header="Дебет" Width="125" DisplayMemberBinding="{Binding Debet}" />
+          <GridViewColumn Header="Кредит" Width="125" DisplayMemberBinding="{Binding Credit}" />
+          <GridViewColumn Header="Категория" Width="150" DisplayMemberBinding="{Binding Article}" />
           <GridViewColumn Header="Сумма" Width="100" DisplayMemberBinding="{Binding Amount}" />
+          <GridViewColumn Header="Валюта" DisplayMemberBinding="{Binding Currency}" />
           <GridViewColumn Header="Примечание" Width="180" DisplayMemberBinding="{Binding Comment}" />
         </GridView>
       </ListView.View>
     </ListView>
-    <ComboBox HorizontalAlignment="Left" Margin="50,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="80"
-              ItemsSource="{x:Static ViewModels:AllOperationTypes.OperationTypeList }"
-              SelectedItem="{Binding SelectedOperationType}"/>
+    <StackPanel HorizontalAlignment="Stretch" Margin="1" Grid.Row="1" VerticalAlignment="Stretch">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <ComboBox Name="operationType" HorizontalAlignment="Left" Margin="230,8,0,10" Grid.Row="0" VerticalAlignment="Center" Width="80"
+              ItemsSource="{Binding OperationTypes }"
+              SelectedItem="{Binding SelectedTransaction.Operation}" />
+        <Label Content="Кто" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+        <ComboBox Name="Debet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="125"
+              ItemsSource="{Binding ExternalDebetAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Debet}" />
+        <Label Content="Куда" HorizontalAlignment="Left" Margin="220,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+        <ComboBox Name="Credit" HorizontalAlignment="Left" Margin="270,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="125"
+              ItemsSource="{Binding MyAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Credit}" />
+        <Label Content="За что" HorizontalAlignment="Left" Margin="420,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+        <ComboBox Name="Article" HorizontalAlignment="Left" Margin="480,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding IncomeArticles}"
+              SelectedItem="{Binding SelectedTransaction.Article}" />
+        <Label Content="Сколько" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+        <TextBox Name="Amount" HorizontalAlignment="Left" Margin="90,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="120"
+                 Text="{Binding SelectedTransaction.Amount}"/>
+        <ComboBox Name="Currency" HorizontalAlignment="Left" Margin="220,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80"
+              ItemsSource="{Binding CurrencyList}"
+              SelectedItem="{Binding SelectedTransaction.Currency}" />
+        <Label Content="Примечание" HorizontalAlignment="Left" Margin="340,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+        <TextBox Name="Comment" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="200"
+                 Text="{Binding SelectedTransaction.Comment}"/>
+      </Grid>
+    </StackPanel>
 
-  </Grid>
+    </Grid>
 </Window>

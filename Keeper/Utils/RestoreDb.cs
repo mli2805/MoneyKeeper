@@ -39,7 +39,7 @@ namespace Keeper.Utils
         {
           transaction = TransactionFromStringWithNames(s);
         }
-        catch (Exception e)
+        catch (Exception)
         {
           wrongContent.Add(s);
         }

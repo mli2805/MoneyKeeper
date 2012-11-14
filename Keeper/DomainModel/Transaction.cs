@@ -8,17 +8,86 @@ namespace Keeper.DomainModel
 {
   public class Transaction : PropertyChangedBase
   {
+    private OperationType _operation;
+    private Account _debet;
+    private Account _credit;
+    private Account _article;
+    private decimal _amount;
+    private CurrencyCodes _currency;
+    private string _comment;
+
     public int Id { get; set; }
     public DateTime Timestamp { get; set; }
-    public OperationType Operation { get; set; }
-
-    public Account Debet { get; set; }
-    public Account Credit { get; set; }
-    public Account Article { get; set; }
-
-    public decimal Amount { get; set; }
-    public CurrencyCodes Currency { get; set; }
-    public string Comment { get; set; }
+    public OperationType Operation
+    {
+      get { return _operation; }
+      set
+      {
+        if (Equals(value, _operation)) return;
+        _operation = value;
+        NotifyOfPropertyChange(() => TransactionFontColor);
+      }
+    }
+    public Account Debet
+    {
+      get { return _debet; }
+      set
+      {
+        if (Equals(value, _debet)) return;
+        _debet = value;
+        NotifyOfPropertyChange(() => Debet);
+      }
+    }
+    public Account Credit
+    {
+      get { return _credit; }
+      set
+      {
+        if (Equals(value, _credit)) return;
+        _credit = value;
+        NotifyOfPropertyChange(() => Credit);
+      }
+    }
+    public Account Article
+    {
+      get { return _article; }
+      set
+      {
+        if (Equals(value, _article)) return;
+        _article = value;
+        NotifyOfPropertyChange(() => Article);
+      }
+    }
+    public decimal Amount
+    {
+      get { return _amount; }
+      set
+      {
+        if (value == _amount) return;
+        _amount = value;
+        NotifyOfPropertyChange(() => Amount);
+      }
+    }
+    public CurrencyCodes Currency
+    {
+      get { return _currency; }
+      set
+      {
+        if (Equals(value, _currency)) return;
+        _currency = value;
+        NotifyOfPropertyChange(() => Currency);
+      }
+    }
+    public string Comment
+    {
+      get { return _comment; }
+      set
+      {
+        if (value == _comment) return;
+        _comment = value;
+        NotifyOfPropertyChange(() => Comment);
+      }
+    }
 
     #region ' _isSelected '
     private bool _isSelected;
@@ -31,13 +100,12 @@ namespace Keeper.DomainModel
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
         NotifyOfPropertyChange(() => IsSelected);
-        IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
+//        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
       }
     }
     #endregion
     
     #region // два вычислимых поля содержащих цвет шрифта и фона для отображения транзакции
-    private Brush _dayBackgroundColor;
     [NotMapped]
     public Brush DayBackgroundColor
     {
@@ -47,10 +115,8 @@ namespace Keeper.DomainModel
         if (DaysFrom.Days % 2 == 0) return Brushes.Cornsilk;
         else return Brushes.Azure;
       }
-      set { _dayBackgroundColor = value; }
     }
 
-    private Brush _transactionFontColor;
     [NotMapped]
     public Brush TransactionFontColor
     {
@@ -61,7 +127,6 @@ namespace Keeper.DomainModel
         if (Operation == OperationType.Обмен) return Brushes.DarkGreen;
         else return Brushes.Black;
       }
-      set { _transactionFontColor = value; }
     }
     #endregion
 
