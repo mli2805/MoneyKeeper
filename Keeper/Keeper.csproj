@@ -81,8 +81,12 @@
     <Compile Include="Utils\DumpDb.cs" />
     <Compile Include="Utils\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="Utils\RestoreDb.cs" />
+    <Compile Include="Utils\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
+    <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyCodes.cs" />
+    <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyRatesFilters.cs" />
+    <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModel.cs" />

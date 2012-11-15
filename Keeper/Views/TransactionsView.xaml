@@ -4,8 +4,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:GridLines="clr-namespace:Keeper.Utils"
-        mc:Ignorable="d"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
+        xmlns:u="clr-namespace:Keeper.Utils"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" mc:Ignorable="d"
         Title="Daily transactions" Height="800" Width="Auto"
         Icon="/Keeper;component/Resources/transactions.ico"
         d:DataContext="{d:DesignInstance ViewModels:TransactionsViewModel}" 
@@ -14,10 +15,13 @@
     <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="29*"/>
-      <RowDefinition Height="200"/>
+      <RowDefinition Height="300"/>
     </Grid.RowDefinitions>
     <ListView HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" 
               ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTransaction}" >
+      <i:Interaction.Behaviors>
+        <u:ScrollToBottomOnLoadBehavior />
+      </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">
           <Setter Property="Margin" Value="2,0,0,0"/>
@@ -33,7 +37,7 @@
                 <Border BorderBrush="{TemplateBinding BorderBrush}" 
                                         BorderThickness="{TemplateBinding BorderThickness}" 
                                         Background="{TemplateBinding Background}">
-                  <GridLines:GridViewRowPresenterWithGridLines 
+                  <u:GridViewRowPresenterWithGridLines 
                                         Columns="{TemplateBinding GridView.ColumnCollection}"
                                         Margin="{TemplateBinding Padding}" />
                 </Border>
@@ -69,9 +73,13 @@
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <ComboBox Name="operationType" HorizontalAlignment="Left" Margin="230,8,0,10" Grid.Row="0" VerticalAlignment="Center" Width="80"
+        <DatePicker HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Center" FirstDayOfWeek="Monday"
+                    Text="{Binding SelectedTransaction.Timestamp, Mode=TwoWay}" />
+        <ComboBox Name="operationType" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="0" VerticalAlignment="Center" Width="80"
               ItemsSource="{Binding OperationTypes }"
               SelectedItem="{Binding SelectedTransaction.Operation}" />
         <Label Content="Кто" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
@@ -95,6 +103,12 @@
         <Label Content="Примечание" HorizontalAlignment="Left" Margin="340,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
         <TextBox Name="Comment" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="200"
                  Text="{Binding SelectedTransaction.Comment}"/>
+        <Button Content="Сохранить" HorizontalAlignment="Left" Margin="60,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Сохранить и добавить еще одну" HorizontalAlignment="Left" Margin="185,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="200"/>
+        <Button Content="Отказаться" HorizontalAlignment="Left" Margin="450,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Добавить операцию" Name="AddTransaction" Margin="60,10,0,0" Grid.Row="4" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button Content="Удалить операцию" Name="DeleteTransaction" Margin="280,10,0,0" Grid.Row="4" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
       </Grid>
     </StackPanel>
 

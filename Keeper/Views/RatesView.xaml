@@ -74,7 +74,7 @@ xml:lang="ru-RU"
     </Expander>
 
     <ComboBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,35" Width="110"
-              ItemsSource="{x:Static ViewModels:AllFilters.FilterList}"
+              ItemsSource="{x:Static ViewModels:AllCurrencyRatesFilters.FilterList}"
               SelectedItem="{Binding SelectedFilter}">
 
     </ComboBox>

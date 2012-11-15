@@ -8,6 +8,7 @@ namespace Keeper.DomainModel
 {
   public class Transaction : PropertyChangedBase
   {
+    private DateTime _timestamp;
     private OperationType _operation;
     private Account _debet;
     private Account _credit;
@@ -17,7 +18,16 @@ namespace Keeper.DomainModel
     private string _comment;
 
     public int Id { get; set; }
-    public DateTime Timestamp { get; set; }
+    public DateTime Timestamp
+    {
+      get { return _timestamp; }
+      set
+      {
+        if (value.Equals(_timestamp)) return;
+        _timestamp = value;
+        NotifyOfPropertyChange(() => Timestamp);
+      }
+    }
     public OperationType Operation
     {
       get { return _operation; }
@@ -91,6 +101,7 @@ namespace Keeper.DomainModel
 
     #region ' _isSelected '
     private bool _isSelected;
+
     [NotMapped]
     public bool IsSelected
     {
@@ -100,7 +111,7 @@ namespace Keeper.DomainModel
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
         NotifyOfPropertyChange(() => IsSelected);
-//        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
+        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
       }
     }
     #endregion

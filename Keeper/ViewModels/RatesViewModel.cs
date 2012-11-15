@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Data;
@@ -9,53 +7,6 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
-  // это для комбика выбора валюты в datagrid
-  public static class AllCurrencyCodes
-  {
-    public static List<CurrencyCodes> CurrencyList { get; private set; }
-
-    static AllCurrencyCodes()
-    {
-      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-    }
-  }
-
-  // это для комбика фильтра
-  public class Filter
-  {
-    public bool IsTurnOn { get; set; }
-    public CurrencyCodes Currency { get; set; }
-    public Filter() { IsTurnOn = false; }
-    public Filter(CurrencyCodes currency)
-    {
-      IsTurnOn = true;
-      Currency = currency;
-    }
-
-    public override string ToString()
-    {
-      return IsTurnOn ? Currency.ToString() : "<no filter>";
-    }
-  }
-
-  public static class AllFilters
-  {
-    public static List<Filter> FilterList { get; private set; }
-    static AllFilters()
-    {
-      FilterList = new List<Filter>();
-      var filter = new Filter();
-      FilterList.Add(filter);
-      foreach (var currencyCode in AllCurrencyCodes.CurrencyList)
-      {
-        if (currencyCode == CurrencyCodes.USD) continue;
-        filter = new Filter(currencyCode);
-        FilterList.Add(filter);
-      }
-    }
-  }
-
-
   public class RatesViewModel : Screen
   {
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
@@ -83,8 +34,8 @@ namespace Keeper.ViewModels
     */
 
 
-    private Filter _selectedFilter;
-    public Filter SelectedFilter  
+    private CurrencyRatesFilter _selectedFilter;
+    public CurrencyRatesFilter SelectedFilter  
     {
       get { return _selectedFilter; }
       set
@@ -103,7 +54,7 @@ namespace Keeper.ViewModels
     {
       Db.CurrencyRates.Load();
       Rows = Db.CurrencyRates.Local;
-      SelectedFilter = AllFilters.FilterList.First(f => !f.IsTurnOn);
+      SelectedFilter = AllCurrencyRatesFilters.FilterList.First(f => !f.IsOn);
 
       var view = CollectionViewSource.GetDefaultView(Rows);
 
@@ -113,7 +64,7 @@ namespace Keeper.ViewModels
     private bool OnFilter(object o)
     {
       var currencyRate = (CurrencyRate) o;
-      if (SelectedFilter.IsTurnOn == false) return true;
+      if (SelectedFilter.IsOn == false) return true;
       return currencyRate.Currency == SelectedFilter.Currency;
     }
   }

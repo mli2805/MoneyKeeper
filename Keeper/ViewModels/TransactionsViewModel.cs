@@ -10,9 +10,10 @@ using System.Linq;
 namespace Keeper.ViewModels
 {
   [Export(typeof(IShell))]
-  [Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
+  [Export(typeof(TransactionsViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionsViewModel : Screen, IShell
   {
+    private Transaction _selectedTransaction;
     public List<OperationType> OperationTypes { get; set; }
     public List<CurrencyCodes> CurrencyList { get; set; }
 
@@ -41,23 +42,28 @@ namespace Keeper.ViewModels
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public ObservableCollection<Transaction> Rows { get; set; }
-    public Transaction SelectedTransaction { get; set; }
-    
+    public Transaction SelectedTransaction  
+    {
+      get { return _selectedTransaction; }
+      set
+      {
+        if (Equals(value, _selectedTransaction)) return;
+        _selectedTransaction = value;
+        NotifyOfPropertyChange(() => SelectedTransaction);
+      }
+    }
+
     public TransactionsViewModel()
     {
       Db.Transactions.Load();
       Rows = Db.Transactions.Local;
-      SelectedTransaction = Rows.First();
-
-      //      SelectedTransaction = new Transaction();
-      //      Rows.First().IsSelected = true;
+      SelectedTransaction = Rows.Last();
       ComboBoxesValues();
     }
 
-    protected override void OnViewLoaded(object view)
+    public void AddTransaction()
     {
     }
-
   }
 
 
