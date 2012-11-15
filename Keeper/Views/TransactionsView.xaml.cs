@@ -23,6 +23,5 @@ namespace Keeper.Views
     {
       InitializeComponent();
     }
-
   }
 }

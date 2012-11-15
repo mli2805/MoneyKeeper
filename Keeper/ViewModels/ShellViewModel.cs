@@ -158,6 +158,11 @@ namespace Keeper.ViewModels
 
     #region // вызовы дочерних окон
 
+    public void TemporaryLoadTransactionsView()
+    {
+      ShowTransactionsForm();
+    }
+
     public void ShowTransactionsForm()
     {
       String arcMessage = Message;
