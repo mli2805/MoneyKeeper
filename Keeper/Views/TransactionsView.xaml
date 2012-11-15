@@ -80,9 +80,25 @@
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Rectangle Stroke="LightBlue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="4" Grid.RowSpan="7"/>
-        <Rectangle Stroke="Gray" StrokeThickness="1" Margin="20,0,0,0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" Height="24"/>
-        <DatePicker HorizontalAlignment="Left" Margin="70,0,0,0" Grid.Row="1" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
+<!--        <Rectangle Stroke="Gray" StrokeThickness="1" Margin="20,0,0,0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" Height="24"/>-->
+        <Button Name="DayBefore" BorderBrush="White" HorizontalAlignment="Left" Margin="49,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+          <Grid>
+            <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">
+              <Polygon.Fill> <SolidColorBrush Color="Black" /> </Polygon.Fill>
+            </Polygon>
+          </Grid>
+        </Button>
+        <DatePicker HorizontalAlignment="Left" Margin="70,0,0,0" Grid.Row="1" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100" Height="24"
                     Text="{Binding SelectedTransaction.Timestamp, Mode=TwoWay}" />
+        <Button Name="DayAfter" BorderBrush="White" HorizontalAlignment="Left" Margin="171,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+          <Grid>
+            <Polygon Points="0,2 4,5 0,8 0,2" Stroke="Black">
+              <Polygon.Fill>
+                <SolidColorBrush Color="Black" />
+              </Polygon.Fill>
+            </Polygon>
+          </Grid>
+        </Button>
         <ComboBox Name="operationType" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="80"
               ItemsSource="{Binding OperationTypes}"
               SelectedItem="{Binding SelectedTransaction.Operation}" />
@@ -91,7 +107,7 @@
               ItemsSource="{Binding ExternalDebetAccounts}"
               SelectedItem="{Binding SelectedTransaction.Debet}" />
         <Label Content="Куда" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-        <ComboBox Name="Credit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="150"
+        <ComboBox Name="Credit" BorderBrush="White" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding SelectedTransaction.Credit}" />
         <Label Content="За что" HorizontalAlignment="Left" Margin="470,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>

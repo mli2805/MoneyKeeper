@@ -64,6 +64,17 @@ namespace Keeper.ViewModels
     public void AddTransaction()
     {
     }
+
+    public void DayBefore()
+    {
+      SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddDays(-1);
+    }
+
+    public void DayAfter()
+    {
+      SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddDays(1);
+    }
+
   }
 
 
