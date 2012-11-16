@@ -27,6 +27,11 @@ namespace Keeper.ViewModels
     public List<Account> IncomeArticles { get; set; }
     public List<Account> ExpenseArticles { get; set; }
 
+    public string SelectedTransactionInUsd
+    {
+      get { return "!!!!"; }
+    }
+
     public void ComboBoxesValues()
     {
       OperationTypes = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();

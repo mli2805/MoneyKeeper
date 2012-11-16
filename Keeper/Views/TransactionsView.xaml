@@ -12,13 +12,17 @@
         d:DataContext="{d:DesignInstance ViewModels:TransactionsViewModel}" 
         SizeToContent="Width" WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
-    <Grid>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="335*"/>
+      <ColumnDefinition Width="160"/>
+    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition Height="29*"/>
-      <RowDefinition Height="300"/>
+      <RowDefinition Height="600*"/>
+      <RowDefinition Height="200"/>
     </Grid.RowDefinitions>
-    <ListView HorizontalAlignment="Left" Margin="5,5,5,0" VerticalAlignment="Top" 
-              ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTransaction}" >
+    <ListView HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" 
+              ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTransaction}" Grid.ColumnSpan="2" >
       <i:Interaction.Behaviors>
         <u:ScrollToBottomOnLoadBehavior />
       </i:Interaction.Behaviors>
@@ -67,28 +71,28 @@
         </GridView>
       </ListView.View>
     </ListView>
-    <StackPanel HorizontalAlignment="Stretch" Margin="1" Grid.Row="1" VerticalAlignment="Stretch">
+    <StackPanel Name="SelectedTransactionPanel" Grid.Row="1" >
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="4"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
+          <RowDefinition Height="50"/>
+          <RowDefinition Height="10"/>
           <RowDefinition Height="40"/>
-          <RowDefinition Height="50"/>
-          <RowDefinition Height="50"/>
-          <RowDefinition Height="4"/>
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Rectangle Stroke="LightBlue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="4" Grid.RowSpan="7"/>
-<!--        <Rectangle Stroke="Gray" StrokeThickness="1" Margin="20,0,0,0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" Height="24"/>-->
+        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Margin="4,0,0,0" Grid.RowSpan="6" Grid.Row="1"/>
         <Button Name="DayBefore" BorderBrush="White" HorizontalAlignment="Left" Margin="49,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
           <Grid>
             <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">
-              <Polygon.Fill> <SolidColorBrush Color="Black" /> </Polygon.Fill>
+              <Polygon.Fill>
+                <SolidColorBrush Color="Black" />
+              </Polygon.Fill>
             </Polygon>
           </Grid>
         </Button>
-        <DatePicker HorizontalAlignment="Left" Margin="70,0,0,0" Grid.Row="1" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100" Height="24"
+        <DatePicker HorizontalAlignment="Left" Margin="70,2,0,0" Grid.Row="1" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
                     Text="{Binding SelectedTransaction.Timestamp, Mode=TwoWay}" />
         <Button Name="DayAfter" BorderBrush="White" HorizontalAlignment="Left" Margin="171,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
           <Grid>
@@ -102,35 +106,41 @@
         <ComboBox Name="operationType" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="80"
               ItemsSource="{Binding OperationTypes}"
               SelectedItem="{Binding SelectedTransaction.Operation}" />
-        <Label Content="Кто" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="2" VerticalAlignment="Center" />
+        <Label Content="Кто" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center" />
         <ComboBox Name="Debet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding ExternalDebetAccounts}"
               SelectedItem="{Binding SelectedTransaction.Debet}" />
         <Label Content="Куда" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-        <ComboBox Name="Credit" BorderBrush="White" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="150"
+        <ComboBox Name="Credit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding SelectedTransaction.Credit}" />
-        <Label Content="За что" HorizontalAlignment="Left" Margin="470,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-        <ComboBox Name="Article" HorizontalAlignment="Left" Margin="530,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
+        <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
+        <ComboBox Name="Article" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="3" Background="White" VerticalAlignment="Center" Width="170"
               ItemsSource="{Binding IncomeArticles}"
               SelectedItem="{Binding SelectedTransaction.Article}" />
-        <Label Content="Сколько" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
-        <TextBox Name="Amount" HorizontalAlignment="Left" Margin="90,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="120"
+        <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
+        <TextBox Name="Amount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding SelectedTransaction.Amount}"/>
-        <ComboBox Name="Currency" HorizontalAlignment="Left" Margin="220,0,0,0" Grid.Row="3" Background="White" VerticalAlignment="Center" Width="50"
+        <ComboBox Name="Currency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="3" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding SelectedTransaction.Currency}" />
-        <Label Content="Примечание" HorizontalAlignment="Left" Margin="310,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
-        <TextBox Name="Comment" HorizontalAlignment="Left" Margin="400,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="300"
-                 Text="{Binding SelectedTransaction.Comment}"/>
-        <Button Content="Сохранить" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="4" Background="White" VerticalAlignment="Center" Width="75"/>
-        <Button Content="Сохранить и добавить еще одну" HorizontalAlignment="Left" Margin="185,0,0,0" Grid.Row="4" Background="White" VerticalAlignment="Center" Width="200"/>
-        <Button Content="Отказаться" HorizontalAlignment="Left" Margin="450,0,0,0" Grid.Row="4" Background="White" VerticalAlignment="Center" Width="75"/>
-        <Button Content="Добавить операцию" Name="AddTransaction" Margin="60,5,0,0" Grid.Row="5" Width="150" Background="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Button Content="Удалить операцию" Name="DeleteTransaction" Margin="280,5,0,0" Grid.Row="5" Width="150" Background="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
+        <Label Name="SelectedTransactionInUsd1" Content="По курсу хххх - dddd usd" HorizontalAlignment="Left" Height="30" Width="150" Margin="270,35,0,0" Grid.Row="3" Grid.RowSpan="3" VerticalAlignment="Top"/>
+
+        <Label Content="Примечание" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="5" VerticalAlignment="Center"/>
+        <TextBox Name="Comment" HorizontalAlignment="Left" Margin="95,0,0,0" Grid.Row="5" VerticalAlignment="Center" Width="345" BorderBrush="#555555" 
+                 Text="{Binding SelectedTransaction.Comment}"/>
       </Grid>
     </StackPanel>
-
-    </Grid>
+    <StackPanel Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" >
+      <Grid>
+        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="152" Margin="4" />
+        <Button Content="Сохранить" Name="SaveTransaction" HorizontalAlignment="Center" Margin="0,20,0,0" Background="White" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Еще одну" Name="OnceMoreTransaction" HorizontalAlignment="Center" Margin="0,50,0,0" Background="White" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Отказаться" Name="CancelTransaction" HorizontalAlignment="Center" Margin="0,80,0,0"  Background="White" VerticalAlignment="Top" Width="120" />
+        <Button Content="Добавить новую" Name="AddTransaction" HorizontalAlignment="Center" Margin="0,110,0,0" Background="White" VerticalAlignment="Top"  Width="120"/>
+        <Button Content="Удалить операцию" Name="DeleteTransaction" HorizontalAlignment="Center" Margin="0,140,0,10" Background="White" VerticalAlignment="Top" Width="120"/>
+      </Grid>
+    </StackPanel>
+  </Grid>
 </Window>
