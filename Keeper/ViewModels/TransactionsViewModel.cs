@@ -27,11 +27,6 @@ namespace Keeper.ViewModels
     public List<Account> IncomeArticles { get; set; }
     public List<Account> ExpenseArticles { get; set; }
 
-    public string SelectedTransactionInUsd
-    {
-      get { return "!!!!"; }
-    }
-
     public void ComboBoxesValues()
     {
       OperationTypes = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
@@ -55,6 +50,26 @@ namespace Keeper.ViewModels
         if (Equals(value, _selectedTransaction)) return;
         _selectedTransaction = value;
         NotifyOfPropertyChange(() => SelectedTransaction);
+        NotifyOfPropertyChange(() => SelectedTransactionInUsd);
+      }
+    }
+
+    public string SelectedTransactionInUsd
+    {
+      get
+      {
+        if (SelectedTransaction.Currency == CurrencyCodes.USD) return "";
+        var rate = new CurrencyRate();
+        
+        rate = 
+          Db.CurrencyRates.Local.First(
+            currencyRate => ( (currencyRate.Currency == SelectedTransaction.Currency))); 
+       //     currencyRate => ((currencyRate.BankDay == SelectedTransaction.Timestamp) && (currencyRate.Currency == SelectedTransaction.Currency))); 
+        
+        if (rate == null) return "отсутствует курс на эту дату";
+        var res = (SelectedTransaction.Amount / (decimal)rate.Rate).ToString("F2") +"$ по курсу "+rate.Rate;
+        if (SelectedTransaction.Currency == CurrencyCodes.EUR) res = res + " (" + (1/rate.Rate).ToString("F3")+ ")";
+        return res;
       }
     }
 
@@ -68,6 +83,9 @@ namespace Keeper.ViewModels
 
     public void AddTransaction()
     {
+      SelectedTransaction = new Transaction();
+      SelectedTransaction.Currency = CurrencyCodes.RUB; // временно !!!
+      Rows.Add(SelectedTransaction);
     }
 
     public void DayBefore()
