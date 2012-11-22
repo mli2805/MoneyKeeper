@@ -15,7 +15,7 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="335*"/>
-      <ColumnDefinition Width="160"/>
+      <ColumnDefinition Width="180"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="600*"/>
@@ -84,7 +84,7 @@
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Margin="4,0,0,0" Grid.RowSpan="6" Grid.Row="1"/>
-        <Button Name="DayBefore" BorderBrush="White" HorizontalAlignment="Left" Margin="49,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+        <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="49,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
           <Grid>
             <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">
               <Polygon.Fill>
@@ -95,7 +95,7 @@
         </Button>
         <DatePicker HorizontalAlignment="Left" Margin="70,2,0,0" Grid.Row="1" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
                     Text="{Binding SelectedTransaction.Timestamp, Mode=TwoWay}" />
-        <Button Name="DayAfter" BorderBrush="White" HorizontalAlignment="Left" Margin="171,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+        <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="171,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
           <Grid>
             <Polygon Points="0,2 4,5 0,8 0,2" Stroke="Black">
               <Polygon.Fill>
@@ -135,12 +135,11 @@
     </StackPanel>
     <StackPanel Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" >
       <Grid>
-        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="152" Margin="4" />
-        <Button Content="Сохранить" Name="SaveTransaction" HorizontalAlignment="Center" Margin="0,20,0,0" Background="White" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Еще одну" Name="OnceMoreTransaction" HorizontalAlignment="Center" Margin="0,50,0,0" Background="White" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Отказаться" Name="CancelTransaction" HorizontalAlignment="Center" Margin="0,80,0,0"  Background="White" VerticalAlignment="Top" Width="120" />
-        <Button Content="Добавить новую" Name="AddTransaction" HorizontalAlignment="Center" Margin="0,110,0,0" Background="White" VerticalAlignment="Top"  Width="120"/>
-        <Button Content="Удалить операцию" Name="DeleteTransaction" HorizontalAlignment="Center" Margin="0,140,0,10" Background="White" VerticalAlignment="Top" Width="120"/>
+        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="172" Margin="4" />
+        <Button Content="Еще одну в этот день" Name="AddOnceMoreTransaction" HorizontalAlignment="Center" Margin="0,30,0,0" Background="White" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Отказаться" Name="CancelTransaction" HorizontalAlignment="Center" Margin="0,60,0,0"  Background="White" VerticalAlignment="Top" Width="150" />
+        <Button Content="Добавить в новый день" Name="AddNewDayTransaction" HorizontalAlignment="Center" Margin="0,90,0,0" Background="White" VerticalAlignment="Top"  Width="150"/>
+        <Button Content="Удалить операцию" Name="DeleteTransaction" HorizontalAlignment="Center" Margin="0,120,0,0" Background="White" VerticalAlignment="Top" Width="150"/>
       </Grid>
     </StackPanel>
   </Grid>

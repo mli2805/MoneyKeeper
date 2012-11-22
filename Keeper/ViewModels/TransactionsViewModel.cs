@@ -81,15 +81,14 @@ namespace Keeper.ViewModels
     }
 
     /// <summary>
-    /// добавление новой транзакции после SelectedTransaction
+    /// добавление новой транзакции в позицию за SelectedTransaction
     /// </summary>
-    public void AddTransaction()
+    public void AddOnceMoreTransaction()
     {
       var selectedIndex = Rows.IndexOf(SelectedTransaction)+1;
       var preformTransaction = SelectedTransaction.Preform();
       SelectedTransaction = preformTransaction;
       Rows.Insert(selectedIndex,SelectedTransaction);
-      
     }
 
     public void DeleteTransaction()
@@ -101,12 +100,12 @@ namespace Keeper.ViewModels
       Rows.Remove(transactionForRemoving);
     }
 
-    public void DayBefore()
+    public void DecreaseTimestamp()
     {
       SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddDays(-1);
     }
 
-    public void DayAfter()
+    public void IncreaseTimestamp()
     {
       SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddDays(1);
     }
