@@ -170,5 +170,19 @@ namespace Keeper.DomainModel
 
       return cloneTransaction;
     }
+
+    public Transaction Preform()
+    {
+      var preformTransaction = new Transaction();
+
+      preformTransaction.Timestamp = Timestamp;
+      preformTransaction.Operation = Operation;
+      preformTransaction.Debet = Debet;
+      preformTransaction.Credit = Credit;
+      preformTransaction.Article = Article;
+      preformTransaction.Currency = Currency;
+
+      return preformTransaction;
+    }
   }
 }

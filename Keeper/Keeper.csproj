@@ -81,6 +81,7 @@
     <Compile Include="Utils\DumpDb.cs" />
     <Compile Include="Utils\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="Utils\RestoreDb.cs" />
+    <Compile Include="Utils\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Utils\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />

@@ -61,10 +61,9 @@ namespace Keeper.ViewModels
         if (SelectedTransaction.Currency == CurrencyCodes.USD) return "";
         var rate = new CurrencyRate();
         
-        rate = 
-          Db.CurrencyRates.Local.First(
-            currencyRate => ( (currencyRate.Currency == SelectedTransaction.Currency))); 
-       //     currencyRate => ((currencyRate.BankDay == SelectedTransaction.Timestamp) && (currencyRate.Currency == SelectedTransaction.Currency))); 
+        rate =
+          Db.CurrencyRates.Local.FirstOrDefault(
+            currencyRate => ((currencyRate.BankDay == SelectedTransaction.Timestamp) && (currencyRate.Currency == SelectedTransaction.Currency))); 
         
         if (rate == null) return "отсутствует курс на эту дату";
         var res = (SelectedTransaction.Amount / (decimal)rate.Rate).ToString("F2") +"$ по курсу "+rate.Rate;
@@ -81,11 +80,25 @@ namespace Keeper.ViewModels
       ComboBoxesValues();
     }
 
+    /// <summary>
+    /// добавление новой транзакции после SelectedTransaction
+    /// </summary>
     public void AddTransaction()
     {
-      SelectedTransaction = new Transaction();
-      SelectedTransaction.Currency = CurrencyCodes.RUB; // временно !!!
-      Rows.Add(SelectedTransaction);
+      var selectedIndex = Rows.IndexOf(SelectedTransaction)+1;
+      var preformTransaction = SelectedTransaction.Preform();
+      SelectedTransaction = preformTransaction;
+      Rows.Insert(selectedIndex,SelectedTransaction);
+      
+    }
+
+    public void DeleteTransaction()
+    {
+      var transactionForRemoving = SelectedTransaction;
+      var selectedIndex = Rows.IndexOf(SelectedTransaction);
+      if (Rows.Count == selectedIndex+1) SelectedTransaction = Rows.ElementAt(--selectedIndex);
+      else SelectedTransaction = Rows.ElementAt(++selectedIndex);
+      Rows.Remove(transactionForRemoving);
     }
 
     public void DayBefore()

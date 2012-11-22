@@ -25,6 +25,7 @@
               ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTransaction}" Grid.ColumnSpan="2" >
       <i:Interaction.Behaviors>
         <u:ScrollToBottomOnLoadBehavior />
+        <u:ScrollToBottomOnAddBehavior />
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">
