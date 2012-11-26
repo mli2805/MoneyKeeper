@@ -72,67 +72,155 @@
         </GridView>
       </ListView.View>
     </ListView>
-    <StackPanel Name="SelectedTransactionPanel" Grid.Row="1" >
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="4"/>
-          <RowDefinition Height="40"/>
-          <RowDefinition Height="40"/>
-          <RowDefinition Height="50"/>
-          <RowDefinition Height="10"/>
-          <RowDefinition Height="40"/>
-          <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Margin="4,0,0,0" Grid.RowSpan="6" Grid.Row="1"/>
-        <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="49,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
-          <Grid>
-            <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">
-              <Polygon.Fill>
-                <SolidColorBrush Color="Black" />
-              </Polygon.Fill>
-            </Polygon>
-          </Grid>
-        </Button>
-        <DatePicker HorizontalAlignment="Left" Margin="70,2,0,0" Grid.Row="1" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
-                    Text="{Binding SelectedTransaction.Timestamp, Mode=TwoWay}" />
-        <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="171,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
-          <Grid>
-            <Polygon Points="0,2 4,5 0,8 0,2" Stroke="Black">
-              <Polygon.Fill>
-                <SolidColorBrush Color="Black" />
-              </Polygon.Fill>
-            </Polygon>
-          </Grid>
-        </Button>
-        <ComboBox Name="operationType" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="80"
-              ItemsSource="{Binding OperationTypes}"
-              SelectedItem="{Binding SelectedTransaction.Operation}" />
-        <Label Content="Кто" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center" />
-        <ComboBox Name="Debet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="150"
+    <!--    Grid вложенный в левую нижнюю ячейку грида всей формы -->
+    <Grid Grid.Row="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="10"/>
+      </Grid.RowDefinitions>
+      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Margin="4,4,0,4" Grid.RowSpan="4"/>
+      <TabControl HorizontalAlignment="Stretch" Margin="10,10,6,4" VerticalAlignment="Stretch" BorderBrush="White">
+        <TabItem Header="Доход" Width="150" Foreground="Blue" >
+          <Grid Background="White">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="4"/>
+              <RowDefinition Height="40"/>
+              <RowDefinition Height="50"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Кто" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+            <ComboBox Name="IncomeDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding ExternalDebetAccounts}"
               SelectedItem="{Binding SelectedTransaction.Debet}" />
-        <Label Content="Куда" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-        <ComboBox Name="Credit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="150"
+            <Label Content="Куда" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding SelectedTransaction.Credit}" />
-        <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
-        <ComboBox Name="Article" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="3" Background="White" VerticalAlignment="Center" Width="170"
+            <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+            <ComboBox Name="IncomeArticle" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
               ItemsSource="{Binding IncomeArticles}"
               SelectedItem="{Binding SelectedTransaction.Article}" />
-        <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
-        <TextBox Name="Amount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+            <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox Name="IncomeAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding SelectedTransaction.Amount}"/>
-        <ComboBox Name="Currency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="3" Background="White" VerticalAlignment="Center" Width="50"
+            <ComboBox Name="IncomeCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+              ItemsSource="{Binding CurrencyList}"
+              SelectedItem="{Binding SelectedTransaction.Currency}" />
+          </Grid>
+        </TabItem>
+        <TabItem Header="Расход" Width="150" Foreground="DarkRed">
+          <Grid Background="White">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="4"/>
+              <RowDefinition Height="40"/>
+              <RowDefinition Height="50"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Откуда" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+            <ComboBox Name="ExpenseDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding ExternalDebetAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Debet}" />
+            <Label Content="Кому" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding MyAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Credit}" />
+            <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+            <ComboBox Name="ExpenseArticle" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
+              ItemsSource="{Binding IncomeArticles}"
+              SelectedItem="{Binding SelectedTransaction.Article}" />
+            <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox Name="ExpenseAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+                 Text="{Binding SelectedTransaction.Amount}"/>
+            <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+              ItemsSource="{Binding CurrencyList}"
+              SelectedItem="{Binding SelectedTransaction.Currency}" />
+          </Grid>
+        </TabItem>
+        <TabItem Header="Перенос" Width="150" Foreground="Black">
+          <Grid Background="White">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="4"/>
+              <RowDefinition Height="40"/>
+              <RowDefinition Height="50"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Откуда" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+            <ComboBox Name="TransferDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding ExternalDebetAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Debet}" />
+            <Label Content="Куда" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="TransferCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding MyAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Credit}" />
+            <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox Name="TransferAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+                 Text="{Binding SelectedTransaction.Amount}"/>
+            <ComboBox Name="TransferCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+              ItemsSource="{Binding CurrencyList}"
+              SelectedItem="{Binding SelectedTransaction.Currency}" />
+          </Grid>
+        </TabItem>
+        <TabItem Header="Обмен" Width="150" Foreground="DarkGreen">
+          <Grid Background="White">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="4"/>
+              <RowDefinition Height="40"/>
+              <RowDefinition Height="50"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Кошелек" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+            <ComboBox Name="ExchangeDebet" HorizontalAlignment="Left" Margin="75,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding ExternalDebetAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Debet}" />
+            <Label Content="Банк" HorizontalAlignment="Left" Margin="250,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="ExchangeCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding MyAccounts}"
+              SelectedItem="{Binding SelectedTransaction.Credit}" />
+            <Label Content="Сдано" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox Name="ExchangeAmountPassed" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+                 Text="{Binding SelectedTransaction.Amount}"/>
+            <ComboBox Name="ExchangeCurrencyPassed" HorizontalAlignment="Left" Margin="150,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+              ItemsSource="{Binding CurrencyList}"
+              SelectedItem="{Binding SelectedTransaction.Currency}" />
+            <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+                 Text="{Binding SelectedTransaction.Amount}"/>
+            <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding SelectedTransaction.Currency}" />
 
-        <Label Name="SelectedTransactionInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" Height="30" Width="170" Margin="270,35,0,0" Grid.Row="3" Grid.RowSpan="3" VerticalAlignment="Top"/>
-
-        <Label Content="Примечание" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="5" VerticalAlignment="Center"/>
-        <TextBox Name="Comment" HorizontalAlignment="Left" Margin="95,0,0,0" Grid.Row="5" VerticalAlignment="Center" Width="345" BorderBrush="#555555" 
+          </Grid>
+        </TabItem>
+      </TabControl>
+      <Label Name="SelectedTransactionInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
+             Height="30" Width="170" Margin="270,0,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+      <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="49,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+        <Grid>
+          <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">
+            <Polygon.Fill>
+              <SolidColorBrush Color="Black" />
+            </Polygon.Fill>
+          </Polygon>
+        </Grid>
+      </Button>
+      <DatePicker HorizontalAlignment="Left" Margin="70,2,0,0" Grid.Row="2" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
+                    Text="{Binding SelectedTransaction.Timestamp, Mode=TwoWay}" />
+      <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="171,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+        <Grid>
+          <Polygon Points="0,2 4,5 0,8 0,2" Stroke="Black">
+            <Polygon.Fill>
+              <SolidColorBrush Color="Black" />
+            </Polygon.Fill>
+          </Polygon>
+        </Grid>
+      </Button>
+      <Label Content="Примечание" HorizontalAlignment="Left" Margin="210,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+      <TextBox Name="Comment" HorizontalAlignment="Left" Margin="295,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="345" BorderBrush="#555555" 
                  Text="{Binding SelectedTransaction.Comment}"/>
-      </Grid>
-    </StackPanel>
+    </Grid>
+
     <StackPanel Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" >
       <Grid>
         <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="172" Margin="4" />
