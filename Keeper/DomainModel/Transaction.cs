@@ -155,23 +155,49 @@ namespace Keeper.DomainModel
              Amount + " ; " + Currency + " ; " + Comment;
     }
 
+
+    /// <summary>
+    /// возвращает полную копию данного инстанса, кроме Id
+    /// </summary>
+    /// <returns></returns>
     public Transaction Clone()
     {
       var cloneTransaction = new Transaction();
 
       cloneTransaction.Timestamp = Timestamp;
       cloneTransaction.Operation = Operation;
-      cloneTransaction.Debet = Debet;
-      cloneTransaction.Credit = Credit;
-      cloneTransaction.Article = Article;
-      cloneTransaction.Amount = Amount;
-      cloneTransaction.Currency = Currency;
-      cloneTransaction.Comment = Comment;
+      cloneTransaction.Debet     = Debet;
+      cloneTransaction.Credit    = Credit;
+      cloneTransaction.Article   = Article;
+      cloneTransaction.Amount    = Amount;
+      cloneTransaction.Currency  = Currency;
+      cloneTransaction.Comment   = Comment;
 
       return cloneTransaction;
     }
 
-    public Transaction Preform()
+    /// <summary>
+    /// засасывает в данный инстанс все поля из инстанса-хранилища (кроме Id)
+    /// </summary>
+    /// <param name="storage"></param>
+    public void SuckOut(Transaction storage)
+    {
+      this.Timestamp = storage.Timestamp;
+      this.Operation = storage.Operation;
+      this.Debet     = storage.Debet;
+      this.Credit    = storage.Credit;
+      this.Article   = storage.Article;
+      this.Amount    = storage.Amount;
+      this.Currency  = storage.Currency;
+      this.Comment   = storage.Comment;
+    }
+
+
+    /// <summary>
+    ///  возвращает заготовку созданную на основе этого инстанса, Amount и Comment оставляются пустыми
+    /// </summary>
+    /// <returns></returns>
+    public Transaction Preform()  
     {
       var preformTransaction = new Transaction();
 
