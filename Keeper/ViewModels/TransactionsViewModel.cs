@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using System.Linq;
@@ -14,7 +16,7 @@ namespace Keeper.ViewModels
   [Export(typeof(TransactionsViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionsViewModel : Screen, IShell
   {
-    #region // объявление и инициализация листов для комбиков 
+    #region // объявление и инициализация листов для комбиков
     public List<OperationType> OperationTypes { get; set; }
     public List<CurrencyCodes> CurrencyList { get; set; }
 
@@ -37,14 +39,31 @@ namespace Keeper.ViewModels
       IncomeArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все доходы")).ToList();
       ExpenseArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все расходы")).ToList();
     }
-    #endregion  
+    #endregion
 
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public ObservableCollection<Transaction> Rows { get; set; }
 
+    /// <summary>
+    /// при смене SelectedTransaction может оказаться что новая SelectedTransaction имеет другой тип операции
+    /// и нужно открыть другую закладку TabControlа
+    /// тогда поднимаем этот флаг , чтобы отличить эту ситуацию от случая когда юзер меняет тип операции
+    /// для текущей SelectedTransaction и надо очистить комбики
+    /// </summary>
     private bool _isInTransactionSelectionProcess;
-    private Transaction _selectedTransactionBeforeEditing;
+
+    private Transaction _transactionInWork;
+    public Transaction TransactionInWork
+    {
+      get { return _transactionInWork; }
+      set
+      {
+        if (Equals(value, _transactionInWork)) return;
+        _transactionInWork = value;
+        NotifyOfPropertyChange(() => TransactionInWork);
+      }
+    }
 
     private int _selectedTabIndex;
     public int SelectedTabIndex
@@ -55,18 +74,34 @@ namespace Keeper.ViewModels
         if (value == _selectedTabIndex) return;
         _selectedTabIndex = value;
         NotifyOfPropertyChange(() => SelectedTabIndex);
-        _selectedTransaction.Operation = (OperationType) _selectedTabIndex;
+        _transactionInWork.Operation = (OperationType)_selectedTabIndex;
         if (!_isInTransactionSelectionProcess)
         {
-          _selectedTransaction.Debet = null;
-          _selectedTransaction.Credit = null;
-          _selectedTransaction.Article = null;
+          if (HaveTheSameOperationType(SelectedTransaction, TransactionInWork))
+          {
+            SelectedTransaction.Operation = TransactionInWork.Operation;
+            TransactionInWork.Debet = SelectedTransaction.Debet;
+            TransactionInWork.Credit = SelectedTransaction.Credit;
+            TransactionInWork.Article = SelectedTransaction.Article;
+          }
+          else
+          {
+            SelectedTransaction.Operation = (OperationType) (900 + (int) SelectedTransaction.Operation);
+            _transactionInWork.Debet = null;
+            _transactionInWork.Credit = null;
+            _transactionInWork.Article = null;
+          }
         }
       }
     }
 
+    private bool HaveTheSameOperationType(Transaction a, Transaction b)
+    { // и 1 и 901 это расход
+      return (a.Operation == b.Operation || Math.Abs((int)a.Operation - (int)b.Operation) == 900);
+    }
+
     private Transaction _selectedTransaction;
-    public Transaction SelectedTransaction  
+    public Transaction SelectedTransaction
     {
       get { return _selectedTransaction; }
       set
@@ -74,11 +109,14 @@ namespace Keeper.ViewModels
         if (Equals(value, _selectedTransaction)) return;
         _selectedTransaction = value;
         NotifyOfPropertyChange(() => SelectedTransaction);
-        NotifyOfPropertyChange(() => AmountInUsd);
-        _isInTransactionSelectionProcess = true;
-        SelectedTabIndex = (int) _selectedTransaction.Operation;
+
+        _isInTransactionSelectionProcess = true; // ставим флаг, чтобы если меняется тип операции в сеттере SelectedTabIndex не удалялись поля транзакции
+        if (!_isInAddTransactionMode) _transactionInWork.CloneFrom(_selectedTransaction);// else TransactionInWork уже сформирован методом Preform
+        SelectedTabIndex = (int)_transactionInWork.Operation;
         _isInTransactionSelectionProcess = false;
-        if (_selectedTransaction != null) _selectedTransactionBeforeEditing.SuckOut(_selectedTransaction);
+        NotifyOfPropertyChange(() => TransactionInWork);
+        NotifyOfPropertyChange(() => AmountInUsd);
+
       }
     }
 
@@ -86,38 +124,119 @@ namespace Keeper.ViewModels
     {
       get
       {
-        if (SelectedTransaction.Currency == CurrencyCodes.USD) return "";
+        if (TransactionInWork.Currency == CurrencyCodes.USD) return "";
         var rate = new CurrencyRate();
-        
+
         rate =
           Db.CurrencyRates.Local.FirstOrDefault(
-            currencyRate => ((currencyRate.BankDay == SelectedTransaction.Timestamp) && (currencyRate.Currency == SelectedTransaction.Currency))); 
-        
+            currencyRate => ((currencyRate.BankDay == TransactionInWork.Timestamp) && (currencyRate.Currency == TransactionInWork.Currency)));
+
         if (rate == null) return "отсутствует курс на эту дату";
-        var res = (SelectedTransaction.Amount / (decimal)rate.Rate).ToString("F2") +"$ по курсу "+rate.Rate;
-        if (SelectedTransaction.Currency == CurrencyCodes.EUR) res = res + " (" + (1/rate.Rate).ToString("F3")+ ")";
+        var res = (TransactionInWork.Amount / (decimal)rate.Rate).ToString("F2") + "$ по курсу " + rate.Rate;
+        if (TransactionInWork.Currency == CurrencyCodes.EUR) res = res + " (" + (1 / rate.Rate).ToString("F3") + ")";
         return res;
       }
     }
 
+    /// <summary>
+    /// 1. В базе транзакции хранятся неупорядоченные, поэтому при зачитывании в Rows берем их OrderBy
+    /// 2. Во время работы формы я поддерживаю правильную сортированность Rows, вставляя новые строки в те места , где они и отображаются
+    /// 3. При выходе из программы в БД записываются только изменения, значит новые транзакции добавятся в конец. См п.1
+    /// </summary>
     public TransactionsViewModel()
     {
       Db.Transactions.Load();
-      Rows = Db.Transactions.Local;
-      _selectedTransactionBeforeEditing = new Transaction();
+      Rows = new ObservableCollection<Transaction>(Db.Transactions.Local.OrderBy(transaction => transaction.Timestamp));
+      SortTransactionsByTimestamp();
+
+      _transactionInWork = new Transaction();
       SelectedTransaction = Rows.Last();
       ComboBoxesValues();
     }
 
+    private void SortTransactionsByTimestamp()
+    {
+      var view = CollectionViewSource.GetDefaultView(Rows);
+      view.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
+    }
+
+    /// <summary>
+    /// Когда форма загружена, подписываемся на событие "Изменено свойство в инстансе TransactionInWork класса Transaction
+    /// Такая возможность существует т.к. класс Transaction отнаследован от PropertyChangedBase
+    /// Однако чтобы такое событие происходило, надо чтобы хотя бы одно свойство класса Transaction было нотифицирующим
+    /// </summary>
+    /// <param name="view"></param>
     protected override void OnViewLoaded(object view)
     {
-      SelectedTransaction.PropertyChanged += SelectedTransactionPropertyChanged;
+      TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
+      CanSaveTransactionChanges = false;
       CanCancelTransactionChanges = false;
     }
 
-    void SelectedTransactionPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    /// <summary>
+    /// Какое именно свойство в инстансе TransactionInWork класса Transaction можно узнать из  e.PropertyName ,
+    /// но в данном случае нас это не интересует.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    void TransactionInWorkPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-      CanCancelTransactionChanges = true;
+      IsTransactionInWorkChanged = true;
+    }
+
+    #region  // кнопки операций над транзакциями
+
+    private bool _isInAddTransactionMode;
+
+    private bool _isTransactionInWorkChanged;
+    public bool IsTransactionInWorkChanged
+    {
+      get { return _isTransactionInWorkChanged; }
+      set
+      {
+        if (value.Equals(_isTransactionInWorkChanged)) return;
+        if (_isInTransactionSelectionProcess) return;
+        _isTransactionInWorkChanged = value;
+        CanSaveTransactionChanges = value;
+        CanCancelTransactionChanges = value;
+        NotifyOfPropertyChange(() => CanSaveTransactionChanges);
+        NotifyOfPropertyChange(() => CanCancelTransactionChanges);
+      }
+    }
+
+    public bool CanSaveTransactionChanges { get; set; }
+    public bool CanCancelTransactionChanges { get; set; }
+
+    public void SaveTransactionChanges()
+    {
+      var isDateChanged = SelectedTransaction.Timestamp.Date != TransactionInWork.Timestamp.Date;
+      SelectedTransaction.CloneFrom(TransactionInWork);
+      if (isDateChanged)
+      {
+        // обнулить минуты
+        SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddMinutes(-SelectedTransaction.Timestamp.Minute);
+        SortTransactionsByTimestamp();
+      }
+      IsTransactionInWorkChanged = false;
+      _isInAddTransactionMode = false;
+    }
+
+    public void CancelTransactionChanges()
+    {
+      if (_isInAddTransactionMode)
+      {
+        DeleteTransaction();
+        _isInAddTransactionMode = false;
+      }
+
+      if (TransactionInWork.Operation != SelectedTransaction.Operation)
+      {
+        if ((int)SelectedTransaction.Operation >= 900)
+          SelectedTransaction.Operation = (OperationType) ((int) SelectedTransaction.Operation - 900);
+        SelectedTabIndex = (int) SelectedTransaction.Operation;
+      }
+      TransactionInWork.CloneFrom(SelectedTransaction);
+      IsTransactionInWorkChanged = false;
     }
 
     /// <summary>
@@ -125,57 +244,67 @@ namespace Keeper.ViewModels
     /// </summary>
     public void AddOnceMoreTransaction()
     {
-      var selectedIndex = Rows.IndexOf(SelectedTransaction)+1;
-      var preformTransaction = SelectedTransaction.Preform();
-      SelectedTransaction = preformTransaction;
-      Rows.Insert(selectedIndex,SelectedTransaction);
+      _isInAddTransactionMode = true;
+
+      var positionForNewTransaction = Rows.IndexOf(SelectedTransaction) + 1; // позиция куда будем вставлять
+      var i = positionForNewTransaction;
+      while (i != Rows.Count && // пока не конец списка
+          SelectedTransaction.Timestamp.Date == Rows[i].Timestamp.Date) // то все что той же даты что и выделенная запись после которой добавляем
+      {
+        Rows[i].Timestamp = Rows[i].Timestamp.AddMinutes(1);  // надо перенумеровать - увеличить "номер" минуты
+        i++;
+      }
+
+      TransactionInWork = SelectedTransaction.Preform("SameDate");  // а новая запись получит то же время что и выделенная + 1 минута
+
+      SelectedTransaction = new Transaction();
+      SelectedTransaction.Timestamp = TransactionInWork.Timestamp;
+      SelectedTransaction.Operation = (OperationType)(900 + (int)SelectedTransaction.Operation);
+
+      Rows.Insert(positionForNewTransaction, SelectedTransaction);
+      IsTransactionInWorkChanged = true;
     }
 
-    public void SaveTransaction()
+    /// <summary>
+    /// добавление новой транзакции в конец списка, с датой следующей за последней
+    /// </summary>
+    public void AddNewDayTransaction()
     {
-      _selectedTransactionBeforeEditing.SuckOut(SelectedTransaction);
-      CanCancelTransactionChanges = false;
+      _isInAddTransactionMode = true;
+      TransactionInWork = Rows.Last().Preform("NextDate");
+      SelectedTransaction = new Transaction();
+      SelectedTransaction.Timestamp = TransactionInWork.Timestamp;
+      SelectedTransaction.Operation = (OperationType)(900 + (int)SelectedTransaction.Operation);
+
+      Rows.Add(SelectedTransaction);
+      IsTransactionInWorkChanged = true;
     }
 
     public void DeleteTransaction()
     {
-      var transactionForRemoving = SelectedTransaction;
-      var selectedIndex = Rows.IndexOf(SelectedTransaction);
-      if (Rows.Count == selectedIndex+1) SelectedTransaction = Rows.ElementAt(--selectedIndex);
-      else SelectedTransaction = Rows.ElementAt(++selectedIndex);
-      Rows.Remove(transactionForRemoving);
+      var transactionForRemoval = SelectedTransaction;
+      var selectedTransactionIndex = Rows.IndexOf(SelectedTransaction);
+      // каждое присваивание SelectedTransaction влечет за собой присваивание в сеттере того же и TransactionInWork
+      if (Rows.Count == selectedTransactionIndex + 1) SelectedTransaction = Rows.ElementAt(--selectedTransactionIndex);
+      else SelectedTransaction = Rows.ElementAt(++selectedTransactionIndex);
+      Rows.Remove(transactionForRemoval);
+      TransactionInWork.CloneFrom(SelectedTransaction);
+      IsTransactionInWorkChanged = false;
     }
 
-    private bool _canCancelTransactionChanges;
-    public bool CanCancelTransactionChanges
-    {
-      get { return _canCancelTransactionChanges; }
-      set
-      {
-        if (value.Equals(_canCancelTransactionChanges)) return;
-        _canCancelTransactionChanges = value;
-        NotifyOfPropertyChange(() => CanCancelTransactionChanges);
-      }
-    }
+    #endregion // кнопки операций над транзакциями
 
-    public void CancelTransactionChanges()
-    {
-      SelectedTabIndex = (int)_selectedTransactionBeforeEditing.Operation;
-      SelectedTransaction.SuckOut(_selectedTransactionBeforeEditing);
-      CanCancelTransactionChanges = false;
-    }
 
     public void DecreaseTimestamp()
     {
-      SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddDays(-1);
+      TransactionInWork.Timestamp = TransactionInWork.Timestamp.AddDays(-1);
     }
 
     public void IncreaseTimestamp()
     {
-      SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddDays(1);
+      TransactionInWork.Timestamp = TransactionInWork.Timestamp.AddDays(1);
     }
 
   }
-
 
 }

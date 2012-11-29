@@ -136,7 +136,8 @@ namespace Keeper.DomainModel
         if (Operation == OperationType.Доход) return Brushes.Blue;
         if (Operation == OperationType.Расход) return Brushes.Red;
         if (Operation == OperationType.Обмен) return Brushes.DarkGreen;
-        else return Brushes.Black;
+        if (Operation == OperationType.Перенос) return Brushes.Black;
+        return Brushes.Gray; 
       }
     }
     #endregion
@@ -180,7 +181,7 @@ namespace Keeper.DomainModel
     /// засасывает в данный инстанс все поля из инстанса-хранилища (кроме Id)
     /// </summary>
     /// <param name="storage"></param>
-    public void SuckOut(Transaction storage)
+    public void CloneFrom(Transaction storage)
     {
       this.Timestamp = storage.Timestamp;
       this.Operation = storage.Operation;
@@ -197,16 +198,17 @@ namespace Keeper.DomainModel
     ///  возвращает заготовку созданную на основе этого инстанса, Amount и Comment оставляются пустыми
     /// </summary>
     /// <returns></returns>
-    public Transaction Preform()  
+    public Transaction Preform(string param)  
     {
       var preformTransaction = new Transaction();
 
-      preformTransaction.Timestamp = Timestamp;
-      preformTransaction.Operation = Operation;
-      preformTransaction.Debet = Debet;
-      preformTransaction.Credit = Credit;
-      preformTransaction.Article = Article;
-      preformTransaction.Currency = Currency;
+      if (param == "SameDate") preformTransaction.Timestamp = this.Timestamp.AddMinutes(1);
+      if (param == "NextDate") preformTransaction.Timestamp = this.Timestamp.Date.AddDays(1);
+      preformTransaction.Operation = this.Operation;
+      preformTransaction.Debet     = this.Debet;
+      preformTransaction.Credit    = this.Credit;
+      preformTransaction.Article   = this.Article;
+      preformTransaction.Currency  = this.Currency;
 
       return preformTransaction;
     }
