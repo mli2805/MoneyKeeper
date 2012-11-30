@@ -6,8 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:u="clr-namespace:Keeper.Utils"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" mc:Ignorable="d"
-        Title="Daily transactions" Height="800" Width="883" MaxWidth="883"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:cal="http://www.caliburnproject.org"
+        mc:Ignorable="d"
+        Title="Daily transactions" Height="800" Width="1014" MaxWidth="1014"
         Icon="/Keeper;component/Resources/transactions.ico"
         d:DataContext="{d:DesignInstance ViewModels:TransactionsViewModel}" 
         SizeToContent="Width" WindowStartupLocation="CenterScreen"
@@ -60,15 +61,25 @@
           </Style.Triggers>
         </Style>
       </ListView.ItemContainerStyle>
+      <ListView.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="Вверх" cal:Message.Attach="MoveTransactionUp" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+          <MenuItem Header="Вниз" cal:Message.Attach="MoveTransactionDown" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+<!--          <MenuItem Header="{Binding SelectedTransaction.Operation}" BorderBrush="{x:Null}" Background="White" ></MenuItem>-->
+          <MenuItem Header="Операция" cal:Message.Attach="ShowOperationType" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+        </ContextMenu>
+      </ListView.ContextMenu>
       <ListView.View>
         <GridView>
 <!--          <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='yyyy MMM dd, ddd'}" />-->
           <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy mm'}" />
           <GridViewColumn Header="Дебет" Width="125" DisplayMemberBinding="{Binding Debet}" />
           <GridViewColumn Header="Кредит" Width="125" DisplayMemberBinding="{Binding Credit}" />
-          <GridViewColumn Header="Категория" Width="150" DisplayMemberBinding="{Binding Article}" />
           <GridViewColumn Header="Сумма" Width="100" DisplayMemberBinding="{Binding Amount}" />
-          <GridViewColumn Header="Валюта" Width="50" DisplayMemberBinding="{Binding Currency}" />
+          <GridViewColumn Header="Вал" Width="40" DisplayMemberBinding="{Binding Currency}" />
+          <GridViewColumn Header="Сумма2" Width="100" DisplayMemberBinding="{Binding Amount2}" />
+          <GridViewColumn Header="Вал2" Width="40" DisplayMemberBinding="{Binding Currency2}" />
+          <GridViewColumn Header="Категория" Width="150" DisplayMemberBinding="{Binding Article}" />
           <GridViewColumn Header="Примечание" Width="180" DisplayMemberBinding="{Binding Comment}" />
         </GridView>
       </ListView.View>
@@ -188,10 +199,10 @@
               SelectedItem="{Binding TransactionInWork.Currency}" />
             <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount}"/>
+                 Text="{Binding TransactionInWork.Amount2}"/>
             <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
-              SelectedItem="{Binding TransactionInWork.Currency}" />
+              SelectedItem="{Binding TransactionInWork.Currency2}" />
 
           </Grid>
         </TabItem>

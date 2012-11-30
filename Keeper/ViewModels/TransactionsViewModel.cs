@@ -44,6 +44,7 @@ namespace Keeper.ViewModels
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public ObservableCollection<Transaction> Rows { get; set; }
+    public ICollectionView SortedRows { get; set; }
 
     /// <summary>
     /// при смене SelectedTransaction может оказаться что новая SelectedTransaction имеет другой тип операции
@@ -52,6 +53,23 @@ namespace Keeper.ViewModels
     /// для текущей SelectedTransaction и надо очистить комбики
     /// </summary>
     private bool _isInTransactionSelectionProcess;
+    private bool _isInAddTransactionMode;
+
+    private bool _isTransactionInWorkChanged;
+    public bool IsTransactionInWorkChanged
+    {
+      get { return _isTransactionInWorkChanged; }
+      set
+      {
+        if (value.Equals(_isTransactionInWorkChanged)) return;
+        if (_isInTransactionSelectionProcess) return;
+        _isTransactionInWorkChanged = value;
+        CanSaveTransactionChanges = value;
+        CanCancelTransactionChanges = value;
+        NotifyOfPropertyChange(() => CanSaveTransactionChanges);
+        NotifyOfPropertyChange(() => CanCancelTransactionChanges);
+      }
+    }
 
     private Transaction _transactionInWork;
     public Transaction TransactionInWork
@@ -93,11 +111,6 @@ namespace Keeper.ViewModels
           }
         }
       }
-    }
-
-    private bool HaveTheSameOperationType(Transaction a, Transaction b)
-    { // и 1 и 901 это расход
-      return (a.Operation == b.Operation || Math.Abs((int)a.Operation - (int)b.Operation) == 900);
     }
 
     private Transaction _selectedTransaction;
@@ -146,18 +159,20 @@ namespace Keeper.ViewModels
     public TransactionsViewModel()
     {
       Db.Transactions.Load();
-      Rows = new ObservableCollection<Transaction>(Db.Transactions.Local.OrderBy(transaction => transaction.Timestamp));
-      SortTransactionsByTimestamp();
+//      Rows = new ObservableCollection<Transaction>(Db.Transactions.Local.OrderBy(transaction => transaction.Timestamp));
+      Rows = Db.Transactions.Local; // берем все-таки несортированную коллекцию
+      SortedRows = CollectionViewSource.GetDefaultView(Rows);
+      SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
+      SortedRows.MoveCurrentToLast();
 
       _transactionInWork = new Transaction();
-      SelectedTransaction = Rows.Last();
+      SelectedTransaction = (Transaction)SortedRows.CurrentItem;
       ComboBoxesValues();
     }
 
-    private void SortTransactionsByTimestamp()
-    {
-      var view = CollectionViewSource.GetDefaultView(Rows);
-      view.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
+    private bool HaveTheSameOperationType(Transaction a, Transaction b)
+    { // и 1 и 901 это расход
+      return (a.Operation == b.Operation || Math.Abs((int)a.Operation - (int)b.Operation) == 900);
     }
 
     /// <summary>
@@ -186,36 +201,16 @@ namespace Keeper.ViewModels
 
     #region  // кнопки операций над транзакциями
 
-    private bool _isInAddTransactionMode;
-
-    private bool _isTransactionInWorkChanged;
-    public bool IsTransactionInWorkChanged
-    {
-      get { return _isTransactionInWorkChanged; }
-      set
-      {
-        if (value.Equals(_isTransactionInWorkChanged)) return;
-        if (_isInTransactionSelectionProcess) return;
-        _isTransactionInWorkChanged = value;
-        CanSaveTransactionChanges = value;
-        CanCancelTransactionChanges = value;
-        NotifyOfPropertyChange(() => CanSaveTransactionChanges);
-        NotifyOfPropertyChange(() => CanCancelTransactionChanges);
-      }
-    }
-
     public bool CanSaveTransactionChanges { get; set; }
     public bool CanCancelTransactionChanges { get; set; }
 
     public void SaveTransactionChanges()
     {
-      var isDateChanged = SelectedTransaction.Timestamp.Date != TransactionInWork.Timestamp.Date;
+      var isTimestampChanged = SelectedTransaction.Timestamp.Date != TransactionInWork.Timestamp.Date;
       SelectedTransaction.CloneFrom(TransactionInWork);
-      if (isDateChanged)
+      if (isTimestampChanged)
       {
-        // обнулить минуты
-        SelectedTransaction.Timestamp = SelectedTransaction.Timestamp.AddMinutes(-SelectedTransaction.Timestamp.Minute);
-        SortTransactionsByTimestamp();
+        MoveTransactionToRightPlace();
       }
       IsTransactionInWorkChanged = false;
       _isInAddTransactionMode = false;
@@ -244,8 +239,9 @@ namespace Keeper.ViewModels
     /// </summary>
     public void AddOnceMoreTransaction()
     {
-      _isInAddTransactionMode = true;
+      if (CanSaveTransactionChanges) SaveTransactionChanges();
 
+      _isInAddTransactionMode = true;
       var positionForNewTransaction = Rows.IndexOf(SelectedTransaction) + 1; // позиция куда будем вставлять
       var i = positionForNewTransaction;
       while (i != Rows.Count && // пока не конец списка
@@ -270,6 +266,7 @@ namespace Keeper.ViewModels
     /// </summary>
     public void AddNewDayTransaction()
     {
+      if (CanSaveTransactionChanges) SaveTransactionChanges();
       _isInAddTransactionMode = true;
       TransactionInWork = Rows.Last().Preform("NextDate");
       SelectedTransaction = new Transaction();
@@ -304,6 +301,46 @@ namespace Keeper.ViewModels
     {
       TransactionInWork.Timestamp = TransactionInWork.Timestamp.AddDays(1);
     }
+
+    public void MoveTransactionToRightPlace()
+    {
+      
+    }
+
+    public void MoveTransactionUp()
+    {
+      if (CanSaveTransactionChanges) SaveTransactionChanges();
+
+      var selectedTransactionIndex = Rows.IndexOf(SelectedTransaction);
+      if (selectedTransactionIndex == 0) return;
+
+      var auxiliaryTransaction = SelectedTransaction.Clone();
+      Rows.Insert(selectedTransactionIndex-1,auxiliaryTransaction);
+      SelectedTransaction = auxiliaryTransaction;
+      Rows.RemoveAt(selectedTransactionIndex+1);
+
+//      auxiliaryTransaction = Rows.ElementAt(selectedTransactionIndex);
+
+    }
+
+    public void MoveTransactionDown()
+    {
+      if (CanSaveTransactionChanges) SaveTransactionChanges();
+
+      var selectedTransactionIndex = Rows.IndexOf(SelectedTransaction);
+      if (selectedTransactionIndex == Rows.Count-1) return;
+
+      var auxiliaryTransaction = SelectedTransaction.Clone();
+      Rows.Insert(selectedTransactionIndex + 2, auxiliaryTransaction);
+      SelectedTransaction = auxiliaryTransaction;
+      Rows.RemoveAt(selectedTransactionIndex);
+    }
+
+    public void ShowOperationType()
+    {
+
+    }
+
 
   }
 

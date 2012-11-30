@@ -100,7 +100,9 @@ namespace Keeper.DomainModel
         Debet = accountOptixsoft, 
         Credit = accountMyWallet, 
         Amount = 450, 
-        Currency = CurrencyCodes.USD, 
+        Currency = CurrencyCodes.USD,
+        Amount2 = 0,
+        Currency2 = 0,
         Article = incomeAccountSalarySecondPart, 
         Comment = "за август"
       };
@@ -113,21 +115,20 @@ namespace Keeper.DomainModel
         Credit = accountShops,
         Amount = 10000,
         Currency = CurrencyCodes.BYR,
+        Amount2 = 0,
+        Currency2 = 0,
         Article = expenseAccountCar,
         Comment = "Лампочка левого стопа"
       };
-      context.Transactions.Add(transaction2);
-      context.Transactions.Add(transaction2.Clone());
       context.Transactions.Add(transaction);
-      context.Transactions.Add(transaction2.Clone());
-      context.Transactions.Add(transaction2.Clone());
-      context.Transactions.Add(transaction.Clone());
-      context.Transactions.Add(transaction.Clone());
+      context.Transactions.Add(transaction2);
       #endregion
 
       #region // курсы валют
       var currencyRate = new CurrencyRate();
-      currencyRate.Rate = 8540;
+      currencyRate.BankDay = Convert.ToDateTime("30/11/2012");
+      currencyRate.Currency = CurrencyCodes.USD;
+      currencyRate.Rate = 8560;
       context.CurrencyRates.Add(currencyRate);
       #endregion
 
