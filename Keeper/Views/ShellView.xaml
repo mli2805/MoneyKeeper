@@ -7,7 +7,7 @@
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
         xmlns:cal="http://www.caliburnproject.org" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
         x:Class="Keeper.Views.ShellView"
-        mc:Ignorable="d" Title="Keeper 2012" Height="562" Width="924" ResizeMode="CanResizeWithGrip"
+        mc:Ignorable="d" Title="Keeper 2012" Height="762" Width="924" ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
         d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}"
         TextOptions.TextFormattingMode="Display"> <!--attached property для сглаживания шрифтов-->

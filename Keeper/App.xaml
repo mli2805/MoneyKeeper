@@ -36,6 +36,11 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
+        <Setter Property="Background" Value="#F4FBA7" />
+      </Style>
+
       <System:String x:Key="iconplus">../Resources/plus16.ico</System:String>
     </ResourceDictionary>
   </Application.Resources>

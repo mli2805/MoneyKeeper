@@ -104,7 +104,7 @@ namespace Keeper.ViewModels
           }
           else
           {
-            SelectedTransaction.Operation = (OperationType) (900 + (int) SelectedTransaction.Operation);
+            SelectedTransaction.Operation = (OperationType)(900 + ExtractPureOperationType((int)SelectedTransaction.Operation));
             _transactionInWork.Debet = null;
             _transactionInWork.Credit = null;
             _transactionInWork.Article = null;
@@ -142,7 +142,7 @@ namespace Keeper.ViewModels
 
         rate =
           Db.CurrencyRates.Local.FirstOrDefault(
-            currencyRate => ((currencyRate.BankDay == TransactionInWork.Timestamp) && (currencyRate.Currency == TransactionInWork.Currency)));
+            currencyRate => ((currencyRate.BankDay.Date == TransactionInWork.Timestamp.Date) && (currencyRate.Currency == TransactionInWork.Currency)));
 
         if (rate == null) return "отсутствует курс на эту дату";
         var res = (TransactionInWork.Amount / (decimal)rate.Rate).ToString("F2") + "$ по курсу " + rate.Rate;
@@ -159,7 +159,7 @@ namespace Keeper.ViewModels
     public TransactionsViewModel()
     {
       Db.Transactions.Load();
-//      Rows = new ObservableCollection<Transaction>(Db.Transactions.Local.OrderBy(transaction => transaction.Timestamp));
+      //      Rows = new ObservableCollection<Transaction>(Db.Transactions.Local.OrderBy(transaction => transaction.Timestamp));
       Rows = Db.Transactions.Local; // берем все-таки несортированную коллекцию
       SortedRows = CollectionViewSource.GetDefaultView(Rows);
       SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
@@ -168,6 +168,11 @@ namespace Keeper.ViewModels
       _transactionInWork = new Transaction();
       SelectedTransaction = (Transaction)SortedRows.CurrentItem;
       ComboBoxesValues();
+    }
+
+    private int ExtractPureOperationType(int param)
+    {
+      return param >= 900 ? param - 900 : param;
     }
 
     private bool HaveTheSameOperationType(Transaction a, Transaction b)
@@ -197,6 +202,7 @@ namespace Keeper.ViewModels
     void TransactionInWorkPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       IsTransactionInWorkChanged = true;
+      if (e.PropertyName == "Amount") { NotifyOfPropertyChange(() => AmountInUsd); }
     }
 
     #region  // кнопки операций над транзакциями
@@ -220,15 +226,15 @@ namespace Keeper.ViewModels
     {
       if (_isInAddTransactionMode)
       {
-        DeleteTransaction();
         _isInAddTransactionMode = false;
+        DeleteTransaction();
       }
 
       if (TransactionInWork.Operation != SelectedTransaction.Operation)
       {
         if ((int)SelectedTransaction.Operation >= 900)
-          SelectedTransaction.Operation = (OperationType) ((int) SelectedTransaction.Operation - 900);
-        SelectedTabIndex = (int) SelectedTransaction.Operation;
+          SelectedTransaction.Operation = (OperationType)((int)SelectedTransaction.Operation - 900);
+        SelectedTabIndex = (int)SelectedTransaction.Operation;
       }
       TransactionInWork.CloneFrom(SelectedTransaction);
       IsTransactionInWorkChanged = false;
@@ -304,7 +310,7 @@ namespace Keeper.ViewModels
 
     public void MoveTransactionToRightPlace()
     {
-      
+
     }
 
     public void MoveTransactionUp()
@@ -315,11 +321,11 @@ namespace Keeper.ViewModels
       if (selectedTransactionIndex == 0) return;
 
       var auxiliaryTransaction = SelectedTransaction.Clone();
-      Rows.Insert(selectedTransactionIndex-1,auxiliaryTransaction);
+      Rows.Insert(selectedTransactionIndex - 1, auxiliaryTransaction);
       SelectedTransaction = auxiliaryTransaction;
-      Rows.RemoveAt(selectedTransactionIndex+1);
+      Rows.RemoveAt(selectedTransactionIndex + 1);
 
-//      auxiliaryTransaction = Rows.ElementAt(selectedTransactionIndex);
+      //      auxiliaryTransaction = Rows.ElementAt(selectedTransactionIndex);
 
     }
 
@@ -328,7 +334,7 @@ namespace Keeper.ViewModels
       if (CanSaveTransactionChanges) SaveTransactionChanges();
 
       var selectedTransactionIndex = Rows.IndexOf(SelectedTransaction);
-      if (selectedTransactionIndex == Rows.Count-1) return;
+      if (selectedTransactionIndex == Rows.Count - 1) return;
 
       var auxiliaryTransaction = SelectedTransaction.Clone();
       Rows.Insert(selectedTransactionIndex + 2, auxiliaryTransaction);
