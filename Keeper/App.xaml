@@ -12,13 +12,7 @@
         </ResourceDictionary>
         <ResourceDictionary>
           <!-- ресурсы вставлять сюда-->
-          <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
-            <Setter Property="FontWeight" Value="Bold"/>
-          </Style>
-          <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-          </Style>
-          <Style x:Key="TextBoxCellTextStyle" TargetType="{x:Type TextBox}">
+          <Style x:Key="TextBoxCellTextStyle2" TargetType="{x:Type TextBox}">
             <Setter Property="HorizontalAlignment" Value="Right"/>
           </Style>
         </ResourceDictionary>

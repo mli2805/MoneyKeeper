@@ -21,6 +21,8 @@ namespace Keeper.ViewModels
     public List<CurrencyCodes> CurrencyList { get; set; }
 
     public List<Account> MyAccounts { get; set; }
+    public List<Account> MyAccountsForShopping { get; set; }
+
     public List<Account> AccountsWhoGivesMeMoney { get; set; }
     public List<Account> AccountsWhoTakesMyMoney { get; set; }
     public List<Account> BankAccounts { get; set; }
@@ -32,12 +34,20 @@ namespace Keeper.ViewModels
       OperationTypes = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
 
-      MyAccounts = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои")).ToList();
-      AccountsWhoGivesMeMoney = (Db.Accounts.Local.Where(account => account.IsDescendantOf("ДеньгоДатели"))).ToList();
-      AccountsWhoTakesMyMoney = (Db.Accounts.Local.Where(account => account.IsDescendantOf("ДеньгоПолучатели"))).ToList();
-      BankAccounts = (Db.Accounts.Local.Where(account => account.IsDescendantOf("Банки"))).ToList();
-      IncomeArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все доходы")).ToList();
-      ExpenseArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все расходы")).ToList();
+      MyAccounts = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
+        account.Children.Count == 0)).ToList();
+      MyAccountsForShopping = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
+        account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))).ToList();
+      AccountsWhoGivesMeMoney = (Db.Accounts.Local.Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
+        account.IsDescendantOf("Банки")) && account.Children.Count == 0)).ToList();
+      AccountsWhoTakesMyMoney = (Db.Accounts.Local.Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
+        account.Children.Count == 0)).ToList();
+      BankAccounts = (Db.Accounts.Local.Where(account => account.IsDescendantOf("Банки") &&
+        account.Children.Count == 0)).ToList();
+      IncomeArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все доходы" &&
+        account.Children.Count == 0)).ToList();
+      ExpenseArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все расходы" &&
+        account.Children.Count == 0)).ToList();
     }
     #endregion
 
@@ -158,6 +168,7 @@ namespace Keeper.ViewModels
     /// </summary>
     public TransactionsViewModel()
     {
+      ComboBoxesValues();
       Db.Transactions.Load();
       //      Rows = new ObservableCollection<Transaction>(Db.Transactions.Local.OrderBy(transaction => transaction.Timestamp));
       Rows = Db.Transactions.Local; // берем все-таки несортированную коллекцию
@@ -166,8 +177,6 @@ namespace Keeper.ViewModels
       SortedRows.MoveCurrentToLast();
 
       _transactionInWork = new Transaction();
-      SelectedTransaction = (Transaction)SortedRows.CurrentItem;
-      ComboBoxesValues();
     }
 
     private int ExtractPureOperationType(int param)
@@ -188,6 +197,9 @@ namespace Keeper.ViewModels
     /// <param name="view"></param>
     protected override void OnViewLoaded(object view)
     {
+      DisplayName = "Daily transactions";
+      SelectedTransaction = (Transaction)SortedRows.CurrentItem;
+
       TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
       CanSaveTransactionChanges = false;
       CanCancelTransactionChanges = false;
@@ -243,28 +255,38 @@ namespace Keeper.ViewModels
     /// <summary>
     /// добавление новой транзакции в позицию за SelectedTransaction
     /// </summary>
-    public void AddOnceMoreTransaction()
+    public void AddTransactionAfterSelected()
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
-
       _isInAddTransactionMode = true;
-      var positionForNewTransaction = Rows.IndexOf(SelectedTransaction) + 1; // позиция куда будем вставлять
-      var i = positionForNewTransaction;
-      while (i != Rows.Count && // пока не конец списка
-          SelectedTransaction.Timestamp.Date == Rows[i].Timestamp.Date) // то все что той же даты что и выделенная запись после которой добавляем
-      {
-        Rows[i].Timestamp = Rows[i].Timestamp.AddMinutes(1);  // надо перенумеровать - увеличить "номер" минуты
-        i++;
-      }
 
-      TransactionInWork = SelectedTransaction.Preform("SameDate");  // а новая запись получит то же время что и выделенная + 1 минута
+      TransactionInWork = SelectedTransaction.Preform("SameDate");  // новая запись получит то же время что и выделенная + 1 минута
 
       SelectedTransaction = new Transaction();
       SelectedTransaction.Timestamp = TransactionInWork.Timestamp;
       SelectedTransaction.Operation = (OperationType)(900 + (int)SelectedTransaction.Operation);
 
-      Rows.Insert(positionForNewTransaction, SelectedTransaction);
+      Rows.Add(SelectedTransaction);
+      MoveDownTransactionsFromCurrentUntilHole();
+
       IsTransactionInWorkChanged = true;
+    }
+
+    private void MoveDownTransactionsFromCurrentUntilHole()
+    {
+      SortedRows.MoveCurrentTo(SelectedTransaction);
+      var previous = (Transaction)SortedRows.CurrentItem; // только что вставленная заготовка
+
+      if (!SortedRows.MoveCurrentToNext()) return; // шагнули за конец списка
+      var current = (Transaction)SortedRows.CurrentItem;
+
+      while (current.Timestamp.Date == previous.Timestamp.Date)
+      {
+        current.Timestamp = previous.Timestamp.AddMinutes(1);
+        previous = current;
+        if (!SortedRows.MoveCurrentToNext()) return; // шагнули за конец списка
+        current = (Transaction)SortedRows.CurrentItem;
+      }
     }
 
     /// <summary>
@@ -274,24 +296,34 @@ namespace Keeper.ViewModels
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
       _isInAddTransactionMode = true;
-      TransactionInWork = Rows.Last().Preform("NextDate");
+
+      SortedRows = CollectionViewSource.GetDefaultView(Rows);
+      SortedRows.MoveCurrentToLast();
+      TransactionInWork = ((Transaction)SortedRows.CurrentItem).Preform("NextDate");
+
       SelectedTransaction = new Transaction();
       SelectedTransaction.Timestamp = TransactionInWork.Timestamp;
       SelectedTransaction.Operation = (OperationType)(900 + (int)SelectedTransaction.Operation);
 
       Rows.Add(SelectedTransaction);
+
       IsTransactionInWorkChanged = true;
     }
 
     public void DeleteTransaction()
     {
       var transactionForRemoval = SelectedTransaction;
-      var selectedTransactionIndex = Rows.IndexOf(SelectedTransaction);
-      // каждое присваивание SelectedTransaction влечет за собой присваивание в сеттере того же и TransactionInWork
-      if (Rows.Count == selectedTransactionIndex + 1) SelectedTransaction = Rows.ElementAt(--selectedTransactionIndex);
-      else SelectedTransaction = Rows.ElementAt(++selectedTransactionIndex);
+
+      SortedRows.MoveCurrentTo(SelectedTransaction);
+      if (!SortedRows.MoveCurrentToNext())
+      {
+        SortedRows.MoveCurrentToPrevious();
+        SortedRows.MoveCurrentToPrevious();
+      }
+      SelectedTransaction = (Transaction) SortedRows.CurrentItem;
+      
       Rows.Remove(transactionForRemoval);
-      TransactionInWork.CloneFrom(SelectedTransaction);
+//      TransactionInWork.CloneFrom(SelectedTransaction);
       IsTransactionInWorkChanged = false;
     }
 
@@ -317,36 +349,44 @@ namespace Keeper.ViewModels
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
 
-      var selectedTransactionIndex = Rows.IndexOf(SelectedTransaction);
-      if (selectedTransactionIndex == 0) return;
+      SortedRows.MoveCurrentTo(SelectedTransaction);
 
-      var auxiliaryTransaction = SelectedTransaction.Clone();
-      Rows.Insert(selectedTransactionIndex - 1, auxiliaryTransaction);
-      SelectedTransaction = auxiliaryTransaction;
-      Rows.RemoveAt(selectedTransactionIndex + 1);
+      var activeTransaction = (Transaction)SortedRows.CurrentItem;
+      if (!SortedRows.MoveCurrentToPrevious()) return;                        // previous
+      var nearbyTransaction = (Transaction)SortedRows.CurrentItem;
 
-      //      auxiliaryTransaction = Rows.ElementAt(selectedTransactionIndex);
+      activeTransaction.Timestamp = nearbyTransaction.Timestamp;
+      nearbyTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(1);
 
+      SortedRows.Refresh();
     }
 
     public void MoveTransactionDown()
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
 
-      var selectedTransactionIndex = Rows.IndexOf(SelectedTransaction);
-      if (selectedTransactionIndex == Rows.Count - 1) return;
+      SortedRows.MoveCurrentTo(SelectedTransaction);
 
-      var auxiliaryTransaction = SelectedTransaction.Clone();
-      Rows.Insert(selectedTransactionIndex + 2, auxiliaryTransaction);
-      SelectedTransaction = auxiliaryTransaction;
-      Rows.RemoveAt(selectedTransactionIndex);
+      if (!SortedRows.MoveCurrentToNext()) return;                           // next
+      var nearbyTransaction = (Transaction)SortedRows.CurrentItem;
+
+      if (SelectedTransaction.Timestamp.Date == nearbyTransaction.Timestamp.Date)
+      {
+        SelectedTransaction.Timestamp = nearbyTransaction.Timestamp;
+        nearbyTransaction.Timestamp = SelectedTransaction.Timestamp.AddMinutes(-1);
+      }
+      else
+      {
+        SelectedTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(1);
+        MoveDownTransactionsFromCurrentUntilHole();
+        
+      }
+
+      SortedRows.Refresh();
+
+//      SortedRows.MoveCurrentToNext();
+//      SelectedTransaction = (Transaction)SortedRows.CurrentItem;
     }
-
-    public void ShowOperationType()
-    {
-
-    }
-
 
   }
 

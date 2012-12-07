@@ -61,6 +61,11 @@ namespace Keeper.ViewModels
       view.Filter +=OnFilter;
     }
 
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = "Курсы валют";
+    }
+
     private bool OnFilter(object o)
     {
       var currencyRate = (CurrencyRate) o;
