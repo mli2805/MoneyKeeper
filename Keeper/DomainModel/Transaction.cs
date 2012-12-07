@@ -15,7 +15,7 @@ namespace Keeper.DomainModel
     private decimal _amount;
     private CurrencyCodes _currency;
     private decimal _amount2;
-    private CurrencyCodes _currency2;
+    private CurrencyCodes? _currency2;
     private Account _article;
     private string _comment;
 
@@ -90,16 +90,18 @@ namespace Keeper.DomainModel
         NotifyOfPropertyChange(() => Amount2);
       }
     }
-    public CurrencyCodes Currency2  
+
+    public CurrencyCodes? Currency2
     {
       get { return _currency2; }
       set
       {
-        if (Equals(value, _currency2)) return;
+        if (value.Equals(_currency2)) return;
         _currency2 = value;
         NotifyOfPropertyChange(() => Currency2);
       }
     }
+
     public Account Article
     {
       get { return _article; }
