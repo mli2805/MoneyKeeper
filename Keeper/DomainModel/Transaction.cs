@@ -80,7 +80,7 @@ namespace Keeper.DomainModel
         NotifyOfPropertyChange(() => Currency);
       }
     }
-    public decimal Amount2  
+    public decimal Amount2
     {
       get { return _amount2; }
       set
@@ -139,7 +139,7 @@ namespace Keeper.DomainModel
       }
     }
     #endregion
-    
+
     #region // два вычислимых поля содержащих цвет шрифта и фона для отображения транзакции
     [NotMapped]
     public Brush DayBackgroundColor
@@ -155,33 +155,26 @@ namespace Keeper.DomainModel
     [NotMapped]
     public Brush TransactionFontColor
     {
-      get 
+      get
       {
         if (Operation == OperationType.Доход) return Brushes.Blue;
         if (Operation == OperationType.Расход) return Brushes.Red;
         if (Operation == OperationType.Обмен) return Brushes.DarkGreen;
         if (Operation == OperationType.Перенос) return Brushes.Black;
-        return Brushes.Gray; 
+        return Brushes.Gray;
       }
     }
     #endregion
 
-    public string ToDumpWithIds()
-    {
-      return Timestamp + " ; " + Operation + " ; " + 
-             Debet.Id + " ; " + Credit.Id + " ; " +
-             Amount + " ; " + Currency + " ; " + Amount2 + " ; " + Currency2 + " ; " + 
-             Article.Id + " ; " + Comment;
-    }
-
     public string ToDumpWithNames()
     {
-      return Timestamp + " ; " + Operation + " ; " +
+      var s = Timestamp + " ; " + Operation + " ; " +
              Debet + " ; " + Credit + " ; " +
-             Amount + " ; " + Currency + " ; " + Amount2 + " ; " + Currency2 + " ; " + 
+             Amount + " ; " + Currency + " ; " + Amount2 + " ; " + Currency2 + " ; " +
              Article + " ; " + Comment;
-    }
 
+      return s;
+    }
 
     /// <summary>
     /// создает новый инстанс и в нем возвращает полную копию данного инстанса, кроме Id
@@ -193,14 +186,14 @@ namespace Keeper.DomainModel
 
       cloneTransaction.Timestamp = Timestamp;
       cloneTransaction.Operation = Operation;
-      cloneTransaction.Debet     = Debet;
-      cloneTransaction.Credit    = Credit;
-      cloneTransaction.Amount    = Amount;
-      cloneTransaction.Currency  = Currency;
-      cloneTransaction.Amount2   = Amount2;
+      cloneTransaction.Debet = Debet;
+      cloneTransaction.Credit = Credit;
+      cloneTransaction.Amount = Amount;
+      cloneTransaction.Currency = Currency;
+      cloneTransaction.Amount2 = Amount2;
       cloneTransaction.Currency2 = Currency2;
-      cloneTransaction.Article   = Article;
-      cloneTransaction.Comment   = Comment;
+      cloneTransaction.Article = Article;
+      cloneTransaction.Comment = Comment;
 
       return cloneTransaction;
     }
@@ -213,14 +206,14 @@ namespace Keeper.DomainModel
     {
       this.Timestamp = storage.Timestamp;
       this.Operation = storage.Operation;
-      this.Debet     = storage.Debet;
-      this.Credit    = storage.Credit;
-      this.Amount    = storage.Amount;
-      this.Currency  = storage.Currency;
-      this.Amount2   = storage.Amount2;
+      this.Debet = storage.Debet;
+      this.Credit = storage.Credit;
+      this.Amount = storage.Amount;
+      this.Currency = storage.Currency;
+      this.Amount2 = storage.Amount2;
       this.Currency2 = storage.Currency2;
-      this.Article   = storage.Article;
-      this.Comment   = storage.Comment;
+      this.Article = storage.Article;
+      this.Comment = storage.Comment;
     }
 
 
@@ -228,18 +221,18 @@ namespace Keeper.DomainModel
     ///  возвращает заготовку созданную на основе этого инстанса, Amount и Comment оставляются пустыми
     /// </summary>
     /// <returns></returns>
-    public Transaction Preform(string param)  
+    public Transaction Preform(string param)
     {
       var preformTransaction = new Transaction();
 
       if (param == "SameDate") preformTransaction.Timestamp = this.Timestamp.AddMinutes(1);
       if (param == "NextDate") preformTransaction.Timestamp = this.Timestamp.Date.AddDays(1);
       preformTransaction.Operation = this.Operation;
-      preformTransaction.Debet     = this.Debet;
-      preformTransaction.Credit    = this.Credit;
-      preformTransaction.Currency  = this.Currency;
+      preformTransaction.Debet = this.Debet;
+      preformTransaction.Credit = this.Credit;
+      preformTransaction.Currency = this.Currency;
       preformTransaction.Currency2 = this.Currency2;
-      preformTransaction.Article   = this.Article;
+      preformTransaction.Article = this.Article;
 
       return preformTransaction;
     }

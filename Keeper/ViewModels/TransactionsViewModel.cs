@@ -131,7 +131,7 @@ namespace Keeper.ViewModels
       {
         if (Equals(value, _selectedTransaction)) return;
         _selectedTransaction = value;
-        NotifyOfPropertyChange(() => SelectedTransaction);
+//        NotifyOfPropertyChange(() => SelectedTransaction);
 
         _isInTransactionSelectionProcess = true; // ставим флаг, чтобы если меняется тип операции в сеттере SelectedTabIndex не удалялись поля транзакции
         if (!_isInAddTransactionMode) _transactionInWork.CloneFrom(_selectedTransaction);// else TransactionInWork уже сформирован методом Preform
@@ -139,7 +139,6 @@ namespace Keeper.ViewModels
         _isInTransactionSelectionProcess = false;
         NotifyOfPropertyChange(() => TransactionInWork);
         NotifyOfPropertyChange(() => AmountInUsd);
-
       }
     }
 
@@ -225,6 +224,7 @@ namespace Keeper.ViewModels
     public void SaveTransactionChanges()
     {
       var isTimestampChanged = SelectedTransaction.Timestamp.Date != TransactionInWork.Timestamp.Date;
+      if (TransactionInWork.Amount2 == 0) TransactionInWork.Currency2 = null;
       SelectedTransaction.CloneFrom(TransactionInWork);
       if (isTimestampChanged)
       {
@@ -379,13 +379,10 @@ namespace Keeper.ViewModels
       {
         SelectedTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(1);
         MoveDownTransactionsFromCurrentUntilHole();
-        
       }
 
       SortedRows.Refresh();
-
-//      SortedRows.MoveCurrentToNext();
-//      SelectedTransaction = (Transaction)SortedRows.CurrentItem;
+      SortedRows.MoveCurrentTo(SelectedTransaction);
     }
 
   }

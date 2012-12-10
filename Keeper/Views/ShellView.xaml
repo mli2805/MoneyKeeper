@@ -29,7 +29,9 @@
       <RowDefinition/>
       <RowDefinition Height="23"/>
     </Grid.RowDefinitions>
-    <Label x:Name="Message" VerticalAlignment="Center" Content="Attention! Keeper is under construction!" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0,6,0,4" Width="222" FontSize="11" Height="22" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Column="1" />
+    <Label x:Name="Message" VerticalAlignment="Center" Content="Keeper is under construction since October 22nd, 2012!" 
+           Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0,6,0,4" Width="300" FontSize="11" Height="22" 
+           VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Column="1" />
     <Menu Name="MainMenu" Margin="10,8,0,6" VerticalAlignment="Center" 
           Background="{x:Null}" Height="18"  Grid.ColumnSpan="2">
       <MenuItem Header="ФОРМЫ" Background="{x:Null}" Foreground="#FF0F0FFF" Padding="7,0,8,0">

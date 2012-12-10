@@ -8,7 +8,7 @@ using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
-  public class Account : PropertyChangedBase 
+  public class Account : PropertyChangedBase
   {
 
     #region // свойства (properties) класса
@@ -39,9 +39,8 @@ namespace Keeper.DomainModel
       {
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
-//        NotifyOfPropertyChange(() => IsSelected);
-        if (_isSelected)
-        IoC.Get<ShellViewModel>().SelectedAccount = this;
+        // NotifyOfPropertyChange(() => IsSelected);
+        if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccount = this;
       }
     }
     #endregion
@@ -82,7 +81,7 @@ namespace Keeper.DomainModel
     public string ToDump(int offset)
     {
 
-      string shiftedName = Name.PadLeft(Name.Length+offset);
+      string shiftedName = Name.PadLeft(Name.Length + offset);
       return Id + " ; " + shiftedName + " ; " + ParentForDump();
     }
 

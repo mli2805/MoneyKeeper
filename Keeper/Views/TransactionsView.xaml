@@ -82,9 +82,9 @@
           <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy mm'}" />
           <GridViewColumn Header="Дебет" Width="125" DisplayMemberBinding="{Binding Debet}" />
           <GridViewColumn Header="Кредит" Width="125" DisplayMemberBinding="{Binding Credit}" />
-          <GridViewColumn Header="Сумма" Width="100" DisplayMemberBinding="{Binding Amount, StringFormat='{}{0:#,0;; }'}" />
+          <GridViewColumn Header="Сумма" Width="100" DisplayMemberBinding="{Binding Amount, StringFormat='{}{0:#,#;; }'}" />
           <GridViewColumn Header="Вал" Width="40" DisplayMemberBinding="{Binding Currency}" />
-          <GridViewColumn Header="Сумма2" Width="100" DisplayMemberBinding="{Binding Amount2, StringFormat='{}{0:#,0;; }'}" />
+          <GridViewColumn Header="Сумма2" Width="100" DisplayMemberBinding="{Binding Amount2, StringFormat='{}{0:#,#;; }'}" />
           <GridViewColumn Header="Вал2" Width="40" DisplayMemberBinding="{Binding Currency2}" />
           <GridViewColumn Header="Категория" Width="150" DisplayMemberBinding="{Binding Article}" />
           <GridViewColumn Header="Примечание" Width="180" DisplayMemberBinding="{Binding Comment}" />
@@ -124,7 +124,7 @@
               SelectedItem="{Binding TransactionInWork.Article}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="IncomeAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,0}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="IncomeCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
@@ -152,7 +152,7 @@
               SelectedItem="{Binding TransactionInWork.Article}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExpenseAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,0}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
@@ -176,7 +176,7 @@
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="TransferAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,0}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="TransferCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
@@ -200,13 +200,13 @@
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="Сдано" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountPassed" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,0}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="ExchangeCurrencyPassed" HorizontalAlignment="Left" Margin="150,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
             <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount2, StringFormat='{}{0:#,0}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount2, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency2}" />

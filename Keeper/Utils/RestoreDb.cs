@@ -48,43 +48,7 @@ namespace Keeper.Utils
       File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestroreTransactions.err"), wrongContent, Encoding1251);
     }
 
-    private static Transaction TransactionFromStringWithIds(string s)
-    {
-      var transaction = new Transaction();
-      int prev = s.IndexOf(';');
-      transaction.Timestamp = Convert.ToDateTime(s.Substring(0, prev));
-      int next = s.IndexOf(';', prev + 2);
-      transaction.Operation = (OperationType)Enum.Parse(typeof (OperationType), s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      int debetId = Convert.ToInt32(s.Substring(prev + 2, next - prev - 3));
-      transaction.Debet = Db.Accounts.Local.First(account => account.Id == debetId);
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      int creditId = Convert.ToInt32(s.Substring(prev + 2, next - prev - 3));
-      transaction.Credit = Db.Accounts.Local.First(account => account.Id == creditId);
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      transaction.Amount = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      transaction.Currency = (CurrencyCodes) Enum.Parse(typeof (CurrencyCodes), s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      transaction.Amount2 = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      int articleId = Convert.ToInt32(s.Substring(prev + 2, next - prev - 3));
-      transaction.Article = Db.Accounts.Local.First(account => account.Id == articleId);
-      transaction.Comment = s.Substring(next + 2);
-
-      return transaction;
-    }
-
-    private static Transaction TransactionFromStringWithNames(string s)
+  private static Transaction TransactionFromStringWithNames(string s)
     {
       var transaction = new Transaction();
       int prev = s.IndexOf(';');
@@ -114,7 +78,7 @@ namespace Keeper.Utils
       prev = next;
       next = s.IndexOf(';', prev + 2);
       string article = s.Substring(prev + 2, next - prev - 3);
-      transaction.Article = Db.Accounts.Local.First(account => account.Name == article);
+      transaction.Article = article != "" ? Db.Accounts.Local.First(account => account.Name == article) : null;
       transaction.Comment = s.Substring(next + 2);
 
       return transaction;
