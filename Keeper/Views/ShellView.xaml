@@ -180,6 +180,5 @@
                Background="White" BorderBrush="Gray"/>
     <Button Name="TemporaryLoadTransactionsView" Background="White" Content="Операции    (Временная кнопка)" Padding="10"
             Grid.Column="1" HorizontalAlignment="Center" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Height="104"/>
-
   </Grid>
 </Window>

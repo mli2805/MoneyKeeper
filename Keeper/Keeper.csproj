@@ -90,7 +90,7 @@
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsViewModel.cs" />
+    <Compile Include="ViewModels\TransactionViewModel.cs" />
     <Compile Include="Views\AddAndEditAccountView.xaml.cs">
       <DependentUpon>AddAndEditAccountView.xaml</DependentUpon>
     </Compile>
@@ -100,8 +100,8 @@
     <Compile Include="Views\RatesView.xaml.cs">
       <DependentUpon>RatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TransactionsView.xaml.cs">
-      <DependentUpon>TransactionsView.xaml</DependentUpon>
+    <Compile Include="Views\TransactionView.xaml.cs">
+      <DependentUpon>TransactionView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TransactionsView.xaml">
+    <Page Include="Views\TransactionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -135,7 +135,7 @@ namespace Keeper.DomainModel
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
         NotifyOfPropertyChange(() => IsSelected);
-        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
+//        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
       }
     }
     #endregion
@@ -225,8 +225,9 @@ namespace Keeper.DomainModel
     {
       var preformTransaction = new Transaction();
 
-      if (param == "SameDate") preformTransaction.Timestamp = this.Timestamp.AddMinutes(1);
-      if (param == "NextDate") preformTransaction.Timestamp = this.Timestamp.Date.AddDays(1);
+      if (param == "SameDate") preformTransaction.Timestamp = this.Timestamp;
+      if (param == "SameDatePlusMinite") preformTransaction.Timestamp = this.Timestamp.AddMinutes(1);
+      if (param == "NextDate") preformTransaction.Timestamp = this.Timestamp.Date.AddDays(1).AddHours(9);
       preformTransaction.Operation = this.Operation;
       preformTransaction.Debet = this.Debet;
       preformTransaction.Credit = this.Credit;

@@ -167,7 +167,7 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Input operations";
-      WindowManager.ShowDialog(new TransactionsViewModel());
+      WindowManager.ShowDialog(new TransactionViewModel());
       Message = arcMessage;
     }
 

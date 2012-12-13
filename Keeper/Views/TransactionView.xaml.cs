@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Keeper.Views
 {
   /// <summary>
-  /// Interaction logic for TransactionsView.xaml
+  /// Interaction logic for TransactionView.xaml
   /// </summary>
-  public partial class TransactionsView : Window
+  public partial class TransactionView : Window
   {
-    public TransactionsView()
+    public TransactionView()
     {
       InitializeComponent();
     }
