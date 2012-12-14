@@ -123,22 +123,22 @@ namespace Keeper.DomainModel
       }
     }
 
-    #region ' _isSelected '
-    private bool _isSelected;
-
-    [NotMapped]
-    public bool IsSelected
-    {
-      get { return _isSelected; }
-      set
-      {
-        if (value.Equals(_isSelected)) return;
-        _isSelected = value;
-        NotifyOfPropertyChange(() => IsSelected);
-//        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
-      }
-    }
-    #endregion
+//    #region ' _isSelected '
+//    private bool _isSelected;
+//
+//    [NotMapped]
+//    public bool IsSelected
+//    {
+//      get { return _isSelected; }
+//      set
+//      {
+//        if (value.Equals(_isSelected)) return;
+//        _isSelected = value;
+//        NotifyOfPropertyChange(() => IsSelected);
+////        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
+//      }
+//    }
+//    #endregion
 
     #region // два вычислимых поля содержащих цвет шрифта и фона для отображения транзакции
     [NotMapped]

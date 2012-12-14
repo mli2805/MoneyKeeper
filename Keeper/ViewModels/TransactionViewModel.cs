@@ -222,8 +222,45 @@ namespace Keeper.ViewModels
 
     public void SaveTransactionChanges()
     {
-      SelectedTransaction.CloneFrom(TransactionInWork);
+//     из-за смены типа операции во время ввода/редактирования в некоторых полях TransactionInWork могли остаться ненужные данные
+      CleanUselessFieldsBeforeSave();
+
+      var isDateChanged = SelectedTransaction.Timestamp != TransactionInWork.Timestamp;
+
+      if (isDateChanged)      
+      {
+        Transaction transactionBefore = null;
+//            все же SQL запрос пока наглядней чем LINQ форма
+//        transactionBefore = (from transaction in Db.Transactions.Local
+//                             where transaction.Timestamp.Date == TransactionInWork.Timestamp.Date
+//                             orderby transaction.Timestamp
+//                             select transaction).LastOrDefault();
+
+        transactionBefore = Db.Transactions.Local.Where(
+          transaction => transaction.Timestamp.Date == TransactionInWork.Timestamp.Date).OrderBy(
+            transaction => transaction.Timestamp).LastOrDefault();
+        
+        SelectedTransaction.CloneFrom(TransactionInWork);
+        SelectedTransaction.Timestamp = transactionBefore == null ? SelectedTransaction.Timestamp.AddHours(9) : transactionBefore.Timestamp.AddMinutes(1);
+        SortedRows.Refresh();
+      }
+      else SelectedTransaction.CloneFrom(TransactionInWork);
+
       IsTransactionInWorkChanged = false;
+    }
+
+    private void CleanUselessFieldsBeforeSave()
+    {
+      if (TransactionInWork.Operation != OperationType.Обмен)
+      {
+        TransactionInWork.Amount2 = 0;
+        TransactionInWork.Currency2 = 0;
+      }
+
+      if (TransactionInWork.Operation != OperationType.Доход && TransactionInWork.Operation != OperationType.Расход)
+      {
+        TransactionInWork.Article = null;
+      }
     }
 
     public void CancelTransactionChanges()
@@ -303,8 +340,16 @@ namespace Keeper.ViewModels
       Rows.Remove(transactionForRemoval);
 
       _isInAddTransactionMode = false;
-
     }
 
+    public void IncreaseTimestamp()
+    {
+      TransactionInWork.Timestamp = TransactionInWork.Timestamp.AddDays(1);
+    }
+
+    public void DecreaseTimestamp()
+    {
+      TransactionInWork.Timestamp = TransactionInWork.Timestamp.AddDays(-1);
+    }
   }
 }
