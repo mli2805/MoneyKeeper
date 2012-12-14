@@ -1,4 +1,19 @@
-﻿using System;
+﻿#region TODO List
+/* TODO List
+ * 1. Срабатывание события TransactionInWorkPropertyChanged сразу,  а не по потере полем фокуса
+ * 2. Прокрутка к выделенная записи, если в результате редактирования даты она сместилась за пределы экрана
+ * 3. запретить редактирование даты при вводе новой записи (_isInAddTransactionMode), 
+ * т.к. все добавление настроено на вставку в определенное место засчет задания определенной даты/времени
+ * 4. Суммы - выравнивание вправо
+ * 5. Вертикальные полоски между столбцами ListView и цвет для выделенной строки
+ * 6. Горячие клавиши - Ins - вставить перед, Ctrl+Enter - вставить после, Ctrl+Del - удалить строку, 
+ * Enter - завершить редактирование
+ * 7. Запрещенные клавиши DatePicker нарисовать иначе
+ * 
+*/
+# endregion
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -59,6 +74,7 @@ namespace Keeper.ViewModels
     private Transaction _transactionInWork;
     private int _selectedTabIndex;
     private bool _isTransactionInWorkChanged;
+    private bool _canEditDate;
     private bool _isInAddTransactionMode;
 
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
@@ -149,6 +165,27 @@ namespace Keeper.ViewModels
       }
     }
 
+    public bool IsInAddTransactionMode
+    {
+      get { return _isInAddTransactionMode; }
+      set 
+      {
+        _isInAddTransactionMode = value;
+        CanEditDate = !value;
+      }
+    }
+
+    public bool CanEditDate
+    {
+      get { return _canEditDate; }
+      set
+      {
+        if (value.Equals(_canEditDate)) return;
+        _canEditDate = value;
+        NotifyOfPropertyChange(() => CanEditDate);
+      }
+    }
+
     public TransactionViewModel()
     {
       ComboBoxesValues();
@@ -174,6 +211,7 @@ namespace Keeper.ViewModels
       TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
       CanSaveTransactionChanges = false;
       CanCancelTransactionChanges = false;
+      IsInAddTransactionMode = false;
     }
 
     /// <summary>
@@ -247,6 +285,7 @@ namespace Keeper.ViewModels
       else SelectedTransaction.CloneFrom(TransactionInWork);
 
       IsTransactionInWorkChanged = false;
+      IsInAddTransactionMode = false;
     }
 
     private void CleanUselessFieldsBeforeSave()
@@ -265,18 +304,19 @@ namespace Keeper.ViewModels
 
     public void CancelTransactionChanges()
     {
-      if (_isInAddTransactionMode) DeleteTransaction();
+      if (IsInAddTransactionMode) DeleteTransaction();
 
       TransactionInWork.CloneFrom(SelectedTransaction);
       SelectedTabIndex = (int)TransactionInWork.Operation;
       IsTransactionInWorkChanged = false;
+      IsInAddTransactionMode = false;
     }
 
  
     public void AddTransactionBeforeSelected()
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
-      _isInAddTransactionMode = true;
+      IsInAddTransactionMode = true;
 
       var newTransaction = SelectedTransaction.Preform("SameDate");
       IncreaseNextTransactionTime();
@@ -302,7 +342,7 @@ namespace Keeper.ViewModels
     public void AddTransactionAfterSelected()
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
-      _isInAddTransactionMode = true;
+      IsInAddTransactionMode = true;
 
       var newTransaction = SelectedTransaction.Preform("SameDatePlusMinite");
 
@@ -322,7 +362,7 @@ namespace Keeper.ViewModels
     public void AddNewDayTransaction()
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
-      _isInAddTransactionMode = true;
+      IsInAddTransactionMode = true;
 
       SelectedTransactionIndex = Rows.Count - 1;
       var newTransaction = SelectedTransaction.Preform("NextDate");
@@ -339,7 +379,7 @@ namespace Keeper.ViewModels
       if (SelectedTransactionIndex != Rows.Count-1) SelectedTransactionIndex++; else SelectedTransactionIndex--;
       Rows.Remove(transactionForRemoval);
 
-      _isInAddTransactionMode = false;
+      IsInAddTransactionMode = false;
     }
 
     public void IncreaseTimestamp()
@@ -353,3 +393,4 @@ namespace Keeper.ViewModels
     }
   }
 }
+

@@ -207,7 +207,8 @@
       </TabControl>
       <Label Name="AmountInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
              Height="30" Width="170" Margin="290,-35,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-      <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+      <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,0,0,0" Grid.Row="1" 
+              VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
         <Grid>
           <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">
             <Polygon.Fill>
@@ -216,9 +217,11 @@
           </Polygon>
         </Grid>
       </Button>
-      <DatePicker HorizontalAlignment="Left" Margin="40,2,0,0" Grid.Row="1" VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
-                    Text="{Binding TransactionInWork.Timestamp, Mode=TwoWay}" IsEnabled="{Binding IsInAdd}" />
-      <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0">
+      <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,2,0,0" Grid.Row="1" 
+                  VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
+                  Text="{Binding TransactionInWork.Timestamp, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" />
+      <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,0,0,0" Grid.Row="1" 
+              VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
         <Grid>
           <Polygon Points="0,2 4,5 0,8 0,2" Stroke="Black">
             <Polygon.Fill>
