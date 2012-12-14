@@ -17,6 +17,13 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
+  public class Balance
+  {
+    public string Field1 { get; set; }
+    public string Field2 { get; set; }
+    public string Field3 { get; set; }
+  }
+
   [Export(typeof(IShell))]
   [Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class ShellViewModel : Screen, IShell
@@ -31,6 +38,8 @@ namespace Keeper.ViewModels
 
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
     private string _message;
+    private Account _selectedAccount;
+    private List<string> _stringList;
 
     public string Message
     {
@@ -51,7 +60,60 @@ namespace Keeper.ViewModels
     public ObservableCollection<Account> IncomesRoot { get; set; }
     public ObservableCollection<Account> ExpensesRoot { get; set; }
 
-    public Account SelectedAccount { get; set; }
+    public Account SelectedAccount
+    {
+      get { return _selectedAccount; }
+      set
+      {
+        _selectedAccount = value;
+        CountBalances();
+      }
+    }
+
+    private void CountBalances()
+    {
+      BalancesList.Clear();
+      var currentBalance = new Balance();
+      currentBalance.Field1 = SelectedAccount.Name;
+      BalancesList.Add(currentBalance);
+
+      StringList.Clear();
+      StringList.Add("SelectedAccount.Name");
+
+      /* без учета валюты 
+            var credit = Db.Transactions.Local.Where(t => t.Credit == SelectedAccount).Sum(t => t.Amount);
+            var debet = Db.Transactions.Local.Where(t => t.Debet == SelectedAccount).Sum(t=>t.Amount);
+            var balance = credit - debet;
+            StringList.Add(balance.ToString());
+      */
+      var creditByCurrency = from t in Db.Transactions.Local
+                              where t.Credit == SelectedAccount
+                              group t by t.Currency into grouping
+                              let count = grouping.Count()
+                              select new
+                                       {
+                                         Currency = grouping.Key,
+                                         Count = count
+                                       };
+      foreach (var item in creditByCurrency)
+      {
+        StringList.Add(String.Format("валюта {0} количество {1}", item.Currency,item.Count));
+      }
+
+      NotifyOfPropertyChange(() => StringList);
+    }
+
+    public ObservableCollection<Balance> BalancesList { get; set; }
+    public List<string> StringList
+    {
+      get { return _stringList; }
+      set
+      {
+        if (Equals(value, _stringList)) return;
+        _stringList = value;
+        NotifyOfPropertyChange(() => StringList);
+      }
+    }
 
     #endregion
 
@@ -78,6 +140,12 @@ namespace Keeper.ViewModels
       Db.CurrencyRates.Load(); // пока эта форма главная
 
       InitVariablesToShowAccounts();
+
+      BalancesList = new ObservableCollection<Balance>();
+      var firstBalance = new Balance {Field1 = "bla-bla"};
+      BalancesList.Add(firstBalance);
+
+      StringList = new List<string> {"test string"};
     }
 
     private void InitVariablesToShowAccounts()
@@ -116,7 +184,7 @@ namespace Keeper.ViewModels
                                       where transaction.Debet == SelectedAccount || transaction.Credit == SelectedAccount
                                       select transaction;
 
-        // Any() пытается двинуться по этому энумератору двинутся и если может, то true
+        // Any() пытается двинуться по этому энумератору и если может, то true
         if (tr.Any()) MessageBox.Show("Этот счет используется в проводках!", "Отказ!");
         else
         {

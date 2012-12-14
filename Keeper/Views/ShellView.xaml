@@ -7,7 +7,7 @@
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
         xmlns:cal="http://www.caliburnproject.org" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
         x:Class="Keeper.Views.ShellView"
-        mc:Ignorable="d" Height="762" Width="924" ResizeMode="CanResizeWithGrip"
+        mc:Ignorable="d" Height="762" Width="1154" ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
         d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}"
         TextOptions.TextFormattingMode="Display"> <!--attached property для сглаживания шрифтов-->
@@ -179,6 +179,24 @@
     <StatusBar Margin="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" 
                Background="White" BorderBrush="Gray"/>
     <Button Name="TemporaryLoadTransactionsView" Background="White" Content="Операции    (Временная кнопка)" Padding="10"
-            Grid.Column="1" HorizontalAlignment="Center" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Height="104"/>
+            Grid.Column="1" HorizontalAlignment="Center" Margin="364,518,0,0" Grid.Row="1" VerticalAlignment="Stretch" 
+            Height="104"  Grid.ColumnSpan="3"/>
+
+    <ListView Grid.Column="1" HorizontalAlignment="Left" Height="210" Margin="31,0,0,0" Grid.Row="1" 
+              VerticalAlignment="Top" Width="327" ItemsSource="{Binding BalancesList}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="1" Width="200" DisplayMemberBinding="{Binding Field1}" />
+        </GridView>
+      </ListView.View>
+    </ListView>
+    <ListView Grid.Column="1" HorizontalAlignment="Left" Height="249" Margin="41,246,0,0" Grid.Row="1" VerticalAlignment="Top" 
+              Width="327" ItemsSource="{Binding StringList}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn/>
+        </GridView>
+      </ListView.View>
+    </ListView>
   </Grid>
 </Window>
