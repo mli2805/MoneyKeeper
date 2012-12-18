@@ -78,7 +78,7 @@ namespace Keeper.ViewModels
       BalancesList.Add(currentBalance);
 
       StringList.Clear();
-      StringList.Add("SelectedAccount.Name");
+      StringList.Add(SelectedAccount.Name);
 
       /* без учета валюты 
             var credit = Db.Transactions.Local.Where(t => t.Credit == SelectedAccount).Sum(t => t.Amount);

@@ -3,7 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="DumpPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">..\..\Dump\</Value>
+      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\Dump\</Value>
+    </Setting>
+    <Setting Name="DropBoxPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\</Value>
+    </Setting>
+    <Setting Name="DumpInDropBoxPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Keeper\Dump\</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -52,7 +52,6 @@
       </MenuItem>
     </Menu>
     <TabControl Margin="0,0,0,5" Grid.Row="1" MinHeight="350" MinWidth="250">
-
       <TabItem Header="Мои счета" Background="{x:Null}">
         <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MineAccountsRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
@@ -83,7 +82,6 @@
           </TreeView.ItemContainerStyle>
         </TreeView>
       </TabItem>
-
       <TabItem Header="Контрагенты" Background="{x:Null}">
         <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding ExternalAccountsRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
@@ -190,6 +188,7 @@
         </GridView>
       </ListView.View>
     </ListView>
+    
     <ListView Grid.Column="1" HorizontalAlignment="Left" Height="249" Margin="41,246,0,0" Grid.Row="1" VerticalAlignment="Top" 
               Width="327" ItemsSource="{Binding StringList}">
       <ListView.View>
@@ -198,5 +197,6 @@
         </GridView>
       </ListView.View>
     </ListView>
+    
   </Grid>
 </Window>
