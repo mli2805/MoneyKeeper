@@ -238,9 +238,9 @@ namespace Keeper.DomainModel
       return preformTransaction;
     }
 
-    public decimal SignedAmount(Account a)
+    public int SignForAmount(Account a)
     {
-      if (Credit == a || Credit.IsDescendantOf(a.Name)) return Amount; else return -Amount;
+      if (Credit == a || Credit.IsDescendantOf(a.Name)) return 1; else return -1;
     }
   }
 
