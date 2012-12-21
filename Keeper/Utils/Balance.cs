@@ -39,7 +39,7 @@ namespace Keeper.Utils
                                     Amount = g.Sum(a => a.Amount*a.SignForAmount(balancedAccount))
                                   }).
                     Concat
-                        (from t in Db.Transactions.Local
+                        (from t in Db.Transactions.Local  // учесть вторую сторону обмена - приход денег в другой валюте
                          where t.Amount2 != 0 && (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) || t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
                          group t by t.Currency2 into g
                          select new BalancePair()
