@@ -95,10 +95,28 @@ namespace Keeper.DomainModel
       return Parent == null ? Name : Parent.GetRootName();
     }
 
+
+    /// <summary>
+    /// true если инстанс потомок счета-параметра, но не сам этот счет
+    /// </summary>
+    /// <param name="ancestor"></param>
+    /// <returns></returns>
     public bool IsDescendantOf(string ancestor)  // Descendant - потомок ; Ancestor - предок
     {
       if (Parent == null) return false;
       else return Parent.Name == ancestor ? true : Parent.IsDescendantOf(ancestor);
+    }
+
+
+    /// <summary>
+    /// true если инстанс или потомок счета-параметра или сам Ё“ќ“ счет
+    /// </summary>
+    /// <param name="ancestor"></param>
+    /// <returns></returns>
+    public bool IsTheSameOrDescendantOf(string ancestor)  // Descendant - потомок ; Ancestor - предок
+    {
+      if (Name == ancestor) return true;
+      else return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
     }
   }
 }

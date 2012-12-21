@@ -17,13 +17,6 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  public class Balance
-  {
-    public string Field1 { get; set; }
-    public string Field2 { get; set; }
-    public string Field3 { get; set; }
-  }
-
   [Export(typeof(IShell))]
   [Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class ShellViewModel : Screen, IShell
@@ -39,7 +32,7 @@ namespace Keeper.ViewModels
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
     private string _message;
     private Account _selectedAccount;
-    private List<string> _stringList;
+    private int _openedAccountPage;
 
     public string Message
     {
@@ -60,60 +53,79 @@ namespace Keeper.ViewModels
     public ObservableCollection<Account> IncomesRoot { get; set; }
     public ObservableCollection<Account> ExpensesRoot { get; set; }
 
+    public ObservableCollection<string> BalanceList { get; set; }
+
     public Account SelectedAccount
     {
       get { return _selectedAccount; }
       set
       {
         _selectedAccount = value;
-        CountBalances();
+        Balance.CountBalances(SelectedAccount, BalanceList);
+        NotifyOfPropertyChange(() => SelectedAccount);
       }
     }
 
-    private void CountBalances()
+    public int OpenedAccountPage
     {
-      BalancesList.Clear();
-      var currentBalance = new Balance();
-      currentBalance.Field1 = SelectedAccount.Name;
-      BalancesList.Add(currentBalance);
-
-      StringList.Clear();
-      StringList.Add(SelectedAccount.Name);
-
-      /* без учета валюты 
-            var credit = Db.Transactions.Local.Where(t => t.Credit == SelectedAccount).Sum(t => t.Amount);
-            var debet = Db.Transactions.Local.Where(t => t.Debet == SelectedAccount).Sum(t=>t.Amount);
-            var balance = credit - debet;
-            StringList.Add(balance.ToString());
-      */
-      var creditByCurrency = from t in Db.Transactions.Local
-                              where t.Credit == SelectedAccount
-                              group t by t.Currency into grouping
-                              let count = grouping.Count()
-                              select new
-                                       {
-                                         Currency = grouping.Key,
-                                         Count = count
-                                       };
-      foreach (var item in creditByCurrency)
-      {
-        StringList.Add(String.Format("валюта {0} количество {1}", item.Currency,item.Count));
-      }
-
-      NotifyOfPropertyChange(() => StringList);
-    }
-
-    public ObservableCollection<Balance> BalancesList { get; set; }
-    public List<string> StringList
-    {
-      get { return _stringList; }
+      get { return _openedAccountPage; }
       set
       {
-        if (Equals(value, _stringList)) return;
-        _stringList = value;
-        NotifyOfPropertyChange(() => StringList);
+        _openedAccountPage = value;
+        var a = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
+        SelectedAccount = a;
       }
     }
+
+    private Account GetSelectedInBranch(Account account)
+    {
+      if (account.IsSelected) return account;
+      foreach (var child in account.Children)
+      {
+        var result = GetSelectedInBranch(child);
+        if (result != null) return result;
+      }
+      return null;
+    }
+
+    private Account GetSelectedInCollection(ObservableCollection<Account> collection)
+    {
+      foreach (var branch in collection)
+      {
+        var result = GetSelectedInBranch(branch);
+        if (result != null) return result;
+      }
+      return null;
+    }
+
+    private Account FindSelectedOrAssignFirstAccountOnPage(int pageNumber)
+    {
+      ObservableCollection<Account> page;
+      switch (pageNumber)
+      {
+        case 0:
+          page = MineAccountsRoot; break;
+        case 1:
+          page = ExternalAccountsRoot; break;
+        case 2:
+          page = IncomesRoot; break;
+        case 3:
+          page = ExpensesRoot; break;
+        default:
+          page = MineAccountsRoot; break;
+      }
+
+      var result = GetSelectedInCollection(page);
+
+      if (result == null)
+      {
+        result = (from account in page
+                  select account).First();
+        result.IsSelected = true;
+      }
+      return result;
+    }
+
 
     #endregion
 
@@ -121,6 +133,7 @@ namespace Keeper.ViewModels
     {
       _message = "Keeper is running (On Debug)";
       Database.SetInitializer(new DbInitializer());
+      BalanceList = new ObservableCollection<string>() { "test balance" };
     }
 
     public override void CanClose(Action<bool> callback)
@@ -140,12 +153,7 @@ namespace Keeper.ViewModels
       Db.CurrencyRates.Load(); // пока эта форма главная
 
       InitVariablesToShowAccounts();
-
-      BalancesList = new ObservableCollection<Balance>();
-      var firstBalance = new Balance {Field1 = "bla-bla"};
-      BalancesList.Add(firstBalance);
-
-      StringList = new List<string> {"test string"};
+      OpenedAccountPage = 0;
     }
 
     private void InitVariablesToShowAccounts()

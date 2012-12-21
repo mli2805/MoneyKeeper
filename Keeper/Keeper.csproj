@@ -79,6 +79,7 @@
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
+    <Compile Include="Utils\Balance.cs" />
     <Compile Include="Utils\ClearDb.cs" />
     <Compile Include="Utils\DumpDb.cs" />
     <Compile Include="Utils\GridViewRowPresenterWithGridLines.cs" />

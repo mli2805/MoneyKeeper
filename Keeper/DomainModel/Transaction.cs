@@ -237,5 +237,12 @@ namespace Keeper.DomainModel
 
       return preformTransaction;
     }
+
+    public decimal SignedAmount(Account a)
+    {
+      if (Credit == a || Credit.IsDescendantOf(a.Name)) return Amount; else return -Amount;
+    }
   }
+
+ 
 }
