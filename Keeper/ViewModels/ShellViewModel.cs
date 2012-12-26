@@ -120,7 +120,7 @@ namespace Keeper.ViewModels
       if (result == null)
       {
         result = (from account in page
-                  select account).First();
+                  select account).FirstOrDefault();
     //    result.IsSelected = true;
       }
       return result;

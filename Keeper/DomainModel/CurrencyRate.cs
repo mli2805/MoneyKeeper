@@ -16,13 +16,6 @@ namespace Keeper.DomainModel
     public CurrencyCodes Currency { get; set; }
     public Double Rate { get; set; }
 
-//    public CurrencyRate()
-//    {
-//      BankDay = DateTime.Today;
-//      Currency = CurrencyCodes.BYR;
-//      Rate = 0;
-//    }
-
     public string ToDump()
     {
       return BankDay + " ; " + Currency + " ; " + Math.Round(Rate, 4);

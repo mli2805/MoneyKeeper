@@ -73,6 +73,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainModel\Account.cs" />
+    <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
     <Compile Include="DomainModel\DbInitializer.cs" />
     <Compile Include="DomainModel\KeeperDB.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyCodes.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyRatesFilters.cs" />
+    <Compile Include="ViewModels\ListsForComboboxes\AssociatedArticlesLists.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />

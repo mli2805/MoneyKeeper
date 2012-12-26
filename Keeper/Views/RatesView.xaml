@@ -1,6 +1,6 @@
 ﻿<Window x:Class="Keeper.Views.RatesView"
         Height="600" Width="1050" MaxHeight="700"
-xml:lang="ru-RU"
+        xml:lang="ru-RU"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,8 @@ xml:lang="ru-RU"
         mc:Ignorable="d" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
         Icon="/Keeper;component/Resources/currency_rates.ico" 
-        d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}" SizeToContent="Height">
+        d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}"
+        SizeToContent="Height">
   <Window.Resources>
     <ResourceDictionary>
       <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">

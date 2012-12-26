@@ -15,6 +15,7 @@ namespace Keeper.DomainModel
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<CurrencyRate> CurrencyRates { get; set; }
+    public DbSet<ArticleAssociation> ArticlesAssociations { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
