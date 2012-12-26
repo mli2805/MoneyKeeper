@@ -11,5 +11,11 @@ namespace Keeper.DomainModel
         public int Id { get; set; }
         public Account ExternalAccount { get; set; }
         public Account AssociatedArticle { get; set; }
+
+        public string ToDumpWithNames()
+        {
+            return ExternalAccount + " ; " + AssociatedArticle;
+        }
     }
+
 }
