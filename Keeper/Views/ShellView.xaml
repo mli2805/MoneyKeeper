@@ -45,6 +45,8 @@
         <MenuItem x:Name="DumpDatabaseToTxt" Header="ВЫГРУЗИТЬ"/>
         <MenuItem x:Name="RestoreDatabaseFromTxt" Header="ЗАГРУЗИТЬ"/>
         <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ"/>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="ArticlesAssociations" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
       </MenuItem>
       <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem Header="СДЕЛАТЬ" />

@@ -121,7 +121,7 @@ namespace Keeper.ViewModels
       {
         result = (from account in page
                   select account).First();
-        result.IsSelected = true;
+    //    result.IsSelected = true;
       }
       return result;
     }
@@ -255,6 +255,13 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
+    public void ArticlesAssociations()
+    {
+        String arcMessage = Message;
+        Message = "Articles' associations";
+        WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
+        Message = arcMessage;
+    }
     #endregion
 
     #region // методы выгрузки / загрузки БД в текстовый файл
@@ -285,6 +292,7 @@ namespace Keeper.ViewModels
       MineAccountsRoot.Clear();
     }
     #endregion
+
 
   }
 }

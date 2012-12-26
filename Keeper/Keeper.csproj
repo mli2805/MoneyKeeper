@@ -88,6 +88,7 @@
     <Compile Include="Utils\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
+    <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyCodes.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyRatesFilters.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
@@ -96,6 +97,9 @@
     <Compile Include="ViewModels\TransactionViewModel.cs" />
     <Compile Include="Views\AddAndEditAccountView.xaml.cs">
       <DependentUpon>AddAndEditAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ArticlesAssociationsView.xaml.cs">
+      <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -142,6 +146,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AddAndEditAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ArticlesAssociationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
