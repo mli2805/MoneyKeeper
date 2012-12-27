@@ -84,6 +84,7 @@
     <Compile Include="Utils\ClearDb.cs" />
     <Compile Include="Utils\DumpDb.cs" />
     <Compile Include="Utils\GridViewRowPresenterWithGridLines.cs" />
+    <Compile Include="Utils\Period.cs" />
     <Compile Include="Utils\RestoreDb.cs" />
     <Compile Include="Utils\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Utils\ScrollToBottomOnLoadBehavior.cs" />

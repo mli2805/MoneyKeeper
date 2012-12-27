@@ -61,7 +61,8 @@ namespace Keeper.ViewModels
       set
       {
         _selectedAccount = value;
-        Balance.CountBalances(SelectedAccount, BalanceList);
+          var period = new Period(new DateTime(0),new DateTime(9999,12,31,23,59,59));
+        Balance.CountBalances(SelectedAccount, period, BalanceList);
         NotifyOfPropertyChange(() => SelectedAccount);
       }
     }

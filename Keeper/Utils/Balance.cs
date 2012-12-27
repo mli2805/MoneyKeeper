@@ -22,11 +22,11 @@ namespace Keeper.Utils
             public decimal Amount;
         }
 
-        private static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount)
+        private static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
         {
             var tempBalance = (from t in Db.Transactions.Local
-                               where t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
-                                   t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name)
+                               where  period.IsDateIn(t.Timestamp) && (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
+                                   t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
                                group t by t.Currency into g
                                select new BalancePair()
                                           {
@@ -55,10 +55,10 @@ namespace Keeper.Utils
 
         }
 
-        private static IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount)
+        private static IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
         {
             return from t in Db.Transactions.Local
-                   where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name)
+                   where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateIn(t.Timestamp)
                    group t by t.Currency into g
                    select new BalancePair()
                               {
@@ -67,12 +67,12 @@ namespace Keeper.Utils
                               };
         }
 
-        private static List<string> OneBalance(Account balancedAccount)
+        private static List<string> OneBalance(Account balancedAccount, Period period)
         {
             var balance = new List<string>();
 
             bool kind = balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы");
-            var balancePairs = kind ? ArticleBalancePairs(balancedAccount) : AccountBalancePairs(balancedAccount);
+            var balancePairs = kind ? ArticleBalancePairs(balancedAccount, period) : AccountBalancePairs(balancedAccount, period);
 
             foreach (var item in balancePairs)
                 if (item.Amount != 0) balance.Add(String.Format("{0:#,#} {1}", item.Amount, item.Currency));
@@ -83,21 +83,32 @@ namespace Keeper.Utils
         /// Функция нужна только заполнения для 2-й рамки на ShellView
         /// Расчитываются остатки по счету и его потомкам 1-го поколения
         /// </summary>
-        public static void CountBalances(Account selectedAccount, ObservableCollection<string> balanceList)
+        public static void CountBalances(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
         {
             balanceList.Clear();
 
-            var b = OneBalance(selectedAccount);
+            var b = OneBalance(selectedAccount, period);
             foreach (var st in b)
                 balanceList.Add(st);
 
             foreach (var child in selectedAccount.Children)
             {
-                b = OneBalance(child);
+                b = OneBalance(child, period);
                 if (b.Count > 0) balanceList.Add("         " + child.Name);
                 foreach (var st in b)
                     balanceList.Add("    " + st);
             }
+        }
+
+        public static decimal GetBalanceInCurrency(Account account, Period period, CurrencyCodes currency)
+        {
+            if (account == null) return 0;
+            var balances = AccountBalancePairs(account, period);
+            foreach (var balancePair in balances)
+            {
+                if (balancePair.Currency == currency) return balancePair.Amount;
+            }
+            return 0;
         }
 
     }
