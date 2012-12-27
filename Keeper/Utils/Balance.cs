@@ -11,96 +11,94 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-  class Balance
-  {
-    [Import]
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-
-    class BalancePair
+    class Balance
     {
-      public CurrencyCodes? Currency;
-      public decimal Amount;
+        [Import]
+        public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
-      public string NullableToString()
-      {
-        if (Amount == 0) return null;
-        return String.Format("{0:#,#} {1}", Amount, Currency);
-      }
-    }
+        class BalancePair
+        {
+            public CurrencyCodes? Currency;
+            public decimal Amount;
+        }
 
-    private static List<string> AccountBalance(Account balancedAccount)
-    {
-      var tempBalance = (from t in Db.Transactions.Local
-                         where t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) || t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name)
-                         group t by t.Currency into g
-                         select new BalancePair()
-                                  {
-                                    Currency = g.Key,
-                                    Amount = g.Sum(a => a.Amount*a.SignForAmount(balancedAccount))
-                                  }).
-                    Concat
-                        (from t in Db.Transactions.Local  // учесть вторую сторону обмена - приход денег в другой валюте
-                         where t.Amount2 != 0 && (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) || t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
-                         group t by t.Currency2 into g
-                         select new BalancePair()
-                                  {
-                                    Currency = g.Key,
-                                    Amount = g.Sum(a => a.Amount2*a.SignForAmount(balancedAccount)*-1)
-                                  });
-
-
-      var balanceByCurrency = from b in tempBalance
-                              group b by b.Currency into g
-                              select new BalancePair()
-                                       {
-                                         Currency = g.Key,
-                                         Amount = g.Sum(a => a.Amount)
-                                       }.NullableToString();
-
-      var balance = new List<string>();
-      foreach (var item in balanceByCurrency)
-        if (item != null) balance.Add(item);
-
-      return balance;
-    }
-
-    private static List<string> ArticleBalance(Account balancedAccount)
-    {
-      var balanceByCurrency = from t in Db.Transactions.Local
-                              where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name)
-                              group t by t.Currency into g
-                              select new BalancePair()
-                              {
+        private static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount)
+        {
+            var tempBalance = (from t in Db.Transactions.Local
+                               where t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
+                                   t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name)
+                               group t by t.Currency into g
+                               select new BalancePair()
+                                          {
+                                              Currency = g.Key,
+                                              Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount))
+                                          }).
+                Concat
+                (from t in Db.Transactions.Local
+                 // учесть вторую сторону обмена - приход денег в другой валюте
+                 where t.Amount2 != 0 && (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
+                                                   t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
+                 group t by t.Currency2 into g
+                 select new BalancePair()
+                            {
                                 Currency = g.Key,
-                                Amount = g.Sum(a => a.Amount)
-                              }.NullableToString();
+                                Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1)
+                            });
 
-      var balance = new List<string>();
-      foreach (var item in balanceByCurrency)
-        if (item != null) balance.Add(item);
+            return from b in tempBalance
+                   group b by b.Currency into g
+                   select new BalancePair()
+                                   {
+                                       Currency = g.Key,
+                                       Amount = g.Sum(a => a.Amount)
+                                   };
 
-      return balance;
+        }
+
+        private static IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount)
+        {
+            return from t in Db.Transactions.Local
+                   where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name)
+                   group t by t.Currency into g
+                   select new BalancePair()
+                              {
+                                  Currency = g.Key,
+                                  Amount = g.Sum(a => a.Amount)
+                              };
+        }
+
+        private static List<string> OneBalance(Account balancedAccount)
+        {
+            var balance = new List<string>();
+
+            bool kind = balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы");
+            var balancePairs = kind ? ArticleBalancePairs(balancedAccount) : AccountBalancePairs(balancedAccount);
+
+            foreach (var item in balancePairs)
+                if (item.Amount != 0) balance.Add(String.Format("{0:#,#} {1}", item.Amount, item.Currency));
+            return balance;
+        }
+
+        /// <summary>
+        /// Функция нужна только заполнения для 2-й рамки на ShellView
+        /// Расчитываются остатки по счету и его потомкам 1-го поколения
+        /// </summary>
+        public static void CountBalances(Account selectedAccount, ObservableCollection<string> balanceList)
+        {
+            balanceList.Clear();
+
+            var b = OneBalance(selectedAccount);
+            foreach (var st in b)
+                balanceList.Add(st);
+
+            foreach (var child in selectedAccount.Children)
+            {
+                b = OneBalance(child);
+                if (b.Count > 0) balanceList.Add("         " + child.Name);
+                foreach (var st in b)
+                    balanceList.Add("    " + st);
+            }
+        }
+
     }
-
-
-    public static void CountBalances(Account selectedAccount, ObservableCollection<string> balanceList)
-    {
-      balanceList.Clear();
-      List<string> b;
-      bool kind = selectedAccount.IsTheSameOrDescendantOf("Все доходы") || selectedAccount.IsTheSameOrDescendantOf("Все расходы");
-
-      b = kind ? ArticleBalance(selectedAccount) : AccountBalance(selectedAccount);
-      foreach (var st in b)
-        balanceList.Add(st);
-
-      foreach (var child in selectedAccount.Children)
-      {
-        b = kind ? ArticleBalance(child) : AccountBalance(child);
-        if (b.Count > 0) balanceList.Add("         " + child.Name);
-        foreach (var st in b)
-          balanceList.Add("    " + st);
-      }
-    }
-
-  }
 }

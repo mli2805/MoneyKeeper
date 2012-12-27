@@ -166,6 +166,18 @@ namespace Keeper.ViewModels
       }
     }
 
+      public string AmountBeforeTransaction { get
+      {
+          Account balancedAccount;
+          if (SelectedTabIndex == 0) balancedAccount = TransactionInWork.Credit;
+          if (SelectedTabIndex == 1) balancedAccount = TransactionInWork.Debet;
+//          GetBalanceInCurrency()
+
+          return "  -  было до";
+      }}
+
+      public string AmountAfterTransaction { get { return "  -  стало после"; } }
+
     public bool IsInAddTransactionMode
     {
       get { return _isInAddTransactionMode; }
