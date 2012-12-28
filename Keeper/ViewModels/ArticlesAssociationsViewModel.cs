@@ -10,26 +10,26 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
-    class ArticlesAssociationsViewModel : Screen
+  class ArticlesAssociationsViewModel : Screen
+  {
+    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+
+    public ObservableCollection<ArticleAssociation> Rows { get; set; }
+
+
+
+    public ArticlesAssociationsViewModel()
     {
-        public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-
-        public ObservableCollection<ArticleAssociation> Rows { get; set; }
-
-
-
-        public ArticlesAssociationsViewModel()
-        {
-            Db.Accounts.Load();
-            Db.ArticlesAssociations.Load();
-            Rows = Db.ArticlesAssociations.Local;
-        }
-
-        protected override void OnViewLoaded(object view)
-        {
-            DisplayName = "Ассоциации категории";
-        }
-
-
+      Db.Accounts.Load();
+      Db.ArticlesAssociations.Load();
+      Rows = Db.ArticlesAssociations.Local;
     }
+
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = "Ассоциации категории";
+    }
+
+
+  }
 }

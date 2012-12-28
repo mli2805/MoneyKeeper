@@ -279,6 +279,12 @@ namespace Keeper.ViewModels
       if (!_isInTransactionSelectionProcess)
       {
         IsTransactionInWorkChanged = true;
+
+        if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход)
+        {
+          TransactionInWork.Article = AssociatedArticlesLists.GetAssociation(TransactionInWork.Debet);
+        }
+
         if (e.PropertyName == "Amount" || e.PropertyName == "Currency")
           NotifyOfPropertyChange(() => AmountInUsd);
         NotifyOfPropertyChange(() => DebetAccountBalance);
