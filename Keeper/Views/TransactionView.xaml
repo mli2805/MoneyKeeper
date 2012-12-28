@@ -37,28 +37,28 @@
           <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
           <Setter Property="BorderThickness" Value="0,0,0,1"/>
           <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-<!--          <Setter Property="Template">-->
-<!--            <Setter.Value>-->
-<!--              <ControlTemplate TargetType="{x:Type ListViewItem}">-->
-<!--                <Border BorderBrush="{TemplateBinding BorderBrush}" -->
-<!--                                        BorderThickness="{TemplateBinding BorderThickness}" -->
-<!--                                        Background="{TemplateBinding Background}">-->
-<!--                  <u:GridViewRowPresenterWithGridLines -->
-<!--                                        Columns="{TemplateBinding GridView.ColumnCollection}"-->
-<!--                                        Margin="{TemplateBinding Padding}" />-->
-<!--                </Border>-->
-<!--              </ControlTemplate>-->
-<!--            </Setter.Value>-->
-<!--          </Setter>-->
-<!--          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>-->
-<!--          <Style.Triggers>-->
-<!--            <Trigger Property="IsSelected" Value="True">-->
-<!--              <Setter Property="Background" Value="#FFB0E0FF"/>-->
-<!--            </Trigger>-->
-<!--            <Trigger Property="IsEnabled" Value="False">-->
-<!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
-<!--            </Trigger>-->
-<!--          </Style.Triggers>-->
+          <!--          <Setter Property="Template">-->
+          <!--            <Setter.Value>-->
+          <!--              <ControlTemplate TargetType="{x:Type ListViewItem}">-->
+          <!--                <Border BorderBrush="{TemplateBinding BorderBrush}" -->
+          <!--                                        BorderThickness="{TemplateBinding BorderThickness}" -->
+          <!--                                        Background="{TemplateBinding Background}">-->
+          <!--                  <u:GridViewRowPresenterWithGridLines -->
+          <!--                                        Columns="{TemplateBinding GridView.ColumnCollection}"-->
+          <!--                                        Margin="{TemplateBinding Padding}" />-->
+          <!--                </Border>-->
+          <!--              </ControlTemplate>-->
+          <!--            </Setter.Value>-->
+          <!--          </Setter>-->
+          <!--          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>-->
+          <!--          <Style.Triggers>-->
+          <!--            <Trigger Property="IsSelected" Value="True">-->
+          <!--              <Setter Property="Background" Value="#FFB0E0FF"/>-->
+          <!--            </Trigger>-->
+          <!--            <Trigger Property="IsEnabled" Value="False">-->
+          <!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
+          <!--            </Trigger>-->
+          <!--          </Style.Triggers>-->
         </Style>
       </ListView.ItemContainerStyle>
       <ListView.ContextMenu>
@@ -86,7 +86,7 @@
     <Grid Grid.Row="1">
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
-<!--        <RowDefinition Height="20"/>-->
+        <!--        <RowDefinition Height="20"/>-->
         <RowDefinition Height="40"/>
         <RowDefinition Height="10"/>
       </Grid.RowDefinitions>
@@ -105,8 +105,8 @@
             <ComboBox Name="IncomeDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding AccountsWhoGivesMeMoney}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Куда" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+            <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
@@ -133,8 +133,8 @@
             <ComboBox Name="ExpenseDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccountsForShopping}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Кому" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+            <Label Content="Кому" HorizontalAlignment="Left" Margin="380,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="430,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding AccountsWhoTakesMyMoney}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
@@ -161,8 +161,8 @@
             <ComboBox Name="TransferDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Куда" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="TransferCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+            <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="TransferCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
@@ -182,11 +182,11 @@
               <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Label Content="Кошелек" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
-            <ComboBox Name="ExchangeDebet" HorizontalAlignment="Left" Margin="75,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{Binding MyAccounts}"
-              SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Банк" HorizontalAlignment="Left" Margin="250,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="ExchangeCredit" HorizontalAlignment="Left" Margin="290,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+            <ComboBox Name="ExchangeDebet" HorizontalAlignment="Left" Margin="70,0,0,0" Grid.Row="1" Background="White" 
+                      VerticalAlignment="Center" Width="150"
+              ItemsSource="{Binding MyAccounts}" SelectedItem="{Binding TransactionInWork.Debet}" />
+            <Label Content="Банк" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="ExchangeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding BankAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="Сдано" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
@@ -207,11 +207,15 @@
       </TabControl>
       <Label Name="AmountInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
              Height="30" Width="170" Margin="290,-35,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-      <Label Name="AmountBeforeTransaction" Content="dddd - было до проведения транзакции" 
-             Height="30" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="470,75,0,0"/>
-            <Label Name="AmountAfterTransaction" Content="dddd - стало после проведения транзакции" 
-             Height="30" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="470,100,0,0"/>
-            <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,0,0,0" Grid.Row="1" 
+
+      <Label Name="DebetAccountBalance" Content="ddd ddd ddd - стало после "
+             Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="235,40,0,0"/>
+      <Label Name="DebetAccountBalanceSecondCurrency" Content="ddd ddd ddd - стало после "
+             Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="235,57,0,0"/>
+      <Label Name="CreditAccountBalance" Content="ddd ddd ddd - стало после"
+              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="610,40,0,0"/>
+
+      <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,0,0,0" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
         <Grid>
           <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">

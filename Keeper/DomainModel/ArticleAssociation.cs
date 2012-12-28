@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Keeper.DomainModel
 {
-    public class ArticleAssociation
-    {
-        public int Id { get; set; }
-        public Account ExternalAccount { get; set; }
-        public Account AssociatedArticle { get; set; }
+  public class ArticleAssociation
+  {
+    public int Id { get; set; }
+    public Account ExternalAccount { get; set; }
+    public Account AssociatedArticle { get; set; }
 
-        public string ToDumpWithNames()
-        {
-            return ExternalAccount + " ; " + AssociatedArticle;
-        }
+    public string ToDumpWithNames()
+    {
+      return ExternalAccount + " ; " + AssociatedArticle;
     }
+  }
 
 }

@@ -169,9 +169,12 @@ namespace Keeper.DomainModel
     public string ToDumpWithNames()
     {
       var s = Timestamp + " ; " + Operation + " ; " +
-             Debet + " ; " + Credit + " ; " +
-             Amount + " ; " + Currency + " ; " + Amount2 + " ; " + Currency2 + " ; " +
-             Article + " ; " + Comment;
+              Debet + " ; " + Credit + " ; " +
+              Amount + " ; " + Currency + " ; " + Amount2 + " ; ";
+             
+      if (Currency2 == null || Currency2 == 0) s = s + "null"; else s = s + Currency2;
+
+      s = s + " ; " + Article + " ; " + Comment;
 
       return s;
     }
