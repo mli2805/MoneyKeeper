@@ -280,10 +280,10 @@ namespace Keeper.ViewModels
       {
         IsTransactionInWorkChanged = true;
 
-        if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход)
-        {
+        if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
           TransactionInWork.Article = AssociatedArticlesLists.GetAssociation(TransactionInWork.Debet);
-        }
+        if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
+          TransactionInWork.Article = AssociatedArticlesLists.GetAssociation(TransactionInWork.Credit);
 
         if (e.PropertyName == "Amount" || e.PropertyName == "Currency")
           NotifyOfPropertyChange(() => AmountInUsd);
