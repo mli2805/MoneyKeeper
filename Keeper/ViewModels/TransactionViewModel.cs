@@ -293,6 +293,12 @@ namespace Keeper.ViewModels
       }
     }
 
+    protected override void OnDeactivate(bool close)
+    {
+      if (IsInAddTransactionMode) DeleteTransaction();
+      base.OnDeactivate(close);
+    }
+
     public void MoveTransactionUp()
     {
       var currentTransaction = SelectedTransaction;

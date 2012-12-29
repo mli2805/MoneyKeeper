@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance ViewModels:ArticlesAssociationsViewModel}"
-        Height="500" Width="400">
+        Height="500" Width="420">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
@@ -20,7 +20,6 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
         <DataGrid x:Name="IncomesGrid" Margin="5" Padding="1" 

@@ -49,10 +49,10 @@ namespace Keeper.ViewModels
 
     public static Account GetAssociation(Account account)
     {
-      var article = (from association in Db.ArticlesAssociations.Local
-                    where association.ExternalAccount == account
-                    select association).FirstOrDefault();
-      return article == null ? null : article.AssociatedArticle;
+      var association = (from a in Db.ArticlesAssociations.Local
+                         where a.ExternalAccount == account
+                         select a).FirstOrDefault();
+      return association == null ? null : association.AssociatedArticle;
     }
 
   }

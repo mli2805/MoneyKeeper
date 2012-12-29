@@ -179,9 +179,6 @@
 
     <StatusBar Margin="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" 
                Background="White" BorderBrush="Gray"/>
-    <Button Name="TemporaryLoadTransactionsView" Background="White" Content="Операции    (Временная кнопка)" Padding="10"
-            Grid.Column="2" HorizontalAlignment="Center" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" 
-            Height="104" Grid.ColumnSpan="3"/>
 
     <ListView Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,5" Grid.Row="1" 
               ItemsSource="{Binding BalanceList}">
