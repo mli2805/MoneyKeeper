@@ -175,8 +175,8 @@
         </TreeView>
       </TabItem>
     </TabControl>
-    <ListView Grid.Column="2" HorizontalAlignment="Left" Margin="0,0,0,135" Grid.Row="1" 
-              ItemsSource="{Binding BalanceList}" Width="310" BorderBrush="LightGray">
+    <ListView Grid.Column="2" HorizontalAlignment="Left" Margin="0,0,0,140" Grid.Row="1" 
+              ItemsSource="{Binding BalanceList}" Width="310" BorderBrush="DarkGray">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="{Binding SelectedAccount}" Width="300"/>
@@ -184,13 +184,14 @@
       </ListView.View>
     </ListView>
 
-    <Grid Grid.Column="2" Grid.Row="1" VerticalAlignment="Bottom" Height="130">
+    <Grid Grid.Column="2" Grid.Row="1" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5">
       <Grid.RowDefinitions>
         <RowDefinition Height="30" />
         <RowDefinition Height="50" />
         <RowDefinition Height="40" />
         <RowDefinition Height="10" />
       </Grid.RowDefinitions>
+      <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="4"></Rectangle>
       <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
       <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding BalanceDate, Mode=TwoWay}" />
       <Button Name="DecreaseOneDay" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
@@ -202,16 +203,16 @@
 
       <Button Name="IncreaseOneDay" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,70,0"
               Height="20" Width="25" Content="+Д" Background="White" FontSize="9" />
-      <Button Name="InscreaseOneMonth" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0"
+      <Button Name="IncreaseOneMonth" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0"
               Height="20" Width="25" Content="+М" Background="White" FontSize="9" />
-      <Button Name="InscreaseOneYear" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
+      <Button Name="IncreaseOneYear" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
               Height="20" Width="25" Content="+Г" Background="White" FontSize="9" />
 
 
       <Button Name="TodayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-              Height="30" Width="80" Content="Сегодня" Background="White" FontSize="9" />
+              Height="30" Width="80" Content="Сегодня" Background="White" />
       <Button Name="YesterdayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
-              Height="30" Width="80" Content="Вчера" Background="White" FontSize="9" />
+              Height="30" Width="80" Content="Вчера" Background="White" />
       <Button Name="LastMonthEndBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
               Height="30" Width="80" Background="White" >
         <ContentControl >
@@ -220,8 +221,8 @@
               <RowDefinition/>
               <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Конец прошлого" HorizontalAlignment="Center" FontSize="9"/>
-            <TextBlock Text="месяца" Grid.Row="1" HorizontalAlignment="Center" FontSize="9"/>
+            <TextBlock Text="Конец про-" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+            <TextBlock Text="шлого месяца" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
           </Grid>
         </ContentControl>
       </Button>

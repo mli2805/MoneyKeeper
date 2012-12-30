@@ -62,7 +62,7 @@ namespace Keeper.ViewModels
       set
       {
         _selectedAccount = value;
-          var period = new Period(new DateTime(0),new DateTime(9999,12,31,23,59,59));
+        var period = new Period(new DateTime(0),BalanceDate);
         Balance.CountBalances(SelectedAccount, period, BalanceList);
         NotifyOfPropertyChange(() => SelectedAccount);
       }
@@ -298,7 +298,21 @@ namespace Keeper.ViewModels
         if (value.Equals(_balanceDate)) return;
         _balanceDate = value;
         NotifyOfPropertyChange(() => BalanceDate);
+        var period = new Period(new DateTime(0), BalanceDate);
+        Balance.CountBalances(SelectedAccount, period, BalanceList);
       }
     }
+
+    public void TodayBalance() { BalanceDate = DateTime.Today; }
+    public void YesterdayBalance() { BalanceDate = DateTime.Today.AddDays(-1); }
+    public void LastMonthEndBalance() { BalanceDate = BalanceDate.AddDays(-BalanceDate.Day); }
+
+    public void DecreaseOneDay() { BalanceDate = BalanceDate.AddDays(-1); }
+    public void DecreaseOneMonth() { BalanceDate = BalanceDate.AddMonths(-1); }
+    public void DecreaseOneYear() { BalanceDate = BalanceDate.AddYears(-1); }
+
+    public void IncreaseOneDay() { BalanceDate = BalanceDate.AddDays(1); }
+    public void IncreaseOneMonth() { BalanceDate = BalanceDate.AddMonths(1); }
+    public void IncreaseOneYear() { BalanceDate = BalanceDate.AddYears(1); }
   }
 }

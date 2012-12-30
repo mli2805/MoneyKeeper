@@ -19,7 +19,7 @@ namespace Keeper.Utils
 
         public bool IsDateIn(DateTime checkDate)
         {
-            if (checkDate >= _start && checkDate < _finish) return true;
+            if (checkDate.Date >= _start.Date && checkDate.Date <= _finish.Date) return true;
             else return false;
         }
     }
