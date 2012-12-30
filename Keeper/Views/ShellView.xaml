@@ -175,60 +175,126 @@
         </TreeView>
       </TabItem>
     </TabControl>
-    <ListView Grid.Column="2" HorizontalAlignment="Left" Margin="0,0,0,140" Grid.Row="1" 
-              ItemsSource="{Binding BalanceList}" Width="310" BorderBrush="DarkGray">
-      <ListView.View>
-        <GridView>
-          <GridViewColumn Header="{Binding SelectedAccount}" Width="300"/>
-        </GridView>
-      </ListView.View>
-    </ListView>
 
-    <Grid Grid.Column="2" Grid.Row="1" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5">
+    <Grid  Grid.Column="2" Grid.Row="1">
       <Grid.RowDefinitions>
-        <RowDefinition Height="30" />
-        <RowDefinition Height="50" />
-        <RowDefinition Height="40" />
-        <RowDefinition Height="10" />
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
-      <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="4"></Rectangle>
-      <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-      <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding BalanceDate, Mode=TwoWay}" />
-      <Button Name="DecreaseOneDay" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
+      <ListView Margin="0,0,0,5" ItemsSource="{Binding BalanceList}" Width="310" BorderBrush="DarkGray">
+        <ListView.View>
+          <GridView>
+            <GridViewColumn Header="{Binding SelectedAccount}" Width="300"/>
+          </GridView>
+        </ListView.View>
+      </ListView>
+      <Grid Visibility="{Binding PaymentsPeriodChoise}"  VerticalAlignment="Bottom" Height="200" Margin="0,0,0,5" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="6"></Rectangle>
+        <TextBlock Text="Показать обороты за:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+                    Text="{Binding PaymentsStartDate, Mode=TwoWay}" />
+        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
+                    Text="{Binding PaymentsFinishDate, Mode=TwoWay}" />
+
+        <Button Name="OneDayBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"
+              Height="20" Width="35" Content="-Д" Background="White" FontSize="9" />
+        <Button Name="OneMonthBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0"
+              Height="20" Width="35" Content="-М" Background="White" FontSize="9" />
+        <Button Name="OneYearBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+              Height="20" Width="35" Content="-Г" Background="White" FontSize="9" />
+
+        <Button Name="OneDayAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0"
+              Height="20" Width="35" Content="+Д" Background="White" FontSize="9" />
+        <Button Name="OneMonthAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,60,0"
+              Height="20" Width="35" Content="+М" Background="White" FontSize="9" />
+        <Button Name="OneYearAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
+              Height="20" Width="35" Content="+Г" Background="White" FontSize="9" />
+
+
+        <Button Name="TodayPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
+              Height="30" Width="85" Content="Сегодня" Background="White" />
+        <Button Name="YesterdayPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
+              Height="30" Width="85" Content="Вчера" Background="White" />
+        
+        <Button Name="ThisMonthPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
+              Height="30" Width="86" Content="Этот месяц" Background="White" />
+        <Button Name="LastMonthPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
+              Height="30" Width="86" Background="White" >
+          <ContentControl >
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <TextBlock Text="Прошлый" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+              <TextBlock Text="месяц" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+            </Grid>
+          </ContentControl>
+        </Button>
+
+        <Button Name="ThisYearPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
+              Height="30" Width="85" Content="Этот год" Background="White" />
+        <Button Name="LastYearPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
+              Height="30" Width="85" Content="Прошлый год" Background="White" />
+ 
+
+      </Grid>
+      <Grid Visibility="{Binding BalancePeriodChoise}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30" />
+          <RowDefinition Height="50" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="4"></Rectangle>
+        <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding BalanceDate, Mode=TwoWay}" />
+        <Button Name="OneDayBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
               Height="20" Width="25" Content="-Д" Background="White" FontSize="9" />
-      <Button Name="DecreaseOneMonth" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0"
+        <Button Name="OneMonthBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0"
               Height="20" Width="25" Content="-М" Background="White" FontSize="9" />
-      <Button Name="DecreaseOneYear" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
+        <Button Name="OneYearBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
               Height="20" Width="25" Content="-Г" Background="White" FontSize="9" />
 
-      <Button Name="IncreaseOneDay" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,70,0"
+        <Button Name="OneDayAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,70,0"
               Height="20" Width="25" Content="+Д" Background="White" FontSize="9" />
-      <Button Name="IncreaseOneMonth" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0"
+        <Button Name="OneMonthAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0"
               Height="20" Width="25" Content="+М" Background="White" FontSize="9" />
-      <Button Name="IncreaseOneYear" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
+        <Button Name="OneYearAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
               Height="20" Width="25" Content="+Г" Background="White" FontSize="9" />
 
 
-      <Button Name="TodayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+        <Button Name="TodayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
               Height="30" Width="80" Content="Сегодня" Background="White" />
-      <Button Name="YesterdayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
+        <Button Name="YesterdayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
               Height="30" Width="80" Content="Вчера" Background="White" />
-      <Button Name="LastMonthEndBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
+        <Button Name="LastMonthEndBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
               Height="30" Width="80" Background="White" >
-        <ContentControl >
-          <Grid>
-            <Grid.RowDefinitions>
-              <RowDefinition/>
-              <RowDefinition/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Конец про-" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
-            <TextBlock Text="шлого месяца" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
-          </Grid>
-        </ContentControl>
-      </Button>
+          <ContentControl >
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <TextBlock Text="Конец про-" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+              <TextBlock Text="шлого месяца" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+            </Grid>
+          </ContentControl>
+        </Button>
 
+      </Grid>
     </Grid>
-    
+
+
     <StatusBar Margin="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" BorderThickness="1" 
                Background="White" BorderBrush="Gray"/>
   </Grid>

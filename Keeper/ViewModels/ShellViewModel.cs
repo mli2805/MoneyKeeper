@@ -34,6 +34,10 @@ namespace Keeper.ViewModels
     private Account _selectedAccount;
     private int _openedAccountPage;
     private DateTime _balanceDate;
+    private Visibility _balancePeriodChoise;
+    private Visibility _paymentsPeriodChoise;
+    private DateTime _paymentsStartDate;
+    private DateTime _paymentsFinishDate;
 
     public string Message
     {
@@ -74,6 +78,16 @@ namespace Keeper.ViewModels
       set
       {
         _openedAccountPage = value;
+        if (value == 0)
+        {
+          BalancePeriodChoise = Visibility.Visible;
+          PaymentsPeriodChoise = Visibility.Collapsed;
+        } 
+        else 
+        { 
+          BalancePeriodChoise = Visibility.Collapsed;
+          PaymentsPeriodChoise = Visibility.Visible;
+        } 
         var a = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
         SelectedAccount = a;
       }
@@ -156,6 +170,8 @@ namespace Keeper.ViewModels
       InitVariablesToShowAccounts();
       OpenedAccountPage = 0;
       BalanceDate = DateTime.Today;
+      PaymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
+      PaymentsFinishDate = DateTime.Today;
     }
 
     private void InitVariablesToShowAccounts()
@@ -305,14 +321,110 @@ namespace Keeper.ViewModels
 
     public void TodayBalance() { BalanceDate = DateTime.Today; }
     public void YesterdayBalance() { BalanceDate = DateTime.Today.AddDays(-1); }
-    public void LastMonthEndBalance() { BalanceDate = BalanceDate.AddDays(-BalanceDate.Day); }
+    public void LastMonthEndBalance() { BalanceDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1); }
 
-    public void DecreaseOneDay() { BalanceDate = BalanceDate.AddDays(-1); }
-    public void DecreaseOneMonth() { BalanceDate = BalanceDate.AddMonths(-1); }
-    public void DecreaseOneYear() { BalanceDate = BalanceDate.AddYears(-1); }
+    public void OneDayBeforeBalance() { BalanceDate = BalanceDate.AddDays(-1); }
+    public void OneMonthBeforeBalance() { BalanceDate = BalanceDate.AddMonths(-1); }
+    public void OneYearBeforeBalance() { BalanceDate = BalanceDate.AddYears(-1); }
 
-    public void IncreaseOneDay() { BalanceDate = BalanceDate.AddDays(1); }
-    public void IncreaseOneMonth() { BalanceDate = BalanceDate.AddMonths(1); }
-    public void IncreaseOneYear() { BalanceDate = BalanceDate.AddYears(1); }
+    public void OneDayAfterBalance() { BalanceDate = BalanceDate.AddDays(1); }
+    public void OneMonthAfterBalance() { BalanceDate = BalanceDate.AddMonths(1); }
+    public void OneYearAfterBalance() { BalanceDate = BalanceDate.AddYears(1); }
+
+    public DateTime PaymentsStartDate
+    {
+      get { return _paymentsStartDate; }
+      set
+      {
+        if (value.Equals(_paymentsStartDate)) return;
+        _paymentsStartDate = value;
+        NotifyOfPropertyChange(() => PaymentsStartDate);
+        var period = new Period(PaymentsStartDate, PaymentsFinishDate);
+        Balance.CountBalances(SelectedAccount, period, BalanceList);
+      }
+    }
+
+    public DateTime PaymentsFinishDate
+    {
+      get { return _paymentsFinishDate; }
+      set
+      {
+        if (value.Equals(_paymentsFinishDate)) return;
+        _paymentsFinishDate = value;
+        NotifyOfPropertyChange(() => PaymentsFinishDate);
+        var period = new Period(PaymentsStartDate, PaymentsFinishDate);
+        Balance.CountBalances(SelectedAccount, period, BalanceList);
+      }
+    }
+
+    public void TodayPayments() { PaymentsStartDate = DateTime.Today; PaymentsFinishDate = DateTime.Today; }
+    public void YesterdayPayments() { PaymentsStartDate = DateTime.Today.AddDays(-1); PaymentsFinishDate = DateTime.Today.AddDays(-1); }
+    public void ThisMonthPayments()
+    {
+      PaymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
+      PaymentsFinishDate = DateTime.Today;
+    }
+    public void LastMonthPayments()
+    {
+      PaymentsFinishDate = DateTime.Today.AddDays(-DateTime.Today.Day);
+      PaymentsStartDate = PaymentsFinishDate.AddDays(-PaymentsFinishDate.Day + 1);
+    }
+    public void ThisYearPayments()
+    {
+      PaymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.DayOfYear + 1);
+      PaymentsFinishDate = DateTime.Today;
+    }
+    public void LastYearPayments()
+    {
+      PaymentsFinishDate = DateTime.Today.AddDays(-DateTime.Today.DayOfYear);
+      PaymentsStartDate = PaymentsFinishDate.AddDays(-PaymentsFinishDate.DayOfYear + 1);
+    }
+    public void OneDayBeforePayments() { PaymentsStartDate = PaymentsStartDate.AddDays(-1); PaymentsFinishDate = PaymentsFinishDate.AddDays(-1); }
+    public void OneMonthBeforePayments()
+    {
+      PaymentsStartDate = PaymentsStartDate.AddMonths(-1);
+      PaymentsFinishDate = IsLastDayOfMonth(PaymentsFinishDate) ? PaymentsFinishDate.AddDays(-PaymentsFinishDate.Day) : PaymentsFinishDate.AddMonths(-1);
+    }
+
+    public void OneYearBeforePayments() { PaymentsStartDate = PaymentsStartDate.AddYears(-1); PaymentsFinishDate = PaymentsFinishDate.AddYears(-1); }
+    public void OneDayAfterPayments() { PaymentsStartDate = PaymentsStartDate.AddDays(1); PaymentsFinishDate = PaymentsFinishDate.AddDays(1); }
+    public void OneMonthAfterPayments()
+    {
+      PaymentsStartDate = PaymentsStartDate.AddMonths(1);
+      if (IsLastDayOfMonth(PaymentsFinishDate))
+      {
+        PaymentsFinishDate = PaymentsFinishDate.AddMonths(2);
+        PaymentsFinishDate = PaymentsFinishDate.AddDays(-PaymentsFinishDate.Day);
+      }
+      else PaymentsFinishDate = PaymentsFinishDate.AddMonths(1);
+    }
+
+    public void OneYearAfterPayments() { PaymentsStartDate = PaymentsStartDate.AddYears(1); PaymentsFinishDate = PaymentsFinishDate.AddYears(1); }
+
+    public Visibility BalancePeriodChoise 
+    {
+      get { return _balancePeriodChoise; }
+      set
+      {
+        if (Equals(value, _balancePeriodChoise)) return;
+        _balancePeriodChoise = value;
+        NotifyOfPropertyChange(() => BalancePeriodChoise);
+      }
+    }
+
+    public Visibility PaymentsPeriodChoise  
+    {
+      get { return _paymentsPeriodChoise; }
+      set
+      {
+        if (Equals(value, _paymentsPeriodChoise)) return;
+        _paymentsPeriodChoise = value;
+        NotifyOfPropertyChange(() => PaymentsPeriodChoise);
+      }
+    }
+
+    private bool IsLastDayOfMonth(DateTime date) { return date.Month != date.AddDays(1).Month; }
   }
+
+
 }
