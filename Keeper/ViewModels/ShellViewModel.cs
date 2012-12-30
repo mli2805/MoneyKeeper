@@ -33,6 +33,7 @@ namespace Keeper.ViewModels
     private string _message;
     private Account _selectedAccount;
     private int _openedAccountPage;
+    private DateTime _balanceDate;
 
     public string Message
     {
@@ -122,7 +123,6 @@ namespace Keeper.ViewModels
       {
         result = (from account in page
                   select account).FirstOrDefault();
-    //    result.IsSelected = true;
       }
       return result;
     }
@@ -155,6 +155,7 @@ namespace Keeper.ViewModels
 
       InitVariablesToShowAccounts();
       OpenedAccountPage = 0;
+      BalanceDate = DateTime.Today;
     }
 
     private void InitVariablesToShowAccounts()
@@ -289,6 +290,15 @@ namespace Keeper.ViewModels
     }
     #endregion
 
-
+    public DateTime BalanceDate 
+    {
+      get { return _balanceDate; }
+      set
+      {
+        if (value.Equals(_balanceDate)) return;
+        _balanceDate = value;
+        NotifyOfPropertyChange(() => BalanceDate);
+      }
+    }
   }
 }
