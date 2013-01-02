@@ -198,7 +198,7 @@
               SelectedItem="{Binding TransactionInWork.Currency}" />
             <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount2, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount2, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency2}" />
@@ -207,7 +207,7 @@
         </TabItem>
       </TabControl>
       <Label Name="AmountInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
-             Height="30" Width="170" Margin="290,-35,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+             Height="30" Width="430" Margin="70,-35,0,0" Grid.Row="1" VerticalAlignment="Top"/>
 
       <Label Name="DebetAccountBalance" Content="ddd ddd ddd - стало после "
              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="235,40,0,0"/>
@@ -228,7 +228,7 @@
       </Button>
       <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,2,0,0" Grid.Row="1" 
                   VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
-                  Text="{Binding TransactionInWork.Timestamp, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" />
+                  Text="{Binding TransactionInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" />
       <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,0,0,0" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
         <Grid>
@@ -241,7 +241,7 @@
       </Button>
       <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
       <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Comment}">
+                 Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}">
       </TextBox>
     </Grid>
     <StackPanel Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" >

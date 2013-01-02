@@ -66,7 +66,7 @@ namespace Keeper.ViewModels
       set
       {
         _selectedAccount = value;
-        var period = new Period(new DateTime(0),BalanceDate);
+        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0),BalanceDate) : new Period(PaymentsStartDate,PaymentsFinishDate);
         Balance.CountBalances(SelectedAccount, period, BalanceList);
         NotifyOfPropertyChange(() => SelectedAccount);
       }
@@ -259,6 +259,8 @@ namespace Keeper.ViewModels
       String arcMessage = Message;
       Message = "Input operations";
       WindowManager.ShowDialog(new TransactionViewModel());
+      Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
+      Balance.CountBalances(SelectedAccount, period, BalanceList);
       Message = arcMessage;
     }
 

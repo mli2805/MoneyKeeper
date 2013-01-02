@@ -7,7 +7,7 @@
  * 7. Запрещенные клавиши DatePicker нарисовать иначе
  * 8. Отображение входящего и исходящего в результате транзакции остатка по кошельку - сделать чтобы 0 отображался
  * 9. При смене типа операции проверять на соответствие значений типу операции ИЛИ при сохранении ?
- * 10. Amount по курсу - для обмена придумать что-то более логичное/красиво расположенное
+ * 11. 
 */
 # endregion
 
@@ -154,21 +154,39 @@ namespace Keeper.ViewModels
     public bool CanSaveTransactionChanges { get; set; }
     public bool CanCancelTransactionChanges { get; set; }
 
+    private string GetUsdEquivalent(Decimal amount, CurrencyCodes currency, DateTime timestamp)
+    {
+      var rate = new CurrencyRate();
+      rate = Db.CurrencyRates.Local.FirstOrDefault(
+        currencyRate => ((currencyRate.BankDay.Date == timestamp.Date) && (currencyRate.Currency == currency)));
+
+      if (rate == null) return "не задан курс " + currency + " на эту дату";
+
+      var res = (amount / (decimal)rate.Rate).ToString("F2") + "$ по курсу " + rate.Rate;
+      if (currency == CurrencyCodes.EUR) res = (amount * (decimal)rate.Rate).ToString("F2") + "$ по курсу " + rate.Rate + " (" + (1 / rate.Rate).ToString("F3") + ")";
+      return res;
+    }
+
     public string AmountInUsd
     {
       get
       {
-        if (TransactionInWork.Currency == CurrencyCodes.USD) return "";
-        var rate = new CurrencyRate();
+        // одинарные операции не долларах
+        if (TransactionInWork.Currency == CurrencyCodes.USD && SelectedTabIndex != 3) return "";
+        const string res0 = "                                                                                ";
 
-        rate =
-          Db.CurrencyRates.Local.FirstOrDefault(
-            currencyRate => ((currencyRate.BankDay.Date == TransactionInWork.Timestamp.Date) && (currencyRate.Currency == TransactionInWork.Currency)));
+        var res1 = GetUsdEquivalent(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
+        // одинарные операции не в остальных валютах
+        if (SelectedTabIndex != 3) return res0 + res1;
 
-        if (rate == null) return "отсутствует курс на эту дату";
-        var res = (TransactionInWork.Amount / (decimal)rate.Rate).ToString("F2") + "$ по курсу " + rate.Rate;
-        if (TransactionInWork.Currency == CurrencyCodes.EUR) res = res + " (" + (1 / rate.Rate).ToString("F3") + ")";
-        return res;
+        if (TransactionInWork.Currency2 == null) TransactionInWork.Currency2 = CurrencyCodes.BYR;
+        var res2 = GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
+        // обменные операции: доллары на другую валюту
+        if (SelectedTabIndex == 3 && TransactionInWork.Currency == CurrencyCodes.USD) return res0 + res2;
+        // обменные операции: другая валюта на доллары
+        if (SelectedTabIndex == 3 && TransactionInWork.Currency2 == CurrencyCodes.USD) return res1;
+        // обменные операции: не доллары на не доллары
+        return res1 + "                                 " + res2;
       }
     }
 
@@ -190,12 +208,12 @@ namespace Keeper.ViewModels
     {
       get
       {
-        if (TransactionInWork.Debet == null || TransactionInWork.Operation != OperationType.Обмен 
+        if (TransactionInWork.Debet == null || TransactionInWork.Operation != OperationType.Обмен
                                                            || TransactionInWork.Currency2 == null) return "";
 
         var period = new Period(new DateTime(0), TransactionInWork.Timestamp);
-        var balanceBefore = 
-          Balance.GetBalanceInCurrency(TransactionInWork.Debet, period, (CurrencyCodes) TransactionInWork.Currency2);
+        var balanceBefore =
+          Balance.GetBalanceInCurrency(TransactionInWork.Debet, period, (CurrencyCodes)TransactionInWork.Currency2);
 
         return String.Format("{0:#,#} {2} -> {1:#,#} {2}",
              balanceBefore, balanceBefore + TransactionInWork.Amount2, TransactionInWork.Currency2.ToString().ToLower());
@@ -211,7 +229,7 @@ namespace Keeper.ViewModels
         var period = new Period(new DateTime(0), TransactionInWork.Timestamp);
         var balanceBefore = Balance.GetBalanceInCurrency(TransactionInWork.Credit, period, TransactionInWork.Currency);
 
-        return String.Format("{0:#,#} {2} -> {1:#,#} {2}", 
+        return String.Format("{0:#,#} {2} -> {1:#,#} {2}",
              balanceBefore, balanceBefore + TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
       }
     }
@@ -282,7 +300,7 @@ namespace Keeper.ViewModels
         if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
           TransactionInWork.Article = AssociatedArticlesLists.GetAssociation(TransactionInWork.Credit);
 
-        if (e.PropertyName == "Amount" || e.PropertyName == "Currency")
+        if (e.PropertyName == "Amount" || e.PropertyName == "Currency" || e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
           NotifyOfPropertyChange(() => AmountInUsd);
         NotifyOfPropertyChange(() => DebetAccountBalance);
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
