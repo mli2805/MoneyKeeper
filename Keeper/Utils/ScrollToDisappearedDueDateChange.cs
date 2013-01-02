@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
-using System.Windows.Threading;
+
 
 namespace Keeper.Utils
 {
-  class ScrollToBottomOnAddBehavior : Behavior<ListView>
+  class ScrollToDisappearedDueDateChange : Behavior<ListView>
   {
+    private int i = -1;
     protected override void OnAttached()
     {
       INotifyCollectionChanged itemCollection = AssociatedObject.Items;
@@ -20,10 +21,13 @@ namespace Keeper.Utils
 
     private void ItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
-      var rows = (ItemCollection)sender;
-      if (args.Action == NotifyCollectionChangedAction.Add)
-        if (args.NewStartingIndex == rows.Count-1)
-          AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+      if (i != AssociatedObject.SelectedIndex)
+      {
+        AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.SelectedIndex]);
+      }
+
+      i = AssociatedObject.SelectedIndex;
     }
+
   }
 }

@@ -88,6 +88,7 @@
     <Compile Include="Utils\RestoreDb.cs" />
     <Compile Include="Utils\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Utils\ScrollToBottomOnLoadBehavior.cs" />
+    <Compile Include="Utils\ScrollToDisappearedDueDateChange.cs" />
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
