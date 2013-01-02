@@ -207,7 +207,7 @@
         </TabItem>
       </TabControl>
       <Label Name="AmountInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
-             Height="30" Width="430" Margin="72,-35,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+             Height="30" Width="430" Margin="75,-35,0,0" Grid.Row="1" VerticalAlignment="Top"/>
 
       <Label Name="DebetAccountBalance" Content="ddd ddd ddd - стало после "
              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="235,40,0,0"/>
