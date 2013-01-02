@@ -18,7 +18,6 @@ namespace Keeper.Utils
       AssociatedObject.Loaded +=AssociatedObjectOnLoaded;  // а здесь подписываюсь именно на то событие, по которому должно выполняться действие
     }
 
-
     /// <summary>
     ///  действия, которые я хочу чтобы выполнились
     /// </summary>

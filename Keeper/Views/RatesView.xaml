@@ -6,7 +6,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
-        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:u="clr-namespace:Keeper.Utils"
         Icon="/Keeper;component/Resources/currency_rates.ico" 
         d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}"
         SizeToContent="Height">
@@ -33,6 +34,9 @@
     <DataGrid x:Name="Grid"  Margin="5" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
+      <i:Interaction.Behaviors>
+        <u:ScrollToBottomOnLoadDatagridBehavior />
+      </i:Interaction.Behaviors>
       <DataGrid.Columns>
         <DataGridTextColumn Header="  Дата" SortDirection="Ascending"
                             Binding="{Binding BankDay, StringFormat='dddd, dd MMMM yyyy'}">
