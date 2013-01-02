@@ -19,7 +19,7 @@ namespace Keeper.ViewModels
 {
   [Export(typeof(IShell))]
   [Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
-  public class ShellViewModel : Screen, IShell
+  public class ShellViewModel : Screen, IShell, IPartImportsSatisfiedNotification
   {
     [Import]
     public IWindowManager WindowManager { get; set; }
@@ -116,32 +116,31 @@ namespace Keeper.ViewModels
 
     private Account FindSelectedOrAssignFirstAccountOnPage(int pageNumber)
     {
-      ObservableCollection<Account> page;
+      ObservableCollection<Account> collection;
       switch (pageNumber)
       {
         case 0:
-          page = MineAccountsRoot; break;
+          collection = MineAccountsRoot; break;
         case 1:
-          page = ExternalAccountsRoot; break;
+          collection = ExternalAccountsRoot; break;
         case 2:
-          page = IncomesRoot; break;
+          collection = IncomesRoot; break;
         case 3:
-          page = ExpensesRoot; break;
+          collection = ExpensesRoot; break;
         default:
-          page = MineAccountsRoot; break;
+          collection = MineAccountsRoot; break;
       }
 
-      var result = GetSelectedInCollection(page);
+      var result = GetSelectedInCollection(collection);
 
       if (result == null)
       {
-        result = (from account in page
-                  select account).FirstOrDefault();
+        result = (from account in collection
+                  select account).First();
+        result.IsSelected = true;
       }
       return result;
     }
-
-
     #endregion
 
     public ShellViewModel()
@@ -158,20 +157,23 @@ namespace Keeper.ViewModels
       callback(true);
     }
 
-    protected override void OnViewLoaded(object view)
+    public void OnImportsSatisfied()
     {
-      DisplayName = "Keeper 2012";
-      Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
-
       Db.Accounts.Load();  // загрузка с диска в оперативную
       Db.Transactions.Load();  // это должно происходить при загрузке главной формы
       Db.CurrencyRates.Load(); // пока эта форма главная
 
       InitVariablesToShowAccounts();
+      _balanceDate = DateTime.Today;
+      _paymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
+      _paymentsFinishDate = DateTime.Today;
       OpenedAccountPage = 0;
-      BalanceDate = DateTime.Today;
-      PaymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
-      PaymentsFinishDate = DateTime.Today;
+    }
+
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = "Keeper 2012";
+      Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
     }
 
     private void InitVariablesToShowAccounts()
@@ -424,6 +426,7 @@ namespace Keeper.ViewModels
     }
 
     private bool IsLastDayOfMonth(DateTime date) { return date.Month != date.AddDays(1).Month; }
+
   }
 
 
