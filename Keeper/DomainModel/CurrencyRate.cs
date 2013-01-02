@@ -30,7 +30,8 @@ namespace Keeper.DomainModel
       get
       {
         if (Currency == CurrencyCodes.EUR) return Math.Round(1 / Rate, 3).ToString();
-        else return Math.Round(Rate, 0).ToString();
+        else if (Currency == CurrencyCodes.BYR) return Math.Round(Rate, 0).ToString();
+        else return Rate.ToString();
       }
       set
       {

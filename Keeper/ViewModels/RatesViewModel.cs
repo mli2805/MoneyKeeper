@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Data;
@@ -59,6 +60,7 @@ namespace Keeper.ViewModels
       var view = CollectionViewSource.GetDefaultView(Rows);
 
       view.Filter +=OnFilter;
+      view.SortDescriptions.Add(new SortDescription("BankDay",ListSortDirection.Ascending));
     }
 
     protected override void OnViewLoaded(object view)

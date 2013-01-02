@@ -1,5 +1,5 @@
 ﻿<Window x:Class="Keeper.Views.RatesView"
-        Height="600" Width="1050" MaxHeight="700"
+        Height="500" Width="462" MaxHeight="700"
         xml:lang="ru-RU"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +7,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:u="clr-namespace:Keeper.Utils"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+        xmlns:u="clr-namespace:Keeper.Utils"
         Icon="/Keeper;component/Resources/currency_rates.ico" 
         d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}"
         SizeToContent="Height">
@@ -24,14 +25,11 @@
 
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="30"/>
       <RowDefinition Height="200*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition/>
-    </Grid.ColumnDefinitions>
-    <DataGrid x:Name="Grid"  Margin="5" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
+    <DataGrid x:Name="Grid"  Grid.Row="1" Margin="5" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <i:Interaction.Behaviors>
@@ -55,7 +53,6 @@
               <TextBlock Padding="5,0,5,0" Text="за 1"/>
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
-
         </DataGridTemplateColumn>
 
         <DataGridComboBoxColumn SelectedItemBinding ="{Binding CurrencyRight}" Width="70"
@@ -66,7 +63,7 @@
     <Expander Header="Удобный ввод новых курсов" HorizontalAlignment="Stretch"
               BorderBrush="CornflowerBlue" BorderThickness="1"
               IsExpanded="False" ExpandDirection="Down"
-              Grid.Row="1" Margin="5"   >
+              Grid.Row="2" Margin="5"   >
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="37*"/>
@@ -77,24 +74,19 @@
           <RowDefinition Height="30"/>
           <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Button Margin="5" Height="20" Width="30" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0">
+        <Button Margin="5" Height="20" Width="30" HorizontalAlignment="Center">
           <Polygon Points="5,15 15,15 10,8" Fill="Black"></Polygon>
         </Button>
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-
-        </TextBox>
-        <Button Margin="64.632,5,102,5"   Height="20" Width="30" Grid.Row="2" Grid.Column="0">
+        <TextBox Grid.Row="1" />
+        <Button Margin="5" Height="20" Width="30" Grid.Row="2">
           <Polygon Points="5,5 15,5 10,12" Fill="Black"></Polygon>
         </Button>
       </Grid>
     </Expander>
-
-    <ComboBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,35" Width="110"
+    <Label Content="Фильтр по валюте" Grid.Column="0" HorizontalAlignment="Left" Margin="7,0" VerticalAlignment="Top"/>
+    <ComboBox Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,5" Width="110"
               ItemsSource="{x:Static ViewModels:AllCurrencyRatesFilters.FilterList}"
               SelectedItem="{Binding SelectedFilter}">
-
     </ComboBox>
-    <Label Content="Фильтр по валюте" Grid.Column="1" HorizontalAlignment="Left" Margin="7,5" VerticalAlignment="Top"/>
-
   </Grid>
 </Window>
