@@ -4,7 +4,6 @@
  * 6. Горячие клавиши - Ins - вставить перед, Ctrl+Enter - вставить после, Ctrl+Del - удалить строку, 
  * Enter - завершить редактирование, Ctrl + стрелки вверх/вниз
  * 7. Запрещенные клавиши DatePicker нарисовать иначе
- * 8. Отображение входящего и исходящего в результате транзакции остатка по кошельку - сделать чтобы 0 отображался
  * 9. При смене типа операции проверять на соответствие значений типу операции ИЛИ при сохранении ?
  * 11. Ввод курсов валют совсем кривой
  * 12. Вертикальные полоски между столбцами ListView и цвет для выделенной строки
@@ -196,10 +195,10 @@ namespace Keeper.ViewModels
       {
         if (TransactionInWork.Debet == null || !TransactionInWork.Debet.IsDescendantOf("Мои")) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp);
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore = Balance.GetBalanceInCurrency(TransactionInWork.Debet, period, TransactionInWork.Currency);
 
-        return String.Format("{0:0,#} {2} -> {1:0,#} {2}",
+        return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
              balanceBefore, balanceBefore - TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
       }
     }
@@ -211,11 +210,11 @@ namespace Keeper.ViewModels
         if (TransactionInWork.Debet == null || TransactionInWork.Operation != OperationType.Обмен
                                                            || TransactionInWork.Currency2 == null) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp);
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore =
           Balance.GetBalanceInCurrency(TransactionInWork.Debet, period, (CurrencyCodes)TransactionInWork.Currency2);
 
-        return String.Format("{0:#,#} {2} -> {1:#,#} {2}",
+        return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
              balanceBefore, balanceBefore + TransactionInWork.Amount2, TransactionInWork.Currency2.ToString().ToLower());
       }
     }
@@ -226,10 +225,10 @@ namespace Keeper.ViewModels
       {
         if (TransactionInWork.Credit == null || !TransactionInWork.Credit.IsDescendantOf("Мои")) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp);
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore = Balance.GetBalanceInCurrency(TransactionInWork.Credit, period, TransactionInWork.Currency);
 
-        return String.Format("{0:#,#} {2} -> {1:#,#} {2}",
+        return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
              balanceBefore, balanceBefore + TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
       }
     }
