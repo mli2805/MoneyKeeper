@@ -94,8 +94,8 @@
         </Button>
       </Grid>
     </Expander>
-    <Label Content="Фильтр по валюте" Grid.Column="0" HorizontalAlignment="Left" Margin="67,5,0,0"/>
-    <ComboBox Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="195,5,0,0" Width="70"
+    <Label Content="Фильтр по валюте" HorizontalAlignment="Left" Margin="67,5,0,0"/>
+    <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="195,5,0,0" Width="70"
               ItemsSource="{x:Static ViewModels:AllCurrencyRatesFilters.FilterList}"
               SelectedItem="{Binding SelectedFilter}">
     </ComboBox>
