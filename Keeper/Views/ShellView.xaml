@@ -189,7 +189,7 @@
           </GridView>
         </ListView.View>
       </ListView>
-      <Grid Visibility="{Binding PaymentsPeriodChoise}"  VerticalAlignment="Bottom" Height="200" Margin="0,0,0,5" Grid.Row="1">
+      <Grid Visibility="{Binding PaymentsPeriodChoiseControls}"  VerticalAlignment="Bottom" Height="200" Margin="0,0,0,5" Grid.Row="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="30" />
           <RowDefinition Height="40" />
@@ -248,7 +248,7 @@
  
 
       </Grid>
-      <Grid Visibility="{Binding BalancePeriodChoise}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="2">
+      <Grid Visibility="{Binding BalancePeriodChoiseControls}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="2">
         <Grid.RowDefinitions>
           <RowDefinition Height="30" />
           <RowDefinition Height="50" />

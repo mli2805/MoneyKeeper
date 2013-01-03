@@ -26,7 +26,7 @@ namespace Keeper.Utils
     {
       var tempBalance = 
         (from t in Db.Transactions.Local
-         where period.IsDateIn(t.Timestamp) && 
+         where period.IsDateTimeIn(t.Timestamp) && 
                (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) ||
                (t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)))
          group t by t.Currency into g
@@ -38,7 +38,7 @@ namespace Keeper.Utils
         Concat
         (from t in Db.Transactions.Local
          // учесть вторую сторону обмена - приход денег в другой валюте
-         where t.Amount2 != 0 && period.IsDateIn(t.Timestamp) && 
+         where t.Amount2 != 0 && period.IsDateTimeIn(t.Timestamp) && 
                (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
                                            t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
          group t by t.Currency2 into g
@@ -60,7 +60,7 @@ namespace Keeper.Utils
     private static IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
     {
       return from t in Db.Transactions.Local
-             where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateIn(t.Timestamp)
+             where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
              group t by t.Currency into g
              select new BalancePair()
                         {

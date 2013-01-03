@@ -34,8 +34,8 @@ namespace Keeper.ViewModels
     private Account _selectedAccount;
     private int _openedAccountPage;
     private DateTime _balanceDate;
-    private Visibility _balancePeriodChoise;
-    private Visibility _paymentsPeriodChoise;
+    private Visibility _balancePeriodChoiseControls;
+    private Visibility _paymentsPeriodChoiseControls;
     private DateTime _paymentsStartDate;
     private DateTime _paymentsFinishDate;
 
@@ -80,13 +80,13 @@ namespace Keeper.ViewModels
         _openedAccountPage = value;
         if (value == 0)
         {
-          BalancePeriodChoise = Visibility.Visible;
-          PaymentsPeriodChoise = Visibility.Collapsed;
+          BalancePeriodChoiseControls = Visibility.Visible;
+          PaymentsPeriodChoiseControls = Visibility.Collapsed;
         } 
         else 
         { 
-          BalancePeriodChoise = Visibility.Collapsed;
-          PaymentsPeriodChoise = Visibility.Visible;
+          BalancePeriodChoiseControls = Visibility.Collapsed;
+          PaymentsPeriodChoiseControls = Visibility.Visible;
         } 
         var a = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
         SelectedAccount = a;
@@ -310,13 +310,16 @@ namespace Keeper.ViewModels
     }
     #endregion
 
+    // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
+    // свойства куда эти даты заносятся, свойства видимости этих групп контролов
+    #region 
     public DateTime BalanceDate 
     {
       get { return _balanceDate; }
       set
       {
         if (value.Equals(_balanceDate)) return;
-        _balanceDate = value;
+        _balanceDate = value.Date.AddDays(1).AddMilliseconds(-1);
         NotifyOfPropertyChange(() => BalanceDate);
         var period = new Period(new DateTime(0), BalanceDate);
         Balance.CountBalances(SelectedAccount, period, BalanceList);
@@ -354,7 +357,7 @@ namespace Keeper.ViewModels
       set
       {
         if (value.Equals(_paymentsFinishDate)) return;
-        _paymentsFinishDate = value;
+        _paymentsFinishDate = value.Date.AddDays(1).AddMilliseconds(-1);
         NotifyOfPropertyChange(() => PaymentsFinishDate);
         var period = new Period(PaymentsStartDate, PaymentsFinishDate);
         Balance.CountBalances(SelectedAccount, period, BalanceList);
@@ -405,29 +408,31 @@ namespace Keeper.ViewModels
 
     public void OneYearAfterPayments() { PaymentsStartDate = PaymentsStartDate.AddYears(1); PaymentsFinishDate = PaymentsFinishDate.AddYears(1); }
 
-    public Visibility BalancePeriodChoise 
+    public Visibility BalancePeriodChoiseControls 
     {
-      get { return _balancePeriodChoise; }
+      get { return _balancePeriodChoiseControls; }
       set
       {
-        if (Equals(value, _balancePeriodChoise)) return;
-        _balancePeriodChoise = value;
-        NotifyOfPropertyChange(() => BalancePeriodChoise);
+        if (Equals(value, _balancePeriodChoiseControls)) return;
+        _balancePeriodChoiseControls = value;
+        NotifyOfPropertyChange(() => BalancePeriodChoiseControls);
       }
     }
 
-    public Visibility PaymentsPeriodChoise  
+    public Visibility PaymentsPeriodChoiseControls  
     {
-      get { return _paymentsPeriodChoise; }
+      get { return _paymentsPeriodChoiseControls; }
       set
       {
-        if (Equals(value, _paymentsPeriodChoise)) return;
-        _paymentsPeriodChoise = value;
-        NotifyOfPropertyChange(() => PaymentsPeriodChoise);
+        if (Equals(value, _paymentsPeriodChoiseControls)) return;
+        _paymentsPeriodChoiseControls = value;
+        NotifyOfPropertyChange(() => PaymentsPeriodChoiseControls);
       }
     }
 
     private bool IsLastDayOfMonth(DateTime date) { return date.Month != date.AddDays(1).Month; }
+
+#endregion
 
   }
 

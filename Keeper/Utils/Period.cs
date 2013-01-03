@@ -17,10 +17,16 @@ namespace Keeper.Utils
             _finish = finish;
         }
 
-        public bool IsDateIn(DateTime checkDate)
+//        public bool IsDateIn(DateTime checkDate)
+//        {
+//            if (checkDate.Date >= _start.Date && checkDate.Date <= _finish.Date) return true;
+//            else return false;
+//        }
+
+      public bool IsDateTimeIn(DateTime checkDate)
         {
-            if (checkDate.Date >= _start.Date && checkDate.Date <= _finish.Date) return true;
-            else return false;
+          if (checkDate >= _start && checkDate <= _finish) return true;
+          else return false;
         }
     }
 }
