@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
@@ -36,6 +37,9 @@ namespace Keeper.ViewModels
 
 
     private CurrencyRatesFilter _selectedFilter;
+    private string _expanderHeader;
+    private bool _isInInputMode;
+
     public CurrencyRatesFilter SelectedFilter  
     {
       get { return _selectedFilter; }
@@ -51,9 +55,32 @@ namespace Keeper.ViewModels
 
     public ObservableCollection<CurrencyRate> Rows { get; set; }
 
+    public DateTime NewDate { get; set; }
+    public bool IsInInputMode 
+    {
+      get { return _isInInputMode; }
+      set
+      {
+        if (value.Equals(_isInInputMode)) return;
+        _isInInputMode = value;
+        ExpanderHeader = _isInInputMode ? "" : "Удобный способ ввода курсов валют";
+        NotifyOfPropertyChange(() => IsInInputMode);
+      }
+    }
+
+    public string ExpanderHeader
+    {
+      get { return _expanderHeader; }
+      set
+      {
+        if (value == _expanderHeader) return;
+        _expanderHeader = value;
+        NotifyOfPropertyChange(() => ExpanderHeader);
+      }
+    }
+
     public RatesViewModel()
     {
-//      Db.CurrencyRates.Load();
       Rows = Db.CurrencyRates.Local;
       SelectedFilter = AllCurrencyRatesFilters.FilterList.First(f => !f.IsOn);
 
@@ -61,6 +88,10 @@ namespace Keeper.ViewModels
 
       view.Filter +=OnFilter;
       view.SortDescriptions.Add(new SortDescription("BankDay",ListSortDirection.Ascending));
+
+      view.MoveCurrentToLast();
+      NewDate = ((CurrencyRate) view.CurrentItem).BankDay.Date.AddDays(1);
+      IsInInputMode = false;
     }
 
     protected override void OnViewLoaded(object view)
