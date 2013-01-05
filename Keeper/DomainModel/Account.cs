@@ -8,7 +8,7 @@ using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
-  public class Account : PropertyChangedBase
+  public class Account : PropertyChangedBase, IComparable
   {
 
     #region // свойства (properties) класса
@@ -117,6 +117,11 @@ namespace Keeper.DomainModel
     {
       if (Name == ancestor) return true;
       else return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
+    }
+
+    public int CompareTo(object obj)
+    {
+      return System.String.Compare(Name, ((Account) obj).Name, System.StringComparison.Ordinal);
     }
   }
 }

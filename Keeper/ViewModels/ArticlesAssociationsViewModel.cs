@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
@@ -16,13 +18,13 @@ namespace Keeper.ViewModels
 
     public ObservableCollection<ArticleAssociation> Rows { get; set; }
 
-
-
     public ArticlesAssociationsViewModel()
     {
       Db.Accounts.Load();
-      Db.ArticlesAssociations.Load();
       Rows = Db.ArticlesAssociations.Local;
+
+      var view = CollectionViewSource.GetDefaultView(Rows);
+      view.SortDescriptions.Add(new SortDescription("ExternalAccount", ListSortDirection.Ascending));
     }
 
     protected override void OnViewLoaded(object view)

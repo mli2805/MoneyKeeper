@@ -53,7 +53,7 @@ namespace Keeper.ViewModels
 
     public RatesViewModel()
     {
-      Db.CurrencyRates.Load();
+//      Db.CurrencyRates.Load();
       Rows = Db.CurrencyRates.Local;
       SelectedFilter = AllCurrencyRatesFilters.FilterList.First(f => !f.IsOn);
 

@@ -162,6 +162,7 @@ namespace Keeper.ViewModels
       Db.Accounts.Load();  // загрузка с диска в оперативную
       Db.Transactions.Load();  // это должно происходить при загрузке главной формы
       Db.CurrencyRates.Load(); // пока эта форма главная
+      Db.ArticlesAssociations.Load();
 
       InitVariablesToShowAccounts();
       _balanceDate = DateTime.Today;

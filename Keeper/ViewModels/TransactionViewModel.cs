@@ -239,7 +239,7 @@ namespace Keeper.ViewModels
       set
       {
         _isInAddTransactionMode = value;
-        CanEditDate = !value;
+        if (!value) CanEditDate = true;
       }
     }
 
@@ -374,7 +374,7 @@ namespace Keeper.ViewModels
       if (TransactionInWork.Operation != OperationType.Обмен)
       {
         TransactionInWork.Amount2 = 0;
-        TransactionInWork.Currency2 = 0;
+        TransactionInWork.Currency2 = null;
       }
 
       if (TransactionInWork.Operation != OperationType.Доход && TransactionInWork.Operation != OperationType.Расход)
@@ -398,6 +398,7 @@ namespace Keeper.ViewModels
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
       IsInAddTransactionMode = true;
+      CanEditDate = false;
 
       var newTransaction = SelectedTransaction.Preform("SameDate");
       IncreaseNextTransactionTime();
@@ -424,6 +425,7 @@ namespace Keeper.ViewModels
     {
       if (CanSaveTransactionChanges) SaveTransactionChanges();
       IsInAddTransactionMode = true;
+      CanEditDate = false;
 
       var newTransaction = SelectedTransaction.Preform("SameDatePlusMinite");
 

@@ -147,8 +147,9 @@ namespace Keeper.DomainModel
       get
       {
         TimeSpan DaysFrom = Timestamp.Date - new DateTime(1972, 5, 28);
-        if (DaysFrom.Days % 2 == 0) return Brushes.Cornsilk;
-        else return Brushes.Azure;
+        if (DaysFrom.Days % 3 == 0) return Brushes.Cornsilk;
+        if (DaysFrom.Days % 3 == 1) return Brushes.GhostWhite;
+        return Brushes.Azure;
       }
     }
 

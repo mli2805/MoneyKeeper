@@ -55,7 +55,9 @@ namespace Keeper.Utils
       int prev = s.IndexOf(';');
       string externalAccount = s.Substring(0, prev - 1);
       association.ExternalAccount = Db.Accounts.Local.First(account => account.Name == externalAccount);
-      string associatedArticle = s.Substring(prev + 2);
+      int next = s.IndexOf(';', prev + 2);
+      association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), s.Substring(prev + 2, next - prev - 3));
+      string associatedArticle = s.Substring(next + 2);
       association.AssociatedArticle = Db.Accounts.Local.First(account => account.Name == associatedArticle);
 
       return association;

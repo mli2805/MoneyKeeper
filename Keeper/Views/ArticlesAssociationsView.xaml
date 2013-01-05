@@ -6,39 +6,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance ViewModels:ArticlesAssociationsViewModel}"
-        Height="500" Width="420">
-    <Window.Resources>
-        <ResourceDictionary>
-            <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-            </Style>
-            <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
-                <Setter Property="FontWeight" Value="Bold"/>
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
+        Height="600" Width="396">
+  <Window.Resources>
+    <ResourceDictionary>
+      <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
+<!--        <Setter Property="HorizontalAlignment" Value="Left"/>-->
+        <Setter Property="Margin" Value="5,0,0,0"/>
+      </Style>
+      <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
+        <Setter Property="FontWeight" Value="Bold"/>
+      </Style>
+    </ResourceDictionary>
+  </Window.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <DataGrid x:Name="IncomesGrid" Margin="5" Padding="1" 
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <DataGrid x:Name="IncomesGrid" Margin="5" Padding="1" 
                   ItemsSource="{Binding Rows}"  AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}">
-            <DataGrid.Columns>
-                <DataGridComboBoxColumn Header="Счет деньгодателя" Width="170"
+      <DataGrid.Columns>
+        <DataGridComboBoxColumn Header="Контрагент" Width="170"
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
                                 SelectedItemBinding ="{Binding ExternalAccount}"
                                 ItemsSource="{x:Static  ViewModels:AssociatedArticlesLists.ExternalAccounts}">
-                </DataGridComboBoxColumn>
-                <DataGridComboBoxColumn Header="Ассоциированная категория" Width="190" 
+        </DataGridComboBoxColumn>
+        <DataGridComboBoxColumn Header="Ассоциированная категория" Width="190" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
                                 SelectedItemBinding ="{Binding AssociatedArticle}"
                                 ItemsSource="{x:Static ViewModels:AssociatedArticlesLists.AssociatedArticles}">
-                </DataGridComboBoxColumn>
-            </DataGrid.Columns>
-            
-        </DataGrid>
- 
-    </Grid>
+        </DataGridComboBoxColumn>
+      </DataGrid.Columns>
+
+    </DataGrid>
+
+  </Grid>
 </Window>
