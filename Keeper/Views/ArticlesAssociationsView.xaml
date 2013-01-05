@@ -10,7 +10,6 @@
   <Window.Resources>
     <ResourceDictionary>
       <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
-<!--        <Setter Property="HorizontalAlignment" Value="Left"/>-->
         <Setter Property="Margin" Value="5,0,0,0"/>
       </Style>
       <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">

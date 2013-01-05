@@ -20,7 +20,6 @@ namespace Keeper.ViewModels
 
     public ArticlesAssociationsViewModel()
     {
-      Db.Accounts.Load();
       Rows = Db.ArticlesAssociations.Local;
 
       var view = CollectionViewSource.GetDefaultView(Rows);
