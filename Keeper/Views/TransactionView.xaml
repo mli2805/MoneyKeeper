@@ -11,6 +11,24 @@
         Title="TransactionView" Height="502" Width="1012"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
+  <Window.Resources>
+    <ResourceDictionary>
+      <DataTemplate x:Key="AmountColumnStyle">
+        <TextBlock HorizontalAlignment="Right">
+          <TextBlock.Text>
+            <Binding Path="Amount" StringFormat="{}{0:#,#;; }"/>
+          </TextBlock.Text>
+        </TextBlock>
+      </DataTemplate>
+      <DataTemplate x:Key="Amount2ColumnStyle">
+        <TextBlock HorizontalAlignment="Right">
+          <TextBlock.Text>
+            <Binding Path="Amount2" StringFormat="{}{0:#,#;; }"/>
+          </TextBlock.Text>
+        </TextBlock>
+      </DataTemplate>
+    </ResourceDictionary>
+  </Window.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="335*"/>
@@ -75,9 +93,9 @@
           <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy h:mm'}" />
           <GridViewColumn Header="Дебет" Width="125" DisplayMemberBinding="{Binding Debet}" />
           <GridViewColumn Header="Кредит" Width="125" DisplayMemberBinding="{Binding Credit}" />
-          <GridViewColumn Header="Сумма" Width="100" DisplayMemberBinding="{Binding Amount, StringFormat='{}{0:#,#;; }'}" />
+          <GridViewColumn Header="Сумма" Width="100" CellTemplate="{StaticResource AmountColumnStyle}" />
           <GridViewColumn Header="Вал" Width="40" DisplayMemberBinding="{Binding Currency}" />
-          <GridViewColumn Header="Сумма2" Width="100" DisplayMemberBinding="{Binding Amount2, StringFormat='{}{0:#,#;; }'}" />
+          <GridViewColumn Header="Сумма2" Width="100" CellTemplate="{StaticResource Amount2ColumnStyle}" />
           <GridViewColumn Header="Вал2" Width="40" DisplayMemberBinding="{Binding Currency2}" />
           <GridViewColumn Header="Категория" Width="150" DisplayMemberBinding="{Binding Article}" />
           <GridViewColumn Header="Примечание" Width="180" DisplayMemberBinding="{Binding Comment}" />
@@ -134,8 +152,8 @@
             <ComboBox Name="ExpenseDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccountsForShopping}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Кому" HorizontalAlignment="Left" Margin="380,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="430,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+            <Label Content="Кому" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding AccountsWhoTakesMyMoney}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>

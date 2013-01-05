@@ -79,6 +79,7 @@ namespace Keeper.ViewModels
 
     public ObservableCollection<Transaction> Rows { get; set; }
     public ICollectionView SortedRows { get; set; }
+
     public Transaction SelectedTransaction
     {
       get { return _selectedTransaction; }

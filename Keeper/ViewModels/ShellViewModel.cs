@@ -165,9 +165,9 @@ namespace Keeper.ViewModels
       Db.ArticlesAssociations.Load();
 
       InitVariablesToShowAccounts();
-      _balanceDate = DateTime.Today;
+      _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
       _paymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
-      _paymentsFinishDate = DateTime.Today;
+      _paymentsFinishDate = DateTime.Today.AddDays(1).AddSeconds(-1);
       OpenedAccountPage = 0;
     }
 
