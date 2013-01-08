@@ -6,11 +6,20 @@
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:cal="http://www.caliburnproject.org" mc:Ignorable="d"
+        xmlns:cal="http://www.caliburnproject.org" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:ii="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
+        mc:Ignorable="d"
         d:DataContext="{d:DesignInstance ViewModels:TransactionViewModel}" 
         Title="TransactionView" Height="502" Width="1012"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
+  <i:Interaction.Triggers>
+    <ii:KeyTrigger Key="S" Modifiers="Control">
+      <cal:ActionMessage MethodName="Test">
+       
+      </cal:ActionMessage>
+    </ii:KeyTrigger>
+  </i:Interaction.Triggers>
   <Window.Resources>
     <ResourceDictionary>
       <DataTemplate x:Key="AmountColumnStyle">

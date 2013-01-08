@@ -30,6 +30,11 @@ namespace Keeper.ViewModels
   [Export(typeof(TransactionViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionViewModel : Screen, IShell
   {
+    public void Test()
+    {
+      
+    }
+
     #region // объявление и инициализация листов для комбиков
     public List<OperationType> OperationTypes { get; set; }
     public List<CurrencyCodes> CurrencyList { get; set; }
