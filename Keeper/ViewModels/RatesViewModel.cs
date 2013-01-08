@@ -39,8 +39,11 @@ namespace Keeper.ViewModels
     private CurrencyRatesFilter _selectedFilter;
     private string _expanderHeader;
     private bool _isInInputMode;
+    private double _lastByrRate;
+    private DateTime _newDate;
+    private double _lastEurRate;
 
-    public CurrencyRatesFilter SelectedFilter  
+    public CurrencyRatesFilter SelectedFilter
     {
       get { return _selectedFilter; }
       set
@@ -55,8 +58,40 @@ namespace Keeper.ViewModels
 
     public ObservableCollection<CurrencyRate> Rows { get; set; }
 
-    public DateTime NewDate { get; set; }
-    public bool IsInInputMode 
+    public DateTime NewDate
+    {
+      get { return _newDate; }
+      set
+      {
+        if (value.Equals(_newDate)) return;
+        _newDate = value;
+        NotifyOfPropertyChange(() => NewDate);
+      }
+    }
+
+    public double LastByrRate 
+    {
+      get { return _lastByrRate; }
+      set
+      {
+        if (value.Equals(_lastByrRate)) return;
+        _lastByrRate = value;
+        NotifyOfPropertyChange(() => LastByrRate);
+      }
+    }
+
+    public double LastEurRate
+    {
+      get { return _lastEurRate; }
+      set
+      {
+        if (value.Equals(_lastEurRate)) return;
+        _lastEurRate = value;
+        NotifyOfPropertyChange(() => LastEurRate);
+      }
+    }
+
+    public bool IsInInputMode
     {
       get { return _isInInputMode; }
       set
@@ -64,8 +99,26 @@ namespace Keeper.ViewModels
         if (value.Equals(_isInInputMode)) return;
         _isInInputMode = value;
         ExpanderHeader = _isInInputMode ? "" : "Удобный способ ввода курсов валют";
+        if (_isInInputMode) FillInFields();
         NotifyOfPropertyChange(() => IsInInputMode);
       }
+    }
+
+    public void FillInFields()
+    {
+      var lastCurrencyRate = (from cr in Rows
+                              where cr.Currency == CurrencyCodes.BYR
+                              orderby cr.BankDay
+                              select cr).Last();
+      NewDate = lastCurrencyRate.BankDay.Date.AddDays(1);
+      LastByrRate = lastCurrencyRate.Rate;
+
+      lastCurrencyRate = (from cr in Rows
+                          where cr.Currency == CurrencyCodes.EUR
+                          orderby cr.BankDay
+                          select cr).Last();
+      if (NewDate <= lastCurrencyRate.BankDay.Date) NewDate = lastCurrencyRate.BankDay.Date.AddDays(1); 
+      LastEurRate = Math.Round(1/lastCurrencyRate.Rate,3);
     }
 
     public string ExpanderHeader
@@ -86,11 +139,9 @@ namespace Keeper.ViewModels
 
       var view = CollectionViewSource.GetDefaultView(Rows);
 
-      view.Filter +=OnFilter;
-      view.SortDescriptions.Add(new SortDescription("BankDay",ListSortDirection.Ascending));
+      view.Filter += OnFilter;
+      view.SortDescriptions.Add(new SortDescription("BankDay", ListSortDirection.Ascending));
 
-      view.MoveCurrentToLast();
-      NewDate = ((CurrencyRate) view.CurrentItem).BankDay.Date.AddDays(1);
       IsInInputMode = false;
     }
 
@@ -101,9 +152,26 @@ namespace Keeper.ViewModels
 
     private bool OnFilter(object o)
     {
-      var currencyRate = (CurrencyRate) o;
+      var currencyRate = (CurrencyRate)o;
       if (SelectedFilter.IsOn == false) return true;
       return currencyRate.Currency == SelectedFilter.Currency;
+    }
+
+    public void SaveNewRates()
+    {
+      var newByrCurrencyRate = new CurrencyRate {BankDay = NewDate, Currency = CurrencyCodes.BYR, Rate = LastByrRate};
+      Rows.Add(newByrCurrencyRate);
+
+      var newEurCurrencyRate = new CurrencyRate
+                                 {BankDay = NewDate, Currency = CurrencyCodes.EUR, Rate = Math.Round(1/LastEurRate, 4)};
+      Rows.Add(newEurCurrencyRate);
+
+      IsInInputMode = false;
+    }
+
+    public void CancelNewRates()
+    {
+      IsInInputMode = false;
     }
   }
 }
