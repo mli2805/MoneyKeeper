@@ -6,7 +6,7 @@
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:cal="http://www.caliburnproject.org" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org" 
         xmlns:ii="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance ViewModels:TransactionViewModel}" 
@@ -14,10 +14,29 @@
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
   <i:Interaction.Triggers>
-    <ii:KeyTrigger Key="S" Modifiers="Control">
-      <cal:ActionMessage MethodName="Test">
-       
-      </cal:ActionMessage>
+<!--    <ii:KeyTrigger Key="Enter">-->
+<!--      <cal:ActionMessage MethodName="SaveTransactionChanges"/>-->
+<!--    </ii:KeyTrigger>-->
+<!--    <ii:KeyTrigger Key="Escape">-->
+<!--      <cal:ActionMessage MethodName="CancelTransactionChanges"/>-->
+<!--    </ii:KeyTrigger>-->
+    <ii:KeyTrigger Modifiers="Control" Key="Enter" >
+      <cal:ActionMessage MethodName="AddTransactionAfterSelected"/>
+    </ii:KeyTrigger>
+    <ii:KeyTrigger Key="Insert" >
+      <cal:ActionMessage MethodName="AddTransactionBeforeSelected"/>
+    </ii:KeyTrigger>
+    <ii:KeyTrigger Modifiers="Control" Key="Insert">
+      <cal:ActionMessage MethodName="AddNewDayTransaction"/>
+    </ii:KeyTrigger>
+    <ii:KeyTrigger Modifiers="Control" Key="Delete">
+      <cal:ActionMessage MethodName="DeleteTransaction"/>
+    </ii:KeyTrigger>
+    <ii:KeyTrigger Modifiers="Control" Key="Up">
+      <cal:ActionMessage MethodName="MoveTransactionUp"/>
+    </ii:KeyTrigger>
+    <ii:KeyTrigger Modifiers="Control" Key="Down">
+      <cal:ActionMessage MethodName="MoveTransactionDown"/>
     </ii:KeyTrigger>
   </i:Interaction.Triggers>
   <Window.Resources>

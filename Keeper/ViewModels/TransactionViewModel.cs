@@ -1,7 +1,5 @@
 ﻿#region TODO List
 /* TODO List
- * 6. Горячие клавиши - Ins - вставить перед, Ctrl+Enter - вставить после, Ctrl+Del - удалить строку, 
- * Enter - завершить редактирование, Ctrl + стрелки вверх/вниз
  * 7. Запрещенные клавиши DatePicker нарисовать иначе
  * 9. При смене типа операции проверять на соответствие значений типу операции ИЛИ при сохранении ?
  * 11. Ввод курсов валют совсем кривой
@@ -30,11 +28,6 @@ namespace Keeper.ViewModels
   [Export(typeof(TransactionViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionViewModel : Screen, IShell
   {
-    public void Test()
-    {
-      
-    }
-
     #region // объявление и инициализация листов для комбиков
     public List<OperationType> OperationTypes { get; set; }
     public List<CurrencyCodes> CurrencyList { get; set; }
