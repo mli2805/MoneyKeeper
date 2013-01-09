@@ -123,22 +123,22 @@ namespace Keeper.DomainModel
       }
     }
 
-//    #region ' _isSelected '
-//    private bool _isSelected;
-//
-//    [NotMapped]
-//    public bool IsSelected
-//    {
-//      get { return _isSelected; }
-//      set
-//      {
-//        if (value.Equals(_isSelected)) return;
-//        _isSelected = value;
-//        NotifyOfPropertyChange(() => IsSelected);
-////        if (_isSelected) IoC.Get<TransactionsViewModel>().SelectedTransaction = this;
-//      }
-//    }
-//    #endregion
+    #region ' _isSelected '
+    private bool _isSelected;
+
+    [NotMapped]
+    public bool IsSelected
+    {
+      get { return _isSelected; }
+      set
+      {
+        if (value.Equals(_isSelected)) return;
+        _isSelected = value;
+        NotifyOfPropertyChange(() => IsSelected);
+        if (_isSelected) IoC.Get<TransactionViewModel>().SelectedTransaction = this;
+      }
+    }
+    #endregion
 
     #region // два вычислимых поля содержащих цвет шрифта и фона для отображения транзакции
     [NotMapped]
@@ -147,8 +147,9 @@ namespace Keeper.DomainModel
       get
       {
         TimeSpan DaysFrom = Timestamp.Date - new DateTime(1972, 5, 28);
-        if (DaysFrom.Days % 3 == 0) return Brushes.Cornsilk;
-        if (DaysFrom.Days % 3 == 1) return Brushes.GhostWhite;
+        if (DaysFrom.Days % 4 == 0) return Brushes.Cornsilk;
+        if (DaysFrom.Days % 4 == 1) return new SolidColorBrush(Color.FromRgb(240,255,240));
+        if (DaysFrom.Days % 4 == 2) return Brushes.GhostWhite;
         return Brushes.Azure;
       }
     }

@@ -10,7 +10,7 @@
         xmlns:ii="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance ViewModels:TransactionViewModel}" 
-        Title="TransactionView" Height="502" Width="1012"
+        Title="TransactionView" Height="502" Width="1032"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
   <i:Interaction.Triggers>
@@ -74,35 +74,36 @@
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">
-          <Setter Property="Margin" Value="2,0,0,0"/>
-          <Setter Property="Padding" Value="0,2"/>
+          <Setter Property="Margin" Value="1,0,0,0"/>
+          <Setter Property="Padding" Value="0,1"/>
           <Setter Property="BorderBrush" Value="LightGray"/>
           <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
           <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
           <Setter Property="BorderThickness" Value="0,0,0,1"/>
           <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-          <!--          <Setter Property="Template">-->
-          <!--            <Setter.Value>-->
-          <!--              <ControlTemplate TargetType="{x:Type ListViewItem}">-->
-          <!--                <Border BorderBrush="{TemplateBinding BorderBrush}" -->
-          <!--                                        BorderThickness="{TemplateBinding BorderThickness}" -->
-          <!--                                        Background="{TemplateBinding Background}">-->
-          <!--                  <u:GridViewRowPresenterWithGridLines -->
-          <!--                                        Columns="{TemplateBinding GridView.ColumnCollection}"-->
-          <!--                                        Margin="{TemplateBinding Padding}" />-->
-          <!--                </Border>-->
-          <!--              </ControlTemplate>-->
-          <!--            </Setter.Value>-->
-          <!--          </Setter>-->
-          <!--          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>-->
-          <!--          <Style.Triggers>-->
-          <!--            <Trigger Property="IsSelected" Value="True">-->
-          <!--              <Setter Property="Background" Value="#FFB0E0FF"/>-->
-          <!--            </Trigger>-->
-          <!--            <Trigger Property="IsEnabled" Value="False">-->
-          <!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
-          <!--            </Trigger>-->
-          <!--          </Style.Triggers>-->
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="{x:Type ListViewItem}">
+                <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                                  BorderThickness="{TemplateBinding BorderThickness}" 
+                                                  Background="{TemplateBinding Background}">
+                  <u:GridViewRowPresenterWithGridLines 
+                                                  Columns="{TemplateBinding GridView.ColumnCollection}"
+                                                  Margin="{TemplateBinding Padding}" />
+                </Border>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+
+          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+          <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter Property="Background" Value="#B6E6FF"/>
+            </Trigger>
+<!--            <Trigger Property="IsEnabled" Value="False">-->
+<!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
+<!--            </Trigger>-->
+          </Style.Triggers>
         </Style>
       </ListView.ItemContainerStyle>
       <ListView.ContextMenu>
@@ -116,8 +117,8 @@
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy h:mm'}" />
-          <GridViewColumn Header="Дебет" Width="125" DisplayMemberBinding="{Binding Debet}" />
-          <GridViewColumn Header="Кредит" Width="125" DisplayMemberBinding="{Binding Credit}" />
+          <GridViewColumn Header="Дебет" Width="135" DisplayMemberBinding="{Binding Debet}" />
+          <GridViewColumn Header="Кредит" Width="135" DisplayMemberBinding="{Binding Credit}" />
           <GridViewColumn Header="Сумма" Width="100" CellTemplate="{StaticResource AmountColumnStyle}" />
           <GridViewColumn Header="Вал" Width="40" DisplayMemberBinding="{Binding Currency}" />
           <GridViewColumn Header="Сумма2" Width="100" CellTemplate="{StaticResource Amount2ColumnStyle}" />
@@ -130,7 +131,6 @@
     <Grid Grid.Row="1">
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
-        <!--        <RowDefinition Height="20"/>-->
         <RowDefinition Height="40"/>
         <RowDefinition Height="10"/>
       </Grid.RowDefinitions>
