@@ -14,12 +14,9 @@
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
   <i:Interaction.Triggers>
-<!--    <ii:KeyTrigger Key="Enter">-->
-<!--      <cal:ActionMessage MethodName="SaveTransactionChanges"/>-->
-<!--    </ii:KeyTrigger>-->
-<!--    <ii:KeyTrigger Key="Escape">-->
-<!--      <cal:ActionMessage MethodName="CancelTransactionChanges"/>-->
-<!--    </ii:KeyTrigger>-->
+    <ii:KeyTrigger Key="Escape" >
+      <cal:ActionMessage MethodName="EscapeButtonPressed"/>
+    </ii:KeyTrigger>
     <ii:KeyTrigger Modifiers="Control" Key="Enter" >
       <cal:ActionMessage MethodName="AddTransactionAfterSelected"/>
     </ii:KeyTrigger>
@@ -293,8 +290,10 @@
     <StackPanel Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" >
       <Grid>
         <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="172" Margin="4" />
-        <Button Content="Сохранить операцию"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" Background="White" VerticalAlignment="Top" Width="150"/>
-        <Button Content="Отменить изменения"   Name="CancelTransactionChanges" ToolTip="Esc"   HorizontalAlignment="Center" Margin="0,50,0,0"  Background="White" VerticalAlignment="Top" Width="150" />
+        <Button Content="Сохранить операцию"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" 
+                Background="White" VerticalAlignment="Top" Width="150" IsDefault="True"/>
+        <Button Content="Отменить изменения"   Name="CancelTransactionChanges" ToolTip="Esc"   HorizontalAlignment="Center" Margin="0,50,0,0"  
+                Background="White" VerticalAlignment="Top" Width="150"/>
         <Button Content="Еще одну в этот день" Name="AddTransactionAfterSelected" HorizontalAlignment="Center" Margin="0,90,0,0" Background="White" VerticalAlignment="Top" Width="150">
           <Button.ToolTip>
             <ToolTip ToolTipService.ShowDuration="200000">

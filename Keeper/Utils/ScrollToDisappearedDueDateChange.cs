@@ -21,7 +21,9 @@ namespace Keeper.Utils
 
     private void ItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
-      if (i != AssociatedObject.SelectedIndex)
+      Console.WriteLine(args.Action);
+      
+      if (i != AssociatedObject.SelectedIndex && args.Action == NotifyCollectionChangedAction.Reset)
       {
         AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.SelectedIndex]);
       }

@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="176.233" Width="446.918"
+        Title="{Binding Title}" Height="176" Width="447"
         d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}">
     <Grid>
     <TextBox HorizontalAlignment="Left" Height="23" Margin="75,58,0,0" TextWrapping="Wrap" 

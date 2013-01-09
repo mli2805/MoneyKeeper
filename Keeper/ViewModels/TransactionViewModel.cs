@@ -381,6 +381,11 @@ namespace Keeper.ViewModels
       }
     }
 
+    public void EscapeButtonPressed()
+    {
+      CancelTransactionChanges();
+    }
+
     public void CancelTransactionChanges()
     {
       if (IsInAddTransactionMode) DeleteTransaction();
