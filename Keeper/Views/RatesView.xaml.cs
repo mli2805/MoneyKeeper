@@ -22,6 +22,13 @@ namespace Keeper.Views
     public RatesView()
     {
       InitializeComponent();
+
+      InputRatesExpander.Expanded += InputRatesExpanderExpanded;
+    }
+
+    void InputRatesExpanderExpanded(object sender, RoutedEventArgs e)
+    {
+      RatesGrid.ScrollIntoView(RatesGrid.Items[RatesGrid.Items.Count-1]);
     }
     
   }
