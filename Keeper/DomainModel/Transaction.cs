@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
 using Caliburn.Micro;
+using Keeper.Utils;
 using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
@@ -177,6 +178,19 @@ namespace Keeper.DomainModel
       if (Currency2 == null || Currency2 == 0) s = s + "null"; else s = s + Currency2;
 
       s = s + " ; " + Article + " ; " + Comment;
+
+      return s;
+    }
+
+    public string ToDepositReport(Account deposit)
+    {
+      var s = Timestamp.ToString("dd/MM/yyyy");
+
+      var sum = Currency != CurrencyCodes.USD ?
+        String.Format("{0} byr  ($ {1} )", Amount, Rate.GetRate(Currency, Timestamp)) :
+        String.Format("{0} byr", Amount) ;
+      if (Debet == deposit) s = s + sum;
+      else s = s + "                                           " + sum;
 
       return s;
     }

@@ -251,6 +251,11 @@ namespace Keeper.ViewModels
       Account.CopyForEdit(SelectedAccount, accountInWork);
     }
 
+    public void ShowDeposit()
+    {
+      WindowManager.ShowDialog(new DepositViewModel(SelectedAccount));
+    }
+
     #endregion
 
     #region // вызовы дочерних окон

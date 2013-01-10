@@ -80,6 +80,7 @@
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
     <Compile Include="DomainModel\DbInitializer.cs" />
+    <Compile Include="DomainModel\Deposit.cs" />
     <Compile Include="DomainModel\KeeperDB.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Utils\DumpDb.cs" />
     <Compile Include="Utils\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="Utils\Period.cs" />
+    <Compile Include="Utils\Rate.cs" />
     <Compile Include="Utils\RestoreDb.cs" />
     <Compile Include="Utils\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Utils\ScrollToBottomOnLoadBehavior.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
+    <Compile Include="ViewModels\DepositViewModel.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyCodes.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyRatesFilters.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\AssociatedArticlesLists.cs" />
@@ -109,6 +112,9 @@
     </Compile>
     <Compile Include="Views\ArticlesAssociationsView.xaml.cs">
       <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DepositView.xaml.cs">
+      <DependentUpon>DepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -159,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ArticlesAssociationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

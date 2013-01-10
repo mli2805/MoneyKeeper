@@ -152,14 +152,11 @@ namespace Keeper.ViewModels
 
     private string GetUsdEquivalent(Decimal amount, CurrencyCodes currency, DateTime timestamp)
     {
-      var rate = new CurrencyRate();
-      rate = Db.CurrencyRates.Local.FirstOrDefault(
-        currencyRate => ((currencyRate.BankDay.Date == timestamp.Date) && (currencyRate.Currency == currency)));
+      var rate = Rate.GetRate(currency, timestamp);
+      if (rate.Equals(0.0)) return "не задан курс " + currency + " на эту дату";
 
-      if (rate == null) return "не задан курс " + currency + " на эту дату";
-
-      var res = (amount / (decimal)rate.Rate).ToString("F2") + "$ по курсу " + rate.Rate;
-      if (currency == CurrencyCodes.EUR) res = (amount * (decimal)rate.Rate).ToString("F2") + "$ по курсу " + rate.Rate + " (" + (1 / rate.Rate).ToString("F3") + ")";
+      var res = (amount / (decimal)rate).ToString("F2") + "$ по курсу " + rate;
+      if (currency == CurrencyCodes.EUR) res = (amount * (decimal)rate).ToString("F2") + "$ по курсу " + rate + " (" + (1 / rate).ToString("F3") + ")";
       return res;
     }
 
