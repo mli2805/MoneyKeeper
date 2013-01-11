@@ -17,7 +17,7 @@ namespace Keeper.Utils
     public static double GetRate(CurrencyCodes currency, DateTime day)
     {
       var rate = (from currencyRate in Db.CurrencyRates.Local
-                  where currencyRate.BankDay == day && currencyRate.Currency == currency
+                  where currencyRate.BankDay.Date == day.Date && currencyRate.Currency == currency
                   select currencyRate).FirstOrDefault();
       return rate != null ? rate.Rate : 0.0;
     }

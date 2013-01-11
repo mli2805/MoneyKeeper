@@ -29,10 +29,10 @@
     <ii:KeyTrigger Modifiers="Control" Key="Delete">
       <cal:ActionMessage MethodName="DeleteTransaction"/>
     </ii:KeyTrigger>
-    <ii:KeyTrigger Modifiers="Control" Key="Up">
+    <ii:KeyTrigger Modifiers="Control" Key="OemMinus">
       <cal:ActionMessage MethodName="MoveTransactionUp"/>
     </ii:KeyTrigger>
-    <ii:KeyTrigger Modifiers="Control" Key="Down">
+    <ii:KeyTrigger Modifiers="Control" Key="OemPlus">
       <cal:ActionMessage MethodName="MoveTransactionDown"/>
     </ii:KeyTrigger>
   </i:Interaction.Triggers>
