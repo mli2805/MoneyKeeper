@@ -46,10 +46,10 @@ namespace Keeper.ViewModels
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
 
       MyAccounts = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
-        account.Children.Count == 0)).ToList();
+        account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
       MyAccountsForShopping = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
         account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))).ToList();
-      AccountsWhoGivesMeMoney = (Db.Accounts.Local.Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
+      AccountsWhoGivesMeMoney = (Db.Accounts.Local.Where(account => (account.IsDescendantOf("ДеньгоДатели") || 
         account.IsDescendantOf("Банки")) && account.Children.Count == 0)).ToList();
       AccountsWhoTakesMyMoney = (Db.Accounts.Local.Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
         account.Children.Count == 0)).ToList();

@@ -45,7 +45,7 @@ namespace Keeper.Utils
         }
         if (association != null) Db.ArticlesAssociations.Add(association);
       }
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestroreArticlesAssociations.err"), wrongContent, Encoding1251);
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreArticlesAssociations.err"), wrongContent, Encoding1251);
 
     }
 
@@ -85,7 +85,7 @@ namespace Keeper.Utils
         }
         if (transaction != null) Db.Transactions.Add(transaction);
       }
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestroreTransactions.err"), wrongContent, Encoding1251);
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreTransactions.err"), wrongContent, Encoding1251);
     }
 
     private static Transaction TransactionFromStringWithNames(string s)

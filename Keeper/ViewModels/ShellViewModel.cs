@@ -66,7 +66,7 @@ namespace Keeper.ViewModels
       set
       {
         _selectedAccount = value;
-        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0),BalanceDate) : new Period(PaymentsStartDate,PaymentsFinishDate);
+        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
         Balance.CountBalances(SelectedAccount, period, BalanceList);
         NotifyOfPropertyChange(() => SelectedAccount);
       }
@@ -82,12 +82,12 @@ namespace Keeper.ViewModels
         {
           BalancePeriodChoiseControls = Visibility.Visible;
           PaymentsPeriodChoiseControls = Visibility.Collapsed;
-        } 
-        else 
-        { 
+        }
+        else
+        {
           BalancePeriodChoiseControls = Visibility.Collapsed;
           PaymentsPeriodChoiseControls = Visibility.Visible;
-        } 
+        }
         var a = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
         SelectedAccount = a;
       }
@@ -280,10 +280,10 @@ namespace Keeper.ViewModels
 
     public void ArticlesAssociations()
     {
-        String arcMessage = Message;
-        Message = "Articles' associations";
-        WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
-        Message = arcMessage;
+      String arcMessage = Message;
+      Message = "Articles' associations";
+      WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
+      Message = arcMessage;
     }
     #endregion
 
@@ -316,10 +316,45 @@ namespace Keeper.ViewModels
     }
     #endregion
 
+    public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
+    public void DayBalances()
+    {
+      var content = new List<string>();
+      var start = new DateTime(2010, 04, 28);
+      var finish = start;
+      var ruki = (from account in Db.Accounts.Local
+                  where account.Name == "На руках"
+                  select account).First();
+      var deps = (from account in Db.Accounts.Local
+                  where account.Name == "Депозиты"
+                  select account).First();
+
+      while (finish <= new DateTime(2012, 11, 30))
+      {
+        finish = finish.AddDays(1);
+        var st =
+          String.Format(
+            "{0:dd/MM/yyyy} = {1:#,0} usd  {2:#,0} eur  {3:#,0} byr  {4:#,0} usd  {5:#,0} eur  {6:#,0} byr ",
+            finish,
+            Balance.GetBalanceInCurrency(ruki, new Period(start, finish), CurrencyCodes.USD),
+            Balance.GetBalanceInCurrency(ruki, new Period(start, finish), CurrencyCodes.EUR),
+            Balance.GetBalanceInCurrency(ruki, new Period(start, finish), CurrencyCodes.BYR),
+            Balance.GetBalanceInCurrency(deps, new Period(start, finish), CurrencyCodes.USD),
+            Balance.GetBalanceInCurrency(deps, new Period(start, finish), CurrencyCodes.EUR),
+            Balance.GetBalanceInCurrency(deps, new Period(start, finish), CurrencyCodes.BYR));
+        content.Add(st);
+
+        if (finish.Day == 1)
+          File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "balances.txt"), content, Encoding1251);
+      }
+
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath,"balances.txt"),content,Encoding1251);
+    }
+
     // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
     // свойства куда эти даты заносятся, свойства видимости этих групп контролов
-    #region 
-    public DateTime BalanceDate 
+    #region
+    public DateTime BalanceDate
     {
       get { return _balanceDate; }
       set
@@ -414,7 +449,7 @@ namespace Keeper.ViewModels
 
     public void OneYearAfterPayments() { PaymentsStartDate = PaymentsStartDate.AddYears(1); PaymentsFinishDate = PaymentsFinishDate.AddYears(1); }
 
-    public Visibility BalancePeriodChoiseControls 
+    public Visibility BalancePeriodChoiseControls
     {
       get { return _balancePeriodChoiseControls; }
       set
@@ -425,7 +460,7 @@ namespace Keeper.ViewModels
       }
     }
 
-    public Visibility PaymentsPeriodChoiseControls  
+    public Visibility PaymentsPeriodChoiseControls
     {
       get { return _paymentsPeriodChoiseControls; }
       set
@@ -438,7 +473,7 @@ namespace Keeper.ViewModels
 
     private bool IsLastDayOfMonth(DateTime date) { return date.Month != date.AddDays(1).Month; }
 
-#endregion
+    #endregion
 
   }
 
