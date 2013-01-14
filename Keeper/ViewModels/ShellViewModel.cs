@@ -321,13 +321,15 @@ namespace Keeper.ViewModels
     {
       var content = new List<string>();
       var start = new DateTime(2010, 04, 28);
-      var finish = start;
+      var finish = start.AddDays(1).AddSeconds(-1);
       var ruki = (from account in Db.Accounts.Local
                   where account.Name == "На руках"
                   select account).First();
       var deps = (from account in Db.Accounts.Local
                   where account.Name == "Депозиты"
                   select account).First();
+      content.Add("Таблица остатков");
+      content.Add("");
 
       while (finish <= new DateTime(2012, 11, 30))
       {
