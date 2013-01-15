@@ -72,6 +72,7 @@ namespace Keeper.Utils
     private static List<string> OneBalance(Account balancedAccount, Period period)
     {
       var balance = new List<string>();
+      if (balancedAccount == null) return balance;
 
       bool kind = balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы");
       var balancePairs = kind ? ArticleBalancePairs(balancedAccount, period) : AccountBalancePairs(balancedAccount, period);
@@ -88,6 +89,7 @@ namespace Keeper.Utils
     public static void CountBalances(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
     {
       balanceList.Clear();
+      if (selectedAccount == null) return;
 
       var b = OneBalance(selectedAccount, period);
       foreach (var st in b)

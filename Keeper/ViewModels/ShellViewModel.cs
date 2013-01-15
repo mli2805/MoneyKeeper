@@ -133,7 +133,7 @@ namespace Keeper.ViewModels
 
       var result = GetSelectedInCollection(collection);
 
-      if (result == null)
+      if (result == null && collection.Count != 0)
       {
         result = (from account in collection
                   select account).First();
