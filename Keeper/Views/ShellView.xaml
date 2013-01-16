@@ -305,6 +305,8 @@
       </Grid>
     </Grid>
 
-    <StatusBar Margin="0" Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="1" Background="White" BorderBrush="Gray"/>
+    <StatusBar Margin="0" Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="1" Background="White" BorderBrush="Gray">
+      
+    </StatusBar>
   </Grid>
 </Window>

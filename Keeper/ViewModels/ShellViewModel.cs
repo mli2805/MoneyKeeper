@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -317,7 +318,7 @@ namespace Keeper.ViewModels
     #endregion
 
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-    public void DayBalances()
+    public void DayBalances1()
     {
       var content = new List<string>();
       var start = new DateTime(2010, 04, 28);
@@ -351,6 +352,77 @@ namespace Keeper.ViewModels
       }
 
       File.WriteAllLines(Path.Combine(Settings.Default.DumpPath,"balances.txt"),content,Encoding1251);
+    }
+
+    public void DayBalances()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "OstatkiDnevn.txt"), Encoding1251);
+      var acc = new Account[15];
+      var cur = new CurrencyCodes[15];
+      acc[0]  = (from account in Db.Accounts.Local where account.Name == "Мой кошелек" select account).First(); cur[0] = CurrencyCodes.BYR;
+      acc[1] = (from account in Db.Accounts.Local where account.Name == "Юлин кошелек" select account).First(); cur[1] = CurrencyCodes.BYR;
+      acc[2] = (from account in Db.Accounts.Local where account.Name == "Мой кошелек" select account).First(); cur[2] = CurrencyCodes.USD;
+      acc[3] = (from account in Db.Accounts.Local where account.Name == "Шкаф" select account).First(); cur[3] = CurrencyCodes.BYR;
+      acc[4] = (from account in Db.Accounts.Local where account.Name == "Шкаф" select account).First(); cur[4] = CurrencyCodes.USD;
+      acc[5] = (from account in Db.Accounts.Local where account.Name == "Шкаф единички" select account).First(); cur[5] = CurrencyCodes.USD;
+      acc[6] = (from account in Db.Accounts.Local where account.Name == "Шкаф" select account).First(); cur[6] = CurrencyCodes.EUR;
+      acc[7] = (from account in Db.Accounts.Local where account.Name == "Мне должны" select account).First(); cur[7] = CurrencyCodes.BYR;
+      acc[8] = (from account in Db.Accounts.Local where account.Name == "Мне должны" select account).First(); cur[8] = CurrencyCodes.USD;
+      acc[9] = (from account in Db.Accounts.Local where account.Name == "Тумбочка" select account).First(); cur[9] = CurrencyCodes.BYR;
+      acc[10] = (from account in Db.Accounts.Local where account.Name == "Моя карточка" select account).First(); cur[10] = CurrencyCodes.BYR;
+      acc[11] = (from account in Db.Accounts.Local where account.Name == "Юлина карточка" select account).First(); cur[11] = CurrencyCodes.BYR;
+//      acc[12] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[12] = CurrencyCodes.USD;
+//      acc[13] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[13] = CurrencyCodes.BYR;
+//      acc[14] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[14] = CurrencyCodes.EUR;
+      acc[12] = (from account in Db.Accounts.Local where account.Name == "Депозиты" select account).First(); cur[12] = CurrencyCodes.USD;
+      acc[13] = (from account in Db.Accounts.Local where account.Name == "Депозиты" select account).First(); cur[13] = CurrencyCodes.BYR;
+      acc[14] = (from account in Db.Accounts.Local where account.Name == "Депозиты" select account).First(); cur[14] = CurrencyCodes.EUR;
+
+      foreach (var s in content)
+      {
+        var dt = new DateTime();
+        var ost = new decimal[15];
+        ParseOstatki(s, out dt, ost);
+        decimal[] bal;
+        GetBalances(dt.AddDays(1).AddSeconds(-1), acc, cur, out bal);
+        int a = CompareOstatki(ost, bal);
+        if (a != -1)
+        {
+          MessageBox.Show(String.Format("{0:dd/MMM/yyyy}  счет {1} в {2}",dt,acc[a],cur[a]));
+          BalanceDate = dt;
+          break;
+        }
+      }
+    }
+
+    public void ParseOstatki(string st, out DateTime dt, decimal[] ost)
+    {
+      int prev = 0;
+      int next = st.IndexOf(';', prev);
+      dt = Convert.ToDateTime(st.Substring(prev, next));
+
+      for (int i = 0; i < 15; i++)
+      {
+        prev = next + 2;
+        next = st.IndexOf(';', prev);
+        ost[i] = Convert.ToDecimal(st.Substring(prev, next - prev - 1));
+      }
+
+    }
+
+    public void GetBalances(DateTime dt, Account[] acc, CurrencyCodes[] cur, out decimal[] bal)
+    {
+      var start = new DateTime(2001, 01, 01);
+      bal = new decimal[15];
+      for (int i = 0; i < acc.Count(); i++)
+        bal[i] = Balance.GetBalanceInCurrency(acc[i], new Period(start, dt), cur[i]);
+    }
+
+    public int CompareOstatki(decimal[] ost, decimal[] bal)
+    {
+      for (int i = 0; i < ost.Count(); i++)
+        if (ost[i] != bal[i]) return i;
+      return -1;
     }
 
     // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
