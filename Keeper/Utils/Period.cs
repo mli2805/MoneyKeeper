@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keeper.Utils
 {
@@ -24,9 +20,9 @@ namespace Keeper.Utils
 //        }
 
       public bool IsDateTimeIn(DateTime checkDate)
-        {
-          if (checkDate >= _start && checkDate <= _finish) return true;
-          else return false;
-        }
+      {
+        if (checkDate >= _start && checkDate <= _finish) return true;
+        return false;
+      }
     }
 }

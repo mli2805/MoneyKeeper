@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
@@ -148,7 +144,7 @@ namespace Keeper.ViewModels
     {
       _message = "Keeper is running (On Debug)";
       Database.SetInitializer(new DbInitializer());
-      BalanceList = new ObservableCollection<string>() { "test balance" };
+      BalanceList = new ObservableCollection<string> { "test balance" };
     }
 
     public override void CanClose(Action<bool> callback)
@@ -347,7 +343,7 @@ namespace Keeper.ViewModels
 
       foreach (var s in content)
       {
-        var dt = new DateTime();
+        DateTime dt;
         var ost = new decimal[15];
         ParseOstatki(s, out dt, ost);
         decimal[] bal;
@@ -420,7 +416,7 @@ namespace Keeper.ViewModels
 
       foreach (var transaction in Db.Transactions) 
       {
-        if (transaction.Comment.IndexOf("фикт", System.StringComparison.Ordinal) != -1) 
+        if (transaction.Comment.IndexOf("фикт", StringComparison.Ordinal) != -1) 
           content.Add(transaction.ToDumpWithNames());
       }
       File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "ShamTransactions.txt"), content, Encoding1251);

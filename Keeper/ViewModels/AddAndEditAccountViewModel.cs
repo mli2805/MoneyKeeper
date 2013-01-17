@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
@@ -29,7 +25,7 @@ namespace Keeper.ViewModels
     public Account GetRoot(Account account)
     {
       if (account.Parent == null) return account;
-      else return GetRoot(account.Parent);
+      return GetRoot(account.Parent);
     }
 
     public void GetBranchFromPoint(Account point, List<Account> list)

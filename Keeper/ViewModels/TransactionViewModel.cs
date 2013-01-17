@@ -14,8 +14,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using Caliburn.Micro;
@@ -284,7 +282,7 @@ namespace Keeper.ViewModels
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    void TransactionInWorkPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    void TransactionInWorkPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
       if (!_isInTransactionSelectionProcess)
       {
@@ -344,14 +342,13 @@ namespace Keeper.ViewModels
 
       if (isDateChanged)
       {
-        Transaction transactionBefore = null;
         //            все же SQL запрос пока наглядней чем LINQ форма
-        //        transactionBefore = (from transaction in Db.Transactions.Local
+        //      var transactionBefore = (from transaction in Db.Transactions.Local
         //                             where transaction.Timestamp.Date == TransactionInWork.Timestamp.Date
         //                             orderby transaction.Timestamp
         //                             select transaction).LastOrDefault();
 
-        transactionBefore = Db.Transactions.Local.Where(
+        var transactionBefore = Db.Transactions.Local.Where(
           transaction => transaction.Timestamp.Date == TransactionInWork.Timestamp.Date).OrderBy(
             transaction => transaction.Timestamp).LastOrDefault();
 

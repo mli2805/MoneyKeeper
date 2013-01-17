@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -68,8 +67,7 @@ namespace Keeper.Utils
             count = count - _lines.Count;
             for (var i = 0; i < count; i++)
             {
-                var line = (FrameworkElement) Activator.CreateInstance(SeparatorStyle.TargetType);
-                line = new Rectangle{Fill=Brushes.LightGray};
+              FrameworkElement line = new Rectangle{Fill=Brushes.LightGray};
                 line.Style = SeparatorStyle;
                 AddVisualChild(line);
                 _lines.Add(line);
