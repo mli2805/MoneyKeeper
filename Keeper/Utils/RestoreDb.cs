@@ -19,10 +19,10 @@ namespace Keeper.Utils
 
     public static void RestoreAllTables()
     {
-//      RestoreCurrencyRates();
-//      RestoreAccounts();
+      RestoreCurrencyRates();
+      RestoreAccounts();
       RestoreTransactions();
-//      RestoreArticlesAssociations();
+      RestoreArticlesAssociations();
     }
 
     #region // Articles associations

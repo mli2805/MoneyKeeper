@@ -317,43 +317,9 @@ namespace Keeper.ViewModels
     }
     #endregion
 
+
+    #region // одноразовые методы сравнения ежедневных остатков с выгруженными из старого кипера
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-    public void DayBalances1()
-    {
-      var content = new List<string>();
-      var start = new DateTime(2010, 04, 28);
-      var finish = start.AddDays(1).AddSeconds(-1);
-      var ruki = (from account in Db.Accounts.Local
-                  where account.Name == "На руках"
-                  select account).First();
-      var deps = (from account in Db.Accounts.Local
-                  where account.Name == "Депозиты"
-                  select account).First();
-      content.Add("Таблица остатков");
-      content.Add("");
-
-      while (finish <= new DateTime(2012, 11, 30))
-      {
-        finish = finish.AddDays(1);
-        var st =
-          String.Format(
-            "{0:dd/MM/yyyy} = {1:#,0} usd  {2:#,0} eur  {3:#,0} byr  {4:#,0} usd  {5:#,0} eur  {6:#,0} byr ",
-            finish,
-            Balance.GetBalanceInCurrency(ruki, new Period(start, finish), CurrencyCodes.USD),
-            Balance.GetBalanceInCurrency(ruki, new Period(start, finish), CurrencyCodes.EUR),
-            Balance.GetBalanceInCurrency(ruki, new Period(start, finish), CurrencyCodes.BYR),
-            Balance.GetBalanceInCurrency(deps, new Period(start, finish), CurrencyCodes.USD),
-            Balance.GetBalanceInCurrency(deps, new Period(start, finish), CurrencyCodes.EUR),
-            Balance.GetBalanceInCurrency(deps, new Period(start, finish), CurrencyCodes.BYR));
-        content.Add(st);
-
-        if (finish.Day == 1)
-          File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "balances.txt"), content, Encoding1251);
-      }
-
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath,"balances.txt"),content,Encoding1251);
-    }
-
     public void DayBalances()
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "OstatkiDnevn.txt"), Encoding1251);
@@ -424,6 +390,7 @@ namespace Keeper.ViewModels
         if (ost[i] != bal[i]) return i;
       return -1;
     }
+    #endregion
 
     // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
     // свойства куда эти даты заносятся, свойства видимости этих групп контролов

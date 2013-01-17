@@ -38,9 +38,9 @@
       <RowDefinition/>
       <RowDefinition Height="23"/>
     </Grid.RowDefinitions>
-    <Label x:Name="Message" Content="Keeper is under construction since October 22nd, 2012!" 
-           HorizontalAlignment="Right" Margin="0,6,5,4" FontSize="11" Height="22" 
-           Grid.Column="2" />
+<!--    <Label x:Name="Message" Content="Keeper is under construction since October 22nd, 2012!" -->
+<!--           HorizontalAlignment="Right" Margin="0,6,5,4" FontSize="11" Height="22" -->
+<!--           Grid.Column="2" />-->
     <Menu Name="MainMenu" Margin="10,8,0,6" VerticalAlignment="Center" 
           Background="{x:Null}" Height="18"  Grid.ColumnSpan="3">
       <MenuItem Header="ФОРМЫ" Background="{x:Null}" Foreground="#FF0F0FFF" Padding="7,0,8,0">
@@ -236,7 +236,7 @@
               Height="30" Width="85" Content="Сегодня" Background="White" />
         <Button Name="YesterdayPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
               Height="30" Width="85" Content="Вчера" Background="White" />
-        
+
         <Button Name="ThisMonthPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
               Height="30" Width="86" Content="Этот месяц" Background="White" />
         <Button Name="LastMonthPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
@@ -257,7 +257,7 @@
               Height="30" Width="85" Content="Этот год" Background="White" />
         <Button Name="LastYearPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
               Height="30" Width="85" Content="Прошлый год" Background="White" />
- 
+
       </Grid>
       <Grid Visibility="{Binding BalancePeriodChoiseControls}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="2">
         <Grid.RowDefinitions>
@@ -283,7 +283,6 @@
         <Button Name="OneYearAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
               Height="20" Width="25" Content="+Г" Background="White" FontSize="9" />
 
-
         <Button Name="TodayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
               Height="30" Width="80" Content="Сегодня" Background="White" />
         <Button Name="YesterdayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
@@ -306,7 +305,22 @@
     </Grid>
 
     <StatusBar Margin="0" Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="1" Background="White" BorderBrush="Gray">
-      
+      <StatusBar.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+          </Grid>
+        </ItemsPanelTemplate>
+      </StatusBar.ItemsPanel>
+      <StatusBarItem Grid.Column ="0">
+        <TextBlock Margin="5,0,0,0" Text="v. 0.2.104"/>
+      </StatusBarItem>
+      <StatusBarItem Grid.Column ="1">
+        <TextBlock Margin="0,0,10,0" Text="{Binding Message}"/>
+      </StatusBarItem>
     </StatusBar>
   </Grid>
 </Window>
