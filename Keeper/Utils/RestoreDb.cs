@@ -45,8 +45,7 @@ namespace Keeper.Utils
         }
         if (association != null) Db.ArticlesAssociations.Add(association);
       }
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreArticlesAssociations.err"), wrongContent, Encoding1251);
-
+      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreArticlesAssociations.err"), wrongContent, Encoding1251);
     }
 
     private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
@@ -63,7 +62,6 @@ namespace Keeper.Utils
       return association;
     }
     #endregion
-
 
     #region // Transactions
     private static void RestoreTransactions()
@@ -85,7 +83,7 @@ namespace Keeper.Utils
         }
         if (transaction != null) Db.Transactions.Add(transaction);
       }
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreTransactions.err"), wrongContent, Encoding1251);
+      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreTransactions.err"), wrongContent, Encoding1251);
     }
 
     private static Transaction TransactionFromStringWithNames(string s)

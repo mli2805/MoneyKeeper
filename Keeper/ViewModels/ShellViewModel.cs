@@ -325,7 +325,7 @@ namespace Keeper.ViewModels
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "OstatkiDnevn.txt"), Encoding1251);
       var acc = new Account[15];
       var cur = new CurrencyCodes[15];
-      acc[0]  = (from account in Db.Accounts.Local where account.Name == "Мой кошелек" select account).First(); cur[0] = CurrencyCodes.BYR;
+      acc[0] = (from account in Db.Accounts.Local where account.Name == "Мой кошелек" select account).First(); cur[0] = CurrencyCodes.BYR;
       acc[1] = (from account in Db.Accounts.Local where account.Name == "Юлин кошелек" select account).First(); cur[1] = CurrencyCodes.BYR;
       acc[2] = (from account in Db.Accounts.Local where account.Name == "Мой кошелек" select account).First(); cur[2] = CurrencyCodes.USD;
       acc[3] = (from account in Db.Accounts.Local where account.Name == "Шкаф" select account).First(); cur[3] = CurrencyCodes.BYR;
@@ -337,9 +337,9 @@ namespace Keeper.ViewModels
       acc[9] = (from account in Db.Accounts.Local where account.Name == "Тумбочка" select account).First(); cur[9] = CurrencyCodes.BYR;
       acc[10] = (from account in Db.Accounts.Local where account.Name == "Моя карточка" select account).First(); cur[10] = CurrencyCodes.BYR;
       acc[11] = (from account in Db.Accounts.Local where account.Name == "Юлина карточка" select account).First(); cur[11] = CurrencyCodes.BYR;
-//      acc[12] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[12] = CurrencyCodes.USD;
-//      acc[13] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[13] = CurrencyCodes.BYR;
-//      acc[14] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[14] = CurrencyCodes.EUR;
+      //      acc[12] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[12] = CurrencyCodes.USD;
+      //      acc[13] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[13] = CurrencyCodes.BYR;
+      //      acc[14] = (from account in Db.Accounts.Local where account.Name == "Депозиты закрытые до ведения в данной программе" select account).First(); cur[14] = CurrencyCodes.EUR;
       acc[12] = (from account in Db.Accounts.Local where account.Name == "Депозиты" select account).First(); cur[12] = CurrencyCodes.USD;
       acc[13] = (from account in Db.Accounts.Local where account.Name == "Депозиты" select account).First(); cur[13] = CurrencyCodes.BYR;
       acc[14] = (from account in Db.Accounts.Local where account.Name == "Депозиты" select account).First(); cur[14] = CurrencyCodes.EUR;
@@ -354,7 +354,7 @@ namespace Keeper.ViewModels
         int a = CompareOstatki(ost, bal);
         if (a != -1)
         {
-          MessageBox.Show(String.Format("{0:dd/MMM/yyyy}  счет {1} в {2}",dt,acc[a],cur[a]));
+          MessageBox.Show(String.Format("{0:dd/MMM/yyyy}  счет {1} в {2}", dt, acc[a], cur[a]));
           BalanceDate = dt;
           break;
         }
@@ -389,6 +389,20 @@ namespace Keeper.ViewModels
       for (int i = 0; i < ost.Count(); i++)
         if (ost[i] != bal[i]) return i;
       return -1;
+    }
+
+    public void RepairEqualTransactionTimestamps()
+    {
+      Db.SaveChanges(); // сначала сохранить текущие изменения из ОЗУ на винт, при этом новые записи получат ID,
+      var orderedTransactions = from transaction in Db.Transactions
+                                orderby transaction.Timestamp
+                                select transaction;
+
+      var prevTimestamp = new DateTime(2001, 1, 1);
+      foreach (var transaction in orderedTransactions)
+      {
+        if (transaction.Timestamp <= prevTimestamp) transaction.Timestamp = prevTimestamp.AddMinutes(1);
+      }
     }
     #endregion
 

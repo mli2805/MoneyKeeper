@@ -187,8 +187,8 @@ namespace Keeper.DomainModel
       var s = Timestamp.ToString("dd/MM/yyyy");
 
       var sum = Currency != CurrencyCodes.USD ?
-        String.Format("{0:0,0} byr  ($ {1:0,0} )", Amount, Amount / (decimal)Rate.GetRate(Currency, Timestamp)) :
-        String.Format("{0:0,0} usd", Amount) ;
+        String.Format("{0:#,0} byr  ($ {1:#,0} )", Amount, Amount / (decimal)Rate.GetRate(Currency, Timestamp)) :
+        String.Format("{0:#,0} usd", Amount) ;
       if (Debet == deposit) s = s + "   " + sum;
       else s = s + "                                           " + sum;
 
