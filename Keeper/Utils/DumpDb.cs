@@ -61,11 +61,14 @@ namespace Keeper.Utils
                                 orderby transaction.Timestamp
                                 select transaction;
 
+      var prevTimestamp = new DateTime(2001, 1, 1);
       foreach (var transaction in orderedTransactions)
       {
+        if (transaction.Timestamp <= prevTimestamp) transaction.Timestamp = prevTimestamp.AddMinutes(1);
         content.Add(transaction.ToDumpWithNames());
-        File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "Transactions.txt"), content, Encoding1251);
+        prevTimestamp = transaction.Timestamp;
       }
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "Transactions.txt"), content, Encoding1251);
     }
 
     public static void DumpArticlesAssociations()
@@ -74,8 +77,8 @@ namespace Keeper.Utils
       foreach (var association in Db.ArticlesAssociations)
       {
         content.Add(association.ToDumpWithNames());
-        File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "ArticlesAssociations.txt"), content, Encoding1251);
       }
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "ArticlesAssociations.txt"), content, Encoding1251);
     }
 
     public static void DumpCurrencyRates()

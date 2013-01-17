@@ -318,8 +318,9 @@ namespace Keeper.ViewModels
     #endregion
 
 
-    #region // одноразовые методы сравнения ежедневных остатков с выгруженными из старого кипера
+    #region // одноразовые методы
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
+    // сравнение ежедневных остатков с выгруженными из старого кипера
     public void DayBalances()
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "OstatkiDnevn.txt"), Encoding1251);
@@ -391,18 +392,38 @@ namespace Keeper.ViewModels
       return -1;
     }
 
-    public void RepairEqualTransactionTimestamps()
+    public void NegativeBalances()
     {
-      Db.SaveChanges(); // сначала сохранить текущие изменения из ОЗУ на винт, при этом новые записи получат ID,
+      var content = new List<string>();
       var orderedTransactions = from transaction in Db.Transactions
+//                                where transaction.Debet.IsDescendantOf("Мои")
                                 orderby transaction.Timestamp
                                 select transaction;
 
-      var prevTimestamp = new DateTime(2001, 1, 1);
       foreach (var transaction in orderedTransactions)
       {
-        if (transaction.Timestamp <= prevTimestamp) transaction.Timestamp = prevTimestamp.AddMinutes(1);
+        if (!transaction.Debet.IsDescendantOf("Мои")) continue;
+        var balance = Balance.GetBalanceInCurrency(transaction.Debet,
+                                                   new Period(new DateTime(0), transaction.Timestamp.AddSeconds(59)),
+                                                   transaction.Currency);
+        if (balance < 0)
+          content.Add(String.Format("{0:dd/MM/yyyy hh:mm} со счета {1} списано {2} {3} осталось {4}",
+            transaction.Timestamp, transaction.Debet, transaction.Amount, transaction.Currency, balance));
       }
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "NegativeBalances.txt"), content, Encoding1251);
+
+    }
+
+    public void ShamTransactions()
+    {
+      var content = new List<string>();
+
+      foreach (var transaction in Db.Transactions) 
+      {
+        if (transaction.Comment.IndexOf("фикт", System.StringComparison.Ordinal) != -1) 
+          content.Add(transaction.ToDumpWithNames());
+      }
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "ShamTransactions.txt"), content, Encoding1251);
     }
     #endregion
 
