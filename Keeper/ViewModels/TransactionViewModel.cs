@@ -32,6 +32,7 @@ namespace Keeper.ViewModels
       SelectedDebetFilter = FilterListsForComboboxes.DebetFilterList.First(f => !f.IsOn);
       SelectedCreditFilter = FilterListsForComboboxes.CreditFilterList.First(f => !f.IsOn);
       SelectedArticleFilter = FilterListsForComboboxes.ArticleFilterList.First(f => !f.IsOn);
+      CommentFilter = "";
     }
 
     private bool OnFilter(object o)
@@ -41,8 +42,24 @@ namespace Keeper.ViewModels
       if (SelectedDebetFilter.IsOn && transaction.Debet != SelectedDebetFilter.WantedAccount) return false;
       if (SelectedCreditFilter.IsOn && transaction.Credit != SelectedCreditFilter.WantedAccount) return false;
       if (SelectedArticleFilter.IsOn && transaction.Article != SelectedArticleFilter.WantedAccount) return false;
+      if (CommentFilter != "" && transaction.Comment.IndexOf(CommentFilter, StringComparison.Ordinal) == -1) return false;
 
       return true;
+    }
+
+    public DateTime DateToGo
+    {
+      get { return _dateToGo; }
+      set
+      {
+        if (value.Equals(_dateToGo)) return;
+        _dateToGo = value;
+        NotifyOfPropertyChange(() => DateToGo);
+        while (SelectedTransactionIndex > 0 && SelectedTransaction.Timestamp > DateToGo)
+        {
+          SelectedTransactionIndex--;
+        }
+      }
     }
 
     public OperationTypesFilter SelectedOperationTypeFilter
@@ -94,6 +111,19 @@ namespace Keeper.ViewModels
       }
     }
 
+    public string CommentFilter
+    {
+      get { return _commentFilter; }
+      set
+      {
+        if (value == _commentFilter) return;
+        _commentFilter = value;
+        NotifyOfPropertyChange(() => CommentFilter);
+        var view = CollectionViewSource.GetDefaultView(SortedRows);
+        view.Refresh();
+      }
+    }
+
     private bool _isInTransactionSelectionProcess;
     private Transaction _selectedTransaction;
     private int _selectedTransactionIndex;
@@ -106,6 +136,8 @@ namespace Keeper.ViewModels
     private AccountFilter _selectedDebetFilter;
     private AccountFilter _selectedCreditFilter;
     private AccountFilter _selectedArticleFilter;
+    private string _commentFilter;
+    private DateTime _dateToGo;
 
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
