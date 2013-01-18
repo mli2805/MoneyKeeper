@@ -38,6 +38,11 @@
       <RowDefinition Height="200*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
+    <Label Content="Фильтр по валюте" HorizontalAlignment="Left" Margin="67,5,0,0"/>
+    <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,5,0,0" Width="75"
+              ItemsSource="{x:Static ViewModels:AllCurrencyRatesFilters.FilterList}"
+              SelectedItem="{Binding SelectedFilter}">
+    </ComboBox>
     <DataGrid x:Name="RatesGrid"  Grid.Row="1" Margin="5,5,5,0" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
@@ -109,10 +114,5 @@
         <Button Name="CancelNewRates" Content="Отмена" Grid.Column="5" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Margin="0,4,10,4"/>
       </Grid>
     </Expander>
-    <Label Content="Фильтр по валюте" HorizontalAlignment="Left" Margin="67,5,0,0"/>
-    <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,5,0,0" Width="75"
-              ItemsSource="{x:Static ViewModels:AllCurrencyRatesFilters.FilterList}"
-              SelectedItem="{Binding SelectedFilter}">
-    </ComboBox>
   </Grid>
 </Window>
