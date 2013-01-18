@@ -62,6 +62,31 @@ namespace Keeper.ViewModels
     }
     #endregion
 
+    private void ClearAllFilters()
+    {
+      SelectedOperationTypeFilter = OperationTypesFilerListForCombo.FilterList.First(f => !f.IsOn);
+    }
+
+    private bool OnFilter(object o)
+    {
+      var transaction = (Transaction) o;
+      if (SelectedOperationTypeFilter.IsOn && transaction.Operation != SelectedOperationTypeFilter.Operation) return false;
+
+      return true;
+    }
+
+    public OperationTypesFilter SelectedOperationTypeFilter
+    {
+      get { return _selectedOperationTypeFilter; }
+      set
+      {
+        if (Equals(value, _selectedOperationTypeFilter)) return;
+        _selectedOperationTypeFilter = value;
+        var view = CollectionViewSource.GetDefaultView(SortedRows);
+        view.Refresh();
+      }
+    }
+
     private bool _isInTransactionSelectionProcess;
     private Transaction _selectedTransaction;
     private int _selectedTransactionIndex;
@@ -70,6 +95,7 @@ namespace Keeper.ViewModels
     private bool _isTransactionInWorkChanged;
     private bool _canEditDate;
     private bool _isInAddTransactionMode;
+    private OperationTypesFilter _selectedOperationTypeFilter;
 
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
@@ -258,6 +284,8 @@ namespace Keeper.ViewModels
 
       SortedRows = CollectionViewSource.GetDefaultView(Rows);
       SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
+      ClearAllFilters();
+      SortedRows.Filter += OnFilter;
     }
 
     /// <summary>

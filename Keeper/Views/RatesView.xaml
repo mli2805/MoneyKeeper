@@ -40,7 +40,7 @@
     </Grid.RowDefinitions>
     <Label Content="Фильтр по валюте" HorizontalAlignment="Left" Margin="67,5,0,0"/>
     <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,5,0,0" Width="75"
-              ItemsSource="{x:Static ViewModels:AllCurrencyRatesFilters.FilterList}"
+              ItemsSource="{x:Static ViewModels:CurrencyRatesFilterListForCombo.FilterList}"
               SelectedItem="{Binding SelectedFilter}">
     </ComboBox>
     <DataGrid x:Name="RatesGrid"  Grid.Row="1" Margin="5,5,5,0" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 

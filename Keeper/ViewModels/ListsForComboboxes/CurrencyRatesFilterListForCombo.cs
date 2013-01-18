@@ -6,11 +6,11 @@ namespace Keeper.ViewModels
   /// <summary>
   /// Filter's list for combobox on CurrencyRates window
   /// </summary>
-  public static class AllCurrencyRatesFilters
+  public static class CurrencyRatesFilterListForCombo
   {
     public static List<CurrencyRatesFilter> FilterList { get; private set; }
 
-    static AllCurrencyRatesFilters()
+    static CurrencyRatesFilterListForCombo()
     {
       FilterList = new List<CurrencyRatesFilter>();
 

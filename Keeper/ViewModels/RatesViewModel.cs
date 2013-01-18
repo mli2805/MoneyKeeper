@@ -134,7 +134,7 @@ namespace Keeper.ViewModels
     public RatesViewModel()
     {
       Rows = Db.CurrencyRates.Local;
-      SelectedFilter = AllCurrencyRatesFilters.FilterList.First(f => !f.IsOn);
+      SelectedFilter = CurrencyRatesFilterListForCombo.FilterList.First(f => !f.IsOn);
 
       var view = CollectionViewSource.GetDefaultView(Rows);
 
