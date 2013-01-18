@@ -105,6 +105,7 @@
     <Compile Include="ViewModels\ListsForComboboxes\AssociatedArticlesLists.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\AccountFilter.cs" />
+    <Compile Include="ViewModels\TransactionViewFilters\AccountsForDebetFilterListForCombo.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilerListForCombo.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilter.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />

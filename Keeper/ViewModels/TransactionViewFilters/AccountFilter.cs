@@ -7,7 +7,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
-  class AccountFilter
+  public class AccountFilter
   {
     public bool IsOn { get; set; }
     public Account WantedAccount { get; set; }
