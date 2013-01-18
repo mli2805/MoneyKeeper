@@ -201,18 +201,19 @@ namespace Keeper.DomainModel
     /// <returns></returns>
     public Transaction Clone()
     {
-      var cloneTransaction = new Transaction();
-
-      cloneTransaction.Timestamp = Timestamp;
-      cloneTransaction.Operation = Operation;
-      cloneTransaction.Debet = Debet;
-      cloneTransaction.Credit = Credit;
-      cloneTransaction.Amount = Amount;
-      cloneTransaction.Currency = Currency;
-      cloneTransaction.Amount2 = Amount2;
-      cloneTransaction.Currency2 = Currency2;
-      cloneTransaction.Article = Article;
-      cloneTransaction.Comment = Comment;
+      var cloneTransaction = new Transaction
+                               {
+                                 Timestamp = Timestamp,
+                                 Operation = Operation,
+                                 Debet = Debet,
+                                 Credit = Credit,
+                                 Amount = Amount,
+                                 Currency = Currency,
+                                 Amount2 = Amount2,
+                                 Currency2 = Currency2,
+                                 Article = Article,
+                                 Comment = Comment
+                               };
 
       return cloneTransaction;
     }
@@ -223,16 +224,16 @@ namespace Keeper.DomainModel
     /// <param name="storage"></param>
     public void CloneFrom(Transaction storage)
     {
-      this.Timestamp = storage.Timestamp;
-      this.Operation = storage.Operation;
-      this.Debet = storage.Debet;
-      this.Credit = storage.Credit;
-      this.Amount = storage.Amount;
-      this.Currency = storage.Currency;
-      this.Amount2 = storage.Amount2;
-      this.Currency2 = storage.Currency2;
-      this.Article = storage.Article;
-      this.Comment = storage.Comment;
+      Timestamp = storage.Timestamp;
+      Operation = storage.Operation;
+      Debet = storage.Debet;
+      Credit = storage.Credit;
+      Amount = storage.Amount;
+      Currency = storage.Currency;
+      Amount2 = storage.Amount2;
+      Currency2 = storage.Currency2;
+      Article = storage.Article;
+      Comment = storage.Comment;
     }
 
 
@@ -244,22 +245,23 @@ namespace Keeper.DomainModel
     {
       var preformTransaction = new Transaction();
 
-      if (param == "SameDate") preformTransaction.Timestamp = this.Timestamp;
-      if (param == "SameDatePlusMinite") preformTransaction.Timestamp = this.Timestamp.AddMinutes(1);
-      if (param == "NextDate") preformTransaction.Timestamp = this.Timestamp.Date.AddDays(1).AddHours(9);
-      preformTransaction.Operation = this.Operation;
-      preformTransaction.Debet = this.Debet;
-      preformTransaction.Credit = this.Credit;
-      preformTransaction.Currency = this.Currency;
-      preformTransaction.Currency2 = this.Currency2;
-      preformTransaction.Article = this.Article;
+      if (param == "SameDate") preformTransaction.Timestamp = Timestamp;
+      if (param == "SameDatePlusMinite") preformTransaction.Timestamp = Timestamp.AddMinutes(1);
+      if (param == "NextDate") preformTransaction.Timestamp = Timestamp.Date.AddDays(1).AddHours(9);
+      preformTransaction.Operation = Operation;
+      preformTransaction.Debet = Debet;
+      preformTransaction.Credit = Credit;
+      preformTransaction.Currency = Currency;
+      preformTransaction.Currency2 = Currency2;
+      preformTransaction.Article = Article;
 
       return preformTransaction;
     }
 
     public int SignForAmount(Account a)
     {
-      if (Credit == a || Credit.IsDescendantOf(a.Name)) return 1; else return -1;
+      if (Credit == a || Credit.IsDescendantOf(a.Name)) return 1;
+      return -1;
     }
   }
 

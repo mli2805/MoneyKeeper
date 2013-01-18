@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keeper.DomainModel
 {
@@ -125,10 +121,8 @@ namespace Keeper.DomainModel
       #endregion
 
       #region // курсы валют
-      var currencyRate = new CurrencyRate();
-      currencyRate.BankDay = Convert.ToDateTime("30/11/2012");
-      currencyRate.Currency = CurrencyCodes.USD;
-      currencyRate.Rate = 8560;
+      var currencyRate = new CurrencyRate
+                           {BankDay = Convert.ToDateTime("30/11/2012"), Currency = CurrencyCodes.USD, Rate = 8560};
       context.CurrencyRates.Add(currencyRate);
       #endregion
 

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using Caliburn.Micro;
 
 namespace Keeper.DomainModel
@@ -29,9 +26,9 @@ namespace Keeper.DomainModel
     {
       get
       {
-        if (Currency == CurrencyCodes.EUR) return Math.Round(1 / Rate, 3).ToString();
-        else if (Currency == CurrencyCodes.BYR) return Math.Round(Rate, 0).ToString();
-        else return Rate.ToString();
+        if (Currency == CurrencyCodes.EUR) return Math.Round(1 / Rate, 3).ToString(CultureInfo.CurrentCulture);
+        if (Currency == CurrencyCodes.BYR) return Math.Round(Rate, 0).ToString(CultureInfo.CurrentCulture);
+        return Rate.ToString(CultureInfo.CurrentCulture);
       }
       set
       {
@@ -47,9 +44,7 @@ namespace Keeper.DomainModel
     {
       get
       {
-        if (Currency == CurrencyCodes.EUR) return CurrencyCodes.USD;
-        else
-          return Currency;
+        return Currency == CurrencyCodes.EUR ? CurrencyCodes.USD : Currency;
       }
       set
       {
@@ -76,8 +71,7 @@ namespace Keeper.DomainModel
     {
       get
       {
-        if (Currency == CurrencyCodes.EUR) return CurrencyCodes.EUR;
-        else return CurrencyCodes.USD;
+        return Currency == CurrencyCodes.EUR ? CurrencyCodes.EUR : CurrencyCodes.USD;
       }
       set
       {

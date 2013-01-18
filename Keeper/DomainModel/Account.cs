@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations.Schema;
 using Caliburn.Micro;
 using Keeper.ViewModels;
@@ -74,8 +73,7 @@ namespace Keeper.DomainModel
 
     private int ParentForDump()
     {
-      if (Parent == null) return 0;
-      else return Parent.Id;
+      return Parent == null ? 0 : Parent.Id;
     }
 
     public string ToDump(int offset)
@@ -104,7 +102,7 @@ namespace Keeper.DomainModel
     public bool IsDescendantOf(string ancestor)  // Descendant - потомок ; Ancestor - предок
     {
       if (Parent == null) return false;
-      else return Parent.Name == ancestor ? true : Parent.IsDescendantOf(ancestor);
+      return Parent.Name == ancestor || Parent.IsDescendantOf(ancestor);
     }
 
 
@@ -116,7 +114,7 @@ namespace Keeper.DomainModel
     public bool IsTheSameOrDescendantOf(string ancestor)  // Descendant - потомок ; Ancestor - предок
     {
       if (Name == ancestor) return true;
-      else return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
+      return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
     }
 
     public int CompareTo(object obj)

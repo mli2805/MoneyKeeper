@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keeper.DomainModel
 {
@@ -20,7 +16,7 @@ namespace Keeper.DomainModel
 
     public int CompareTo(object obj)
     {
-      return System.String.Compare(ExternalAccount.Name, ((Account) obj).Name, System.StringComparison.Ordinal);
+      return String.Compare(ExternalAccount.Name, ((Account) obj).Name, StringComparison.Ordinal);
     }
   }
 
