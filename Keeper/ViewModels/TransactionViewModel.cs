@@ -9,7 +9,6 @@
 # endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -27,41 +26,6 @@ namespace Keeper.ViewModels
   [Export(typeof(TransactionViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionViewModel : Screen, IShell
   {
-    #region // объявление и инициализация листов для комбиков
-    public List<OperationType> OperationTypes { get; set; }
-    public List<CurrencyCodes> CurrencyList { get; set; }
-
-    public List<Account> MyAccounts { get; set; }
-    public List<Account> MyAccountsForShopping { get; set; }
-
-    public List<Account> AccountsWhoGivesMeMoney { get; set; }
-    public List<Account> AccountsWhoTakesMyMoney { get; set; }
-    public List<Account> BankAccounts { get; set; }
-    public List<Account> IncomeArticles { get; set; }
-    public List<Account> ExpenseArticles { get; set; }
-
-    public void ComboBoxesValues()
-    {
-      OperationTypes = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
-      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-
-      MyAccounts = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
-        account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
-      MyAccountsForShopping = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
-        account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))).ToList();
-      AccountsWhoGivesMeMoney = (Db.Accounts.Local.Where(account => (account.IsDescendantOf("ДеньгоДатели") || 
-        account.IsDescendantOf("Банки")) && account.Children.Count == 0)).ToList();
-      AccountsWhoTakesMyMoney = (Db.Accounts.Local.Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
-        account.Children.Count == 0)).ToList();
-      BankAccounts = (Db.Accounts.Local.Where(account => account.IsDescendantOf("Банки") &&
-        account.Children.Count == 0)).ToList();
-      IncomeArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все доходы" &&
-        account.Children.Count == 0)).ToList();
-      ExpenseArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все расходы" &&
-        account.Children.Count == 0)).ToList();
-    }
-    #endregion
-
     private void ClearAllFilters()
     {
       SelectedOperationTypeFilter = OperationTypesFilerListForCombo.FilterList.First(f => !f.IsOn);
@@ -276,7 +240,6 @@ namespace Keeper.ViewModels
 
     public TransactionViewModel()
     {
-      ComboBoxesValues();
       TransactionInWork = new Transaction();
       Db.Transactions.Load();
       Rows = Db.Transactions.Local;
@@ -317,9 +280,9 @@ namespace Keeper.ViewModels
         IsTransactionInWorkChanged = true;
 
         if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
-          TransactionInWork.Article = AssociatedArticlesLists.GetAssociation(TransactionInWork.Debet);
+          TransactionInWork.Article = AssociatedArticles.GetAssociation(TransactionInWork.Debet);
         if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
-          TransactionInWork.Article = AssociatedArticlesLists.GetAssociation(TransactionInWork.Credit);
+          TransactionInWork.Article = AssociatedArticles.GetAssociation(TransactionInWork.Credit);
 
         if (e.PropertyName == "Amount" || e.PropertyName == "Currency" || e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
           NotifyOfPropertyChange(() => AmountInUsd);

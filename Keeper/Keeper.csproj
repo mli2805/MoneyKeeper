@@ -100,9 +100,9 @@
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
     <Compile Include="ViewModels\DepositViewModel.cs" />
-    <Compile Include="ViewModels\ListsForComboboxes\AllCurrencyCodes.cs" />
+    <Compile Include="ViewModels\ListsForComboboxes\UsefulLists.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilterListForCombo.cs" />
-    <Compile Include="ViewModels\ListsForComboboxes\AssociatedArticlesLists.cs" />
+    <Compile Include="Utils\AssociatedArticles.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\AccountFilter.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\AccountsForDebetFilterListForCombo.cs" />

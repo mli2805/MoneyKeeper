@@ -19,7 +19,7 @@ namespace Keeper.ViewModels
       FilterList.Add(filter);
 
       // one filter for each currency in my enam, except USD
-      foreach (var currencyCode in AllCurrencyCodes.CurrencyList)
+      foreach (var currencyCode in UsefulLists.CurrencyList)
       {
         if (currencyCode == CurrencyCodes.USD) continue;
         filter = new CurrencyRatesFilter(currencyCode);

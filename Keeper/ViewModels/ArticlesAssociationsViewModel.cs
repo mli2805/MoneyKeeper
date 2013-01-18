@@ -22,7 +22,7 @@ namespace Keeper.ViewModels
 
     protected override void OnViewLoaded(object view)
     {
-      DisplayName = "Ассоциации категории";
+      DisplayName = "Ассоциации категорий";
     }
 
 

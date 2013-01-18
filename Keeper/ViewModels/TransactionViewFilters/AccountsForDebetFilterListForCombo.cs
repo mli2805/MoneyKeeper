@@ -20,13 +20,13 @@ namespace Keeper.ViewModels
       var filter = new AccountFilter();
       FilterList.Add(filter);
 
-      var debetAccounts = 
+//      var debetAccounts = 
 
-      foreach (var account in debetAccounts)
-      {
-        filter = new AccountFilter(account);
-        FilterList.Add(filter);
-      }
+//      foreach (var account in debetAccounts)
+//      {
+//        filter = new AccountFilter(account);
+//        FilterList.Add(filter);
+//      }
 
     }
   }
