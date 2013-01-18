@@ -37,7 +37,7 @@ namespace Keeper.ViewModels
 
     private bool OnFilter(object o)
     {
-      var transaction = (Transaction) o;
+      var transaction = (Transaction)o;
       if (SelectedOperationTypeFilter.IsOn && transaction.Operation != SelectedOperationTypeFilter.Operation) return false;
       if (SelectedDebetFilter.IsOn && transaction.Debet != SelectedDebetFilter.WantedAccount) return false;
       if (SelectedCreditFilter.IsOn && transaction.Credit != SelectedCreditFilter.WantedAccount) return false;
@@ -55,10 +55,14 @@ namespace Keeper.ViewModels
         if (value.Equals(_dateToGo)) return;
         _dateToGo = value;
         NotifyOfPropertyChange(() => DateToGo);
-        while (SelectedTransactionIndex > 0 && SelectedTransaction.Timestamp > DateToGo)
-        {
-          SelectedTransactionIndex--;
-        }
+//        while (SelectedTransaction.Timestamp > DateToGo)
+//        {
+
+//          SelectedTransactionIndex--;
+//        }
+          SelectedTransaction = (from transaction in Db.Transactions.Local
+                                 where transaction.Timestamp > DateToGo
+                                 select transaction).FirstOrDefault() ?? Rows.Last();
       }
     }
 
