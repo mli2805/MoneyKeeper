@@ -26,15 +26,21 @@ namespace Keeper.ViewModels
   [Export(typeof(TransactionViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionViewModel : Screen, IShell
   {
-    private void ClearAllFilters()
+    public void ClearAllFilters()
     {
       SelectedOperationTypeFilter = OperationTypesFilerListForCombo.FilterList.First(f => !f.IsOn);
+      SelectedDebetFilter = FilterListsForComboboxes.DebetFilterList.First(f => !f.IsOn);
+      SelectedCreditFilter = FilterListsForComboboxes.CreditFilterList.First(f => !f.IsOn);
+      SelectedArticleFilter = FilterListsForComboboxes.ArticleFilterList.First(f => !f.IsOn);
     }
 
     private bool OnFilter(object o)
     {
       var transaction = (Transaction) o;
       if (SelectedOperationTypeFilter.IsOn && transaction.Operation != SelectedOperationTypeFilter.Operation) return false;
+      if (SelectedDebetFilter.IsOn && transaction.Debet != SelectedDebetFilter.WantedAccount) return false;
+      if (SelectedCreditFilter.IsOn && transaction.Credit != SelectedCreditFilter.WantedAccount) return false;
+      if (SelectedArticleFilter.IsOn && transaction.Article != SelectedArticleFilter.WantedAccount) return false;
 
       return true;
     }
@@ -51,6 +57,43 @@ namespace Keeper.ViewModels
       }
     }
 
+    public AccountFilter SelectedDebetFilter
+    {
+      get { return _selectedDebetFilter; }
+      set
+      {
+        if (Equals(value, _selectedDebetFilter)) return;
+        _selectedDebetFilter = value;
+        var view = CollectionViewSource.GetDefaultView(SortedRows);
+        view.Refresh();
+      }
+    }
+
+    public AccountFilter SelectedCreditFilter
+    {
+      get { return _selectedCreditFilter; }
+      set
+      {
+        if (Equals(value, _selectedCreditFilter)) return;
+        _selectedCreditFilter = value;
+        var view = CollectionViewSource.GetDefaultView(SortedRows);
+        view.Refresh();
+      }
+    }
+
+    public AccountFilter SelectedArticleFilter
+    {
+      get { return _selectedArticleFilter; }
+      set
+      {
+        if (Equals(value, _selectedArticleFilter)) return;
+        _selectedArticleFilter = value;
+        NotifyOfPropertyChange(() => SelectedArticleFilter);
+        var view = CollectionViewSource.GetDefaultView(SortedRows);
+        view.Refresh();
+      }
+    }
+
     private bool _isInTransactionSelectionProcess;
     private Transaction _selectedTransaction;
     private int _selectedTransactionIndex;
@@ -60,6 +103,9 @@ namespace Keeper.ViewModels
     private bool _canEditDate;
     private bool _isInAddTransactionMode;
     private OperationTypesFilter _selectedOperationTypeFilter;
+    private AccountFilter _selectedDebetFilter;
+    private AccountFilter _selectedCreditFilter;
+    private AccountFilter _selectedArticleFilter;
 
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 

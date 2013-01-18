@@ -9,7 +9,6 @@ namespace Keeper.Utils
   {
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
-
     static AssociatedArticles()
     {
       Db.Accounts.Load();

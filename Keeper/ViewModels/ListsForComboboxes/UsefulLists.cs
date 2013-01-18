@@ -17,6 +17,9 @@ namespace Keeper.ViewModels
     public static List<CurrencyCodes> CurrencyList { get; private set; }
     public static List<OperationType> OperationTypeList { get; private set; }
 
+    public static List<Account> AllAccounts { get; set; } // т.е. счета, но не категории
+    public static List<Account> AllArticles { get; set; } // т.е. категории, но не счета
+
     public static List<Account> MyAccounts { get; set; }
     public static List<Account> MyAccountsForShopping { get; set; }
     public static List<Account> AccountsWhoGivesMeMoney { get; set; }
@@ -28,12 +31,16 @@ namespace Keeper.ViewModels
     public static List<Account> ExternalAccounts { get; set; }
     public static List<Account> AssociatedArticles { get; set; }
 
-
     static UsefulLists()
     {
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
       OperationTypeList = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
 
+      AllAccounts = (Db.Accounts.Local.Where(account =>
+                      (account.GetRootName() == "Мои" || account.GetRootName() == "Внешние") && account.Children.Count == 0)).ToList();
+      AllArticles = (Db.Accounts.Local.Where(account =>
+                      (account.GetRootName() == "Все доходы" || account.GetRootName() == "Все расходы") && account.Children.Count == 0)).ToList();
+      
       MyAccounts = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
              account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
       MyAccountsForShopping = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
@@ -49,12 +56,8 @@ namespace Keeper.ViewModels
       ExpenseArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все расходы" &&
         account.Children.Count == 0)).ToList();
 
-      ExternalAccounts =
-    (Db.Accounts.Local.Where(account => account.IsDescendantOf("Внешние") && account.Children.Count == 0)).ToList();
-      AssociatedArticles =
-        (Db.Accounts.Local.Where(account =>
-          (account.GetRootName() == "Все доходы" || account.GetRootName() == "Все расходы") &&
-                                                                 account.Children.Count == 0)).ToList();
+      ExternalAccounts = (Db.Accounts.Local.Where(account => account.IsDescendantOf("Внешние") && account.Children.Count == 0)).ToList();
+      AssociatedArticles = AllArticles;
     }
   }
 }
