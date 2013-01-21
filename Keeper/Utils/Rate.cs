@@ -8,7 +8,6 @@ namespace Keeper.Utils
 {
   class Rate
   {
-    [Import]
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public static double GetRate(CurrencyCodes currency, DateTime day)

@@ -19,7 +19,7 @@ namespace Keeper.Utils
     {
       Console.WriteLine(args.Action);
       
-      if (i != AssociatedObject.SelectedIndex && args.Action == NotifyCollectionChangedAction.Reset)
+      if (i != -1 && i != AssociatedObject.SelectedIndex && args.Action == NotifyCollectionChangedAction.Reset)
       {
         AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.SelectedIndex]);
       }

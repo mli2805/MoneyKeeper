@@ -12,7 +12,6 @@ namespace Keeper.Utils
 {
   class RestoreDb
   {
-    [Import]
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
 

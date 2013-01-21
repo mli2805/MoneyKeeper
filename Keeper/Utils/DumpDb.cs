@@ -13,7 +13,6 @@ namespace Keeper.Utils
 {
   class DumpDb
   {
-    [Import]
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
 

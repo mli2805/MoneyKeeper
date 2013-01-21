@@ -22,10 +22,21 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  [Export(typeof(IShell))]
-  [Export(typeof(TransactionViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
-  public class TransactionViewModel : Screen, IShell
+  [Export, PartCreationPolicy(CreationPolicy.Shared)]
+  public class TransactionViewModel : Screen
   {
+//    [Import]
+//    public KeeperDb Db { get; set; }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+
+    #region  // фильтрация и переход к дате
+    private OperationTypesFilter _selectedOperationTypeFilter;
+    private AccountFilter _selectedDebetFilter;
+    private AccountFilter _selectedCreditFilter;
+    private AccountFilter _selectedArticleFilter;
+    private string _commentFilter;
+    private DateTime _dateToGo;
+
     public void ClearAllFilters()
     {
       SelectedOperationTypeFilter = OperationTypesFilerListForCombo.FilterList.First(f => !f.IsOn);
@@ -55,14 +66,9 @@ namespace Keeper.ViewModels
         if (value.Equals(_dateToGo)) return;
         _dateToGo = value;
         NotifyOfPropertyChange(() => DateToGo);
-//        while (SelectedTransaction.Timestamp > DateToGo)
-//        {
-
-//          SelectedTransactionIndex--;
-//        }
-          SelectedTransaction = (from transaction in Db.Transactions.Local
-                                 where transaction.Timestamp > DateToGo
-                                 select transaction).FirstOrDefault() ?? Rows.Last();
+        SelectedTransaction = (from transaction in Db.Transactions.Local
+                               where transaction.Timestamp > DateToGo
+                               select transaction).FirstOrDefault() ?? Rows.Last();
       }
     }
 
@@ -127,6 +133,7 @@ namespace Keeper.ViewModels
         view.Refresh();
       }
     }
+    #endregion
 
     private bool _isInTransactionSelectionProcess;
     private Transaction _selectedTransaction;
@@ -136,14 +143,6 @@ namespace Keeper.ViewModels
     private bool _isTransactionInWorkChanged;
     private bool _canEditDate;
     private bool _isInAddTransactionMode;
-    private OperationTypesFilter _selectedOperationTypeFilter;
-    private AccountFilter _selectedDebetFilter;
-    private AccountFilter _selectedCreditFilter;
-    private AccountFilter _selectedArticleFilter;
-    private string _commentFilter;
-    private DateTime _dateToGo;
-
-    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public ObservableCollection<Transaction> Rows { get; set; }
     public ICollectionView SortedRows { get; set; }

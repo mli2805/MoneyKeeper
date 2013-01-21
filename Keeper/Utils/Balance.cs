@@ -10,7 +10,6 @@ namespace Keeper.Utils
 {
   class Balance
   {
-    [Import]
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     class BalancePair
