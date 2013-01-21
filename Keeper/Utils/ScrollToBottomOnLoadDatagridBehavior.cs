@@ -15,6 +15,5 @@ namespace Keeper.Utils
     {
       AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
     }
-
   }
 }

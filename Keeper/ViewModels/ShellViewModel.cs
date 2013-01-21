@@ -21,8 +21,7 @@ namespace Keeper.ViewModels
     [Import]
     public IWindowManager WindowManager { get; set; }
 
-    [Import]
-    public KeeperDb Db { get; set; }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -262,6 +261,7 @@ namespace Keeper.ViewModels
       String arcMessage = Message;
       Message = "Input operations";
       WindowManager.ShowDialog(new TransactionViewModel());
+      // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
       Balance.CountBalances(SelectedAccount, period, BalanceList);
       Message = arcMessage;

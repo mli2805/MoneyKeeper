@@ -22,11 +22,9 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  [Export, PartCreationPolicy(CreationPolicy.Shared)]
+//  [Export, PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionViewModel : Screen
   {
-//    [Import]
-//    public KeeperDb Db { get; set; }
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     #region  // фильтрация и переход к дате
@@ -322,7 +320,7 @@ namespace Keeper.ViewModels
     public TransactionViewModel()
     {
       TransactionInWork = new Transaction();
-      Db.Transactions.Load();
+//      Db.Transactions.Load();
       Rows = Db.Transactions.Local;
       SelectedTransactionIndex = Rows.Count - 1;
 
