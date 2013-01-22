@@ -23,7 +23,7 @@ namespace Keeper.Utils
     /// </summary>
     private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
     {
-//      AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+      AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
     }
   }
 }

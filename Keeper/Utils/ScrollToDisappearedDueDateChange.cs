@@ -21,6 +21,8 @@ namespace Keeper.Utils
       
       if (i != -1 && i != AssociatedObject.SelectedIndex && args.Action == NotifyCollectionChangedAction.Reset)
       {
+        if (AssociatedObject.SelectedIndex == -1) // в случае фильтрации, когда селектнутая строка не отобралась
+          AssociatedObject.SelectedIndex = AssociatedObject.Items.Count - 1;
         AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.SelectedIndex]);
       }
 

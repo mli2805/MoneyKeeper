@@ -212,8 +212,9 @@ namespace Keeper.DomainModel
                                  Amount2 = Amount2,
                                  Currency2 = Currency2,
                                  Article = Article,
-                                 Comment = Comment
                                };
+
+      cloneTransaction.Comment = Comment ?? "";
 
       return cloneTransaction;
     }
@@ -233,7 +234,7 @@ namespace Keeper.DomainModel
       Amount2 = storage.Amount2;
       Currency2 = storage.Currency2;
       Article = storage.Article;
-      Comment = storage.Comment;
+      Comment = storage.Comment ?? "";
     }
 
 

@@ -22,7 +22,7 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-//  [Export, PartCreationPolicy(CreationPolicy.Shared)]
+  [Export, PartCreationPolicy(CreationPolicy.Shared)]
   public class TransactionViewModel : Screen
   {
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
@@ -357,6 +357,8 @@ namespace Keeper.ViewModels
       if (!_isInTransactionSelectionProcess)
       {
         IsTransactionInWorkChanged = true;
+
+        if (e.PropertyName == "Comment") return;
 
         if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
           TransactionInWork.Article = AssociatedArticles.GetAssociation(TransactionInWork.Debet);
