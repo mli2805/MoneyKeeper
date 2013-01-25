@@ -322,8 +322,8 @@ namespace Keeper.ViewModels
 
     public TransactionViewModel()
     {
+      
       TransactionInWork = new Transaction();
-      //      Db.Transactions.Load();
       Rows = Db.Transactions.Local;
       SelectedTransactionIndex = Rows.Count - 1;
 

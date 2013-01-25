@@ -36,11 +36,16 @@ namespace Keeper.ViewModels
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
       OperationTypeList = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
 
+      FillListsFromLocal();
+    }
+
+    public static void FillListsFromLocal()
+    {
       AllAccounts = (Db.Accounts.Local.Where(account =>
                       (account.GetRootName() == "Мои" || account.GetRootName() == "Внешние") && account.Children.Count == 0)).ToList();
       AllArticles = (Db.Accounts.Local.Where(account =>
                       (account.GetRootName() == "Все доходы" || account.GetRootName() == "Все расходы") && account.Children.Count == 0)).ToList();
-      
+
       MyAccounts = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
              account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
       MyAccountsForShopping = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&

@@ -260,6 +260,7 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Input operations";
+      UsefulLists.FillListsFromLocal();
       WindowManager.ShowDialog(new TransactionViewModel());
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
@@ -279,6 +280,7 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Articles' associations";
+      UsefulLists.FillListsFromLocal();
       WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
       Message = arcMessage;
     }

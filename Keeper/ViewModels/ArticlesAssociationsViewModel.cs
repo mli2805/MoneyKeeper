@@ -9,9 +9,7 @@ namespace Keeper.ViewModels
 {
   class ArticlesAssociationsViewModel : Screen
   {
-    [Import]
-    public KeeperDb Db { get; set; }
-//    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public ObservableCollection<ArticleAssociation> Rows { get; set; }
 
@@ -27,7 +25,6 @@ namespace Keeper.ViewModels
     {
       DisplayName = "Ассоциации категорий";
     }
-
 
   }
 }
