@@ -17,15 +17,16 @@ using System.Windows;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using System.Data.Entity;
 using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  [Export, PartCreationPolicy(CreationPolicy.Shared)]
+  [Export, PartCreationPolicy(CreationPolicy.Shared)] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public ObservableCollection<Transaction> Rows { get; set; }
+    public ICollectionView SortedRows { get; set; }
 
     #region  // фильтрация и переход к дате
     private OperationTypesFilter _selectedOperationTypeFilter;
@@ -133,17 +134,26 @@ namespace Keeper.ViewModels
     }
     #endregion
 
+    #region // группа свойств для биндинга селектов и др.
     private bool _isInTransactionSelectionProcess;
+    private int _selectedTabIndex;
     private Transaction _selectedTransaction;
     private int _selectedTransactionIndex;
-    private Transaction _transactionInWork;
-    private int _selectedTabIndex;
     private bool _isTransactionInWorkChanged;
-    private bool _canEditDate;
+    private Transaction _transactionInWork;
     private bool _isInAddTransactionMode;
 
-    public ObservableCollection<Transaction> Rows { get; set; }
-    public ICollectionView SortedRows { get; set; }
+    public int SelectedTabIndex
+    {
+      get { return _selectedTabIndex; }
+      set
+      {
+        if (value == _selectedTabIndex) return;
+        _selectedTabIndex = value;
+        NotifyOfPropertyChange(() => SelectedTabIndex);
+        TransactionInWork.Operation = (OperationType)SelectedTabIndex;
+      }
+    }
 
     public Transaction SelectedTransaction
     {
@@ -164,6 +174,17 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalance);
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
+      }
+    }
+
+    public int SelectedTransactionIndex
+    {
+      get { return _selectedTransactionIndex; }
+      set
+      {
+        if (value == _selectedTransactionIndex) return;
+        _selectedTransactionIndex = value;
+        NotifyOfPropertyChange(() => SelectedTransactionIndex);
       }
     }
 
@@ -193,32 +214,34 @@ namespace Keeper.ViewModels
       }
     }
 
-    public int SelectedTransactionIndex
+    public bool IsInAddTransactionMode
     {
-      get { return _selectedTransactionIndex; }
+      get { return _isInAddTransactionMode; }
       set
       {
-        if (value == _selectedTransactionIndex) return;
-        _selectedTransactionIndex = value;
-        NotifyOfPropertyChange(() => SelectedTransactionIndex);
+        _isInAddTransactionMode = value;
+        if (!value) CanEditDate = true;
       }
     }
+    #endregion
 
-    public int SelectedTabIndex
-    {
-      get { return _selectedTabIndex; }
-      set
-      {
-        if (value == _selectedTabIndex) return;
-        _selectedTabIndex = value;
-        NotifyOfPropertyChange(() => SelectedTabIndex);
-        TransactionInWork.Operation = (OperationType)SelectedTabIndex;
-      }
-    }
-
+    #region // свойства Can для нескольких кнопок
+    private bool _canEditDate;
     public bool CanSaveTransactionChanges { get; set; }
     public bool CanCancelTransactionChanges { get; set; }
+    public bool CanEditDate
+    {
+      get { return _canEditDate; }
+      set
+      {
+        if (value.Equals(_canEditDate)) return;
+        _canEditDate = value;
+        NotifyOfPropertyChange(() => CanEditDate);
+      }
+    }
+    #endregion
 
+    #region // свойства для показа сумм остатков на счетах и перевода операции в доллары
     private string GetUsdEquivalent(Decimal amount, CurrencyCodes currency, DateTime timestamp)
     {
       var rate = Rate.GetRate(currency, timestamp);
@@ -295,32 +318,12 @@ namespace Keeper.ViewModels
              balanceBefore, balanceBefore + TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
       }
     }
-
-    public bool IsInAddTransactionMode
-    {
-      get { return _isInAddTransactionMode; }
-      set
-      {
-        _isInAddTransactionMode = value;
-        if (!value) CanEditDate = true;
-      }
-    }
-
-    public bool CanEditDate
-    {
-      get { return _canEditDate; }
-      set
-      {
-        if (value.Equals(_canEditDate)) return;
-        _canEditDate = value;
-        NotifyOfPropertyChange(() => CanEditDate);
-      }
-    }
+    #endregion
 
     public TransactionViewModel()
     {
       TransactionInWork = new Transaction();
-//      Db.Transactions.Load();
+      //      Db.Transactions.Load();
       Rows = Db.Transactions.Local;
       SelectedTransactionIndex = Rows.Count - 1;
 
@@ -348,7 +351,6 @@ namespace Keeper.ViewModels
 
     /// <summary>
     /// Какое именно свойство в инстансе TransactionInWork класса Transaction можно узнать из  e.PropertyName ,
-    /// но в данном случае нас это не интересует.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

@@ -14,8 +14,8 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  [Export(typeof(IShell))]
-  [Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
+  [Export(typeof(IShell))] // это для загрузчика, который ищет главное окно проги
+  [Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)] // это для класса Account чтобы засунуть в свойство SelectedAccount 
   public class ShellViewModel : Screen, IShell, IPartImportsSatisfiedNotification
   {
     [Import]
