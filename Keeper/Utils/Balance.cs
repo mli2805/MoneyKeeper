@@ -100,6 +100,8 @@ namespace Keeper.Utils
       }
     }
 
+
+    // Хреново!!! - запрашивает баланс по всем валютам, и возращает по одной переданной в качестве параметра
     public static decimal GetBalanceInCurrency(Account account, Period period, CurrencyCodes currency)
     {
       if (account == null) return 0;

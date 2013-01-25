@@ -56,9 +56,9 @@
         <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem x:Name="ArticlesAssociations" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
-        <MenuItem x:Name="DayBalances" Header="Остатки по дням"/>
+        <MenuItem x:Name="RestoreFromSeparateFiles" Header="Загрузить сепаратно"/>
         <MenuItem x:Name="NegativeBalances" Header="Отрицательные ежедневные остатки"/>
-        <MenuItem x:Name="ShamTransactions" Header="Фиктивные операции"/>
+        <MenuItem x:Name="DumpToSeparateFiles" Header="Сепаратор"/>
       </MenuItem>
       <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem Header="СДЕЛАТЬ" />
