@@ -322,7 +322,7 @@ namespace Keeper.ViewModels
     public void RestoreFromSeparateFiles()
     {
       var start = DateTime.Now;
-      var content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "Separator.txt"), Encoding1251);
+      var content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "TransactionsNL.txt"), Encoding1251);
       
       var result = new List<Transaction>();
 
@@ -379,18 +379,18 @@ namespace Keeper.ViewModels
       var start = DateTime.Now;
       var content = new List<string>();
 
-      foreach (var transaction in Db.Transactions) 
+      foreach (var transaction in Db.Transactions)
       {
         foreach (var property in transaction.GetType().GetProperties())
-        { 
+        {
           if (property.Name == "Id" || property.Name == "DayBackgroundColor" || property.Name == "TransactionFontColor" ||
-            property.Name == "IsSelected" || property.Name == "IsNotifying" ) continue;
+            property.Name == "IsSelected" || property.Name == "IsNotifying") continue;
           var st = String.Format("{0}", property.GetValue(transaction, null));
           content.Add(st);
         }
       }
+      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "TransactionsNL.txt"), content, Encoding1251);
 
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "Separator.txt"), content, Encoding1251);
       var duration = DateTime.Now - start;
       MessageBox.Show(duration.ToString());
     }
