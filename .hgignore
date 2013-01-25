@@ -6,3 +6,5 @@ bin
 *.suo
 *.ncrunchsolution
 *.user
+Keeper.psess
+*.vsp
