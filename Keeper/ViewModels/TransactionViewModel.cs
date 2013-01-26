@@ -1,13 +1,4 @@
-﻿#region TODO List
-/* TODO List
- * 7. Запрещенные клавиши DatePicker нарисовать иначе
- * 9. При смене типа операции проверять на соответствие значений типу операции ИЛИ при сохранении ?
- * 12. Вертикальные полоски между столбцами ListView и цвет для выделенной строки
- * 15. проверить что в результате операций нет минусовых остатков    
- * 16. сделать более красивый отчет по депозиту: шапка и итого как есть, а тело сделать ListView
-*/
-# endregion
-
+﻿
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -78,6 +69,7 @@ namespace Keeper.ViewModels
       {
         if (Equals(value, _selectedOperationTypeFilter)) return;
         _selectedOperationTypeFilter = value;
+        NotifyOfPropertyChange(() => SelectedOperationTypeFilter);
         var view = CollectionViewSource.GetDefaultView(SortedRows);
         view.Refresh();
       }
@@ -90,6 +82,7 @@ namespace Keeper.ViewModels
       {
         if (Equals(value, _selectedDebetFilter)) return;
         _selectedDebetFilter = value;
+        NotifyOfPropertyChange(() => SelectedDebetFilter);
         var view = CollectionViewSource.GetDefaultView(SortedRows);
         view.Refresh();
       }
@@ -102,6 +95,7 @@ namespace Keeper.ViewModels
       {
         if (Equals(value, _selectedCreditFilter)) return;
         _selectedCreditFilter = value;
+        NotifyOfPropertyChange(() => SelectedCreditFilter);
         var view = CollectionViewSource.GetDefaultView(SortedRows);
         view.Refresh();
       }
@@ -322,15 +316,9 @@ namespace Keeper.ViewModels
 
     public TransactionViewModel()
     {
-      
       TransactionInWork = new Transaction();
       Rows = Db.Transactions;
       SelectedTransactionIndex = Rows.Count - 1;
-
-      SortedRows = CollectionViewSource.GetDefaultView(Rows);
-      SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
-      ClearAllFilters();
-      SortedRows.Filter += OnFilter;
     }
 
     /// <summary>
@@ -342,6 +330,11 @@ namespace Keeper.ViewModels
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Ежедневные операции";
+
+      SortedRows = CollectionViewSource.GetDefaultView(Rows);
+      SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
+      ClearAllFilters();
+      SortedRows.Filter += OnFilter;
 
       TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
       CanSaveTransactionChanges = false;
