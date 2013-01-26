@@ -26,9 +26,9 @@ namespace Keeper.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\Leonid\\Dropbox\\Keeper\\Dump\\")]
-        public string DumpPath {
+        public string SavePath {
             get {
-                return ((string)(this["DumpPath"]));
+                return ((string)(this["SavePath"]));
             }
         }
         
@@ -44,9 +44,9 @@ namespace Keeper.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Keeper\\Dump\\")]
-        public string DumpInDropBoxPath {
+        public string SavePathInDropBox {
             get {
-                return ((string)(this["DumpInDropBoxPath"]));
+                return ((string)(this["SavePathInDropBox"]));
             }
         }
     }

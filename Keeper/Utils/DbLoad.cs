@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,23 +10,39 @@ using Keeper.Properties;
 
 namespace Keeper.Utils
 {
-  class RestoreDb
+  class DbLoad
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
 
-    public static void RestoreAllTables()
+    public static TimeSpan LoadAllTables()
     {
-      RestoreCurrencyRates();
-      RestoreAccounts();
-      RestoreTransactions();
-      RestoreArticlesAssociations();
+      var start = DateTime.Now;
+
+      LoadCurrencyRates();
+      LoadAccounts();
+      FillInAccountsPlaneList(Db.Accounts);
+      LoadTransactions();
+      LoadArticlesAssociations();
+
+      return DateTime.Now - start;
+    }
+
+    public static void FillInAccountsPlaneList(IEnumerable<Account> accountsList)
+    {
+      if (Db.AccountsPlaneList == null) Db.AccountsPlaneList = new List<Account>();
+      foreach (var account in accountsList)
+      {
+        Db.AccountsPlaneList.Add(account);
+        FillInAccountsPlaneList(account.Children);
+      }
     }
 
     #region // Articles associations
-    private static void RestoreArticlesAssociations()
+    private static void LoadArticlesAssociations()
     {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "ArticlesAssociations.txt"), Encoding1251);
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "ArticlesAssociations.txt"), Encoding1251);
+      if (Db.ArticlesAssociations == null) Db.ArticlesAssociations = new ObservableCollection<ArticleAssociation>();
       var wrongContent = new List<string>();
       foreach (var s in content)
       {
@@ -43,7 +59,7 @@ namespace Keeper.Utils
         }
         if (association != null) Db.ArticlesAssociations.Add(association);
       }
-      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreArticlesAssociations.err"), wrongContent, Encoding1251);
+      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
     }
 
     private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
@@ -51,20 +67,21 @@ namespace Keeper.Utils
       var association = new ArticleAssociation();
       int prev = s.IndexOf(';');
       string externalAccount = s.Substring(0, prev - 1);
-      association.ExternalAccount = Db.Accounts.Local.First(account => account.Name == externalAccount);
+      association.ExternalAccount = Db.AccountsPlaneList.First(account => account.Name == externalAccount);
       int next = s.IndexOf(';', prev + 2);
       association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), s.Substring(prev + 2, next - prev - 3));
       string associatedArticle = s.Substring(next + 2);
-      association.AssociatedArticle = Db.Accounts.Local.First(account => account.Name == associatedArticle);
+      association.AssociatedArticle = Db.AccountsPlaneList.First(account => account.Name == associatedArticle);
 
       return association;
     }
     #endregion
 
     #region // Transactions
-    private static void RestoreTransactions()
+    private static void LoadTransactions()
     {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "Transactions.txt"), Encoding1251);
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "Transactions.txt"), Encoding1251);
+      if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
       var wrongContent = new List<string>();
       foreach (var s in content)
       {
@@ -81,7 +98,7 @@ namespace Keeper.Utils
         }
         if (transaction != null) Db.Transactions.Add(transaction);
       }
-      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "RestoreTransactions.err"), wrongContent, Encoding1251);
+      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadTransactions.err"), wrongContent, Encoding1251);
     }
 
     private static Transaction TransactionFromStringWithNames(string s)
@@ -94,11 +111,11 @@ namespace Keeper.Utils
       prev = next;
       next = s.IndexOf(';', prev + 2);
       string debet = s.Substring(prev + 2, next - prev - 3);
-      transaction.Debet = Db.Accounts.Local.First(account => account.Name == debet);
+      transaction.Debet = Db.AccountsPlaneList.First(account => account.Name == debet);
       prev = next;
       next = s.IndexOf(';', prev + 2);
       string credit = s.Substring(prev + 2, next - prev - 3);
-      transaction.Credit = Db.Accounts.Local.First(account => account.Name == credit);
+      transaction.Credit = Db.AccountsPlaneList.First(account => account.Name == credit);
       prev = next;
       next = s.IndexOf(';', prev + 2);
       transaction.Amount = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
@@ -117,7 +134,7 @@ namespace Keeper.Utils
       prev = next;
       next = s.IndexOf(';', prev + 2);
       string article = s.Substring(prev + 2, next - prev - 3);
-      transaction.Article = article != "" ? Db.Accounts.Local.First(account => account.Name == article) : null;
+      transaction.Article = article != "" ? Db.AccountsPlaneList.First(account => account.Name == article) : null;
       transaction.Comment = s.Substring(next + 2);
 
       return transaction;
@@ -125,9 +142,10 @@ namespace Keeper.Utils
     #endregion
 
     #region // Currency Rates
-    public static void RestoreCurrencyRates()
+    public static void LoadCurrencyRates()
     {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "CurrencyRates.txt"), Encoding1251);
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), Encoding1251);
+      if (Db.CurrencyRates == null) Db.CurrencyRates = new ObservableCollection<CurrencyRate>();
       foreach (var s in content)
       {
         var rate = CurrencyRateFromString(s);
@@ -148,9 +166,10 @@ namespace Keeper.Utils
     #endregion
 
     #region // Accounts
-    public static void RestoreAccounts()
+    public static void LoadAccounts()
     {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "Accounts.txt"), Encoding1251);
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "Accounts.txt"), Encoding1251);
+      if (Db.Accounts == null) Db.Accounts = new ObservableCollection<Account>();
       foreach (var s in content)
       {
         if (s == "") continue;

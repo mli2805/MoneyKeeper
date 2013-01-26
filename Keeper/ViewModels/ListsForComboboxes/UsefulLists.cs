@@ -12,7 +12,7 @@ namespace Keeper.ViewModels
   /// </summary>
   public static class UsefulLists
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     public static List<CurrencyCodes> CurrencyList { get; private set; }
     public static List<OperationType> OperationTypeList { get; private set; }
@@ -36,32 +36,32 @@ namespace Keeper.ViewModels
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
       OperationTypeList = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
 
-      FillListsFromLocal();
+      FillLists();
     }
 
-    public static void FillListsFromLocal()
+    public static void FillLists()
     {
-      AllAccounts = (Db.Accounts.Local.Where(account =>
+      AllAccounts = (Db.AccountsPlaneList.Where(account =>
                       (account.GetRootName() == "Мои" || account.GetRootName() == "Внешние") && account.Children.Count == 0)).ToList();
-      AllArticles = (Db.Accounts.Local.Where(account =>
+      AllArticles = (Db.AccountsPlaneList.Where(account =>
                       (account.GetRootName() == "Все доходы" || account.GetRootName() == "Все расходы") && account.Children.Count == 0)).ToList();
 
-      MyAccounts = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
+      MyAccounts = (Db.AccountsPlaneList.Where(account => account.GetRootName() == "Мои" &&
              account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
-      MyAccountsForShopping = (Db.Accounts.Local.Where(account => account.GetRootName() == "Мои" &&
+      MyAccountsForShopping = (Db.AccountsPlaneList.Where(account => account.GetRootName() == "Мои" &&
         account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))).ToList();
-      AccountsWhoGivesMeMoney = (Db.Accounts.Local.Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
+      AccountsWhoGivesMeMoney = (Db.AccountsPlaneList.Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
         account.IsDescendantOf("Банки")) && account.Children.Count == 0)).ToList();
-      AccountsWhoTakesMyMoney = (Db.Accounts.Local.Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
+      AccountsWhoTakesMyMoney = (Db.AccountsPlaneList.Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
         account.Children.Count == 0)).ToList();
-      BankAccounts = (Db.Accounts.Local.Where(account => account.IsDescendantOf("Банки") &&
+      BankAccounts = (Db.AccountsPlaneList.Where(account => account.IsDescendantOf("Банки") &&
         account.Children.Count == 0)).ToList();
-      IncomeArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все доходы" &&
+      IncomeArticles = (Db.AccountsPlaneList.Where(account => account.GetRootName() == "Все доходы" &&
         account.Children.Count == 0)).ToList();
-      ExpenseArticles = (Db.Accounts.Local.Where(account => account.GetRootName() == "Все расходы" &&
+      ExpenseArticles = (Db.AccountsPlaneList.Where(account => account.GetRootName() == "Все расходы" &&
         account.Children.Count == 0)).ToList();
 
-      ExternalAccounts = (Db.Accounts.Local.Where(account => account.IsDescendantOf("Внешние") && account.Children.Count == 0)).ToList();
+      ExternalAccounts = (Db.AccountsPlaneList.Where(account => account.IsDescendantOf("Внешние") && account.Children.Count == 0)).ToList();
       AssociatedArticles = AllArticles;
     }
   }

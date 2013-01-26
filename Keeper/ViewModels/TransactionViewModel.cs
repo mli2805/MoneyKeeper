@@ -24,7 +24,7 @@ namespace Keeper.ViewModels
   [Export, PartCreationPolicy(CreationPolicy.Shared)] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }
     public ICollectionView SortedRows { get; set; }
 
@@ -65,7 +65,7 @@ namespace Keeper.ViewModels
         if (value.Equals(_dateToGo)) return;
         _dateToGo = value;
         NotifyOfPropertyChange(() => DateToGo);
-        SelectedTransaction = (from transaction in Db.Transactions.Local
+        SelectedTransaction = (from transaction in Db.Transactions
                                where transaction.Timestamp > DateToGo
                                select transaction).FirstOrDefault() ?? Rows.Last();
       }
@@ -324,7 +324,7 @@ namespace Keeper.ViewModels
     {
       
       TransactionInWork = new Transaction();
-      Rows = Db.Transactions.Local;
+      Rows = Db.Transactions;
       SelectedTransactionIndex = Rows.Count - 1;
 
       SortedRows = CollectionViewSource.GetDefaultView(Rows);
@@ -417,12 +417,12 @@ namespace Keeper.ViewModels
       if (isDateChanged)
       {
         //            все же SQL запрос пока наглядней чем LINQ форма
-        //      var transactionBefore = (from transaction in Db.Transactions.Local
+        //      var transactionBefore = (from transaction in Db.Transactions
         //                             where transaction.Timestamp.Date == TransactionInWork.Timestamp.Date
         //                             orderby transaction.Timestamp
         //                             select transaction).LastOrDefault();
 
-        var transactionBefore = Db.Transactions.Local.Where(
+        var transactionBefore = Db.Transactions.Where(
           transaction => transaction.Timestamp.Date == TransactionInWork.Timestamp.Date).OrderBy(
             transaction => transaction.Timestamp).LastOrDefault();
 

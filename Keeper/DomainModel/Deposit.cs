@@ -13,7 +13,7 @@ namespace Keeper.DomainModel
     private ObservableCollection<string> _report;
 
     [Import]
-    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     public Account Account { get; set; }
     public DateTime Start { get; set; }
@@ -50,7 +50,7 @@ namespace Keeper.DomainModel
 
     private void SelectTransactions()
     {
-      Transactions = (from transaction in Db.Transactions.Local
+      Transactions = (from transaction in Db.Transactions
                       where transaction.Debet == Account || transaction.Credit == Account
                       orderby transaction.Timestamp
                       select transaction).ToList();

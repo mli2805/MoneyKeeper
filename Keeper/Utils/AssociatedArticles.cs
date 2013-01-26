@@ -7,16 +7,11 @@ namespace Keeper.Utils
 {
   public static class AssociatedArticles
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-
-    static AssociatedArticles()
-    {
-      Db.Accounts.Load();
-    }
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     public static Account GetAssociation(Account account)
     {
-      var association = (from a in Db.ArticlesAssociations.Local
+      var association = (from a in Db.ArticlesAssociations
                          where a.ExternalAccount == account
                          select a).FirstOrDefault();
       return association == null ? null : association.AssociatedArticle;

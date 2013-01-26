@@ -7,7 +7,7 @@ namespace Keeper.ViewModels
 {
   class AddAndEditAccountViewModel : Screen
   {
-    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     public String Title { get; set; }
     public Account AccountInWork { get; set; }
@@ -44,7 +44,7 @@ namespace Keeper.ViewModels
       GetBranchFromPoint(root,CategoriesForParentList);
       CategoriesForParentList.Remove(AccountInWork); // не работает, т.к. разные инстансы , надо перегружать операцию сравнения (по Id)
 
-//      CategoriesForParentList = new List<Account>(from account in Db.Categories.Local
+//      CategoriesForParentList = new List<Account>(from account in Db.Categories
 //                                                   where account == root
 //                                                   select account);
       SelectedParent = AccountInWork.Parent;

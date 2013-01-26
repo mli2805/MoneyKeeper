@@ -10,7 +10,7 @@ namespace Keeper.ViewModels
 {
   public class RatesViewModel : Screen
   {
-    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
 
     /*****************************************************************************
@@ -133,7 +133,7 @@ namespace Keeper.ViewModels
 
     public RatesViewModel()
     {
-      Rows = Db.CurrencyRates.Local;
+      Rows = Db.CurrencyRates;
       SelectedFilter = CurrencyRatesFilterListForCombo.FilterList.First(f => !f.IsOn);
 
       var view = CollectionViewSource.GetDefaultView(Rows);

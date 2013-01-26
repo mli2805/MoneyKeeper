@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Data.Entity;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Properties;
 using Keeper.Utils;
 
 namespace Keeper.ViewModels
@@ -21,12 +17,13 @@ namespace Keeper.ViewModels
     [Import]
     public IWindowManager WindowManager { get; set; }
 
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
     private string _message;
+    private string _statusBarItem0;
     private Account _selectedAccount;
     private int _openedAccountPage;
     private DateTime _balanceDate;
@@ -43,6 +40,17 @@ namespace Keeper.ViewModels
         if (value == _message) return;
         _message = value;
         NotifyOfPropertyChange(() => Message);
+      }
+    }
+
+    public string StatusBarItem0 
+    {
+      get { return _statusBarItem0; }
+      set
+      {
+        if (value.Equals(_statusBarItem0)) return;
+        _statusBarItem0 = value;
+        NotifyOfPropertyChange(() => StatusBarItem0);
       }
     }
 
@@ -142,16 +150,13 @@ namespace Keeper.ViewModels
     public ShellViewModel()
     {
       _message = "Keeper is running (On Debug)";
-      Database.SetInitializer(new DbInitializer());
+//      Database.SetInitializer(new DbInitializer());
       BalanceList = new ObservableCollection<string> { "test balance" };
     }
 
     public void OnImportsSatisfied()
     {
-      Db.Accounts.Load();  // загрузка с диска в оперативную
-      Db.Transactions.Load();  // это должно происходить при загрузке главной формы
-      Db.CurrencyRates.Load(); // пока эта форма главная
-      Db.ArticlesAssociations.Load();
+      StatusBarItem0 = DbLoad.LoadAllTables().ToString();
 
       InitVariablesToShowAccounts();
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
@@ -164,17 +169,17 @@ namespace Keeper.ViewModels
       // из копии в оперативке загружаем в переменные типа  ObservableCollection<Account>
       // при этом никакой загрузки не происходит - коллекция получает указатель на корневой Account
       // (могло быть несколько указателей на несколько корней дерева)
-      // который при этом продолжает лежать в Db.Accounts.Local и ссылаться на своих потомков
-      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+      // который при этом продолжает лежать в Db.Accounts и ссылаться на своих потомков
+      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts
                                                            where account.Name == "Мои"
                                                            select account);
-      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts
                                                                where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков"
                                                                select account);
-      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts
                                                       where account.Name == "Все доходы"
                                                       select account);
-      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts.Local
+      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts
                                                        where account.Name == "Все расходы"
                                                        select account);
 
@@ -193,8 +198,7 @@ namespace Keeper.ViewModels
 
     public override void CanClose(Action<bool> callback)
     {
-      Db.SaveChanges();
-      Db.Dispose();
+      StatusBarItem0 = DbSave.SaveAllTables().ToString();
       callback(true);
     }
 
@@ -205,8 +209,8 @@ namespace Keeper.ViewModels
       if (SelectedAccount.Parent != null)
       {
         // такой запрос возвращает не коллекцию, а энумератор
-        IEnumerable<Transaction> tr = from transaction in Db.Transactions.Local
-                                      where transaction.Debet == SelectedAccount || transaction.Credit == SelectedAccount
+        IEnumerable<Transaction> tr = from transaction in Db.Transactions
+                                      where transaction.Debet == SelectedAccount || transaction.Credit == SelectedAccount || transaction.Article == SelectedAccount
                                       select transaction;
 
         // Any() пытается двинуться по этому энумератору и если может, то true
@@ -215,7 +219,7 @@ namespace Keeper.ViewModels
         {
           if (MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
                               MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            ClearDb.RemoveAccountFromDatabase(SelectedAccount);
+            DbClear.RemoveAccountFromDatabase(SelectedAccount);
         }
 
       }
@@ -260,7 +264,7 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Input operations";
-      UsefulLists.FillListsFromLocal();
+      UsefulLists.FillLists();
       WindowManager.ShowDialog(new TransactionViewModel());
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
@@ -280,119 +284,32 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "Articles' associations";
-      UsefulLists.FillListsFromLocal();
+      UsefulLists.FillLists();
       WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
       Message = arcMessage;
     }
     #endregion
 
     #region // методы выгрузки / загрузки БД в текстовый файл
-    public void DumpDatabaseToTxt()
+    public void SaveDatabase()
     {
-      Db.SaveChanges(); // сначала сохранить текущие изменения из ОЗУ на винт, при этом новые записи получат ID,
-      DumpDb.DumpAllTables();  // затем уже выгрузить
+      StatusBarItem0 = DbSave.SaveAllTables().ToString();
     }
 
-    public void RestoreDatabaseFromTxt()
+    public void LoadDatabase()
     {
-      // загружает из текстовых файлов данные в копии таблиц БД в оперативке (db.xxxxx.local)
-      RestoreDb.RestoreAllTables();
-      // записывает эти данные в БД на винт
-      Db.SaveChanges();
-      // инициализирует переменные для визуального отображения деревьев счетов
+      StatusBarItem0 = DbLoad.LoadAllTables().ToString();
       InitVariablesToShowAccounts();
     }
 
     public void ClearDatabase()
     {
-      ClearDb.ClearAllTables();
-      Db.SaveChanges();
+      DbClear.ClearAllTables();
 
       IncomesRoot.Clear();
       ExpensesRoot.Clear();
       ExternalAccountsRoot.Clear();
       MineAccountsRoot.Clear();
-    }
-    #endregion
-
-
-    #region // одноразовые методы
-    public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-
-    public void RestoreFromSeparateFiles()
-    {
-      var start = DateTime.Now;
-      var content = File.ReadAllLines(Path.Combine(Settings.Default.DumpPath, "TransactionsNL.txt"), Encoding1251);
-      
-      var result = new List<Transaction>();
-
-      const int numberOfProperties = 10;
-      var i = 0;
-      while (i * numberOfProperties < content.Count())
-      {
-        var transaction = new Transaction();
-        transaction.Timestamp = Convert.ToDateTime(content[i * numberOfProperties]);
-        transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), content[i * numberOfProperties + 1]);
-        transaction.Debet = Db.Accounts.Local.First(account => account.Name == content[i * numberOfProperties + 2]);
-        transaction.Credit = Db.Accounts.Local.First(account => account.Name == content[i * numberOfProperties + 3]);
-        transaction.Amount =  Convert.ToDecimal(content[i * numberOfProperties + 4]);
-        transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), content[i * numberOfProperties + 5]);
-        transaction.Amount2 = Convert.ToDecimal(content[i * numberOfProperties + 6]);
-        var temp = content[i*numberOfProperties + 7];
-        transaction.Currency2 = temp != "" ? (CurrencyCodes?)Enum.Parse(typeof(CurrencyCodes), temp) : null;
-        temp = content[i * numberOfProperties + 8];
-        transaction.Article = temp != "" ? Db.Accounts.Local.First(account => account.Name == temp) : null;
-        transaction.Comment = content[i*numberOfProperties + 9];
-
-        result.Add(transaction);
-        i++;
-      }
-
-      var duration = DateTime.Now - start;
-      MessageBox.Show(duration.ToString());
-    }
-
-    public void NegativeBalances()
-    {
-      var content = new List<string>();
-      var orderedTransactions = from transaction in Db.Transactions
-//                                where transaction.Debet.IsDescendantOf("Мои")
-                                orderby transaction.Timestamp
-                                select transaction;
-
-      foreach (var transaction in orderedTransactions)
-      {
-        if (!transaction.Debet.IsDescendantOf("Мои")) continue;
-        var balance = Balance.GetBalanceInCurrency(transaction.Debet,
-                                                   new Period(new DateTime(0), transaction.Timestamp.AddSeconds(59)),
-                                                   transaction.Currency);
-        if (balance < 0)
-          content.Add(String.Format("{0:dd/MM/yyyy hh:mm} со счета {1} списано {2} {3} осталось {4}",
-            transaction.Timestamp, transaction.Debet, transaction.Amount, transaction.Currency, balance));
-      }
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "NegativeBalances.txt"), content, Encoding1251);
-
-    }
-
-    public void DumpToSeparateFiles()
-    {
-      var start = DateTime.Now;
-      var content = new List<string>();
-
-      foreach (var transaction in Db.Transactions)
-      {
-        foreach (var property in transaction.GetType().GetProperties())
-        {
-          if (property.Name == "Id" || property.Name == "DayBackgroundColor" || property.Name == "TransactionFontColor" ||
-            property.Name == "IsSelected" || property.Name == "IsNotifying") continue;
-          var st = String.Format("{0}", property.GetValue(transaction, null));
-          content.Add(st);
-        }
-      }
-      File.WriteAllLines(Path.Combine(Settings.Default.DumpPath, "TransactionsNL.txt"), content, Encoding1251);
-
-      var duration = DateTime.Now - start;
-      MessageBox.Show(duration.ToString());
     }
     #endregion
 
@@ -521,6 +438,4 @@ namespace Keeper.ViewModels
     #endregion
 
   }
-
-
 }

@@ -10,7 +10,7 @@ namespace Keeper.Utils
 {
   class Balance
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     class BalancePair
     {
@@ -20,8 +20,10 @@ namespace Keeper.Utils
 
     private static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
     {
+      Db.Transactions.ToString();
+      ObservableCollection<Transaction> local = Db.Transactions;
       var tempBalance = 
-        (from t in Db.Transactions.Local
+        (from t in local
          where period.IsDateTimeIn(t.Timestamp) && 
                (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) ||
                (t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)))
@@ -32,7 +34,7 @@ namespace Keeper.Utils
                       Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount))
                     }).
         Concat
-        (from t in Db.Transactions.Local
+        (from t in local
          // учесть вторую сторону обмена - приход денег в другой валюте
          where t.Amount2 != 0 && period.IsDateTimeIn(t.Timestamp) && 
                (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
@@ -55,7 +57,7 @@ namespace Keeper.Utils
 
     private static IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
     {
-      return from t in Db.Transactions.Local
+      return from t in Db.Transactions
              where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
              group t by t.Currency into g
              select new BalancePair()

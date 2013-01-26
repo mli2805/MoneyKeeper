@@ -9,13 +9,13 @@ namespace Keeper.ViewModels
 {
   class ArticlesAssociationsViewModel : Screen
   {
-    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     public ObservableCollection<ArticleAssociation> Rows { get; set; }
 
     public ArticlesAssociationsViewModel()
     {
-      Rows = Db.ArticlesAssociations.Local;
+      Rows = Db.ArticlesAssociations;
 
       var view = CollectionViewSource.GetDefaultView(Rows);
       view.SortDescriptions.Add(new SortDescription("ExternalAccount", ListSortDirection.Ascending));
