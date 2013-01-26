@@ -103,6 +103,7 @@
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilterListForCombo.cs" />
     <Compile Include="Utils\AssociatedArticles.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
+    <Compile Include="ViewModels\ToDoViewModel.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\AccountFilter.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\FilterListsForComboboxes.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilerListForCombo.cs" />
@@ -124,6 +125,9 @@
     </Compile>
     <Compile Include="Views\RatesView.xaml.cs">
       <DependentUpon>RatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToDoView.xaml.cs">
+      <DependentUpon>ToDoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TransactionView.xaml.cs">
       <DependentUpon>TransactionView.xaml</DependentUpon>
@@ -180,6 +184,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ToDoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

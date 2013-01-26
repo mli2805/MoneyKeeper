@@ -46,7 +46,7 @@
       <MenuItem Header="ФОРМЫ" Background="{x:Null}" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
         <MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
-        <MenuItem x:Name="ArticlesAssociations" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
+        <MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
       </MenuItem>
       <MenuItem Header="TOOLS" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem x:Name="SaveDatabase" Header="СОХРАНИТЬ"/>
@@ -54,7 +54,7 @@
         <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ"/>
       </MenuItem>
       <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
-        <MenuItem Header="СДЕЛАТЬ" />
+        <MenuItem x:Name="ShowToDoForm" Header="СДЕЛАТЬ" />
         <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem Header="О ПРОГРАММЕ"/>
       </MenuItem>

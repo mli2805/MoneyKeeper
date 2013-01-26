@@ -43,10 +43,6 @@ namespace Keeper.ViewModels
       CategoriesForParentList = new List<Account>();
       GetBranchFromPoint(root,CategoriesForParentList);
       CategoriesForParentList.Remove(AccountInWork); // не работает, т.к. разные инстансы , надо перегружать операцию сравнения (по Id)
-
-//      CategoriesForParentList = new List<Account>(from account in Db.Categories
-//                                                   where account == root
-//                                                   select account);
       SelectedParent = AccountInWork.Parent;
     }
 

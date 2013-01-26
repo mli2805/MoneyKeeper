@@ -280,12 +280,20 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
-    public void ArticlesAssociations()
+    public void ShowArticlesAssociationsForm()
     {
       String arcMessage = Message;
       Message = "Articles' associations";
       UsefulLists.FillLists();
       WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
+      Message = arcMessage;
+    }
+
+    public void ShowToDoForm()
+    {
+      String arcMessage = Message;
+      Message = "TODO List";
+      WindowManager.ShowDialog(new ToDoViewModel());
       Message = arcMessage;
     }
     #endregion
