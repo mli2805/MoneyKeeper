@@ -59,7 +59,7 @@ namespace Keeper.Utils
         }
         if (association != null) Db.ArticlesAssociations.Add(association);
       }
-      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
+      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
     }
 
     private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
@@ -75,6 +75,140 @@ namespace Keeper.Utils
 
       return association;
     }
+    #endregion
+
+    #region // 2002-2010
+    public static void Load2002D()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromDohods.txt"), Encoding1251);
+      if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
+      var wrongContent = new List<string>();
+      foreach (var s in content)
+      {
+        if (s == "") continue;
+
+        Transaction transaction = null;
+        try
+        {
+          transaction = TransactionFrom2002D(s);
+        }
+        catch (Exception)
+        {
+          wrongContent.Add(s);
+        }
+        if (transaction != null) Db.Transactions.Add(transaction);
+      }
+      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "Load2002D.err"), wrongContent, Encoding1251);
+    }
+
+    public static void Load2002Rk()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromRashodsKategories.txt"), Encoding1251);
+      if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
+      var wrongContent = new List<string>();
+      foreach (var s in content)
+      {
+        if (s == "") continue;
+
+        try
+        {
+          Parse2002Rk(s);
+        }
+        catch (Exception)
+        {
+          wrongContent.Add(s);
+        }
+      }
+      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "Load2002R.err"), wrongContent, Encoding1251);
+    }
+
+    private static Transaction TransactionFrom2002D(string s)
+    {
+      var transaction = new Transaction
+                          {
+                            Timestamp = Convert.ToDateTime(s.Substring(0, 10)).AddHours(9),
+                            Operation = OperationType.Доход
+                          };
+
+      var prev = 21;
+      var next = s.IndexOf(';', prev);
+      var debet = s.Substring(prev, next - prev - 1);
+      transaction.Debet = Db.AccountsPlaneList.First(account => account.Name == debet);
+      prev = next;
+      next = s.IndexOf(';', prev + 2);
+      var credit = s.Substring(prev + 2, next - prev - 3);
+      transaction.Credit = Db.AccountsPlaneList.First(account => account.Name == credit);
+      prev = next;
+      next = s.IndexOf(';', prev + 2);
+      var article = s.Substring(prev + 2, next - prev - 3);
+      transaction.Article = Db.AccountsPlaneList.First(account => account.Name == article);
+      prev = next;
+      next = s.IndexOf(';', prev + 2);
+      transaction.Amount = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
+      prev = next;
+      next = s.IndexOf(';', prev + 2);
+      transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(prev + 2, next - prev - 3));
+
+      transaction.Amount2 = 0;
+      transaction.Currency2 = null;
+      transaction.Comment = s.Substring(next + 2);
+
+      return transaction;
+    }
+
+    private static void Parse2002Rk(string s)
+    {
+      DateTime dt = Convert.ToDateTime("15" + s.Substring(12, 8)).AddHours(10);
+      var articles = new Account[9];
+      articles[0] = Db.AccountsPlaneList.First(account => account.Name == "Продукты в целом");
+      articles[1] = Db.AccountsPlaneList.First(account => account.Name == "Автомобиль");
+      articles[2] = Db.AccountsPlaneList.First(account => account.Name == "Лекарства");
+      articles[3] = Db.AccountsPlaneList.First(account => account.Name == "Квартира1");
+      articles[4] = Db.AccountsPlaneList.First(account => account.Name == "Квартира2");
+      articles[5] = Db.AccountsPlaneList.First(account => account.Name == "Одежда");
+      articles[6] = Db.AccountsPlaneList.First(account => account.Name == "Ремонт");
+      articles[7] = Db.AccountsPlaneList.First(account => account.Name == "Дача");
+      articles[8] = Db.AccountsPlaneList.First(account => account.Name == "Прочие расходы");
+
+      var prev = 28;
+      for (var i = 0; i < 9; i++)
+      {
+
+        var next = s.IndexOf(';', prev+2);
+        var amount = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
+        if (amount != 0)
+          Db.Transactions.Add(Common2002Rk(dt.AddMinutes(i), amount, articles[i]));
+        prev = next;
+      }
+
+      var last = s.IndexOf(';', prev+2);
+      var rate = new CurrencyRate
+                   {
+                     BankDay = dt,
+                     Currency = CurrencyCodes.BYR,
+                     Rate = Convert.ToDouble(s.Substring(prev + 2, last - prev - 3))
+                   };
+      Db.CurrencyRates.Add(rate);
+    }
+
+    private static Transaction Common2002Rk(DateTime dt, decimal amount, Account article)
+    {
+      var transaction = new Transaction
+                          {
+                            Timestamp = dt,
+                            Operation = OperationType.Расход,
+                            Debet = Db.AccountsPlaneList.First(account => account.Name == "Мой кошелек"),
+                            Credit = Db.AccountsPlaneList.First(account => account.Name == "Прочие магазины"),
+                            Amount = amount,
+                            Currency = CurrencyCodes.BYR,
+                            Amount2 = 0,
+                            Currency2 = null,
+                            Article = article,
+                            Comment = ""
+                          };
+      return transaction;
+    }
+
     #endregion
 
     #region // Transactions
@@ -98,7 +232,7 @@ namespace Keeper.Utils
         }
         if (transaction != null) Db.Transactions.Add(transaction);
       }
-      if (wrongContent.Count !=0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadTransactions.err"), wrongContent, Encoding1251);
+      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadTransactions.err"), wrongContent, Encoding1251);
     }
 
     private static Transaction TransactionFromStringWithNames(string s)

@@ -445,5 +445,11 @@ namespace Keeper.ViewModels
 
     #endregion
 
+
+    public void Load2002()
+    {
+      DbLoad.Load2002D();
+      DbLoad.Load2002Rk();
+    }
   }
 }
