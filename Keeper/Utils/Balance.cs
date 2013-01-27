@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -18,29 +17,39 @@ namespace Keeper.Utils
       public decimal Amount;
     }
 
+    class BalanceTrio
+    {
+      public Account MyAccount;
+      public decimal Amount;
+      public CurrencyCodes Currency;
+
+      public new string ToString()
+      {
+        return String.Format("{0}  {1:#,0} {2}", MyAccount.Name, Amount, Currency);
+      }
+    }
+
     private static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
     {
-      Db.Transactions.ToString();
-      ObservableCollection<Transaction> local = Db.Transactions;
-      var tempBalance = 
-        (from t in local
-         where period.IsDateTimeIn(t.Timestamp) && 
+      var tempBalance =
+        (from t in Db.Transactions
+         where period.IsDateTimeIn(t.Timestamp) &&
                (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) ||
                (t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)))
          group t by t.Currency into g
-         select new BalancePair()
+         select new BalancePair
                     {
                       Currency = g.Key,
                       Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount))
                     }).
         Concat
-        (from t in local
+        (from t in Db.Transactions
          // учесть вторую сторону обмена - приход денег в другой валюте
-         where t.Amount2 != 0 && period.IsDateTimeIn(t.Timestamp) && 
+         where t.Amount2 != 0 && period.IsDateTimeIn(t.Timestamp) &&
                (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
                                            t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
          group t by t.Currency2 into g
-         select new BalancePair()
+         select new BalancePair
                     {
                       Currency = g.Key,
                       Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1)
@@ -48,7 +57,7 @@ namespace Keeper.Utils
 
       return from b in tempBalance
              group b by b.Currency into g
-             select new BalancePair()
+             select new BalancePair
                              {
                                Currency = g.Key,
                                Amount = g.Sum(a => a.Amount)
@@ -60,7 +69,7 @@ namespace Keeper.Utils
       return from t in Db.Transactions
              where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
              group t by t.Currency into g
-             select new BalancePair()
+             select new BalancePair
                         {
                           Currency = g.Key,
                           Amount = g.Sum(a => a.Amount)
@@ -113,6 +122,56 @@ namespace Keeper.Utils
         if (balancePair.Currency == currency) return balancePair.Amount;
       }
       return 0;
+    }
+
+    public static ObservableCollection<string> CalculateDayResults(DateTime dt)
+    {
+      var dayResults = new ObservableCollection<string>();
+
+      var incomes = from t in Db.Transactions
+                    where t.Operation == OperationType.Доход && t.Timestamp.Date == dt.Date
+                    group t by new
+                                 {
+                                   t.Credit,
+                                   t.Currency
+                                 }
+                      into g
+                      select new BalanceTrio
+                      {
+                        MyAccount = g.Key.Credit,
+                        Currency = g.Key.Currency,
+                        Amount = g.Sum(a => a.Amount)
+                      };
+
+      if (incomes.Any()) dayResults.Add("Доходы");
+      foreach (var balanceTrio in incomes)
+      {
+        dayResults.Add(balanceTrio.ToString());
+      }
+
+      var expense = from t in Db.Transactions
+                    where t.Operation == OperationType.Расход && t.Timestamp.Date == dt.Date
+                    group t by new
+                    {
+                      t.Debet,
+                      t.Currency
+                    }
+                      into g
+                      select new BalanceTrio
+                               {
+                                 MyAccount = g.Key.Debet,
+                                 Currency = g.Key.Currency,
+                                 Amount = g.Sum(a => a.Amount)
+                               };
+
+      if (dayResults.Count > 0) dayResults.Add("");
+      if (expense.Any()) dayResults.Add("Расходы");
+      foreach (var balanceTrio in expense)
+      {
+        dayResults.Add(balanceTrio.ToString());
+      }
+
+      return dayResults;
     }
 
   }

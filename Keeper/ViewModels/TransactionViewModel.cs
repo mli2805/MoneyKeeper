@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -312,6 +313,19 @@ namespace Keeper.ViewModels
              balanceBefore, balanceBefore + TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
       }
     }
+
+    private ObservableCollection<string> _dayResults;
+    public ObservableCollection<string> DayResults
+    {
+      get { return _dayResults; }
+      set
+      {
+        if (Equals(value, _dayResults)) return;
+        _dayResults = value;
+        NotifyOfPropertyChange(() => DayResults);
+      }
+    }
+
     #endregion
 
     public TransactionViewModel()
@@ -360,8 +374,13 @@ namespace Keeper.ViewModels
         if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
           TransactionInWork.Article = AssociatedArticles.GetAssociation(TransactionInWork.Credit);
 
-        if (e.PropertyName == "Amount" || e.PropertyName == "Currency" || e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
+        if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
+                e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
+        {
           NotifyOfPropertyChange(() => AmountInUsd);
+          DayResults = Balance.CalculateDayResults(TransactionInWork.Timestamp);
+        }
+
         NotifyOfPropertyChange(() => DebetAccountBalance);
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);

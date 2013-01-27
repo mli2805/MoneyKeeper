@@ -57,7 +57,8 @@
   </Window.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="335*"/>
+      <ColumnDefinition Width="700"/>
+      <ColumnDefinition Width="136"/>
       <ColumnDefinition Width="180"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
@@ -65,7 +66,7 @@
       <RowDefinition Height="269*"/>
       <RowDefinition Height="200"/>
     </Grid.RowDefinitions>
-    <StackPanel Name="FilterPanel" Grid.ColumnSpan="2">
+    <StackPanel Name="FilterPanel" Grid.ColumnSpan="3">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="24"/>
@@ -89,7 +90,7 @@
                  Text="{Binding CommentFilter}"/>
       </Grid>
     </StackPanel>
-    <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="5,2,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"
+    <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="5,2,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
               ItemsSource="{Binding Rows}" SelectedIndex="{Binding SelectedTransactionIndex, Mode=TwoWay}" 
               SelectedItem="{Binding SelectedTransaction, Mode=OneWayToSource}"  >
       <i:Interaction.Behaviors>
@@ -126,9 +127,9 @@
             <Trigger Property="IsSelected" Value="True">
               <Setter Property="Background" Value="#B6E6FF"/>
             </Trigger>
-<!--            <Trigger Property="IsEnabled" Value="False">-->
-<!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
-<!--            </Trigger>-->
+            <!--            <Trigger Property="IsEnabled" Value="False">-->
+            <!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
+            <!--            </Trigger>-->
           </Style.Triggers>
         </Style>
       </ListView.ItemContainerStyle>
@@ -284,7 +285,7 @@
       <Label Name="DebetAccountBalanceSecondCurrency" Content="ddd ddd ddd - стало после "
              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="235,57,0,0"/>
       <Label Name="CreditAccountBalance" Content="ddd ddd ddd - стало после"
-              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="610,40,0,0"/>
+              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="510,67,0,0"/>
 
       <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,0,0,0" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
@@ -314,7 +315,11 @@
                  Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}">
       </TextBox>
     </Grid>
-    <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="1" >
+    <StackPanel Name="DayResultsPanel" Grid.Row="2" Grid.Column="1">
+      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="132" Margin="4,4,0,4" />
+      <ListBox ItemsSource="{Binding DayResults}" />
+    </StackPanel>
+    <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="2" >
       <Grid>
         <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="172" Margin="4" />
         <Button Content="Сохранить операцию"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" 
