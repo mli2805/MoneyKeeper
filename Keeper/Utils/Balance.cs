@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.ViewModels;
 
 namespace Keeper.Utils
 {
@@ -15,6 +17,11 @@ namespace Keeper.Utils
     {
       public CurrencyCodes? Currency;
       public decimal Amount;
+
+      public new string ToString()
+      {
+        return String.Format("{0:#,0} {1}", Amount, Currency.ToString().ToLower());
+      }
     }
 
     class BalanceTrio
@@ -25,7 +32,7 @@ namespace Keeper.Utils
 
       public new string ToString()
       {
-        return String.Format("{0}  {1:#,0} {2}", MyAccount.Name, Amount, Currency);
+        return String.Format("{0}  {1:#,0} {2}", MyAccount.Name, Amount, Currency.ToString().ToLower());
       }
     }
 
@@ -124,9 +131,9 @@ namespace Keeper.Utils
       return 0;
     }
 
-    public static ObservableCollection<string> CalculateDayResults(DateTime dt)
+    public static List<string> CalculateDayResults(DateTime dt)
     {
-      var dayResults = new ObservableCollection<string>();
+      var dayResults = new List<string> { String.Format("                              {0:dd MMMM yyyy}", dt.Date) };
 
       var incomes = from t in Db.Transactions
                     where t.Operation == OperationType.Доход && t.Timestamp.Date == dt.Date
@@ -143,7 +150,7 @@ namespace Keeper.Utils
                         Amount = g.Sum(a => a.Amount)
                       };
 
-      if (incomes.Any()) dayResults.Add("Доходы");
+      if (incomes.Any()) dayResults.Add("  Доходы");
       foreach (var balanceTrio in incomes)
       {
         dayResults.Add(balanceTrio.ToString());
@@ -165,13 +172,33 @@ namespace Keeper.Utils
                                };
 
       if (dayResults.Count > 0) dayResults.Add("");
-      if (expense.Any()) dayResults.Add("Расходы");
+      if (expense.Any()) dayResults.Add("  Расходы");
       foreach (var balanceTrio in expense)
       {
         dayResults.Add(balanceTrio.ToString());
       }
 
       return dayResults;
+    }
+
+    public static string EndDayBalances(DateTime dt)
+    {
+      var period = new Period(new DateTime(0), dt.Date.AddDays(1).AddMinutes(-1));
+      var result = String.Format(" На конец {0:dd MMMM yyyy} :   ",dt.Date);
+
+      foreach (var account in UsefulLists.MyAccountsForShopping)
+      {
+        var pairs = AccountBalancePairs(account, period).ToList();
+        foreach (var balancePair in pairs.ToArray())
+          if (balancePair.Amount == 0) pairs.Remove(balancePair);
+        if (pairs.Any()) 
+          result = result + String.Format("   {0}  {1}", account.Name, pairs[0].ToString());
+        if (pairs.Count() > 1) 
+          for (var i = 1; i < pairs.Count(); i++) 
+            result = result + String.Format(" + {0}", pairs[i].ToString());
+      }
+
+      return result;
     }
 
   }

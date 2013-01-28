@@ -11,7 +11,7 @@
         xmlns:ii="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance ViewModels:TransactionViewModel}" 
-        Title="TransactionView" Height="556" Width="1032" SizeToContent="Width"
+        Title="TransactionView" Height="656" MinWidth="1032" MaxWidth="1032" SizeToContent="Width"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
   <i:Interaction.Triggers>
@@ -63,7 +63,7 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="54"/>
       <RowDefinition Height="269*"/>
-      <RowDefinition Height="200"/>
+      <RowDefinition Height="260"/>
     </Grid.RowDefinitions>
     <StackPanel Name="FilterPanel" Grid.ColumnSpan="3">
       <Grid>
@@ -156,15 +156,15 @@
     </ListView>
     <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="348*"/>
-        <ColumnDefinition Width="107*"/>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="192"/>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
         <RowDefinition Height="40"/>
-        <RowDefinition Height="10"/>
+        <RowDefinition Height="70"/>
       </Grid.RowDefinitions>
-      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Margin="4,4,0,4" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Margin="4,4,0,4" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
       <TabControl SelectedIndex="{Binding SelectedTabIndex}"
                   HorizontalAlignment="Stretch" Margin="10,10,6,4" VerticalAlignment="Stretch" BorderBrush="White" BorderThickness="0" Grid.ColumnSpan="1">
         <TabItem Name="tiIncome" Header="Доход" Width="160" Foreground="Blue" Background="#E8FFFF" >
@@ -302,7 +302,7 @@
       </Button>
       <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,9,0,7" Grid.Row="1" 
                   VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
-                  Text="{Binding TransactionInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" />
+                  Text="{Binding TransactionInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" Height="24" />
       <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,10" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
         <Grid>
@@ -313,14 +313,17 @@
           </Polygon>
         </Grid>
       </Button>
-      <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="1" VerticalAlignment="Center"/>
+      <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="1" VerticalAlignment="Center" Height="24" Width="81"/>
       <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,10,0,10" Grid.Row="1" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" />
-      <ListBox Grid.Column="1" Grid.RowSpan="2" Margin="0,20,2,0" BorderThickness="0" ItemsSource="{Binding DayResults}" />
+                 Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="20" />
+      <ListBox Grid.Column="1" Grid.RowSpan="2" Margin="0,12,2,0" BorderThickness="0" ItemsSource="{Binding DayResults}" />
+      <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,5,5,5"
+                  Text="{Binding Path=EndDayBalances}" TextWrapping="Wrap" Width="900"/>
     </Grid>
-    <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="1" >
+
+    <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" >
       <Grid>
-        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="106" Margin="4" />
+        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="252" Width="106" Margin="4" />
         <Button Content="Сохранить"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" 
                 Background="White" VerticalAlignment="Top" Width="90" IsDefault="True"/>
         <Button Content="Отменить"   Name="CancelTransactionChanges" ToolTip="Esc"   HorizontalAlignment="Center" Margin="0,50,0,0"  

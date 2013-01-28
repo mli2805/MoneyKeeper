@@ -170,6 +170,7 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
         DayResults = Balance.CalculateDayResults(TransactionInWork.Timestamp);
+        EndDayBalances = Balance.EndDayBalances(SelectedTransaction.Timestamp);
       }
     }
 
@@ -315,8 +316,9 @@ namespace Keeper.ViewModels
       }
     }
 
-    private ObservableCollection<string> _dayResults;
-    public ObservableCollection<string> DayResults
+    private List<string> _dayResults;
+
+    public List<string> DayResults
     {
       get { return _dayResults; }
       set
@@ -326,6 +328,19 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DayResults);
       }
     }
+
+    private string _endDayBalances;
+    public string EndDayBalances
+    {
+      get { return _endDayBalances; }
+      set
+      {
+        if (value == _endDayBalances) return;
+        _endDayBalances = value;
+        NotifyOfPropertyChange(() => EndDayBalances);
+      }
+    }
+
     #endregion
 
     public TransactionViewModel()
