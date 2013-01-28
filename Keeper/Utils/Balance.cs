@@ -186,7 +186,12 @@ namespace Keeper.Utils
       var period = new Period(new DateTime(0), dt.Date.AddDays(1).AddMinutes(-1));
       var result = String.Format(" На конец {0:dd MMMM yyyy} :   ",dt.Date);
 
-      foreach (var account in UsefulLists.MyAccountsForShopping)
+      var depo = (from a in Db.AccountsPlaneList
+                 where a.Name == "Депозиты"
+                 select a).First();
+      var calculatedAccounts = new List<Account>(UsefulLists.MyAccountsForShopping);
+      calculatedAccounts.Add(depo);
+      foreach (var account in calculatedAccounts)
       {
         var pairs = AccountBalancePairs(account, period).ToList();
         foreach (var balancePair in pairs.ToArray())
