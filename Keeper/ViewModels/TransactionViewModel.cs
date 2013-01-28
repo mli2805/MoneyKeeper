@@ -170,7 +170,7 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
         NotifyOfPropertyChange(() => ExchangeRate);
-        DayResults = Balance.CalculateDayResults(TransactionInWork.Timestamp);
+        DayResults = Balance.CalculateDayResults(SelectedTransaction.Timestamp);
         EndDayBalances = Balance.EndDayBalances(SelectedTransaction.Timestamp);
       }
     }
@@ -421,7 +421,7 @@ namespace Keeper.ViewModels
                 e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
         {
           NotifyOfPropertyChange(() => AmountInUsd);
-          DayResults = Balance.CalculateDayResults(TransactionInWork.Timestamp);
+          DayResults = Balance.CalculateDayResults(SelectedTransaction.Timestamp);
         }
 
         NotifyOfPropertyChange(() => DebetAccountBalance);
@@ -488,6 +488,8 @@ namespace Keeper.ViewModels
       }
       else SelectedTransaction.CloneFrom(TransactionInWork);
 
+      DayResults = Balance.CalculateDayResults(SelectedTransaction.Timestamp);
+      EndDayBalances = Balance.EndDayBalances(SelectedTransaction.Timestamp);
       IsTransactionInWorkChanged = false;
       IsInAddTransactionMode = false;
     }
@@ -590,6 +592,8 @@ namespace Keeper.ViewModels
       if (SelectedTransactionIndex != Rows.Count - 1) SelectedTransactionIndex++; else SelectedTransactionIndex--;
       Rows.Remove(transactionForRemoval);
 
+      DayResults = Balance.CalculateDayResults(SelectedTransaction.Timestamp);
+      EndDayBalances = Balance.EndDayBalances(SelectedTransaction.Timestamp);
       IsInAddTransactionMode = false;
     }
 
