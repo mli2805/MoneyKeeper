@@ -169,6 +169,7 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalance);
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
+        NotifyOfPropertyChange(() => ExchangeRate);
         DayResults = Balance.CalculateDayResults(TransactionInWork.Timestamp);
         EndDayBalances = Balance.EndDayBalances(SelectedTransaction.Timestamp);
       }
@@ -316,6 +317,33 @@ namespace Keeper.ViewModels
       }
     }
 
+    public string ExchangeRate
+    {
+      get
+      {
+        if (TransactionInWork.Operation != OperationType.Обмен) return "";
+
+        decimal rate;
+        if (TransactionInWork.Currency == CurrencyCodes.BYR)
+        {
+          return TransactionInWork.Amount2 != 0 ? String.Format("обменный курс - {0:#,0}", TransactionInWork.Amount / TransactionInWork.Amount2) : "";
+        }
+        if (TransactionInWork.Currency2 == CurrencyCodes.BYR)
+        {
+          return TransactionInWork.Amount != 0 ? String.Format("обменный курс - {0:#,0}", TransactionInWork.Amount2 / TransactionInWork.Amount) : "";
+        }
+        if (TransactionInWork.Currency == CurrencyCodes.USD)
+        {
+          return TransactionInWork.Amount != 0 ? String.Format("обменный курс - {0:#,00}", TransactionInWork.Amount2 / TransactionInWork.Amount) : "";
+        }
+        if (TransactionInWork.Currency2 == CurrencyCodes.USD)
+        {
+          return TransactionInWork.Amount2 != 0 ? String.Format("обменный курс - {0:#,00}", TransactionInWork.Amount / TransactionInWork.Amount2) : "";
+        }
+        return "не понял!";
+      }
+    }
+
     private List<string> _dayResults;
 
     public List<string> DayResults
@@ -399,6 +427,7 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalance);
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
+        NotifyOfPropertyChange(() => ExchangeRate);
       }
     }
 
