@@ -57,9 +57,8 @@
   </Window.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="700"/>
-      <ColumnDefinition Width="136"/>
-      <ColumnDefinition Width="180"/>
+      <ColumnDefinition Width="700*"/>
+      <ColumnDefinition Width="114"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="54"/>
@@ -90,7 +89,7 @@
                  Text="{Binding CommentFilter}"/>
       </Grid>
     </StackPanel>
-    <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="5,2,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
+    <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="4,2,4,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
               ItemsSource="{Binding Rows}" SelectedIndex="{Binding SelectedTransactionIndex, Mode=TwoWay}" 
               SelectedItem="{Binding SelectedTransaction, Mode=OneWayToSource}"  >
       <i:Interaction.Behaviors>
@@ -156,14 +155,18 @@
       </ListView.View>
     </ListView>
     <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="348*"/>
+        <ColumnDefinition Width="107*"/>
+      </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
         <RowDefinition Height="40"/>
         <RowDefinition Height="10"/>
       </Grid.RowDefinitions>
-      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Margin="4,4,0,4" Grid.RowSpan="4"/>
+      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Margin="4,4,0,4" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
       <TabControl SelectedIndex="{Binding SelectedTabIndex}"
-                  HorizontalAlignment="Stretch" Margin="10,10,6,4" VerticalAlignment="Stretch" BorderBrush="White" BorderThickness="0">
+                  HorizontalAlignment="Stretch" Margin="10,10,6,4" VerticalAlignment="Stretch" BorderBrush="White" BorderThickness="0" Grid.ColumnSpan="1">
         <TabItem Name="tiIncome" Header="Доход" Width="160" Foreground="Blue" Background="#E8FFFF" >
           <Grid Background="#E8FFFF">
             <Grid.RowDefinitions>
@@ -278,7 +281,7 @@
         </TabItem>
       </TabControl>
       <Label Name="AmountInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
-             Height="30" Width="430" Margin="75,-35,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+             Height="30" Width="430" Margin="75,115,0,0" VerticalAlignment="Top"/>
 
       <Label Name="DebetAccountBalance" Content="ddd ddd ddd - стало после "
              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="235,40,0,0"/>
@@ -287,7 +290,7 @@
       <Label Name="CreditAccountBalance" Content="ddd ddd ddd - стало после"
               Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="510,67,0,0"/>
 
-      <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,0,0,0" Grid.Row="1" 
+      <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,10" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
         <Grid>
           <Polygon Points="4,2 0,5 4,8 4,2" Stroke="Black">
@@ -297,10 +300,10 @@
           </Polygon>
         </Grid>
       </Button>
-      <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,2,0,0" Grid.Row="1" 
+      <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,9,0,7" Grid.Row="1" 
                   VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
                   Text="{Binding TransactionInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" />
-      <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,0,0,0" Grid.Row="1" 
+      <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,10" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" Padding="0" IsEnabled="{Binding CanEditDate}">
         <Grid>
           <Polygon Points="0,2 4,5 0,8 0,2" Stroke="Black">
@@ -310,23 +313,20 @@
           </Polygon>
         </Grid>
       </Button>
-      <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-      <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}">
-      </TextBox>
+      <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="1" VerticalAlignment="Center"/>
+      <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,10,0,10" Grid.Row="1" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
+                 Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" />
+      <ListBox Grid.Column="1" Grid.RowSpan="2" Margin="0,20,2,0" BorderThickness="0" ItemsSource="{Binding DayResults}" />
     </Grid>
-    <StackPanel Name="DayResultsPanel" Grid.Row="2" Grid.Column="1">
-      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="132" Margin="4,4,0,4" />
-      <ListBox ItemsSource="{Binding DayResults}" />
-    </StackPanel>
-    <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="2" >
+    <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="1" >
       <Grid>
-        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="172" Margin="4" />
-        <Button Content="Сохранить операцию"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" 
-                Background="White" VerticalAlignment="Top" Width="150" IsDefault="True"/>
-        <Button Content="Отменить изменения"   Name="CancelTransactionChanges" ToolTip="Esc"   HorizontalAlignment="Center" Margin="0,50,0,0"  
-                Background="White" VerticalAlignment="Top" Width="150"/>
-        <Button Content="Еще одну в этот день" Name="AddTransactionAfterSelected" HorizontalAlignment="Center" Margin="0,90,0,0" Background="White" VerticalAlignment="Top" Width="150">
+        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="192" Width="106" Margin="4" />
+        <Button Content="Сохранить"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" 
+                Background="White" VerticalAlignment="Top" Width="90" IsDefault="True"/>
+        <Button Content="Отменить"   Name="CancelTransactionChanges" ToolTip="Esc"   HorizontalAlignment="Center" Margin="0,50,0,0"  
+                Background="White" VerticalAlignment="Top" Width="90"/>
+        <Button Content="Еще одну" Name="AddTransactionAfterSelected" HorizontalAlignment="Center" Margin="0,90,0,0" Background="White" 
+                VerticalAlignment="Top" Width="90">
           <Button.ToolTip>
             <ToolTip ToolTipService.ShowDuration="200000">
               <StackPanel>
@@ -337,8 +337,10 @@
             </ToolTip>
           </Button.ToolTip>
         </Button>
-        <Button Content="Добавить в новый день" Name="AddNewDayTransaction"  ToolTip="Добавление транзакции с новой датой Ctrl+Ins" HorizontalAlignment="Center" Margin="0,120,0,0" Background="White" VerticalAlignment="Top"  Width="150"/>
-        <Button Content="Удалить операцию"     Name="DeleteTransaction"      ToolTip="Удаление выделенной транзакции Ctrl+Del"  HorizontalAlignment="Center" Margin="0,150,0,0" Background="White" VerticalAlignment="Top" Width="150"/>
+        <Button Content="В новый день" Name="AddNewDayTransaction"  ToolTip="Добавление транзакции с новой датой Ctrl+Ins" 
+                HorizontalAlignment="Center" Margin="0,120,0,0" Background="White" VerticalAlignment="Top"  Width="90"/>
+        <Button Content="Удалить"     Name="DeleteTransaction"      ToolTip="Удаление выделенной транзакции Ctrl+Del"  
+                HorizontalAlignment="Center" Margin="0,150,0,0" Background="White" VerticalAlignment="Top" Width="90"/>
       </Grid>
     </StackPanel>
 

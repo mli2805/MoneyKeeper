@@ -169,6 +169,7 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalance);
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
+        DayResults = Balance.CalculateDayResults(TransactionInWork.Timestamp);
       }
     }
 
@@ -325,7 +326,6 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DayResults);
       }
     }
-
     #endregion
 
     public TransactionViewModel()
