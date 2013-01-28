@@ -54,6 +54,7 @@
         <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ"/>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem x:Name="Load2002" Header="Загрузить 2002-2010 годы"/>
+        <MenuItem x:Name="Make2002Normal" Header="Нормализация файла расходов 2002"/>
       </MenuItem>
       <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem x:Name="ShowToDoForm" Header="СДЕЛАТЬ" />

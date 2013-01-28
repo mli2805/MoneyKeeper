@@ -78,6 +78,70 @@ namespace Keeper.Utils
     #endregion
 
     #region // 2002-2010
+
+    public class Rashod2002
+    {
+      public DateTime Dt;
+      public decimal InUsdRuki;
+      public decimal InUsdVklad;
+      public decimal Rate;
+      public decimal InByr;
+      public string Comment;
+
+      public new string ToString()
+      {
+        return String.Format("{0} ; {1} ; {2}  ; {3} ; {4} ; {5}", Dt, InByr, Rate, InUsdRuki, InUsdVklad, Comment);
+      }
+    }
+
+    public static void Make2002Normal()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromRashods.txt"), Encoding1251);
+      var contentOut = new List<string>();
+      foreach (var s in content)
+      {
+        contentOut.Add(MakeNormalRashodString(s));
+      }
+      File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromRashodsNormal.txt"), contentOut, Encoding1251);
+    }
+
+    private static string MakeNormalRashodString(string s)
+    {
+      var rashod = ParseRashod2002(s);
+      if (rashod.Rate == 0) rashod.Rate = (decimal)Rate.GetRate(CurrencyCodes.BYR, rashod.Dt);
+      if (rashod.InByr == 0)
+        rashod.InByr = (rashod.InUsdRuki +  rashod.InUsdVklad) * rashod.Rate;
+
+      return rashod.ToString();
+    }
+
+    private static Rashod2002 ParseRashod2002(string s)
+    {
+      var result = new Rashod2002();
+      var prev = 0;
+      var next = s.IndexOf(';');
+      result.Dt = Convert.ToDateTime(s.Substring(prev, next - 1));
+      prev = next + 2;
+      next = s.IndexOf(';', prev);
+      prev = next + 2; // пропуск слова Расход
+      next = s.IndexOf(';', prev);
+      var ruki = s.Substring(prev, next - prev - 1);
+      result.InByr = ruki != "" ? Convert.ToDecimal(ruki) : 0; 
+      prev = next + 2;
+      next = s.IndexOf(';', prev);
+      string rate = s.Substring(prev, next - prev - 1);
+      result.Rate = rate != "" ? Convert.ToDecimal(rate) : 0;
+      prev = next + 2;
+      next = s.IndexOf(';', prev);
+      result.InUsdRuki = Convert.ToDecimal(s.Substring(prev, next - prev - 1));
+      prev = next + 2;
+      next = s.IndexOf(';', prev);
+      result.InUsdVklad = Convert.ToDecimal(s.Substring(prev, next - prev - 1));
+      prev = next + 2;
+      result.Comment = s.Substring(prev);
+      return result;
+    }
+
     public static void Load2002D()
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromDohods.txt"), Encoding1251);
@@ -173,7 +237,6 @@ namespace Keeper.Utils
       var prev = 28;
       for (var i = 0; i < 9; i++)
       {
-
         var next = s.IndexOf(';', prev+2);
         var amount = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
         if (amount != 0)
@@ -189,6 +252,20 @@ namespace Keeper.Utils
                      Rate = Convert.ToDouble(s.Substring(prev + 2, last - prev - 3))
                    };
       Db.CurrencyRates.Add(rate);
+      Db.Transactions.Add(new Transaction
+                            {
+                              Timestamp = dt.Date.AddHours(9).AddMinutes(30),
+                              Operation = OperationType.Обмен,
+                              Debet = Db.AccountsPlaneList.First(account => account.Name == "Мой кошелек"),
+                              Credit = Db.AccountsPlaneList.First(account => account.Name == "обменник"),
+                              Amount = 100,
+                              Currency = CurrencyCodes.USD,
+                              Amount2 = 100 * Convert.ToDecimal(s.Substring(prev + 2, last - prev - 3)),
+                              Currency2 = CurrencyCodes.BYR,
+                              Article = null,
+                              Comment = "Все расходы в рублях, часть доходов в долларах, часть меняем"
+                            });
+
     }
 
     private static Transaction Common2002Rk(DateTime dt, decimal amount, Account article)

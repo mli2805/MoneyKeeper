@@ -451,5 +451,10 @@ namespace Keeper.ViewModels
       DbLoad.Load2002D();
       DbLoad.Load2002Rk();
     }
+
+    public void Make2002Normal()
+    {
+      DbLoad.Make2002Normal();
+    }
   }
 }
