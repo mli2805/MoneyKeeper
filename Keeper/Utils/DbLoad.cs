@@ -14,6 +14,8 @@ namespace Keeper.Utils
   {
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
+    public static Dictionary<DateTime, Decimal> MonthRashod { get; set; }
+
 
     public static TimeSpan LoadAllTables()
     {
@@ -94,25 +96,41 @@ namespace Keeper.Utils
       }
     }
 
+    public static void StartingBalances()
+    {
+      LoadTransactionsFrom("Transactions ввод остатков 1 января 2002.txt");
+    }
+
+    /// <summary>
+    /// заполняет белорусские и курс там где они не стояли
+    /// суммирует расходы за месяц и сумму в белорусских с датой заносит в словарик
+    /// </summary>
     public static void Make2002Normal()
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromRashods.txt"), Encoding1251);
       var contentOut = new List<string>();
+      var currentMonthDate = new DateTime(0);
+      decimal currentMonthSum = 0;
       foreach (var s in content)
       {
-        contentOut.Add(MakeNormalRashodString(s));
+        var rashod = ParseRashod2002(s);
+        if (rashod.Rate == 0) rashod.Rate = (decimal)Rate.GetRate(CurrencyCodes.BYR, rashod.Dt);
+        if (rashod.InByr == 0)
+          rashod.InByr = (rashod.InUsdRuki + rashod.InUsdVklad) * rashod.Rate;
+
+        contentOut.Add(rashod.ToString());
+
+        if (currentMonthDate == rashod.Dt) currentMonthSum += rashod.InByr;
+        else
+        {
+          if (MonthRashod == null) MonthRashod = new Dictionary<DateTime, decimal>();
+          MonthRashod.Add(currentMonthDate, currentMonthSum);
+          currentMonthDate = rashod.Dt;
+          currentMonthSum = rashod.InByr;
+        }
       }
+      MonthRashod.Add(currentMonthDate, currentMonthSum);
       File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromRashodsNormal.txt"), contentOut, Encoding1251);
-    }
-
-    private static string MakeNormalRashodString(string s)
-    {
-      var rashod = ParseRashod2002(s);
-      if (rashod.Rate == 0) rashod.Rate = (decimal)Rate.GetRate(CurrencyCodes.BYR, rashod.Dt);
-      if (rashod.InByr == 0)
-        rashod.InByr = (rashod.InUsdRuki +  rashod.InUsdVklad) * rashod.Rate;
-
-      return rashod.ToString();
     }
 
     private static Rashod2002 ParseRashod2002(string s)
@@ -126,7 +144,7 @@ namespace Keeper.Utils
       prev = next + 2; // пропуск слова Расход
       next = s.IndexOf(';', prev);
       var ruki = s.Substring(prev, next - prev - 1);
-      result.InByr = ruki != "" ? Convert.ToDecimal(ruki) : 0; 
+      result.InByr = ruki != "" ? Convert.ToDecimal(ruki) : 0;
       prev = next + 2;
       next = s.IndexOf(';', prev);
       string rate = s.Substring(prev, next - prev - 1);
@@ -142,6 +160,9 @@ namespace Keeper.Utils
       return result;
     }
 
+    /// <summary>
+    /// разбирает файл доходов , заносит доходы в транзакции
+    /// </summary>
     public static void Load2002D()
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromDohods.txt"), Encoding1251);
@@ -165,34 +186,13 @@ namespace Keeper.Utils
       if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "Load2002D.err"), wrongContent, Encoding1251);
     }
 
-    public static void Load2002Rk()
-    {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromRashodsKategories.txt"), Encoding1251);
-      if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
-      var wrongContent = new List<string>();
-      foreach (var s in content)
-      {
-        if (s == "") continue;
-
-        try
-        {
-          Parse2002Rk(s);
-        }
-        catch (Exception)
-        {
-          wrongContent.Add(s);
-        }
-      }
-      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "Load2002R.err"), wrongContent, Encoding1251);
-    }
-
     private static Transaction TransactionFrom2002D(string s)
     {
       var transaction = new Transaction
-                          {
-                            Timestamp = Convert.ToDateTime(s.Substring(0, 10)).AddHours(9),
-                            Operation = OperationType.Доход
-                          };
+      {
+        Timestamp = Convert.ToDateTime(s.Substring(0, 10)).AddHours(9),
+        Operation = OperationType.Доход
+      };
 
       var prev = 21;
       var next = s.IndexOf(';', prev);
@@ -220,10 +220,40 @@ namespace Keeper.Utils
       return transaction;
     }
 
+    /// <summary>
+    /// загрузка расходов из распределения по категориям
+    /// </summary>
+    public static void Load2002Rk()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromRashodsKategories.txt"), Encoding1251);
+      if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
+      var wrongContent = new List<string>();
+      foreach (var s in content)
+      {
+        if (s == "") continue;
+
+        try
+        {
+          Parse2002Rk(s);
+        }
+        catch (Exception)
+        {
+          wrongContent.Add(s);
+        }
+      }
+      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "Load2002R.err"), wrongContent, Encoding1251);
+    }
+
+    /// <summary>
+    /// разбирает строку одного месяца, 
+    /// сумму сумм категорий сравнивает с общим расходом из словарика и пропорционально изменяет
+    /// </summary>
+    /// <param name="s"></param>
     private static void Parse2002Rk(string s)
     {
       DateTime dt = Convert.ToDateTime("15" + s.Substring(12, 8)).AddHours(10);
       var articles = new Account[9];
+      var amounts = new decimal[9];
       articles[0] = Db.AccountsPlaneList.First(account => account.Name == "Продукты в целом");
       articles[1] = Db.AccountsPlaneList.First(account => account.Name == "Автомобиль");
       articles[2] = Db.AccountsPlaneList.First(account => account.Name == "Лекарства");
@@ -235,23 +265,25 @@ namespace Keeper.Utils
       articles[8] = Db.AccountsPlaneList.First(account => account.Name == "Прочие расходы");
 
       var prev = 28;
+      decimal allAmounts = 0;
       for (var i = 0; i < 9; i++)
       {
-        var next = s.IndexOf(';', prev+2);
-        var amount = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
-        if (amount != 0)
-          Db.Transactions.Add(Common2002Rk(dt.AddMinutes(i), amount, articles[i]));
+        var next = s.IndexOf(';', prev + 2);
+        amounts[i] = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
+        allAmounts += amounts[i];
         prev = next;
       }
 
-      var last = s.IndexOf(';', prev+2);
-      var rate = new CurrencyRate
-                   {
-                     BankDay = dt,
-                     Currency = CurrencyCodes.BYR,
-                     Rate = Convert.ToDouble(s.Substring(prev + 2, last - prev - 3))
-                   };
-      Db.CurrencyRates.Add(rate);
+      // один раз курсы загрузил и хватит!
+
+//      var last = s.IndexOf(';', prev + 2);
+//      var rate = new CurrencyRate
+//                   {
+//                     BankDay = dt,
+//                     Currency = CurrencyCodes.BYR,
+//                     Rate = Convert.ToDouble(s.Substring(prev + 2, last - prev - 3))
+//                   };
+//      Db.CurrencyRates.Add(rate);
       Db.Transactions.Add(new Transaction
                             {
                               Timestamp = dt.Date.AddHours(9).AddMinutes(30),
@@ -260,12 +292,19 @@ namespace Keeper.Utils
                               Credit = Db.AccountsPlaneList.First(account => account.Name == "обменник"),
                               Amount = 100,
                               Currency = CurrencyCodes.USD,
-                              Amount2 = 100 * Convert.ToDecimal(s.Substring(prev + 2, last - prev - 3)),
+                              Amount2 = 100,
                               Currency2 = CurrencyCodes.BYR,
                               Article = null,
                               Comment = "Все расходы в рублях, часть доходов в долларах, часть меняем"
                             });
 
+      decimal montsAmount;
+      MonthRashod.TryGetValue(dt.Date, out montsAmount);
+      for (var i = 0; i < 9; i++)
+      {
+        if (amounts[i] != 0)
+          Db.Transactions.Add(Common2002Rk(dt.AddMinutes(i), amounts[i] * montsAmount / allAmounts, articles[i]));
+      }
     }
 
     private static Transaction Common2002Rk(DateTime dt, decimal amount, Account article)
@@ -289,9 +328,15 @@ namespace Keeper.Utils
     #endregion
 
     #region // Transactions
+
     private static void LoadTransactions()
     {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "Transactions.txt"), Encoding1251);
+      LoadTransactionsFrom("Transactions.txt");
+    }
+
+    private static void LoadTransactionsFrom(string filename)
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, filename), Encoding1251);
       if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
       var wrongContent = new List<string>();
       foreach (var s in content)
