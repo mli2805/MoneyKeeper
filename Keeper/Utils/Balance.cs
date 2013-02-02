@@ -13,7 +13,7 @@ namespace Keeper.Utils
   {
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
-    class BalancePair
+    internal class BalancePair
     {
       public CurrencyCodes? Currency;
       public decimal Amount;
@@ -36,7 +36,31 @@ namespace Keeper.Utils
       }
     }
 
-    private static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
+    /// <summary>
+    /// вызов с параметром 2 февраля 2013 - вернет остаток по счету на утро 2 февраля 2013 
+    /// </summary>
+    /// <param name="balancedAccount"></param>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static IEnumerable<BalancePair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
+    {
+      var period = new Period(new DateTime(0), dateTime.Date.AddMinutes(-1));
+      return AccountBalancePairs(balancedAccount, period);
+    }
+
+    /// <summary>
+    /// вызов с параметром 2 февраля 2013 - вернет остаток по счету после 2 февраля 2013 
+    /// </summary>
+    /// <param name="balancedAccount"></param>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static IEnumerable<BalancePair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
+    {
+      var period = new Period(new DateTime(0), dateTime.Date.AddDays(1).AddMinutes(-1));
+      return AccountBalancePairs(balancedAccount, period);
+    }
+
+    public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
     {
       var tempBalance =
         (from t in Db.Transactions
@@ -184,11 +208,11 @@ namespace Keeper.Utils
     public static string EndDayBalances(DateTime dt)
     {
       var period = new Period(new DateTime(0), dt.Date.AddDays(1).AddMinutes(-1));
-      var result = String.Format(" На конец {0:dd MMMM yyyy} :   ",dt.Date);
+      var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);
 
       var depo = (from a in Db.AccountsPlaneList
-                 where a.Name == "Депозиты"
-                 select a).First();
+                  where a.Name == "Депозиты"
+                  select a).First();
       var calculatedAccounts = new List<Account>(UsefulLists.MyAccountsForShopping);
       calculatedAccounts.Add(depo);
       foreach (var account in calculatedAccounts)
@@ -196,10 +220,10 @@ namespace Keeper.Utils
         var pairs = AccountBalancePairs(account, period).ToList();
         foreach (var balancePair in pairs.ToArray())
           if (balancePair.Amount == 0) pairs.Remove(balancePair);
-        if (pairs.Any()) 
+        if (pairs.Any())
           result = result + String.Format("   {0}  {1}", account.Name, pairs[0].ToString());
-        if (pairs.Count() > 1) 
-          for (var i = 1; i < pairs.Count(); i++) 
+        if (pairs.Count() > 1)
+          for (var i = 1; i < pairs.Count(); i++)
             result = result + String.Format(" + {0}", pairs[i].ToString());
       }
 

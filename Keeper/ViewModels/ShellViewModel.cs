@@ -296,6 +296,15 @@ namespace Keeper.ViewModels
       WindowManager.ShowDialog(new ToDoViewModel());
       Message = arcMessage;
     }
+
+    public void ShowMonthAnalisysForm()
+    {
+      String arcMessage = Message;
+      Message = "MonthAnalisys";
+      WindowManager.ShowDialog(new MonthAnalisysViewModel());
+      Message = arcMessage;
+    }
+
     #endregion
 
     #region // методы выгрузки / загрузки БД в текстовый файл

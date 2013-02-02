@@ -240,16 +240,6 @@ namespace Keeper.ViewModels
     #endregion
 
     #region // свойства для показа сумм остатков на счетах и перевода операции в доллары
-    private string GetUsdEquivalent(Decimal amount, CurrencyCodes currency, DateTime timestamp)
-    {
-      var rate = Rate.GetRate(currency, timestamp);
-      if (rate.Equals(0.0)) return "не задан курс " + currency + " на эту дату";
-
-      var res = (amount / (decimal)rate).ToString("F2") + "$ по курсу " + rate;
-      if (currency == CurrencyCodes.EUR) res = (amount * (decimal)rate).ToString("F2") + "$ по курсу " + rate + " (" + (1 / rate).ToString("F3") + ")";
-      return res;
-    }
-
     public string AmountInUsd
     {
       get
@@ -258,12 +248,12 @@ namespace Keeper.ViewModels
         if (TransactionInWork.Currency == CurrencyCodes.USD && SelectedTabIndex != 3) return "";
         const string res0 = "                                                                                ";
 
-        var res1 = GetUsdEquivalent(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
+        var res1 = Rate.GetUsdEquivalent(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
         // одинарные операции не в остальных валютах
         if (SelectedTabIndex != 3) return res0 + res1;
 
         if (TransactionInWork.Currency2 == null) TransactionInWork.Currency2 = CurrencyCodes.BYR;
-        var res2 = GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
+        var res2 = Rate.GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
         // обменные операции: доллары на другую валюту
         if (SelectedTabIndex == 3 && TransactionInWork.Currency == CurrencyCodes.USD) return res0 + res2;
         // обменные операции: другая валюта на доллары
@@ -323,7 +313,6 @@ namespace Keeper.ViewModels
       {
         if (TransactionInWork.Operation != OperationType.Обмен) return "";
 
-        decimal rate;
         if (TransactionInWork.Currency == CurrencyCodes.BYR)
         {
           return TransactionInWork.Amount2 != 0 ? String.Format("обменный курс - {0:#,0}", TransactionInWork.Amount / TransactionInWork.Amount2) : "";
