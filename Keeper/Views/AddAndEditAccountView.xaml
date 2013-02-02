@@ -1,0 +1,38 @@
+﻿<Window x:Class="Keeper.Views.AddAndEditAccountView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+        xmlns:u="clr-namespace:Keeper.Utils"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="176" Width="447"
+        d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}">
+    <Grid>
+    <TextBox HorizontalAlignment="Left" Height="23" Margin="75,58,0,0" TextWrapping="Wrap" 
+             VerticalAlignment="Top" Width="344"
+             Text="{Binding AccountInWork.Name}">
+    <i:Interaction.Behaviors>
+      <u:SetFocusOnLoadBehavior />
+      </i:Interaction.Behaviors>
+    </TextBox>
+    <Button x:Name="Accept" Content="Принять" HorizontalAlignment="Left" Margin="116,104,0,0" 
+            VerticalAlignment="Top" Width="75" IsDefault="True"/>
+    <Button x:Name="Decline" Content="Отклонить" HorizontalAlignment="Left" Margin="235,104,0,0" 
+            VerticalAlignment="Top" Width="75" IsCancel="True" />
+    <Label Content="Название" HorizontalAlignment="Left" Margin="8,56,0,0" VerticalAlignment="Top"/>
+    <ComboBox HorizontalAlignment="Left" Margin="75,18,0,0" VerticalAlignment="Top" Width="344"
+              ItemsSource="{Binding CategoriesForParentList}" SelectedItem="{Binding SelectedParent}">
+<!--      если ItemTemplate нет , то для отображения в комбике прибинженного содержимого используется ToString-->
+<!--      но если это класс, а показывать надо только поле Name (например), то можно задать ItemTemplate-->
+<!--      или определить ToString, т.к. стандартный для класса выводит имя класса-->
+<!--      <ComboBox.ItemTemplate>-->
+<!--        <DataTemplate DataType="DomainModel:Account">-->
+<!--          <TextBlock Text="{Binding Name}"/>-->
+<!--        </DataTemplate>-->
+<!--      </ComboBox.ItemTemplate>-->
+    </ComboBox>
+
+    </Grid>
+</Window>

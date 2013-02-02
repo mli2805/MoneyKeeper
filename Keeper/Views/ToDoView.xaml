@@ -1,0 +1,24 @@
+﻿<Window x:Class="Keeper.Views.ToDoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
+        mc:Ignorable="d" Title="ToDoView" Height="500" Width="700"
+        d:DataContext="{d:DesignInstance ViewModels:ToDoViewModel}">
+    <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="100"/>
+      <ColumnDefinition Width="100"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="35"/>
+    </Grid.RowDefinitions>
+    <ListBox Grid.ColumnSpan="3" Margin="5,5,5,0" ItemsSource="{Binding ToDoList}"/>
+    <TextBox Grid.Row="1" Margin="5" BorderBrush="Black" Text="{Binding NewJob, UpdateSourceTrigger=PropertyChanged}" />
+    <Button Name="Add" Content="Add" IsDefault="True" Grid.Row="1" Grid.Column="1" Margin="5"/>
+    <Button Name="Close" Content="Close" IsCancel="True" Grid.Row="1" Grid.Column="2" Margin="5"/>
+  </Grid>
+</Window>
