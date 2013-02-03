@@ -1,8 +1,18 @@
 ﻿<Window x:Class="Keeper.Views.MonthAnalisysView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MonthAnalisysView" SizeToContent="WidthAndHeight" ResizeMode="NoResize" >
-    <Grid>
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:cal="http://www.caliburnproject.org"
+        Title="{Binding MonthAnalisysViewCaption}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" >
+  <i:Interaction.Triggers>
+    <ei:KeyTrigger Key="Right">
+      <cal:ActionMessage MethodName="ShowNextMonth"/>
+    </ei:KeyTrigger>
+    <ei:KeyTrigger Key="Left">
+      <cal:ActionMessage MethodName="ShowPreviousMonth"/>
+    </ei:KeyTrigger>
+  </i:Interaction.Triggers>
+  <Grid>
     <StackPanel>
       <ListBox Name="BeforeList" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="2,2,2,0" Padding="2,2,7,4"/>
       <ListBox Name="IncomesList" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="2,2,2,0" Padding="2,2,7,4"
