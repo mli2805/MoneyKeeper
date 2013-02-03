@@ -83,6 +83,7 @@
     <Compile Include="DomainModel\KeeperTxtDB.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
+    <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Balance.cs" />
     <Compile Include="Utils\DbClear.cs" />
