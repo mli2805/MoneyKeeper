@@ -247,7 +247,12 @@ namespace Keeper.ViewModels
             transaction.AmountInUsd, transaction.Article, transaction.Comment));
         largeExpenseInUsd -= transaction.AmountInUsd;
       }
-      LargeExpenseList.Add(String.Format("\nИтого крупных {0:#,0} usd", largeExpenseInUsd));
+      if (largeExpenseInUsd == 0) LargeExpenseList[0] = "Крупных трат в этом месяце не было\n";
+      else
+      {
+        LargeExpenseList.Add(String.Format("\nИтого крупных {0:#,0} usd", largeExpenseInUsd));
+        LargeExpenseList.Add(String.Format("\nТекущие расходы {0:#,0} usd", expenseInUsd - largeExpenseInUsd));
+      }
     }
 
     private void CalculateEndBalance()
