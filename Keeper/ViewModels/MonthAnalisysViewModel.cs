@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
@@ -10,24 +10,95 @@ namespace Keeper.ViewModels
 {
   class MonthAnalisysViewModel : Screen
   {
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+
+    private ObservableCollection<string> _beforeList;
+    private ObservableCollection<string> _incomesList;
+    private ObservableCollection<string> _expenseList;
+    private ObservableCollection<string> _largeExpenseList;
+    private ObservableCollection<string> _afterList;
+    private ObservableCollection<string> _resultList;
+
+    private DateTime _startDate;
     private Brush _resultForeground;
 
-    public static KeeperTxtDb Db
+    public ObservableCollection<string> BeforeList
     {
-      get { return IoC.Get<KeeperTxtDb>(); }
+      get { return _beforeList; }
+      set
+      {
+        if (Equals(value, _beforeList)) return;
+        _beforeList = value;
+        NotifyOfPropertyChange(() => BeforeList);
+      }
+    }
+    public ObservableCollection<string> IncomesList
+    {
+      get { return _incomesList; }
+      set
+      {
+        if (Equals(value, _incomesList)) return;
+        _incomesList = value;
+        NotifyOfPropertyChange(() => IncomesList);
+      }
+    }
+    public ObservableCollection<string> ExpenseList
+    {
+      get { return _expenseList; }
+      set
+      {
+        if (Equals(value, _expenseList)) return;
+        _expenseList = value;
+        NotifyOfPropertyChange(() => ExpenseList);
+      }
+    }
+    public ObservableCollection<string> LargeExpenseList
+    {
+      get { return _largeExpenseList; }
+      set
+      {
+        if (Equals(value, _largeExpenseList)) return;
+        _largeExpenseList = value;
+        NotifyOfPropertyChange(() => LargeExpenseList);
+      }
+    }
+    public ObservableCollection<string> AfterList
+    {
+      get { return _afterList; }
+      set
+      {
+        if (Equals(value, _afterList)) return;
+        _afterList = value;
+        NotifyOfPropertyChange(() => AfterList);
+      }
+    }
+    public ObservableCollection<string> ResultList
+    {
+      get { return _resultList; }
+      set
+      {
+        if (Equals(value, _resultList)) return;
+        _resultList = value;
+        NotifyOfPropertyChange(() => ResultList);
+      }
     }
 
-    public List<String> BeforeList { get; set; }
-    public List<String> IncomesList { get; set; }
-    public List<String> ExpenseList { get; set; }
-    public List<String> LargeExpenseList { get; set; }
-    public List<String> AfterList { get; set; }
-    public List<String> ResultList { get; set; }
-    public DateTime StartDate { get; set; }
+    public DateTime StartDate
+    {
+      get { return _startDate; }
+      set 
+      {
+        _startDate = value;
+        AnalyzedPeriod = new Period(StartDate.Date, StartDate.Date.AddMonths(1).AddMinutes(-1));
+        MonthAnalisysViewCaption = String.Format("Анализ месяца [{0}]", AnalyzedMonth);
+        NotifyOfPropertyChange(()=>MonthAnalisysViewCaption);
+      }
+    }
     public string AnalyzedMonth
     {
       get { return String.Format("{0:MMMM yyyy}", StartDate); }
     }
+    public string MonthAnalisysViewCaption { get; set; }
     public Period AnalyzedPeriod { get; set; }
     public Saldo MonthSaldo { get; set; }
     public Brush ResultForeground
@@ -43,20 +114,17 @@ namespace Keeper.ViewModels
 
     public MonthAnalisysViewModel()
     {
-      StartDate = new DateTime(2013, 1, 1);
-      AnalyzedPeriod = new Period(StartDate.Date, StartDate.Date.AddMonths(1).AddMinutes(-1));
-      MonthSaldo = new Saldo();
-      ResultForeground = Brushes.Green;
+      StartDate = new DateTime(2012, 7, 1);
       Calculate();
     }
 
     protected override void OnViewLoaded(object view)
     {
-      DisplayName = String.Format("Анализ месяца [{0}]", AnalyzedMonth);
     }
 
     private void Calculate()
     {
+      MonthSaldo = new Saldo();
       CalculateBeginBalance();
       CalculateIncomes();
       CalculateExpense();
@@ -66,11 +134,11 @@ namespace Keeper.ViewModels
 
     private void CalculateBeginBalance()
     {
-      BeforeList = new List<string> { String.Format("Входящий остаток на начало месяца\n") };
+      BeforeList = new ObservableCollection<string> { String.Format("Входящий остаток на начало месяца\n") };
       MonthSaldo.BeginBalance = FillListWithDateBalance(BeforeList, StartDate);
     }
 
-    private decimal FillListWithDateBalance(List<string> list, DateTime date)
+    private decimal FillListWithDateBalance(ObservableCollection<string> list, DateTime date)
     {
       var myAccountsRoot = (from account in Db.Accounts
                             where account.Name == "Мои"
@@ -100,7 +168,7 @@ namespace Keeper.ViewModels
 
     private void CalculateIncomes()
     {
-      IncomesList = new List<string> { "Доходы за месяц\n" };
+      IncomesList = new ObservableCollection<string> { "Доходы за месяц\n" };
       decimal incomesInUsd = 0;
       var incomes = from t in Db.Transactions
                     where AnalyzedPeriod.IsDateTimeIn(t.Timestamp) && t.Operation == OperationType.Доход
@@ -130,8 +198,8 @@ namespace Keeper.ViewModels
 
     private void CalculateExpense()
     {
-      ExpenseList = new List<string> { "Расходы за месяц\n" };
-      LargeExpenseList = new List<string> { "В том числе крупные траты этого месяца\n" };
+      ExpenseList = new ObservableCollection<string> { "Расходы за месяц\n" };
+      LargeExpenseList = new ObservableCollection<string> { "В том числе крупные траты этого месяца\n" };
       var expenseTransactions = from t in Db.Transactions
                                 where AnalyzedPeriod.IsDateTimeIn(t.Timestamp) && t.Operation == OperationType.Расход
                                 select t;
@@ -184,14 +252,14 @@ namespace Keeper.ViewModels
 
     private void CalculateEndBalance()
     {
-      AfterList = new List<string> { String.Format("Исходящий остаток на конец месяца\n") };
+      AfterList = new ObservableCollection<string> { String.Format("Исходящий остаток на конец месяца\n") };
       MonthSaldo.EndBalance = FillListWithDateBalance(AfterList, StartDate.AddMonths(1));
     }
 
     private void CalculateResult()
     {
       ResultForeground = MonthSaldo.BeginBalance > MonthSaldo.EndBalance ? Brushes.Red : Brushes.Blue;
-      ResultList = new List<string> {String.Format( "Финансовый результат месяца {0:#,0} {1:#,0} = {2:#,0} usd\n",
+      ResultList = new ObservableCollection<string> {String.Format( "Финансовый результат месяца {0:#,0} {1:#,0} = {2:#,0} usd\n",
                                       MonthSaldo.Incomes, MonthSaldo.Expense, MonthSaldo.SaldoIncomesExpense)};
 
       ResultList.Add(String.Format("Курсовые разницы {4:#,0} - ({0:#,0} - {1:#,0} + {2:#,0}) = {3:#,0} usd\n",
@@ -200,5 +268,18 @@ namespace Keeper.ViewModels
       ResultList.Add(String.Format("С учетом курсовых разниц {0:#,0} - {1:#,0} - {2:#,0} = {3:#,0} usd",
         MonthSaldo.Incomes, -MonthSaldo.Expense, -MonthSaldo.ExchangeDifference, MonthSaldo.Result));
     }
+
+    public void ShowPreviousMonth()
+    {
+      StartDate = StartDate.AddMonths(-1);
+      Calculate();
+    }
+
+    public void ShowNextMonth()
+    {
+      StartDate = StartDate.AddMonths(1);
+      Calculate();
+    }
   }
+
 }
