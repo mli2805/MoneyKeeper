@@ -191,7 +191,7 @@ namespace Keeper.ViewModels
 
     protected override void OnViewLoaded(object view)
     {
-      DisplayName = "Keeper 2012";
+      DisplayName = "Keeper (c) 2012-13";
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
       OpenedAccountPage = 0;
     }
