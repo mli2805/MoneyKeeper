@@ -15,7 +15,7 @@ namespace Keeper.ViewModels
     protected override void OnViewLoaded(object view)
     {
       DisplayName = Deposit.Account.Name;
-      Deposit.MakeReport();
+      Deposit.CollectInfo();
     }
 
   }

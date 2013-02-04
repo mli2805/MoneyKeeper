@@ -80,6 +80,7 @@
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
     <Compile Include="DomainModel\Deposit.cs" />
+    <Compile Include="DomainModel\DepositStates.cs" />
     <Compile Include="DomainModel\KeeperTxtDB.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
+    <Compile Include="ViewModels\DepositsViewModel.cs" />
     <Compile Include="ViewModels\DepositViewModel.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\UsefulLists.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilterListForCombo.cs" />
@@ -118,6 +120,9 @@
     </Compile>
     <Compile Include="Views\ArticlesAssociationsView.xaml.cs">
       <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DepositsView.xaml.cs">
+      <DependentUpon>DepositsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DepositView.xaml.cs">
       <DependentUpon>DepositView.xaml</DependentUpon>
@@ -180,6 +185,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DepositsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -223,6 +232,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\month_analisys.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\safe.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
