@@ -5,7 +5,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:cal="http://www.caliburnproject.org"
         Icon="/Keeper;component/Resources/month_analisys.ico" 
-        Title="{Binding MonthAnalisysViewCaption}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" >
+        Title="{Binding MonthAnalisysViewCaption}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
   <i:Interaction.Triggers>
     <ei:KeyTrigger Key="Right">
       <cal:ActionMessage MethodName="ShowNextMonth"/>

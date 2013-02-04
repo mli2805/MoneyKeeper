@@ -120,7 +120,12 @@ namespace Keeper.DomainModel
 
     public void MakeReport()
     {
-      ExtractDatesFromName();
+      if (Account.Name != "Депозиты закрытые до ведения в данной программе") ExtractDatesFromName();
+      else
+      {
+        Start = new DateTime(2002,1,1);
+        Finish = new DateTime(2010,1,1);
+      }
       SelectTransactions();
       MainCurrency = Transactions.First().Currency;
       Report = new ObservableCollection<string>();
