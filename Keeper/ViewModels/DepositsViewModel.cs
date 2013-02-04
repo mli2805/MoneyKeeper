@@ -29,5 +29,10 @@ namespace Keeper.ViewModels
 
       TotalsList = new List<string>{"Итоговые показатели:"};
     }
+
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = "Депозиты";
+    }
   }
 }
