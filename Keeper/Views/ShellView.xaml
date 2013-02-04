@@ -24,6 +24,9 @@
     <ei:KeyTrigger Key="A">
       <cal:ActionMessage MethodName="ShowMonthAnalisysForm"/>
     </ei:KeyTrigger>
+    <ei:KeyTrigger Key="D">
+      <cal:ActionMessage MethodName="ShowDepositsForm"/>
+    </ei:KeyTrigger>
   </i:Interaction.Triggers>
   <Window.Resources>
     <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
@@ -49,6 +52,7 @@
       <MenuItem Header="ФОРМЫ" Background="{x:Null}" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
         <MenuItem x:Name="ShowMonthAnalisysForm" Header="АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
+        <MenuItem x:Name="ShowDepositsForm" Header="ДЕПОЗИТЫ"/>
         <MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
         <MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
       </MenuItem>

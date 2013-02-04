@@ -306,6 +306,14 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
+    public void ShowDepositsForm()
+    {
+      String arcMessage = Message;
+      Message = "All Deposits";
+      WindowManager.ShowDialog(new DepositsViewModel());
+      Message = arcMessage;
+    }
+
     #endregion
 
     #region // методы выгрузки / загрузки БД в текстовый файл
