@@ -8,6 +8,7 @@ namespace Keeper.DomainModel
     public decimal BeginByrRate { get; set; }
     public decimal Incomes { get; set; }
     public decimal Expense { get; set; }
+    public decimal LargeExpense { get; set; }
     public decimal ExchangeDifference { get { return EndBalance - BeginBalance - Incomes - Expense; } }
     public decimal EndBalance { get; set; }
     public decimal LastByrRate { get; set; }
