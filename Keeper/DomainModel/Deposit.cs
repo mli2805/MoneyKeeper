@@ -20,15 +20,25 @@ namespace Keeper.DomainModel
     public DateTime Start { get; set; }
     public DateTime Finish { get; set; }
     public CurrencyCodes MainCurrency { get; set; }
-    public decimal Amount { get; set; }
+    public decimal StartAmount { get; set; }
+    public decimal AdditionalAmounts { get; set; }
     public List<Transaction> Transactions { get; set; }
     public decimal CurrentBalance { get; set; }
     public DepositStates State { get; set; }
-    public Brush FontColor { get { return Brushes.Blue; } }
+    public Brush FontColor
+    {
+      get
+      {
+        if (State == DepositStates.Закрыт) return Brushes.Gray;
+        if (State == DepositStates.Просрочен) return Brushes.Red;
+        return Brushes.Blue;
+      }
+    }
 
     public decimal Profit { get; set; }
+    public decimal DepositRate { get; set; }
     public decimal Forecast { get; set; }
-    public ObservableCollection<string> Report      
+    public ObservableCollection<string> Report
     {
       get { return _report; }
       set
@@ -42,7 +52,7 @@ namespace Keeper.DomainModel
     /// <summary>
     /// из предположения, что обратные слэши только в датах, и даты с обеих сторон имеют пробелы
     /// </summary>
-    private void ExtractDatesFromName()
+    private void ExtractInfoFromName()
     {
       var s = Account.Name;
       var p = s.IndexOf('/');
@@ -51,6 +61,8 @@ namespace Keeper.DomainModel
       p = s.IndexOf('/', n);
       n = s.IndexOf(' ', p);
       Finish = Convert.ToDateTime(s.Substring(p - 2, n - p + 2));
+      p = s.IndexOf('%', n);
+      DepositRate = Convert.ToDecimal(s.Substring(n, p - n));
     }
 
     private void SelectTransactions()
@@ -65,15 +77,28 @@ namespace Keeper.DomainModel
     {
       // шапка отчета
       if (Transactions.Count == 0) return;
-      CurrentBalance = Balance.GetBalanceInCurrency(Account, new Period(new DateTime(1001, 1, 1), DateTime.Today), MainCurrency);
-      if (Finish < DateTime.Today)
-        Report.Add(CurrentBalance == 0 ? "Депозит закрыт. Остаток 0.\n" : "!!! Срок депозита истек !!!\n");
+      CurrentBalance = Balance.GetBalanceInCurrency(Account, new Period(new DateTime(1001, 1, 1), DateTime.Today.AddDays(1).AddMinutes(-1)), MainCurrency);
+      if (CurrentBalance == 0)
+      {
+        Report.Add("Депозит закрыт. Остаток 0.\n");
+        State = DepositStates.Закрыт;
+      }
       else
       {
+        if (Finish < DateTime.Today)
+        {
+          Report.Add("!!! Срок депозита истек !!!\n");
+          State = DepositStates.Просрочен;
+        }
+        else
+        {
+          Report.Add("Действующий депозит.\n");
+          State = DepositStates.Открыт;
+        }
         var balanceString = MainCurrency != CurrencyCodes.USD ?
-          String.Format("{0:#,0} byr  ($ {1:#,0} )", CurrentBalance, CurrentBalance / (decimal)Rate.GetRate(MainCurrency, DateTime.Today.Date)) :
-          String.Format("{0:#,0} usd", CurrentBalance);
-        Report.Add(String.Format("Действующий депозит. Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
+              String.Format("{0:#,0} byr  ($ {1:#,0} )", CurrentBalance, CurrentBalance / (decimal)Rate.GetRate(MainCurrency, DateTime.Today.Date)) :
+              String.Format("{0:#,0} usd", CurrentBalance);
+        Report.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }
       Report.Add("                             Расход                          Доход ");
 
@@ -90,7 +115,16 @@ namespace Keeper.DomainModel
         {
           if (transaction.Operation == OperationType.Перенос)
           {
-            comment = balanceAfterTransaction == 0 ? "открытие депозита" : "доп взнос";
+            if (balanceAfterTransaction == 0)
+            {
+              comment = "открытие депозита";
+              StartAmount = transaction.Amount;
+            }
+            else
+            {
+              comment = "доп взнос";
+              AdditionalAmounts += transaction.Amount;
+            }
             Profit = Profit - transaction.Amount / (decimal)rate;
           }
           else comment = "начисление процентов";
@@ -111,25 +145,35 @@ namespace Keeper.DomainModel
       if (CurrentBalance != 0)
       {
         var todayRate = MainCurrency != CurrencyCodes.USD ? Rate.GetRate(MainCurrency, DateTime.Today) : 1.0;
-        Profit += CurrentBalance/(decimal) todayRate;
+        Profit += CurrentBalance / (decimal)todayRate;
       }
 
-      Report.Add("");
-      Report.Add(String.Format("Доход по депозиту {0:#,0} usd \n", Profit));
-      Report.Add("");
+      Report.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", Profit));
+      Report.Add(ForecastProfit());
     }
 
-    private void ForecastProfit()
+    private string ForecastProfit()
     {
+      if (CurrentBalance == 0) return "";
+
+      Forecast = CurrentBalance * DepositRate / 100 * (Finish - Start).Days / 365;
+      var forecastInUsd = Forecast;
+
+      if (MainCurrency != CurrencyCodes.USD)
+      {
+        var todayRate = Rate.GetRate(MainCurrency, DateTime.Today);
+        forecastInUsd = forecastInUsd / (decimal)todayRate;
+      }
+      return String.Format("Прогноз по депозиту {0:#,0} usd", forecastInUsd);
     }
 
     public void CollectInfo()
     {
-      if (Account.Name != "Депозиты закрытые до ведения в данной программе") ExtractDatesFromName();
+      if (Account.Name != "Депозиты закрытые до ведения в данной программе") ExtractInfoFromName();
       else
       {
-        Start = new DateTime(2002,1,1);
-        Finish = new DateTime(2010,1,1);
+        Start = new DateTime(2002, 1, 1);
+        Finish = new DateTime(2010, 1, 1);
       }
       SelectTransactions();
       MainCurrency = Transactions.First().Currency;

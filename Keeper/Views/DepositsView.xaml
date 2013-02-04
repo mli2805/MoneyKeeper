@@ -6,10 +6,17 @@
         Title="DepositsView" MaxHeight="500" SizeToContent="WidthAndHeight">
   <Window.Resources>
     <ResourceDictionary>
-      <DataTemplate x:Key="AmountColumnStyle">
+      <DataTemplate x:Key="StartAmountColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-            <Binding Path="Amount" StringFormat="{}{0:#,0;; }"/>
+            <Binding Path="StartAmount" StringFormat="{}{0:#,0;; }"/>
+          </TextBlock.Text>
+        </TextBlock>
+      </DataTemplate>
+      <DataTemplate x:Key="AdditionalAmountsColumnStyle">
+        <TextBlock HorizontalAlignment="Right">
+          <TextBlock.Text>
+            <Binding Path="AdditionalAmounts" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
@@ -27,20 +34,37 @@
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
+      <DataTemplate x:Key="ForecastColumnStyle">
+        <TextBlock HorizontalAlignment="Right">
+          <TextBlock.Text>
+            <Binding Path="Forecast" StringFormat="{}{0:#,0;; }"/>
+          </TextBlock.Text>
+        </TextBlock>
+      </DataTemplate>
     </ResourceDictionary>
   </Window.Resources>
   <Grid>
     <StackPanel>
       <ListView Margin="2" ItemsSource="{Binding DepositsList}">
+        <ListView.ItemContainerStyle>
+          <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Margin" Value="1,0,0,0"/>
+            <Setter Property="Padding" Value="0,1"/>
+            <Setter Property="Foreground" Value="{Binding FontColor}"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+          </Style>
+        </ListView.ItemContainerStyle>
         <ListView.View>
           <GridView>
             <GridViewColumn Header="Наименование" Width="350" DisplayMemberBinding="{Binding Account}" />
-            <GridViewColumn Header="Дата открытия" Width="100" DisplayMemberBinding="{Binding Start, StringFormat='d-MM-yyyy'}" />
-            <GridViewColumn Header="Дата окончания" Width="100" DisplayMemberBinding="{Binding Finish, StringFormat='d-MM-yyyy'}" />
+<!--            <GridViewColumn Header="Дата открытия" Width="100" DisplayMemberBinding="{Binding Start, StringFormat='d-MM-yyyy'}" />-->
+<!--            <GridViewColumn Header="Дата окончания" Width="100" DisplayMemberBinding="{Binding Finish, StringFormat='d-MM-yyyy'}" />-->
             <GridViewColumn Header="Вал"            Width="40" DisplayMemberBinding="{Binding MainCurrency}" />
-            <GridViewColumn Header="Сумма открытия" Width="100" CellTemplate="{StaticResource AmountColumnStyle}" />
+            <GridViewColumn Header="Сумма открытия" Width="100" CellTemplate="{StaticResource StartAmountColumnStyle}" />
+            <GridViewColumn Header="Доп взносы"     Width="100" CellTemplate="{StaticResource AdditionalAmountsColumnStyle}" />
             <GridViewColumn Header="Текущий остаток" Width="100" CellTemplate="{StaticResource CurrentBalanceColumnStyle}" />
             <GridViewColumn Header="Прибыль"        Width="100" CellTemplate="{StaticResource ProfitColumnStyle}" />
+            <GridViewColumn Header="Прогноз"        Width="100" CellTemplate="{StaticResource ForecastColumnStyle}" />
           </GridView>
         </ListView.View>
       </ListView>
