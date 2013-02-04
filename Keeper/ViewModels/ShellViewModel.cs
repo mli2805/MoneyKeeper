@@ -253,7 +253,8 @@ namespace Keeper.ViewModels
 
     public void ShowDeposit()
     {
-      WindowManager.ShowDialog(new DepositViewModel(SelectedAccount));
+      if (SelectedAccount.IsDescendantOf("Депозиты") && SelectedAccount.Children.Count == 0)
+                                WindowManager.ShowDialog(new DepositViewModel(SelectedAccount));
     }
 
     #endregion
