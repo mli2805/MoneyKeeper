@@ -136,6 +136,7 @@ namespace Keeper.ViewModels
     {
       BeforeList = new ObservableCollection<string> { String.Format("Входящий остаток на начало месяца\n") };
       MonthSaldo.BeginBalance = FillListWithDateBalance(BeforeList, StartDate);
+      MonthSaldo.BeginByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, StartDate.AddDays(-1));
     }
 
     private decimal FillListWithDateBalance(ObservableCollection<string> list, DateTime date)
@@ -259,6 +260,7 @@ namespace Keeper.ViewModels
     {
       AfterList = new ObservableCollection<string> { String.Format("Исходящий остаток на конец месяца\n") };
       MonthSaldo.EndBalance = FillListWithDateBalance(AfterList, StartDate.AddMonths(1));
+      MonthSaldo.EndByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, StartDate.AddMonths(1).AddDays(-1));
     }
 
     private void CalculateResult()
@@ -267,8 +269,9 @@ namespace Keeper.ViewModels
       ResultList = new ObservableCollection<string> {String.Format( "Финансовый результат месяца {0:#,0} {1:#,0} = {2:#,0} usd\n",
                                       MonthSaldo.Incomes, MonthSaldo.Expense, MonthSaldo.SaldoIncomesExpense)};
 
-      ResultList.Add(String.Format("Курсовые разницы {4:#,0} - ({0:#,0} - {1:#,0} + {2:#,0}) = {3:#,0} usd\n",
+      ResultList.Add(String.Format("Курсовые разницы {4:#,0} - ({0:#,0} - {1:#,0} + {2:#,0}) = {3:#,0} usd",
         MonthSaldo.BeginBalance, MonthSaldo.Incomes, -MonthSaldo.Expense, MonthSaldo.ExchangeDifference, MonthSaldo.EndBalance));
+      ResultList.Add(String.Format("Курсы Byr/Usd на начало и конец месца:  {0:#,0} - {1:#,0} \n", MonthSaldo.BeginByrRate, MonthSaldo.EndByrRate));
 
       ResultList.Add(String.Format("С учетом курсовых разниц {0:#,0} - {1:#,0} - {2:#,0} = {3:#,0} usd",
         MonthSaldo.Incomes, -MonthSaldo.Expense, -MonthSaldo.ExchangeDifference, MonthSaldo.Result));
