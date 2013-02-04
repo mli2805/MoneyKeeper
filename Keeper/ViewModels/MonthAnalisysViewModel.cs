@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -20,9 +21,11 @@ namespace Keeper.ViewModels
     private ObservableCollection<string> _largeExpenseList;
     private ObservableCollection<string> _afterList;
     private ObservableCollection<string> _resultList;
+    private ObservableCollection<string> _forecastList;
 
     private DateTime _startDate;
     private Brush _resultForeground;
+    private Visibility _forecastListVisibility;
 
     public ObservableCollection<string> BeforeList
     {
@@ -84,18 +87,47 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => ResultList);
       }
     }
+    public ObservableCollection<string> ForecastList
+    {
+      get { return _forecastList; }
+      set
+      {
+        if (Equals(value, _forecastList)) return;
+        _forecastList = value;
+        NotifyOfPropertyChange(() => ForecastList);
+      }
+    }
 
+    public Visibility ForecastListVisibility
+    {
+      get { return _forecastListVisibility; }
+      set
+      {
+        if (Equals(value, _forecastListVisibility)) return;
+        _forecastListVisibility = value;
+        NotifyOfPropertyChange(() => ForecastListVisibility);
+      }
+    }
     public DateTime StartDate
     {
       get { return _startDate; }
-      set 
+      set
       {
         _startDate = value;
         AnalyzedPeriod = new Period(StartDate.Date, StartDate.Date.AddMonths(1).AddMinutes(-1));
-        if (AnalyzedPeriod.IsDateTimeIn(DateTime.Today)) _isMonthEnded = false; else _isMonthEnded = true;
+        if (AnalyzedPeriod.IsDateTimeIn(DateTime.Today))
+        {
+          _isMonthEnded = false;
+          ForecastListVisibility = Visibility.Visible;
+        }
+        else
+        {
+          _isMonthEnded = true;
+          ForecastListVisibility = Visibility.Collapsed;
+        }
         MonthAnalisysViewCaption = String.Format("Анализ месяца [{0}]", AnalyzedMonth);
         if (!_isMonthEnded) MonthAnalisysViewCaption += " - текущий период!";
-        NotifyOfPropertyChange(()=>MonthAnalisysViewCaption);
+        NotifyOfPropertyChange(() => MonthAnalisysViewCaption);
       }
     }
     public string AnalyzedMonth
@@ -130,6 +162,7 @@ namespace Keeper.ViewModels
       CalculateExpense();
       CalculateEndBalance();
       CalculateResult();
+      if (!_isMonthEnded) CalculateForecast();
     }
 
     private void CalculateBeginBalance()
@@ -139,6 +172,19 @@ namespace Keeper.ViewModels
       MonthSaldo.BeginByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, StartDate.AddDays(-1));
     }
 
+    /// <summary>
+    /// При расчете ВХОДЯЩИХ остатков подается первое число месяца 
+    /// и рассчитываются остатки после последнего дня прошлого месяца
+    /// по курсам последнего дня прошлого месяца
+    /// 
+    /// При расчете ИСХОДЯЩИХ надо подавать дату следущую за последним днем 
+    /// ввода транзакций в анализируемом месяце
+    /// т.е. первое число следущего месяца для прошлых периодов или
+    /// "завтра" для текущего месяца
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="date"></param>
+    /// <returns></returns>
     private decimal FillListWithDateBalance(ObservableCollection<string> list, DateTime date)
     {
       var myAccountsRoot = (from account in Db.Accounts
@@ -146,8 +192,8 @@ namespace Keeper.ViewModels
                             select account).FirstOrDefault();
 
       var startBalance = Balance.AccountBalancePairsBeforeDay(myAccountsRoot, date);
-      decimal balanceInUsd = 0;
-      foreach (var balancePair in startBalance)
+      decimal balanceInUsd = 0;                         // функция возвращает остатки на утро, 
+      foreach (var balancePair in startBalance)         // т.е. фактически остатки вечера предыдущего дня
       {
         if (balancePair.Amount == 0) continue;
         if (balancePair.Currency == CurrencyCodes.USD)
@@ -156,9 +202,9 @@ namespace Keeper.ViewModels
           list.Add(balancePair.ToString());
         }
         else
-        {
-          decimal amountInUsd;
-          Rate.GetUsdEquivalent(balancePair.Amount, (CurrencyCodes)balancePair.Currency, date, out amountInUsd);
+        {                                                             // значит для перевода остатков в доллары
+          decimal amountInUsd;                                        // курс тоже должен быть вчерашнего дня
+          Rate.GetUsdEquivalent(balancePair.Amount, (CurrencyCodes)balancePair.Currency, date.AddDays(-1), out amountInUsd);
           balanceInUsd += amountInUsd;
           list.Add(String.Format("{0}  (= {1:#,0} $)", balancePair.ToString(), amountInUsd));
         }
@@ -210,7 +256,7 @@ namespace Keeper.ViewModels
       if (lastTransaction != null)
       {
         MonthSaldo.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
-        MonthSaldo.LastByrRate = (decimal) Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
+        MonthSaldo.LastByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
       }
 
       var expenseTransactionsInUsd =
@@ -257,6 +303,7 @@ namespace Keeper.ViewModels
             transaction.AmountInUsd, transaction.Article, transaction.Comment));
         largeExpenseInUsd -= transaction.AmountInUsd;
       }
+      MonthSaldo.LargeExpense = largeExpenseInUsd;
       if (largeExpenseInUsd == 0) LargeExpenseList[0] = "Крупных трат в этом месяце не было\n";
       else
       {
@@ -283,6 +330,19 @@ namespace Keeper.ViewModels
 
       ResultList.Add(String.Format("С учетом курсовых разниц {0:#,0} - {1:#,0} - {2:#,0} = {3:#,0} usd",
         MonthSaldo.Incomes, -MonthSaldo.Expense, -MonthSaldo.ExchangeDifference, MonthSaldo.Result));
+    }
+
+    private void CalculateForecast()
+    {
+      ForecastList = new ObservableCollection<string> { "Прогноз расходов\n" };
+      var averageExpenseInUsd = (MonthSaldo.Expense - MonthSaldo.LargeExpense)/MonthSaldo.LastDayWithTransactionsInMonth.Day;
+      ForecastList.Add(String.Format("Среднедневные расходы {0:#,0} usd ( {1:#,0} byr)",
+        averageExpenseInUsd, averageExpenseInUsd *  MonthSaldo.LastByrRate ));
+      var daysInMonth = StartDate.AddMonths(1).AddDays(-1).Day;
+      ForecastList.Add(String.Format("За {0} дней составит: {1:#,0} usd ( {2:#,0} byr)",
+        daysInMonth, averageExpenseInUsd * daysInMonth, averageExpenseInUsd *  MonthSaldo.LastByrRate * daysInMonth ));
+      ForecastList.Add(String.Format("Итого расходов {0:#,0} usd ",
+                                     averageExpenseInUsd*daysInMonth + MonthSaldo.LargeExpense));
     }
 
     public void ShowPreviousMonth()
