@@ -254,7 +254,7 @@ namespace Keeper.ViewModels
     public void ShowDeposit()
     {
       if (SelectedAccount.IsDescendantOf("Депозиты") && SelectedAccount.Children.Count == 0)
-                                WindowManager.ShowDialog(new DepositViewModel(SelectedAccount));
+                                WindowManager.ShowWindow(new DepositViewModel(SelectedAccount));
     }
 
     #endregion
@@ -310,7 +310,7 @@ namespace Keeper.ViewModels
     {
       String arcMessage = Message;
       Message = "All Deposits";
-      WindowManager.ShowDialog(new DepositsViewModel());
+      WindowManager.ShowWindow(new DepositsViewModel());
       Message = arcMessage;
     }
 

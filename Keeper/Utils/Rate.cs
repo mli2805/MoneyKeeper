@@ -17,6 +17,15 @@ namespace Keeper.Utils
       return rate != null ? rate.Rate : 0.0;
     }
 
+    public static double GetLastRate(CurrencyCodes currency)
+    {
+      var rate = (from currencyRate in Db.CurrencyRates
+                  where currencyRate.Currency == currency
+                  orderby currencyRate.BankDay
+                  select currencyRate).LastOrDefault();
+      return rate != null ? rate.Rate : 0.0;
+    }
+
     public static string GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp)
     {
       decimal temp;

@@ -96,7 +96,7 @@ namespace Keeper.DomainModel
           State = DepositStates.Открыт;
         }
         var balanceString = MainCurrency != CurrencyCodes.USD ?
-              String.Format("{0:#,0} byr  ($ {1:#,0} )", CurrentBalance, CurrentBalance / (decimal)Rate.GetRate(MainCurrency, DateTime.Today.Date)) :
+              String.Format("{0:#,0} byr  ($ {1:#,0} )", CurrentBalance, CurrentBalance / (decimal)Rate.GetLastRate(MainCurrency)) :
               String.Format("{0:#,0} usd", CurrentBalance);
         Report.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }
@@ -144,7 +144,7 @@ namespace Keeper.DomainModel
       // подвал отчета
       if (CurrentBalance != 0)
       {
-        var todayRate = MainCurrency != CurrencyCodes.USD ? Rate.GetRate(MainCurrency, DateTime.Today) : 1.0;
+        var todayRate = MainCurrency != CurrencyCodes.USD ? Rate.GetLastRate(MainCurrency) : 1.0;
         Profit += CurrentBalance / (decimal)todayRate;
       }
 
@@ -161,7 +161,7 @@ namespace Keeper.DomainModel
 
       if (MainCurrency != CurrencyCodes.USD)
       {
-        var todayRate = Rate.GetRate(MainCurrency, DateTime.Today);
+        var todayRate = Rate.GetLastRate(MainCurrency);
         forecastInUsd = forecastInUsd / (decimal)todayRate;
       }
       return String.Format("Прогноз по депозиту {0:#,0} usd", forecastInUsd);
