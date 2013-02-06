@@ -29,7 +29,30 @@ namespace Keeper.DomainModel
     public ObservableCollection<ArticleAssociation> ArticlesAssociations { get; set; }
 
     public List<Account> AccountsPlaneList { get; set; }
+
+    public Account FindAccountInBranch(string toFind, Account branch)
+    {
+      foreach (var child in branch.Children)
+      {
+        if (child.Name == toFind) return child;
+        var res = FindAccountInBranch(toFind, child);
+        if (res != null) return res;
+      }
+      return null;
+    }
+
+    public Account FindAccountInTree(string name)
+    {
+      foreach (var root in Accounts)
+      {
+        if (root.Name == name) return root;
+        var res = FindAccountInBranch(name, root);
+        if (res != null) return res;
+      }
+      return null;
+    }
   }
+
 
 
 }

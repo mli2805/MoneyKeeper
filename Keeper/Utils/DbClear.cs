@@ -25,18 +25,17 @@ namespace Keeper.Utils
                                     select account);
       foreach (var root in roots)
       {
-        RemoveAccountFromDatabase(root);
+        RemoveBranchFromDatabase(root);
       }
     }
 
-    public static void RemoveAccountFromDatabase(Account account)
+    public static void RemoveBranchFromDatabase(Account branch)
     {
-      foreach (var child in account.Children.ToArray())
+      foreach (var child in branch.Children.ToArray())
       {
-        RemoveAccountFromDatabase(child);
+        RemoveBranchFromDatabase(child);
       }
-      Db.Accounts.Remove(account);
+      Db.Accounts.Remove(branch);
     }
-
   }
 }

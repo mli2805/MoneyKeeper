@@ -43,7 +43,7 @@ namespace Keeper.ViewModels
       }
     }
 
-    public string StatusBarItem0 
+    public string StatusBarItem0
     {
       get { return _statusBarItem0; }
       set
@@ -150,7 +150,7 @@ namespace Keeper.ViewModels
     public ShellViewModel()
     {
       _message = "Keeper is running (On Debug)";
-//      Database.SetInitializer(new DbInitializer());
+      //      Database.SetInitializer(new DbInitializer());
       BalanceList = new ObservableCollection<string> { "test balance" };
     }
 
@@ -206,24 +206,32 @@ namespace Keeper.ViewModels
 
     public void RemoveAccount()
     {
-      if (SelectedAccount.Parent != null)
+      if (SelectedAccount.Parent == null)
       {
-        // такой запрос возвращает не коллекцию, а энумератор
-        IEnumerable<Transaction> tr = from transaction in Db.Transactions
-                                      where transaction.Debet == SelectedAccount || transaction.Credit == SelectedAccount || transaction.Article == SelectedAccount
-                                      select transaction;
-
-        // Any() пытается двинуться по этому энумератору и если может, то true
-        if (tr.Any()) MessageBox.Show("Этот счет используется в проводках!", "Отказ!");
-        else
-        {
-          if (MessageBox.Show("Проверено, счет не используется в транзакциях.\n Удаление счета <<" + SelectedAccount.Name + ">>\n          Удалить?", "Confirm",
-                              MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            DbClear.RemoveAccountFromDatabase(SelectedAccount);
-        }
-
+        MessageBox.Show("Корневой счет нельзя удалять!", "Отказ!");
+        return;
       }
-      else MessageBox.Show("Корневой счет нельзя удалять!", "Отказ!");
+      if (SelectedAccount.Children.Count > 0)
+      {
+        MessageBox.Show("Удалять разрешено \n только конечные листья дерева счетов!", "Отказ!");
+        return;
+      }
+      // такой запрос возвращает не коллекцию, а энумератор
+      IEnumerable<Transaction> tr = from transaction in Db.Transactions
+                                    where transaction.Debet == SelectedAccount || transaction.Credit == SelectedAccount || transaction.Article == SelectedAccount
+                                    select transaction;
+
+      // Any() пытается двинуться по этому энумератору и если может, то true
+      if (tr.Any())
+      {
+        MessageBox.Show("Этот счет используется в проводках!", "Отказ!");
+        return;
+      }
+      if (MessageBox.Show("Проверено, счет не используется в транзакциях.\n Удаление счета\n\n <<" + SelectedAccount.Name + ">>\n          Удалить?", "Confirm",
+                          MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) return;
+
+      Db.AccountsPlaneList.Remove(SelectedAccount);
+      SelectedAccount.Parent.Children.Remove(SelectedAccount);
     }
 
     public void AddAccount()
@@ -235,7 +243,7 @@ namespace Keeper.ViewModels
       SelectedAccount = accountInWork.Parent;
       accountInWork.Id = (from account in Db.AccountsPlaneList select account.Id).Max() + 1;
       SelectedAccount.Children.Add(accountInWork);
-      Db.AccountsPlaneList.Clear(); 
+      Db.AccountsPlaneList.Clear();
       DbLoad.FillInAccountsPlaneList(Db.Accounts);
       UsefulLists.FillLists();
     }
@@ -257,7 +265,7 @@ namespace Keeper.ViewModels
     public void ShowDeposit()
     {
       if (SelectedAccount.IsDescendantOf("Депозиты") && SelectedAccount.Children.Count == 0)
-                                WindowManager.ShowWindow(new DepositViewModel(SelectedAccount));
+        WindowManager.ShowWindow(new DepositViewModel(SelectedAccount));
     }
 
     #endregion
