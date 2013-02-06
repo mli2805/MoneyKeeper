@@ -217,7 +217,7 @@ namespace Keeper.ViewModels
         if (tr.Any()) MessageBox.Show("Этот счет используется в проводках!", "Отказ!");
         else
         {
-          if (MessageBox.Show("Удаление счета <<" + SelectedAccount.Name + ">>\n\n          Вы уверены?", "Confirm",
+          if (MessageBox.Show("Проверено, счет не используется в транзакциях.\n Удаление счета <<" + SelectedAccount.Name + ">>\n          Удалить?", "Confirm",
                               MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             DbClear.RemoveAccountFromDatabase(SelectedAccount);
         }
