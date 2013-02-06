@@ -233,8 +233,11 @@ namespace Keeper.ViewModels
       if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
       SelectedAccount = accountInWork.Parent;
+      accountInWork.Id = (from account in Db.AccountsPlaneList select account.Id).Max() + 1;
       SelectedAccount.Children.Add(accountInWork);
-      Db.Accounts.Add(accountInWork);
+      Db.AccountsPlaneList.Clear(); 
+      DbLoad.FillInAccountsPlaneList(Db.Accounts);
+      UsefulLists.FillLists();
     }
 
     public void ChangeAccount()

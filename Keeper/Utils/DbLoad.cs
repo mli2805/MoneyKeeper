@@ -23,61 +23,13 @@ namespace Keeper.Utils
 
       LoadCurrencyRates();
       LoadAccounts();
+      if (Db.AccountsPlaneList == null) Db.AccountsPlaneList = new List<Account>(); else Db.AccountsPlaneList.Clear();
       FillInAccountsPlaneList(Db.Accounts);
       LoadTransactions();
       LoadArticlesAssociations();
 
       return DateTime.Now - start;
     }
-
-    public static void FillInAccountsPlaneList(IEnumerable<Account> accountsList)
-    {
-      if (Db.AccountsPlaneList == null) Db.AccountsPlaneList = new List<Account>();
-      foreach (var account in accountsList)
-      {
-        Db.AccountsPlaneList.Add(account);
-        FillInAccountsPlaneList(account.Children);
-      }
-    }
-
-    #region // Articles associations
-    private static void LoadArticlesAssociations()
-    {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "ArticlesAssociations.txt"), Encoding1251);
-      if (Db.ArticlesAssociations == null) Db.ArticlesAssociations = new ObservableCollection<ArticleAssociation>();
-      var wrongContent = new List<string>();
-      foreach (var s in content)
-      {
-        if (s == "") continue;
-
-        ArticleAssociation association = null;
-        try
-        {
-          association = ArticleAssociationFromStringWithNames(s);
-        }
-        catch (Exception)
-        {
-          wrongContent.Add(s);
-        }
-        if (association != null) Db.ArticlesAssociations.Add(association);
-      }
-      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
-    }
-
-    private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
-    {
-      var association = new ArticleAssociation();
-      int prev = s.IndexOf(';');
-      string externalAccount = s.Substring(0, prev - 1);
-      association.ExternalAccount = Db.AccountsPlaneList.First(account => account.Name == externalAccount);
-      int next = s.IndexOf(';', prev + 2);
-      association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), s.Substring(prev + 2, next - prev - 3));
-      string associatedArticle = s.Substring(next + 2);
-      association.AssociatedArticle = Db.AccountsPlaneList.First(account => account.Name == associatedArticle);
-
-      return association;
-    }
-    #endregion
 
     #region // 2002-2010
 
@@ -397,30 +349,6 @@ namespace Keeper.Utils
     }
     #endregion
 
-    #region // Currency Rates
-    public static void LoadCurrencyRates()
-    {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), Encoding1251);
-      if (Db.CurrencyRates == null) Db.CurrencyRates = new ObservableCollection<CurrencyRate>();
-      foreach (var s in content)
-      {
-        var rate = CurrencyRateFromString(s);
-        Db.CurrencyRates.Add(rate);
-      }
-    }
-
-    private static CurrencyRate CurrencyRateFromString(string s)
-    {
-      var rate = new CurrencyRate();
-      int next = s.IndexOf(';');
-      rate.BankDay = Convert.ToDateTime(s.Substring(0, next));
-      rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
-      next += 6;
-      rate.Rate = Convert.ToDouble(s.Substring(next + 2));
-      return rate;
-    }
-    #endregion
-
     #region // Accounts
     public static void LoadAccounts()
     {
@@ -463,6 +391,84 @@ namespace Keeper.Utils
           BuildBranchFromRoot(account, content);
         }
       }
+    }
+
+    public static void FillInAccountsPlaneList(IEnumerable<Account> accountsList)
+    {
+      foreach (var account in accountsList)
+      {
+        Db.AccountsPlaneList.Add(account);
+        FillInAccountsPlaneList(account.Children);
+      }
+    }
+
+    public static int GetMaxAccountId()
+    {
+      return (from account in Db.AccountsPlaneList select account.Id).Max();
+    }
+
+    #endregion
+
+    #region // Currency Rates
+    public static void LoadCurrencyRates()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), Encoding1251);
+      if (Db.CurrencyRates == null) Db.CurrencyRates = new ObservableCollection<CurrencyRate>();
+      foreach (var s in content)
+      {
+        var rate = CurrencyRateFromString(s);
+        Db.CurrencyRates.Add(rate);
+      }
+    }
+
+    private static CurrencyRate CurrencyRateFromString(string s)
+    {
+      var rate = new CurrencyRate();
+      int next = s.IndexOf(';');
+      rate.BankDay = Convert.ToDateTime(s.Substring(0, next));
+      rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
+      next += 6;
+      rate.Rate = Convert.ToDouble(s.Substring(next + 2));
+      return rate;
+    }
+    #endregion
+
+    #region // Articles associations
+    private static void LoadArticlesAssociations()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "ArticlesAssociations.txt"), Encoding1251);
+      if (Db.ArticlesAssociations == null) Db.ArticlesAssociations = new ObservableCollection<ArticleAssociation>();
+      var wrongContent = new List<string>();
+      foreach (var s in content)
+      {
+        if (s == "") continue;
+
+        ArticleAssociation association = null;
+        try
+        {
+          association = ArticleAssociationFromStringWithNames(s);
+        }
+        catch (Exception)
+        {
+          wrongContent.Add(s);
+        }
+        if (association != null) Db.ArticlesAssociations.Add(association);
+      }
+      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
+    }
+
+    private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
+    {
+      var association = new ArticleAssociation();
+      int prev = s.IndexOf(';');
+      string externalAccount = s.Substring(0, prev - 1);
+      association.ExternalAccount = Db.AccountsPlaneList.First(account => account.Name == externalAccount);
+      int next = s.IndexOf(';', prev + 2);
+      association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), s.Substring(prev + 2, next - prev - 3));
+      string associatedArticle = s.Substring(next + 2);
+      association.AssociatedArticle = Db.AccountsPlaneList.First(account => account.Name == associatedArticle);
+
+      return association;
     }
     #endregion
 
