@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
@@ -306,7 +307,11 @@ namespace Keeper.Utils
         }
         if (transaction != null) Db.Transactions.Add(transaction);
       }
-      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadTransactions.err"), wrongContent, Encoding1251);
+      if (wrongContent.Count != 0)
+      {
+        File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadTransactions.err"), wrongContent, Encoding1251);
+        MessageBox.Show("Ошибки загрузки транзакций смотри в файле LoadTransactions.err");
+      }
     }
 
     private static Transaction TransactionFromStringWithNames(string s)
@@ -414,10 +419,26 @@ namespace Keeper.Utils
     {
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), Encoding1251);
       if (Db.CurrencyRates == null) Db.CurrencyRates = new ObservableCollection<CurrencyRate>();
+      var wrongContent = new List<string>();
       foreach (var s in content)
       {
-        var rate = CurrencyRateFromString(s);
-        Db.CurrencyRates.Add(rate);
+        if (s == "") continue;
+
+        CurrencyRate rate = null;
+        try
+        {
+          rate = CurrencyRateFromString(s);
+        }
+        catch (Exception)
+        {
+          wrongContent.Add(s);
+        }
+        if (rate != null) Db.CurrencyRates.Add(rate);
+        if (wrongContent.Count != 0)
+        {
+          File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.err"), wrongContent, Encoding1251);
+          MessageBox.Show("Ошибки загрузки курсов валют смотри в файле CurrencyRates.err");
+        }
       }
     }
 
@@ -454,7 +475,11 @@ namespace Keeper.Utils
         }
         if (association != null) Db.ArticlesAssociations.Add(association);
       }
-      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
+      if (wrongContent.Count != 0)
+      {
+        File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
+        MessageBox.Show("Ошибки загрузки ассоциаций смотри в файле LoadArticlesAssociations.err");
+      }
     }
 
     private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)

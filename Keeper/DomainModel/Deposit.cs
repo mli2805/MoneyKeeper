@@ -9,7 +9,7 @@ using Keeper.Utils;
 
 namespace Keeper.DomainModel
 {
-  class Deposit : PropertyChangedBase
+  public class Deposit : PropertyChangedBase
   {
     private ObservableCollection<string> _report;
 
