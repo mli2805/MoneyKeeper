@@ -169,15 +169,15 @@ namespace Keeper.DomainModel
 
     public void CollectInfo()
     {
-      if (Account.Name != "Депозиты закрытые до ведения в данной программе") ExtractInfoFromName();
-      else
-      {
-        Start = new DateTime(2002, 1, 1);
-        Finish = new DateTime(2010, 1, 1);
-      }
+      ExtractInfoFromName();
       SelectTransactions();
-      MainCurrency = Transactions.First().Currency;
       Report = new ObservableCollection<string>();
+      if (Transactions.Count == 0)
+      {
+        State = DepositStates.Закрыт;
+        return; 
+      }
+      MainCurrency = Transactions.First().Currency;
       Calculate();
       if (Finish > DateTime.Today) ForecastProfit();
     }
