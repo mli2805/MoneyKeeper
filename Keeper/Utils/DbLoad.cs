@@ -379,6 +379,7 @@ namespace Keeper.Utils
       account.Id = Convert.ToInt32(substrings[0]);
       account.Name = substrings[1].Trim();
       parentId = Convert.ToInt32(substrings[2]);
+      account.IsExpanded = Convert.ToBoolean(substrings[3]);
       return account;
     }
 
