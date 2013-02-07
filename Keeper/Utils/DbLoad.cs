@@ -320,7 +320,7 @@ namespace Keeper.Utils
       else
         transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]);
       transaction.Article = substrings[8].Trim() != "" ? Db.AccountsPlaneList.First(account => account.Name == substrings[8].Trim()) : null;
-      transaction.Comment = substrings[9];
+      transaction.Comment = substrings[9].Trim();
 
       return transaction;
     }
