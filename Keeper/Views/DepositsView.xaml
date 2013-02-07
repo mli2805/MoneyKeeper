@@ -5,7 +5,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         Icon="/Keeper;component/Resources/safe.ico" 
         TextOptions.TextFormattingMode="Display"
-        Title="DepositsView" MaxHeight="500" SizeToContent="WidthAndHeight">
+        Title="DepositsView" MaxHeight="600" SizeToContent="WidthAndHeight">
   <Window.Resources>
     <ResourceDictionary>
       <DataTemplate x:Key="StartAmountColumnStyle">
@@ -46,9 +46,16 @@
     </ResourceDictionary>
   </Window.Resources>
   <Grid>
-    <StackPanel>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="451*"/>
+      <ColumnDefinition Width="453*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="400*"/>
+      <RowDefinition Height="100*"/>
+    </Grid.RowDefinitions>
       <ListView Margin="2" ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
-                cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]">
+                cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" Grid.ColumnSpan="2">
         <ListView.ItemContainerStyle>
           <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Foreground" Value="{Binding FontColor}"/>
@@ -68,7 +75,7 @@
           </GridView>
         </ListView.View>
       </ListView>
-      <ListBox Name="TotalsList" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="2" Padding="2,2,7,4"/>
-    </StackPanel>
+    <ListBox Name="TotalsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2,2,2,2" Padding="2,2,7,4" Grid.Row="1"/>
+    <ListBox Name="YearsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,2,2,2" Padding="2,2,7,4" Grid.Row="1" Grid.Column="1"/>
   </Grid>
 </Window>

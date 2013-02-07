@@ -182,5 +182,27 @@ namespace Keeper.DomainModel
       if (Finish > DateTime.Today) ForecastProfit();
     }
 
+    public decimal GetProfitForYear(int year)
+    {
+      if (Profit == 0) return 0;
+      int startYear = Transactions.First().Timestamp.Year;
+      int finishYear = Transactions.Last().Timestamp.AddDays(-1).Year;
+      if (year < startYear || year > finishYear) return 0;
+      if (startYear == finishYear) return Profit;
+      int allDaysCount = (Transactions.Last().Timestamp.AddDays(-1) - Transactions.First().Timestamp).Days;
+      if (year == startYear)
+      {
+        int startYearDaysCount = (new DateTime(startYear, 12, 31) - Transactions.First().Timestamp).Days;
+        return Profit*startYearDaysCount/allDaysCount;
+      }
+      if (year == finishYear)
+      {
+        int finishYearDaysCount = (Transactions.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
+        return Profit*finishYearDaysCount/allDaysCount;
+      }
+      int yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
+      return Profit*yearDaysCount;
+    }
+
   }
 }
