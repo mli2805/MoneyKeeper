@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -317,38 +318,19 @@ namespace Keeper.Utils
     private static Transaction TransactionFromStringWithNames(string s)
     {
       var transaction = new Transaction();
-      int prev = s.IndexOf(';');
-      transaction.Timestamp = Convert.ToDateTime(s.Substring(0, prev));
-      int next = s.IndexOf(';', prev + 2);
-      transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      string debet = s.Substring(prev + 2, next - prev - 3);
-      transaction.Debet = Db.AccountsPlaneList.First(account => account.Name == debet);
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      string credit = s.Substring(prev + 2, next - prev - 3);
-      transaction.Credit = Db.AccountsPlaneList.First(account => account.Name == credit);
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      transaction.Amount = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      transaction.Amount2 = Convert.ToDecimal(s.Substring(prev + 2, next - prev - 3));
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      var c2 = s.Substring(prev + 2, next - prev - 3);
-      if (c2 == "null" || c2 == "0") transaction.Currency2 = null;
+      var substrings = s.Split(';');
+      transaction.Timestamp = Convert.ToDateTime(substrings[0]);
+      transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
+      transaction.Debet = Db.AccountsPlaneList.First(account => account.Name == substrings[2].Trim());
+      transaction.Credit = Db.AccountsPlaneList.First(account => account.Name == substrings[3].Trim());
+      transaction.Amount = Convert.ToDecimal(substrings[4]);
+      transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
+      transaction.Amount2 = Convert.ToDecimal(substrings[6]);
+      if (substrings[7].Trim() == "null" || substrings[7].Trim() == "0") transaction.Currency2 = null;
       else
-        transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), c2);
-      prev = next;
-      next = s.IndexOf(';', prev + 2);
-      string article = s.Substring(prev + 2, next - prev - 3);
-      transaction.Article = article != "" ? Db.AccountsPlaneList.First(account => account.Name == article) : null;
-      transaction.Comment = s.Substring(next + 2);
+        transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]);
+      transaction.Article = substrings[8].Trim() != "" ? Db.AccountsPlaneList.First(account => account.Name == substrings[8].Trim()) : null;
+      transaction.Comment = substrings[9];
 
       return transaction;
     }
@@ -486,13 +468,10 @@ namespace Keeper.Utils
     private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
     {
       var association = new ArticleAssociation();
-      int prev = s.IndexOf(';');
-      string externalAccount = s.Substring(0, prev - 1);
-      association.ExternalAccount = Db.AccountsPlaneList.First(account => account.Name == externalAccount);
-      int next = s.IndexOf(';', prev + 2);
-      association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), s.Substring(prev + 2, next - prev - 3));
-      string associatedArticle = s.Substring(next + 2);
-      association.AssociatedArticle = Db.AccountsPlaneList.First(account => account.Name == associatedArticle);
+      var substrings = s.Split(';');
+      association.ExternalAccount = Db.AccountsPlaneList.First(account => account.Name == substrings[0].Trim());
+      association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
+      association.AssociatedArticle = Db.AccountsPlaneList.First(account => account.Name == substrings[2].Trim());
 
       return association;
     }
