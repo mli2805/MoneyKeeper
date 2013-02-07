@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
@@ -11,6 +12,7 @@ namespace Keeper.ViewModels
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public List<Deposit> DepositsList { get; set; }
     public List<string> TotalsList { get; set; }
+    public List<string> YearsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViews { get; set; }
 
@@ -27,7 +29,8 @@ namespace Keeper.ViewModels
         }
       }
       SelectedDeposit = DepositsList[0];
-      TotalsList = new List<string>{"Итоговые показатели:"};
+      TotalBalances();
+      YearsProfit();
     }
 
     protected override void OnViewLoaded(object view)
@@ -50,5 +53,41 @@ namespace Keeper.ViewModels
       LaunchedViews.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
     }
+
+    public void TotalBalances()
+    {
+      TotalsList = new List<string> { "Сумма депозитов на текущий момент:\n" };
+      var totalBalances = new Dictionary<CurrencyCodes, decimal>();
+
+      foreach (var deposit in DepositsList)
+      {
+        if (deposit.CurrentBalance == 0) continue;
+        decimal total;
+        if (totalBalances.TryGetValue(deposit.MainCurrency, out total))
+          totalBalances[deposit.MainCurrency] = total + deposit.CurrentBalance;
+        else
+          totalBalances.Add(deposit.MainCurrency,deposit.CurrentBalance);
+      }
+
+      foreach (var currency in totalBalances.Keys)
+      {
+        TotalsList.Add(String.Format("{0:#,0} {1}",totalBalances[currency],currency));
+      }
+    }
+
+    public void YearsProfit()
+    {
+      YearsList = new List<string> { "Суммы дохода по годам начисления (не выплаты):\n" };
+      for (int i = 2002; i < DateTime.Today.Year; i++)
+      {
+        decimal yearTotal = 0;
+        foreach (var deposit in DepositsList)
+        {
+          yearTotal += deposit.GetProfitForYear(i);
+        }
+        if (yearTotal != 0) YearsList.Add(String.Format("   {0} год  -   {1:#,0} usd,   в месяц примерно {2:#,0} usd", i, yearTotal, yearTotal/12));
+      }
+    }
+
   }
 }

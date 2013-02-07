@@ -90,27 +90,17 @@ namespace Keeper.Utils
     private static Rashod2002 ParseRashod2002(string s)
     {
       var result = new Rashod2002();
-      var prev = 0;
-      var next = s.IndexOf(';');
-      result.Dt = Convert.ToDateTime(s.Substring(prev, next - 1));
-      prev = next + 2;
-      next = s.IndexOf(';', prev);
-      prev = next + 2; // пропуск слова Расход
-      next = s.IndexOf(';', prev);
-      var ruki = s.Substring(prev, next - prev - 1);
+      var substrings = s.Split(';');
+
+      result.Dt = Convert.ToDateTime(substrings[0]);
+      // пропуск слова Расход
+      var ruki = substrings[2].Trim();
       result.InByr = ruki != "" ? Convert.ToDecimal(ruki) : 0;
-      prev = next + 2;
-      next = s.IndexOf(';', prev);
-      string rate = s.Substring(prev, next - prev - 1);
+      string rate = substrings[3].Trim();
       result.Rate = rate != "" ? Convert.ToDecimal(rate) : 0;
-      prev = next + 2;
-      next = s.IndexOf(';', prev);
-      result.InUsdRuki = Convert.ToDecimal(s.Substring(prev, next - prev - 1));
-      prev = next + 2;
-      next = s.IndexOf(';', prev);
-      result.InUsdVklad = Convert.ToDecimal(s.Substring(prev, next - prev - 1));
-      prev = next + 2;
-      result.Comment = s.Substring(prev);
+      result.InUsdRuki = Convert.ToDecimal(substrings[4]);
+      result.InUsdVklad = Convert.ToDecimal(substrings[5]);
+      result.Comment = substrings[6].Trim();
       return result;
     }
 
