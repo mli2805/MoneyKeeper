@@ -24,7 +24,6 @@ namespace Keeper.DomainModel
         NotifyOfPropertyChange(() => Name);
       }
     }
-
     public Account Parent { get; set; }
     public virtual ICollection<Account> Children { get; private set; }
 
@@ -44,6 +43,7 @@ namespace Keeper.DomainModel
     }
     #endregion
 
+    public bool IsExpanded { get; set; }
     #endregion
 
     #region // конструкторы
@@ -80,7 +80,7 @@ namespace Keeper.DomainModel
     {
 
       string shiftedName = Name.PadLeft(Name.Length + offset);
-      return Id + " ; " + shiftedName + " ; " + ParentForDump();
+      return Id + " ; " + shiftedName + " ; " + ParentForDump() + " ; " + IsExpanded;
     }
 
     public override string ToString()
