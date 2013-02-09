@@ -264,6 +264,7 @@ namespace Keeper.DomainModel
       if (Credit == a || Credit.IsDescendantOf(a.Name)) return 1;
       return -1;
     }
+
   }
 
  
