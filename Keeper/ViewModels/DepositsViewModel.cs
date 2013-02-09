@@ -15,9 +15,11 @@ namespace Keeper.ViewModels
     public List<string> YearsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViews { get; set; }
+    public bool Alive { get; set; }
 
     public DepositsViewModel()
     {
+      Alive = true;
       DepositsList = new List<Deposit>();
       foreach (var account in Db.AccountsPlaneList)
       {
@@ -38,11 +40,12 @@ namespace Keeper.ViewModels
       DisplayName = "Депозиты";
     }
 
-    public override void CanClose(System.Action<bool> callback)
+    public override void CanClose(Action<bool> callback)
     {
       if (LaunchedViews != null)
         foreach (var depositViewModel in LaunchedViews)
           if (depositViewModel.Alive) depositViewModel.TryClose();
+      Alive = false;
       base.CanClose(callback);
     }
 
