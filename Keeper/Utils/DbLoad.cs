@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -17,24 +16,18 @@ namespace Keeper.Utils
   {
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-    public static Dictionary<DateTime, Decimal> MonthRashod { get; set; }
 
     public static TimeSpan LoadAllTables()
     {
       var stopWatch = new Stopwatch();
-      stopWatch.Start(); 
+      stopWatch.Start();
 
-//      LoadCurrencyRates();
-      Db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString);
+      Db.Accounts = LoadAccounts();
+      Db.AccountsPlaneList = FillInAccountsPlaneList(Db.Accounts);
 
-      LoadAccounts();
-      if (Db.AccountsPlaneList == null) Db.AccountsPlaneList = new List<Account>(); else Db.AccountsPlaneList.Clear();
-      FillInAccountsPlaneList(Db.Accounts);
-
-//      LoadTransactions();
       Db.Transactions = LoadFrom("Transactions.txt", TransactionFromStringWithNames);
-
-      LoadArticlesAssociations();
+      Db.ArticlesAssociations = LoadFrom("ArticlesAssociations.txt", ArticleAssociationFromStringWithNames);
+      Db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString);
 
       stopWatch.Stop();
       return stopWatch.Elapsed;
@@ -46,7 +39,6 @@ namespace Keeper.Utils
         File.ReadAllLines(Path.Combine(Settings.Default.SavePath, filename), Encoding1251).Where(
           s => !string.IsNullOrWhiteSpace(s));
       var wrongContent = new List<string>();
-
       var result = new ObservableCollection<T>();
 
       foreach (var s in content)
@@ -70,6 +62,7 @@ namespace Keeper.Utils
     }
 
     #region // 2002-2010
+    public static Dictionary<DateTime, Decimal> MonthRashod { get; set; }
 
     public class Rashod2002
     {
@@ -88,7 +81,7 @@ namespace Keeper.Utils
 
     public static void StartingBalances()
     {
-      LoadTransactionsFrom("Transactions ввод остатков 1 января 2002.txt");
+      Db.Transactions = LoadFrom("Transactions ввод остатков 1 января 2002.txt", TransactionFromStringWithNames);
     }
 
     /// <summary>
@@ -256,14 +249,14 @@ namespace Keeper.Utils
 
       // один раз курсы загрузил и хватит!
 
-//      var last = s.IndexOf(';', prev + 2);
-//      var rate = new CurrencyRate
-//                   {
-//                     BankDay = dt,
-//                     Currency = CurrencyCodes.BYR,
-//                     Rate = Convert.ToDouble(s.Substring(prev + 2, last - prev - 3))
-//                   };
-//      Db.CurrencyRates.Add(rate);
+      //      var last = s.IndexOf(';', prev + 2);
+      //      var rate = new CurrencyRate
+      //                   {
+      //                     BankDay = dt,
+      //                     Currency = CurrencyCodes.BYR,
+      //                     Rate = Convert.ToDouble(s.Substring(prev + 2, last - prev - 3))
+      //                   };
+      //      Db.CurrencyRates.Add(rate);
       Db.Transactions.Add(new Transaction
                             {
                               Timestamp = dt.Date.AddHours(9).AddMinutes(30),
@@ -307,40 +300,66 @@ namespace Keeper.Utils
 
     #endregion
 
-    #region // Transactions
-
-    private static void LoadTransactions()
+    #region // Accounts
+    public static ObservableCollection<Account> LoadAccounts()
     {
-      LoadTransactionsFrom("Transactions.txt");
+      var content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "Accounts.txt"), Encoding1251).
+                                                                 Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+      var result = new ObservableCollection<Account>();
+      foreach (var s in content)
+      {
+        int parentId;
+        var account = AccountFromString(s, out parentId);
+        if (parentId == 0)
+        {
+          BuildBranchFromRoot(account, content);
+          result.Add(account);
+        }
+      }
+      return result;
     }
 
-    private static void LoadTransactionsFrom(string filename)
+    private static Account AccountFromString(string s, out int parentId)
     {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, filename), Encoding1251);
-      if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
-      var wrongContent = new List<string>();
+      var account = new Account();
+      var substrings = s.Split(';');
+      account.Id = Convert.ToInt32(substrings[0]);
+      account.Name = substrings[1].Trim();
+      parentId = Convert.ToInt32(substrings[2]);
+      account.IsExpanded = Convert.ToBoolean(substrings[3]);
+      return account;
+    }
+
+    private static void BuildBranchFromRoot(Account root, List<string> content)
+    {
       foreach (var s in content)
       {
         if (s == "") continue;
-
-        Transaction transaction = null;
-        try
+        int parentId;
+        var account = AccountFromString(s, out parentId);
+        if (parentId == root.Id)
         {
-          transaction = TransactionFromStringWithNames(s);
+          account.Parent = root;
+          root.Children.Add(account);
+          BuildBranchFromRoot(account, content);
         }
-        catch (Exception)
-        {
-          wrongContent.Add(s);
-        }
-        if (transaction != null) Db.Transactions.Add(transaction);
-      }
-      if (wrongContent.Count != 0)
-      {
-        File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadTransactions.err"), wrongContent, Encoding1251);
-        MessageBox.Show("Ошибки загрузки транзакций смотри в файле LoadTransactions.err");
       }
     }
 
+    public static List<Account> FillInAccountsPlaneList(IEnumerable<Account> accountsList)
+    {
+      var result = new List<Account>();
+      foreach (var account in accountsList)
+      {
+        result.Add(account);
+        var childList = FillInAccountsPlaneList(account.Children);
+        result.AddRange(childList);
+      }
+      return result;
+    }
+    #endregion
+
+    #region // Parsing
     private static Transaction TransactionFromStringWithNames(string s)
     {
       var transaction = new Transaction();
@@ -360,97 +379,6 @@ namespace Keeper.Utils
 
       return transaction;
     }
-    #endregion
-
-    #region // Accounts
-    public static void LoadAccounts()
-    {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "Accounts.txt"), Encoding1251);
-      if (Db.Accounts == null) Db.Accounts = new ObservableCollection<Account>();
-      foreach (var s in content)
-      {
-        if (s == "") continue;
-        int parentId;
-        var account = AccountFromString(s, out parentId);
-        if (parentId == 0)
-        {
-          BuildBranchFromRoot(account, content);
-          Db.Accounts.Add(account);
-        }
-      }
-    }
-
-    private static Account AccountFromString(string s, out int parentId)
-    {
-      var account = new Account();
-      var substrings = s.Split(';');
-      account.Id = Convert.ToInt32(substrings[0]);
-      account.Name = substrings[1].Trim();
-      parentId = Convert.ToInt32(substrings[2]);
-      account.IsExpanded = Convert.ToBoolean(substrings[3]);
-      return account;
-    }
-
-    private static void BuildBranchFromRoot(Account root, string[] content)
-    {
-      foreach (var s in content)
-      {
-        if (s == "") continue;
-        int parentId;
-        var account = AccountFromString(s, out parentId);
-        if (parentId == root.Id)
-        {
-          account.Parent = root;
-          root.Children.Add(account);
-          BuildBranchFromRoot(account, content);
-        }
-      }
-    }
-
-    public static void FillInAccountsPlaneList(IEnumerable<Account> accountsList)
-    {
-      foreach (var account in accountsList)
-      {
-        Db.AccountsPlaneList.Add(account);
-        FillInAccountsPlaneList(account.Children);
-      }
-    }
-
-    public static int GetMaxAccountId()
-    {
-      return (from account in Db.AccountsPlaneList select account.Id).Max();
-    }
-
-    #endregion
-
-    #region // Currency Rates
-    public static void LoadCurrencyRates()
-    {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), Encoding1251);
-      if (Db.CurrencyRates == null) Db.CurrencyRates = new ObservableCollection<CurrencyRate>();
-      var wrongContent = new List<string>();
-      foreach (var s in content)
-      {
-        if (s == "") continue;
-
-        CurrencyRate rate = null;
-        try
-        {
-          rate = CurrencyRateFromString(s);
-        }
-        catch (Exception)
-        {
-          wrongContent.Add(s);
-        }
-        if (rate != null) Db.CurrencyRates.Add(rate);
-        if (wrongContent.Count != 0)
-        {
-          File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.err"), wrongContent, Encoding1251);
-          MessageBox.Show("Ошибки загрузки курсов валют смотри в файле CurrencyRates.err");
-        }
-      }
-    }
-
     private static CurrencyRate CurrencyRateFromString(string s)
     {
       var rate = new CurrencyRate();
@@ -461,36 +389,6 @@ namespace Keeper.Utils
       rate.Rate = Convert.ToDouble(s.Substring(next + 2));
       return rate;
     }
-    #endregion
-
-    #region // Articles associations
-    private static void LoadArticlesAssociations()
-    {
-      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "ArticlesAssociations.txt"), Encoding1251);
-      if (Db.ArticlesAssociations == null) Db.ArticlesAssociations = new ObservableCollection<ArticleAssociation>();
-      var wrongContent = new List<string>();
-      foreach (var s in content)
-      {
-        if (s == "") continue;
-
-        ArticleAssociation association = null;
-        try
-        {
-          association = ArticleAssociationFromStringWithNames(s);
-        }
-        catch (Exception)
-        {
-          wrongContent.Add(s);
-        }
-        if (association != null) Db.ArticlesAssociations.Add(association);
-      }
-      if (wrongContent.Count != 0)
-      {
-        File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadArticlesAssociations.err"), wrongContent, Encoding1251);
-        MessageBox.Show("Ошибки загрузки ассоциаций смотри в файле LoadArticlesAssociations.err");
-      }
-    }
-
     private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
     {
       var association = new ArticleAssociation();
@@ -498,10 +396,8 @@ namespace Keeper.Utils
       association.ExternalAccount = Db.AccountsPlaneList.First(account => account.Name == substrings[0].Trim());
       association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
       association.AssociatedArticle = Db.AccountsPlaneList.First(account => account.Name == substrings[2].Trim());
-
       return association;
     }
     #endregion
-
   }
 }

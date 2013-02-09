@@ -1,25 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace Keeper.DomainModel
 {
-  //  [Export(typeof(KeeperTxtDb)), PartCreationPolicy(CreationPolicy.Shared)]
-  //  public class KeeperTxtDb : DbContext
-  //  {
-  //    public DbSet<Account> Accounts { get; set; }
-  //    public DbSet<Transaction> Transactions { get; set; }
-  //    public DbSet<CurrencyRate> CurrencyRates { get; set; }
-  //    public DbSet<ArticleAssociation> ArticlesAssociations { get; set; }
-
-  //    protected override void OnModelCreating(DbModelBuilder modelBuilder)
-  //    {
-  //      modelBuilder.Entity<Account>().Ignore(x => x.IsNotifying);
-  //      modelBuilder.Entity<CurrencyRate>().Ignore(x => x.IsNotifying);
-  //    }
-  //  }
-
-  [Export(typeof(KeeperTxtDb)), PartCreationPolicy(CreationPolicy.Shared)]
+ [Export(typeof(KeeperTxtDb)), PartCreationPolicy(CreationPolicy.Shared)]
   public class KeeperTxtDb
   {
     public ObservableCollection<Account> Accounts { get; set; }
@@ -50,8 +36,10 @@ namespace Keeper.DomainModel
       }
       return null;
     }
+
+    public int GetMaxAccountId()
+    {
+      return (from account in AccountsPlaneList select account.Id).Max();
+    }
   }
-
-
-
 }
