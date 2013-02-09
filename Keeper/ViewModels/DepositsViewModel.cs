@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
@@ -25,7 +26,7 @@ namespace Keeper.ViewModels
       {
         if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
         {
-          var temp = new Deposit {Account = account};
+          var temp = new Deposit { Account = account };
           temp.CollectInfo();
           DepositsList.Add(temp);
         }
@@ -52,6 +53,13 @@ namespace Keeper.ViewModels
     public void ShowSelectedDeposit()
     {
       if (LaunchedViews == null) LaunchedViews = new List<DepositViewModel>();
+      else
+      {
+        var depositView = (from d in LaunchedViews
+                           where d.Deposit.Account == SelectedDeposit.Account
+                          select d).FirstOrDefault();
+        if (depositView !=  null) depositView.TryClose();
+      }
       var depositViewModel = new DepositViewModel(SelectedDeposit.Account);
       LaunchedViews.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
@@ -69,12 +77,12 @@ namespace Keeper.ViewModels
         if (totalBalances.TryGetValue(deposit.MainCurrency, out total))
           totalBalances[deposit.MainCurrency] = total + deposit.CurrentBalance;
         else
-          totalBalances.Add(deposit.MainCurrency,deposit.CurrentBalance);
+          totalBalances.Add(deposit.MainCurrency, deposit.CurrentBalance);
       }
 
       foreach (var currency in totalBalances.Keys)
       {
-        TotalsList.Add(String.Format("{0:#,0} {1}",totalBalances[currency],currency));
+        TotalsList.Add(String.Format("{0:#,0} {1}", totalBalances[currency], currency));
       }
     }
 
@@ -88,7 +96,7 @@ namespace Keeper.ViewModels
         {
           yearTotal += deposit.GetProfitForYear(i);
         }
-        if (yearTotal != 0) YearsList.Add(String.Format("   {0} год  -   {1:#,0} usd,   в месяц примерно {2:#,0} usd", i, yearTotal, yearTotal/12));
+        if (yearTotal != 0) YearsList.Add(String.Format("   {0} год  -   {1:#,0} usd,   в месяц примерно {2:#,0} usd", i, yearTotal, yearTotal / 12));
       }
     }
 

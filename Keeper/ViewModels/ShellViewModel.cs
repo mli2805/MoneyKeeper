@@ -196,6 +196,7 @@ namespace Keeper.ViewModels
 
     public override void CanClose(Action<bool> callback)
     {
+      if (DepositsFormPointer != null) DepositsFormPointer.TryClose();
       StatusBarItem0 = DbSave.SaveAllTables().ToString();
       callback(true);
     }
