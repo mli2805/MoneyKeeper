@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,19 +19,54 @@ namespace Keeper.Utils
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
     public static Dictionary<DateTime, Decimal> MonthRashod { get; set; }
 
-
     public static TimeSpan LoadAllTables()
     {
-      var start = DateTime.Now;
+      var stopWatch = new Stopwatch();
+      stopWatch.Start(); 
 
-      LoadCurrencyRates();
+//      LoadCurrencyRates();
+      Db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString);
+
       LoadAccounts();
       if (Db.AccountsPlaneList == null) Db.AccountsPlaneList = new List<Account>(); else Db.AccountsPlaneList.Clear();
       FillInAccountsPlaneList(Db.Accounts);
-      LoadTransactions();
+
+//      LoadTransactions();
+      Db.Transactions = LoadFrom("Transactions.txt", TransactionFromStringWithNames);
+
       LoadArticlesAssociations();
 
-      return DateTime.Now - start;
+      stopWatch.Stop();
+      return stopWatch.Elapsed;
+    }
+
+    public static ObservableCollection<T> LoadFrom<T>(string filename, Func<string, T> parseLine)
+    {
+      var content =
+        File.ReadAllLines(Path.Combine(Settings.Default.SavePath, filename), Encoding1251).Where(
+          s => !string.IsNullOrWhiteSpace(s));
+      var wrongContent = new List<string>();
+
+      var result = new ObservableCollection<T>();
+
+      foreach (var s in content)
+      {
+        try
+        {
+          result.Add(parseLine(s));
+        }
+        catch (Exception)
+        {
+          wrongContent.Add(s);
+        }
+      }
+      if (wrongContent.Count != 0)
+      {
+        File.WriteAllLines(Path.ChangeExtension(Path.Combine(Settings.Default.SavePath, filename), "err"), wrongContent, Encoding1251);
+        MessageBox.Show("Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
+      }
+
+      return result;
     }
 
     #region // 2002-2010
