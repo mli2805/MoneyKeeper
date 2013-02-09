@@ -18,6 +18,7 @@ namespace Keeper.ViewModels
     public IWindowManager WindowManager { get; set; }
 
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public DepositsViewModel DepositsFormPointer { get; set; }
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -152,6 +153,7 @@ namespace Keeper.ViewModels
       _message = "Keeper is running (On Debug)";
       //      Database.SetInitializer(new DbInitializer());
       BalanceList = new ObservableCollection<string> { "test balance" };
+      DepositsFormPointer = null;
     }
 
     public void OnImportsSatisfied()
@@ -166,10 +168,6 @@ namespace Keeper.ViewModels
 
     private void InitVariablesToShowAccounts()
     {
-      // из копии в оперативке загружаем в переменные типа  ObservableCollection<Account>
-      // при этом никакой загрузки не происходит - коллекция получает указатель на корневой Account
-      // (могло быть несколько указателей на несколько корней дерева)
-      // который при этом продолжает лежать в Db.Accounts и ссылаться на своих потомков
       MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts
                                                            where account.Name == "Мои"
                                                            select account);
@@ -236,8 +234,7 @@ namespace Keeper.ViewModels
 
     public void AddAccount()
     {
-      var accountInWork = new Account();
-      accountInWork.Parent = SelectedAccount;
+      var accountInWork = new Account {Parent = SelectedAccount};
       if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
       SelectedAccount = accountInWork.Parent;
@@ -294,7 +291,7 @@ namespace Keeper.ViewModels
 
     public void ShowArticlesAssociationsForm()
     {
-      String arcMessage = Message;
+      var arcMessage = Message;
       Message = "Articles' associations";
       UsefulLists.FillLists();
       WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
@@ -303,7 +300,7 @@ namespace Keeper.ViewModels
 
     public void ShowToDoForm()
     {
-      String arcMessage = Message;
+      var arcMessage = Message;
       Message = "TODO List";
       WindowManager.ShowDialog(new ToDoViewModel());
       Message = arcMessage;
@@ -311,7 +308,7 @@ namespace Keeper.ViewModels
 
     public void ShowMonthAnalisysForm()
     {
-      String arcMessage = Message;
+      var arcMessage = Message;
       Message = "MonthAnalisys";
       WindowManager.ShowDialog(new MonthAnalisysViewModel());
       Message = arcMessage;
@@ -319,10 +316,9 @@ namespace Keeper.ViewModels
 
     public void ShowDepositsForm()
     {
-      String arcMessage = Message;
-      Message = "All Deposits";
-      WindowManager.ShowWindow(new DepositsViewModel());
-      Message = arcMessage;
+      if (DepositsFormPointer != null && DepositsFormPointer.Alive) DepositsFormPointer.TryClose();
+      DepositsFormPointer = new DepositsViewModel();
+      WindowManager.ShowWindow(DepositsFormPointer);
     }
 
     #endregion
