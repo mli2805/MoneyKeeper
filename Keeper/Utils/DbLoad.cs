@@ -12,12 +12,25 @@ using Keeper.Properties;
 
 namespace Keeper.Utils
 {
+  public class DbLoadError
+  {
+    public int Code { get; set; }
+    public string Explanation { get; set; }
+
+    public void Add(int code, string explanation)
+    {
+      Code = code;
+      Explanation += explanation + "\n";
+    }
+
+  }
   class DbLoad
   {
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
+    public static DbLoadError Result = new DbLoadError();
 
-    public static TimeSpan LoadAllTables()
+    public static DbLoadError LoadAllTables(out TimeSpan elapsed)
     {
       var stopWatch = new Stopwatch();
       stopWatch.Start();
@@ -30,7 +43,8 @@ namespace Keeper.Utils
       Db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString);
 
       stopWatch.Stop();
-      return stopWatch.Elapsed;
+      elapsed = stopWatch.Elapsed;
+      return Result;
     }
 
     public static ObservableCollection<T> LoadFrom<T>(string filename, Func<string, T> parseLine)
@@ -55,9 +69,8 @@ namespace Keeper.Utils
       if (wrongContent.Count != 0)
       {
         File.WriteAllLines(Path.ChangeExtension(Path.Combine(Settings.Default.SavePath, filename), "err"), wrongContent, Encoding1251);
-        MessageBox.Show("Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
+        Result.Add(6,"Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
       }
-
       return result;
     }
 
