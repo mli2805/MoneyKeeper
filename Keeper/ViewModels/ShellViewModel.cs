@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
@@ -148,17 +149,23 @@ namespace Keeper.ViewModels
     }
     #endregion
 
+    public DbLoadError DbLoadResult { get; set; }
+
     public ShellViewModel()
     {
       _message = "Keeper is running (On Debug)";
       //      Database.SetInitializer(new DbInitializer());
       BalanceList = new ObservableCollection<string> { "test balance" };
       DepositsFormPointer = null;
+      MessageBox.Show("Test");
+
     }
 
     public void OnImportsSatisfied()
     {
-      StatusBarItem0 = DbLoad.LoadAllTables().ToString();
+      TimeSpan elapsed;
+      DbLoadResult = DbLoad.LoadAllTables(out elapsed);
+      StatusBarItem0 = elapsed.ToString();
 
       InitVariablesToShowAccounts();
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
@@ -192,11 +199,16 @@ namespace Keeper.ViewModels
       DisplayName = "Keeper (c) 2012-13";
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
       OpenedAccountPage = 0;
+
+      if (DbLoadResult.Code != 0)
+      {
+        MessageBox.Show(DbLoadResult.Explanation, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
     }
 
     public override void CanClose(Action<bool> callback)
     {
-      if (DepositsFormPointer != null) DepositsFormPointer.TryClose();
+      if (DepositsFormPointer != null && DepositsFormPointer.Alive) DepositsFormPointer.TryClose();
       StatusBarItem0 = DbSave.SaveAllTables().ToString();
       callback(true);
     }
@@ -235,7 +247,7 @@ namespace Keeper.ViewModels
 
     public void AddAccount()
     {
-      var accountInWork = new Account {Parent = SelectedAccount};
+      var accountInWork = new Account { Parent = SelectedAccount };
       if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
       SelectedAccount = accountInWork.Parent;
@@ -321,7 +333,6 @@ namespace Keeper.ViewModels
       DepositsFormPointer = new DepositsViewModel();
       WindowManager.ShowWindow(DepositsFormPointer);
     }
-
     #endregion
 
     #region // методы выгрузки / загрузки БД в текстовый файл
@@ -332,7 +343,11 @@ namespace Keeper.ViewModels
 
     public void LoadDatabase()
     {
-      StatusBarItem0 = DbLoad.LoadAllTables().ToString();
+      TimeSpan elapsed;
+      var result = DbLoad.LoadAllTables(out elapsed);
+      StatusBarItem0 = elapsed.ToString();
+      if (result.Code != 0) MessageBox.Show(result.Explanation, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
       InitVariablesToShowAccounts();
     }
 
