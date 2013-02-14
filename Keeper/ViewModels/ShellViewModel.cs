@@ -157,8 +157,6 @@ namespace Keeper.ViewModels
       //      Database.SetInitializer(new DbInitializer());
       BalanceList = new ObservableCollection<string> { "test balance" };
       DepositsFormPointer = null;
-      MessageBox.Show("Test");
-
     }
 
     public void OnImportsSatisfied()
