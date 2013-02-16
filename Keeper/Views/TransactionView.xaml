@@ -222,6 +222,7 @@
             <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
+            <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22"/>
           </Grid>
         </TabItem>
         <TabItem Name="tiTransfer" Header="Перенос" Width="160" Foreground="Black" Background="#E8E8E8">

@@ -16,7 +16,7 @@ namespace Keeper.ViewModels
     public List<string> TotalsList { get; set; }
     public List<string> YearsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
-    public List<DepositViewModel> LaunchedViews { get; set; }
+    public List<DepositViewModel> LaunchedViewModels { get; set; }
     public bool Alive { get; set; }
 
     public DepositsViewModel()
@@ -44,8 +44,8 @@ namespace Keeper.ViewModels
 
     public override void CanClose(Action<bool> callback)
     {
-      if (LaunchedViews != null)
-        foreach (var depositViewModel in LaunchedViews)
+      if (LaunchedViewModels != null)
+        foreach (var depositViewModel in LaunchedViewModels)
           if (depositViewModel.Alive) depositViewModel.TryClose();
       Alive = false;
       base.CanClose(callback);
@@ -53,16 +53,16 @@ namespace Keeper.ViewModels
 
     public void ShowSelectedDeposit()
     {
-      if (LaunchedViews == null) LaunchedViews = new List<DepositViewModel>();
+      if (LaunchedViewModels == null) LaunchedViewModels = new List<DepositViewModel>();
       else
       {
-        var depositView = (from d in LaunchedViews
+        var depositView = (from d in LaunchedViewModels
                            where d.Deposit.Account == SelectedDeposit.Account
                           select d).FirstOrDefault();
         if (depositView !=  null) depositView.TryClose();
       }
       var depositViewModel = new DepositViewModel(SelectedDeposit.Account);
-      LaunchedViews.Add(depositViewModel);
+      LaunchedViewModels.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
     }
 
