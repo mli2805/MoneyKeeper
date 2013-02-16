@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using Caliburn.Micro;
+using Ionic.Zip;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
@@ -13,6 +16,29 @@ namespace Keeper.Utils
   {
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
+
+    public static void ZipAllTables()
+    {
+      var archiveName = String.Format("DB{0:yyyy-MM-dd}.zip",DateTime.Today);
+      var zipFileToCreate = Path.Combine(Settings.Default.KeeperInDropBox, archiveName);
+      var directoryToZip = Settings.Default.SavePath;
+      try
+      {
+        using (var zip = new ZipFile())
+        {
+          // note: this does not recurse directories! 
+          var filenames = Directory.GetFiles(directoryToZip);
+          foreach (var filename in filenames)
+                            zip.AddFile(filename);
+          zip.Comment = String.Format("This zip archive was created  on machine '{0}'", System.Net.Dns.GetHostName());
+          zip.Save(zipFileToCreate);
+        }
+      }
+      catch (Exception ex1)
+      {
+        MessageBox.Show("exception: " + ex1);
+      }
+    }
 
     public static TimeSpan SaveAllTables()
     {

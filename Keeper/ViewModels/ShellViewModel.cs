@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+
 
 namespace Keeper.ViewModels
 {
@@ -200,6 +200,7 @@ namespace Keeper.ViewModels
 
       if (DbLoadResult.Code != 0)
       {
+        MessageBox.Show("");
         MessageBox.Show(DbLoadResult.Explanation, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
@@ -487,10 +488,12 @@ namespace Keeper.ViewModels
 
     public void Load2002()
     {
-      DbLoad.StartingBalances();
-      DbLoad.Load2002D();
-      DbLoad.Make2002Normal();
-      DbLoad.Load2002Rk();
+      DbSave.ZipAllTables();
+
+//      DbLoad.StartingBalances();
+//      DbLoad.Load2002D();
+//      DbLoad.Make2002Normal();
+//      DbLoad.Load2002Rk();
     }
 
   }

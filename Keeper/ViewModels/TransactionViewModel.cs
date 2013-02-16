@@ -17,6 +17,7 @@ namespace Keeper.ViewModels
   public class TransactionViewModel : Screen
   {
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }
     public ICollectionView SortedRows { get; set; }
 
@@ -594,6 +595,16 @@ namespace Keeper.ViewModels
     public void DecreaseTimestamp()
     {
       TransactionInWork.Timestamp = TransactionInWork.Timestamp.AddDays(-1);
+    }
+
+    public void FillInReceipt()
+    {
+      var receiptViewModel = new ReceiptViewModel();
+      WindowManager.ShowDialog(receiptViewModel);
+      if (receiptViewModel.Result)
+      {
+        // добавить транзакции
+      }
     }
   }
 }
