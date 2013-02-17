@@ -219,10 +219,11 @@
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExpenseAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
-            <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+            <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="50" Background="White"
               ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
-            <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22"/>
+            <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22" Background="Transparent">
+            </Button>
           </Grid>
         </TabItem>
         <TabItem Name="tiTransfer" Header="Перенос" Width="160" Foreground="Black" Background="#E8E8E8">
