@@ -11,8 +11,30 @@ namespace Keeper.ViewModels
     public DateTime ReceiptDate { get; set; }
     public string Acceptor { get; set; }
 
-    public decimal TotalAmount { get; set; }
-    public CurrencyCodes Currency { get; set; }
+    public decimal TotalAmount  
+    {
+      get { return _totalAmount; }
+      set
+      {
+        if (value == _totalAmount) return;
+        _totalAmount = value;
+        NotifyOfPropertyChange(() => TotalAmount);
+        PartialAmount = _totalAmount - PartialTotal;
+        CanAcceptReceipt = TotalAmount == PartialTotal;
+      }
+    }
+
+    public CurrencyCodes Currency
+    {
+      get { return _currency; }
+      set
+      {
+        if (Equals(value, _currency)) return;
+        _currency = value;
+        NotifyOfPropertyChange(() => Currency);
+      }
+    }
+
     public decimal PartialTotal { get { return (from a in Expense select a.Item1).Sum(); } }
 
     public List<Tuple<decimal, Account, string>> Expense { get; set; }
@@ -22,6 +44,8 @@ namespace Keeper.ViewModels
     private Account _partialArticle;
     private string _partialComment;
     private bool _canAcceptReceipt;
+    private decimal _totalAmount;
+    private CurrencyCodes _currency;
 
     public string ReceiptFigure 
     {

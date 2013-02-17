@@ -238,6 +238,19 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => CanEditDate);
       }
     }
+
+    private bool _canFillInReceipt;
+    public bool CanFillInReceipt  
+    {
+      get { return _canFillInReceipt; }
+      set
+      {
+        if (value.Equals(_canFillInReceipt)) return;
+        _canFillInReceipt = value;
+        NotifyOfPropertyChange(() => CanFillInReceipt);
+      }
+    }
+
     #endregion
 
     #region // свойства для показа сумм остатков на счетах и перевода операции в доллары
@@ -348,6 +361,7 @@ namespace Keeper.ViewModels
     }
 
     private string _endDayBalances;
+
     public string EndDayBalances
     {
       get { return _endDayBalances; }
@@ -386,6 +400,7 @@ namespace Keeper.ViewModels
       TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
       CanSaveTransactionChanges = false;
       CanCancelTransactionChanges = false;
+      CanFillInReceipt = false;
       IsInAddTransactionMode = false;
     }
 
@@ -482,6 +497,7 @@ namespace Keeper.ViewModels
       EndDayBalances = Balance.EndDayBalances(SelectedTransaction.Timestamp);
       IsTransactionInWorkChanged = false;
       IsInAddTransactionMode = false;
+      CanFillInReceipt = false;
     }
 
     private void CleanUselessFieldsBeforeSave()
@@ -511,6 +527,7 @@ namespace Keeper.ViewModels
       SelectedTabIndex = (int)TransactionInWork.Operation;
       IsTransactionInWorkChanged = false;
       IsInAddTransactionMode = false;
+      CanFillInReceipt = false;
     }
 
 
@@ -526,6 +543,7 @@ namespace Keeper.ViewModels
       Rows.Add(newTransaction);
       SelectedTransactionIndex--;
       IsTransactionInWorkChanged = true;
+      CanFillInReceipt = true;
     }
 
     /// <summary>
@@ -560,6 +578,7 @@ namespace Keeper.ViewModels
       Rows.Add(newTransaction);
       SelectedTransactionIndex++;
       IsTransactionInWorkChanged = true;
+      CanFillInReceipt = true;
     }
 
     public void AddNewDayTransaction()
@@ -573,6 +592,7 @@ namespace Keeper.ViewModels
       Rows.Add(newTransaction);
       SelectedTransactionIndex++;
       IsTransactionInWorkChanged = true;
+      CanFillInReceipt = true;
     }
 
     public void DeleteTransaction()
