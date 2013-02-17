@@ -29,7 +29,7 @@ namespace Keeper.Utils
           // note: this does not recurse directories! 
           var filenames = Directory.GetFiles(directoryToZip);
           foreach (var filename in filenames)
-                            zip.AddFile(filename);
+                            zip.AddFile(filename,String.Empty);
           zip.Comment = String.Format("This zip archive was created  on machine '{0}'", System.Net.Dns.GetHostName());
           zip.Save(zipFileToCreate);
         }

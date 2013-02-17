@@ -599,7 +599,8 @@ namespace Keeper.ViewModels
 
     public void FillInReceipt()
     {
-      var receiptViewModel = new ReceiptViewModel();
+      var receiptViewModel = new ReceiptViewModel(TransactionInWork.Timestamp,TransactionInWork.Credit.Name,
+                                                      TransactionInWork.Amount,TransactionInWork.Currency);
       WindowManager.ShowDialog(receiptViewModel);
       if (receiptViewModel.Result)
       {
