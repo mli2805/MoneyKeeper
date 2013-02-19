@@ -33,7 +33,7 @@ namespace Keeper.Utils
 
     public static void ZipAllTables()
     {
-      var archiveName = String.Format("DB{0:yyyy-MM-dd-hh-mm-ss}.zip", DateTime.Now);
+      var archiveName = String.Format("DB{0:yyyy-MM-dd-HH-mm-ss}.zip", DateTime.Now);
       var zipFileToCreate = Path.Combine(Settings.Default.KeeperInDropBox, archiveName);
       var directoryToZip = Settings.Default.SavePath;
       try
@@ -41,6 +41,8 @@ namespace Keeper.Utils
         using (var zip = new ZipFile())
         {
           // note: this does not recurse directories! 
+          zip.Password = "!opa1526";
+          zip.Encryption = EncryptionAlgorithm.WinZipAes256; 
           var filenames = Directory.GetFiles(directoryToZip);
           foreach (var filename in filenames)
             zip.AddFile(filename, String.Empty);
