@@ -622,11 +622,20 @@ namespace Keeper.ViewModels
       var receiptViewModel = new ReceiptViewModel(TransactionInWork.Timestamp,TransactionInWork.Credit.Name,
                                      TransactionInWork.Currency,TransactionInWork.Amount,TransactionInWork.Article);
       WindowManager.ShowDialog(receiptViewModel);
-      if (receiptViewModel.Result)
+      if (receiptViewModel.Result) // добавить транзакции
       {
-        // добавить транзакции
+        foreach (var tuple in receiptViewModel.Expense)
+        {
+          TransactionInWork.Amount = tuple.Item1;
+          TransactionInWork.Article = tuple.Item2;
+          TransactionInWork.Comment = tuple.Item3;
+          SaveTransactionChanges();
+          AddTransactionAfterSelected();
+        }
+        CancelTransactionChanges();
       }
     }
+
   }
 }
 
