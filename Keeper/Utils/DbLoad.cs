@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Ionic.Zip;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
@@ -45,6 +46,26 @@ namespace Keeper.Utils
       stopWatch.Stop();
       elapsed = stopWatch.Elapsed;
       return Result;
+    }
+
+    private static string GetLatestDbArchive()
+    {
+      return "Db.zip";
+    }
+
+    public static void UnzipAllTables()
+    {
+      var zipToUnpack = GetLatestDbArchive();
+      var unpackDirectory = Settings.Default.SavePath; 
+      using (var zip1 = ZipFile.Read(zipToUnpack))
+      {
+        // here, we extract every entry, but we could extract conditionally
+        // based on entry name, size, date, checkbox status, etc.  
+        foreach (ZipEntry e in zip1)
+        {
+          e.ExtractWithPassword(unpackDirectory, ExtractExistingFileAction.OverwriteSilently,"!opa1526");
+        }
+      }
     }
 
     public static ObservableCollection<T> LoadFrom<T>(string filename, Func<string, T> parseLine)
