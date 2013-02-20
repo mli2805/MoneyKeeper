@@ -40,10 +40,9 @@ namespace Keeper.Utils
       {
         using (var zip = new ZipFile())
         {
-          // note: this does not recurse directories! 
           zip.Password = "!opa1526";
-          zip.Encryption = EncryptionAlgorithm.WinZipAes256; 
-          var filenames = Directory.GetFiles(directoryToZip);
+          zip.Encryption = EncryptionAlgorithm.WinZipAes256;
+          var filenames = Directory.GetFiles(directoryToZip); // note: this does not recurse directories! 
           foreach (var filename in filenames)
             zip.AddFile(filename, String.Empty);
           zip.Comment = String.Format("This zip archive was created  on machine '{0}'", System.Net.Dns.GetHostName());
@@ -98,11 +97,7 @@ namespace Keeper.Utils
 
     public static void SaveArticlesAssociations()
     {
-      var content = new List<string>();
-      foreach (var association in Db.ArticlesAssociations)
-      {
-        content.Add(association.ToDumpWithNames());
-      }
+      var content = Db.ArticlesAssociations.Select(association => association.ToDumpWithNames()).ToList();
       File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "ArticlesAssociations.txt"), content, Encoding1251);
     }
 
