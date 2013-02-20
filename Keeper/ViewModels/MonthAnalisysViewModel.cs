@@ -202,6 +202,7 @@ namespace Keeper.ViewModels
     {
       MonthSaldo = new Saldo();
       CalculateBeginBalance();
+      DefineLastDay();
       CalculateIncomes();
       CalculateExpense();
       CalculateEndBalance();
@@ -259,6 +260,20 @@ namespace Keeper.ViewModels
       return balanceInUsd;
     }
 
+    private void DefineLastDay()
+    {
+      var transactions = from t in Db.Transactions
+                    where AnalyzedPeriod.IsDateTimeIn(t.Timestamp)
+                    select t;
+
+      var lastTransaction = transactions.LastOrDefault();
+      if (lastTransaction != null)
+      {
+        MonthSaldo.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
+        MonthSaldo.LastByrRate = (decimal) Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
+      }
+    }
+
     private void CalculateIncomes()
     {
       IncomesList = new ObservableCollection<string> { "Доходы за месяц\n" };
@@ -298,12 +313,6 @@ namespace Keeper.ViewModels
                                 orderby t.Timestamp
                                 select t;
 
-      var lastTransaction = expenseTransactions.LastOrDefault();
-      if (lastTransaction != null)
-      {
-        MonthSaldo.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
-        MonthSaldo.LastByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
-      }
 
       var expenseTransactionsInUsd =
         from t in expenseTransactions
