@@ -21,6 +21,7 @@ namespace Keeper.ViewModels
     public static List<Account> AllArticles { get; set; } // т.е. категории, но не счета
 
     public static List<Account> MyAccounts { get; set; }
+    public static List<Account> MyModernAccounts { get; set; }
     public static List<Account> MyAccountsForShopping { get; set; }
     public static List<Account> AccountsWhoGivesMeMoney { get; set; }
     public static List<Account> AccountsWhoTakesMyMoney { get; set; }
@@ -48,6 +49,8 @@ namespace Keeper.ViewModels
 
       MyAccounts = (Db.AccountsPlaneList.Where(account => account.GetRootName() == "Мои" &&
              account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
+      MyModernAccounts = Db.AccountsPlaneList.Where(account => account.GetRootName() == "Мои" &&
+                   account.Children.Count == 0 && account.Parent.Name != "Закрытые депозиты").ToList();
       MyAccountsForShopping = (Db.AccountsPlaneList.Where(account => account.GetRootName() == "Мои" &&
         account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))).ToList();
       AccountsWhoGivesMeMoney = (Db.AccountsPlaneList.Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
