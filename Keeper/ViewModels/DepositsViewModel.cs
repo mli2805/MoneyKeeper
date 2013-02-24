@@ -90,7 +90,7 @@ namespace Keeper.ViewModels
     public void YearsProfit()
     {
       YearsList = new List<string> { "Суммы дохода по годам начисления (не выплаты):\n" };
-      for (int i = 2002; i < DateTime.Today.Year; i++)
+      for (int i = 2002; i <= DateTime.Today.Year; i++)
       {
         decimal yearTotal = 0;
         foreach (var deposit in DepositsList)
