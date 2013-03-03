@@ -103,12 +103,11 @@ namespace Keeper.Utils
 
     public static void SaveCurrencyRates()
     {
-      var content = new List<string>();
-      foreach (var currencyRate in Db.CurrencyRates)
-      {
-        content.Add(currencyRate.ToDump());
-      }
-      File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), content, Encoding1251);
+      var ratesOrderedByDate = (from rate in Db.CurrencyRates
+                               orderby rate.BankDay
+                               select rate.ToDump()).ToList();
+
+      File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), ratesOrderedByDate, Encoding1251);
     }
 
   }

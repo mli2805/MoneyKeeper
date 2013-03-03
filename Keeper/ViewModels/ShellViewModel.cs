@@ -488,10 +488,12 @@ namespace Keeper.ViewModels
 
     public void Load2002()
     {
-      DbLoad.StartingBalances();
-      DbLoad.Load2002D();
-      DbLoad.Make2002Normal();
-      DbLoad.Load2002Rk();
+      DbLoad.LoadEuro2002();
+
+//      DbLoad.StartingBalances();
+//      DbLoad.Load2002D();
+//      DbLoad.Make2002Normal();
+//      DbLoad.Load2002Rk();
     }
 
   }

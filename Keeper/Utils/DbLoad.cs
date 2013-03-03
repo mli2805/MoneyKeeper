@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using Caliburn.Micro;
 using Ionic.Zip;
 using Keeper.DomainModel;
@@ -56,14 +55,14 @@ namespace Keeper.Utils
     public static void UnzipAllTables()
     {
       var zipToUnpack = GetLatestDbArchive();
-      var unpackDirectory = Settings.Default.SavePath; 
+      var unpackDirectory = Settings.Default.SavePath;
       using (var zip1 = ZipFile.Read(zipToUnpack))
       {
         // here, we extract every entry, but we could extract conditionally
         // based on entry name, size, date, checkbox status, etc.  
         foreach (ZipEntry e in zip1)
         {
-          e.ExtractWithPassword(unpackDirectory, ExtractExistingFileAction.OverwriteSilently,"!opa1526");
+          e.ExtractWithPassword(unpackDirectory, ExtractExistingFileAction.OverwriteSilently, "!opa1526");
         }
       }
     }
@@ -90,13 +89,48 @@ namespace Keeper.Utils
       if (wrongContent.Count != 0)
       {
         File.WriteAllLines(Path.ChangeExtension(Path.Combine(Settings.Default.SavePath, filename), "err"), wrongContent, Encoding1251);
-        Result.Add(6,"Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
+        Result.Add(6, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
       }
       return result;
     }
 
     #region // 2002-2010
+    public static void LoadEuro2002()
+    {
+      string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "euro.txt"), Encoding1251);
+      var wrongContent = new List<string>();
+      foreach (var s in content)
+      {
+        if (s == "") continue;
+
+        CurrencyRate rate = null;
+        try
+        {
+          rate = RateEuro2002(s);
+        }
+        catch (Exception)
+        {
+          wrongContent.Add(s);
+        }
+        if (rate != null) Db.CurrencyRates.Add(rate);
+      }
+      if (wrongContent.Count != 0) File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "LoadEuro2002.err"), wrongContent, Encoding1251);
+    }
+
+    public static CurrencyRate RateEuro2002(string st)
+    {
+      var parts = st.Split(';');
+      var dateRate = Convert.ToDateTime(String.Format("15 {0} {1}",parts[0], parts[1]));
+      var rate = new CurrencyRate();
+      rate.BankDay = dateRate;
+      rate.Currency = CurrencyCodes.EUR;
+      rate.Rate = 1 / Convert.ToDouble(parts[2]);
+      return rate;
+    }
+
     public static Dictionary<DateTime, Decimal> MonthRashod { get; set; }
+    private static int _dohMins;
+    private static DateTime _previousDohod;
 
     public class Rashod2002
     {
@@ -115,7 +149,8 @@ namespace Keeper.Utils
 
     public static void StartingBalances()
     {
-      Db.Transactions = LoadFrom("Transactions ввод остатков 1 января 2002.txt", TransactionFromStringWithNames);
+      Db.Transactions = LoadFrom("Transactions already checked from 2002.txt", TransactionFromStringWithNames);
+      //      Db.Transactions = LoadFrom("Transactions income balances on 1 jan 2002.txt", TransactionFromStringWithNames);
     }
 
     /// <summary>
@@ -175,6 +210,8 @@ namespace Keeper.Utils
       string[] content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "TransactionsFromDohods.txt"), Encoding1251);
       if (Db.Transactions == null) Db.Transactions = new ObservableCollection<Transaction>();
       var wrongContent = new List<string>();
+      _dohMins = 0;
+      _previousDohod = new DateTime(0);
       foreach (var s in content)
       {
         if (s == "") continue;
@@ -200,6 +237,14 @@ namespace Keeper.Utils
         Timestamp = Convert.ToDateTime(s.Substring(0, 10)).AddHours(9),
         Operation = OperationType.Доход
       };
+
+      if (_previousDohod.Date != transaction.Timestamp.Date) _dohMins = 1;
+      else
+      {
+        transaction.Timestamp = transaction.Timestamp + new TimeSpan(0, _dohMins, 0);
+        _dohMins++;
+      }
+      _previousDohod = transaction.Timestamp;
 
       var prev = 21;
       var next = s.IndexOf(';', prev);
@@ -261,13 +306,13 @@ namespace Keeper.Utils
       DateTime dt = Convert.ToDateTime("15" + s.Substring(12, 8)).AddHours(10);
       var articles = new Account[9];
       var amounts = new decimal[9];
-      articles[0] = Db.AccountsPlaneList.First(account => account.Name == "Продукты в целом");
-      articles[1] = Db.AccountsPlaneList.First(account => account.Name == "Автомобиль");
+      articles[0] = Db.AccountsPlaneList.First(account => account.Name == "Обслуживание"); // авто 
+      articles[1] = Db.AccountsPlaneList.First(account => account.Name == "Продукты в целом");
       articles[2] = Db.AccountsPlaneList.First(account => account.Name == "Лекарства");
       articles[3] = Db.AccountsPlaneList.First(account => account.Name == "Квартира1");
       articles[4] = Db.AccountsPlaneList.First(account => account.Name == "Квартира2");
       articles[5] = Db.AccountsPlaneList.First(account => account.Name == "Одежда");
-      articles[6] = Db.AccountsPlaneList.First(account => account.Name == "Ремонт");
+      articles[6] = Db.AccountsPlaneList.First(account => account.Name == "Мебель");
       articles[7] = Db.AccountsPlaneList.First(account => account.Name == "Дача");
       articles[8] = Db.AccountsPlaneList.First(account => account.Name == "Прочие расходы");
 
@@ -281,16 +326,12 @@ namespace Keeper.Utils
         prev = next;
       }
 
-      // один раз курсы загрузил и хватит!
+      if (dt < new DateTime(2003, 1, 1))
+      {
+        amounts[8] += amounts[5];
+        amounts[5] = 0;
+      }
 
-      //      var last = s.IndexOf(';', prev + 2);
-      //      var rate = new CurrencyRate
-      //                   {
-      //                     BankDay = dt,
-      //                     Currency = CurrencyCodes.BYR,
-      //                     Rate = Convert.ToDouble(s.Substring(prev + 2, last - prev - 3))
-      //                   };
-      //      Db.CurrencyRates.Add(rate);
       Db.Transactions.Add(new Transaction
                             {
                               Timestamp = dt.Date.AddHours(9).AddMinutes(30),
@@ -310,7 +351,7 @@ namespace Keeper.Utils
       for (var i = 0; i < 9; i++)
       {
         if (amounts[i] != 0)
-          Db.Transactions.Add(Common2002Rk(dt.AddMinutes(i), amounts[i] * montsAmount / allAmounts, articles[i]));
+          Db.Transactions.Add(Common2002Rk(dt.AddMinutes(i), Math.Round(amounts[i] * montsAmount / allAmounts / 100) * 100, articles[i]));
       }
     }
 
