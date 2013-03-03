@@ -11,7 +11,7 @@
         xmlns:ii="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance ViewModels:TransactionViewModel}" 
-        Title="TransactionView" Height="656" MinWidth="1032" MaxWidth="1032" SizeToContent="Width"
+        Title="TransactionView" Height="806" MinWidth="1032" MaxWidth="1032" SizeToContent="Width"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
   <i:Interaction.Triggers>
