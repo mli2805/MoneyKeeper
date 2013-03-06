@@ -6,11 +6,9 @@ namespace Keeper.ViewModels
   public class DepositViewModel : Screen
   {
     public Deposit Deposit { get; set; }
-    public bool Alive { get; set; }
 
     public DepositViewModel(Account account)
     {
-      Alive = true;
       Deposit = new Deposit { Account = account };
     }
 
@@ -18,12 +16,6 @@ namespace Keeper.ViewModels
     {
       DisplayName = Deposit.Account.Name;
       Deposit.CollectInfo();
-    }
-
-    public override void CanClose(System.Action<bool> callback)
-    {
-      Alive = false;
-      base.CanClose(callback);
     }
 
   }
