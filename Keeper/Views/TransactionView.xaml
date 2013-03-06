@@ -181,7 +181,7 @@
               SelectedItem="{Binding TransactionInWork.Debet}" />
             <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
             <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.MyModernAccounts}"
+              ItemsSource="{x:Static ViewModels:UsefulLists.MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <ComboBox Name="IncomeArticle" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
