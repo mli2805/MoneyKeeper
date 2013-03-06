@@ -102,6 +102,7 @@ namespace Keeper.ViewModels
 
     public ReceiptViewModel(DateTime receiptDate, string acceptor, CurrencyCodes currency, decimal totalAmount, Account article)
     {
+      Expense = new List<Tuple<decimal, Account, string>>();
       ReceiptDate = receiptDate;
       Acceptor = acceptor;
       Currency = currency;
@@ -110,7 +111,6 @@ namespace Keeper.ViewModels
       PartialAmount = totalAmount;
       PartialArticle = article;
 
-      Expense = new List<Tuple<decimal, Account, string>>();
       ChangeAllProperties();
 
       Result = false;
