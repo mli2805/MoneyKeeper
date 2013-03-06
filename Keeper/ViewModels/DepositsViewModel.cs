@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
@@ -82,7 +83,13 @@ namespace Keeper.ViewModels
 
       foreach (var currency in totalBalances.Keys)
       {
-        TotalsList.Add(String.Format("{0:#,0} {1}", totalBalances[currency], currency));
+        if (currency == CurrencyCodes.USD)
+           TotalsList.Add(String.Format("{0:#,0} {1}", totalBalances[currency], currency));
+        else
+        {
+          var inUsd = totalBalances[currency] / (decimal)Rate.GetLastRate(currency);
+          TotalsList.Add(String.Format("{0:#,0} {1}  ({2:#,0} USD)", totalBalances[currency], currency, inUsd));
+        }
       }
     }
 

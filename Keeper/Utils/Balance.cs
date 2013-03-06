@@ -44,6 +44,7 @@ namespace Keeper.Utils
     /// <returns></returns>
     public static IEnumerable<BalancePair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
     {
+                                                      // выделение даты без времени и минус минута
       var period = new Period(new DateTime(0), dateTime.Date.AddMinutes(-1));
       return AccountBalancePairs(balancedAccount, period);
     }
@@ -55,7 +56,8 @@ namespace Keeper.Utils
     /// <param name="dateTime"></param>
     /// <returns></returns>
     public static IEnumerable<BalancePair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
-    {
+
+    {                                                    // выделение даты без времени плюс день и минус минута
       var period = new Period(new DateTime(0), dateTime.Date.AddDays(1).AddMinutes(-1));
       return AccountBalancePairs(balancedAccount, period);
     }

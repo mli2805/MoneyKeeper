@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Keeper.App" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.AppBootstrapper" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAABAACIABAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>AppBootstrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.DomainModel.Account" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAGoQAAIAAAEAQEAAAEQASAAAAAgAAAAAAAAAAAACA=</HashCode>
+      <FileName>DomainModel\Account.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Keeper.DomainModel.ArticleAssociation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAABAAAAAAQAAAAAAAAAAgAAAAAAAABAAABAAAA=</HashCode>
+      <FileName>DomainModel\ArticleAssociation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Keeper.DomainModel.CurrencyRate" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAACABAAAAAAAAAAAgAAAAEACAAgCAAAAAEAAABAAAA=</HashCode>
+      <FileName>DomainModel\CurrencyRate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.DomainModel.Deposit" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAIIAARCAAAAQgEgAAQAACACQIAAAAAAEABAAQBEg=</HashCode>
+      <FileName>DomainModel\Deposit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.DomainModel.KeeperTxtDb" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAIAAAAAAAAAAAAAAgAAAAAAAKAMAAAQAAAAAA=</HashCode>
+      <FileName>DomainModel\KeeperTxtDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.DomainModel.Saldo" Collapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAQAAAACACAAAAAAAACEQAgAAAQAgCAAABAgQAAAA=</HashCode>
+      <FileName>DomainModel\Saldo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.DomainModel.Transaction" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAIAEEAAAEEABABRDBAKIGgEAAAIAgANEAIAAABA=</HashCode>
+      <FileName>DomainModel\Transaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Properties.Resources" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Properties.Settings" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAQAAEABAAgAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.AssociatedArticles" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Utils\AssociatedArticles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.Balance" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAACAAIAEAAAAABAAAAQAAAAAQAAgAAAgQA=</HashCode>
+      <FileName>Utils\Balance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.DbClear" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Utils\DbClear.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.DbLoadError" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Utils\DbLoad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.DbLoad" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAACwAAgCAAEAAQAAQGAAAAAAAAAAEAAIAAAAA=</HashCode>
+      <FileName>Utils\DbLoad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.DbSave" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAEBAAAAAAAAAIAAAEAAAAgAAAEAA=</HashCode>
+      <FileName>Utils\DbSave.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.GridViewRowPresenterWithGridLines" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAACIAQFAIAQAAAAAAAAAAAAAQAAIAA=</HashCode>
+      <FileName>Utils\GridViewRowPresenterWithGridLines.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.Period" Collapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAgAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\Period.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.Rate" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAEAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\Rate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.ScrollToBottomOnAddBehavior" Collapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\ScrollToBottomOnAddBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.ScrollToBottomOnLoadBehavior" Collapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\ScrollToBottomOnLoadBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.ScrollToBottomOnLoadDatagridBehavior" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\ScrollToBottomOnLoadDatagridBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.ScrollToDisappearedDueDateChange" Collapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAEAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Utils\ScrollToDisappearedDueDateChange.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Utils.SetFocusOnLoadBehavior" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\SetFocusOnLoadBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.AddAndEditAccountViewModel" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAEAEAAEAAAAAgAAAAAEEAAAAAAAAAAQAA=</HashCode>
+      <FileName>ViewModels\AddAndEditAccountViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.ArticlesAssociationsViewModel" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAEgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ArticlesAssociationsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.DepositsViewModel" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGAAAAAAAAIQAECAEgAEAIAAAAAAAgQAAAAAAAAAACA=</HashCode>
+      <FileName>ViewModels\DepositsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.DepositViewModel" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>ViewModels\DepositViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.CurrencyRatesFilter" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAACQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.CurrencyRatesFilterListForCombo" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ListsForComboboxes\CurrencyRatesFilterListForCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.UsefulLists" Collapsed="true">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQEAAIAAAAhAAgQAEAAgAIAAAgAEAAAABQAAAABAgAA=</HashCode>
+      <FileName>ViewModels\ListsForComboboxes\UsefulLists.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.MonthAnalisysViewModel" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JkAiSEWkAAAAIQAQsAQAAgEQAqSiIABQAAIEAEHCAwg=</HashCode>
+      <FileName>ViewModels\MonthAnalisysViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.RatesViewModel" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAICAAAgEABEgAAAAACAAAAZEAAAAABQBCAgoA=</HashCode>
+      <FileName>ViewModels\RatesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.ReceiptViewModel" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAEoAAYSgABDACMAgBQACAQAAAAAwBAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ReceiptViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.ShellViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEAUkIAAwERlAADQFgEAAIFaAEAwJyAQWBkaIzBBAGI=</HashCode>
+      <FileName>ViewModels\ShellViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Keeper.ViewModels.ToDoViewModel" Collapsed="true">
+    <Position X="12.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAABAAAAAAAAEgAAAAAAAAAAAgACAAAQAAABEAA=</HashCode>
+      <FileName>ViewModels\ToDoViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.AccountFilter" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAQAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\TransactionViewFilters\AccountFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.FilterListsForComboboxes" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAEA=</HashCode>
+      <FileName>ViewModels\TransactionViewFilters\FilterListsForComboboxes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.OperationTypesFilerListForCombo" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\TransactionViewFilters\OperationTypesFilerListForCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.OperationTypesFilter" Collapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>ViewModels\TransactionViewFilters\OperationTypesFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.ViewModels.TransactionViewModel" Collapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAgaQE02KGkiFdQADoCgKASFAwSRAMgEAAKQQ=</HashCode>
+      <FileName>ViewModels\TransactionViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.AddAndEditAccountView" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\AddAndEditAccountView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.ArticlesAssociationsView" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ArticlesAssociationsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.DepositsView" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\DepositsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.DepositView" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\DepositView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.MonthAnalisysView" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\MonthAnalisysView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.RatesView" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\RatesView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.ReceiptView" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ReceiptView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.ShellView" Collapsed="true">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ShellView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.ToDoView" Collapsed="true">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ToDoView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keeper.Views.TransactionView" Collapsed="true">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\TransactionView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Keeper.IShell" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IShell.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Keeper.DomainModel.CurrencyCodes" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQCAIAAAAAAAAAAAAEA=</HashCode>
+      <FileName>DomainModel\CurrencyCodes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Keeper.DomainModel.DepositStates" Collapsed="true">
+    <Position X="2.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>DomainModel\DepositStates.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Keeper.DomainModel.OperationType" Collapsed="true">
+    <Position X="4" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIQAAAAAAAAAAAAIAAAAACAAAAAAA=</HashCode>
+      <FileName>DomainModel\OperationType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
