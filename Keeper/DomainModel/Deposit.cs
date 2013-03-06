@@ -96,7 +96,8 @@ namespace Keeper.DomainModel
           State = DepositStates.Открыт;
         }
         var balanceString = MainCurrency != CurrencyCodes.USD ?
-              String.Format("{0:#,0} byr  ($ {1:#,0} )", CurrentBalance, CurrentBalance / (decimal)Rate.GetLastRate(MainCurrency)) :
+              String.Format("{0:#,0} {2}  ($ {1:#,0} )", 
+                 CurrentBalance, CurrentBalance / (decimal)Rate.GetLastRate(MainCurrency), MainCurrency.ToString().ToLower()) :
               String.Format("{0:#,0} usd", CurrentBalance);
         Report.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
@@ -46,7 +45,7 @@ namespace Keeper.ViewModels
     {
       if (LaunchedViewModels != null)
         foreach (var depositViewModel in LaunchedViewModels)
-          if (depositViewModel.Alive) depositViewModel.TryClose();
+          if (depositViewModel.IsActive) depositViewModel.TryClose();
       Alive = false;
       base.CanClose(callback);
     }
