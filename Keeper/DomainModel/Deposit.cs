@@ -96,7 +96,7 @@ namespace Keeper.DomainModel
           State = DepositStates.Открыт;
         }
         var balanceString = MainCurrency != CurrencyCodes.USD ?
-              String.Format("{0:#,0} {2}  ($ {1:#,0} )", 
+              String.Format("{0:#,0} {2}  ($ {1:#,0} )",
                  CurrentBalance, CurrentBalance / (decimal)Rate.GetLastRate(MainCurrency), MainCurrency.ToString().ToLower()) :
               String.Format("{0:#,0} usd", CurrentBalance);
         Report.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
@@ -176,7 +176,7 @@ namespace Keeper.DomainModel
       if (Transactions.Count == 0)
       {
         State = DepositStates.Закрыт;
-        return; 
+        return;
       }
       MainCurrency = Transactions.First().Currency;
       Calculate();
@@ -194,15 +194,15 @@ namespace Keeper.DomainModel
       if (year == startYear)
       {
         int startYearDaysCount = (new DateTime(startYear, 12, 31) - Transactions.First().Timestamp).Days;
-        return Profit*startYearDaysCount/allDaysCount;
+        return Profit * startYearDaysCount / allDaysCount;
       }
       if (year == finishYear)
       {
         int finishYearDaysCount = (Transactions.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
-        return Profit*finishYearDaysCount/allDaysCount;
+        return Profit * finishYearDaysCount / allDaysCount;
       }
       int yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
-      return Profit*yearDaysCount;
+      return Profit * yearDaysCount / allDaysCount;
     }
 
   }
