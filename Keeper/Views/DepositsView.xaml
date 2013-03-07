@@ -2,7 +2,8 @@
         xml:lang="ru-RU"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:cal="http://www.caliburnproject.org" xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         Icon="/Keeper;component/Resources/safe.ico" 
         TextOptions.TextFormattingMode="Display"
         Title="DepositsView" MaxHeight="600" SizeToContent="WidthAndHeight">
@@ -52,10 +53,12 @@
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="400*"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="100*"/>
     </Grid.RowDefinitions>
-      <ListView Margin="2" ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
-                cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" Grid.ColumnSpan="2">
+    <ListView Margin="2" Grid.ColumnSpan="2"
+              ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
+              cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" >
         <ListView.ItemContainerStyle>
           <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Foreground" Value="{Binding FontColor}"/>
@@ -75,7 +78,15 @@
           </GridView>
         </ListView.View>
       </ListView>
-    <ListBox Name="TotalsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2,2,2,2" Padding="2,2,7,4" Grid.Row="1"/>
-    <ListBox Name="YearsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,2,2,2" Padding="2,2,7,4" Grid.Row="1" Grid.Column="1"/>
+    
+    <GridSplitter Background="LightGray" Height="10" Grid.Row="1" Grid.ColumnSpan="2" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+  
+    <chartingToolkit:Chart Grid.Row="2" Margin="-8,-40,-5,-20" BorderThickness="0">
+      <chartingToolkit:PieSeries ItemsSource="{Binding TotalsList}" 
+                       IndependentValuePath="Subject" DependentValuePath="Amount" />
+    </chartingToolkit:Chart> 
+    <ListBox Name="YearsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+             Margin="0,2,2,2" Padding="2,2,7,4" Grid.Row="2" Grid.Column="1"/>
   </Grid>
 </Window>

@@ -27,6 +27,9 @@
     <ei:KeyTrigger Key="D">
       <cal:ActionMessage MethodName="ShowDepositsForm"/>
     </ei:KeyTrigger>
+    <ei:KeyTrigger Key="T">
+      <cal:ActionMessage MethodName="TempItem"/>
+    </ei:KeyTrigger>
   </i:Interaction.Triggers>
   <Window.Resources>
     <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
@@ -61,7 +64,7 @@
         <MenuItem x:Name="LoadDatabase" Header="ЗАГРУЗИТЬ"/>
         <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ"/>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
-        <MenuItem x:Name="TempItem" Header="Временный пункт"/>
+        <MenuItem x:Name="TempItem" Header="Временный пункт (жми T)"/>
       </MenuItem>
       <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
         <MenuItem x:Name="ShowToDoForm" Header="СДЕЛАТЬ" />
