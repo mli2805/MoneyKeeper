@@ -13,15 +13,13 @@ namespace Keeper.ViewModels
 
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
     public List<Deposit> DepositsList { get; set; }
-    public List<string> TotalsList { get; set; }
+    public List<PieItem> TotalsList { get; set; }
     public List<string> YearsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViewModels { get; set; }
-    public bool Alive { get; set; }
 
     public DepositsViewModel()
     {
-      Alive = true;
       DepositsList = new List<Deposit>();
       foreach (var account in Db.AccountsPlaneList)
       {
@@ -47,7 +45,6 @@ namespace Keeper.ViewModels
       if (LaunchedViewModels != null)
         foreach (var depositViewModel in LaunchedViewModels)
           if (depositViewModel.IsActive) depositViewModel.TryClose();
-      Alive = false;
       base.CanClose(callback);
     }
 
@@ -68,7 +65,8 @@ namespace Keeper.ViewModels
 
     public void TotalBalances()
     {
-      TotalsList = new List<string> { "Сумма депозитов на текущий момент:\n" };
+      //      TotalsList = new List<string> { "Сумма депозитов на текущий момент:\n" };
+      TotalsList = new List<PieItem>();
       var totalBalances = new Dictionary<CurrencyCodes, decimal>();
 
       foreach (var deposit in DepositsList)
@@ -84,11 +82,17 @@ namespace Keeper.ViewModels
       foreach (var currency in totalBalances.Keys)
       {
         if (currency == CurrencyCodes.USD)
-           TotalsList.Add(String.Format("{0:#,0} {1}", totalBalances[currency], currency));
+          TotalsList.Add(
+             new PieItem(
+               String.Format("{0:#,0} {1}", totalBalances[currency], currency), 
+               totalBalances[currency]));
         else
         {
           var inUsd = totalBalances[currency] / (decimal)Rate.GetLastRate(currency);
-          TotalsList.Add(String.Format("{0:#,0} {1}  ({2:#,0} USD)", totalBalances[currency], currency, inUsd));
+          TotalsList.Add(
+            new PieItem(
+              String.Format("{0:#,0} {1}  ({2:#,0} USD)", totalBalances[currency], currency, inUsd), 
+              inUsd));
         }
       }
     }

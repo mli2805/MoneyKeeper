@@ -207,7 +207,7 @@ namespace Keeper.ViewModels
 
     public override void CanClose(Action<bool> callback)
     {
-      if (DepositsFormPointer != null && DepositsFormPointer.Alive) DepositsFormPointer.TryClose();
+      if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
       StatusBarItem0 = DbSave.SaveAllTables().ToString();
       callback(true);
     }
@@ -328,7 +328,7 @@ namespace Keeper.ViewModels
 
     public void ShowDepositsForm()
     {
-      if (DepositsFormPointer != null && DepositsFormPointer.Alive) DepositsFormPointer.TryClose();
+      if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
       DepositsFormPointer = new DepositsViewModel();
       WindowManager.ShowWindow(DepositsFormPointer);
     }
@@ -488,6 +488,7 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
+      WindowManager.ShowDialog(new ChartsViewModel());
     }
 
   }
