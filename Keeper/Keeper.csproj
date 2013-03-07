@@ -105,7 +105,6 @@
     <Compile Include="Utils\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
-    <Compile Include="ViewModels\ChartsViewModel.cs" />
     <Compile Include="ViewModels\DepositsViewModel.cs" />
     <Compile Include="ViewModels\DepositViewModel.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\UsefulLists.cs" />
@@ -127,9 +126,6 @@
     </Compile>
     <Compile Include="Views\ArticlesAssociationsView.xaml.cs">
       <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ChartsView.xaml.cs">
-      <DependentUpon>ChartsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DepositsView.xaml.cs">
       <DependentUpon>DepositsView.xaml</DependentUpon>
@@ -196,10 +192,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ArticlesAssociationsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ChartsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

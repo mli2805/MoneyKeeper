@@ -488,7 +488,7 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
-      WindowManager.ShowDialog(new ChartsViewModel());
+      WindowManager.ShowDialog(new DepositsViewModel());
     }
 
   }

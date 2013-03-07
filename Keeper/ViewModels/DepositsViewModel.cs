@@ -1,31 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
+  public class ChartPoint
+  {
+    public string Subject { get; set; }
+    public int Amount { get; set; }
+
+    public ChartPoint(string subject, int amount)
+    {
+      Subject = subject;
+      Amount = amount;
+    }
+  }
+
   public class DepositsViewModel : Screen
   {
-    public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
+    public static IWindowManager WindowManager
+    {
+      get { return IoC.Get<IWindowManager>(); }
+    }
 
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperTxtDb Db
+    {
+      get { return IoC.Get<KeeperTxtDb>(); }
+    }
+
     public List<Deposit> DepositsList { get; set; }
-    public List<PieItem> TotalsList { get; set; }
-    public List<string> YearsList { get; set; }
+    public List<ChartPoint> TotalsList { get; set; }
+    public List<ChartPoint> YearsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViewModels { get; set; }
 
+    public Style MyTitleStyle { get; set; }
+
     public DepositsViewModel()
     {
+      MyTitleStyle = new Style();
+
       DepositsList = new List<Deposit>();
       foreach (var account in Db.AccountsPlaneList)
       {
         if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
         {
-          var temp = new Deposit { Account = account };
+          var temp = new Deposit {Account = account};
           temp.CollectInfo();
           DepositsList.Add(temp);
         }
@@ -55,8 +81,8 @@ namespace Keeper.ViewModels
       {
         var depositView = (from d in LaunchedViewModels
                            where d.Deposit.Account == SelectedDeposit.Account
-                          select d).FirstOrDefault();
-        if (depositView !=  null) depositView.TryClose();
+                           select d).FirstOrDefault();
+        if (depositView != null) depositView.TryClose();
       }
       var depositViewModel = new DepositViewModel(SelectedDeposit.Account);
       LaunchedViewModels.Add(depositViewModel);
@@ -65,8 +91,7 @@ namespace Keeper.ViewModels
 
     public void TotalBalances()
     {
-      //      TotalsList = new List<string> { "Сумма депозитов на текущий момент:\n" };
-      TotalsList = new List<PieItem>();
+      TotalsList = new List<ChartPoint>();
       var totalBalances = new Dictionary<CurrencyCodes, decimal>();
 
       foreach (var deposit in DepositsList)
@@ -83,23 +108,25 @@ namespace Keeper.ViewModels
       {
         if (currency == CurrencyCodes.USD)
           TotalsList.Add(
-             new PieItem(
-               String.Format("{0:#,0} {1}", totalBalances[currency], currency), 
-               totalBalances[currency]));
+            new ChartPoint(
+              String.Format("{0:#,0} {1}", totalBalances[currency], currency),
+              (int) totalBalances[currency]));
         else
         {
-          var inUsd = totalBalances[currency] / (decimal)Rate.GetLastRate(currency);
+          var inUsd = totalBalances[currency]/(decimal) Rate.GetLastRate(currency);
           TotalsList.Add(
-            new PieItem(
-              String.Format("{0:#,0} {1}  ({2:#,0} USD)", totalBalances[currency], currency, inUsd), 
-              inUsd));
+            new ChartPoint(
+              String.Format("{0:#,0} {1}", totalBalances[currency], currency),
+              (int) Math.Round(inUsd)));
         }
       }
     }
 
     public void YearsProfit()
     {
-      YearsList = new List<string> { "Суммы дохода по годам начисления (не выплаты):\n" };
+
+      YearsList = new List<ChartPoint>();
+
       for (int i = 2002; i <= DateTime.Today.Year; i++)
       {
         decimal yearTotal = 0;
@@ -107,9 +134,12 @@ namespace Keeper.ViewModels
         {
           yearTotal += deposit.GetProfitForYear(i);
         }
-        if (yearTotal != 0) YearsList.Add(String.Format("   {0} год  -   {1:#,0} usd,   в месяц примерно {2:#,0} usd", i, yearTotal, yearTotal / 12));
+        if (yearTotal != 0)
+          YearsList.Add(
+            new ChartPoint(
+              String.Format("{0}\n {1:#,0}$/мес", i, yearTotal/12),
+              (int) yearTotal));
       }
     }
-
   }
 }
