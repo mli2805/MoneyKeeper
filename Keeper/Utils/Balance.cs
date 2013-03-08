@@ -9,18 +9,23 @@ using Keeper.ViewModels;
 
 namespace Keeper.Utils
 {
-  class Balance
+  public class Balance
   {
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
-    internal class BalancePair
+    public class BalancePair : IComparable
     {
-      public CurrencyCodes? Currency;
-      public decimal Amount;
+      public CurrencyCodes Currency { get; set; }
+      public decimal Amount { get; set; }
 
       public new string ToString()
       {
         return String.Format("{0:#,0} {1}", Amount, Currency.ToString().ToLower());
+      }
+
+      public int CompareTo(object obj)
+      {
+        return Currency.CompareTo(((BalancePair) obj).Currency);
       }
     }
 
@@ -84,7 +89,7 @@ namespace Keeper.Utils
          group t by t.Currency2 into g
          select new BalancePair
                     {
-                      Currency = g.Key,
+                      Currency = (CurrencyCodes)g.Key,
                       Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1)
                     });
 

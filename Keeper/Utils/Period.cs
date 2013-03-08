@@ -2,7 +2,7 @@
 
 namespace Keeper.Utils
 {
-  class Period
+  public class Period
   {
     private DateTime _start;
     private DateTime _finish;
