@@ -1,12 +1,14 @@
+using System;
+
 namespace Keeper.DomainModel
 {
  
   public enum CurrencyCodes
   {
-    BYR = 974,
-    USD = 840,
-    EUR = 978,
-    RUB = 643
+    USD = 1,
+    BYR = 2,
+    EUR = 3,
+    RUB = 4
   };
   
 }

@@ -22,8 +22,23 @@ namespace Keeper.ViewModels
     }
   }
 
+  public class DateProcentPoint
+  {
+    public DateTime Date { get; set; }
+    public decimal Procent { get; set; }
+
+    public DateProcentPoint(DateTime date, decimal procent)
+    {
+      Date = date;
+      Procent = procent;
+    }
+  }
+
   public class DepositsViewModel : Screen
   {
+    private Visibility _yearsProfitVisibility;
+    private Visibility _proportionsChartVisibility;
+
     public static IWindowManager WindowManager
     {
       get { return IoC.Get<IWindowManager>(); }
@@ -59,6 +74,8 @@ namespace Keeper.ViewModels
       SelectedDeposit = DepositsList[0];
       TotalBalances();
       YearsProfit();
+
+      ProportionChartCtor();
     }
 
     protected override void OnViewLoaded(object view)
@@ -139,6 +156,101 @@ namespace Keeper.ViewModels
             new ChartPoint(
               String.Format("{0}\n {1:#,0}$/мес", i, yearTotal/12),
               (int) yearTotal));
+      }
+    }
+
+
+    public Visibility YearsProfitVisibility 
+    {
+      get { return _yearsProfitVisibility; }
+      set
+      {
+        if (Equals(value, _yearsProfitVisibility)) return;
+        _yearsProfitVisibility = value;
+        NotifyOfPropertyChange(() => YearsProfitVisibility);
+      }
+    }
+
+    public Visibility ProportionsChartVisibility
+    {
+      get { return _proportionsChartVisibility; }
+      set
+      {
+        if (Equals(value, _proportionsChartVisibility)) return;
+        _proportionsChartVisibility = value;
+        NotifyOfPropertyChange(() => ProportionsChartVisibility);
+      }
+    }
+
+    public List<DateProcentPoint> Series1 { get; set; }
+    public List<DateProcentPoint> Series2 { get; set; }
+    public List<DateProcentPoint> Series3 { get; set; }
+
+    public void ProportionChartCtor()
+    {
+      YearsProfitVisibility = Visibility.Visible;
+      ProportionsChartVisibility = Visibility.Hidden;
+
+      var days = new Dictionary<DateTime, List<Balance.BalancePair>>();
+      
+
+      var rootDepo = Db.FindAccountInTree("Депозиты");
+      var depoDates = (from t in Db.Transactions
+                       where t.Debet.IsDescendantOf("Депозиты") || t.Credit.IsDescendantOf("Депозиты")
+                       select t.Timestamp.Date).Distinct();
+      foreach (var date in depoDates)
+      {
+        var allCurrencies = 
+          Balance.AccountBalancePairsAfterDay(rootDepo, date).OrderByDescending(pair => pair.Currency).ToList();
+        foreach (var pair in allCurrencies)  // переводим суммы в доллары, оставляя название валюты
+        {
+          if (pair.Currency != CurrencyCodes.USD) 
+                        pair.Amount = pair.Amount / (decimal)Rate.GetRateThisDayOrBefore(pair.Currency, date);
+        }
+        var totalinUsd = (from p in allCurrencies select p.Amount).Sum();
+        decimal totalProcents = 0;
+        foreach (var pair in allCurrencies)  // переводим доллары в проценты , накопительным итогом 
+                                             // пары отсортированы по валютам
+        {
+          totalProcents += Math.Round(pair.Amount / totalinUsd * 10000) / 100;
+          pair.Amount = totalProcents;
+        }
+
+        days[date] = allCurrencies; 
+      }
+
+      Series1 = new List<DateProcentPoint>();
+      Series2 = new List<DateProcentPoint>();
+      Series3 = new List<DateProcentPoint>();
+      foreach (var day in days)
+      {
+        var list = day.Value;
+        foreach (var pair in list)
+        {
+          if (pair.Currency == CurrencyCodes.USD) Series1.Add(new DateProcentPoint(day.Key, pair.Amount));
+          if (pair.Currency == CurrencyCodes.BYR) Series2.Add(new DateProcentPoint(day.Key, pair.Amount));
+          if (pair.Currency == CurrencyCodes.EUR) Series3.Add(new DateProcentPoint(day.Key, pair.Amount));
+        }
+      }   
+
+    }
+
+    public CurrencyCodes CurrencyExtractor(Balance.BalancePair pair)
+    {
+      return pair.Currency;
+    }
+
+    public void ShowProportion()
+    {
+      if (YearsProfitVisibility == Visibility.Visible)
+      {
+        YearsProfitVisibility = Visibility.Hidden;
+        ProportionsChartVisibility = Visibility.Visible;
+      }
+      else
+      {
+        ProportionsChartVisibility = Visibility.Hidden;
+        YearsProfitVisibility = Visibility.Visible;
       }
     }
   }

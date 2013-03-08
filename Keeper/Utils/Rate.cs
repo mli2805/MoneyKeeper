@@ -26,6 +26,14 @@ namespace Keeper.Utils
       return rate != null ? rate.Rate : 0.0;
     }
 
+    public static double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day)
+    {
+      var rate = (from currencyRate in Db.CurrencyRates
+                  where currencyRate.BankDay.Date <= day.Date && currencyRate.Currency == currency
+                  select currencyRate).LastOrDefault();
+      return rate != null ? rate.Rate : 0.0;
+    }
+
     public static string GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp)
     {
       decimal temp;
