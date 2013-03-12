@@ -67,6 +67,7 @@ namespace Keeper.DomainModel
 
     public static void CopyForEdit(Account destination, Account source)
     {
+      destination.Id = source.Id;
       destination.Name = source.Name;
       destination.Parent = source.Parent;
     }
