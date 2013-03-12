@@ -36,8 +36,10 @@ namespace Keeper.ViewModels
 
   public class DepositsViewModel : Screen
   {
-    private Visibility _yearsProfitVisibility;
-    private Visibility _proportionsChartVisibility;
+    private Visibility _chart2Visibility;
+    private Visibility _chart1Visibility;
+    private Visibility _chart3Visibility;
+    private Visibility _chart4Visibility;
 
     public static IWindowManager WindowManager
     {
@@ -160,39 +162,13 @@ namespace Keeper.ViewModels
     }
 
 
-    public Visibility YearsProfitVisibility 
-    {
-      get { return _yearsProfitVisibility; }
-      set
-      {
-        if (Equals(value, _yearsProfitVisibility)) return;
-        _yearsProfitVisibility = value;
-        NotifyOfPropertyChange(() => YearsProfitVisibility);
-      }
-    }
-
-    public Visibility ProportionsChartVisibility
-    {
-      get { return _proportionsChartVisibility; }
-      set
-      {
-        if (Equals(value, _proportionsChartVisibility)) return;
-        _proportionsChartVisibility = value;
-        NotifyOfPropertyChange(() => ProportionsChartVisibility);
-      }
-    }
-
     public List<DateProcentPoint> Series1 { get; set; }
     public List<DateProcentPoint> Series2 { get; set; }
     public List<DateProcentPoint> Series3 { get; set; }
 
     public void ProportionChartCtor()
     {
-      YearsProfitVisibility = Visibility.Visible;
-      ProportionsChartVisibility = Visibility.Hidden;
-
       var days = new Dictionary<DateTime, List<Balance.BalancePair>>();
-      
 
       var rootDepo = Db.FindAccountInTree("Депозиты");
       var depoDates = (from t in Db.Transactions
@@ -240,18 +216,63 @@ namespace Keeper.ViewModels
       return pair.Currency;
     }
 
-    public void ShowProportion()
+    public Visibility Chart1Visibility
     {
-      if (YearsProfitVisibility == Visibility.Visible)
+      get { return _chart1Visibility; }
+      set
       {
-        YearsProfitVisibility = Visibility.Hidden;
-        ProportionsChartVisibility = Visibility.Visible;
+        if (Equals(value, _chart1Visibility)) return;
+        _chart1Visibility = value;
+        NotifyOfPropertyChange(() => Chart1Visibility);
       }
-      else
+    }
+    public Visibility Chart2Visibility
+    {
+      get { return _chart2Visibility; }
+      set
       {
-        ProportionsChartVisibility = Visibility.Hidden;
-        YearsProfitVisibility = Visibility.Visible;
+        if (Equals(value, _chart2Visibility)) return;
+        _chart2Visibility = value;
+        NotifyOfPropertyChange(() => Chart2Visibility);
       }
+    }
+    public Visibility Chart3Visibility
+    {
+      get { return _chart3Visibility; }
+      set
+      {
+        if (Equals(value, _chart3Visibility)) return;
+        _chart3Visibility = value;
+        NotifyOfPropertyChange(() => Chart3Visibility);
+      }
+    }
+    public Visibility Chart4Visibility
+    {
+      get { return _chart4Visibility; }
+      set
+      {
+        if (Equals(value, _chart4Visibility)) return;
+        _chart4Visibility = value;
+        NotifyOfPropertyChange(() => Chart4Visibility);
+      }
+    }
+
+    public void ExpandChart1() {ExpandChart(1);}
+    public void ExpandChart2() {ExpandChart(2);}
+    public void ExpandChart3() {ExpandChart(3);}
+    public void ExpandChart4() {ExpandChart(4);}
+
+    public void ExpandChart(int clickedChart)
+    {
+      if (clickedChart != 1) Chart1Visibility = TurnoverVisibility(Chart1Visibility);
+      if (clickedChart != 2) Chart2Visibility = TurnoverVisibility(Chart2Visibility);
+      if (clickedChart != 3) Chart3Visibility = TurnoverVisibility(Chart3Visibility);
+      if (clickedChart != 4) Chart4Visibility = TurnoverVisibility(Chart4Visibility);
+    }
+
+    private Visibility TurnoverVisibility(Visibility visibility)
+    {
+      return visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
     }
   }
 }
