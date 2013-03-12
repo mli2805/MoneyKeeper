@@ -265,10 +265,11 @@ namespace Keeper.ViewModels
 
       if (SelectedAccount.Parent != accountInWork.Parent)
       {
-        accountInWork.Parent.Children.Add(SelectedAccount);
+        accountInWork.Parent.Children.Add(accountInWork);
         SelectedAccount.Parent.Children.Remove(SelectedAccount);
       }
-      Account.CopyForEdit(SelectedAccount, accountInWork);
+      else SelectedAccount.Name = accountInWork.Name;
+//      Account.CopyForEdit(SelectedAccount, accountInWork);
     }
 
     public void ShowDeposit()
