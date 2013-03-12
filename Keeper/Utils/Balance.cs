@@ -67,6 +67,19 @@ namespace Keeper.Utils
       return AccountBalancePairs(balancedAccount, period);
     }
 
+    public static decimal AccountBalanceAfterDayInUsd(Account balancedAccount, DateTime dateTime)
+    {
+      var inCurrencies = AccountBalancePairsAfterDay(balancedAccount, dateTime);
+      decimal result = 0;
+      foreach (var balancePair in inCurrencies)
+      {
+        if (balancePair.Currency == CurrencyCodes.USD) result += balancePair.Amount;
+        else
+          result += balancePair.Amount / (decimal)Rate.GetRateThisDayOrBefore(balancePair.Currency, dateTime);
+      }
+      return Math.Round(result*100)/100;
+    }
+
     public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
     {
       var tempBalance =

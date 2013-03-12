@@ -36,11 +36,6 @@ namespace Keeper.ViewModels
 
   public class DepositsViewModel : Screen
   {
-    private Visibility _chart2Visibility;
-    private Visibility _chart1Visibility;
-    private Visibility _chart3Visibility;
-    private Visibility _chart4Visibility;
-
     public static IWindowManager WindowManager
     {
       get { return IoC.Get<IWindowManager>(); }
@@ -77,7 +72,8 @@ namespace Keeper.ViewModels
       TotalBalances();
       YearsProfit();
 
-      ProportionChartCtor();
+      DepoCurrenciesProportionChartCtor();
+      CashDepoProportionChartCtor();
     }
 
     protected override void OnViewLoaded(object view)
@@ -166,7 +162,7 @@ namespace Keeper.ViewModels
     public List<DateProcentPoint> Series2 { get; set; }
     public List<DateProcentPoint> Series3 { get; set; }
 
-    public void ProportionChartCtor()
+    public void DepoCurrenciesProportionChartCtor()
     {
       var days = new Dictionary<DateTime, List<Balance.BalancePair>>();
 
@@ -208,13 +204,32 @@ namespace Keeper.ViewModels
           if (pair.Currency == CurrencyCodes.EUR) Series3.Add(new DateProcentPoint(day.Key, pair.Amount));
         }
       }   
-
     }
 
-    public CurrencyCodes CurrencyExtractor(Balance.BalancePair pair)
+    public List<DateProcentPoint> CashSeries { get; set; }
+    public List<DateProcentPoint> DepoSeries { get; set; }
+
+    public void CashDepoProportionChartCtor()
     {
-      return pair.Currency;
+      CashSeries = new List<DateProcentPoint>();
+      DepoSeries = new List<DateProcentPoint>();
+      var rootCashAccount = Db.FindAccountInTree("На руках");
+      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
+      for (var dt = new DateTime(2002,1,1); dt <= DateTime.Today; dt = dt.AddDays(1))
+      {
+        var cashInUsd = Balance.AccountBalanceAfterDayInUsd(rootCashAccount, dt);
+        var depoInUsd = Balance.AccountBalanceAfterDayInUsd(rootDepoAccount, dt);
+        CashSeries.Add(new DateProcentPoint(dt,Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+        DepoSeries.Add(new DateProcentPoint(dt,100));
+      }
     }
+
+    #region // Visibility
+
+    private Visibility _chart2Visibility;
+    private Visibility _chart1Visibility;
+    private Visibility _chart3Visibility;
+    private Visibility _chart4Visibility;
 
     public Visibility Chart1Visibility
     {
@@ -274,5 +289,7 @@ namespace Keeper.ViewModels
     {
       return visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
     }
+
+    #endregion
   }
 }
