@@ -1,10 +1,10 @@
 ﻿<Window x:Class="Keeper.Views.DepositsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DepositsView" Height="608" Width="938"
+        Title="DepositsView" Height="808" Width="938" WindowStartupLocation="CenterScreen"
         xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:cal="http://www.caliburnproject.org" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:Utils="clr-namespace:Keeper.Utils">
+        xmlns:Utils="clr-namespace:Keeper.Utils" >
   <Window.Resources>
     <ResourceDictionary>
       <DataTemplate x:Key="StartAmountColumnStyle">
@@ -44,15 +44,11 @@
       </DataTemplate>
     </ResourceDictionary>
   </Window.Resources>
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="30*"/>
-      <ColumnDefinition Width="70*"/>
-    </Grid.ColumnDefinitions>
+  <Grid Name="MainGrid">
     <Grid.RowDefinitions>
-      <RowDefinition Height="149*"/>
-      <RowDefinition Height="10"/>
-      <RowDefinition Height="121*"/>
+      <RowDefinition Height="10*"/>
+      <RowDefinition Height="15"/>
+      <RowDefinition Height="15*"/>
     </Grid.RowDefinitions>
     <ListView Margin="2" Grid.ColumnSpan="2"
               ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
@@ -79,37 +75,52 @@
         </GridView>
       </ListView.View>
     </ListView>
-    <GridSplitter Background="LightGray" Margin="2,0" Height="10" Grid.Row="1" Grid.ColumnSpan="2" 
+    <GridSplitter Background="#E9E9E9" Margin="2,0" Height="15" Grid.Row="1" Grid.ColumnSpan="2" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Center" BorderThickness="1" BorderBrush="AliceBlue" />
-    <chartingToolkit:Chart Margin="-8,-10,-8,20" Grid.Row="2" BorderThickness="0"
-                           Title="Сумма депозитов на текущий момент:" TitleStyle="{Binding MyTitleStyle}">
-      <chartingToolkit:PieSeries
-        DependentValuePath="Amount" IndependentValuePath="Subject" 
-        ItemsSource="{Binding TotalsList}" 
-		IsSelectionEnabled="True"/>
-    </chartingToolkit:Chart>
+    <Grid Name="InnerBottomGrid" Grid.Row="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <chartingToolkit:Chart Name="Chart1" Margin="-8,-10,-8,-20" BorderThickness="0"
+                             Title="Соотношение наличные / депозиты" TitleStyle="{Binding}"
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]"
+                             Visibility="{Binding Chart1Visibility}">
 
-    <chartingToolkit:Chart Margin="0,-10,-110,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0" 
-                           Visibility="{Binding YearsProfitVisibility}"
-                           Title="Суммы дохода по годам начисления (не выплаты)" TitleStyle="{Binding MyTitleStyle}">
-      <chartingToolkit:ColumnSeries
-        DependentValuePath="Amount" IndependentValuePath="Subject" 
-        ItemsSource="{Binding YearsList}" 
-		IsSelectionEnabled="True"/>
-    </chartingToolkit:Chart>
+      </chartingToolkit:Chart>
+      <chartingToolkit:Chart Name="Chart2" Margin="0,-10,-110,-20" Grid.Row="0" Grid.Column="1" BorderThickness="0" 
+                           Title="Суммы дохода по годам начисления (не выплаты)" TitleStyle="{Binding MyTitleStyle}"
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart2()]"
+                             Visibility="{Binding Chart2Visibility}">
+        <chartingToolkit:ColumnSeries DependentValuePath="Amount" IndependentValuePath="Subject" 
+                                      ItemsSource="{Binding YearsList}" IsSelectionEnabled="True"/>
+      </chartingToolkit:Chart>
 
-    <chartingToolkit:Chart Margin="0,-10,-10,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0" 
-                           Visibility="{Binding ProportionsChartVisibility}"
-                           Title="Распределение вкладов по валютам" TitleStyle="{Binding MyTitleStyle}">
-      <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
+      <chartingToolkit:Chart Name="Chart3" Margin="-8,-10,-8,-20" Grid.Row="1" BorderThickness="0"
+                           Title="Сумма депозитов на текущий момент:" TitleStyle="{Binding MyTitleStyle}"
+                            cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart3()]"
+                            Visibility="{Binding Chart3Visibility}">
+        <chartingToolkit:PieSeries
+        DependentValuePath="Amount" IndependentValuePath="Subject" 
+        ItemsSource="{Binding TotalsList}" IsSelectionEnabled="True"/>
+      </chartingToolkit:Chart>
+
+      <chartingToolkit:Chart Name="Chart4" Margin="0,-10,-10,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0" 
+                           Title="Распределение вкладов по валютам" TitleStyle="{Binding MyTitleStyle}"
+                           cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4(4)]"
+                           Visibility="{Binding Chart4Visibility}">
+        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
                                   ItemsSource="{Binding Series1}" Title="USD" />
-      <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
+        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
                                   ItemsSource="{Binding Series2}" Title="BYR" />
-      <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
+        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
                                   ItemsSource="{Binding Series3}" Title="EUR" />
-    </chartingToolkit:Chart>
+      </chartingToolkit:Chart>
 
-    <Button Grid.Row="2" Height="24" VerticalAlignment="Bottom" Width="100" HorizontalAlignment="Right" Margin="20,12"
-            Name="ShowProportion" Content="Распределение"/>
+    </Grid>
   </Grid>
 </Window>
