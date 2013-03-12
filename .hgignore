@@ -8,3 +8,4 @@ bin
 *.user
 Keeper.psess
 *.vsp
+*.orig
