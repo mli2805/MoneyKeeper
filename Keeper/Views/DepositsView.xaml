@@ -50,7 +50,7 @@
       <RowDefinition Height="15"/>
       <RowDefinition Height="15*"/>
     </Grid.RowDefinitions>
-    <ListView Margin="2" Grid.ColumnSpan="2" Visibility="{Binding ListViewVisibility}"
+    <ListView Margin="2" Grid.ColumnSpan="2" 
               ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
               cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" >
       <i:Interaction.Behaviors>
@@ -86,8 +86,8 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <chartingToolkit:Chart Name="Chart1" Margin="-8,-10,-8,-20" BorderThickness="0"
-                             Title="Соотношение наличные / депозиты" TitleStyle="{Binding}"
+      <chartingToolkit:Chart Name="Chart1" Margin="-3,-10,-8,-20" BorderThickness="0"
+                             Title="Соотношение наличные / депозиты (%)" TitleStyle="{Binding}"
                              cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]"
                              Visibility="{Binding Chart1Visibility}">
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date"
@@ -103,7 +103,7 @@
                                       ItemsSource="{Binding YearsList}" IsSelectionEnabled="True"/>
       </chartingToolkit:Chart>
 
-      <chartingToolkit:Chart Name="Chart3" Margin="-8,-10,-8,-20" Grid.Row="1" BorderThickness="0"
+      <chartingToolkit:Chart Name="Chart3" Margin="-3,-10,-8,-20" Grid.Row="1" BorderThickness="0"
                            Title="Сумма депозитов на текущий момент:" TitleStyle="{Binding MyTitleStyle}"
                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart3()]"
                             Visibility="{Binding Chart3Visibility}">
@@ -113,7 +113,7 @@
       </chartingToolkit:Chart>
 
       <chartingToolkit:Chart Name="Chart4" Margin="0,-10,-10,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0" 
-                           Title="Распределение вкладов по валютам" TitleStyle="{Binding MyTitleStyle}"
+                           Title="Распределение вкладов по валютам (%)" TitleStyle="{Binding MyTitleStyle}"
                            cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4(4)]"
                            Visibility="{Binding Chart4Visibility}">
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 

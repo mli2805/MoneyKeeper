@@ -76,6 +76,12 @@ namespace Keeper.Utils
     public static decimal AccountBalanceAfterDayInUsd(Account balancedAccount, DateTime dateTime)
     {
       var inCurrencies = AccountBalancePairsAfterDay(balancedAccount, dateTime);
+      var result = BalancePairsToUsd(inCurrencies, dateTime);
+      return Math.Round(result*100)/100;
+    }
+
+    public static decimal BalancePairsToUsd(IEnumerable<BalancePair> inCurrencies, DateTime dateTime)
+    {
       decimal result = 0;
       foreach (var balancePair in inCurrencies)
       {
@@ -83,7 +89,32 @@ namespace Keeper.Utils
         else
           result += balancePair.Amount / (decimal)Rate.GetRateThisDayOrBefore(balancePair.Currency, dateTime);
       }
-      return Math.Round(result*100)/100;
+      return result;
+    }
+
+    /// <summary>
+    /// остатки за каждый день периода, даже если в какой-то день не было движения по счету
+    /// </summary>
+    /// <param name="balancedAccount"></param>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    public static Dictionary<DateTime,decimal> AccountBalancesForPeriodInUsd(Account balancedAccount, Period period)
+    {
+      var result = new Dictionary<DateTime, decimal>();
+
+      decimal balance = 0;
+      foreach (DateTime day in period)
+      {
+        // получаем обороты по счету за 1 день
+        var oneDayInCurrencies = AccountBalancePairs(balancedAccount,
+                                                     new Period(day.Date, day.Date.AddDays(1).AddSeconds(-1)));
+
+        // и нарастающим итогом сохраняем в массив
+        balance += BalancePairsToUsd(oneDayInCurrencies, day);
+        result.Add(day,Math.Round(balance*10000)/100);
+      }
+
+      return result;
     }
 
     public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)

@@ -209,18 +209,39 @@ namespace Keeper.ViewModels
     public List<DateProcentPoint> CashSeries { get; set; }
     public List<DateProcentPoint> DepoSeries { get; set; }
 
+//    public void CashDepoProportionChartCtor()
+//    {
+//      CashSeries = new List<DateProcentPoint>();
+//      DepoSeries = new List<DateProcentPoint>();
+//      var rootCashAccount = Db.FindAccountInTree("На руках");
+//      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
+//      for (var dt = new DateTime(2002, 1, 1); dt <= DateTime.Today; dt = dt.AddDays(1))
+//      {
+//        var cashInUsd = Balance.AccountBalanceAfterDayInUsd(rootCashAccount, dt);
+//        var depoInUsd = Balance.AccountBalanceAfterDayInUsd(rootDepoAccount, dt);
+//        CashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+//        DepoSeries.Add(new DateProcentPoint(dt, 100));
+//      }
+//    }
+
     public void CashDepoProportionChartCtor()
     {
       CashSeries = new List<DateProcentPoint>();
       DepoSeries = new List<DateProcentPoint>();
       var rootCashAccount = Db.FindAccountInTree("На руках");
       var rootDepoAccount = Db.FindAccountInTree("Депозиты");
-      for (var dt = new DateTime(2002,1,1); dt <= DateTime.Today; dt = dt.AddDays(1))
+
+      var period = new Period(new DateTime(2002, 1, 1), DateTime.Today);
+      var cashBalances = Balance.AccountBalancesForPeriodInUsd(rootCashAccount, period);
+      var depoBalances = Balance.AccountBalancesForPeriodInUsd(rootDepoAccount, period);
+
+      foreach (DateTime day in period)
       {
-        var cashInUsd = Balance.AccountBalanceAfterDayInUsd(rootCashAccount, dt);
-        var depoInUsd = Balance.AccountBalanceAfterDayInUsd(rootDepoAccount, dt);
-        CashSeries.Add(new DateProcentPoint(dt,Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-        DepoSeries.Add(new DateProcentPoint(dt,100));
+        var cashInUsd = cashBalances[day];
+        var depoInUsd = depoBalances[day];
+        CashSeries.Add(new DateProcentPoint(day, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+        DepoSeries.Add(new DateProcentPoint(day, 100));
+        
       }
     }
 
