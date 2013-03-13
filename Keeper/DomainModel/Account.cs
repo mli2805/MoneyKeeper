@@ -65,6 +65,20 @@ namespace Keeper.DomainModel
 
     #endregion
 
+    public static bool operator ==(Account a, Account b)
+    {
+      // If both are null, or both are same instance, return true.
+      if (ReferenceEquals(a, b)) return true;
+      // If one is null, but not both, return false.
+      if (((object)a == null) || ((object)b == null)) return false;
+      return a.Name == b.Name;
+    }
+
+    public static bool operator !=(Account a,Account b)
+    {
+      return !(a == b);
+    }
+
     public static void CopyForEdit(Account destination, Account source)
     {
       destination.Id = source.Id;
