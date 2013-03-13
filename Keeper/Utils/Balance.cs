@@ -44,8 +44,8 @@ namespace Keeper.Utils
     /// <summary>
     /// вызов с параметром 2 февраля 2013 - вернет остаток по счету на утро 2 февраля 2013 
     /// </summary>
-    /// <param name="balancedAccount"></param>
-    /// <param name="dateTime"></param>
+    /// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
+    /// <param name="dateTime">день, до которого остаток</param>
     /// <returns></returns>
     public static IEnumerable<BalancePair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
     {
@@ -57,8 +57,8 @@ namespace Keeper.Utils
     /// <summary>
     /// вызов с параметром 2 февраля 2013 - вернет остаток по счету после 2 февраля 2013 
     /// </summary>
-    /// <param name="balancedAccount"></param>
-    /// <param name="dateTime"></param>
+    /// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
+    /// <param name="dateTime">день, после которого остаток</param>
     /// <returns></returns>
     public static IEnumerable<BalancePair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
 
@@ -67,6 +67,12 @@ namespace Keeper.Utils
       return AccountBalancePairs(balancedAccount, period);
     }
 
+    /// <summary>
+    /// переводит остатки во всех валютах по balancedAccount после dateTime в доллары
+    /// </summary>
+    /// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
+    /// <param name="dateTime">день, после которого остаток</param>
+    /// <returns></returns>
     public static decimal AccountBalanceAfterDayInUsd(Account balancedAccount, DateTime dateTime)
     {
       var inCurrencies = AccountBalancePairsAfterDay(balancedAccount, dateTime);
@@ -82,6 +88,16 @@ namespace Keeper.Utils
 
     public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
     {
+      var trs = (from t in Db.Transactions
+                 where t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)
+                       || t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name)
+                 select t).ToList();
+
+      if (trs.Count > 0)
+      {
+        
+      }
+
       var tempBalance =
         (from t in Db.Transactions
          where period.IsDateTimeIn(t.Timestamp) &&
