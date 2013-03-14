@@ -17,8 +17,7 @@ namespace Keeper.Utils
 
     public bool IsDateTimeIn(DateTime checkDate)
     {
-      if (checkDate >= _start && checkDate <= _finish) return true;
-      return false;
+      return checkDate >= _start && checkDate <= _finish;
     }
 
     public IEnumerator GetEnumerator()

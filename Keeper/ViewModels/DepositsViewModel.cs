@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,14 +42,9 @@ namespace Keeper.ViewModels
       get { return IoC.Get<IWindowManager>(); }
     }
 
-    public static KeeperTxtDb Db
-    {
-      get { return IoC.Get<KeeperTxtDb>(); }
-    }
+    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     public List<Deposit> DepositsList { get; set; }
-    public List<ChartPoint> TotalsList { get; set; }
-    public List<ChartPoint> YearsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViewModels { get; set; }
 
@@ -69,11 +65,18 @@ namespace Keeper.ViewModels
         }
       }
       SelectedDeposit = DepositsList[0];
-      TotalBalances();
-      YearsProfit();
 
+
+      var sw = new Stopwatch();
+      sw.Start();
+
+      TotalBalancesCtor();
+      YearsProfitCtor();
       DepoCurrenciesProportionChartCtor();
-      CashDepoProportionChartCtor();
+//      CashDepoProportionChartCtor();
+
+      sw.Stop();
+      Console.WriteLine(sw.Elapsed);
     }
 
     protected override void OnViewLoaded(object view)
@@ -104,7 +107,8 @@ namespace Keeper.ViewModels
       WindowManager.ShowWindow(depositViewModel);
     }
 
-    public void TotalBalances()
+    public List<ChartPoint> TotalsList { get; set; }
+    public void TotalBalancesCtor()
     {
       TotalsList = new List<ChartPoint>();
       var totalBalances = new Dictionary<CurrencyCodes, decimal>();
@@ -137,7 +141,8 @@ namespace Keeper.ViewModels
       }
     }
 
-    public void YearsProfit()
+    public List<ChartPoint> YearsList { get; set; }
+    public void YearsProfitCtor()
     {
 
       YearsList = new List<ChartPoint>();
@@ -157,11 +162,9 @@ namespace Keeper.ViewModels
       }
     }
 
-
     public List<DateProcentPoint> Series1 { get; set; }
     public List<DateProcentPoint> Series2 { get; set; }
     public List<DateProcentPoint> Series3 { get; set; }
-
     public void DepoCurrenciesProportionChartCtor()
     {
       var days = new Dictionary<DateTime, List<Balance.BalancePair>>();
@@ -224,24 +227,64 @@ namespace Keeper.ViewModels
 //      }
 //    }
 
+
+
+//    public void CashDepoProportionChartCtor()
+//    {
+//      CashSeries = new List<DateProcentPoint>();
+//      DepoSeries = new List<DateProcentPoint>();
+//      var rootCashAccount = Db.FindAccountInTree("На руках");
+//      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
+
+//      var period = new Period(new DateTime(2002, 1, 1), DateTime.Today);
+//      var cashBalances = Balance.AccountBalancesForPeriodInUsd(rootCashAccount, period);
+//      var depoBalances = Balance.AccountBalancesForPeriodInUsd(rootDepoAccount, period);
+
+//      foreach (DateTime day in period)
+//      {
+//        var cashInUsd = cashBalances[day];
+//        var depoInUsd = depoBalances[day];
+//        CashSeries.Add(new DateProcentPoint(day, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+//        DepoSeries.Add(new DateProcentPoint(day, 100));
+        
+//      }
+//    }
+
+//     на opx-lmarholin 1-й вариант 82 сек, 2-й вариант 57 сек, 3-й вариант 1 сек
     public void CashDepoProportionChartCtor()
     {
       CashSeries = new List<DateProcentPoint>();
       DepoSeries = new List<DateProcentPoint>();
-      var rootCashAccount = Db.FindAccountInTree("На руках");
-      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
 
-      var period = new Period(new DateTime(2002, 1, 1), DateTime.Today);
-      var cashBalances = Balance.AccountBalancesForPeriodInUsd(rootCashAccount, period);
-      var depoBalances = Balance.AccountBalancesForPeriodInUsd(rootDepoAccount, period);
+      decimal cashInUsd = 0, depoInUsd = 0;
+      var dt = new DateTime(2002, 1, 1);
+      var transactionsArray = Db.Transactions.ToArray();
+      int index = 0;
+      Transaction tr = transactionsArray[0];
 
-      foreach (DateTime day in period)
+      while (index < transactionsArray.Count())
       {
-        var cashInUsd = cashBalances[day];
-        var depoInUsd = depoBalances[day];
-        CashSeries.Add(new DateProcentPoint(day, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-        DepoSeries.Add(new DateProcentPoint(day, 100));
-        
+        while (tr.Timestamp.Date == dt.Date)
+        {
+          if (tr.Debet.IsTheSameOrDescendantOf("На руках"))
+            cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+          if (tr.Credit.IsTheSameOrDescendantOf("На руках"))
+            cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+          if (tr.Debet.IsTheSameOrDescendantOf("Депозиты"))
+            depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+          if (tr.Credit.IsTheSameOrDescendantOf("Депозиты"))
+            depoInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+
+          if (index == transactionsArray.Count()-1) break;
+          index++;
+          tr = transactionsArray[index];
+        }
+
+        CashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+        DepoSeries.Add(new DateProcentPoint(dt, 100));
+        if (index == transactionsArray.Count() - 1) break;
+        dt = dt.AddDays(1);
+
       }
     }
 
