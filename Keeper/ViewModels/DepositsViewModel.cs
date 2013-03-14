@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Keeper.ViewModels
     public string Subject { get; set; }
     public int Amount { get; set; }
 
+    public ChartPoint() { }
     public ChartPoint(string subject, int amount)
     {
       Subject = subject;
@@ -28,6 +30,7 @@ namespace Keeper.ViewModels
     public DateTime Date { get; set; }
     public decimal Procent { get; set; }
 
+    public DateProcentPoint() { }
     public DateProcentPoint(DateTime date, decimal procent)
     {
       Date = date;
@@ -37,16 +40,35 @@ namespace Keeper.ViewModels
 
   public class DepositsViewModel : Screen
   {
-    public static IWindowManager WindowManager
-    {
-      get { return IoC.Get<IWindowManager>(); }
-    }
-
+    public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
 
     public List<Deposit> DepositsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViewModels { get; set; }
+
+    private GridLength _upperPart;
+    private GridLength _bottomPart;
+    public GridLength UpperPart
+    {
+      get { return _upperPart; }
+      set
+      {
+        if (value.Equals(_upperPart)) return;
+        _upperPart = value;
+        NotifyOfPropertyChange(() => UpperPart);
+      }
+    }
+    public GridLength BottomPart
+    {
+      get { return _bottomPart; }
+      set
+      {
+        if (value.Equals(_bottomPart)) return;
+        _bottomPart = value;
+        NotifyOfPropertyChange(() => BottomPart);
+      }
+    }
 
     public Style MyTitleStyle { get; set; }
 
@@ -59,20 +81,22 @@ namespace Keeper.ViewModels
       {
         if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
         {
-          var temp = new Deposit {Account = account};
+          var temp = new Deposit { Account = account };
           temp.CollectInfo();
           DepositsList.Add(temp);
         }
       }
       SelectedDeposit = DepositsList[0];
+      UpperPart = new GridLength(10, GridUnitType.Star);
+      BottomPart = new GridLength(15, GridUnitType.Star);
 
-      TotalBalancesCtor();
-      YearsProfitCtor();
-      DepoCurrenciesProportionChartCtor();
 
       var sw = new Stopwatch();
       sw.Start();
 
+      TotalBalancesCtor();
+      YearsProfitCtor();
+      DepoCurrenciesProportionChartCtor();
       CashDepoProportionChartCtor();
 
       sw.Stop();
@@ -129,14 +153,14 @@ namespace Keeper.ViewModels
           TotalsList.Add(
             new ChartPoint(
               String.Format("{0:#,0} {1}", totalBalances[currency], currency),
-              (int) totalBalances[currency]));
+              (int)totalBalances[currency]));
         else
         {
-          var inUsd = totalBalances[currency]/(decimal) Rate.GetLastRate(currency);
+          var inUsd = totalBalances[currency] / (decimal)Rate.GetLastRate(currency);
           TotalsList.Add(
             new ChartPoint(
               String.Format("{0:#,0} {1}", totalBalances[currency], currency),
-              (int) Math.Round(inUsd)));
+              (int)Math.Round(inUsd)));
         }
       }
     }
@@ -157,8 +181,8 @@ namespace Keeper.ViewModels
         if (yearTotal != 0)
           YearsList.Add(
             new ChartPoint(
-              String.Format("{0}\n {1:#,0}$/мес", i, yearTotal/12),
-              (int) yearTotal));
+              String.Format("{0}\n {1:#,0}$/мес", i, yearTotal / 12),
+              (int)yearTotal));
       }
     }
 
@@ -175,23 +199,23 @@ namespace Keeper.ViewModels
                        select t.Timestamp.Date).Distinct();
       foreach (var date in depoDates)
       {
-        var allCurrencies = 
+        var allCurrencies =
           Balance.AccountBalancePairsAfterDay(rootDepo, date).OrderByDescending(pair => pair.Currency).ToList();
         foreach (var pair in allCurrencies)  // переводим суммы в доллары, оставляя название валюты
         {
-          if (pair.Currency != CurrencyCodes.USD) 
-                        pair.Amount = pair.Amount / (decimal)Rate.GetRateThisDayOrBefore(pair.Currency, date);
+          if (pair.Currency != CurrencyCodes.USD)
+            pair.Amount = pair.Amount / (decimal)Rate.GetRateThisDayOrBefore(pair.Currency, date);
         }
         var totalinUsd = (from p in allCurrencies select p.Amount).Sum();
         decimal totalProcents = 0;
         foreach (var pair in allCurrencies)  // переводим доллары в проценты , накопительным итогом 
-                                             // пары отсортированы по валютам
+        // пары отсортированы по валютам
         {
           totalProcents += Math.Round(pair.Amount / totalinUsd * 10000) / 100;
           pair.Amount = totalProcents;
         }
 
-        days[date] = allCurrencies; 
+        days[date] = allCurrencies;
       }
 
       Series1 = new List<DateProcentPoint>();
@@ -206,51 +230,54 @@ namespace Keeper.ViewModels
           if (pair.Currency == CurrencyCodes.BYR) Series2.Add(new DateProcentPoint(day.Key, pair.Amount));
           if (pair.Currency == CurrencyCodes.EUR) Series3.Add(new DateProcentPoint(day.Key, pair.Amount));
         }
-      }   
+      }
     }
 
     public List<DateProcentPoint> CashSeries { get; set; }
 
-//    public void CashDepoProportionChartCtor()
-//    {
-//      CashSeries = new List<DateProcentPoint>();
-//      DepoSeries = new List<DateProcentPoint>();
-//      var rootCashAccount = Db.FindAccountInTree("На руках");
-//      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
-//      for (var dt = new DateTime(2002, 1, 1); dt <= DateTime.Today; dt = dt.AddDays(1))
-//      {
-//        var cashInUsd = Balance.AccountBalanceAfterDayInUsd(rootCashAccount, dt);
-//        var depoInUsd = Balance.AccountBalanceAfterDayInUsd(rootDepoAccount, dt);
-//        CashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-//        DepoSeries.Add(new DateProcentPoint(dt, 100));
-//      }
-//    }
+    //    public void CashDepoProportionChartCtor()
+    //    {
+    //      CashSeries = new List<DateProcentPoint>();
+    //      DepoSeries = new List<DateProcentPoint>();
+    //      var rootCashAccount = Db.FindAccountInTree("На руках");
+    //      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
+    //      for (var dt = new DateTime(2002, 1, 1); dt <= DateTime.Today; dt = dt.AddDays(1))
+    //      {
+    //        var cashInUsd = Balance.AccountBalanceAfterDayInUsd(rootCashAccount, dt);
+    //        var depoInUsd = Balance.AccountBalanceAfterDayInUsd(rootDepoAccount, dt);
+    //        CashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+    //        DepoSeries.Add(new DateProcentPoint(dt, 100));
+    //      }
+    //    }
 
-//    public void CashDepoProportionChartCtor()
-//    {
-//      CashSeries = new List<DateProcentPoint>();
-//      DepoSeries = new List<DateProcentPoint>();
-//      var rootCashAccount = Db.FindAccountInTree("На руках");
-//      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
+    //    public void CashDepoProportionChartCtor()
+    //    {
+    //      CashSeries = new List<DateProcentPoint>();
+    //      DepoSeries = new List<DateProcentPoint>();
+    //      var rootCashAccount = Db.FindAccountInTree("На руках");
+    //      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
 
-//      var period = new Period(new DateTime(2002, 1, 1), DateTime.Today);
-//      var cashBalances = Balance.AccountBalancesForPeriodInUsd(rootCashAccount, period);
-//      var depoBalances = Balance.AccountBalancesForPeriodInUsd(rootDepoAccount, period);
+    //      var period = new Period(new DateTime(2002, 1, 1), DateTime.Today);
+    //      var cashBalances = Balance.AccountBalancesForPeriodInUsd(rootCashAccount, period);
+    //      var depoBalances = Balance.AccountBalancesForPeriodInUsd(rootDepoAccount, period);
 
-//      foreach (DateTime day in period)
-//      {
-//        var cashInUsd = cashBalances[day];
-//        var depoInUsd = depoBalances[day];
-//        CashSeries.Add(new DateProcentPoint(day, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-//        DepoSeries.Add(new DateProcentPoint(day, 100));
-        
-//      }
-//    }
+    //      foreach (DateTime day in period)
+    //      {
+    //        var cashInUsd = cashBalances[day];
+    //        var depoInUsd = depoBalances[day];
+    //        CashSeries.Add(new DateProcentPoint(day, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+    //        DepoSeries.Add(new DateProcentPoint(day, 100));
 
-//     на opx-lmarholin 1-й вариант 82 сек, 2-й вариант 57 сек, 3-й вариант 1 сек
+    //      }
+    //    }
+
+    public List<DateProcentPoint> MonthlyCashSeries { get; set; }
+
+    //     на hall-comp 1-й вариант 102 сек, 2-й вариант 71 сек, 3-й вариант 1.4 сек
+    //     на opx-lmarholin 1-й вариант 82 сек, 2-й вариант 57 сек, 3-й вариант 1.3 сек
     public void CashDepoProportionChartCtor()
     {
-      CashSeries = new List<DateProcentPoint>();
+      var dailyCashSeries = new List<DateProcentPoint>();
 
       decimal cashInUsd = 0, depoInUsd = 0;
       var dt = new DateTime(2002, 1, 1);
@@ -264,11 +291,11 @@ namespace Keeper.ViewModels
         {
           if (tr.Debet.IsTheSameOrDescendantOf("На руках"))
           {
-            cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount/(decimal) Rate.GetRate(tr.Currency, tr.Timestamp);
+            cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
             if (tr.Operation == OperationType.Обмен)
               cashInUsd += tr.Currency2 == CurrencyCodes.USD
                              ? tr.Amount2
-                             : tr.Amount2/(decimal) Rate.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
+                             : tr.Amount2 / (decimal)Rate.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
           }
           if (tr.Credit.IsTheSameOrDescendantOf("На руках"))
             cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
@@ -277,22 +304,32 @@ namespace Keeper.ViewModels
           if (tr.Credit.IsTheSameOrDescendantOf("Депозиты"))
             depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
 
-          if (index == transactionsArray.Count()-1) break;
+          if (index == transactionsArray.Count() - 1) break;
           index++;
           tr = transactionsArray[index];
         }
 
-        CashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+        dailyCashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
         if (index == transactionsArray.Count() - 1) break;
         dt = dt.AddDays(1);
-
       }
+
+      MonthlyCashSeries = (from p in dailyCashSeries
+                           group p by new { year = p.Date.Year, month = p.Date.Month}
+                             into g
+                             select new DateProcentPoint
+                             {
+                               Date = new DateTime(g.Key.year,g.Key.month,15),
+                               Procent = Math.Round(g.Average(a => a.Procent))
+                             }).ToList();
+
+
     }
 
     #region // Visibility
 
-    private Visibility _chart2Visibility;
     private Visibility _chart1Visibility;
+    private Visibility _chart2Visibility;
     private Visibility _chart3Visibility;
     private Visibility _chart4Visibility;
 
@@ -337,10 +374,10 @@ namespace Keeper.ViewModels
       }
     }
 
-    public void ExpandChart1() {ExpandChart(1);}
-    public void ExpandChart2() {ExpandChart(2);}
-    public void ExpandChart3() {ExpandChart(3);}
-    public void ExpandChart4() {ExpandChart(4);}
+    public void ExpandChart1() { ExpandChart(1); }
+    public void ExpandChart2() { ExpandChart(2); }
+    public void ExpandChart3() { ExpandChart(3); }
+    public void ExpandChart4() { ExpandChart(4); }
 
     public void ExpandChart(int clickedChart)
     {
