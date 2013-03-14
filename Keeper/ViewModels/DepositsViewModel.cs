@@ -48,7 +48,7 @@ namespace Keeper.ViewModels
     public List<DepositViewModel> LaunchedViewModels { get; set; }
 
     private GridLength _upperPart;
-    private GridLength _bottomPart;
+    private GridLength _lowerPart;
     public GridLength UpperPart
     {
       get { return _upperPart; }
@@ -59,14 +59,59 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => UpperPart);
       }
     }
-    public GridLength BottomPart
+    public GridLength LowerPart
     {
-      get { return _bottomPart; }
+      get { return _lowerPart; }
       set
       {
-        if (value.Equals(_bottomPart)) return;
-        _bottomPart = value;
-        NotifyOfPropertyChange(() => BottomPart);
+        if (value.Equals(_lowerPart)) return;
+        _lowerPart = value;
+        NotifyOfPropertyChange(() => LowerPart);
+      }
+    }
+
+    private GridLength _upperRow;
+    private GridLength _lowerRow;
+    private GridLength _leftColumn;
+    private GridLength _rightColumn;
+    public GridLength UpperRow
+    {
+      get { return _upperRow; }
+      set
+      {
+        if (value.Equals(_upperRow)) return;
+        _upperRow = value;
+        NotifyOfPropertyChange(() => UpperRow);
+      }
+    }
+    public GridLength LowerRow
+    {
+      get { return _lowerRow; }
+      set
+      {
+        if (value.Equals(_lowerRow)) return;
+        _lowerRow = value;
+        NotifyOfPropertyChange(() => LowerRow);
+      }
+    }
+    public GridLength LeftColumn
+    {
+      get { return _leftColumn; }
+      set
+      {
+        if (value.Equals(_leftColumn)) return;
+        _leftColumn = value;
+        NotifyOfPropertyChange(() => LeftColumn);
+      }
+    }
+    public GridLength RightColumn
+    {
+      get { return _rightColumn; }
+      set
+      {
+        if (value.Equals(_rightColumn)) return;
+        _rightColumn = value;
+        NotifyOfPropertyChange(() => RightColumn);
       }
     }
 
@@ -88,8 +133,12 @@ namespace Keeper.ViewModels
       }
       SelectedDeposit = DepositsList[0];
       UpperPart = new GridLength(10, GridUnitType.Star);
-      BottomPart = new GridLength(15, GridUnitType.Star);
+      LowerPart = new GridLength(15, GridUnitType.Star);
 
+      UpperRow = new GridLength(1,GridUnitType.Star);
+      LowerRow = new GridLength(1, GridUnitType.Star);
+      LeftColumn = new GridLength(1, GridUnitType.Star);
+      RightColumn = new GridLength(1, GridUnitType.Star);
 
       var sw = new Stopwatch();
       sw.Start();
@@ -328,68 +377,19 @@ namespace Keeper.ViewModels
 
     #region // Visibility
 
-    private Visibility _chart1Visibility;
-    private Visibility _chart2Visibility;
-    private Visibility _chart3Visibility;
-    private Visibility _chart4Visibility;
 
-    public Visibility Chart1Visibility
+    public void ExpandChart1()
     {
-      get { return _chart1Visibility; }
-      set
-      {
-        if (Equals(value, _chart1Visibility)) return;
-        _chart1Visibility = value;
-        NotifyOfPropertyChange(() => Chart1Visibility);
-      }
+      TurnoverGridSize(ref LowerRow);
+      TurnoverGridSize(ref RightColumn);
     }
-    public Visibility Chart2Visibility
-    {
-      get { return _chart2Visibility; }
-      set
-      {
-        if (Equals(value, _chart2Visibility)) return;
-        _chart2Visibility = value;
-        NotifyOfPropertyChange(() => Chart2Visibility);
-      }
-    }
-    public Visibility Chart3Visibility
-    {
-      get { return _chart3Visibility; }
-      set
-      {
-        if (Equals(value, _chart3Visibility)) return;
-        _chart3Visibility = value;
-        NotifyOfPropertyChange(() => Chart3Visibility);
-      }
-    }
-    public Visibility Chart4Visibility
-    {
-      get { return _chart4Visibility; }
-      set
-      {
-        if (Equals(value, _chart4Visibility)) return;
-        _chart4Visibility = value;
-        NotifyOfPropertyChange(() => Chart4Visibility);
-      }
-    }
+    public void ExpandChart2() {  }
+    public void ExpandChart3() {  }
+    public void ExpandChart4() {  }
 
-    public void ExpandChart1() { ExpandChart(1); }
-    public void ExpandChart2() { ExpandChart(2); }
-    public void ExpandChart3() { ExpandChart(3); }
-    public void ExpandChart4() { ExpandChart(4); }
-
-    public void ExpandChart(int clickedChart)
+    private void TurnoverGridSize(ref GridLength size)
     {
-      if (clickedChart != 1) Chart1Visibility = TurnoverVisibility(Chart1Visibility);
-      if (clickedChart != 2) Chart2Visibility = TurnoverVisibility(Chart2Visibility);
-      if (clickedChart != 3) Chart3Visibility = TurnoverVisibility(Chart3Visibility);
-      if (clickedChart != 4) Chart4Visibility = TurnoverVisibility(Chart4Visibility);
-    }
-
-    private Visibility TurnoverVisibility(Visibility visibility)
-    {
-      return visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+      size = size == new GridLength(0) ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
     }
 
     #endregion

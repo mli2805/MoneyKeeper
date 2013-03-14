@@ -48,7 +48,7 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding UpperPart}"/>
       <RowDefinition Height="15"/>
-      <RowDefinition Height="{Binding BottomPart}"/>
+      <RowDefinition Height="{Binding LowerPart}"/>
     </Grid.RowDefinitions>
     <ListView Margin="2" Grid.ColumnSpan="2" 
               ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
@@ -79,12 +79,12 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Center" BorderThickness="1" BorderBrush="AliceBlue" />
     <Grid Name="InnerBottomGrid" Grid.Row="2">
       <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
+        <RowDefinition Height="{Binding UpperRow}"/>
+        <RowDefinition Height="{Binding LowerRow}"/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="{Binding LeftColumn}"/>
+        <ColumnDefinition Width="{Binding RightColumn}"/>
       </Grid.ColumnDefinitions>
       <chartingToolkit:Chart Name="Chart1" Margin="0,-10,-10,-20" BorderThickness="0" 
                            Title="Распределение вкладов по валютам (%)" TitleStyle="{Binding MyTitleStyle}"
