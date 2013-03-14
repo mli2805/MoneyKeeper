@@ -66,14 +66,14 @@ namespace Keeper.ViewModels
       }
       SelectedDeposit = DepositsList[0];
 
+      TotalBalancesCtor();
+      YearsProfitCtor();
+      DepoCurrenciesProportionChartCtor();
 
       var sw = new Stopwatch();
       sw.Start();
 
-      TotalBalancesCtor();
-      YearsProfitCtor();
-      DepoCurrenciesProportionChartCtor();
-//      CashDepoProportionChartCtor();
+      CashDepoProportionChartCtor();
 
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
@@ -210,7 +210,6 @@ namespace Keeper.ViewModels
     }
 
     public List<DateProcentPoint> CashSeries { get; set; }
-    public List<DateProcentPoint> DepoSeries { get; set; }
 
 //    public void CashDepoProportionChartCtor()
 //    {
@@ -226,8 +225,6 @@ namespace Keeper.ViewModels
 //        DepoSeries.Add(new DateProcentPoint(dt, 100));
 //      }
 //    }
-
-
 
 //    public void CashDepoProportionChartCtor()
 //    {
@@ -254,7 +251,6 @@ namespace Keeper.ViewModels
     public void CashDepoProportionChartCtor()
     {
       CashSeries = new List<DateProcentPoint>();
-      DepoSeries = new List<DateProcentPoint>();
 
       decimal cashInUsd = 0, depoInUsd = 0;
       var dt = new DateTime(2002, 1, 1);
@@ -267,13 +263,19 @@ namespace Keeper.ViewModels
         while (tr.Timestamp.Date == dt.Date)
         {
           if (tr.Debet.IsTheSameOrDescendantOf("На руках"))
-            cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+          {
+            cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount/(decimal) Rate.GetRate(tr.Currency, tr.Timestamp);
+            if (tr.Operation == OperationType.Обмен)
+              cashInUsd += tr.Currency2 == CurrencyCodes.USD
+                             ? tr.Amount2
+                             : tr.Amount2/(decimal) Rate.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
+          }
           if (tr.Credit.IsTheSameOrDescendantOf("На руках"))
             cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
           if (tr.Debet.IsTheSameOrDescendantOf("Депозиты"))
-            depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
-          if (tr.Credit.IsTheSameOrDescendantOf("Депозиты"))
             depoInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+          if (tr.Credit.IsTheSameOrDescendantOf("Депозиты"))
+            depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
 
           if (index == transactionsArray.Count()-1) break;
           index++;
@@ -281,7 +283,6 @@ namespace Keeper.ViewModels
         }
 
         CashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-        DepoSeries.Add(new DateProcentPoint(dt, 100));
         if (index == transactionsArray.Count() - 1) break;
         dt = dt.AddDays(1);
 
