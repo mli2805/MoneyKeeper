@@ -86,16 +86,19 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <chartingToolkit:Chart Name="Chart1" Margin="-3,-10,-8,-20" BorderThickness="0"
-                             Title="Соотношение наличные / депозиты (%)" TitleStyle="{Binding}"
-                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]"
-                             Visibility="{Binding Chart1Visibility}">
-        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date"
-                            ItemsSource="{Binding DepoSeries}" Title="Депозиты"/>
-        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date"
-                            ItemsSource="{Binding CashSeries}" Title="На руках"/>
+      <chartingToolkit:Chart Name="Chart1" Margin="0,-10,-10,-20" BorderThickness="0" 
+                           Title="Распределение вкладов по валютам (%)" TitleStyle="{Binding MyTitleStyle}"
+                           cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4(4)]"
+                           Visibility="{Binding Chart1Visibility}">
+        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
+                                  ItemsSource="{Binding Series1}" Title="USD" />
+        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
+                                  ItemsSource="{Binding Series2}" Title="BYR" />
+        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
+                                  ItemsSource="{Binding Series3}" Title="EUR" />
       </chartingToolkit:Chart>
-      <chartingToolkit:Chart Name="Chart2" Margin="0,-10,-110,-20" Grid.Row="0" Grid.Column="1" BorderThickness="0" 
+
+      <chartingToolkit:Chart Name="Chart2" Margin="0,-10,-105,-20" Grid.Row="0" Grid.Column="1" BorderThickness="0" 
                            Title="Суммы дохода по годам начисления (не выплаты)" TitleStyle="{Binding MyTitleStyle}"
                              cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart2()]"
                              Visibility="{Binding Chart2Visibility}">
@@ -103,25 +106,20 @@
                                       ItemsSource="{Binding YearsList}" IsSelectionEnabled="True"/>
       </chartingToolkit:Chart>
 
-      <chartingToolkit:Chart Name="Chart3" Margin="-3,-10,-8,-20" Grid.Row="1" BorderThickness="0"
-                           Title="Сумма депозитов на текущий момент:" TitleStyle="{Binding MyTitleStyle}"
-                            cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart3()]"
-                            Visibility="{Binding Chart3Visibility}">
-        <chartingToolkit:PieSeries
-        DependentValuePath="Amount" IndependentValuePath="Subject" 
-        ItemsSource="{Binding TotalsList}" IsSelectionEnabled="True"/>
+      <chartingToolkit:Chart Name="Chart3" Margin="0,-10,-8,-20" Grid.Row="1" BorderThickness="0"
+                             Title="Распределение вкладов по валютам на текущий момент:" TitleStyle="{Binding MyTitleStyle}"
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart3()]"
+                             Visibility="{Binding Chart3Visibility}">
+        <chartingToolkit:PieSeries DependentValuePath="Amount" IndependentValuePath="Subject" 
+                                   ItemsSource="{Binding TotalsList}" IsSelectionEnabled="True"/>
       </chartingToolkit:Chart>
-
-      <chartingToolkit:Chart Name="Chart4" Margin="0,-10,-10,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0" 
-                           Title="Распределение вкладов по валютам (%)" TitleStyle="{Binding MyTitleStyle}"
-                           cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4(4)]"
-                           Visibility="{Binding Chart4Visibility}">
-        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
-                                  ItemsSource="{Binding Series1}" Title="USD" />
-        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
-                                  ItemsSource="{Binding Series2}" Title="BYR" />
-        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
-                                  ItemsSource="{Binding Series3}" Title="EUR" />
+      
+      <chartingToolkit:Chart Name="Chart4" Margin="-3,-10,-110,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0"
+                             Title="Процент средств на руках (остальные на депозите)" TitleStyle="{Binding}"
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]"
+                             Visibility="{Binding Chart4Visibility}">
+        <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date"
+                                    ItemsSource="{Binding CashSeries}" Title="На руках"/>
       </chartingToolkit:Chart>
 
     </Grid>
