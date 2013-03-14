@@ -46,9 +46,9 @@
   </Window.Resources>
   <Grid Name="MainGrid">
     <Grid.RowDefinitions>
-      <RowDefinition Height="10*"/>
+      <RowDefinition Height="{Binding UpperPart}"/>
       <RowDefinition Height="15"/>
-      <RowDefinition Height="15*"/>
+      <RowDefinition Height="{Binding BottomPart}"/>
     </Grid.RowDefinitions>
     <ListView Margin="2" Grid.ColumnSpan="2" 
               ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
@@ -88,7 +88,7 @@
       </Grid.ColumnDefinitions>
       <chartingToolkit:Chart Name="Chart1" Margin="0,-10,-10,-20" BorderThickness="0" 
                            Title="Распределение вкладов по валютам (%)" TitleStyle="{Binding MyTitleStyle}"
-                           cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4(4)]"
+                           cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]"
                            Visibility="{Binding Chart1Visibility}">
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
                                   ItemsSource="{Binding Series1}" Title="USD" />
@@ -115,11 +115,11 @@
       </chartingToolkit:Chart>
       
       <chartingToolkit:Chart Name="Chart4" Margin="-3,-10,-110,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0"
-                             Title="Процент средств на руках (остальные на депозите)" TitleStyle="{Binding}"
-                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]"
+                             Title="Среднемесячный процент средств на руках (остальные на депозите)" TitleStyle="{Binding MyTitleStyle}"
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4]"
                              Visibility="{Binding Chart4Visibility}">
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date"
-                                    ItemsSource="{Binding CashSeries}" Title="На руках"/>
+                                    ItemsSource="{Binding MonthlyCashSeries}" Title="На руках"/>
       </chartingToolkit:Chart>
 
     </Grid>
