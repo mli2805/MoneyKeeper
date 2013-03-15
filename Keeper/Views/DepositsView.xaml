@@ -4,9 +4,8 @@
         Title="DepositsView" Height="808" Width="938" WindowStartupLocation="CenterScreen"
         xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:cal="http://www.caliburnproject.org" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:Utils="clr-namespace:Keeper.Utils" >
+        xmlns:Utils="clr-namespace:Keeper.Utils" xmlns:System="clr-namespace:System;assembly=mscorlib">
   <Window.Resources>
-    <ResourceDictionary>
       <DataTemplate x:Key="StartAmountColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
@@ -42,7 +41,71 @@
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
-    </ResourceDictionary>
+    <Style x:Key="ButtonOnSplitterFocusedStyle" TargetType="{x:Type Button}">
+      <Setter Property="Background" Value="AliceBlue"/>
+      
+    </Style>
+    <Style x:Key="ButtonOnSplitterStyle" TargetType="{x:Type Button}">
+      <Setter Property="FocusVisualStyle"
+					Value="{StaticResource ButtonOnSplitterFocusedStyle}" />
+      <Setter Property="Background"
+					Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+      <Setter Property="BorderBrush"
+					Value="#FF373737" />
+      <Setter Property="BorderThickness"
+					Value="0" />
+      <Setter Property="Foreground"
+					Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+      <Setter Property="HorizontalContentAlignment"
+					Value="Stretch" />
+      <Setter Property="VerticalContentAlignment"
+					Value="Stretch" />
+      <Setter Property="Padding"
+					Value="1" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								Margin="{TemplateBinding Padding}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								Background="{TemplateBinding Background}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								Padding="{TemplateBinding Padding}">
+              <ContentPresenter RecognizesAccessKey="True"
+											  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsKeyboardFocused"
+									 Value="true" />
+              <Trigger Property="ToggleButton.IsChecked"
+									 Value="true" />
+              <Trigger Property="IsEnabled"
+									 Value="false">
+                <Setter Property="Foreground"
+										Value="#ADADAD" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="GridSplitterWithButtonsStyle" TargetType="{x:Type GridSplitter}">
+      <Setter Property="Background" Value="Azure"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type GridSplitter}">
+            <Grid>
+              <StackPanel Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Cursor="SizeNS">
+                <Button Name="CollapseListView" Style="{DynamicResource ButtonOnSplitterStyle}" Height="15" Width="30" Cursor="Arrow" HorizontalAlignment="Left" Margin="10,0,0,0">
+                  <Path Data="M3,2 H25 L3,11 V2" Stroke="Black" SnapsToDevicePixels="True"/>
+                </Button>
+              </StackPanel>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
   </Window.Resources>
   <Grid Name="MainGrid">
     <Grid.RowDefinitions>
@@ -75,8 +138,8 @@
         </GridView>
       </ListView.View>
     </ListView>
-    <GridSplitter Background="#E9E9E9" Margin="2,0" Height="15" Grid.Row="1" Grid.ColumnSpan="2" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Center" BorderThickness="1" BorderBrush="AliceBlue" />
+    <GridSplitter Margin="2,0" Height="15" Grid.Row="1" Grid.ColumnSpan="2" Cursor="SizeNS" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" Style="{DynamicResource GridSplitterWithButtonsStyle}" />
     <Grid Name="InnerBottomGrid" Grid.Row="2">
       <Grid.RowDefinitions>
         <RowDefinition Height="{Binding UpperRow}"/>
@@ -88,8 +151,7 @@
       </Grid.ColumnDefinitions>
       <chartingToolkit:Chart Name="Chart1" Margin="0,-10,-10,-20" BorderThickness="0" 
                            Title="Распределение вкладов по валютам (%)" TitleStyle="{Binding MyTitleStyle}"
-                           cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]"
-                           Visibility="{Binding Chart1Visibility}">
+                           cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]">
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
                                   ItemsSource="{Binding Series1}" Title="USD" />
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
@@ -100,24 +162,21 @@
 
       <chartingToolkit:Chart Name="Chart2" Margin="0,-10,-105,-20" Grid.Row="0" Grid.Column="1" BorderThickness="0" 
                            Title="Суммы дохода по годам начисления (не выплаты)" TitleStyle="{Binding MyTitleStyle}"
-                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart2()]"
-                             Visibility="{Binding Chart2Visibility}">
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart2()]">
         <chartingToolkit:ColumnSeries DependentValuePath="Amount" IndependentValuePath="Subject" 
                                       ItemsSource="{Binding YearsList}" IsSelectionEnabled="True"/>
       </chartingToolkit:Chart>
 
       <chartingToolkit:Chart Name="Chart3" Margin="0,-10,-8,-20" Grid.Row="1" BorderThickness="0"
                              Title="Распределение вкладов по валютам на текущий момент:" TitleStyle="{Binding MyTitleStyle}"
-                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart3()]"
-                             Visibility="{Binding Chart3Visibility}">
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart3()]">
         <chartingToolkit:PieSeries DependentValuePath="Amount" IndependentValuePath="Subject" 
                                    ItemsSource="{Binding TotalsList}" IsSelectionEnabled="True"/>
       </chartingToolkit:Chart>
       
       <chartingToolkit:Chart Name="Chart4" Margin="-3,-10,-110,-20" Grid.Row="2" Grid.Column="1" BorderThickness="0"
                              Title="Среднемесячный процент средств на руках (остальные на депозите)" TitleStyle="{Binding MyTitleStyle}"
-                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4]"
-                             Visibility="{Binding Chart4Visibility}">
+                             cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart4]">
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date"
                                     ItemsSource="{Binding MonthlyCashSeries}" Title="На руках"/>
       </chartingToolkit:Chart>

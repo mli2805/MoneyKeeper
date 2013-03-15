@@ -47,74 +47,6 @@ namespace Keeper.ViewModels
     public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViewModels { get; set; }
 
-    private GridLength _upperPart;
-    private GridLength _lowerPart;
-    public GridLength UpperPart
-    {
-      get { return _upperPart; }
-      set
-      {
-        if (value.Equals(_upperPart)) return;
-        _upperPart = value;
-        NotifyOfPropertyChange(() => UpperPart);
-      }
-    }
-    public GridLength LowerPart
-    {
-      get { return _lowerPart; }
-      set
-      {
-        if (value.Equals(_lowerPart)) return;
-        _lowerPart = value;
-        NotifyOfPropertyChange(() => LowerPart);
-      }
-    }
-
-    private GridLength _upperRow;
-    private GridLength _lowerRow;
-    private GridLength _leftColumn;
-    private GridLength _rightColumn;
-    public GridLength UpperRow
-    {
-      get { return _upperRow; }
-      set
-      {
-        if (value.Equals(_upperRow)) return;
-        _upperRow = value;
-        NotifyOfPropertyChange(() => UpperRow);
-      }
-    }
-    public GridLength LowerRow
-    {
-      get { return _lowerRow; }
-      set
-      {
-        if (value.Equals(_lowerRow)) return;
-        _lowerRow = value;
-        NotifyOfPropertyChange(() => LowerRow);
-      }
-    }
-    public GridLength LeftColumn
-    {
-      get { return _leftColumn; }
-      set
-      {
-        if (value.Equals(_leftColumn)) return;
-        _leftColumn = value;
-        NotifyOfPropertyChange(() => LeftColumn);
-      }
-    }
-    public GridLength RightColumn
-    {
-      get { return _rightColumn; }
-      set
-      {
-        if (value.Equals(_rightColumn)) return;
-        _rightColumn = value;
-        NotifyOfPropertyChange(() => RightColumn);
-      }
-    }
-
     public Style MyTitleStyle { get; set; }
 
     public DepositsViewModel()
@@ -145,8 +77,8 @@ namespace Keeper.ViewModels
 
       TotalBalancesCtor();
       YearsProfitCtor();
-      DepoCurrenciesProportionChartCtor();
-      CashDepoProportionChartCtor();
+//      DepoCurrenciesProportionChartCtor();
+//      CashDepoProportionChartCtor();
 
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
@@ -371,25 +303,111 @@ namespace Keeper.ViewModels
                                Date = new DateTime(g.Key.year,g.Key.month,15),
                                Procent = Math.Round(g.Average(a => a.Procent))
                              }).ToList();
-
-
     }
 
-    #region // Visibility
+    #region // Fun with Collapse-Expand
 
+    // листвью vs чарты
+
+    private GridLength _upperPart;
+    private GridLength _lowerPart;
+    public GridLength UpperPart
+    {
+      get { return _upperPart; }
+      set
+      {
+        if (value.Equals(_upperPart)) return;
+        _upperPart = value;
+        NotifyOfPropertyChange(() => UpperPart);
+      }
+    }
+    public GridLength LowerPart
+    {
+      get { return _lowerPart; }
+      set
+      {
+        if (value.Equals(_lowerPart)) return;
+        _lowerPart = value;
+        NotifyOfPropertyChange(() => LowerPart);
+      }
+    }
+
+    public void CollapseListView()
+    {
+      UpperPart = TurnoverGridSize(UpperPart);
+    }
+
+    // чарты между собой
+    
+    private GridLength _upperRow;
+    private GridLength _lowerRow;
+    private GridLength _leftColumn;
+    private GridLength _rightColumn;
+    public GridLength UpperRow
+    {
+      get { return _upperRow; }
+      set
+      {
+        if (value.Equals(_upperRow)) return;
+        _upperRow = value;
+        NotifyOfPropertyChange(() => UpperRow);
+      }
+    }
+    public GridLength LowerRow
+    {
+      get { return _lowerRow; }
+      set
+      {
+        if (value.Equals(_lowerRow)) return;
+        _lowerRow = value;
+        NotifyOfPropertyChange(() => LowerRow);
+      }
+    }
+    public GridLength LeftColumn
+    {
+      get { return _leftColumn; }
+      set
+      {
+        if (value.Equals(_leftColumn)) return;
+        _leftColumn = value;
+        NotifyOfPropertyChange(() => LeftColumn);
+      }
+    }
+    public GridLength RightColumn
+    {
+      get { return _rightColumn; }
+      set
+      {
+        if (value.Equals(_rightColumn)) return;
+        _rightColumn = value;
+        NotifyOfPropertyChange(() => RightColumn);
+      }
+    }
 
     public void ExpandChart1()
     {
-      TurnoverGridSize(ref LowerRow);
-      TurnoverGridSize(ref RightColumn);
+      LowerRow = TurnoverGridSize(LowerRow);
+      RightColumn = TurnoverGridSize(RightColumn);
     }
-    public void ExpandChart2() {  }
-    public void ExpandChart3() {  }
-    public void ExpandChart4() {  }
-
-    private void TurnoverGridSize(ref GridLength size)
+    public void ExpandChart2()
     {
-      size = size == new GridLength(0) ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
+      LowerRow = TurnoverGridSize(LowerRow);
+      LeftColumn = TurnoverGridSize(LeftColumn);
+    }
+    public void ExpandChart3()
+    {
+      UpperRow = TurnoverGridSize(UpperRow);
+      RightColumn = TurnoverGridSize(RightColumn);
+    }
+    public void ExpandChart4()
+    {
+      UpperRow = TurnoverGridSize(UpperRow);
+      LeftColumn = TurnoverGridSize(LeftColumn);
+    }
+
+    private GridLength TurnoverGridSize(GridLength size)
+    {
+      return size == new GridLength(0) ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
     }
 
     #endregion
