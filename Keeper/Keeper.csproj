@@ -92,6 +92,7 @@
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Balance.cs" />
+    <Compile Include="Utils\CollapseAction.cs" />
     <Compile Include="Utils\DbClear.cs" />
     <Compile Include="Utils\DbSave.cs" />
     <Compile Include="Utils\GridViewRowPresenterWithGridLines.cs" />
