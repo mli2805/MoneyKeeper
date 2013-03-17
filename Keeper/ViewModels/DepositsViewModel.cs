@@ -332,12 +332,7 @@ namespace Keeper.ViewModels
       }
     }
 
-    public void CollapseListView()
-    {
-      UpperPart = TurnoverGridSize(UpperPart);
-    }
-
-    // чарты между собой
+ // чарты между собой
     
     private GridLength _upperRow;
     private GridLength _lowerRow;
