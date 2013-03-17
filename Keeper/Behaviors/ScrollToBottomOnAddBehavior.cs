@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace Keeper.Utils
+namespace Keeper.Behaviors
 {
   class ScrollToBottomOnAddBehavior : Behavior<ListView>
   {

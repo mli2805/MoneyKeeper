@@ -3,10 +3,9 @@ using System.Collections.Specialized;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-
-namespace Keeper.Utils
+namespace Keeper.Behaviors
 {
-  class ScrollToDisappearedDueDateChange : Behavior<ListView>
+  class ScrollToDisappearedDueDateChangeBehavior : Behavior<ListView>
   {
     private int i = -1;
     protected override void OnAttached()

@@ -6,7 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
-        mc:Ignorable="d"
+        xmlns:Behaviors="clr-namespace:Keeper.Behaviors" mc:Ignorable="d"
         Title="{Binding Title}" Height="176" Width="447"
         d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}">
     <Grid>
@@ -14,7 +14,7 @@
              VerticalAlignment="Top" Width="344"
              Text="{Binding AccountInWork.Name}">
     <i:Interaction.Behaviors>
-      <u:SetFocusOnLoadBehavior />
+      <Behaviors:SetFocusOnLoadBehavior />
       </i:Interaction.Behaviors>
     </TextBox>
     <Button x:Name="Accept" Content="Принять" HorizontalAlignment="Left" Margin="116,104,0,0" 
