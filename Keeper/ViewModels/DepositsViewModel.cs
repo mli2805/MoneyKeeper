@@ -77,8 +77,8 @@ namespace Keeper.ViewModels
 
       TotalBalancesCtor();
       YearsProfitCtor();
-//      DepoCurrenciesProportionChartCtor();
-//      CashDepoProportionChartCtor();
+      DepoCurrenciesProportionChartCtor();
+      CashDepoProportionChartCtor();
 
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
