@@ -4,7 +4,8 @@
         Title="DepositsView" Height="808" Width="938" WindowStartupLocation="CenterScreen"
         xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:cal="http://www.caliburnproject.org" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:Utils="clr-namespace:Keeper.Utils" xmlns:System="clr-namespace:System;assembly=mscorlib">
+        xmlns:Utils="clr-namespace:Keeper.Utils" xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:Behaviors="clr-namespace:Keeper.Behaviors" xmlns:XamlExtensions="clr-namespace:Keeper.XamlExtensions">
   <Window.Resources>
       <DataTemplate x:Key="StartAmountColumnStyle">
         <TextBlock HorizontalAlignment="Right">
@@ -104,7 +105,7 @@
                   <Path Data="M0,0 H17 V2 H0 M0,4 H17 V6 H0 M0,8 H17 V10 H0" Fill="DarkGray" SnapsToDevicePixels="True"/>
                   <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                      <Utils:CollapseAction Direction="Bottom"/>
+                      <XamlExtensions:CollapseAction Direction="Bottom"/>
                     </i:EventTrigger>
                   </i:Interaction.Triggers>
                 </Button>
@@ -113,7 +114,7 @@
                   <Path Data="M0,3 H4 V7 H0 M6,3 H10 V7 H6 M12,3 H16 V7 H12" Fill="DarkGray" SnapsToDevicePixels="True"/>
                   <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                      <Utils:CollapseAction Direction="Left"/>
+                      <XamlExtensions:CollapseAction Direction="Left"/>
                     </i:EventTrigger>
                   </i:Interaction.Triggers>
                 </Button>
@@ -122,7 +123,7 @@
                   <Path Data="M0,11 L1,3 L15,8 L16,0" Fill="DarkGray" SnapsToDevicePixels="True"/>
                   <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                      <Utils:CollapseAction Direction="Top"/>
+                      <XamlExtensions:CollapseAction Direction="Top"/>
                     </i:EventTrigger>
                   </i:Interaction.Triggers>
                 </Button>
@@ -143,7 +144,7 @@
               ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
               cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" >
       <i:Interaction.Behaviors>
-        <Utils:ScrollToBottomOnLoadBehavior/>
+        <Behaviors:ScrollToBottomOnLoadBehavior/>
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">

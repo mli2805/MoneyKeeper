@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Interactivity;
 
-namespace Keeper.Utils
+namespace Keeper.Behaviors
 {
   public class SetFocusOnLoadBehavior : Behavior<FrameworkElement>
   {

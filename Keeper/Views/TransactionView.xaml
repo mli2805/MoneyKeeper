@@ -9,7 +9,7 @@
         xmlns:cal="http://www.caliburnproject.org" 
         Icon="/Keeper;component/Resources/transactions.ico" 
         xmlns:ii="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
-        mc:Ignorable="d"
+        xmlns:Behaviors="clr-namespace:Keeper.Behaviors" xmlns:XamlExtensions="clr-namespace:Keeper.XamlExtensions" mc:Ignorable="d"
         d:DataContext="{d:DesignInstance ViewModels:TransactionViewModel}" 
         Title="TransactionView" Height="806" MinWidth="1032" MaxWidth="1032" SizeToContent="Width"
         WindowStartupLocation="CenterScreen"
@@ -93,10 +93,10 @@
               ItemsSource="{Binding Rows}" SelectedIndex="{Binding SelectedTransactionIndex, Mode=TwoWay}" 
               SelectedItem="{Binding SelectedTransaction, Mode=OneWayToSource}"  >
       <i:Interaction.Behaviors>
-        <u:ScrollToDisappearedDueDateChange />
-        <u:ScrollToBottomOnLoadBehavior />
-        <u:ScrollToBottomOnAddBehavior />
-        <u:SetFocusOnLoadBehavior />
+        <Behaviors:ScrollToDisappearedDueDateChangeBehavior />
+        <Behaviors:ScrollToBottomOnLoadBehavior />
+        <Behaviors:ScrollToBottomOnAddBehavior />
+        <Behaviors:SetFocusOnLoadBehavior />
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">
@@ -113,7 +113,7 @@
                 <Border BorderBrush="{TemplateBinding BorderBrush}" 
                                                   BorderThickness="{TemplateBinding BorderThickness}" 
                                                   Background="{TemplateBinding Background}">
-                  <u:GridViewRowPresenterWithGridLines 
+                  <XamlExtensions:GridViewRowPresenterWithGridLines 
                                                   Columns="{TemplateBinding GridView.ColumnCollection}"
                                                   Margin="{TemplateBinding Padding}" />
                 </Border>

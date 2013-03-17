@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace Keeper.Utils
+namespace Keeper.Behaviors
 {
   /// <summary>
   /// Этот Behavior аттачится на ListView (т.е. AssociatedObject это ListView)
