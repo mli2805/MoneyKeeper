@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -64,9 +61,7 @@ namespace Keeper.ViewModels
         }
       }
       SelectedDeposit = DepositsList[0];
-      UpperPart = new GridLength(10, GridUnitType.Star);
-      LowerPart = new GridLength(15, GridUnitType.Star);
-
+     
       UpperRow = new GridLength(1,GridUnitType.Star);
       LowerRow = new GridLength(1, GridUnitType.Star);
       LeftColumn = new GridLength(1, GridUnitType.Star);
@@ -305,34 +300,7 @@ namespace Keeper.ViewModels
                              }).ToList();
     }
 
-    #region // Fun with Collapse-Expand
-
-    // листвью vs чарты
-
-    private GridLength _upperPart;
-    private GridLength _lowerPart;
-    public GridLength UpperPart
-    {
-      get { return _upperPart; }
-      set
-      {
-        if (value.Equals(_upperPart)) return;
-        _upperPart = value;
-        NotifyOfPropertyChange(() => UpperPart);
-      }
-    }
-    public GridLength LowerPart
-    {
-      get { return _lowerPart; }
-      set
-      {
-        if (value.Equals(_lowerPart)) return;
-        _lowerPart = value;
-        NotifyOfPropertyChange(() => LowerPart);
-      }
-    }
-
- // чарты между собой
+    #region // Fun with Charts Expand
     
     private GridLength _upperRow;
     private GridLength _lowerRow;
