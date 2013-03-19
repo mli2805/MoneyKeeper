@@ -227,28 +227,28 @@
                     Text="{Binding PaymentsFinishDate, Mode=TwoWay}" />
 
         <Button Name="OneDayBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"
-              Height="20" Width="35" Content="-Д" Background="White" FontSize="9" />
+              Height="20" Width="35" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9"/>
         <Button Name="OneMonthBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0"
-              Height="20" Width="35" Content="-М" Background="White" FontSize="9" />
+              Height="20" Width="35" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
         <Button Name="OneYearBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-              Height="20" Width="35" Content="-Г" Background="White" FontSize="9" />
+              Height="20" Width="35" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
 
         <Button Name="OneDayAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0"
-              Height="20" Width="35" Content="+Д" Background="White" FontSize="9" />
+              Height="20" Width="35" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
         <Button Name="OneMonthAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,60,0"
-              Height="20" Width="35" Content="+М" Background="White" FontSize="9" />
+              Height="20" Width="35" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
         <Button Name="OneYearAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
-              Height="20" Width="35" Content="+Г" Background="White" FontSize="9" />
+              Height="20" Width="35" Content="+Г" Style="{StaticResource MyButtonStyle}"  FontSize="9" />
 
         <Button Name="TodayPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
-              Height="30" Width="85" Content="Сегодня" Background="White" />
+              Height="30" Width="85" Content="Сегодня" Style="{StaticResource MyButtonStyle}" />
         <Button Name="YesterdayPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
-              Height="30" Width="85" Content="Вчера" Background="White" />
+              Height="30" Width="85" Content="Вчера" Style="{StaticResource MyButtonStyle}" />
 
         <Button Name="ThisMonthPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
-              Height="30" Width="86" Content="Этот месяц" Background="White" />
+              Height="30" Width="86" Content="Этот месяц" Style="{StaticResource MyButtonStyle}" />
         <Button Name="LastMonthPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
-              Height="30" Width="86" Background="White" >
+              Height="30" Width="86" Style="{StaticResource MyButtonStyle}" >
           <ContentControl >
             <Grid>
               <Grid.RowDefinitions>
@@ -262,9 +262,9 @@
         </Button>
 
         <Button Name="ThisYearPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
-              Height="30" Width="85" Content="Этот год" Background="White" />
+              Height="30" Width="85" Content="Этот год" Style="{StaticResource MyButtonStyle}" />
         <Button Name="LastYearPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
-              Height="30" Width="85" Content="Прошлый год" Background="White" />
+              Height="30" Width="85" Content="Прошлый год" Style="{StaticResource MyButtonStyle}" />
 
       </Grid>
       <Grid Visibility="{Binding BalancePeriodChoiseControls}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="2">
@@ -278,25 +278,25 @@
         <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding BalanceDate, Mode=TwoWay}" />
         <Button Name="OneDayBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
-              Height="20" Width="25" Content="-Д" Background="White" FontSize="9" />
+              Height="20" Width="25" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
         <Button Name="OneMonthBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0"
-              Height="20" Width="25" Content="-М" Background="White" FontSize="9" />
+              Height="20" Width="25" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
         <Button Name="OneYearBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
-              Height="20" Width="25" Content="-Г" Background="White" FontSize="9" />
+              Height="20" Width="25" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
 
         <Button Name="OneDayAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,70,0"
-              Height="20" Width="25" Content="+Д" Background="White" FontSize="9" />
+              Height="20" Width="25" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
         <Button Name="OneMonthAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0"
-              Height="20" Width="25" Content="+М" Background="White" FontSize="9" />
+              Height="20" Width="25" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
         <Button Name="OneYearAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
-              Height="20" Width="25" Content="+Г" Background="White" FontSize="9" />
+              Height="20" Width="25" Content="+Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
 
         <Button Name="TodayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-              Height="30" Width="80" Content="Сегодня" Background="White" />
+              Height="30" Width="80" Content="Сегодня" Style="{StaticResource MyButtonStyle}" />
         <Button Name="YesterdayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
-              Height="30" Width="80" Content="Вчера" Background="White" />
+              Height="30" Width="80" Content="Вчера" Style="{StaticResource MyButtonStyle}" />
         <Button Name="LastMonthEndBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
-              Height="30" Width="80" Background="White" >
+              Height="30" Width="80" Style="{StaticResource MyButtonStyle}" >
           <ContentControl >
             <Grid>
               <Grid.RowDefinitions>
