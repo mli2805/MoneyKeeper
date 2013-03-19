@@ -18,9 +18,9 @@
       </i:Interaction.Behaviors>
     </TextBox>
     <Button x:Name="Accept" Content="Принять" HorizontalAlignment="Left" Margin="116,104,0,0" 
-            VerticalAlignment="Top" Width="75" IsDefault="True"/>
+            VerticalAlignment="Top" Width="75" IsDefault="True" Style="{StaticResource MyButtonStyle}"/>
     <Button x:Name="Decline" Content="Отклонить" HorizontalAlignment="Left" Margin="235,104,0,0" 
-            VerticalAlignment="Top" Width="75" IsCancel="True" />
+            VerticalAlignment="Top" Width="75" IsCancel="True" Style="{StaticResource MyButtonStyle}"/>
     <Label Content="Название" HorizontalAlignment="Left" Margin="8,56,0,0" VerticalAlignment="Top"/>
     <ComboBox HorizontalAlignment="Left" Margin="75,18,0,0" VerticalAlignment="Top" Width="344"
               ItemsSource="{Binding CategoriesForParentList}" SelectedItem="{Binding SelectedParent}">

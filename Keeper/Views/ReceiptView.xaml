@@ -38,9 +38,9 @@
              BorderBrush="#555555" Height="22"
              Text="{Binding PartialComment, Mode=TwoWay}" />
     <!--    кнопки-->
-    <Button Content="Еще"      Name="OnceMore"  Grid.Row="3" Margin="120,12,  0,12" Width="70" HorizontalAlignment="Left" Background="White"/>
-    <Button Content="Вернуть"  Name="DeleteOne" Grid.Row="3" Margin="  0,12,120,12" Width="70" HorizontalAlignment="Right" Background="White"/>
-    <Button Content="Принять"  Name="AcceptReceipt" Grid.Row="3" Margin=" 10,10,  0,10" Width="100" HorizontalAlignment="Left" Background="White"></Button>
-    <Button Content="Отменить" Name="CancelReceipt" Grid.Row="3" Margin="  0,10, 10,10" Width="100" HorizontalAlignment="Right" Background="White"></Button>
+    <Button Content="Еще"      Name="OnceMore"  Grid.Row="3" Margin="120,12,  0,12" Width="70" HorizontalAlignment="Left" Style="{StaticResource MyButtonStyle}"/>
+    <Button Content="Вернуть"  Name="DeleteOne" Grid.Row="3" Margin="  0,12,120,12" Width="70" HorizontalAlignment="Right" Style="{StaticResource MyButtonStyle}"/>
+    <Button Content="Принять"  Name="AcceptReceipt" Grid.Row="3" Margin=" 10,10,  0,10" Width="100" HorizontalAlignment="Left" Style="{StaticResource MyButtonStyle}" />
+    <Button Content="Отменить" Name="CancelReceipt" Grid.Row="3" Margin="  0,10, 10,10" Width="100" HorizontalAlignment="Right" Style="{StaticResource MyButtonStyle}" />
   </Grid>
 </Window>

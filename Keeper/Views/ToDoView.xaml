@@ -18,7 +18,7 @@
     </Grid.RowDefinitions>
     <ListBox Grid.ColumnSpan="3" Margin="5,5,5,0" ItemsSource="{Binding ToDoList}"/>
     <TextBox Grid.Row="1" Margin="5" BorderBrush="Black" Text="{Binding NewJob, UpdateSourceTrigger=PropertyChanged}" />
-    <Button Name="Add" Content="Add" IsDefault="True" Grid.Row="1" Grid.Column="1" Margin="5"/>
-    <Button Name="CloseWindow" Content="Close" IsCancel="True" Grid.Row="1" Grid.Column="2" Margin="5"/>
+    <Button Name="Add" Content="Add" IsDefault="True" Grid.Row="1" Grid.Column="1" Margin="5" Style="{StaticResource MyButtonStyle}"/>
+    <Button Name="CloseWindow" Content="Close" IsCancel="True" Grid.Row="1" Grid.Column="2" Margin="5" Style="{StaticResource MyButtonStyle}"/>
   </Grid>
 </Window>
