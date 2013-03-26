@@ -2,6 +2,7 @@
 
 namespace Keeper.DomainModel
 {
+  [Serializable]
   public class ArticleAssociation : IComparable
   {
     public int Id { get; set; }

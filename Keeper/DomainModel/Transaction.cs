@@ -7,6 +7,7 @@ using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
+  [Serializable]
   public class Transaction : PropertyChangedBase
   {
     private DateTime _timestamp;

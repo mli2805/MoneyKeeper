@@ -5,6 +5,7 @@ using Caliburn.Micro;
 
 namespace Keeper.DomainModel
 {
+  [Serializable]
   public class CurrencyRate : PropertyChangedBase
   {
     //    Все курсы валют хранятся относительно USD (дата - валюта - курс к доллару)

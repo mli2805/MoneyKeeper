@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters.Soap;
 using System.Windows;
+using System.Xml.Serialization;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
@@ -489,8 +494,120 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
-     
+      DbBinarySerialization();
+      DbBinaryDeserialization();
+
+//      DbSoapSerialization();
+//      DbSoapDeserialization();
+
+//      DbXmlSerialization();
+//      DbXmlDeserialization();
     }
 
+
+    #region SOAP
+
+    private static void DbSoapSerialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      var soapFormatter = new SoapFormatter();
+      using (Stream fStream = new FileStream("KeeperDb.soap", FileMode.Create, FileAccess.Write))
+      {
+        soapFormatter.Serialize(fStream, Db);
+      }
+
+      watch1.Stop();
+      Console.WriteLine("SoapFormatter serialization time is {0}", watch1.Elapsed);
+    }
+
+    private static void DbSoapDeserialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      var db2 = new KeeperTxtDb();
+      var soapFormatter = new SoapFormatter();
+      using (Stream fStream = new FileStream("KeeperDb.soap", FileMode.Open, FileAccess.Read))
+      {
+        db2 = (KeeperTxtDb)soapFormatter.Deserialize(fStream);
+      }
+
+      watch1.Stop();
+      Console.WriteLine("SoapFormatter deserialization time is {0}", watch1.Elapsed);
+    }
+
+    #endregion
+
+    #region XML serialization
+
+    private static void DbXmlSerialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      var xmlSerializer = new XmlSerializer(typeof(KeeperTxtDb));
+      using (Stream fStream = new FileStream("KeeperDb.xml",FileMode.Create,FileAccess.Write))
+      {
+        xmlSerializer.Serialize(fStream,Db);
+      }
+
+      watch1.Stop();
+      Console.WriteLine("XmlSerializer serialization time is {0}", watch1.Elapsed);
+    }
+
+    private static void DbXmlDeserialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      var db1 = new KeeperTxtDb();
+      var xmlSerializer = new XmlSerializer(typeof(KeeperTxtDb));
+      using (Stream fStream = new FileStream("DbKeeper.xml",FileMode.Open,FileAccess.Read))
+      {
+        db1 = (KeeperTxtDb)xmlSerializer.Deserialize(fStream);
+      }
+
+      watch1.Stop();
+      Console.WriteLine("XmlSerializer deserialization time is {0}", watch1.Elapsed);
+    }
+
+    #endregion
+
+    #region Binary serialization
+
+    private static void DbBinarySerialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      var binaryFormatter = new BinaryFormatter();
+      using (Stream fStream = new FileStream("KeeperDb.binary", FileMode.Create, FileAccess.Write))
+      {
+        binaryFormatter.Serialize(fStream, Db);
+      }
+
+      watch1.Stop();
+      Console.WriteLine("BinaryFormatter serialization  time is {0}", watch1.Elapsed);
+    }
+
+    private static void DbBinaryDeserialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      var db1 = new KeeperTxtDb();
+      var binaryFormatter = new BinaryFormatter();
+      using (Stream fStream = new FileStream("KeeperDb.binary", FileMode.Open, FileAccess.Read))
+      {
+        db1 = (KeeperTxtDb)binaryFormatter.Deserialize(fStream);
+      }
+
+      watch1.Stop();
+      Console.WriteLine("BinaryFormatter deserialization time is {0}", watch1.Elapsed);
+    }
+
+    #endregion
   }
 }

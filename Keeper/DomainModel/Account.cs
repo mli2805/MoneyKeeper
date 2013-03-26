@@ -7,6 +7,7 @@ using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
+  [Serializable]
   public class Account : PropertyChangedBase, IComparable
   {
 
@@ -28,8 +29,8 @@ namespace Keeper.DomainModel
     public virtual ICollection<Account> Children { get; private set; }
 
     #region ' _isSelected '
+    [NonSerialized]
     private bool _isSelected;
-    [NotMapped]
     public bool IsSelected
     {
       get { return _isSelected; }
@@ -74,10 +75,27 @@ namespace Keeper.DomainModel
       return a.Name == b.Name;
     }
 
+    #region Override == , != , Equals and GetHashCode
+
     public static bool operator !=(Account a,Account b)
     {
       return !(a == b);
     }
+
+    public override bool Equals(object obj)
+    {
+      if (object.ReferenceEquals(this, obj)) return true;
+      var other = obj as Account;
+      if (other == null) return false;
+      return this.Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+      return Name.GetHashCode();
+    }
+
+    #endregion
 
     public static void CopyForEdit(Account destination, Account source)
     {
