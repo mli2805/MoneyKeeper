@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Xml.Serialization;
 using Caliburn.Micro;
@@ -274,7 +275,7 @@ namespace Keeper.ViewModels
         SelectedAccount.Parent.Children.Remove(SelectedAccount);
       }
       else SelectedAccount.Name = accountInWork.Name;
-//      Account.CopyForEdit(SelectedAccount, accountInWork);
+      //      Account.CopyForEdit(SelectedAccount, accountInWork);
     }
 
     public void ShowDeposit()
@@ -497,11 +498,14 @@ namespace Keeper.ViewModels
       DbBinarySerialization();
       DbBinaryDeserialization();
 
-//      DbSoapSerialization();
-//      DbSoapDeserialization();
+      //      DbSoapSerialization();
+      //      DbSoapDeserialization();
 
-//      DbXmlSerialization();
-//      DbXmlDeserialization();
+      //      DbXmlSerialization();
+      //      DbXmlDeserialization();
+
+      DbCryptoSerialization();
+      DbCryptoDeserialization();
     }
 
 
@@ -548,9 +552,9 @@ namespace Keeper.ViewModels
       watch1.Start();
 
       var xmlSerializer = new XmlSerializer(typeof(KeeperTxtDb));
-      using (Stream fStream = new FileStream("KeeperDb.xml",FileMode.Create,FileAccess.Write))
+      using (Stream fStream = new FileStream("KeeperDb.xml", FileMode.Create, FileAccess.Write))
       {
-        xmlSerializer.Serialize(fStream,Db);
+        xmlSerializer.Serialize(fStream, Db);
       }
 
       watch1.Stop();
@@ -564,7 +568,7 @@ namespace Keeper.ViewModels
 
       var db1 = new KeeperTxtDb();
       var xmlSerializer = new XmlSerializer(typeof(KeeperTxtDb));
-      using (Stream fStream = new FileStream("DbKeeper.xml",FileMode.Open,FileAccess.Read))
+      using (Stream fStream = new FileStream("DbKeeper.xml", FileMode.Open, FileAccess.Read))
       {
         db1 = (KeeperTxtDb)xmlSerializer.Deserialize(fStream);
       }
@@ -597,15 +601,64 @@ namespace Keeper.ViewModels
       var watch1 = new Stopwatch();
       watch1.Start();
 
-      var db1 = new KeeperTxtDb();
-      var binaryFormatter = new BinaryFormatter();
       using (Stream fStream = new FileStream("KeeperDb.binary", FileMode.Open, FileAccess.Read))
       {
-        db1 = (KeeperTxtDb)binaryFormatter.Deserialize(fStream);
+        var binaryFormatter = new BinaryFormatter();
+        var db1 = (KeeperTxtDb)binaryFormatter.Deserialize(fStream);
       }
 
       watch1.Stop();
       Console.WriteLine("BinaryFormatter deserialization time is {0}", watch1.Elapsed);
+    }
+
+    #endregion
+
+    #region Crypto
+
+    private static void DbCryptoSerialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      byte[] key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+      byte[] initVector = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+      using (Stream fStream = new FileStream("KeeperDb.crypto", FileMode.Create, FileAccess.Write))
+      {
+        var rmCrypto = new RijndaelManaged();
+
+        using (var cryptoStream = new CryptoStream(fStream, rmCrypto.CreateEncryptor(key, initVector), CryptoStreamMode.Write))
+        {
+          var binaryFormatter = new BinaryFormatter();
+          binaryFormatter.Serialize(cryptoStream, Db);
+        }
+
+      }
+
+      watch1.Stop();
+      Console.WriteLine("BinaryFormatter serialization with Crypto takes {0} sec", watch1.Elapsed);
+    }
+
+    private static void DbCryptoDeserialization()
+    {
+      var watch1 = new Stopwatch();
+      watch1.Start();
+
+      byte[] key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+      byte[] initVector = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+
+      using (Stream fStream = new FileStream("KeeperDb.crypto", FileMode.Open, FileAccess.Read))
+      {
+        var rmCrypto = new RijndaelManaged();
+
+        using (var cryptoStream = new CryptoStream(fStream,rmCrypto.CreateDecryptor(key,initVector),CryptoStreamMode.Read))
+        {
+          var binaryFormatter = new BinaryFormatter();
+          var db1 = (KeeperTxtDb) binaryFormatter.Deserialize(cryptoStream);
+        }
+      }
+
+      watch1.Stop();
+      Console.WriteLine("BinaryFormatter deserialization with Crypto takes {0} sec", watch1.Elapsed);
     }
 
     #endregion
