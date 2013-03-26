@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 
 namespace Keeper.DomainModel
 {
- [Export(typeof(KeeperTxtDb)), PartCreationPolicy(CreationPolicy.Shared)]
+  [Export(typeof(KeeperTxtDb)), PartCreationPolicy(CreationPolicy.Shared)]
+
+  [Serializable]
   public class KeeperTxtDb
   {
     public ObservableCollection<Account> Accounts { get; set; }
