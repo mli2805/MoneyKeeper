@@ -26,7 +26,7 @@ namespace Keeper.DomainModel
       }
     }
     public Account Parent { get; set; }
-    public virtual ICollection<Account> Children { get; private set; }
+    public ObservableCollection<Account> Children { get; private set; }
 
     #region ' _isSelected '
     [NonSerialized]
@@ -38,7 +38,6 @@ namespace Keeper.DomainModel
       {
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
-        // NotifyOfPropertyChange(() => IsSelected);
         if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccount = this;
       }
     }

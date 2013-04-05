@@ -9,7 +9,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.Security.Cryptography;
 using System.Windows;
-using System.Xml;
 using System.Xml.Serialization;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -496,21 +495,21 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
-      DbBinarySerialization();
-      DbBinaryDeserialization();
+//      DbBinarySerialization();
+//      DbBinaryDeserialization();
 
             DbSoapSerialization();
-            DbSoapDeserialization();
+//            DbSoapDeserialization();
 
-      //      DbXmlSerialization();
-      //      DbXmlDeserialization();
+            DbXmlSerialization();
+            DbXmlDeserialization();
 
-      DbCryptoSerialization();
-      DbCryptoDeserialization();
+//      DbCryptoSerialization();
+//      DbCryptoDeserialization();
     }
 
 
-    #region SOAP
+    #region SOAP - не обрабатывает дженерики
 
     private static void DbSoapSerialization()
     {
@@ -518,14 +517,12 @@ namespace Keeper.ViewModels
       watch1.Start();
 
       var soapFormatter = new SoapFormatter();
-      using (Stream fStream = new FileStream("KeeperDb.soap", FileMode.Create, FileAccess.Write))
+      using (Stream fStream = new FileStream("CurrencyRates.soap", FileMode.Create, FileAccess.Write))
       {
-        foreach (var rate in Db.CurrencyRates)
+        foreach (var currencyRate in Db.CurrencyRates)
         {
-          soapFormatter.Serialize(fStream,rate);
+          soapFormatter.Serialize(fStream, currencyRate);
         }
-
-//        soapFormatter.Serialize(fStream, Db);
       }
 
       watch1.Stop();
@@ -537,26 +534,13 @@ namespace Keeper.ViewModels
       var watch1 = new Stopwatch();
       watch1.Start();
 
-//      var db2 = new KeeperTxtDb();
-      var db2 = new ObservableCollection<CurrencyRate>();
+      var rates = new ObservableCollection<CurrencyRate>();
       var soapFormatter = new SoapFormatter();
-      using (Stream fStream = new FileStream("KeeperDb.soap", FileMode.Open, FileAccess.Read))
+      using (Stream fStream = new FileStream("CurrencyRates.soap", FileMode.Open, FileAccess.Read))
       {
-        while (true)
-        {
-          try
-          {
-            var rate = (CurrencyRate) soapFormatter.Deserialize(fStream);
-            db2.Add(rate);
-          }
-          catch(XmlException e)
-          {
-             // просто закончился файл
-            break;
-          }
-        }
-
-//        db2 = (KeeperTxtDb)soapFormatter.Deserialize(fStream);
+        //  как цикл по файлу устроить      ??????????????????????????
+        var rate1 = (CurrencyRate)soapFormatter.Deserialize(fStream);
+        rates.Add(rate1); 
       }
 
       watch1.Stop();
@@ -566,16 +550,18 @@ namespace Keeper.ViewModels
     #endregion
 
     #region XML serialization
+    // дженерик проглотила нормально
+    // сломалась на дереве счетов - Account содержит Account
 
     private static void DbXmlSerialization()
     {
       var watch1 = new Stopwatch();
       watch1.Start();
 
-      var xmlSerializer = new XmlSerializer(typeof(KeeperTxtDb));
-      using (Stream fStream = new FileStream("KeeperDb.xml", FileMode.Create, FileAccess.Write))
+      var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<CurrencyRate>));
+      using (Stream fStream = new FileStream("CurrencyRates.xml", FileMode.Create, FileAccess.Write))
       {
-        xmlSerializer.Serialize(fStream, Db);
+          xmlSerializer.Serialize(fStream, Db.CurrencyRates);
       }
 
       watch1.Stop();
@@ -587,11 +573,11 @@ namespace Keeper.ViewModels
       var watch1 = new Stopwatch();
       watch1.Start();
 
-      var db1 = new KeeperTxtDb();
-      var xmlSerializer = new XmlSerializer(typeof(KeeperTxtDb));
-      using (Stream fStream = new FileStream("DbKeeper.xml", FileMode.Open, FileAccess.Read))
+      var db1 = new ObservableCollection<CurrencyRate>();
+      var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<CurrencyRate>));
+      using (Stream fStream = new FileStream("CurrencyRates.xml", FileMode.Open, FileAccess.Read))
       {
-        db1 = (KeeperTxtDb)xmlSerializer.Deserialize(fStream);
+        db1 = (ObservableCollection<CurrencyRate>)xmlSerializer.Deserialize(fStream);
       }
 
       watch1.Stop();
@@ -652,7 +638,6 @@ namespace Keeper.ViewModels
           var binaryFormatter = new BinaryFormatter();
           binaryFormatter.Serialize(cryptoStream, Db);
         }
-
       }
 
       watch1.Stop();

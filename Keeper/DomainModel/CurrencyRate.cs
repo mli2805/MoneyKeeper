@@ -1,15 +1,14 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
+using System.Xml.Serialization;
 using Caliburn.Micro;
 
 namespace Keeper.DomainModel
 {
-  [Serializable]
+  [Serializable] // для binary formatter
   public class CurrencyRate : PropertyChangedBase
   {
     //    Все курсы валют хранятся относительно USD (дата - валюта - курс к доллару)
-    public int Id { get; set; }
     public DateTime BankDay { get; set; }
     public CurrencyCodes Currency { get; set; }
     public Double Rate { get; set; }
@@ -19,10 +18,8 @@ namespace Keeper.DomainModel
       return BankDay + " ; " + Currency + " ; " + Math.Round(Rate, 4);
     }
 
-
-    #region Поля для показа на форме "Курсы валют"
-
-    [NotMapped]
+   #region Поля для показа на форме "Курсы валют"
+  
     public string RateOnScreen
     {
       get
@@ -40,7 +37,6 @@ namespace Keeper.DomainModel
     }
 
     private CurrencyCodes _currencyLeft;
-    [NotMapped]
     public CurrencyCodes CurrencyLeft
     {
       get
@@ -67,7 +63,6 @@ namespace Keeper.DomainModel
     }
 
     private CurrencyCodes _currencyRight;
-    [NotMapped]
     public CurrencyCodes CurrencyRight
     {
       get
@@ -94,8 +89,17 @@ namespace Keeper.DomainModel
       }
     }
 
-    [NotMapped]
     public string ForOne { get { return "за 1"; } }
     #endregion
   }
+
+  /*
+   * для XML сериализатора нужно чтобы класс был Public и был конструктор без параметров
+   * (если нет ни одного конструктора - то без параметров создается компилятором)
+   * 
+   * чтобы поле было атрибутом , а не элементом - [XmlAttribute]
+   * 
+   * public поля для показа на форме не надо хранить - [XmlIgnore]
+   * public без set - не сериализует, public с private set - runtime error при сериализации
+   */
 }
