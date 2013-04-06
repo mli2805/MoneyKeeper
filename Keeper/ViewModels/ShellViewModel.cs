@@ -5,9 +5,7 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Xml.Serialization;
 using Caliburn.Micro;
@@ -24,7 +22,7 @@ namespace Keeper.ViewModels
     [Import]
     public IWindowManager WindowManager { get; set; }
 
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public DepositsViewModel DepositsFormPointer { get; set; }
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
@@ -155,21 +153,17 @@ namespace Keeper.ViewModels
     }
     #endregion
 
-    public DbLoadError DbLoadResult { get; set; }
-
     public ShellViewModel()
     {
       _message = "Keeper is running (On Debug)";
-      //      Database.SetInitializer(new DbInitializer());
       BalanceList = new ObservableCollection<string> { "test balance" };
       DepositsFormPointer = null;
     }
 
     public void OnImportsSatisfied()
     {
-      TimeSpan elapsed;
-      DbLoadResult = DbLoad.LoadAllTables(out elapsed);
-      StatusBarItem0 = elapsed.ToString();
+      BinaryCrypto.DbCryptoDeserialization();
+//      DbTxtLoad.LoadDbFromTxt();
 
       InitVariablesToShowAccounts();
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
@@ -203,18 +197,14 @@ namespace Keeper.ViewModels
       DisplayName = "Keeper (c) 2012-13";
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
       OpenedAccountPage = 0;
-
-      if (DbLoadResult.Code != 0)
-      {
-        MessageBox.Show("");
-        MessageBox.Show(DbLoadResult.Explanation, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
     }
 
     public override void CanClose(Action<bool> callback)
     {
       if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
-      StatusBarItem0 = DbSave.SaveAllTables().ToString();
+      BinaryCrypto.DbCryptoSerialization();
+      DbTxtSave.MakeDbBackupCopy();
+
       callback(true);
     }
 
@@ -259,7 +249,7 @@ namespace Keeper.ViewModels
       accountInWork.Id = (from account in Db.AccountsPlaneList select account.Id).Max() + 1;
       SelectedAccount.Children.Add(accountInWork);
       Db.AccountsPlaneList.Clear();
-      Db.AccountsPlaneList = DbLoad.FillInAccountsPlaneList(Db.Accounts);
+      Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
       UsefulLists.FillLists();
     }
 
@@ -286,7 +276,46 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    #region // вызовы дочерних окон
+    #region // меню файл
+    public void SaveDatabase()
+    {
+      BinaryCrypto.DbCryptoSerialization();
+    }
+
+    public void LoadDatabase()
+    {
+      BinaryCrypto.DbCryptoDeserialization();
+    }
+
+    public void ClearDatabase()
+    {
+      DbClear.ClearAllTables();
+
+      IncomesRoot.Clear();
+      ExpensesRoot.Clear();
+      ExternalAccountsRoot.Clear();
+      MineAccountsRoot.Clear();
+    }
+
+    public void MakeDatabaseBackup()
+    {
+      DbTxtSave.MakeDbBackupCopy();
+    }
+
+    public void ExportDatabaseToTxt()
+    {
+      DbTxtSave.SaveDbInTxt();
+    }
+
+    public void ImportDatabaseFromTxt()
+    {
+      DbTxtLoad.LoadDbFromTxt();
+      InitVariablesToShowAccounts();
+    }
+
+    #endregion
+
+    #region // меню формы - вызовы дочерних окон
 
     public void ShowTransactionsForm()
     {
@@ -338,33 +367,6 @@ namespace Keeper.ViewModels
       if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
       DepositsFormPointer = new DepositsViewModel();
       WindowManager.ShowWindow(DepositsFormPointer);
-    }
-    #endregion
-
-    #region // методы выгрузки / загрузки БД в текстовый файл
-    public void SaveDatabase()
-    {
-      StatusBarItem0 = DbSave.SaveAllTables().ToString();
-    }
-
-    public void LoadDatabase()
-    {
-      TimeSpan elapsed;
-      var result = DbLoad.LoadAllTables(out elapsed);
-      StatusBarItem0 = elapsed.ToString();
-      if (result.Code != 0) MessageBox.Show(result.Explanation, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-
-      InitVariablesToShowAccounts();
-    }
-
-    public void ClearDatabase()
-    {
-      DbClear.ClearAllTables();
-
-      IncomesRoot.Clear();
-      ExpensesRoot.Clear();
-      ExternalAccountsRoot.Clear();
-      MineAccountsRoot.Clear();
     }
     #endregion
 
@@ -492,20 +494,13 @@ namespace Keeper.ViewModels
 
     #endregion
 
-
     public void TempItem()
     {
-//      DbBinarySerialization();
-//      DbBinaryDeserialization();
-
             DbSoapSerialization();
 //            DbSoapDeserialization();
 
             DbXmlSerialization();
             DbXmlDeserialization();
-
-//      DbCryptoSerialization();
-//      DbCryptoDeserialization();
     }
 
 
@@ -582,89 +577,6 @@ namespace Keeper.ViewModels
 
       watch1.Stop();
       Console.WriteLine("XmlSerializer deserialization time is {0}", watch1.Elapsed);
-    }
-
-    #endregion
-
-    #region Binary serialization
-
-    private static void DbBinarySerialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      var binaryFormatter = new BinaryFormatter();
-      using (Stream fStream = new FileStream("KeeperDb.binary", FileMode.Create, FileAccess.Write))
-      {
-        binaryFormatter.Serialize(fStream, Db);
-      }
-
-      watch1.Stop();
-      Console.WriteLine("BinaryFormatter serialization  time is {0}", watch1.Elapsed);
-    }
-
-    private static void DbBinaryDeserialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      using (Stream fStream = new FileStream("KeeperDb.binary", FileMode.Open, FileAccess.Read))
-      {
-        var binaryFormatter = new BinaryFormatter();
-        var db1 = (KeeperTxtDb)binaryFormatter.Deserialize(fStream);
-      }
-
-      watch1.Stop();
-      Console.WriteLine("BinaryFormatter deserialization time is {0}", watch1.Elapsed);
-    }
-
-    #endregion
-
-    #region Crypto
-
-    private static void DbCryptoSerialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      byte[] key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
-      byte[] initVector = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
-      using (Stream fStream = new FileStream("KeeperDb.crypto", FileMode.Create, FileAccess.Write))
-      {
-        var rmCrypto = new RijndaelManaged();
-
-        using (var cryptoStream = new CryptoStream(fStream, rmCrypto.CreateEncryptor(key, initVector), CryptoStreamMode.Write))
-        {
-          var binaryFormatter = new BinaryFormatter();
-          binaryFormatter.Serialize(cryptoStream, Db);
-        }
-      }
-
-      watch1.Stop();
-      Console.WriteLine("BinaryFormatter serialization with Crypto takes {0} sec", watch1.Elapsed);
-    }
-
-    private static void DbCryptoDeserialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      byte[] key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
-      byte[] initVector = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
-
-      using (Stream fStream = new FileStream("KeeperDb.crypto", FileMode.Open, FileAccess.Read))
-      {
-        var rmCrypto = new RijndaelManaged();
-
-        using (var cryptoStream = new CryptoStream(fStream,rmCrypto.CreateDecryptor(key,initVector),CryptoStreamMode.Read))
-        {
-          var binaryFormatter = new BinaryFormatter();
-          var db1 = (KeeperTxtDb) binaryFormatter.Deserialize(cryptoStream);
-        }
-      }
-
-      watch1.Stop();
-      Console.WriteLine("BinaryFormatter deserialization with Crypto takes {0} sec", watch1.Elapsed);
     }
 
     #endregion

@@ -16,7 +16,7 @@ namespace Keeper.ViewModels
   [Export, PartCreationPolicy(CreationPolicy.Shared)] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }
     public ICollectionView SortedRows { get; set; }

@@ -24,26 +24,27 @@ namespace Keeper.Utils
     }
 
   }
-  class DbLoad
+  class DbTxtLoad
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
     public static DbLoadError Result = new DbLoadError();
 
-    public static DbLoadError LoadAllTables(out TimeSpan elapsed)
+    public static DbLoadError LoadDbFromTxt()
     {
-      var stopWatch = new Stopwatch();
-      stopWatch.Start();
+      var tt = new Stopwatch();
+      tt.Start();
 
       Db.Accounts = LoadAccounts();
-      Db.AccountsPlaneList = FillInAccountsPlaneList(Db.Accounts);
+      Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
 
       Db.Transactions = LoadFrom("Transactions.txt", TransactionFromStringWithNames);
       Db.ArticlesAssociations = LoadFrom("ArticlesAssociations.txt", ArticleAssociationFromStringWithNames);
       Db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString);
 
-      stopWatch.Stop();
-      elapsed = stopWatch.Elapsed;
+      tt.Stop();
+      Console.WriteLine("Creation backup copy in encrypted zip archive takes {0} sec", tt.Elapsed);
+
       return Result;
     }
 
@@ -140,17 +141,6 @@ namespace Keeper.Utils
       }
     }
 
-    public static List<Account> FillInAccountsPlaneList(IEnumerable<Account> accountsList)
-    {
-      var result = new List<Account>();
-      foreach (var account in accountsList)
-      {
-        result.Add(account);
-        var childList = FillInAccountsPlaneList(account.Children);
-        result.AddRange(childList);
-      }
-      return result;
-    }
     #endregion
 
     #region // Parsing

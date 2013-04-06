@@ -12,7 +12,7 @@ namespace Keeper.ViewModels
   /// </summary>
   public static class UsefulLists
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public static List<CurrencyCodes> CurrencyList { get; private set; }
     public static List<OperationType> OperationTypeList { get; private set; }
