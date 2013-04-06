@@ -47,12 +47,9 @@
       <RowDefinition/>
       <RowDefinition Height="23"/>
     </Grid.RowDefinitions>
-<!--    <Label x:Name="Message" Content="Keeper is under construction since October 22nd, 2012!" -->
-<!--           HorizontalAlignment="Right" Margin="0,6,5,4" FontSize="11" Height="22" -->
-<!--           Grid.Column="2" />-->
-    <Menu Name="MainMenu" Margin="10,8,0,6" VerticalAlignment="Center" 
-          Background="{x:Null}" Height="18"  Grid.ColumnSpan="3">
-      <MenuItem Header="ФАЙЛЫ" Foreground="#FF0F0FFF" Padding="7,0,8,0">
+    <Menu Name="MainMenu" Margin="10,3,10,6" Height="20"  Grid.ColumnSpan="3" >
+      
+      <MenuItem Header="ФАЙЛЫ" >
         <MenuItem x:Name="SaveDatabase" Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД"/>
         <MenuItem x:Name="LoadDatabase" Header="ЗАГРУЗИТЬ ПРЕДЫДУЩЕЕ СОСТОЯНИЕ"/>
         <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ БД (ну вот на фига!)"/>
@@ -61,20 +58,20 @@
         <MenuItem x:Name="ExportDatabaseToTxt" Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ"/>
         <MenuItem x:Name="ImportDatabaseFromTxt" Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ"/>
       </MenuItem>
-      <MenuItem Header="ФОРМЫ" Background="{x:Null}" Foreground="#FF0F0FFF" Padding="7,0,8,0">
+      <MenuItem Header="ФОРМЫ">
         <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
         <MenuItem x:Name="ShowMonthAnalisysForm" Header="АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
         <MenuItem x:Name="ShowDepositsForm" Header="ДЕПОЗИТЫ"/>
         <MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
         <MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
       </MenuItem>
-      <MenuItem Header="TOOLS" Foreground="#FF0F0FFF" Padding="7,0,8,0">
+      <MenuItem Header="TOOLS">
         <MenuItem x:Name="TempItem" Header="Временный пункт (жми T)"/>
       </MenuItem>
-      <MenuItem Header="СПРАВКА" Foreground="#FF0F0FFF" Padding="7,0,8,0">
+      <MenuItem Header="СПРАВКА">
         <MenuItem x:Name="ShowToDoForm" Header="СДЕЛАТЬ" />
         <Separator Style="{DynamicResource SeparatorStyle}"/>
-        <MenuItem Header="О ПРОГРАММЕ"/>
+        <MenuItem x:Name="AboutForm" Header="О ПРОГРАММЕ"/>
       </MenuItem>
     </Menu>
     <TabControl Margin="0,0,0,5" Grid.Row="1" SelectedIndex="{Binding OpenedAccountPage, Mode=TwoWay}">

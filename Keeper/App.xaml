@@ -94,6 +94,24 @@
           </Setter.Value>
         </Setter>
       </Style>
+      
+      <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="MenuItem">
+              <Border Height="20" BorderThickness="1" BorderBrush="{x:Null}" Background="White" >
+               
+              
+                <StackPanel ClipToBounds="True"
+                      Orientation="Horizontal"
+                      IsItemsHost="True" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
 
       <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
         <Setter Property="Background" Value="#F4FBA7" />
