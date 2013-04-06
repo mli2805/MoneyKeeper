@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,38 +12,61 @@ using Keeper.Properties;
 
 namespace Keeper.Utils
 {
-  class DbSave
+  internal class DbTxtSave
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db
+    {
+      get { return IoC.Get<KeeperDb>(); }
+    }
+
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
 
-    public static TimeSpan SaveAllTables()
+    public static void MakeDbBackupCopy()
     {
-      var start = DateTime.Now;
+      var tt = new Stopwatch();
+      tt.Start();
 
-      if (!Directory.Exists(Settings.Default.SavePath)) Directory.CreateDirectory(Settings.Default.SavePath);
+      SaveDbInTxt();
+      ZipTxtDb();
+      DeleteTxtDb();
+
+      tt.Stop();
+      Console.WriteLine("Creation backup copy in encrypted zip archive takes {0} sec", tt.Elapsed);
+    }
+
+    public static void SaveDbInTxt()
+    {
+      if (!Directory.Exists(Settings.Default.TemporaryTxtDbPath))
+        Directory.CreateDirectory(Settings.Default.TemporaryTxtDbPath);
       SaveAccounts();
       SaveTransactions();
       SaveArticlesAssociations();
       SaveCurrencyRates();
-
-      ZipAllTables();
-
-      return DateTime.Now - start;
     }
 
-    public static void ZipAllTables()
+
+    public static void DeleteTxtDb()
+    {
+      if (!Directory.Exists(Settings.Default.TemporaryTxtDbPath)) return;
+      var filenames = Directory.GetFiles(Settings.Default.TemporaryTxtDbPath, "*.txt"); // note: this does not recurse directories! 
+      foreach (var filename in filenames)
+      {
+        File.Delete(filename);
+      }
+    }
+
+    public static void ZipTxtDb()
     {
       var archiveName = String.Format("DB{0:yyyy-MM-dd-HH-mm-ss}.zip", DateTime.Now);
-      var zipFileToCreate = Path.Combine(Settings.Default.KeeperInDropBox, archiveName);
-      var directoryToZip = Settings.Default.SavePath;
+      var zipFileToCreate = Path.Combine(Settings.Default.SavePath, archiveName);
+      var directoryToZip = Settings.Default.TemporaryTxtDbPath;
       try
       {
         using (var zip = new ZipFile())
         {
           zip.Password = "!opa1526";
           zip.Encryption = EncryptionAlgorithm.WinZipAes256;
-          var filenames = Directory.GetFiles(directoryToZip); // note: this does not recurse directories! 
+          var filenames = Directory.GetFiles(directoryToZip, "*.txt"); // note: this does not recurse directories! 
           foreach (var filename in filenames)
             zip.AddFile(filename, String.Empty);
           zip.Comment = String.Format("This zip archive was created  on machine '{0}'", System.Net.Dns.GetHostName());
@@ -51,12 +75,13 @@ namespace Keeper.Utils
       }
       catch (Exception ex1)
       {
-        MessageBox.Show("exception: " + ex1);
+        MessageBox.Show("Exception during database ziping: " + ex1);
       }
     }
 
     #region // Accounts
-    public static void SaveAccounts()
+
+    private static void SaveAccounts()
     {
       var content = new List<string>();
       foreach (var accountsRoot in Db.Accounts)
@@ -64,10 +89,10 @@ namespace Keeper.Utils
         SaveAccount(accountsRoot, content, 0);
         content.Add("");
       }
-      File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "Accounts.txt"), content, Encoding1251);
+      File.WriteAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt"), content, Encoding1251);
     }
 
-    public static void SaveAccount(Account account, List<string> content, int offset)
+    private static void SaveAccount(Account account, List<string> content, int offset)
     {
       content.Add(account.ToDump(offset));
       foreach (var child in account.Children)
@@ -77,7 +102,7 @@ namespace Keeper.Utils
     }
     #endregion
 
-    public static void SaveTransactions()
+    private static void SaveTransactions()
     {
       var content = new List<string>();
 
@@ -92,22 +117,22 @@ namespace Keeper.Utils
         content.Add(transaction.ToDumpWithNames());
         prevTimestamp = transaction.Timestamp;
       }
-      File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "Transactions.txt"), content, Encoding1251);
+      File.WriteAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, "Transactions.txt"), content, Encoding1251);
     }
 
-    public static void SaveArticlesAssociations()
+    private static void SaveArticlesAssociations()
     {
       var content = Db.ArticlesAssociations.Select(association => association.ToDumpWithNames()).ToList();
-      File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "ArticlesAssociations.txt"), content, Encoding1251);
+      File.WriteAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, "ArticlesAssociations.txt"), content, Encoding1251);
     }
 
-    public static void SaveCurrencyRates()
+    private static void SaveCurrencyRates()
     {
       var ratesOrderedByDate = (from rate in Db.CurrencyRates
-                               orderby rate.BankDay
-                               select rate.ToDump()).ToList();
+                                orderby rate.BankDay
+                                select rate.ToDump()).ToList();
 
-      File.WriteAllLines(Path.Combine(Settings.Default.SavePath, "CurrencyRates.txt"), ratesOrderedByDate, Encoding1251);
+      File.WriteAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, "CurrencyRates.txt"), ratesOrderedByDate, Encoding1251);
     }
 
   }

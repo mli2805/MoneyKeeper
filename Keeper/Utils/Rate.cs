@@ -7,7 +7,7 @@ namespace Keeper.Utils
 {
   class Rate
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public static double GetRate(CurrencyCodes currency, DateTime day)
     {

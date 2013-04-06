@@ -38,7 +38,7 @@ namespace Keeper.ViewModels
   public class DepositsViewModel : Screen
   {
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public List<Deposit> DepositsList { get; set; }
     public Deposit SelectedDeposit { get; set; }

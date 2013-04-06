@@ -7,7 +7,7 @@ namespace Keeper.Utils
 {
   class DbClear
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public static void ClearAllTables()
     {

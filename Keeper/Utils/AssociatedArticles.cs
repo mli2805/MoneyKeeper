@@ -7,7 +7,7 @@ namespace Keeper.Utils
 {
   public static class AssociatedArticles
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public static Account GetAssociation(Account account)
     {

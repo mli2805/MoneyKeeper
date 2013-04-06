@@ -14,7 +14,7 @@ namespace Keeper.DomainModel
     private ObservableCollection<string> _report;
 
     [Import]
-    public KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public Account Account { get; set; }
     public DateTime Start { get; set; }

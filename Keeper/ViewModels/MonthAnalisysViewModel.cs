@@ -11,7 +11,7 @@ namespace Keeper.ViewModels
 {
   class MonthAnalisysViewModel : Screen
   {
-    public static KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     private bool _isMonthEnded;
 

@@ -10,7 +10,7 @@ namespace Keeper.ViewModels
 {
   public class RatesViewModel : Screen
   {
-    public KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
 
     /*****************************************************************************

@@ -2,21 +2,40 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+using Caliburn.Micro;
 
 namespace Keeper.DomainModel
 {
-  [Export(typeof(KeeperTxtDb)), PartCreationPolicy(CreationPolicy.Shared)]
+  [Export(typeof(KeeperDb)), PartCreationPolicy(CreationPolicy.Shared)]
 
   [Serializable]
-  public class KeeperTxtDb
+  public class KeeperDb
   {
     public ObservableCollection<Account> Accounts { get; set; }
     public ObservableCollection<Transaction> Transactions { get; set; }
     public ObservableCollection<CurrencyRate> CurrencyRates { get; set; }
     public ObservableCollection<ArticleAssociation> ArticlesAssociations { get; set; }
 
-    public List<Account> AccountsPlaneList { get; set; }
+    public List<Account> AccountsPlaneList { get; set; } // не хранится , а формируется из дерева счетов в момент десериализации 
+
+    // Accounts - дерево счетов, т.е. в базе счета хранятся в виде дерева и автоматически
+    // сериализуются/десериализуются в виде дерева , а иногда нужен плоский список
+    public static List<Account> FillInAccountsPlaneList(IEnumerable<Account> accountsList)
+    {
+      var result = new List<Account>();
+      foreach (var account in accountsList)
+      {
+        result.Add(account);
+        var childList = FillInAccountsPlaneList(account.Children);
+        result.AddRange(childList);
+      }
+      return result;
+    }
 
     public Account FindAccountInBranch(string toFind, Account branch)
     {
@@ -44,5 +63,7 @@ namespace Keeper.DomainModel
     {
       return (from account in AccountsPlaneList select account.Id).Max();
     }
+
+
   }
 }

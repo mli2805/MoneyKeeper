@@ -9,7 +9,7 @@ namespace Keeper.ViewModels
 {
   class ArticlesAssociationsViewModel : Screen
   {
-    public KeeperTxtDb Db { get { return IoC.Get<KeeperTxtDb>(); } }
+    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public ObservableCollection<ArticleAssociation> Rows { get; set; }
 
