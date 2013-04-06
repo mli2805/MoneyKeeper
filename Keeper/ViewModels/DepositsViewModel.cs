@@ -211,46 +211,8 @@ namespace Keeper.ViewModels
 
     public List<DateProcentPoint> CashSeries { get; set; }
 
-    //    public void CashDepoProportionChartCtor()
-    //    {
-    //      CashSeries = new List<DateProcentPoint>();
-    //      DepoSeries = new List<DateProcentPoint>();
-    //      var rootCashAccount = Db.FindAccountInTree("На руках");
-    //      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
-    //      for (var dt = new DateTime(2002, 1, 1); dt <= DateTime.Today; dt = dt.AddDays(1))
-    //      {
-    //        var cashInUsd = Balance.AccountBalanceAfterDayInUsd(rootCashAccount, dt);
-    //        var depoInUsd = Balance.AccountBalanceAfterDayInUsd(rootDepoAccount, dt);
-    //        CashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-    //        DepoSeries.Add(new DateProcentPoint(dt, 100));
-    //      }
-    //    }
-
-    //    public void CashDepoProportionChartCtor()
-    //    {
-    //      CashSeries = new List<DateProcentPoint>();
-    //      DepoSeries = new List<DateProcentPoint>();
-    //      var rootCashAccount = Db.FindAccountInTree("На руках");
-    //      var rootDepoAccount = Db.FindAccountInTree("Депозиты");
-
-    //      var period = new Period(new DateTime(2002, 1, 1), DateTime.Today);
-    //      var cashBalances = Balance.AccountBalancesForPeriodInUsd(rootCashAccount, period);
-    //      var depoBalances = Balance.AccountBalancesForPeriodInUsd(rootDepoAccount, period);
-
-    //      foreach (DateTime day in period)
-    //      {
-    //        var cashInUsd = cashBalances[day];
-    //        var depoInUsd = depoBalances[day];
-    //        CashSeries.Add(new DateProcentPoint(day, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-    //        DepoSeries.Add(new DateProcentPoint(day, 100));
-
-    //      }
-    //    }
-
     public List<DateProcentPoint> MonthlyCashSeries { get; set; }
 
-    //     на hall-comp 1-й вариант 102 сек, 2-й вариант 71 сек, 3-й вариант 1.4 сек
-    //     на opx-lmarholin 1-й вариант 82 сек, 2-й вариант 57 сек, 3-й вариант 1.3 сек
     public void CashDepoProportionChartCtor()
     {
       var dailyCashSeries = new List<DateProcentPoint>();

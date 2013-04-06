@@ -136,9 +136,9 @@
   </Window.Resources>
   <Grid Name="MainGrid">
     <Grid.RowDefinitions>
-      <RowDefinition Height="{Binding UpperPart}"/>
+      <RowDefinition Height="1*"/>
       <RowDefinition Height="15"/>
-      <RowDefinition Height="{Binding LowerPart}"/>
+      <RowDefinition Height="2*"/>
     </Grid.RowDefinitions>
     <ListView Margin="2" Grid.ColumnSpan="2" 
               ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
