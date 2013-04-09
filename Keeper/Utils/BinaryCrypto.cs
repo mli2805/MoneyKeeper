@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Caliburn.Micro;
@@ -19,7 +21,14 @@ namespace Keeper.Utils
         Db.Accounts  = value.Accounts;
         Db.ArticlesAssociations = value.ArticlesAssociations;
         Db.CurrencyRates = value.CurrencyRates;
-        Db.Transactions = value.Transactions;
+
+        Db.Transactions = new ObservableCollection<Transaction>();
+        var transactions = from transaction in value.Transactions orderby transaction.Timestamp select transaction;
+        foreach (var transaction in transactions)
+        {
+          Db.Transactions.Add(transaction);
+        }
+
         Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
       }
     }

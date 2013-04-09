@@ -242,16 +242,17 @@ namespace Keeper.ViewModels
           if (tr.Credit.IsTheSameOrDescendantOf("Депозиты"))
             depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
 
-          if (index == transactionsArray.Count() - 1) break;
           index++;
+          if (index == transactionsArray.Count()) break;
           tr = transactionsArray[index];
         }
 
         dailyCashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-        if (index == transactionsArray.Count() - 1) break;
+        if (index == transactionsArray.Count()) break;
         dt = dt.AddDays(1);
       }
 
+      // средняя по месяцам
       MonthlyCashSeries = (from p in dailyCashSeries
                            group p by new { year = p.Date.Year, month = p.Date.Month}
                              into g
