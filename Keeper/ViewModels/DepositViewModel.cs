@@ -10,10 +10,12 @@ namespace Keeper.ViewModels
     public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
     public Deposit Deposit { get; set; }
+    public Account NewAccountForDeposit { get; set; }
 
     public DepositViewModel(Account account)
     {
       Deposit = new Deposit { Account = account };
+      NewAccountForDeposit = null;
     }
 
     protected override void OnViewLoaded(object view)
@@ -24,7 +26,13 @@ namespace Keeper.ViewModels
 
     public void Renew()
     {
-      WindowManager.ShowDialog(new RenewDepositViewModel(Deposit));
+      var renewDepositViewModel = new RenewDepositViewModel(Deposit);
+      WindowManager.ShowDialog(renewDepositViewModel);
+      if (renewDepositViewModel.NewDeposit != null)
+      {
+        NewAccountForDeposit = renewDepositViewModel.NewDeposit;
+        Deposit.CollectInfo();
+      }
     }
 
 
