@@ -8,7 +8,7 @@
         mc:Ignorable="d" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-        xmlns:u="clr-namespace:Keeper.Utils" xmlns:Behaviors="clr-namespace:Keeper.Behaviors"
+        xmlns:Behaviors="clr-namespace:Keeper.Behaviors"
         Icon="/Keeper;component/Resources/currency_rates.ico" 
         d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}"
         SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >

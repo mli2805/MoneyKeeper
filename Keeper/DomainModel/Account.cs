@@ -65,6 +65,8 @@ namespace Keeper.DomainModel
 
     #endregion
 
+    #region Override == , != , Equals and GetHashCode
+
     public static bool operator ==(Account a, Account b)
     {
       // If both are null, or both are same instance, return true.
@@ -73,8 +75,6 @@ namespace Keeper.DomainModel
       if (((object)a == null) || ((object)b == null)) return false;
       return a.Name == b.Name;
     }
-
-    #region Override == , != , Equals and GetHashCode
 
     public static bool operator !=(Account a,Account b)
     {
