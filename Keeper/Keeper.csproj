@@ -94,6 +94,10 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Balance.cs" />
     <Compile Include="Utils\BinaryCrypto.cs" />
+    <Compile Include="ViewModels\RenewDepositViewModel.cs" />
+    <Compile Include="Views\RenewDepositView.xaml.cs">
+      <DependentUpon>RenewDepositView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
     <Compile Include="Utils\DbClear.cs" />
     <Compile Include="Utils\DbTxtSave.cs" />
@@ -211,6 +215,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReceiptView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RenewDepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

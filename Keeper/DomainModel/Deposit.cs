@@ -25,6 +25,12 @@ namespace Keeper.DomainModel
     public List<Transaction> Transactions { get; set; }
     public decimal CurrentBalance { get; set; }
     public DepositStates State { get; set; }
+    public decimal DepositRate { get; set; }
+
+    public decimal Profit { get; set; }
+    public decimal Forecast { get; set; }
+
+
     public Brush FontColor
     {
       get
@@ -35,9 +41,6 @@ namespace Keeper.DomainModel
       }
     }
 
-    public decimal Profit { get; set; }
-    public decimal DepositRate { get; set; }
-    public decimal Forecast { get; set; }
     public ObservableCollection<string> Report
     {
       get { return _report; }
