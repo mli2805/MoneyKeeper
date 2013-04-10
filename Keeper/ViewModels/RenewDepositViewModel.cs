@@ -112,11 +112,22 @@ namespace Keeper.ViewModels
       Db.Transactions.Add(transactionProcents);
     }
 
+    private void RemoveOldAccountToClosed()
+    {
+      var parent = Db.FindAccountInTree("Депозиты");
+      parent.Children.Remove(_oldDeposit.Account);
+
+      parent = Db.FindAccountInTree("Закрытые депозиты");
+      _oldDeposit.Account.Parent = parent;
+      parent.Children.Add(_oldDeposit.Account);
+    }
+
     public void Accept()
     {
       MakeTransactionProcents();
       NewDeposit = AddNewAccountForDeposit();
       MakeTransactionTransfer();
+      RemoveOldAccountToClosed(); 
       TryClose();
     }
 
@@ -125,4 +136,6 @@ namespace Keeper.ViewModels
     }
 
   }
+
+
 }

@@ -145,6 +145,7 @@
               cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" >
       <i:Interaction.Behaviors>
         <Behaviors:ScrollToBottomOnLoadBehavior/>
+        <Behaviors:ScrollToBottomOnResizeBehavior/>
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">

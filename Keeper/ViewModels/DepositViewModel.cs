@@ -6,11 +6,23 @@ namespace Keeper.ViewModels
 {
   public class DepositViewModel : Screen
   {
+    private bool _canRenew;
+
     [Import]
     public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
     public Deposit Deposit { get; set; }
     public Account NewAccountForDeposit { get; set; }
+    public bool CanRenew
+    {
+      get { return _canRenew; }
+      set
+      {
+        if (value.Equals(_canRenew)) return;
+        _canRenew = value;
+        NotifyOfPropertyChange(() => CanRenew);
+      }
+    }
 
     public DepositViewModel(Account account)
     {
@@ -22,6 +34,7 @@ namespace Keeper.ViewModels
     {
       DisplayName = Deposit.Account.Name;
       Deposit.CollectInfo();
+      CanRenew = Deposit.State != DepositStates.Закрыт;
     }
 
     public void Renew()
@@ -32,7 +45,21 @@ namespace Keeper.ViewModels
       {
         NewAccountForDeposit = renewDepositViewModel.NewDeposit;
         Deposit.CollectInfo();
+        CanRenew = Deposit.State != DepositStates.Закрыт;
+        OnRenewed(NewAccountForDeposit);
       }
+    }
+
+    public void Exit()
+    {
+      TryClose();
+    }
+
+    public delegate void RenewedEventHandler(object sender, Account newAccount);
+    public event RenewedEventHandler Renewed;
+    protected void OnRenewed(Account newAccount)
+    {
+      if (Renewed != null) Renewed(this, newAccount);
     }
 
 
