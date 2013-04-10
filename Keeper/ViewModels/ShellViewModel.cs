@@ -273,10 +273,15 @@ namespace Keeper.ViewModels
       if (SelectedAccount.IsDescendantOf("Депозиты") && SelectedAccount.Children.Count == 0)
       {
         var depositViewModel = new DepositViewModel(SelectedAccount);
+        depositViewModel.Renewed += DepositViewModelRenewed;
         WindowManager.ShowWindow(depositViewModel);
-        if (depositViewModel.NewAccountForDeposit != null) 
-          SelectedAccount = depositViewModel.NewAccountForDeposit;
       }
+    }
+
+    void DepositViewModelRenewed(object sender, Account newAccount)
+    {
+      SelectedAccount.IsSelected = false;
+      SelectedAccount = newAccount;
     }
 
     #endregion
