@@ -37,6 +37,7 @@ namespace Keeper.ViewModels
     private Visibility _paymentsPeriodChoiseControls;
     private DateTime _paymentsStartDate;
     private DateTime _paymentsFinishDate;
+    private Visibility _isDeposit;
 
     public string Message
     {
@@ -68,6 +69,17 @@ namespace Keeper.ViewModels
     public ObservableCollection<Account> IncomesRoot { get; set; }
     public ObservableCollection<Account> ExpensesRoot { get; set; }
 
+    public Visibility IsDeposit
+    {
+      get { return _isDeposit; }
+      set
+      {
+        if (value.Equals(_isDeposit)) return;
+        _isDeposit = value;
+        NotifyOfPropertyChange(() => IsDeposit);
+      }
+    }
+
     public ObservableCollection<string> BalanceList { get; set; }
 
     public Account SelectedAccount
@@ -79,6 +91,7 @@ namespace Keeper.ViewModels
         Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
         Balance.CountBalances(SelectedAccount, period, BalanceList);
         NotifyOfPropertyChange(() => SelectedAccount);
+        IsDeposit = value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
       }
     }
 
