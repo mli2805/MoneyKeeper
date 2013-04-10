@@ -95,7 +95,7 @@
                   <Image Source="..\Resources/edit16.ico" Width="16"/>
                 </MenuItem.Icon>
               </MenuItem>
-              <MenuItem Header="Депозит" cal:Message.Attach="ShowDeposit" BorderBrush="{x:Null}" Background="White">
+              <MenuItem Header="Депозит" cal:Message.Attach="ShowDeposit" BorderBrush="{x:Null}" Background="White" Visibility="{Binding IsDeposit}">
               </MenuItem>
             </ContextMenu>
           </TreeView.ContextMenu>

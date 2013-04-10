@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
@@ -13,7 +8,6 @@ namespace Keeper.Behaviors
   {
     protected override void OnAttached() // это стандартное место
     {
-//      AssociatedObject.Loaded += AssociatedObjectOnLoaded;  // а здесь подписываюсь именно на то событие, по которому должно выполняться действие
       AssociatedObject.SizeChanged += AssociatedObjectSizeChanged;
     }
 
