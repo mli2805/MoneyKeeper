@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Views;
 
 
 namespace Keeper.ViewModels
@@ -520,11 +521,17 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
-            DbSoapSerialization();
+//            DbSoapSerialization();
 //            DbSoapDeserialization();
 
-            DbXmlSerialization();
-            DbXmlDeserialization();
+//            DbXmlSerialization();
+//            DbXmlDeserialization();
+
+      var arcMessage = Message;
+      Message = "Diagrams";
+      WindowManager.ShowDialog(new RatesDiagramViewModel());
+      Message = arcMessage;
+
     }
 
 

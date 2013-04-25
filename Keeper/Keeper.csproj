@@ -95,7 +95,11 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Balance.cs" />
     <Compile Include="Utils\BinaryCrypto.cs" />
+    <Compile Include="ViewModels\RatesDiagramViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
+    <Compile Include="Views\RatesDiagramView.xaml.cs">
+      <DependentUpon>RatesDiagramView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
@@ -212,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MonthAnalisysView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RatesDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
