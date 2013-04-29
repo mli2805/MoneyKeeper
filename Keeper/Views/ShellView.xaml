@@ -50,13 +50,13 @@
     <Menu Name="MainMenu" Margin="10,3,10,6" Height="20"  Grid.ColumnSpan="3" >
       
       <MenuItem Header="ФАЙЛЫ" >
-        <MenuItem x:Name="SaveDatabase" Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД"/>
-        <MenuItem x:Name="LoadDatabase" Header="ЗАГРУЗИТЬ ПРЕДЫДУЩЕЕ СОСТОЯНИЕ"/>
-        <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ БД (ну вот на фига!)"/>
+        <MenuItem x:Name="SaveDatabase" Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД" ToolTip="Binary Crypto Serialization"/>
+        <MenuItem x:Name="LoadDatabase" Header="ЗАГРУЗИТЬ ПРЕДЫДУЩЕЕ СОСТОЯНИЕ" ToolTip="Binary Crypto Deserialization"/>
+        <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ БД" ToolTip="(ну вот на фига!)"/>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
-        <MenuItem x:Name="MakeDatabaseBackup" Header="СОЗДАТЬ РЕЗЕРВНУЮ КОПИЮ"/>
-        <MenuItem x:Name="ExportDatabaseToTxt" Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ"/>
-        <MenuItem x:Name="ImportDatabaseFromTxt" Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ"/>
+        <MenuItem x:Name="MakeDatabaseBackup" Header="СОЗДАТЬ РЕЗЕРВНУЮ КОПИЮ" ToolTip="Txt in zip with password (dropbox\keeper)"/>
+        <MenuItem x:Name="ExportDatabaseToTxt" Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ" ToolTip="c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+        <MenuItem x:Name="ImportDatabaseFromTxt" Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ"  ToolTip="c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
       </MenuItem>
       <MenuItem Header="ФОРМЫ">
         <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>

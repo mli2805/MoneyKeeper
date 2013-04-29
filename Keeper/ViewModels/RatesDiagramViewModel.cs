@@ -76,6 +76,7 @@ namespace Keeper.ViewModels
 
       var rectGeometry2 = new RectangleGeometry { Rect = new Rect(50, 0, 650, 670) };
       geometryDrawing2.Geometry = rectGeometry2;
+      geometryDrawing2.Pen = new Pen(Brushes.Black, 1);
       geometryDrawing2.Brush = Brushes.Azure;// Кисть закраски
       // Добавляем готовый слой в контейнер отображения
       DrawingGroup.Children.Add(geometryDrawing2);
