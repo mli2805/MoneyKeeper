@@ -82,9 +82,7 @@ namespace Keeper.ViewModels
                                               CanvasHeight - BottomMargin - Data[i+1].Rate * _pointPerOneValue));
         geometryGroup.Children.Add(line);
       }
-      var geometryDrawing = new GeometryDrawing();
-      geometryDrawing.Geometry = geometryGroup;
-      geometryDrawing.Pen = new Pen(Brushes.LimeGreen, 1);
+      var geometryDrawing = new GeometryDrawing {Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1)};
       DrawingGroup.Children.Add(geometryDrawing);
     }
 
@@ -122,9 +120,7 @@ namespace Keeper.ViewModels
                                   new Point(CanvasWidth - RightMargin, TopMargin));
       geometryGroup.Children.Add(topAxis);
 
-      var geometryDrawing = new GeometryDrawing();
-      geometryDrawing.Geometry = geometryGroup;
-      geometryDrawing.Pen = new Pen(Brushes.Black, 1);
+      var geometryDrawing = new GeometryDrawing {Geometry = geometryGroup, Pen = new Pen(Brushes.Black, 1)};
       DrawingGroup.Children.Add(geometryDrawing);
     }
 
@@ -164,14 +160,12 @@ namespace Keeper.ViewModels
         geometryGroupDashesAndMarks.Children.Add(geometry);
       }
 
-      var geometryDrawingDashesAndMarks = new GeometryDrawing();
-      geometryDrawingDashesAndMarks.Geometry = geometryGroupDashesAndMarks;
-      geometryDrawingDashesAndMarks.Pen = new Pen(Brushes.Black, 1);
+      var geometryDrawingDashesAndMarks = new GeometryDrawing
+                                            {Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1)};
       DrawingGroup.Children.Add(geometryDrawingDashesAndMarks);
 
-      var geometryDrawingGridlines = new GeometryDrawing();
-      geometryDrawingGridlines.Geometry = geometryGroupGridlines;
-      geometryDrawingGridlines.Pen = new Pen(Brushes.LightGray, 1);
+      var geometryDrawingGridlines = new GeometryDrawing
+                                       {Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1)};
       DrawingGroup.Children.Add(geometryDrawingGridlines);
     }
 
@@ -185,9 +179,7 @@ namespace Keeper.ViewModels
                               new Point(CanvasWidth - RightMargin, CanvasHeight - BottomMargin));
       geometryGroup.Children.Add(rightAxis);
 
-      var geometryDrawing = new GeometryDrawing();
-      geometryDrawing.Geometry = geometryGroup;
-      geometryDrawing.Pen = new Pen(Brushes.Black, 1);
+      var geometryDrawing = new GeometryDrawing {Geometry = geometryGroup, Pen = new Pen(Brushes.Black, 1)};
       DrawingGroup.Children.Add(geometryDrawing);
     }
 
@@ -226,14 +218,12 @@ namespace Keeper.ViewModels
         geometryGroupDashesAndMarks.Children.Add(geometry);
       }
 
-      var geometryDrawingDashesAndMarks = new GeometryDrawing();
-      geometryDrawingDashesAndMarks.Geometry = geometryGroupDashesAndMarks;
-      geometryDrawingDashesAndMarks.Pen = new Pen(Brushes.Black, 1);
+      var geometryDrawingDashesAndMarks = new GeometryDrawing
+                                            {Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1)};
       DrawingGroup.Children.Add(geometryDrawingDashesAndMarks);
 
-      var geometryDrawingGridlines = new GeometryDrawing();
-      geometryDrawingGridlines.Geometry = geometryGroupGridlines;
-      geometryDrawingGridlines.Pen = new Pen(Brushes.LightGray, 1);
+      var geometryDrawingGridlines = new GeometryDrawing
+                                       {Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1)};
       DrawingGroup.Children.Add(geometryDrawingGridlines);
     }
   }
