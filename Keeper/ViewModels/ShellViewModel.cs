@@ -529,7 +529,8 @@ namespace Keeper.ViewModels
 
       var arcMessage = Message;
       Message = "Diagrams";
-      WindowManager.ShowDialog(new RatesDiagramViewModel());
+      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).ToList();
+      WindowManager.ShowDialog(new RatesDiagramViewModel(ratesData));
       Message = arcMessage;
 
     }
