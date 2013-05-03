@@ -2,12 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
-using Caliburn.Micro;
 
 namespace Keeper.DomainModel
 {
