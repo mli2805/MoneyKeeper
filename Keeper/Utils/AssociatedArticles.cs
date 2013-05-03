@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
