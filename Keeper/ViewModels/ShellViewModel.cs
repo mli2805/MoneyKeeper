@@ -393,6 +393,17 @@ namespace Keeper.ViewModels
       DepositsFormPointer = new DepositsViewModel();
       WindowManager.ShowWindow(DepositsFormPointer);
     }
+
+    public void ShowRatesDiagram()
+    {
+      var arcMessage = Message;
+      Message = "Diagrams";
+      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).ToList();
+      WindowManager.ShowDialog(new RatesDiagramViewModel(ratesData));
+      Message = arcMessage;
+    }
+
+    
     #endregion
 
     // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
@@ -521,17 +532,12 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
-//            DbSoapSerialization();
-//            DbSoapDeserialization();
+            DbSoapSerialization();
+            DbSoapDeserialization();
 
-//            DbXmlSerialization();
-//            DbXmlDeserialization();
+            DbXmlSerialization();
+            DbXmlDeserialization();
 
-      var arcMessage = Message;
-      Message = "Diagrams";
-      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).ToList();
-      WindowManager.ShowDialog(new RatesDiagramViewModel(ratesData));
-      Message = arcMessage;
 
     }
 
