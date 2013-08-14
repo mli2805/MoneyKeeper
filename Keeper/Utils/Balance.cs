@@ -93,7 +93,8 @@ namespace Keeper.Utils
     }
 
     /// <summary>
-    /// остатки за каждый день периода, даже если в какой-то день не было движения по счету
+    /// остатки за каждый день периода, когда было движение
+    /// НЕТ! даже если в какой-то день не было движения по счету
     /// </summary>
     /// <param name="balancedAccount"></param>
     /// <param name="period"></param>
@@ -110,8 +111,10 @@ namespace Keeper.Utils
                                                      new Period(day.Date, day.Date.AddDays(1).AddSeconds(-1)));
 
         // и нарастающим итогом сохраняем в массив
-        balance += BalancePairsToUsd(oneDayInCurrencies, day);
-        result.Add(day,Math.Round(balance*10000)/100);
+        var oneDayResult = BalancePairsToUsd(oneDayInCurrencies, day);
+        if (oneDayResult == 0) continue;
+        balance += oneDayResult;
+        result.Add(day, Math.Round(balance*100)/100);
       }
 
       return result;
