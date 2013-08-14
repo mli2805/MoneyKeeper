@@ -10,6 +10,18 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
+  public class DiagramPair
+  {
+    public DateTime CoorXdate;
+    public double CoorYdouble;
+
+    public DiagramPair(DateTime coorXdate, double coorYdouble)
+    {
+      CoorXdate = coorXdate;
+      CoorYdouble = coorYdouble;
+    }
+  }
+
   class RatesDiagramViewModel : Screen
   {
     private const double CanvasWidth = 800;  // Не важно сколько конкретно - они займут всю ячейку грида
@@ -19,7 +31,8 @@ namespace Keeper.ViewModels
     private const double TopMargin = 30;
     private const double BottomMargin = 30;
 
-    public List<CurrencyRate> Data { get; set; }
+    public List<DiagramPair> DiagramData { get; set; }
+
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue;
     private double _pointPerDay, _pointPerOneValue;
@@ -37,11 +50,12 @@ namespace Keeper.ViewModels
       }
     }
 
-    public RatesDiagramViewModel(List<CurrencyRate> data)
+    public RatesDiagramViewModel(List<DiagramPair> data)
     {
-      Data = data;
-      ProcessDiagramData();
+      DiagramData = data;
+      GetDiagramDataLimits();
 
+#region Drawing
       DiagramBackground();
 
       HorizontalAxes();
@@ -54,32 +68,28 @@ namespace Keeper.ViewModels
 
       Diagram();
       ImageSource = new DrawingImage(DrawingGroup);
+#endregion
+
     }
 
-    private void ProcessDiagramData()
-    {
-      InitDiagramData();
-    }
 
-    private void InitDiagramData()
+    private void GetDiagramDataLimits()
     {
-//      Data = LoadRatesFromTxt.LoadData().Where(r => r.Currency == CurrencyCodes.BYR).ToList();
-
-      _minDate = Data[0].BankDay;
-      _maxDate = Data.Last().BankDay;
-      _minValue = Data.Min(r => r.Rate); if (_minValue > 0) _minValue = 0;
-      _maxValue = Data.Max(r => r.Rate) * 1.03;
+      _minDate = DiagramData[0].CoorXdate;
+      _maxDate = DiagramData.Last().CoorXdate;
+      _minValue = DiagramData.Min(r => r.CoorYdouble); if (_minValue > 0) _minValue = 0;
+      _maxValue = DiagramData.Max(r => r.CoorYdouble) * 1.03;
     }
 
     private void Diagram()
     {
       var geometryGroup = new GeometryGroup();
-      for (int i = 0; i < Data.Count - 1; i++)
+      for (int i = 0; i < DiagramData.Count - 1; i++)
       {
-        var line = new LineGeometry(new Point((Data[i].BankDay - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - Data[i].Rate * _pointPerOneValue),
-                                    new Point((Data[i+1].BankDay - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - Data[i+1].Rate * _pointPerOneValue));
+        var line = new LineGeometry(new Point((DiagramData[i].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
+                                              CanvasHeight - BottomMargin - DiagramData[i].CoorYdouble * _pointPerOneValue),
+                                    new Point((DiagramData[i+1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
+                                              CanvasHeight - BottomMargin - DiagramData[i + 1].CoorYdouble * _pointPerOneValue));
         geometryGroup.Children.Add(line);
       }
       var geometryDrawing = new GeometryDrawing {Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1)};
@@ -153,7 +163,7 @@ namespace Keeper.ViewModels
         geometryGroupGridlines.Children.Add(gridline);
 
         var markY = flag == Dock.Bottom ? CanvasHeight : TopMargin;
-        var mark = String.Format("{0:d/M/yyyy} ", Data[0].BankDay.AddDays(i * daysPerDivision));
+        var mark = String.Format("{0:d/M/yyyy} ", DiagramData[0].CoorXdate.AddDays(i * daysPerDivision));
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry = formattedText.BuildGeometry(new Point(pointPerScaleStep * i + LeftMargin - 25, markY - 20));
