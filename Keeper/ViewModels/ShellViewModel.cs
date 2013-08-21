@@ -394,20 +394,32 @@ namespace Keeper.ViewModels
       WindowManager.ShowWindow(DepositsFormPointer);
     }
 
-    public void ShowRatesDiagram()
+    #endregion
+
+    #region menu Diagrams
+
+    public void ShowDailyBalancesDiagram()
     {
       var arcMessage = Message;
       Message = "Diagrams";
-
-
-//      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).ToList();
-//      var diagramData = ratesData.Select(currencyRate => new DiagramPair(currencyRate.BankDay, currencyRate.Rate)).ToList();
 
       var allMyMoney = (from account in Db.Accounts
                        where account.Name == "Мои"
                        select account).FirstOrDefault();
       var balances = Balance.AccountBalancesForPeriodInUsd(allMyMoney, new Period(new DateTime(2002,1,1), DateTime.Today));
       var diagramData = balances.Select(pair => new DiagramPair(pair.Key, (double) pair.Value)).ToList();
+
+      WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));
+      Message = arcMessage;
+    }
+
+    public void ShowRatesDiagram()
+    {
+      var arcMessage = Message;
+      Message = "Diagrams";
+
+      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).ToList();
+      var diagramData = ratesData.Select(currencyRate => new DiagramPair(currencyRate.BankDay, currencyRate.Rate)).ToList();
 
       WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));
       Message = arcMessage;
