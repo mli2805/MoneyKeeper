@@ -69,6 +69,8 @@
         <MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
       </MenuItem>
       <MenuItem Header="ДИАГРАММЫ">
+        <MenuItem x:Name="ShowDailyBalancesDiagram" Header="Ежедневные остатки"/>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem x:Name="ShowRatesDiagram" Header="Курсы валют"/>
       </MenuItem>
       <MenuItem Header="TOOLS">
