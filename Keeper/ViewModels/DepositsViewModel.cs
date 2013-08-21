@@ -170,10 +170,11 @@ namespace Keeper.ViewModels
       var days = new Dictionary<DateTime, List<Balance.BalancePair>>();
 
       var rootDepo = Db.FindAccountInTree("Депозиты");
-      var depoDates = (from t in Db.Transactions
-                       where t.Debet.IsDescendantOf("Депозиты") || t.Credit.IsDescendantOf("Депозиты")
-                       select t.Timestamp.Date).Distinct();
-      foreach (var date in depoDates)
+//      var depoDates = (from t in Db.Transactions
+//                       where t.Debet.IsDescendantOf("Депозиты") || t.Credit.IsDescendantOf("Депозиты")
+//                       select t.Timestamp.Date).Distinct();
+//      foreach (var date in depoDates)
+      for (DateTime date = new DateTime(2002,1,1); date < DateTime.Today; date = date.AddDays(1))
       {
         var allCurrencies =
           Balance.AccountBalancePairsAfterDay(rootDepo, date).OrderByDescending(pair => pair.Currency).ToList();
