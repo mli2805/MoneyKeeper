@@ -96,6 +96,8 @@ namespace Keeper.ViewModels
       DrawingGroup.Children.Add(geometryDrawing);
     }
 
+    #region Drawing implementation
+
     private void DiagramBackground()
     {
       var geometryDrawing = new GeometryDrawing();
@@ -236,5 +238,8 @@ namespace Keeper.ViewModels
                                        {Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1)};
       DrawingGroup.Children.Add(geometryDrawingGridlines);
     }
+
+#endregion
+
   }
 }

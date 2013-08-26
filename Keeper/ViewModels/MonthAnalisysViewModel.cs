@@ -252,7 +252,7 @@ namespace Keeper.ViewModels
         else
         {                                                             // значит для перевода остатков в доллары
           decimal amountInUsd;                                        // курс тоже должен быть вчерашнего дня
-          Rate.GetUsdEquivalent(balancePair.Amount, (CurrencyCodes)balancePair.Currency, date.AddDays(-1), out amountInUsd);
+          Rate.GetUsdEquivalentString(balancePair.Amount, (CurrencyCodes)balancePair.Currency, date.AddDays(-1), out amountInUsd);
           balanceInUsd += amountInUsd;
           list.Add(String.Format("{0}  (= {1:#,0} $)", balancePair.ToString(), amountInUsd));
         }
@@ -293,7 +293,7 @@ namespace Keeper.ViewModels
         else
         {
           decimal amountInUsd;
-          Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp, out amountInUsd);
+          Rate.GetUsdEquivalentString(transaction.Amount, transaction.Currency, transaction.Timestamp, out amountInUsd);
           incomesInUsd += amountInUsd;
           IncomesList.Add(String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
             transaction.Timestamp, transaction.Amount, transaction.Currency.ToString().ToLower(),

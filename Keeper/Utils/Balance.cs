@@ -93,8 +93,8 @@ namespace Keeper.Utils
     }
 
     /// <summary>
-    /// остатки за каждый день периода, когда было движение
-    /// НЕТ! даже если в какой-то день не было движения по счету
+    /// остатки за каждый день периода, 
+    /// даже если в какой-то день не было движения по счету
     /// </summary>
     /// <param name="balancedAccount"></param>
     /// <param name="period"></param>
@@ -120,32 +120,76 @@ namespace Keeper.Utils
       return result;
     }
 
+    /// <summary>
+    /// Second way to build daily balances
+    /// </summary>
+    /// <param name="balancedAccount"></param>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    public static Dictionary<DateTime,decimal> AccountBalancesForPeriodInUsdSecondWay(Account balancedAccount, Period period)
+    {
+      var result = new Dictionary<DateTime, decimal>();
+
+      var currentDate = period.GetStart();
+      decimal balance = 0;
+      foreach (var transaction in Db.Transactions)
+      {
+        if (currentDate != transaction.Timestamp.Date)
+        {
+          result.Add(currentDate,balance);
+          currentDate = currentDate.AddDays(1);
+          while (currentDate != transaction.Timestamp.Date)
+          {
+//            result.Add(currentDate, balance); добавлять если не изменился остаток
+            currentDate = currentDate.AddDays(1);
+          }
+        }
+
+        if (transaction.Debet.IsTheSameOrDescendantOf(balancedAccount))
+        {
+          balance -= Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+          if (transaction.Amount2 != 0)
+            balance += Rate.GetUsdEquivalent(transaction.Amount2, (CurrencyCodes)transaction.Currency2, transaction.Timestamp);
+        }
+
+        if (transaction.Credit.IsTheSameOrDescendantOf(balancedAccount))
+        {
+          balance += Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+          if (transaction.Amount2 != 0)
+            balance -= Rate.GetUsdEquivalent(transaction.Amount2, (CurrencyCodes)transaction.Currency2, transaction.Timestamp);
+        }
+
+      }
+      result.Add(currentDate, balance);
+      return result;
+    }
+
+
     public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
     {
-      var trs = (from t in Db.Transactions
-                 where t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)
-                       || t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name)
-                 select t).ToList();
+//      var trs = (from t in Db.Transactions
+//                 where t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)
+//                       || t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name)
+//                 select t).ToList();
 
-      if (trs.Count > 0)
-      {
+//      if (trs.Count > 0)
+//      {
         
-      }
+//      }
 
       var tempBalance =
         (from t in Db.Transactions
          where period.IsDateTimeIn(t.Timestamp) &&
-               (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) ||
-               (t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)))
+            (t.Credit.IsTheSameOrDescendantOf(balancedAccount) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount) ||
+             (t.Debet.IsTheSameOrDescendantOf(balancedAccount) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount)))
          group t by t.Currency into g
          select new BalancePair
                     {
                       Currency = g.Key,
                       Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount))
                     }).
-        Concat
+        Concat // учесть вторую сторону обмена - приход денег в другой валюте
         (from t in Db.Transactions
-         // учесть вторую сторону обмена - приход денег в другой валюте
          where t.Amount2 != 0 && period.IsDateTimeIn(t.Timestamp) &&
                (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
                                            t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))

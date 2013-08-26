@@ -137,6 +137,11 @@ namespace Keeper.DomainModel
       return Parent.Name == ancestor || Parent.IsDescendantOf(ancestor);
     }
 
+    public bool IsDescendantOf(Account ancestor)
+    {
+      if (Parent == null) return false;
+      return Parent == ancestor || Parent.IsDescendantOf(ancestor);
+    }
 
     /// <summary>
     /// true если инстанс или потомок счета-параметра или сам Ё“ќ“ счет
@@ -148,6 +153,14 @@ namespace Keeper.DomainModel
       if (Name == ancestor) return true;
       return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
     }
+
+    public bool IsTheSameOrDescendantOf(Account ancestor)  
+    {
+      if (this == ancestor) return true;
+      return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
+    }
+
+
 
     public int CompareTo(object obj)
     {
