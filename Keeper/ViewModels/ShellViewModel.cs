@@ -431,10 +431,16 @@ namespace Keeper.ViewModels
       var arcMessage = Message;
       Message = "Diagrams";
 
-      var allMyMoney = (from account in Db.Accounts
-                       where account.Name == "Мои"
-                       select account).FirstOrDefault();
-      var balances = Balance.AccountBalancesForPeriodInUsd(allMyMoney, new Period(new DateTime(2002,1,1), DateTime.Today));
+      var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
+
+      var tt = new Stopwatch();
+      tt.Start();
+//            var balances = Balance.AccountBalancesForPeriodInUsd(allMyMoney, new Period(new DateTime(2002, 1, 1), DateTime.Today));
+      var balances = Balance.AccountBalancesForPeriodInUsdSecondWay(allMyMoney, new Period(new DateTime(2002, 1, 1), DateTime.Today));
+
+      tt.Stop();
+      Console.WriteLine(tt.Elapsed);
+
       var diagramData = balances.Select(pair => new DiagramPair(pair.Key, (double) pair.Value)).ToList();
 
       WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));

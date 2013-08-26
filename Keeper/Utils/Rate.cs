@@ -34,13 +34,24 @@ namespace Keeper.Utils
       return rate != null ? rate.Rate : 0.0;
     }
 
-    public static string GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp)
+    public static decimal GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp)
     {
-      decimal temp;
-      return GetUsdEquivalent(amount, currency, timestamp, out temp);
+      if (currency == CurrencyCodes.USD) return amount;
+
+      var rate = GetRate(currency, timestamp);
+      if (rate.Equals(0.0)) return -1;
+
+      if (currency == CurrencyCodes.EUR) rate = 1/rate;
+      return amount / (decimal)rate;
     }
 
-    public static string GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd)
+    public static string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp)
+    {
+      decimal temp;
+      return GetUsdEquivalentString(amount, currency, timestamp, out temp);
+    }
+
+    public static string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd)
     {
       amountInUsd = 0;
       var rate = GetRate(currency, timestamp);

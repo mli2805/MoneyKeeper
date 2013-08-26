@@ -20,6 +20,11 @@ namespace Keeper.Utils
       return checkDate >= _start && checkDate <= _finish;
     }
 
+    public DateTime GetStart()
+    {
+      return _start;
+    }
+
     public IEnumerator GetEnumerator()
     {
       for (var dt = _start; dt <= _finish; dt = dt.AddDays(1))

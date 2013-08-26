@@ -148,10 +148,10 @@ namespace Keeper.DomainModel
     {
       get
       {
-        TimeSpan DaysFrom = Timestamp.Date - new DateTime(1972, 5, 28);
-        if (DaysFrom.Days % 4 == 0) return Brushes.Cornsilk;
-        if (DaysFrom.Days % 4 == 1) return new SolidColorBrush(Color.FromRgb(240,255,240));
-        if (DaysFrom.Days % 4 == 2) return Brushes.GhostWhite;
+        var daysFrom = Timestamp.Date - new DateTime(1972, 5, 28);
+        if (daysFrom.Days % 4 == 0) return Brushes.Cornsilk;
+        if (daysFrom.Days % 4 == 1) return new SolidColorBrush(Color.FromRgb(240,255,240));
+        if (daysFrom.Days % 4 == 2) return Brushes.GhostWhite;
         return Brushes.Azure;
       }
     }

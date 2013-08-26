@@ -262,7 +262,7 @@ namespace Keeper.ViewModels
         if (TransactionInWork.Currency == CurrencyCodes.USD && SelectedTabIndex != 3) return "";
         const string res0 = "                                                                                ";
 
-        var res1 = Rate.GetUsdEquivalent(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
+        var res1 = Rate.GetUsdEquivalentString(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
         // одинарные операции не в остальных валютах
         if (SelectedTabIndex != 3) return res0 + res1;
 
