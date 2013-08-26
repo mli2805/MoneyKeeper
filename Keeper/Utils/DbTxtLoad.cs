@@ -30,12 +30,25 @@ namespace Keeper.Utils
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
     public static DbLoadError Result = new DbLoadError();
 
+    public static DbLoadError LoadFromLastZip()
+    {
+
+
+      return LoadDbFromTxt();
+    }
+
     public static DbLoadError LoadDbFromTxt()
     {
       var tt = new Stopwatch();
       tt.Start();
 
       Db.Accounts = LoadAccounts();
+      if (Db.Accounts == null)
+      {
+        Result.Code = 5;
+        Result.Explanation = "File '" + Path.Combine(Settings.Default.SavePath, "Accounts.txt") + "' not found";
+        return Result;
+      }
       Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
 
       Db.Transactions = LoadFrom("Transactions.txt", TransactionFromStringWithNames);
@@ -43,7 +56,7 @@ namespace Keeper.Utils
       Db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString);
 
       tt.Stop();
-      Console.WriteLine("Creation backup copy in encrypted zip archive takes {0} sec", tt.Elapsed);
+      Console.WriteLine("Loading from zip archive takes {0} sec", tt.Elapsed);
 
       return Result;
     }
@@ -98,8 +111,10 @@ namespace Keeper.Utils
     #region // Accounts
     public static ObservableCollection<Account> LoadAccounts()
     {
-      var content = File.ReadAllLines(Path.Combine(Settings.Default.SavePath, "Accounts.txt"), Encoding1251).
-                                                                 Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+      var filename = Path.Combine(Settings.Default.SavePath, "Accounts.txt");
+      if (!File.Exists(filename)) return null;
+
+      var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
       var result = new ObservableCollection<Account>();
       foreach (var s in content)
       {

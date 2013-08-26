@@ -10,6 +10,7 @@ using System.Windows;
 using System.Xml.Serialization;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Properties;
 using Keeper.Utils;
 using Keeper.Views;
 
@@ -39,6 +40,7 @@ namespace Keeper.ViewModels
     private DateTime _paymentsStartDate;
     private DateTime _paymentsFinishDate;
     private Visibility _isDeposit;
+    private bool _isDbLoadingSuccessed;
 
     public string Message
     {
@@ -176,13 +178,27 @@ namespace Keeper.ViewModels
 
     public void OnImportsSatisfied()
     {
-      BinaryCrypto.DbCryptoDeserialization();
-//      DbTxtLoad.LoadDbFromTxt();
+      _isDbLoadingSuccessed = false;
+      if (BinaryCrypto.DbCryptoDeserialization() == 5)
+      {
+        var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
+        MessageBox.Show("");
+        MessageBox.Show("File '" + filename + "' not found. \n Last zip will be used.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        var loadResult = DbTxtLoad.LoadFromLastZip();
+        if (loadResult.Code != 0)
+        {
+          MessageBox.Show(loadResult.Explanation + ". \n Application will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+          return;
+        }
+
+      }
 
       InitVariablesToShowAccounts();
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
       _paymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
       _paymentsFinishDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+      _isDbLoadingSuccessed = true;
     }
 
     private void InitVariablesToShowAccounts()
@@ -208,6 +224,11 @@ namespace Keeper.ViewModels
 
     protected override void OnViewLoaded(object view)
     {
+      if (!_isDbLoadingSuccessed)
+      {
+        TryClose();
+        return;
+      }
       DisplayName = "Keeper (c) 2012-13";
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
       OpenedAccountPage = 0;
@@ -215,10 +236,12 @@ namespace Keeper.ViewModels
 
     public override void CanClose(Action<bool> callback)
     {
-      if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
-      BinaryCrypto.DbCryptoSerialization();
-      DbTxtSave.MakeDbBackupCopy();
-
+      if (_isDbLoadingSuccessed)
+      {
+        if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
+        BinaryCrypto.DbCryptoSerialization();
+        DbTxtSave.MakeDbBackupCopy();
+      }
       callback(true);
     }
 
@@ -335,6 +358,11 @@ namespace Keeper.ViewModels
     {
       DbTxtLoad.LoadDbFromTxt();
       InitVariablesToShowAccounts();
+    }
+
+    public void ProgramExit()
+    {
+      TryClose();
     }
 
     #endregion
