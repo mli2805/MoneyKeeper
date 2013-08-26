@@ -60,6 +60,8 @@
         <MenuItem x:Name="MakeDatabaseBackup" Header="СОЗДАТЬ РЕЗЕРВНУЮ КОПИЮ" ToolTip="Txt in zip with password (dropbox\keeper)"/>
         <MenuItem x:Name="ExportDatabaseToTxt" Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ" ToolTip="c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
         <MenuItem x:Name="ImportDatabaseFromTxt" Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ"  ToolTip="c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="ProgramExit" Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye"/>
       </MenuItem>
       <MenuItem Header="ФОРМЫ">
         <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>

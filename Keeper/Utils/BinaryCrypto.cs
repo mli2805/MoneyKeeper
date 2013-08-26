@@ -58,7 +58,7 @@ namespace Keeper.Utils
       Console.WriteLine("BinaryFormatter serialization with Crypto takes {0} sec", watch1.Elapsed);
     }
 
-    public static void DbCryptoDeserialization()
+    public static int DbCryptoDeserialization()
     {
       var watch1 = new Stopwatch();
       watch1.Start();
@@ -67,6 +67,7 @@ namespace Keeper.Utils
       byte[] initVector = { 0xf3, 0x5e, 0x7a, 0x81, 0xae, 0x8c, 0xb4, 0x92, 0xd0, 0xf2, 0xe7, 0xc1, 0x8d, 0x54, 0x00, 0xd8 };
 
       var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
+      if (!File.Exists(filename)) return 5; // file not found
       using (Stream fStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
       {
         var rmCrypto = new RijndaelManaged();
@@ -80,6 +81,7 @@ namespace Keeper.Utils
 
       watch1.Stop();
       Console.WriteLine("BinaryFormatter deserialization with Crypto takes {0} sec", watch1.Elapsed);
+      return 0;
     }
   }
 }
