@@ -221,16 +221,21 @@ namespace Keeper.Utils
                         };
     }
 
-    private static List<string> OneBalance(Account balancedAccount, Period period)
+    private static List<string> OneBalance(Account balancedAccount, Period period, out decimal totalInUsd)
     {
       var balance = new List<string>();
+      totalInUsd = 0;
       if (balancedAccount == null) return balance;
 
       bool kind = balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы");
       var balancePairs = kind ? ArticleBalancePairs(balancedAccount, period) : AccountBalancePairs(balancedAccount, period);
 
       foreach (var item in balancePairs)
+      {
         if (item.Amount != 0) balance.Add(String.Format("{0:#,#} {1}", item.Amount, item.Currency));
+        totalInUsd += Rate.GetUsdEquivalent(item.Amount, item.Currency, period.GetFinish());
+      }
+
       return balance;
     }
 
@@ -238,22 +243,26 @@ namespace Keeper.Utils
     /// Функция нужна только заполнения для 2-й рамки на ShellView
     /// Расчитываются остатки по счету и его потомкам 1-го поколения
     /// </summary>
-    public static void CountBalances(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
+    public static decimal CountBalances(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
     {
       balanceList.Clear();
-      if (selectedAccount == null) return;
+      if (selectedAccount == null) return 0;
 
-      var b = OneBalance(selectedAccount, period);
+      decimal inUsd;
+      var b = OneBalance(selectedAccount, period, out inUsd);
       foreach (var st in b)
         balanceList.Add(st);
 
       foreach (var child in selectedAccount.Children)
       {
-        b = OneBalance(child, period);
+        decimal temp;
+        b = OneBalance(child, period, out temp);
         if (b.Count > 0) balanceList.Add("         " + child.Name);
         foreach (var st in b)
           balanceList.Add("    " + st);
       }
+
+      return inUsd;
     }
 
 
