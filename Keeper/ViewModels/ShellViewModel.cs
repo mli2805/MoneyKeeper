@@ -39,6 +39,7 @@ namespace Keeper.ViewModels
     private Visibility _paymentsPeriodChoiseControls;
     private DateTime _paymentsStartDate;
     private DateTime _paymentsFinishDate;
+    private string _accountBalanceInUsd;
     private Visibility _isDeposit;
     private bool _isDbLoadingSuccessed;
 
@@ -61,6 +62,17 @@ namespace Keeper.ViewModels
         if (value.Equals(_statusBarItem0)) return;
         _statusBarItem0 = value;
         NotifyOfPropertyChange(() => StatusBarItem0);
+      }
+    }
+
+    public string AccountBalanceInUsd
+    {
+      get { return _accountBalanceInUsd; }
+      set
+      {
+        if (value == _accountBalanceInUsd) return;
+        _accountBalanceInUsd = value;
+        NotifyOfPropertyChange(() => AccountBalanceInUsd);
       }
     }
 
@@ -92,9 +104,10 @@ namespace Keeper.ViewModels
       {
         _selectedAccount = value;
         Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
-        Balance.CountBalances(SelectedAccount, period, BalanceList);
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccount);
         IsDeposit = value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+
       }
     }
 

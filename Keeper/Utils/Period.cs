@@ -25,6 +25,11 @@ namespace Keeper.Utils
       return _start;
     }
 
+    public DateTime GetFinish()
+    {
+      return _finish;
+    }
+
     public IEnumerator GetEnumerator()
     {
       for (var dt = _start; dt <= _finish; dt = dt.AddDays(1))
