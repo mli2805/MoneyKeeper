@@ -454,6 +454,7 @@ namespace Keeper.ViewModels
       tt.Stop();
       Console.WriteLine(tt.Elapsed);
 
+
       var diagramData = balances.Select(pair => new DiagramPair(pair.Key, (double) pair.Value)).ToList();
 
       WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));
@@ -487,7 +488,7 @@ namespace Keeper.ViewModels
         _balanceDate = value.Date.AddDays(1).AddMilliseconds(-1);
         NotifyOfPropertyChange(() => BalanceDate);
         var period = new Period(new DateTime(0), BalanceDate);
-        Balance.CountBalances(SelectedAccount, period, BalanceList);
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
       }
     }
 
@@ -512,7 +513,7 @@ namespace Keeper.ViewModels
         _paymentsStartDate = value;
         NotifyOfPropertyChange(() => PaymentsStartDate);
         var period = new Period(PaymentsStartDate, PaymentsFinishDate);
-        Balance.CountBalances(SelectedAccount, period, BalanceList);
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
       }
     }
 
@@ -525,7 +526,7 @@ namespace Keeper.ViewModels
         _paymentsFinishDate = value.Date.AddDays(1).AddMilliseconds(-1);
         NotifyOfPropertyChange(() => PaymentsFinishDate);
         var period = new Period(PaymentsStartDate, PaymentsFinishDate);
-        Balance.CountBalances(SelectedAccount, period, BalanceList);
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
       }
     }
 
@@ -606,8 +607,6 @@ namespace Keeper.ViewModels
 
             DbXmlSerialization();
             DbXmlDeserialization();
-
-
     }
 
 

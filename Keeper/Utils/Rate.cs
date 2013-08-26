@@ -38,7 +38,7 @@ namespace Keeper.Utils
     {
       if (currency == CurrencyCodes.USD) return amount;
 
-      var rate = GetRate(currency, timestamp);
+      var rate = GetRateThisDayOrBefore(currency, timestamp);
       if (rate.Equals(0.0)) return -1;
 
       if (currency == CurrencyCodes.EUR) rate = 1/rate;
