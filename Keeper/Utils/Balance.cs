@@ -120,8 +120,75 @@ namespace Keeper.Utils
       return result;
     }
 
+    public static decimal ConvertAllCurrenciesToUsd(Dictionary<CurrencyCodes, decimal> balances, DateTime date )
+    {
+      decimal inUsd = 0;
+      foreach (var balance in balances)
+      {
+        inUsd += Rate.GetUsdEquivalent(balance.Value, balance.Key, date);
+      }
+      return inUsd;
+    }
+
+    public static Dictionary<DateTime, decimal> AccountBalancesForPeriodInUsdThirdWay(Account balancedAccount, Period period)
+    {
+      var result = new Dictionary<DateTime, decimal>();
+      var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
+      var currentDate = period.GetStart();
+
+      var interestingDate = new DateTime(2013, 2, 17);
+      foreach (var transaction in Db.Transactions)
+      {
+        if (currentDate != transaction.Timestamp.Date)
+        {
+          result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies,currentDate));
+          currentDate = currentDate.AddDays(1);
+          while (currentDate != transaction.Timestamp.Date)
+          {
+            //            result.Add(currentDate, balance); добавлять если не изменился остаток
+            currentDate = currentDate.AddDays(1);
+          }
+        }
+
+        if (currentDate == interestingDate && transaction.Operation == OperationType.Обмен)
+        {
+          
+        }
+
+        if (transaction.Debet.IsTheSameOrDescendantOf(balancedAccount))
+        {
+          if (!balanceInCurrencies.ContainsKey(transaction.Currency)) balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
+          else balanceInCurrencies[transaction.Currency] -= transaction.Amount;
+          if (transaction.Amount2 != 0)
+          {
+            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, transaction.Amount2);
+            else balanceInCurrencies[(CurrencyCodes) transaction.Currency2] += transaction.Amount2;
+          }
+        }
+
+        if (transaction.Credit.IsTheSameOrDescendantOf(balancedAccount))
+        {
+          if (!balanceInCurrencies.ContainsKey(transaction.Currency)) balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
+          else balanceInCurrencies[transaction.Currency] += transaction.Amount;
+          if (transaction.Amount2 != 0)
+          {
+            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, -transaction.Amount2);
+            else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] -= transaction.Amount2;
+          }
+        }
+      }
+      result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
+      return result;
+    }
+
+
+
     /// <summary>
     /// Second way to build daily balances
+    /// 
+    /// This way doesn't consider excange rate differences!!!
     /// </summary>
     /// <param name="balancedAccount"></param>
     /// <param name="period"></param>
@@ -165,18 +232,16 @@ namespace Keeper.Utils
     }
 
 
+    /// <summary>
+    /// First way to build daily balances
+    /// 
+    /// This way doesn't consider excange rate differences!!!
+    /// </summary>
+    /// <param name="balancedAccount"></param>
+    /// <param name="period"></param>
+    /// <returns></returns>
     public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
     {
-//      var trs = (from t in Db.Transactions
-//                 where t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name)
-//                       || t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name)
-//                 select t).ToList();
-
-//      if (trs.Count > 0)
-//      {
-        
-//      }
-
       var tempBalance =
         (from t in Db.Transactions
          where period.IsDateTimeIn(t.Timestamp) &&
