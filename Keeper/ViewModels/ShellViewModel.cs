@@ -25,7 +25,6 @@ namespace Keeper.ViewModels
     public IWindowManager WindowManager { get; set; }
 
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-    public DepositsViewModel DepositsFormPointer { get; set; }
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -186,7 +185,7 @@ namespace Keeper.ViewModels
     {
       _message = "Keeper is running (On Debug)";
       BalanceList = new ObservableCollection<string> { "test balance" };
-      DepositsFormPointer = null;
+      _depositsFormPointer = null;
     }
 
     public void OnImportsSatisfied()
@@ -251,7 +250,8 @@ namespace Keeper.ViewModels
     {
       if (_isDbLoadingSuccessed)
       {
-        if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
+        if (_ratesDiagramFormPointer != null && _ratesDiagramFormPointer.IsActive) _ratesDiagramFormPointer.TryClose();
+        if (_depositsFormPointer != null && _depositsFormPointer.IsActive) _depositsFormPointer.TryClose();
         if (LaunchedViewModels != null)
           foreach (var depositViewModel in LaunchedViewModels)
             if (depositViewModel.IsActive) depositViewModel.TryClose();
@@ -442,11 +442,12 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
+    private DepositsViewModel _depositsFormPointer;
     public void ShowDepositsForm()
     {
-      if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
-      DepositsFormPointer = new DepositsViewModel();
-      WindowManager.ShowWindow(DepositsFormPointer);
+      if (_depositsFormPointer != null && _depositsFormPointer.IsActive) _depositsFormPointer.TryClose();
+      _depositsFormPointer = new DepositsViewModel();
+      WindowManager.ShowWindow(_depositsFormPointer);
     }
 
     #endregion
@@ -482,6 +483,7 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
+    private RatesDiagramViewModel _ratesDiagramFormPointer;
     public void ShowRatesDiagram()
     {
       var arcMessage = Message;
@@ -490,7 +492,8 @@ namespace Keeper.ViewModels
       var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).ToList();
       var diagramData = ratesData.Select(currencyRate => new DiagramPair(currencyRate.BankDay, currencyRate.Rate)).ToList();
 
-      WindowManager.ShowWindow(new RatesDiagramViewModel(diagramData));
+      _ratesDiagramFormPointer = new RatesDiagramViewModel(diagramData);
+      WindowManager.ShowWindow(_ratesDiagramFormPointer);
       Message = arcMessage;
     }
 
