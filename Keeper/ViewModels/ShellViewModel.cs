@@ -252,6 +252,10 @@ namespace Keeper.ViewModels
       if (_isDbLoadingSuccessed)
       {
         if (DepositsFormPointer != null && DepositsFormPointer.IsActive) DepositsFormPointer.TryClose();
+        if (LaunchedViewModels != null)
+          foreach (var depositViewModel in LaunchedViewModels)
+            if (depositViewModel.IsActive) depositViewModel.TryClose();
+
         BinaryCrypto.DbCryptoSerialization();
         DbTxtSave.MakeDbBackupCopy();
       }
@@ -318,11 +322,21 @@ namespace Keeper.ViewModels
       //      Account.CopyForEdit(SelectedAccount, accountInWork);
     }
 
+    public List<DepositViewModel> LaunchedViewModels { get; set; }
     public void ShowDeposit()
     {
       if (SelectedAccount.IsDescendantOf("Депозиты") && SelectedAccount.Children.Count == 0)
       {
+        if (LaunchedViewModels == null) LaunchedViewModels = new List<DepositViewModel>();
+        else
+        {
+          var depositView = (from d in LaunchedViewModels
+                             where d.Deposit.Account == SelectedAccount
+                             select d).FirstOrDefault();
+          if (depositView != null) depositView.TryClose();
+        }
         var depositViewModel = new DepositViewModel(SelectedAccount);
+        LaunchedViewModels.Add(depositViewModel);
         depositViewModel.Renewed += DepositViewModelRenewed;
         WindowManager.ShowWindow(depositViewModel);
       }
@@ -476,7 +490,7 @@ namespace Keeper.ViewModels
       var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).ToList();
       var diagramData = ratesData.Select(currencyRate => new DiagramPair(currencyRate.BankDay, currencyRate.Rate)).ToList();
 
-      WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));
+      WindowManager.ShowWindow(new RatesDiagramViewModel(diagramData));
       Message = arcMessage;
     }
 
