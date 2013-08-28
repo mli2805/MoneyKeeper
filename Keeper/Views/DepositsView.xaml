@@ -181,11 +181,11 @@
                            Title="Распределение вкладов по валютам (%)" TitleStyle="{Binding MyTitleStyle}"
                            cal:Message.Attach="[Event MouseDoubleClick] = [Action ExpandChart1()]">
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
-                                  ItemsSource="{Binding Series1}" Title="USD" />
+                                  ItemsSource="{Binding SeriesUsd}" Title="USD" />
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
-                                  ItemsSource="{Binding Series2}" Title="BYR" />
+                                  ItemsSource="{Binding SeriesByr}" Title="BYR" />
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
-                                  ItemsSource="{Binding Series3}" Title="EUR" />
+                                  ItemsSource="{Binding SeriesEuro}" Title="EUR" />
       </chartingToolkit:Chart>
 
       <chartingToolkit:Chart Name="Chart2" Margin="0,-10,-105,-20" Grid.Row="0" Grid.Column="1" BorderThickness="0" 
