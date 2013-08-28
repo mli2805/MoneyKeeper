@@ -70,9 +70,9 @@ namespace Keeper.ViewModels
       var sw = new Stopwatch();
       sw.Start();
 
-      TotalBalancesCtor();
-      YearsProfitCtor();
       DepoCurrenciesProportionChartCtor();
+      YearsProfitCtor();
+      TotalBalancesCtor();
       CashDepoProportionChartCtor();
 
       sw.Stop();
@@ -107,6 +107,67 @@ namespace Keeper.ViewModels
       WindowManager.ShowWindow(depositViewModel);
     }
 
+
+    #region // подготовка данных для чартов
+    // распределение вкладов по валютам в течении периода наблюдений
+    public List<DateProcentPoint> SeriesUsd { get; set; }
+    public List<DateProcentPoint> SeriesByr { get; set; }
+    public List<DateProcentPoint> SeriesEuro { get; set; }
+
+    public void DepoCurrenciesProportionChartCtor()
+    {
+      SeriesUsd = new List<DateProcentPoint>();
+      SeriesByr = new List<DateProcentPoint>();
+      SeriesEuro = new List<DateProcentPoint>();
+      var rootDepo = Db.FindAccountInTree("Депозиты");
+      var inMoney = Balance.AccountBalancesForPeriodInCurrencies(rootDepo,
+                                                                 new Period(new DateTime(2002, 1, 1), DateTime.Today));
+      foreach (var pair in inMoney)
+      {
+        var date = pair.Key;
+        var balancesInCurrencies = pair.Value;
+
+        var dateTotalInUsd = Balance.ConvertAllCurrenciesToUsd(balancesInCurrencies, date);
+        decimal cumulativePercent = 0;
+        if (balancesInCurrencies.ContainsKey(CurrencyCodes.EUR))
+        {
+          var inUsd = Rate.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.EUR], CurrencyCodes.EUR, date);
+          cumulativePercent = Math.Round(inUsd / dateTotalInUsd * 10000) / 100;
+          SeriesEuro.Add(new DateProcentPoint(date, cumulativePercent));
+        }
+        if (balancesInCurrencies.ContainsKey(CurrencyCodes.BYR))
+        {
+          var inUsd = Rate.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.BYR], CurrencyCodes.BYR, date);
+          cumulativePercent += Math.Round(inUsd / dateTotalInUsd * 10000) / 100;
+          SeriesByr.Add(new DateProcentPoint(date, cumulativePercent));
+        }
+        if (balancesInCurrencies.ContainsKey(CurrencyCodes.USD)) SeriesUsd.Add(new DateProcentPoint(date, 100));
+      }
+    }
+
+    // суммы прибыли от депозитов по годам
+    public List<ChartPoint> YearsList { get; set; }
+    public void YearsProfitCtor()
+    {
+
+      YearsList = new List<ChartPoint>();
+
+      for (int i = 2002; i <= DateTime.Today.Year; i++)
+      {
+        decimal yearTotal = 0;
+        foreach (var deposit in DepositsList)
+        {
+          yearTotal += deposit.GetProfitForYear(i);
+        }
+        if (yearTotal != 0)
+          YearsList.Add(
+            new ChartPoint(
+              String.Format("{0}\n {1:#,0}$/мес", i, yearTotal / 12),
+              (int)yearTotal));
+      }
+    }
+
+    // распределение вкладов по валютам в данный момент
     public List<ChartPoint> TotalsList { get; set; }
     public void TotalBalancesCtor()
     {
@@ -141,79 +202,8 @@ namespace Keeper.ViewModels
       }
     }
 
-    public List<ChartPoint> YearsList { get; set; }
-    public void YearsProfitCtor()
-    {
-
-      YearsList = new List<ChartPoint>();
-
-      for (int i = 2002; i <= DateTime.Today.Year; i++)
-      {
-        decimal yearTotal = 0;
-        foreach (var deposit in DepositsList)
-        {
-          yearTotal += deposit.GetProfitForYear(i);
-        }
-        if (yearTotal != 0)
-          YearsList.Add(
-            new ChartPoint(
-              String.Format("{0}\n {1:#,0}$/мес", i, yearTotal / 12),
-              (int)yearTotal));
-      }
-    }
-
-    public List<DateProcentPoint> Series1 { get; set; }
-    public List<DateProcentPoint> Series2 { get; set; }
-    public List<DateProcentPoint> Series3 { get; set; }
-    public void DepoCurrenciesProportionChartCtor()
-    {
-      var days = new Dictionary<DateTime, List<Balance.BalancePair>>();
-
-      var rootDepo = Db.FindAccountInTree("Депозиты");
-//      var depoDates = (from t in Db.Transactions
-//                       where t.Debet.IsDescendantOf("Депозиты") || t.Credit.IsDescendantOf("Депозиты")
-//                       select t.Timestamp.Date).Distinct();
-//      foreach (var date in depoDates)
-      for (DateTime date = new DateTime(2002,1,1); date < DateTime.Today; date = date.AddDays(1))
-      {
-        var allCurrencies =
-          Balance.AccountBalancePairsAfterDay(rootDepo, date).OrderByDescending(pair => pair.Currency).ToList();
-        foreach (var pair in allCurrencies)  // переводим суммы в доллары, оставляя название валюты
-        {
-          if (pair.Currency != CurrencyCodes.USD)
-            pair.Amount = pair.Amount / (decimal)Rate.GetRateThisDayOrBefore(pair.Currency, date);
-        }
-        var totalinUsd = (from p in allCurrencies select p.Amount).Sum();
-        decimal totalProcents = 0;
-        foreach (var pair in allCurrencies)  // переводим доллары в проценты , накопительным итогом 
-        // пары отсортированы по валютам
-        {
-          totalProcents += Math.Round(pair.Amount / totalinUsd * 10000) / 100;
-          pair.Amount = totalProcents;
-        }
-
-        days[date] = allCurrencies;
-      }
-
-      Series1 = new List<DateProcentPoint>();
-      Series2 = new List<DateProcentPoint>();
-      Series3 = new List<DateProcentPoint>();
-      foreach (var day in days)
-      {
-        var list = day.Value;
-        foreach (var pair in list)
-        {
-          if (pair.Currency == CurrencyCodes.USD) Series1.Add(new DateProcentPoint(day.Key, pair.Amount));
-          if (pair.Currency == CurrencyCodes.BYR) Series2.Add(new DateProcentPoint(day.Key, pair.Amount));
-          if (pair.Currency == CurrencyCodes.EUR) Series3.Add(new DateProcentPoint(day.Key, pair.Amount));
-        }
-      }
-    }
-
-    public List<DateProcentPoint> CashSeries { get; set; }
-
+    // соотношение депозитов и денег наруках
     public List<DateProcentPoint> MonthlyCashSeries { get; set; }
-
     public void CashDepoProportionChartCtor()
     {
       var dailyCashSeries = new List<DateProcentPoint>();
@@ -263,6 +253,8 @@ namespace Keeper.ViewModels
                                Procent = Math.Round(g.Average(a => a.Procent))
                              }).ToList();
     }
+
+    #endregion
 
     #region // Fun with Charts Expand
     
