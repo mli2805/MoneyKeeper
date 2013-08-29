@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
@@ -31,7 +31,8 @@ namespace Keeper.ViewModels
     private const double TopMargin = 30;
     private const double BottomMargin = 30;
 
-    public List<DiagramPair> DiagramData { get; set; }
+    public List<DiagramPair> AllDiagramData { get; set; }
+    public List<DiagramPair> CurrentDiagramData { get; set; }
 
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue;
@@ -52,10 +53,15 @@ namespace Keeper.ViewModels
 
     public RatesDiagramViewModel(List<DiagramPair> data)
     {
-      DiagramData = data;
+      AllDiagramData = data;
+      CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
+      DrawCurrentDiagram();
+    }
+
+    public void DrawCurrentDiagram()
+    {
       GetDiagramDataLimits();
 
-#region Drawing
       DiagramBackground();
 
       HorizontalAxes();
@@ -68,28 +74,25 @@ namespace Keeper.ViewModels
 
       Diagram();
       ImageSource = new DrawingImage(DrawingGroup);
-#endregion
-
     }
-
 
     private void GetDiagramDataLimits()
     {
-      _minDate = DiagramData[0].CoorXdate;
-      _maxDate = DiagramData.Last().CoorXdate;
-      _minValue = DiagramData.Min(r => r.CoorYdouble); if (_minValue > 0) _minValue = 0;
-      _maxValue = DiagramData.Max(r => r.CoorYdouble) * 1.03;
+      _minDate = CurrentDiagramData[0].CoorXdate;
+      _maxDate = CurrentDiagramData.Last().CoorXdate;
+      _minValue = CurrentDiagramData.Min(r => r.CoorYdouble); if (_minValue > 0) _minValue = 0;
+      _maxValue = CurrentDiagramData.Max(r => r.CoorYdouble) * 1.03;
     }
 
     private void Diagram()
     {
       var geometryGroup = new GeometryGroup();
-      for (int i = 0; i < DiagramData.Count - 1; i++)
+      for (int i = 0; i < CurrentDiagramData.Count - 1; i++)
       {
-        var line = new LineGeometry(new Point((DiagramData[i].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - DiagramData[i].CoorYdouble * _pointPerOneValue),
-                                    new Point((DiagramData[i+1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - DiagramData[i + 1].CoorYdouble * _pointPerOneValue));
+        var line = new LineGeometry(new Point((CurrentDiagramData[i].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
+                                              CanvasHeight - BottomMargin - CurrentDiagramData[i].CoorYdouble * _pointPerOneValue),
+                                    new Point((CurrentDiagramData[i+1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
+                                              CanvasHeight - BottomMargin - CurrentDiagramData[i + 1].CoorYdouble * _pointPerOneValue));
         geometryGroup.Children.Add(line);
       }
       var geometryDrawing = new GeometryDrawing {Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1)};
@@ -165,7 +168,7 @@ namespace Keeper.ViewModels
         geometryGroupGridlines.Children.Add(gridline);
 
         var markY = flag == Dock.Bottom ? CanvasHeight : TopMargin;
-        var mark = String.Format("{0:d/M/yyyy} ", DiagramData[0].CoorXdate.AddDays(i * daysPerDivision));
+        var mark = String.Format("{0:d/M/yyyy} ", CurrentDiagramData[0].CoorXdate.AddDays(i * daysPerDivision));
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry = formattedText.BuildGeometry(new Point(pointPerScaleStep * i + LeftMargin - 25, markY - 20));
@@ -240,6 +243,55 @@ namespace Keeper.ViewModels
     }
 
 #endregion
+
+    enum ChangeDiagramDataMode
+    {
+      Increase,
+      Decrease,
+      ShiftLeft 
+    }
+    private void ChangeDiagramData(ChangeDiagramDataMode mode)
+    {
+      var tt = new Stopwatch();
+      tt.Start();
+
+      int shiftDateRange;
+      DateTime newMinDate = _minDate;
+      DateTime newMaxDate = _maxDate;
+      switch (mode)
+      {
+        case ChangeDiagramDataMode.Increase: 
+          shiftDateRange = (_maxDate - _minDate).Days / 10;
+          newMinDate = _minDate.AddDays(shiftDateRange);
+          newMaxDate = _maxDate.AddDays(-shiftDateRange);
+          break;
+        case ChangeDiagramDataMode.Decrease: 
+          shiftDateRange = (_maxDate - _minDate).Days / 10;
+          newMinDate = _minDate.AddDays(-shiftDateRange);
+          newMaxDate = _maxDate.AddDays(shiftDateRange);
+          break;
+        case ChangeDiagramDataMode.ShiftLeft: 
+          break;
+      }
+
+      CurrentDiagramData =
+        AllDiagramData.Where(pair => pair.CoorXdate >= newMinDate && pair.CoorXdate <= newMaxDate).ToList();
+
+      tt.Stop();
+      Console.WriteLine(tt.Elapsed);
+    }
+
+    public void IncreaseDiagram()
+    {
+      ChangeDiagramData(ChangeDiagramDataMode.Increase);
+      DrawCurrentDiagram();
+    }
+
+    public void DecreaseDiagram()
+    {
+      ChangeDiagramData(ChangeDiagramDataMode.Decrease);
+      DrawCurrentDiagram();
+    }
 
   }
 }

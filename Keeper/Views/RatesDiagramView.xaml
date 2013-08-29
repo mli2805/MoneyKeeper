@@ -14,7 +14,7 @@
       <ColumnDefinition Width="30*"/>
     </Grid.ColumnDefinitions>
     <Image Grid.Row="1" Grid.Column="1" Margin="7" Source="{Binding ImageSource}" Stretch="Fill" />
-    <Button Grid.Column="2" Grid.Row="1" Content="+" VerticalAlignment="Bottom" Margin="5,0,5,50"/>
-    <Button Grid.Column="2" Grid.Row="1" Content="-" VerticalAlignment="Bottom" Margin="5,0,5,20"/>
+    <Button Name="IncreaseDiagram" Grid.Column="2" Grid.Row="1" Content="+" VerticalAlignment="Bottom" Margin="5,0,5,50"/>
+    <Button Name="DecreaseDiagram" Grid.Column="2" Grid.Row="1" Content="-" VerticalAlignment="Bottom" Margin="5,0,5,20"/>
   </Grid>
 </Window>
