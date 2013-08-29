@@ -489,7 +489,7 @@ namespace Keeper.ViewModels
       var arcMessage = Message;
       Message = "Diagrams";
 
-      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).ToList();
+      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).ToList();
       var diagramData = ratesData.Select(currencyRate => new DiagramPair(currencyRate.BankDay, currencyRate.Rate)).ToList();
 
       _ratesDiagramFormPointer = new RatesDiagramViewModel(diagramData);
