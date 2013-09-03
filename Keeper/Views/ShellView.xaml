@@ -72,6 +72,7 @@
       </MenuItem>
       <MenuItem Header="ДИАГРАММЫ">
         <MenuItem x:Name="ShowDailyBalancesDiagram" Header="Ежедневные остатки"/>
+        <MenuItem x:Name="ShowMonthlyResultDiagram" Header="Ежемесячное сальдо"/>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem x:Name="ShowRatesDiagram" Header="Курсы валют"/>
       </MenuItem>

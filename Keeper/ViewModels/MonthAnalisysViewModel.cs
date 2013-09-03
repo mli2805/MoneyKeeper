@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -194,98 +195,80 @@ namespace Keeper.ViewModels
 
     public MonthAnalisysViewModel()
     {
-      StartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
-      Calculate();
+      MonthSaldo = MonthAnalisysCtor.AnalizeMonth(DateTime.Today);
+      StartDate = MonthSaldo.StartDate;
+      FillInLists();
     }
 
-    private void Calculate()
+    private void FillInLists()
     {
-      MonthSaldo = new Saldo();
-      CalculateBeginBalance();
+      FillInBeginList();
       DefineLastDay();
-      CalculateIncomes();
-      CalculateExpense();
-      CalculateEndBalance();
-      CalculateResult();
+      FillInIncomesList();
+      FillInExpenseList();
+      FillInEndList();
+      FillInResultList();
       if (!_isMonthEnded) CalculateForecast();
     }
 
-    private void CalculateBeginBalance()
+    private void FillInBeginList()
     {
       BeforeList = new ObservableCollection<string> { "Входящий остаток на начало месяца                \n"};
-      BeforeListByCurrency = new ObservableCollection<string>();
-      MonthSaldo.BeginBalance = FillListWithDateBalance(BeforeListByCurrency, StartDate);
-      MonthSaldo.BeginByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, StartDate.AddDays(-1));
+      BeforeListByCurrency = FillListWithDateBalance(MonthSaldo.BeginBalanceInCurrencies, MonthSaldo.StartDate);
       BeforeList.Add(String.Format("Итого {0:#,0} usd", MonthSaldo.BeginBalance));
     }
 
-    /// <summary>
-    /// При расчете ВХОДЯЩИХ остатков подается первое число месяца 
-    /// и рассчитываются остатки после последнего дня прошлого месяца
-    /// по курсам последнего дня прошлого месяца
-    /// 
-    /// При расчете ИСХОДЯЩИХ надо подавать дату следущую за последним днем 
-    /// ввода транзакций в анализируемом месяце
-    /// т.е. первое число следущего месяца для прошлых периодов или
-    /// "завтра" для текущего месяца
-    /// </summary>
-    /// <param name="list"></param>
-    /// <param name="date"></param>
-    /// <returns></returns>
-    private decimal FillListWithDateBalance(ObservableCollection<string> list, DateTime date)
+    private ObservableCollection<string> FillListWithDateBalance(List<Balance.BalancePair> balanceInCurrencies, DateTime date)
     {
+      var list = new ObservableCollection<string>();
       list.Add("В разрезе валют:");
-      var myAccountsRoot = (from account in Db.Accounts
-                            where account.Name == "Мои"
-                            select account).FirstOrDefault();
-
-      var startBalance = Balance.AccountBalancePairsBeforeDay(myAccountsRoot, date);
-      decimal balanceInUsd = 0;                         // функция возвращает остатки на утро, 
-      foreach (var balancePair in startBalance)         // т.е. фактически остатки вечера предыдущего дня
+      foreach (var balancePair in balanceInCurrencies)    
       {
         if (balancePair.Amount == 0) continue;
         if (balancePair.Currency == CurrencyCodes.USD)
         {
-          balanceInUsd += balancePair.Amount;
           list.Add(balancePair.ToString());
         }
         else
-        {                                                             // значит для перевода остатков в доллары
-          decimal amountInUsd;                                        // курс тоже должен быть вчерашнего дня
-          Rate.GetUsdEquivalentString(balancePair.Amount, (CurrencyCodes)balancePair.Currency, date.AddDays(-1), out amountInUsd);
-          balanceInUsd += amountInUsd;
+        {                                                          
+          decimal amountInUsd = Rate.GetUsdEquivalent(balancePair.Amount, balancePair.Currency, date.AddDays(-1));
           list.Add(String.Format("{0}  (= {1:#,0} $)", balancePair.ToString(), amountInUsd));
         }
       }
-      return balanceInUsd;
+      return list;
     }
 
     private void DefineLastDay()
     {
       var transactions = from t in Db.Transactions
-                    where AnalyzedPeriod.IsDateTimeIn(t.Timestamp)
-                    select t;
+                         where AnalyzedPeriod.IsDateTimeIn(t.Timestamp)
+                         select t;
 
-      var lastTransaction = transactions.LastOrDefault();
-      if (lastTransaction != null)
+      if (!transactions.Any())
       {
+        MonthSaldo.LastDayWithTransactionsInMonth = MonthSaldo.StartDate;
+        MonthSaldo.EndByrRate = MonthSaldo.BeginByrRate;
+      }
+      else
+      {
+        var lastTransaction = transactions.Last();
         MonthSaldo.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
-        MonthSaldo.LastByrRate = (decimal) Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
+        MonthSaldo.EndByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
       }
     }
 
-    private void CalculateIncomes()
+    private void FillInIncomesList()
     {
       IncomesList = new ObservableCollection<string> { "Доходы за месяц\n" };
-      decimal incomesInUsd = 0;
-      var incomes = from t in Db.Transactions
-                    where AnalyzedPeriod.IsDateTimeIn(t.Timestamp) && t.Operation == OperationType.Доход
-                    select t;
+      var incomes = from transaction in Db.Transactions
+                     where transaction.Operation == OperationType.Доход  && 
+                       transaction.Timestamp.Month == MonthSaldo.StartDate.Month &&
+                        transaction.Timestamp.Year == MonthSaldo.StartDate.Year
+                     select transaction;
       foreach (var transaction in incomes)
       {
         if (transaction.Currency == CurrencyCodes.USD)
         {
-          incomesInUsd += transaction.Amount;
           IncomesList.Add(String.Format("{1:#,0}  {2}  {3} {4} , {0:d MMM}",
             transaction.Timestamp, transaction.Amount, transaction.Currency.ToString().ToLower(),
             transaction.Article, transaction.Comment));
@@ -294,17 +277,15 @@ namespace Keeper.ViewModels
         {
           decimal amountInUsd;
           Rate.GetUsdEquivalentString(transaction.Amount, transaction.Currency, transaction.Timestamp, out amountInUsd);
-          incomesInUsd += amountInUsd;
           IncomesList.Add(String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
             transaction.Timestamp, transaction.Amount, transaction.Currency.ToString().ToLower(),
             amountInUsd, transaction.Article, transaction.Comment));
         }
       }
-      IncomesList.Add(String.Format("\nИтого {0:#,0} usd", incomesInUsd));
-      MonthSaldo.Incomes = incomesInUsd;
+      IncomesList.Add(String.Format("\nИтого {0:#,0} usd", MonthSaldo.Incomes));
     }
 
-    private void CalculateExpense()
+    private void FillInExpenseList()
     {
       ExpenseList = new ObservableCollection<string> { "Расходы за месяц\n" };
       LargeExpenseList = new ObservableCollection<string> { "В том числе крупные траты этого месяца\n" };
@@ -329,7 +310,6 @@ namespace Keeper.ViewModels
           t.Comment
         };
 
-      decimal expenseInUsd = 0;
       var expenseRoot = (from account in Db.Accounts
                          where account.Name == "Все расходы"
                          select account).First();
@@ -339,12 +319,9 @@ namespace Keeper.ViewModels
                                where e.Article.IsTheSameOrDescendantOf(expense.Name)
                                select e).Sum(a => a.AmountInUsd);
         if (amountInUsd != 0) ExpenseList.Add(String.Format("{0:#,0} $ - {1}", amountInUsd, expense.Name));
-        expenseInUsd += amountInUsd;
       }
-      ExpenseList.Add(String.Format("\nИтого {0:#,0} usd", expenseInUsd));
-      MonthSaldo.Expense = expenseInUsd;
+      ExpenseList.Add(String.Format("\nИтого {0:#,0} usd", MonthSaldo.Expense));
 
-      decimal largeExpenseInUsd = 0;
       foreach (var transaction in expenseTransactionsInUsd)
       {
         if (transaction.AmountInUsd < 50) continue;
@@ -356,27 +333,25 @@ namespace Keeper.ViewModels
           LargeExpenseList.Add(String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
             transaction.Timestamp, transaction.Amount, transaction.Currency.ToString().ToLower(),
             transaction.AmountInUsd, transaction.Article, transaction.Comment));
-        largeExpenseInUsd += transaction.AmountInUsd;
       }
-      MonthSaldo.LargeExpense = largeExpenseInUsd;
-      if (largeExpenseInUsd == 0) LargeExpenseList[0] = "Крупных трат в этом месяце не было\n";
+      if (MonthSaldo.LargeExpense == 0) LargeExpenseList[0] = "Крупных трат в этом месяце не было\n";
       else
       {
-        LargeExpenseList.Add(String.Format("\nИтого крупных {0:#,0} usd", largeExpenseInUsd));
-        LargeExpenseList.Add(String.Format("\nТекущие расходы {0:#,0} usd", expenseInUsd - largeExpenseInUsd));
+        LargeExpenseList.Add(String.Format("\nИтого крупных {0:#,0} usd", MonthSaldo.LargeExpense));
+        LargeExpenseList.Add(String.Format("\nТекущие расходы {0:#,0} usd", MonthSaldo.Expense - MonthSaldo.LargeExpense));
       }
     }
 
-    private void CalculateEndBalance()
+    private void FillInEndList()
     {
       AfterList = new ObservableCollection<string> { "Исходящий остаток на конец месяца                \n" };
-      AfterListByCurrency = new ObservableCollection<string>();
-      MonthSaldo.EndBalance = FillListWithDateBalance(AfterListByCurrency, MonthSaldo.LastDayWithTransactionsInMonth.AddDays(1));
-                                                                        // если не добавить день - получишь остаток на утро последнего дня
+      AfterListByCurrency = FillListWithDateBalance(MonthSaldo.EndBalanceInCurrencies, 
+                         MonthSaldo.LastDayWithTransactionsInMonth.AddDays(1));
+                                            // если не добавить день - получишь остаток на утро последнего дня
       AfterList.Add(String.Format("Итого {0:#,0} usd", MonthSaldo.EndBalance));
     }  
 
-    private void CalculateResult()
+    private void FillInResultList()
     {
       ResultForeground = MonthSaldo.BeginBalance > MonthSaldo.EndBalance ? Brushes.Red : Brushes.Blue;
       ResultList = new ObservableCollection<string> {String.Format( "Финансовый результат месяца {0:#,0} - {1:#,0} = {2:#,0} usd\n",
@@ -384,7 +359,7 @@ namespace Keeper.ViewModels
 
       ResultList.Add(String.Format("Курсовые разницы {4:#,0} - ({0:#,0} + {1:#,0} - {2:#,0}) = {3:#,0} usd (с плюсом - в мою пользу)",
         MonthSaldo.BeginBalance, MonthSaldo.Incomes, MonthSaldo.Expense, MonthSaldo.ExchangeDifference, MonthSaldo.EndBalance));
-      ResultList.Add(String.Format("Курсы Byr/Usd на начало и конец месца:  {0:#,0} - {1:#,0} \n", MonthSaldo.BeginByrRate, MonthSaldo.LastByrRate));
+      ResultList.Add(String.Format("Курсы Byr/Usd на начало и конец месца:  {0:#,0} - {1:#,0} \n", MonthSaldo.BeginByrRate, MonthSaldo.EndByrRate));
 
       ResultList.Add(String.Format("С учетом курсовых разниц {0:#,0} - {1:#,0} + {2:#,0} = {3:#,0} usd",
         MonthSaldo.Incomes, MonthSaldo.Expense, MonthSaldo.ExchangeDifference, MonthSaldo.Result));
@@ -399,10 +374,10 @@ namespace Keeper.ViewModels
       ForecastListExpense = new ObservableCollection<string> { "Прогноз расходов\n" };
       var averageExpenseInUsd = (MonthSaldo.Expense - MonthSaldo.LargeExpense)/MonthSaldo.LastDayWithTransactionsInMonth.Day;
       ForecastListExpense.Add(String.Format("Среднедневные расходы {0:#,0} usd ( {1:#,0} byr)",
-        averageExpenseInUsd, averageExpenseInUsd *  MonthSaldo.LastByrRate ));
+        averageExpenseInUsd, averageExpenseInUsd *  MonthSaldo.EndByrRate ));
       var daysInMonth = StartDate.AddMonths(1).AddDays(-1).Day;
       ForecastListExpense.Add(String.Format("За {0} дней составит: {1:#,0} usd ( {2:#,0} byr)",
-        daysInMonth, averageExpenseInUsd * daysInMonth, averageExpenseInUsd *  MonthSaldo.LastByrRate * daysInMonth ));
+        daysInMonth, averageExpenseInUsd * daysInMonth, averageExpenseInUsd *  MonthSaldo.EndByrRate * daysInMonth ));
       ForecastListExpense.Add(String.Format(" + крупные расходы:  {0:#,0} usd", MonthSaldo.LargeExpense));
       MonthSaldo.ForecastExpense = averageExpenseInUsd*daysInMonth + MonthSaldo.LargeExpense;
       ForecastListExpense.Add(String.Format("\nИтого расходов {0:#,0} usd ", MonthSaldo.ForecastExpense));
@@ -417,14 +392,16 @@ namespace Keeper.ViewModels
 
     public void ShowPreviousMonth()
     {
-      StartDate = StartDate.AddMonths(-1);
-      Calculate();
+      MonthSaldo = MonthAnalisysCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
+      StartDate = MonthSaldo.StartDate; 
+      FillInLists();
     }
 
     public void ShowNextMonth()
     {
-      StartDate = StartDate.AddMonths(1);
-      Calculate();
+      MonthSaldo = MonthAnalisysCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
+      StartDate = MonthSaldo.StartDate;
+      FillInLists();
     }
   }
 

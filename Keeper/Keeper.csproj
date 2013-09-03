@@ -94,9 +94,15 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Balance.cs" />
     <Compile Include="Utils\BinaryCrypto.cs" />
-    <Compile Include="ViewModels\RatesDiagramViewModel.cs" />
+    <Compile Include="Utils\DiagramDataCtors.cs" />
+    <Compile Include="Utils\MonthAnalisysCtor.cs" />
+    <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
+    <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
-    <Compile Include="Views\RatesDiagramView.xaml.cs">
+    <Compile Include="Views\DiagramViews\MonthlyResultDiagramView.xaml.cs">
+      <DependentUpon>MonthlyResultDiagramView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramViews\RatesDiagramView.xaml.cs">
       <DependentUpon>RatesDiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
@@ -214,11 +220,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DiagramViews\MonthlyResultDiagramView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MonthAnalisysView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RatesDiagramView.xaml">
+    <Page Include="Views\DiagramViews\RatesDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,6 +279,7 @@
   <ItemGroup>
     <Resource Include="Resources\safe.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
