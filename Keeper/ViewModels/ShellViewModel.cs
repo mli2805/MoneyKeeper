@@ -12,7 +12,6 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
-using Keeper.Views;
 
 
 namespace Keeper.ViewModels
@@ -495,6 +494,16 @@ namespace Keeper.ViewModels
       _ratesDiagramFormPointer = new RatesDiagramViewModel(diagramData);
       WindowManager.ShowWindow(_ratesDiagramFormPointer);
       Message = arcMessage;
+    }
+
+    private MonthlyResultDiagramViewModel _monthlyResultDiagramFormPointer;
+    public void ShowMonthlyResultDiagram()
+    {
+      var diagramData = DiagramDataCtors.GetMonthlyResultData();
+
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(diagramData);
+      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
+
     }
 
     
