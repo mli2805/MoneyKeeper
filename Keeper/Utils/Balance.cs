@@ -41,6 +41,60 @@ namespace Keeper.Utils
     }
 
     /// <summary>
+    /// First way to build daily balances
+    /// 
+    /// This way doesn't consider excange rate differences!!!
+    /// </summary>
+    /// <param name="balancedAccount"></param>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
+    {
+      var tempBalance =
+        (from t in Db.Transactions
+         where period.IsDateTimeIn(t.Timestamp) &&
+            (t.Credit.IsTheSameOrDescendantOf(balancedAccount) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount) ||
+             (t.Debet.IsTheSameOrDescendantOf(balancedAccount) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount)))
+         group t by t.Currency into g
+         select new BalancePair
+         {
+           Currency = g.Key,
+           Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount))
+         }).
+        Concat // учесть вторую сторону обмена - приход денег в другой валюте
+        (from t in Db.Transactions
+         where t.Amount2 != 0 && period.IsDateTimeIn(t.Timestamp) &&
+               (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
+                                           t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
+         group t by t.Currency2 into g
+         select new BalancePair
+         {
+           Currency = (CurrencyCodes)g.Key,
+           Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1)
+         });
+
+      return from b in tempBalance
+             group b by b.Currency into g
+             select new BalancePair
+             {
+               Currency = g.Key,
+               Amount = g.Sum(a => a.Amount)
+             };
+    }
+
+    private static IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
+    {
+      return from t in Db.Transactions
+             where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
+             group t by t.Currency into g
+             select new BalancePair
+             {
+               Currency = g.Key,
+               Amount = g.Sum(a => a.Amount)
+             };
+    }
+
+    /// <summary>
     /// вызов с параметром 2 февраля 2013 - вернет остаток по счету на утро 2 февраля 2013 
     /// </summary>
     /// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
@@ -50,7 +104,9 @@ namespace Keeper.Utils
     {
                                                       // выделение даты без времени и минус минута
       var period = new Period(new DateTime(0), dateTime.Date.AddMinutes(-1));
-      return AccountBalancePairs(balancedAccount, period);
+      if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
+       return ArticleBalancePairs(balancedAccount, period); 
+      else return AccountBalancePairs(balancedAccount, period);
     }
 
     /// <summary>
@@ -63,20 +119,9 @@ namespace Keeper.Utils
 
     {                                                    // выделение даты без времени плюс день и минус минута
       var period = new Period(new DateTime(0), dateTime.Date.AddDays(1).AddMinutes(-1));
-      return AccountBalancePairs(balancedAccount, period);
-    }
-
-    /// <summary>
-    /// переводит остатки во всех валютах по balancedAccount после dateTime в доллары
-    /// </summary>
-    /// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
-    /// <param name="dateTime">день, после которого остаток</param>
-    /// <returns></returns>
-    public static decimal AccountBalanceAfterDayInUsd(Account balancedAccount, DateTime dateTime)
-    {
-      var inCurrencies = AccountBalancePairsAfterDay(balancedAccount, dateTime);
-      var result = BalancePairsToUsd(inCurrencies, dateTime);
-      return Math.Round(result*100)/100;
+      if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
+        return ArticleBalancePairs(balancedAccount, period);
+      else return AccountBalancePairs(balancedAccount, period);
     }
 
     public static decimal BalancePairsToUsd(IEnumerable<BalancePair> inCurrencies, DateTime dateTime)
@@ -92,33 +137,42 @@ namespace Keeper.Utils
     }
 
     /// <summary>
-    /// остатки за каждый день периода, 
-    /// даже если в какой-то день не было движения по счету
+    /// переводит остатки во всех валютах по balancedAccount после dateTime в доллары
     /// </summary>
-    /// <param name="balancedAccount"></param>
-    /// <param name="period"></param>
+    /// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
+    /// <param name="dateTime">день, после которого остаток</param>
     /// <returns></returns>
-    public static Dictionary<DateTime,decimal> AccountBalancesForPeriodInUsd(Account balancedAccount, Period period)
+    public static decimal AccountBalanceAfterDayInUsd(Account balancedAccount, DateTime dateTime)
     {
-      var result = new Dictionary<DateTime, decimal>();
-
-      decimal balance = 0;
-      foreach (DateTime day in period)
-      {
-        // получаем обороты по счету за 1 день
-        var oneDayInCurrencies = AccountBalancePairs(balancedAccount,
-                                                     new Period(day.Date, day.Date.AddDays(1).AddSeconds(-1)));
-
-        // и нарастающим итогом сохраняем в массив
-        var oneDayResult = BalancePairsToUsd(oneDayInCurrencies, day);
-        if (oneDayResult == 0) continue;
-        balance += oneDayResult;
-        result.Add(day, Math.Round(balance*100)/100);
-      }
-
-      return result;
+      var inCurrencies = AccountBalancePairsAfterDay(balancedAccount, dateTime);
+      var result = BalancePairsToUsd(inCurrencies, dateTime);
+      return Math.Round(result*100)/100;
     }
 
+    /// <summary>
+    /// Хреново!!! - запрашивает остаток по всем валютам, и возращает по одной переданной в качестве параметра 
+    /// Иначе надо почти дублировать длинные AccountBalancePairs и ArticleBalancePairs, только с параметром валюта
+    /// Если будет где-то тормозить, можно переписать
+    /// </summary>
+    /// <param name="account">счет, по которому будет вычислен остаток</param>
+    /// <param name="period">период, за который учитываются обороты</param>
+    /// <param name="currency">валюта, в которой учитываются обороты</param>
+    /// <returns></returns>
+    public static decimal GetBalanceInCurrency(Account account, Period period, CurrencyCodes currency)
+    {
+      if (account == null) return 0;
+      var balances = AccountBalancePairs(account, period);
+      foreach (var balancePair in balances)
+      {
+        if (balancePair.Currency == currency) return balancePair.Amount;
+      }
+      return 0;
+    }
+
+    #region для диаграммы ежедневные остатки
+    // получение остатка по счету за [каждую] дату периода
+    // реализовано не через функцию получения остатка на дату, вызванную для дат периода
+    // а за один проход по БД с получением остатков накопительным итогом, т.к. гораздо быстрее
 
     public static decimal ConvertAllCurrenciesToUsd(Dictionary<CurrencyCodes, decimal> balances, DateTime date)
     {
@@ -226,106 +280,9 @@ namespace Keeper.Utils
       return result;
     }
 
-    /// <summary>
-    /// Second way to build daily balances
-    /// 
-    /// This way doesn't consider excange rate differences!!!
-    /// </summary>
-    /// <param name="balancedAccount"></param>
-    /// <param name="period"></param>
-    /// <returns></returns>
-    public static Dictionary<DateTime,decimal> AccountBalancesForPeriodInUsdSecondWay(Account balancedAccount, Period period)
-    {
-      var result = new Dictionary<DateTime, decimal>();
+    #endregion 
 
-      var currentDate = period.GetStart();
-      decimal balance = 0;
-      foreach (var transaction in Db.Transactions)
-      {
-        if (currentDate != transaction.Timestamp.Date)
-        {
-          result.Add(currentDate,balance);
-          currentDate = currentDate.AddDays(1);
-          while (currentDate != transaction.Timestamp.Date)
-          {
-//            result.Add(currentDate, balance); добавлять если не изменился остаток
-            currentDate = currentDate.AddDays(1);
-          }
-        }
-
-        if (transaction.Debet.IsTheSameOrDescendantOf(balancedAccount))
-        {
-          balance -= Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
-          if (transaction.Amount2 != 0)
-            balance += Rate.GetUsdEquivalent(transaction.Amount2, (CurrencyCodes)transaction.Currency2, transaction.Timestamp);
-        }
-
-        if (transaction.Credit.IsTheSameOrDescendantOf(balancedAccount))
-        {
-          balance += Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
-          if (transaction.Amount2 != 0)
-            balance -= Rate.GetUsdEquivalent(transaction.Amount2, (CurrencyCodes)transaction.Currency2, transaction.Timestamp);
-        }
-
-      }
-      result.Add(currentDate, balance);
-      return result;
-    }
-
-
-    /// <summary>
-    /// First way to build daily balances
-    /// 
-    /// This way doesn't consider excange rate differences!!!
-    /// </summary>
-    /// <param name="balancedAccount"></param>
-    /// <param name="period"></param>
-    /// <returns></returns>
-    public static IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
-    {
-      var tempBalance =
-        (from t in Db.Transactions
-         where period.IsDateTimeIn(t.Timestamp) &&
-            (t.Credit.IsTheSameOrDescendantOf(balancedAccount) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount) ||
-             (t.Debet.IsTheSameOrDescendantOf(balancedAccount) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount)))
-         group t by t.Currency into g
-         select new BalancePair
-                    {
-                      Currency = g.Key,
-                      Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount))
-                    }).
-        Concat // учесть вторую сторону обмена - приход денег в другой валюте
-        (from t in Db.Transactions
-         where t.Amount2 != 0 && period.IsDateTimeIn(t.Timestamp) &&
-               (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
-                                           t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
-         group t by t.Currency2 into g
-         select new BalancePair
-                    {
-                      Currency = (CurrencyCodes)g.Key,
-                      Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1)
-                    });
-
-      return from b in tempBalance
-             group b by b.Currency into g
-             select new BalancePair
-                             {
-                               Currency = g.Key,
-                               Amount = g.Sum(a => a.Amount)
-                             };
-    }
-
-    private static IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
-    {
-      return from t in Db.Transactions
-             where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
-             group t by t.Currency into g
-             select new BalancePair
-                        {
-                          Currency = g.Key,
-                          Amount = g.Sum(a => a.Amount)
-                        };
-    }
+    #region для заполнения для 2-й рамки на ShellView
 
     private static List<string> OneBalance(Account balancedAccount, Period period, out decimal totalInUsd)
     {
@@ -370,19 +327,9 @@ namespace Keeper.Utils
 
       return inUsd;
     }
+    #endregion
 
-
-    // Хреново!!! - запрашивает баланс по всем валютам, и возращает по одной переданной в качестве параметра
-    public static decimal GetBalanceInCurrency(Account account, Period period, CurrencyCodes currency)
-    {
-      if (account == null) return 0;
-      var balances = AccountBalancePairs(account, period);
-      foreach (var balancePair in balances)
-      {
-        if (balancePair.Currency == currency) return balancePair.Amount;
-      }
-      return 0;
-    }
+    #region для заполнения окошек на TransactionsView
 
     public static List<string> CalculateDayResults(DateTime dt)
     {
@@ -458,6 +405,8 @@ namespace Keeper.Utils
 
       return result;
     }
+
+    #endregion
 
   }
 }
