@@ -45,14 +45,20 @@ namespace Keeper.Utils
         Balance.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate.AddMonths(1)).ToList();
       result.EndBalance = Balance.BalancePairsToUsd(result.EndBalanceInCurrencies,
                                                     result.StartDate.AddMonths(1).AddDays(-1));
-      result.EndByrRate = (decimal)Rate.GetRateThisDayOrBefore(CurrencyCodes.BYR, 
-                                                               result.StartDate.AddMonths(1).AddDays(-1));
-
-
+      if (!transactions.Any())
+      {
+        result.LastDayWithTransactionsInMonth = result.StartDate;
+        result.EndByrRate = result.BeginByrRate;
+      }
+      else
+      {
+        var lastTransaction = transactions.Last();
+        result.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
+        result.EndByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
+      }
 
       return result;
     }
 
-    
   }
 }

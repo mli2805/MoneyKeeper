@@ -203,7 +203,6 @@ namespace Keeper.ViewModels
     private void FillInLists()
     {
       FillInBeginList();
-      DefineLastDay();
       FillInIncomesList();
       FillInExpenseList();
       FillInEndList();
@@ -236,25 +235,6 @@ namespace Keeper.ViewModels
         }
       }
       return list;
-    }
-
-    private void DefineLastDay()
-    {
-      var transactions = from t in Db.Transactions
-                         where AnalyzedPeriod.IsDateTimeIn(t.Timestamp)
-                         select t;
-
-      if (!transactions.Any())
-      {
-        MonthSaldo.LastDayWithTransactionsInMonth = MonthSaldo.StartDate;
-        MonthSaldo.EndByrRate = MonthSaldo.BeginByrRate;
-      }
-      else
-      {
-        var lastTransaction = transactions.Last();
-        MonthSaldo.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
-        MonthSaldo.EndByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
-      }
     }
 
     private void FillInIncomesList()

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
@@ -125,11 +123,52 @@ namespace Keeper.Utils
 
     #endregion 
 
-
-
-    public static int GetMonthlyResultData()
+    // медленно, возможно придется считать строго ежемесячные результаты в одном цикле, не отвлекаясь на остальные поля Saldo 
+    public static Dictionary<DateTime, decimal> MonthlyResults()
     {
-      return Db.Accounts.Count;
+      var result = new Dictionary<DateTime, decimal>();
+      for (var date = new DateTime(2002, 1, 1); date <= DateTime.Today; date = date.AddMonths(1))
+      {
+        var saldo = MonthAnalisysCtor.AnalizeMonth(date);
+        result.Add(saldo.LastDayWithTransactionsInMonth,saldo.Result);
+      }
+      return result;
+    }
+
+    private static int MonthsFromStart(DateTime date)
+    {
+      return (date.Year - 2002)*12 + date.Month;
+    }
+
+    public static void AverageMonthlyResults(Dictionary<DateTime, decimal> monthlyResults)
+    {
+      var averageFromStartDictionary = new Dictionary<DateTime, decimal>();
+      var averageFromJanuaryDictionary = new Dictionary<DateTime, decimal>();
+      var averageForLast12MonthsDictionary = new Dictionary<DateTime, decimal>();
+
+      decimal averageFromStart = 0;
+      decimal averageFromJanuary = 0;
+      var last12Months = new SortedDictionary<DateTime, decimal>();
+      foreach (var monthSaldo in monthlyResults.OrderBy(pair => pair.Key))
+      {
+        averageFromStart += monthSaldo.Value;
+        averageFromStartDictionary.Add(monthSaldo.Key, Math.Round(averageFromStart / MonthsFromStart(monthSaldo.Key)));
+
+        if (monthSaldo.Key.Month == 1) averageFromJanuary = 0;
+        averageFromJanuary += monthSaldo.Value;
+        averageFromJanuaryDictionary.Add(monthSaldo.Key, Math.Round(averageFromJanuary / monthSaldo.Key.Month));
+
+        if (last12Months.Count < 12) last12Months.Add(monthSaldo.Key, monthSaldo.Value);
+        else
+        {
+          var minDate = last12Months.Min(pair => pair.Key);
+          last12Months.Remove(minDate);
+          last12Months.Add(monthSaldo.Key, monthSaldo.Value);
+          decimal averageForLast12Months = last12Months.Sum(pair => pair.Value)/12;
+          averageForLast12MonthsDictionary.Add(monthSaldo.Key, averageForLast12Months);
+        }
+      }
+
     }
   }
 }
