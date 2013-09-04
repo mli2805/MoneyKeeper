@@ -120,14 +120,14 @@ namespace Keeper.ViewModels
       SeriesByr = new List<DateProcentPoint>();
       SeriesEuro = new List<DateProcentPoint>();
       var rootDepo = Db.FindAccountInTree("Депозиты");
-      var inMoney = Balance.AccountBalancesForPeriodInCurrencies(rootDepo,
+      var inMoney = DiagramDataCtors.AccountBalancesForPeriodInCurrencies(rootDepo,
                                                                  new Period(new DateTime(2002, 1, 1), DateTime.Today));
       foreach (var pair in inMoney)
       {
         var date = pair.Key;
         var balancesInCurrencies = pair.Value;
 
-        var dateTotalInUsd = Balance.ConvertAllCurrenciesToUsd(balancesInCurrencies, date);
+        var dateTotalInUsd = DiagramDataCtors.ConvertAllCurrenciesToUsd(balancesInCurrencies, date);
         decimal cumulativePercent = 0;
         if (balancesInCurrencies.ContainsKey(CurrencyCodes.EUR))
         {

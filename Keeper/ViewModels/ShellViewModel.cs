@@ -462,19 +462,10 @@ namespace Keeper.ViewModels
 
       var tt = new Stopwatch();
       tt.Start();
-//            var balances = Balance.AccountBalancesForPeriodInUsd(allMyMoney, new Period(new DateTime(2002, 1, 1), DateTime.Today));
-//      var balances = Balance.AccountBalancesForPeriodInUsdSecondWay(allMyMoney, new Period(new DateTime(2002, 1, 1), DateTime.Today));
-      var balances = Balance.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2002, 1, 1), DateTime.Today));
+      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2002, 1, 1), DateTime.Today));
 
       tt.Stop();
       Console.WriteLine(tt.Elapsed);
-
-      var content  = new List<string>();
-      foreach (var pair in balances)
-      {
-        content.Add(string.Format("{0} - {1:#,#}",pair.Key, pair.Value));
-      }
-      File.WriteAllLines(@"d:\balances3.txt",content);
 
       var diagramData = balances.Select(pair => new DiagramPair(pair.Key, (double) pair.Value)).ToList();
 
