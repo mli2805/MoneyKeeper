@@ -462,14 +462,16 @@ namespace Keeper.ViewModels
 
       var tt = new Stopwatch();
       tt.Start();
-      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2002, 1, 1), DateTime.Today));
+      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today));
 
       tt.Stop();
       Console.WriteLine(tt.Elapsed);
 
-      var diagramData = balances.Select(pair => new DiagramPair(pair.Key, (double) pair.Value)).ToList();
+//      var diagramData = balances.Select(pair => new DiagramPair(pair.Key, (double) pair.Value)).ToList();
 
-      WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));
+//      WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(balances);
+      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
       Message = arcMessage;
     }
 
@@ -479,11 +481,17 @@ namespace Keeper.ViewModels
       var arcMessage = Message;
       Message = "Diagrams";
 
-      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).ToList();
-      var diagramData = ratesData.Select(currencyRate => new DiagramPair(currencyRate.BankDay, currencyRate.Rate)).ToList();
+//      var ratesData = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).OrderBy(r => r.BankDay).ToList();
+//      var diagramData = ratesData.Select(currencyRate => new DiagramPair(currencyRate.BankDay, currencyRate.Rate)).ToList();
 
-      _ratesDiagramFormPointer = new RatesDiagramViewModel(diagramData);
-      WindowManager.ShowWindow(_ratesDiagramFormPointer);
+      var rates = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).OrderBy(r => r.BankDay).
+                           ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal) currencyRate.Rate);
+
+//      _ratesDiagramFormPointer = new RatesDiagramViewModel(diagramData);
+//      WindowManager.ShowWindow(_ratesDiagramFormPointer);
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(rates);
+      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
+
       Message = arcMessage;
     }
 
