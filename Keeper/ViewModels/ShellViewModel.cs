@@ -490,10 +490,13 @@ namespace Keeper.ViewModels
     private MonthlyResultDiagramViewModel _monthlyResultDiagramFormPointer;
     public void ShowMonthlyResultDiagram()
     {
-      var diagramData = DiagramDataCtors.GetMonthlyResultData();
+      var monthlyResults = DiagramDataCtors.MonthlyResults();
 
-      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(diagramData);
-      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
+      var diagramData = monthlyResults.Select(pair => new DiagramPair(pair.Key, (double)pair.Value)).ToList();
+
+      WindowManager.ShowDialog(new RatesDiagramViewModel(diagramData));
+//      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(diagramData);
+//      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
 
     }
 

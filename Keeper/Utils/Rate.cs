@@ -30,6 +30,7 @@ namespace Keeper.Utils
     {
       var rate = (from currencyRate in Db.CurrencyRates
                   where currencyRate.BankDay.Date <= day.Date && currencyRate.Currency == currency
+                  orderby currencyRate.BankDay
                   select currencyRate).LastOrDefault();
       return rate != null ? rate.Rate : 0.0;
     }
