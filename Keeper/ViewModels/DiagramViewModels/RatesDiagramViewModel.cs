@@ -22,6 +22,13 @@ namespace Keeper.ViewModels
     }
   }
 
+  public enum ChangeDiagramDataMode
+  {
+    Increase,
+    Decrease,
+    ShiftLeft
+  }
+
   class RatesDiagramViewModel : Screen
   {
     private const double CanvasWidth = 800;  // Не важно сколько конкретно - они займут всю ячейку грида
@@ -244,12 +251,6 @@ namespace Keeper.ViewModels
 
 #endregion
 
-    enum ChangeDiagramDataMode
-    {
-      Increase,
-      Decrease,
-      ShiftLeft 
-    }
     private void ChangeDiagramData(ChangeDiagramDataMode mode)
     {
       var tt = new Stopwatch();
