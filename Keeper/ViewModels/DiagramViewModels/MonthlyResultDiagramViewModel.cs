@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,8 +13,8 @@ namespace Keeper.ViewModels
 {
   class MonthlyResultDiagramViewModel : Screen 
   {
-    private const double CanvasWidth = 800;  // Не важно сколько конкретно - они займут всю ячейку грида
-    private const double CanvasHeight = 640;
+    private const double CanvasWidth = 1200;  // Не важно сколько конкретно - они займут всю ячейку грида
+    private const double CanvasHeight = 900;
     private const double LeftMargin = 50;
     private const double RightMargin = 50;
     private const double TopMargin = 30;
@@ -48,7 +46,7 @@ namespace Keeper.ViewModels
                          select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
       CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
       DrawCurrentDiagram();
-//      DiagramDataCtors.AverageMonthlyResults(monthlyResults);
+      DiagramDataCtors.AverageMonthlyResults(monthlyResults);
     }
 
     public void DrawCurrentDiagram()
@@ -73,23 +71,8 @@ namespace Keeper.ViewModels
     {
       _minDate = CurrentDiagramData[0].CoorXdate;
       _maxDate = CurrentDiagramData.Last().CoorXdate;
-      _minValue = CurrentDiagramData.Min(r => r.CoorYdouble); //if (_minValue > 0) _minValue = 0;
+      _minValue = CurrentDiagramData.Min(r => r.CoorYdouble);
       _maxValue = CurrentDiagramData.Max(r => r.CoorYdouble);
-    }
-
-    private void Diagram()
-    {
-      var geometryGroup = new GeometryGroup();
-      for (int i = 0; i < CurrentDiagramData.Count - 1; i++)
-      {
-        var line = new LineGeometry(new Point((CurrentDiagramData[i].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - _lowestScaleValue) * _pointPerOneValue),
-                                    new Point((CurrentDiagramData[i + 1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i + 1].CoorYdouble - _lowestScaleValue) * _pointPerOneValue));
-        geometryGroup.Children.Add(line);
-      }
-      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
-      DrawingGroup.Children.Add(geometryDrawing);
     }
 
     #region Drawing implementation
@@ -134,6 +117,9 @@ namespace Keeper.ViewModels
 
     private void HorizontalAxisWithMarkers(Dock flag)
     {
+
+
+
       const double minPointBetweenDivision = 75;
 
       int days = (_maxDate - _minDate).Days;
@@ -245,6 +231,33 @@ namespace Keeper.ViewModels
 
       var geometryDrawingGridlines = new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
       DrawingGroup.Children.Add(geometryDrawingGridlines);
+    }
+
+    private void Diagram()
+    {
+      var gap = 3;
+      var pointPerDate = Math.Floor((CanvasWidth - LeftMargin - RightMargin) / CurrentDiagramData.Count);
+      var shift = ((CanvasWidth - LeftMargin - RightMargin) - pointPerDate * CurrentDiagramData.Count + gap) / 2;
+      var pointPerBar = pointPerDate - gap;
+
+      var geometryGroup = new GeometryGroup();
+      for (int i = 0; i < CurrentDiagramData.Count; i++)
+      {
+        Rect rect;
+        if (CurrentDiagramData[i].CoorYdouble >= 0)
+          rect = new Rect(LeftMargin + shift + i*(pointPerBar+gap),
+                          CanvasHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - _lowestScaleValue)*_pointPerOneValue,
+                          pointPerBar,
+                          CurrentDiagramData[i].CoorYdouble*_pointPerOneValue);
+        else rect = new Rect(LeftMargin + shift + i*(pointPerBar+gap),
+                          CanvasHeight - BottomMargin - (0 - _lowestScaleValue) * _pointPerOneValue,
+                          pointPerBar,
+                          - CurrentDiagramData[i].CoorYdouble * _pointPerOneValue);
+
+        geometryGroup.Children.Add(new RectangleGeometry(rect));
+      }
+      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
+      DrawingGroup.Children.Add(geometryDrawing);
     }
 
     #endregion

@@ -42,7 +42,7 @@ namespace Keeper.ViewModels
     public List<DiagramPair> CurrentDiagramData { get; set; }
 
     private DateTime _minDate, _maxDate;
-    private double _minValue, _maxValue;
+    private double _minValue, _maxValue, _lowestScaleValue;
     private double _pointPerDay, _pointPerOneValue;
 
     public DrawingGroup DrawingGroup = new DrawingGroup();
@@ -58,9 +58,10 @@ namespace Keeper.ViewModels
       }
     }
 
-    public RatesDiagramViewModel(List<DiagramPair> data)
+    public RatesDiagramViewModel(Dictionary<DateTime, decimal> data)
     {
-      AllDiagramData = data;
+      AllDiagramData = (from pair in data
+                        select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
       CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
       DrawCurrentDiagram();
     }
@@ -87,8 +88,8 @@ namespace Keeper.ViewModels
     {
       _minDate = CurrentDiagramData[0].CoorXdate;
       _maxDate = CurrentDiagramData.Last().CoorXdate;
-      _minValue = CurrentDiagramData.Min(r => r.CoorYdouble); if (_minValue > 0) _minValue = 0;
-      _maxValue = CurrentDiagramData.Max(r => r.CoorYdouble) * 1.03;
+      _minValue = CurrentDiagramData.Min(r => r.CoorYdouble); 
+      _maxValue = CurrentDiagramData.Max(r => r.CoorYdouble);
     }
 
     private void Diagram()
@@ -97,12 +98,12 @@ namespace Keeper.ViewModels
       for (int i = 0; i < CurrentDiagramData.Count - 1; i++)
       {
         var line = new LineGeometry(new Point((CurrentDiagramData[i].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - CurrentDiagramData[i].CoorYdouble * _pointPerOneValue),
-                                    new Point((CurrentDiagramData[i+1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - CurrentDiagramData[i + 1].CoorYdouble * _pointPerOneValue));
+                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - _lowestScaleValue) * _pointPerOneValue),
+                                    new Point((CurrentDiagramData[i + 1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
+                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i + 1].CoorYdouble - _lowestScaleValue) * _pointPerOneValue));
         geometryGroup.Children.Add(line);
       }
-      var geometryDrawing = new GeometryDrawing {Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1)};
+      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
       DrawingGroup.Children.Add(geometryDrawing);
     }
 
@@ -210,42 +211,56 @@ namespace Keeper.ViewModels
       const int precision = 0;
       const double minPointBetweenDivision = 35;
 
-      double values = (_maxValue - _minValue) * Math.Pow(10,precision);
+      double values = (_maxValue - _minValue) * Math.Pow(10, precision);
       _pointPerOneValue = (CanvasHeight - TopMargin - BottomMargin) / values;
-      double valuesPerDivision = Math.Ceiling(minPointBetweenDivision / _pointPerOneValue);
-      double zeros = Math.Floor(Math.Log10(valuesPerDivision));
+
+      double valuesPerDivision;
+      double zeros;
+      if (minPointBetweenDivision > _pointPerOneValue)
+      {
+        valuesPerDivision = Math.Ceiling(minPointBetweenDivision / _pointPerOneValue);
+        zeros = Math.Floor(Math.Log10(valuesPerDivision));
+      }
+      else
+      {
+        valuesPerDivision = minPointBetweenDivision / _pointPerOneValue;
+        zeros = Math.Floor(Math.Log10(valuesPerDivision));
+      }
+
+
       double accurateValuesPerDivision = Math.Ceiling(valuesPerDivision / Math.Pow(10, zeros)) * Math.Pow(10, zeros);
 
-      int steps = Convert.ToInt32(Math.Floor(values / accurateValuesPerDivision));
-      double pointPerScaleStep = _pointPerOneValue * accurateValuesPerDivision;
+      int fromDivision = Convert.ToInt32(Math.Floor(_minValue / accurateValuesPerDivision));
+      int divisions = Convert.ToInt32(Math.Ceiling(values / accurateValuesPerDivision));
+      double pointPerScaleStep = (CanvasHeight - TopMargin - BottomMargin) / divisions;
+      _lowestScaleValue = fromDivision * accurateValuesPerDivision;
+      _pointPerOneValue = (CanvasHeight - TopMargin - BottomMargin) / (divisions * accurateValuesPerDivision);
 
       var geometryGroupDashesAndMarks = new GeometryGroup();
       var geometryGroupGridlines = new GeometryGroup();
-      for (var i = 1; i <= steps; i++)
+      for (var i = 0; i <= divisions; i++)
       {
         var dashX = flag == Dock.Left ? LeftMargin : CanvasWidth - LeftMargin;
         var dash = new LineGeometry(new Point(dashX - 5, CanvasHeight - BottomMargin - pointPerScaleStep * i),
                                     new Point(dashX + 5, CanvasHeight - BottomMargin - pointPerScaleStep * i));
         geometryGroupDashesAndMarks.Children.Add(dash);
 
-        var gridline = new LineGeometry(new Point(LeftMargin + 5, CanvasHeight - BottomMargin - pointPerScaleStep*i),
-                            new Point(CanvasWidth - LeftMargin - 5, CanvasHeight - BottomMargin - pointPerScaleStep*i));
+        var gridline = new LineGeometry(new Point(LeftMargin + 5, CanvasHeight - BottomMargin - pointPerScaleStep * i),
+                            new Point(CanvasWidth - LeftMargin - 5, CanvasHeight - BottomMargin - pointPerScaleStep * i));
         geometryGroupGridlines.Children.Add(gridline);
 
         var markX = flag == Dock.Left ? LeftMargin - 40 : CanvasWidth - RightMargin + 15;
-        var mark = String.Format("{0} ", i * accurateValuesPerDivision / Math.Pow(10, precision));
+        var mark = String.Format("{0} ", (i + fromDivision) * accurateValuesPerDivision / Math.Pow(10, precision));
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry = formattedText.BuildGeometry(new Point(markX, CanvasHeight - BottomMargin - pointPerScaleStep * i - 7));
         geometryGroupDashesAndMarks.Children.Add(geometry);
       }
 
-      var geometryDrawingDashesAndMarks = new GeometryDrawing
-                                            {Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1)};
+      var geometryDrawingDashesAndMarks = new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
       DrawingGroup.Children.Add(geometryDrawingDashesAndMarks);
 
-      var geometryDrawingGridlines = new GeometryDrawing
-                                       {Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1)};
+      var geometryDrawingGridlines = new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
       DrawingGroup.Children.Add(geometryDrawingGridlines);
     }
 
