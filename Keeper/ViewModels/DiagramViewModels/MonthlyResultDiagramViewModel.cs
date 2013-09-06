@@ -24,8 +24,9 @@ namespace Keeper.ViewModels
     public List<DiagramPair> CurrentDiagramData { get; set; }
 
     private DateTime _minDate, _maxDate;
-    private double _minValue, _maxValue, _lowestScaleValue; 
+    private double _minValue, _maxValue, _lowestScaleValue;
     private double _pointPerDay, _pointPerOneValue;
+    private double _pointPerDate, _shift;
 
     public DrawingGroup DrawingGroup = new DrawingGroup();
     private DrawingImage _imageSource;
@@ -117,41 +118,36 @@ namespace Keeper.ViewModels
 
     private void HorizontalAxisWithMarkers(Dock flag)
     {
+      _pointPerDate = Math.Floor((CanvasWidth - LeftMargin - RightMargin) / CurrentDiagramData.Count);
+      _shift = ((CanvasWidth - LeftMargin - RightMargin) - _pointPerDate * CurrentDiagramData.Count) / 2;
 
-
-
-      const double minPointBetweenDivision = 75;
-
-      int days = (_maxDate - _minDate).Days;
-      _pointPerDay = (CanvasWidth - LeftMargin - RightMargin) / days;
-      double daysPerDivision = Math.Ceiling(minPointBetweenDivision / _pointPerDay);
-
-      int steps = Convert.ToInt32(Math.Floor(days / daysPerDivision));
-      double pointPerScaleStep = _pointPerDay * daysPerDivision;
+      const double minPointBetweenMarkedDivision = 50;
+      var markedDash = (int)Math.Ceiling(minPointBetweenMarkedDivision/_pointPerDate);
 
       var geometryGroupDashesAndMarks = new GeometryGroup();
       var geometryGroupGridlines = new GeometryGroup();
 
-      for (var i = 0; i <= steps; i++)
+      for (var i = 0; i < CurrentDiagramData.Count; i++)
       {
-        if (i != 0)
+        var dashY = flag == Dock.Bottom ? CanvasHeight - BottomMargin : TopMargin;
+        var dash = new LineGeometry(new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5), dashY - 5),
+                                      new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5), dashY + 5));
+        geometryGroupDashesAndMarks.Children.Add(dash);
+
+
+        if (i % markedDash == 0)
         {
-          var dashY = flag == Dock.Bottom ? CanvasHeight - BottomMargin : TopMargin;
-          var dash = new LineGeometry(new Point(pointPerScaleStep * i + LeftMargin, dashY - 5),
-                                      new Point(pointPerScaleStep * i + LeftMargin, dashY + 5));
-          geometryGroupDashesAndMarks.Children.Add(dash);
+          var gridline = new LineGeometry(new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5) -1, TopMargin + 5),
+                           new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5) -1, CanvasHeight - BottomMargin - 5));
+          geometryGroupGridlines.Children.Add(gridline);
+
+          var markY = flag == Dock.Bottom ? CanvasHeight : TopMargin;
+          var mark = String.Format("{0:M/yyyy} ", CurrentDiagramData[i].CoorXdate);
+          var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                                                new Typeface("Times New Roman"), 12, Brushes.Black);
+          var geometry = formattedText.BuildGeometry(new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5) - 18, markY - 20));
+          geometryGroupDashesAndMarks.Children.Add(geometry);
         }
-
-        var gridline = new LineGeometry(new Point(pointPerScaleStep * i + LeftMargin, TopMargin + 5),
-                         new Point(pointPerScaleStep * i + LeftMargin, CanvasHeight - BottomMargin - 5));
-        geometryGroupGridlines.Children.Add(gridline);
-
-        var markY = flag == Dock.Bottom ? CanvasHeight : TopMargin;
-        var mark = String.Format("{0:d/M/yyyy} ", CurrentDiagramData[0].CoorXdate.AddDays(i * daysPerDivision));
-        var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                              new Typeface("Times New Roman"), 12, Brushes.Black);
-        var geometry = formattedText.BuildGeometry(new Point(pointPerScaleStep * i + LeftMargin - 25, markY - 20));
-        geometryGroupDashesAndMarks.Children.Add(geometry);
       }
 
       var geometryDrawingDashesAndMarks = new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
@@ -235,26 +231,26 @@ namespace Keeper.ViewModels
 
     private void Diagram()
     {
-      var gap = 3;
-      var pointPerDate = Math.Floor((CanvasWidth - LeftMargin - RightMargin) / CurrentDiagramData.Count);
-      var shift = ((CanvasWidth - LeftMargin - RightMargin) - pointPerDate * CurrentDiagramData.Count + gap) / 2;
-      var pointPerBar = pointPerDate - gap;
+      var gap = Math.Round(_pointPerDate / 3);
+      var pointPerBar = _pointPerDate - gap;
 
       var geometryGroup = new GeometryGroup();
       for (int i = 0; i < CurrentDiagramData.Count; i++)
       {
         Rect rect;
         if (CurrentDiagramData[i].CoorYdouble >= 0)
-          rect = new Rect(LeftMargin + shift + i*(pointPerBar+gap),
+          rect = new Rect(LeftMargin + _shift + i*(pointPerBar+gap),
                           CanvasHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - _lowestScaleValue)*_pointPerOneValue,
                           pointPerBar,
                           CurrentDiagramData[i].CoorYdouble*_pointPerOneValue);
-        else rect = new Rect(LeftMargin + shift + i*(pointPerBar+gap),
+        else rect = new Rect(LeftMargin + _shift + i*(pointPerBar+gap),
                           CanvasHeight - BottomMargin - (0 - _lowestScaleValue) * _pointPerOneValue,
                           pointPerBar,
                           - CurrentDiagramData[i].CoorYdouble * _pointPerOneValue);
 
-        geometryGroup.Children.Add(new RectangleGeometry(rect));
+        var rectangleGeometry = new RectangleGeometry(rect);
+//        rectangleGeometry.
+        geometryGroup.Children.Add(rectangleGeometry);
       }
       var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
       DrawingGroup.Children.Add(geometryDrawing);
