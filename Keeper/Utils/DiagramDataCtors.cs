@@ -6,6 +6,28 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
+  public enum Every
+  {
+    Day,
+    Week,
+    Month,
+    Quarter,
+    Year
+  }
+
+  class FunctionsWithEvery
+  {
+    public static bool IsLastDayOf(DateTime date, Every period)
+    {
+      if (period == Every.Day) return true;
+      if (period == Every.Week && date.DayOfWeek == DayOfWeek.Sunday) return true;
+      if (period == Every.Month && date.Month != date.AddDays(1).Month) return true;
+      if (period == Every.Quarter && date.Month != date.AddDays(1).Month && date.Month % 3 == 0) return true;
+      if (period == Every.Year && date.Day == 31 && date.Month == 12) return true;
+      return false;
+    }
+  }
+
   class DiagramDataCtors
   {
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
@@ -74,7 +96,7 @@ namespace Keeper.Utils
       return result;
     }
 
-    public static Dictionary<DateTime, decimal> AccountBalancesForPeriodInUsdThirdWay(Account balancedAccount, Period period)
+    public static Dictionary<DateTime, decimal> AccountBalancesForPeriodInUsdThirdWay(Account balancedAccount, Period period, Every frequency)
     {
       var result = new Dictionary<DateTime, decimal>();
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
@@ -84,11 +106,12 @@ namespace Keeper.Utils
       {
         if (currentDate != transaction.Timestamp.Date)
         {
-          result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
+          if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency)) result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
           currentDate = currentDate.AddDays(1);
           while (currentDate != transaction.Timestamp.Date)
           {
-            //  result.Add(currentDate, balance); // раскомментарить, если даты когда не было изменений тоже должны попадать набор
+            // закомментарить часть условия frequency != Every.Day, если надо ежедневно и даты когда не было изменений тоже должны попадать набор
+            if (frequency != Every.Day && FunctionsWithEvery.IsLastDayOf(currentDate, frequency)) result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
             currentDate = currentDate.AddDays(1);
           }
         }
@@ -123,8 +146,9 @@ namespace Keeper.Utils
 
     #endregion 
 
+    #region для диаграммы ЕЖЕМЕСЯЧНОЕ САЛЬДО
     // медленно, возможно придется считать строго ежемесячные результаты в одном цикле, не отвлекаясь на остальные поля Saldo 
-    public static Dictionary<DateTime, decimal> MonthlyResults()
+    public static Dictionary<DateTime, decimal> MonthlyResultsOld()
     {
       var result = new Dictionary<DateTime, decimal>();
       for (var date = new DateTime(2002, 1, 1); date <= DateTime.Today; date = date.AddMonths(1))
@@ -134,6 +158,21 @@ namespace Keeper.Utils
       }
       return result;
     }
+
+    public static Dictionary<DateTime, decimal> MonthlyResults()
+    {
+      var result = new Dictionary<DateTime, decimal>();
+
+      var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
+      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today), Every.Month).OrderBy(pair => pair.Key).ToList();
+
+      for (var i = 1; i < balances.Count; i++)
+      {
+        result.Add(balances[i].Key, balances[i].Value - balances[i-1].Value);
+      }
+      return result;
+    }
+
 
     private static int MonthsFromStart(DateTime date)
     {
@@ -170,5 +209,8 @@ namespace Keeper.Utils
       }
 
     }
+
+    #endregion
+
   }
 }

@@ -457,7 +457,7 @@ namespace Keeper.ViewModels
     public void ShowDailyBalancesDiagram()
     {
       var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
-      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today));
+      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today), Every.Day);
 
       _ratesDiagramFormPointer = new RatesDiagramViewModel(balances);
       WindowManager.ShowWindow(_ratesDiagramFormPointer);
