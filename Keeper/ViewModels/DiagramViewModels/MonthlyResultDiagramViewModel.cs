@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using Caliburn.Micro;
 using Keeper.Utils;
 
@@ -25,8 +26,9 @@ namespace Keeper.ViewModels
 
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue, _lowestScaleValue;
-    private double _pointPerDay, _pointPerOneValue;
-    private double _pointPerDate, _shift;
+    private double _pointPerOneValue;
+    private double _pointPerDate, _pointPerBar, _gap, _shift;
+
 
     public DrawingGroup DrawingGroup = new DrawingGroup();
     private DrawingImage _imageSource;
@@ -118,8 +120,8 @@ namespace Keeper.ViewModels
 
     private void HorizontalAxisWithMarkers(Dock flag)
     {
-      _pointPerDate = Math.Floor((CanvasWidth - LeftMargin - RightMargin) / CurrentDiagramData.Count);
-      _shift = ((CanvasWidth - LeftMargin - RightMargin) - _pointPerDate * CurrentDiagramData.Count) / 2;
+      _shift = 4;
+      _pointPerDate = (CanvasWidth - LeftMargin - RightMargin - _shift) / CurrentDiagramData.Count;
 
       const double minPointBetweenMarkedDivision = 50;
       var markedDash = (int)Math.Ceiling(minPointBetweenMarkedDivision/_pointPerDate);
@@ -130,22 +132,22 @@ namespace Keeper.ViewModels
       for (var i = 0; i < CurrentDiagramData.Count; i++)
       {
         var dashY = flag == Dock.Bottom ? CanvasHeight - BottomMargin : TopMargin;
-        var dash = new LineGeometry(new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5), dashY - 5),
-                                      new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5), dashY + 5));
+        var dash = new LineGeometry(new Point(LeftMargin + _shift / 2 + _pointPerDate * (i + 0.5), dashY - 5),
+                                      new Point(LeftMargin + _shift / 2 + _pointPerDate * (i + 0.5), dashY + 5));
         geometryGroupDashesAndMarks.Children.Add(dash);
 
 
         if (i % markedDash == 0)
         {
-          var gridline = new LineGeometry(new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5) -1, TopMargin + 5),
-                           new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5) -1, CanvasHeight - BottomMargin - 5));
+          var gridline = new LineGeometry(new Point(LeftMargin + _shift / 2 + _pointPerDate * (i + 0.5) - 1, TopMargin + 5),
+                           new Point(LeftMargin + _shift / 2 + _pointPerDate * (i + 0.5) - 1, CanvasHeight - BottomMargin - 5));
           geometryGroupGridlines.Children.Add(gridline);
 
           var markY = flag == Dock.Bottom ? CanvasHeight : TopMargin;
           var mark = String.Format("{0:M/yyyy} ", CurrentDiagramData[i].CoorXdate);
           var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                                 new Typeface("Times New Roman"), 12, Brushes.Black);
-          var geometry = formattedText.BuildGeometry(new Point(LeftMargin + _shift + _pointPerDate * (i + 0.5) - 18, markY - 20));
+          var geometry = formattedText.BuildGeometry(new Point(LeftMargin + _shift / 2 + _pointPerDate * (i + 0.5) - 18, markY - 20));
           geometryGroupDashesAndMarks.Children.Add(geometry);
         }
       }
@@ -192,7 +194,6 @@ namespace Keeper.ViewModels
         zeros = Math.Floor(Math.Log10(valuesPerDivision));
       }
 
-
       double accurateValuesPerDivision = Math.Ceiling(valuesPerDivision / Math.Pow(10, zeros)) * Math.Pow(10, zeros);
 
       int fromDivision = Convert.ToInt32(Math.Floor(_minValue / accurateValuesPerDivision));
@@ -212,7 +213,9 @@ namespace Keeper.ViewModels
 
         var gridline = new LineGeometry(new Point(LeftMargin + 5, CanvasHeight - BottomMargin - pointPerScaleStep * i),
                             new Point(CanvasWidth - LeftMargin - 5, CanvasHeight - BottomMargin - pointPerScaleStep * i));
-        geometryGroupGridlines.Children.Add(gridline);
+        if (i + fromDivision == 0)
+          geometryGroupDashesAndMarks.Children.Add(gridline);
+        else geometryGroupGridlines.Children.Add(gridline);
 
         var markX = flag == Dock.Left ? LeftMargin - 40 : CanvasWidth - RightMargin + 15;
         var mark = String.Format("{0} ", (i + fromDivision) * accurateValuesPerDivision / Math.Pow(10, precision));
@@ -231,29 +234,35 @@ namespace Keeper.ViewModels
 
     private void Diagram()
     {
-      var gap = Math.Round(_pointPerDate / 3);
-      var pointPerBar = _pointPerDate - gap;
+      _gap = _pointPerDate / 3;
+      _pointPerBar = _pointPerDate - _gap;
 
-      var geometryGroup = new GeometryGroup();
+      var geometryGroupPositive = new GeometryGroup();
+      var geometryGroupNegative = new GeometryGroup();
       for (int i = 0; i < CurrentDiagramData.Count; i++)
       {
         Rect rect;
         if (CurrentDiagramData[i].CoorYdouble >= 0)
-          rect = new Rect(LeftMargin + _shift + i*(pointPerBar+gap),
+          rect = new Rect(LeftMargin + _shift / 2 + _gap / 2 + i * (_pointPerBar + _gap),
                           CanvasHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - _lowestScaleValue)*_pointPerOneValue,
-                          pointPerBar,
+                          _pointPerBar,
                           CurrentDiagramData[i].CoorYdouble*_pointPerOneValue);
-        else rect = new Rect(LeftMargin + _shift + i*(pointPerBar+gap),
+        else rect = new Rect(LeftMargin + _shift / 2 + _gap / 2 + i*(_pointPerBar + _gap),
                           CanvasHeight - BottomMargin - (0 - _lowestScaleValue) * _pointPerOneValue,
-                          pointPerBar,
+                          _pointPerBar,
                           - CurrentDiagramData[i].CoorYdouble * _pointPerOneValue);
-
+       
         var rectangleGeometry = new RectangleGeometry(rect);
-//        rectangleGeometry.
-        geometryGroup.Children.Add(rectangleGeometry);
+        if (CurrentDiagramData[i].CoorYdouble > 0)
+          geometryGroupPositive.Children.Add(rectangleGeometry);
+        else
+          geometryGroupNegative.Children.Add(rectangleGeometry);
+
       }
-      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
-      DrawingGroup.Children.Add(geometryDrawing);
+      var geometryDrawingPositive = new GeometryDrawing { Geometry = geometryGroupPositive, Pen = new Pen(Brushes.Blue, 1), Brush = Brushes.Blue};
+      DrawingGroup.Children.Add(geometryDrawingPositive);
+      var geometryDrawingNegative = new GeometryDrawing { Geometry = geometryGroupNegative, Pen = new Pen(Brushes.Red, 1), Brush = Brushes.Red};
+      DrawingGroup.Children.Add(geometryDrawingNegative);
     }
 
     #endregion
