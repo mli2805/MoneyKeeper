@@ -24,9 +24,9 @@ namespace Keeper.ViewModels
 
   public enum ChangeDiagramDataMode
   {
-    Increase,
-    Decrease,
-    ShiftLeft
+    ZoomIn,
+    ZoomOut,
+    Move
   }
 
   class RatesDiagramViewModel : Screen
@@ -266,7 +266,7 @@ namespace Keeper.ViewModels
 
 #endregion
 
-    private void ChangeDiagramData(ChangeDiagramDataMode mode)
+    private bool ChangeDiagramData(ChangeDiagramDataMode mode)
     {
       var tt = new Stopwatch();
       tt.Start();
@@ -276,17 +276,17 @@ namespace Keeper.ViewModels
       DateTime newMaxDate = _maxDate;
       switch (mode)
       {
-        case ChangeDiagramDataMode.Increase: 
+        case ChangeDiagramDataMode.ZoomIn: 
           shiftDateRange = (_maxDate - _minDate).Days / 10;
           newMinDate = _minDate.AddDays(shiftDateRange);
           newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
-        case ChangeDiagramDataMode.Decrease: 
+        case ChangeDiagramDataMode.ZoomOut: 
           shiftDateRange = (_maxDate - _minDate).Days / 10;
           newMinDate = _minDate.AddDays(-shiftDateRange);
           newMaxDate = _maxDate.AddDays(shiftDateRange);
           break;
-        case ChangeDiagramDataMode.ShiftLeft: 
+        case ChangeDiagramDataMode.Move: 
           break;
       }
 
@@ -295,18 +295,18 @@ namespace Keeper.ViewModels
 
       tt.Stop();
       Console.WriteLine(tt.Elapsed);
+
+      return true;
     }
 
     public void IncreaseDiagram()
     {
-      ChangeDiagramData(ChangeDiagramDataMode.Increase);
-      DrawCurrentDiagram();
+      if (ChangeDiagramData(ChangeDiagramDataMode.ZoomIn)) DrawCurrentDiagram();
     }
 
     public void DecreaseDiagram()
     {
-      ChangeDiagramData(ChangeDiagramDataMode.Decrease);
-      DrawCurrentDiagram();
+      if (ChangeDiagramData(ChangeDiagramDataMode.ZoomOut)) DrawCurrentDiagram();
     }
 
   }

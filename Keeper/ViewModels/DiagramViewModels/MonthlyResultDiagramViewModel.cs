@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Caliburn.Micro;
@@ -267,7 +268,7 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    private void ChangeDiagramData(ChangeDiagramDataMode mode)
+    private bool ChangeDiagramData(ChangeDiagramDataMode mode, int horizontal, int vertical)
     {
       var tt = new Stopwatch();
       tt.Start();
@@ -277,38 +278,90 @@ namespace Keeper.ViewModels
       DateTime newMaxDate = _maxDate;
       switch (mode)
       {
-        case ChangeDiagramDataMode.Increase:
-          shiftDateRange = (_maxDate - _minDate).Days / 10;
+        case ChangeDiagramDataMode.ZoomIn:
+          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
           newMinDate = _minDate.AddDays(shiftDateRange);
           newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
-        case ChangeDiagramDataMode.Decrease:
-          shiftDateRange = (_maxDate - _minDate).Days / 10;
+        case ChangeDiagramDataMode.ZoomOut:
+          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
           newMinDate = _minDate.AddDays(-shiftDateRange);
           newMaxDate = _maxDate.AddDays(shiftDateRange);
           break;
-        case ChangeDiagramDataMode.ShiftLeft:
+        case ChangeDiagramDataMode.Move:
+          var percent = (int)(horizontal*100/CanvasWidth);
+          shiftDateRange = (_maxDate - _minDate).Days * percent / 100;
+          newMinDate = _minDate.AddDays(-shiftDateRange);
+          newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
       }
 
-      CurrentDiagramData =
-        AllDiagramData.Where(pair => pair.CoorXdate >= newMinDate && pair.CoorXdate <= newMaxDate).ToList();
+      CurrentDiagramData.Clear();
+      foreach (var diagramPair in AllDiagramData)
+      {
+        if (diagramPair.CoorXdate >= newMinDate && diagramPair.CoorXdate <= newMaxDate)
+        {
+          CurrentDiagramData.Add(diagramPair);
+        }
+      }
+
+//      CurrentDiagramData =
+//        AllDiagramData.Where(pair => pair.CoorXdate >= newMinDate && pair.CoorXdate <= newMaxDate).ToList();
 
       tt.Stop();
       Console.WriteLine(tt.Elapsed);
+
+      return true;
     }
 
-    public void IncreaseDiagram()
+    public void ZoomDiagram(ChangeDiagramDataMode param, int horizontal, int vertical)
     {
-      ChangeDiagramData(ChangeDiagramDataMode.Increase);
-      DrawCurrentDiagram();
+      if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
 
-    public void DecreaseDiagram()
+    public void MoveDiagramData(ChangeDiagramDataMode param, int horizontal, int vertical)
     {
-      ChangeDiagramData(ChangeDiagramDataMode.Decrease);
-      DrawCurrentDiagram();
+      if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
+
+    #region mouse events handlers
+
+    private Point _mouseRightButtonDownPoint;
+    public void MouseRightButtonDown(MouseEventArgs args, IInputElement elem)
+    {
+      _mouseRightButtonDownPoint = args.GetPosition(elem);
+    }
+
+    public void MouseRightButtonUp(MouseEventArgs args, IInputElement elem)
+    {
+      var pt = args.GetPosition(elem);
+      MoveDiagramData(ChangeDiagramDataMode.Move, (int)(pt.X - _mouseRightButtonDownPoint.X),
+                                                            (int)(pt.Y - _mouseRightButtonDownPoint.Y));
+    }
+
+    public void MouseLeftButtonDown(MouseEventArgs args, IInputElement elem)
+    {
+      Point pt = args.GetPosition(elem);
+      Console.WriteLine("{0}, {1}", pt.X, pt.Y);
+    }
+
+    public void MouseLeftButtonUp(MouseEventArgs args, IInputElement elem)
+    {
+      Point pt = args.GetPosition(elem);
+      Console.WriteLine("{0}, {1}", pt.X, pt.Y);
+    }
+
+    public void MouseDoubleClick()
+    {
+      Console.WriteLine("DoubleClick");
+    }
+
+    public void MouseWheel(MouseWheelEventArgs args)
+    {
+      ZoomDiagram(args.Delta > 0 ? ChangeDiagramDataMode.ZoomIn : ChangeDiagramDataMode.ZoomOut, 10, 0);
+    }
+
+    #endregion
 
   }
 }
