@@ -26,7 +26,9 @@ namespace Keeper.ViewModels
   {
     ZoomIn,
     ZoomOut,
-    Move
+    Move,
+    ZoomInRect,
+    ZoomAll
   }
 
   class RatesDiagramViewModel : Screen

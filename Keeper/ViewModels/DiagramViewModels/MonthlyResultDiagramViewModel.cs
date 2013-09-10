@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -216,7 +217,7 @@ namespace Keeper.ViewModels
                             new Point(CanvasWidth - LeftMargin - 5, CanvasHeight - BottomMargin - pointPerScaleStep * i));
         if (i + fromDivision == 0)
           geometryGroupDashesAndMarks.Children.Add(gridline);
-        else geometryGroupGridlines.Children.Add(gridline);
+        else if (i != 0 && i != divisions) geometryGroupGridlines.Children.Add(gridline);
 
         var markX = flag == Dock.Left ? LeftMargin - 40 : CanvasWidth - RightMargin + 15;
         var mark = String.Format("{0} ", (i + fromDivision) * accurateValuesPerDivision / Math.Pow(10, precision));
@@ -279,14 +280,17 @@ namespace Keeper.ViewModels
       switch (mode)
       {
         case ChangeDiagramDataMode.ZoomIn:
-          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
-          newMinDate = _minDate.AddDays(shiftDateRange);
-          newMaxDate = _maxDate.AddDays(-shiftDateRange);
+          if (CurrentDiagramData.Count < 4) return true;
+            shiftDateRange = (_maxDate - _minDate).Days*horizontal/100;
+            if (shiftDateRange < 31) shiftDateRange = 31;
+            newMinDate = _minDate.AddDays(shiftDateRange);
+            newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
         case ChangeDiagramDataMode.ZoomOut:
-          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
-          newMinDate = _minDate.AddDays(-shiftDateRange);
-          newMaxDate = _maxDate.AddDays(shiftDateRange);
+            shiftDateRange = (_maxDate - _minDate).Days*horizontal/100;
+            if (shiftDateRange < 31) shiftDateRange = 31;
+            newMinDate = _minDate.AddDays(-shiftDateRange);
+            newMaxDate = _maxDate.AddDays(shiftDateRange);
           break;
         case ChangeDiagramDataMode.Move:
           var percent = (int)(horizontal*100/CanvasWidth);
@@ -294,9 +298,12 @@ namespace Keeper.ViewModels
           newMinDate = _minDate.AddDays(-shiftDateRange);
           newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
+          case ChangeDiagramDataMode.ZoomInRect:
+
+          break;
       }
 
-      CurrentDiagramData.Clear();
+      CurrentDiagramData.Clear(); 
       foreach (var diagramPair in AllDiagramData)
       {
         if (diagramPair.CoorXdate >= newMinDate && diagramPair.CoorXdate <= newMaxDate)
@@ -314,6 +321,14 @@ namespace Keeper.ViewModels
       return true;
     }
 
+    #region преобразует точки к данным диаграммы и запускает перерисовку
+    // привязан к типу диаграммы (в данном случае - столбцовая, время - значение)
+
+    public int Point2Number(Point point)
+    {
+      return (int) ((point.X - LeftMargin - _shift / 2 - _gap / 2) / (_pointPerBar + _gap) + 1);
+    }
+
     public void ZoomDiagram(ChangeDiagramDataMode param, int horizontal, int vertical)
     {
       if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
@@ -324,7 +339,31 @@ namespace Keeper.ViewModels
       if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
 
+    public void ZoomRectDiagram(Point leftTop, Point rightBottom)
+    {
+      var numberFrom = Point2Number(leftTop);
+      var numberTo = Point2Number(rightBottom);
+      if (numberTo - numberFrom < 3) return;
+      var nuevoCurrentDiagramData = new List<DiagramPair>();
+      for (int i = numberFrom; i < numberTo; i++)
+      {
+        nuevoCurrentDiagramData.Add(CurrentDiagramData[i]);
+      }
+      CurrentDiagramData = nuevoCurrentDiagramData;
+      DrawCurrentDiagram();
+    }
+
+    public void ZoomAllDiagram()
+    {
+      CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
+      DrawCurrentDiagram();
+    }
+
+    #endregion
+
     #region mouse events handlers
+    //  не привязан к типу диаграммы, передаются точки, в которых было нажатие-отпускание мыши
+    //  разница в пикселах между этими точками, направления прокрутки колеса и т.п.
 
     private Point _mouseRightButtonDownPoint;
     public void MouseRightButtonDown(MouseEventArgs args, IInputElement elem)
@@ -335,20 +374,28 @@ namespace Keeper.ViewModels
     public void MouseRightButtonUp(MouseEventArgs args, IInputElement elem)
     {
       var pt = args.GetPosition(elem);
-      MoveDiagramData(ChangeDiagramDataMode.Move, (int)(pt.X - _mouseRightButtonDownPoint.X),
+      if (pt != _mouseRightButtonDownPoint) 
+            MoveDiagramData(ChangeDiagramDataMode.Move, (int)(pt.X - _mouseRightButtonDownPoint.X),
                                                             (int)(pt.Y - _mouseRightButtonDownPoint.Y));
     }
 
+    private Point _mouseLeftButtonDownPoint;
     public void MouseLeftButtonDown(MouseEventArgs args, IInputElement elem)
     {
-      Point pt = args.GetPosition(elem);
-      Console.WriteLine("{0}, {1}", pt.X, pt.Y);
+      _mouseLeftButtonDownPoint = args.GetPosition(elem);
     }
 
     public void MouseLeftButtonUp(MouseEventArgs args, IInputElement elem)
     {
       Point pt = args.GetPosition(elem);
-      Console.WriteLine("{0}, {1}", pt.X, pt.Y);
+      if (pt == _mouseLeftButtonDownPoint) return;
+
+      if (pt.X < _mouseLeftButtonDownPoint.X) { var temp = pt.X; pt.X = _mouseLeftButtonDownPoint.X;_mouseLeftButtonDownPoint.X = temp; }
+      if (pt.Y < _mouseLeftButtonDownPoint.Y) { var temp = pt.Y; pt.Y = _mouseLeftButtonDownPoint.Y;_mouseLeftButtonDownPoint.Y = temp; }
+
+      if (pt.X - _mouseLeftButtonDownPoint.X < 4 || pt.Y - _mouseLeftButtonDownPoint.Y < 4) ZoomAllDiagram();
+      else
+        ZoomRectDiagram(_mouseLeftButtonDownPoint,pt);
     }
 
     public void MouseDoubleClick()
@@ -358,7 +405,7 @@ namespace Keeper.ViewModels
 
     public void MouseWheel(MouseWheelEventArgs args)
     {
-      ZoomDiagram(args.Delta > 0 ? ChangeDiagramDataMode.ZoomIn : ChangeDiagramDataMode.ZoomOut, 10, 0);
+      ZoomDiagram(args.Delta < 0 ? ChangeDiagramDataMode.ZoomIn : ChangeDiagramDataMode.ZoomOut, 10, 0);
     }
 
     #endregion
