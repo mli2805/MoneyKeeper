@@ -121,7 +121,7 @@ namespace Keeper.ViewModels
       SeriesEuro = new List<DateProcentPoint>();
       var rootDepo = Db.FindAccountInTree("Депозиты");
       var inMoney = DiagramDataCtors.AccountBalancesForPeriodInCurrencies(rootDepo,
-                                                                 new Period(new DateTime(2002, 1, 1), DateTime.Today));
+                                                                 new Period(new DateTime(2001, 12, 31), DateTime.Today));
       foreach (var pair in inMoney)
       {
         var date = pair.Key;
@@ -209,7 +209,7 @@ namespace Keeper.ViewModels
       var dailyCashSeries = new List<DateProcentPoint>();
 
       decimal cashInUsd = 0, depoInUsd = 0;
-      var dt = new DateTime(2002, 1, 1);
+      var dt = new DateTime(2001, 12, 31);
       var transactionsArray = Db.Transactions.ToArray();
       int index = 0;
       Transaction tr = transactionsArray[0];
