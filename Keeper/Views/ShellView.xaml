@@ -28,7 +28,7 @@
       <cal:ActionMessage MethodName="ShowDepositsForm"/>
     </ei:KeyTrigger>
     <ei:KeyTrigger Key="G">
-      <cal:ActionMessage MethodName="ShowMonthlyResultDiagram"/>
+      <cal:ActionMessage MethodName="ShowRatesDiagram"/>
     </ei:KeyTrigger>
     <ei:KeyTrigger Key="T">
       <cal:ActionMessage MethodName="TempItem"/>
