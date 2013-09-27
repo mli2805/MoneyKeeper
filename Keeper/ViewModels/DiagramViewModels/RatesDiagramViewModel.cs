@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Caliburn.Micro;
 
@@ -92,21 +93,6 @@ namespace Keeper.ViewModels
       _maxDate = CurrentDiagramData.Last().CoorXdate;
       _minValue = CurrentDiagramData.Min(r => r.CoorYdouble); 
       _maxValue = CurrentDiagramData.Max(r => r.CoorYdouble);
-    }
-
-    private void Diagram()
-    {
-      var geometryGroup = new GeometryGroup();
-      for (int i = 0; i < CurrentDiagramData.Count - 1; i++)
-      {
-        var line = new LineGeometry(new Point((CurrentDiagramData[i].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - _lowestScaleValue) * _pointPerOneValue),
-                                    new Point((CurrentDiagramData[i + 1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
-                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i + 1].CoorYdouble - _lowestScaleValue) * _pointPerOneValue));
-        geometryGroup.Children.Add(line);
-      }
-      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
-      DrawingGroup.Children.Add(geometryDrawing);
     }
 
     #region Drawing implementation
@@ -234,6 +220,7 @@ namespace Keeper.ViewModels
 
       int fromDivision = Convert.ToInt32(Math.Floor(_minValue / accurateValuesPerDivision));
       int divisions = Convert.ToInt32(Math.Ceiling(values / accurateValuesPerDivision));
+      if ((fromDivision + divisions) * accurateValuesPerDivision < _maxValue) divisions++;
       double pointPerScaleStep = (CanvasHeight - TopMargin - BottomMargin) / divisions;
       _lowestScaleValue = fromDivision * accurateValuesPerDivision;
       _pointPerOneValue = (CanvasHeight - TopMargin - BottomMargin) / (divisions * accurateValuesPerDivision);
@@ -266,9 +253,24 @@ namespace Keeper.ViewModels
       DrawingGroup.Children.Add(geometryDrawingGridlines);
     }
 
-#endregion
+    private void Diagram()
+    {
+      var geometryGroup = new GeometryGroup();
+      for (int i = 0; i < CurrentDiagramData.Count - 1; i++)
+      {
+        var line = new LineGeometry(new Point((CurrentDiagramData[i].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
+                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - _lowestScaleValue) * _pointPerOneValue),
+                                    new Point((CurrentDiagramData[i + 1].CoorXdate - _minDate).Days * _pointPerDay + LeftMargin,
+                                              CanvasHeight - BottomMargin - (CurrentDiagramData[i + 1].CoorYdouble - _lowestScaleValue) * _pointPerOneValue));
+        geometryGroup.Children.Add(line);
+      }
+      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
+      DrawingGroup.Children.Add(geometryDrawing);
+    }
 
-    private bool ChangeDiagramData(ChangeDiagramDataMode mode)
+    #endregion
+
+    private bool ChangeDiagramData(ChangeDiagramDataMode mode, int horizontal, int vertical)
     {
       var tt = new Stopwatch();
       tt.Start();
@@ -278,22 +280,45 @@ namespace Keeper.ViewModels
       DateTime newMaxDate = _maxDate;
       switch (mode)
       {
-        case ChangeDiagramDataMode.ZoomIn: 
-          shiftDateRange = (_maxDate - _minDate).Days / 10;
+        case ChangeDiagramDataMode.ZoomIn:
+          if (CurrentDiagramData.Count < 4) return false;
+          if (CurrentDiagramData.Count < 16)
+          {
+            CurrentDiagramData.RemoveAt(CurrentDiagramData.Count-1);
+            CurrentDiagramData.RemoveAt(0);
+            return true;
+          }
+
+          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
+          if (shiftDateRange < 31) shiftDateRange = 31;
           newMinDate = _minDate.AddDays(shiftDateRange);
           newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
-        case ChangeDiagramDataMode.ZoomOut: 
-          shiftDateRange = (_maxDate - _minDate).Days / 10;
+        case ChangeDiagramDataMode.ZoomOut:
+          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
+          if (shiftDateRange < 31) shiftDateRange = 31;
           newMinDate = _minDate.AddDays(-shiftDateRange);
           newMaxDate = _maxDate.AddDays(shiftDateRange);
           break;
-        case ChangeDiagramDataMode.Move: 
+        case ChangeDiagramDataMode.Move:
+          var percent = (int)(horizontal * 100 / CanvasWidth);
+          shiftDateRange = (_maxDate - _minDate).Days * percent / 100;
+          newMinDate = _minDate.AddDays(-shiftDateRange);
+          newMaxDate = _maxDate.AddDays(-shiftDateRange);
+          break;
+        case ChangeDiagramDataMode.ZoomInRect:
+
           break;
       }
 
-      CurrentDiagramData =
-        AllDiagramData.Where(pair => pair.CoorXdate >= newMinDate && pair.CoorXdate <= newMaxDate).ToList();
+      CurrentDiagramData.Clear();
+      foreach (var diagramPair in AllDiagramData)
+      {
+        if (diagramPair.CoorXdate >= newMinDate && diagramPair.CoorXdate <= newMaxDate)
+        {
+          CurrentDiagramData.Add(diagramPair);
+        }
+      }
 
       tt.Stop();
       Console.WriteLine(tt.Elapsed);
@@ -301,15 +326,95 @@ namespace Keeper.ViewModels
       return true;
     }
 
-    public void IncreaseDiagram()
+    #region преобразует точки к данным диаграммы и запускает перерисовку
+    // привязан к типу диаграммы (в данном случае - линия, соединяющая точки "время - значение")
+
+    public int Point2Number(Point point)
     {
-      if (ChangeDiagramData(ChangeDiagramDataMode.ZoomIn)) DrawCurrentDiagram();
+      return (int)((point.X - LeftMargin));
     }
 
-    public void DecreaseDiagram()
+    public void ZoomDiagram(ChangeDiagramDataMode param, int horizontal, int vertical)
     {
-      if (ChangeDiagramData(ChangeDiagramDataMode.ZoomOut)) DrawCurrentDiagram();
+      if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
+
+    public void MoveDiagramData(ChangeDiagramDataMode param, int horizontal, int vertical)
+    {
+      if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
+    }
+
+    public void ZoomRectDiagram(Point leftTop, Point rightBottom)
+    {
+      var numberFrom = Point2Number(leftTop);
+      var numberTo = Point2Number(rightBottom);
+      if (numberTo - numberFrom < 3) return;
+      var nuevoCurrentDiagramData = new List<DiagramPair>();
+      for (int i = numberFrom; i < numberTo; i++)
+      {
+        nuevoCurrentDiagramData.Add(CurrentDiagramData[i]);
+      }
+      CurrentDiagramData = nuevoCurrentDiagramData;
+      DrawCurrentDiagram();
+    }
+
+    public void ZoomAllDiagram()
+    {
+      CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
+      DrawCurrentDiagram();
+    }
+
+    #endregion
+
+
+    #region mouse events handlers
+    //  не привязан к типу диаграммы, передаются точки, в которых было нажатие-отпускание мыши
+    //  разница в пикселах между этими точками, направления прокрутки колеса и т.п.
+
+    private Point _mouseRightButtonDownPoint;
+    public void MouseRightButtonDown(MouseEventArgs args, IInputElement elem)
+    {
+      _mouseRightButtonDownPoint = args.GetPosition(elem);
+    }
+
+    public void MouseRightButtonUp(MouseEventArgs args, IInputElement elem)
+    {
+      var pt = args.GetPosition(elem);
+      if (pt != _mouseRightButtonDownPoint)
+        MoveDiagramData(ChangeDiagramDataMode.Move, (int)(pt.X - _mouseRightButtonDownPoint.X),
+                                                        (int)(pt.Y - _mouseRightButtonDownPoint.Y));
+    }
+
+    private Point _mouseLeftButtonDownPoint;
+    public void MouseLeftButtonDown(MouseEventArgs args, IInputElement elem)
+    {
+      _mouseLeftButtonDownPoint = args.GetPosition(elem);
+    }
+
+    public void MouseLeftButtonUp(MouseEventArgs args, IInputElement elem)
+    {
+      Point pt = args.GetPosition(elem);
+      if (pt == _mouseLeftButtonDownPoint) return;
+
+      if (pt.X < _mouseLeftButtonDownPoint.X) { var temp = pt.X; pt.X = _mouseLeftButtonDownPoint.X; _mouseLeftButtonDownPoint.X = temp; }
+      if (pt.Y < _mouseLeftButtonDownPoint.Y) { var temp = pt.Y; pt.Y = _mouseLeftButtonDownPoint.Y; _mouseLeftButtonDownPoint.Y = temp; }
+
+      if (pt.X - _mouseLeftButtonDownPoint.X < 4 || pt.Y - _mouseLeftButtonDownPoint.Y < 4) ZoomAllDiagram();
+      else
+        ZoomRectDiagram(_mouseLeftButtonDownPoint, pt);
+    }
+
+    public void MouseDoubleClick()
+    {
+      Console.WriteLine("DoubleClick");
+    }
+
+    public void MouseWheel(MouseWheelEventArgs args)
+    {
+      ZoomDiagram(args.Delta < 0 ? ChangeDiagramDataMode.ZoomIn : ChangeDiagramDataMode.ZoomOut, 10, 0);
+    }
+
+    #endregion
 
   }
 }

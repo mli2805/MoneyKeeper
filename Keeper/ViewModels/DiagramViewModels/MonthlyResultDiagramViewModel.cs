@@ -29,7 +29,9 @@ namespace Keeper.ViewModels
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue, _lowestScaleValue;
     private double _pointPerOneValue;
-    private double _pointPerDate, _pointPerBar, _gap, _shift;
+    private double _pointPerDate, _pointPerBar;
+    private double _gap; // промежуток между столбиками диаграммы
+    private double _shift; // от левой оси до первого столбика
 
 
     public DrawingGroup DrawingGroup = new DrawingGroup();
@@ -200,6 +202,7 @@ namespace Keeper.ViewModels
 
       int fromDivision = Convert.ToInt32(Math.Floor(_minValue / accurateValuesPerDivision));
       int divisions = Convert.ToInt32(Math.Ceiling(values / accurateValuesPerDivision));
+      if ((fromDivision + divisions) * accurateValuesPerDivision < _maxValue) divisions++;
       double pointPerScaleStep = (CanvasHeight - TopMargin - BottomMargin) / divisions;
       _lowestScaleValue = fromDivision*accurateValuesPerDivision;
       _pointPerOneValue = (CanvasHeight - TopMargin - BottomMargin) / (divisions * accurateValuesPerDivision);
@@ -282,9 +285,16 @@ namespace Keeper.ViewModels
         case ChangeDiagramDataMode.ZoomIn:
           if (CurrentDiagramData.Count < 4) return true;
             shiftDateRange = (_maxDate - _minDate).Days*horizontal/100;
-            if (shiftDateRange < 31) shiftDateRange = 31;
-            newMinDate = _minDate.AddDays(shiftDateRange);
-            newMaxDate = _maxDate.AddDays(-shiftDateRange);
+            if (shiftDateRange < 31)
+            {
+              newMinDate = _minDate.AddMonths(1);
+              newMaxDate = _maxDate.AddMonths(-1);
+            }
+            else
+            {
+              newMinDate = _minDate.AddDays(shiftDateRange);
+              newMaxDate = _maxDate.AddDays(-shiftDateRange);
+            }
           break;
         case ChangeDiagramDataMode.ZoomOut:
             shiftDateRange = (_maxDate - _minDate).Days*horizontal/100;
@@ -311,9 +321,6 @@ namespace Keeper.ViewModels
           CurrentDiagramData.Add(diagramPair);
         }
       }
-
-//      CurrentDiagramData =
-//        AllDiagramData.Where(pair => pair.CoorXdate >= newMinDate && pair.CoorXdate <= newMaxDate).ToList();
 
       tt.Stop();
       Console.WriteLine(tt.Elapsed);

@@ -137,7 +137,7 @@ namespace Keeper.ViewModels
     private int _selectedTransactionIndex;
     private bool _isTransactionInWorkChanged;
     private Transaction _transactionInWork;
-    private bool _isInAddTransactionMode;
+    private bool _isInAddTransactionMode;   
 
     public int SelectedTabIndex
     {
