@@ -14,10 +14,23 @@ namespace Keeper.Behaviors
 
     private void ItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
-      var rows = (ItemCollection)sender;
-      if (args.Action == NotifyCollectionChangedAction.Add)
-        if (args.NewStartingIndex == rows.Count-1)
-          AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+      if (args.Action == NotifyCollectionChangedAction.Reset) return; // Reset приходит при начальной инициализации Rows и обрабатывается в ScrollToPreviousExitPointOrBottomOnLoadBehavior
+      if (AssociatedObject.Items.Count == 0) return;
+
+
+//      var rows = (ItemCollection)sender;
+//      if (args.Action == NotifyCollectionChangedAction.Add)
+//        if (args.NewStartingIndex == rows.Count-1)
+//          AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+
+      if (AssociatedObject.SelectedIndex == -1)
+        AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+      else
+      { // если при загрузке мы возвращаемся не к последней записи, то желательно ее поставить в середину таблицы
+        int itemNumber = AssociatedObject.SelectedIndex + 1;
+        if (itemNumber > AssociatedObject.Items.Count - 1) itemNumber = AssociatedObject.Items.Count - 1;
+        AssociatedObject.ScrollIntoView(AssociatedObject.Items[itemNumber]);
+      }
     }
   }
 }

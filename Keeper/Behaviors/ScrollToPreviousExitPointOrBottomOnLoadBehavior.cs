@@ -12,7 +12,7 @@ namespace Keeper.Behaviors
   /// значит когда ListView загрузится (Loaded) вызовется мой код 
   /// в котором сказано проскролить ListView чтобы стал виден последний айтем
   /// </summary>
-  public class ScrollToBottomOnLoadBehavior : Behavior<ListView>
+  public class ScrollToPreviousExitPointOrBottomOnLoadBehavior : Behavior<ListView>
   {
     protected override void OnAttached() // это стандартное место
     {
@@ -24,10 +24,16 @@ namespace Keeper.Behaviors
     /// </summary>
     private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
     {
-      if (AssociatedObject.SelectedIndex >= 0 )
-        AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.SelectedIndex]);
-      else
+      if (AssociatedObject.Items.Count == 0) return;
+
+      if (AssociatedObject.SelectedIndex == -1 )
         AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+      else
+      { // если при загрузке мы возвращаемся не к последней записи, то желательно ее поставить в середину таблицы
+        int itemNumber = AssociatedObject.SelectedIndex + 10;
+        if (itemNumber > AssociatedObject.Items.Count - 1) itemNumber = AssociatedObject.Items.Count - 1; 
+        AssociatedObject.ScrollIntoView(AssociatedObject.Items[itemNumber]);
+      }
     }
   }
 }

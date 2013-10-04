@@ -153,7 +153,7 @@
               SelectedItem="{Binding SelectedTransaction, Mode=OneWayToSource}" SelectionMode="Single"  >
       <i:Interaction.Behaviors>
         <Behaviors:ScrollToDisappearedDueDateChangeBehavior />
-        <Behaviors:ScrollToBottomOnLoadBehavior />
+        <Behaviors:ScrollToPreviousExitPointOrBottomOnLoadBehavior />
         <Behaviors:ScrollToBottomOnAddBehavior />
         <Behaviors:SetFocusOnLoadBehavior />
       </i:Interaction.Behaviors>
@@ -281,7 +281,7 @@
             <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="50" Background="White"
               ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
-            <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22" Background="Transparent">
+            <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,9" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22" Background="Transparent" VerticalAlignment="Bottom">
             </Button>
           </Grid>
         </TabItem>

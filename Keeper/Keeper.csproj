@@ -121,7 +121,7 @@
     <Compile Include="Utils\Rate.cs" />
     <Compile Include="Utils\DbTxtLoad.cs" />
     <Compile Include="Behaviors\ScrollToBottomOnAddBehavior.cs" />
-    <Compile Include="Behaviors\ScrollToBottomOnLoadBehavior.cs" />
+    <Compile Include="Behaviors\ScrollToPreviousExitPointOrBottomOnLoadBehavior.cs" />
     <Compile Include="Behaviors\ScrollToBottomOnLoadDatagridBehavior.cs" />
     <Compile Include="Behaviors\ScrollToDisappearedDueDateChangeBehavior.cs" />
     <Compile Include="Behaviors\SetFocusOnLoadBehavior.cs" />
