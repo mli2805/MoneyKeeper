@@ -18,6 +18,9 @@
     <ei:KeyTrigger Key="O">
       <cal:ActionMessage MethodName="ShowTransactionsForm"/>
     </ei:KeyTrigger>
+    <ei:KeyTrigger Key="Q">
+      <cal:ActionMessage MethodName="ShowTransactionsNewForm"/>
+    </ei:KeyTrigger>
     <ei:KeyTrigger Key="C">
       <cal:ActionMessage MethodName="ShowCurrencyRatesForm"/>
     </ei:KeyTrigger>
@@ -64,11 +67,12 @@
         <MenuItem x:Name="ProgramExit" Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye"/>
       </MenuItem>
       <MenuItem Header="ФОРМЫ">
-        <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
-        <MenuItem x:Name="ShowMonthAnalisysForm" Header="АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
-        <MenuItem x:Name="ShowDepositsForm" Header="ДЕПОЗИТЫ"/>
-        <MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
-        <MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
+        <MenuItem x:Name="ShowTransactionsForm" Header="O ОПЕРАЦИИ"/>
+        <MenuItem x:Name="ShowTransactionsNewForm" Header="Q ОПЕРАЦИИ НОВЫЕ "/>
+        <MenuItem x:Name="ShowMonthAnalisysForm" Header="A АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
+        <MenuItem x:Name="ShowDepositsForm" Header="D ДЕПОЗИТЫ"/>
+        <MenuItem x:Name="ShowCurrencyRatesForm" Header="C КУРСЫ ВАЛЮТ"/>
+        <MenuItem x:Name="ShowArticlesAssociationsForm" Header=" АССОЦИАЦИИ КАТЕГОРИЙ"/>
       </MenuItem>
       <MenuItem Header="ДИАГРАММЫ">
         <MenuItem x:Name="ShowDailyBalancesDiagram" Header="Ежедневные остатки"/>

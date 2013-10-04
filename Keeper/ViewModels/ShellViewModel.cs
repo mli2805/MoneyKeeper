@@ -408,6 +408,19 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
+    public void ShowTransactionsNewForm()
+    {
+      String arcMessage = Message;
+      Message = "Input operations";
+      UsefulLists.FillLists();
+      WindowManager.ShowDialog(new TransactionsNewViewModel());
+      // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
+      Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
+      Balance.CountBalances(SelectedAccount, period, BalanceList);
+//      BinaryCrypto.DbCryptoSerialization();
+      Message = arcMessage;
+    }
+
     public void ShowCurrencyRatesForm()
     {
       String arcMessage = Message;

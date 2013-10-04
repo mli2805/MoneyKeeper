@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
+using Keeper.DomainModel;
 
 namespace Keeper.Behaviors
 {
@@ -23,7 +24,10 @@ namespace Keeper.Behaviors
     /// </summary>
     private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
     {
-      AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+      if (AssociatedObject.SelectedIndex >= 0 )
+        AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.SelectedIndex]);
+      else
+        AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
     }
   }
 }

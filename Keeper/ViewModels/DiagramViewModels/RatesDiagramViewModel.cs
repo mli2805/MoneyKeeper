@@ -8,30 +8,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Caliburn.Micro;
+using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  public class DiagramPair
-  {
-    public DateTime CoorXdate;
-    public double CoorYdouble;
-
-    public DiagramPair(DateTime coorXdate, double coorYdouble)
-    {
-      CoorXdate = coorXdate;
-      CoorYdouble = coorYdouble;
-    }
-  }
-
-  public enum ChangeDiagramDataMode
-  {
-    ZoomIn,
-    ZoomOut,
-    Move,
-    ZoomInRect,
-    ZoomAll
-  }
-
   class RatesDiagramViewModel : Screen
   {
     private const double CanvasWidth = 800;  // Не важно сколько конкретно - они займут всю ячейку грида

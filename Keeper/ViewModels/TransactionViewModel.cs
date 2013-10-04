@@ -161,7 +161,17 @@ namespace Keeper.ViewModels
           MessageBox.Show("SelectedTransaction is null!");
           return;
         }
+
+        if (_selectedTransaction != null) _selectedTransaction.SetIsSelectedWithoutNotification(false);
+//        foreach (var transaction in Rows)
+//        {
+//          transaction.SetIsSelectedWithoutNotification(false);
+//        }
+
+
         _selectedTransaction = value;
+        _selectedTransaction.IsSelected = true;
+
         _isInTransactionSelectionProcess = true;
         TransactionInWork.CloneFrom(_selectedTransaction);
         _isInTransactionSelectionProcess = false;
@@ -173,6 +183,21 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => ExchangeRate);
         DayResults = Balance.CalculateDayResults(SelectedTransaction.Timestamp);
         EndDayBalances = Balance.EndDayBalances(SelectedTransaction.Timestamp);
+
+        Transaction tr = null;
+        bool fl = false;
+        foreach (var transaction in Rows)
+        {
+          if (transaction.IsSelected)
+          {
+            if (tr != null) { Console.WriteLine(tr.ToDumpWithNames()); fl = true; }
+            tr = transaction;
+          }
+        }
+        if (fl)
+        {
+          Console.WriteLine(tr.ToDumpWithNames());
+        }
       }
     }
 
@@ -379,7 +404,16 @@ namespace Keeper.ViewModels
     {
       TransactionInWork = new Transaction();
       Rows = Db.Transactions;
+      foreach (var transaction in Db.Transactions)
+      {
+        if (transaction.IsSelected)
+        {
+          SelectedTransactionIndex = Rows.IndexOf(transaction);
+          return;
+        }
+      }
       SelectedTransactionIndex = Rows.Count - 1;
+      Rows.Last().IsSelected = true;
     }
 
     /// <summary>
