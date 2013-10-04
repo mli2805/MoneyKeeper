@@ -150,7 +150,7 @@
     </StackPanel>
     <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="4,2,4,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
               ItemsSource="{Binding Rows}" SelectedIndex="{Binding SelectedTransactionIndex, Mode=TwoWay}" 
-              SelectedItem="{Binding SelectedTransaction, Mode=OneWayToSource}"  >
+              SelectedItem="{Binding SelectedTransaction, Mode=OneWayToSource}" SelectionMode="Single"  >
       <i:Interaction.Behaviors>
         <Behaviors:ScrollToDisappearedDueDateChangeBehavior />
         <Behaviors:ScrollToBottomOnLoadBehavior />

@@ -137,8 +137,13 @@ namespace Keeper.DomainModel
         if (value.Equals(_isSelected)) return;
         _isSelected = value;
         NotifyOfPropertyChange(() => IsSelected);
-        if (_isSelected) IoC.Get<TransactionViewModel>().SelectedTransaction = this;
+//        if (_isSelected) IoC.Get<TransactionViewModel>().SelectedTransaction = this;
       }
+    }
+
+    public void SetIsSelectedWithoutNotification(bool value)
+    {
+      _isSelected = value;
     }
     #endregion
 

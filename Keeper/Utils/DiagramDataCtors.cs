@@ -28,6 +28,18 @@ namespace Keeper.Utils
     }
   }
 
+  public class DiagramPair
+  {
+    public DateTime CoorXdate;
+    public double CoorYdouble;
+
+    public DiagramPair(DateTime coorXdate, double coorYdouble)
+    {
+      CoorXdate = coorXdate;
+      CoorYdouble = coorYdouble;
+    }
+  }
+
   class DiagramDataCtors
   {
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
