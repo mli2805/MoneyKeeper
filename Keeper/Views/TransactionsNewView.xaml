@@ -98,7 +98,7 @@
               SelectedItem="{Binding SelectedTransaction}"  >
       <i:Interaction.Behaviors>
         <Behaviors:ScrollToDisappearedDueDateChangeBehavior />
-        <Behaviors:ScrollToBottomOnLoadBehavior />
+        <Behaviors:ScrollToPreviousExitPointOrBottomOnLoadBehavior />
         <Behaviors:ScrollToBottomOnAddBehavior />
         <Behaviors:SetFocusOnLoadBehavior />
       </i:Interaction.Behaviors>

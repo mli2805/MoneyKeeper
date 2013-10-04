@@ -163,11 +163,6 @@ namespace Keeper.ViewModels
         }
 
         if (_selectedTransaction != null) _selectedTransaction.SetIsSelectedWithoutNotification(false);
-//        foreach (var transaction in Rows)
-//        {
-//          transaction.SetIsSelectedWithoutNotification(false);
-//        }
-
 
         _selectedTransaction = value;
         _selectedTransaction.IsSelected = true;
@@ -633,7 +628,7 @@ namespace Keeper.ViewModels
     {
       var transactionForRemoval = SelectedTransaction;
 
-      if (SelectedTransactionIndex != Rows.Count - 1) SelectedTransactionIndex++; else SelectedTransactionIndex--;
+      if (SelectedTransactionIndex == 0) SelectedTransactionIndex++; else SelectedTransactionIndex--;
       Rows.Remove(transactionForRemoval);
 
       DayResults = Balance.CalculateDayResults(SelectedTransaction.Timestamp);

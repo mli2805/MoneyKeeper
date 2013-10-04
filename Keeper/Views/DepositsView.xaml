@@ -144,7 +144,7 @@
               ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
               cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" >
       <i:Interaction.Behaviors>
-        <Behaviors:ScrollToBottomOnLoadBehavior/>
+        <Behaviors:ScrollToPreviousExitPointOrBottomOnLoadBehavior/>
         <Behaviors:ScrollToBottomOnResizeBehavior/>
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
