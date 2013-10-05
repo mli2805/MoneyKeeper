@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -16,13 +17,14 @@ namespace Keeper.ViewModels
 {
   class MonthlyResultDiagramViewModel : Screen 
   {
-    private const double CanvasWidth = 1200;  // Не важно сколько конкретно - они займут всю ячейку грида
+//    private const double CanvasWidth = 1200;  // Не важно сколько конкретно - они займут всю ячейку грида
     private const double CanvasHeight = 900;
     private const double LeftMargin = 50;
     private const double RightMargin = 50;
     private const double TopMargin = 30;
     private const double BottomMargin = 30;
 
+    public double CanvasWidth { get; set; }
     public List<DiagramPair> AllDiagramData { get; set; }
     public List<DiagramPair> CurrentDiagramData { get; set; }
 
@@ -52,6 +54,7 @@ namespace Keeper.ViewModels
       AllDiagramData = (from pair in monthlyResults
                          select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
       CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
+      CanvasWidth = 1200;
       DrawCurrentDiagram();
       DiagramDataCtors.AverageMonthlyResults(monthlyResults);
     }
@@ -239,6 +242,8 @@ namespace Keeper.ViewModels
 
     private void Diagram()
     {
+      var content = new List<string>();
+
       _gap = _pointPerDate / 3;
       _pointPerBar = _pointPerDate - _gap;
 
@@ -257,6 +262,8 @@ namespace Keeper.ViewModels
                           _pointPerBar,
                           - CurrentDiagramData[i].CoorYdouble * _pointPerOneValue);
        
+        content.Add(String.Format("{0} столбец {1:0.000} - {2:0.000}",i, rect.Left, rect.Left+rect.Width));
+
         var rectangleGeometry = new RectangleGeometry(rect);
         if (CurrentDiagramData[i].CoorYdouble > 0)
           geometryGroupPositive.Children.Add(rectangleGeometry);
@@ -264,6 +271,9 @@ namespace Keeper.ViewModels
           geometryGroupNegative.Children.Add(rectangleGeometry);
 
       }
+
+      File.WriteAllLines(@"d:\chartbart.txt",content);
+
       var geometryDrawingPositive = new GeometryDrawing { Geometry = geometryGroupPositive, Pen = new Pen(Brushes.Blue, 1), Brush = Brushes.Blue};
       DrawingGroup.Children.Add(geometryDrawingPositive);
       var geometryDrawingNegative = new GeometryDrawing { Geometry = geometryGroupNegative, Pen = new Pen(Brushes.Red, 1), Brush = Brushes.Red};
@@ -330,10 +340,22 @@ namespace Keeper.ViewModels
 
     #region преобразует точки к данным диаграммы и запускает перерисовку
     // привязан к типу диаграммы (в данном случае - столбцовая, время - значение)
-
-    public int Point2Number(Point point)
+    public enum WhichDiagramBar
     {
-      return (int) ((point.X - LeftMargin - _shift / 2 - _gap / 2) / (_pointPerBar + _gap) + 1);
+      OnTheLeftOfCursor,
+      OnTheRightOfCursor
+    }
+
+    public int Point2Number(Point point, WhichDiagramBar flag)
+    {
+      double margin = LeftMargin + _shift/2 + _gap/2;
+      double barWithGap = _pointPerBar + _gap;
+      double d = point.X - margin; if (d < 0) return 0;
+      var count = (int)Math.Floor(d / barWithGap); 
+      var rest = d - count*barWithGap;
+      if (rest < _pointPerBar) return count; 
+      if (flag == WhichDiagramBar.OnTheLeftOfCursor) return count; 
+      return count+1;
     }
 
     public void ZoomDiagram(ChangeDiagramDataMode param, int horizontal, int vertical)
@@ -346,13 +368,15 @@ namespace Keeper.ViewModels
       if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
 
+
+
     public void ZoomRectDiagram(Point leftTop, Point rightBottom)
     {
-      var numberFrom = Point2Number(leftTop);
-      var numberTo = Point2Number(rightBottom);
+      var numberFrom = Point2Number(leftTop,WhichDiagramBar.OnTheRightOfCursor);
+      var numberTo = Point2Number(rightBottom,WhichDiagramBar.OnTheLeftOfCursor);
       if (numberTo - numberFrom < 3) return;
       var nuevoCurrentDiagramData = new List<DiagramPair>();
-      for (int i = numberFrom; i < numberTo; i++)
+      for (int i = numberFrom; i <= numberTo; i++)
       {
         nuevoCurrentDiagramData.Add(CurrentDiagramData[i]);
       }
@@ -360,7 +384,7 @@ namespace Keeper.ViewModels
       DrawCurrentDiagram();
     }
 
-    public void ZoomAllDiagram()
+    public void ShowAllDiagram()
     {
       CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
       DrawCurrentDiagram();
@@ -376,6 +400,8 @@ namespace Keeper.ViewModels
     public void MouseRightButtonDown(MouseEventArgs args, IInputElement elem)
     {
       _mouseRightButtonDownPoint = args.GetPosition(elem);
+
+      Console.WriteLine(CanvasWidth);
     }
 
     public void MouseRightButtonUp(MouseEventArgs args, IInputElement elem)
@@ -400,7 +426,7 @@ namespace Keeper.ViewModels
       if (pt.X < _mouseLeftButtonDownPoint.X) { var temp = pt.X; pt.X = _mouseLeftButtonDownPoint.X;_mouseLeftButtonDownPoint.X = temp; }
       if (pt.Y < _mouseLeftButtonDownPoint.Y) { var temp = pt.Y; pt.Y = _mouseLeftButtonDownPoint.Y;_mouseLeftButtonDownPoint.Y = temp; }
 
-      if (pt.X - _mouseLeftButtonDownPoint.X < 4 || pt.Y - _mouseLeftButtonDownPoint.Y < 4) ZoomAllDiagram();
+      if (pt.X - _mouseLeftButtonDownPoint.X < 4 || pt.Y - _mouseLeftButtonDownPoint.Y < 4) ShowAllDiagram();
       else
         ZoomRectDiagram(_mouseLeftButtonDownPoint,pt);
     }
