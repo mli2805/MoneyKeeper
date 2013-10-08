@@ -26,7 +26,8 @@
                                [Event MouseLeftButtonDown] = [Action MouseLeftButtonDown($eventArgs, $source)];
                                [Event MouseLeftButtonUp] = [Action MouseLeftButtonUp($eventArgs, $source)];
                                [Event MouseWheel] = [Action MouseWheel($eventArgs)];
-                               [Event MouseDoubleClick] = [Action MouseDoubleClick()]">
+                               [Event MouseDoubleClick] = [Action MouseDoubleClick()]"
+           >
       <Image.ContextMenu>
         <ContextMenu>
         <MenuItem Header="По месяцам" cal:Message.Attach="GroupByMonthes" BorderBrush="{x:Null}" Background="White" />

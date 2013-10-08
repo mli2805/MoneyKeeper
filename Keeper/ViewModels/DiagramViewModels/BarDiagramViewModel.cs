@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 
-namespace Keeper.ViewModels.DiagramjViewModels
+namespace Keeper.ViewModels
 {
-  class Class1
+  class BarDiagramViewModel : Screen
   {
+    public DateTime ModelProperty { get; set; }
+
   }
 }

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using Keeper.Views.DiagramViews;
 
 namespace Keeper.Views
 {
