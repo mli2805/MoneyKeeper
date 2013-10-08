@@ -624,11 +624,8 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
-            DbSoapSerialization();
-            DbSoapDeserialization();
-
-            DbXmlSerialization();
-            DbXmlDeserialization();
+      var barDiagramViewModel = new BarDiagramViewModel();
+      WindowManager.ShowDialog(barDiagramViewModel);
     }
 
 

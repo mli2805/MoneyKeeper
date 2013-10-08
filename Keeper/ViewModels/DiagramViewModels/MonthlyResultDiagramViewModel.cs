@@ -384,8 +384,6 @@ ExtractDataBetweenLimits();
       if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
 
-
-
     public void ZoomRectDiagram(Point leftTop, Point rightBottom)
     {
       var numberFrom = Point2Number(leftTop, WhichDiagramBar.OnTheRightOfCursor);
@@ -481,6 +479,40 @@ ExtractDataBetweenLimits();
 
     public void GroupByYears()
     {
+      DefineYearsLimits();
+      ExtractDataBetweenLimitsWithYearsGrouping();
+      DrawCurrentDiagram();
+    }
+
+    private void ExtractDataBetweenLimitsWithYearsGrouping()
+    {
+      CurrentDiagramData.Clear();
+      var startYearDate = new DateTime(0);
+      double yearValue = 0;
+      foreach (var diagramPair in AllDiagramData)
+      {
+        if (diagramPair.CoorXdate < _minDate || diagramPair.CoorXdate > _maxDate) continue;
+
+        if (startYearDate.Year != diagramPair.CoorXdate.Year)
+        {
+          if (startYearDate.Year != 1)
+          {
+            CurrentDiagramData.Add(new DiagramPair(startYearDate, yearValue));
+          }
+
+          startYearDate = diagramPair.CoorXdate;
+          yearValue = diagramPair.CoorYdouble;
+        }
+        else
+        {
+          yearValue += diagramPair.CoorYdouble;
+        }
+      }
+      CurrentDiagramData.Add(new DiagramPair(startYearDate, yearValue));
+    }
+
+    private void DefineYearsLimits()
+    {
       const int bottomLimit = 2002;
       var topLimit = DateTime.Today.Year;
 
@@ -503,37 +535,8 @@ ExtractDataBetweenLimits();
 
       _minDate = new DateTime(startYear, 1, 1);
       _maxDate = new DateTime(endYear, 12, 31);
-
-      CurrentDiagramData.Clear();
-      var startYearDate = new DateTime(0);
-      double yearValue = 0;
-      foreach (var diagramPair in AllDiagramData)
-      {
-        if (diagramPair.CoorXdate < _minDate || diagramPair.CoorXdate > _maxDate) continue;
-
-        if (startYearDate.Year != diagramPair.CoorXdate.Year)
-        {
-          if (startYearDate.Year != 1)
-          {
-            CurrentDiagramData.Add(new DiagramPair(startYearDate,yearValue));
-              
-          }
-
-          startYearDate = diagramPair.CoorXdate;
-          yearValue = diagramPair.CoorYdouble;
-        }
-        else
-        {
-          yearValue += diagramPair.CoorYdouble;
-        }
-      }
-      CurrentDiagramData.Add(new DiagramPair(startYearDate, yearValue));
-
-      DrawCurrentDiagram();
     }
 
-
-
-  #endregion
+    #endregion
   }
 }
