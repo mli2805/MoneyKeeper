@@ -21,15 +21,18 @@
       <ColumnDefinition Width="30"/>
     </Grid.ColumnDefinitions>
     <Image Grid.Row="1" Grid.Column="1" Margin="7" Source="{Binding ImageSource}" Stretch="Fill" 
-           Width="{Binding CanvasWidth, Mode=OneWayToSource}"
-      
            cal:Message.Attach="[Event MouseRightButtonDown] = [Action MouseRightButtonDown($eventArgs, $source)]; 
                                [Event MouseRightButtonUp] = [Action MouseRightButtonUp($eventArgs, $source)];
                                [Event MouseLeftButtonDown] = [Action MouseLeftButtonDown($eventArgs, $source)];
                                [Event MouseLeftButtonUp] = [Action MouseLeftButtonUp($eventArgs, $source)];
                                [Event MouseWheel] = [Action MouseWheel($eventArgs)];
-                               [Event MouseDoubleClick] = [Action MouseDoubleClick()];
-           [Event KeyDown] = [Action KeyDown($eventArgs)]"
-            />
+                               [Event MouseDoubleClick] = [Action MouseDoubleClick()]">
+      <Image.ContextMenu>
+        <ContextMenu>
+        <MenuItem Header="По месяцам" cal:Message.Attach="GroupByMonthes" BorderBrush="{x:Null}" Background="White" />
+        <MenuItem Header="По годам" cal:Message.Attach="GroupByYears" BorderBrush="{x:Null}" Background="White" />
+        </ContextMenu>
+      </Image.ContextMenu>
+    </Image>
   </Grid>
 </Window>
