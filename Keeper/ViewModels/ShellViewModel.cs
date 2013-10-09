@@ -624,8 +624,6 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
-      var barDiagramViewModel = new BarDiagramViewModel();
-      WindowManager.ShowDialog(barDiagramViewModel);
     }
 
 
