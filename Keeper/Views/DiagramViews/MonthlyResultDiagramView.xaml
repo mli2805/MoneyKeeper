@@ -1,39 +1,8 @@
 ﻿<Window x:Class="Keeper.Views.MonthlyResultDiagramView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cal="http://www.caliburnproject.org"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
-        Title="MonthlyResultDiagramView" WindowState="Maximized">
-  <i:Interaction.Triggers>
-    <ei:KeyTrigger Modifiers="Control" Key="A">
-      <cal:ActionMessage MethodName="ShowAllDiagram"/>
-    </ei:KeyTrigger>
-  </i:Interaction.Triggers>
-  <Grid Background="Azure">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="30"/>
-      <RowDefinition/>
-      <RowDefinition Height="30"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="30"/>
-      <ColumnDefinition/>
-      <ColumnDefinition Width="30"/>
-    </Grid.ColumnDefinitions>
-    <Image Grid.Row="1" Grid.Column="1" Margin="7" Source="{Binding ImageSource}" Stretch="Fill" 
-           cal:Message.Attach="[Event MouseRightButtonDown] = [Action MouseRightButtonDown($eventArgs, $source)]; 
-                               [Event MouseRightButtonUp] = [Action MouseRightButtonUp($eventArgs, $source)];
-                               [Event MouseLeftButtonDown] = [Action MouseLeftButtonDown($eventArgs, $source)];
-                               [Event MouseLeftButtonUp] = [Action MouseLeftButtonUp($eventArgs, $source)];
-                               [Event MouseWheel] = [Action MouseWheel($eventArgs)];
-                               [Event MouseDoubleClick] = [Action MouseDoubleClick()]"
-           >
-      <Image.ContextMenu>
-        <ContextMenu>
-        <MenuItem Header="По месяцам" cal:Message.Attach="GroupByMonthes" BorderBrush="{x:Null}" Background="White" />
-        <MenuItem Header="По годам" cal:Message.Attach="GroupByYears" BorderBrush="{x:Null}" Background="White" />
-        </ContextMenu>
-      </Image.ContextMenu>
-    </Image>
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="clr-namespace:Keeper.Controls"
+        Title="BarDiagramView" WindowState="Maximized">
+  <Grid>
+    <Controls:BarDiagramControl AllDiagramData="{Binding ModelProperty}" Focusable="True" />
   </Grid>
 </Window>

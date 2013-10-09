@@ -82,6 +82,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="Controls\BarDiagramControl.xaml.cs">
+      <DependentUpon>BarDiagramControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
@@ -97,22 +100,15 @@
     <Compile Include="Utils\DiagramDataChanging.cs" />
     <Compile Include="Utils\DiagramDataCtors.cs" />
     <Compile Include="Utils\MonthAnalisysCtor.cs" />
-    <Compile Include="ViewModels\DiagramViewModels\BarDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
     <Compile Include="ViewModels\TransactionsNewViewModel.cs" />
-    <Compile Include="Views\DiagramViews\BarDiagramView.xaml.cs">
-      <DependentUpon>BarDiagramView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DiagramViews\MonthlyResultDiagramView.xaml.cs">
       <DependentUpon>MonthlyResultDiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DiagramViews\RatesDiagramView.xaml.cs">
       <DependentUpon>RatesDiagramView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DiagramViews\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
@@ -216,6 +212,10 @@
     <Resource Include="Resources\keeper.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\BarDiagramControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddAndEditAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -232,15 +232,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DiagramViews\BarDiagramView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\DiagramViews\MonthlyResultDiagramView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DiagramViews\UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
