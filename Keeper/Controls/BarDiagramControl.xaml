@@ -5,10 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              >
-    <Grid>
-    <Image Name="DiagramImage" MouseLeftButtonDown="OnMouseLeftButtonDown" MouseLeftButtonUp="OnMouseLeftButtonUp" 
-                               MouseRightButtonDown="OnMouseRightButtonDown" MouseRightButtonUp="OnMouseRightButtonUp"
-                               MouseWheel="OnMouseWheel" KeyDown="OnKeyDown" >
+    <Grid Background="Azure">
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="30"/>
+      
+    </Grid.RowDefinitions>
+      <Image Name="DiagramImage" Stretch="Fill" 
+           MouseLeftButtonDown="OnMouseLeftButtonDown" MouseLeftButtonUp="OnMouseLeftButtonUp" 
+           MouseRightButtonDown="OnMouseRightButtonDown" MouseRightButtonUp="OnMouseRightButtonUp"
+           MouseWheel="OnMouseWheel" KeyDown="OnKeyDown" MouseMove="OnMouseMove" >
       <Image.ContextMenu>
         <ContextMenu>
           <MenuItem Header="По месяцам" BorderBrush="{x:Null}" Background="White" Click="GroupByMonthes" />
@@ -16,5 +22,6 @@
         </ContextMenu>
       </Image.ContextMenu>
     </Image>
-    </Grid>
+    <TextBlock Name="StatusBar" Grid.Row="1"/>
+  </Grid>
 </UserControl>
