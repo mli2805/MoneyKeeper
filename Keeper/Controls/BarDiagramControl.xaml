@@ -9,13 +9,13 @@
     <Grid.RowDefinitions>
       <RowDefinition/>
       <RowDefinition Height="30"/>
-      
     </Grid.RowDefinitions>
-      <Image Name="DiagramImage" Stretch="Fill" 
+      <Image Name="DiagramImage" Stretch="Fill"  
            MouseLeftButtonDown="OnMouseLeftButtonDown" MouseLeftButtonUp="OnMouseLeftButtonUp" 
            MouseRightButtonDown="OnMouseRightButtonDown" MouseRightButtonUp="OnMouseRightButtonUp"
            MouseWheel="OnMouseWheel" KeyDown="OnKeyDown" MouseMove="OnMouseMove" >
-      <Image.ContextMenu>
+    
+        <Image.ContextMenu>
         <ContextMenu>
           <MenuItem Header="По месяцам" BorderBrush="{x:Null}" Background="White" Click="GroupByMonthes" />
           <MenuItem Header="По годам" BorderBrush="{x:Null}" Background="White" Click="GroupByYears" />
