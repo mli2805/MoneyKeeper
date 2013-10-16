@@ -30,10 +30,10 @@ namespace Keeper.Controls
     public List<DiagramPair> CurrentDiagramData { get; set; }
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue;
-    private double LowestScaleValue {get {return FromDivision * AccurateValuesPerDivision;}}
+    private double LowestScaleValue {get {return _fromDivision * _accurateValuesPerDivision;}}
 
-    public double ImageWidth { get { return this.IsLoaded ? ActualWidth : SystemParameters.FullPrimaryScreenWidth; } }
-    public double ImageHeight { get { return this.IsLoaded ? (ActualHeight - StatusBar.ActualHeight) : SystemParameters.FullPrimaryScreenHeight; } }
+    public double ImageWidth { get { return IsLoaded ? ActualWidth : SystemParameters.FullPrimaryScreenWidth; } }
+    public double ImageHeight { get { return IsLoaded ? (ActualHeight - StatusBar.ActualHeight) : SystemParameters.FullPrimaryScreenHeight; } }
 
     private double LeftMargin { get { return ImageWidth*0.03; }}
     private double RightMargin { get { return ImageWidth * 0.03; }}
@@ -50,31 +50,19 @@ namespace Keeper.Controls
     private double PointPerBar { get { return PointPerDate - Gap; } }
     private double Shift { get { return ImageWidth * 0.002; } } // от левой оси до первого столбика
 
-    const double MinPointBetweenDivision = 35;
-    private double PointPerOneValueBefore { get { return _maxValue.Equals(_minValue) ? 0 : (ImageHeight - TopMargin - BottomMargin) / (_maxValue - _minValue); } }
-    private double ValuesPerDivision { get { return (MinPointBetweenDivision > PointPerOneValueBefore) ?
-      Math.Ceiling(MinPointBetweenDivision / PointPerOneValueBefore) : MinPointBetweenDivision / PointPerOneValueBefore; }}
-    private double Zeros { get { return Math.Floor(Math.Log10(ValuesPerDivision));}}
-    private double AccurateValuesPerDivision { get { return Math.Ceiling(ValuesPerDivision/Math.Pow(10, Zeros))*Math.Pow(10, Zeros); }}
-    private int FromDivision {get { return Convert.ToInt32(Math.Floor(_minValue / AccurateValuesPerDivision));}} 
-    private int Divisions
-    {
-      get
-      {
-        var temp = Convert.ToInt32(Math.Ceiling((_maxValue - _minValue) / AccurateValuesPerDivision));
-        if ((FromDivision + temp) * AccurateValuesPerDivision < _maxValue) temp++;
-        return temp;
-      }
-    }
-    private double PointPerScaleStep { get {return (ImageHeight - TopMargin - BottomMargin) / Divisions; }}
+//---------- vertical axes
+    private double _accurateValuesPerDivision;
+    private int _fromDivision;
+    private int _divisions;
+    private double PointPerScaleStep { get { return  (ImageHeight - TopMargin - BottomMargin) / _divisions;}}
 
-    private double PointPerOneValueAfter { get { return (ImageHeight - TopMargin - BottomMargin) / (Divisions * AccurateValuesPerDivision); } }
+    private double PointPerOneValueAfter { get { return (ImageHeight - TopMargin - BottomMargin) / (_divisions * _accurateValuesPerDivision); } }
     private double Y0
     {
       get
       {
         var temp = ImageHeight - BottomMargin;
-        if (FromDivision < 0) temp += PointPerScaleStep * FromDivision;
+        if (_fromDivision < 0) temp += PointPerScaleStep * _fromDivision;
         return temp;
       }
     }
@@ -223,9 +211,22 @@ namespace Keeper.Controls
 
     private void MarkersForVerticalAxes(Dock flag)
     {
+      const double minPointBetweenDivision = 35;
+
+      double pointPerOneValueBefore = _maxValue.Equals(_minValue) ? 0 : (ImageHeight - TopMargin - BottomMargin) / (_maxValue - _minValue); 
+      double valuesPerDivision = (minPointBetweenDivision > pointPerOneValueBefore) ?
+                  Math.Ceiling(minPointBetweenDivision / pointPerOneValueBefore) : minPointBetweenDivision / pointPerOneValueBefore; 
+      double zeros = Math.Floor(Math.Log10(valuesPerDivision));
+      _accurateValuesPerDivision = Math.Ceiling(valuesPerDivision/Math.Pow(10, zeros))*Math.Pow(10, zeros);
+      _fromDivision = Convert.ToInt32(Math.Floor(_minValue / _accurateValuesPerDivision));
+
+        var temp = Convert.ToInt32(Math.Ceiling((_maxValue - _minValue) / _accurateValuesPerDivision));
+        if ((_fromDivision + temp) * _accurateValuesPerDivision < _maxValue) temp++;
+      _divisions = temp;
+
       var geometryGroupDashesAndMarks = new GeometryGroup();
       var geometryGroupGridlines = new GeometryGroup();
-      for (var i = 0; i <= Divisions; i++)
+      for (var i = 0; i <= _divisions; i++)
       {
         var dashX = flag == Dock.Left ? LeftMargin : ImageWidth - LeftMargin;
         var dash = new LineGeometry(new Point(dashX - 5, ImageHeight - BottomMargin - PointPerScaleStep * i),
@@ -235,12 +236,12 @@ namespace Keeper.Controls
         var gridline = new LineGeometry(new Point(LeftMargin + 5, ImageHeight - BottomMargin - PointPerScaleStep * i),
                                         new Point(ImageWidth - LeftMargin - 5,
                                                   ImageHeight - BottomMargin - PointPerScaleStep * i));
-        if (i + FromDivision == 0)
+        if (i + _fromDivision == 0)
           geometryGroupDashesAndMarks.Children.Add(gridline);
-        else if (i != 0 && i != Divisions) geometryGroupGridlines.Children.Add(gridline);
+        else if (i != 0 && i != _divisions) geometryGroupGridlines.Children.Add(gridline);
 
         var markX = flag == Dock.Left ? LeftMargin - 40 : ImageWidth - RightMargin + 15;
-        var mark = String.Format("{0} ", (i + FromDivision) * AccurateValuesPerDivision);
+        var mark = String.Format("{0} ", (i + _fromDivision) * _accurateValuesPerDivision);
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry =
