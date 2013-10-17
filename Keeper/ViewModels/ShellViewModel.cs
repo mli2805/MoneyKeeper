@@ -255,8 +255,8 @@ namespace Keeper.ViewModels
           foreach (var depositViewModel in LaunchedViewModels)
             if (depositViewModel.IsActive) depositViewModel.TryClose();
 
-        BinaryCrypto.DbCryptoSerialization();
-        DbTxtSave.MakeDbBackupCopy();
+        BinaryCrypto.DbCryptoSerialization(); // сериализует БД в dbx файл
+        DbTxtSave.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
       }
       callback(true);
     }
@@ -405,19 +405,6 @@ namespace Keeper.ViewModels
       Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
       Balance.CountBalances(SelectedAccount, period, BalanceList);
       BinaryCrypto.DbCryptoSerialization();
-      Message = arcMessage;
-    }
-
-    public void ShowTransactionsNewForm()
-    {
-      String arcMessage = Message;
-      Message = "Input operations";
-      UsefulLists.FillLists();
-      WindowManager.ShowDialog(new TransactionsNewViewModel());
-      // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
-      Balance.CountBalances(SelectedAccount, period, BalanceList);
-//      BinaryCrypto.DbCryptoSerialization();
       Message = arcMessage;
     }
 

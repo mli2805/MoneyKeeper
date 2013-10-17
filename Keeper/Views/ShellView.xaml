@@ -18,9 +18,6 @@
     <ei:KeyTrigger Key="O">
       <cal:ActionMessage MethodName="ShowTransactionsForm"/>
     </ei:KeyTrigger>
-    <ei:KeyTrigger Key="Q">
-      <cal:ActionMessage MethodName="ShowTransactionsNewForm"/>
-    </ei:KeyTrigger>
     <ei:KeyTrigger Key="C">
       <cal:ActionMessage MethodName="ShowCurrencyRatesForm"/>
     </ei:KeyTrigger>
@@ -56,19 +53,75 @@
     <Menu Name="MainMenu" Margin="10,3,10,6" Height="20"  Grid.ColumnSpan="3" >
       
       <MenuItem Header="ФАЙЛЫ" >
-        <MenuItem x:Name="SaveDatabase" Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД" ToolTip="Binary Crypto Serialization"/>
-        <MenuItem x:Name="LoadDatabase" Header="ЗАГРУЗИТЬ ПРЕДЫДУЩЕЕ СОСТОЯНИЕ" ToolTip="Binary Crypto Deserialization"/>
+        <MenuItem x:Name="SaveDatabase" Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Сохраняет текущее состояние БД"/>
+                <TextBlock Text="в штатный dbx файл (лежит в dropbox\keeper)"/>
+                <TextBlock Text="Данная операция происходит автоматически"/>
+                <TextBlock Text="при выходе из ввода операций и из программы"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <MenuItem x:Name="LoadDatabase" Header="ЗАГРУЗИТЬ ПРЕДЫДУЩЕЕ СОСТОЯНИЕ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Отменит изменения данных, произведенные с момента"/>
+                <TextBlock Text=" входа в программу или после ввода операций,"/>
+                <TextBlock Text="например редактирование счетов, ассоциаций, курсов"/>
+                <TextBlock Text=""/>
+                <TextBlock Text="При необходимости восстановления на определенную дату"/>
+                <TextBlock Text=" надо использовать 'ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ'"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
         <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ БД" ToolTip="(ну вот на фига!)"/>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
-        <MenuItem x:Name="MakeDatabaseBackup" Header="СОЗДАТЬ РЕЗЕРВНУЮ КОПИЮ" ToolTip="Txt in zip with password (dropbox\keeper)"/>
-        <MenuItem x:Name="ExportDatabaseToTxt" Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ" ToolTip="c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
-        <MenuItem x:Name="ImportDatabaseFromTxt" Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ"  ToolTip="c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+        <MenuItem x:Name="MakeDatabaseBackup" Header="СОЗДАТЬ РЕЗЕРВНУЮ КОПИЮ" ToolTipService.ShowDuration="20000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Создается копия БД на данный момент" />
+                <TextBlock Text="в виде набора из 4 txt файлов"/>
+                <TextBlock Text="запакованных в шифрованный zip "/>
+                <TextBlock Text="(лежит в dropbox\keeper)" />
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <MenuItem x:Name="ExportDatabaseToTxt" Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Выгружает копию БД на данный момент"/>
+                <TextBlock Text="в виде набора из 4 txt файлов"/>
+                <TextBlock Text="Лежит в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+                <TextBlock Text="При выходе из программы каталог будет очищен."/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <MenuItem x:Name="ImportDatabaseFromTxt" Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Загружает БД из набора из 4 txt файлов,"/>
+                <TextBlock Text="лежащих в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+                <TextBlock Text="Файлы вручную достать из шифрованного zip"/>
+                <TextBlock Text="(лежат в dropbox\keeper)"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem x:Name="ProgramExit" Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye"/>
       </MenuItem>
       <MenuItem Header="ФОРМЫ">
         <MenuItem x:Name="ShowTransactionsForm" Header="O ОПЕРАЦИИ"/>
-        <MenuItem x:Name="ShowTransactionsNewForm" Header="Q ОПЕРАЦИИ НОВЫЕ "/>
         <MenuItem x:Name="ShowMonthAnalisysForm" Header="A АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
         <MenuItem x:Name="ShowDepositsForm" Header="D ДЕПОЗИТЫ"/>
         <MenuItem x:Name="ShowCurrencyRatesForm" Header="C КУРСЫ ВАЛЮТ"/>
