@@ -386,9 +386,13 @@ namespace Keeper.ViewModels
       InitVariablesToShowAccounts();
     }
 
-    public void ProgramExit()
+    public void RemoveExtraBackups()
     {
-      TryClose();
+      String arcMessage = Message;
+      Message = "Удаление идентичных резервных копий";
+      DbBackup.RemoveIdenticalBackups();
+      Message = arcMessage;
+      StatusBarItem0 = "Готово";
     }
 
     #endregion
@@ -431,6 +435,11 @@ namespace Keeper.ViewModels
       Message = "TODO List";
       WindowManager.ShowDialog(new ToDoViewModel());
       Message = arcMessage;
+    }
+
+    public void ProgramExit()
+    {
+      TryClose();
     }
 
     public void ShowMonthAnalisysForm()

@@ -118,14 +118,27 @@
           </MenuItem.ToolTip>
         </MenuItem>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
-        <MenuItem x:Name="ProgramExit" Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye"/>
+        <MenuItem x:Name="RemoveExtraBackups" Header="УДАЛИТЬ СОВПАДАЮЩИЕ РЕЗЕРВНЫЕ КОПИИ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Удалит лишние резервные копии ( шифрованные zip'ы )"/>
+                <TextBlock Text="для которых есть более поздние такого же размера"/>
+                <TextBlock Text=""/>
+                <TextBlock Text="возникающие при каждом выходе из программы"/>
+                <TextBlock Text="при работе с кодом без изменения данных"/>
+                <TextBlock Text="(лежат в dropbox\keeper)"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
       </MenuItem>
       <MenuItem Header="ФОРМЫ">
-        <MenuItem x:Name="ShowTransactionsForm" Header="O ОПЕРАЦИИ"/>
-        <MenuItem x:Name="ShowMonthAnalisysForm" Header="A АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
-        <MenuItem x:Name="ShowDepositsForm" Header="D ДЕПОЗИТЫ"/>
-        <MenuItem x:Name="ShowCurrencyRatesForm" Header="C КУРСЫ ВАЛЮТ"/>
-        <MenuItem x:Name="ShowArticlesAssociationsForm" Header=" АССОЦИАЦИИ КАТЕГОРИЙ"/>
+        <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
+        <MenuItem x:Name="ShowMonthAnalisysForm" Header="АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
+        <MenuItem x:Name="ShowDepositsForm" Header="ДЕПОЗИТЫ"/>
+        <MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
+        <MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
       </MenuItem>
       <MenuItem Header="ДИАГРАММЫ">
         <MenuItem x:Name="ShowDailyBalancesDiagram" Header="Ежедневные остатки"/>
@@ -138,8 +151,9 @@
       </MenuItem>
       <MenuItem Header="СПРАВКА">
         <MenuItem x:Name="ShowToDoForm" Header="СДЕЛАТЬ" />
-        <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem x:Name="AboutForm" Header="О ПРОГРАММЕ"/>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="ProgramExit" Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye"/>
       </MenuItem>
     </Menu>
     <TabControl Margin="0,0,0,5" Grid.Row="1" SelectedIndex="{Binding OpenedAccountPage, Mode=TwoWay}">
