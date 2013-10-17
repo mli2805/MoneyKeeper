@@ -164,7 +164,36 @@ namespace Keeper.DomainModel
 
     public int CompareTo(object obj)
     {
-      return System.String.Compare(Name, ((Account) obj).Name, System.StringComparison.Ordinal);
+      return String.Compare(Name, ((Account) obj).Name, StringComparison.Ordinal);
+    }
+
+    public DateTime GetEndDepositDate(string depositName)
+    {
+      var s = depositName;
+      var p = s.IndexOf('/'); if (p == 0) return new DateTime(0);
+      var n = s.IndexOf(' ', p); if (n == 0) return new DateTime(0);
+      p = s.IndexOf('/', n); if (p == 0) return new DateTime(0);
+      n = s.IndexOf(' ', p); if (n == 0) return new DateTime(0);
+
+      DateTime result;
+      try
+      {
+        result = Convert.ToDateTime(s.Substring(p - 2, n - p + 2));
+      }
+      catch (Exception)
+      {
+        
+        result = new DateTime(0);
+      }
+      return result;
+    }
+
+    public int CompareOnEndDepositDateBasis(Account other)
+    {
+      if (Parent == null || Parent.Name != "Депозиты") return 0;
+      if (other == null || other.Parent.Name != "Депозиты") return 0;
+
+      return DateTime.Compare(GetEndDepositDate(Name), GetEndDepositDate(other.Name));
     }
   }
 }

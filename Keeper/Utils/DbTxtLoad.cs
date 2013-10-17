@@ -46,7 +46,7 @@ namespace Keeper.Utils
       if (Db.Accounts == null)
       {
         Result.Code = 5;
-        Result.Explanation = "File '" + Path.Combine(Settings.Default.SavePath, "Accounts.txt") + "' not found";
+        Result.Explanation = "File '" + Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt") + "' not found";
         return Result;
       }
       Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
@@ -84,7 +84,7 @@ namespace Keeper.Utils
     public static ObservableCollection<T> LoadFrom<T>(string filename, Func<string, T> parseLine)
     {
       var content =
-        File.ReadAllLines(Path.Combine(Settings.Default.SavePath, filename), Encoding1251).Where(
+        File.ReadAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, filename), Encoding1251).Where(
           s => !string.IsNullOrWhiteSpace(s));
       var wrongContent = new List<string>();
       var result = new ObservableCollection<T>();
@@ -111,7 +111,7 @@ namespace Keeper.Utils
     #region // Accounts
     public static ObservableCollection<Account> LoadAccounts()
     {
-      var filename = Path.Combine(Settings.Default.SavePath, "Accounts.txt");
+      var filename = Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt");
       if (!File.Exists(filename)) return null;
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();

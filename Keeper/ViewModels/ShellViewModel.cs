@@ -382,8 +382,9 @@ namespace Keeper.ViewModels
 
     public void ImportDatabaseFromTxt()
     {
-      DbTxtLoad.LoadDbFromTxt();
-      InitVariablesToShowAccounts();
+      var result = DbTxtLoad.LoadDbFromTxt();
+      if (result.Code != 0) MessageBox.Show(result.Explanation);
+      else InitVariablesToShowAccounts();
     }
 
     public void RemoveExtraBackups()
