@@ -103,7 +103,6 @@
     <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsNewViewModel.cs" />
     <Compile Include="Views\DiagramViews\MonthlyResultDiagramView.xaml.cs">
       <DependentUpon>MonthlyResultDiagramView.xaml</DependentUpon>
     </Compile>
@@ -112,9 +111,6 @@
     </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TransactionsNewView.xaml.cs">
-      <DependentUpon>TransactionsNewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
     <Compile Include="Utils\DbClear.cs" />
@@ -261,10 +257,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ToDoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TransactionsNewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
