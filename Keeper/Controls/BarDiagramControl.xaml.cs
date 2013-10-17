@@ -334,10 +334,29 @@ namespace Keeper.Controls
           _maxDate = _maxDate.AddDays(shiftDateRange);
           break;
         case ChangeDiagramDataMode.Move:
-          var percent = (int)(horizontal * 100 / ImageWidth);
-          shiftDateRange = (_maxDate - _minDate).Days * percent / 100;
-          _minDate = _minDate.AddDays(-shiftDateRange);
-          _maxDate = _maxDate.AddDays(-shiftDateRange);
+          var deltaMonthes = (int)Math.Round(Math.Abs(horizontal/PointPerDate));
+          if (horizontal < 0) // двигаем влево
+          {
+            var newMaxDate = _maxDate.AddMonths(deltaMonthes); 
+            if (newMaxDate > AllDiagramData.Max(p => p.CoorXdate))
+            {
+              newMaxDate = AllDiagramData.Max(p => p.CoorXdate);
+              deltaMonthes = (int)Math.Round((newMaxDate - _maxDate).TotalDays / 30);
+            }
+            _maxDate = newMaxDate;
+            _minDate = _minDate.AddMonths(deltaMonthes);
+          }
+          else // вправо
+          {
+            var newMinDate = _minDate.AddMonths(-deltaMonthes); 
+            if (newMinDate < AllDiagramData.Min(p => p.CoorXdate))
+            {
+              newMinDate = AllDiagramData.Min(p => p.CoorXdate);
+              deltaMonthes = (int)Math.Round((_minDate - newMinDate).TotalDays / 30);
+            }
+            _minDate = newMinDate;
+            _maxDate = _maxDate.AddMonths(-deltaMonthes);
+          }
           break;
         case ChangeDiagramDataMode.ZoomInRect:
 
