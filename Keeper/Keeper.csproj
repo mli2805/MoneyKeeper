@@ -97,6 +97,7 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Balance.cs" />
     <Compile Include="Utils\BinaryCrypto.cs" />
+    <Compile Include="Utils\DbBackup.cs" />
     <Compile Include="Utils\DiagramDataChanging.cs" />
     <Compile Include="Utils\DiagramDataCtors.cs" />
     <Compile Include="Utils\MonthAnalisysCtor.cs" />
