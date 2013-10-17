@@ -10,6 +10,8 @@
       <RowDefinition/>
       <RowDefinition Height="30"/>
     </Grid.RowDefinitions>
+    <Popup Name="myPopup">
+      <TextBlock>Popup text</TextBlock></Popup>
       <Image Name="DiagramImage" Stretch="Fill"  
            MouseLeftButtonDown="OnMouseLeftButtonDown" MouseLeftButtonUp="OnMouseLeftButtonUp" 
            MouseRightButtonDown="OnMouseRightButtonDown" MouseRightButtonUp="OnMouseRightButtonUp"
