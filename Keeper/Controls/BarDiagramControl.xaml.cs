@@ -595,13 +595,23 @@ namespace Keeper.Controls
       var bar = PointToBar(pt, out barLeft, out isOverBar);
 
       if (isOverBar)
-           StatusBar.Text = string.Format("  {0}:{1}   {2:MMMM yyyy} {3:0}$",pt.X,pt.Y, CurrentDiagramData[bar].CoorXdate, CurrentDiagramData[bar].CoorYdouble);
-      else if (bar != -1)
-           StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer missed {2}th bar by height",pt.X,pt.Y, bar+1);
-      else
-        StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer is to the right of {2}th bar", pt.X, pt.Y, barLeft+1);
+      {
+        BarHint.IsOpen = true;
+        BarHint.HorizontalOffset = pt.X;
+        BarHint.VerticalOffset = pt.Y;
 
+        BarHintText.Background = CurrentDiagramData[bar].CoorYdouble > 0 ? Brushes.Azure : Brushes.LavenderBlush;
+        BarHintText.Text = string.Format("  {0:MMMM yyyy}  \n   {1:0} usd ", CurrentDiagramData[bar].CoorXdate, CurrentDiagramData[bar].CoorYdouble);
+      }
+      else // debug info
+      {
+        BarHint.IsOpen = false;
+        if (bar != -1)
+          StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer missed {2}th bar by height", pt.X, pt.Y, bar + 1);
+        else
+          StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer is to the right of {2}th bar", pt.X, pt.Y,
+                                         barLeft + 1);
+      }
     }
-
   }
 }
