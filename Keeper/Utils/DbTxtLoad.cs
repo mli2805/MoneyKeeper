@@ -115,18 +115,51 @@ namespace Keeper.Utils
       if (!File.Exists(filename)) return null;
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+
+      // промежуточная сортировка действующих депозитов
+      var sortedContent = SortActiveDepositAccountsByEndDate(content);
+
       var result = new ObservableCollection<Account>();
-      foreach (var s in content)
+      foreach (var s in sortedContent)
       {
         int parentId;
         var account = AccountFromString(s, out parentId);
         if (parentId == 0)
         {
-          BuildBranchFromRoot(account, content);
+          BuildBranchFromRoot(account, sortedContent);
           result.Add(account);
         }
       }
       return result;
+    }
+
+    private static List<string> SortActiveDepositAccountsByEndDate(IEnumerable<string> content)
+    {
+      var activeDepos = new List<Account>();
+      var sortedContent = new List<string>();
+      int depoId = -1;
+      var depoAccount = new Account();
+      foreach (var s in content)
+      {
+        int parentId;
+        var account = AccountFromString(s, out parentId);
+        if (account.Name == "Депозиты")
+        {
+          depoId = account.Id;
+          depoAccount = account;
+        }
+        if (parentId == depoId && account.Name != "Закрытые депозиты")
+        {
+          account.Parent = depoAccount;
+          activeDepos.Add(account);
+        }
+        else sortedContent.Add(s);
+      }
+
+      activeDepos.Sort(Account.CompareEndDepositDates);
+
+      sortedContent.AddRange(activeDepos.Select(account => account.ToDump(4)));
+      return sortedContent;
     }
 
     private static Account AccountFromString(string s, out int parentId)

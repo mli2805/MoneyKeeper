@@ -167,13 +167,13 @@ namespace Keeper.DomainModel
       return String.Compare(Name, ((Account) obj).Name, StringComparison.Ordinal);
     }
 
-    public DateTime GetEndDepositDate(string depositName)
+    public static DateTime GetEndDepositDate(string depositName)
     {
       var s = depositName;
-      var p = s.IndexOf('/'); if (p == 0) return new DateTime(0);
-      var n = s.IndexOf(' ', p); if (n == 0) return new DateTime(0);
-      p = s.IndexOf('/', n); if (p == 0) return new DateTime(0);
-      n = s.IndexOf(' ', p); if (n == 0) return new DateTime(0);
+      var p = s.IndexOf('/'); if (p == -1) return new DateTime(0);
+      var n = s.IndexOf(' ', p); if (n == -1) return new DateTime(0);
+      p = s.IndexOf('/', n); if (p == -1) return new DateTime(0);
+      n = s.IndexOf(' ', p); if (n == -1) return new DateTime(0);
 
       DateTime result;
       try
@@ -195,5 +195,14 @@ namespace Keeper.DomainModel
 
       return DateTime.Compare(GetEndDepositDate(Name), GetEndDepositDate(other.Name));
     }
+
+    public static int CompareEndDepositDates(Account a, Account b)
+    {
+      // проверка депозит ли это не осуществляется здесь
+      // но если имя счета не соответствует шабону для депозита 
+      // то в качестве даты конца вклада будет возвращен 1/01/0001
+      return DateTime.Compare(GetEndDepositDate(a.Name), GetEndDepositDate(b.Name));
+    }
+
   }
 }

@@ -301,6 +301,15 @@ namespace Keeper.ViewModels
       SelectedAccount = accountInWork.Parent;
       accountInWork.Id = (from account in Db.AccountsPlaneList select account.Id).Max() + 1;
       SelectedAccount.Children.Add(accountInWork);
+
+      if (SelectedAccount.Name == "Депозиты")
+      {
+          DbTxtSave.SaveDbInTxt();
+          var result = DbTxtLoad.LoadDbFromTxt();
+          if (result.Code != 0) MessageBox.Show(result.Explanation);
+          else InitVariablesToShowAccounts();
+      }
+
       Db.AccountsPlaneList.Clear();
       Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
       UsefulLists.FillLists();
