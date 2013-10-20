@@ -598,7 +598,7 @@ namespace Keeper.Controls
       {
         BarHint.IsOpen = true;
         BarHint.HorizontalOffset = pt.X;
-        BarHint.VerticalOffset = pt.Y;
+        BarHint.VerticalOffset = pt.Y - 5;
 
         BarHintText.Background = CurrentDiagramData[bar].CoorYdouble > 0 ? Brushes.Azure : Brushes.LavenderBlush;
         BarHintText.Text = string.Format("  {0:MMMM yyyy}  \n   {1:0} usd ", CurrentDiagramData[bar].CoorXdate, CurrentDiagramData[bar].CoorYdouble);
