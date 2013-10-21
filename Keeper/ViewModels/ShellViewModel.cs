@@ -504,6 +504,32 @@ namespace Keeper.ViewModels
     
     #endregion
 
+    public void TempItem()
+    {
+      var ratesByrUsd = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).OrderBy(r => r.BankDay).
+                           ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)currencyRate.Rate);
+
+      var rates2 = new Dictionary<DateTime, decimal>();
+      foreach (var pair in ratesByrUsd)
+      {
+        var days = (pair.Key - new DateTime(0)).TotalDays;
+        if ((days%2).Equals(0)) rates2.Add(pair.Key.AddDays(-193),(decimal)1.1*pair.Value);
+        else rates2.Add(pair.Key.AddDays(-193), (decimal)0.9 * pair.Value);
+      }
+
+      var rates3 = new Dictionary<DateTime, decimal>();
+      foreach (var pair in ratesByrUsd)
+      {
+        rates3.Add(pair.Key.AddDays(78), (decimal)Math.Log10((double)pair.Value));
+      }
+
+      var rates = new List<Dictionary<DateTime, decimal>>();
+      rates.Add(ratesByrUsd);
+      rates.Add(rates2);
+      rates.Add(rates3);
+      WindowManager.ShowWindow(new DateDoubleDiagramViewModel(rates,0));
+    }
+
     // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
     // свойства куда эти даты заносятся, свойства видимости этих групп контролов
     #region
@@ -627,11 +653,6 @@ namespace Keeper.ViewModels
     private bool IsLastDayOfMonth(DateTime date) { return date.Month != date.AddDays(1).Month; }
 
     #endregion
-
-    public void TempItem()
-    {
-    }
-
 
     #region SOAP - не обрабатывает дженерики
 
