@@ -85,6 +85,9 @@
     <Compile Include="Controls\BarDiagramControl.xaml.cs">
       <DependentUpon>BarDiagramControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DiagramControl.xaml.cs">
+      <DependentUpon>DiagramControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
@@ -101,9 +104,13 @@
     <Compile Include="Utils\DiagramDataChanging.cs" />
     <Compile Include="Utils\DiagramDataCtors.cs" />
     <Compile Include="Utils\MonthAnalisysCtor.cs" />
+    <Compile Include="ViewModels\DiagramViewModels\DateDoubleDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
+    <Compile Include="Views\DiagramViews\DateDoubleDiagramView.xaml.cs">
+      <DependentUpon>DateDoubleDiagramView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DiagramViews\MonthlyResultDiagramView.xaml.cs">
       <DependentUpon>MonthlyResultDiagramView.xaml</DependentUpon>
     </Compile>
@@ -213,6 +220,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DiagramControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddAndEditAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -226,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DepositView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramViews\DateDoubleDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

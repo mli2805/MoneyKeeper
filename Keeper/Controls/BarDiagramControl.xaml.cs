@@ -585,6 +585,7 @@ namespace Keeper.Controls
     private void OnKeyDown(object sender, KeyEventArgs e)
     {
       if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAllDiagram();
+      if (e.Key == Key.F5) DrawCurrentDiagram();
     }
 
     private void OnMouseMove(object sender, MouseEventArgs e)
