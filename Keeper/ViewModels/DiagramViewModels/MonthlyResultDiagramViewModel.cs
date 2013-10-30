@@ -15,6 +15,7 @@ namespace Keeper.ViewModels
     }
 
     public List<DiagramPair> ModelProperty { get; set; }
+    public List<DiagramSeries> ModelDataProperty { get; set; }
 
   }
  

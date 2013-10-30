@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
@@ -13,6 +14,13 @@ namespace Keeper.Utils
     Month,
     Quarter,
     Year
+  }
+
+  public enum BarDiagramMode
+  {
+    Horizontal,
+    Vertical,
+    Vertical100
   }
 
   class FunctionsWithEvery
@@ -38,6 +46,14 @@ namespace Keeper.Utils
       CoorXdate = coorXdate;
       CoorYdouble = coorYdouble;
     }
+  }
+
+  public class DiagramSeries
+  {
+    public string Name;
+    public Brushes BrushColor;
+    public int Index;
+    public List<DiagramPair> Data;
   }
 
   class DiagramDataCtors

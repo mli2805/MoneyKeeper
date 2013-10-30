@@ -18,6 +18,16 @@ namespace Keeper.Controls
       throw new NotImplementedException();
     }
 
+    public static readonly DependencyProperty AllDiagramSeriesProperty =
+      DependencyProperty.Register("AllDiagramSeries", typeof (List<DiagramSeries>),
+                                  typeof(BarDiagramControl), new FrameworkPropertyMetadata(new List<DiagramSeries>()));
+
+    public List<DiagramSeries> AllDiagramSeries
+    {
+      get { return (List < DiagramSeries >) GetValue(AllDiagramSeriesProperty); }
+      set {SetValue(AllDiagramSeriesProperty, value);}
+    }
+    
     public static readonly DependencyProperty AllDiagramDataProperty =
       DependencyProperty.Register("AllDiagramData", typeof(List<DiagramPair>),
                                   typeof(BarDiagramControl), new FrameworkPropertyMetadata(new List<DiagramPair>()));
@@ -27,7 +37,12 @@ namespace Keeper.Controls
       get { return (List<DiagramPair>)GetValue(AllDiagramDataProperty); }
       set { SetValue(AllDiagramDataProperty, value); }
     }
+
+    public List<DiagramSeries> CurrentSeriesList { get; set; }
     public List<DiagramPair> CurrentDiagramData { get; set; }
+
+
+
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue;
     private double LowestScaleValue {get {return _fromDivision * _accurateValuesPerDivision;}}
@@ -86,6 +101,15 @@ namespace Keeper.Controls
 
       var window = Window.GetWindow(this);
       if (window != null) window.KeyDown += OnKeyDown; 
+    }
+
+    private void GetAllSeriesDataLimits()
+    {
+      _minDate = CurrentSeriesList.Select(series => series.Data[0].CoorXdate).Min();
+      _maxDate = CurrentSeriesList.Select(series => series.Data.Last().CoorXdate).Max();
+
+      _minValue = CurrentSeriesList.Select(series => series.Data.Min(r => r.CoorYdouble)).Min();
+      _maxValue = CurrentSeriesList.Select(series => series.Data.Max(r => r.CoorYdouble)).Max();
     }
 
     private void GetDiagramDataLimits()
