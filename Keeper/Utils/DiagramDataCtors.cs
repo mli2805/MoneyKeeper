@@ -88,7 +88,7 @@ namespace Keeper.Utils
         {
           result.Add(currentDate, new Dictionary<CurrencyCodes, decimal>(balanceInCurrencies));
           currentDate = currentDate.AddDays(1);
-          while (currentDate != transaction.Timestamp.Date)
+          while (currentDate < transaction.Timestamp.Date)
           {
             //  result.Add(currentDate, balance); // раскомментарить, если даты когда не было изменений тоже должны попадать набор
             currentDate = currentDate.AddDays(1);
