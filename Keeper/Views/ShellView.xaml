@@ -1,0 +1,420 @@
+﻿<Window x:Class="Keeper.Views.ShellView"
+        xml:lang="ru-RU"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
+        xmlns:cal="http://www.caliburnproject.org" 
+        xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+        mc:Ignorable="d" Height="762" SizeToContent="Width"
+        WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
+        d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}"
+        TextOptions.TextFormattingMode="Display">
+  <!--attached property для сглаживания шрифтов-->
+  <i:Interaction.Triggers>
+    <ei:KeyTrigger Key="O">
+      <cal:ActionMessage MethodName="ShowTransactionsForm"/>
+    </ei:KeyTrigger>
+    <ei:KeyTrigger Key="C">
+      <cal:ActionMessage MethodName="ShowCurrencyRatesForm"/>
+    </ei:KeyTrigger>
+    <ei:KeyTrigger Key="A">
+      <cal:ActionMessage MethodName="ShowMonthAnalisysForm"/>
+    </ei:KeyTrigger>
+    <ei:KeyTrigger Key="D">
+      <cal:ActionMessage MethodName="ShowDepositsForm"/>
+    </ei:KeyTrigger>
+    <ei:KeyTrigger Key="G">
+      <cal:ActionMessage MethodName="ShowMonthlyResultDiagram"/>
+    </ei:KeyTrigger>
+    <ei:KeyTrigger Key="T">
+      <cal:ActionMessage MethodName="TempItem"/>
+    </ei:KeyTrigger>
+  </i:Interaction.Triggers>
+  <Window.Resources>
+    <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
+      <TextBlock Text="{Binding Name}" Margin="0,0,20,0"/>
+    </HierarchicalDataTemplate>
+  </Window.Resources>
+  <Grid Margin="5" Width="Auto">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="310"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="32"/>
+      <RowDefinition/>
+      <RowDefinition Height="23"/>
+    </Grid.RowDefinitions>
+    <Menu Name="MainMenu" Margin="10,3,10,6" Height="20"  Grid.ColumnSpan="3" >
+      
+      <MenuItem Header="ФАЙЛЫ" >
+        <MenuItem x:Name="SaveDatabase" Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Сохраняет текущее состояние БД"/>
+                <TextBlock Text="в штатный dbx файл (лежит в dropbox\keeper)"/>
+                <TextBlock Text="Данная операция происходит автоматически"/>
+                <TextBlock Text="при выходе из ввода операций и из программы"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <MenuItem x:Name="LoadDatabase" Header="ЗАГРУЗИТЬ ПРЕДЫДУЩЕЕ СОСТОЯНИЕ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Отменит изменения данных, произведенные с момента"/>
+                <TextBlock Text=" входа в программу или после ввода операций,"/>
+                <TextBlock Text="например редактирование счетов, ассоциаций, курсов"/>
+                <TextBlock Text=""/>
+                <TextBlock Text="При необходимости восстановления на определенную дату"/>
+                <TextBlock Text=" надо использовать 'ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ'"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <MenuItem x:Name="ClearDatabase" Header="ОЧИСТИТЬ БД" ToolTip="(ну вот на фига!)"/>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="MakeDatabaseBackup" Header="СОЗДАТЬ РЕЗЕРВНУЮ КОПИЮ" ToolTipService.ShowDuration="20000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Создается копия БД на данный момент" />
+                <TextBlock Text="в виде набора из 4 txt файлов"/>
+                <TextBlock Text="запакованных в шифрованный zip "/>
+                <TextBlock Text="(лежит в dropbox\keeper)" />
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <MenuItem x:Name="ExportDatabaseToTxt" Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Выгружает копию БД на данный момент"/>
+                <TextBlock Text="в виде набора из 4 txt файлов"/>
+                <TextBlock Text="Лежит в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+                <TextBlock Text="При выходе из программы каталог будет очищен."/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <MenuItem x:Name="ImportDatabaseFromTxt" Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Загружает БД из набора из 4 txt файлов,"/>
+                <TextBlock Text="лежащих в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+                <TextBlock Text="Файлы вручную достать из шифрованного zip"/>
+                <TextBlock Text="(лежат в dropbox\keeper)"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="RemoveExtraBackups" Header="УДАЛИТЬ СОВПАДАЮЩИЕ РЕЗЕРВНЫЕ КОПИИ" ToolTipService.ShowDuration="50000">
+          <MenuItem.ToolTip>
+            <ToolTip>
+              <StackPanel>
+                <TextBlock Text="Удалит лишние резервные копии ( шифрованные zip'ы )"/>
+                <TextBlock Text="для которых есть более поздние такого же размера"/>
+                <TextBlock Text=""/>
+                <TextBlock Text="возникающие при каждом выходе из программы"/>
+                <TextBlock Text="при работе с кодом без изменения данных"/>
+                <TextBlock Text="(лежат в dropbox\keeper)"/>
+              </StackPanel>
+            </ToolTip>
+          </MenuItem.ToolTip>
+        </MenuItem>
+      </MenuItem>
+      <MenuItem Header="ФОРМЫ">
+        <MenuItem x:Name="ShowTransactionsForm" Header="ОПЕРАЦИИ"/>
+        <MenuItem x:Name="ShowMonthAnalisysForm" Header="АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
+        <MenuItem x:Name="ShowDepositsForm" Header="ДЕПОЗИТЫ"/>
+        <MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
+        <MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
+      </MenuItem>
+      <MenuItem Header="ДИАГРАММЫ">
+        <MenuItem x:Name="ShowDailyBalancesDiagram" Header="Ежедневные остатки"/>
+        <MenuItem x:Name="ShowMonthlyResultDiagram" Header="Ежемесячное сальдо"/>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="ShowRatesDiagram" Header="Курсы валют"/>
+      </MenuItem>
+      <MenuItem Header="TOOLS">
+        <MenuItem x:Name="TempItem" Header="Временный пункт (жми T)"/>
+      </MenuItem>
+      <MenuItem Header="СПРАВКА">
+        <MenuItem x:Name="ShowToDoForm" Header="СДЕЛАТЬ" />
+        <MenuItem x:Name="AboutForm" Header="О ПРОГРАММЕ"/>
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="ProgramExit" Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye"/>
+      </MenuItem>
+    </Menu>
+    <TabControl Margin="0,0,0,5" Grid.Row="1" SelectedIndex="{Binding OpenedAccountPage, Mode=TwoWay}">
+      <TabItem Header="Мои счета" Background="{x:Null}">
+        <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MineAccountsRoot}"
+      		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Депозит" cal:Message.Attach="ShowDeposit" BorderBrush="{x:Null}" Background="White" Visibility="{Binding IsDeposit}">
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+      <TabItem Header="Контрагенты" Background="{x:Null}">
+        <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding ExternalAccountsRoot}" 
+      		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+      <TabItem Header="Доходы" Background="{x:Null}">
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoot}" 
+      		ItemTemplate="{DynamicResource AccountTemplate}">
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+      <TabItem Header="Расходы" Background="{x:Null}">
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoot}" 
+      		ItemTemplate="{DynamicResource AccountTemplate}">
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="..\Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+    </TabControl>
+
+    <Grid  Grid.Column="2" Grid.Row="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <ListView Margin="0,0,0,5" ItemsSource="{Binding BalanceList}" BorderBrush="DarkGray">
+        <ListView.View>
+          <GridView>
+            <GridViewColumn Header="{Binding SelectedAccount}" Width="300"/>
+          </GridView>
+        </ListView.View>
+      </ListView>
+      <TextBlock Grid.Row="1" Margin="8,-25,5,5" Text="{Binding AccountBalanceInUsd}" Foreground="Blue" />
+      <Grid Visibility="{Binding PaymentsPeriodChoiseControls}"  VerticalAlignment="Bottom" Height="200" Margin="0,0,0,5" Grid.Row="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="6"></Rectangle>
+        <TextBlock Text="Показать обороты за:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+                    Text="{Binding PaymentsStartDate, Mode=TwoWay}" />
+        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
+                    Text="{Binding PaymentsFinishDate, Mode=TwoWay}" />
+
+        <Button Name="OneDayBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"
+              Height="20" Width="35" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9"/>
+        <Button Name="OneMonthBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0"
+              Height="20" Width="35" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+        <Button Name="OneYearBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+              Height="20" Width="35" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+
+        <Button Name="OneDayAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0"
+              Height="20" Width="35" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+        <Button Name="OneMonthAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,60,0"
+              Height="20" Width="35" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+        <Button Name="OneYearAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
+              Height="20" Width="35" Content="+Г" Style="{StaticResource MyButtonStyle}"  FontSize="9" />
+
+        <Button Name="TodayPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
+              Height="30" Width="85" Content="Сегодня" Style="{StaticResource MyButtonStyle}" />
+        <Button Name="YesterdayPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
+              Height="30" Width="85" Content="Вчера" Style="{StaticResource MyButtonStyle}" />
+
+        <Button Name="ThisMonthPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
+              Height="30" Width="86" Content="Этот месяц" Style="{StaticResource MyButtonStyle}" />
+        <Button Name="LastMonthPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
+              Height="30" Width="86" Style="{StaticResource MyButtonStyle}" >
+          <ContentControl >
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <TextBlock Text="Прошлый" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+              <TextBlock Text="месяц" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+            </Grid>
+          </ContentControl>
+        </Button>
+
+        <Button Name="ThisYearPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
+              Height="30" Width="85" Content="Этот год" Style="{StaticResource MyButtonStyle}" />
+        <Button Name="LastYearPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
+              Height="30" Width="85" Content="Прошлый год" Style="{StaticResource MyButtonStyle}" />
+
+      </Grid>
+      <Grid Visibility="{Binding BalancePeriodChoiseControls}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="3">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30" />
+          <RowDefinition Height="50" />
+          <RowDefinition Height="40" />
+          <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="4"></Rectangle>
+        <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding BalanceDate, Mode=TwoWay}" />
+        <Button Name="OneDayBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
+              Height="20" Width="25" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+        <Button Name="OneMonthBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0"
+              Height="20" Width="25" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+        <Button Name="OneYearBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
+              Height="20" Width="25" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+
+        <Button Name="OneDayAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,70,0"
+              Height="20" Width="25" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+        <Button Name="OneMonthAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0"
+              Height="20" Width="25" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+        <Button Name="OneYearAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
+              Height="20" Width="25" Content="+Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+
+        <Button Name="TodayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+              Height="30" Width="80" Content="Сегодня" Style="{StaticResource MyButtonStyle}" />
+        <Button Name="YesterdayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
+              Height="30" Width="80" Content="Вчера" Style="{StaticResource MyButtonStyle}" />
+        <Button Name="LastMonthEndBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
+              Height="30" Width="80" Style="{StaticResource MyButtonStyle}" >
+          <ContentControl >
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <TextBlock Text="Конец про-" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+              <TextBlock Text="шлого месяца" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+            </Grid>
+          </ContentControl>
+        </Button>
+
+      </Grid>
+    </Grid>
+
+    <StatusBar Margin="0" Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="1" Background="White" BorderBrush="Gray">
+      <StatusBar.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+          </Grid>
+        </ItemsPanelTemplate>
+      </StatusBar.ItemsPanel>
+      <StatusBarItem Grid.Column ="0">
+        <TextBlock Margin="5,0,0,0" Text="{Binding StatusBarItem0}"/>
+      </StatusBarItem>
+      <StatusBarItem Grid.Column ="1">
+        <TextBlock Margin="0,0,10,0" Text="{Binding Message}"/>
+      </StatusBarItem>
+    </StatusBar>
+  </Grid>
+</Window>
