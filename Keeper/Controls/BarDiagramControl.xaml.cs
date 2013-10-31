@@ -38,10 +38,22 @@ namespace Keeper.Controls
       set { SetValue(AllDiagramDataProperty, value); }
     }
 
-    public List<DiagramSeries> CurrentSeriesList { get; set; }
+    public DateLineDiagramData AllDataInOneDateLine { get; set; }
+    public DateLineDiagramData CurrentDataInOneDateLine { get; set; }
+
     public List<DiagramPair> CurrentDiagramData { get; set; }
 
-
+    /// <summary>
+    /// На входе AllDiagramSeries, надо преобразовать в структуру, 
+    /// где одной дате соответствуют значения для разных серий - List of DiagramDate
+    /// </summary>
+    private void ConvertToOneDateLine()
+    {
+      foreach (var diagramSeries in AllDiagramSeries)
+      {
+        AllDataInOneDateLine.Add(diagramSeries);
+      }
+    }
 
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue;
@@ -96,6 +108,12 @@ namespace Keeper.Controls
     {
       CurrentDiagramData = new List<DiagramPair>(AllDiagramData);
       if (CurrentDiagramData.Count == 0) return;
+
+      AllDataInOneDateLine = new DateLineDiagramData();
+      ConvertToOneDateLine();
+      if (AllDataInOneDateLine.SeriesNumber == 0) return;
+      CurrentDataInOneDateLine = new DateLineDiagramData(AllDataInOneDateLine);
+
       DrawCurrentDiagram();
       DiagramImage.Source = ImageSource;
 
@@ -103,13 +121,13 @@ namespace Keeper.Controls
       if (window != null) window.KeyDown += OnKeyDown; 
     }
 
-    private void GetAllSeriesDataLimits()
+    private void GetDataInLineLimits()
     {
-      _minDate = CurrentSeriesList.Select(series => series.Data[0].CoorXdate).Min();
-      _maxDate = CurrentSeriesList.Select(series => series.Data.Last().CoorXdate).Max();
+      _minDate = AllDataInOneDateLine.DiagramData.ElementAt(0).Key;
+      _maxDate = AllDataInOneDateLine.DiagramData.Last().Key;
 
-      _minValue = CurrentSeriesList.Select(series => series.Data.Min(r => r.CoorYdouble)).Min();
-      _maxValue = CurrentSeriesList.Select(series => series.Data.Max(r => r.CoorYdouble)).Max();
+      _minValue = AllDataInOneDateLine.DiagramData.Values.Min(l => l.Min());
+      _maxValue = AllDataInOneDateLine.DiagramData.Values.Max(l => l.Max());
     }
 
     private void GetDiagramDataLimits()
@@ -124,7 +142,8 @@ namespace Keeper.Controls
 
     public void DrawCurrentDiagram()
     {
-      GetDiagramDataLimits();
+//      GetDiagramDataLimits();
+      GetDataInLineLimits();
 
       DiagramBackground();
 
@@ -136,7 +155,8 @@ namespace Keeper.Controls
       MarkersForVerticalAxes(Dock.Left);
       MarkersForVerticalAxes(Dock.Right);
 
-      Diagram();
+//      Diagram();
+      VerticalDiagram();
       ImageSource = new DrawingImage(DrawingGroup);
     }
 
@@ -278,6 +298,45 @@ namespace Keeper.Controls
 
       var geometryDrawingGridlines = new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
       DrawingGroup.Children.Add(geometryDrawingGridlines);
+    }
+
+    private void Vertical100Diagram()
+    {}
+
+    private  void VerticalDiagram()
+    {
+      var geometryGroups = new List<GeometryGroup>();
+      for (int i = 0; i < CurrentDataInOneDateLine.SeriesNumber; i++) geometryGroups.Add(new GeometryGroup());
+
+      for (int i = 0; i < CurrentDataInOneDateLine.DiagramData.Count; i++)
+      {
+        var oneDay = CurrentDataInOneDateLine.DiagramData.ElementAt(i).Value;
+        for (int j = 0; j < CurrentDataInOneDateLine.SeriesNumber; j++)
+        {
+          if (!oneDay[j].Equals(0))
+          {
+            var rect = new Rect(LeftMargin + Shift / 2 + Gap / 2 + i * (PointPerBar + Gap),
+                                ImageHeight - BottomMargin - (CurrentDiagramData[i].CoorYdouble - LowestScaleValue) * PointPerOneValueAfter,
+                                PointPerBar,
+                                CurrentDiagramData[i].CoorYdouble * PointPerOneValueAfter);
+            var rectangleGeometry = new RectangleGeometry(rect);
+            geometryGroups[j].Children.Add(rectangleGeometry);
+          }
+        }
+      }
+
+      for (int i = 0; i < CurrentDataInOneDateLine.SeriesNumber; i++)
+      {
+        var seriesGeometryDrawing = new GeometryDrawing();
+
+        seriesGeometryDrawing.Geometry = geometryGroups[i];
+
+        seriesGeometryDrawing.Brush = AllDiagramSeries[i].positiveBrushColor;
+        seriesGeometryDrawing.Pen = new Pen(AllDiagramSeries[i].positiveBrushColor, 1);
+
+        DrawingGroup.Children.Add(seriesGeometryDrawing);
+      }
+
     }
 
     private void Diagram()
