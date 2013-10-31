@@ -11,10 +11,6 @@ namespace Keeper.ViewModels
    {
     public MonthlyResultDiagramViewModel(Dictionary<DateTime, decimal> monthlyResults)
     {
-      ModelProperty = (from pair in monthlyResults
-                       select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
-
-//-----------
       var data = (from pair in monthlyResults
                   select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
 
@@ -24,7 +20,6 @@ namespace Keeper.ViewModels
       ModelDataProperty = new List<DiagramSeries> {series};
     }
 
-    public List<DiagramPair> ModelProperty { get; set; }
     public List<DiagramSeries> ModelDataProperty { get; set; }
 
   }
