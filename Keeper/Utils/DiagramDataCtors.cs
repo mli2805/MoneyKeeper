@@ -18,9 +18,9 @@ namespace Keeper.Utils
 
   public enum BarDiagramMode
   {
-    Horizontal,
-    Vertical,
-    Vertical100
+    Horizontal, // столбцы разных серий для одной даты находятся рядом, могут быть отрицательные
+    Vertical, // столбцы для одной даты ставятся один на один, не должно быть отрицательных
+    Vertical100 // столбцы для одной даты ставятся один на один и сумма считается за 100%, не должно быть отрицательных
   }
 
   class FunctionsWithEvery
@@ -51,9 +51,46 @@ namespace Keeper.Utils
   public class DiagramSeries
   {
     public string Name;
-    public Brushes BrushColor;
+    public Brush positiveBrushColor;
+    public Brush negativeBrushColor;
     public int Index;
     public List<DiagramPair> Data;
+  }
+
+  public class DiagramDate
+  {
+    public DateTime CoorXdate;
+    public List<Double> CoorYdouble;
+  }
+
+  public class DateLineDiagramData
+  {
+    public SortedList<DateTime, List<Double>> DiagramData;
+    public int SeriesNumber;
+
+
+    public DateLineDiagramData()
+    {
+      SeriesNumber = 0;
+      DiagramData = new SortedList<DateTime, List<double>>();
+    }
+
+    public DateLineDiagramData(DateLineDiagramData other)
+    {
+      SeriesNumber = other.SeriesNumber;
+      DiagramData = new SortedList<DateTime, List<double>>(other.DiagramData);
+    }
+
+    public void Add(DiagramSeries series)
+    {
+      foreach (var pair in series.Data)
+      {
+        if (!DiagramData.ContainsKey(pair.CoorXdate)) DiagramData.Add(pair.CoorXdate,new List<double>());
+        while (DiagramData[pair.CoorXdate].Count < SeriesNumber) DiagramData[pair.CoorXdate].Add(0);
+        DiagramData[pair.CoorXdate].Add(pair.CoorYdouble);
+      }
+      SeriesNumber++;
+    }
   }
 
   class DiagramDataCtors

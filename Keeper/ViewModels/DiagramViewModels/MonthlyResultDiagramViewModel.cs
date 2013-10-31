@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Utils;
 
@@ -12,6 +13,15 @@ namespace Keeper.ViewModels
     {
       ModelProperty = (from pair in monthlyResults
                        select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
+
+//-----------
+      var data = (from pair in monthlyResults
+                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
+
+      var series = new DiagramSeries
+                     {Name = "Сальдо", positiveBrushColor = Brushes.Blue, negativeBrushColor = Brushes.Red, Data = data};
+
+      ModelDataProperty = new List<DiagramSeries> {series};
     }
 
     public List<DiagramPair> ModelProperty { get; set; }
