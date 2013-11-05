@@ -383,6 +383,11 @@ namespace Keeper.ViewModels
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }
+
+    public void Close()
+    {
+      TryClose();
+    }
   }
 
 }

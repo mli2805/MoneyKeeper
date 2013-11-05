@@ -26,5 +26,10 @@ namespace Keeper.ViewModels
       DisplayName = "Ассоциации категорий";
     }
 
+    public void Close()
+    {
+      TryClose();
+    }
+
   }
 }

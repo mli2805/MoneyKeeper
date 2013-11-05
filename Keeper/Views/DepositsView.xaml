@@ -4,7 +4,6 @@
         Title="DepositsView" Height="808" Width="938" WindowStartupLocation="CenterScreen"
         xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:cal="http://www.caliburnproject.org" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:Utils="clr-namespace:Keeper.Utils" xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:Behaviors="clr-namespace:Keeper.Behaviors" xmlns:XamlExtensions="clr-namespace:Keeper.XamlExtensions">
   <Window.Resources>
       <DataTemplate x:Key="StartAmountColumnStyle">
