@@ -24,16 +24,61 @@ namespace Keeper.Utils
     Vertical100 // столбцы для одной даты ставятся один на один и сумма считается за 100%, не должно быть отрицательных
   }
 
-  class FunctionsWithEvery
+  internal class FunctionsWithEvery
   {
     public static bool IsLastDayOf(DateTime date, Every period)
     {
       if (period == Every.Day) return true;
       if (period == Every.Week && date.DayOfWeek == DayOfWeek.Sunday) return true;
       if (period == Every.Month && date.Month != date.AddDays(1).Month) return true;
-      if (period == Every.Quarter && date.Month != date.AddDays(1).Month && date.Month % 3 == 0) return true;
+      if (period == Every.Quarter && date.Month != date.AddDays(1).Month && date.Month%3 == 0) return true;
       if (period == Every.Year && date.Day == 31 && date.Month == 12) return true;
       return false;
+    }
+
+    public static DateTime GetLastDayOfTheSamePeriod(DateTime date, Every period)
+    {
+      if (period == Every.Day) return date;
+      if (period == Every.Week)
+      {
+        while (date.DayOfWeek != DayOfWeek.Sunday) date = date.AddDays(1);
+        return date;
+      }
+      if (period == Every.Month)
+      {
+        date = date.AddMonths(1);
+        return new DateTime(date.Year, date.Month, 1).AddDays(-1);
+      }
+      if (period == Every.Quarter)
+      {
+        date = date.AddMonths(3 - (date.Month - 1) % 3);
+        return new DateTime(date.Year, date.Month, 1).AddDays(-1);
+      }
+      if (period == Every.Year) return new DateTime(date.Year +1, 12, 31);
+      throw new Exception("Такого периода не бывает!");
+    }
+
+    public static int WeekNumber(DateTime date)
+    {
+      int weekNumber = date.DayOfYear/7;
+      if ((int) date.DayOfWeek < date.DayOfYear%7) weekNumber++;
+      return weekNumber;
+    }
+
+    public static int QuarterNumber(DateTime date)
+    {
+      return (date.Month - 1)/3 + 1;
+    }
+
+    public static bool IsTheSamePeriod(DateTime date1, DateTime date2, Every period)
+    {
+      if (period == Every.Day) return date1.Date == date2.Date;
+      if (period == Every.Week) return WeekNumber(date1) == WeekNumber(date2);
+      if (period == Every.Month) return date1.Year == date2.Year && date1.Month == date2.Month;
+      if (period == Every.Quarter) return date1.Year == date2.Year && QuarterNumber(date1) == QuarterNumber(date2);
+      if (period == Every.Year) return date1.Year == date2.Year;
+      
+      throw new Exception("Такого периода не бывает!");
     }
   }
 
@@ -170,9 +215,17 @@ namespace Keeper.Utils
 
       foreach (var transaction in Balance.Db.Transactions)
       {
-        if (transaction.Timestamp.Date != currentDate)
+        if (transaction.Timestamp.Date < period.GetStart()) continue;
+        if (transaction.Timestamp.Date > period.GetFinish()) break;
+
+        if ( transaction.Timestamp.Date != currentDate)
         {
-          if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency)) { result.Add(currentDate, movement); movement = 0; }
+          if (!FunctionsWithEvery.IsTheSamePeriod(transaction.Timestamp.Date, currentDate, frequency))
+          {
+            // последняя подходящая операция в периоде может быть когда угодно, а записываем последним числом периода (чтобы диаграмма красивей была)
+            result.Add(FunctionsWithEvery.GetLastDayOfTheSamePeriod(currentDate.Date,frequency), movement); 
+            movement = 0;
+          }
           currentDate = transaction.Timestamp.Date;
         }
 
@@ -184,7 +237,7 @@ namespace Keeper.Utils
         else
           movement += Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
       }
-
+      result.Add(FunctionsWithEvery.GetLastDayOfTheSamePeriod(currentDate.Date, frequency), movement);
       return result;
     }
 
@@ -310,10 +363,8 @@ namespace Keeper.Utils
     {
       var kategory = (from account in Db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
 
-      var movements = KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2001, 12, 31), DateTime.Today), Every.Month).
-                                                                                                            OrderBy(pair => pair.Key).ToList();
-
-      return movements.ToDictionary(t => t.Key, t => t.Value);
+      return KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2002, 1, 1), DateTime.Today), Every.Month); 
+      
     }
 
     private static int MonthsFromStart(DateTime date)
