@@ -67,18 +67,17 @@ namespace Keeper.Utils
   public class DateLineDiagramData
   {
     public SortedList<DateTime, List<Double>> DiagramData;
-    public int SeriesNumber;
-
+    public int SeriesCount;
 
     public DateLineDiagramData()
     {
-      SeriesNumber = 0;
+      SeriesCount = 0;
       DiagramData = new SortedList<DateTime, List<double>>();
     }
 
     public DateLineDiagramData(DateLineDiagramData other)
     {
-      SeriesNumber = other.SeriesNumber;
+      SeriesCount = other.SeriesCount;
       DiagramData = new SortedList<DateTime, List<double>>(other.DiagramData);
     }
 
@@ -87,10 +86,10 @@ namespace Keeper.Utils
       foreach (var pair in series.Data)
       {
         if (!DiagramData.ContainsKey(pair.CoorXdate)) DiagramData.Add(pair.CoorXdate,new List<double>());
-        while (DiagramData[pair.CoorXdate].Count < SeriesNumber) DiagramData[pair.CoorXdate].Add(0);
+        while (DiagramData[pair.CoorXdate].Count < SeriesCount) DiagramData[pair.CoorXdate].Add(0);
         DiagramData[pair.CoorXdate].Add(pair.CoorYdouble);
       }
-      SeriesNumber++;
+      SeriesCount++;
     }
   }
 
@@ -103,12 +102,12 @@ namespace Keeper.Utils
     // реализовано не через функцию получения остатка на дату, вызванную для дат периода
     // а за один проход по БД с получением остатков накопительным итогом, т.к. гораздо быстрее
 
-    public static decimal ConvertAllCurrenciesToUsd(Dictionary<CurrencyCodes, decimal> balances, DateTime date)
+    public static decimal ConvertAllCurrenciesToUsd(Dictionary<CurrencyCodes, decimal> amounts, DateTime date)
     {
       decimal inUsd = 0;
-      foreach (var balance in balances)
+      foreach (var amount in amounts)
       {
-        inUsd += Rate.GetUsdEquivalent(balance.Value, balance.Key, date);
+        inUsd += Rate.GetUsdEquivalent(amount.Value, amount.Key, date);
       }
       return inUsd;
     }
@@ -159,6 +158,33 @@ namespace Keeper.Utils
         }
 
       }
+      return result;
+    }
+
+
+    public static Dictionary<DateTime, decimal> KategoriesTrafficForPeriodInUsd(Account kategory, Period period, Every frequency)
+    {
+      var result = new Dictionary<DateTime, decimal>();
+      decimal movement = 0;
+      var currentDate = period.GetStart();
+
+      foreach (var transaction in Balance.Db.Transactions)
+      {
+        if (transaction.Timestamp.Date != currentDate)
+        {
+          if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency)) { result.Add(currentDate, movement); movement = 0; }
+          currentDate = transaction.Timestamp.Date;
+        }
+
+
+        if (transaction.Article == null || !transaction.Article.IsTheSameOrDescendantOf(kategory)) continue;
+
+        if (transaction.Debet.IsTheSameOrDescendantOf("Мои"))
+          movement -= Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+        else
+          movement += Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+      }
+
       return result;
     }
 
@@ -213,24 +239,63 @@ namespace Keeper.Utils
     #endregion 
 
     #region для диаграммы ЕЖЕМЕСЯЧНОЕ САЛЬДО
-    // медленно, возможно придется считать строго ежемесячные результаты в одном цикле, не отвлекаясь на остальные поля Saldo 
-    public static Dictionary<DateTime, decimal> MonthlyResultsOld()
+
+    public static List<DiagramSeries>  MonthlyIncomesDiagramCtor()
     {
-      var result = new Dictionary<DateTime, decimal>();
-      for (var date = new DateTime(2002, 1, 1); date <= DateTime.Today; date = date.AddMonths(1))
-      {
-        var saldo = MonthAnalisysCtor.AnalizeMonth(date);
-        result.Add(saldo.LastDayWithTransactionsInMonth,saldo.Result);
-      }
-      return result;
+      var dataForDiagram = new List<DiagramSeries>();
+
+      dataForDiagram.Add(
+        new DiagramSeries
+        {
+          Name = "Рента",
+          positiveBrushColor = Brushes.Blue,
+          negativeBrushColor = Brushes.Red,
+          Index = 0,
+          Data = (from pair in MonthlyTraffic("Рента")
+                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
+        });
+
+      dataForDiagram.Add(
+        new DiagramSeries
+          {
+            Name = "Зарплата",
+            positiveBrushColor = Brushes.Green,
+            negativeBrushColor = Brushes.Red,
+            Index = 0,
+            Data = (from pair in MonthlyTraffic("Зарплата")
+                    select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
+          });
+
+      return dataForDiagram;
     }
 
-    public static Dictionary<DateTime, decimal> MonthlyResults()
+    public  static List<DiagramSeries> MonthlyResultsDiagramCtor()
+    {
+      var dataForDiagram = new List<DiagramSeries>
+                             {
+                               new DiagramSeries
+                                 {
+                                   Name = "Сальдо",
+                                   positiveBrushColor = Brushes.Blue,
+                                   negativeBrushColor = Brushes.Red,
+                                   Index = 0,
+                                   Data = (from pair in MonthlyResults("Мои")
+                                           select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
+                                 }
+                             };
+
+      return dataForDiagram;
+    }
+
+    // на сколько изменился остаток по счету за месяц (разница остатка после Nного и N-1го месяцев)
+    // годится именно для счетов, (не для категорий, на которых нет остатка, есть движение)
+    public static Dictionary<DateTime, decimal> MonthlyResults(string accountName)
     {
       var result = new Dictionary<DateTime, decimal>();
 
-      var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
-      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today), Every.Month).OrderBy(pair => pair.Key).ToList();
+      var accountForAnalisys = (from account in Db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
+      var balances = AccountBalancesForPeriodInUsdThirdWay(accountForAnalisys, new Period(new DateTime(2001, 12, 31), DateTime.Today), Every.Month).
+                                                                                                            OrderBy(pair => pair.Key).ToList();
 
       for (var i = 1; i < balances.Count; i++)
       {
@@ -239,6 +304,17 @@ namespace Keeper.Utils
       return result;
     }
 
+    // какие обороты были по счету за месяц
+    // применяется для счетов - категорий
+    public static Dictionary<DateTime, decimal> MonthlyTraffic(string accountName)
+    {
+      var kategory = (from account in Db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
+
+      var movements = KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2001, 12, 31), DateTime.Today), Every.Month).
+                                                                                                            OrderBy(pair => pair.Key).ToList();
+
+      return movements.ToDictionary(t => t.Key, t => t.Value);
+    }
 
     private static int MonthsFromStart(DateTime date)
     {

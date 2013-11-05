@@ -95,7 +95,7 @@ namespace Keeper.Controls
     {
       AllDataInOneDateLine = new DateLineDiagramData();
       ConvertToOneDateLine();
-      if (AllDataInOneDateLine.SeriesNumber == 0) return;
+      if (AllDataInOneDateLine.SeriesCount == 0) return;
       CurrentDataInOneDateLine = new DateLineDiagramData(AllDataInOneDateLine);
 
       DrawCurrentDiagram();
@@ -292,7 +292,7 @@ namespace Keeper.Controls
     {
       var positiveGeometryGroups = new List<GeometryGroup>();
       var negativeGeometryGroups = new List<GeometryGroup>();
-      for (int i = 0; i < CurrentDataInOneDateLine.SeriesNumber; i++)
+      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
       {
         positiveGeometryGroups.Add(new GeometryGroup());
         negativeGeometryGroups.Add(new GeometryGroup());
@@ -301,7 +301,7 @@ namespace Keeper.Controls
       for (int i = 0; i < CurrentDataInOneDateLine.DiagramData.Count; i++)
       {
         var oneDay = CurrentDataInOneDateLine.DiagramData.ElementAt(i).Value;
-        for (int j = 0; j < CurrentDataInOneDateLine.SeriesNumber; j++)
+        for (int j = 0; j < CurrentDataInOneDateLine.SeriesCount; j++)
         {
           if (oneDay[j].Equals(0)) continue;
           Rect rect;
@@ -324,7 +324,7 @@ namespace Keeper.Controls
         }
       }
 
-      for (int i = 0; i < CurrentDataInOneDateLine.SeriesNumber; i++)
+      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
       {
         var positiveGeometryDrawing = new GeometryDrawing
                                       {

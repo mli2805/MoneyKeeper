@@ -9,15 +9,14 @@ namespace Keeper.ViewModels
 {
   internal class MonthlyResultDiagramViewModel : Screen
    {
-    public MonthlyResultDiagramViewModel(Dictionary<DateTime, decimal> monthlyResults)
+    public MonthlyResultDiagramViewModel(IEnumerable<DiagramSeries> severalSeries)
     {
-      var data = (from pair in monthlyResults
-                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList();
-
-      var series = new DiagramSeries
-                     {Name = "Сальдо", positiveBrushColor = Brushes.Blue, negativeBrushColor = Brushes.Red, Data = data};
-
-      ModelDataProperty = new List<DiagramSeries> {series};
+      ModelDataProperty = new List<DiagramSeries>();
+      foreach (var series in severalSeries)
+      {
+        ModelDataProperty.Add(series);
+        
+      }
     }
 
     public List<DiagramSeries> ModelDataProperty { get; set; }
