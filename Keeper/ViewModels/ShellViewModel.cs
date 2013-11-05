@@ -496,12 +496,20 @@ namespace Keeper.ViewModels
     private MonthlyResultDiagramViewModel _monthlyResultDiagramFormPointer;
     public void ShowMonthlyResultDiagram()
     {
-      var monthlyResults = DiagramDataCtors.MonthlyResults();
+      var monthlyResults = DiagramDataCtors.MonthlyResultsDiagramCtor();
 
       _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyResults);
       WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
     }
-    
+
+    public void ShowMonthlyIncomeDiagram()
+    {
+      var monthlyIncomes = DiagramDataCtors.MonthlyIncomesDiagramCtor();
+
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyIncomes);
+      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
+    }
+
     #endregion
 
     public void TempItem()
