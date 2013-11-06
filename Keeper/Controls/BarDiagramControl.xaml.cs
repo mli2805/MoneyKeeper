@@ -37,8 +37,9 @@ namespace Keeper.Controls
       set {SetValue(AllDiagramSeriesProperty, value);}
     }
     
-    public DateLineDiagramData AllDataInOneDateLine { get; set; }
-    public DateLineDiagramData CurrentDataInOneDateLine { get; set; }
+    public DateLineDiagramData AllData { get; set; }
+    public DateLineDiagramData CurrentData { get; set; }
+    private Every _oneBarPeriod;
 
     /// <summary>
     /// На входе AllDiagramSeries, надо преобразовать в структуру, 
@@ -48,7 +49,7 @@ namespace Keeper.Controls
     {
       foreach (var diagramSeries in AllDiagramSeries)
       {
-        AllDataInOneDateLine.Add(diagramSeries);
+        AllData.Add(diagramSeries);
       }
     }
 
@@ -66,9 +67,9 @@ namespace Keeper.Controls
 
     private double PointPerDate { get
     {
-      if (CurrentDataInOneDateLine.DiagramData == null) return 0;
-      if (CurrentDataInOneDateLine.DiagramData.Count == 0) return 0;
-      return (ImageWidth - LeftMargin - RightMargin - Shift) / CurrentDataInOneDateLine.DiagramData.Count;
+      if (CurrentData.DiagramData == null) return 0;
+      if (CurrentData.DiagramData.Count == 0) return 0;
+      return (ImageWidth - LeftMargin - RightMargin - Shift) / CurrentData.DiagramData.Count;
     } }
     private double Gap { get { return PointPerDate/3; } } // промежуток между столбиками диаграммы
     private double PointPerBar { get { return PointPerDate - Gap; } }
@@ -103,10 +104,11 @@ namespace Keeper.Controls
 
     void BarDiagramControlOnLoaded(object sender, RoutedEventArgs e)
     {
-      AllDataInOneDateLine = new DateLineDiagramData();
+      _oneBarPeriod = Every.Month;
+      AllData = new DateLineDiagramData();
       ConvertToOneDateLine();
-      if (AllDataInOneDateLine.SeriesCount == 0) return;
-      CurrentDataInOneDateLine = new DateLineDiagramData(AllDataInOneDateLine);
+      if (AllData.SeriesCount == 0) return;
+      CurrentData = new DateLineDiagramData(AllData);
 
       DrawCurrentDiagram();
       DiagramImage.Source = ImageSource;
@@ -117,23 +119,23 @@ namespace Keeper.Controls
 
     private void GetDataInLineLimits(BarDiagramMode mode)
     {
-      _minDate = CurrentDataInOneDateLine.DiagramData.ElementAt(0).Key;
-      _maxDate = CurrentDataInOneDateLine.DiagramData.Last().Key;
+      _minDate = CurrentData.DiagramData.ElementAt(0).Key;
+      _maxDate = CurrentData.DiagramData.Last().Key;
 
       switch (mode)
       {
           case BarDiagramMode.Horizontal:
           // это вариант , когда столбцы разных серий стоят рядом
-          _minValue = CurrentDataInOneDateLine.DiagramData.Values.Min(l => l.Min());
-          _maxValue = CurrentDataInOneDateLine.DiagramData.Values.Max(l => l.Max());
+          _minValue = CurrentData.DiagramData.Values.Min(l => l.Min());
+          _maxValue = CurrentData.DiagramData.Values.Max(l => l.Max());
           break;
 
           case BarDiagramMode.Vertical:
           // Vertical , столбцы стоят один на одном и надо находить min/max суммы
           case BarDiagramMode.Butterfly:
           // Butterfly - Vertical, но ряд серий отрицательные НО их сумма НЕ должна считаться отдельно
-          _minValue = CurrentDataInOneDateLine.DiagramData.Values.Min(l => l.Sum());
-          _maxValue = CurrentDataInOneDateLine.DiagramData.Values.Max(l => l.Sum());
+          _minValue = CurrentData.DiagramData.Values.Min(l => l.Sum());
+          _maxValue = CurrentData.DiagramData.Values.Max(l => l.Sum());
           break;
       }
 
@@ -208,7 +210,7 @@ namespace Keeper.Controls
       var geometryGroupDashesAndMarks = new GeometryGroup();
       var geometryGroupGridlines = new GeometryGroup();
 
-      for (var i = 0; i < CurrentDataInOneDateLine.DiagramData.Count; i++)
+      for (var i = 0; i < CurrentData.DiagramData.Count; i++)
       {
         var dashY = flag == Dock.Bottom ? ImageHeight - BottomMargin : TopMargin;
         var dash = new LineGeometry(new Point(LeftMargin + Shift / 2 + PointPerDate * (i + 0.5), dashY - 5),
@@ -224,7 +226,7 @@ namespace Keeper.Controls
           geometryGroupGridlines.Children.Add(gridline);
 
           var markY = flag == Dock.Bottom ? ImageHeight : TopMargin;
-          var mark = String.Format("{0:M/yyyy} ", CurrentDataInOneDateLine.DiagramData.ElementAt(i).Key);
+          var mark = String.Format("{0:M/yyyy} ", CurrentData.DiagramData.ElementAt(i).Key);
           var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                                 new Typeface("Times New Roman"), 12, Brushes.Black);
           var geometry =
@@ -304,16 +306,16 @@ namespace Keeper.Controls
     private void VerticalDiagram()
     {
       var positiveGeometryGroups = new List<GeometryGroup>();
-      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
+      for (int i = 0; i < CurrentData.SeriesCount; i++)
       {
         positiveGeometryGroups.Add(new GeometryGroup());
       }
 
-      for (int i = 0; i < CurrentDataInOneDateLine.DiagramData.Count; i++)
+      for (int i = 0; i < CurrentData.DiagramData.Count; i++)
       {
-        var oneDay = CurrentDataInOneDateLine.DiagramData.ElementAt(i).Value;
+        var oneDay = CurrentData.DiagramData.ElementAt(i).Value;
         double hasAlreadyHeight = 0;
-        for (int j = 0; j < CurrentDataInOneDateLine.SeriesCount; j++)
+        for (int j = 0; j < CurrentData.SeriesCount; j++)
         {
           if (oneDay[j].Equals(0)) continue;
           var rect = new Rect(LeftMargin + Shift / 2 + Gap / 2 + i * (PointPerBar + Gap),
@@ -325,7 +327,7 @@ namespace Keeper.Controls
         }
       }
 
-      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
+      for (int i = 0; i < CurrentData.SeriesCount; i++)
       {
         var positiveGeometryDrawing = new GeometryDrawing
         {
@@ -343,16 +345,16 @@ namespace Keeper.Controls
     {
       var positiveGeometryGroups = new List<GeometryGroup>();
       var negativeGeometryGroups = new List<GeometryGroup>();
-      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
+      for (int i = 0; i < CurrentData.SeriesCount; i++)
       {
         positiveGeometryGroups.Add(new GeometryGroup());
         negativeGeometryGroups.Add(new GeometryGroup());
       }
 
-      for (int i = 0; i < CurrentDataInOneDateLine.DiagramData.Count; i++)
+      for (int i = 0; i < CurrentData.DiagramData.Count; i++)
       {
-        var oneDay = CurrentDataInOneDateLine.DiagramData.ElementAt(i).Value;
-        for (int j = 0; j < CurrentDataInOneDateLine.SeriesCount; j++)
+        var oneDay = CurrentData.DiagramData.ElementAt(i).Value;
+        for (int j = 0; j < CurrentData.SeriesCount; j++)
         {
           if (oneDay[j].Equals(0)) continue;
           Rect rect;
@@ -375,7 +377,7 @@ namespace Keeper.Controls
         }
       }
 
-      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
+      for (int i = 0; i < CurrentData.SeriesCount; i++)
       {
         var positiveGeometryDrawing = new GeometryDrawing
                                       {
@@ -406,7 +408,7 @@ namespace Keeper.Controls
       switch (mode)
       {
         case ChangeDiagramDataMode.ZoomIn:
-          if (CurrentDataInOneDateLine.DiagramData.Count < 4) return true;
+          if (CurrentData.DiagramData.Count < 4) return true;
           shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
           if (shiftDateRange < 31)
           {
@@ -430,9 +432,9 @@ namespace Keeper.Controls
           if (horizontal < 0) // двигаем влево
           {
             var newMaxDate = _maxDate.AddMonths(deltaMonthes); 
-            if (newMaxDate > AllDataInOneDateLine.DiagramData.Last().Key)
+            if (newMaxDate > AllData.DiagramData.Last().Key)
             {
-              newMaxDate = AllDataInOneDateLine.DiagramData.Last().Key;
+              newMaxDate = AllData.DiagramData.Last().Key;
               deltaMonthes = (int)Math.Round((newMaxDate - _maxDate).TotalDays / 30);
             }
             _maxDate = newMaxDate;
@@ -441,9 +443,9 @@ namespace Keeper.Controls
           else // вправо
           {
             var newMinDate = _minDate.AddMonths(-deltaMonthes); 
-            if (newMinDate < AllDataInOneDateLine.DiagramData.ElementAt(0).Key)
+            if (newMinDate < AllData.DiagramData.ElementAt(0).Key)
             {
-              newMinDate = AllDataInOneDateLine.DiagramData.ElementAt(0).Key;
+              newMinDate = AllData.DiagramData.ElementAt(0).Key;
               deltaMonthes = (int)Math.Round((_minDate - newMinDate).TotalDays / 30);
             }
             _minDate = newMinDate;
@@ -460,12 +462,12 @@ namespace Keeper.Controls
 
     public void ExtractDataBetweenLimits()
     {
-      CurrentDataInOneDateLine.DiagramData.Clear();
-      foreach (var day in AllDataInOneDateLine.DiagramData)
+      CurrentData.DiagramData.Clear();
+      foreach (var day in AllData.DiagramData)
       {
         if (day.Key >= _minDate && day.Key <= _maxDate)
         {
-          CurrentDataInOneDateLine.DiagramData.Add(day.Key, day.Value);
+          CurrentData.DiagramData.Add(day.Key, day.Value);
         }
       }
     }
@@ -485,14 +487,14 @@ namespace Keeper.Controls
 
       var count = (int)Math.Floor(d / PointPerDate);
       var rest = d - count * PointPerDate;
-      if (rest < PointPerBar && count < CurrentDataInOneDateLine.DiagramData.Count)
+      if (rest < PointPerBar && count < CurrentData.DiagramData.Count)
       {
-        var barHeight = Y0 - PointPerOneValueAfter * CurrentDataInOneDateLine.DiagramData.ElementAt(count).Value.Sum();
+        var barHeight = Y0 - PointPerOneValueAfter * CurrentData.DiagramData.ElementAt(count).Value.Sum();
         if (barHeight < Y0) byHeight = barHeight < point.Y && point.Y < Y0;
         else byHeight = barHeight > point.Y && point.Y > Y0;
         return count; // мышь попала на столбец по горизонтали
       }
-      leftBar = count >= CurrentDataInOneDateLine.DiagramData.Count ? CurrentDataInOneDateLine.DiagramData.Count -1 : count;
+      leftBar = count >= CurrentData.DiagramData.Count ? CurrentData.DiagramData.Count -1 : count;
       return -1; // мышь не попала на столбец по горизонтали, слева кто-то есть
     }
 
@@ -543,16 +545,16 @@ namespace Keeper.Controls
       var nuevoCurrentDiagramData = new SortedList<DateTime, List<double>>();
       for (int i = numberFrom; i <= numberTo; i++)
       {
-        nuevoCurrentDiagramData.Add(CurrentDataInOneDateLine.DiagramData.ElementAt(i).Key,
-             CurrentDataInOneDateLine.DiagramData.ElementAt(i).Value);
+        nuevoCurrentDiagramData.Add(CurrentData.DiagramData.ElementAt(i).Key,
+             CurrentData.DiagramData.ElementAt(i).Value);
       }
-      CurrentDataInOneDateLine.DiagramData = nuevoCurrentDiagramData;
+      CurrentData.DiagramData = nuevoCurrentDiagramData;
       DrawCurrentDiagram();
     }
 
     public void ShowAllDiagram()
     {
-      CurrentDataInOneDateLine.DiagramData = new SortedList<DateTime, List<double>>(AllDataInOneDateLine.DiagramData);
+      CurrentData.DiagramData = new SortedList<DateTime, List<double>>(AllData.DiagramData);
       DrawCurrentDiagram();
     }
 
@@ -610,6 +612,7 @@ namespace Keeper.Controls
     #region popup menu
     private void GroupByMonthes(object sender, RoutedEventArgs e)
     {
+      _oneBarPeriod = Every.Month;
       _maxDate = new DateTime(_maxDate.Year, 12, 31);
       ExtractDataBetweenLimits();
       DrawCurrentDiagram();
@@ -617,16 +620,17 @@ namespace Keeper.Controls
 
     private void GroupByYears(object sender, RoutedEventArgs e)
     {
+      _oneBarPeriod = Every.Year;
       DefineYearsLimits();
       ExtractDataBetweenLimitsWithYearsGrouping();
       DrawCurrentDiagram();
     }
     private void ExtractDataBetweenLimitsWithYearsGrouping()
     {
-      CurrentDataInOneDateLine.DiagramData.Clear();
+      CurrentData.DiagramData.Clear();
       var startYearDate = new DateTime(0);
       var yearValue = new List<double>();
-      foreach (var day in AllDataInOneDateLine.DiagramData)
+      foreach (var day in AllData.DiagramData)
       {
         if (day.Key < _minDate || day.Key > _maxDate) continue;
 
@@ -634,7 +638,7 @@ namespace Keeper.Controls
         {
           if (startYearDate.Year != 1)
           {
-            CurrentDataInOneDateLine.DiagramData.Add(startYearDate, yearValue);
+            CurrentData.DiagramData.Add(startYearDate, yearValue);
           }
 
           startYearDate = day.Key;
@@ -649,7 +653,7 @@ namespace Keeper.Controls
           }
         }
       }
-      CurrentDataInOneDateLine.DiagramData.Add(startYearDate, yearValue);
+      CurrentData.DiagramData.Add(startYearDate, yearValue);
     }
 
     private void DefineYearsLimits()
@@ -685,6 +689,38 @@ namespace Keeper.Controls
       if (e.Key == Key.F5) DrawCurrentDiagram();
     }
 
+    private Brush DefineBarHintBackground(int barNumber)
+    {
+      if (AllDiagramSeries.Count == 1) return CurrentData.DiagramData.ElementAt(barNumber).Value[0] > 0 ?
+                                                                       Brushes.Azure : Brushes.LavenderBlush;
+      return Brushes.White;
+    }
+
+    private string CreateBarHintContent(int barNumber)
+    {
+      var content = _oneBarPeriod == Every.Month
+                          ? "  {0:MMMM yyyy}  "
+                          : "  {0:yyyy} год  ";
+
+      if (AllDiagramSeries.Count == 1)
+      {
+        content += "\n  {1:0} usd ";
+        return string.Format(content,     
+                        CurrentData.DiagramData.ElementAt(barNumber).Key,
+                        CurrentData.DiagramData.ElementAt(barNumber).Value[0]);
+      }
+
+      int i = 0;
+      content = string.Format(content, CurrentData.DiagramData.ElementAt(barNumber).Key);
+      foreach (var series in AllDiagramSeries)
+      {
+        content += string.Format("\n  {0} - {1:0} usd  ", series.Name, CurrentData.DiagramData.ElementAt(barNumber).Value[i]);
+        i++;
+      }
+
+      return content;
+    }
+
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
       Point pt = e.GetPosition(this);
@@ -698,11 +734,8 @@ namespace Keeper.Controls
         BarHint.HorizontalOffset = pt.X;
         BarHint.VerticalOffset = pt.Y - 5;
 
-        BarHintText.Background = CurrentDataInOneDateLine.DiagramData.ElementAt(bar).Value.Sum() > 0 ?
-                                                                       Brushes.Azure : Brushes.LavenderBlush;
-        BarHintText.Text = string.Format("  {0:MMMM yyyy}  \n   {1:0} usd ", 
-                        CurrentDataInOneDateLine.DiagramData.ElementAt(bar).Key,
-                        CurrentDataInOneDateLine.DiagramData.ElementAt(bar).Value.Sum());
+        BarHintText.Background = DefineBarHintBackground(bar);
+        BarHintText.Text = CreateBarHintContent(bar);
       }
       else // debug info
       {
