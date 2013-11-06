@@ -45,8 +45,9 @@ namespace Keeper.Controls
     /// На входе AllDiagramSeries, надо преобразовать в структуру, 
     /// где одной дате соответствуют значения для разных серий - List of DiagramDate
     /// </summary>
-    private void ConvertToOneDateLine()
+    private void AllSeriesToAllData()
     {
+      AllData = new DateLineDiagramData();
       foreach (var diagramSeries in AllDiagramSeries)
       {
         AllData.Add(diagramSeries);
@@ -106,7 +107,7 @@ namespace Keeper.Controls
     {
       _oneBarPeriod = Every.Month;
       AllData = new DateLineDiagramData();
-      ConvertToOneDateLine();
+      AllSeriesToAllData();
       if (AllData.SeriesCount == 0) return;
       CurrentData = new DateLineDiagramData(AllData);
 
@@ -610,20 +611,53 @@ namespace Keeper.Controls
     #endregion
 
     #region popup menu
-    private void GroupByMonthes(object sender, RoutedEventArgs e)
+
+    private void GroupAllData(Every period)
     {
-      _oneBarPeriod = Every.Month;
-      _maxDate = new DateTime(_maxDate.Year, 12, 31);
+      _oneBarPeriod = period;
+
+      var groupedData = new SortedList<DateTime, List<double>>();
+      var onePair = AllData.DiagramData.ElementAt(0);
+      for (var p = 1; p < AllData.DiagramData.Count; p++ )
+      {
+        var pair = AllData.DiagramData.ElementAt(p);
+        if (FunctionsWithEvery.IsTheSamePeriod(onePair.Key, pair.Key, period))
+        {
+          for (var i = 0; i < onePair.Value.Count; i++)
+            onePair.Value[i] += pair.Value[i];
+        }
+        else
+        {
+          groupedData.Add(onePair.Key, onePair.Value);
+          onePair = pair;
+        }
+      }
+      groupedData.Add(onePair.Key, onePair.Value);
+      AllData.DiagramData = new SortedList<DateTime, List<double>>(groupedData);
+    }
+
+    private void ChangeDiagramForNewGrouping(Every groupPeriod)
+    {
+      AllSeriesToAllData();
+      GroupAllData(groupPeriod);
+
+      if (groupPeriod == Every.Year) DefineYearsLimits();
+      else _maxDate = new DateTime(_maxDate.Year, 12, 31);
+
       ExtractDataBetweenLimits();
       DrawCurrentDiagram();
     }
 
+    private void GroupByMonthes(object sender, RoutedEventArgs e)
+    {
+      if (_oneBarPeriod == Every.Month) return;
+      ChangeDiagramForNewGrouping(Every.Month);
+    }
+
     private void GroupByYears(object sender, RoutedEventArgs e)
     {
-      _oneBarPeriod = Every.Year;
-      DefineYearsLimits();
-      ExtractDataBetweenLimitsWithYearsGrouping();
-      DrawCurrentDiagram();
+      if (_oneBarPeriod == Every.Year) return;
+      ChangeDiagramForNewGrouping(Every.Year);
     }
     private void ExtractDataBetweenLimitsWithYearsGrouping()
     {
