@@ -17,6 +17,16 @@ namespace Keeper.Controls
       throw new NotImplementedException();
     }
 
+    public static readonly DependencyProperty DiagramModeProperty =
+      DependencyProperty.Register("DiagramMode", typeof(BarDiagramMode),
+                                  typeof(BarDiagramControl), new FrameworkPropertyMetadata(new BarDiagramMode()));
+
+    public BarDiagramMode DiagramMode
+    {
+      get { return (BarDiagramMode) GetValue(DiagramModeProperty); }
+      set { SetValue(DiagramModeProperty, value);}
+    }
+
     public static readonly DependencyProperty AllDiagramSeriesProperty =
       DependencyProperty.Register("AllDiagramSeries", typeof (List<DiagramSeries>),
                                   typeof(BarDiagramControl), new FrameworkPropertyMetadata(new List<DiagramSeries>()));
@@ -126,6 +136,8 @@ namespace Keeper.Controls
           _maxValue = CurrentDataInOneDateLine.DiagramData.Values.Max(l => l.Sum());
           break;
       }
+
+      if (_minValue > 0) _minValue = 0;
     }
 
     #region Drawing implementation
@@ -144,7 +156,8 @@ namespace Keeper.Controls
       MarkersForVerticalAxes(Dock.Left);
       MarkersForVerticalAxes(Dock.Right);
 
-      ButterflyDiagram();
+      if (DiagramMode == BarDiagramMode.Butterfly) ButterflyDiagram();
+      if (DiagramMode == BarDiagramMode.Vertical) VerticalDiagram();
       ImageSource = new DrawingImage(DrawingGroup);
     }
 
@@ -286,6 +299,44 @@ namespace Keeper.Controls
 
       var geometryDrawingGridlines = new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
       DrawingGroup.Children.Add(geometryDrawingGridlines);
+    }
+
+    private void VerticalDiagram()
+    {
+      var positiveGeometryGroups = new List<GeometryGroup>();
+      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
+      {
+        positiveGeometryGroups.Add(new GeometryGroup());
+      }
+
+      for (int i = 0; i < CurrentDataInOneDateLine.DiagramData.Count; i++)
+      {
+        var oneDay = CurrentDataInOneDateLine.DiagramData.ElementAt(i).Value;
+        double hasAlreadyHeight = 0;
+        for (int j = 0; j < CurrentDataInOneDateLine.SeriesCount; j++)
+        {
+          if (oneDay[j].Equals(0)) continue;
+          var rect = new Rect(LeftMargin + Shift / 2 + Gap / 2 + i * (PointPerBar + Gap),
+                                ImageHeight - BottomMargin - (oneDay[j] + hasAlreadyHeight - LowestScaleValue) * PointPerOneValueAfter,
+                                PointPerBar,
+                                oneDay[j] * PointPerOneValueAfter);
+          positiveGeometryGroups[j].Children.Add(new RectangleGeometry(rect));
+          hasAlreadyHeight += oneDay[j];
+        }
+      }
+
+      for (int i = 0; i < CurrentDataInOneDateLine.SeriesCount; i++)
+      {
+        var positiveGeometryDrawing = new GeometryDrawing
+        {
+          Geometry = positiveGeometryGroups[i],
+          Brush = AllDiagramSeries[i].positiveBrushColor,
+          Pen = new Pen(AllDiagramSeries[i].positiveBrushColor, 1)
+        };
+
+        DrawingGroup.Children.Add(positiveGeometryDrawing);
+      }
+
     }
 
     private  void ButterflyDiagram()

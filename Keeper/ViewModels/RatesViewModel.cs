@@ -173,7 +173,7 @@ namespace Keeper.ViewModels
       IsInInputMode = false;
     }
 
-    public void Close()
+    public void CloseView()
     {
       TryClose();
     }
