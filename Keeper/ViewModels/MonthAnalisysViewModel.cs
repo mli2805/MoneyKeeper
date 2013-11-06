@@ -384,7 +384,7 @@ namespace Keeper.ViewModels
       FillInLists();
     }
 
-    public void Close()
+    public void CloseView()
     {
       TryClose();
     }

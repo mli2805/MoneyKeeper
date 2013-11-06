@@ -300,6 +300,17 @@ namespace Keeper.Utils
       dataForDiagram.Add(
         new DiagramSeries
         {
+          Name = "Зарплата",
+          positiveBrushColor = Brushes.Green,
+          negativeBrushColor = Brushes.Red,
+          Index = 0,
+          Data = (from pair in MonthlyTraffic("Зарплата")
+                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
+        });
+
+      dataForDiagram.Add(
+        new DiagramSeries
+        {
           Name = "Рента",
           positiveBrushColor = Brushes.Blue,
           negativeBrushColor = Brushes.Red,
@@ -307,17 +318,6 @@ namespace Keeper.Utils
           Data = (from pair in MonthlyTraffic("Рента")
                   select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
         });
-
-      dataForDiagram.Add(
-        new DiagramSeries
-          {
-            Name = "Зарплата",
-            positiveBrushColor = Brushes.Green,
-            negativeBrushColor = Brushes.Red,
-            Index = 0,
-            Data = (from pair in MonthlyTraffic("Зарплата")
-                    select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
-          });
 
       return dataForDiagram;
     }

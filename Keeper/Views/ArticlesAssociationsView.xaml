@@ -39,7 +39,7 @@
         </DataGridComboBoxColumn>
       </DataGrid.Columns>
     </DataGrid>
-    <Button Grid.Row="1" Name="Close" IsCancel="True"/>
+    <Button Grid.Row="1" Name="CloseView" IsCancel="True"/>
 
   </Grid>
 </Window>

@@ -498,7 +498,7 @@ namespace Keeper.ViewModels
     {
       var monthlyResults = DiagramDataCtors.MonthlyResultsDiagramCtor();
 
-      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyResults);
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyResults,BarDiagramMode.Butterfly);
       WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
     }
 
@@ -506,7 +506,7 @@ namespace Keeper.ViewModels
     {
       var monthlyIncomes = DiagramDataCtors.MonthlyIncomesDiagramCtor();
 
-      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyIncomes);
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyIncomes,BarDiagramMode.Vertical);
       WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
     }
 
