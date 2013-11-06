@@ -311,11 +311,33 @@ namespace Keeper.Utils
       dataForDiagram.Add(
         new DiagramSeries
         {
+          Name = "Иррациональные",
+          positiveBrushColor = Brushes.CadetBlue,
+          negativeBrushColor = Brushes.Red,
+          Index = 1,
+          Data = (from pair in MonthlyTraffic("Иррациональные")
+                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
+        });
+
+      dataForDiagram.Add(
+        new DiagramSeries
+        {
           Name = "Рента",
           positiveBrushColor = Brushes.Blue,
           negativeBrushColor = Brushes.Red,
-          Index = 0,
+          Index = 2,
           Data = (from pair in MonthlyTraffic("Рента")
+                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
+        });
+
+      dataForDiagram.Add(
+        new DiagramSeries
+        {
+          Name = "Подарки",
+          positiveBrushColor = Brushes.DarkOrange,
+          negativeBrushColor = Brushes.Red,
+          Index = 3,
+          Data = (from pair in MonthlyTraffic("Подарки")
                   select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
         });
 
