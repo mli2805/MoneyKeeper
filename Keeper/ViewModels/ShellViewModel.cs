@@ -24,6 +24,7 @@ namespace Keeper.ViewModels
     public IWindowManager WindowManager { get; set; }
 
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+	private static readonly IBalance Balance = IoC.Get<IBalance>();
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 

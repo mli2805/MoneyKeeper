@@ -1,68 +1,86 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-  class Rate
-  {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+	public interface IRate
+	{
+		double GetRate(CurrencyCodes currency, DateTime day);
+		double GetLastRate(CurrencyCodes currency);
+		double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day);
+		decimal GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp);
+		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp);
+		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd);
+	}
 
-    public static double GetRate(CurrencyCodes currency, DateTime day)
-    {
-      var rate = (from currencyRate in Db.CurrencyRates
-                  where currencyRate.BankDay.Date == day.Date && currencyRate.Currency == currency
-                  select currencyRate).FirstOrDefault();
-      return rate != null ? rate.Rate : 0.0;
-    }
+	[Export(typeof(IRate))]
+	public class Rate : IRate
+	{
+		public IKeeperDb Db { get; private set; }
+		
+		[ImportingConstructor]
+		public Rate(IKeeperDb db)
+		{
+			Db = db;
+		}
 
-    public static double GetLastRate(CurrencyCodes currency)
-    {
-      var rate = (from currencyRate in Db.CurrencyRates
-                  where currencyRate.Currency == currency
-                  orderby currencyRate.BankDay
-                  select currencyRate).LastOrDefault();
-      return rate != null ? rate.Rate : 0.0;
-    }
+		public double GetRate(CurrencyCodes currency, DateTime day)
+		{
+			var rate = (from currencyRate in Db.CurrencyRates
+						where currencyRate.BankDay.Date == day.Date && currencyRate.Currency == currency
+						select currencyRate).FirstOrDefault();
+			return rate != null ? rate.Rate : 0.0;
+		}
 
-    public static double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day)
-    {
-      var rate = (from currencyRate in Db.CurrencyRates
-                  where currencyRate.BankDay.Date <= day.Date && currencyRate.Currency == currency
-                  orderby currencyRate.BankDay
-                  select currencyRate).LastOrDefault();
-      return rate != null ? rate.Rate : 0.0;
-    }
+		public double GetLastRate(CurrencyCodes currency)
+		{
+			var rate = (from currencyRate in Db.CurrencyRates
+						where currencyRate.Currency == currency
+						orderby currencyRate.BankDay
+						select currencyRate).LastOrDefault();
+			return rate != null ? rate.Rate : 0.0;
+		}
 
-    public static decimal GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp)
-    {
-      if (currency == CurrencyCodes.USD) return amount;
+		public double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day)
+		{
+			var rate = (from currencyRate in Db.CurrencyRates
+						where currencyRate.BankDay.Date <= day.Date && currencyRate.Currency == currency
+						orderby currencyRate.BankDay
+						select currencyRate).LastOrDefault();
+			return rate != null ? rate.Rate : 0.0;
+		}
 
-      var rate = GetRateThisDayOrBefore(currency, timestamp);
-      if (rate.Equals(0.0)) return -1;
+		public decimal GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp)
+		{
+			if (currency == CurrencyCodes.USD) return amount;
 
-      return amount / (decimal)rate;
-    }
+			var rate = GetRateThisDayOrBefore(currency, timestamp);
+			if (rate.Equals(0.0)) return -1;
 
-    public static string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp)
-    {
-      decimal temp;
-      return GetUsdEquivalentString(amount, currency, timestamp, out temp);
-    }
+			return amount / (decimal)rate;
+		}
 
-    public static string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd)
-    {
-      amountInUsd = 0;
-      var rate = GetRate(currency, timestamp);
-      if (rate.Equals(0.0)) return "не задан курс " + currency + " на эту дату";
+		public string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp)
+		{
+			decimal temp;
+			return GetUsdEquivalentString(amount, currency, timestamp, out temp);
+		}
 
-      amountInUsd = amount/(decimal) rate;
-      var res = amountInUsd.ToString("F2") + "$ по курсу " + rate;
-      if (currency == CurrencyCodes.EUR)
-        res = amountInUsd.ToString("F2") + "$ по курсу " + (1 / rate).ToString("F3");
-      return res;
-    }
+		public string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd)
+		{
+			amountInUsd = 0;
+			var rate = GetRate(currency, timestamp);
+			if (rate.Equals(0.0)) return "не задан курс " + currency + " на эту дату";
 
-  }
+			amountInUsd = amount / (decimal)rate;
+			var res = amountInUsd.ToString("F2") + "$ по курсу " + rate;
+			if (currency == CurrencyCodes.EUR)
+				res = amountInUsd.ToString("F2") + "$ по курсу " + (1 / rate).ToString("F3");
+			return res;
+		}
+
+	}
 }

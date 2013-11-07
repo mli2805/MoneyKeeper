@@ -3,14 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Utils;
-using Keeper.ViewModels;
 
 namespace Keeper.DomainModel
 {
   [Serializable]
   public class Transaction : PropertyChangedBase
   {
-    private DateTime _timestamp;
+	  private readonly IRate Rate = IoC.Get<IRate>();
+
+	  private DateTime _timestamp;
     private OperationType _operation;
     private Account _debet;
     private Account _credit;
