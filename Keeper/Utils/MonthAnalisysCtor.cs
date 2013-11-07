@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -10,6 +8,8 @@ namespace Keeper.Utils
   class MonthAnalisysCtor
   {
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+	private static readonly IRate Rate = IoC.Get<IRate>();
+	private static readonly IBalance Balance = IoC.Get<IBalance>();
   
     public static Saldo AnalizeMonth(DateTime initialDay)
     {

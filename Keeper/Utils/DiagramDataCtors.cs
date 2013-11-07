@@ -111,7 +111,8 @@ namespace Keeper.Utils
 
   public class DateLineDiagramData
   {
-    public SortedList<DateTime, List<Double>> DiagramData;
+	  private static readonly IRate Rate = IoC.Get<IRate>();
+	  public SortedList<DateTime, List<Double>> DiagramData;
     public int SeriesCount;
 
     public DateLineDiagramData()
@@ -140,6 +141,9 @@ namespace Keeper.Utils
 
   class DiagramDataCtors
   {
+	  private static readonly IRate Rate = IoC.Get<IRate>();
+//	  private static readonly IBalance Balance = IoC.Get<IBalance>();
+
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     #region для диаграмм ежедневные остатки и ежедневное распределение по валютам депозитов
@@ -164,7 +168,7 @@ namespace Keeper.Utils
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
       var currentDate = period.GetStart();
 
-      foreach (var transaction in Balance.Db.Transactions)
+	  foreach (var transaction in Db.Transactions)
       {
         if (currentDate != transaction.Timestamp.Date)
         {
@@ -213,7 +217,7 @@ namespace Keeper.Utils
       decimal movement = 0;
       var currentDate = period.GetStart();
 
-      foreach (var transaction in Balance.Db.Transactions)
+	  foreach (var transaction in Db.Transactions)
       {
         if (transaction.Timestamp.Date < period.GetStart()) continue;
         if (transaction.Timestamp.Date > period.GetFinish()) break;
@@ -247,7 +251,7 @@ namespace Keeper.Utils
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
       var currentDate = period.GetStart();
 
-      foreach (var transaction in Balance.Db.Transactions)
+      foreach (var transaction in Db.Transactions)
       {
         if (currentDate != transaction.Timestamp.Date)
         {

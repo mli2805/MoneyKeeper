@@ -12,7 +12,8 @@ namespace Keeper.ViewModels
 {
   class MonthAnalisysViewModel : Screen
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+	  private readonly IRate Rate = IoC.Get<IRate>();
+	  public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     private bool _isMonthEnded;
 

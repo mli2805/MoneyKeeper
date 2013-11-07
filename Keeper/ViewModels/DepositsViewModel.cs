@@ -11,7 +11,8 @@ namespace Keeper.ViewModels
 {
   public class ChartPoint
   {
-    public string Subject { get; set; }
+	  private readonly IRate Rate = IoC.Get<IRate>();
+	  public string Subject { get; set; }
     public int Amount { get; set; }
 
     public ChartPoint() { }
@@ -37,7 +38,8 @@ namespace Keeper.ViewModels
 
   public class DepositsViewModel : Screen
   {
-    public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
+	  private readonly Rate Rate = new Rate(IoC.Get<IKeeperDb>());
+	  public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
     public List<Deposit> DepositsList { get; set; }
