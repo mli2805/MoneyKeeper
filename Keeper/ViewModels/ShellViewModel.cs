@@ -191,11 +191,28 @@ namespace Keeper.ViewModels
     public void OnImportsSatisfied()
     {
       _isDbLoadingSuccessed = false;
-//      ShowLogonForm();
 
-      if (BinaryCrypto.DbCryptoDeserialization() == 5)
+      var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
+      if  (!File.Exists(filename))
       {
-        var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
+        MessageBox.Show("");
+        MessageBox.Show("File '" + filename + "' not found. \n\n You will be offered to choose database file.", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+        // Create OpenFileDialog
+        var dlg = new Microsoft.Win32.OpenFileDialog();
+
+        // Set filter for file extension and default file extension
+        dlg.DefaultExt = ".dbx";
+        dlg.Filter = "Keeper Database (.dbx)|*.dbx";
+
+        // Display OpenFileDialog by calling ShowDialog method
+        var result = dlg.ShowDialog();
+
+        // Get the selected file name and display in a TextBox
+        filename = result == true ? dlg.FileName : @"g:\local_keeperDb\Keeper.dbx";
+      }
+      if (BinaryCrypto.DbCryptoDeserialization(filename) != 0)
+      {
         MessageBox.Show("");
         MessageBox.Show("File '" + filename + "' not found. \n Last zip will be used.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 
@@ -369,7 +386,8 @@ namespace Keeper.ViewModels
 
     public void LoadDatabase()
     {
-      BinaryCrypto.DbCryptoDeserialization();
+      var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
+      BinaryCrypto.DbCryptoDeserialization(filename);
     }
 
     public void ClearDatabase()

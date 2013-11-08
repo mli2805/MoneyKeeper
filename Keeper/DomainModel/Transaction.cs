@@ -9,8 +9,6 @@ namespace Keeper.DomainModel
   [Serializable]
   public class Transaction : PropertyChangedBase
   {
-	  private readonly IRate Rate = IoC.Get<IRate>();
-
 	  private DateTime _timestamp;
     private OperationType _operation;
     private Account _debet;
