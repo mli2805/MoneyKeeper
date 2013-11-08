@@ -115,6 +115,7 @@
     <Compile Include="ViewModels\DiagramViewModels\DateDoubleDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
+    <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
     <Compile Include="Views\DiagramViews\DateDoubleDiagramView.xaml.cs">
       <DependentUpon>DateDoubleDiagramView.xaml</DependentUpon>
@@ -124,6 +125,9 @@
     </Compile>
     <Compile Include="Views\DiagramViews\RatesDiagramView.xaml.cs">
       <DependentUpon>RatesDiagramView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogonView.xaml.cs">
+      <DependentUpon>LogonView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
@@ -252,6 +256,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DiagramViews\MonthlyResultDiagramView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

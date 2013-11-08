@@ -144,7 +144,7 @@ namespace Keeper.DomainModel
 					comment = balanceAfterTransaction == 0 ? "закрытие депозита" : "частичное снятие";
 				}
 
-				Report.Add(String.Format("{0}     {1}", transaction.ToDepositReport(Account), comment));
+				Report.Add(String.Format("{0}     {1}", ToDepositReport(transaction), comment));
 			}
 
 			// подвал отчета
@@ -157,6 +157,22 @@ namespace Keeper.DomainModel
 			Report.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", Profit));
 			Report.Add(ForecastProfit());
 		}
+
+    private string ToDepositReport(Transaction transaction)
+    {
+      var s = transaction.Timestamp.ToString("dd/MM/yyyy");
+
+      var sum = transaction.Currency != CurrencyCodes.USD ?
+        String.Format("{0:#,0} {1}  ($ {2:#,0} )",
+         transaction.Amount, transaction.Currency.ToString().ToLower(), transaction.Amount / (decimal)Rate.GetRate(transaction.Currency, transaction.Timestamp)) :
+        String.Format("{0:#,0} usd", transaction.Amount);
+      if (transaction.Debet == Account) s = s + "   " + sum;
+      else s = s + "                                           " + sum;
+
+      return s;
+    }
+
+
 
 		private string ForecastProfit()
 		{

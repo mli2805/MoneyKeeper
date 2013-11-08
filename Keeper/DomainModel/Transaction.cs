@@ -189,20 +189,6 @@ namespace Keeper.DomainModel
       return s;
     }
 
-    public string ToDepositReport(Account deposit)
-    {
-      var s = Timestamp.ToString("dd/MM/yyyy");
-
-      var sum = Currency != CurrencyCodes.USD ?
-        String.Format("{0:#,0} {2}  ($ {1:#,0} )", 
-         Amount, Amount / (decimal)Rate.GetRate(Currency, Timestamp),Currency.ToString().ToLower()) :
-        String.Format("{0:#,0} usd", Amount) ;
-      if (Debet == deposit) s = s + "   " + sum;
-      else s = s + "                                           " + sum;
-
-      return s;
-    }
-
     /// <summary>
     /// создает новый инстанс и в нем возвращает полную копию данного инстанса, кроме Id
     /// </summary>
