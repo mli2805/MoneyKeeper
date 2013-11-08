@@ -96,6 +96,7 @@
     <Compile Include="Controls\DiagramControl.xaml.cs">
       <DependentUpon>DiagramControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DbInputOutput\DbGeneralLoading.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
@@ -107,8 +108,9 @@
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Balance.cs" />
-    <Compile Include="Utils\BinaryCrypto.cs" />
-    <Compile Include="Utils\DbBackup.cs" />
+    <Compile Include="DbInputOutput\BinaryCrypto.cs" />
+    <Compile Include="DbInputOutput\DbBackup.cs" />
+    <Compile Include="DbInputOutput\DbTxtLoad.cs" />
     <Compile Include="Utils\DiagramDataChanging.cs" />
     <Compile Include="Utils\DiagramDataCtors.cs" />
     <Compile Include="Utils\MonthAnalisysCtor.cs" />
@@ -133,12 +135,11 @@
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
-    <Compile Include="Utils\DbClear.cs" />
-    <Compile Include="Utils\DbTxtSave.cs" />
+    <Compile Include="DbInputOutput\DbClear.cs" />
+    <Compile Include="DbInputOutput\DbTxtSave.cs" />
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Utils\Rate.cs" />
-    <Compile Include="Utils\DbTxtLoad.cs" />
     <Compile Include="Behaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ScrollToPreviousExitPointOrBottomOnLoadBehavior.cs" />
     <Compile Include="Behaviors\ScrollToBottomOnLoadDatagridBehavior.cs" />

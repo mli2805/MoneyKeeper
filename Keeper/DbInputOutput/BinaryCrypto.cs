@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -9,7 +7,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
-namespace Keeper.Utils
+namespace Keeper.DbInputOutput
 {
   class BinaryCrypto
   {
@@ -35,9 +33,6 @@ namespace Keeper.Utils
 
     public static void DbCryptoSerialization()
     {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
       byte[] key = { 0xc5, 0x51, 0xf6, 0x4e, 0x97, 0xdc, 0xa0, 0x54, 0x89, 0x1d, 0xe6, 0x62, 0x3f, 0x27, 0x00, 0xca };
       byte[] initVector = { 0xf3, 0x5e, 0x7a, 0x81, 0xae, 0x8c, 0xb4, 0x92, 0xd0, 0xf2, 0xe7, 0xc1, 0x8d, 0x54, 0x00, 0xd8 };
 
@@ -53,16 +48,10 @@ namespace Keeper.Utils
           binaryFormatter.Serialize(cryptoStream, Db);
         }
       }
-
-      watch1.Stop();
-      Console.WriteLine("BinaryFormatter serialization with Crypto takes {0} sec", watch1.Elapsed);
     }
 
-    public static int DbCryptoDeserialization(string filename)
+    public static bool DbCryptoDeserialization(string filename)
     {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
       byte[] key = { 0xc5, 0x51, 0xf6, 0x4e, 0x97, 0xdc, 0xa0, 0x54, 0x89, 0x1d, 0xe6, 0x62, 0x3f, 0x27, 0x00, 0xca };
       byte[] initVector = { 0xf3, 0x5e, 0x7a, 0x81, 0xae, 0x8c, 0xb4, 0x92, 0xd0, 0xf2, 0xe7, 0xc1, 0x8d, 0x54, 0x00, 0xd8 };
 
@@ -76,10 +65,15 @@ namespace Keeper.Utils
           Db = (KeeperDb)binaryFormatter.Deserialize(cryptoStream);
         }
       }
-
-      watch1.Stop();
-      Console.WriteLine("BinaryFormatter deserialization with Crypto takes {0} sec", watch1.Elapsed);
-      return 0;
+      return true;
     }
   }
 }
+
+// кроме того пробовал
+
+// SOAP serialization - не обрабатывает дженерики
+
+// XML serialization
+// дженерик проглотила нормально
+// сломалась на дереве счетов - Account содержит Account
