@@ -18,6 +18,7 @@ namespace Keeper.ViewModels
   {
 	  private readonly IRate Rate = IoC.Get<IRate>();
 	  private static readonly IBalance Balance = IoC.Get<IBalance>();
+
 	  public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }

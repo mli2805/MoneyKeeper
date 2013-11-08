@@ -191,6 +191,8 @@ namespace Keeper.ViewModels
     public void OnImportsSatisfied()
     {
       _isDbLoadingSuccessed = false;
+//      ShowLogonForm();
+
       if (BinaryCrypto.DbCryptoDeserialization() == 5)
       {
         var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
@@ -409,6 +411,11 @@ namespace Keeper.ViewModels
     #endregion
 
     #region // меню формы - вызовы дочерних окон
+
+    public void ShowLogonForm()
+    {
+      WindowManager.ShowDialog(new LogonViewModel());
+    }
 
     public void ShowTransactionsForm()
     {
