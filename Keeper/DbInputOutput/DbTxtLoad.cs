@@ -1,4 +1,4 @@
-п»їusing System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using Ionic.Zip;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
-namespace Keeper.Utils
+namespace Keeper.DbInputOutput
 {
   public class DbLoadError
   {
@@ -103,7 +103,7 @@ namespace Keeper.Utils
       if (wrongContent.Count != 0)
       {
         File.WriteAllLines(Path.ChangeExtension(Path.Combine(Settings.Default.SavePath, filename), "err"), wrongContent, Encoding1251);
-        Result.Add(6, "РћС€РёР±РєРё Р·Р°РіСЂСѓР·РєРё СЃРјРѕС‚СЂРё РІ С„Р°Р№Р»Рµ " + Path.ChangeExtension(filename, "err"));
+        Result.Add(6, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
       }
       return result;
     }
@@ -116,7 +116,7 @@ namespace Keeper.Utils
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
 
-      // РїСЂРѕРјРµР¶СѓС‚РѕС‡РЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° РґРµР№СЃС‚РІСѓСЋС‰РёС… РґРµРїРѕР·РёС‚РѕРІ
+      // промежуточная сортировка действующих депозитов
       var sortedContent = SortActiveDepositAccountsByEndDate(content);
 
       var result = new ObservableCollection<Account>();
@@ -143,12 +143,12 @@ namespace Keeper.Utils
       {
         int parentId;
         var account = AccountFromString(s, out parentId);
-        if (account.Name == "Р”РµРїРѕР·РёС‚С‹")
+        if (account.Name == "Депозиты")
         {
           depoId = account.Id;
           depoAccount = account;
         }
-        if (parentId == depoId && account.Name != "Р—Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹")
+        if (parentId == depoId && account.Name != "Закрытые депозиты")
         {
           account.Parent = depoAccount;
           activeDepos.Add(account);

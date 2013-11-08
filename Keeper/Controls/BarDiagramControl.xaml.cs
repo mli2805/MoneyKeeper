@@ -61,8 +61,8 @@ namespace Keeper.Controls
     public double ImageWidth { get { return IsLoaded ? ActualWidth : SystemParameters.FullPrimaryScreenWidth; } }
     public double ImageHeight { get { return IsLoaded ? (ActualHeight - StatusBar.ActualHeight) : SystemParameters.FullPrimaryScreenHeight; } }
 
-    private double LeftMargin { get { return ImageWidth*0.03; }}
-    private double RightMargin { get { return ImageWidth * 0.03; }}
+    private double LeftMargin { get { return ImageWidth*0.04; }}
+    private double RightMargin { get { return ImageWidth * 0.04; }}
     private double TopMargin { get { return ImageHeight*0.03; }}
     private double BottomMargin { get { return ImageHeight * 0.03; }}
 

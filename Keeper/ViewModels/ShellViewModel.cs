@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Soap;
 using System.Windows;
-using System.Xml.Serialization;
 using Caliburn.Micro;
+using Keeper.DbInputOutput;
 using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
@@ -24,7 +22,7 @@ namespace Keeper.ViewModels
     public IWindowManager WindowManager { get; set; }
 
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-	private static readonly IBalance Balance = IoC.Get<IBalance>();
+    private static readonly IBalance Balance = IoC.Get<IBalance>();
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -185,47 +183,18 @@ namespace Keeper.ViewModels
     {
       _message = "Keeper is running (On Debug)";
       BalanceList = new ObservableCollection<string> { "test balance" };
-      _depositsFormPointer = null;
     }
 
     public void OnImportsSatisfied()
     {
-      _isDbLoadingSuccessed = false;
-
-      var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
-      if  (!File.Exists(filename))
-      {
-        MessageBox.Show("");
-        MessageBox.Show("File '" + filename + "' not found. \n\n You will be offered to choose database file.", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-        // Create OpenFileDialog
-        var dlg = new Microsoft.Win32.OpenFileDialog();
-
-        // Set filter for file extension and default file extension
-        dlg.DefaultExt = ".dbx";
-        dlg.Filter = "Keeper Database (.dbx)|*.dbx";
-
-        // Display OpenFileDialog by calling ShowDialog method
-        var result = dlg.ShowDialog();
-
-        // Get the selected file name and display in a TextBox
-        filename = result == true ? dlg.FileName : @"g:\local_keeperDb\Keeper.dbx";
-      }
-      if (BinaryCrypto.DbCryptoDeserialization(filename) != 0)
-      {
-        MessageBox.Show("");
-        MessageBox.Show("File '" + filename + "' not found. \n Last zip will be used.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-
-        var loadResult = DbTxtLoad.LoadFromLastZip();
-        if (loadResult.Code != 0)
-        {
-          MessageBox.Show(loadResult.Explanation + ". \n Application will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-          return;
-        }
-
-      }
+      _isDbLoadingSuccessed = DbGeneralLoading.FullDbLoadProcess();
 
       InitVariablesToShowAccounts();
+      InitBalanceControls();
+    }
+
+    private void InitBalanceControls()
+    {
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
       _paymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
       _paymentsFinishDate = DateTime.Today.AddDays(1).AddSeconds(-1);
@@ -269,12 +238,8 @@ namespace Keeper.ViewModels
     {
       if (_isDbLoadingSuccessed)
       {
-        if (_ratesDiagramFormPointer != null && _ratesDiagramFormPointer.IsActive) _ratesDiagramFormPointer.TryClose();
-        if (_depositsFormPointer != null && _depositsFormPointer.IsActive) _depositsFormPointer.TryClose();
-        if (LaunchedViewModels != null)
-          foreach (var depositViewModel in LaunchedViewModels)
-            if (depositViewModel.IsActive) depositViewModel.TryClose();
-
+        foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
+          launchedForm.TryClose();
         BinaryCrypto.DbCryptoSerialization(); // сериализует БД в dbx файл
         DbTxtSave.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
       }
@@ -324,10 +289,10 @@ namespace Keeper.ViewModels
 
       if (SelectedAccount.Name == "Депозиты")
       {
-          DbTxtSave.SaveDbInTxt();
-          var result = DbTxtLoad.LoadDbFromTxt();
-          if (result.Code != 0) MessageBox.Show(result.Explanation);
-          else InitVariablesToShowAccounts();
+        DbTxtSave.SaveDbInTxt();
+        var result = DbTxtLoad.LoadDbFromTxt();
+        if (result.Code != 0) MessageBox.Show(result.Explanation);
+        else InitVariablesToShowAccounts();
       }
 
       Db.AccountsPlaneList.Clear();
@@ -353,21 +318,18 @@ namespace Keeper.ViewModels
     public List<DepositViewModel> LaunchedViewModels { get; set; }
     public void ShowDeposit()
     {
-      if (SelectedAccount.IsDescendantOf("Депозиты") && SelectedAccount.Children.Count == 0)
+      if (!SelectedAccount.IsDescendantOf("Депозиты") || SelectedAccount.Children.Count != 0) return;
+
+      foreach (var launchedForm in _launchedForms)
       {
-        if (LaunchedViewModels == null) LaunchedViewModels = new List<DepositViewModel>();
-        else
-        {
-          var depositView = (from d in LaunchedViewModels
-                             where d.Deposit.Account == SelectedAccount
-                             select d).FirstOrDefault();
-          if (depositView != null) depositView.TryClose();
-        }
-        var depositViewModel = new DepositViewModel(SelectedAccount);
-        LaunchedViewModels.Add(depositViewModel);
-        depositViewModel.Renewed += DepositViewModelRenewed;
-        WindowManager.ShowWindow(depositViewModel);
+        if (launchedForm is DepositViewModel && launchedForm.IsActive
+            && ((DepositViewModel)launchedForm).Deposit.Account == SelectedAccount) launchedForm.TryClose();
       }
+
+      var depositForm = new DepositViewModel(SelectedAccount);
+      _launchedForms.Add(depositForm);
+      depositForm.Renewed += DepositViewModelRenewed; // ?
+      WindowManager.ShowWindow(depositForm);
     }
 
     void DepositViewModelRenewed(object sender, Account newAccount)
@@ -435,6 +397,8 @@ namespace Keeper.ViewModels
       WindowManager.ShowDialog(new LogonViewModel());
     }
 
+    private readonly List<Screen> _launchedForms = new List<Screen>();
+
     public void ShowTransactionsForm()
     {
       String arcMessage = Message;
@@ -486,19 +450,21 @@ namespace Keeper.ViewModels
       Message = arcMessage;
     }
 
-    private DepositsViewModel _depositsFormPointer;
     public void ShowDepositsForm()
     {
-      if (_depositsFormPointer != null && _depositsFormPointer.IsActive) _depositsFormPointer.TryClose();
-      _depositsFormPointer = new DepositsViewModel();
-      WindowManager.ShowWindow(_depositsFormPointer);
+      foreach (var launchedForm in _launchedForms)
+        if (launchedForm is DepositViewModel && launchedForm.IsActive) launchedForm.TryClose();
+
+      var depositsForm = new DepositsViewModel();
+      _launchedForms.Add(depositsForm);
+      WindowManager.ShowWindow(depositsForm);
     }
 
     #endregion
 
     #region menu Diagrams
 
-    private RatesDiagramViewModel _ratesDiagramFormPointer;
+    private Screen _ratesDiagramFormPointer;
     public void ShowDailyBalancesDiagram()
     {
       var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
@@ -510,8 +476,8 @@ namespace Keeper.ViewModels
 
     public void ShowRatesDiagram()
     {
-//      var rates = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).OrderBy(r => r.BankDay).
-//                           ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)(1 / currencyRate.Rate));
+      //      var rates = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).OrderBy(r => r.BankDay).
+      //                           ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)(1 / currencyRate.Rate));
       var rates = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).OrderBy(r => r.BankDay).
                            ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)currencyRate.Rate);
 
@@ -524,7 +490,7 @@ namespace Keeper.ViewModels
     {
       var monthlyResults = DiagramDataCtors.MonthlyResultsDiagramCtor();
 
-      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyResults,BarDiagramMode.Butterfly);
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyResults, BarDiagramMode.Butterfly);
       WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
     }
 
@@ -532,7 +498,7 @@ namespace Keeper.ViewModels
     {
       var monthlyIncomes = DiagramDataCtors.MonthlyIncomesDiagramCtor();
 
-      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyIncomes,BarDiagramMode.Vertical);
+      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyIncomes, BarDiagramMode.Vertical);
       WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
     }
 
@@ -547,7 +513,7 @@ namespace Keeper.ViewModels
       foreach (var pair in ratesByrUsd)
       {
         var days = (pair.Key - new DateTime(0)).TotalDays;
-        if ((days%2).Equals(0)) rates2.Add(pair.Key.AddDays(-193),(decimal)1.1*pair.Value);
+        if ((days % 2).Equals(0)) rates2.Add(pair.Key.AddDays(-193), (decimal)1.1 * pair.Value);
         else rates2.Add(pair.Key.AddDays(-193), (decimal)0.9 * pair.Value);
       }
 
@@ -561,7 +527,7 @@ namespace Keeper.ViewModels
       rates.Add(ratesByrUsd);
       rates.Add(rates2);
       rates.Add(rates3);
-      WindowManager.ShowWindow(new DateDoubleDiagramViewModel(rates,0));
+      WindowManager.ShowWindow(new DateDoubleDiagramViewModel(rates, 0));
     }
 
     // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
@@ -688,81 +654,5 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    #region SOAP - не обрабатывает дженерики
-
-    private static void DbSoapSerialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      var soapFormatter = new SoapFormatter();
-      using (Stream fStream = new FileStream("CurrencyRates.soap", FileMode.Create, FileAccess.Write))
-      {
-        foreach (var currencyRate in Db.CurrencyRates)
-        {
-          soapFormatter.Serialize(fStream, currencyRate);
-        }
-      }
-
-      watch1.Stop();
-      Console.WriteLine("SoapFormatter serialization time is {0}", watch1.Elapsed);
-    }
-
-    private static void DbSoapDeserialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      var rates = new ObservableCollection<CurrencyRate>();
-      var soapFormatter = new SoapFormatter();
-      using (Stream fStream = new FileStream("CurrencyRates.soap", FileMode.Open, FileAccess.Read))
-      {
-        //  как цикл по файлу устроить      ??????????????????????????
-        var rate1 = (CurrencyRate)soapFormatter.Deserialize(fStream);
-        rates.Add(rate1); 
-      }
-
-      watch1.Stop();
-      Console.WriteLine("SoapFormatter deserialization time is {0}", watch1.Elapsed);
-    }
-
-    #endregion
-
-    #region XML serialization
-    // дженерик проглотила нормально
-    // сломалась на дереве счетов - Account содержит Account
-
-    private static void DbXmlSerialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<CurrencyRate>));
-      using (Stream fStream = new FileStream("CurrencyRates.xml", FileMode.Create, FileAccess.Write))
-      {
-          xmlSerializer.Serialize(fStream, Db.CurrencyRates);
-      }
-
-      watch1.Stop();
-      Console.WriteLine("XmlSerializer serialization time is {0}", watch1.Elapsed);
-    }
-
-    private static void DbXmlDeserialization()
-    {
-      var watch1 = new Stopwatch();
-      watch1.Start();
-
-      var db1 = new ObservableCollection<CurrencyRate>();
-      var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<CurrencyRate>));
-      using (Stream fStream = new FileStream("CurrencyRates.xml", FileMode.Open, FileAccess.Read))
-      {
-        db1 = (ObservableCollection<CurrencyRate>)xmlSerializer.Deserialize(fStream);
-      }
-
-      watch1.Stop();
-      Console.WriteLine("XmlSerializer deserialization time is {0}", watch1.Elapsed);
-    }
-
-    #endregion
   }
 }

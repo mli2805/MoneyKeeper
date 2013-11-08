@@ -10,7 +10,7 @@ using Ionic.Zip;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
-namespace Keeper.Utils
+namespace Keeper.DbInputOutput
 {
   internal class DbTxtSave
   {
