@@ -107,6 +107,7 @@
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
+    <Compile Include="Utils\AccountTreesFunctions.cs" />
     <Compile Include="Utils\Balance.cs" />
     <Compile Include="DbInputOutput\BinaryCrypto.cs" />
     <Compile Include="DbInputOutput\DbBackup.cs" />

@@ -22,6 +22,7 @@ namespace Keeper.ViewModels
     public IWindowManager WindowManager { get; set; }
 
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    private AccountTreesFunctions _accountTreesFunctions;
     private static readonly IBalance Balance = IoC.Get<IBalance>();
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
@@ -191,6 +192,7 @@ namespace Keeper.ViewModels
 
       InitVariablesToShowAccounts();
       InitBalanceControls();
+      _accountTreesFunctions = new AccountTreesFunctions(Db);
     }
 
     private void InitBalanceControls()
@@ -248,71 +250,28 @@ namespace Keeper.ViewModels
 
     #region // методы реализации контекстного меню на дереве счетов
 
-    public void RemoveAccount()
+    public void RemoveSelectedAccount()
     {
-      if (SelectedAccount.Parent == null)
-      {
-        MessageBox.Show("Корневой счет нельзя удалять!", "Отказ!");
-        return;
-      }
-      if (SelectedAccount.Children.Count > 0)
-      {
-        MessageBox.Show("Удалять разрешено \n только конечные листья дерева счетов!", "Отказ!");
-        return;
-      }
-      // такой запрос возвращает не коллекцию, а энумератор
-      IEnumerable<Transaction> tr = from transaction in Db.Transactions
-                                    where transaction.Debet == SelectedAccount || transaction.Credit == SelectedAccount || transaction.Article == SelectedAccount
-                                    select transaction;
-
-      // Any() пытается двинуться по этому энумератору и если может, то true
-      if (tr.Any())
-      {
-        MessageBox.Show("Этот счет используется в проводках!", "Отказ!");
-        return;
-      }
-      if (MessageBox.Show("Проверено, счет не используется в транзакциях.\n Удаление счета\n\n <<" + SelectedAccount.Name + ">>\n          Удалить?", "Confirm",
-                          MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) return;
-
-      Db.AccountsPlaneList.Remove(SelectedAccount);
-      SelectedAccount.Parent.Children.Remove(SelectedAccount);
+      _accountTreesFunctions.RemoveAccount(SelectedAccount);
     }
 
-    public void AddAccount()
+    public void AddSelectedAccount() 
     {
-      var accountInWork = new Account { Parent = SelectedAccount };
-      if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
-
-      SelectedAccount = accountInWork.Parent;
-      accountInWork.Id = (from account in Db.AccountsPlaneList select account.Id).Max() + 1;
-      SelectedAccount.Children.Add(accountInWork);
-
-      if (SelectedAccount.Name == "Депозиты")
-      {
-        DbTxtSave.SaveDbInTxt();
-        var result = DbTxtLoad.LoadDbFromTxt();
-        if (result.Code != 0) MessageBox.Show(result.Explanation);
-        else InitVariablesToShowAccounts();
-      }
-
-      Db.AccountsPlaneList.Clear();
-      Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
-      UsefulLists.FillLists();
+      _accountTreesFunctions.AddAccount(SelectedAccount);
+      if (SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
     }
 
-    public void ChangeAccount()
+    private void ReorderDepositAccounts()
     {
-      var accountInWork = new Account();
-      Account.CopyForEdit(accountInWork, SelectedAccount);
-      if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Редактировать")) != true) return;
+      DbTxtSave.SaveDbInTxt();
+      var result = DbTxtLoad.LoadDbFromTxt();
+      if (result.Code != 0) MessageBox.Show(result.Explanation);
+      else InitVariablesToShowAccounts();
+    }
 
-      if (SelectedAccount.Parent != accountInWork.Parent)
-      {
-        accountInWork.Parent.Children.Add(accountInWork);
-        SelectedAccount.Parent.Children.Remove(SelectedAccount);
-      }
-      else SelectedAccount.Name = accountInWork.Name;
-      //      Account.CopyForEdit(SelectedAccount, accountInWork);
+    public void ChangeSelectedAccount()
+    {
+      _accountTreesFunctions.ChangeAccount(SelectedAccount);
     }
 
     public List<DepositViewModel> LaunchedViewModels { get; set; }
