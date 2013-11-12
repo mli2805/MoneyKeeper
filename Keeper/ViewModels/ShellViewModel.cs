@@ -32,14 +32,14 @@ namespace Keeper.ViewModels
     private string _statusBarItem0;
     private Account _selectedAccount;
     private int _openedAccountPage;
-    private DateTime _balanceDate;
-    private Visibility _balancePeriodChoiseControls;
-    private Visibility _paymentsPeriodChoiseControls;
-    private DateTime _paymentsStartDate;
-    private DateTime _paymentsFinishDate;
     private string _accountBalanceInUsd;
     private Visibility _isDeposit;
     private bool _isDbLoadingSuccessed;
+
+    private DateTime _balanceDate;
+    private Period _paymentsPeriod;
+    private Visibility _balancePeriodChoiseControls;
+    private Visibility _paymentsPeriodChoiseControls;
 
     public string Message
     {
@@ -101,7 +101,7 @@ namespace Keeper.ViewModels
       set
       {
         _selectedAccount = value;
-        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
+        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
         AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccount);
         IsDeposit = value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -198,8 +198,7 @@ namespace Keeper.ViewModels
     private void InitBalanceControls()
     {
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-      _paymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
-      _paymentsFinishDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+      _paymentsPeriod = new Period(DateTime.Today.AddDays(-(DateTime.Today.Day-1)), DateTime.Today.AddDays(1).AddSeconds(-1));
       _isDbLoadingSuccessed = true;
     }
 
@@ -365,7 +364,7 @@ namespace Keeper.ViewModels
       UsefulLists.FillLists();
       WindowManager.ShowDialog(new TransactionViewModel());
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : new Period(PaymentsStartDate, PaymentsFinishDate);
+      Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
       Balance.CountBalances(SelectedAccount, period, BalanceList);
       BinaryCrypto.DbCryptoSerialization();
       Message = arcMessage;
@@ -445,6 +444,7 @@ namespace Keeper.ViewModels
     }
 
     private MonthlyResultDiagramViewModel _monthlyResultDiagramFormPointer;
+
     public void ShowMonthlyResultDiagram()
     {
       var monthlyResults = DiagramDataCtors.MonthlyResultsDiagramCtor();
@@ -505,87 +505,18 @@ namespace Keeper.ViewModels
       }
     }
 
-    public void TodayBalance() { BalanceDate = DateTime.Today; }
-    public void YesterdayBalance() { BalanceDate = DateTime.Today.AddDays(-1); }
-    public void LastMonthEndBalance() { BalanceDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1); }
-
-    public void OneDayBeforeBalance() { BalanceDate = BalanceDate.AddDays(-1); }
-    public void OneMonthBeforeBalance() { BalanceDate = BalanceDate.AddMonths(-1); }
-    public void OneYearBeforeBalance() { BalanceDate = BalanceDate.AddYears(-1); }
-
-    public void OneDayAfterBalance() { BalanceDate = BalanceDate.AddDays(1); }
-    public void OneMonthAfterBalance() { BalanceDate = BalanceDate.AddMonths(1); }
-    public void OneYearAfterBalance() { BalanceDate = BalanceDate.AddYears(1); }
-
-    public DateTime PaymentsStartDate
+    public Period PaymentsPeriod
     {
-      get { return _paymentsStartDate; }
+      get { return _paymentsPeriod; }
       set
       {
-        if (value.Equals(_paymentsStartDate)) return;
-        _paymentsStartDate = value;
-        NotifyOfPropertyChange(() => PaymentsStartDate);
-        var period = new Period(PaymentsStartDate, PaymentsFinishDate);
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
+        if (Equals(value, _paymentsPeriod)) return;
+        _paymentsPeriod = value;
+        NotifyOfPropertyChange(() => PaymentsPeriod);
+        AccountBalanceInUsd = string.Format("{0:#,#} usd",
+                                            Balance.CountBalances(SelectedAccount, _paymentsPeriod, BalanceList));
       }
     }
-
-    public DateTime PaymentsFinishDate
-    {
-      get { return _paymentsFinishDate; }
-      set
-      {
-        if (value.Equals(_paymentsFinishDate)) return;
-        _paymentsFinishDate = value.Date.AddDays(1).AddMilliseconds(-1);
-        NotifyOfPropertyChange(() => PaymentsFinishDate);
-        var period = new Period(PaymentsStartDate, PaymentsFinishDate);
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
-      }
-    }
-
-    public void TodayPayments() { PaymentsStartDate = DateTime.Today; PaymentsFinishDate = DateTime.Today; }
-    public void YesterdayPayments() { PaymentsStartDate = DateTime.Today.AddDays(-1); PaymentsFinishDate = DateTime.Today.AddDays(-1); }
-    public void ThisMonthPayments()
-    {
-      PaymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.Day + 1);
-      PaymentsFinishDate = DateTime.Today;
-    }
-    public void LastMonthPayments()
-    {
-      PaymentsFinishDate = DateTime.Today.AddDays(-DateTime.Today.Day);
-      PaymentsStartDate = PaymentsFinishDate.AddDays(-PaymentsFinishDate.Day + 1);
-    }
-    public void ThisYearPayments()
-    {
-      PaymentsStartDate = DateTime.Today.AddDays(-DateTime.Today.DayOfYear + 1);
-      PaymentsFinishDate = DateTime.Today;
-    }
-    public void LastYearPayments()
-    {
-      PaymentsFinishDate = DateTime.Today.AddDays(-DateTime.Today.DayOfYear);
-      PaymentsStartDate = PaymentsFinishDate.AddDays(-PaymentsFinishDate.DayOfYear + 1);
-    }
-    public void OneDayBeforePayments() { PaymentsStartDate = PaymentsStartDate.AddDays(-1); PaymentsFinishDate = PaymentsFinishDate.AddDays(-1); }
-    public void OneMonthBeforePayments()
-    {
-      PaymentsStartDate = PaymentsStartDate.AddMonths(-1);
-      PaymentsFinishDate = IsLastDayOfMonth(PaymentsFinishDate) ? PaymentsFinishDate.AddDays(-PaymentsFinishDate.Day) : PaymentsFinishDate.AddMonths(-1);
-    }
-
-    public void OneYearBeforePayments() { PaymentsStartDate = PaymentsStartDate.AddYears(-1); PaymentsFinishDate = PaymentsFinishDate.AddYears(-1); }
-    public void OneDayAfterPayments() { PaymentsStartDate = PaymentsStartDate.AddDays(1); PaymentsFinishDate = PaymentsFinishDate.AddDays(1); }
-    public void OneMonthAfterPayments()
-    {
-      PaymentsStartDate = PaymentsStartDate.AddMonths(1);
-      if (IsLastDayOfMonth(PaymentsFinishDate))
-      {
-        PaymentsFinishDate = PaymentsFinishDate.AddMonths(2);
-        PaymentsFinishDate = PaymentsFinishDate.AddDays(-PaymentsFinishDate.Day);
-      }
-      else PaymentsFinishDate = PaymentsFinishDate.AddMonths(1);
-    }
-
-    public void OneYearAfterPayments() { PaymentsStartDate = PaymentsStartDate.AddYears(1); PaymentsFinishDate = PaymentsFinishDate.AddYears(1); }
 
     public Visibility BalancePeriodChoiseControls
     {
@@ -609,9 +540,6 @@ namespace Keeper.ViewModels
       }
     }
 
-    private bool IsLastDayOfMonth(DateTime date) { return date.Month != date.AddDays(1).Month; }
-
     #endregion
-
   }
 }

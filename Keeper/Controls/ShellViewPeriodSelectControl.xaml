@@ -16,34 +16,34 @@
     </Grid.RowDefinitions>
     <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="6"></Rectangle>
     <TextBlock Text="Показать обороты за:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-                    Text="{Binding PaymentsStartDate, Mode=TwoWay}" />
-    <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
-                    Text="{Binding PaymentsFinishDate, Mode=TwoWay}" />
+    <DatePicker Name="StartDatePicker" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                Margin="20,0,0,0" SelectedDateChanged="StartDatePickerSelectedDateChanged"/>
+    <DatePicker Name="FinishDatePicker" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                Margin="0,0,20,0" SelectedDateChanged="FinishDatePickerSelectedDateChanged"/>
 
-    <Button Name="OneDayBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"
-              Height="20" Width="35" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9"/>
-    <Button Name="OneMonthBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0"
-              Height="20" Width="35" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-    <Button Name="OneYearBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-              Height="20" Width="35" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
+    <Button Name="OneDayBefore" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"
+              Height="20" Width="35" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9" Click="OneDayBeforeClick"/>
+    <Button Name="OneMonthBefore" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0"
+              Height="20" Width="35" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" Click="OneMonthBeforeClick" />
+    <Button Name="OneYearBefore" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+              Height="20" Width="35" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" Click="OneYearBeforeClick" />
 
-    <Button Name="OneDayAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0"
-              Height="20" Width="35" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-    <Button Name="OneMonthAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,60,0"
-              Height="20" Width="35" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-    <Button Name="OneYearAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
-              Height="20" Width="35" Content="+Г" Style="{StaticResource MyButtonStyle}"  FontSize="9" />
+    <Button Name="OneDayAfter" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0"
+              Height="20" Width="35" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" Click="OneDayAfterClick" />
+    <Button Name="OneMonthAfter" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,60,0"
+              Height="20" Width="35" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" Click="OneMonthAfterClick" />
+    <Button Name="OneYearAfter" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
+              Height="20" Width="35" Content="+Г" Style="{StaticResource MyButtonStyle}"  FontSize="9" Click="OneYearAfterClick" />
 
-    <Button Name="TodayPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
-              Height="30" Width="85" Content="Сегодня" Style="{StaticResource MyButtonStyle}" />
-    <Button Name="YesterdayPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
-              Height="30" Width="85" Content="Вчера" Style="{StaticResource MyButtonStyle}" />
+    <Button Name="Today" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
+              Height="30" Width="85" Content="Сегодня" Style="{StaticResource MyButtonStyle}" Click="TodayClick" />
+    <Button Name="Yesterday" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
+              Height="30" Width="85" Content="Вчера" Style="{StaticResource MyButtonStyle}" Click="YesterdayClick" />
 
-    <Button Name="ThisMonthPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
-              Height="30" Width="86" Content="Этот месяц" Style="{StaticResource MyButtonStyle}" />
-    <Button Name="LastMonthPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
-              Height="30" Width="86" Style="{StaticResource MyButtonStyle}" >
+    <Button Name="ThisMonth" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
+              Height="30" Width="86" Content="Этот месяц" Style="{StaticResource MyButtonStyle}" Click="ThisMonthClick" />
+    <Button Name="LastMonth" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
+              Height="30" Width="86" Style="{StaticResource MyButtonStyle}" Click="LastMonthClick" >
       <ContentControl >
         <Grid>
           <Grid.RowDefinitions>
@@ -57,9 +57,9 @@
     </Button>
 
     <Button Name="ThisYearPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
-              Height="30" Width="85" Content="Этот год" Style="{StaticResource MyButtonStyle}" />
+              Height="30" Width="85" Content="Этот год" Style="{StaticResource MyButtonStyle}" Click="ThisYearPaymentsClick" />
     <Button Name="LastYearPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
-              Height="30" Width="85" Content="Прошлый год" Style="{StaticResource MyButtonStyle}" />
+              Height="30" Width="85" Content="Прошлый год" Style="{StaticResource MyButtonStyle}" Click="LastYearPaymentsClick" />
 
   </Grid>
 
