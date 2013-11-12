@@ -173,8 +173,7 @@ namespace Keeper.Utils
 		/// <returns></returns>
 		public IEnumerable<BalancePair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
 		{
-			// выделение даты без времени и минус минута
-			var period = new Period(new DateTime(0), dateTime.Date.AddMinutes(-1));
+      var period = new Period(new DateTime(0), dateTime, true);
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
 				return ArticleBalancePairs(balancedAccount, period);
 			else return AccountBalancePairs(balancedAccount, period);
@@ -187,8 +186,8 @@ namespace Keeper.Utils
 		/// <param name="dateTime">день, после которого остаток</param>
 		/// <returns></returns>
 		public IEnumerable<BalancePair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
-		{                                                    // выделение даты без времени плюс день и минус минута
-			var period = new Period(new DateTime(0), dateTime.Date.AddDays(1).AddMinutes(-1));
+		{                                                    
+			var period = new Period(new DateTime(0), dateTime, true);
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
 				return ArticleBalancePairs(balancedAccount, period);
 			else return AccountBalancePairs(balancedAccount, period);
@@ -341,7 +340,7 @@ namespace Keeper.Utils
 
 		public string EndDayBalances(DateTime dt)
 		{
-			var period = new Period(new DateTime(0), dt.Date.AddDays(1).AddMinutes(-1));
+			var period = new Period(new DateTime(0), dt, true);
 			var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);
 
 			var depo = (from a in Db.AccountsPlaneList

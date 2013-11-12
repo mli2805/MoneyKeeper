@@ -160,7 +160,7 @@ namespace Keeper.ViewModels
       set
       {
         _startDate = value;
-        AnalyzedPeriod = new Period(StartDate.Date, StartDate.Date.AddMonths(1).AddMinutes(-1));
+        AnalyzedPeriod = new Period(StartDate.Date, StartDate.Date.AddMonths(1).AddMinutes(-1), true);
         if (AnalyzedPeriod.IsDateTimeIn(DateTime.Today))
         {
           _isMonthEnded = false;
