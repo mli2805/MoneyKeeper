@@ -96,6 +96,12 @@
     <Compile Include="Controls\DiagramControl.xaml.cs">
       <DependentUpon>DiagramControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ShellViewDateSelectControl.xaml.cs">
+      <DependentUpon>ShellViewDateSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
+      <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DbInputOutput\DbGeneralLoading.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
@@ -234,6 +240,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DiagramControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ShellViewDateSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ShellViewPeriodSelectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
