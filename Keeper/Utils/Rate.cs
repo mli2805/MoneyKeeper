@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Linq;
-using Caliburn.Micro;
 using Keeper.DomainModel;
 
 namespace Keeper.Utils

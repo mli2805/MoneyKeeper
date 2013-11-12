@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Keeper.Utils
 {
@@ -15,6 +14,12 @@ namespace Keeper.Utils
       var mm = day.Month;
       var dd = day.Day;
       return new DateTime(yy, mm, dd, 0, 0, 0, 0);
+    }
+
+    public Period()
+    {
+      _start = new DateTime(0);
+      _finish = GetDayBegin(DateTime.Today.AddDays(1)).AddMilliseconds(-1);
     }
 
     public Period(DateTime start, DateTime finish)
