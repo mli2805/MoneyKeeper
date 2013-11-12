@@ -8,8 +8,8 @@
         xmlns:cal="http://www.caliburnproject.org" 
         xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
-        mc:Ignorable="d" Height="762" SizeToContent="Width"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:Controls="clr-namespace:Keeper.Controls" mc:Ignorable="d" Height="762" SizeToContent="Width"
         WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
         d:DataContext="{d:DesignInstance {x:Type ViewModels:ShellViewModel}}"
         TextOptions.TextFormattingMode="Display">
@@ -297,106 +297,10 @@
         </ListView.View>
       </ListView>
       <TextBlock Grid.Row="1" Margin="8,-25,5,5" Text="{Binding AccountBalanceInUsd}" Foreground="Blue" />
-      <Grid Visibility="{Binding PaymentsPeriodChoiseControls}"  VerticalAlignment="Bottom" Height="200" Margin="0,0,0,5" Grid.Row="2">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="30" />
-          <RowDefinition Height="40" />
-          <RowDefinition Height="40"/>
-          <RowDefinition Height="40" />
-          <RowDefinition Height="40" />
-          <RowDefinition Height="10" />
-        </Grid.RowDefinitions>
-        <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="6"></Rectangle>
-        <TextBlock Text="Показать обороты за:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-                    Text="{Binding PaymentsStartDate, Mode=TwoWay}" />
-        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
-                    Text="{Binding PaymentsFinishDate, Mode=TwoWay}" />
-
-        <Button Name="OneDayBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"
-              Height="20" Width="35" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9"/>
-        <Button Name="OneMonthBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0"
-              Height="20" Width="35" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-        <Button Name="OneYearBeforePayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-              Height="20" Width="35" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-
-        <Button Name="OneDayAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0"
-              Height="20" Width="35" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-        <Button Name="OneMonthAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,60,0"
-              Height="20" Width="35" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-        <Button Name="OneYearAfterPayments" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
-              Height="20" Width="35" Content="+Г" Style="{StaticResource MyButtonStyle}"  FontSize="9" />
-
-        <Button Name="TodayPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
-              Height="30" Width="85" Content="Сегодня" Style="{StaticResource MyButtonStyle}" />
-        <Button Name="YesterdayPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
-              Height="30" Width="85" Content="Вчера" Style="{StaticResource MyButtonStyle}" />
-
-        <Button Name="ThisMonthPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
-              Height="30" Width="86" Content="Этот месяц" Style="{StaticResource MyButtonStyle}" />
-        <Button Name="LastMonthPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
-              Height="30" Width="86" Style="{StaticResource MyButtonStyle}" >
-          <ContentControl >
-            <Grid>
-              <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-              </Grid.RowDefinitions>
-              <TextBlock Text="Прошлый" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
-              <TextBlock Text="месяц" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
-            </Grid>
-          </ContentControl>
-        </Button>
-
-        <Button Name="ThisYearPayments" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
-              Height="30" Width="85" Content="Этот год" Style="{StaticResource MyButtonStyle}" />
-        <Button Name="LastYearPayments" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,20,5"
-              Height="30" Width="85" Content="Прошлый год" Style="{StaticResource MyButtonStyle}" />
-
-      </Grid>
-      <Grid Visibility="{Binding BalancePeriodChoiseControls}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="3">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="30" />
-          <RowDefinition Height="50" />
-          <RowDefinition Height="40" />
-          <RowDefinition Height="10" />
-        </Grid.RowDefinitions>
-        <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="4"></Rectangle>
-        <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding BalanceDate, Mode=TwoWay}" />
-        <Button Name="OneDayBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
-              Height="20" Width="25" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-        <Button Name="OneMonthBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0"
-              Height="20" Width="25" Content="-М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-        <Button Name="OneYearBeforeBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
-              Height="20" Width="25" Content="-Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-
-        <Button Name="OneDayAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,70,0"
-              Height="20" Width="25" Content="+Д" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-        <Button Name="OneMonthAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0"
-              Height="20" Width="25" Content="+М" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-        <Button Name="OneYearAfterBalance" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"
-              Height="20" Width="25" Content="+Г" Style="{StaticResource MyButtonStyle}" FontSize="9" />
-
-        <Button Name="TodayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
-              Height="30" Width="80" Content="Сегодня" Style="{StaticResource MyButtonStyle}" />
-        <Button Name="YesterdayBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
-              Height="30" Width="80" Content="Вчера" Style="{StaticResource MyButtonStyle}" />
-        <Button Name="LastMonthEndBalance" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"
-              Height="30" Width="80" Style="{StaticResource MyButtonStyle}" >
-          <ContentControl >
-            <Grid>
-              <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-              </Grid.RowDefinitions>
-              <TextBlock Text="Конец про-" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
-              <TextBlock Text="шлого месяца" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
-            </Grid>
-          </ContentControl>
-        </Button>
-
-      </Grid>
+      <Controls:ShellViewPeriodSelectControl Visibility="{Binding PaymentsPeriodChoiseControls}" 
+                  SelectedPeriod="{Binding PaymentsPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,5" Grid.Row="2"/>
+      <Controls:ShellViewDateSelectControl Visibility="{Binding BalancePeriodChoiseControls}" 
+                  SelectedDay="{Binding BalanceDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="3"/>
     </Grid>
 
     <StatusBar Margin="0" Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="1" Background="White" BorderBrush="Gray">

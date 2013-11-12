@@ -15,7 +15,7 @@
       </Grid.RowDefinitions>
       <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="4"></Rectangle>
       <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-      <DatePicker Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SelectedDay, Mode=TwoWay}" />
+      <DatePicker Name="MyDatePicker" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" SelectedDateChanged="MyDatePickerSelectedDateChanged" />
       <Button Name="OneDayBefore" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
               Height="20" Width="25" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9" Click="OneDayBeforeClick" />
       <Button Name="OneMonthBefore" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0"
