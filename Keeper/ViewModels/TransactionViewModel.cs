@@ -306,7 +306,7 @@ namespace Keeper.ViewModels
       {
         if (TransactionInWork.Debet == null || !TransactionInWork.Debet.IsDescendantOf("Мои")) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1), false);
         var balanceBefore = Balance.GetBalanceInCurrency(TransactionInWork.Debet, period, TransactionInWork.Currency);
 
         return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
@@ -321,7 +321,7 @@ namespace Keeper.ViewModels
         if (TransactionInWork.Debet == null || TransactionInWork.Operation != OperationType.Обмен
                                                            || TransactionInWork.Currency2 == null) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1), false);
         var balanceBefore =
           Balance.GetBalanceInCurrency(TransactionInWork.Debet, period, (CurrencyCodes)TransactionInWork.Currency2);
 
@@ -336,7 +336,7 @@ namespace Keeper.ViewModels
       {
         if (TransactionInWork.Credit == null || !TransactionInWork.Credit.IsDescendantOf("Мои")) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1),false);
         var balanceBefore = Balance.GetBalanceInCurrency(TransactionInWork.Credit, period, TransactionInWork.Currency);
 
         return String.Format("{0:#,0} {2} -> {1:#,0} {2}",

@@ -19,13 +19,21 @@ namespace Keeper.Utils
     public Period()
     {
       _start = new DateTime(0);
-      _finish = GetDayBegin(DateTime.Today.AddDays(1)).AddMilliseconds(-1);
+      _finish = DateTime.Today;
     }
 
-    public Period(DateTime start, DateTime finish)
+    public Period(DateTime start, DateTime finish, bool extendToMidnight)
     {
-      _start = GetDayBegin(start);
-      _finish = GetDayBegin(finish.AddDays(1)).AddMilliseconds(-1);
+      if (extendToMidnight)
+      {
+        _start = GetDayBegin(start);
+        _finish = GetDayBegin(finish.AddDays(1)).AddMilliseconds(-1);
+      }
+      else
+      {
+        _start = start;
+        _finish = finish;
+      }
     }
 
     public bool IsDateTimeIn(DateTime checkDate)

@@ -1,27 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Keeper.Views
 {
   /// <summary>
   /// Interaction logic for LogonView.xaml
   /// </summary>
-  public partial class LogonView : Window
+  public partial class LogonView
   {
     public LogonView()
     {
       InitializeComponent();
+
+      Loaded += LogonViewLoaded;
+    }
+
+    void LogonViewLoaded(object sender, RoutedEventArgs e)
+    {
+      NowStamp.Text = string.Format("{0:HH:mm dd/MM/yyyy}",DateTime.Now);
+    }
+
+    public void Connect(int connectionId, object target)
+    {
+      throw new NotImplementedException();
     }
   }
 }

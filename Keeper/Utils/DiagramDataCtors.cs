@@ -373,7 +373,7 @@ namespace Keeper.Utils
       var result = new Dictionary<DateTime, decimal>();
 
       var accountForAnalisys = (from account in Db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
-      var balances = AccountBalancesForPeriodInUsdThirdWay(accountForAnalisys, new Period(new DateTime(2001, 12, 31), DateTime.Today), Every.Month).
+      var balances = AccountBalancesForPeriodInUsdThirdWay(accountForAnalisys, new Period(new DateTime(2001, 12, 31), DateTime.Today, true), Every.Month).
                                                                                                             OrderBy(pair => pair.Key).ToList();
 
       for (var i = 1; i < balances.Count; i++)
@@ -389,7 +389,7 @@ namespace Keeper.Utils
     {
       var kategory = (from account in Db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
 
-      return KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2002, 1, 1), DateTime.Today), Every.Month); 
+      return KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2002, 1, 1), DateTime.Today, true), Every.Month); 
       
     }
 

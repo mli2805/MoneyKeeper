@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 
 namespace Keeper.ViewModels
 {
   class LogonViewModel : Screen
   {
-    [Import]
-    public IWindowManager WindowManager { get; set; }
+    public string Password { get; set; }
 
-    public LogonViewModel()
+    public void LogIn()
     {
-      WindowManager.ShowDialog(new ShellViewModel());
+      if (CheckPassword(Password)) TryClose();
+    }
 
+    public bool CheckPassword(string password)
+    {
+      return true;
     }
   }
 }
