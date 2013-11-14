@@ -8,6 +8,14 @@ namespace Keeper.Views
   /// </summary>
   public partial class LogonView
   {
+    private string _password;
+    public string Password
+    {
+      get { return _password; }
+      set { _password = value; }
+    }
+
+
     public LogonView()
     {
       InitializeComponent();
@@ -17,12 +25,13 @@ namespace Keeper.Views
 
     void LogonViewLoaded(object sender, RoutedEventArgs e)
     {
-      NowStamp.Text = string.Format("{0:HH:mm dd/MM/yyyy}",DateTime.Now);
+      NowStamp.Text = string.Format("{0:dd/MM/yyyy HH:mm}", DateTime.Now);
     }
 
     public void Connect(int connectionId, object target)
     {
       throw new NotImplementedException();
     }
+
   }
 }
