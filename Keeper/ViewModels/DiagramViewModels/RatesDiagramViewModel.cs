@@ -250,7 +250,7 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    private bool ChangeDiagramData(ChangeDiagramDataMode mode, int horizontal, int vertical)
+    private bool ChangeDiagramData(DiagramDataChangeMode mode, int horizontal, int vertical)
     {
       var tt = new Stopwatch();
       tt.Start();
@@ -260,7 +260,7 @@ namespace Keeper.ViewModels
       DateTime newMaxDate = _maxDate;
       switch (mode)
       {
-        case ChangeDiagramDataMode.ZoomIn:
+        case DiagramDataChangeMode.ZoomIn:
           if (CurrentDiagramData.Count < 4) return false;
           if (CurrentDiagramData.Count < 16)
           {
@@ -274,19 +274,19 @@ namespace Keeper.ViewModels
           newMinDate = _minDate.AddDays(shiftDateRange);
           newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
-        case ChangeDiagramDataMode.ZoomOut:
+        case DiagramDataChangeMode.ZoomOut:
           shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
           if (shiftDateRange < 31) shiftDateRange = 31;
           newMinDate = _minDate.AddDays(-shiftDateRange);
           newMaxDate = _maxDate.AddDays(shiftDateRange);
           break;
-        case ChangeDiagramDataMode.Move:
+        case DiagramDataChangeMode.Move:
           var percent = (int)(horizontal * 100 / CanvasWidth);
           shiftDateRange = (_maxDate - _minDate).Days * percent / 100;
           newMinDate = _minDate.AddDays(-shiftDateRange);
           newMaxDate = _maxDate.AddDays(-shiftDateRange);
           break;
-        case ChangeDiagramDataMode.ZoomInRect:
+        case DiagramDataChangeMode.ZoomInRect:
 
           break;
       }
@@ -314,12 +314,12 @@ namespace Keeper.ViewModels
       return (int)((point.X - LeftMargin));
     }
 
-    public void ZoomDiagram(ChangeDiagramDataMode param, int horizontal, int vertical)
+    public void ZoomDiagram(DiagramDataChangeMode param, int horizontal, int vertical)
     {
       if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
 
-    public void MoveDiagramData(ChangeDiagramDataMode param, int horizontal, int vertical)
+    public void MoveDiagramData(DiagramDataChangeMode param, int horizontal, int vertical)
     {
       if (ChangeDiagramData(param, horizontal, vertical)) DrawCurrentDiagram();
     }
@@ -360,7 +360,7 @@ namespace Keeper.ViewModels
     {
       var pt = args.GetPosition(elem);
       if (pt != _mouseRightButtonDownPoint)
-        MoveDiagramData(ChangeDiagramDataMode.Move, (int)(pt.X - _mouseRightButtonDownPoint.X),
+        MoveDiagramData(DiagramDataChangeMode.Move, (int)(pt.X - _mouseRightButtonDownPoint.X),
                                                         (int)(pt.Y - _mouseRightButtonDownPoint.Y));
     }
 
@@ -390,7 +390,7 @@ namespace Keeper.ViewModels
 
     public void MouseWheel(MouseWheelEventArgs args)
     {
-      ZoomDiagram(args.Delta < 0 ? ChangeDiagramDataMode.ZoomIn : ChangeDiagramDataMode.ZoomOut, 10, 0);
+      ZoomDiagram(args.Delta < 0 ? DiagramDataChangeMode.ZoomIn : DiagramDataChangeMode.ZoomOut, 10, 0);
     }
 
     #endregion

@@ -102,7 +102,7 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DbInputOutput\DbGeneralLoading.cs" />
+    <Compile Include="Utils\DbInputOutput\DbGeneralLoading.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
@@ -115,12 +115,17 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\AccountTreesFunctions.cs" />
     <Compile Include="Utils\Balance.cs" />
-    <Compile Include="DbInputOutput\BinaryCrypto.cs" />
-    <Compile Include="DbInputOutput\DbBackup.cs" />
-    <Compile Include="DbInputOutput\DbTxtLoad.cs" />
-    <Compile Include="Utils\DiagramDataChanging.cs" />
-    <Compile Include="Utils\DiagramDataCtors.cs" />
-    <Compile Include="Utils\MonthAnalisysCtor.cs" />
+    <Compile Include="Utils\DbInputOutput\BinaryCrypto.cs" />
+    <Compile Include="Utils\DbInputOutput\DbBackup.cs" />
+    <Compile Include="Utils\DbInputOutput\DbTxtLoad.cs" />
+    <Compile Include="Utils\Diagram\BarDiagramMode.cs" />
+    <Compile Include="Utils\Diagram\DiagramSeriesUnited.cs" />
+    <Compile Include="Utils\Diagram\DiagramDataChangeMode.cs" />
+    <Compile Include="Utils\Diagram\DiagramDataCtors.cs" />
+    <Compile Include="Utils\Diagram\DiagramPair.cs" />
+    <Compile Include="Utils\Diagram\DiagramSeries.cs" />
+    <Compile Include="Utils\Diagram\FunctionsWithEvery.cs" />
+    <Compile Include="Utils\MonthAnalisysViewDataCtor.cs" />
     <Compile Include="ViewModels\DiagramViewModels\DateDoubleDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
@@ -142,8 +147,8 @@
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
-    <Compile Include="DbInputOutput\DbClear.cs" />
-    <Compile Include="DbInputOutput\DbTxtSave.cs" />
+    <Compile Include="Utils\DbInputOutput\DbClear.cs" />
+    <Compile Include="Utils\DbInputOutput\DbTxtSave.cs" />
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Utils\Rate.cs" />
