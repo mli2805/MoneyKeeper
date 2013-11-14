@@ -1,6 +1,6 @@
 ﻿namespace Keeper.Utils
 {
-  public enum ChangeDiagramDataMode
+  public enum DiagramDataChangeMode
   {
     ZoomIn,
     ZoomOut,
@@ -9,7 +9,4 @@
     ZoomAll
   }
 
-  class DiagramDataChanging
-  {
-  }
 }

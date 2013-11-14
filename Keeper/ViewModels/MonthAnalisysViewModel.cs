@@ -196,7 +196,7 @@ namespace Keeper.ViewModels
 
     public MonthAnalisysViewModel()
     {
-      MonthSaldo = MonthAnalisysCtor.AnalizeMonth(DateTime.Today);
+      MonthSaldo = MonthAnalisysViewDataCtor.AnalizeMonth(DateTime.Today);
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }
@@ -373,14 +373,14 @@ namespace Keeper.ViewModels
 
     public void ShowPreviousMonth()
     {
-      MonthSaldo = MonthAnalisysCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
+      MonthSaldo = MonthAnalisysViewDataCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
       StartDate = MonthSaldo.StartDate; 
       FillInLists();
     }
 
     public void ShowNextMonth()
     {
-      MonthSaldo = MonthAnalisysCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
+      MonthSaldo = MonthAnalisysViewDataCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }

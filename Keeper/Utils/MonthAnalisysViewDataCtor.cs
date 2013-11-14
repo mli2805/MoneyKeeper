@@ -5,12 +5,12 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-  class MonthAnalisysCtor
+  class MonthAnalisysViewDataCtor
   {
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-	private static readonly IRate Rate = IoC.Get<IRate>();
-	private static readonly IBalance Balance = IoC.Get<IBalance>();
-  
+    private static readonly IRate Rate = IoC.Get<IRate>();
+    private static readonly IBalance Balance = IoC.Get<IBalance>();
+
     public static Saldo AnalizeMonth(DateTime initialDay)
     {
       var myAccountsRoot = (from account in Db.Accounts
@@ -24,15 +24,15 @@ namespace Keeper.Utils
       result.BeginByrRate = (decimal)Rate.GetRateThisDayOrBefore(CurrencyCodes.BYR, result.StartDate.AddDays(-1));
 
       var transactions = (from transaction in Db.Transactions
-                     where (transaction.Operation == OperationType.Доход || 
-                        transaction.Operation == OperationType.Расход ) && 
-                       transaction.Timestamp.Month == result.StartDate.Month &&
-                        transaction.Timestamp.Year == result.StartDate.Year
-                     select transaction);
+                          where (transaction.Operation == OperationType.Доход ||
+                             transaction.Operation == OperationType.Расход) &&
+                            transaction.Timestamp.Month == result.StartDate.Month &&
+                             transaction.Timestamp.Year == result.StartDate.Year
+                          select transaction);
       foreach (var transaction in transactions)
       {
         var amountInUsd = Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
-        if (transaction.Operation== OperationType.Доход)
+        if (transaction.Operation == OperationType.Доход)
           result.Incomes += amountInUsd;
         else
         {

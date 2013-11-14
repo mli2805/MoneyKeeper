@@ -38,8 +38,8 @@ namespace Keeper.ViewModels
 
     private DateTime _balanceDate;
     private Period _paymentsPeriod;
-    private Visibility _balancePeriodChoiseControls;
-    private Visibility _paymentsPeriodChoiseControls;
+    private Visibility _balanceDateSelectControl;
+    private Visibility _paymentsPeriodSelectControl;
 
     public string Message
     {
@@ -117,13 +117,13 @@ namespace Keeper.ViewModels
         _openedAccountPage = value;
         if (value == 0)
         {
-          BalancePeriodChoiseControls = Visibility.Visible;
-          PaymentsPeriodChoiseControls = Visibility.Collapsed;
+          BalanceDateSelectControl = Visibility.Visible;
+          PaymentsPeriodSelectControl = Visibility.Collapsed;
         }
         else
         {
-          BalancePeriodChoiseControls = Visibility.Collapsed;
-          PaymentsPeriodChoiseControls = Visibility.Visible;
+          BalanceDateSelectControl = Visibility.Collapsed;
+          PaymentsPeriodSelectControl = Visibility.Visible;
         }
         var a = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
         SelectedAccount = a;
@@ -141,9 +141,9 @@ namespace Keeper.ViewModels
       return null;
     }
 
-    private Account GetSelectedInCollection(ObservableCollection<Account> collection)
+    private Account GetSelectedInCollection(IEnumerable<Account> roots)
     {
-      foreach (var branch in collection)
+      foreach (var branch in roots)
       {
         var result = GetSelectedInBranch(branch);
         if (result != null) return result;
@@ -491,9 +491,7 @@ namespace Keeper.ViewModels
       WindowManager.ShowWindow(new DateDoubleDiagramViewModel(rates, 0));
     }
 
-    // методы привязанные к группам контролов выбора даты, на которую остатки (дат, между которыми обороты)
-    // свойства куда эти даты заносятся, свойства видимости этих групп контролов
-    #region
+    #region date\period selection controls
     public DateTime BalanceDate
     {
       get { return _balanceDate; }
@@ -520,25 +518,25 @@ namespace Keeper.ViewModels
       }
     }
 
-    public Visibility BalancePeriodChoiseControls
+    public Visibility BalanceDateSelectControl
     {
-      get { return _balancePeriodChoiseControls; }
+      get { return _balanceDateSelectControl; }
       set
       {
-        if (Equals(value, _balancePeriodChoiseControls)) return;
-        _balancePeriodChoiseControls = value;
-        NotifyOfPropertyChange(() => BalancePeriodChoiseControls);
+        if (Equals(value, _balanceDateSelectControl)) return;
+        _balanceDateSelectControl = value;
+        NotifyOfPropertyChange(() => BalanceDateSelectControl);
       }
     }
 
-    public Visibility PaymentsPeriodChoiseControls
+    public Visibility PaymentsPeriodSelectControl
     {
-      get { return _paymentsPeriodChoiseControls; }
+      get { return _paymentsPeriodSelectControl; }
       set
       {
-        if (Equals(value, _paymentsPeriodChoiseControls)) return;
-        _paymentsPeriodChoiseControls = value;
-        NotifyOfPropertyChange(() => PaymentsPeriodChoiseControls);
+        if (Equals(value, _paymentsPeriodSelectControl)) return;
+        _paymentsPeriodSelectControl = value;
+        NotifyOfPropertyChange(() => PaymentsPeriodSelectControl);
       }
     }
 
