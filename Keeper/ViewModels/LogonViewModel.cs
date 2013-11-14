@@ -4,16 +4,39 @@ namespace Keeper.ViewModels
 {
   class LogonViewModel : Screen
   {
-    public string Password { get; set; }
+    private string _password;
+    public string Password
+    {
+      get { return _password; }
+      set
+      {
+        _password = value;
+        LogIn();
+      }
+    }
+
+    public bool Result { get; set; }
+
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = "Logon";
+    }
 
     public void LogIn()
     {
-      if (CheckPassword(Password)) TryClose();
+      Result = CheckPassword(Password);
+      if (Result) TryClose();
+    }
+
+    public void Escape()
+    {
+      Result = false;
+      TryClose();
     }
 
     public bool CheckPassword(string password)
     {
-      return true;
+      return password == "123";
     }
   }
 }

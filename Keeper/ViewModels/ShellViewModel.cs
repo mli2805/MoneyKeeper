@@ -234,7 +234,8 @@ namespace Keeper.ViewModels
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
       OpenedAccountPage = 0;
 
-      ShowLogonForm();
+      if (!ShowLogonForm()) TryClose();
+
     }
 
     public override void CanClose(Action<bool> callback)
@@ -352,9 +353,11 @@ namespace Keeper.ViewModels
 
     #region // меню формы - вызовы дочерних окон
 
-    public void ShowLogonForm()
+    public bool ShowLogonForm()
     {
-      WindowManager.ShowDialog(new LogonViewModel());
+      var logonViewModel = new LogonViewModel();
+      WindowManager.ShowDialog(logonViewModel);
+      return logonViewModel.Result;
     }
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
