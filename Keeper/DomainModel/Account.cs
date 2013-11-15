@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using Caliburn.Micro;
 using Keeper.ViewModels;
 
@@ -101,6 +99,13 @@ namespace Keeper.DomainModel
       destination.Id = source.Id;
       destination.Name = source.Name;
       destination.Parent = source.Parent;
+
+      foreach (var account in source.Children)
+      {
+        var child = new Account();
+        CopyForEdit(child,account);
+        destination.Children.Add(child);
+      }
     }
 
     private int ParentForDump()
