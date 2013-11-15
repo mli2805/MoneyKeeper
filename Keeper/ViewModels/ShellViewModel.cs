@@ -10,6 +10,7 @@ using Keeper.DbInputOutput;
 using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
+using Keeper.Utils.Diagram;
 
 
 namespace Keeper.ViewModels
@@ -24,6 +25,10 @@ namespace Keeper.ViewModels
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     private AccountTreesFunctions _accountTreesFunctions;
     private static readonly IBalance Balance = IoC.Get<IBalance>();
+    private static readonly IRate Rate = IoC.Get<IRate>();
+
+    private DiagramDataCtors _diagramDataCtor;
+    private DiagramDataCalculation _diagramDataCalculator;
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -193,6 +198,9 @@ namespace Keeper.ViewModels
       InitVariablesToShowAccounts();
       InitBalanceControls();
       _accountTreesFunctions = new AccountTreesFunctions(Db);
+
+      _diagramDataCalculator = new DiagramDataCalculation(Db, Rate);
+      _diagramDataCtor = new DiagramDataCtors(Db, Rate);
     }
 
     private void InitBalanceControls()
@@ -431,7 +439,7 @@ namespace Keeper.ViewModels
     public void ShowDailyBalancesDiagram()
     {
       var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
-      var balances = DiagramDataCtors.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today, true), Every.Day);
+      var balances = _diagramDataCalculator.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today, true), Every.Day);
 
       _ratesDiagramFormPointer = new RatesDiagramViewModel(balances);
       WindowManager.ShowWindow(_ratesDiagramFormPointer);
@@ -452,7 +460,7 @@ namespace Keeper.ViewModels
 
     public void ShowMonthlyResultDiagram()
     {
-      var monthlyResults = DiagramDataCtors.MonthlyResultsDiagramCtor();
+      var monthlyResults = _diagramDataCtor.MonthlyResultsDiagramCtor();
 
       _barDiagramFormPointer = new BarDiagramViewModel(monthlyResults, BarDiagramMode.Butterfly);
       WindowManager.ShowWindow(_barDiagramFormPointer);
@@ -460,9 +468,17 @@ namespace Keeper.ViewModels
 
     public void ShowMonthlyIncomeDiagram()
     {
-      var monthlyIncomes = DiagramDataCtors.MonthlyIncomesDiagramCtor();
+      var monthlyIncomes = _diagramDataCtor.MonthlyIncomesDiagramCtor();
 
       _barDiagramFormPointer = new BarDiagramViewModel(monthlyIncomes, BarDiagramMode.Vertical);
+      WindowManager.ShowWindow(_barDiagramFormPointer);
+    }
+
+    public void ShowMonthlyOutcomeDiagram()
+    {
+      var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
+
+      _barDiagramFormPointer = new BarDiagramViewModel(monthlyOutcomes, BarDiagramMode.Vertical);
       WindowManager.ShowWindow(_barDiagramFormPointer);
     }
 

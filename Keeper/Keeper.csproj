@@ -121,6 +121,7 @@
     <Compile Include="Utils\DbInputOutput\DbBackup.cs" />
     <Compile Include="Utils\DbInputOutput\DbTxtLoad.cs" />
     <Compile Include="Utils\Diagram\BarDiagramMode.cs" />
+    <Compile Include="Utils\Diagram\DiagramDataCalculation.cs" />
     <Compile Include="Utils\Diagram\DiagramSeriesUnited.cs" />
     <Compile Include="Utils\Diagram\DiagramDataChangeMode.cs" />
     <Compile Include="Utils\Diagram\DiagramDataCtors.cs" />
