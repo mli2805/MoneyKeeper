@@ -95,9 +95,6 @@
     <Compile Include="Controls\BarDiagramControl.xaml.cs">
       <DependentUpon>BarDiagramControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DiagramControl.xaml.cs">
-      <DependentUpon>DiagramControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\PasswordControl.xaml.cs">
       <DependentUpon>PasswordControl.xaml</DependentUpon>
     </Compile>
@@ -131,14 +128,10 @@
     <Compile Include="Utils\Diagram\DiagramSeries.cs" />
     <Compile Include="Utils\Diagram\FunctionsWithEvery.cs" />
     <Compile Include="Utils\MonthAnalisysViewDataCtor.cs" />
-    <Compile Include="ViewModels\DiagramViewModels\DateDoubleDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
-    <Compile Include="Views\DiagramViews\DateDoubleDiagramView.xaml.cs">
-      <DependentUpon>DateDoubleDiagramView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DiagramViews\MonthlyResultDiagramView.xaml.cs">
       <DependentUpon>MonthlyResultDiagramView.xaml</DependentUpon>
     </Compile>
@@ -249,10 +242,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DiagramControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\PasswordControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -278,10 +267,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DepositView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DiagramViews\DateDoubleDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
