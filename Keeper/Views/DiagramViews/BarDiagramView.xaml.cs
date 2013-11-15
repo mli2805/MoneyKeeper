@@ -4,11 +4,11 @@ using System.Windows;
 namespace Keeper.Views
 {
   /// <summary>
-  /// Interaction logic for MonthlyResultDiagramView.xaml
+  /// Interaction logic for BarDiagramView.xaml
   /// </summary>
-  public partial class MonthlyResultDiagramView : Window
+  public partial class BarDiagramView : Window
   {
-    public MonthlyResultDiagramView()
+    public BarDiagramView()
     {
       InitializeComponent();
     }
