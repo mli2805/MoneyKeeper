@@ -26,6 +26,7 @@ namespace Keeper.Views
     void LogonViewLoaded(object sender, RoutedEventArgs e)
     {
       NowStamp.Text = string.Format("{0:dd/MM/yyyy HH:mm}", DateTime.Now);
+
     }
 
     public void Connect(int connectionId, object target)

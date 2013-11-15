@@ -352,6 +352,9 @@
     <Resource Include="Resources\keys.ico" />
     <Resource Include="Resources\lock.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\square_lock.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
