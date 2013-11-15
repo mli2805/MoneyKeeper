@@ -1,10 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Media;
+using Caliburn.Micro;
 
 namespace Keeper.ViewModels
 {
   class LogonViewModel : Screen
   {
     private string _password;
+    private Brush _propositionColor;
+
     public string Password
     {
       get { return _password; }
@@ -15,17 +18,31 @@ namespace Keeper.ViewModels
       }
     }
 
+    public Brush PropositionColor
+    {
+      get { return _propositionColor; }
+      set
+      {
+        if (Equals(value, _propositionColor)) return;
+        _propositionColor = value;
+        NotifyOfPropertyChange(() => PropositionColor);
+      }
+    }
+
     public bool Result { get; set; }
 
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Logon";
+      PropositionColor = Brushes.Blue;
     }
 
     public void LogIn()
     {
       Result = CheckPassword(Password);
       if (Result) TryClose();
+      else
+        PropositionColor = Equals(PropositionColor, Brushes.Red) ? Brushes.DarkMagenta : Brushes.Red;
     }
 
     public void Escape()
@@ -36,7 +53,7 @@ namespace Keeper.ViewModels
 
     public bool CheckPassword(string password)
     {
-      return password == "123";
+      return password == "1";
     }
   }
 }

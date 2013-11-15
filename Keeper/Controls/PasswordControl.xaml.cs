@@ -24,6 +24,13 @@ namespace Keeper.Controls
     public PasswordControl()
     {
       InitializeComponent();
+
+      Loaded += PasswordControl_Loaded;
+    }
+
+    void PasswordControl_Loaded(object sender, RoutedEventArgs e)
+    {
+      PasswordBox.Focus();
     }
 
     public void Connect(int connectionId, object target)
