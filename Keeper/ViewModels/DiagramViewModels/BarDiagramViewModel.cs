@@ -7,9 +7,9 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  internal class MonthlyResultDiagramViewModel : Screen
+  internal class BarDiagramViewModel : Screen
    {
-    public MonthlyResultDiagramViewModel(IEnumerable<DiagramSeries> severalSeries, BarDiagramMode diagramMode)
+    public BarDiagramViewModel(IEnumerable<DiagramSeries> severalSeries, BarDiagramMode diagramMode)
     {
       ModelDataProperty = new List<DiagramSeries>();
       foreach (var series in severalSeries)

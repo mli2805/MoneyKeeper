@@ -448,22 +448,22 @@ namespace Keeper.ViewModels
       WindowManager.ShowWindow(_ratesDiagramFormPointer);
     }
 
-    private MonthlyResultDiagramViewModel _monthlyResultDiagramFormPointer;
+    private BarDiagramViewModel _barDiagramFormPointer;
 
     public void ShowMonthlyResultDiagram()
     {
       var monthlyResults = DiagramDataCtors.MonthlyResultsDiagramCtor();
 
-      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyResults, BarDiagramMode.Butterfly);
-      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
+      _barDiagramFormPointer = new BarDiagramViewModel(monthlyResults, BarDiagramMode.Butterfly);
+      WindowManager.ShowWindow(_barDiagramFormPointer);
     }
 
     public void ShowMonthlyIncomeDiagram()
     {
       var monthlyIncomes = DiagramDataCtors.MonthlyIncomesDiagramCtor();
 
-      _monthlyResultDiagramFormPointer = new MonthlyResultDiagramViewModel(monthlyIncomes, BarDiagramMode.Vertical);
-      WindowManager.ShowWindow(_monthlyResultDiagramFormPointer);
+      _barDiagramFormPointer = new BarDiagramViewModel(monthlyIncomes, BarDiagramMode.Vertical);
+      WindowManager.ShowWindow(_barDiagramFormPointer);
     }
 
     #endregion

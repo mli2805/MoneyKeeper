@@ -128,12 +128,12 @@
     <Compile Include="Utils\Diagram\DiagramSeries.cs" />
     <Compile Include="Utils\Diagram\FunctionsWithEvery.cs" />
     <Compile Include="Utils\MonthAnalisysViewDataCtor.cs" />
-    <Compile Include="ViewModels\DiagramViewModels\MonthlyResultDiagramViewModel.cs" />
+    <Compile Include="ViewModels\DiagramViewModels\BarDiagramViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
-    <Compile Include="Views\DiagramViews\MonthlyResultDiagramView.xaml.cs">
-      <DependentUpon>MonthlyResultDiagramView.xaml</DependentUpon>
+    <Compile Include="Views\DiagramViews\BarDiagramView.xaml.cs">
+      <DependentUpon>BarDiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DiagramViews\RatesDiagramView.xaml.cs">
       <DependentUpon>RatesDiagramView.xaml</DependentUpon>
@@ -270,7 +270,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DiagramViews\MonthlyResultDiagramView.xaml">
+    <Page Include="Views\DiagramViews\BarDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
