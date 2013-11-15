@@ -6,6 +6,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Diagram;
 
 namespace Keeper.ViewModels
 {
@@ -118,18 +119,20 @@ namespace Keeper.ViewModels
 
     public void DepoCurrenciesProportionChartCtor()
     {
+      var calculator = new DiagramDataCalculation(Db, Rate);
+
       SeriesUsd = new List<DateProcentPoint>();
       SeriesByr = new List<DateProcentPoint>();
       SeriesEuro = new List<DateProcentPoint>();
       var rootDepo = Db.FindAccountInTree("Депозиты");
-      var inMoney = DiagramDataCtors.AccountBalancesForPeriodInCurrencies(rootDepo,
+      var inMoney = calculator.AccountBalancesForPeriodInCurrencies(rootDepo,
                                                                  new Period(new DateTime(2001, 12, 31), DateTime.Today, true));
       foreach (var pair in inMoney)
       {
         var date = pair.Key;
         var balancesInCurrencies = pair.Value;
 
-        var dateTotalInUsd = DiagramDataCtors.ConvertAllCurrenciesToUsd(balancesInCurrencies, date);
+        var dateTotalInUsd = calculator.ConvertAllCurrenciesToUsd(balancesInCurrencies, date);
         decimal cumulativePercent = 0;
         if (balancesInCurrencies.ContainsKey(CurrencyCodes.EUR))
         {
