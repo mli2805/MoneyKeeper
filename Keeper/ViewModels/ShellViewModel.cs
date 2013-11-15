@@ -355,7 +355,7 @@ namespace Keeper.ViewModels
 
     public bool ShowLogonForm()
     {
-      var logonViewModel = new LogonViewModel();
+      var logonViewModel = new LogonViewModel("1");
       WindowManager.ShowDialog(logonViewModel);
       return logonViewModel.Result;
     }
@@ -364,12 +364,12 @@ namespace Keeper.ViewModels
 
     public void ShowTransactionsForm()
     {
-      String arcMessage = Message;
+      var arcMessage = Message;
       Message = "Input operations";
       UsefulLists.FillLists();
       WindowManager.ShowDialog(new TransactionViewModel());
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate, true) : PaymentsPeriod;
+      var period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate, true) : PaymentsPeriod;
       Balance.CountBalances(SelectedAccount, period, BalanceList);
       BinaryCrypto.DbCryptoSerialization();
       Message = arcMessage;
@@ -377,7 +377,7 @@ namespace Keeper.ViewModels
 
     public void ShowCurrencyRatesForm()
     {
-      String arcMessage = Message;
+      var arcMessage = Message;
       Message = "Currency rates";
       WindowManager.ShowDialog(new RatesViewModel());
       Message = arcMessage;
@@ -487,10 +487,7 @@ namespace Keeper.ViewModels
         rates3.Add(pair.Key.AddDays(78), (decimal)Math.Log10((double)pair.Value));
       }
 
-      var rates = new List<Dictionary<DateTime, decimal>>();
-      rates.Add(ratesByrUsd);
-      rates.Add(rates2);
-      rates.Add(rates3);
+      var rates = new List<Dictionary<DateTime, decimal>> {ratesByrUsd, rates2, rates3};
       WindowManager.ShowWindow(new DateDoubleDiagramViewModel(rates, 0));
     }
 

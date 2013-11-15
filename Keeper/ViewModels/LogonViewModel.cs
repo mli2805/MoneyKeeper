@@ -7,7 +7,6 @@ namespace Keeper.ViewModels
   {
     private string _password;
     private Brush _propositionColor;
-
     public string Password
     {
       get { return _password; }
@@ -17,7 +16,6 @@ namespace Keeper.ViewModels
         LogIn();
       }
     }
-
     public Brush PropositionColor
     {
       get { return _propositionColor; }
@@ -28,8 +26,14 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => PropositionColor);
       }
     }
+    private readonly string _correctPassword;
 
     public bool Result { get; set; }
+
+    public LogonViewModel(string correctPassword)
+    {
+      _correctPassword = correctPassword;
+    }
 
     protected override void OnViewLoaded(object view)
     {
@@ -41,8 +45,8 @@ namespace Keeper.ViewModels
     {
       Result = CheckPassword(Password);
       if (Result) TryClose();
-      else
-        PropositionColor = Equals(PropositionColor, Brushes.Red) ? Brushes.DarkMagenta : Brushes.Red;
+//      else
+//        PropositionColor = Equals(PropositionColor, Brushes.Red) ? Brushes.DarkMagenta : Brushes.Red;
     }
 
     public void Escape()
@@ -53,7 +57,7 @@ namespace Keeper.ViewModels
 
     public bool CheckPassword(string password)
     {
-      return password == "1";
+      return password == _correctPassword;
     }
   }
 }
