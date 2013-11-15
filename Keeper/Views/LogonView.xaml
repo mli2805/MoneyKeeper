@@ -8,19 +8,19 @@
       <RowDefinition Height="50"/>
       <RowDefinition Height="3"/>
       <RowDefinition Height="20"/>
-      <RowDefinition Height="35"/>
-      <RowDefinition Height="50"/>
+      
+      <RowDefinition Height="85"/>
+      
       <RowDefinition Height="40"/>
       <RowDefinition Height="30"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="1" Orientation="Horizontal">
       <Image Height="48" Width="48" Source="/Keeper;component/Resources/Square_lock.ico" Margin="20,0,0,0"/>
       <TextBlock Text="Keeper (c) 2012-2013 " VerticalAlignment="Center" Margin="20,5,0,5" FontSize="16"  FontWeight="Bold"/>
-
     </StackPanel>
     <Button Grid.Row="2" Name="Escape" IsCancel="True" />
-    <TextBlock Grid.Row="4" Text="Введите пароль" Margin="20,5,0,5" Foreground="{Binding PropositionColor}" FontSize="16"  />
-    <Controls:PasswordControl Password="{Binding Password, Mode=TwoWay}"  Grid.Row="5"/>
-    <TextBlock Name="NowStamp" Grid.Row="7" Text="2/56/6819 2:35" HorizontalAlignment="Right" Margin="0,5,25,5"/>
+
+    <Controls:PasswordControl Password="{Binding Password, Mode=TwoWay}"  Grid.Row="4"/>
+    <TextBlock Name="NowStamp" Grid.Row="6" Text="2/56/6819 2:35" HorizontalAlignment="Right" Margin="0,5,25,5"/>
   </Grid>
 </Window>

@@ -25,10 +25,10 @@ namespace Keeper.Controls
     {
       InitializeComponent();
 
-      Loaded += PasswordControl_Loaded;
+      Loaded += PasswordControlLoaded;
     }
 
-    void PasswordControl_Loaded(object sender, RoutedEventArgs e)
+    void PasswordControlLoaded(object sender, RoutedEventArgs e)
     {
       PasswordBox.Focus();
     }
