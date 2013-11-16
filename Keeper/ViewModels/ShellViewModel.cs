@@ -462,7 +462,7 @@ namespace Keeper.ViewModels
     {
       var monthlyResults = _diagramDataCtor.MonthlyResultsDiagramCtor();
 
-      _barDiagramFormPointer = new BarDiagramViewModel(monthlyResults, BarDiagramMode.Butterfly);
+      _barDiagramFormPointer = new BarDiagramViewModel(monthlyResults, BarDiagramMode.Vertical);
       WindowManager.ShowWindow(_barDiagramFormPointer);
     }
 

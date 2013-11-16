@@ -34,15 +34,15 @@ namespace Keeper.Utils
 
       foreach (var outcome in outcomes.Children)
       {
+        colorsEnumerator.MoveNext();
         dataForDiagram.Add(new DiagramSeries
             {
               Name = outcome.Name,
               positiveBrushColor = colorsEnumerator.Current,
+              negativeBrushColor = colorsEnumerator.Current,
               Data = (from pair in Calculator.MonthlyTraffic(outcome.Name)
-                      select new DiagramPair(pair.Key, -(double)pair.Value)).ToList()
+                      select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
             });
-
-        colorsEnumerator.MoveNext();
       }
 
       return dataForDiagram;
