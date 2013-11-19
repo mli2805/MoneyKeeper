@@ -374,7 +374,7 @@ namespace Keeper.ViewModels
       var arcMessage = Message;
       Message = "Input operations";
       UsefulLists.FillLists();
-      WindowManager.ShowDialog(new TransactionViewModel());
+      WindowManager.ShowDialog(new TransactionViewModel(Db));
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate, true) : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);

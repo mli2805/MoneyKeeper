@@ -4,13 +4,18 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-  public static class AssociatedArticles
+  public class AssociationFinder
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    private readonly KeeperDb _db;
 
-    public static Account GetAssociation(Account account)
+    public AssociationFinder(KeeperDb db)
     {
-      var association = (from a in Db.ArticlesAssociations
+      _db = db;
+    }
+
+    public Account GetAssociation(Account account)
+    {
+      var association = (from a in _db.ArticlesAssociations
                          where a.ExternalAccount == account
                          select a).FirstOrDefault();
       return association == null ? null : association.AssociatedArticle;

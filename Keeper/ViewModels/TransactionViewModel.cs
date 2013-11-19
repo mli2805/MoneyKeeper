@@ -16,7 +16,7 @@ namespace Keeper.ViewModels
   [Export, PartCreationPolicy(CreationPolicy.Shared)] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
-	  public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    private readonly KeeperDb _db;
 
     private readonly RateExtractor _rateExtractor;
     private readonly BalanceCalculator _balanceCalculator;
@@ -63,7 +63,7 @@ namespace Keeper.ViewModels
         if (value.Equals(_dateToGo)) return;
         _dateToGo = value;
         NotifyOfPropertyChange(() => DateToGo);
-        SelectedTransaction = (from transaction in Db.Transactions
+        SelectedTransaction = (from transaction in _db.Transactions
                                where transaction.Timestamp > DateToGo
                                select transaction).FirstOrDefault() ?? Rows.Last();
       }
@@ -400,15 +400,17 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    public TransactionViewModel()
+    public TransactionViewModel(KeeperDb db)
     {
-      _rateExtractor = new RateExtractor(Db);
-      _balanceCalculator = new BalanceCalculator(Db);
-      _balancesForTransactionsCalculator = new BalancesForTransactions(Db);
+      _db = db;
+
+      _rateExtractor = new RateExtractor(_db);
+      _balanceCalculator = new BalanceCalculator(_db);
+      _balancesForTransactionsCalculator = new BalancesForTransactions(_db);
 
       TransactionInWork = new Transaction();
-      Rows = Db.Transactions;
-      foreach (var transaction in Db.Transactions)
+      Rows = _db.Transactions;
+      foreach (var transaction in _db.Transactions)
       {
         if (transaction.IsSelected)
         {
@@ -449,29 +451,28 @@ namespace Keeper.ViewModels
     /// <param name="e"></param>
     void TransactionInWorkPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-      if (!_isInTransactionSelectionProcess)
+      if (_isInTransactionSelectionProcess) return;
+      if (e.PropertyName == "Comment") return;
+
+      IsTransactionInWorkChanged = true;
+      var associationFinder = new AssociationFinder(_db);
+
+      if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
+        TransactionInWork.Article = associationFinder.GetAssociation(TransactionInWork.Debet);
+      if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
+        TransactionInWork.Article = associationFinder.GetAssociation(TransactionInWork.Credit);
+
+      if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
+          e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
       {
-        IsTransactionInWorkChanged = true;
-
-        if (e.PropertyName == "Comment") return;
-
-        if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
-          TransactionInWork.Article = AssociatedArticles.GetAssociation(TransactionInWork.Debet);
-        if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
-          TransactionInWork.Article = AssociatedArticles.GetAssociation(TransactionInWork.Credit);
-
-        if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
-                e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
-        {
-          NotifyOfPropertyChange(() => AmountInUsd);
-          DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-        }
-
-        NotifyOfPropertyChange(() => DebetAccountBalance);
-        NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
-        NotifyOfPropertyChange(() => CreditAccountBalance);
-        NotifyOfPropertyChange(() => ExchangeRate);
+        NotifyOfPropertyChange(() => AmountInUsd);
+        DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
       }
+
+      NotifyOfPropertyChange(() => DebetAccountBalance);
+      NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
+      NotifyOfPropertyChange(() => CreditAccountBalance);
+      NotifyOfPropertyChange(() => ExchangeRate);
     }
 
     protected override void OnDeactivate(bool close)
@@ -521,7 +522,7 @@ namespace Keeper.ViewModels
         //                             orderby transaction.Timestamp
         //                             select transaction).LastOrDefault();
 
-        var transactionBefore = Db.Transactions.Where(
+        var transactionBefore = _db.Transactions.Where(
           transaction => transaction.Timestamp.Date == TransactionInWork.Timestamp.Date).OrderBy(
             transaction => transaction.Timestamp).LastOrDefault();
 
