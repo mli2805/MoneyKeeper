@@ -1,29 +1,37 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
-using Caliburn.Micro;
 using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-  class MonthAnalisysViewDataCtor
+  class MonthAnalizer
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-    private static readonly IRate Rate = IoC.Get<IRate>();
-    private static readonly IBalance Balance = IoC.Get<IBalance>();
+    private readonly KeeperDb _db;
+    private readonly RateExtractor _rateExtractor;
+    private readonly BalanceCalculator _balanceCalculator;
 
-    public static Saldo AnalizeMonth(DateTime initialDay)
+    [ImportingConstructor]
+    public MonthAnalizer(KeeperDb db)
     {
-      var myAccountsRoot = (from account in Db.Accounts
+      _db = db;
+      _rateExtractor = new RateExtractor(db);
+      _balanceCalculator = new BalanceCalculator(db);
+    }
+
+    public Saldo AnalizeMonth(DateTime initialDay)
+    {
+      var myAccountsRoot = (from account in _db.Accounts
                             where account.Name == "Мои"
                             select account).FirstOrDefault();
       var result = new Saldo();
 
       result.StartDate = initialDay.AddDays(-initialDay.Day + 1);
-      result.BeginBalanceInCurrencies = Balance.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate).ToList();
-      result.BeginBalance = Balance.BalancePairsToUsd(result.BeginBalanceInCurrencies, result.StartDate.AddDays(-1));
-      result.BeginByrRate = (decimal)Rate.GetRateThisDayOrBefore(CurrencyCodes.BYR, result.StartDate.AddDays(-1));
+      result.BeginBalanceInCurrencies = _balanceCalculator.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate).ToList();
+      result.BeginBalance = _balanceCalculator.BalancePairsToUsd(result.BeginBalanceInCurrencies, result.StartDate.AddDays(-1));
+      result.BeginByrRate = (decimal)_rateExtractor.GetRateThisDayOrBefore(CurrencyCodes.BYR, result.StartDate.AddDays(-1));
 
-      var transactions = (from transaction in Db.Transactions
+      var transactions = (from transaction in _db.Transactions
                           where (transaction.Operation == OperationType.Доход ||
                              transaction.Operation == OperationType.Расход) &&
                             transaction.Timestamp.Month == result.StartDate.Month &&
@@ -31,7 +39,7 @@ namespace Keeper.Utils
                           select transaction);
       foreach (var transaction in transactions)
       {
-        var amountInUsd = Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+        var amountInUsd = _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
         if (transaction.Operation == OperationType.Доход)
           result.Incomes += amountInUsd;
         else
@@ -42,8 +50,8 @@ namespace Keeper.Utils
       }
 
       result.EndBalanceInCurrencies =
-        Balance.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate.AddMonths(1)).ToList();
-      result.EndBalance = Balance.BalancePairsToUsd(result.EndBalanceInCurrencies,
+        _balanceCalculator.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate.AddMonths(1)).ToList();
+      result.EndBalance = _balanceCalculator.BalancePairsToUsd(result.EndBalanceInCurrencies,
                                                     result.StartDate.AddMonths(1).AddDays(-1));
       if (!transactions.Any())
       {
@@ -54,7 +62,7 @@ namespace Keeper.Utils
       {
         var lastTransaction = transactions.Last();
         result.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
-        result.EndByrRate = (decimal)Rate.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
+        result.EndByrRate = (decimal)_rateExtractor.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
       }
 
       return result;

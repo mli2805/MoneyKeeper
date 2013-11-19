@@ -15,13 +15,13 @@ namespace Keeper.UnitTests.Utils
 		private readonly static DateTime Monday = new DateTime(2000, 1, 1);
 		private readonly static DateTime Tuesday = new DateTime(2000, 1, 2);
 		private readonly static DateTime Wednesday = new DateTime(2000, 1, 3);
-		private Rate _underTest;
+		private RateExtractor _underTest;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_keeperDb = A.Fake<IKeeperDb>();
-			_underTest = new Rate(_keeperDb);
+			_underTest = new RateExtractor(_keeperDb);
 			A.CallTo(() => _keeperDb.CurrencyRates).Returns(new ObservableCollection<CurrencyRate>
 				{
 					new CurrencyRate
@@ -54,7 +54,7 @@ namespace Keeper.UnitTests.Utils
 	[TestFixture]
 	public class TestBalance
 	{
-		private Balance _underTest;
+		private BalanceCalculator _underTest;
 		private IRate _rate;
 		private readonly static DateTime Monday = new DateTime(2000, 1, 1);
 
@@ -62,7 +62,7 @@ namespace Keeper.UnitTests.Utils
 		public void SetUp()
 		{
 			_rate = A.Fake<IRate>();
-			_underTest = new Balance(A.Fake<IKeeperDb>(), _rate);
+			_underTest = new BalanceCalculator(A.Fake<IKeeperDb>(), _rate);
 		
 		}
 		[Test]
@@ -72,8 +72,8 @@ namespace Keeper.UnitTests.Utils
 			A.CallTo(() => _rate.GetRateThisDayOrBefore(CurrencyCodes.EUR, Monday)).Returns(22);
 			_underTest.BalancePairsToUsd(new[]
 				{
-					new Balance.BalancePair {Amount = 7, Currency = CurrencyCodes.BYR},
-					new Balance.BalancePair {Amount = 11, Currency = CurrencyCodes.EUR},
+					new BalanceCalculator.BalancePair {Amount = 7, Currency = CurrencyCodes.BYR},
+					new BalanceCalculator.BalancePair {Amount = 11, Currency = CurrencyCodes.EUR},
 				}, Monday).Should().Be(1);
 		}
 		[Test]
@@ -81,7 +81,7 @@ namespace Keeper.UnitTests.Utils
 		{
 			_underTest.BalancePairsToUsd(new[]
 				{
-					new Balance.BalancePair {Amount = 7, Currency = CurrencyCodes.USD},
+					new BalanceCalculator.BalancePair {Amount = 7, Currency = CurrencyCodes.USD},
 				}, Monday).Should().Be(7);
 			A.CallTo(() => _rate.GetRateThisDayOrBefore(A<CurrencyCodes>.Ignored, A<DateTime>.Ignored))
 				.MustNotHaveHappened();

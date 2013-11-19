@@ -9,25 +9,25 @@ namespace Keeper.Utils
 {
   class DiagramDataCtors
   {
-    public IKeeperDb Db { get; private set; }
-    public IRate Rate { get; private set; }
+    private readonly KeeperDb _db;
+    private readonly RateExtractor _rateExtractor;
 
     private DiagramDataCalculation Calculator { get; set; }
 
     [ImportingConstructor]
-    public DiagramDataCtors(IKeeperDb db, IRate rate)
+    public DiagramDataCtors(KeeperDb db)
     {
-      Db = db;
-      Rate = rate;
+      _db = db;
+      _rateExtractor = new RateExtractor(db);
 
-      Calculator = new DiagramDataCalculation(Db, Rate);
+      Calculator = new DiagramDataCalculation(_db);
     }
 
     public List<DiagramSeries> MonthlyOutcomesDiagramCtor()
     {
       var dataForDiagram = new List<DiagramSeries>();
 
-      var outcomes = Db.FindAccountInTree("Все расходы");
+      var outcomes = _db.FindAccountInTree("Все расходы");
       var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta, 
                                            Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
       var colorsEnumerator = outcomeColors.GetEnumerator();

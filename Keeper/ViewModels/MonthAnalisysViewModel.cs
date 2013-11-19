@@ -12,8 +12,10 @@ namespace Keeper.ViewModels
 {
   class MonthAnalisysViewModel : Screen
   {
-	  private readonly IRate Rate = IoC.Get<IRate>();
-	  public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    private readonly RateExtractor _rateExtractor;
+    private readonly KeeperDb _db;
+
+    private readonly MonthAnalizer _monthAnalizer;
 
     private bool _isMonthEnded;
 
@@ -194,9 +196,13 @@ namespace Keeper.ViewModels
       }
     }
 
-    public MonthAnalisysViewModel()
+    public MonthAnalisysViewModel(KeeperDb db)
     {
-      MonthSaldo = MonthAnalisysViewDataCtor.AnalizeMonth(DateTime.Today);
+      _db = db;
+      _rateExtractor = new RateExtractor(db);
+
+      _monthAnalizer = new MonthAnalizer(_db);
+      MonthSaldo = _monthAnalizer.AnalizeMonth(DateTime.Today);
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }
@@ -218,7 +224,7 @@ namespace Keeper.ViewModels
       BeforeList.Add(String.Format("Итого {0:#,0} usd", MonthSaldo.BeginBalance));
     }
 
-    private ObservableCollection<string> FillListWithDateBalance(List<Balance.BalancePair> balanceInCurrencies, DateTime date)
+    private ObservableCollection<string> FillListWithDateBalance(List<BalanceCalculator.BalancePair> balanceInCurrencies, DateTime date)
     {
       var list = new ObservableCollection<string>();
       list.Add("В разрезе валют:");
@@ -231,7 +237,7 @@ namespace Keeper.ViewModels
         }
         else
         {                                                          
-          decimal amountInUsd = Rate.GetUsdEquivalent(balancePair.Amount, balancePair.Currency, date.AddDays(-1));
+          decimal amountInUsd = _rateExtractor.GetUsdEquivalent(balancePair.Amount, balancePair.Currency, date.AddDays(-1));
           list.Add(String.Format("{0}  (= {1:#,0} $)", balancePair.ToString(), amountInUsd));
         }
       }
@@ -241,7 +247,7 @@ namespace Keeper.ViewModels
     private void FillInIncomesList()
     {
       IncomesList = new ObservableCollection<string> { "Доходы за месяц\n" };
-      var incomes = from transaction in Db.Transactions
+      var incomes = from transaction in _db.Transactions
                      where transaction.Operation == OperationType.Доход  && 
                        transaction.Timestamp.Month == MonthSaldo.StartDate.Month &&
                         transaction.Timestamp.Year == MonthSaldo.StartDate.Year
@@ -257,7 +263,7 @@ namespace Keeper.ViewModels
         else
         {
           decimal amountInUsd;
-          Rate.GetUsdEquivalentString(transaction.Amount, transaction.Currency, transaction.Timestamp, out amountInUsd);
+          _rateExtractor.GetUsdEquivalentString(transaction.Amount, transaction.Currency, transaction.Timestamp, out amountInUsd);
           IncomesList.Add(String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
             transaction.Timestamp, transaction.Amount, transaction.Currency.ToString().ToLower(),
             amountInUsd, transaction.Article, transaction.Comment));
@@ -270,7 +276,7 @@ namespace Keeper.ViewModels
     {
       ExpenseList = new ObservableCollection<string> { "Расходы за месяц\n" };
       LargeExpenseList = new ObservableCollection<string> { "В том числе крупные траты этого месяца\n" };
-      var expenseTransactions = from t in Db.Transactions
+      var expenseTransactions = from t in _db.Transactions
                                 where AnalyzedPeriod.IsDateTimeIn(t.Timestamp) && t.Operation == OperationType.Расход
                                 orderby t.Timestamp
                                 select t;
@@ -278,7 +284,7 @@ namespace Keeper.ViewModels
 
       var expenseTransactionsInUsd =
         from t in expenseTransactions
-        join r in Db.CurrencyRates
+        join r in _db.CurrencyRates
          on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
         from rate in g.DefaultIfEmpty()
         select new
@@ -291,7 +297,7 @@ namespace Keeper.ViewModels
           t.Comment
         };
 
-      var expenseRoot = (from account in Db.Accounts
+      var expenseRoot = (from account in _db.Accounts
                          where account.Name == "Все расходы"
                          select account).First();
       foreach (var expense in expenseRoot.Children)
@@ -373,14 +379,14 @@ namespace Keeper.ViewModels
 
     public void ShowPreviousMonth()
     {
-      MonthSaldo = MonthAnalisysViewDataCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
+      MonthSaldo = _monthAnalizer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
       StartDate = MonthSaldo.StartDate; 
       FillInLists();
     }
 
     public void ShowNextMonth()
     {
-      MonthSaldo = MonthAnalisysViewDataCtor.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
+      MonthSaldo = _monthAnalizer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }

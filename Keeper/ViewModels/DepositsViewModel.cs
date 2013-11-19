@@ -12,7 +12,6 @@ namespace Keeper.ViewModels
 {
   public class ChartPoint
   {
-	  private readonly IRate Rate = IoC.Get<IRate>();
 	  public string Subject { get; set; }
     public int Amount { get; set; }
 
@@ -39,9 +38,10 @@ namespace Keeper.ViewModels
 
   public class DepositsViewModel : Screen
   {
-	  private readonly Rate Rate = new Rate(IoC.Get<IKeeperDb>());
-	  public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
+
+    private readonly RateExtractor _rateExtractor;
+    private readonly KeeperDb _db;
 
     public List<Deposit> DepositsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
@@ -49,16 +49,20 @@ namespace Keeper.ViewModels
 
     public Style MyTitleStyle { get; set; }
 
-    public DepositsViewModel()
+    public DepositsViewModel(KeeperDb db)
     {
+      _db = db;
+      _rateExtractor = new RateExtractor(db);
+
       MyTitleStyle = new Style();
 
       DepositsList = new List<Deposit>();
-      foreach (var account in Db.AccountsPlaneList)
+      foreach (var account in _db.AccountsPlaneList)
       {
         if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
         {
-          var temp = new Deposit { Account = account };
+          var temp = new Deposit(_db);
+          temp.Account = account;
           temp.CollectInfo();
           DepositsList.Add(temp);
         }
@@ -105,7 +109,7 @@ namespace Keeper.ViewModels
                            select d).FirstOrDefault();
         if (depositView != null) depositView.TryClose();
       }
-      var depositViewModel = new DepositViewModel(SelectedDeposit.Account);
+      var depositViewModel = new DepositViewModel(_db, SelectedDeposit.Account);
       LaunchedViewModels.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
     }
@@ -119,12 +123,12 @@ namespace Keeper.ViewModels
 
     public void DepoCurrenciesProportionChartCtor()
     {
-      var calculator = new DiagramDataCalculation(Db, Rate);
+      var calculator = new DiagramDataCalculation(_db);
 
       SeriesUsd = new List<DateProcentPoint>();
       SeriesByr = new List<DateProcentPoint>();
       SeriesEuro = new List<DateProcentPoint>();
-      var rootDepo = Db.FindAccountInTree("Депозиты");
+      var rootDepo = _db.FindAccountInTree("Депозиты");
       var inMoney = calculator.AccountBalancesForPeriodInCurrencies(rootDepo,
                                                                  new Period(new DateTime(2001, 12, 31), DateTime.Today, true));
       foreach (var pair in inMoney)
@@ -136,13 +140,13 @@ namespace Keeper.ViewModels
         decimal cumulativePercent = 0;
         if (balancesInCurrencies.ContainsKey(CurrencyCodes.EUR))
         {
-          var inUsd = Rate.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.EUR], CurrencyCodes.EUR, date);
+          var inUsd = _rateExtractor.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.EUR], CurrencyCodes.EUR, date);
           cumulativePercent = Math.Round(inUsd / dateTotalInUsd * 10000) / 100;
           SeriesEuro.Add(new DateProcentPoint(date, cumulativePercent));
         }
         if (balancesInCurrencies.ContainsKey(CurrencyCodes.BYR))
         {
-          var inUsd = Rate.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.BYR], CurrencyCodes.BYR, date);
+          var inUsd = _rateExtractor.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.BYR], CurrencyCodes.BYR, date);
           cumulativePercent += Math.Round(inUsd / dateTotalInUsd * 10000) / 100;
           SeriesByr.Add(new DateProcentPoint(date, cumulativePercent));
         }
@@ -198,7 +202,7 @@ namespace Keeper.ViewModels
               (int)totalBalances[currency]));
         else
         {
-          var inUsd = totalBalances[currency] / (decimal)Rate.GetLastRate(currency);
+          var inUsd = totalBalances[currency] / (decimal)_rateExtractor.GetLastRate(currency);
           TotalsList.Add(
             new ChartPoint(
               String.Format("{0:#,0} {1}", totalBalances[currency], currency),
@@ -215,7 +219,7 @@ namespace Keeper.ViewModels
 
       decimal cashInUsd = 0, depoInUsd = 0;
       var dt = new DateTime(2001, 12, 31);
-      var transactionsArray = Db.Transactions.ToArray();
+      var transactionsArray = _db.Transactions.ToArray();
       int index = 0;
       Transaction tr = transactionsArray[0];
 
@@ -225,18 +229,18 @@ namespace Keeper.ViewModels
         {
           if (tr.Debet.IsTheSameOrDescendantOf("На руках"))
           {
-            cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+            cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
             if (tr.Operation == OperationType.Обмен)
               cashInUsd += tr.Currency2 == CurrencyCodes.USD
                              ? tr.Amount2
-                             : tr.Amount2 / (decimal)Rate.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
+                             : tr.Amount2 / (decimal)_rateExtractor.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
           }
           if (tr.Credit.IsTheSameOrDescendantOf("На руках"))
-            cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+            cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
           if (tr.Debet.IsTheSameOrDescendantOf("Депозиты"))
-            depoInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+            depoInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
           if (tr.Credit.IsTheSameOrDescendantOf("Депозиты"))
-            depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)Rate.GetRate(tr.Currency, tr.Timestamp);
+            depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
 
           index++;
           if (index == transactionsArray.Count()) break;

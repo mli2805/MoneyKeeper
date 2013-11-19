@@ -24,9 +24,7 @@ namespace Keeper.ViewModels
 
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     private AccountTreesFunctions _accountTreesFunctions;
-    private static readonly IBalance Balance = IoC.Get<IBalance>();
-    private static readonly IRate Rate = IoC.Get<IRate>();
-
+    private BalanceCalculator _balanceCalculator;
     private DiagramDataCtors _diagramDataCtor;
     private DiagramDataCalculation _diagramDataCalculator;
 
@@ -107,7 +105,7 @@ namespace Keeper.ViewModels
       {
         _selectedAccount = value;
         Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate, true) : PaymentsPeriod;
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccount);
         IsDeposit = value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
@@ -197,10 +195,11 @@ namespace Keeper.ViewModels
 
       InitVariablesToShowAccounts();
       InitBalanceControls();
-      _accountTreesFunctions = new AccountTreesFunctions(Db);
 
-      _diagramDataCalculator = new DiagramDataCalculation(Db, Rate);
-      _diagramDataCtor = new DiagramDataCtors(Db, Rate);
+      _balanceCalculator = new BalanceCalculator(Db);
+      _accountTreesFunctions = new AccountTreesFunctions(Db);
+      _diagramDataCalculator = new DiagramDataCalculation(Db);
+      _diagramDataCtor = new DiagramDataCtors(Db);
     }
 
     private void InitBalanceControls()
@@ -295,7 +294,7 @@ namespace Keeper.ViewModels
             && ((DepositViewModel)launchedForm).Deposit.Account == SelectedAccount) launchedForm.TryClose();
       }
 
-      var depositForm = new DepositViewModel(SelectedAccount);
+      var depositForm = new DepositViewModel(Db, SelectedAccount);
       _launchedForms.Add(depositForm);
       depositForm.Renewed += DepositViewModelRenewed; // ?
       WindowManager.ShowWindow(depositForm);
@@ -378,7 +377,7 @@ namespace Keeper.ViewModels
       WindowManager.ShowDialog(new TransactionViewModel());
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate, true) : PaymentsPeriod;
-      Balance.CountBalances(SelectedAccount, period, BalanceList);
+      _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
       BinaryCrypto.DbCryptoSerialization();
       Message = arcMessage;
     }
@@ -417,7 +416,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "MonthAnalisys";
-      WindowManager.ShowDialog(new MonthAnalisysViewModel());
+      WindowManager.ShowDialog(new MonthAnalisysViewModel(Db));
       Message = arcMessage;
     }
 
@@ -426,7 +425,7 @@ namespace Keeper.ViewModels
       foreach (var launchedForm in _launchedForms)
         if (launchedForm is DepositViewModel && launchedForm.IsActive) launchedForm.TryClose();
 
-      var depositsForm = new DepositsViewModel();
+      var depositsForm = new DepositsViewModel(Db);
       _launchedForms.Add(depositsForm);
       WindowManager.ShowWindow(depositsForm);
     }
@@ -501,7 +500,7 @@ namespace Keeper.ViewModels
         _balanceDate = value.Date.AddDays(1).AddMilliseconds(-1);
         NotifyOfPropertyChange(() => BalanceDate);
         var period = new Period(new DateTime(0), BalanceDate, true);
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", Balance.CountBalances(SelectedAccount, period, BalanceList));
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
       }
     }
 
@@ -514,7 +513,7 @@ namespace Keeper.ViewModels
         _paymentsPeriod = value;
         NotifyOfPropertyChange(() => PaymentsPeriod);
         AccountBalanceInUsd = string.Format("{0:#,#} usd",
-                                            Balance.CountBalances(SelectedAccount, _paymentsPeriod, BalanceList));
+                                            _balanceCalculator.CountBalances(SelectedAccount, _paymentsPeriod, BalanceList));
       }
     }
 

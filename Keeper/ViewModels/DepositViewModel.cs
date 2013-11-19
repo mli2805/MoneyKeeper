@@ -11,6 +11,7 @@ namespace Keeper.ViewModels
     [Import]
     public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
+    private readonly KeeperDb _db;
     public Deposit Deposit { get; set; }
     public Account NewAccountForDeposit { get; set; }
     public bool CanRenew
@@ -24,9 +25,10 @@ namespace Keeper.ViewModels
       }
     }
 
-    public DepositViewModel(Account account)
+    public DepositViewModel(KeeperDb db, Account account)
     {
-      Deposit = new Deposit { Account = account };
+      _db = db;
+      Deposit = new Deposit(db) {Account = account};
       NewAccountForDeposit = null;
     }
 
@@ -39,7 +41,7 @@ namespace Keeper.ViewModels
 
     public void Renew()
     {
-      var renewDepositViewModel = new RenewDepositViewModel(Deposit);
+      var renewDepositViewModel = new RenewDepositViewModel(_db, Deposit);
       WindowManager.ShowDialog(renewDepositViewModel);
       if (renewDepositViewModel.NewDeposit != null)
       {

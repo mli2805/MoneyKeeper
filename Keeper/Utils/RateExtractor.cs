@@ -5,30 +5,30 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-	public interface IRate
-	{
-		double GetRate(CurrencyCodes currency, DateTime day);
-		double GetLastRate(CurrencyCodes currency);
-		double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day);
-		decimal GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp);
-		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp);
-		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd);
-	}
+//	public interface IRate
+//	{
+//		double GetRate(CurrencyCodes currency, DateTime day);
+//		double GetLastRate(CurrencyCodes currency);
+//		double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day);
+//		decimal GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp);
+//		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp);
+//		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd);
+//	}
 
-	[Export(typeof(IRate))]
-	public class Rate : IRate
+//	[Export(typeof(IRate))]
+	public class RateExtractor //: IRate
 	{
-		public IKeeperDb Db { get; private set; }
+	  private readonly KeeperDb _db;
 		
 		[ImportingConstructor]
-		public Rate(IKeeperDb db)
+		public RateExtractor(KeeperDb db)
 		{
-			Db = db;
+			_db = db;
 		}
 
 		public double GetRate(CurrencyCodes currency, DateTime day)
 		{
-			var rate = (from currencyRate in Db.CurrencyRates
+			var rate = (from currencyRate in _db.CurrencyRates
 						where currencyRate.BankDay.Date == day.Date && currencyRate.Currency == currency
 						select currencyRate).FirstOrDefault();
 			return rate != null ? rate.Rate : 0.0;
@@ -36,7 +36,7 @@ namespace Keeper.Utils
 
 		public double GetLastRate(CurrencyCodes currency)
 		{
-			var rate = (from currencyRate in Db.CurrencyRates
+			var rate = (from currencyRate in _db.CurrencyRates
 						where currencyRate.Currency == currency
 						orderby currencyRate.BankDay
 						select currencyRate).LastOrDefault();
@@ -45,7 +45,7 @@ namespace Keeper.Utils
 
 		public double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day)
 		{
-			var rate = (from currencyRate in Db.CurrencyRates
+			var rate = (from currencyRate in _db.CurrencyRates
 						where currencyRate.BankDay.Date <= day.Date && currencyRate.Currency == currency
 						orderby currencyRate.BankDay
 						select currencyRate).LastOrDefault();
