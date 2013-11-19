@@ -104,7 +104,9 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\BalancesForTransactions.cs" />
+    <Compile Include="Utils\BalancesForShellCalculator.cs" />
+    <Compile Include="Utils\BalancesForTransactionsCalculator.cs" />
+    <Compile Include="Utils\DayProcessor.cs" />
     <Compile Include="Utils\DbInputOutput\DbGeneralLoading.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />

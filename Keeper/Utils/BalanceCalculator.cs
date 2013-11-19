@@ -78,7 +78,7 @@ namespace Keeper.Utils
 				   };
 		}
 
-		private IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
+		public IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
 		{
 			return from t in _db.Transactions
 				   where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
@@ -98,7 +98,7 @@ namespace Keeper.Utils
 		/// <returns></returns>
 		public IEnumerable<BalancePair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
 		{
-      var period = new Period(new DateTime(0), dateTime, true);
+      var period = new Period(new DateTime(0), new DayProcessor(dateTime).BeforeThisDay());
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
 				return ArticleBalancePairs(balancedAccount, period);
 			else return AccountBalancePairs(balancedAccount, period);
@@ -112,7 +112,7 @@ namespace Keeper.Utils
 		/// <returns></returns>
 		public IEnumerable<BalancePair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
 		{                                                    
-			var period = new Period(new DateTime(0), dateTime, true);
+			var period = new Period(new DateTime(0), new DayProcessor(dateTime).AfterThisDay());
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
 				return ArticleBalancePairs(balancedAccount, period);
 			else return AccountBalancePairs(balancedAccount, period);
@@ -163,53 +163,5 @@ namespace Keeper.Utils
 			}
 			return 0;
 		}
-
-		#region для заполнения для 2-й рамки на ShellView
-
-		private List<string> OneBalance(Account balancedAccount, Period period, out decimal totalInUsd)
-		{
-			var balance = new List<string>();
-			totalInUsd = 0;
-			if (balancedAccount == null) return balance;
-
-			bool kind = balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы");
-			var balancePairs = kind ? ArticleBalancePairs(balancedAccount, period) : AccountBalancePairs(balancedAccount, period);
-
-			foreach (var item in balancePairs)
-			{
-				if (item.Amount != 0) balance.Add(String.Format("{0:#,#} {1}", item.Amount, item.Currency));
-				totalInUsd += _rateExtractor.GetUsdEquivalent(item.Amount, item.Currency, period.GetFinish());
-			}
-
-			return balance;
-		}
-
-		/// <summary>
-		/// Функция нужна только заполнения для 2-й рамки на ShellView
-		/// Расчитываются остатки по счету и его потомкам 1-го поколения
-		/// </summary>
-		public decimal CountBalances(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
-		{
-			balanceList.Clear();
-			if (selectedAccount == null) return 0;
-
-			decimal inUsd;
-			var b = OneBalance(selectedAccount, period, out inUsd);
-			foreach (var st in b)
-				balanceList.Add(st);
-
-			foreach (var child in selectedAccount.Children)
-			{
-				decimal temp;
-				b = OneBalance(child, period, out temp);
-				if (b.Count > 0) balanceList.Add("         " + child.Name);
-				foreach (var st in b)
-					balanceList.Add("    " + st);
-			}
-
-			return inUsd;
-		}
-		#endregion
-
 	}
 }

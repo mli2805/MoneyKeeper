@@ -173,7 +173,7 @@ namespace Keeper.Utils.Diagram
 
       var accountForAnalisys = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
       var balances = AccountBalancesForPeriodInUsdThirdWay(accountForAnalisys, 
-                                                           new Period(new DateTime(2001, 12, 31), DateTime.Today, true), 
+                                                           new Period(new DateTime(2001, 12, 31), DateTime.Now), 
                                                            Every.Month).OrderBy(pair => pair.Key).ToList();
 
       for (var i = 1; i < balances.Count; i++)
@@ -190,7 +190,7 @@ namespace Keeper.Utils.Diagram
     {
       var kategory = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
 
-      return KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2002, 1, 1), DateTime.Today, true), Every.Month);
+      return KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2002, 1, 1), DateTime.Now), Every.Month);
     }
 
     private static int MonthCountFromStart(DateTime date)

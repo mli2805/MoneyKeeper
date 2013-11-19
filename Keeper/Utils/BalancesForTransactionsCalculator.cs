@@ -19,17 +19,15 @@ namespace Keeper.Utils
     }
   }
 
-  class BalancesForTransactions
+  class BalancesForTransactionsCalculator
   {
     private readonly KeeperDb _db;
 
     [ImportingConstructor]
-    public BalancesForTransactions(KeeperDb db)
+    public BalancesForTransactionsCalculator(KeeperDb db)
     {
       _db = db;
     }
-
-    #region для заполнения окошек на TransactionsView
 
     public List<string> CalculateDayResults(DateTime dt)
     {
@@ -85,7 +83,7 @@ namespace Keeper.Utils
     {
       var balanceCalculator = new BalanceCalculator(_db);
 
-      var period = new Period(new DateTime(0), dt, true);
+      var period = new Period(new DateTime(0), new DayProcessor(dt).AfterThisDay());
       var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);
 
       var depo = (from a in _db.AccountsPlaneList
@@ -107,8 +105,5 @@ namespace Keeper.Utils
 
       return result;
     }
-
-    #endregion
-
   }
 }
