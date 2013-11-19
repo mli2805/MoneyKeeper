@@ -359,6 +359,8 @@ namespace Keeper.ViewModels
 
     #endregion
 
+    private readonly List<Screen> _launchedForms = new List<Screen>();
+
     #region // меню формы - вызовы дочерних окон
 
     public bool ShowLogonForm()
@@ -367,8 +369,6 @@ namespace Keeper.ViewModels
       WindowManager.ShowDialog(logonViewModel);
       return logonViewModel.Result;
     }
-
-    private readonly List<Screen> _launchedForms = new List<Screen>();
 
     public void ShowTransactionsForm()
     {
@@ -435,14 +435,14 @@ namespace Keeper.ViewModels
 
     #region menu Diagrams
 
-    private Screen _ratesDiagramFormPointer;
     public void ShowDailyBalancesDiagram()
     {
       var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
       var balances = _diagramDataCalculator.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today, true), Every.Day);
 
-      _ratesDiagramFormPointer = new RatesDiagramViewModel(balances);
-      WindowManager.ShowWindow(_ratesDiagramFormPointer);
+      var ratesDiagramForm = new RatesDiagramViewModel(balances);
+      _launchedForms.Add(ratesDiagramForm);
+      WindowManager.ShowWindow(ratesDiagramForm);
     }
 
     public void ShowRatesDiagram()
@@ -452,34 +452,37 @@ namespace Keeper.ViewModels
       var rates = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).OrderBy(r => r.BankDay).
                            ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)currencyRate.Rate);
 
-      _ratesDiagramFormPointer = new RatesDiagramViewModel(rates);
-      WindowManager.ShowWindow(_ratesDiagramFormPointer);
+      var ratesDiagramForm = new RatesDiagramViewModel(rates);
+      _launchedForms.Add(ratesDiagramForm);
+      WindowManager.ShowWindow(ratesDiagramForm);
     }
 
-    private BarDiagramViewModel _barDiagramFormPointer;
 
     public void ShowMonthlyResultDiagram()
     {
       var monthlyResults = _diagramDataCtor.MonthlyResultsDiagramCtor();
 
-      _barDiagramFormPointer = new BarDiagramViewModel(monthlyResults, BarDiagramMode.Vertical);
-      WindowManager.ShowWindow(_barDiagramFormPointer);
+      var barDiagramForm = new BarDiagramViewModel(monthlyResults, BarDiagramMode.Vertical);
+      _launchedForms.Add(barDiagramForm);
+      WindowManager.ShowWindow(barDiagramForm);
     }
 
     public void ShowMonthlyIncomeDiagram()
     {
       var monthlyIncomes = _diagramDataCtor.MonthlyIncomesDiagramCtor();
 
-      _barDiagramFormPointer = new BarDiagramViewModel(monthlyIncomes, BarDiagramMode.Vertical);
-      WindowManager.ShowWindow(_barDiagramFormPointer);
+      var barDiagramForm = new BarDiagramViewModel(monthlyIncomes, BarDiagramMode.Vertical);
+      _launchedForms.Add(barDiagramForm);
+      WindowManager.ShowWindow(barDiagramForm);
     }
 
     public void ShowMonthlyOutcomeDiagram()
     {
       var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
 
-      _barDiagramFormPointer = new BarDiagramViewModel(monthlyOutcomes, BarDiagramMode.Vertical);
-      WindowManager.ShowWindow(_barDiagramFormPointer);
+      var barDiagramForm = new BarDiagramViewModel(monthlyOutcomes, BarDiagramMode.Vertical);
+      _launchedForms.Add(barDiagramForm);
+      WindowManager.ShowWindow(barDiagramForm);
     }
 
     #endregion
@@ -488,7 +491,7 @@ namespace Keeper.ViewModels
     {
     }
 
-    #region date\period selection controls
+    #region date\period selection properties
     public DateTime BalanceDate
     {
       get { return _balanceDate; }
