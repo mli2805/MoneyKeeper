@@ -107,7 +107,7 @@ namespace Keeper.ViewModels
 				Debet = _oldDeposit.Account,
 				Credit = NewDeposit,
 				Amount = _balanceCalculator.GetBalanceInCurrency(_oldDeposit.Account,
-                            new Period(new DateTime(0), GetTimestampForTransactions(), true),
+                            new Period(new DateTime(0), GetTimestampForTransactions()),
 													  _oldDeposit.MainCurrency),
 				Currency = _oldDeposit.MainCurrency,
 				Comment = "переоформление вклада"

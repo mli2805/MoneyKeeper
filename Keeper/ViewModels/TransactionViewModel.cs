@@ -20,7 +20,7 @@ namespace Keeper.ViewModels
 
     private readonly RateExtractor _rateExtractor;
     private readonly BalanceCalculator _balanceCalculator;
-    private readonly BalancesForTransactions _balancesForTransactionsCalculator;
+    private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculatorCalculator;
 
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }
@@ -181,8 +181,8 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
         NotifyOfPropertyChange(() => ExchangeRate);
-        DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-        EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+        DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+        EndDayBalances = _balancesForTransactionsCalculatorCalculator.EndDayBalances(SelectedTransaction.Timestamp);
 
         Transaction tr = null;
         bool fl = false;
@@ -308,7 +308,7 @@ namespace Keeper.ViewModels
       {
         if (TransactionInWork.Debet == null || !TransactionInWork.Debet.IsDescendantOf("Мои")) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1), false);
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore = _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Debet, period, TransactionInWork.Currency);
 
         return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
@@ -323,7 +323,7 @@ namespace Keeper.ViewModels
         if (TransactionInWork.Debet == null || TransactionInWork.Operation != OperationType.Обмен
                                                            || TransactionInWork.Currency2 == null) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1), false);
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore =
           _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Debet, period, (CurrencyCodes)TransactionInWork.Currency2);
 
@@ -338,7 +338,7 @@ namespace Keeper.ViewModels
       {
         if (TransactionInWork.Credit == null || !TransactionInWork.Credit.IsDescendantOf("Мои")) return "";
 
-        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1),false);
+        var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore = _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Credit, period, TransactionInWork.Currency);
 
         return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
@@ -406,7 +406,7 @@ namespace Keeper.ViewModels
 
       _rateExtractor = new RateExtractor(_db);
       _balanceCalculator = new BalanceCalculator(_db);
-      _balancesForTransactionsCalculator = new BalancesForTransactions(_db);
+      _balancesForTransactionsCalculatorCalculator = new BalancesForTransactionsCalculator(_db);
 
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;
@@ -466,7 +466,7 @@ namespace Keeper.ViewModels
           e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
       {
         NotifyOfPropertyChange(() => AmountInUsd);
-        DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+        DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
       }
 
       NotifyOfPropertyChange(() => DebetAccountBalance);
@@ -532,8 +532,8 @@ namespace Keeper.ViewModels
       }
       else SelectedTransaction.CloneFrom(TransactionInWork);
 
-      DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-      EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+      DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+      EndDayBalances = _balancesForTransactionsCalculatorCalculator.EndDayBalances(SelectedTransaction.Timestamp);
       IsTransactionInWorkChanged = false;
       IsInAddTransactionMode = false;
       CanFillInReceipt = false;
@@ -641,8 +641,8 @@ namespace Keeper.ViewModels
       if (SelectedTransactionIndex == 0) SelectedTransactionIndex++; else SelectedTransactionIndex--;
       Rows.Remove(transactionForRemoval);
 
-      DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-      EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+      DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+      EndDayBalances = _balancesForTransactionsCalculatorCalculator.EndDayBalances(SelectedTransaction.Timestamp);
       IsInAddTransactionMode = false;
     }
 

@@ -24,7 +24,7 @@ namespace Keeper.ViewModels
 
     public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     private AccountTreesFunctions _accountTreesFunctions;
-    private BalanceCalculator _balanceCalculator;
+    private BalancesForShellCalculator _balanceCalculator;
     private DiagramDataCtors _diagramDataCtor;
     private DiagramDataCalculation _diagramDataCalculator;
 
@@ -104,7 +104,7 @@ namespace Keeper.ViewModels
       set
       {
         _selectedAccount = value;
-        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate, true) : PaymentsPeriod;
+        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
         AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccount);
         IsDeposit = value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -196,7 +196,7 @@ namespace Keeper.ViewModels
       InitVariablesToShowAccounts();
       InitBalanceControls();
 
-      _balanceCalculator = new BalanceCalculator(Db);
+      _balanceCalculator = new BalancesForShellCalculator(Db);
       _accountTreesFunctions = new AccountTreesFunctions(Db);
       _diagramDataCalculator = new DiagramDataCalculation(Db);
       _diagramDataCtor = new DiagramDataCtors(Db);
@@ -205,7 +205,7 @@ namespace Keeper.ViewModels
     private void InitBalanceControls()
     {
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-      _paymentsPeriod = new Period(DateTime.Today.AddDays(-(DateTime.Today.Day - 1)), DateTime.Today.AddDays(1).AddSeconds(-1), true);
+      _paymentsPeriod = new Period(new DayProcessor(DateTime.Today).BeforeThisDay(), new DayProcessor(DateTime.Today).AfterThisDay());
       _isDbLoadingSuccessed = true;
     }
 
@@ -376,7 +376,7 @@ namespace Keeper.ViewModels
       UsefulLists.FillLists();
       WindowManager.ShowDialog(new TransactionViewModel(Db));
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      var period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate, true) : PaymentsPeriod;
+      var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
       BinaryCrypto.DbCryptoSerialization();
       Message = arcMessage;
@@ -437,7 +437,7 @@ namespace Keeper.ViewModels
     public void ShowDailyBalancesDiagram()
     {
       var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
-      var balances = _diagramDataCalculator.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Today, true), Every.Day);
+      var balances = _diagramDataCalculator.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
 
       var ratesDiagramForm = new RatesDiagramViewModel(balances);
       _launchedForms.Add(ratesDiagramForm);
@@ -499,7 +499,7 @@ namespace Keeper.ViewModels
         if (value.Equals(_balanceDate)) return;
         _balanceDate = value.Date.AddDays(1).AddMilliseconds(-1);
         NotifyOfPropertyChange(() => BalanceDate);
-        var period = new Period(new DateTime(0), BalanceDate, true);
+        var period = new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay());
         AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
       }
     }

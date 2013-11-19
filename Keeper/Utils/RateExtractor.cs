@@ -5,18 +5,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-//	public interface IRate
-//	{
-//		double GetRate(CurrencyCodes currency, DateTime day);
-//		double GetLastRate(CurrencyCodes currency);
-//		double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day);
-//		decimal GetUsdEquivalent(decimal amount, CurrencyCodes currency, DateTime timestamp);
-//		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp);
-//		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd);
-//	}
-
-//	[Export(typeof(IRate))]
-	public class RateExtractor //: IRate
+	public class RateExtractor
 	{
 	  private readonly KeeperDb _db;
 		

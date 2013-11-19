@@ -88,7 +88,7 @@ namespace Keeper.DomainModel
 		{
 			// шапка отчета
 			if (Transactions.Count == 0) return;
-			CurrentBalance = _balanceCalculator.GetBalanceInCurrency(Account, new Period(new DateTime(0), DateTime.Today, true), MainCurrency);
+			CurrentBalance = _balanceCalculator.GetBalanceInCurrency(Account, new Period(new DateTime(0), DateTime.Today), MainCurrency);
 			if (CurrentBalance == 0)
 			{
 				Report.Add("Депозит закрыт. Остаток 0.\n");
