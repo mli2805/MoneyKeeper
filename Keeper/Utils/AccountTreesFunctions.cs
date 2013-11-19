@@ -13,11 +13,12 @@ namespace Keeper.Utils
     [Import]
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
-    public IKeeperDb Db { get; private set; }
+    private readonly KeeperDb _db;
+
     [ImportingConstructor]
-    public AccountTreesFunctions(IKeeperDb db)
+    public AccountTreesFunctions(KeeperDb db)
     {
-      Db = db;
+      _db = db;
     }
 
     public void RemoveAccount(Account selectedAccount)
@@ -33,7 +34,7 @@ namespace Keeper.Utils
         return;
       }
       // такой запрос возвращает не коллекцию, а энумератор
-      IEnumerable<Transaction> tr = from transaction in Db.Transactions
+      IEnumerable<Transaction> tr = from transaction in _db.Transactions
                                     where transaction.Debet == selectedAccount || transaction.Credit == selectedAccount || transaction.Article == selectedAccount
                                     select transaction;
 
@@ -46,7 +47,7 @@ namespace Keeper.Utils
       if (MessageBox.Show("Проверено, счет не используется в транзакциях.\n Удаление счета\n\n <<" + selectedAccount.Name + ">>\n          Удалить?", "Confirm",
                           MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) return;
 
-      Db.AccountsPlaneList.Remove(selectedAccount);
+      _db.AccountsPlaneList.Remove(selectedAccount);
       selectedAccount.Parent.Children.Remove(selectedAccount);
 
     }
@@ -57,11 +58,11 @@ namespace Keeper.Utils
       if (WindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
       selectedAccount = accountInWork.Parent;
-      accountInWork.Id = (from account in Db.AccountsPlaneList select account.Id).Max() + 1;
+      accountInWork.Id = (from account in _db.AccountsPlaneList select account.Id).Max() + 1;
       selectedAccount.Children.Add(accountInWork);
 
-      Db.AccountsPlaneList.Clear();
-      Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
+      _db.AccountsPlaneList.Clear();
+      _db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(_db.Accounts);
       UsefulLists.FillLists();
     }
 

@@ -151,7 +151,7 @@
     <Compile Include="Utils\DbInputOutput\DbClear.cs" />
     <Compile Include="Utils\DbInputOutput\DbTxtSave.cs" />
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
-    <Compile Include="Utils\Period.cs" />
+    <Compile Include="DomainModel\Period.cs" />
     <Compile Include="Utils\RateExtractor.cs" />
     <Compile Include="Behaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ScrollToPreviousExitPointOrBottomOnLoadBehavior.cs" />
@@ -164,7 +164,7 @@
     <Compile Include="ViewModels\DepositViewModel.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\UsefulLists.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilterListForCombo.cs" />
-    <Compile Include="Utils\AssociatedArticles.cs" />
+    <Compile Include="Utils\AssociationFinder.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\MonthAnalisysViewModel.cs" />
     <Compile Include="ViewModels\ReceiptViewModel.cs" />
