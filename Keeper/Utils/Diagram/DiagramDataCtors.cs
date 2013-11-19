@@ -28,8 +28,8 @@ namespace Keeper.Utils
       var dataForDiagram = new List<DiagramSeries>();
 
       var outcomes = Db.FindAccountInTree("Все расходы");
-      var outcomeColors = new List<Brush> {Brushes.Red, Brushes.Turquoise, Brushes.SeaGreen, Brushes.Magenta, 
-                                           Brushes.SpringGreen, Brushes.Blue, Brushes.Peru, Brushes.Gold};
+      var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta, 
+                                           Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
       var colorsEnumerator = outcomeColors.GetEnumerator();
 
       foreach (var outcome in outcomes.Children)
