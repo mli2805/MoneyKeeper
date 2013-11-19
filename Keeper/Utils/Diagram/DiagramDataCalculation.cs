@@ -8,14 +8,14 @@ namespace Keeper.Utils.Diagram
 {
   class DiagramDataCalculation
   {
-		public IKeeperDb Db { get; private set; }
-		public IRate Rate { get; private set; }
+    private readonly KeeperDb _db;
+    private readonly RateExtractor _rateExtractor;
 
 		[ImportingConstructor]
-    public DiagramDataCalculation(IKeeperDb db, IRate rate)
+    public DiagramDataCalculation(KeeperDb db)
 		{
-			Db = db;
-			Rate = rate;
+			_db = db;
+			_rateExtractor = new RateExtractor(db);
 		}
 
     #region Core calculations
@@ -25,7 +25,7 @@ namespace Keeper.Utils.Diagram
       decimal inUsd = 0;
       foreach (var amount in amounts)
       {
-        inUsd += Rate.GetUsdEquivalent(amount.Value, amount.Key, date);
+        inUsd += _rateExtractor.GetUsdEquivalent(amount.Value, amount.Key, date);
       }
       return inUsd;
     }
@@ -37,7 +37,7 @@ namespace Keeper.Utils.Diagram
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
       var currentDate = period.GetStart();
 
-      foreach (var transaction in Db.Transactions)
+      foreach (var transaction in _db.Transactions)
       {
         if (currentDate != transaction.Timestamp.Date)
         {
@@ -88,7 +88,7 @@ namespace Keeper.Utils.Diagram
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
       var currentDate = period.GetStart();
 
-      foreach (var transaction in Db.Transactions)
+      foreach (var transaction in _db.Transactions)
       {
         if (currentDate != transaction.Timestamp.Date)
         {
@@ -136,7 +136,7 @@ namespace Keeper.Utils.Diagram
       decimal movement = 0;
       var currentDate = period.GetStart();
 
-      foreach (var transaction in Db.Transactions)
+      foreach (var transaction in _db.Transactions)
       {
         if (transaction.Timestamp.Date < period.GetStart()) continue;
         if (transaction.Timestamp.Date > period.GetFinish()) break;
@@ -155,9 +155,9 @@ namespace Keeper.Utils.Diagram
         if (transaction.Article == null || !transaction.Article.IsTheSameOrDescendantOf(kategory)) continue;
 
         if (transaction.Debet.IsTheSameOrDescendantOf("Мои"))
-          movement -= Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+          movement -= _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
         else
-          movement += Rate.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+          movement += _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
       }
       result.Add(FunctionsWithEvery.GetLastDayOfTheSamePeriod(currentDate.Date, frequency), movement);
       return result;
@@ -171,7 +171,7 @@ namespace Keeper.Utils.Diagram
     {
       var result = new Dictionary<DateTime, decimal>();
 
-      var accountForAnalisys = (from account in Db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
+      var accountForAnalisys = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
       var balances = AccountBalancesForPeriodInUsdThirdWay(accountForAnalisys, 
                                                            new Period(new DateTime(2001, 12, 31), DateTime.Today, true), 
                                                            Every.Month).OrderBy(pair => pair.Key).ToList();
@@ -188,7 +188,7 @@ namespace Keeper.Utils.Diagram
 
     public Dictionary<DateTime, decimal> MonthlyTraffic(string accountName)
     {
-      var kategory = (from account in Db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
+      var kategory = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
 
       return KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2002, 1, 1), DateTime.Today, true), Every.Month);
     }

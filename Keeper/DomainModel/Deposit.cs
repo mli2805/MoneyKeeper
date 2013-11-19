@@ -11,12 +11,11 @@ namespace Keeper.DomainModel
 {
 	public class Deposit : PropertyChangedBase
 	{
-		private readonly IRate Rate = IoC.Get<IRate>();
-		private static readonly IBalance Balance = IoC.Get<IBalance>();
-		private ObservableCollection<string> _report;
+	  private readonly RateExtractor _rateExtractor;
+	  private readonly BalanceCalculator _balanceCalculator;
+	  private readonly KeeperDb _db;
 
-		[Import]
-		public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    private ObservableCollection<string> _report;
 
 		public Account Account { get; set; }
 		public DateTime Start { get; set; }
@@ -32,8 +31,15 @@ namespace Keeper.DomainModel
 		public decimal Profit { get; set; }
 		public decimal Forecast { get; set; }
 
+    [ImportingConstructor]
+	  public Deposit(KeeperDb db)
+    {
+      _db = db;
+      _balanceCalculator = new BalanceCalculator(db);
+      _rateExtractor = new RateExtractor(db);
+    }
 
-		public Brush FontColor
+	  public Brush FontColor
 		{
 			get
 			{
@@ -72,7 +78,7 @@ namespace Keeper.DomainModel
 
 		private void SelectTransactions()
 		{
-			Transactions = (from transaction in Db.Transactions
+			Transactions = (from transaction in _db.Transactions
 							where transaction.Debet == Account || transaction.Credit == Account
 							orderby transaction.Timestamp
 							select transaction).ToList();
@@ -82,7 +88,7 @@ namespace Keeper.DomainModel
 		{
 			// шапка отчета
 			if (Transactions.Count == 0) return;
-			CurrentBalance = Balance.GetBalanceInCurrency(Account, new Period(new DateTime(0), DateTime.Today, true), MainCurrency);
+			CurrentBalance = _balanceCalculator.GetBalanceInCurrency(Account, new Period(new DateTime(0), DateTime.Today, true), MainCurrency);
 			if (CurrentBalance == 0)
 			{
 				Report.Add("Депозит закрыт. Остаток 0.\n");
@@ -102,7 +108,7 @@ namespace Keeper.DomainModel
 				}
 				var balanceString = MainCurrency != CurrencyCodes.USD ?
 					  String.Format("{0:#,0} {2}  ($ {1:#,0} )",
-						 CurrentBalance, CurrentBalance / (decimal)Rate.GetLastRate(MainCurrency), MainCurrency.ToString().ToLower()) :
+						 CurrentBalance, CurrentBalance / (decimal)_rateExtractor.GetLastRate(MainCurrency), MainCurrency.ToString().ToLower()) :
 					  String.Format("{0:#,0} usd", CurrentBalance);
 				Report.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
 			}
@@ -115,7 +121,7 @@ namespace Keeper.DomainModel
 			var comment = "";
 			foreach (var transaction in Transactions)
 			{
-				var rate = transaction.Currency != CurrencyCodes.USD ? Rate.GetRate(transaction.Currency, transaction.Timestamp) : 1.0;
+				var rate = transaction.Currency != CurrencyCodes.USD ? _rateExtractor.GetRate(transaction.Currency, transaction.Timestamp) : 1.0;
 
 				if (transaction.Credit == Account)
 				{
@@ -150,7 +156,7 @@ namespace Keeper.DomainModel
 			// подвал отчета
 			if (CurrentBalance != 0)
 			{
-				var todayRate = MainCurrency != CurrencyCodes.USD ? Rate.GetLastRate(MainCurrency) : 1.0;
+				var todayRate = MainCurrency != CurrencyCodes.USD ? _rateExtractor.GetLastRate(MainCurrency) : 1.0;
 				Profit += CurrentBalance / (decimal)todayRate;
 			}
 
@@ -164,7 +170,7 @@ namespace Keeper.DomainModel
 
       var sum = transaction.Currency != CurrencyCodes.USD ?
         String.Format("{0:#,0} {1}  ($ {2:#,0} )",
-         transaction.Amount, transaction.Currency.ToString().ToLower(), transaction.Amount / (decimal)Rate.GetRate(transaction.Currency, transaction.Timestamp)) :
+         transaction.Amount, transaction.Currency.ToString().ToLower(), transaction.Amount / (decimal)_rateExtractor.GetRate(transaction.Currency, transaction.Timestamp)) :
         String.Format("{0:#,0} usd", transaction.Amount);
       if (transaction.Debet == Account) s = s + "   " + sum;
       else s = s + "                                           " + sum;
@@ -183,7 +189,7 @@ namespace Keeper.DomainModel
 
 			if (MainCurrency != CurrencyCodes.USD)
 			{
-				var todayRate = Rate.GetLastRate(MainCurrency);
+				var todayRate = _rateExtractor.GetLastRate(MainCurrency);
 				forecastInUsd = forecastInUsd / (decimal)todayRate;
 			}
 			return String.Format("Прогноз по депозиту {0:#,0} usd", forecastInUsd);

@@ -8,8 +8,8 @@ namespace Keeper.ViewModels
 {
 	class RenewDepositViewModel : Screen
 	{
-		public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-		private static readonly IBalance Balance = IoC.Get<IBalance>();
+	  private readonly KeeperDb _db;
+    private readonly BalanceCalculator _balanceCalculator;
 
 		private readonly Deposit _oldDeposit;
 		public Account NewDeposit { get; set; }
@@ -21,8 +21,11 @@ namespace Keeper.ViewModels
 		public decimal Procents { get; set; }
 		public string NewDepositName { get; set; }
 
-		public RenewDepositViewModel(Deposit oldDeposit)
+		public RenewDepositViewModel(KeeperDb db, Deposit oldDeposit)
 		{
+		  _db = db;
+		  _balanceCalculator = new BalanceCalculator(db);
+
 			_oldDeposit = oldDeposit;
 			NewDeposit = null;
 
@@ -42,7 +45,7 @@ namespace Keeper.ViewModels
 		private Account FindBankAccount()
 		{
 			var st = OldDepositName.Substring(0, OldDepositName.IndexOf(' '));
-			return Db.FindAccountInTree(st);
+			return _db.FindAccountInTree(st);
 		}
 
 		private string BuildNewName()
@@ -56,14 +59,14 @@ namespace Keeper.ViewModels
 		private Account AddNewAccountForDeposit()
 		{
 			var newDepositAccount = new Account(NewDepositName);
-			newDepositAccount.Id = (from account in Db.AccountsPlaneList select account.Id).Max() + 1;
+			newDepositAccount.Id = (from account in _db.AccountsPlaneList select account.Id).Max() + 1;
 
-			var parent = Db.FindAccountInTree("Депозиты");
+			var parent = _db.FindAccountInTree("Депозиты");
 			newDepositAccount.Parent = parent;
 			parent.Children.Add(newDepositAccount);
 
-			Db.AccountsPlaneList.Clear();
-			Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
+			_db.AccountsPlaneList.Clear();
+			_db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(_db.Accounts);
 			UsefulLists.FillLists();
 
 			return newDepositAccount;
@@ -72,7 +75,7 @@ namespace Keeper.ViewModels
 		private DateTime GetTimestampForTransactions()
 		{
 			var lastTransactionInDay =
-			   (from t in Db.Transactions where t.Timestamp.Date == TransactionsDate.Date select t).LastOrDefault();
+			   (from t in _db.Transactions where t.Timestamp.Date == TransactionsDate.Date select t).LastOrDefault();
 			return lastTransactionInDay == null ?
 			  TransactionsDate.AddHours(9) :
 			  lastTransactionInDay.Timestamp.AddMinutes(1);
@@ -80,7 +83,7 @@ namespace Keeper.ViewModels
 
 		private void MakeTransactionProcents()
 		{
-			var transactionProcents = new Transaction()
+			var transactionProcents = new Transaction
 			  {
 				  Timestamp = GetTimestampForTransactions(),
 				  Operation = OperationType.Доход,
@@ -88,37 +91,37 @@ namespace Keeper.ViewModels
 				  Credit = _oldDeposit.Account,
 				  Amount = Procents,
 				  Currency = _oldDeposit.MainCurrency,
-				  Article = Db.FindAccountInTree("Проценты по депозитам"),
+				  Article = _db.FindAccountInTree("Проценты по депозитам"),
 				  Comment = "причисление процентов при закрытии"
 			  };
 
-			Db.Transactions.Add(transactionProcents);
+			_db.Transactions.Add(transactionProcents);
 		}
 
 		private void MakeTransactionTransfer()
 		{
-			var transactionProcents = new Transaction()
+			var transactionProcents = new Transaction
 			{
 				Timestamp = GetTimestampForTransactions(),
 				Operation = OperationType.Перенос,
 				Debet = _oldDeposit.Account,
 				Credit = NewDeposit,
-				Amount = Balance.GetBalanceInCurrency(_oldDeposit.Account,
+				Amount = _balanceCalculator.GetBalanceInCurrency(_oldDeposit.Account,
                             new Period(new DateTime(0), GetTimestampForTransactions(), true),
 													  _oldDeposit.MainCurrency),
 				Currency = _oldDeposit.MainCurrency,
 				Comment = "переоформление вклада"
 			};
 
-			Db.Transactions.Add(transactionProcents);
+			_db.Transactions.Add(transactionProcents);
 		}
 
 		private void RemoveOldAccountToClosed()
 		{
-			var parent = Db.FindAccountInTree("Депозиты");
+			var parent = _db.FindAccountInTree("Депозиты");
 			parent.Children.Remove(_oldDeposit.Account);
 
-			parent = Db.FindAccountInTree("Закрытые депозиты");
+			parent = _db.FindAccountInTree("Закрытые депозиты");
 			_oldDeposit.Account.Parent = parent;
 			parent.Children.Add(_oldDeposit.Account);
 		}
