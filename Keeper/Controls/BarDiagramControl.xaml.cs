@@ -15,31 +15,22 @@ namespace Keeper.Controls
   {
     #region DependencyProperties
 
-    public static readonly DependencyProperty DiagramModeProperty =
-      DependencyProperty.Register("DiagramMode", typeof(BarDiagramMode),
-                                  typeof(BarDiagramControl), new FrameworkPropertyMetadata(new BarDiagramMode()));
+    public static readonly DependencyProperty AllDiagramDataProperty =
+      DependencyProperty.Register("AllDiagramData", typeof(DiagramData),
+                                  typeof(BarDiagramControl), new FrameworkPropertyMetadata(new DiagramData()));
 
-    public BarDiagramMode DiagramMode
+    public DiagramData AllDiagramData
     {
-      get { return (BarDiagramMode)GetValue(DiagramModeProperty); }
-      set { SetValue(DiagramModeProperty, value); }
-    }
-
-    public static readonly DependencyProperty AllDiagramSeriesProperty =
-      DependencyProperty.Register("AllDiagramSeries", typeof(List<DiagramSeries>),
-                                  typeof(BarDiagramControl), new FrameworkPropertyMetadata(new List<DiagramSeries>()));
-
-    public List<DiagramSeries> AllDiagramSeries
-    {
-      get { return (List<DiagramSeries>)GetValue(AllDiagramSeriesProperty); }
-      set { SetValue(AllDiagramSeriesProperty, value); }
+      get { return (DiagramData)GetValue(AllDiagramDataProperty); }
+      set { SetValue(AllDiagramDataProperty, value); }
     }
 
     #endregion
 
     public DiagramSeriesUnited AllSeriesUnited { get; set; }
     public DiagramSeriesUnited CurrentSeriesUnited { get; set; }
-    private Every _oneBarPeriod;
+    private Every _groupInterval;
+    private DiagramMode _diagramMode;
 
     private DateTime _minDate, _maxDate;
     private double _minValue, _maxValue;
@@ -65,10 +56,11 @@ namespace Keeper.Controls
 
     void BarDiagramControlOnLoaded(object sender, RoutedEventArgs e)
     {
-      _oneBarPeriod = Every.Month;
       AllSeriesUnited = new DiagramSeriesUnited();
-      AllSeriesToAllData();
+      CombineAllSeries();
       if (AllSeriesUnited.SeriesCount == 0) return;
+      _groupInterval = AllDiagramData.TimeInterval;
+      _diagramMode = AllDiagramData.Mode;
       CurrentSeriesUnited = new DiagramSeriesUnited(AllSeriesUnited);
 
       ImageSource = DrawCurrentDiagram(CalculationData);
@@ -83,13 +75,13 @@ namespace Keeper.Controls
     #region data processing methods
 
     /// <summary>
-    /// На входе AllDiagramSeries, надо преобразовать в структуру, 
+    /// На входе AllDiagramData, надо преобразовать в структуру, 
     /// где одной дате соответствуют значения для разных серий - List of DiagramDate
     /// </summary>
-    private void AllSeriesToAllData()
+    private void CombineAllSeries()
     {
       AllSeriesUnited = new DiagramSeriesUnited();
-      foreach (var diagramSeries in AllDiagramSeries)
+      foreach (var diagramSeries in AllDiagramData.Data)
       {
         AllSeriesUnited.Add(diagramSeries);
       }
@@ -100,15 +92,16 @@ namespace Keeper.Controls
       _minDate = CurrentSeriesUnited.DiagramData.ElementAt(0).Key;
       _maxDate = CurrentSeriesUnited.DiagramData.Last().Key;
 
-      switch (DiagramMode)
+      switch (_diagramMode)
       {
-        case BarDiagramMode.Horizontal:
+        case DiagramMode.BarHorizontal:
           // это вариант , когда столбцы разных серий стоят рядом
           _minValue = CurrentSeriesUnited.DiagramData.Values.Min(l => l.Min());
           _maxValue = CurrentSeriesUnited.DiagramData.Values.Max(l => l.Max());
           break;
 
-        case BarDiagramMode.Vertical:
+        case DiagramMode.BarVertical:
+        case DiagramMode.Line:
           // ряд серий отрицательные, либо даже просто значение отрицательное в положительной серии
           _minValue = _maxValue = 0;
           foreach (var day in CurrentSeriesUnited.DiagramData)
@@ -148,9 +141,8 @@ namespace Keeper.Controls
       DrawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Right, cd));
       DrawingGroup.Children.Add(HorizontalGridLines(cd));
 
-      if (DiagramMode == BarDiagramMode.Vertical) VerticalDiagram(cd);
-//      if (DiagramMode == BarDiagramMode.Vertical100) 
-//      if (DiagramMode == BarDiagramMode.Horizontal) 
+      if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(cd);
+      if (_diagramMode == DiagramMode.Line) LineDiagram(cd);
 
       return new DrawingImage(DrawingGroup);
     } 
@@ -302,11 +294,6 @@ namespace Keeper.Controls
                                     new Point(dashX + 5, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i));
         geometryGroupDashesAndMarks.Children.Add(dash);
 
-//        if (i + cd.FromDivision == 0)
-//          geometryGroupDashesAndMarks.Children.Add(gridline);
-//        else 
-//        if (i != 0 && i != cd.Divisions) geometryGroupGridlines.Children.Add(gridline);
-
         var markX = flag == Dock.Left ? cd.LeftMargin - 40 : cd.ImageWidth - cd.RightMargin + 15;
         var mark = String.Format("{0} ", (i + cd.FromDivision) * cd.AccurateValuesPerDivision);
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
@@ -319,7 +306,24 @@ namespace Keeper.Controls
       return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
-    private void VerticalDiagram(DrawingCalculationData cd)
+    private void LineDiagram(DrawingCalculationData cd)
+    {
+      var geometryGroup = new GeometryGroup();
+      int j = 0;
+      for (int i = 0; i < CurrentSeriesUnited.DiagramData.Count - 1; i++)
+      {
+        var line = new LineGeometry(
+          new Point((CurrentSeriesUnited.DiagramData.ElementAt(i).Key - _minDate).Days * cd.PointPerDate + cd.LeftMargin,
+                     cd.ImageHeight - cd.BottomMargin - (CurrentSeriesUnited.DiagramData.ElementAt(i).Value[j] - cd.LowestScaleValue) * cd.PointPerOneValueAfter),
+          new Point((CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Key - _minDate).Days * cd.PointPerDate + cd.LeftMargin,
+                     cd.ImageHeight - cd.BottomMargin - (CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Value[j] - cd.LowestScaleValue) * cd.PointPerOneValueAfter));
+        geometryGroup.Children.Add(line);
+      }
+      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
+      DrawingGroup.Children.Add(geometryDrawing);
+    }
+
+    private void BarVerticalDiagram(DrawingCalculationData cd)
     {
       var positiveGeometryGroups = new List<GeometryGroup>();
       var negativeGeometryGroups = new List<GeometryGroup>();
@@ -366,8 +370,8 @@ namespace Keeper.Controls
         var positiveGeometryDrawing = new GeometryDrawing
         {
           Geometry = positiveGeometryGroups[i],
-          Brush = AllDiagramSeries[i].positiveBrushColor,
-          Pen = new Pen(AllDiagramSeries[i].positiveBrushColor, 1)
+          Brush = AllDiagramData.Data[i].PositiveBrushColor,
+          Pen = new Pen(AllDiagramData.Data[i].PositiveBrushColor, 1)
         };
 
         DrawingGroup.Children.Add(positiveGeometryDrawing);
@@ -375,8 +379,8 @@ namespace Keeper.Controls
         var negativeGeometryDrawing = new GeometryDrawing
         {
           Geometry = negativeGeometryGroups[i],
-          Brush = AllDiagramSeries[i].negativeBrushColor,
-          Pen = new Pen(AllDiagramSeries[i].negativeBrushColor, 1)
+          Brush = AllDiagramData.Data[i].NegativeBrushColor,
+          Pen = new Pen(AllDiagramData.Data[i].NegativeBrushColor, 1)
         };
 
         DrawingGroup.Children.Add(negativeGeometryDrawing);
@@ -595,7 +599,7 @@ namespace Keeper.Controls
 
     private void GroupAllData(Every period)
     {
-      _oneBarPeriod = period;
+      _groupInterval = period;
 
       var groupedData = new SortedList<DateTime, List<double>>();
       var onePair = AllSeriesUnited.DiagramData.ElementAt(0);
@@ -619,7 +623,7 @@ namespace Keeper.Controls
 
     private void ChangeDiagramForNewGrouping(Every groupPeriod)
     {
-      AllSeriesToAllData();
+      CombineAllSeries();
       GroupAllData(groupPeriod);
 
       if (groupPeriod == Every.Year) DefineYearsLimits();
@@ -631,13 +635,13 @@ namespace Keeper.Controls
 
     private void GroupByMonthes(object sender, RoutedEventArgs e)
     {
-      if (_oneBarPeriod == Every.Month) return;
+      if (_groupInterval == Every.Month) return;
       ChangeDiagramForNewGrouping(Every.Month);
     }
 
     private void GroupByYears(object sender, RoutedEventArgs e)
     {
-      if (_oneBarPeriod == Every.Year) return;
+      if (_groupInterval == Every.Year) return;
       ChangeDiagramForNewGrouping(Every.Year);
     }
 
@@ -676,7 +680,7 @@ namespace Keeper.Controls
 
     private Brush DefineBarHintBackground(int barNumber)
     {
-      if (AllDiagramSeries.Count == 1) return CurrentSeriesUnited.DiagramData.ElementAt(barNumber).Value[0] > 0 ?
+      if (AllDiagramData.Data.Count == 1) return CurrentSeriesUnited.DiagramData.ElementAt(barNumber).Value[0] > 0 ?
                                                                        Brushes.Azure : Brushes.LavenderBlush;
       return Brushes.White;
     }
@@ -684,11 +688,11 @@ namespace Keeper.Controls
     private string CreateBarHintContent(int barNumber)
     {
       var thisBar = CurrentSeriesUnited.DiagramData.ElementAt(barNumber);
-      var content = _oneBarPeriod == Every.Month
+      var content = _groupInterval == Every.Month
                           ? "  {0:MMMM yyyy}  "
                           : "  {0:yyyy} год  ";
 
-      if (AllDiagramSeries.Count == 1)
+      if (AllDiagramData.Data.Count == 1)
       {
         content += "\n  {1:0} usd ";
         return string.Format(content,thisBar.Key,thisBar.Value[0]);
@@ -696,7 +700,7 @@ namespace Keeper.Controls
 
       var i = 0;
       content = string.Format(content, thisBar.Key);
-      foreach (var series in AllDiagramSeries)
+      foreach (var series in AllDiagramData.Data)
       {
         if (!thisBar.Value[i].Equals(0))
           content += string.Format("\n  {0} = {1:0} usd  ", series.Name, thisBar.Value[i]);

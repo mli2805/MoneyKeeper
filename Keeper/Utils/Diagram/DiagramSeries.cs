@@ -6,8 +6,8 @@ namespace Keeper.Utils
   public class DiagramSeries
   {
     public string Name;
-    public Brush positiveBrushColor;
-    public Brush negativeBrushColor;
+    public Brush PositiveBrushColor;
+    public Brush NegativeBrushColor;
     public int Index;
     public List<DiagramPair> Data;
   }

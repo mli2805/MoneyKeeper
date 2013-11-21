@@ -123,7 +123,8 @@
     <Compile Include="Utils\DbInputOutput\BinaryCrypto.cs" />
     <Compile Include="Utils\DbInputOutput\DbBackup.cs" />
     <Compile Include="Utils\DbInputOutput\DbTxtLoad.cs" />
-    <Compile Include="Utils\Diagram\BarDiagramMode.cs" />
+    <Compile Include="Utils\Diagram\DiagramData.cs" />
+    <Compile Include="Utils\Diagram\DiagramMode.cs" />
     <Compile Include="Utils\Diagram\DiagramDataCalculation.cs" />
     <Compile Include="Utils\Diagram\DiagramSeriesUnited.cs" />
     <Compile Include="Utils\Diagram\DiagramDataChangeMode.cs" />

@@ -4,23 +4,19 @@ using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Utils;
+using Keeper.Utils.Diagram;
 
 namespace Keeper.ViewModels
 {
   internal class BarDiagramViewModel : Screen
-   {
-    public BarDiagramViewModel(IEnumerable<DiagramSeries> severalSeries, BarDiagramMode diagramMode)
+  {
+    public DiagramData ModelDataProperty { get; set; }
+
+    public BarDiagramViewModel(DiagramData diagramData)
     {
-      ModelDataProperty = new List<DiagramSeries>();
-      foreach (var series in severalSeries)
-      {
-        ModelDataProperty.Add(series);
-      }
-      ModelModeProperty = diagramMode;
+      ModelDataProperty = diagramData;
     }
 
-    public List<DiagramSeries> ModelDataProperty { get; set; }
-    public BarDiagramMode ModelModeProperty { get; set; }
   }
- 
+
 }

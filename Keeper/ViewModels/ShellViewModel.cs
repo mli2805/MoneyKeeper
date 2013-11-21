@@ -461,7 +461,7 @@ namespace Keeper.ViewModels
     {
       var monthlyResults = _diagramDataCtor.MonthlyResultsDiagramCtor();
 
-      var barDiagramForm = new BarDiagramViewModel(monthlyResults, BarDiagramMode.Vertical);
+      var barDiagramForm = new BarDiagramViewModel(monthlyResults);
       _launchedForms.Add(barDiagramForm);
       WindowManager.ShowWindow(barDiagramForm);
     }
@@ -470,7 +470,7 @@ namespace Keeper.ViewModels
     {
       var monthlyIncomes = _diagramDataCtor.MonthlyIncomesDiagramCtor();
 
-      var barDiagramForm = new BarDiagramViewModel(monthlyIncomes, BarDiagramMode.Vertical);
+      var barDiagramForm = new BarDiagramViewModel(monthlyIncomes);
       _launchedForms.Add(barDiagramForm);
       WindowManager.ShowWindow(barDiagramForm);
     }
@@ -479,7 +479,7 @@ namespace Keeper.ViewModels
     {
       var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
 
-      var barDiagramForm = new BarDiagramViewModel(monthlyOutcomes, BarDiagramMode.Vertical);
+      var barDiagramForm = new BarDiagramViewModel(monthlyOutcomes);
       _launchedForms.Add(barDiagramForm);
       WindowManager.ShowWindow(barDiagramForm);
     }
@@ -488,6 +488,10 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
+      var balances = _diagramDataCtor.DailyBalancesCtor();
+      var barDiagramForm = new BarDiagramViewModel(balances);
+      _launchedForms.Add(barDiagramForm);
+      WindowManager.ShowWindow(barDiagramForm);
     }
 
     #region date\period selection properties
