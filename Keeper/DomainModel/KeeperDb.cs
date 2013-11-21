@@ -6,23 +6,11 @@ using System.Linq;
 
 namespace Keeper.DomainModel
 {
-	public interface IKeeperDb
-	{
-		ObservableCollection<Account> Accounts { get; set; }
-		ObservableCollection<Transaction> Transactions { get; set; }
-		ObservableCollection<CurrencyRate> CurrencyRates { get; set; }
-		ObservableCollection<ArticleAssociation> ArticlesAssociations { get; set; }
-		List<Account> AccountsPlaneList { get; set; }
-		Account FindAccountInBranch(string toFind, Account branch);
-		Account FindAccountInTree(string name);
-		int GetMaxAccountId();
-	}
 
 	[Serializable]
 	[Export(typeof(KeeperDb))]
-	[Export(typeof(IKeeperDb))]
 	[PartCreationPolicy(CreationPolicy.Shared)]
-	public class KeeperDb : IKeeperDb
+	public class KeeperDb 
 	{
 		public ObservableCollection<Account> Accounts { get; set; }
 		public ObservableCollection<Transaction> Transactions { get; set; }

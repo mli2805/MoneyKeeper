@@ -7,13 +7,13 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-
+  [Export]
 	public class BalanceCalculator
 	{
 	  private readonly KeeperDb _db;
 	  private readonly RateExtractor _rateExtractor;
 
-		[ImportingConstructor]
+//		[ImportingConstructor]
 		public BalanceCalculator(KeeperDb db)
 		{
 			_db = db;

@@ -20,6 +20,7 @@ namespace Keeper.DbInputOutput
         Db.ArticlesAssociations = value.ArticlesAssociations;
         Db.CurrencyRates = value.CurrencyRates;
 
+        // сеттер переделан ради сортировки транзакций
         Db.Transactions = new ObservableCollection<Transaction>();
         var transactions = from transaction in value.Transactions orderby transaction.Timestamp select transaction;
         foreach (var transaction in transactions)
