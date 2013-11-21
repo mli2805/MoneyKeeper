@@ -11,7 +11,7 @@ namespace Keeper.UnitTests.Utils
 	[TestFixture]
 	public class TestRate
 	{
-		private IKeeperDb _keeperDb;
+		private KeeperDb _keeperDb;
 		private readonly static DateTime Monday = new DateTime(2000, 1, 1);
 		private readonly static DateTime Tuesday = new DateTime(2000, 1, 2);
 		private readonly static DateTime Wednesday = new DateTime(2000, 1, 3);
@@ -20,7 +20,7 @@ namespace Keeper.UnitTests.Utils
 		[SetUp]
 		public void SetUp()
 		{
-			_keeperDb = A.Fake<IKeeperDb>();
+			_keeperDb = A.Fake<KeeperDb>();
 			_underTest = new RateExtractor(_keeperDb);
 			A.CallTo(() => _keeperDb.CurrencyRates).Returns(new ObservableCollection<CurrencyRate>
 				{
@@ -55,14 +55,14 @@ namespace Keeper.UnitTests.Utils
 	public class TestBalance
 	{
 		private BalanceCalculator _underTest;
-		private IRate _rate;
+		private RateExtractor _rate;
 		private readonly static DateTime Monday = new DateTime(2000, 1, 1);
 
 		[SetUp]
 		public void SetUp()
 		{
-			_rate = A.Fake<IRate>();
-			_underTest = new BalanceCalculator(A.Fake<IKeeperDb>(), _rate);
+      _rate = A.Fake<RateExtractor>();
+			_underTest = new BalanceCalculator(A.Fake<KeeperDb>());
 		
 		}
 		[Test]
