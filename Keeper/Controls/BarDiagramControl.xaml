@@ -7,7 +7,7 @@
              >
     <Grid Background="Azure">
     <Grid.RowDefinitions>
-      <RowDefinition/>
+      <RowDefinition/> 
       <RowDefinition Height="30"/>
     </Grid.RowDefinitions>
     <Popup Name="BarHint" >

@@ -3,6 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="clr-namespace:Keeper.Controls"
         Title="BarDiagramView" WindowState="Maximized">
   <Grid>
-    <Controls:BarDiagramControl AllDiagramSeries="{Binding ModelDataProperty}" DiagramMode="{Binding ModelModeProperty}"  Focusable="True" />
+    <Controls:BarDiagramControl AllDiagramData="{Binding ModelDataProperty}" Focusable="True" />
   </Grid>
 </Window>
