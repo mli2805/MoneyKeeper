@@ -5,10 +5,10 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
+  [Export]
 	public class RateExtractor
 	{
 	  private readonly KeeperDb _db;
-		
 		[ImportingConstructor]
 		public RateExtractor(KeeperDb db)
 		{
