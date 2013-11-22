@@ -29,7 +29,7 @@ namespace Keeper.Controls
 
     public DiagramSeriesUnited AllSeriesUnited { get; set; }
     public DiagramSeriesUnited CurrentSeriesUnited { get; set; }
-    private Every _groupInterval;
+    public Every GroupInterval;
     private DiagramMode _diagramMode;
 
     private DateTime _minDate, _maxDate;
@@ -59,7 +59,7 @@ namespace Keeper.Controls
       AllSeriesUnited = new DiagramSeriesUnited();
       CombineAllSeries();
       if (AllSeriesUnited.SeriesCount == 0) return;
-      _groupInterval = AllDiagramData.TimeInterval;
+      GroupInterval = AllDiagramData.TimeInterval;
       _diagramMode = AllDiagramData.Mode;
       CurrentSeriesUnited = new DiagramSeriesUnited(AllSeriesUnited);
 
@@ -70,7 +70,7 @@ namespace Keeper.Controls
       if (window != null) window.KeyDown += OnKeyDown;
     }
 
-    #endregion 
+    #endregion
 
     #region data processing methods
 
@@ -94,6 +94,7 @@ namespace Keeper.Controls
 
       switch (_diagramMode)
       {
+        case DiagramMode.Line:
         case DiagramMode.BarHorizontal:
           // это вариант , когда столбцы разных серий стоят рядом
           _minValue = CurrentSeriesUnited.DiagramData.Values.Min(l => l.Min());
@@ -101,7 +102,6 @@ namespace Keeper.Controls
           break;
 
         case DiagramMode.BarVertical:
-        case DiagramMode.Line:
           // ряд серий отрицательные, либо даже просто значение отрицательное в положительной серии
           _minValue = _maxValue = 0;
           foreach (var day in CurrentSeriesUnited.DiagramData)
@@ -141,36 +141,27 @@ namespace Keeper.Controls
       DrawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Right, cd));
       DrawingGroup.Children.Add(HorizontalGridLines(cd));
 
-      if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(cd);
-      if (_diagramMode == DiagramMode.Line) LineDiagram(cd);
+      if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(cd, ref DrawingGroup);
+      if (_diagramMode == DiagramMode.Line)
+        for (var j = 0; j < AllDiagramData.Data.Count; j++ ) DrawingGroup.Children.Add(OneSeriesLine(cd,j));
 
       return new DrawingImage(DrawingGroup);
-    } 
+    }
 
     private GeometryDrawing FullDiagramBackground(DrawingCalculationData cd)
     {
-      var geometryDrawing = new GeometryDrawing();
-
-      var rectGeometry = new RectangleGeometry {Rect = new Rect(0, 0, cd.ImageWidth, cd.ImageHeight)};
-      geometryDrawing.Geometry = rectGeometry;
-      geometryDrawing.Brush = Brushes.LightYellow; // Кисть закраски
-
-      return geometryDrawing;
+      var rectGeometry = new RectangleGeometry { Rect = new Rect(0, 0, cd.ImageWidth, cd.ImageHeight) };
+      return new GeometryDrawing {Geometry = rectGeometry, Brush = Brushes.LightYellow};
     }
 
     private GeometryDrawing DiagramRegionBackground(DrawingCalculationData cd)
     {
-    var geometryDrawing = new GeometryDrawing();
-
       var rectGeometry = new RectangleGeometry
       {
         Rect = new Rect(cd.LeftMargin, cd.TopMargin, cd.ImageWidth - cd.LeftMargin - cd.RightMargin,
                         cd.ImageHeight - cd.TopMargin - cd.BottomMargin)
       };
-      geometryDrawing.Geometry = rectGeometry;
-      geometryDrawing.Brush = Brushes.White; // Кисть закраски
-
-      return geometryDrawing;
+      return new GeometryDrawing {Geometry = rectGeometry, Brush = Brushes.White};
     }
 
     private GeometryDrawing HorizontalAxes(DrawingCalculationData cd)
@@ -191,44 +182,49 @@ namespace Keeper.Controls
     {
       var geometryGroupGridlines = new GeometryGroup();
 
-      const double minPointBetweenMarkedDivision = 50;
-      var markedDash = (int)Math.Ceiling(minPointBetweenMarkedDivision / cd.PointPerDate);
-
-      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i++)
+      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i=i+cd.MarkedDash)
       {
-        if (i % markedDash == 0)
-        {
-          var gridline =
+          geometryGroupGridlines.Children.Add(
             new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 1, cd.TopMargin + 5),
                              new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 1,
-                                       cd.ImageHeight - cd.BottomMargin - 5));
-          geometryGroupGridlines.Children.Add(gridline);
-        }
+                                       cd.ImageHeight - cd.BottomMargin - 5)));
       }
 
-      var geometryDrawingGridlines = new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
-      DrawingGroup.Children.Add(geometryDrawingGridlines);
-      return geometryDrawingGridlines;
+      return new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
+    }
+
+    private string GetMarkTemplate()
+    {
+      switch (GroupInterval)
+      {
+        case Every.Year: return "{0:yyyy} ";
+        case Every.Month: return "{0:M/yyyy} ";
+        case Every.Day: return "{0:d/M/yyyy} ";
+        default: return "{0 } ";
+      }
     }
 
     private GeometryDrawing XAxisDashesWithMarkers(Dock flag, DrawingCalculationData cd)
     {
-      const double minPointBetweenMarkedDivision = 50;
-      var markedDash = (int)Math.Ceiling(minPointBetweenMarkedDivision / cd.PointPerDate);
+      var dash = (int)Math.Ceiling(cd.MinPointBetweenDivision / cd.PointPerDate);
 
       var geometryGroupDashesAndMarks = new GeometryGroup();
 
       for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i++)
       {
-        var dashY = flag == Dock.Bottom ? cd.ImageHeight - cd.BottomMargin : cd.TopMargin;
-        var dash = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY - 5),
-                                    new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY + 5));
-        geometryGroupDashesAndMarks.Children.Add(dash);
+        if (i % dash == 0)
+        {
+          var dashY = flag == Dock.Bottom ? cd.ImageHeight - cd.BottomMargin : cd.TopMargin;
+          var dashSize = i%cd.MarkedDash == 0 ? 5 : 2;
+          var dashGeometry = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY - dashSize),
+                                      new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY + dashSize));
+          geometryGroupDashesAndMarks.Children.Add(dashGeometry);
+        }
 
-        if (i % markedDash == 0)
+        if (i % cd.MarkedDash == 0)
         {
           var markY = flag == Dock.Bottom ? cd.ImageHeight : cd.TopMargin;
-          var mark = String.Format("{0:M/yyyy} ", CurrentSeriesUnited.DiagramData.ElementAt(i).Key);
+          var mark = String.Format(GetMarkTemplate(), CurrentSeriesUnited.DiagramData.ElementAt(i).Key);
           var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                                 new Typeface("Times New Roman"), 12, Brushes.Black);
           var geometry =
@@ -237,9 +233,7 @@ namespace Keeper.Controls
         }
       }
 
-      var geometryDrawingDashesAndMarks = new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
-      DrawingGroup.Children.Add(geometryDrawingDashesAndMarks);
-      return geometryDrawingDashesAndMarks;
+      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
     private GeometryDrawing VerticalAxes(DrawingCalculationData cd)
@@ -274,7 +268,7 @@ namespace Keeper.Controls
     {
       const double minPointBetweenDivision = 35;
 
-      double pointPerOneValueBefore = _maxValue.Equals(_minValue) ? 
+      double pointPerOneValueBefore = _maxValue.Equals(_minValue) ?
         0 : (cd.ImageHeight - cd.TopMargin - cd.BottomMargin) / (_maxValue - _minValue);
       double valuesPerDivision = (minPointBetweenDivision > pointPerOneValueBefore) ?
         Math.Ceiling(minPointBetweenDivision / pointPerOneValueBefore) : minPointBetweenDivision / pointPerOneValueBefore;
@@ -306,24 +300,33 @@ namespace Keeper.Controls
       return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
-    private void LineDiagram(DrawingCalculationData cd)
+    private GeometryDrawing OneSeriesLine(DrawingCalculationData cd, int seriesNumber)
     {
-      var geometryGroup = new GeometryGroup();
-      int j = 0;
-      for (int i = 0; i < CurrentSeriesUnited.DiagramData.Count - 1; i++)
-      {
-        var line = new LineGeometry(
-          new Point((CurrentSeriesUnited.DiagramData.ElementAt(i).Key - _minDate).Days * cd.PointPerDate + cd.LeftMargin,
-                     cd.ImageHeight - cd.BottomMargin - (CurrentSeriesUnited.DiagramData.ElementAt(i).Value[j] - cd.LowestScaleValue) * cd.PointPerOneValueAfter),
-          new Point((CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Key - _minDate).Days * cd.PointPerDate + cd.LeftMargin,
-                     cd.ImageHeight - cd.BottomMargin - (CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Value[j] - cd.LowestScaleValue) * cd.PointPerOneValueAfter));
-        geometryGroup.Children.Add(line);
-      }
-      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.LimeGreen, 1) };
-      DrawingGroup.Children.Add(geometryDrawing);
+      var allDays = (_maxDate - _minDate).Days;
+      var pointsPerDay = (cd.ImageWidth - cd.LeftMargin - cd.RightMargin - cd.Shift - cd.Gap) / allDays;
+
+      var firstPointX = cd.LeftMargin + cd.Shift / 2 + cd.Gap / 2;
+
+        var geometryGroup = new GeometryGroup();
+
+        for (int i = 0; i < CurrentSeriesUnited.DiagramData.Count - 1; i++)
+        {
+          var line = new LineGeometry(
+            new Point((CurrentSeriesUnited.DiagramData.ElementAt(i).Key - _minDate).Days*pointsPerDay + firstPointX,
+                      cd.ImageHeight - cd.BottomMargin -
+                      (CurrentSeriesUnited.DiagramData.ElementAt(i).Value[seriesNumber] - cd.LowestScaleValue) *
+                      cd.PointPerOneValueAfter),
+            new Point((CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Key - _minDate).Days*pointsPerDay + firstPointX,
+                      cd.ImageHeight - cd.BottomMargin -
+                      (CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Value[seriesNumber] - cd.LowestScaleValue) *
+                      cd.PointPerOneValueAfter));
+          geometryGroup.Children.Add(line);
+        }
+
+        return new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(AllDiagramData.Data.ElementAt(seriesNumber).PositiveBrushColor, 2) };
     }
 
-    private void BarVerticalDiagram(DrawingCalculationData cd)
+    private void BarVerticalDiagram(DrawingCalculationData cd, ref DrawingGroup drawingGroup)
     {
       var positiveGeometryGroups = new List<GeometryGroup>();
       var negativeGeometryGroups = new List<GeometryGroup>();
@@ -374,7 +377,7 @@ namespace Keeper.Controls
           Pen = new Pen(AllDiagramData.Data[i].PositiveBrushColor, 1)
         };
 
-        DrawingGroup.Children.Add(positiveGeometryDrawing);
+        drawingGroup.Children.Add(positiveGeometryDrawing);
 
         var negativeGeometryDrawing = new GeometryDrawing
         {
@@ -383,7 +386,7 @@ namespace Keeper.Controls
           Pen = new Pen(AllDiagramData.Data[i].NegativeBrushColor, 1)
         };
 
-        DrawingGroup.Children.Add(negativeGeometryDrawing);
+        drawingGroup.Children.Add(negativeGeometryDrawing);
       }
     }
 
@@ -599,7 +602,7 @@ namespace Keeper.Controls
 
     private void GroupAllData(Every period)
     {
-      _groupInterval = period;
+      GroupInterval = period;
 
       var groupedData = new SortedList<DateTime, List<double>>();
       var onePair = AllSeriesUnited.DiagramData.ElementAt(0);
@@ -635,13 +638,13 @@ namespace Keeper.Controls
 
     private void GroupByMonthes(object sender, RoutedEventArgs e)
     {
-      if (_groupInterval == Every.Month) return;
+      if (GroupInterval == Every.Month) return;
       ChangeDiagramForNewGrouping(Every.Month);
     }
 
     private void GroupByYears(object sender, RoutedEventArgs e)
     {
-      if (_groupInterval == Every.Year) return;
+      if (GroupInterval == Every.Year) return;
       ChangeDiagramForNewGrouping(Every.Year);
     }
 
@@ -688,14 +691,14 @@ namespace Keeper.Controls
     private string CreateBarHintContent(int barNumber)
     {
       var thisBar = CurrentSeriesUnited.DiagramData.ElementAt(barNumber);
-      var content = _groupInterval == Every.Month
+      var content = GroupInterval == Every.Month
                           ? "  {0:MMMM yyyy}  "
                           : "  {0:yyyy} год  ";
 
       if (AllDiagramData.Data.Count == 1)
       {
         content += "\n  {1:0} usd ";
-        return string.Format(content,thisBar.Key,thisBar.Value[0]);
+        return string.Format(content, thisBar.Key, thisBar.Value[0]);
       }
 
       var i = 0;
@@ -713,27 +716,39 @@ namespace Keeper.Controls
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
       Point pt = e.GetPosition(this);
-      int barLeft;
-      bool isOverBar;
-      var bar = PointToBar(pt, out barLeft, out isOverBar);
 
-      if (isOverBar)
+      switch (_diagramMode)
       {
-        BarHint.IsOpen = true;
-        BarHint.HorizontalOffset = pt.X;
-        BarHint.VerticalOffset = pt.Y - 5;
+        case DiagramMode.BarVertical:
+          int barLeft;
+          bool isOverBar;
+          var bar = PointToBar(pt, out barLeft, out isOverBar);
 
-        BarHintText.Background = DefineBarHintBackground(bar);
-        BarHintText.Text = CreateBarHintContent(bar);
-      }
-      else // debug info
-      {
-        BarHint.IsOpen = false;
-        if (bar != -1)
-          StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer missed {2}th bar by height", pt.X, pt.Y, bar + 1);
-        else
-          StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer is to the right of {2}th bar", pt.X, pt.Y,
-                                         barLeft + 1);
+          if (isOverBar)
+          {
+            BarHint.IsOpen = true;
+            BarHint.HorizontalOffset = pt.X;
+            BarHint.VerticalOffset = pt.Y - 5;
+
+            BarHintText.Background = DefineBarHintBackground(bar);
+            BarHintText.Text = CreateBarHintContent(bar);
+          }
+          else // debug info
+          {
+            BarHint.IsOpen = false;
+            if (bar != -1)
+              StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer missed {2}th bar by height", pt.X, pt.Y, bar + 1);
+            else
+              StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer is to the right of {2}th bar", pt.X, pt.Y,
+                                             barLeft + 1);
+          }
+          break;
+        case DiagramMode.Line:
+          break;
+        default:
+          BarHint.IsOpen = false;
+          StatusBar.Text = "";
+          break;
       }
     }
   }
