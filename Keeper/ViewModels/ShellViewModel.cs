@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -11,6 +12,7 @@ using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
 using Keeper.Utils.Diagram;
+using Brushes = System.Windows.Media.Brushes;
 
 
 namespace Keeper.ViewModels
@@ -436,12 +438,10 @@ namespace Keeper.ViewModels
 
     public void ShowDailyBalancesDiagram()
     {
-      var allMyMoney = (from account in Db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
-      var balances = _diagramDataCalculator.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
-
-      var ratesDiagramForm = new RatesDiagramViewModel(balances);
-      _launchedForms.Add(ratesDiagramForm);
-      WindowManager.ShowWindow(ratesDiagramForm);
+      var balances = _diagramDataCtor.DailyBalancesCtor();
+      var barDiagramForm = new BarDiagramViewModel(balances);
+      _launchedForms.Add(barDiagramForm);
+      WindowManager.ShowWindow(barDiagramForm);
     }
 
     public void ShowRatesDiagram()
@@ -488,6 +488,25 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
+//      var balances = new DiagramData
+//                       {
+//                         Mode = DiagramMode.BarVertical,
+//                         TimeInterval = Every.Month,
+//                         Data = new List<DiagramSeries>{new DiagramSeries{
+//                           Data = new List<DiagramPair>
+//                                                                                   {
+//                                                                                     new DiagramPair(new DateTime(2002,1,1),300),
+//                                                                                     new DiagramPair(new DateTime(2012,1,1),400),
+//                                                                                     new DiagramPair(new DateTime(2012,2,1),200),
+//                                                                                   },
+//                                                                                   Index = 0,
+//                                                                                   Name = "bla",
+//                                                                                   PositiveBrushColor = Brushes.Blue
+//                         }
+//                         }
+
+//                       };
+
       var balances = _diagramDataCtor.DailyBalancesCtor();
       var barDiagramForm = new BarDiagramViewModel(balances);
       _launchedForms.Add(barDiagramForm);

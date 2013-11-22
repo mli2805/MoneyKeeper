@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Keeper.Controls;
 
 namespace Keeper.Utils.Diagram
@@ -21,7 +22,23 @@ namespace Keeper.Utils.Diagram
     public double BottomMargin { get { return ImageHeight * 0.03; } }
 
     // расчет горизонтальной оси
-    public double Shift { get { return ImageWidth * 0.002; } } // от левой оси до первого столбика
+    public double MinPointBetweenDivision { get { return 10; }}
+    public double MinPointBetweenMarkedDivision
+    {
+      get
+      {
+        switch (Owner.GroupInterval)
+        {
+          case Every.Year: return 30;
+          case Every.Month: return 50;
+          case Every.Day: return 80;
+          default: return 100;
+        }
+      }
+    }
+    public int MarkedDash { get { return (int)Math.Ceiling(MinPointBetweenMarkedDivision / PointPerDate); } }
+
+    public double Shift { get { return ImageWidth * 0.002; } } // от левой оси до первого столбика (начала линии)
     public double PointPerDate
     {
       get

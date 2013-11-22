@@ -21,25 +21,43 @@ namespace Keeper.Utils
       Calculator = new DiagramDataCalculation(db);
     }
 
+    public DiagramSeries AccountDailyBalancesToSeries(string name, Brush positiveBrush)
+    {
+      var balancedAccount = (from account in _db.AccountsPlaneList where account.Name == name select account).FirstOrDefault();
+      var balances = Calculator.AccountBalancesForPeriodInUsdThirdWay(balancedAccount, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
+      var data = balances.Select(pair => new DiagramPair(pair.Key, (double)pair.Value)).ToList();
+
+      return new DiagramSeries
+        {
+          Data = data,
+          Index = 0,
+          Name = name,
+          PositiveBrushColor = positiveBrush
+        };
+    }
+
     public DiagramData DailyBalancesCtor()
     {
-      var allMyMoney = (from account in _db.Accounts where account.Name == "Мои" select account).FirstOrDefault();
-      var balances = Calculator.AccountBalancesForPeriodInUsdThirdWay(allMyMoney, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
-      var data = balances.Select(pair => new DiagramPair(pair.Key, (double) pair.Value)).ToList();
-
       var dataForDiagram = new List<DiagramSeries>
                              {
-                               new DiagramSeries
-                                 {
-                                   Data = data,
-                                   Index = 0,
-                                   Name = "Ежедневные остатки",
-                                   NegativeBrushColor = Brushes.Red,
-                                   PositiveBrushColor = Brushes.Blue
-                                 }
+                               AccountDailyBalancesToSeries("Депозиты", Brushes.LightSkyBlue),
+                               AccountDailyBalancesToSeries("Мои", Brushes.Blue),
                              };
 
-      return new DiagramData {Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day};
+      return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day };
+    }
+
+    public DiagramSeries ArticleMonthlyTrafficToSeries(string name, Brush positiveBrush)
+    {
+      return new DiagramSeries
+               {
+                 Name = name,
+                 PositiveBrushColor = positiveBrush,
+                 NegativeBrushColor = positiveBrush,
+                 Index = 0,
+                 Data = (from pair in Calculator.MonthlyTraffic(name)
+                         select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
+               };
     }
 
     public DiagramData MonthlyOutcomesDiagramCtor()
@@ -53,14 +71,7 @@ namespace Keeper.Utils
       foreach (var outcome in outcomes.Children)
       {
         colorsEnumerator.MoveNext();
-        dataForDiagram.Add(new DiagramSeries
-            {
-              Name = outcome.Name,
-              PositiveBrushColor = colorsEnumerator.Current,
-              NegativeBrushColor = colorsEnumerator.Current,
-              Data = (from pair in Calculator.MonthlyTraffic(outcome.Name)
-                      select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
-            });
+        dataForDiagram.Add(ArticleMonthlyTrafficToSeries(outcome.Name, colorsEnumerator.Current));
       }
 
       return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
@@ -68,51 +79,13 @@ namespace Keeper.Utils
 
     public DiagramData MonthlyIncomesDiagramCtor()
     {
-      var dataForDiagram = new List<DiagramSeries>();
-
-      dataForDiagram.Add(
-        new DiagramSeries
-        {
-          Name = "Зарплата",
-          PositiveBrushColor = Brushes.Green,
-          NegativeBrushColor = Brushes.Red,
-          Index = 0,
-          Data = (from pair in Calculator.MonthlyTraffic("Зарплата")
-                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
-        });
-
-      dataForDiagram.Add(
-        new DiagramSeries
-        {
-          Name = "Иррациональные",
-          PositiveBrushColor = Brushes.CadetBlue,
-          NegativeBrushColor = Brushes.Red,
-          Index = 1,
-          Data = (from pair in Calculator.MonthlyTraffic("Иррациональные")
-                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
-        });
-
-      dataForDiagram.Add(
-        new DiagramSeries
-        {
-          Name = "Рента",
-          PositiveBrushColor = Brushes.Blue,
-          NegativeBrushColor = Brushes.Red,
-          Index = 2,
-          Data = (from pair in Calculator.MonthlyTraffic("Рента")
-                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
-        });
-
-      dataForDiagram.Add(
-        new DiagramSeries
-        {
-          Name = "Подарки",
-          PositiveBrushColor = Brushes.DarkOrange,
-          NegativeBrushColor = Brushes.Red,
-          Index = 3,
-          Data = (from pair in Calculator.MonthlyTraffic("Подарки")
-                  select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
-        });
+      var dataForDiagram = new List<DiagramSeries>
+                             {
+                               ArticleMonthlyTrafficToSeries("Зарплата",Brushes.Green),
+                               ArticleMonthlyTrafficToSeries("Иррациональные",Brushes.CadetBlue),
+                               ArticleMonthlyTrafficToSeries("Рента",Brushes.Blue),
+                               ArticleMonthlyTrafficToSeries("Подарки",Brushes.DarkOrange),
+                             };
 
       return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
     }
