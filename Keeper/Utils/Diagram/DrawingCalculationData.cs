@@ -36,7 +36,15 @@ namespace Keeper.Utils.Diagram
         }
       }
     }
-    public int MarkedDash { get { return (int)Math.Ceiling(MinPointBetweenMarkedDivision / PointPerDate); } }
+    public int Dash { get { return (int)Math.Ceiling(MinPointBetweenDivision / PointPerDate); } }
+    public int MarkedDash
+    {
+      get
+      {
+        var temp = Math.Ceiling(MinPointBetweenMarkedDivision/PointPerDate);
+        return Dash * (int)Math.Round(temp/Dash);
+      }
+    }
 
     public double Shift { get { return ImageWidth * 0.002; } } // от левой оси до первого столбика (начала линии)
     public double PointPerDate
