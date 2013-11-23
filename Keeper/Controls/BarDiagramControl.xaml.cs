@@ -31,13 +31,10 @@ namespace Keeper.Controls
     public DiagramSeriesUnited CurrentSeriesUnited { get; set; }
     public Every GroupInterval;
     private DiagramMode _diagramMode;
-
-    private DateTime _minDate, _maxDate;
-    private double _minValue, _maxValue;
+    private DiagramDataExtremums _diagramDataExtremums;
+    private DiagramDrawer _diagramDrawer;
 
     public DrawingCalculationData CalculationData { get; set; }
-    public DrawingGroup DrawingGroup = new DrawingGroup();
-    public DrawingImage ImageSource { get; set; }
 
     #region class essential methods
 
@@ -56,394 +53,77 @@ namespace Keeper.Controls
 
     void BarDiagramControlOnLoaded(object sender, RoutedEventArgs e)
     {
-      AllSeriesUnited = new DiagramSeriesUnited();
-      CombineAllSeries();
+      // набор серий надо преобразовать в структуру, 
+      // где одной дате соответствуют значения для разных серий
+      AllSeriesUnited = new DiagramSeriesUnited(AllDiagramData);
       if (AllSeriesUnited.SeriesCount == 0) return;
       GroupInterval = AllDiagramData.TimeInterval;
       _diagramMode = AllDiagramData.Mode;
+
       CurrentSeriesUnited = new DiagramSeriesUnited(AllSeriesUnited);
-
-      ImageSource = DrawCurrentDiagram(CalculationData);
-      DiagramImage.Source = ImageSource;
-
+      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      _diagramDrawer = new DiagramDrawer();
+      Draw();
       var window = Window.GetWindow(this);
       if (window != null) window.KeyDown += OnKeyDown;
     }
 
     #endregion
 
-    #region data processing methods
-
-    /// <summary>
-    /// На входе AllDiagramData, надо преобразовать в структуру, 
-    /// где одной дате соответствуют значения для разных серий - List of DiagramDate
-    /// </summary>
-    private void CombineAllSeries()
+    private void Draw()
     {
-      AllSeriesUnited = new DiagramSeriesUnited();
-      foreach (var diagramSeries in AllDiagramData.Data)
-      {
-        AllSeriesUnited.Add(diagramSeries);
-      }
+      DiagramImage.Source =
+        _diagramDrawer.Draw(CurrentSeriesUnited, _diagramDataExtremums, CalculationData, _diagramMode, GroupInterval);
     }
-
-    private void GetDataInLineLimits()
-    {
-      _minDate = CurrentSeriesUnited.DiagramData.ElementAt(0).Key;
-      _maxDate = CurrentSeriesUnited.DiagramData.Last().Key;
-
-      switch (_diagramMode)
-      {
-        case DiagramMode.Line:
-        case DiagramMode.BarHorizontal:
-          // это вариант , когда столбцы разных серий стоят рядом
-          _minValue = CurrentSeriesUnited.DiagramData.Values.Min(l => l.Min());
-          _maxValue = CurrentSeriesUnited.DiagramData.Values.Max(l => l.Max());
-          break;
-
-        case DiagramMode.BarVertical:
-          // ряд серий отрицательные, либо даже просто значение отрицательное в положительной серии
-          _minValue = _maxValue = 0;
-          foreach (var day in CurrentSeriesUnited.DiagramData)
-          {
-            var plus = day.Value.Where(values => values > 0).Sum();
-            var minus = day.Value.Where(values => values < 0).Sum();
-            if (plus > _maxValue) _maxValue = plus;
-            if (minus < _minValue) _minValue = minus;
-          }
-          break;
-      }
-
-      if (_maxValue > 0 && _minValue > 0) _minValue = 0;
-      if (_maxValue < 0 && _minValue < 0) _maxValue = 0;
-    }
-
-    #endregion
-
-    #region Drawing implementation
-
-    public DrawingImage DrawCurrentDiagram(DrawingCalculationData cd)
-    {
-      GetDataInLineLimits();
-
-      DrawingGroup.Children.Add(FullDiagramBackground(cd));
-      DrawingGroup.Children.Add(DiagramRegionBackground(cd));
-
-      DrawingGroup.Children.Add(HorizontalAxes(cd));
-      DrawingGroup.Children.Add(VerticalGridLines(cd));
-
-      DrawingGroup.Children.Add(XAxisDashes(Dock.Top, cd));
-      DrawingGroup.Children.Add(XAxisDashes(Dock.Bottom, cd));
-//      DrawingGroup.Children.Add(XAxisMarkers(Dock.Top, cd));
-      DrawingGroup.Children.Add(XAxisMarkers(Dock.Bottom, cd));
-
-      DrawingGroup.Children.Add(VerticalAxes(cd));
-
-      DrawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Left, cd));
-      DrawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Right, cd));
-      DrawingGroup.Children.Add(HorizontalGridLines(cd));
-
-      if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(cd, ref DrawingGroup);
-      if (_diagramMode == DiagramMode.Line)
-        for (var j = 0; j < AllDiagramData.Data.Count; j++ ) DrawingGroup.Children.Add(OneSeriesLine(cd,j));
-
-      return new DrawingImage(DrawingGroup);
-    }
-
-    private GeometryDrawing FullDiagramBackground(DrawingCalculationData cd)
-    {
-      var rectGeometry = new RectangleGeometry { Rect = new Rect(0, 0, cd.ImageWidth, cd.ImageHeight) };
-      return new GeometryDrawing {Geometry = rectGeometry, Brush = Brushes.LightYellow};
-    }
-
-    private GeometryDrawing DiagramRegionBackground(DrawingCalculationData cd)
-    {
-      var rectGeometry = new RectangleGeometry
-      {
-        Rect = new Rect(cd.LeftMargin, cd.TopMargin, cd.ImageWidth - cd.LeftMargin - cd.RightMargin,
-                        cd.ImageHeight - cd.TopMargin - cd.BottomMargin)
-      };
-      return new GeometryDrawing {Geometry = rectGeometry, Brush = Brushes.White};
-    }
-
-    private GeometryDrawing HorizontalAxes(DrawingCalculationData cd)
-    {
-      var geometryGroup = new GeometryGroup();
-      var bottomAxis = new LineGeometry(new Point(cd.LeftMargin, cd.ImageHeight - cd.BottomMargin),
-                                        new Point(cd.ImageWidth - cd.RightMargin, cd.ImageHeight - cd.BottomMargin));
-      geometryGroup.Children.Add(bottomAxis);
-
-      var topAxis = new LineGeometry(new Point(cd.LeftMargin, cd.TopMargin),
-                                     new Point(cd.ImageWidth - cd.RightMargin, cd.TopMargin));
-      geometryGroup.Children.Add(topAxis);
-
-      return new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.Black, 1) };
-    }
-
-    private GeometryDrawing VerticalGridLines(DrawingCalculationData cd)
-    {
-      var geometryGroupGridlines = new GeometryGroup();
-
-      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i=i+cd.MarkedDash)
-      {
-          geometryGroupGridlines.Children.Add(
-            new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), cd.TopMargin + 5),
-                             new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5),
-                                       cd.ImageHeight - cd.BottomMargin - 5)));
-      }
-
-      return new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
-    }
-
-    private GeometryDrawing XAxisDashes(Dock flag, DrawingCalculationData cd)
-    {
-      var geometryGroupDashesAndMarks = new GeometryGroup();
-
-      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i=i+cd.Dash)
-      {
-          var dashY = flag == Dock.Bottom ? cd.ImageHeight - cd.BottomMargin : cd.TopMargin;
-          var dashSize = (i % cd.MarkedDash) == 0 ? 5 : 2;
-          var dashGeometry = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY - dashSize),
-                                      new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY + dashSize));
-          geometryGroupDashesAndMarks.Children.Add(dashGeometry);
-      }
-
-      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
-    }
-
-    private GeometryDrawing XAxisMarkers(Dock flag, DrawingCalculationData cd)
-    {
-      var geometryGroupDashesAndMarks = new GeometryGroup();
-
-      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i = i + cd.MarkedDash)
-      {
-          var markY = flag == Dock.Bottom ? cd.ImageHeight : cd.TopMargin;
-          var mark = String.Format(GetMarkTemplate(), CurrentSeriesUnited.DiagramData.ElementAt(i).Key);
-          var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                                new Typeface("Times New Roman"), 12, Brushes.Black);
-          var geometry =
-            formattedText.BuildGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 18, markY - 20));
-          geometryGroupDashesAndMarks.Children.Add(geometry);
-      }
-
-      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
-    }
-
-    private string GetMarkTemplate()
-    {
-      switch (GroupInterval)
-      {
-        case Every.Year: return "{0:yyyy} ";
-        case Every.Month: return "{0:M/yyyy} ";
-        case Every.Day: return "{0:d/M/yyyy} ";
-        default: return "{0 } ";
-      }
-    }
-
-    private GeometryDrawing VerticalAxes(DrawingCalculationData cd)
-    {
-      var geometryGroup = new GeometryGroup();
-      var leftAxis = new LineGeometry(new Point(cd.LeftMargin, cd.TopMargin),
-                                      new Point(cd.LeftMargin, cd.ImageHeight - cd.BottomMargin));
-      geometryGroup.Children.Add(leftAxis);
-      var rightAxis = new LineGeometry(new Point(cd.ImageWidth - cd.RightMargin, cd.TopMargin),
-                                       new Point(cd.ImageWidth - cd.RightMargin, cd.ImageHeight - cd.BottomMargin));
-      geometryGroup.Children.Add(rightAxis);
-
-      var geometryDrawing = new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.Black, 1) };
-      return geometryDrawing;
-    }
-
-    private GeometryDrawing HorizontalGridLines(DrawingCalculationData cd)
-    {
-      var geometryGroupGridlines = new GeometryGroup();
-      for (var i = 0; i <= cd.Divisions; i++)
-      {
-        var gridline = new LineGeometry(new Point(cd.LeftMargin + 5, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i),
-                                        new Point(cd.ImageWidth - cd.LeftMargin - 5,
-                                                  cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i));
-        if (i != 0 && i != cd.Divisions) geometryGroupGridlines.Children.Add(gridline);
-      }
-
-      return new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
-    }
-
-    private GeometryDrawing YAxisDashesWithMarkers(Dock flag, DrawingCalculationData cd)
-    {
-      const double minPointBetweenDivision = 35;
-
-      double pointPerOneValueBefore = _maxValue.Equals(_minValue) ?
-        0 : (cd.ImageHeight - cd.TopMargin - cd.BottomMargin) / (_maxValue - _minValue);
-      double valuesPerDivision = (minPointBetweenDivision > pointPerOneValueBefore) ?
-        Math.Ceiling(minPointBetweenDivision / pointPerOneValueBefore) : minPointBetweenDivision / pointPerOneValueBefore;
-      double zeros = Math.Floor(Math.Log10(valuesPerDivision));
-      cd.AccurateValuesPerDivision = Math.Ceiling(valuesPerDivision / Math.Pow(10, zeros)) * Math.Pow(10, zeros);
-      cd.FromDivision = Convert.ToInt32(Math.Floor(_minValue / cd.AccurateValuesPerDivision));
-
-      var temp = Convert.ToInt32(Math.Ceiling((_maxValue - _minValue) / cd.AccurateValuesPerDivision));
-      if ((cd.FromDivision + temp) * cd.AccurateValuesPerDivision < _maxValue) temp++;
-      cd.Divisions = temp;
-
-      var geometryGroupDashesAndMarks = new GeometryGroup();
-      for (var i = 0; i <= cd.Divisions; i++)
-      {
-        var dashX = flag == Dock.Left ? cd.LeftMargin : cd.ImageWidth - cd.LeftMargin;
-        var dash = new LineGeometry(new Point(dashX - 5, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i),
-                                    new Point(dashX + 5, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i));
-        geometryGroupDashesAndMarks.Children.Add(dash);
-
-        var markX = flag == Dock.Left ? cd.LeftMargin - 40 : cd.ImageWidth - cd.RightMargin + 15;
-        var mark = String.Format("{0} ", (i + cd.FromDivision) * cd.AccurateValuesPerDivision);
-        var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                              new Typeface("Times New Roman"), 12, Brushes.Black);
-        var geometry =
-          formattedText.BuildGeometry(new Point(markX, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i - 7));
-        geometryGroupDashesAndMarks.Children.Add(geometry);
-      }
-
-      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
-    }
-
-    private GeometryDrawing OneSeriesLine(DrawingCalculationData cd, int seriesNumber)
-    {
-      var allDays = (_maxDate - _minDate).Days;
-      var pointsPerDay = (cd.ImageWidth - cd.LeftMargin - cd.RightMargin - cd.Shift - cd.Gap) / allDays;
-
-      var firstPointX = cd.LeftMargin + cd.Shift / 2 + cd.Gap / 2;
-
-        var geometryGroup = new GeometryGroup();
-
-        for (int i = 0; i < CurrentSeriesUnited.DiagramData.Count - 1; i++)
-        {
-          var line = new LineGeometry(
-            new Point((CurrentSeriesUnited.DiagramData.ElementAt(i).Key - _minDate).Days*pointsPerDay + firstPointX,
-                      cd.ImageHeight - cd.BottomMargin -
-                      (CurrentSeriesUnited.DiagramData.ElementAt(i).Value[seriesNumber] - cd.LowestScaleValue) *
-                      cd.PointPerOneValueAfter),
-            new Point((CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Key - _minDate).Days*pointsPerDay + firstPointX,
-                      cd.ImageHeight - cd.BottomMargin -
-                      (CurrentSeriesUnited.DiagramData.ElementAt(i + 1).Value[seriesNumber] - cd.LowestScaleValue) *
-                      cd.PointPerOneValueAfter));
-          geometryGroup.Children.Add(line);
-        }
-
-        return new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(AllDiagramData.Data.ElementAt(seriesNumber).PositiveBrushColor, 2) };
-    }
-
-    private void BarVerticalDiagram(DrawingCalculationData cd, ref DrawingGroup drawingGroup)
-    {
-      var positiveGeometryGroups = new List<GeometryGroup>();
-      var negativeGeometryGroups = new List<GeometryGroup>();
-      for (var i = 0; i < CurrentSeriesUnited.SeriesCount; i++)
-      {
-        positiveGeometryGroups.Add(new GeometryGroup());
-        negativeGeometryGroups.Add(new GeometryGroup());
-      }
-
-      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i++)
-      {
-        var oneDay = CurrentSeriesUnited.DiagramData.ElementAt(i).Value;
-        double hasAlreadyPlus = 0;
-        double hasAlreadyMinus = 0;
-        for (var j = 0; j < CurrentSeriesUnited.SeriesCount; j++)
-        {
-          if (oneDay[j].Equals(0)) continue;
-          Rect rect;
-          if (oneDay[j] > 0)
-          {
-            rect = new Rect(
-              cd.LeftMargin + cd.Shift / 2 + cd.Gap / 2 + i * (cd.PointPerBar + cd.Gap),
-              cd.ImageHeight - cd.BottomMargin - (oneDay[j] + hasAlreadyPlus - cd.LowestScaleValue) * cd.PointPerOneValueAfter,
-              cd.PointPerBar,
-              oneDay[j] * cd.PointPerOneValueAfter);
-            positiveGeometryGroups[j].Children.Add(new RectangleGeometry(rect));
-            hasAlreadyPlus += oneDay[j];
-          }
-          else
-          {
-            rect = new Rect(
-              cd.LeftMargin + cd.Shift / 2 + cd.Gap / 2 + i * (cd.PointPerBar + cd.Gap),
-              cd.ImageHeight - cd.BottomMargin - (hasAlreadyMinus - cd.LowestScaleValue) * cd.PointPerOneValueAfter,
-              cd.PointPerBar,
-              -oneDay[j] * cd.PointPerOneValueAfter);
-            negativeGeometryGroups[j].Children.Add(new RectangleGeometry(rect));
-            hasAlreadyMinus += oneDay[j];
-          }
-        }
-      }
-
-      for (var i = 0; i < CurrentSeriesUnited.SeriesCount; i++)
-      {
-        var positiveGeometryDrawing = new GeometryDrawing
-        {
-          Geometry = positiveGeometryGroups[i],
-          Brush = AllDiagramData.Data[i].PositiveBrushColor,
-          Pen = new Pen(AllDiagramData.Data[i].PositiveBrushColor, 1)
-        };
-
-        drawingGroup.Children.Add(positiveGeometryDrawing);
-
-        var negativeGeometryDrawing = new GeometryDrawing
-        {
-          Geometry = negativeGeometryGroups[i],
-          Brush = AllDiagramData.Data[i].NegativeBrushColor,
-          Pen = new Pen(AllDiagramData.Data[i].NegativeBrushColor, 1)
-        };
-
-        drawingGroup.Children.Add(negativeGeometryDrawing);
-      }
-    }
-
-    #endregion
 
     private bool ChangeDiagramData(DiagramDataChangeMode mode, int horizontal, int vertical)
     {
       int shiftDateRange;
       switch (mode)
       {
-        case DiagramDataChangeMode.ZoomIn:
+        case DiagramDataChangeMode.ZoomIn: // increase picture
           if (CurrentSeriesUnited.DiagramData.Count < 4) return true;
-          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
+          shiftDateRange = (_diagramDataExtremums.MaxDate - _diagramDataExtremums.MinDate).Days * horizontal / 100;
           if (shiftDateRange < 31)
           {
-            _minDate = _minDate.AddMonths(1);
-            _maxDate = _maxDate.AddMonths(-1);
+            _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddMonths(1);
+            _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddMonths(-1);
           }
           else
           {
-            _minDate = _minDate.AddDays(shiftDateRange);
-            _maxDate = _maxDate.AddDays(-shiftDateRange);
+            _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddDays(shiftDateRange);
+            _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddDays(-shiftDateRange);
           }
           break;
         case DiagramDataChangeMode.ZoomOut:
-          shiftDateRange = (_maxDate - _minDate).Days * horizontal / 100;
+          shiftDateRange = (_diagramDataExtremums.MaxDate - _diagramDataExtremums.MinDate).Days * horizontal / 100;
           if (shiftDateRange < 31) shiftDateRange = 31;
-          _minDate = _minDate.AddDays(-shiftDateRange);
-          _maxDate = _maxDate.AddDays(shiftDateRange);
+          _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddDays(-shiftDateRange);
+          _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddDays(shiftDateRange);
           break;
         case DiagramDataChangeMode.Move:
           var deltaMonthes = (int)Math.Round(Math.Abs(horizontal / CalculationData.PointPerDate));
           if (horizontal < 0) // двигаем влево
           {
-            var newMaxDate = _maxDate.AddMonths(deltaMonthes);
+            var newMaxDate = _diagramDataExtremums.MaxDate.AddMonths(deltaMonthes);
             if (newMaxDate > AllSeriesUnited.DiagramData.Last().Key)
             {
               newMaxDate = AllSeriesUnited.DiagramData.Last().Key;
-              deltaMonthes = (int)Math.Round((newMaxDate - _maxDate).TotalDays / 30);
+              deltaMonthes = (int)Math.Round((newMaxDate - _diagramDataExtremums.MaxDate).TotalDays / 30);
             }
-            _maxDate = newMaxDate;
-            _minDate = _minDate.AddMonths(deltaMonthes);
+            _diagramDataExtremums.MaxDate = newMaxDate;
+            _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddMonths(deltaMonthes);
           }
           else // вправо
           {
-            var newMinDate = _minDate.AddMonths(-deltaMonthes);
+            var newMinDate = _diagramDataExtremums.MinDate.AddMonths(-deltaMonthes);
             if (newMinDate < AllSeriesUnited.DiagramData.ElementAt(0).Key)
             {
               newMinDate = AllSeriesUnited.DiagramData.ElementAt(0).Key;
-              deltaMonthes = (int)Math.Round((_minDate - newMinDate).TotalDays / 30);
+              deltaMonthes = (int)Math.Round((_diagramDataExtremums.MinDate - newMinDate).TotalDays / 30);
             }
-            _minDate = newMinDate;
-            _maxDate = _maxDate.AddMonths(-deltaMonthes);
+            _diagramDataExtremums.MinDate = newMinDate;
+            _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddMonths(-deltaMonthes);
           }
           break;
         case DiagramDataChangeMode.ZoomInRect:
@@ -451,6 +131,7 @@ namespace Keeper.Controls
           break;
       }
       ExtractDataBetweenLimits();
+      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       return true;
     }
 
@@ -459,7 +140,7 @@ namespace Keeper.Controls
       CurrentSeriesUnited.DiagramData.Clear();
       foreach (var day in AllSeriesUnited.DiagramData)
       {
-        if (day.Key >= _minDate && day.Key <= _maxDate)
+        if (day.Key >= _diagramDataExtremums.MinDate && day.Key <= _diagramDataExtremums.MaxDate)
         {
           CurrentSeriesUnited.DiagramData.Add(day.Key, day.Value);
         }
@@ -522,12 +203,12 @@ namespace Keeper.Controls
 
     public void ZoomDiagram(DiagramDataChangeMode param, int horizontal, int vertical)
     {
-      if (ChangeDiagramData(param, horizontal, vertical)) ImageSource = DrawCurrentDiagram(CalculationData);
+      if (ChangeDiagramData(param, horizontal, vertical)) Draw();
     }
 
     public void MoveDiagramData(DiagramDataChangeMode param, int horizontal, int vertical)
     {
-      if (ChangeDiagramData(param, horizontal, vertical)) ImageSource = DrawCurrentDiagram(CalculationData);
+      if (ChangeDiagramData(param, horizontal, vertical)) Draw();
     }
 
     public void ZoomRectDiagram(Point leftTop, Point rightBottom)
@@ -542,13 +223,15 @@ namespace Keeper.Controls
              CurrentSeriesUnited.DiagramData.ElementAt(i).Value);
       }
       CurrentSeriesUnited.DiagramData = nuevoCurrentDiagramData;
-      ImageSource = DrawCurrentDiagram(CalculationData);
+      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
     }
 
     public void ShowAllDiagram()
     {
       CurrentSeriesUnited.DiagramData = new SortedList<DateTime, List<double>>(AllSeriesUnited.DiagramData);
-      ImageSource = DrawCurrentDiagram(CalculationData);
+      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
     }
 
     #endregion
@@ -630,14 +313,15 @@ namespace Keeper.Controls
 
     private void ChangeDiagramForNewGrouping(Every groupPeriod)
     {
-      CombineAllSeries();
+      AllSeriesUnited = new DiagramSeriesUnited(AllDiagramData);
       GroupAllData(groupPeriod);
 
       if (groupPeriod == Every.Year) DefineYearsLimits();
-      else _maxDate = new DateTime(_maxDate.Year, 12, 31);
+      else _diagramDataExtremums.MaxDate = new DateTime(_diagramDataExtremums.MaxDate.Year, 12, 31);
 
       ExtractDataBetweenLimits();
-      ImageSource = DrawCurrentDiagram(CalculationData);
+      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
     }
 
     private void GroupByMonthes(object sender, RoutedEventArgs e)
@@ -657,8 +341,8 @@ namespace Keeper.Controls
       const int bottomLimit = 2002;
       var topLimit = DateTime.Today.Year;
 
-      var startYear = _minDate.Year;
-      var endYear = _maxDate.Year;
+      var startYear = _diagramDataExtremums.MinDate.Year;
+      var endYear = _diagramDataExtremums.MaxDate.Year;
 
       if (endYear - startYear < 2)
       {
@@ -674,15 +358,15 @@ namespace Keeper.Controls
         }
       }
 
-      _minDate = new DateTime(startYear, 1, 1);
-      _maxDate = new DateTime(endYear, 12, 31);
+      _diagramDataExtremums.MinDate = new DateTime(startYear, 1, 1);
+      _diagramDataExtremums.MaxDate = new DateTime(endYear, 12, 31);
     }
     #endregion
 
     private void OnKeyDown(object sender, KeyEventArgs e)
     {
       if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAllDiagram();
-      if (e.Key == Key.F5) ImageSource = DrawCurrentDiagram(CalculationData);
+      if (e.Key == Key.F5) Draw();
     }
 
     private Brush DefineBarHintBackground(int barNumber)
