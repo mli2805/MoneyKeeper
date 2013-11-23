@@ -132,8 +132,10 @@ namespace Keeper.Controls
       DrawingGroup.Children.Add(HorizontalAxes(cd));
       DrawingGroup.Children.Add(VerticalGridLines(cd));
 
-      DrawingGroup.Children.Add(XAxisDashesWithMarkers(Dock.Top, cd));
-      DrawingGroup.Children.Add(XAxisDashesWithMarkers(Dock.Bottom, cd));
+      DrawingGroup.Children.Add(XAxisDashes(Dock.Top, cd));
+      DrawingGroup.Children.Add(XAxisDashes(Dock.Bottom, cd));
+//      DrawingGroup.Children.Add(XAxisMarkers(Dock.Top, cd));
+      DrawingGroup.Children.Add(XAxisMarkers(Dock.Bottom, cd));
 
       DrawingGroup.Children.Add(VerticalAxes(cd));
 
@@ -185,12 +187,46 @@ namespace Keeper.Controls
       for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i=i+cd.MarkedDash)
       {
           geometryGroupGridlines.Children.Add(
-            new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 1, cd.TopMargin + 5),
-                             new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 1,
+            new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), cd.TopMargin + 5),
+                             new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5),
                                        cd.ImageHeight - cd.BottomMargin - 5)));
       }
 
       return new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
+    }
+
+    private GeometryDrawing XAxisDashes(Dock flag, DrawingCalculationData cd)
+    {
+      var geometryGroupDashesAndMarks = new GeometryGroup();
+
+      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i=i+cd.Dash)
+      {
+          var dashY = flag == Dock.Bottom ? cd.ImageHeight - cd.BottomMargin : cd.TopMargin;
+          var dashSize = (i % cd.MarkedDash) == 0 ? 5 : 2;
+          var dashGeometry = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY - dashSize),
+                                      new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY + dashSize));
+          geometryGroupDashesAndMarks.Children.Add(dashGeometry);
+      }
+
+      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
+    }
+
+    private GeometryDrawing XAxisMarkers(Dock flag, DrawingCalculationData cd)
+    {
+      var geometryGroupDashesAndMarks = new GeometryGroup();
+
+      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i = i + cd.MarkedDash)
+      {
+          var markY = flag == Dock.Bottom ? cd.ImageHeight : cd.TopMargin;
+          var mark = String.Format(GetMarkTemplate(), CurrentSeriesUnited.DiagramData.ElementAt(i).Key);
+          var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                                                new Typeface("Times New Roman"), 12, Brushes.Black);
+          var geometry =
+            formattedText.BuildGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 18, markY - 20));
+          geometryGroupDashesAndMarks.Children.Add(geometry);
+      }
+
+      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
     private string GetMarkTemplate()
@@ -202,38 +238,6 @@ namespace Keeper.Controls
         case Every.Day: return "{0:d/M/yyyy} ";
         default: return "{0 } ";
       }
-    }
-
-    private GeometryDrawing XAxisDashesWithMarkers(Dock flag, DrawingCalculationData cd)
-    {
-      var dash = (int)Math.Ceiling(cd.MinPointBetweenDivision / cd.PointPerDate);
-
-      var geometryGroupDashesAndMarks = new GeometryGroup();
-
-      for (var i = 0; i < CurrentSeriesUnited.DiagramData.Count; i++)
-      {
-        if (i % dash == 0)
-        {
-          var dashY = flag == Dock.Bottom ? cd.ImageHeight - cd.BottomMargin : cd.TopMargin;
-          var dashSize = i%cd.MarkedDash == 0 ? 5 : 2;
-          var dashGeometry = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY - dashSize),
-                                      new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY + dashSize));
-          geometryGroupDashesAndMarks.Children.Add(dashGeometry);
-        }
-
-        if (i % cd.MarkedDash == 0)
-        {
-          var markY = flag == Dock.Bottom ? cd.ImageHeight : cd.TopMargin;
-          var mark = String.Format(GetMarkTemplate(), CurrentSeriesUnited.DiagramData.ElementAt(i).Key);
-          var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                                new Typeface("Times New Roman"), 12, Brushes.Black);
-          var geometry =
-            formattedText.BuildGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 18, markY - 20));
-          geometryGroupDashesAndMarks.Children.Add(geometry);
-        }
-      }
-
-      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
     private GeometryDrawing VerticalAxes(DrawingCalculationData cd)

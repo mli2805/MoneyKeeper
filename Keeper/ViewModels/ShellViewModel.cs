@@ -243,7 +243,7 @@ namespace Keeper.ViewModels
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
       OpenedAccountPage = 0;
 
-      if (!ShowLogonForm()) TryClose();
+//      if (!ShowLogonForm()) TryClose();
 
     }
 
