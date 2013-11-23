@@ -82,22 +82,17 @@ namespace Keeper.Controls
       switch (mode)
       {
         case DiagramDataChangeMode.ZoomIn: // increase picture
-          if (CurrentSeriesUnited.DiagramData.Count < 4) return true;
+          if (CurrentSeriesUnited.DiagramData.Count < 6) return true;
           shiftDateRange = (_diagramDataExtremums.MaxDate - _diagramDataExtremums.MinDate).Days * horizontal / 100;
-          if (shiftDateRange < 31)
-          {
-            _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddMonths(1);
-            _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddMonths(-1);
-          }
-          else
-          {
-            _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddDays(shiftDateRange);
-            _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddDays(-shiftDateRange);
-          }
+          if (shiftDateRange < 31 && GroupInterval == Every.Month) shiftDateRange = 31;
+          if (shiftDateRange < 366 && GroupInterval == Every.Year) shiftDateRange = 366;
+          _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddDays(shiftDateRange);
+          _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddDays(-shiftDateRange);
           break;
         case DiagramDataChangeMode.ZoomOut:
           shiftDateRange = (_diagramDataExtremums.MaxDate - _diagramDataExtremums.MinDate).Days * horizontal / 100;
-          if (shiftDateRange < 31) shiftDateRange = 31;
+          if (shiftDateRange < 31 && GroupInterval == Every.Month) shiftDateRange = 31;
+          if (shiftDateRange < 366 && GroupInterval == Every.Year) shiftDateRange = 366;
           _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddDays(-shiftDateRange);
           _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddDays(shiftDateRange);
           break;

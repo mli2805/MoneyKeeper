@@ -48,7 +48,7 @@ namespace Keeper.Utils.Diagram
 
       if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(_drawingCalculationData, ref drawingGroup);
       if (_diagramMode == DiagramMode.Line)
-        for (var j = 0; j < _diagramData.DiagramData.Count; j++) drawingGroup.Children.Add(OneSeriesLine(_drawingCalculationData, j));
+        for (var j = 0; j < _diagramData.SeriesCount; j++) drawingGroup.Children.Add(OneSeriesLine(_drawingCalculationData, j));
 
       return new DrawingImage(drawingGroup);
     }
