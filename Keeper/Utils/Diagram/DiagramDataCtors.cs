@@ -24,7 +24,7 @@ namespace Keeper.Utils
     public DiagramSeries AccountDailyBalancesToSeries(string name, Brush positiveBrush)
     {
       var balancedAccount = (from account in _db.AccountsPlaneList where account.Name == name select account).FirstOrDefault();
-      var balances = Calculator.AccountBalancesForPeriodInUsdThirdWay(balancedAccount, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
+      var balances = Calculator.AccountBalancesForPeriodInUsd(balancedAccount, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
       var data = balances.Select(pair => new DiagramPair(pair.Key, (double)pair.Value)).ToList();
 
       return new DiagramSeries

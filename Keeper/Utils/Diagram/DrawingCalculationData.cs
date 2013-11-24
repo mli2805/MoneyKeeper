@@ -36,18 +36,9 @@ namespace Keeper.Utils.Diagram
         }
       }
     }
-    public int Dash { get { return (int)Math.Ceiling(MinPointBetweenDivision / PointPerDate); } }
-    public int MarkedDash
-    {
-      get
-      {
-        var temp = Math.Ceiling(MinPointBetweenMarkedDivision/PointPerDate);
-        return Dash * (int)Math.Round(temp/Dash);
-      }
-    }
 
     public double Shift { get { return ImageWidth * 0.002; } } // от левой оси до первого столбика (начала линии)
-    public double PointPerDate
+    public double PointPerDataElement
     {
       get
       {
@@ -56,8 +47,19 @@ namespace Keeper.Utils.Diagram
         return (ImageWidth - LeftMargin - RightMargin - Shift) / Owner.CurrentSeriesUnited.DiagramData.Count;
       }
     }
-    public double Gap { get { return PointPerDate / 3; } } // промежуток между столбиками диаграммы
-    public double PointPerBar { get { return PointPerDate - Gap; } }
+
+    public double Gap { get { return PointPerDataElement / 3; } } // промежуток между столбиками диаграммы
+    public double PointPerBar { get { return PointPerDataElement - Gap; } }
+
+    public int Dash { get { return (int)Math.Ceiling(MinPointBetweenDivision / PointPerDataElement); } }
+    public int MarkedDash
+    {
+      get
+      {
+        var temp = Math.Ceiling(MinPointBetweenMarkedDivision / PointPerDataElement);
+        return Dash * (int)Math.Round(temp / Dash);
+      }
+    }
 
     //расчет вертикальной оси
     public double AccurateValuesPerDivision;

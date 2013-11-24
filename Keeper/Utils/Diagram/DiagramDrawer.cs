@@ -90,8 +90,8 @@ namespace Keeper.Utils.Diagram
       for (var i = 0; i < _diagramData.DiagramData.Count; i = i + cd.MarkedDash)
       {
         geometryGroupGridlines.Children.Add(
-          new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), cd.TopMargin + 5),
-                           new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5),
+          new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5), cd.TopMargin + 5),
+                           new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5),
                                      cd.ImageHeight - cd.BottomMargin - 5)));
       }
 
@@ -106,8 +106,8 @@ namespace Keeper.Utils.Diagram
       {
         var dashY = flag == Dock.Bottom ? cd.ImageHeight - cd.BottomMargin : cd.TopMargin;
         var dashSize = (i % cd.MarkedDash) == 0 ? 5 : 2;
-        var dashGeometry = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY - dashSize),
-                                    new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5), dashY + dashSize));
+        var dashGeometry = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5), dashY - dashSize),
+                                    new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5), dashY + dashSize));
         geometryGroupDashesAndMarks.Children.Add(dashGeometry);
       }
 
@@ -125,7 +125,7 @@ namespace Keeper.Utils.Diagram
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry =
-          formattedText.BuildGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDate * (i + 0.5) - 18, markY - 20));
+          formattedText.BuildGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5) - 18, markY - 20));
         geometryGroupDashesAndMarks.Children.Add(geometry);
       }
 

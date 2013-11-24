@@ -130,7 +130,7 @@ namespace Keeper.ViewModels
       SeriesEuro = new List<DateProcentPoint>();
       var rootDepo = _db.FindAccountInTree("Депозиты");
       var inMoney = calculator.AccountBalancesForPeriodInCurrencies(rootDepo,
-                                                                 new Period(new DateTime(2001, 12, 31), DateTime.Now));
+                                                                 new Period(new DateTime(2001, 12, 31), DateTime.Now),false);
       foreach (var pair in inMoney)
       {
         var date = pair.Key;
