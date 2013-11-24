@@ -31,7 +31,7 @@ namespace Keeper.Utils.Diagram
     }
 
     public Dictionary<DateTime, Dictionary<CurrencyCodes, decimal>>
-      AccountBalancesForPeriodInCurrencies(Account balancedAccount, Period period)
+      AccountBalancesForPeriodInCurrencies(Account balancedAccount, Period period, bool includeDaysWithoutChanges)
     {
       var result = new Dictionary<DateTime, Dictionary<CurrencyCodes, decimal>>();
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
@@ -45,7 +45,7 @@ namespace Keeper.Utils.Diagram
           currentDate = currentDate.AddDays(1);
           while (currentDate < transaction.Timestamp.Date)
           {
-            //  result.Add(currentDate, balance); // раскомментарить, если даты когда не было изменений тоже должны попадать набор
+            if (includeDaysWithoutChanges) result.Add(currentDate,balanceInCurrencies); 
             currentDate = currentDate.AddDays(1);
           }
         }
@@ -79,52 +79,57 @@ namespace Keeper.Utils.Diagram
       return result;
     }
 
-    // получение остатка по счету за каждую дату периода [,когда были операции]
+    private static void TakeAmountIfItsNecessary(Account balancedAccount, Transaction transaction,
+                                             ref Dictionary<CurrencyCodes, decimal> balanceInCurrencies)
+    {
+      if (transaction.Debet.IsTheSameOrDescendantOf(balancedAccount))
+      {
+        if (!balanceInCurrencies.ContainsKey(transaction.Currency))
+          balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
+        else balanceInCurrencies[transaction.Currency] -= transaction.Amount;
+        if (transaction.Amount2 != 0)
+        {
+          if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+            balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, transaction.Amount2);
+          else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] += transaction.Amount2;
+        }
+      }
+
+      if (transaction.Credit.IsTheSameOrDescendantOf(balancedAccount))
+      {
+        if (!balanceInCurrencies.ContainsKey(transaction.Currency))
+          balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
+        else balanceInCurrencies[transaction.Currency] += transaction.Amount;
+        if (transaction.Amount2 != 0)
+        {
+          if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+            balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, -transaction.Amount2);
+          else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] -= transaction.Amount2;
+        }
+      }
+    }
+
+    // получение остатка по счету за каждую дату периода 
     // реализовано не через функцию получения остатка на дату, вызванную для дат периода
     // а за один проход по БД с получением остатков накопительным итогом, т.к. гораздо быстрее
-    public Dictionary<DateTime, decimal> AccountBalancesForPeriodInUsdThirdWay(Account balancedAccount, Period period, Every frequency)
+    // forht version
+    public Dictionary<DateTime, decimal> AccountBalancesForPeriodInUsd
+                        (Account balancedAccount, Period period, Every frequency)
     {
       var result = new Dictionary<DateTime, decimal>();
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
-      var currentDate = period.GetStart();
+      var currentDate = new DateTime(2001, 12, 31); // считать надо всегда с самого начала, иначе остаток неправильный будет
 
       foreach (var transaction in _db.Transactions)
       {
-        if (currentDate != transaction.Timestamp.Date)
+        while (currentDate < transaction.Timestamp.Date)
         {
-          if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency)) result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
+          if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency))
+            result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
           currentDate = currentDate.AddDays(1);
-          while (currentDate != transaction.Timestamp.Date)
-          {
-            // закомментарить часть условия frequency != Every.Day, если надо ежедневно и даты когда не было изменений тоже должны попадать набор
-            if (frequency != Every.Day && FunctionsWithEvery.IsLastDayOf(currentDate, frequency)) result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
-            currentDate = currentDate.AddDays(1);
-          }
+         
         }
-
-        if (transaction.Debet.IsTheSameOrDescendantOf(balancedAccount))
-        {
-          if (!balanceInCurrencies.ContainsKey(transaction.Currency)) balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
-          else balanceInCurrencies[transaction.Currency] -= transaction.Amount;
-          if (transaction.Amount2 != 0)
-          {
-            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
-              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, transaction.Amount2);
-            else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] += transaction.Amount2;
-          }
-        }
-
-        if (transaction.Credit.IsTheSameOrDescendantOf(balancedAccount))
-        {
-          if (!balanceInCurrencies.ContainsKey(transaction.Currency)) balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
-          else balanceInCurrencies[transaction.Currency] += transaction.Amount;
-          if (transaction.Amount2 != 0)
-          {
-            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
-              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, -transaction.Amount2);
-            else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] -= transaction.Amount2;
-          }
-        }
+        TakeAmountIfItsNecessary(balancedAccount, transaction, ref balanceInCurrencies);
       }
       result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
       return result;
@@ -172,9 +177,9 @@ namespace Keeper.Utils.Diagram
       var result = new Dictionary<DateTime, decimal>();
 
       var accountForAnalisys = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
-      var balances = AccountBalancesForPeriodInUsdThirdWay(accountForAnalisys, 
-                                                           new Period(new DateTime(2001, 12, 31), DateTime.Now), 
-                                                           Every.Month).OrderBy(pair => pair.Key).ToList();
+      var balances = AccountBalancesForPeriodInUsd(accountForAnalisys, 
+                                                   new Period(new DateTime(2001, 12, 31), DateTime.Now), 
+                                                   Every.Month).OrderBy(pair => pair.Key).ToList();
 
       for (var i = 1; i < balances.Count; i++)
       {

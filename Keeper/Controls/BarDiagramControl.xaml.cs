@@ -29,9 +29,46 @@ namespace Keeper.Controls
 
     public DiagramSeriesUnited AllSeriesUnited { get; set; }
     public DiagramSeriesUnited CurrentSeriesUnited { get; set; }
-    public Every GroupInterval;
+    public Every GroupInterval
+    {
+      get { return _groupInterval; }
+      set
+      {
+        _groupInterval = value;
+        SetPopupMenuItemsVisibility(value);
+      }
+    }
+
+    private void SetPopupMenuItemsVisibility(Every groupInterval)
+    {
+      switch (groupInterval)
+      {
+        case Every.Day:
+          ItemShowThisYear.Visibility = Visibility.Visible;
+          ItemShowLast12Monthes.Visibility = Visibility.Visible;
+          ItemShowThisMonth.Visibility = Visibility.Visible;
+          ItemGroupByMonthes.Visibility = Visibility.Collapsed;
+          ItemGroupByYears.Visibility = Visibility.Collapsed;
+          break;
+        case Every.Month:
+          ItemShowThisYear.Visibility = Visibility.Visible;
+          ItemShowLast12Monthes.Visibility = Visibility.Visible;
+          ItemShowThisMonth.Visibility = Visibility.Collapsed;
+          ItemGroupByMonthes.Visibility = Visibility.Collapsed;
+          ItemGroupByYears.Visibility = Visibility.Visible;
+          break;
+        case Every.Year:
+          ItemShowThisYear.Visibility = Visibility.Collapsed;
+          ItemShowLast12Monthes.Visibility = Visibility.Collapsed;
+          ItemShowThisMonth.Visibility = Visibility.Collapsed;
+          ItemGroupByMonthes.Visibility = Visibility.Visible;
+          ItemGroupByYears.Visibility = Visibility.Collapsed;
+          break;
+      }
+    }
+
     private DiagramMode _diagramMode;
-    private DiagramDataExtremums _diagramDataExtremums;
+    public DiagramDataExtremums DiagramDataExtremums;
     private DiagramDrawer _diagramDrawer;
 
     public DrawingCalculationData CalculationData { get; set; }
@@ -61,7 +98,7 @@ namespace Keeper.Controls
       _diagramMode = AllDiagramData.Mode;
 
       CurrentSeriesUnited = new DiagramSeriesUnited(AllSeriesUnited);
-      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       _diagramDrawer = new DiagramDrawer();
       Draw();
       var window = Window.GetWindow(this);
@@ -73,7 +110,7 @@ namespace Keeper.Controls
     private void Draw()
     {
       DiagramImage.Source =
-        _diagramDrawer.Draw(CurrentSeriesUnited, _diagramDataExtremums, CalculationData, _diagramMode, GroupInterval);
+        _diagramDrawer.Draw(CurrentSeriesUnited, DiagramDataExtremums, CalculationData, _diagramMode, GroupInterval);
     }
 
     private bool ChangeDiagramData(DiagramDataChangeMode mode, int horizontal, int vertical)
@@ -83,42 +120,42 @@ namespace Keeper.Controls
       {
         case DiagramDataChangeMode.ZoomIn: // increase picture
           if (CurrentSeriesUnited.DiagramData.Count < 6) return true;
-          shiftDateRange = (_diagramDataExtremums.MaxDate - _diagramDataExtremums.MinDate).Days * horizontal / 100;
+          shiftDateRange = (DiagramDataExtremums.MaxDate - DiagramDataExtremums.MinDate).Days * horizontal / 100;
           if (shiftDateRange < 31 && GroupInterval == Every.Month) shiftDateRange = 31;
           if (shiftDateRange < 366 && GroupInterval == Every.Year) shiftDateRange = 366;
-          _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddDays(shiftDateRange);
-          _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddDays(-shiftDateRange);
+          DiagramDataExtremums.MinDate = DiagramDataExtremums.MinDate.AddDays(shiftDateRange);
+          DiagramDataExtremums.MaxDate = DiagramDataExtremums.MaxDate.AddDays(-shiftDateRange);
           break;
         case DiagramDataChangeMode.ZoomOut:
-          shiftDateRange = (_diagramDataExtremums.MaxDate - _diagramDataExtremums.MinDate).Days * horizontal / 100;
+          shiftDateRange = (DiagramDataExtremums.MaxDate - DiagramDataExtremums.MinDate).Days * horizontal / 100;
           if (shiftDateRange < 31 && GroupInterval == Every.Month) shiftDateRange = 31;
           if (shiftDateRange < 366 && GroupInterval == Every.Year) shiftDateRange = 366;
-          _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddDays(-shiftDateRange);
-          _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddDays(shiftDateRange);
+          DiagramDataExtremums.MinDate = DiagramDataExtremums.MinDate.AddDays(-shiftDateRange);
+          DiagramDataExtremums.MaxDate = DiagramDataExtremums.MaxDate.AddDays(shiftDateRange);
           break;
         case DiagramDataChangeMode.Move:
-          var deltaMonthes = (int)Math.Round(Math.Abs(horizontal / CalculationData.PointPerDate));
+          var deltaMonthes = (int)Math.Round(Math.Abs(horizontal / CalculationData.PointPerDataElement));
           if (horizontal < 0) // двигаем влево
           {
-            var newMaxDate = _diagramDataExtremums.MaxDate.AddMonths(deltaMonthes);
+            var newMaxDate = DiagramDataExtremums.MaxDate.AddMonths(deltaMonthes);
             if (newMaxDate > AllSeriesUnited.DiagramData.Last().Key)
             {
               newMaxDate = AllSeriesUnited.DiagramData.Last().Key;
-              deltaMonthes = (int)Math.Round((newMaxDate - _diagramDataExtremums.MaxDate).TotalDays / 30);
+              deltaMonthes = (int)Math.Round((newMaxDate - DiagramDataExtremums.MaxDate).TotalDays / 30);
             }
-            _diagramDataExtremums.MaxDate = newMaxDate;
-            _diagramDataExtremums.MinDate = _diagramDataExtremums.MinDate.AddMonths(deltaMonthes);
+            DiagramDataExtremums.MaxDate = newMaxDate;
+            DiagramDataExtremums.MinDate = DiagramDataExtremums.MinDate.AddMonths(deltaMonthes);
           }
           else // вправо
           {
-            var newMinDate = _diagramDataExtremums.MinDate.AddMonths(-deltaMonthes);
+            var newMinDate = DiagramDataExtremums.MinDate.AddMonths(-deltaMonthes);
             if (newMinDate < AllSeriesUnited.DiagramData.ElementAt(0).Key)
             {
               newMinDate = AllSeriesUnited.DiagramData.ElementAt(0).Key;
-              deltaMonthes = (int)Math.Round((_diagramDataExtremums.MinDate - newMinDate).TotalDays / 30);
+              deltaMonthes = (int)Math.Round((DiagramDataExtremums.MinDate - newMinDate).TotalDays / 30);
             }
-            _diagramDataExtremums.MinDate = newMinDate;
-            _diagramDataExtremums.MaxDate = _diagramDataExtremums.MaxDate.AddMonths(-deltaMonthes);
+            DiagramDataExtremums.MinDate = newMinDate;
+            DiagramDataExtremums.MaxDate = DiagramDataExtremums.MaxDate.AddMonths(-deltaMonthes);
           }
           break;
         case DiagramDataChangeMode.ZoomInRect:
@@ -126,7 +163,7 @@ namespace Keeper.Controls
           break;
       }
       ExtractDataBetweenLimits();
-      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       return true;
     }
 
@@ -135,7 +172,7 @@ namespace Keeper.Controls
       CurrentSeriesUnited.DiagramData.Clear();
       foreach (var day in AllSeriesUnited.DiagramData)
       {
-        if (day.Key >= _diagramDataExtremums.MinDate && day.Key <= _diagramDataExtremums.MaxDate)
+        if (day.Key >= DiagramDataExtremums.MinDate && day.Key <= DiagramDataExtremums.MaxDate)
         {
           CurrentSeriesUnited.DiagramData.Add(day.Key, day.Value);
         }
@@ -154,8 +191,8 @@ namespace Keeper.Controls
       double d = point.X - margin;
       if (d < 0) return -1; // мышь левее самого левого столбца
 
-      var count = (int)Math.Floor(d / CalculationData.PointPerDate);
-      var rest = d - count * CalculationData.PointPerDate;
+      var count = (int)Math.Floor(d / CalculationData.PointPerDataElement);
+      var rest = d - count * CalculationData.PointPerDataElement;
       if (rest < CalculationData.PointPerBar && count < CurrentSeriesUnited.DiagramData.Count)
       {
         var barHeight = CalculationData.Y0 - CalculationData.PointPerOneValueAfter * CurrentSeriesUnited.DiagramData.ElementAt(count).Value.Sum();
@@ -218,14 +255,14 @@ namespace Keeper.Controls
              CurrentSeriesUnited.DiagramData.ElementAt(i).Value);
       }
       CurrentSeriesUnited.DiagramData = nuevoCurrentDiagramData;
-      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       Draw();
     }
 
-    public void ShowAllDiagram()
+    public void ShowAll()
     {
       CurrentSeriesUnited.DiagramData = new SortedList<DateTime, List<double>>(AllSeriesUnited.DiagramData);
-      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       Draw();
     }
 
@@ -246,6 +283,8 @@ namespace Keeper.Controls
     }
 
     private Point _mouseLeftButtonDownPoint;
+    private Every _groupInterval;
+
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
       _mouseLeftButtonDownPoint = e.GetPosition(this);
@@ -268,7 +307,7 @@ namespace Keeper.Controls
         _mouseLeftButtonDownPoint.Y = temp;
       }
 
-      if (pt.X - _mouseLeftButtonDownPoint.X < 4 || pt.Y - _mouseLeftButtonDownPoint.Y < 4) ShowAllDiagram();
+      if (pt.X - _mouseLeftButtonDownPoint.X < 4 || pt.Y - _mouseLeftButtonDownPoint.Y < 4) ShowAll();
       else
         ZoomRectDiagram(_mouseLeftButtonDownPoint, pt);
     }
@@ -312,13 +351,48 @@ namespace Keeper.Controls
       GroupAllData(groupPeriod);
 
       if (groupPeriod == Every.Year) DefineYearsLimits();
-      else _diagramDataExtremums.MaxDate = new DateTime(_diagramDataExtremums.MaxDate.Year, 12, 31);
+      else DiagramDataExtremums.MaxDate = new DateTime(DiagramDataExtremums.MaxDate.Year, 12, 31);
 
       ExtractDataBetweenLimits();
-      _diagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       Draw();
     }
 
+
+    private void ShowAllRange(object sender, RoutedEventArgs e)
+    {
+      ShowAll();
+    }
+
+    private void ShowThisYear(object sender, RoutedEventArgs e)
+    {
+      var date = AllSeriesUnited.DiagramData.Last().Key;
+      DiagramDataExtremums.MinDate = new DateTime(date.Year, 1, 1);
+      DiagramDataExtremums.MaxDate = date;
+      ExtractDataBetweenLimits();
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
+    }
+
+    private void ShowLast12Monthes(object sender, RoutedEventArgs e)
+    {
+      var date = AllSeriesUnited.DiagramData.Last().Key;
+      DiagramDataExtremums.MinDate = new DateTime(date.AddMonths(-11).Year, date.AddMonths(-11).Month, 1);
+      DiagramDataExtremums.MaxDate = date;
+      ExtractDataBetweenLimits();
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
+    }
+
+    private void ShowThisMonth(object sender, RoutedEventArgs e)
+    {
+      var date = AllSeriesUnited.DiagramData.Last().Key;
+      DiagramDataExtremums.MinDate = new DateTime(date.Year, date.Month, 1);
+      DiagramDataExtremums.MaxDate = date;
+      ExtractDataBetweenLimits();
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
+    }
     private void GroupByMonthes(object sender, RoutedEventArgs e)
     {
       if (GroupInterval == Every.Month) return;
@@ -336,8 +410,8 @@ namespace Keeper.Controls
       const int bottomLimit = 2002;
       var topLimit = DateTime.Today.Year;
 
-      var startYear = _diagramDataExtremums.MinDate.Year;
-      var endYear = _diagramDataExtremums.MaxDate.Year;
+      var startYear = DiagramDataExtremums.MinDate.Year;
+      var endYear = DiagramDataExtremums.MaxDate.Year;
 
       if (endYear - startYear < 2)
       {
@@ -353,14 +427,14 @@ namespace Keeper.Controls
         }
       }
 
-      _diagramDataExtremums.MinDate = new DateTime(startYear, 1, 1);
-      _diagramDataExtremums.MaxDate = new DateTime(endYear, 12, 31);
+      DiagramDataExtremums.MinDate = new DateTime(startYear, 1, 1);
+      DiagramDataExtremums.MaxDate = new DateTime(endYear, 12, 31);
     }
     #endregion
 
     private void OnKeyDown(object sender, KeyEventArgs e)
     {
-      if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAllDiagram();
+      if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
       if (e.Key == Key.F5) Draw();
     }
 
@@ -434,5 +508,6 @@ namespace Keeper.Controls
           break;
       }
     }
+
   }
 }
