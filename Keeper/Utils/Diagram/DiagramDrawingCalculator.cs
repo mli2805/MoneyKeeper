@@ -4,9 +4,9 @@ using Keeper.Controls;
 
 namespace Keeper.Utils.Diagram
 {
-  public class DrawingCalculationData
+  public class DiagramDrawingCalculator
   {
-    public DrawingCalculationData(BarDiagramControl owner)
+    public DiagramDrawingCalculator(BarDiagramControl owner)
     {
       Owner = owner;
     }
