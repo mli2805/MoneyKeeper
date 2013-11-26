@@ -123,7 +123,7 @@ namespace Keeper.ViewModels
 
     public void DepoCurrenciesProportionChartCtor()
     {
-      var calculator = new DiagramDataCalculation(_db);
+      var calculator = new DiagramDataExtractor(_db);
 
       SeriesUsd = new List<DateProcentPoint>();
       SeriesByr = new List<DateProcentPoint>();
