@@ -47,6 +47,40 @@ namespace Keeper.Utils
       return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day };
     }
 
+    private Dictionary<DateTime, decimal> ExtractRates(CurrencyCodes currency)
+    {
+      switch (currency)
+      {
+        case CurrencyCodes.EUR:
+          return _db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).OrderBy(r => r.BankDay).
+                               ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)(1 / currencyRate.Rate));
+        case CurrencyCodes.BYR:
+          return _db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).OrderBy(r => r.BankDay).
+                               ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)currencyRate.Rate);
+        default:
+          return null;
+      }
+    }
+
+    public DiagramData RatesCtor(CurrencyCodes currency)
+    {
+      var rates = ExtractRates(currency);
+
+      var series = new DiagramSeries
+                     {
+                       Name = currency.ToString(),
+                       PositiveBrushColor = Brushes.Blue,
+                       Data = (from pair in rates select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
+                     };
+
+      return new DiagramData
+               {
+                 Data = new List<DiagramSeries>{series},
+                 Mode = DiagramMode.Line,
+                 TimeInterval = Every.Day
+               };
+    }
+
     public DiagramSeries ArticleMonthlyTrafficToSeries(string name, Brush positiveBrush)
     {
       return new DiagramSeries
@@ -56,7 +90,7 @@ namespace Keeper.Utils
                  NegativeBrushColor = positiveBrush,
                  Index = 0,
                  Data = (from pair in Calculator.MonthlyTraffic(name)
-                         select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
+                         select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
                };
     }
 

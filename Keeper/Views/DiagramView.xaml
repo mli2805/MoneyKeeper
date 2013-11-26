@@ -1,7 +1,7 @@
-﻿<Window x:Class="Keeper.Views.BarDiagramView"
+﻿<Window x:Class="Keeper.Views.DiagramView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="clr-namespace:Keeper.Controls"
-        Title="BarDiagramView" WindowState="Maximized">
+        Title="DiagramView" WindowState="Maximized">
   <Grid>
     <Controls:BarDiagramControl AllDiagramData="{Binding ModelDataProperty}" Focusable="True" />
   </Grid>

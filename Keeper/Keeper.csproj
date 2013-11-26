@@ -135,15 +135,11 @@
     <Compile Include="Utils\Diagram\DrawingCalculationData.cs" />
     <Compile Include="Utils\Diagram\FunctionsWithEvery.cs" />
     <Compile Include="Utils\MonthAnalizer.cs" />
-    <Compile Include="ViewModels\DiagramViewModels\BarDiagramViewModel.cs" />
-    <Compile Include="ViewModels\DiagramViewModels\RatesDiagramViewModel.cs" />
+    <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
-    <Compile Include="Views\DiagramViews\BarDiagramView.xaml.cs">
-      <DependentUpon>BarDiagramView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DiagramViews\RatesDiagramView.xaml.cs">
-      <DependentUpon>RatesDiagramView.xaml</DependentUpon>
+    <Compile Include="Views\DiagramView.xaml.cs">
+      <DependentUpon>DiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LogonView.xaml.cs">
       <DependentUpon>LogonView.xaml</DependentUpon>
@@ -277,7 +273,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DiagramViews\BarDiagramView.xaml">
+    <Page Include="Views\DiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -286,10 +282,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MonthAnalisysView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DiagramViews\RatesDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

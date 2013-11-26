@@ -439,29 +439,25 @@ namespace Keeper.ViewModels
     public void ShowDailyBalancesDiagram()
     {
       var balances = _diagramDataCtor.DailyBalancesCtor();
-      var barDiagramForm = new BarDiagramViewModel(balances);
-      _launchedForms.Add(barDiagramForm);
-      WindowManager.ShowWindow(barDiagramForm);
+      var diagramForm = new DiagramViewModel(balances);
+      _launchedForms.Add(diagramForm);
+      WindowManager.ShowWindow(diagramForm);
     }
 
     public void ShowRatesDiagram()
     {
-      //      var rates = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).OrderBy(r => r.BankDay).
-      //                           ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)(1 / currencyRate.Rate));
-      var rates = Db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).OrderBy(r => r.BankDay).
-                           ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)currencyRate.Rate);
+      var rate = _diagramDataCtor.RatesCtor(CurrencyCodes.BYR);
 
-      var ratesDiagramForm = new RatesDiagramViewModel(rates);
-      _launchedForms.Add(ratesDiagramForm);
-      WindowManager.ShowWindow(ratesDiagramForm);
+      var diagramForm = new DiagramViewModel(rate);
+      _launchedForms.Add(diagramForm);
+      WindowManager.ShowWindow(diagramForm);
     }
-
 
     public void ShowMonthlyResultDiagram()
     {
       var monthlyResults = _diagramDataCtor.MonthlyResultsDiagramCtor();
 
-      var barDiagramForm = new BarDiagramViewModel(monthlyResults);
+      var barDiagramForm = new DiagramViewModel(monthlyResults);
       _launchedForms.Add(barDiagramForm);
       WindowManager.ShowWindow(barDiagramForm);
     }
@@ -470,7 +466,7 @@ namespace Keeper.ViewModels
     {
       var monthlyIncomes = _diagramDataCtor.MonthlyIncomesDiagramCtor();
 
-      var barDiagramForm = new BarDiagramViewModel(monthlyIncomes);
+      var barDiagramForm = new DiagramViewModel(monthlyIncomes);
       _launchedForms.Add(barDiagramForm);
       WindowManager.ShowWindow(barDiagramForm);
     }
@@ -479,7 +475,7 @@ namespace Keeper.ViewModels
     {
       var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
 
-      var barDiagramForm = new BarDiagramViewModel(monthlyOutcomes);
+      var barDiagramForm = new DiagramViewModel(monthlyOutcomes);
       _launchedForms.Add(barDiagramForm);
       WindowManager.ShowWindow(barDiagramForm);
     }
@@ -507,7 +503,7 @@ namespace Keeper.ViewModels
 
                        };
 
-      var barDiagramForm = new BarDiagramViewModel(balances);
+      var barDiagramForm = new DiagramViewModel(balances);
       _launchedForms.Add(barDiagramForm);
       WindowManager.ShowWindow(barDiagramForm);
     }
