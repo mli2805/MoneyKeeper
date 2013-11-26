@@ -8,11 +8,11 @@ using Keeper.Utils.Diagram;
 
 namespace Keeper.ViewModels
 {
-  internal class BarDiagramViewModel : Screen
+  internal class DiagramViewModel : Screen
   {
     public DiagramData ModelDataProperty { get; set; }
 
-    public BarDiagramViewModel(DiagramData diagramData)
+    public DiagramViewModel(DiagramData diagramData)
     {
       ModelDataProperty = diagramData;
     }
