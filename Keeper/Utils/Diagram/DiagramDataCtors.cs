@@ -62,9 +62,34 @@ namespace Keeper.Utils
       }
     }
 
+    private Dictionary<DateTime,decimal> FillinGapsInRates(Dictionary<DateTime,decimal> ratesFromDb)
+    {
+      var result = new Dictionary<DateTime, decimal>();
+      var previousPair = new KeyValuePair<DateTime, decimal>(new DateTime(0), 0);
+      foreach (var pair in ratesFromDb)
+      {
+        if (!previousPair.Key.Equals(new DateTime(0)))
+        {
+
+          var interval = (pair.Key - previousPair.Key).Days;
+          if (interval > 1)
+          {
+            var delta = (pair.Value - previousPair.Value)/interval;
+            for (int i = 1; i < interval; i++)
+            {
+              result.Add(previousPair.Key.AddDays(i),previousPair.Value + delta*i);
+            }
+          }
+        }
+        result.Add(pair.Key,pair.Value);
+        previousPair = pair;
+      }
+      return result;
+    }
+
     public DiagramData RatesCtor(CurrencyCodes currency)
     {
-      var rates = ExtractRates(currency);
+      var rates = FillinGapsInRates(ExtractRates(currency));
 
       var series = new DiagramSeries
                      {

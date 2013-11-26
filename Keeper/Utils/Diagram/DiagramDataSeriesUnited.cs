@@ -12,7 +12,7 @@ namespace Keeper.Utils
     public double MinValue, MaxValue;
   }
 
-  public class DiagramSeriesUnited
+  public class DiagramDataSeriesUnited
   {
     public SortedList<DateTime, List<double>> DiagramData;
     public List<Brush> PositiveBrushes;
@@ -20,13 +20,13 @@ namespace Keeper.Utils
     public List<string> Names;
     public int SeriesCount;
 
-    public DiagramSeriesUnited()
+    public DiagramDataSeriesUnited()
     {
       SeriesCount = 0;
       DiagramData = new SortedList<DateTime, List<double>>();
     }
 
-    public DiagramSeriesUnited(DiagramData allSeries)
+    public DiagramDataSeriesUnited(DiagramData allSeries)
     {
       DiagramData = new SortedList<DateTime, List<double>>();
       PositiveBrushes = new List<Brush>();
@@ -49,7 +49,7 @@ namespace Keeper.Utils
       SeriesCount = allSeries.Data.Count;
     }
 
-    public DiagramSeriesUnited(DiagramSeriesUnited other)
+    public DiagramDataSeriesUnited(DiagramDataSeriesUnited other)
     {
       DiagramData = new SortedList<DateTime, List<double>>(other.DiagramData);
       PositiveBrushes = new List<Brush>(other.PositiveBrushes);

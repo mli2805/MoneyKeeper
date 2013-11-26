@@ -27,8 +27,8 @@ namespace Keeper.Controls
 
     #endregion
 
-    public DiagramSeriesUnited AllSeriesUnited { get; set; }
-    public DiagramSeriesUnited CurrentSeriesUnited { get; set; }
+    public DiagramDataSeriesUnited AllSeriesUnited { get; set; }
+    public DiagramDataSeriesUnited CurrentSeriesUnited { get; set; }
     public Every GroupInterval
     {
       get { return _groupInterval; }
@@ -71,14 +71,14 @@ namespace Keeper.Controls
     public DiagramDataExtremums DiagramDataExtremums;
     private DiagramDrawer _diagramDrawer;
 
-    public DrawingCalculationData CalculationData { get; set; }
+    public DiagramDrawingCalculator Calculator { get; set; }
 
     #region class essential methods
 
     public BarDiagramControl()
     {
       InitializeComponent();
-      CalculationData = new DrawingCalculationData(this);
+      Calculator = new DiagramDrawingCalculator(this);
 
       Loaded += BarDiagramControlOnLoaded;
     }
@@ -92,12 +92,12 @@ namespace Keeper.Controls
     {
       // набор серий надо преобразовать в структуру, 
       // где одной дате соответствуют значения для разных серий
-      AllSeriesUnited = new DiagramSeriesUnited(AllDiagramData);
+      AllSeriesUnited = new DiagramDataSeriesUnited(AllDiagramData);
       if (AllSeriesUnited.SeriesCount == 0) return;
       GroupInterval = AllDiagramData.TimeInterval;
       _diagramMode = AllDiagramData.Mode;
 
-      CurrentSeriesUnited = new DiagramSeriesUnited(AllSeriesUnited);
+      CurrentSeriesUnited = new DiagramDataSeriesUnited(AllSeriesUnited);
       DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       _diagramDrawer = new DiagramDrawer();
       Draw();
@@ -110,7 +110,7 @@ namespace Keeper.Controls
     private void Draw()
     {
       DiagramImage.Source =
-        _diagramDrawer.Draw(CurrentSeriesUnited, DiagramDataExtremums, CalculationData, _diagramMode, GroupInterval);
+        _diagramDrawer.Draw(CurrentSeriesUnited, DiagramDataExtremums, Calculator, _diagramMode, GroupInterval);
     }
 
     private bool ChangeDiagramData(DiagramDataChangeMode mode, int horizontal, int vertical)
@@ -134,7 +134,7 @@ namespace Keeper.Controls
           DiagramDataExtremums.MaxDate = DiagramDataExtremums.MaxDate.AddDays(shiftDateRange);
           break;
         case DiagramDataChangeMode.Move:
-          var deltaMonthes = (int)Math.Round(Math.Abs(horizontal / CalculationData.PointPerDataElement));
+          var deltaMonthes = (int)Math.Round(Math.Abs(horizontal / Calculator.PointPerDataElement));
           if (horizontal < 0) // двигаем влево
           {
             var newMaxDate = DiagramDataExtremums.MaxDate.AddMonths(deltaMonthes);
@@ -187,17 +187,17 @@ namespace Keeper.Controls
     {
       leftBar = -1;
       byHeight = false;
-      double margin = CalculationData.LeftMargin + CalculationData.Shift / 2 + CalculationData.Gap / 2;
+      double margin = Calculator.LeftMargin + Calculator.Shift / 2 + Calculator.Gap / 2;
       double d = point.X - margin;
       if (d < 0) return -1; // мышь левее самого левого столбца
 
-      var count = (int)Math.Floor(d / CalculationData.PointPerDataElement);
-      var rest = d - count * CalculationData.PointPerDataElement;
-      if (rest < CalculationData.PointPerBar && count < CurrentSeriesUnited.DiagramData.Count)
+      var count = (int)Math.Floor(d / Calculator.PointPerDataElement);
+      var rest = d - count * Calculator.PointPerDataElement;
+      if (rest < Calculator.PointPerBar && count < CurrentSeriesUnited.DiagramData.Count)
       {
-        var barHeight = CalculationData.Y0 - CalculationData.PointPerOneValueAfter * CurrentSeriesUnited.DiagramData.ElementAt(count).Value.Sum();
-        if (barHeight < CalculationData.Y0) byHeight = barHeight < point.Y && point.Y < CalculationData.Y0;
-        else byHeight = barHeight > point.Y && point.Y > CalculationData.Y0;
+        var barHeight = Calculator.Y0 - Calculator.PointPerOneValueAfter * CurrentSeriesUnited.DiagramData.ElementAt(count).Value.Sum();
+        if (barHeight < Calculator.Y0) byHeight = barHeight < point.Y && point.Y < Calculator.Y0;
+        else byHeight = barHeight > point.Y && point.Y > Calculator.Y0;
         return count; // мышь попала на столбец по горизонтали
       }
       leftBar = count >= CurrentSeriesUnited.DiagramData.Count ? CurrentSeriesUnited.DiagramData.Count - 1 : count;
@@ -347,7 +347,7 @@ namespace Keeper.Controls
 
     private void ChangeDiagramForNewGrouping(Every groupPeriod)
     {
-      AllSeriesUnited = new DiagramSeriesUnited(AllDiagramData);
+      AllSeriesUnited = new DiagramDataSeriesUnited(AllDiagramData);
       GroupAllData(groupPeriod);
 
       if (groupPeriod == Every.Year) DefineYearsLimits();

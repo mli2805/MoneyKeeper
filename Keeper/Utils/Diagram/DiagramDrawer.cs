@@ -10,56 +10,54 @@ namespace Keeper.Utils.Diagram
 {
   class DiagramDrawer
   {
-    private DiagramSeriesUnited _diagramData;
+    private DiagramDataSeriesUnited _diagramData;
     private DiagramDataExtremums _extremums;
-    private DrawingCalculationData _drawingCalculationData;
+    private DiagramDrawingCalculator _diagramDrawingCalculator;
     private DiagramMode _diagramMode;
     private Every _groupInterval;
 
-    #region Drawing implementation
-
-    public DrawingImage Draw(DiagramSeriesUnited diagramData, DiagramDataExtremums diagramDataExtremums,
-      DrawingCalculationData drawingCalculationData, DiagramMode diagramMode, Every groupInterval)
+    public DrawingImage Draw(DiagramDataSeriesUnited diagramData, DiagramDataExtremums diagramDataExtremums,
+      DiagramDrawingCalculator diagramDrawingCalculator, DiagramMode diagramMode, Every groupInterval)
     {
       _diagramData = diagramData;
       _extremums = diagramDataExtremums;
-      _drawingCalculationData = drawingCalculationData;
+      _diagramDrawingCalculator = diagramDrawingCalculator;
       _diagramMode = diagramMode;
       _groupInterval = groupInterval;
 
       var drawingGroup = new DrawingGroup();
 
-      drawingGroup.Children.Add(FullDiagramBackground(_drawingCalculationData));
-      drawingGroup.Children.Add(DiagramRegionBackground(_drawingCalculationData));
+      drawingGroup.Children.Add(FullDiagramBackground(_diagramDrawingCalculator));
+      drawingGroup.Children.Add(DiagramRegionBackground(_diagramDrawingCalculator));
 
-      drawingGroup.Children.Add(HorizontalAxes(_drawingCalculationData));
-      drawingGroup.Children.Add(VerticalGridLines(_drawingCalculationData));
+      drawingGroup.Children.Add(HorizontalAxes(_diagramDrawingCalculator));
+      drawingGroup.Children.Add(VerticalGridLines(_diagramDrawingCalculator));
 
-      drawingGroup.Children.Add(XAxisDashes(Dock.Top, _drawingCalculationData));
-      drawingGroup.Children.Add(XAxisDashes(Dock.Bottom, _drawingCalculationData));
-      drawingGroup.Children.Add(XAxisMarkers(Dock.Top, _drawingCalculationData));
-      drawingGroup.Children.Add(XAxisMarkers(Dock.Bottom, _drawingCalculationData));
+      drawingGroup.Children.Add(XAxisDashes(Dock.Top, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(XAxisDashes(Dock.Bottom, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(XAxisMarkers(Dock.Top, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(XAxisMarkers(Dock.Bottom, _diagramDrawingCalculator));
 
-      drawingGroup.Children.Add(VerticalAxes(_drawingCalculationData));
+      drawingGroup.Children.Add(VerticalAxes(_diagramDrawingCalculator));
 
-      drawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Left, _drawingCalculationData));
-      drawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Right, _drawingCalculationData));
-      drawingGroup.Children.Add(HorizontalGridLines(_drawingCalculationData));
+      drawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Left, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Right, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(HorizontalGridLines(_diagramDrawingCalculator));
 
-      if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(_drawingCalculationData, ref drawingGroup);
+      if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(_diagramDrawingCalculator, ref drawingGroup);
       if (_diagramMode == DiagramMode.Line)
-        for (var j = 0; j < _diagramData.SeriesCount; j++) drawingGroup.Children.Add(OneSeriesLine(_drawingCalculationData, j));
+        for (var j = 0; j < _diagramData.SeriesCount; j++) drawingGroup.Children.Add(OneSeriesLine(_diagramDrawingCalculator, j));
 
       return new DrawingImage(drawingGroup);
     }
 
-    private GeometryDrawing FullDiagramBackground(DrawingCalculationData cd)
+    private GeometryDrawing FullDiagramBackground(DiagramDrawingCalculator cd)
     {
       var rectGeometry = new RectangleGeometry { Rect = new Rect(0, 0, cd.ImageWidth, cd.ImageHeight) };
       return new GeometryDrawing { Geometry = rectGeometry, Brush = Brushes.LightYellow };
     }
 
-    private GeometryDrawing DiagramRegionBackground(DrawingCalculationData cd)
+    private GeometryDrawing DiagramRegionBackground(DiagramDrawingCalculator cd)
     {
       var rectGeometry = new RectangleGeometry
       {
@@ -69,7 +67,7 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = rectGeometry, Brush = Brushes.White };
     }
 
-    private GeometryDrawing HorizontalAxes(DrawingCalculationData cd)
+    private GeometryDrawing HorizontalAxes(DiagramDrawingCalculator cd)
     {
       var geometryGroup = new GeometryGroup();
       var bottomAxis = new LineGeometry(new Point(cd.LeftMargin, cd.ImageHeight - cd.BottomMargin),
@@ -83,7 +81,7 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(Brushes.Black, 1) };
     }
 
-    private GeometryDrawing VerticalGridLines(DrawingCalculationData cd)
+    private GeometryDrawing VerticalGridLines(DiagramDrawingCalculator cd)
     {
       var geometryGroupGridlines = new GeometryGroup();
 
@@ -98,7 +96,7 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
     }
 
-    private GeometryDrawing XAxisDashes(Dock flag, DrawingCalculationData cd)
+    private GeometryDrawing XAxisDashes(Dock flag, DiagramDrawingCalculator cd)
     {
       var geometryGroupDashesAndMarks = new GeometryGroup();
 
@@ -114,7 +112,7 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
-    private GeometryDrawing XAxisMarkers(Dock flag, DrawingCalculationData cd)
+    private GeometryDrawing XAxisMarkers(Dock flag, DiagramDrawingCalculator cd)
     {
       var geometryGroupDashesAndMarks = new GeometryGroup();
 
@@ -143,7 +141,7 @@ namespace Keeper.Utils.Diagram
       }
     }
 
-    private GeometryDrawing VerticalAxes(DrawingCalculationData cd)
+    private GeometryDrawing VerticalAxes(DiagramDrawingCalculator cd)
     {
       var geometryGroup = new GeometryGroup();
       var leftAxis = new LineGeometry(new Point(cd.LeftMargin, cd.TopMargin),
@@ -157,7 +155,7 @@ namespace Keeper.Utils.Diagram
       return geometryDrawing;
     }
 
-    private GeometryDrawing HorizontalGridLines(DrawingCalculationData cd)
+    private GeometryDrawing HorizontalGridLines(DiagramDrawingCalculator cd)
     {
       var geometryGroupGridlines = new GeometryGroup();
       for (var i = 0; i <= cd.Divisions; i++)
@@ -171,7 +169,7 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
     }
 
-    private GeometryDrawing YAxisDashesWithMarkers(Dock flag, DrawingCalculationData cd)
+    private GeometryDrawing YAxisDashesWithMarkers(Dock flag, DiagramDrawingCalculator cd)
     {
       const double minPointBetweenDivision = 35;
 
@@ -207,7 +205,7 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
-    private GeometryDrawing OneSeriesLine(DrawingCalculationData cd, int seriesNumber)
+    private GeometryDrawing OneSeriesLine(DiagramDrawingCalculator cd, int seriesNumber)
     {
       var allDays = (_extremums.MaxDate - _extremums.MinDate).Days;
       var pointsPerDay = (cd.ImageWidth - cd.LeftMargin - cd.RightMargin - cd.Shift - cd.Gap) / allDays;
@@ -233,7 +231,7 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = geometryGroup, Pen = new Pen(_diagramData.PositiveBrushes.ElementAt(seriesNumber), 2) };
     }
 
-    private void BarVerticalDiagram(DrawingCalculationData cd, ref DrawingGroup drawingGroup)
+    private void BarVerticalDiagram(DiagramDrawingCalculator cd, ref DrawingGroup drawingGroup)
     {
       var positiveGeometryGroups = new List<GeometryGroup>();
       var negativeGeometryGroups = new List<GeometryGroup>();
@@ -296,9 +294,6 @@ namespace Keeper.Utils.Diagram
         drawingGroup.Children.Add(negativeGeometryDrawing);
       }
     }
-
-    #endregion
-
 
   }
 }
