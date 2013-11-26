@@ -125,15 +125,12 @@
     <Compile Include="Utils\DbInputOutput\DbTxtLoad.cs" />
     <Compile Include="Utils\Diagram\DiagramData.cs" />
     <Compile Include="Utils\Diagram\DiagramDrawer.cs" />
-    <Compile Include="Utils\Diagram\DiagramMode.cs" />
-    <Compile Include="Utils\Diagram\DiagramDataCalculation.cs" />
+    <Compile Include="Utils\Diagram\DiagramDataExtractor.cs" />
     <Compile Include="Utils\Diagram\DiagramSeriesUnited.cs" />
     <Compile Include="Utils\Diagram\DiagramDataChangeMode.cs" />
     <Compile Include="Utils\Diagram\DiagramDataCtors.cs" />
-    <Compile Include="Utils\Diagram\DiagramPair.cs" />
-    <Compile Include="Utils\Diagram\DiagramSeries.cs" />
     <Compile Include="Utils\Diagram\DrawingCalculationData.cs" />
-    <Compile Include="Utils\Diagram\FunctionsWithEvery.cs" />
+    <Compile Include="Utils\FunctionsWithEvery.cs" />
     <Compile Include="Utils\MonthAnalizer.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />

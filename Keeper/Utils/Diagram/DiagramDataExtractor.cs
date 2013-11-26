@@ -6,13 +6,13 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils.Diagram
 {
-  class DiagramDataCalculation
+  class DiagramDataExtractor
   {
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
 
 		[ImportingConstructor]
-    public DiagramDataCalculation(KeeperDb db)
+    public DiagramDataExtractor(KeeperDb db)
 		{
 			_db = db;
 			_rateExtractor = new RateExtractor(db);
