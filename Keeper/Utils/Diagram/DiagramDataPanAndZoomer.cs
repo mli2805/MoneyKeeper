@@ -55,18 +55,46 @@ namespace Keeper.Utils.Diagram
     }
 
 
-    public void FindLimitsForRect(DiagramDataSeriesUnited currentSeriesUnited, Point leftTop, Point rightBottom, ref DiagramDataExtremums extremums)
+    public void FindLimitsForRect(DiagramDataSeriesUnited currentSeriesUnited, DiagramDrawingCalculator drawingCalculator, Point leftTop, Point rightBottom, ref DiagramDataExtremums extremums)
     {
-//      var numberFrom = GetStartBarNumber(leftTop);
-//      var numberTo = GetFinishBarNumber(rightBottom);
-//      if (numberTo - numberFrom < 3) return;
-//      var nuevoCurrentDiagramData = new SortedList<DateTime, List<double>>();
-//      for (var i = numberFrom; i <= numberTo; i++)
-//      {
-//        nuevoCurrentDiagramData.Add(currentSeriesUnited.DiagramData.ElementAt(i).Key,
-//             currentSeriesUnited.DiagramData.ElementAt(i).Value);
-//      }
+      var numberFrom = GetStartBarNumber(currentSeriesUnited, drawingCalculator, leftTop);
+      var numberTo = GetFinishBarNumber(currentSeriesUnited, drawingCalculator, rightBottom);
+      if (numberTo - numberFrom < 3) return;
+      var nuevoCurrentDiagramData = new SortedList<DateTime, List<double>>();
+      for (var i = numberFrom; i <= numberTo; i++)
+      {
+        nuevoCurrentDiagramData.Add(currentSeriesUnited.DiagramData.ElementAt(i).Key,
+             currentSeriesUnited.DiagramData.ElementAt(i).Value);
+      }
     }
+
+    #region преобразует точки к данным диаграммы
+    // привязан к типу диаграммы (в данном случае - столбцовая, время - значение)
+
+    public int GetStartBarNumber(DiagramDataSeriesUnited currentSeriesUnited, DiagramDrawingCalculator drawingCalculator, Point point)
+    {
+      var pointAnalyzer = new DiagramPointAnalyzer(currentSeriesUnited, drawingCalculator);
+
+      int leftBar;
+      var startBarNumber = pointAnalyzer.PointToBar(point, out leftBar);
+      if (startBarNumber == -1) startBarNumber = ++leftBar;
+      return startBarNumber;
+    }
+
+    public int GetFinishBarNumber(DiagramDataSeriesUnited currentSeriesUnited, DiagramDrawingCalculator drawingCalculator, Point point)
+    {
+      var pointAnalyzer = new DiagramPointAnalyzer(currentSeriesUnited, drawingCalculator);
+
+      int leftBar;
+      var finishBarNumber = pointAnalyzer.PointToBar(point, out leftBar);
+      if (finishBarNumber == -1) finishBarNumber = leftBar != -1 ? leftBar : 0;
+      return finishBarNumber;
+
+    }
+
+    #endregion
+
+
 
   }
 }
