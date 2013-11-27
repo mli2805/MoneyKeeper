@@ -28,7 +28,7 @@ namespace Keeper.ViewModels
     private AccountTreesFunctions _accountTreesFunctions;
     private BalancesForShellCalculator _balanceCalculator;
     private DiagramDataCtors _diagramDataCtor;
-    private DiagramDataExtractor _diagramDataCalculator;
+    private DiagramDataExtractorFromDb _diagramDataCalculator;
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -200,7 +200,7 @@ namespace Keeper.ViewModels
 
       _balanceCalculator = new BalancesForShellCalculator(Db);
       _accountTreesFunctions = new AccountTreesFunctions(Db);
-      _diagramDataCalculator = new DiagramDataExtractor(Db);
+      _diagramDataCalculator = new DiagramDataExtractorFromDb(Db);
       _diagramDataCtor = new DiagramDataCtors(Db);
     }
 

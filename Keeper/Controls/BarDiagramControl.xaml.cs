@@ -29,6 +29,7 @@ namespace Keeper.Controls
 
     public DiagramDataSeriesUnited AllSeriesUnited { get; set; }
     public DiagramDataSeriesUnited CurrentSeriesUnited { get; set; }
+    private Every _groupInterval;
     public Every GroupInterval
     {
       get { return _groupInterval; }
@@ -70,6 +71,7 @@ namespace Keeper.Controls
     private DiagramMode _diagramMode;
     public DiagramDataExtremums DiagramDataExtremums;
     private DiagramDrawer _diagramDrawer;
+    private DiagramDataPanAndZoomer _diagramDataPanAndZoomer;
 
     public DiagramDrawingCalculator Calculator { get; set; }
 
@@ -100,6 +102,7 @@ namespace Keeper.Controls
       CurrentSeriesUnited = new DiagramDataSeriesUnited(AllSeriesUnited);
       DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       _diagramDrawer = new DiagramDrawer();
+      _diagramDataPanAndZoomer = new DiagramDataPanAndZoomer();
       Draw();
       var window = Window.GetWindow(this);
       if (window != null) window.KeyDown += OnKeyDown;
@@ -111,60 +114,6 @@ namespace Keeper.Controls
     {
       DiagramImage.Source =
         _diagramDrawer.Draw(CurrentSeriesUnited, DiagramDataExtremums, Calculator, _diagramMode, GroupInterval);
-    }
-
-    private bool ChangeDiagramData(DiagramDataChangeMode mode, int horizontal, int vertical)
-    {
-      int shiftDateRange;
-      switch (mode)
-      {
-        case DiagramDataChangeMode.ZoomIn: // increase picture
-          if (CurrentSeriesUnited.DiagramData.Count < 6) return true;
-          shiftDateRange = (DiagramDataExtremums.MaxDate - DiagramDataExtremums.MinDate).Days * horizontal / 100;
-          if (shiftDateRange < 31 && GroupInterval == Every.Month) shiftDateRange = 31;
-          if (shiftDateRange < 366 && GroupInterval == Every.Year) shiftDateRange = 366;
-          DiagramDataExtremums.MinDate = DiagramDataExtremums.MinDate.AddDays(shiftDateRange);
-          DiagramDataExtremums.MaxDate = DiagramDataExtremums.MaxDate.AddDays(-shiftDateRange);
-          break;
-        case DiagramDataChangeMode.ZoomOut:
-          shiftDateRange = (DiagramDataExtremums.MaxDate - DiagramDataExtremums.MinDate).Days * horizontal / 100;
-          if (shiftDateRange < 31 && GroupInterval == Every.Month) shiftDateRange = 31;
-          if (shiftDateRange < 366 && GroupInterval == Every.Year) shiftDateRange = 366;
-          DiagramDataExtremums.MinDate = DiagramDataExtremums.MinDate.AddDays(-shiftDateRange);
-          DiagramDataExtremums.MaxDate = DiagramDataExtremums.MaxDate.AddDays(shiftDateRange);
-          break;
-        case DiagramDataChangeMode.Move:
-          var deltaMonthes = (int)Math.Round(Math.Abs(horizontal / Calculator.PointPerDataElement));
-          if (horizontal < 0) // двигаем влево
-          {
-            var newMaxDate = DiagramDataExtremums.MaxDate.AddMonths(deltaMonthes);
-            if (newMaxDate > AllSeriesUnited.DiagramData.Last().Key)
-            {
-              newMaxDate = AllSeriesUnited.DiagramData.Last().Key;
-              deltaMonthes = (int)Math.Round((newMaxDate - DiagramDataExtremums.MaxDate).TotalDays / 30);
-            }
-            DiagramDataExtremums.MaxDate = newMaxDate;
-            DiagramDataExtremums.MinDate = DiagramDataExtremums.MinDate.AddMonths(deltaMonthes);
-          }
-          else // вправо
-          {
-            var newMinDate = DiagramDataExtremums.MinDate.AddMonths(-deltaMonthes);
-            if (newMinDate < AllSeriesUnited.DiagramData.ElementAt(0).Key)
-            {
-              newMinDate = AllSeriesUnited.DiagramData.ElementAt(0).Key;
-              deltaMonthes = (int)Math.Round((DiagramDataExtremums.MinDate - newMinDate).TotalDays / 30);
-            }
-            DiagramDataExtremums.MinDate = newMinDate;
-            DiagramDataExtremums.MaxDate = DiagramDataExtremums.MaxDate.AddMonths(-deltaMonthes);
-          }
-          break;
-        case DiagramDataChangeMode.ZoomInRect:
-
-          break;
-      }
-      ExtractDataBetweenLimits();
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
-      return true;
     }
 
     public void ExtractDataBetweenLimits()
@@ -233,28 +182,26 @@ namespace Keeper.Controls
 
     }
 
-    public void ZoomDiagram(DiagramDataChangeMode param, int horizontal, int vertical)
+    public void ZoomDiagram(int delta)
     {
-      if (ChangeDiagramData(param, horizontal, vertical)) Draw();
+      if (!_diagramDataPanAndZoomer.ZoomLimits(CurrentSeriesUnited, GroupInterval, delta, ref DiagramDataExtremums)) return;
+      ExtractDataBetweenLimits();
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
     }
 
-    public void MoveDiagramData(DiagramDataChangeMode param, int horizontal, int vertical)
+ public void MoveDiagramData(int horizontalPoints, int verticalPoints)
     {
-      if (ChangeDiagramData(param, horizontal, vertical)) Draw();
+      if (!_diagramDataPanAndZoomer.MoveLimits(AllSeriesUnited, Calculator, horizontalPoints, verticalPoints, ref DiagramDataExtremums)) return;
+      ExtractDataBetweenLimits();
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      Draw();
     }
 
-    public void ZoomRectDiagram(Point leftTop, Point rightBottom)
+    public void ZoomRectFromDiagramData(Point leftTop, Point rightBottom)
     {
-      var numberFrom = GetStartBarNumber(leftTop);
-      var numberTo = GetFinishBarNumber(rightBottom);
-      if (numberTo - numberFrom < 3) return;
-      var nuevoCurrentDiagramData = new SortedList<DateTime, List<double>>();
-      for (int i = numberFrom; i <= numberTo; i++)
-      {
-        nuevoCurrentDiagramData.Add(CurrentSeriesUnited.DiagramData.ElementAt(i).Key,
-             CurrentSeriesUnited.DiagramData.ElementAt(i).Value);
-      }
-      CurrentSeriesUnited.DiagramData = nuevoCurrentDiagramData;
+      _diagramDataPanAndZoomer.FindLimitsForRect(CurrentSeriesUnited, leftTop, rightBottom, ref DiagramDataExtremums);
+      ExtractDataBetweenLimits();
       DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       Draw();
     }
@@ -269,52 +216,49 @@ namespace Keeper.Controls
     #endregion
 
     #region mouse events handlers
-    private Point _mouseRightButtonDownPoint;
-    private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-    {
-      _mouseRightButtonDownPoint = e.GetPosition(this);
-    }
-    private void OnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
-    {
-      var pt = e.GetPosition(this);
-      if (pt != _mouseRightButtonDownPoint)
-        MoveDiagramData(DiagramDataChangeMode.Move, (int)(pt.X - _mouseRightButtonDownPoint.X),
-                        (int)(pt.Y - _mouseRightButtonDownPoint.Y));
-    }
 
     private Point _mouseLeftButtonDownPoint;
-    private Every _groupInterval;
 
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
       _mouseLeftButtonDownPoint = e.GetPosition(this);
     }
+
+    private void ReSortPointsForRect(ref Point a, ref Point b)
+    {
+      if (a.X < b.X)
+      {
+        var temp = a.X;
+        a.X = b.X;
+        b.X = temp;
+      }
+      if (a.Y < b.Y)
+      {
+        var temp = a.Y;
+        a.Y = b.Y;
+        b.Y = temp;
+      }
+    }
+
     private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-      Point pt = e.GetPosition(this);
+      var pt = e.GetPosition(this);
       if (pt == _mouseLeftButtonDownPoint) return;
-
-      if (pt.X < _mouseLeftButtonDownPoint.X)
-      {
-        var temp = pt.X;
-        pt.X = _mouseLeftButtonDownPoint.X;
-        _mouseLeftButtonDownPoint.X = temp;
-      }
-      if (pt.Y < _mouseLeftButtonDownPoint.Y)
-      {
-        var temp = pt.Y;
-        pt.Y = _mouseLeftButtonDownPoint.Y;
-        _mouseLeftButtonDownPoint.Y = temp;
-      }
-
-      if (pt.X - _mouseLeftButtonDownPoint.X < 4 || pt.Y - _mouseLeftButtonDownPoint.Y < 4) ShowAll();
+      if (Math.Abs(pt.X - _mouseLeftButtonDownPoint.X) < 4 && Math.Abs(pt.Y - _mouseLeftButtonDownPoint.Y) < 4) ShowAll();
       else
-        ZoomRectDiagram(_mouseLeftButtonDownPoint, pt);
+      if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) // c Ctrl это сдвиг изображения
+        MoveDiagramData((int)(pt.X - _mouseLeftButtonDownPoint.X), (int)(pt.Y - _mouseLeftButtonDownPoint.Y));
+      else
+      // без Ctrl это выделение прямоугольника для зума
+      {
+        ReSortPointsForRect(ref _mouseLeftButtonDownPoint, ref pt);
+        ZoomRectFromDiagramData(_mouseLeftButtonDownPoint, pt);
+      }
     }
 
     private void OnMouseWheel(object sender, MouseWheelEventArgs e)
     {
-      ZoomDiagram(e.Delta < 0 ? DiagramDataChangeMode.ZoomIn : DiagramDataChangeMode.ZoomOut, 10, 0);
+      ZoomDiagram(e.Delta);
     }
 
     #endregion
