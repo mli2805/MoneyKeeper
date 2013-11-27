@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using Keeper.Controls;
 
@@ -58,6 +59,17 @@ namespace Keeper.Utils.Diagram
       {
         var temp = Math.Ceiling(MinPointBetweenMarkedDivision / PointPerDataElement);
         return Dash * (int)Math.Round(temp / Dash);
+      }
+    }
+
+    public double PointPerDay
+    {
+      get
+      {
+        if (Owner.CurrentSeriesUnited.DiagramData == null) return 0;
+        if (Owner.CurrentSeriesUnited.DiagramData.Count == 0) return 0;
+        return (ImageWidth - LeftMargin - RightMargin - Shift)/
+               (Owner.CurrentSeriesUnited.DiagramData.Last().Key - Owner.CurrentSeriesUnited.DiagramData.ElementAt(0).Key).Days;
       }
     }
 

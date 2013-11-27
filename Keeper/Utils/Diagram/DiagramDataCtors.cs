@@ -12,19 +12,19 @@ namespace Keeper.Utils
   {
     private readonly KeeperDb _db;
 
-    private DiagramDataExtractor Extractor { get; set; }
+    private DiagramDataExtractorFromDb ExtractorFromDb { get; set; }
 
     [ImportingConstructor]
     public DiagramDataCtors(KeeperDb db)
     {
       _db = db;
-      Extractor = new DiagramDataExtractor(db);
+      ExtractorFromDb = new DiagramDataExtractorFromDb(db);
     }
 
     public DiagramSeries AccountDailyBalancesToSeries(string name, Brush positiveBrush)
     {
       var balancedAccount = (from account in _db.AccountsPlaneList where account.Name == name select account).FirstOrDefault();
-      var balances = Extractor.AccountBalancesForPeriodInUsd(balancedAccount, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
+      var balances = ExtractorFromDb.AccountBalancesForPeriodInUsd(balancedAccount, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
       var data = balances.Select(pair => new DiagramPair(pair.Key, (double)pair.Value)).ToList();
 
       return new DiagramSeries
@@ -114,7 +114,7 @@ namespace Keeper.Utils
                  PositiveBrushColor = positiveBrush,
                  NegativeBrushColor = positiveBrush,
                  Index = 0,
-                 Data = (from pair in Extractor.MonthlyTraffic(name)
+                 Data = (from pair in ExtractorFromDb.MonthlyTraffic(name)
                          select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
                };
     }
@@ -159,7 +159,7 @@ namespace Keeper.Utils
                                    PositiveBrushColor = Brushes.Blue,
                                    NegativeBrushColor = Brushes.Red,
                                    Index = 0,
-                                   Data = (from pair in Extractor.MonthlyResults("Мои")
+                                   Data = (from pair in ExtractorFromDb.MonthlyResults("Мои")
                                            select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
                                  }
                              };

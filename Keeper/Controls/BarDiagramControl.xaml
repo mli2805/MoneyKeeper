@@ -17,7 +17,6 @@
     </Popup>
       <Image Name="DiagramImage" Stretch="Fill"  
            MouseLeftButtonDown="OnMouseLeftButtonDown" MouseLeftButtonUp="OnMouseLeftButtonUp" 
-           MouseRightButtonDown="OnMouseRightButtonDown" MouseRightButtonUp="OnMouseRightButtonUp"
            MouseWheel="OnMouseWheel" KeyDown="OnKeyDown" MouseMove="OnMouseMove" >
     
         <Image.ContextMenu>

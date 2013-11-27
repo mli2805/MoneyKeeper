@@ -87,8 +87,11 @@ namespace Keeper.Utils
           break;
       }
 
-      if (dataExtremums.MaxValue > 0 && dataExtremums.MinValue > 0) dataExtremums.MinValue = 0;
-      if (dataExtremums.MaxValue < 0 && dataExtremums.MinValue < 0) dataExtremums.MaxValue = 0;
+      if (diagramMode != DiagramMode.Line)
+      {
+        if (dataExtremums.MaxValue > 0 && dataExtremums.MinValue > 0) dataExtremums.MinValue = 0;
+        if (dataExtremums.MaxValue < 0 && dataExtremums.MinValue < 0) dataExtremums.MaxValue = 0;
+      }
 
       return dataExtremums;
     }
