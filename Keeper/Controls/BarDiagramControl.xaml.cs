@@ -128,59 +128,7 @@ namespace Keeper.Controls
       }
     }
 
-
-    #region преобразует точки к данным диаграммы и запускает перерисовку
-    // привязан к типу диаграммы (в данном случае - столбцовая, время - значение)
-
-    public int PointToBar(Point point, out int leftBar, out bool byHeight)
-    {
-      leftBar = -1;
-      byHeight = false;
-      double margin = Calculator.LeftMargin + Calculator.Shift / 2 + Calculator.Gap / 2;
-      double d = point.X - margin;
-      if (d < 0) return -1; // мышь левее самого левого столбца
-
-      var count = (int)Math.Floor(d / Calculator.PointPerDataElement);
-      var rest = d - count * Calculator.PointPerDataElement;
-      if (rest < Calculator.PointPerBar && count < CurrentSeriesUnited.DiagramData.Count)
-      {
-        var barHeight = Calculator.Y0 - Calculator.PointPerOneValueAfter * CurrentSeriesUnited.DiagramData.ElementAt(count).Value.Sum();
-        if (barHeight < Calculator.Y0) byHeight = barHeight < point.Y && point.Y < Calculator.Y0;
-        else byHeight = barHeight > point.Y && point.Y > Calculator.Y0;
-        return count; // мышь попала на столбец по горизонтали
-      }
-      leftBar = count >= CurrentSeriesUnited.DiagramData.Count ? CurrentSeriesUnited.DiagramData.Count - 1 : count;
-      return -1; // мышь не попала на столбец по горизонтали, слева кто-то есть
-    }
-
-    public int PointToBar(Point point, out int leftBar)
-    {
-      bool useless;
-      return PointToBar(point, out leftBar, out useless);
-    }
-
-    public int PointToBar(Point point)
-    {
-      int useless;
-      return PointToBar(point, out useless);
-    }
-
-    public int GetStartBarNumber(Point point)
-    {
-      int leftBar;
-      var startBarNumber = PointToBar(point, out leftBar);
-      if (startBarNumber == -1) startBarNumber = ++leftBar;
-      return startBarNumber;
-    }
-
-    public int GetFinishBarNumber(Point point)
-    {
-      int leftBar;
-      var finishBarNumber = PointToBar(point, out leftBar);
-      if (finishBarNumber == -1) finishBarNumber = leftBar != -1 ? leftBar : 0;
-      return finishBarNumber;
-
-    }
+    #region wrappers for pan and zoom functions
 
     public void ZoomDiagram(int delta)
     {
@@ -190,7 +138,7 @@ namespace Keeper.Controls
       Draw();
     }
 
- public void MoveDiagramData(int horizontalPoints, int verticalPoints)
+    public void MoveDiagramData(int horizontalPoints, int verticalPoints)
     {
       if (!_diagramDataPanAndZoomer.MoveLimits(AllSeriesUnited, Calculator, horizontalPoints, verticalPoints, ref DiagramDataExtremums)) return;
       ExtractDataBetweenLimits();
@@ -200,7 +148,7 @@ namespace Keeper.Controls
 
     public void ZoomRectFromDiagramData(Point leftTop, Point rightBottom)
     {
-      _diagramDataPanAndZoomer.FindLimitsForRect(CurrentSeriesUnited, leftTop, rightBottom, ref DiagramDataExtremums);
+      _diagramDataPanAndZoomer.FindLimitsForRect(CurrentSeriesUnited, Calculator, leftTop, rightBottom, ref DiagramDataExtremums);
       ExtractDataBetweenLimits();
       DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       Draw();
@@ -215,7 +163,13 @@ namespace Keeper.Controls
 
     #endregion
 
-    #region mouse events handlers
+    #region keyboard and mouse events handlers
+
+    private void OnKeyDown(object sender, KeyEventArgs e)
+    {
+      if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
+      if (e.Key == Key.F5) Draw();
+    }
 
     private Point _mouseLeftButtonDownPoint;
 
@@ -224,41 +178,31 @@ namespace Keeper.Controls
       _mouseLeftButtonDownPoint = e.GetPosition(this);
     }
 
-    private void ReSortPointsForRect(ref Point a, ref Point b)
-    {
-      if (a.X < b.X)
-      {
-        var temp = a.X;
-        a.X = b.X;
-        b.X = temp;
-      }
-      if (a.Y < b.Y)
-      {
-        var temp = a.Y;
-        a.Y = b.Y;
-        b.Y = temp;
-      }
-    }
-
     private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
       var pt = e.GetPosition(this);
       if (pt == _mouseLeftButtonDownPoint) return;
       if (Math.Abs(pt.X - _mouseLeftButtonDownPoint.X) < 4 && Math.Abs(pt.Y - _mouseLeftButtonDownPoint.Y) < 4) ShowAll();
       else
-      if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) // c Ctrl это сдвиг изображения
-        MoveDiagramData((int)(pt.X - _mouseLeftButtonDownPoint.X), (int)(pt.Y - _mouseLeftButtonDownPoint.Y));
-      else
-      // без Ctrl это выделение прямоугольника для зума
-      {
-        ReSortPointsForRect(ref _mouseLeftButtonDownPoint, ref pt);
-        ZoomRectFromDiagramData(_mouseLeftButtonDownPoint, pt);
-      }
+        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) // c Ctrl это сдвиг изображения
+          MoveDiagramData((int)(pt.X - _mouseLeftButtonDownPoint.X), (int)(pt.Y - _mouseLeftButtonDownPoint.Y));
+        else
+        // без Ctrl это выделение прямоугольника для зума
+        {
+          SortPointsForRect(ref _mouseLeftButtonDownPoint, ref pt);
+          ZoomRectFromDiagramData(_mouseLeftButtonDownPoint, pt);
+        }
     }
 
     private void OnMouseWheel(object sender, MouseWheelEventArgs e)
     {
       ZoomDiagram(e.Delta);
+    }
+
+    private void OnMouseMove(object sender, MouseEventArgs e)
+    {
+      Point pt = e.GetPosition(this);
+      ShowHint(pt);
     }
 
     #endregion
@@ -376,12 +320,6 @@ namespace Keeper.Controls
     }
     #endregion
 
-    private void OnKeyDown(object sender, KeyEventArgs e)
-    {
-      if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
-      if (e.Key == Key.F5) Draw();
-    }
-
     private Brush DefineBarHintBackground(int barNumber)
     {
       if (AllDiagramData.Data.Count == 1) return CurrentSeriesUnited.DiagramData.ElementAt(barNumber).Value[0] > 0 ?
@@ -414,16 +352,15 @@ namespace Keeper.Controls
       return content;
     }
 
-    private void OnMouseMove(object sender, MouseEventArgs e)
+    private void ShowHint(Point pt)
     {
-      Point pt = e.GetPosition(this);
-
       switch (_diagramMode)
       {
         case DiagramMode.BarVertical:
           int barLeft;
           bool isOverBar;
-          var bar = PointToBar(pt, out barLeft, out isOverBar);
+          var pointAnalyzer = new DiagramPointAnalyzer(CurrentSeriesUnited, Calculator);
+          var bar = pointAnalyzer.PointToBar(pt, out barLeft, out isOverBar);
 
           if (isOverBar)
           {
@@ -450,6 +387,22 @@ namespace Keeper.Controls
           BarHint.IsOpen = false;
           StatusBar.Text = "";
           break;
+      }
+    }
+
+    private void SortPointsForRect(ref Point a, ref Point b)
+    {
+      if (a.X < b.X)
+      {
+        var temp = a.X;
+        a.X = b.X;
+        b.X = temp;
+      }
+      if (a.Y < b.Y)
+      {
+        var temp = a.Y;
+        a.Y = b.Y;
+        b.Y = temp;
       }
     }
 
