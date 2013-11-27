@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Keeper.Utils;
@@ -201,8 +199,20 @@ namespace Keeper.Controls
 
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
-      Point pt = e.GetPosition(this);
-      ShowHint(pt);
+      var pt = e.GetPosition(this);
+      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited, GroupInterval, _diagramMode, Calculator);
+      string context;
+      Brush backgroundBrush;
+      if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
+      {
+        BarHint.IsOpen = true;
+        BarHint.HorizontalOffset = pt.X;
+        BarHint.VerticalOffset = pt.Y - 5;
+
+        BarHintText.Background = backgroundBrush;
+        BarHintText.Text = context;
+      }
+      else BarHint.IsOpen = false;
     }
 
     #endregion
@@ -319,76 +329,6 @@ namespace Keeper.Controls
       DiagramDataExtremums.MaxDate = new DateTime(endYear, 12, 31);
     }
     #endregion
-
-    private Brush DefineBarHintBackground(int barNumber)
-    {
-      if (AllDiagramData.Data.Count == 1) return CurrentSeriesUnited.DiagramData.ElementAt(barNumber).Value[0] > 0 ?
-                                                                       Brushes.Azure : Brushes.LavenderBlush;
-      return Brushes.White;
-    }
-
-    private string CreateBarHintContent(int barNumber)
-    {
-      var thisBar = CurrentSeriesUnited.DiagramData.ElementAt(barNumber);
-      var content = GroupInterval == Every.Month
-                          ? "  {0:MMMM yyyy}  "
-                          : "  {0:yyyy} год  ";
-
-      if (AllDiagramData.Data.Count == 1)
-      {
-        content += "\n  {1:0} usd ";
-        return string.Format(content, thisBar.Key, thisBar.Value[0]);
-      }
-
-      var i = 0;
-      content = string.Format(content, thisBar.Key);
-      foreach (var series in AllDiagramData.Data)
-      {
-        if (!thisBar.Value[i].Equals(0))
-          content += string.Format("\n  {0} = {1:0} usd  ", series.Name, thisBar.Value[i]);
-        i++;
-      }
-
-      return content;
-    }
-
-    private void ShowHint(Point pt)
-    {
-      switch (_diagramMode)
-      {
-        case DiagramMode.BarVertical:
-          int barLeft;
-          bool isOverBar;
-          var pointAnalyzer = new DiagramPointAnalyzer(CurrentSeriesUnited, Calculator);
-          var bar = pointAnalyzer.PointToBar(pt, out barLeft, out isOverBar);
-
-          if (isOverBar)
-          {
-            BarHint.IsOpen = true;
-            BarHint.HorizontalOffset = pt.X;
-            BarHint.VerticalOffset = pt.Y - 5;
-
-            BarHintText.Background = DefineBarHintBackground(bar);
-            BarHintText.Text = CreateBarHintContent(bar);
-          }
-          else // debug info
-          {
-            BarHint.IsOpen = false;
-            if (bar != -1)
-              StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer missed {2}th bar by height", pt.X, pt.Y, bar + 1);
-            else
-              StatusBar.Text = string.Format("  {0}:{1}   Mouse pointer is to the right of {2}th bar", pt.X, pt.Y,
-                                             barLeft + 1);
-          }
-          break;
-        case DiagramMode.Line:
-          break;
-        default:
-          BarHint.IsOpen = false;
-          StatusBar.Text = "";
-          break;
-      }
-    }
 
     private void SortPointsForRect(ref Point a, ref Point b)
     {
