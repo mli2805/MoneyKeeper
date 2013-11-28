@@ -105,6 +105,8 @@ namespace Keeper.Controls
       var window = Window.GetWindow(this);
       if (window != null) window.KeyDown += OnKeyDown;
 
+      var diagramLegendCreator = new DiagramLegendCreator(AllDiagramData);
+      LegendImage.Source = diagramLegendCreator.Create();
       StatusBar.Text = "Ctrl+LeftButton - сдвиг изображения; LeftButton - зум прямоугольника";
     }
 
@@ -168,6 +170,7 @@ namespace Keeper.Controls
     {
       if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
       if (e.Key == Key.F5) Draw();
+      if (e.Key == Key.F1) LegendImage.Visibility = LegendImage.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private Point _mouseLeftButtonDownPoint;

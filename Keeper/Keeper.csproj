@@ -131,6 +131,7 @@
     <Compile Include="Utils\Diagram\DiagramDataCtors.cs" />
     <Compile Include="Utils\Diagram\DiagramDrawingCalculator.cs" />
     <Compile Include="Utils\Diagram\DiagramHintCreator.cs" />
+    <Compile Include="Utils\Diagram\DiagramLegendCreator.cs" />
     <Compile Include="Utils\Diagram\DiagramPointAnalyzer.cs" />
     <Compile Include="Utils\FunctionsWithEvery.cs" />
     <Compile Include="Utils\MonthAnalizer.cs" />
