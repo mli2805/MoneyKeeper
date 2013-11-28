@@ -15,6 +15,11 @@
       <TextBlock Name="BarHintText" VerticalAlignment="Center"></TextBlock>
       </Border>
     </Popup>
+    <Grid Background="White">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
       <Image Name="DiagramImage" Stretch="Fill"  
            MouseLeftButtonDown="OnMouseLeftButtonDown" MouseLeftButtonUp="OnMouseLeftButtonUp" 
            MouseWheel="OnMouseWheel" KeyDown="OnKeyDown" MouseMove="OnMouseMove" >
@@ -31,6 +36,8 @@
         </ContextMenu>
       </Image.ContextMenu>
     </Image>
+      <Image Name="LegendImage" Grid.Column="1" Width="150" Visibility="Collapsed" Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5"/>
+    </Grid>
     <TextBlock Name="StatusBar" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="1"/>
   </Grid>
 </UserControl>
