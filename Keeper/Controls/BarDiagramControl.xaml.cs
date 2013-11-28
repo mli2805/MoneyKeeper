@@ -104,6 +104,8 @@ namespace Keeper.Controls
       Draw();
       var window = Window.GetWindow(this);
       if (window != null) window.KeyDown += OnKeyDown;
+
+      StatusBar.Text = "Ctrl+LeftButton - сдвиг изображения; LeftButton - зум прямоугольника";
     }
 
     #endregion
@@ -146,8 +148,7 @@ namespace Keeper.Controls
 
     public void ZoomRectFromDiagramData(Point leftTop, Point rightBottom)
     {
-      _diagramDataPanAndZoomer.FindLimitsForRect(CurrentSeriesUnited, Calculator, leftTop, rightBottom, ref DiagramDataExtremums);
-      ExtractDataBetweenLimits();
+      CurrentSeriesUnited.DiagramData = _diagramDataPanAndZoomer.FindLimitsForRect(CurrentSeriesUnited.DiagramData, Calculator, leftTop, rightBottom);
       DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       Draw();
     }
@@ -200,7 +201,7 @@ namespace Keeper.Controls
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
       var pt = e.GetPosition(this);
-      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited, GroupInterval, _diagramMode, Calculator);
+      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, _diagramMode, Calculator);
       string context;
       Brush backgroundBrush;
       if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
@@ -332,13 +333,13 @@ namespace Keeper.Controls
 
     private void SortPointsForRect(ref Point a, ref Point b)
     {
-      if (a.X < b.X)
+      if (a.X > b.X)
       {
         var temp = a.X;
         a.X = b.X;
         b.X = temp;
       }
-      if (a.Y < b.Y)
+      if (a.Y > b.Y)
       {
         var temp = a.Y;
         a.Y = b.Y;
