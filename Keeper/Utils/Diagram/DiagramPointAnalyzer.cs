@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -6,10 +7,10 @@ namespace Keeper.Utils.Diagram
 {
   class DiagramPointAnalyzer
   {
-    private readonly DiagramDataSeriesUnited _diagramData;
+    private readonly SortedList<DateTime, List<double>> _diagramData;
     private readonly DiagramDrawingCalculator _drawingCalculator;
 
-    public DiagramPointAnalyzer(DiagramDataSeriesUnited diagramData, DiagramDrawingCalculator drawingCalculator)
+    public DiagramPointAnalyzer(SortedList<DateTime, List<double>> diagramData, DiagramDrawingCalculator drawingCalculator)
     {
       _diagramData = diagramData;
       _drawingCalculator = drawingCalculator;
@@ -25,14 +26,14 @@ namespace Keeper.Utils.Diagram
 
       var count = (int)Math.Floor(d / _drawingCalculator.PointPerDataElement);
       var rest = d - count * _drawingCalculator.PointPerDataElement;
-      if (rest < _drawingCalculator.PointPerBar && count < _diagramData.DiagramData.Count)
+      if (rest < _drawingCalculator.PointPerBar && count < _diagramData.Count)
       {
-        var barHeight = _drawingCalculator.Y0 - _drawingCalculator.PointPerOneValueAfter * _diagramData.DiagramData.ElementAt(count).Value.Sum();
+        var barHeight = _drawingCalculator.Y0 - _drawingCalculator.PointPerOneValueAfter * _diagramData.ElementAt(count).Value.Sum();
         if (barHeight < _drawingCalculator.Y0) byHeight = barHeight < point.Y && point.Y < _drawingCalculator.Y0;
         else byHeight = barHeight > point.Y && point.Y > _drawingCalculator.Y0;
         return count; // мышь попала на столбец по горизонтали
       }
-      leftBar = count >= _diagramData.DiagramData.Count ? _diagramData.DiagramData.Count - 1 : count;
+      leftBar = count >= _diagramData.Count ? _diagramData.Count - 1 : count;
       return -1; // мышь не попала на столбец по горизонтали, слева кто-то есть
     }
 

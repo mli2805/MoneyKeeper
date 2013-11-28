@@ -31,6 +31,6 @@
         </ContextMenu>
       </Image.ContextMenu>
     </Image>
-    <TextBlock Name="StatusBar" Grid.Row="1"/>
+    <TextBlock Name="StatusBar" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="1"/>
   </Grid>
 </UserControl>
