@@ -11,12 +11,12 @@ namespace Keeper.Utils.Diagram
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
 
-		[ImportingConstructor]
+    [ImportingConstructor]
     public DiagramDataExtractorFromDb(KeeperDb db)
-		{
-			_db = db;
-			_rateExtractor = new RateExtractor(db);
-		}
+    {
+      _db = db;
+      _rateExtractor = new RateExtractor(db);
+    }
 
     #region Core calculations
 
@@ -45,7 +45,7 @@ namespace Keeper.Utils.Diagram
           currentDate = currentDate.AddDays(1);
           while (currentDate < transaction.Timestamp.Date)
           {
-            if (includeDaysWithoutChanges) result.Add(currentDate,balanceInCurrencies); 
+            if (includeDaysWithoutChanges) result.Add(currentDate, balanceInCurrencies);
             currentDate = currentDate.AddDays(1);
           }
         }
@@ -127,7 +127,7 @@ namespace Keeper.Utils.Diagram
           if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency))
             result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
           currentDate = currentDate.AddDays(1);
-         
+
         }
         TakeAmountIfItsNecessary(balancedAccount, transaction, ref balanceInCurrencies);
       }
@@ -177,8 +177,8 @@ namespace Keeper.Utils.Diagram
       var result = new Dictionary<DateTime, decimal>();
 
       var accountForAnalisys = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
-      var balances = AccountBalancesForPeriodInUsd(accountForAnalisys, 
-                                                   new Period(new DateTime(2001, 12, 31), DateTime.Now), 
+      var balances = AccountBalancesForPeriodInUsd(accountForAnalisys,
+                                                   new Period(new DateTime(2001, 12, 31), DateTime.Now),
                                                    Every.Month).OrderBy(pair => pair.Key).ToList();
 
       for (var i = 1; i < balances.Count; i++)
@@ -203,7 +203,23 @@ namespace Keeper.Utils.Diagram
       return (date.Year - 2002) * 12 + date.Month;
     }
 
-    public void AverageMonthlyResults(Dictionary<DateTime, decimal> monthlyResults)
+    public Dictionary<DateTime, decimal> Average12MsByDictionary(Dictionary<DateTime, decimal> originalDictionary)
+    {
+      var result = new Dictionary<DateTime, decimal>();
+      var last12MonthsValues = new SortedDictionary<DateTime, decimal>();
+      foreach (var originalPair in originalDictionary.OrderBy(pair => pair.Key))
+      {
+        if (last12MonthsValues.Count == 12)
+          last12MonthsValues.Remove(last12MonthsValues.Min(pair => pair.Key));
+
+        last12MonthsValues.Add(originalPair.Key, originalPair.Value);
+        var averageForLast12Months = last12MonthsValues.Sum(pair => pair.Value) / last12MonthsValues.Count;
+        result.Add(originalPair.Key, averageForLast12Months);
+      }
+      return result;
+    }
+
+    public List<Dictionary<DateTime, decimal>> ThreeAverageByDictionary(Dictionary<DateTime, decimal> originalDictionary)
     {
       var averageFromStartDictionary = new Dictionary<DateTime, decimal>();
       var averageFromJanuaryDictionary = new Dictionary<DateTime, decimal>();
@@ -212,25 +228,32 @@ namespace Keeper.Utils.Diagram
       decimal averageFromStart = 0;
       decimal averageFromJanuary = 0;
       var last12Months = new SortedDictionary<DateTime, decimal>();
-      foreach (var monthSaldo in monthlyResults.OrderBy(pair => pair.Key))
+      foreach (var originalPair in originalDictionary.OrderBy(pair => pair.Key))
       {
-        averageFromStart += monthSaldo.Value;
-        averageFromStartDictionary.Add(monthSaldo.Key, Math.Round(averageFromStart / MonthCountFromStart(monthSaldo.Key)));
+        averageFromStart += originalPair.Value;
+        averageFromStartDictionary.Add(originalPair.Key, Math.Round(averageFromStart / MonthCountFromStart(originalPair.Key)));
 
-        if (monthSaldo.Key.Month == 1) averageFromJanuary = 0;
-        averageFromJanuary += monthSaldo.Value;
-        averageFromJanuaryDictionary.Add(monthSaldo.Key, Math.Round(averageFromJanuary / monthSaldo.Key.Month));
+        if (originalPair.Key.Month == 1) averageFromJanuary = 0;
+        averageFromJanuary += originalPair.Value;
+        averageFromJanuaryDictionary.Add(originalPair.Key, Math.Round(averageFromJanuary / originalPair.Key.Month));
 
-        if (last12Months.Count < 12) last12Months.Add(monthSaldo.Key, monthSaldo.Value);
+        if (last12Months.Count < 12) last12Months.Add(originalPair.Key, originalPair.Value);
         else
         {
           var minDate = last12Months.Min(pair => pair.Key);
           last12Months.Remove(minDate);
-          last12Months.Add(monthSaldo.Key, monthSaldo.Value);
-          decimal averageForLast12Months = last12Months.Sum(pair => pair.Value) / 12;
-          averageForLast12MonthsDictionary.Add(monthSaldo.Key, averageForLast12Months);
+          last12Months.Add(originalPair.Key, originalPair.Value);
+          var averageForLast12Months = last12Months.Sum(pair => pair.Value) / 12;
+          averageForLast12MonthsDictionary.Add(originalPair.Key, averageForLast12Months);
         }
       }
+
+      return new List<Dictionary<DateTime, decimal>>
+               {
+                 averageFromStartDictionary,
+                 averageFromJanuaryDictionary,
+                 averageForLast12MonthsDictionary
+               };
     }
 
   }

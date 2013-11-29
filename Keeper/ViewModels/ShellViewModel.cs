@@ -466,46 +466,32 @@ namespace Keeper.ViewModels
     {
       var monthlyIncomes = _diagramDataCtor.MonthlyIncomesDiagramCtor();
 
-      var barDiagramForm = new DiagramViewModel(monthlyIncomes);
-      _launchedForms.Add(barDiagramForm);
-      WindowManager.ShowWindow(barDiagramForm);
+      var diagramForm = new DiagramViewModel(monthlyIncomes);
+      _launchedForms.Add(diagramForm);
+      WindowManager.ShowWindow(diagramForm);
     }
 
     public void ShowMonthlyOutcomeDiagram()
     {
       var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
 
-      var barDiagramForm = new DiagramViewModel(monthlyOutcomes);
-      _launchedForms.Add(barDiagramForm);
-      WindowManager.ShowWindow(barDiagramForm);
+      var diagramForm = new DiagramViewModel(monthlyOutcomes);
+      _launchedForms.Add(diagramForm);
+      WindowManager.ShowWindow(diagramForm);
     }
 
+    public void ShowAverageSignificancesDiagram()
+    {
+      var averageSignificances = _diagramDataCtor.AverageSignificancesDiagramCtor();
+
+      var diagramForm = new DiagramViewModel(averageSignificances);
+      _launchedForms.Add(diagramForm);
+      WindowManager.ShowWindow(diagramForm);
+    }
     #endregion
 
     public void TempItem()
     {
-      var balances = new DiagramData
-                       {
-                         Mode = DiagramMode.BarVertical,
-                         TimeInterval = Every.Month,
-                         Data = new List<DiagramSeries>{new DiagramSeries{
-                           Data = new List<DiagramPair>
-                                                                                   {
-                                                                                     new DiagramPair(new DateTime(2002,1,1),300),
-                                                                                     new DiagramPair(new DateTime(2012,1,1),400),
-                                                                                     new DiagramPair(new DateTime(2012,2,1),200),
-                                                                                   },
-                                                                                   Index = 0,
-                                                                                   Name = "bla",
-                                                                                   PositiveBrushColor = Brushes.Blue
-                         }
-                         }
-
-                       };
-
-      var barDiagramForm = new DiagramViewModel(balances);
-      _launchedForms.Add(barDiagramForm);
-      WindowManager.ShowWindow(barDiagramForm);
     }
 
     #region date\period selection properties
