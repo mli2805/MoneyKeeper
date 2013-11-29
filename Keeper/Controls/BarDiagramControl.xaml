@@ -28,10 +28,10 @@
         <ContextMenu>
           <MenuItem Name="ItemShowAll" Header="За весь период (Ctrl+A)" BorderBrush="{x:Null}" Background="White" Click="ShowAllRange"  />
           <MenuItem Name="ItemShowThisYear" Header="Этот календарный год" BorderBrush="{x:Null}" Background="White" Click="ShowThisYear"  />
-          <MenuItem Name="ItemShowLast12Monthes" Header="Последние 12 месяцев" BorderBrush="{x:Null}" Background="White" Click="ShowLast12Monthes"  />
+          <MenuItem Name="ItemShowLast12Months" Header="Последние 12 месяцев" BorderBrush="{x:Null}" Background="White" Click="ShowLast12Months"  />
           <MenuItem Name="ItemShowThisMonth" Header="Этот месяц" BorderBrush="{x:Null}" Background="White" Click="ShowThisMonth"  />
           <Separator Style="{DynamicResource SeparatorStyle}"/>
-          <MenuItem Name="ItemGroupByMonthes" Header="По месяцам" BorderBrush="{x:Null}" Background="White" Click="GroupByMonthes" />
+          <MenuItem Name="ItemGroupByMonths" Header="По месяцам" BorderBrush="{x:Null}" Background="White" Click="GroupByMonths" />
           <MenuItem Name="ItemGroupByYears" Header="По годам" BorderBrush="{x:Null}" Background="White" Click="GroupByYears" />
         </ContextMenu>
       </Image.ContextMenu>
