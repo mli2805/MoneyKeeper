@@ -44,23 +44,23 @@ namespace Keeper.Controls
       {
         case Every.Day:
           ItemShowThisYear.Visibility = Visibility.Visible;
-          ItemShowLast12Monthes.Visibility = Visibility.Visible;
+          ItemShowLast12Months.Visibility = Visibility.Visible;
           ItemShowThisMonth.Visibility = Visibility.Visible;
-          ItemGroupByMonthes.Visibility = Visibility.Collapsed;
+          ItemGroupByMonths.Visibility = Visibility.Collapsed;
           ItemGroupByYears.Visibility = Visibility.Collapsed;
           break;
         case Every.Month:
           ItemShowThisYear.Visibility = Visibility.Visible;
-          ItemShowLast12Monthes.Visibility = Visibility.Visible;
+          ItemShowLast12Months.Visibility = Visibility.Visible;
           ItemShowThisMonth.Visibility = Visibility.Collapsed;
-          ItemGroupByMonthes.Visibility = Visibility.Collapsed;
+          ItemGroupByMonths.Visibility = Visibility.Collapsed;
           ItemGroupByYears.Visibility = Visibility.Visible;
           break;
         case Every.Year:
           ItemShowThisYear.Visibility = Visibility.Collapsed;
-          ItemShowLast12Monthes.Visibility = Visibility.Collapsed;
+          ItemShowLast12Months.Visibility = Visibility.Collapsed;
           ItemShowThisMonth.Visibility = Visibility.Collapsed;
-          ItemGroupByMonthes.Visibility = Visibility.Visible;
+          ItemGroupByMonths.Visibility = Visibility.Visible;
           ItemGroupByYears.Visibility = Visibility.Collapsed;
           break;
       }
@@ -276,7 +276,7 @@ namespace Keeper.Controls
       Draw();
     }
 
-    private void ShowLast12Monthes(object sender, RoutedEventArgs e)
+    private void ShowLast12Months(object sender, RoutedEventArgs e)
     {
       var date = AllSeriesUnited.DiagramData.Last().Key;
       DiagramDataExtremums.MinDate = new DateTime(date.AddMonths(-11).Year, date.AddMonths(-11).Month, 1);
@@ -295,7 +295,7 @@ namespace Keeper.Controls
       DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
       Draw();
     }
-    private void GroupByMonthes(object sender, RoutedEventArgs e)
+    private void GroupByMonths(object sender, RoutedEventArgs e)
     {
       if (GroupInterval == Every.Month) return;
       ChangeDiagramForNewGrouping(Every.Month);
