@@ -145,6 +145,7 @@
         <MenuItem x:Name="ShowMonthlyResultDiagram" Header="Ежемесячное сальдо"/>
         <MenuItem x:Name="ShowMonthlyIncomeDiagram" Header="Ежемесячное доходы"/>
         <MenuItem x:Name="ShowMonthlyOutcomeDiagram" Header="Ежемесячное расходы"/>
+        <MenuItem x:Name="ShowAverageSignificancesDiagram" Header="Средние основные"/>
         <Separator Style="{DynamicResource SeparatorStyle}"/>
         <MenuItem x:Name="ShowRatesDiagram" Header="Курсы валют"/>
       </MenuItem>

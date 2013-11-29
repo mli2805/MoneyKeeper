@@ -44,7 +44,8 @@ namespace Keeper.Utils
                                AccountDailyBalancesToSeries("Мои", Brushes.Blue),
                              };
 
-      return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day };
+      return new DiagramData { Caption = "Располагаемые средства", 
+                               Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day };
     }
 
     private Dictionary<DateTime, decimal> ExtractRates(CurrencyCodes currency)
@@ -98,12 +99,8 @@ namespace Keeper.Utils
                        Data = (from pair in rates select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
                      };
 
-      return new DiagramData
-               {
-                 Data = new List<DiagramSeries>{series},
-                 Mode = DiagramMode.Line,
-                 TimeInterval = Every.Day
-               };
+      return new DiagramData { Caption = "Курс", Data = new List<DiagramSeries>{series},
+                               Mode = DiagramMode.Line, TimeInterval = Every.Day };
     }
 
     public DiagramSeries ArticleMonthlyTrafficToSeries(string name, Brush positiveBrush)
@@ -133,7 +130,8 @@ namespace Keeper.Utils
         dataForDiagram.Add(ArticleMonthlyTrafficToSeries(outcome.Name, colorsEnumerator.Current));
       }
 
-      return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
+      return new DiagramData { Caption = "Ежемесячные расходы в разрезе категорий", 
+                               Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
     }
 
     public DiagramData MonthlyIncomesDiagramCtor()
@@ -146,7 +144,8 @@ namespace Keeper.Utils
                                ArticleMonthlyTrafficToSeries("Подарки",Brushes.DarkOrange),
                              };
 
-      return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
+      return new DiagramData { Caption = "Ежемесячные доходы (только основные категории)", 
+                               Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
     }
 
     public DiagramData MonthlyResultsDiagramCtor()
@@ -164,7 +163,35 @@ namespace Keeper.Utils
                                  }
                              };
 
-      return new DiagramData { Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
+      return new DiagramData { Caption = "Сальдо", 
+                               Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
+    }
+
+    public DiagramData AverageSignificancesDiagramCtor()
+    {
+      var seriesNames = new List<string> { "Все доходы", "Зарплата", "Иррациональные", "Рента", "Все расходы" };
+      var seriesColors = new List<Brush> {Brushes.DarkGreen, Brushes.LimeGreen, Brushes.Black, 
+                                          Brushes.Blue, Brushes.Red};
+      var colorsEnumerator = seriesColors.GetEnumerator();
+
+      var dataForDiagram = new List<DiagramSeries>();
+      foreach (var seriesName in seriesNames)
+      {
+        var originalDictionary = ExtractorFromDb.MonthlyTraffic(seriesName);
+        var average12MsDictionary = ExtractorFromDb.Average12MsByDictionary(originalDictionary);
+
+        colorsEnumerator.MoveNext();
+        dataForDiagram.Add(new DiagramSeries
+                             {
+                               Name = seriesName,
+                               PositiveBrushColor = colorsEnumerator.Current,
+                               Data = (from pair in average12MsDictionary
+                                       select new DiagramPair(pair.Key, (double)Math.Abs(pair.Value))).ToList()
+                             });
+      }
+
+      return new DiagramData { Caption = "Средние за 12 месяцев по основным индикативным показателям", 
+                               Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day };
     }
   }
 }

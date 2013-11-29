@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Media;
-using Caliburn.Micro;
-using Keeper.Utils;
+﻿using Caliburn.Micro;
 using Keeper.Utils.Diagram;
 
 namespace Keeper.ViewModels
@@ -15,6 +10,11 @@ namespace Keeper.ViewModels
     public DiagramViewModel(DiagramData diagramData)
     {
       ModelDataProperty = diagramData;
+    }
+
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = ModelDataProperty.Caption; 
     }
 
   }
