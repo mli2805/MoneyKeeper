@@ -75,6 +75,7 @@ namespace Keeper.Utils
           break;
 
         case DiagramMode.BarVertical:
+        case DiagramMode.BarVertical100:
           // ряд серий отрицательные, либо даже просто значение отрицательное в положительной серии
           dataExtremums.MinValue = dataExtremums.MaxValue = 0;
           foreach (var day in DiagramData)
@@ -94,6 +95,44 @@ namespace Keeper.Utils
       }
 
       return dataExtremums;
+    }
+
+    public void GroupAllData(Every period)
+    {
+      var groupedData = new SortedList<DateTime, List<double>>();
+      var onePair = DiagramData.ElementAt(0);
+      for (var p = 1; p < DiagramData.Count; p++)
+      {
+        var pair = DiagramData.ElementAt(p);
+        if (FunctionsWithEvery.IsTheSamePeriod(onePair.Key, pair.Key, period))
+        {
+          for (var i = 0; i < onePair.Value.Count; i++)
+            onePair.Value[i] += pair.Value[i];
+        }
+        else
+        {
+          groupedData.Add(onePair.Key, onePair.Value);
+          onePair = pair;
+        }
+      }
+      groupedData.Add(onePair.Key, onePair.Value);
+      DiagramData = new SortedList<DateTime, List<double>>(groupedData);
+    }
+
+    private List<double> StackDoubles(List<double> originalDoubles)
+    {
+      var sum = originalDoubles.Sum();
+      return originalDoubles.Select(d => d / sum * 100).ToList();
+    }
+
+    public void StackAllData()
+    {
+      var stackedData = new SortedList<DateTime, List<double>>();
+      foreach (var date in DiagramData)
+      {
+        stackedData.Add(date.Key, StackDoubles(date.Value));
+      }
+      DiagramData = stackedData;
     }
 
   }

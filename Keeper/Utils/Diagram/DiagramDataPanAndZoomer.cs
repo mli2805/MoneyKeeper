@@ -40,8 +40,8 @@ namespace Keeper.Utils.Diagram
       }
 
       int shiftDateRange = (extremums.MaxDate - extremums.MinDate).Days * delta / 1200;
-      if (Math.Abs(shiftDateRange) < 31 && groupInterval == Every.Month) shiftDateRange = 31;
-      if (Math.Abs(shiftDateRange) < 366 && groupInterval == Every.Year) shiftDateRange = 366;
+      if (Math.Abs(shiftDateRange) < 31 && groupInterval == Every.Month) shiftDateRange = 31 * Math.Sign(delta);
+      if (Math.Abs(shiftDateRange) < 366 && groupInterval == Every.Year) shiftDateRange = 366 * Math.Sign(delta);
       extremums.MinDate = extremums.MinDate.AddDays(-shiftDateRange);
       extremums.MaxDate = extremums.MaxDate.AddDays(shiftDateRange);
       return true;
