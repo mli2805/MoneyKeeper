@@ -34,13 +34,13 @@ namespace Keeper.Controls
       set
       {
         _groupInterval = value;
-        SetPopupMenuItemsVisibility(value);
+        SetPopupMenuIntervalItemsVisibility();
       }
     }
 
-    private void SetPopupMenuItemsVisibility(Every groupInterval)
+    private void SetPopupMenuIntervalItemsVisibility()
     {
-      switch (groupInterval)
+      switch (GroupInterval)
       {
         case Every.Day:
           ItemShowThisYear.Visibility = Visibility.Visible;
@@ -67,6 +67,37 @@ namespace Keeper.Controls
     }
 
     private DiagramMode _diagramMode;
+    public DiagramMode DiagramMode
+    {
+      get { return _diagramMode; }
+      set
+      {
+        _diagramMode = value;
+        SetPopupMenuStackItemsVisibility();
+      }
+    }
+
+    private void SetPopupMenuStackItemsVisibility()
+    {
+      switch (DiagramMode)
+      {
+        case DiagramMode.Line:
+          ItemChangeStackStyle.Visibility = Visibility.Collapsed;
+          break;
+        case DiagramMode.BarVertical:
+          ItemChangeStackStyle.Visibility = Visibility.Visible;
+          ItemChangeStackStyle.Header = "Преобразовать в процентный вид";
+          break;
+        case DiagramMode.BarHorizontal:
+          ItemChangeStackStyle.Visibility = Visibility.Collapsed;
+          break;
+        case DiagramMode.BarVertical100:
+          ItemChangeStackStyle.Visibility = Visibility.Visible;
+          ItemChangeStackStyle.Header = "Преобразовать в долларовый вид";
+          break;
+      }
+    }
+
     public DiagramDataExtremums DiagramDataExtremums;
     private DiagramDrawer _diagramDrawer;
     private DiagramDataPanAndZoomer _diagramDataPanAndZoomer;
@@ -95,10 +126,10 @@ namespace Keeper.Controls
       AllSeriesUnited = new DiagramDataSeriesUnited(AllDiagramData);
       if (AllSeriesUnited.SeriesCount == 0) return;
       GroupInterval = AllDiagramData.TimeInterval;
-      _diagramMode = AllDiagramData.Mode;
+      DiagramMode = AllDiagramData.Mode;
 
       CurrentSeriesUnited = new DiagramDataSeriesUnited(AllSeriesUnited);
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       _diagramDrawer = new DiagramDrawer();
       _diagramDataPanAndZoomer = new DiagramDataPanAndZoomer();
       Draw();
@@ -115,7 +146,7 @@ namespace Keeper.Controls
     private void Draw()
     {
       DiagramImage.Source =
-        _diagramDrawer.Draw(CurrentSeriesUnited, DiagramDataExtremums, Calculator, _diagramMode, GroupInterval);
+        _diagramDrawer.Draw(CurrentSeriesUnited, DiagramDataExtremums, Calculator, DiagramMode, GroupInterval);
     }
 
     public void ExtractDataBetweenLimits()
@@ -136,7 +167,7 @@ namespace Keeper.Controls
     {
       if (!_diagramDataPanAndZoomer.ZoomLimits(CurrentSeriesUnited, GroupInterval, delta, ref DiagramDataExtremums)) return;
       ExtractDataBetweenLimits();
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
 
@@ -144,21 +175,21 @@ namespace Keeper.Controls
     {
       if (!_diagramDataPanAndZoomer.MoveLimits(AllSeriesUnited, Calculator, horizontalPoints, verticalPoints, ref DiagramDataExtremums)) return;
       ExtractDataBetweenLimits();
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
 
     public void ZoomRectFromDiagramData(Point leftTop, Point rightBottom)
     {
       CurrentSeriesUnited.DiagramData = _diagramDataPanAndZoomer.FindLimitsForRect(CurrentSeriesUnited.DiagramData, Calculator, leftTop, rightBottom);
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
 
     public void ShowAll()
     {
       CurrentSeriesUnited.DiagramData = new SortedList<DateTime, List<double>>(AllSeriesUnited.DiagramData);
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
 
@@ -204,7 +235,7 @@ namespace Keeper.Controls
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
       var pt = e.GetPosition(this);
-      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, _diagramMode, Calculator);
+      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
       string context;
       Brush backgroundBrush;
       if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
@@ -223,43 +254,36 @@ namespace Keeper.Controls
 
     #region popup menu
 
-    private void GroupAllData(Every period)
-    {
-      GroupInterval = period;
 
-      var groupedData = new SortedList<DateTime, List<double>>();
-      var onePair = AllSeriesUnited.DiagramData.ElementAt(0);
-      for (var p = 1; p < AllSeriesUnited.DiagramData.Count; p++)
-      {
-        var pair = AllSeriesUnited.DiagramData.ElementAt(p);
-        if (FunctionsWithEvery.IsTheSamePeriod(onePair.Key, pair.Key, period))
-        {
-          for (var i = 0; i < onePair.Value.Count; i++)
-            onePair.Value[i] += pair.Value[i];
-        }
-        else
-        {
-          groupedData.Add(onePair.Key, onePair.Value);
-          onePair = pair;
-        }
-      }
-      groupedData.Add(onePair.Key, onePair.Value);
-      AllSeriesUnited.DiagramData = new SortedList<DateTime, List<double>>(groupedData);
+    private void ChangeDiagramForNewStyle()
+    {
+      AllSeriesUnited = new DiagramDataSeriesUnited(AllDiagramData);
+      if (DiagramMode == DiagramMode.BarVertical100) AllSeriesUnited.StackAllData();
+
+      ExtractDataBetweenLimits();
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
+      Draw();
     }
 
     private void ChangeDiagramForNewGrouping(Every groupPeriod)
     {
+      GroupInterval = groupPeriod;
       AllSeriesUnited = new DiagramDataSeriesUnited(AllDiagramData);
-      GroupAllData(groupPeriod);
+      AllSeriesUnited.GroupAllData(groupPeriod);
 
       if (groupPeriod == Every.Year) DefineYearsLimits();
       else DiagramDataExtremums.MaxDate = new DateTime(DiagramDataExtremums.MaxDate.Year, 12, 31);
 
       ExtractDataBetweenLimits();
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
 
+    private void ChangeStackStyle(object sender, RoutedEventArgs e)
+    {
+      DiagramMode = DiagramMode == DiagramMode.BarVertical ? DiagramMode.BarVertical100 : DiagramMode.BarVertical;
+      ChangeDiagramForNewStyle();
+    }
 
     private void ShowAllRange(object sender, RoutedEventArgs e)
     {
@@ -272,7 +296,7 @@ namespace Keeper.Controls
       DiagramDataExtremums.MinDate = new DateTime(date.Year, 1, 1);
       DiagramDataExtremums.MaxDate = date;
       ExtractDataBetweenLimits();
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
 
@@ -282,7 +306,7 @@ namespace Keeper.Controls
       DiagramDataExtremums.MinDate = new DateTime(date.AddMonths(-11).Year, date.AddMonths(-11).Month, 1);
       DiagramDataExtremums.MaxDate = date;
       ExtractDataBetweenLimits();
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
 
@@ -292,9 +316,10 @@ namespace Keeper.Controls
       DiagramDataExtremums.MinDate = new DateTime(date.Year, date.Month, 1);
       DiagramDataExtremums.MaxDate = date;
       ExtractDataBetweenLimits();
-      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(_diagramMode);
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
       Draw();
     }
+
     private void GroupByMonths(object sender, RoutedEventArgs e)
     {
       if (GroupInterval == Every.Month) return;

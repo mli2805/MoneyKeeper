@@ -26,7 +26,9 @@
     
         <Image.ContextMenu>
         <ContextMenu>
-          <MenuItem Name="ItemShowAll" Header="За весь период (Ctrl+A)" BorderBrush="{x:Null}" Background="White" Click="ShowAllRange"  />
+            <MenuItem Name="ItemChangeStackStyle" Header="100 процентов" BorderBrush="{x:Null}" Background="White" Click="ChangeStackStyle"  />
+            <Separator Style="{DynamicResource SeparatorStyle}"/>
+            <MenuItem Name="ItemShowAll" Header="За весь период (Ctrl+A)" BorderBrush="{x:Null}" Background="White" Click="ShowAllRange"  />
           <MenuItem Name="ItemShowThisYear" Header="Этот календарный год" BorderBrush="{x:Null}" Background="White" Click="ShowThisYear"  />
           <MenuItem Name="ItemShowLast12Months" Header="Последние 12 месяцев" BorderBrush="{x:Null}" Background="White" Click="ShowLast12Months"  />
           <MenuItem Name="ItemShowThisMonth" Header="Этот месяц" BorderBrush="{x:Null}" Background="White" Click="ShowThisMonth"  />
@@ -36,7 +38,7 @@
         </ContextMenu>
       </Image.ContextMenu>
     </Image>
-      <Image Name="LegendImage" Grid.Column="1" Width="150" Visibility="Collapsed" Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5"/>
+      <Image Name="LegendImage" Grid.Column="1" Width="150" Visibility="Collapsed" Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,100,5,5"/>
     </Grid>
     <TextBlock Name="StatusBar" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="1"/>
   </Grid>

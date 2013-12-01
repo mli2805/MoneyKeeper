@@ -44,7 +44,8 @@ namespace Keeper.Utils.Diagram
       drawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Right, _diagramDrawingCalculator));
       drawingGroup.Children.Add(HorizontalGridLines(_diagramDrawingCalculator));
 
-      if (_diagramMode == DiagramMode.BarVertical) BarVerticalDiagram(_diagramDrawingCalculator, ref drawingGroup);
+      if (_diagramMode == DiagramMode.BarVertical || _diagramMode == DiagramMode.BarVertical100) 
+                                             BarVerticalDiagram(_diagramDrawingCalculator, ref drawingGroup);
       if (_diagramMode == DiagramMode.Line)
         for (var j = 0; j < _diagramData.SeriesCount; j++) drawingGroup.Children.Add(OneSeriesLine(_diagramDrawingCalculator, j));
 
@@ -98,7 +99,7 @@ namespace Keeper.Utils.Diagram
 
     private GeometryDrawing XAxisDashes(Dock flag, DiagramDrawingCalculator cd)
     {
-      var geometryGroupDashesAndMarks = new GeometryGroup();
+      var geometryGroupDashes = new GeometryGroup();
 
       for (var i = 0; i < _diagramData.DiagramData.Count; i = i + cd.Dash)
       {
@@ -106,15 +107,15 @@ namespace Keeper.Utils.Diagram
         var dashSize = (i % cd.MarkedDash) == 0 ? 5 : 2;
         var dashGeometry = new LineGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5), dashY - dashSize),
                                     new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5), dashY + dashSize));
-        geometryGroupDashesAndMarks.Children.Add(dashGeometry);
+        geometryGroupDashes.Children.Add(dashGeometry);
       }
 
-      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
+      return new GeometryDrawing { Geometry = geometryGroupDashes, Pen = new Pen(Brushes.Black, 1) };
     }
 
     private GeometryDrawing XAxisMarkers(Dock flag, DiagramDrawingCalculator cd)
     {
-      var geometryGroupDashesAndMarks = new GeometryGroup();
+      var geometryGroupMarks = new GeometryGroup();
 
       for (var i = 0; i < _diagramData.DiagramData.Count; i = i + cd.MarkedDash)
       {
@@ -124,10 +125,10 @@ namespace Keeper.Utils.Diagram
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry =
           formattedText.BuildGeometry(new Point(cd.LeftMargin + cd.Shift / 2 + cd.PointPerDataElement * (i + 0.5) - 18, markY - 20));
-        geometryGroupDashesAndMarks.Children.Add(geometry);
+        geometryGroupMarks.Children.Add(geometry);
       }
 
-      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
+      return new GeometryDrawing { Geometry = geometryGroupMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
     private string GetMarkTemplate()

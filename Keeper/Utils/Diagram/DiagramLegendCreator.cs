@@ -17,8 +17,12 @@ namespace Keeper.Utils.Diagram
     {
       var drawingGroup = new DrawingGroup();
 
-      
-      int i = 0;
+//      drawingGroup.Children.Add(new GeometryDrawing
+//                                  {
+//                                    Geometry = new RectangleGeometry { Rect = new Rect(0, 0, 150, 500) }, 
+//                                    Brush = Brushes.White
+//                                  });
+      var i = 0;
       foreach (var series in _diagramData.Data)
       {
         var geometryGroupColorIndicator = new GeometryGroup();
@@ -28,12 +32,11 @@ namespace Keeper.Utils.Diagram
 
         var geometryGroupSeriesNames = new GeometryGroup();
         var formattedText = new FormattedText(series.Name, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                                new Typeface("Times New Roman"), 14, series.PositiveBrushColor);
+                                                new Typeface("New Curier"), 14, series.PositiveBrushColor);
         var geometry = formattedText.BuildGeometry(new Point(45, i*20 + 20));
         geometryGroupSeriesNames.Children.Add(geometry);
 
-        drawingGroup.Children.Add(new GeometryDrawing { Geometry = geometryGroupSeriesNames, Pen = new Pen(Brushes.Black, 1) });
-
+        drawingGroup.Children.Add(new GeometryDrawing { Geometry = geometryGroupSeriesNames, Pen = new Pen(Brushes.Black , 1) });
 
         i++;
       }
