@@ -18,6 +18,7 @@ namespace Keeper.Utils
     public List<Brush> PositiveBrushes;
     public List<Brush> NegativeBrushes;
     public List<string> Names;
+    public Every GroupInterval;
     public int SeriesCount;
 
     public DiagramDataSeriesUnited()
@@ -47,6 +48,7 @@ namespace Keeper.Utils
 
       }
       SeriesCount = allSeries.Data.Count;
+      GroupInterval = allSeries.TimeInterval;
     }
 
     public DiagramDataSeriesUnited(DiagramDataSeriesUnited other)
@@ -97,7 +99,7 @@ namespace Keeper.Utils
       return dataExtremums;
     }
 
-    public void GroupAllData(Every period)
+    private void GroupAllData(Every period)
     {
       var groupedData = new SortedList<DateTime, List<double>>();
       var onePair = DiagramData.ElementAt(0);
@@ -119,13 +121,19 @@ namespace Keeper.Utils
       DiagramData = new SortedList<DateTime, List<double>>(groupedData);
     }
 
+    public void GroupAllData(Every period, DiagramMode currentDiagramMode)
+    {
+      GroupAllData(period);
+      if (currentDiagramMode == DiagramMode.BarVertical100) StackAllData();
+    }
+
     private List<double> StackDoubles(List<double> originalDoubles)
     {
       var sum = originalDoubles.Sum();
       return originalDoubles.Select(d => d / sum * 100).ToList();
     }
 
-    public void StackAllData()
+    private void StackAllData()
     {
       var stackedData = new SortedList<DateTime, List<double>>();
       foreach (var date in DiagramData)
@@ -133,6 +141,12 @@ namespace Keeper.Utils
         stackedData.Add(date.Key, StackDoubles(date.Value));
       }
       DiagramData = stackedData;
+    }
+
+    public void StackAllData(DiagramMode newDiagramMode, Every currentGroupInterval)
+    {
+      if (currentGroupInterval != GroupInterval) GroupAllData(currentGroupInterval);
+      if (newDiagramMode == DiagramMode.BarVertical100) StackAllData();
     }
 
   }
