@@ -77,7 +77,6 @@ namespace Keeper.Utils
           break;
 
         case DiagramMode.BarVertical:
-        case DiagramMode.BarVertical100:
           // ряд серий отрицательные, либо даже просто значение отрицательное в положительной серии
           dataExtremums.MinValue = dataExtremums.MaxValue = 0;
           foreach (var day in DiagramData)
@@ -87,6 +86,10 @@ namespace Keeper.Utils
             if (plus > dataExtremums.MaxValue) dataExtremums.MaxValue = plus;
             if (minus < dataExtremums.MinValue) dataExtremums.MinValue = minus;
           }
+          break;
+        case DiagramMode.BarVertical100:
+          dataExtremums.MinValue = 0;
+          dataExtremums.MaxValue = 100;
           break;
       }
 

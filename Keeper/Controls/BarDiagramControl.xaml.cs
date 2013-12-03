@@ -234,26 +234,25 @@ namespace Keeper.Controls
 
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
-      var pt = e.GetPosition(this);
-      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
-      string context;
-      Brush backgroundBrush;
-      if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
-      {
-        BarHint.IsOpen = true;
-        BarHint.HorizontalOffset = pt.X;
-        BarHint.VerticalOffset = pt.Y - 5;
+//      var pt = e.GetPosition(this);
+//      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
+//      string context;
+//      Brush backgroundBrush;
+//      if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
+//      {
+//        BarHint.IsOpen = true;
+//        BarHint.HorizontalOffset = pt.X;
+//        BarHint.VerticalOffset = pt.Y - 5;
 
-        BarHintText.Background = backgroundBrush;
-        BarHintText.Text = context;
-      }
-      else BarHint.IsOpen = false;
+//        BarHintText.Background = backgroundBrush;
+//        BarHintText.Text = context;
+//      }
+//      else BarHint.IsOpen = false;
     }
 
     #endregion
 
     #region popup menu
-
 
     private void ChangeDiagramForNewStyle(DiagramMode newDiagramMode)
     {
