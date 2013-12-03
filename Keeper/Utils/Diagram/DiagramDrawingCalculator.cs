@@ -74,9 +74,38 @@ namespace Keeper.Utils.Diagram
     }
 
     //расчет вертикальной оси
-    public double AccurateValuesPerDivision;
-    public int FromDivision;
-    public int Divisions;
+    public double MinPointBetweenVertDivision { get { return 35; } }
+    public double PointPerOneValueBefore
+    {
+      get
+      {
+        return Owner.DiagramDataExtremums.MaxValue.Equals(Owner.DiagramDataExtremums.MinValue) ? 
+          0 : (ImageHeight - TopMargin - BottomMargin) / (Owner.DiagramDataExtremums.MaxValue - Owner.DiagramDataExtremums.MinValue);
+      }
+    }
+    public double ValuesPerDivision
+    {
+      get
+      {
+        return (MinPointBetweenVertDivision > PointPerOneValueBefore)
+                 ? Math.Ceiling(MinPointBetweenVertDivision/PointPerOneValueBefore)
+                 : MinPointBetweenVertDivision/PointPerOneValueBefore;
+      }
+    }
+    public double Zeros { get { return Math.Floor(Math.Log10(ValuesPerDivision)); } }
+    public double AccurateValuesPerDivision { get { return Math.Ceiling(ValuesPerDivision / Math.Pow(10, Zeros)) * Math.Pow(10, Zeros); } }
+    public int FromDivision { get { return Convert.ToInt32(Math.Floor(Owner.DiagramDataExtremums.MinValue / AccurateValuesPerDivision)); } }
+
+    public int Divisions
+    {
+      get
+      {
+        var temp = Convert.ToInt32(Math.Ceiling((Owner.DiagramDataExtremums.MaxValue - Owner.DiagramDataExtremums.MinValue) / AccurateValuesPerDivision));
+        if ((FromDivision + temp) * AccurateValuesPerDivision < Owner.DiagramDataExtremums.MaxValue) temp++;
+        return temp;
+      }
+    }
+
     public double PointPerScaleStep { get { return (ImageHeight - TopMargin - BottomMargin) / Divisions; } }
 
     public double PointPerOneValueAfter { get { return (ImageHeight - TopMargin - BottomMargin) / (Divisions * AccurateValuesPerDivision); } }

@@ -40,8 +40,11 @@ namespace Keeper.Utils.Diagram
 
       drawingGroup.Children.Add(VerticalAxes(_diagramDrawingCalculator));
 
-      drawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Left, _diagramDrawingCalculator));
-      drawingGroup.Children.Add(YAxisDashesWithMarkers(Dock.Right, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(YAxisDashes(Dock.Left, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(YAxisMarkers(Dock.Left, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(YAxisDashes(Dock.Right, _diagramDrawingCalculator));
+      drawingGroup.Children.Add(YAxisMarkers(Dock.Right, _diagramDrawingCalculator));
+
       drawingGroup.Children.Add(HorizontalGridLines(_diagramDrawingCalculator));
 
       if (_diagramMode == DiagramMode.BarVertical || _diagramMode == DiagramMode.BarVertical100) 
@@ -170,40 +173,33 @@ namespace Keeper.Utils.Diagram
       return new GeometryDrawing { Geometry = geometryGroupGridlines, Pen = new Pen(Brushes.LightGray, 1) };
     }
 
-    private GeometryDrawing YAxisDashesWithMarkers(Dock flag, DiagramDrawingCalculator cd)
+    private GeometryDrawing YAxisDashes(Dock flag, DiagramDrawingCalculator cd)
     {
-      const double minPointBetweenDivision = 35;
-
-      double pointPerOneValueBefore = _extremums.MaxValue.Equals(_extremums.MinValue) ?
-        0 : (cd.ImageHeight - cd.TopMargin - cd.BottomMargin) / (_extremums.MaxValue - _extremums.MinValue);
-      double valuesPerDivision = (minPointBetweenDivision > pointPerOneValueBefore) ?
-        Math.Ceiling(minPointBetweenDivision / pointPerOneValueBefore) : minPointBetweenDivision / pointPerOneValueBefore;
-      double zeros = Math.Floor(Math.Log10(valuesPerDivision));
-      cd.AccurateValuesPerDivision = Math.Ceiling(valuesPerDivision / Math.Pow(10, zeros)) * Math.Pow(10, zeros);
-      cd.FromDivision = Convert.ToInt32(Math.Floor(_extremums.MinValue / cd.AccurateValuesPerDivision));
-
-      var temp = Convert.ToInt32(Math.Ceiling((_extremums.MaxValue - _extremums.MinValue) / cd.AccurateValuesPerDivision));
-      if ((cd.FromDivision + temp) * cd.AccurateValuesPerDivision < _extremums.MaxValue) temp++;
-      cd.Divisions = temp;
-
-      var geometryGroupDashesAndMarks = new GeometryGroup();
+      var geometryGroupDashes = new GeometryGroup();
       for (var i = 0; i <= cd.Divisions; i++)
       {
         var dashX = flag == Dock.Left ? cd.LeftMargin : cd.ImageWidth - cd.LeftMargin;
         var dash = new LineGeometry(new Point(dashX - 5, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i),
                                     new Point(dashX + 5, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i));
-        geometryGroupDashesAndMarks.Children.Add(dash);
+        geometryGroupDashes.Children.Add(dash);
+      }
+      return new GeometryDrawing { Geometry = geometryGroupDashes, Pen = new Pen(Brushes.Black, 1) };
+    }
 
+    private GeometryDrawing YAxisMarkers(Dock flag, DiagramDrawingCalculator cd)
+    {
+      var geometryGroupMarks = new GeometryGroup();
+      for (var i = 0; i <= cd.Divisions; i++)
+      {
         var markX = flag == Dock.Left ? cd.LeftMargin - 40 : cd.ImageWidth - cd.RightMargin + 15;
         var mark = String.Format("{0} ", (i + cd.FromDivision) * cd.AccurateValuesPerDivision);
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry =
           formattedText.BuildGeometry(new Point(markX, cd.ImageHeight - cd.BottomMargin - cd.PointPerScaleStep * i - 7));
-        geometryGroupDashesAndMarks.Children.Add(geometry);
+        geometryGroupMarks.Children.Add(geometry);
       }
-
-      return new GeometryDrawing { Geometry = geometryGroupDashesAndMarks, Pen = new Pen(Brushes.Black, 1) };
+      return new GeometryDrawing { Geometry = geometryGroupMarks, Pen = new Pen(Brushes.Black, 1) };
     }
 
     private GeometryDrawing OneSeriesLine(DiagramDrawingCalculator cd, int seriesNumber)
