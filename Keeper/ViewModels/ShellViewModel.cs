@@ -403,10 +403,9 @@ namespace Keeper.ViewModels
 
     public void ShowToDoForm()
     {
-      var arcMessage = Message;
-      Message = "TODO List";
-      WindowManager.ShowDialog(new ToDoViewModel());
-      Message = arcMessage;
+      var toDoForm = new ToDoViewModel();
+      _launchedForms.Add(toDoForm);
+      WindowManager.ShowWindow(toDoForm);
     }
 
     public void ProgramExit()
