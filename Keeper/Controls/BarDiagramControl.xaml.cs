@@ -255,10 +255,11 @@ namespace Keeper.Controls
     #region popup menu
 
 
-    private void ChangeDiagramForNewStyle()
+    private void ChangeDiagramForNewStyle(DiagramMode newDiagramMode)
     {
+      DiagramMode = newDiagramMode;
       AllSeriesUnited = new DiagramDataSeriesUnited(AllDiagramData);
-      if (DiagramMode == DiagramMode.BarVertical100) AllSeriesUnited.StackAllData();
+      AllSeriesUnited.StackAllData(newDiagramMode, GroupInterval);
 
       ExtractDataBetweenLimits();
       DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
@@ -269,7 +270,7 @@ namespace Keeper.Controls
     {
       GroupInterval = groupPeriod;
       AllSeriesUnited = new DiagramDataSeriesUnited(AllDiagramData);
-      AllSeriesUnited.GroupAllData(groupPeriod);
+      AllSeriesUnited.GroupAllData(groupPeriod, DiagramMode);
 
       if (groupPeriod == Every.Year) DefineYearsLimits();
       else DiagramDataExtremums.MaxDate = new DateTime(DiagramDataExtremums.MaxDate.Year, 12, 31);
@@ -281,8 +282,8 @@ namespace Keeper.Controls
 
     private void ChangeStackStyle(object sender, RoutedEventArgs e)
     {
-      DiagramMode = DiagramMode == DiagramMode.BarVertical ? DiagramMode.BarVertical100 : DiagramMode.BarVertical;
-      ChangeDiagramForNewStyle();
+      var newDiagramMode = DiagramMode == DiagramMode.BarVertical ? DiagramMode.BarVertical100 : DiagramMode.BarVertical;
+      ChangeDiagramForNewStyle(newDiagramMode);
     }
 
     private void ShowAllRange(object sender, RoutedEventArgs e)
