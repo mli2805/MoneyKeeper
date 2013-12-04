@@ -67,7 +67,7 @@ namespace Keeper.ViewModels
 
 			_db.AccountsPlaneList.Clear();
 			_db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(_db.Accounts);
-			UsefulLists.FillLists();
+			UsefulLists.FillLists(_db);
 
 			return newDepositAccount;
 		}

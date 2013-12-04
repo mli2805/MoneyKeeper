@@ -107,7 +107,7 @@
     <Compile Include="Utils\BalancesForShellCalculator.cs" />
     <Compile Include="Utils\BalancesForTransactionsCalculator.cs" />
     <Compile Include="Utils\DayProcessor.cs" />
-    <Compile Include="Utils\DbInputOutput\DbGeneralLoading.cs" />
+    <Compile Include="Utils\DbInputOutput\DbGeneralLoader.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
@@ -118,11 +118,11 @@
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
-    <Compile Include="Utils\AccountTreesFunctions.cs" />
+    <Compile Include="Utils\AccountTreesGardener.cs" />
     <Compile Include="Utils\BalanceCalculator.cs" />
-    <Compile Include="Utils\DbInputOutput\BinaryCrypto.cs" />
-    <Compile Include="Utils\DbInputOutput\DbBackup.cs" />
-    <Compile Include="Utils\DbInputOutput\DbTxtLoad.cs" />
+    <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
+    <Compile Include="Utils\DbInputOutput\DbBackupOrganizer.cs" />
+    <Compile Include="Utils\DbInputOutput\DbFromTxtLoader.cs" />
     <Compile Include="Utils\Diagram\DiagramData.cs" />
     <Compile Include="Utils\Diagram\DiagramDataPanAndZoomer.cs" />
     <Compile Include="Utils\Diagram\DiagramDrawer.cs" />
@@ -148,8 +148,8 @@
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
-    <Compile Include="Utils\DbInputOutput\DbClear.cs" />
-    <Compile Include="Utils\DbInputOutput\DbTxtSave.cs" />
+    <Compile Include="Utils\DbInputOutput\DbCleaner.cs" />
+    <Compile Include="Utils\DbInputOutput\DbToTxtSaver.cs" />
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="DomainModel\Period.cs" />
     <Compile Include="Utils\RateExtractor.cs" />

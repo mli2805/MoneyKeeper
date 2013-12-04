@@ -9,30 +9,30 @@ using Keeper.Properties;
 
 namespace Keeper.DbInputOutput
 {
-  class BinaryCrypto
+  class DbSerializer
   {
-    public static KeeperDb Db
-    {
-      get { return IoC.Get<KeeperDb>(); }
-      set 
-      { 
-        Db.Accounts  = value.Accounts;
-        Db.ArticlesAssociations = value.ArticlesAssociations;
-        Db.CurrencyRates = value.CurrencyRates;
+//    public static KeeperDb Db
+//    {
+//      get { return IoC.Get<KeeperDb>(); }
+//      set 
+//      { 
+//        Db.Accounts  = value.Accounts;
+//        Db.ArticlesAssociations = value.ArticlesAssociations;
+//        Db.CurrencyRates = value.CurrencyRates;
 
-        // сеттер переделан ради сортировки транзакций
-        Db.Transactions = new ObservableCollection<Transaction>();
-        var transactions = from transaction in value.Transactions orderby transaction.Timestamp select transaction;
-        foreach (var transaction in transactions)
-        {
-          Db.Transactions.Add(transaction);
-        }
+//         сеттер переделан ради сортировки транзакций
+//        Db.Transactions = new ObservableCollection<Transaction>();
+//        var transactions = from transaction in value.Transactions orderby transaction.Timestamp select transaction;
+//        foreach (var transaction in transactions)
+//        {
+//          Db.Transactions.Add(transaction);
+//        }
 
-        Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
-      }
-    }
+//        Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
+//      }
+//    }
 
-    public static void DbCryptoSerialization()
+    public void EncryptAndSerialize(KeeperDb db)
     {
       byte[] key = { 0xc5, 0x51, 0xf6, 0x4e, 0x97, 0xdc, 0xa0, 0x54, 0x89, 0x1d, 0xe6, 0x62, 0x3f, 0x27, 0x00, 0xca };
       byte[] initVector = { 0xf3, 0x5e, 0x7a, 0x81, 0xae, 0x8c, 0xb4, 0x92, 0xd0, 0xf2, 0xe7, 0xc1, 0x8d, 0x54, 0x00, 0xd8 };
@@ -46,15 +46,17 @@ namespace Keeper.DbInputOutput
         using (var cryptoStream = new CryptoStream(fStream, rmCrypto.CreateEncryptor(key, initVector), CryptoStreamMode.Write))
         {
           var binaryFormatter = new BinaryFormatter();
-          binaryFormatter.Serialize(cryptoStream, Db);
+          binaryFormatter.Serialize(cryptoStream, db);
         }
       }
     }
 
-    public static bool DbCryptoDeserialization(string filename)
+    public KeeperDb DecryptAndDeserialize(string filename)
     {
       byte[] key = { 0xc5, 0x51, 0xf6, 0x4e, 0x97, 0xdc, 0xa0, 0x54, 0x89, 0x1d, 0xe6, 0x62, 0x3f, 0x27, 0x00, 0xca };
       byte[] initVector = { 0xf3, 0x5e, 0x7a, 0x81, 0xae, 0x8c, 0xb4, 0x92, 0xd0, 0xf2, 0xe7, 0xc1, 0x8d, 0x54, 0x00, 0xd8 };
+
+      KeeperDb db;
 
       using (Stream fStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
       {
@@ -63,10 +65,10 @@ namespace Keeper.DbInputOutput
         using (var cryptoStream = new CryptoStream(fStream, rmCrypto.CreateDecryptor(key, initVector), CryptoStreamMode.Read))
         {
           var binaryFormatter = new BinaryFormatter();
-          Db = (KeeperDb)binaryFormatter.Deserialize(cryptoStream);
+          db = (KeeperDb)binaryFormatter.Deserialize(cryptoStream);
         }
       }
-      return true;
+      return db;
     }
   }
 }

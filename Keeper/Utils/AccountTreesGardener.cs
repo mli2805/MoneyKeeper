@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
@@ -8,7 +9,7 @@ using Keeper.ViewModels;
 
 namespace Keeper.Utils
 {
-  class AccountTreesFunctions
+  class AccountTreesGardener
   {
     [Import]
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
@@ -16,7 +17,7 @@ namespace Keeper.Utils
     private readonly KeeperDb _db;
 
     [ImportingConstructor]
-    public AccountTreesFunctions(KeeperDb db)
+    public AccountTreesGardener(KeeperDb db)
     {
       _db = db;
     }
@@ -63,7 +64,7 @@ namespace Keeper.Utils
 
       _db.AccountsPlaneList.Clear();
       _db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(_db.Accounts);
-      UsefulLists.FillLists();
+      UsefulLists.FillLists(_db);
     }
 
     public void ChangeAccount(Account selectedAccount)

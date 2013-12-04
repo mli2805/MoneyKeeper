@@ -24,49 +24,40 @@ namespace Keeper.DbInputOutput
     }
 
   }
-  class DbTxtLoad
+  class DbFromTxtLoader
   {
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-    public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-    public static DbLoadError Result = new DbLoadError();
+    public Encoding Encoding1251 = Encoding.GetEncoding(1251);
+    public DbLoadError Result = new DbLoadError();
 
-    public static DbLoadError LoadFromLastZip()
+    public DbLoadError LoadFromLastZip(ref KeeperDb db)
     {
-
-
-      return LoadDbFromTxt();
+      return LoadDbFromTxt(ref db);
     }
 
-    public static DbLoadError LoadDbFromTxt()
+    public DbLoadError LoadDbFromTxt(ref KeeperDb db)
     {
-      var tt = new Stopwatch();
-      tt.Start();
-
-      Db.Accounts = LoadAccounts();
-      if (Db.Accounts == null)
+      LoadAccounts(ref db);
+      if (db.Accounts == null)
       {
         Result.Code = 5;
         Result.Explanation = "File '" + Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt") + "' not found";
         return Result;
       }
-      Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
+      db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(db.Accounts);
 
-      Db.Transactions = LoadFrom("Transactions.txt", TransactionFromStringWithNames);
-      Db.ArticlesAssociations = LoadFrom("ArticlesAssociations.txt", ArticleAssociationFromStringWithNames);
-      Db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString);
-
-      tt.Stop();
-      Console.WriteLine("Loading from zip archive takes {0} sec", tt.Elapsed);
+      db.Transactions = LoadFrom("Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
+      db.ArticlesAssociations = LoadFrom("ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, db.AccountsPlaneList);
+      db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString, db.AccountsPlaneList);
 
       return Result;
     }
 
-    private static string GetLatestDbArchive()
+    private string GetLatestDbArchive()
     {
       return "Db.zip";
     }
 
-    public static void UnzipAllTables()
+    public void UnzipAllTables()
     {
       var zipToUnpack = GetLatestDbArchive();
       var unpackDirectory = Settings.Default.SavePath;
@@ -81,7 +72,7 @@ namespace Keeper.DbInputOutput
       }
     }
 
-    public static ObservableCollection<T> LoadFrom<T>(string filename, Func<string, T> parseLine)
+    public ObservableCollection<T> LoadFrom<T>(string filename, Func<string, List<Account>, T> parseLine, List<Account> accountsPlaneList)
     {
       var content =
         File.ReadAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, filename), Encoding1251).Where(
@@ -93,7 +84,7 @@ namespace Keeper.DbInputOutput
       {
         try
         {
-          result.Add(parseLine(s));
+          result.Add(parseLine(s, accountsPlaneList));
         }
         catch (Exception)
         {
@@ -109,17 +100,17 @@ namespace Keeper.DbInputOutput
     }
 
     #region // Accounts
-    public static ObservableCollection<Account> LoadAccounts()
+    public bool LoadAccounts(ref KeeperDb db)
     {
       var filename = Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt");
-      if (!File.Exists(filename)) return null;
+      if (!File.Exists(filename)) return false;
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
 
       // промежуточная сортировка действующих депозитов
       var sortedContent = SortActiveDepositAccountsByEndDate(content);
 
-      var result = new ObservableCollection<Account>();
+      db.Accounts = new ObservableCollection<Account>();
       foreach (var s in sortedContent)
       {
         int parentId;
@@ -127,13 +118,13 @@ namespace Keeper.DbInputOutput
         if (parentId == 0)
         {
           BuildBranchFromRoot(account, sortedContent);
-          result.Add(account);
+          db.Accounts.Add(account);
         }
       }
-      return result;
+      return true;
     }
 
-    private static List<string> SortActiveDepositAccountsByEndDate(IEnumerable<string> content)
+    private List<string> SortActiveDepositAccountsByEndDate(IEnumerable<string> content)
     {
       var activeDepos = new List<Account>();
       var sortedContent = new List<string>();
@@ -162,7 +153,7 @@ namespace Keeper.DbInputOutput
       return sortedContent;
     }
 
-    private static Account AccountFromString(string s, out int parentId)
+    private Account AccountFromString(string s, out int parentId)
     {
       var account = new Account();
       var substrings = s.Split(';');
@@ -173,7 +164,7 @@ namespace Keeper.DbInputOutput
       return account;
     }
 
-    private static void BuildBranchFromRoot(Account root, List<string> content)
+    private void BuildBranchFromRoot(Account root, List<string> content)
     {
       foreach (var s in content)
       {
@@ -192,26 +183,26 @@ namespace Keeper.DbInputOutput
     #endregion
 
     #region // Parsing
-    private static Transaction TransactionFromStringWithNames(string s)
+    private Transaction TransactionFromStringWithNames(string s, List<Account> accountsPlaneList)
     {
       var transaction = new Transaction();
       var substrings = s.Split(';');
       transaction.Timestamp = Convert.ToDateTime(substrings[0]);
       transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-      transaction.Debet = Db.AccountsPlaneList.First(account => account.Name == substrings[2].Trim());
-      transaction.Credit = Db.AccountsPlaneList.First(account => account.Name == substrings[3].Trim());
+      transaction.Debet = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
+      transaction.Credit = accountsPlaneList.First(account => account.Name == substrings[3].Trim());
       transaction.Amount = Convert.ToDecimal(substrings[4]);
       transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
       transaction.Amount2 = Convert.ToDecimal(substrings[6]);
       if (substrings[7].Trim() == "null" || substrings[7].Trim() == "0") transaction.Currency2 = null;
       else
         transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]);
-      transaction.Article = substrings[8].Trim() != "" ? Db.AccountsPlaneList.First(account => account.Name == substrings[8].Trim()) : null;
+      transaction.Article = substrings[8].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[8].Trim()) : null;
       transaction.Comment = substrings[9].Trim();
 
       return transaction;
     }
-    private static CurrencyRate CurrencyRateFromString(string s)
+    private CurrencyRate CurrencyRateFromString(string s, List<Account> accountsPlaneList)
     {
       var rate = new CurrencyRate();
       int next = s.IndexOf(';');
@@ -221,13 +212,13 @@ namespace Keeper.DbInputOutput
       rate.Rate = Convert.ToDouble(s.Substring(next + 2));
       return rate;
     }
-    private static ArticleAssociation ArticleAssociationFromStringWithNames(string s)
+    private ArticleAssociation ArticleAssociationFromStringWithNames(string s, List<Account> accountsPlaneList)
     {
       var association = new ArticleAssociation();
       var substrings = s.Split(';');
-      association.ExternalAccount = Db.AccountsPlaneList.First(account => account.Name == substrings[0].Trim());
+      association.ExternalAccount = accountsPlaneList.First(account => account.Name == substrings[0].Trim());
       association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-      association.AssociatedArticle = Db.AccountsPlaneList.First(account => account.Name == substrings[2].Trim());
+      association.AssociatedArticle = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
       return association;
     }
     #endregion

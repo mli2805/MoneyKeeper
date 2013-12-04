@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -12,7 +11,6 @@ using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
 using Keeper.Utils.Diagram;
-using Brushes = System.Windows.Media.Brushes;
 
 
 namespace Keeper.ViewModels
@@ -24,11 +22,12 @@ namespace Keeper.ViewModels
     [Import]
     public IWindowManager WindowManager { get; set; }
 
-    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-    private AccountTreesFunctions _accountTreesFunctions;
+//    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    public KeeperDb Db;
+
+    private AccountTreesGardener _accountTreesGardener;
     private BalancesForShellCalculator _balanceCalculator;
     private DiagramDataCtors _diagramDataCtor;
-    private DiagramDataExtractorFromDb _diagramDataCalculator;
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -193,14 +192,14 @@ namespace Keeper.ViewModels
 
     public void OnImportsSatisfied()
     {
-      _isDbLoadingSuccessed = DbGeneralLoading.FullDbLoadProcess();
+       Db = new DbGeneralLoader().FullDbLoadProcess();
+      _isDbLoadingSuccessed = Db != null;
 
+      _accountTreesGardener = new AccountTreesGardener(Db);
       InitVariablesToShowAccounts();
       InitBalanceControls();
 
       _balanceCalculator = new BalancesForShellCalculator(Db);
-      _accountTreesFunctions = new AccountTreesFunctions(Db);
-      _diagramDataCalculator = new DiagramDataExtractorFromDb(Db);
       _diagramDataCtor = new DiagramDataCtors(Db);
     }
 
@@ -211,7 +210,7 @@ namespace Keeper.ViewModels
       _isDbLoadingSuccessed = true;
     }
 
-    private void InitVariablesToShowAccounts()
+    public void InitVariablesToShowAccounts()
     {
       MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts
                                                            where account.Name == "Мои"
@@ -231,6 +230,8 @@ namespace Keeper.ViewModels
       NotifyOfPropertyChange(() => IncomesRoot);
       NotifyOfPropertyChange(() => ExpensesRoot);
     }
+
+
 
     protected override void OnViewLoaded(object view)
     {
@@ -253,8 +254,8 @@ namespace Keeper.ViewModels
       {
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
-        BinaryCrypto.DbCryptoSerialization(); // сериализует БД в dbx файл
-        DbTxtSave.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+        new DbSerializer().EncryptAndSerialize(Db); // сериализует БД в dbx файл
+        new DbToTxtSaver().MakeDbBackupCopy(Db); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
       }
       callback(true);
     }
@@ -263,26 +264,26 @@ namespace Keeper.ViewModels
 
     public void RemoveSelectedAccount()
     {
-      _accountTreesFunctions.RemoveAccount(SelectedAccount);
+      _accountTreesGardener.RemoveAccount(SelectedAccount);
     }
 
     public void AddSelectedAccount() 
     {
-      _accountTreesFunctions.AddAccount(SelectedAccount);
+      _accountTreesGardener.AddAccount(SelectedAccount);
       if (SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
     }
 
     private void ReorderDepositAccounts()
     {
-      DbTxtSave.SaveDbInTxt();
-      var result = DbTxtLoad.LoadDbFromTxt();
+      new DbToTxtSaver().SaveDbInTxt(Db);
+      var result = new DbFromTxtLoader().LoadDbFromTxt(ref Db);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
-      else InitVariablesToShowAccounts();
+//      else InitVariablesToShowAccounts();
     }
 
     public void ChangeSelectedAccount()
     {
-      _accountTreesFunctions.ChangeAccount(SelectedAccount);
+      _accountTreesGardener.ChangeAccount(SelectedAccount);
     }
 
     public List<DepositViewModel> LaunchedViewModels { get; set; }
@@ -313,18 +314,18 @@ namespace Keeper.ViewModels
     #region // меню файл
     public void SaveDatabase()
     {
-      BinaryCrypto.DbCryptoSerialization();
+       new DbSerializer().EncryptAndSerialize(Db);
     }
 
     public void LoadDatabase()
     {
       var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
-      BinaryCrypto.DbCryptoDeserialization(filename);
+      Db = new DbSerializer().DecryptAndDeserialize(filename);
     }
 
     public void ClearDatabase()
     {
-      DbClear.ClearAllTables();
+      new DbCleaner().ClearAllTables(Db);
 
       IncomesRoot.Clear();
       ExpensesRoot.Clear();
@@ -334,26 +335,26 @@ namespace Keeper.ViewModels
 
     public void MakeDatabaseBackup()
     {
-      DbTxtSave.MakeDbBackupCopy();
+      new DbToTxtSaver().MakeDbBackupCopy(Db);
     }
 
     public void ExportDatabaseToTxt()
     {
-      DbTxtSave.SaveDbInTxt();
+      new DbToTxtSaver().SaveDbInTxt(Db);
     }
 
     public void ImportDatabaseFromTxt()
     {
-      var result = DbTxtLoad.LoadDbFromTxt();
+      var result = new DbFromTxtLoader().LoadDbFromTxt(ref Db);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
-      else InitVariablesToShowAccounts();
+//      else InitVariablesToShowAccounts();
     }
 
     public void RemoveExtraBackups()
     {
       String arcMessage = Message;
       Message = "Удаление идентичных резервных копий";
-      DbBackup.RemoveIdenticalBackups();
+      new DbBackupOrganizer().RemoveIdenticalBackups();
       Message = arcMessage;
       StatusBarItem0 = "Готово";
     }
@@ -375,12 +376,12 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Input operations";
-      UsefulLists.FillLists();
+      UsefulLists.FillLists(Db);
       WindowManager.ShowDialog(new TransactionViewModel(Db));
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
-      BinaryCrypto.DbCryptoSerialization();
+      new DbSerializer().EncryptAndSerialize(Db);
       Message = arcMessage;
     }
 
@@ -388,7 +389,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Currency rates";
-      WindowManager.ShowDialog(new RatesViewModel());
+      WindowManager.ShowDialog(new RatesViewModel(Db));
       Message = arcMessage;
     }
 
@@ -396,8 +397,8 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Articles' associations";
-      UsefulLists.FillLists();
-      WindowManager.ShowDialog(new ArticlesAssociationsViewModel());
+      UsefulLists.FillLists(Db);
+      WindowManager.ShowDialog(new ArticlesAssociationsViewModel(Db));
       Message = arcMessage;
     }
 
