@@ -12,40 +12,29 @@ using Keeper.Properties;
 
 namespace Keeper.DbInputOutput
 {
-  internal class DbTxtSave
+  internal class DbToTxtSaver
   {
-    public static KeeperDb Db
+    public Encoding Encoding1251 = Encoding.GetEncoding(1251);
+
+    public void MakeDbBackupCopy(KeeperDb db)
     {
-      get { return IoC.Get<KeeperDb>(); }
+      SaveDbInTxt(db);
+      ZipTxtDb(db);
+      DeleteTxtDb(db);
     }
 
-    public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-
-    public static void MakeDbBackupCopy()
-    {
-      var tt = new Stopwatch();
-      tt.Start();
-
-      SaveDbInTxt();
-      ZipTxtDb();
-      DeleteTxtDb();
-
-      tt.Stop();
-      Console.WriteLine("Creation backup copy in encrypted zip archive takes {0} sec", tt.Elapsed);
-    }
-
-    public static void SaveDbInTxt()
+    public void SaveDbInTxt(KeeperDb db)
     {
       if (!Directory.Exists(Settings.Default.TemporaryTxtDbPath))
         Directory.CreateDirectory(Settings.Default.TemporaryTxtDbPath);
-      SaveAccounts();
-      SaveTransactions();
-      SaveArticlesAssociations();
-      SaveCurrencyRates();
+      SaveAccounts(db);
+      SaveTransactions(db);
+      SaveArticlesAssociations(db);
+      SaveCurrencyRates(db);
     }
 
 
-    public static void DeleteTxtDb()
+    public void DeleteTxtDb(KeeperDb db)
     {
       if (!Directory.Exists(Settings.Default.TemporaryTxtDbPath)) return;
       var filenames = Directory.GetFiles(Settings.Default.TemporaryTxtDbPath, "*.txt"); // note: this does not recurse directories! 
@@ -55,7 +44,7 @@ namespace Keeper.DbInputOutput
       }
     }
 
-    public static void ZipTxtDb()
+    public void ZipTxtDb(KeeperDb db)
     {
       var archiveName = String.Format("DB{0:yyyy-MM-dd-HH-mm-ss}.zip", DateTime.Now);
       var zipFileToCreate = Path.Combine(Settings.Default.SavePath, archiveName);
@@ -81,10 +70,10 @@ namespace Keeper.DbInputOutput
 
     #region // Accounts
 
-    private static void SaveAccounts()
+    private void SaveAccounts(KeeperDb db)
     {
       var content = new List<string>();
-      foreach (var accountsRoot in Db.Accounts)
+      foreach (var accountsRoot in db.Accounts)
       {
         SaveAccount(accountsRoot, content, 0);
         content.Add("");
@@ -92,7 +81,7 @@ namespace Keeper.DbInputOutput
       File.WriteAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt"), content, Encoding1251);
     }
 
-    private static void SaveAccount(Account account, List<string> content, int offset)
+    private void SaveAccount(Account account, List<string> content, int offset)
     {
       content.Add(account.ToDump(offset));
       foreach (var child in account.Children)
@@ -102,11 +91,11 @@ namespace Keeper.DbInputOutput
     }
     #endregion
 
-    private static void SaveTransactions()
+    private void SaveTransactions(KeeperDb db)
     {
       var content = new List<string>();
 
-      var orderedTransactions = from transaction in Db.Transactions
+      var orderedTransactions = from transaction in db.Transactions
                                 orderby transaction.Timestamp
                                 select transaction;
 
@@ -120,15 +109,15 @@ namespace Keeper.DbInputOutput
       File.WriteAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, "Transactions.txt"), content, Encoding1251);
     }
 
-    private static void SaveArticlesAssociations()
+    private void SaveArticlesAssociations(KeeperDb db)
     {
-      var content = Db.ArticlesAssociations.Select(association => association.ToDumpWithNames()).ToList();
+      var content = db.ArticlesAssociations.Select(association => association.ToDumpWithNames()).ToList();
       File.WriteAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, "ArticlesAssociations.txt"), content, Encoding1251);
     }
 
-    private static void SaveCurrencyRates()
+    private void SaveCurrencyRates(KeeperDb db)
     {
-      var ratesOrderedByDate = (from rate in Db.CurrencyRates
+      var ratesOrderedByDate = (from rate in db.CurrencyRates
                                 orderby rate.BankDay
                                 select rate.ToDump()).ToList();
 

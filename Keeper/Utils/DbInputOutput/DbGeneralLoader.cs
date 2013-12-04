@@ -1,12 +1,13 @@
 ﻿using System.IO;
 using System.Windows;
+using Keeper.DomainModel;
 using Keeper.Properties;
 
 namespace Keeper.DbInputOutput
 {
-  class DbGeneralLoading
+  class DbGeneralLoader
   {
-    public static bool FullDbLoadProcess()
+    public KeeperDb FullDbLoadProcess()
     {
       var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
       if (!File.Exists(filename))
@@ -22,16 +23,17 @@ namespace Keeper.DbInputOutput
         // Get the selected file name and display in a TextBox
         filename = result == true ? dialog.FileName : @"g:\local_keeperDb\Keeper.dbx";
       }
-      if (BinaryCrypto.DbCryptoDeserialization(filename)) return true;
+      var db = new DbSerializer().DecryptAndDeserialize(filename);
+      if (db != null) return db;
 
       MessageBox.Show("");
       MessageBox.Show("File '" + filename + "' not found. \n Last zip will be used.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 
-      var loadResult = DbTxtLoad.LoadFromLastZip();
-      if (loadResult.Code == 0) return true;
+      var loadResult = new DbFromTxtLoader().LoadFromLastZip(ref db);
+      if (loadResult.Code == 0) return db;
 
       MessageBox.Show(loadResult.Explanation + ". \n Application will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-      return false;
+      return null;
     }
 
   }

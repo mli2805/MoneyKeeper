@@ -4,9 +4,9 @@ using Keeper.Properties;
 
 namespace Keeper.DbInputOutput
 {
-  class DbBackup
+  class DbBackupOrganizer
   {
-    public static void RemoveIdenticalBackups()
+    public void RemoveIdenticalBackups()
     {
       var backupFiles = Directory.EnumerateFiles(Settings.Default.SavePath,"DB*.zip").ToList();
       for (int i = 0; i < backupFiles.Count()-1; i++)

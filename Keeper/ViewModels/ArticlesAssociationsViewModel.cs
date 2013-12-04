@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -9,13 +8,14 @@ namespace Keeper.ViewModels
 {
   class ArticlesAssociationsViewModel : Screen
   {
-    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
+    private KeeperDb _db;
 
     public ObservableCollection<ArticleAssociation> Rows { get; set; }
 
-    public ArticlesAssociationsViewModel()
+    public ArticlesAssociationsViewModel(KeeperDb db)
     {
-      Rows = Db.ArticlesAssociations;
+      _db = db;
+      Rows = _db.ArticlesAssociations;
 
       var view = CollectionViewSource.GetDefaultView(Rows);
       view.SortDescriptions.Add(new SortDescription("ExternalAccount", ListSortDirection.Ascending));
