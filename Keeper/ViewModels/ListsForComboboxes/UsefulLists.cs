@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Micro;
 using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
@@ -12,8 +11,6 @@ namespace Keeper.ViewModels
   /// </summary>
   public static class UsefulLists
   {
-    //    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-
     public static List<CurrencyCodes> CurrencyList { get; private set; }
     public static List<OperationType> OperationTypeList { get; private set; }
 
@@ -31,14 +28,6 @@ namespace Keeper.ViewModels
 
     public static List<Account> ExternalAccounts { get; set; }
     public static List<Account> AssociatedArticles { get; set; }
-
-    //    static UsefulLists()
-    //    {
-    //      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-    //      OperationTypeList = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
-
-    //      FillLists();
-    //    }
 
     public static void FillLists(KeeperDb db)
     {

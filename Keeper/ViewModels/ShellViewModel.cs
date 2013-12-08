@@ -389,6 +389,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Currency rates";
+      UsefulLists.FillLists(Db);
       WindowManager.ShowDialog(new RatesViewModel(Db));
       Message = arcMessage;
     }
