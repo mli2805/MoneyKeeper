@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace Keeper.ViewModels
   public class RatesViewModel : Screen
   {
     private readonly KeeperDb _db;
-
 
     /*****************************************************************************
      * метод GetDefaultView получает ObservableCollection и делает из нее CollectionViewSource
@@ -35,13 +35,32 @@ namespace Keeper.ViewModels
     */
 
 
-    private CurrencyRatesFilter _selectedFilter;
     private string _expanderHeader;
     private bool _isInInputMode;
     private double _lastByrRate;
     private DateTime _newDate;
     private double _lastEurRate;
 
+    public IEnumerable<CurrencyRatesFilter> FilterList
+    {
+      get
+      {
+        var result = new List<CurrencyRatesFilter>();
+
+        // <no filter>
+        var filter = new CurrencyRatesFilter();
+        result.Add(filter);
+
+        var currencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+        // one filter for each currency in my enum, except USD
+        result.AddRange(from currencyCode in currencyList
+                        where currencyCode != CurrencyCodes.USD
+                        select new CurrencyRatesFilter(currencyCode));
+        return result;
+      }
+    }
+
+    private CurrencyRatesFilter _selectedFilter;
     public CurrencyRatesFilter SelectedFilter
     {
       get { return _selectedFilter; }
@@ -68,7 +87,7 @@ namespace Keeper.ViewModels
       }
     }
 
-    public double LastByrRate 
+    public double LastByrRate
     {
       get { return _lastByrRate; }
       set
@@ -116,8 +135,8 @@ namespace Keeper.ViewModels
                           where cr.Currency == CurrencyCodes.EUR
                           orderby cr.BankDay
                           select cr).Last();
-      if (NewDate <= lastCurrencyRate.BankDay.Date) NewDate = lastCurrencyRate.BankDay.Date.AddDays(1); 
-      LastEurRate = Math.Round(1/lastCurrencyRate.Rate,3);
+      if (NewDate <= lastCurrencyRate.BankDay.Date) NewDate = lastCurrencyRate.BankDay.Date.AddDays(1);
+      LastEurRate = Math.Round(1 / lastCurrencyRate.Rate, 3);
     }
 
     public string ExpanderHeader
@@ -136,7 +155,7 @@ namespace Keeper.ViewModels
       _db = db;
 
       Rows = _db.CurrencyRates;
-      SelectedFilter = CurrencyRatesFilterListForCombo.FilterList.First(f => !f.IsOn);
+      SelectedFilter = FilterList.First(f => !f.IsOn);
 
       var view = CollectionViewSource.GetDefaultView(Rows);
 
@@ -149,6 +168,7 @@ namespace Keeper.ViewModels
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Курсы валют";
+      SelectedFilter = FilterList.First(f => !f.IsOn);
     }
 
     private bool OnFilter(object o)
@@ -160,11 +180,10 @@ namespace Keeper.ViewModels
 
     public void SaveNewRates()
     {
-      var newByrCurrencyRate = new CurrencyRate {BankDay = NewDate, Currency = CurrencyCodes.BYR, Rate = LastByrRate};
+      var newByrCurrencyRate = new CurrencyRate { BankDay = NewDate, Currency = CurrencyCodes.BYR, Rate = LastByrRate };
       Rows.Add(newByrCurrencyRate);
 
-      var newEurCurrencyRate = new CurrencyRate
-                                 {BankDay = NewDate, Currency = CurrencyCodes.EUR, Rate = Math.Round(1/LastEurRate, 4)};
+      var newEurCurrencyRate = new CurrencyRate { BankDay = NewDate, Currency = CurrencyCodes.EUR, Rate = Math.Round(1 / LastEurRate, 4) };
       Rows.Add(newEurCurrencyRate);
 
       IsInInputMode = false;

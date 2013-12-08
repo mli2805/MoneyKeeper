@@ -93,11 +93,12 @@
     </Grid.RowDefinitions>
     <Label Content="Фильтр по валюте" HorizontalAlignment="Left" Margin="67,5,0,0"/>
     <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,5,0,0" Width="75"
-              ItemsSource="{x:Static ViewModels:CurrencyRatesFilterListForCombo.FilterList}"
-              SelectedItem="{Binding SelectedFilter}">
+              ItemsSource="{Binding FilterList}"
+              SelectedItem="{Binding SelectedFilter, Mode=TwoWay}">
     </ComboBox>
     <Button Name="CloseView" IsCancel="True" HorizontalAlignment="Right" Height="1" Width="1" />
-    <DataGrid x:Name="RatesGrid"  Grid.Row="1" Margin="5,5,5,0" Padding="5" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
+    <DataGrid x:Name="RatesGrid"  Grid.Row="1" Margin="5,5,5,0" Padding="5" 
+              ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <i:Interaction.Behaviors>

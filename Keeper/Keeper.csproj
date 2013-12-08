@@ -163,7 +163,6 @@
     <Compile Include="ViewModels\DepositsViewModel.cs" />
     <Compile Include="ViewModels\DepositViewModel.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\UsefulLists.cs" />
-    <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilterListForCombo.cs" />
     <Compile Include="Utils\AssociationFinder.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\MonthAnalisysViewModel.cs" />
