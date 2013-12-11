@@ -81,7 +81,8 @@ namespace Keeper.Controls
     {
       switch (DiagramMode)
       {
-        case DiagramMode.Line:
+        case DiagramMode.Lines:
+        case DiagramMode.SeparateLines:
           ItemChangeStackStyle.Visibility = Visibility.Collapsed;
           break;
         case DiagramMode.BarVertical:
@@ -193,6 +194,16 @@ namespace Keeper.Controls
       Draw();
     }
 
+    public void ChangeLine()
+    {
+      if (DiagramMode != DiagramMode.SeparateLines) return;
+      if (CurrentSeriesUnited.ActiveLine == CurrentSeriesUnited.SeriesCount - 1)
+        CurrentSeriesUnited.ActiveLine = 0;
+      else CurrentSeriesUnited.ActiveLine++;
+      DiagramDataExtremums = CurrentSeriesUnited.FindDataExtremums(DiagramMode);
+      Draw();
+    }
+
     #endregion
 
     #region keyboard and mouse events handlers
@@ -202,6 +213,7 @@ namespace Keeper.Controls
       if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
       if (e.Key == Key.F5) Draw();
       if (e.Key == Key.F1) LegendImage.Visibility = LegendImage.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+      if (e.Key == Key.F2) ChangeLine();
     }
 
     private Point _mouseLeftButtonDownPoint;
@@ -234,20 +246,20 @@ namespace Keeper.Controls
 
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
-//      var pt = e.GetPosition(this);
-//      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
-//      string context;
-//      Brush backgroundBrush;
-//      if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
-//      {
-//        BarHint.IsOpen = true;
-//        BarHint.HorizontalOffset = pt.X;
-//        BarHint.VerticalOffset = pt.Y - 5;
+      //      var pt = e.GetPosition(this);
+      //      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
+      //      string context;
+      //      Brush backgroundBrush;
+      //      if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
+      //      {
+      //        BarHint.IsOpen = true;
+      //        BarHint.HorizontalOffset = pt.X;
+      //        BarHint.VerticalOffset = pt.Y - 5;
 
-//        BarHintText.Background = backgroundBrush;
-//        BarHintText.Text = context;
-//      }
-//      else BarHint.IsOpen = false;
+      //        BarHintText.Background = backgroundBrush;
+      //        BarHintText.Text = context;
+      //      }
+      //      else BarHint.IsOpen = false;
     }
 
     #endregion

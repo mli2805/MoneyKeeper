@@ -79,7 +79,8 @@ namespace Keeper.Utils.Diagram
           else
             Console.WriteLine("  {0}:{1}   Mouse pointer is to the right of {2}th bar", pt.X, pt.Y, barLeft + 1);
           return false;
-        case DiagramMode.Line:
+        case DiagramMode.Lines:
+        case DiagramMode.SeparateLines:
           return false;
         default:
           return false;
