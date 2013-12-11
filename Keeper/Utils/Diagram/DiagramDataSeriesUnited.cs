@@ -20,6 +20,7 @@ namespace Keeper.Utils
     public List<string> Names;
     public Every GroupInterval;
     public int SeriesCount;
+    public int ActiveLine;
 
     public DiagramDataSeriesUnited()
     {
@@ -29,10 +30,13 @@ namespace Keeper.Utils
 
     public DiagramDataSeriesUnited(DiagramData allSeries)
     {
+      GroupInterval = allSeries.TimeInterval;
+
       DiagramData = new SortedList<DateTime, List<double>>();
       PositiveBrushes = new List<Brush>();
       NegativeBrushes = new List<Brush>();
       Names = new List<string>();
+      SeriesCount = 0;
 
       foreach (var series in allSeries.Data)
       {
@@ -43,12 +47,16 @@ namespace Keeper.Utils
           while (DiagramData[pair.CoorXdate].Count < SeriesCount) DiagramData[pair.CoorXdate].Add(0);
           DiagramData[pair.CoorXdate].Add(pair.CoorYdouble);
         }
+        SeriesCount++;
         PositiveBrushes.Add(series.PositiveBrushColor);
         NegativeBrushes.Add(series.NegativeBrushColor);
-
       }
-      SeriesCount = allSeries.Data.Count;
-      GroupInterval = allSeries.TimeInterval;
+
+      foreach (var pair in DiagramData)
+      {
+        while (DiagramData[pair.Key].Count < SeriesCount) DiagramData[pair.Key].Add(0);
+      }
+
     }
 
     public DiagramDataSeriesUnited(DiagramDataSeriesUnited other)
@@ -69,7 +77,17 @@ namespace Keeper.Utils
 
       switch (diagramMode)
       {
-        case DiagramMode.Line:
+        case DiagramMode.SeparateLines:
+          // экстремумы определ€ютс€ по одной, активной сейчас линии
+          dataExtremums.MinValue = dataExtremums.MaxValue = 0;
+          foreach (var day in DiagramData)
+          {
+            if (day.Value[ActiveLine] < dataExtremums.MinValue) dataExtremums.MinValue = day.Value[ActiveLine];
+            if (day.Value[ActiveLine] > dataExtremums.MaxValue) dataExtremums.MaxValue = day.Value[ActiveLine];
+          }
+          break;
+
+        case DiagramMode.Lines:
         case DiagramMode.BarHorizontal:
           // это вариант , когда столбцы разных серий сто€т р€дом
           dataExtremums.MinValue = DiagramData.Values.Min(l => l.Min());
@@ -93,7 +111,7 @@ namespace Keeper.Utils
           break;
       }
 
-      if (diagramMode != DiagramMode.Line)
+      if ((int)diagramMode < 100)
       {
         if (dataExtremums.MaxValue > 0 && dataExtremums.MinValue > 0) dataExtremums.MinValue = 0;
         if (dataExtremums.MaxValue < 0 && dataExtremums.MinValue < 0) dataExtremums.MaxValue = 0;

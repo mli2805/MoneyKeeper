@@ -25,7 +25,7 @@ namespace Keeper.Utils
     {
       var balancedAccount = (from account in _db.AccountsPlaneList where account.Name == name select account).FirstOrDefault();
       var balances = ExtractorFromDb.AccountBalancesForPeriodInUsd(balancedAccount, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
-      var data = balances.Select(pair => new DiagramPair(pair.Key, (double)pair.Value)).ToList();
+      var data = balances.Select(pair => new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList();
 
       return new DiagramSeries
         {
@@ -44,8 +44,13 @@ namespace Keeper.Utils
                                AccountDailyBalancesToSeries("Мои", Brushes.Blue),
                              };
 
-      return new DiagramData { Caption = "Располагаемые средства", 
-                               Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day };
+      return new DiagramData
+      {
+        Caption = "Располагаемые средства",
+        Data = dataForDiagram,
+        Mode = DiagramMode.Lines,
+        TimeInterval = Every.Day
+      };
     }
 
     private Dictionary<DateTime, decimal> ExtractRates(CurrencyCodes currency)
@@ -54,16 +59,16 @@ namespace Keeper.Utils
       {
         case CurrencyCodes.EUR:
           return _db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.EUR).OrderBy(r => r.BankDay).
-                               ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)(1 / currencyRate.Rate));
+                               ToDictionary(currencyRate => currencyRate.BankDay.Date, currencyRate => (decimal)(1 / currencyRate.Rate));
         case CurrencyCodes.BYR:
           return _db.CurrencyRates.Where(r => r.Currency == CurrencyCodes.BYR).OrderBy(r => r.BankDay).
-                               ToDictionary(currencyRate => currencyRate.BankDay, currencyRate => (decimal)currencyRate.Rate);
+                               ToDictionary(currencyRate => currencyRate.BankDay.Date, currencyRate => (decimal)currencyRate.Rate);
         default:
           return null;
       }
     }
 
-    private Dictionary<DateTime,decimal> FillinGapsInRates(Dictionary<DateTime,decimal> ratesFromDb)
+    private Dictionary<DateTime, decimal> FillinGapsInRates(Dictionary<DateTime, decimal> ratesFromDb)
     {
       var result = new Dictionary<DateTime, decimal>();
       var previousPair = new KeyValuePair<DateTime, decimal>(new DateTime(0), 0);
@@ -75,32 +80,46 @@ namespace Keeper.Utils
           var interval = (pair.Key - previousPair.Key).Days;
           if (interval > 1)
           {
-            var delta = (pair.Value - previousPair.Value)/interval;
+            var delta = (pair.Value - previousPair.Value) / interval;
             for (int i = 1; i < interval; i++)
             {
-              result.Add(previousPair.Key.AddDays(i),previousPair.Value + delta*i);
+              result.Add(previousPair.Key.AddDays(i), previousPair.Value + delta * i);
             }
           }
         }
-        result.Add(pair.Key,pair.Value);
+        result.Add(pair.Key, pair.Value);
         previousPair = pair;
       }
       return result;
     }
 
-    public DiagramData RatesCtor(CurrencyCodes currency)
+    public DiagramData RatesCtor()
     {
-      var rates = FillinGapsInRates(ExtractRates(currency));
+      var data = new List<DiagramSeries>();
 
-      var series = new DiagramSeries
-                     {
-                       Name = currency.ToString(),
-                       PositiveBrushColor = Brushes.Blue,
-                       Data = (from pair in rates select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
-                     };
+      var byrRates = FillinGapsInRates(ExtractRates(CurrencyCodes.BYR));
+      data.Add(new DiagramSeries
+               {
+                 Name = "BYR",
+                 PositiveBrushColor = Brushes.Brown,
+                 Data = (from pair in byrRates select new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList()
+               });
 
-      return new DiagramData { Caption = "Курс", Data = new List<DiagramSeries>{series},
-                               Mode = DiagramMode.Line, TimeInterval = Every.Day };
+      var euroRates = FillinGapsInRates(ExtractRates(CurrencyCodes.EUR));
+      data.Add(new DiagramSeries
+               {
+                 Name = "EURO",
+                 PositiveBrushColor = Brushes.Blue,
+                 Data = (from pair in euroRates select new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList()
+               });
+
+      return new DiagramData
+      {
+        Caption = "Курсы валют",
+        Data = data,
+        Mode = DiagramMode.SeparateLines,
+        TimeInterval = Every.Day
+      };
     }
 
     public DiagramSeries ArticleMonthlyTrafficToSeries(string name, Brush positiveBrush)
@@ -130,8 +149,13 @@ namespace Keeper.Utils
         dataForDiagram.Add(ArticleMonthlyTrafficToSeries(outcome.Name, colorsEnumerator.Current));
       }
 
-      return new DiagramData { Caption = "Ежемесячные расходы в разрезе категорий", 
-                               Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
+      return new DiagramData
+      {
+        Caption = "Ежемесячные расходы в разрезе категорий",
+        Data = dataForDiagram,
+        Mode = DiagramMode.BarVertical,
+        TimeInterval = Every.Month
+      };
     }
 
     public DiagramData MonthlyIncomesDiagramCtor()
@@ -144,8 +168,13 @@ namespace Keeper.Utils
                                ArticleMonthlyTrafficToSeries("Подарки",Brushes.DarkOrange),
                              };
 
-      return new DiagramData { Caption = "Ежемесячные доходы (только основные категории)", 
-                               Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
+      return new DiagramData
+      {
+        Caption = "Ежемесячные доходы (только основные категории)",
+        Data = dataForDiagram,
+        Mode = DiagramMode.BarVertical,
+        TimeInterval = Every.Month
+      };
     }
 
     public DiagramData MonthlyResultsDiagramCtor()
@@ -163,8 +192,13 @@ namespace Keeper.Utils
                                  }
                              };
 
-      return new DiagramData { Caption = "Сальдо", 
-                               Data = dataForDiagram, Mode = DiagramMode.BarVertical, TimeInterval = Every.Month };
+      return new DiagramData
+      {
+        Caption = "Сальдо",
+        Data = dataForDiagram,
+        Mode = DiagramMode.BarVertical,
+        TimeInterval = Every.Month
+      };
     }
 
     public DiagramData AverageSignificancesDiagramCtor()
@@ -182,16 +216,21 @@ namespace Keeper.Utils
 
         colorsEnumerator.MoveNext();
         dataForDiagram.Add(new DiagramSeries
-                             {
-                               Name = seriesName,
-                               PositiveBrushColor = colorsEnumerator.Current,
-                               Data = (from pair in average12MsDictionary
-                                       select new DiagramPair(pair.Key, (double)Math.Abs(pair.Value))).ToList()
-                             });
+                           {
+                             Name = seriesName,
+                             PositiveBrushColor = colorsEnumerator.Current,
+                             Data = (from pair in average12MsDictionary
+                                     select new DiagramPair(pair.Key.Date, (double)Math.Abs(pair.Value))).ToList()
+                           });
       }
 
-      return new DiagramData { Caption = "Средние за 12 месяцев по основным индикативным показателям", 
-                               Data = dataForDiagram, Mode = DiagramMode.Line, TimeInterval = Every.Day };
+      return new DiagramData
+      {
+        Caption = "Средние за 12 месяцев по основным индикативным показателям",
+        Data = dataForDiagram,
+        Mode = DiagramMode.Lines,
+        TimeInterval = Every.Day
+      };
     }
   }
 }

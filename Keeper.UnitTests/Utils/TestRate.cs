@@ -12,9 +12,9 @@ namespace Keeper.UnitTests.Utils
 	public class TestRate
 	{
 		private KeeperDb _keeperDb;
-		private readonly static DateTime Monday = new DateTime(2000, 1, 1);
-		private readonly static DateTime Tuesday = new DateTime(2000, 1, 2);
-		private readonly static DateTime Wednesday = new DateTime(2000, 1, 3);
+		private readonly static DateTime FirstDay = new DateTime(2002, 1, 1);
+		private readonly static DateTime SecondDay = new DateTime(2002, 1, 2);
+		private readonly static DateTime ThirdDay = new DateTime(2002, 1, 3);
 		private RateExtractor _underTest;
 
 		[SetUp]
@@ -26,13 +26,13 @@ namespace Keeper.UnitTests.Utils
 				{
 					new CurrencyRate
 						{
-							BankDay = Monday,
+							BankDay = FirstDay,
 							Currency = CurrencyCodes.BYR,
 							Rate = 1,
 						},
 					new CurrencyRate
 						{
-							BankDay = Wednesday,
+							BankDay = ThirdDay,
 							Currency = CurrencyCodes.BYR,
 							Rate = 2,
 						},
@@ -41,13 +41,13 @@ namespace Keeper.UnitTests.Utils
 		[Test]
 		public void GetRate_When_Invalid_Date_Should_Be_0()
 		{
-			_underTest.GetRate(CurrencyCodes.BYR, Tuesday).Should().Be(0);
+			_underTest.GetRate(CurrencyCodes.BYR, SecondDay).Should().Be(0);
 		}
 		[Test]
 		public void GetRate_Should_Return_Rate_For_The_Day()
 		{
-			_underTest.GetRate(CurrencyCodes.BYR, Monday).Should().Be(1);
-			_underTest.GetRate(CurrencyCodes.BYR, Wednesday).Should().Be(2);
+			_underTest.GetRate(CurrencyCodes.BYR, FirstDay).Should().Be(1);
+			_underTest.GetRate(CurrencyCodes.BYR, ThirdDay).Should().Be(2);
 		}
 	}
 }

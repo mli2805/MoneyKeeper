@@ -447,7 +447,7 @@ namespace Keeper.ViewModels
 
     public void ShowRatesDiagram()
     {
-      var rate = _diagramDataCtor.RatesCtor(CurrencyCodes.BYR);
+      var rate = _diagramDataCtor.RatesCtor();
 
       var diagramForm = new DiagramViewModel(rate);
       _launchedForms.Add(diagramForm);

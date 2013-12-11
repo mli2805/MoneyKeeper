@@ -38,7 +38,7 @@ namespace Keeper.Utils.Diagram
       }
     }
 
-    public double Shift { get { return Owner.DiagramMode == DiagramMode.Line ? 7 : ImageWidth * 0.002; } } // от левой оси до первого столбика (начала линии)
+    public double Shift { get { return (int)Owner.DiagramMode > 100 ? 7 : ImageWidth * 0.002; } } // от левой оси до первого столбика (начала линии)
     public double PointPerDataElement
     {
       get
