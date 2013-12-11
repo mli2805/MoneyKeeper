@@ -79,7 +79,8 @@ namespace Keeper.Utils
       {
         case DiagramMode.SeparateLines:
           // экстремумы определ€ютс€ по одной, активной сейчас линии
-          dataExtremums.MinValue = dataExtremums.MaxValue = 0;
+          dataExtremums.MinValue = double.PositiveInfinity;
+          dataExtremums.MaxValue = Double.NegativeInfinity;
           foreach (var day in DiagramData)
           {
             if (day.Value[ActiveLine] < dataExtremums.MinValue) dataExtremums.MinValue = day.Value[ActiveLine];
