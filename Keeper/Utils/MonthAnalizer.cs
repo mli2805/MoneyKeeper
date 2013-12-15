@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
 
@@ -16,7 +16,7 @@ namespace Keeper.Utils
     {
       _db = db;
       _rateExtractor = new RateExtractor(db);
-      _balanceCalculator = new BalanceCalculator(db);
+      _balanceCalculator = new BalanceCalculator(db, _rateExtractor);
     }
 
     public Saldo AnalizeMonth(DateTime initialDay)

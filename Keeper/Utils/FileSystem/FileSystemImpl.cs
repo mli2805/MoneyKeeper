@@ -1,12 +1,12 @@
 ﻿using System;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.IO;
 using System.Linq;
 
 namespace Keeper.Utils.FileSystem
 {
 	[Export(typeof(IFileSystem))]
-	[PartCreationPolicy(CreationPolicy.Shared)]
+	[Shared]
 	public sealed class FileSystemImpl : IFileSystem
 	{
 		public IFile GetFile(string path)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -15,8 +15,8 @@ using Keeper.Utils;
 namespace Keeper.ViewModels
 {
 	[Export(typeof(IShell))] // это для загрузчика, который ищет главное окно проги
-	[Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)] // это для класса Account чтобы засунуть в свойство SelectedAccount 
-	public class ShellViewModel : Screen, IShell, IPartImportsSatisfiedNotification
+	[Export(typeof(ShellViewModel))][Shared] // это для класса Account чтобы засунуть в свойство SelectedAccount 
+	public class ShellViewModel : Screen, IShell
 	{
 		[Import]
 		public IWindowManager WindowManager { get; set; }
@@ -190,10 +190,7 @@ namespace Keeper.ViewModels
 			_isDbLoadingSuccessed = Db != null;
 			_message = "Keeper is running (On Debug)";
 			BalanceList = new ObservableCollection<string> { "test balance" };
-		}
-
-		public void OnImportsSatisfied()
-		{
+		
 			_accountTreesGardener = new AccountTreesGardener(Db);
 			InitVariablesToShowAccounts();
 			InitBalanceControls();

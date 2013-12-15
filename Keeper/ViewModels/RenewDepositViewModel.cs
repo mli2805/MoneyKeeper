@@ -24,7 +24,7 @@ namespace Keeper.ViewModels
 		public RenewDepositViewModel(KeeperDb db, Deposit oldDeposit)
 		{
 		  _db = db;
-		  _balanceCalculator = new BalanceCalculator(db);
+		  _balanceCalculator = new BalanceCalculator(db, new RateExtractor(_db));
 
 			_oldDeposit = oldDeposit;
 			NewDeposit = null;

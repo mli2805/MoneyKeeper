@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.Composition;
 using System.ComponentModel.Composition.Hosting;
 
 using FluentAssertions;
@@ -13,14 +13,14 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 	public sealed class TestMef
 	{
 		[Export]
-		[PartCreationPolicy(CreationPolicy.Shared)]
+		[Shared]
 		internal class Importer
 		{
 			[Import]
 			public KeeperDb Db { get; set; }
 		}
 		[Export]
-		[PartCreationPolicy(CreationPolicy.Shared)]
+		[Shared]
 		internal class Exporter
 		{
 			[Export]

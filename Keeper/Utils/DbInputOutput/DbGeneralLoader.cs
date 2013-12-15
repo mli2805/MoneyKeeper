@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.Composition;
 using System.Windows;
 
 using Keeper.DomainModel;
@@ -8,7 +8,7 @@ using Keeper.Utils.FileSystem;
 namespace Keeper.DbInputOutput
 {
 	[Export]
-	[PartCreationPolicy(CreationPolicy.Shared)]
+	[Shared]
 	internal class DbGeneralLoader
 	{
 		readonly IMessageBoxer mMessageBoxer;
