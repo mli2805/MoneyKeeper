@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Composition;
 using System.Linq;
+
+using Keeper.DbInputOutput;
 
 namespace Keeper.DomainModel
 {
 
+	/// <summary>
+	/// <see cref="DbGeneralLoader"/> is factory for the KeeperDb
+	/// </summary>
 	[Serializable]
-//	[Export(typeof(KeeperDb))]
-//	[Shared]
 	public class KeeperDb 
 	{
 		public ObservableCollection<Account> Accounts { get; set; }

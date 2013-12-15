@@ -293,7 +293,8 @@ namespace Keeper.ViewModels
 					&& ((DepositViewModel)launchedForm).Deposit.Account == SelectedAccount) launchedForm.TryClose();
 			}
 
-			var depositForm = new DepositViewModel(Db, SelectedAccount);
+			var depositForm = IoC.Get<DepositViewModel>();
+			depositForm.SetAccount(SelectedAccount);
 			_launchedForms.Add(depositForm);
 			depositForm.Renewed += DepositViewModelRenewed; // ?
 			WindowManager.ShowWindow(depositForm);
@@ -424,7 +425,8 @@ namespace Keeper.ViewModels
 			foreach (var launchedForm in _launchedForms)
 				if (launchedForm is DepositViewModel && launchedForm.IsActive) launchedForm.TryClose();
 
-			var depositsForm = new DepositsViewModel(Db);
+			var depositsForm = IoC.Get<DepositsViewModel>();
+
 			_launchedForms.Add(depositsForm);
 			WindowManager.ShowWindow(depositsForm);
 		}

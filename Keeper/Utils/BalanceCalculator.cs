@@ -10,10 +10,10 @@ namespace Keeper.Utils
 	public class BalanceCalculator
 	{
 	  private readonly KeeperDb _db;
-	  private readonly IRateExtractor _rateExtractor;
+	  private readonly RateExtractor _rateExtractor;
 
 		[ImportingConstructor]
-		public BalanceCalculator(KeeperDb db, IRateExtractor rateExtractor)
+		public BalanceCalculator(KeeperDb db, RateExtractor rateExtractor)
 		{
 			_db = db;
 			_rateExtractor = rateExtractor;
