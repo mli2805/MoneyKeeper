@@ -8,10 +8,10 @@ using FluentAssertions;
 
 namespace Keeper.UnitTests.Utils
 {
-/*	[TestFixture]
+	[TestFixture]
 	public class TestRate
 	{
-		private KeeperDb _keeperDb;
+		private IKeeperDb _keeperDb;
 		private readonly static DateTime FirstDay = new DateTime(2002, 1, 1);
 		private readonly static DateTime SecondDay = new DateTime(2002, 1, 2);
 		private readonly static DateTime ThirdDay = new DateTime(2002, 1, 3);
@@ -20,7 +20,7 @@ namespace Keeper.UnitTests.Utils
 		[SetUp]
 		public void SetUp()
 		{
-			_keeperDb = A.Fake<KeeperDb>();
+			_keeperDb = A.Fake<IKeeperDb>();
 			_underTest = new RateExtractor(_keeperDb);
 			A.CallTo(() => _keeperDb.CurrencyRates).Returns(new ObservableCollection<CurrencyRate>
 				{
@@ -49,5 +49,5 @@ namespace Keeper.UnitTests.Utils
 			_underTest.GetRate(CurrencyCodes.BYR, FirstDay).Should().Be(1);
 			_underTest.GetRate(CurrencyCodes.BYR, ThirdDay).Should().Be(2);
 		}
-	}*/
+	}
 }

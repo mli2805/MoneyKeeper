@@ -7,18 +7,18 @@ using NUnit.Framework;
 
 namespace Keeper.UnitTests.Utils
 {
-  /*[TestFixture]
+  [TestFixture]
   public class TestBalance
   {
     private BalanceCalculator _underTest;
-    private RateExtractor _rate;
+    private IRateExtractor _rate;
     private readonly static DateTime Monday = new DateTime(2000, 1, 1);
 
     [SetUp]
     public void SetUp()
     {
-      _rate = A.Fake<RateExtractor>();
-      _underTest = new BalanceCalculator(A.Fake<KeeperDb>());
+      _rate = A.Fake<IRateExtractor>();
+      _underTest = new BalanceCalculator(A.Fake<KeeperDb>(), _rate);
 		
     }
     [Test]
@@ -42,5 +42,5 @@ namespace Keeper.UnitTests.Utils
       A.CallTo(() => _rate.GetRateThisDayOrBefore(A<CurrencyCodes>.Ignored, A<DateTime>.Ignored))
         .MustNotHaveHappened();
     }
-  }*/
+  }
 }
