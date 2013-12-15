@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.Composition;
 using System.Windows;
 
 namespace Keeper.DbInputOutput
 {
 	[Export(typeof(IMessageBoxer))]
-	[PartCreationPolicy(CreationPolicy.Shared)]
+	[Shared]
 	class MessageBoxer : IMessageBoxer
 	{
 		bool mIsFirstTime= true;

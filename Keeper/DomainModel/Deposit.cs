@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
@@ -35,8 +35,8 @@ namespace Keeper.DomainModel
 	  public Deposit(KeeperDb db)
     {
       _db = db;
-      _balanceCalculator = new BalanceCalculator(db);
-      _rateExtractor = new RateExtractor(db);
+	  _rateExtractor = new RateExtractor(db);
+	  _balanceCalculator = new BalanceCalculator(db, _rateExtractor);
     }
 
 	  public Brush FontColor

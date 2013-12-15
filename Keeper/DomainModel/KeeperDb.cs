@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.Linq;
 
 namespace Keeper.DomainModel
@@ -9,7 +9,7 @@ namespace Keeper.DomainModel
 
 	[Serializable]
 //	[Export(typeof(KeeperDb))]
-//	[PartCreationPolicy(CreationPolicy.Shared)]
+//	[Shared]
 	public class KeeperDb 
 	{
 		public ObservableCollection<Account> Accounts { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
 using Keeper.ViewModels;
@@ -81,7 +81,7 @@ namespace Keeper.Utils
 
     public string EndDayBalances(DateTime dt)
     {
-      var balanceCalculator = new BalanceCalculator(_db);
+      var balanceCalculator = new BalanceCalculator(_db, new RateExtractor(_db));
 
       var period = new Period(new DateTime(0), new DayProcessor(dt).AfterThisDay());
       var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);

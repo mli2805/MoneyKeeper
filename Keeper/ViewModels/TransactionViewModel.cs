@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -13,7 +13,8 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
-  [Export, PartCreationPolicy(CreationPolicy.Shared)] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
+	[Export]
+	[Shared] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
     private readonly KeeperDb _db;
@@ -405,7 +406,7 @@ namespace Keeper.ViewModels
       _db = db;
 
       _rateExtractor = new RateExtractor(_db);
-      _balanceCalculator = new BalanceCalculator(_db);
+      _balanceCalculator = new BalanceCalculator(_db, _rateExtractor);
       _balancesForTransactionsCalculatorCalculator = new BalancesForTransactionsCalculator(_db);
 
       TransactionInWork = new Transaction();
