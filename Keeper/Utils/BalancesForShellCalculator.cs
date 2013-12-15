@@ -34,7 +34,7 @@ namespace Keeper.Utils
       foreach (var item in balancePairs)
       {
         if (item.Amount != 0) balance.Add(String.Format("{0:#,#} {1}", item.Amount, item.Currency));
-        totalInUsd += _rateExtractor.GetUsdEquivalent(item.Amount, item.Currency, period.GetFinish());
+        totalInUsd += _rateExtractor.GetUsdEquivalent(item.Amount, item.Currency, period.Finish);
       }
 
       return balance;

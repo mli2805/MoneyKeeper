@@ -13,19 +13,16 @@ namespace Keeper.Utils
 
   public class Period
   {
-    private readonly DateTime _start;
-    private readonly DateTime _finish;
-
-    public Period()
+	  public Period()
     {
-      _start = new DateTime(0);
-      _finish = DateTime.Today;
+      Start = new DateTime(0);
+      Finish = DateTime.Today;
     }
 
     public Period(DateTime start, DateTime finish)
     {
-        _start = start;
-        _finish = finish;
+        Start = start;
+        Finish = finish;
     }
 
     #region Override == , != , Equals and GetHashCode
@@ -36,7 +33,7 @@ namespace Keeper.Utils
       if (ReferenceEquals(a, b)) return true;
       // If one is null, but not both, return false.
       if (((object)a == null) || ((object)b == null)) return false;
-      return (a.GetStart() == b.GetStart() && a.GetFinish() == b.GetFinish());
+      return (a.Start == b.Start && a.Finish == b.Finish);
     }
 
     public static bool operator !=(Period a, Period b)
@@ -49,34 +46,27 @@ namespace Keeper.Utils
       if (object.ReferenceEquals(this, obj)) return true;
       var other = obj as Period;
       if (other == null) return false;
-      return (this.GetStart() == other.GetStart());
+      return (this.Start == other.Start);
     }
 
     public override int GetHashCode()
     {
-      return GetStart().GetHashCode();
+      return Start.GetHashCode();
     }
 
     #endregion
 
     public bool IsDateTimeIn(DateTime checkDate)
     {
-      return checkDate >= _start && checkDate <= _finish;
+      return checkDate >= Start && checkDate <= Finish;
     }
 
-    public DateTime GetStart()
-    {
-      return _start;
-    }
+	  public DateTime Start { get; private set; }
+	  public DateTime Finish { get; private set; }
 
-    public DateTime GetFinish()
+	  public IEnumerator GetEnumerator()
     {
-      return _finish;
-    }
-
-    public IEnumerator GetEnumerator()
-    {
-      for (var dt = _start; dt <= _finish; dt = dt.AddDays(1))
+      for (var dt = Start; dt <= Finish; dt = dt.AddDays(1))
       {
         yield return dt;
       }
