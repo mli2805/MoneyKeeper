@@ -2,16 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Caliburn.Micro;
 using Ionic.Zip;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.DbInputOutput
 {
 	[Export(typeof(IDbFromTxtLoader))]
   class DbFromTxtLoader : IDbFromTxtLoader

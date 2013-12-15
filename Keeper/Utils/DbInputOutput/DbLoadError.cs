@@ -1,4 +1,4 @@
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.DbInputOutput
 {
 	public class DbLoadError
 	{
