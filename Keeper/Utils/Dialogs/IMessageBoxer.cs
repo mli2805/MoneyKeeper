@@ -2,8 +2,7 @@
 
 namespace Keeper.Utils.Dialogs
 {
-	interface IMessageBoxer 
-  {
+	interface IMessageBoxer {
 		void Show(string messageBoxText, string caption, MessageBoxButton messageBoxButton, MessageBoxImage messageBoxImage);
 	}
 }
