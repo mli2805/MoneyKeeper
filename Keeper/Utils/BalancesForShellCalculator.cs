@@ -7,19 +7,20 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-  class BalancesForShellCalculator
+[Export]
+  public class BalancesForShellCalculator
   {
     private readonly BalanceCalculator _balanceCalculator;
     private readonly RateExtractor _rateExtractor;
 
     [ImportingConstructor]
-    public BalancesForShellCalculator(KeeperDb db)
+    public BalancesForShellCalculator(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator)
     {
-		_rateExtractor = new RateExtractor(db);
-		_balanceCalculator = new BalanceCalculator(db,new RateExtractor(db));
+	    _rateExtractor = rateExtractor;
+	    _balanceCalculator = balanceCalculator;
     }
 
-    private List<string> OneBalance(Account balancedAccount, Period period, out decimal totalInUsd)
+	  private List<string> OneBalance(Account balancedAccount, Period period, out decimal totalInUsd)
     {
       var balance = new List<string>();
       totalInUsd = 0;

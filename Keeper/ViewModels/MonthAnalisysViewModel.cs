@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -10,6 +11,7 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
+	[Export]
   class MonthAnalisysViewModel : Screen
   {
     private readonly RateExtractor _rateExtractor;
@@ -196,12 +198,13 @@ namespace Keeper.ViewModels
       }
     }
 
-    public MonthAnalisysViewModel(KeeperDb db)
+	  [ImportingConstructor]
+    public MonthAnalisysViewModel(KeeperDb db, RateExtractor rateExtractor, MonthAnalizer monthAnalizer)
     {
       _db = db;
-      _rateExtractor = new RateExtractor(db);
+      _rateExtractor =rateExtractor;
 
-      _monthAnalizer = new MonthAnalizer(_db);
+      _monthAnalizer = monthAnalizer;
       MonthSaldo = _monthAnalizer.AnalizeMonth(DateTime.Today);
       StartDate = MonthSaldo.StartDate;
       FillInLists();

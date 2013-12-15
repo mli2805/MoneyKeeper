@@ -401,13 +401,15 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    public TransactionViewModel(KeeperDb db)
+		[ImportingConstructor]
+    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, 
+			BalanceCalculator balanceCalculator, BalancesForTransactionsCalculator balancesForTransactionsCalculator)
     {
       _db = db;
 
-      _rateExtractor = new RateExtractor(_db);
-      _balanceCalculator = new BalanceCalculator(_db, _rateExtractor);
-      _balancesForTransactionsCalculatorCalculator = new BalancesForTransactionsCalculator(_db);
+      _rateExtractor = rateExtractor;
+      _balanceCalculator = balanceCalculator;
+      _balancesForTransactionsCalculatorCalculator = balancesForTransactionsCalculator;
 
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;

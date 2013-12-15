@@ -5,6 +5,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
+	[Export]
   class MonthAnalizer
   {
     private readonly KeeperDb _db;
@@ -12,14 +13,14 @@ namespace Keeper.Utils
     private readonly BalanceCalculator _balanceCalculator;
 
     [ImportingConstructor]
-    public MonthAnalizer(KeeperDb db)
+    public MonthAnalizer(KeeperDb db, BalanceCalculator balanceCalculator, RateExtractor rateExtractor)
     {
-      _db = db;
-      _rateExtractor = new RateExtractor(db);
-      _balanceCalculator = new BalanceCalculator(db, _rateExtractor);
+	    _db = db;
+	    _balanceCalculator = balanceCalculator;
+	    _rateExtractor = rateExtractor;
     }
 
-    public Saldo AnalizeMonth(DateTime initialDay)
+	  public Saldo AnalizeMonth(DateTime initialDay)
     {
       var myAccountsRoot = (from account in _db.Accounts
                             where account.Name == "Мои"
