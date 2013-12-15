@@ -14,11 +14,12 @@ namespace Keeper.Utils
 		string GetUsdEquivalentString(decimal amount, CurrencyCodes currency, DateTime timestamp, out decimal amountInUsd);
 	}
 	[Export]
+	[Export(typeof(IRateExtractor))]
 	public class RateExtractor : IRateExtractor
 	{
-	  private readonly KeeperDb _db;
+	  private readonly IKeeperDb _db;
 		[ImportingConstructor]
-		public RateExtractor(KeeperDb db)
+		public RateExtractor(IKeeperDb db)
 		{
 			_db = db;
 		}

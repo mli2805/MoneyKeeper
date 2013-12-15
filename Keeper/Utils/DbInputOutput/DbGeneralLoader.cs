@@ -17,6 +17,7 @@ namespace Keeper.DbInputOutput
 		readonly IDbFromTxtLoader mFromTxtLoader;
 		readonly IFileSystem mFileSystem;
 		[Export]
+		[Export(typeof(IKeeperDb))]
 		public KeeperDb Db { get; private set; }
 
 		[ImportingConstructor]

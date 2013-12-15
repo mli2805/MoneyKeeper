@@ -7,12 +7,21 @@ using Keeper.DbInputOutput;
 
 namespace Keeper.DomainModel
 {
-
+	public interface IKeeperDb {
+		ObservableCollection<Account> Accounts { get; set; }
+		ObservableCollection<Transaction> Transactions { get; set; }
+		ObservableCollection<CurrencyRate> CurrencyRates { get; set; }
+		ObservableCollection<ArticleAssociation> ArticlesAssociations { get; set; }
+		List<Account> AccountsPlaneList { get; set; }
+		Account FindAccountInBranch(string toFind, Account branch);
+		Account FindAccountInTree(string name);
+		int GetMaxAccountId();
+	}
 	/// <summary>
 	/// <see cref="DbGeneralLoader"/> is factory for the KeeperDb
 	/// </summary>
 	[Serializable]
-	public class KeeperDb 
+	public class KeeperDb : IKeeperDb
 	{
 		public ObservableCollection<Account> Accounts { get; set; }
 		public ObservableCollection<Transaction> Transactions { get; set; }
