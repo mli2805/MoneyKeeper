@@ -5,8 +5,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils.DbInputOutput
 {
-	interface IDbFromTxtLoader 
-  {
+	interface IDbFromTxtLoader {
 		DbLoadError LoadFromLastZip(ref KeeperDb db);
 		DbLoadError LoadDbFromTxt(ref KeeperDb db);
 		void UnzipAllTables();

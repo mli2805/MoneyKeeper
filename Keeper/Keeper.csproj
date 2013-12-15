@@ -118,7 +118,6 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\DbInputOutput\IDbFromTxtLoader.cs" />
     <Compile Include="Utils\BalancesForShellCalculator.cs" />
     <Compile Include="Utils\BalancesForTransactionsCalculator.cs" />
     <Compile Include="Utils\DayProcessor.cs" />
@@ -139,6 +138,7 @@
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
     <Compile Include="Utils\DbInputOutput\DbBackupOrganizer.cs" />
     <Compile Include="Utils\DbInputOutput\DbFromTxtLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\IDbFromTxtLoader.cs" />
     <Compile Include="Utils\DbInputOutput\IDbSerializer.cs" />
     <Compile Include="Utils\Dialogs\IMessageBoxer.cs" />
     <Compile Include="Utils\Dialogs\IMyOpenFileDialog.cs" />
