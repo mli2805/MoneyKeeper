@@ -10,16 +10,16 @@ namespace Keeper.Utils
 	public class BalanceCalculator
 	{
 	  private readonly KeeperDb _db;
-	  private readonly RateExtractor _rateExtractor;
+	  private readonly IRateExtractor _rateExtractor;
 
-//		[ImportingConstructor]
-		public BalanceCalculator(KeeperDb db)
+		[ImportingConstructor]
+		public BalanceCalculator(KeeperDb db, IRateExtractor rateExtractor)
 		{
 			_db = db;
-			_rateExtractor = new RateExtractor(db);
+			_rateExtractor = rateExtractor;
 		}
 
-		public class BalancePair : IComparable
+	  public class BalancePair : IComparable
 		{
 			public CurrencyCodes Currency { get; set; }
 			public decimal Amount { get; set; }

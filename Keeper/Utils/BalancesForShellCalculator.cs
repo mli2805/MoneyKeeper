@@ -14,8 +14,8 @@ namespace Keeper.Utils
     [ImportingConstructor]
     public BalancesForShellCalculator(KeeperDb db)
     {
-      _balanceCalculator = new BalanceCalculator(db);
-      _rateExtractor = new RateExtractor(db);
+		_rateExtractor = new RateExtractor(db);
+		_balanceCalculator = new BalanceCalculator(db,new RateExtractor(db));
     }
 
     private List<string> OneBalance(Account balancedAccount, Period period, out decimal totalInUsd)
