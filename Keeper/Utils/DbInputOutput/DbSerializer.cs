@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -9,28 +10,9 @@ using Keeper.Properties;
 
 namespace Keeper.DbInputOutput
 {
-  class DbSerializer
-  {
-//    public static KeeperDb Db
-//    {
-//      get { return IoC.Get<KeeperDb>(); }
-//      set 
-//      { 
-//        Db.Accounts  = value.Accounts;
-//        Db.ArticlesAssociations = value.ArticlesAssociations;
-//        Db.CurrencyRates = value.CurrencyRates;
-
-//         сеттер переделан ради сортировки транзакций
-//        Db.Transactions = new ObservableCollection<Transaction>();
-//        var transactions = from transaction in value.Transactions orderby transaction.Timestamp select transaction;
-//        foreach (var transaction in transactions)
-//        {
-//          Db.Transactions.Add(transaction);
-//        }
-
-//        Db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(Db.Accounts);
-//      }
-//    }
+	[Export(typeof(IDbSerializer))]
+  class DbSerializer : IDbSerializer
+	{
 
     public void EncryptAndSerialize(KeeperDb db)
     {

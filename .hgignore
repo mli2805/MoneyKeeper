@@ -9,3 +9,4 @@ bin
 Keeper.psess
 *.vsp
 *.orig
+*.ncrunchproject

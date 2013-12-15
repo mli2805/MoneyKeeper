@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Keeper.UnitTests.Utils
 {
-  [TestFixture]
+  /*[TestFixture]
   public class TestBalance
   {
     private BalanceCalculator _underTest;
@@ -42,5 +42,5 @@ namespace Keeper.UnitTests.Utils
       A.CallTo(() => _rate.GetRateThisDayOrBefore(A<CurrencyCodes>.Ignored, A<DateTime>.Ignored))
         .MustNotHaveHappened();
     }
-  }
+  }*/
 }

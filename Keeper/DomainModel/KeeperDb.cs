@@ -8,8 +8,8 @@ namespace Keeper.DomainModel
 {
 
 	[Serializable]
-	[Export(typeof(KeeperDb))]
-	[PartCreationPolicy(CreationPolicy.Shared)]
+//	[Export(typeof(KeeperDb))]
+//	[PartCreationPolicy(CreationPolicy.Shared)]
 	public class KeeperDb 
 	{
 		public ObservableCollection<Account> Accounts { get; set; }
