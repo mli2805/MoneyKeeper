@@ -9,7 +9,7 @@ using FluentAssertions;
 namespace Keeper.UnitTests.Utils
 {
 	[TestFixture]
-	public class TestRateExtractor
+	public class TestRate
 	{
 		private IKeeperDb _keeperDb;
 		private readonly static DateTime FirstDay = new DateTime(2002, 1, 1);
@@ -36,16 +36,10 @@ namespace Keeper.UnitTests.Utils
 							Currency = CurrencyCodes.BYR,
 							Rate = 2,
 						},
-					new CurrencyRate
-						{
-							BankDay = ThirdDay,
-							Currency = CurrencyCodes.EUR,
-							Rate = 7,
-						},
 				});
 		}
 		[Test]
-		public void GetRate_When_No_Rate_For_Date_Should_Return_0()
+		public void GetRate_When_Invalid_Date_Should_Be_0()
 		{
 			_underTest.GetRate(CurrencyCodes.BYR, SecondDay).Should().Be(0);
 		}
