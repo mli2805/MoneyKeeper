@@ -46,7 +46,8 @@ namespace Keeper.ViewModels
 
 		public void Renew()
 		{
-			var renewDepositViewModel = new RenewDepositViewModel(_db, Deposit);
+			var renewDepositViewModel = IoC.Get<RenewDepositViewModel>();
+			renewDepositViewModel.SetOldDeposit(Deposit);
 			WindowManager.ShowDialog(renewDepositViewModel);
 			if (renewDepositViewModel.NewDeposit != null)
 			{

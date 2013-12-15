@@ -184,7 +184,7 @@ namespace Keeper.ViewModels
 		#endregion
 
 		[ImportingConstructor]
-		public ShellViewModel(KeeperDb db)
+		public ShellViewModel(KeeperDb db, BalancesForShellCalculator balancesForShellCalculator)
 		{
 			Db = db;
 			_isDbLoadingSuccessed = Db != null;
@@ -195,7 +195,7 @@ namespace Keeper.ViewModels
 			InitVariablesToShowAccounts();
 			InitBalanceControls();
 
-			_balanceCalculator = new BalancesForShellCalculator(Db);
+			_balanceCalculator = balancesForShellCalculator;
 			_diagramDataCtor = new DiagramDataCtors(Db);
 		}
 
@@ -374,7 +374,7 @@ namespace Keeper.ViewModels
 			var arcMessage = Message;
 			Message = "Input operations";
 			UsefulLists.FillLists(Db);
-			WindowManager.ShowDialog(new TransactionViewModel(Db));
+			WindowManager.ShowDialog(IoC.Get<TransactionViewModel>());
 			// по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
 			var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
 			_balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
@@ -416,7 +416,7 @@ namespace Keeper.ViewModels
 		{
 			var arcMessage = Message;
 			Message = "MonthAnalisys";
-			WindowManager.ShowDialog(new MonthAnalisysViewModel(Db));
+			WindowManager.ShowDialog(IoC.Get<MonthAnalisysViewModel>());
 			Message = arcMessage;
 		}
 

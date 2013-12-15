@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -6,12 +7,13 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
+	[Export]
 	class RenewDepositViewModel : Screen
 	{
-	  private readonly KeeperDb _db;
-    private readonly BalanceCalculator _balanceCalculator;
+	  private KeeperDb _db;
+    private BalanceCalculator _balanceCalculator;
 
-		private readonly Deposit _oldDeposit;
+		private Deposit _oldDeposit;
 		public Account NewDeposit { get; set; }
 
 		public DateTime TransactionsDate { get; set; }
@@ -21,13 +23,16 @@ namespace Keeper.ViewModels
 		public decimal Procents { get; set; }
 		public string NewDepositName { get; set; }
 
-		public RenewDepositViewModel(KeeperDb db, Deposit oldDeposit)
+		[ImportingConstructor]
+		public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator)
 		{
 		  _db = db;
-		  _balanceCalculator = new BalanceCalculator(db, new RateExtractor(_db));
+		  _balanceCalculator = balanceCalculator;
+		}
 
+		public void SetOldDeposit(Deposit oldDeposit)
+		{
 			_oldDeposit = oldDeposit;
-			NewDeposit = null;
 
 			TransactionsDate = _oldDeposit.Finish;
 			OldDepositName = _oldDeposit.Account.Name;
