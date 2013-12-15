@@ -6,10 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper.DbInputOutput;
 using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
+using Keeper.Utils.DbInputOutput;
 
 
 namespace Keeper.ViewModels
