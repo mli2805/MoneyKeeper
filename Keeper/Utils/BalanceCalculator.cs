@@ -10,32 +10,14 @@ namespace Keeper.Utils
 	public class BalanceCalculator
 	{
 	  private readonly KeeperDb _db;
-	  private readonly IRateExtractor _rateExtractor;
 
 		[ImportingConstructor]
 		public BalanceCalculator(KeeperDb db, IRateExtractor rateExtractor)
 		{
 			_db = db;
-			_rateExtractor = rateExtractor;
 		}
 
-	  public class BalancePair : IComparable
-		{
-			public CurrencyCodes Currency { get; set; }
-			public decimal Amount { get; set; }
-
-			public new string ToString()
-			{
-				return String.Format("{0:#,0} {1}", Amount, Currency.ToString().ToLower());
-			}
-
-			public int CompareTo(object obj)
-			{
-				return Currency.CompareTo(((BalancePair)obj).Currency);
-			}
-		}
-
-		/// <summary>
+	  /// <summary>
 		/// First way to build daily balances
 		/// 
 		/// This way doesn't consider excange rate differences!!!
@@ -117,32 +99,6 @@ namespace Keeper.Utils
 			else return AccountBalancePairs(balancedAccount, period);
 		}
 
-		public decimal BalancePairsToUsd(IEnumerable<BalancePair> inCurrencies, DateTime dateTime)
-		{
-			decimal result = 0;
-			foreach (var balancePair in inCurrencies)
-			{
-				if (balancePair.Currency == CurrencyCodes.USD) 
-					result += balancePair.Amount;
-				else
-					result += balancePair.Amount / (decimal)_rateExtractor.GetRateThisDayOrBefore(balancePair.Currency, dateTime);
-			}
-			return result;
-		}
-
-		/// <summary>
-		/// переводит остатки во всех валютах по balancedAccount после dateTime в доллары
-		/// </summary>
-		/// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
-		/// <param name="dateTime">день, после которого остаток</param>
-		/// <returns></returns>
-		public decimal AccountBalanceAfterDayInUsd(Account balancedAccount, DateTime dateTime)
-		{
-			var inCurrencies = AccountBalancePairsAfterDay(balancedAccount, dateTime);
-			var result = BalancePairsToUsd(inCurrencies, dateTime);
-			return Math.Round(result * 100) / 100;
-		}
-
 		/// <summary>
 		/// Хреново!!! - запрашивает остаток по всем валютам, и возращает по одной переданной в качестве параметра 
 		/// Иначе надо почти дублировать длинные AccountBalancePairs и ArticleBalancePairs, только с параметром валюта
@@ -161,6 +117,52 @@ namespace Keeper.Utils
 				if (balancePair.Currency == currency) return balancePair.Amount;
 			}
 			return 0;
+		}
+	}
+
+	public interface IBank {
+		decimal BalancePairsToUsd(IEnumerable<BalancePair> inCurrencies, DateTime dateTime);
+	}
+	[Export(typeof(IBank))]
+	public class Bank : IBank
+	{
+		private readonly IRateExtractor _rateExtractor;
+
+		[ImportingConstructor]
+		public Bank(IRateExtractor rateExtractor)
+		{
+			_rateExtractor = rateExtractor;
+		}
+
+		public decimal BalancePairsToUsd(IEnumerable<BalancePair> inCurrencies, DateTime dateTime)
+		{
+			decimal result = 0;
+			foreach (var balancePair in inCurrencies)
+			{
+				if (balancePair.Currency == CurrencyCodes.USD)
+					result += balancePair.Amount;
+				else
+					result += balancePair.Amount / (decimal)_rateExtractor.GetRateThisDayOrBefore(balancePair.Currency, dateTime);
+			}
+			return result;
+		}
+
+		
+	}
+
+	public class BalancePair : IComparable
+	{
+		public CurrencyCodes Currency { get; set; }
+		public decimal Amount { get; set; }
+
+		public new string ToString()
+		{
+			return String.Format("{0:#,0} {1}", Amount, Currency.ToString().ToLower());
+		}
+
+		public int CompareTo(object obj)
+		{
+			return Currency.CompareTo(((BalancePair)obj).Currency);
 		}
 	}
 }
