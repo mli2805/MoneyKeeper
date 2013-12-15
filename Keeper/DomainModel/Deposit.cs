@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
@@ -9,13 +10,14 @@ using Keeper.Utils;
 
 namespace Keeper.DomainModel
 {
+	[Export]
 	public class Deposit : PropertyChangedBase
 	{
-	  private readonly RateExtractor _rateExtractor;
-	  private readonly BalanceCalculator _balanceCalculator;
-	  private readonly KeeperDb _db;
+		private readonly RateExtractor _rateExtractor;
+		private readonly BalanceCalculator _balanceCalculator;
+		private readonly KeeperDb _db;
 
-    private ObservableCollection<string> _report;
+		private ObservableCollection<string> _report;
 
 		public Account Account { get; set; }
 		public DateTime Start { get; set; }
@@ -31,15 +33,15 @@ namespace Keeper.DomainModel
 		public decimal Profit { get; set; }
 		public decimal Forecast { get; set; }
 
-    [ImportingConstructor]
-	  public Deposit(KeeperDb db)
-    {
-      _db = db;
-	  _rateExtractor = new RateExtractor(db);
-	  _balanceCalculator = new BalanceCalculator(db, _rateExtractor);
-    }
+		[ImportingConstructor]
+		public Deposit(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator)
+		{
+			_db = db;
+			_rateExtractor = rateExtractor;
+			_balanceCalculator = balanceCalculator;
+		}
 
-	  public Brush FontColor
+		public Brush FontColor
 		{
 			get
 			{
@@ -68,10 +70,10 @@ namespace Keeper.DomainModel
 			var s = Account.Name;
 			var p = s.IndexOf('/');
 			var n = s.IndexOf(' ', p);
-			Start = Convert.ToDateTime(s.Substring(p - 2, n - p + 2));
+			Start = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
 			p = s.IndexOf('/', n);
 			n = s.IndexOf(' ', p);
-			Finish = Convert.ToDateTime(s.Substring(p - 2, n - p + 2));
+			Finish = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
 			p = s.IndexOf('%', n);
 			DepositRate = Convert.ToDecimal(s.Substring(n, p - n));
 		}
@@ -164,19 +166,19 @@ namespace Keeper.DomainModel
 			Report.Add(ForecastProfit());
 		}
 
-    private string ToDepositReport(Transaction transaction)
-    {
-      var s = transaction.Timestamp.ToString("dd/MM/yyyy");
+		private string ToDepositReport(Transaction transaction)
+		{
+			var s = transaction.Timestamp.ToString("dd/MM/yyyy");
 
-      var sum = transaction.Currency != CurrencyCodes.USD ?
-        String.Format("{0:#,0} {1}  ($ {2:#,0} )",
-         transaction.Amount, transaction.Currency.ToString().ToLower(), transaction.Amount / (decimal)_rateExtractor.GetRate(transaction.Currency, transaction.Timestamp)) :
-        String.Format("{0:#,0} usd", transaction.Amount);
-      if (transaction.Debet == Account) s = s + "   " + sum;
-      else s = s + "                                           " + sum;
+			var sum = transaction.Currency != CurrencyCodes.USD ?
+			  String.Format("{0:#,0} {1}  ($ {2:#,0} )",
+			   transaction.Amount, transaction.Currency.ToString().ToLower(), transaction.Amount / (decimal)_rateExtractor.GetRate(transaction.Currency, transaction.Timestamp)) :
+			  String.Format("{0:#,0} usd", transaction.Amount);
+			if (transaction.Debet == Account) s = s + "   " + sum;
+			else s = s + "                                           " + sum;
 
-      return s;
-    }
+			return s;
+		}
 
 
 

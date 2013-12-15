@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -36,6 +37,7 @@ namespace Keeper.ViewModels
     }
   }
 
+	[Export]
   public class DepositsViewModel : Screen
   {
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
@@ -49,6 +51,7 @@ namespace Keeper.ViewModels
 
     public Style MyTitleStyle { get; set; }
 
+	  [ImportingConstructor]
     public DepositsViewModel(KeeperDb db)
     {
       _db = db;
@@ -61,10 +64,10 @@ namespace Keeper.ViewModels
       {
         if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
         {
-          var temp = new Deposit(_db);
-          temp.Account = account;
-          temp.CollectInfo();
-          DepositsList.Add(temp);
+	        var deposit = IoC.Get<Deposit>();
+			deposit.Account = account;
+			deposit.CollectInfo();
+			DepositsList.Add(deposit);
         }
       }
       SelectedDeposit = DepositsList[0];
@@ -107,9 +110,11 @@ namespace Keeper.ViewModels
         var depositView = (from d in LaunchedViewModels
                            where d.Deposit.Account == SelectedDeposit.Account
                            select d).FirstOrDefault();
-        if (depositView != null) depositView.TryClose();
+        if (depositView != null) 
+			depositView.TryClose();
       }
-      var depositViewModel = new DepositViewModel(_db, SelectedDeposit.Account);
+      var depositViewModel = IoC.Get<DepositViewModel>();
+	  depositViewModel.SetAccount(SelectedDeposit.Account);
       LaunchedViewModels.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
     }
