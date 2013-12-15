@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using Caliburn.Micro;
 using Ionic.Zip;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.DbInputOutput
 {
   internal class DbToTxtSaver
   {

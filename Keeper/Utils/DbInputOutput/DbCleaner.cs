@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Micro;
 using Keeper.DomainModel;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.DbInputOutput
 {
   class DbCleaner
   {

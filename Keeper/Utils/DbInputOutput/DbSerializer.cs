@@ -1,14 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.Composition;
+﻿using System.Composition;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
-using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.DbInputOutput
 {
 	[Export(typeof(IDbSerializer))]
   class DbSerializer : IDbSerializer

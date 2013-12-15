@@ -3,10 +3,10 @@
 using FakeItEasy;
 
 using FluentAssertions;
-
-using Keeper.DbInputOutput;
 using Keeper.DomainModel;
 using Keeper.Properties;
+using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.Dialogs;
 using Keeper.Utils.FileSystem;
 
 using NUnit.Framework;

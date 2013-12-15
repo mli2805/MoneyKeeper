@@ -2,7 +2,7 @@
 using System.Linq;
 using Keeper.Properties;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.DbInputOutput
 {
   class DbBackupOrganizer
   {

@@ -1,7 +1,7 @@
 ﻿using System.Composition;
 using System.Windows;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.Dialogs
 {
 	[Export(typeof(IMessageBoxer))]
 	[Shared]
