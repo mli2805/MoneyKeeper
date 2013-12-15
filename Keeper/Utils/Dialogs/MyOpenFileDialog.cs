@@ -1,6 +1,6 @@
 ﻿using System.Composition;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.Dialogs
 {
 	[Export(typeof(IMyOpenFileDialog))]
 	class MyOpenFileDialog : IMyOpenFileDialog
