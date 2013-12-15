@@ -227,7 +227,7 @@ namespace Keeper.ViewModels
       BeforeList.Add(String.Format("Итого {0:#,0} usd", MonthSaldo.BeginBalance));
     }
 
-    private ObservableCollection<string> FillListWithDateBalance(List<BalanceCalculator.BalancePair> balanceInCurrencies, DateTime date)
+    private ObservableCollection<string> FillListWithDateBalance(List<BalancePair> balanceInCurrencies, DateTime date)
     {
       var list = new ObservableCollection<string>();
       list.Add("В разрезе валют:");
