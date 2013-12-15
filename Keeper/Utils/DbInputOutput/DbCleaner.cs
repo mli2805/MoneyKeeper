@@ -13,25 +13,25 @@ namespace Keeper.Utils.DbInputOutput
       db.ArticlesAssociations.Clear();
       db.Transactions.Clear();
 
-      ClearAccounts(ref db);
+      ClearAccounts(db);
     }
 
-    private void ClearAccounts(ref KeeperDb db)
+    private void ClearAccounts(KeeperDb db)
     {
       var roots = new List<Account>(from account in db.Accounts
                                     where account.Parent == null
                                     select account);
       foreach (var root in roots)
       {
-        RemoveBranchFromDatabase(ref db, root);
+        RemoveBranchFromDatabase(db, root);
       }
     }
 
-    public void RemoveBranchFromDatabase(ref KeeperDb db, Account branch)
+    public void RemoveBranchFromDatabase(KeeperDb db, Account branch)
     {
       foreach (var child in branch.Children.ToArray())
       {
-        RemoveBranchFromDatabase(ref db, child);
+        RemoveBranchFromDatabase(db, child);
       }
       db.Accounts.Remove(branch);
     }
