@@ -21,8 +21,8 @@ namespace Keeper.Controls
       {
         if (SelectedPeriod.Equals(value)) return;
         SetValue(SelectedPeriodProperty, value);
-        StartDatePicker.SelectedDate = value.GetStart();
-        FinishDatePicker.SelectedDate = value.GetFinish();
+        StartDatePicker.SelectedDate = value.Start;
+        FinishDatePicker.SelectedDate = value.Finish;
       }
     }
 
@@ -44,31 +44,31 @@ namespace Keeper.Controls
       throw new NotImplementedException();
     }
 
-    private void OneDayBeforeClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.GetStart().AddDays(-1), SelectedPeriod.GetFinish().AddDays(-1)); }
+    private void OneDayBeforeClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddDays(-1), SelectedPeriod.Finish.AddDays(-1)); }
 
     private void OneMonthBeforeClick(object sender, RoutedEventArgs e)
     {
 
-      var finish = SelectedPeriod.GetFinish();
+      var finish = SelectedPeriod.Finish;
       finish = IsLastDayOfMonth(finish) ? finish.AddDays(-finish.Day) : finish.AddMonths(-1);
-      SelectedPeriod = new Period(SelectedPeriod.GetStart().AddMonths(-1), finish);
+      SelectedPeriod = new Period(SelectedPeriod.Start.AddMonths(-1), finish);
     }
 
-    private void OneYearBeforeClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.GetStart().AddYears(-1), SelectedPeriod.GetFinish().AddYears(-1)); }
-    private void OneDayAfterClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.GetStart().AddDays(1), SelectedPeriod.GetFinish().AddDays(1)); }
+    private void OneYearBeforeClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddYears(-1), SelectedPeriod.Finish.AddYears(-1)); }
+    private void OneDayAfterClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddDays(1), SelectedPeriod.Finish.AddDays(1)); }
     private void OneMonthAfterClick(object sender, RoutedEventArgs e)
     {
       DateTime finish;
-      if (IsLastDayOfMonth(SelectedPeriod.GetFinish()))
+      if (IsLastDayOfMonth(SelectedPeriod.Finish))
       {
-        finish = SelectedPeriod.GetFinish().AddMonths(2);
+        finish = SelectedPeriod.Finish.AddMonths(2);
         finish = finish.AddDays(-finish.Day);
       }
-      else finish = SelectedPeriod.GetFinish().AddMonths(1);
+      else finish = SelectedPeriod.Finish.AddMonths(1);
 
-      SelectedPeriod = new Period(SelectedPeriod.GetStart().AddMonths(1), finish);
+      SelectedPeriod = new Period(SelectedPeriod.Start.AddMonths(1), finish);
     }
-    private void OneYearAfterClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.GetStart().AddYears(1), SelectedPeriod.GetFinish().AddYears(1)); }
+    private void OneYearAfterClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddYears(1), SelectedPeriod.Finish.AddYears(1)); }
     private void TodayClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today, DateTime.Today); }
     private void YesterdayClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-1), DateTime.Today.AddDays(-1)); }
     private void ThisMonthClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.Day + 1), DateTime.Today); }
@@ -88,16 +88,16 @@ namespace Keeper.Controls
 
     private void StartDatePickerSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
-      if (StartDatePicker.SelectedDate == null) StartDatePicker.SelectedDate = SelectedPeriod.GetStart();
+      if (StartDatePicker.SelectedDate == null) StartDatePicker.SelectedDate = SelectedPeriod.Start;
       else
-        SelectedPeriod = new Period(new DayProcessor((DateTime)StartDatePicker.SelectedDate).BeforeThisDay(), SelectedPeriod.GetFinish());
+        SelectedPeriod = new Period(new DayProcessor((DateTime)StartDatePicker.SelectedDate).BeforeThisDay(), SelectedPeriod.Finish);
     }
 
     private void FinishDatePickerSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
-      if (FinishDatePicker.SelectedDate == null) FinishDatePicker.SelectedDate = SelectedPeriod.GetFinish(); 
+      if (FinishDatePicker.SelectedDate == null) FinishDatePicker.SelectedDate = SelectedPeriod.Finish; 
       else
-        SelectedPeriod = new Period(SelectedPeriod.GetStart(), new DayProcessor((DateTime)FinishDatePicker.SelectedDate).AfterThisDay());
+        SelectedPeriod = new Period(SelectedPeriod.Start, new DayProcessor((DateTime)FinishDatePicker.SelectedDate).AfterThisDay());
     }
 
   }

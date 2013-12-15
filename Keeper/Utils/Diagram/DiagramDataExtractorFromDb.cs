@@ -35,7 +35,7 @@ namespace Keeper.Utils.Diagram
     {
       var result = new Dictionary<DateTime, Dictionary<CurrencyCodes, decimal>>();
       var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
-      var currentDate = period.GetStart();
+      var currentDate = period.Start;
 
       foreach (var transaction in _db.Transactions)
       {
@@ -139,12 +139,12 @@ namespace Keeper.Utils.Diagram
     {
       var result = new Dictionary<DateTime, decimal>();
       decimal movement = 0;
-      var currentDate = period.GetStart();
+      var currentDate = period.Start;
 
       foreach (var transaction in _db.Transactions)
       {
-        if (transaction.Timestamp.Date < period.GetStart()) continue;
-        if (transaction.Timestamp.Date > period.GetFinish()) break;
+        if (transaction.Timestamp.Date < period.Start) continue;
+        if (transaction.Timestamp.Date > period.Finish) break;
 
         if (transaction.Timestamp.Date != currentDate)
         {
