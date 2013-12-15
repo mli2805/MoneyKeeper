@@ -1,9 +1,10 @@
 ﻿using System.Composition;
-using System.ComponentModel.Composition.Hosting;
+using System.Composition.Hosting;
 
 using FluentAssertions;
 
 using Keeper.DomainModel;
+using Keeper.Utils.MEF;
 
 using NUnit.Framework;
 
@@ -12,6 +13,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 	[TestFixture]
 	public sealed class TestMef
 	{
+		CompositionHost mContainer;
 		[Export]
 		[Shared]
 		internal class Importer
@@ -26,25 +28,25 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			[Export]
 			public KeeperDb Db { get; set; }
 		}
-		CompositionContainer mCompositionContainer;
 
 		[SetUp]
 		public void Setup()
 		{
-			mCompositionContainer = new CompositionContainer(new AssemblyCatalog(typeof(Exporter).Assembly));
+			mContainer = new ContainerBuilder()
+				.WithAssembly(typeof(Exporter).Assembly).Build();
 		}
 
 		[Test]
 		public void Export_When_Property_Is_Null_Should_Work_And_Import_Null()
 		{
-			mCompositionContainer.GetExport<Importer>().Value.Db.Should().BeNull();
+			mContainer.GetExport<Importer>().Db.Should().BeNull();
 		}
 
 		[Test]
 		public void Export_When_Property_Is_Not_Null_Should_Work_And_Import_Not_Null()
 		{
-			mCompositionContainer.GetExport<Exporter>().Value.Db = new KeeperDb();
-			mCompositionContainer.GetExport<Importer>().Value.Db.Should().NotBeNull();
+			mContainer.GetExport<Exporter>().Db = new KeeperDb();
+			mContainer.GetExport<Importer>().Db.Should().NotBeNull();
 		}
 	}
 }
