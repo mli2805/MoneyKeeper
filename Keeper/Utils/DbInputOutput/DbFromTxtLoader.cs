@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,20 +13,10 @@ using Keeper.Properties;
 
 namespace Keeper.DbInputOutput
 {
-  public class DbLoadError
-  {
-    public int Code { get; set; }
-    public string Explanation { get; set; }
+	[Export(typeof(IDbFromTxtLoader))]
+  class DbFromTxtLoader : IDbFromTxtLoader
+	{
 
-    public void Add(int code, string explanation)
-    {
-      Code = code;
-      Explanation += explanation + "\n";
-    }
-
-  }
-  class DbFromTxtLoader
-  {
     public Encoding Encoding1251 = Encoding.GetEncoding(1251);
     public DbLoadError Result = new DbLoadError();
 

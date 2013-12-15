@@ -120,9 +120,16 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\AccountTreesGardener.cs" />
     <Compile Include="Utils\BalanceCalculator.cs" />
+    <Compile Include="Utils\DbInputOutput\DbLoadError.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
     <Compile Include="Utils\DbInputOutput\DbBackupOrganizer.cs" />
     <Compile Include="Utils\DbInputOutput\DbFromTxtLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\IDbFromTxtLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\IDbSerializer.cs" />
+    <Compile Include="Utils\DbInputOutput\IMessageBoxer.cs" />
+    <Compile Include="Utils\DbInputOutput\IMyOpenFileDialog.cs" />
+    <Compile Include="Utils\DbInputOutput\MessageBoxer.cs" />
+    <Compile Include="Utils\DbInputOutput\MyOpenFileDialog.cs" />
     <Compile Include="Utils\Diagram\DiagramData.cs" />
     <Compile Include="Utils\Diagram\DiagramDataPanAndZoomer.cs" />
     <Compile Include="Utils\Diagram\DiagramDrawer.cs" />
@@ -133,6 +140,12 @@
     <Compile Include="Utils\Diagram\DiagramHintCreator.cs" />
     <Compile Include="Utils\Diagram\DiagramLegendCreator.cs" />
     <Compile Include="Utils\Diagram\DiagramPointAnalyzer.cs" />
+    <Compile Include="Utils\FileSystem\DirectoryImpl.cs" />
+    <Compile Include="Utils\FileSystem\FileImpl.cs" />
+    <Compile Include="Utils\FileSystem\FileSystemImpl.cs" />
+    <Compile Include="Utils\FileSystem\IDirectory.cs" />
+    <Compile Include="Utils\FileSystem\IFile.cs" />
+    <Compile Include="Utils\FileSystem\IFileSystem.cs" />
     <Compile Include="Utils\FunctionsWithEvery.cs" />
     <Compile Include="Utils\MonthAnalizer.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
@@ -338,6 +351,7 @@
   <ItemGroup>
     <Resource Include="Resources\square_lock.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

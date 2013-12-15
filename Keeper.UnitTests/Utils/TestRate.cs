@@ -8,7 +8,7 @@ using FluentAssertions;
 
 namespace Keeper.UnitTests.Utils
 {
-	[TestFixture]
+/*	[TestFixture]
 	public class TestRate
 	{
 		private KeeperDb _keeperDb;
@@ -49,5 +49,5 @@ namespace Keeper.UnitTests.Utils
 			_underTest.GetRate(CurrencyCodes.BYR, FirstDay).Should().Be(1);
 			_underTest.GetRate(CurrencyCodes.BYR, ThirdDay).Should().Be(2);
 		}
-	}
+	}*/
 }

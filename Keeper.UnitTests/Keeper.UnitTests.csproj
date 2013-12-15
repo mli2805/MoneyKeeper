@@ -44,6 +44,8 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -58,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\DbInputOutput\TestDbGeneralLoader.cs" />
+    <Compile Include="TestMef.cs" />
     <Compile Include="Utils\TestBalance.cs" />
     <Compile Include="Utils\TestRate.cs" />
   </ItemGroup>
