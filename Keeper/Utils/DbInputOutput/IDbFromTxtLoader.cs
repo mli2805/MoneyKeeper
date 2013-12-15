@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 using Keeper.DomainModel;
 
-namespace Keeper.DbInputOutput
+namespace Keeper.Utils.DbInputOutput
 {
 	interface IDbFromTxtLoader {
 		DbLoadError LoadFromLastZip(ref KeeperDb db);
