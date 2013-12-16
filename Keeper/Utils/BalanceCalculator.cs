@@ -59,6 +59,7 @@ namespace Keeper.Utils
 				   };
 		}
 
+    // TODO Test
 		public IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
 		{
 			return from t in _db.Transactions
