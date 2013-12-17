@@ -24,9 +24,9 @@ namespace Keeper.ViewModels
 		//    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 		public KeeperDb Db;
 
-		private AccountTreesGardener _accountTreesGardener;
-		private BalancesForShellCalculator _balanceCalculator;
-		private DiagramDataCtors _diagramDataCtor;
+		private readonly AccountTreesGardener _accountTreesGardener;
+		private readonly BalancesForShellCalculator _balanceCalculator;
+		private readonly DiagramDataCtors _diagramDataCtor;
 
 		#region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
