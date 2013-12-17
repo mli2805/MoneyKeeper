@@ -118,8 +118,10 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\MoneyPair.cs" />
     <Compile Include="Utils\BalancesForShellCalculator.cs" />
     <Compile Include="Utils\BalancesForTransactionsCalculator.cs" />
+    <Compile Include="Utils\CurrencyExchanger.cs" />
     <Compile Include="Utils\DayProcessor.cs" />
     <Compile Include="Utils\DbInputOutput\DbGeneralLoader.cs" />
     <Compile Include="DomainModel\Account.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="Utils\FileSystem\IFile.cs" />
     <Compile Include="Utils\FileSystem\IFileSystem.cs" />
     <Compile Include="Utils\FunctionsWithEvery.cs" />
+    <Compile Include="Utils\ICurrencyExchanger.cs" />
     <Compile Include="Utils\MEF\ContainerBuilder.cs" />
     <Compile Include="Utils\MEF\ContainerConfigurationExtensions.cs" />
     <Compile Include="Utils\MEF\InstanceDescriptorProvider.cs" />
