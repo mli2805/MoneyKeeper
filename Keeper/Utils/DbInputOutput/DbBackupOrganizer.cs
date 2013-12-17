@@ -8,7 +8,7 @@ namespace Keeper.Utils.DbInputOutput
   {
     public void RemoveIdenticalBackups()
     {
-      var backupFiles = Directory.EnumerateFiles(Settings.Default.SavePath,"DB*.zip").ToList();
+      var backupFiles = Directory.EnumerateFiles(Settings.Default.DbPath,"DB*.zip").ToList();
       for (int i = 0; i < backupFiles.Count()-1; i++)
       {
         var file = new FileInfo(backupFiles[i]);

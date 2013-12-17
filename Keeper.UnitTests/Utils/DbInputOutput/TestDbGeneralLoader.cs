@@ -32,7 +32,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mDbSerializer = A.Fake<IDbSerializer>();
 			mFromTxtLoader = A.Fake<IDbFromTxtLoader>();
 			mFileSystem = A.Fake<IFileSystem>();
-			Settings.Default.SavePath = @"C:\";
+			
 			mFile = A.Fake<IFile>();
 			mKeeperDb = new KeeperDb();
 			A.CallTo(() => mFileSystem.PathCombine(@"C:\", "Keeper.dbx")).Returns("full path");
@@ -76,7 +76,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			// Arrange
 			A.CallTo(() => mFile.Exists).Returns(false);
 			A.CallTo(() => mOpenFileDialog.Show(".dbx",
-			                                    "Keeper Database (.dbx)|*.dbx", "full path", 
+			                                    "Keeper Database (.dbx)|*.dbx",  
 			                                    @"g:\local_keeperDb\Keeper.dbx")).Returns("changed filename");
 
 			// Act

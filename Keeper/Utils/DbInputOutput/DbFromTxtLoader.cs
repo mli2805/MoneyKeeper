@@ -49,7 +49,7 @@ namespace Keeper.Utils.DbInputOutput
     public void UnzipAllTables()
     {
       var zipToUnpack = GetLatestDbArchive();
-      var unpackDirectory = Settings.Default.SavePath;
+      var unpackDirectory = Settings.Default.DbPath;
       using (var zip1 = ZipFile.Read(zipToUnpack))
       {
         // here, we extract every entry, but we could extract conditionally
@@ -82,7 +82,7 @@ namespace Keeper.Utils.DbInputOutput
       }
       if (wrongContent.Count != 0)
       {
-        File.WriteAllLines(Path.ChangeExtension(Path.Combine(Settings.Default.SavePath, filename), "err"), wrongContent, Encoding1251);
+        File.WriteAllLines(Path.ChangeExtension(Path.Combine(Settings.Default.DbPath, filename), "err"), wrongContent, Encoding1251);
         Result.Add(6, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
       }
       return result;

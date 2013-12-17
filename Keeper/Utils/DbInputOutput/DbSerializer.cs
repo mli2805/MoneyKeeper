@@ -11,13 +11,11 @@ namespace Keeper.Utils.DbInputOutput
   class DbSerializer : IDbSerializer
 	{
 
-    public void EncryptAndSerialize(KeeperDb db)
+    public void EncryptAndSerialize(KeeperDb db, string filename)
     {
       byte[] key = { 0xc5, 0x51, 0xf6, 0x4e, 0x97, 0xdc, 0xa0, 0x54, 0x89, 0x1d, 0xe6, 0x62, 0x3f, 0x27, 0x00, 0xca };
       byte[] initVector = { 0xf3, 0x5e, 0x7a, 0x81, 0xae, 0x8c, 0xb4, 0x92, 0xd0, 0xf2, 0xe7, 0xc1, 0x8d, 0x54, 0x00, 0xd8 };
 
-      if (!Directory.Exists(Settings.Default.SavePath)) Directory.CreateDirectory(Settings.Default.SavePath);
-      var filename = Path.Combine(Settings.Default.SavePath, "Keeper.dbx");
       using (Stream fStream = new FileStream(filename, FileMode.Create, FileAccess.Write))
       {
         var rmCrypto = new RijndaelManaged();

@@ -1,4 +1,5 @@
 ﻿using System.Composition;
+using System.IO;
 using System.Windows;
 using Keeper.DomainModel;
 using Keeper.Properties;
@@ -11,11 +12,11 @@ namespace Keeper.Utils.DbInputOutput
 	[Shared]
 	internal class DbGeneralLoader
 	{
-		readonly IMessageBoxer _mMessageBoxer;
-		readonly IMyOpenFileDialog _mOpenFileDialog;
-		readonly IDbSerializer _mDbSerializer;
-		readonly IDbFromTxtLoader _mFromTxtLoader;
-		readonly IFileSystem _mFileSystem;
+		readonly IMessageBoxer _messageBoxer;
+		readonly IMyOpenFileDialog _openFileDialog;
+		readonly IDbSerializer _dbSerializer;
+		readonly IDbFromTxtLoader _fromTxtLoader;
+		readonly IFileSystem _fileSystem;
 		[Export]
 		[Export(typeof(IKeeperDb))]
 		public KeeperDb Db { get; private set; }
@@ -24,36 +25,43 @@ namespace Keeper.Utils.DbInputOutput
 		public DbGeneralLoader(IMessageBoxer messageBoxer, IMyOpenFileDialog openFileDialog, 
 			IDbSerializer dbSerializer, IDbFromTxtLoader fromTxtLoader, IFileSystem fileSystem)
 		{
-			_mMessageBoxer = messageBoxer;
-			_mOpenFileDialog = openFileDialog;
-			_mDbSerializer = dbSerializer;
-			_mFromTxtLoader = fromTxtLoader;
-			_mFileSystem = fileSystem;
+			_messageBoxer = messageBoxer;
+			_openFileDialog = openFileDialog;
+			_dbSerializer = dbSerializer;
+			_fromTxtLoader = fromTxtLoader;
+			_fileSystem = fileSystem;
 			Db = FullDbLoadProcess();
 		}
 
 		KeeperDb FullDbLoadProcess()
 		{
-			var filename = _mFileSystem.PathCombine(Settings.Default.SavePath, "Keeper.dbx");
-			if (!_mFileSystem.GetFile(filename).Exists)
+      var filename = Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile);
+			if (!_fileSystem.GetFile(filename).Exists)
 			{
-				_mMessageBoxer.Show("File '" + filename + 
+				_messageBoxer.Show("File '" + filename + 
 					"' not found. \n\n You will be offered to choose database file.",
 					"Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-				filename = _mOpenFileDialog.Show(".dbx", 
-					"Keeper Database (.dbx)|*.dbx", filename, @"g:\local_keeperDb\Keeper.dbx");
+			  var startupPath = Path.GetDirectoryName(System.Environment.GetCommandLineArgs()[0]);
+			  var testBasePath = Path.GetFullPath(Path.Combine(startupPath, Settings.Default.TestDbPath));
+
+			  filename = _openFileDialog.Show(".dbx", "Keeper Database (.dbx)|*.dbx", testBasePath);
+        if (filename == "") return null;
+
+        Settings.Default.DbPath = Path.GetDirectoryName(filename);
+			  Settings.Default.DbxFile = filename;
 			}
-			var db = _mDbSerializer.DecryptAndDeserialize(filename);
+
+			var db = _dbSerializer.DecryptAndDeserialize(filename);
 			if (db != null) return db;
 
-			_mMessageBoxer.Show("File '" + filename + "' not found. \n Last zip will be used.",
+			_messageBoxer.Show("File '" + filename + "' not found. \n Last zip will be used.",
 				"Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 
-			var loadResult = _mFromTxtLoader.LoadFromLastZip(ref db);
+			var loadResult = _fromTxtLoader.LoadFromLastZip(ref db);
 			if (loadResult.Code == 0) return db;
 
-			_mMessageBoxer.Show(loadResult.Explanation + ". \n Application will be closed!", 
+			_messageBoxer.Show(loadResult.Explanation + ". \n Application will be closed!", 
 				"Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 			return null;
 		}
