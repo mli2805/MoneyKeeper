@@ -78,7 +78,7 @@
     <Compile Include="TestMef.cs" />
     <Compile Include="DomainModel\TestPeriod.cs" />
     <Compile Include="Utils\TestBalanceCalculator.cs" />
-    <Compile Include="Utils\TestBank.cs" />
+    <Compile Include="Utils\TestCurrencyExchanger.cs" />
     <Compile Include="Utils\TestRate.cs" />
   </ItemGroup>
   <ItemGroup>
