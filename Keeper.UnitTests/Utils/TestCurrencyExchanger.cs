@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace Keeper.UnitTests.Utils
 {
   [TestFixture]
-	public class TestBank
+	public class TestCurrencyExchanger
 	{
 		private CurrencyExchanger _underTest;
 		private IRateExtractor _rate;
