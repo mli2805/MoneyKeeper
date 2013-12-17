@@ -10,16 +10,16 @@ namespace Keeper.Utils
   {
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
-		readonly IBank _bank;
+		readonly ICurrencyExchanger _currencyExchanger;
 		private readonly BalanceCalculator _balanceCalculator;
 
     [ImportingConstructor]
-    public MonthAnalizer(KeeperDb db, BalanceCalculator balanceCalculator, RateExtractor rateExtractor, IBank bank)
+    public MonthAnalizer(KeeperDb db, BalanceCalculator balanceCalculator, RateExtractor rateExtractor, ICurrencyExchanger currencyExchanger)
     {
 	    _db = db;
 	    _balanceCalculator = balanceCalculator;
 	    _rateExtractor = rateExtractor;
-	    _bank = bank;
+	    _currencyExchanger = currencyExchanger;
     }
 
 	  public Saldo AnalizeMonth(DateTime initialDay)
@@ -31,7 +31,7 @@ namespace Keeper.Utils
 
       result.StartDate = initialDay.AddDays(-initialDay.Day + 1);
       result.BeginBalanceInCurrencies = _balanceCalculator.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate).ToList();
-      result.BeginBalance = _bank.BalancePairsToUsd(result.BeginBalanceInCurrencies, result.StartDate.AddDays(-1));
+      result.BeginBalance = _currencyExchanger.BalancePairsToUsd(result.BeginBalanceInCurrencies, result.StartDate.AddDays(-1));
       result.BeginByrRate = (decimal)_rateExtractor.GetRateThisDayOrBefore(CurrencyCodes.BYR, result.StartDate.AddDays(-1));
 
       var transactions = (from transaction in _db.Transactions
@@ -54,7 +54,7 @@ namespace Keeper.Utils
 
       result.EndBalanceInCurrencies =
         _balanceCalculator.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate.AddMonths(1)).ToList();
-      result.EndBalance = _bank.BalancePairsToUsd(result.EndBalanceInCurrencies,
+      result.EndBalance = _currencyExchanger.BalancePairsToUsd(result.EndBalanceInCurrencies,
                                                     result.StartDate.AddMonths(1).AddDays(-1));
       if (!transactions.Any())
       {

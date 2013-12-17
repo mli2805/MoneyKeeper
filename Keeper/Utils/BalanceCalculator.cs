@@ -25,7 +25,7 @@ namespace Keeper.Utils
 		/// <param name="balancedAccount"></param>
 		/// <param name="period"></param>
 		/// <returns></returns>
-		public IEnumerable<BalancePair> AccountBalancePairs(Account balancedAccount, Period period)
+		public IEnumerable<MoneyPair> AccountBalancePairs(Account balancedAccount, Period period)
 		{
 			var tempBalance =
 			  (from t in _db.Transactions
@@ -33,7 +33,7 @@ namespace Keeper.Utils
 				  (t.Credit.IsTheSameOrDescendantOf(balancedAccount) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount) ||
 				   (t.Debet.IsTheSameOrDescendantOf(balancedAccount) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount)))
 			   group t by t.Currency into g
-			   select new BalancePair
+			   select new MoneyPair
 			   {
 				   Currency = g.Key,
 				   Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount))
@@ -44,7 +44,7 @@ namespace Keeper.Utils
 					 (t.Credit.IsTheSameOrDescendantOf(balancedAccount.Name) ||
 												 t.Debet.IsTheSameOrDescendantOf(balancedAccount.Name))
 			   group t by t.Currency2 into g
-			   select new BalancePair
+			   select new MoneyPair
 			   {
 				   Currency = (CurrencyCodes)g.Key,
 				   Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1)
@@ -52,7 +52,7 @@ namespace Keeper.Utils
 
 			return from b in tempBalance
 				   group b by b.Currency into g
-				   select new BalancePair
+				   select new MoneyPair
 				   {
 					   Currency = g.Key,
 					   Amount = g.Sum(a => a.Amount)
@@ -60,12 +60,12 @@ namespace Keeper.Utils
 		}
 
     // TODO Test
-		public IEnumerable<BalancePair> ArticleBalancePairs(Account balancedAccount, Period period)
+		public IEnumerable<MoneyPair> ArticleBalancePairs(Account balancedAccount, Period period)
 		{
 			return from t in _db.Transactions
 				   where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
 				   group t by t.Currency into g
-				   select new BalancePair
+				   select new MoneyPair
 				   {
 					   Currency = g.Key,
 					   Amount = g.Sum(a => a.Amount)
@@ -78,7 +78,7 @@ namespace Keeper.Utils
 		/// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
 		/// <param name="dateTime">день, до которого остаток</param>
 		/// <returns></returns>
-		public IEnumerable<BalancePair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
+		public IEnumerable<MoneyPair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
 		{
       var period = new Period(new DateTime(0), new DayProcessor(dateTime).BeforeThisDay());
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
@@ -92,7 +92,7 @@ namespace Keeper.Utils
 		/// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
 		/// <param name="dateTime">день, после которого остаток</param>
 		/// <returns></returns>
-		public IEnumerable<BalancePair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
+		public IEnumerable<MoneyPair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
 		{                                                    
 			var period = new Period(new DateTime(0), new DayProcessor(dateTime).AfterThisDay());
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
@@ -118,52 +118,6 @@ namespace Keeper.Utils
 				if (balancePair.Currency == currency) return balancePair.Amount;
 			}
 			return 0;
-		}
-	}
-
-	public interface IBank {
-		decimal BalancePairsToUsd(IEnumerable<BalancePair> inCurrencies, DateTime dateTime);
-	}
-	[Export(typeof(IBank))]
-	public class Bank : IBank
-	{
-		private readonly IRateExtractor _rateExtractor;
-
-		[ImportingConstructor]
-		public Bank(IRateExtractor rateExtractor)
-		{
-			_rateExtractor = rateExtractor;
-		}
-
-		public decimal BalancePairsToUsd(IEnumerable<BalancePair> inCurrencies, DateTime dateTime)
-		{
-			decimal result = 0;
-			foreach (var balancePair in inCurrencies)
-			{
-				if (balancePair.Currency == CurrencyCodes.USD)
-					result += balancePair.Amount;
-				else
-					result += balancePair.Amount / (decimal)_rateExtractor.GetRateThisDayOrBefore(balancePair.Currency, dateTime);
-			}
-			return result;
-		}
-
-		
-	}
-
-	public class BalancePair : IComparable
-	{
-		public CurrencyCodes Currency { get; set; }
-		public decimal Amount { get; set; }
-
-		public new string ToString()
-		{
-			return String.Format("{0:#,0} {1}", Amount, Currency.ToString().ToLower());
-		}
-
-		public int CompareTo(object obj)
-		{
-			return Currency.CompareTo(((BalancePair)obj).Currency);
 		}
 	}
 }

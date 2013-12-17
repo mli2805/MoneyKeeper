@@ -11,10 +11,10 @@ using NUnit.Framework;
 
 namespace Keeper.UnitTests.Utils
 {
-	[TestFixture]
+  [TestFixture]
 	public class TestBank
 	{
-		private Bank _underTest;
+		private CurrencyExchanger _underTest;
 		private IRateExtractor _rate;
 		private readonly static DateTime Monday = new DateTime(2000, 1, 1);
 
@@ -22,7 +22,7 @@ namespace Keeper.UnitTests.Utils
 		public void SetUp()
 		{
 			_rate = A.Fake<IRateExtractor>();
-			_underTest = new Bank(_rate);
+			_underTest = new CurrencyExchanger(_rate);
 		
 		}
 		[Test]
@@ -32,8 +32,8 @@ namespace Keeper.UnitTests.Utils
 			A.CallTo(() => _rate.GetRateThisDayOrBefore(CurrencyCodes.EUR, Monday)).Returns(22);
 			_underTest.BalancePairsToUsd(new[]
 				{
-					new BalancePair {Amount = 7, Currency = CurrencyCodes.BYR},
-					new BalancePair {Amount = 11, Currency = CurrencyCodes.EUR},
+					new MoneyPair {Amount = 7, Currency = CurrencyCodes.BYR},
+					new MoneyPair {Amount = 11, Currency = CurrencyCodes.EUR},
 				}, Monday).Should().Be(1);
 		}
 		[Test]
@@ -41,7 +41,7 @@ namespace Keeper.UnitTests.Utils
 		{
 			_underTest.BalancePairsToUsd(new[]
 				{
-					new BalancePair {Amount = 7, Currency = CurrencyCodes.USD},
+					new MoneyPair {Amount = 7, Currency = CurrencyCodes.USD},
 				}, Monday).Should().Be(7);
 			A.CallTo(() => _rate.GetRateThisDayOrBefore(A<CurrencyCodes>.Ignored, A<DateTime>.Ignored))
 			 .MustNotHaveHappened();
