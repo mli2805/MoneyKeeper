@@ -7,9 +7,7 @@ namespace Keeper.Utils.DbInputOutput
 {
 	interface IDbFromTxtLoader {
 		DbLoadError LoadFromLastZip(ref KeeperDb db);
-		DbLoadError LoadDbFromTxt(ref KeeperDb db);
+    DbLoadError LoadDbFromTxt(ref KeeperDb db, string path);
 		void UnzipAllTables();
-		ObservableCollection<T> LoadFrom<T>(string filename, Func<string, List<Account>, T> parseLine, List<Account> accountsPlaneList);
-		bool LoadAccounts(ref KeeperDb db);
 	}
 }
