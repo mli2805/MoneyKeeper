@@ -20,23 +20,24 @@ namespace Keeper.Utils.DbInputOutput
 
     public DbLoadError LoadFromLastZip(ref KeeperDb db)
     {
-      return LoadDbFromTxt(ref db);
+      // TODO здесь надо сделать выбор зипа, распаковать его ну и вызвать загрузку из текстовых
+      return LoadDbFromTxt(ref db, Settings.Default.TemporaryTxtDbPath);
     }
 
-    public DbLoadError LoadDbFromTxt(ref KeeperDb db)
+    public DbLoadError LoadDbFromTxt(ref KeeperDb db, string path)
     {
-      LoadAccounts(ref db);
+      LoadAccounts(ref db, path);
       if (db.Accounts == null)
       {
         Result.Code = 5;
-        Result.Explanation = "File '" + Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt") + "' not found";
+        Result.Explanation = "File '" + Path.Combine(path, "Accounts.txt") + "' not found";
         return Result;
       }
       db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(db.Accounts);
 
-      db.Transactions = LoadFrom("Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
-      db.ArticlesAssociations = LoadFrom("ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, db.AccountsPlaneList);
-      db.CurrencyRates = LoadFrom("CurrencyRates.txt", CurrencyRateFromString, db.AccountsPlaneList);
+      db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
+      db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, db.AccountsPlaneList);
+      db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", CurrencyRateFromString, db.AccountsPlaneList);
 
       return Result;
     }
@@ -61,10 +62,10 @@ namespace Keeper.Utils.DbInputOutput
       }
     }
 
-    public ObservableCollection<T> LoadFrom<T>(string filename, Func<string, List<Account>, T> parseLine, List<Account> accountsPlaneList)
+    private ObservableCollection<T> LoadFrom<T>(string path, string filename, Func<string, List<Account>, T> parseLine, List<Account> accountsPlaneList)
     {
       var content =
-        File.ReadAllLines(Path.Combine(Settings.Default.TemporaryTxtDbPath, filename), Encoding1251).Where(
+        File.ReadAllLines(Path.Combine(path, filename), Encoding1251).Where(
           s => !string.IsNullOrWhiteSpace(s));
       var wrongContent = new List<string>();
       var result = new ObservableCollection<T>();
@@ -89,9 +90,9 @@ namespace Keeper.Utils.DbInputOutput
     }
 
     #region // Accounts
-    public bool LoadAccounts(ref KeeperDb db)
+    private bool LoadAccounts(ref KeeperDb db, string path)
     {
-      var filename = Path.Combine(Settings.Default.TemporaryTxtDbPath, "Accounts.txt");
+      var filename = Path.Combine(path, "Accounts.txt");
       if (!File.Exists(filename)) return false;
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
