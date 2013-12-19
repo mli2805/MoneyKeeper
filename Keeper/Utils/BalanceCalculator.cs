@@ -63,7 +63,7 @@ namespace Keeper.Utils
 		public IEnumerable<MoneyPair> ArticleBalancePairs(Account balancedAccount, Period period)
 		{
 			return from t in _db.Transactions
-				   where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateTimeIn(t.Timestamp)
+				   where t.Article != null && t.Article.IsTheSameOrDescendantOf(balancedAccount.Name) && period.IsDateIn(t.Timestamp)
 				   group t by t.Currency into g
 				   select new MoneyPair
 				   {
