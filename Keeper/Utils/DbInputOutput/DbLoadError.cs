@@ -5,7 +5,7 @@ namespace Keeper.Utils.DbInputOutput
 		public int Code { get; set; }
 		public string Explanation { get; set; }
 
-		public void Add(int code, string explanation)
+		public void Set(int code, string explanation)
 		{
 			Code = code;
 			Explanation += explanation + "\n";

@@ -5,68 +5,43 @@ using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Ionic.Zip;
 using Keeper.DomainModel;
 using Keeper.Properties;
 
 namespace Keeper.Utils.DbInputOutput
 {
-	[Export(typeof(IDbFromTxtLoader))]
+  [Export(typeof(IDbFromTxtLoader))]
   class DbFromTxtLoader : IDbFromTxtLoader
 	{
-
     public Encoding Encoding1251 = Encoding.GetEncoding(1251);
     public DbLoadError Result = new DbLoadError();
-
-    public DbLoadError LoadFromLastZip(ref KeeperDb db)
-    {
-      // TODO здесь надо сделать выбор зипа, распаковать его ну и вызвать загрузку из текстовых
-      return LoadDbFromTxt(ref db, Settings.Default.TemporaryTxtDbPath);
-    }
 
     public DbLoadError LoadDbFromTxt(ref KeeperDb db, string path)
     {
       LoadAccounts(ref db, path);
-      if (db.Accounts == null)
-      {
-        Result.Code = 5;
-        Result.Explanation = "File '" + Path.Combine(path, "Accounts.txt") + "' not found";
-        return Result;
-      }
+      if (Result.Code != 0) { db = null; return Result; }
       db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(db.Accounts);
 
       db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
+      if (Result.Code != 0) { db = null; return Result; }
       db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, db.AccountsPlaneList);
+      if (Result.Code != 0) { db = null; return Result; }
       db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", CurrencyRateFromString, db.AccountsPlaneList);
+      if (Result.Code != 0) { db = null; return Result; }
 
       return Result;
     }
 
-    private string GetLatestDbArchive()
-    {
-      return "Db.zip";
-    }
-
-    public void UnzipAllTables()
-    {
-      var zipToUnpack = GetLatestDbArchive();
-      var unpackDirectory = Settings.Default.DbPath;
-      using (var zip1 = ZipFile.Read(zipToUnpack))
-      {
-        // here, we extract every entry, but we could extract conditionally
-        // based on entry name, size, date, checkbox status, etc.  
-        foreach (ZipEntry e in zip1)
-        {
-          e.ExtractWithPassword(unpackDirectory, ExtractExistingFileAction.OverwriteSilently, "!opa1526");
-        }
-      }
-    }
-
     private ObservableCollection<T> LoadFrom<T>(string path, string filename, Func<string, List<Account>, T> parseLine, List<Account> accountsPlaneList)
     {
-      var content =
-        File.ReadAllLines(Path.Combine(path, filename), Encoding1251).Where(
-          s => !string.IsNullOrWhiteSpace(s));
+      var fullFilename = Path.Combine(path, filename);
+      if (!File.Exists(fullFilename))
+      {
+        Result.Set(325, "File <"+fullFilename+"> not found");
+        return null;
+      }
+
+      var content = File.ReadAllLines(fullFilename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s));
       var wrongContent = new List<string>();
       var result = new ObservableCollection<T>();
 
@@ -83,17 +58,21 @@ namespace Keeper.Utils.DbInputOutput
       }
       if (wrongContent.Count != 0)
       {
-        File.WriteAllLines(Path.ChangeExtension(Path.Combine(Settings.Default.DbPath, filename), "err"), wrongContent, Encoding1251);
-        Result.Add(6, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
+        File.WriteAllLines(Path.ChangeExtension(Path.Combine(path, filename), "err"), wrongContent, Encoding1251);
+        Result.Set(326, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
       }
       return result;
     }
 
     #region // Accounts
-    private bool LoadAccounts(ref KeeperDb db, string path)
+    private void LoadAccounts(ref KeeperDb db, string path)
     {
       var filename = Path.Combine(path, "Accounts.txt");
-      if (!File.Exists(filename)) return false;
+      if (!File.Exists(filename))
+      {
+        Result.Set(315, "File <Accounts.txt> not found");
+        return;
+      }
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
 
@@ -111,7 +90,6 @@ namespace Keeper.Utils.DbInputOutput
           db.Accounts.Add(account);
         }
       }
-      return true;
     }
 
     private List<string> SortActiveDepositAccountsByEndDate(IEnumerable<string> content)

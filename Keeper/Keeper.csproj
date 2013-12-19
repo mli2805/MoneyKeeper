@@ -118,6 +118,8 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\DbInputOutput\DbFromZipLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\IDbFromZipLoader.cs" />
     <Compile Include="Utils\MoneyPair.cs" />
     <Compile Include="Utils\BalancesForShellCalculator.cs" />
     <Compile Include="Utils\BalancesForTransactionsCalculator.cs" />
