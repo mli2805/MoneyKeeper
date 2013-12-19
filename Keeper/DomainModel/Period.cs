@@ -61,6 +61,11 @@ namespace Keeper.Utils
       return checkDate >= Start && checkDate <= Finish;
     }
 
+    public bool IsDateIn(DateTime checkDate)
+    {
+      return checkDate.Date >= Start.Date && checkDate.Date <= Finish.Date;
+    }
+
 	  public DateTime Start { get; private set; }
 	  public DateTime Finish { get; private set; }
 
