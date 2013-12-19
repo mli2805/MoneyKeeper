@@ -190,6 +190,7 @@ namespace Keeper.ViewModels
       _isDbLoadingSuccessed = Db != null;
       if (!_isDbLoadingSuccessed)
       {
+        // TODO How to get DbLoadResult from MEF
         MessageBox.Show("Application will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
