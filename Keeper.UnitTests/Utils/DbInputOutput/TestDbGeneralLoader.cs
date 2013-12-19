@@ -1,10 +1,7 @@
 ﻿using System.Windows;
-
 using FakeItEasy;
-
 using FluentAssertions;
 using Keeper.DomainModel;
-using Keeper.Properties;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.Dialogs;
 using Keeper.Utils.FileSystem;
@@ -20,6 +17,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 		IMyOpenFileDialog mOpenFileDialog;
 		IDbSerializer mDbSerializer;
 		IDbFromTxtLoader mFromTxtLoader;
+		IDbFromZipLoader mFromZipLoader;
 		IFileSystem mFileSystem;
 		IFile mFile;
 		KeeperDb mKeeperDb;
@@ -31,24 +29,24 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mOpenFileDialog = A.Fake<IMyOpenFileDialog>();
 			mDbSerializer = A.Fake<IDbSerializer>();
 			mFromTxtLoader = A.Fake<IDbFromTxtLoader>();
+			mFromZipLoader = A.Fake<IDbFromZipLoader>();
 			mFileSystem = A.Fake<IFileSystem>();
 			
 			mFile = A.Fake<IFile>();
 			mKeeperDb = new KeeperDb();
-			A.CallTo(() => mFileSystem.PathCombine(@"C:\", "Keeper.dbx")).Returns("full path");
-			A.CallTo(() => mFileSystem.GetFile("full path")).Returns(mFile);
-			A.CallTo(() => mFile.Exists).Returns(true);
 		}
 
 		[Test]
 		public void Ctor_Should_CombinePath_DecryptAndDeserialize_DbFile_And_Set_Db_Property()
 		{
 			// Arrange
-			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(mKeeperDb);
+      A.CallTo(() => mFileSystem.PathCombine(A<string>.Ignored, A<string>.Ignored)).Returns("fullpath.dbx");
+      A.CallTo(() => mDbSerializer.DecryptAndDeserialize("fullpath.dbx")).Returns(mKeeperDb);
+      A.CallTo(() => mFileSystem.GetFile("fullpath.dbx")).Returns(mFile);
+      A.CallTo(() => mFile.Exists).Returns(true);
 
 			// Act
-			var underTest = new DbGeneralLoader(mMessageBoxer,
-			                                    mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem);
+			var underTest = new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
 
 			// Assert
 			underTest.Db.Should().Be(mKeeperDb);
@@ -58,14 +56,14 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 		public void Ctor_When_Default_File_Doesnt_Exist_Should_Warn_User()
 		{
 			// Arrange
-			A.CallTo(() => mFile.Exists).Returns(false);
+      A.CallTo(() => mFileSystem.PathCombine(A<string>.Ignored, A<string>.Ignored)).Returns("fullpath.dbx");
+      A.CallTo(() => mFileSystem.GetFile("fullpath.dbx")).Returns(mFile);
+      A.CallTo(() => mFile.Exists).Returns(false);
 			
 			// Act
-			new DbGeneralLoader(mMessageBoxer,
-			                    mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem); 
-			
-			
-			A.CallTo(() => mMessageBoxer.Show("File 'full path' not found. " + 
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
+
+      A.CallTo(() => mMessageBoxer.Show("File 'fullpath.dbx' not found. " + 
 			                                  "\n\n You will be offered to choose database file.",
 			                                  "Error!", MessageBoxButton.OK, MessageBoxImage.Warning)).MustHaveHappened();
 		}
@@ -74,75 +72,73 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 		public void Ctor_When_Default_File_Doesnt_Exist_Should_Ask_User_To_Change_FileName()
 		{
 			// Arrange
-			A.CallTo(() => mFile.Exists).Returns(false);
-			A.CallTo(() => mOpenFileDialog.Show(".dbx",
-			                                    "Keeper Database (.dbx)|*.dbx",  
-			                                    @"g:\local_keeperDb\Keeper.dbx")).Returns("changed filename");
+      A.CallTo(() => mFileSystem.PathCombine(A<string>.Ignored, A<string>.Ignored)).Returns("fullpath.dbx");
+      A.CallTo(() => mFileSystem.GetFile("fullpath.dbx")).Returns(mFile);
+      A.CallTo(() => mFile.Exists).Returns(false);
+
 
 			// Act
-			new DbGeneralLoader(mMessageBoxer,
-			                    mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem);
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);			
 
 			// Assert
-			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("changed filename"))
-			 .MustHaveHappened();
-		}
+      A.CallTo(() => mOpenFileDialog.Show("*.*",
+                                          "All files (*.*)|*.*|Keeper Database (.dbx)|*.dbx|Zip archive (with keeper database .zip)|*.zip|Text files (with data for keeper .txt)|*.txt",
+                                          A<string>.Ignored)).MustHaveHappened();
+    }
 
 		[Test]
-		public void Ctor_When_Cannot_Deserialize_Database_Should_Warn_User()
+		public void Ctor_When_Cannot_Deserialize_Database_Should_Return_Null()
 		{
 			// Arrange
-			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
+      A.CallTo(() => mFileSystem.PathCombine(A<string>.Ignored, A<string>.Ignored)).Returns("illegal.dbx");
+      A.CallTo(() => mDbSerializer.DecryptAndDeserialize("illegal.dbx")).Returns(mKeeperDb);
+      A.CallTo(() => mFileSystem.GetFile("illegal.dbx")).Returns(mFile);
+      A.CallTo(() => mFile.Exists).Returns(true);
 
 			// Act
-			new DbGeneralLoader(mMessageBoxer,
-			                    mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem);
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
 
-			A.CallTo(() => mMessageBoxer.Show("File 'full path' not found. \n Last zip will be used.",
-			                                  "Error!", MessageBoxButton.OK, MessageBoxImage.Error)).MustHaveHappened();
-		}
+      A.CallTo(() => mDbSerializer.DecryptAndDeserialize("illegal.dbx")).Returns(null);
+    }
 
 		[Test]
-		public void Ctor_When_Cannot_Deserialize_Database_Should_Try_To_Load_From_Text_File()
+    public void Ctor_When_User_Choose_Txtfile_Should_Load_From_Txt()
 		{
 			// Arrange
-			mKeeperDb = null;
-			var newKeeperdb = new KeeperDb();
-
-			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
-			A.CallTo(() => mFromTxtLoader.LoadDbFromZip(ref mKeeperDb))
+      var newKeeperdb = new KeeperDb();
+      A.CallTo(() => mFileSystem.PathCombine(A<string>.Ignored, A<string>.Ignored)).Returns("illegal.dbx");
+      A.CallTo(() => mFileSystem.GetFile("illegal.dbx")).Returns(mFile);
+      A.CallTo(() => mFile.Exists).Returns(true);
+      A.CallTo(() => mFromTxtLoader.LoadDbFromTxt(ref mKeeperDb, "file.txt"))
 			 .Returns(new DbLoadError())
-			 .AssignsOutAndRefParameters(newKeeperdb);
+       .AssignsOutAndRefParameters(mKeeperDb);
 
 			// Act
-			var result = new DbGeneralLoader(mMessageBoxer,
-			                                 mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem);
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);			
 
 			// Assert
-			result.Db.Should().Be(newKeeperdb);
+      mKeeperDb.ShouldBeEquivalentTo(newKeeperdb);
 		}
 
 		[Test]
-		public void Ctor_When_Cannot_Load_From_Text_File_Should_Warn_User()
+		public void Ctor_When_User_Choose_Zipfile_Should_Load_From_Zip()
 		{
-			// Arrange
-			mKeeperDb = null;
+      // Arrange
+      var newKeeperdb = new KeeperDb();
+      A.CallTo(() => mFileSystem.PathCombine(A<string>.Ignored, A<string>.Ignored)).Returns("illegal.dbx");
+      A.CallTo(() => mFileSystem.GetFile("illegal.dbx")).Returns(mFile);
+      A.CallTo(() => mFile.Exists).Returns(true);
+      A.CallTo(() => mFromZipLoader.LoadDbFromZip(ref mKeeperDb, "file.zip"))
+       .Returns(new DbLoadError())
+       .AssignsOutAndRefParameters(mKeeperDb);
 
-			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
-			A.CallTo(() => mFromTxtLoader.LoadDbFromZip(ref mKeeperDb)).Returns(new DbLoadError
-				{
-					Explanation = "Explanation",
-					Code = 5
-				});
+      // Act
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
 
-			// Act
-			new DbGeneralLoader(mMessageBoxer,
-			                    mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem);
+      // Assert
+      mKeeperDb.ShouldBeEquivalentTo(newKeeperdb);
+    }
 
-			// Assert
-			A.CallTo(() => mMessageBoxer.Show("Explanation. \n Application will be closed!",
-			                                  "Error!", MessageBoxButton.OK, MessageBoxImage.Error)).MustHaveHappened();
-		}
 		[Test]
 		public void Ctor_When_Cannot_Load_From_Text_File_Should_Set_Db_Property_To_Null()
 		{
@@ -150,11 +146,10 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mKeeperDb = null;
 
 			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
-			A.CallTo(() => mFromTxtLoader.LoadDbFromZip(ref mKeeperDb)).Returns(new DbLoadError { Code = 5 });
+      A.CallTo(() => mFromTxtLoader.LoadDbFromTxt(ref mKeeperDb, "full path")).Returns(new DbLoadError { Code = 5 });
 
 			// Act
-			var result = new DbGeneralLoader(mMessageBoxer,
-			                                 mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem);
+      var result = new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);			
 
 			// Assert
 			result.Db.Should().BeNull();

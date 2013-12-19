@@ -43,7 +43,7 @@ namespace Keeper.Utils.DbInputOutput
 
     KeeperDb FullDbLoadProcess()
     {
-      var filename = Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile);
+      var filename = _fileSystem.PathCombine(Settings.Default.DbPath, Settings.Default.DbxFile);
       if (!_fileSystem.GetFile(filename).Exists)
       {
         if (!AskUserForAnotherFile(ref filename)) return null;
