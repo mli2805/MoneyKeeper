@@ -206,7 +206,7 @@ namespace Keeper.ViewModels
     private void InitBalanceControls()
     {
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-      _paymentsPeriod = new Period(new DayProcessor(DateTime.Today).BeforeThisDay(), new DayProcessor(DateTime.Today).AfterThisDay());
+      _paymentsPeriod = new Period(new DayProcessor(DateTime.Today).BeforeThisDay(), new DayProcessor(DateTime.Today).AfterThisDay().AddSeconds(-1));
       BalanceList = new ObservableCollection<string>();
       _isDbLoadingSuccessed = true;
     }

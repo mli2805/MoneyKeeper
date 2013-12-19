@@ -69,12 +69,12 @@ namespace Keeper.Controls
       SelectedPeriod = new Period(SelectedPeriod.Start.AddMonths(1), finish);
     }
     private void OneYearAfterClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddYears(1), SelectedPeriod.Finish.AddYears(1)); }
-    private void TodayClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today, DateTime.Today); }
-    private void YesterdayClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-1), DateTime.Today.AddDays(-1)); }
-    private void ThisMonthClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.Day + 1), DateTime.Today); }
+    private void TodayClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today, DateTime.Today.AddDays(1).AddSeconds(-1)); }
+    private void YesterdayClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-1), DateTime.Today.AddSeconds(-1)); }
+    private void ThisMonthClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.Day + 1), DateTime.Today.AddDays(1).AddSeconds(-1)); }
     private void LastMonthClick(object sender, RoutedEventArgs e)
     {
-      var finish = DateTime.Today.AddDays(-DateTime.Today.Day);
+      var finish = DateTime.Today.AddDays(-DateTime.Today.Day+1).AddSeconds(-1);
       SelectedPeriod = new Period(finish.AddDays(-finish.Day + 1), finish);
     }
     private void ThisYearPaymentsClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.DayOfYear + 1), DateTime.Today); }

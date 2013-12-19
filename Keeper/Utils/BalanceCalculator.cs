@@ -29,7 +29,7 @@ namespace Keeper.Utils
 		{
 			var tempBalance =
 			  (from t in _db.Transactions
-			   where period.IsDateTimeIn(t.Timestamp) &&
+			   where period.IsDateIn(t.Timestamp) &&
 				  (t.Credit.IsTheSameOrDescendantOf(balancedAccount) && !t.Debet.IsTheSameOrDescendantOf(balancedAccount) ||
 				   (t.Debet.IsTheSameOrDescendantOf(balancedAccount) && !t.Credit.IsTheSameOrDescendantOf(balancedAccount)))
 			   group t by t.Currency into g
@@ -59,7 +59,6 @@ namespace Keeper.Utils
 				   };
 		}
 
-    // TODO Test
 		public IEnumerable<MoneyPair> ArticleBalancePairs(Account balancedAccount, Period period)
 		{
 			return from t in _db.Transactions
@@ -81,20 +80,6 @@ namespace Keeper.Utils
 		public IEnumerable<MoneyPair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
 		{
       var period = new Period(new DateTime(0), new DayProcessor(dateTime).BeforeThisDay());
-			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
-				return ArticleBalancePairs(balancedAccount, period);
-			else return AccountBalancePairs(balancedAccount, period);
-		}
-
-		/// <summary>
-		/// вызов с параметром 2 февраля 2013 - вернет остаток по счету после 2 февраля 2013 
-		/// </summary>
-		/// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
-		/// <param name="dateTime">день, после которого остаток</param>
-		/// <returns></returns>
-		public IEnumerable<MoneyPair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
-		{                                                    
-			var period = new Period(new DateTime(0), new DayProcessor(dateTime).AfterThisDay());
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
 				return ArticleBalancePairs(balancedAccount, period);
 			else return AccountBalancePairs(balancedAccount, period);
