@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.IO;
-using FakeItEasy;
 using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
@@ -15,12 +13,11 @@ namespace Keeper.UnitTests.Utils
   [TestFixture]
   public class TestBalanceCalculator
   {
-    private KeeperDb _db;
+    private readonly KeeperDb _db;
     private BalanceCalculator _underTest;
 
     public TestBalanceCalculator()
     {
-//      _db = new DbSerializer().DecryptAndDeserialize(Path.GetFullPath(@"..\..\..\TestDb\Keeper.dbx"));
       _db = new KeeperDb();
       new DbFromTxtLoader().LoadDbFromTxt(ref _db, Path.GetFullPath(Settings.Default.TestDbPath));
     }

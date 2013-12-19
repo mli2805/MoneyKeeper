@@ -188,7 +188,11 @@ namespace Keeper.ViewModels
     {
       Db = db;
       _isDbLoadingSuccessed = Db != null;
-      if (!_isDbLoadingSuccessed) return;
+      if (!_isDbLoadingSuccessed)
+      {
+        MessageBox.Show("Application will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
 
       _accountTreesGardener = new AccountTreesGardener(Db);
       InitVariablesToShowAccounts();

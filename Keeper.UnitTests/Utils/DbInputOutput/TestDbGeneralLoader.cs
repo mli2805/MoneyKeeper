@@ -110,7 +110,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			var newKeeperdb = new KeeperDb();
 
 			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
-			A.CallTo(() => mFromTxtLoader.LoadFromLastZip(ref mKeeperDb))
+			A.CallTo(() => mFromTxtLoader.LoadDbFromZip(ref mKeeperDb))
 			 .Returns(new DbLoadError())
 			 .AssignsOutAndRefParameters(newKeeperdb);
 
@@ -129,7 +129,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mKeeperDb = null;
 
 			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
-			A.CallTo(() => mFromTxtLoader.LoadFromLastZip(ref mKeeperDb)).Returns(new DbLoadError
+			A.CallTo(() => mFromTxtLoader.LoadDbFromZip(ref mKeeperDb)).Returns(new DbLoadError
 				{
 					Explanation = "Explanation",
 					Code = 5
@@ -150,7 +150,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mKeeperDb = null;
 
 			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
-			A.CallTo(() => mFromTxtLoader.LoadFromLastZip(ref mKeeperDb)).Returns(new DbLoadError { Code = 5 });
+			A.CallTo(() => mFromTxtLoader.LoadDbFromZip(ref mKeeperDb)).Returns(new DbLoadError { Code = 5 });
 
 			// Act
 			var result = new DbGeneralLoader(mMessageBoxer,
