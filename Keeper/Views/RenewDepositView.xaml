@@ -1,0 +1,49 @@
+﻿<Window x:Class="Keeper.Views.RenewDepositView"
+        xml:lang="ru-RU"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
+        Title="RenewDepositView" Width="350" SizeToContent="Height">
+    <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="10"/>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="16"/>
+      <RowDefinition Height="40"/>
+      <RowDefinition Height="16"/>
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,8,0,8" 
+               Text="Депозит" />
+    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" 
+               Text="{Binding OldDepositName}" FontWeight="SemiBold" Foreground="Blue"   />
+    <TextBlock Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,8,0,8" 
+               Text="Дата переоформления "/>
+    <DatePicker Grid.Row="3" HorizontalAlignment="Right" Margin="0,0,20,0" Height="22" Width="120"
+               Text="{Binding TransactionsDate, Mode=TwoWay}" />
+    <TextBlock Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,8,0,8" 
+               Text="Банк "/>
+    <ComboBox Grid.Row="4" HorizontalAlignment="Right" Margin="0,5,20,5" Width="120" Height="22"
+              ItemsSource="{x:Static ViewModels:UsefulLists.AccountsWhoGivesMeMoney}"
+              SelectedItem="{Binding BankAccount}"/>
+    <TextBlock Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,8,0,8" 
+               Text="начислено процентов ,"/>
+    <TextBlock Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="150,8,0,8"
+               Text="{Binding DepositCurrency}" />
+    <TextBox Grid.Row="5" HorizontalAlignment="Right" Margin="0,5,20,5" Width="120" Height="22"
+             Text="{Binding Procents, StringFormat='{}{0:#,#}'}"/>
+    <TextBlock Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,8,0,8" 
+               Text="Новый счет" />
+    <TextBox Grid.Row="7" HorizontalAlignment="Stretch" Margin="20,5" Height="22"
+             Text="{Binding NewDepositName, Mode=TwoWay}"/>
+    <Button Grid.Row="9" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Width="100" Margin="40,9,0,9"
+            Name="Accept" IsDefault="True" Content="Принять" Style="{StaticResource MyButtonStyle}"/>
+    <Button Grid.Row="9" HorizontalAlignment="Right" VerticalAlignment="Center" Height="22" Width="100" Margin="0,9,40,9"
+            Name="Decline" IsCancel="True" Content="Отклонить" Style="{StaticResource MyButtonStyle}"/>
+
+  </Grid>
+</Window>

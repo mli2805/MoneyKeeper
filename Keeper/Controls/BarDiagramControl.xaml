@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="Keeper.Controls.BarDiagramControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             >
+    <Grid Background="Azure">
+    <Grid.RowDefinitions>
+      <RowDefinition/> 
+      <RowDefinition Height="30"/>
+    </Grid.RowDefinitions>
+    <Popup Name="BarHint" >
+      <Border Margin="1" Background="Black">
+      <TextBlock Name="BarHintText" VerticalAlignment="Center"></TextBlock>
+      </Border>
+    </Popup>
+    <Grid Background="White">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Image Name="DiagramImage" Stretch="Fill"  
+           MouseLeftButtonDown="OnMouseLeftButtonDown" MouseLeftButtonUp="OnMouseLeftButtonUp" 
+           MouseWheel="OnMouseWheel" KeyDown="OnKeyDown" MouseMove="OnMouseMove" >
+    
+        <Image.ContextMenu>
+        <ContextMenu>
+            <MenuItem Name="ItemChangeStackStyle" Header="100 процентов" BorderBrush="{x:Null}" Background="White" Click="ChangeStackStyle"  />
+            <Separator Style="{DynamicResource SeparatorStyle}"/>
+            <MenuItem Name="ItemShowAll" Header="За весь период (Ctrl+A)" BorderBrush="{x:Null}" Background="White" Click="ShowAllRange"  />
+          <MenuItem Name="ItemShowThisYear" Header="Этот календарный год" BorderBrush="{x:Null}" Background="White" Click="ShowThisYear"  />
+          <MenuItem Name="ItemShowLast12Months" Header="Последние 12 месяцев" BorderBrush="{x:Null}" Background="White" Click="ShowLast12Months"  />
+          <MenuItem Name="ItemShowThisMonth" Header="Этот месяц" BorderBrush="{x:Null}" Background="White" Click="ShowThisMonth"  />
+          <Separator Style="{DynamicResource SeparatorStyle}"/>
+          <MenuItem Name="ItemGroupByMonths" Header="По месяцам" BorderBrush="{x:Null}" Background="White" Click="GroupByMonths" />
+          <MenuItem Name="ItemGroupByYears" Header="По годам" BorderBrush="{x:Null}" Background="White" Click="GroupByYears" />
+        </ContextMenu>
+      </Image.ContextMenu>
+    </Image>
+      <Image Name="LegendImage" Grid.Column="1" Width="150" Visibility="Collapsed" Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,100,5,5"/>
+    </Grid>
+    <TextBlock Name="StatusBar" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="1"/>
+  </Grid>
+</UserControl>

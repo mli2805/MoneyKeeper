@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Keeper.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DbxFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Keeper.dbx</Value>
+    </Setting>
+    <Setting Name="TemporaryTxtDbPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\Temp\dr5g6-egr6e-wegffs-w34ger\</Value>
+    </Setting>
+    <Setting Name="DbPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\_DB\</Value>
+    </Setting>
+    <Setting Name="KeeperInDropBox" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\</Value>
+    </Setting>
+    <Setting Name="TestDbPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">..\..\..\TestDb\</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
