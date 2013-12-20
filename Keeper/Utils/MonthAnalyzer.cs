@@ -6,7 +6,7 @@ using Keeper.DomainModel;
 namespace Keeper.Utils
 {
 	[Export]
-  class MonthAnalizer
+  class MonthAnalyzer
   {
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
@@ -14,7 +14,7 @@ namespace Keeper.Utils
 		private readonly BalanceCalculator _balanceCalculator;
 
     [ImportingConstructor]
-    public MonthAnalizer(KeeperDb db, BalanceCalculator balanceCalculator, RateExtractor rateExtractor, ICurrencyExchanger currencyExchanger)
+    public MonthAnalyzer(KeeperDb db, BalanceCalculator balanceCalculator, RateExtractor rateExtractor, ICurrencyExchanger currencyExchanger)
     {
 	    _db = db;
 	    _balanceCalculator = balanceCalculator;

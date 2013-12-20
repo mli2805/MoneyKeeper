@@ -503,7 +503,6 @@ namespace Keeper.ViewModels
       {
         if (value.Equals(_balanceDate)) return;
         _balanceDate = value.Date.AddDays(1).AddMilliseconds(-1);
-        NotifyOfPropertyChange(() => BalanceDate);
         var period = new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay());
         AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
       }
@@ -516,7 +515,6 @@ namespace Keeper.ViewModels
       {
         if (Equals(value, _paymentsPeriod)) return;
         _paymentsPeriod = value;
-        NotifyOfPropertyChange(() => PaymentsPeriod);
         AccountBalanceInUsd = string.Format("{0:#,#} usd",
                           _balanceCalculator.CountBalances(SelectedAccount, _paymentsPeriod, BalanceList));
       }

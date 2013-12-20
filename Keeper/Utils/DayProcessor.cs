@@ -24,7 +24,7 @@ namespace Keeper.Utils
       var yy = _day.Year;
       var mm = _day.Month;
       var dd = _day.Day;
-      return new DateTime(yy, mm, dd, 0, 0, 0, 0).AddDays(1);
+      return new DateTime(yy, mm, dd, 23, 59, 59, 999);
     }
   }
 }
