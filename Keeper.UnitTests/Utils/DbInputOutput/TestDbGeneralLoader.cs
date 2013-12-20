@@ -63,9 +63,8 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			// Act
       new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
 
-      A.CallTo(() => mMessageBoxer.Show("File 'fullpath.dbx' not found. " + 
-			                                  "\n\n You will be offered to choose database file.",
-			                                  "Error!", MessageBoxButton.OK, MessageBoxImage.Warning)).MustHaveHappened();
+      A.CallTo(() => mMessageBoxer.Show(A<string>.Ignored,
+			                                  "Error!", MessageBoxButton.YesNo, MessageBoxImage.Warning)).MustHaveHappened();
 		}
 
 		[Test] 

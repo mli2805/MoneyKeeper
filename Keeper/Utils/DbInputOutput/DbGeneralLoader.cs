@@ -65,22 +65,29 @@ namespace Keeper.Utils.DbInputOutput
       {
         var db = new KeeperDb();
         LoadResult = _fromZipLoader.LoadDbFromZip(ref db, filename);
-        return db;
+        if (LoadResult.Code == 0) return db; 
       }
       if (extension == ".txt")
       {
         var db = new KeeperDb();
         LoadResult = _fromTxtLoader.LoadDbFromTxt(ref db, Path.GetDirectoryName(filename));
-        return db;
+        if (LoadResult.Code == 0) return db;
       }
       return null;
     }
 
     private bool AskUserForAnotherFile(ref string filename)
     {
-      _messageBoxer.Show("File '" + filename +
-                         "' not found. \n\n You will be offered to choose database file.",
-                         "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+      if (_messageBoxer.Show("File '" + filename +
+                         "' not found. \n\n You will be offered to choose database file. \n" +
+                         "\n Folder with chozen file will be accepted as new location for database " +
+                         "\n When exiting the program database and archive will be saved in this new folder" +
+                         "\n\n Would you like choose database or archive file?",
+                         "Error!", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+      {
+        LoadResult.Set(0x1,"User refused file selection request");
+        return false;
+      }
 
       filename = _openFileDialog.Show("*.*",
                                       "All files (*.*)|*.*|Keeper Database (.dbx)|*.dbx|Zip archive (with keeper database .zip)|*.zip|Text files (with data for keeper .txt)|*.txt",

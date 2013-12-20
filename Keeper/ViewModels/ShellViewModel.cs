@@ -232,8 +232,6 @@ namespace Keeper.ViewModels
       NotifyOfPropertyChange(() => ExpensesRoot);
     }
 
-
-
     protected override void OnViewLoaded(object view)
     {
       if (!_isDbLoadingSuccessed)

@@ -9,7 +9,7 @@
       <Value Profile="(Default)">c:\Temp\dr5g6-egr6e-wegffs-w34ger\</Value>
     </Setting>
     <Setting Name="DbPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\DB\</Value>
+      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\_DB\</Value>
     </Setting>
     <Setting Name="KeeperInDropBox" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\</Value>
