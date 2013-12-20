@@ -105,6 +105,11 @@ namespace Keeper.Utils
       return result;
     }
 
+    private Dictionary<DateTime, decimal> ByrRateLogarithm(Dictionary<DateTime, decimal> byrRates)
+    {
+      return byrRates.ToDictionary(byrRate => byrRate.Key, byrRate => (decimal) Math.Log10((double) byrRate.Value));
+    }
+
     public DiagramData RatesCtor()
     {
       var data = new List<DiagramSeries>();
@@ -115,6 +120,14 @@ namespace Keeper.Utils
                  Name = "BYR",
                  PositiveBrushColor = Brushes.Brown,
                  Data = (from pair in byrRates select new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList()
+               });
+
+      var byrRatesLog = ByrRateLogarithm(byrRates);
+      data.Add(new DiagramSeries
+               {
+                 Name = "LogBYR",
+                 PositiveBrushColor = Brushes.Chocolate,
+                 Data = (from pair in byrRatesLog select new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList()
                });
 
       var euroRates = FillinGapsInRates(ExtractRates(CurrencyCodes.EUR));
