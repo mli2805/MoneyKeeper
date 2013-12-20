@@ -17,7 +17,7 @@ namespace Keeper.ViewModels
     private readonly RateExtractor _rateExtractor;
     private readonly KeeperDb _db;
 
-    private readonly MonthAnalizer _monthAnalizer;
+    private readonly MonthAnalyzer _monthAnalyzer;
 
     private bool _isMonthEnded;
 
@@ -199,13 +199,13 @@ namespace Keeper.ViewModels
     }
 
 	  [ImportingConstructor]
-    public MonthAnalisysViewModel(KeeperDb db, RateExtractor rateExtractor, MonthAnalizer monthAnalizer)
+    public MonthAnalisysViewModel(KeeperDb db, RateExtractor rateExtractor, MonthAnalyzer monthAnalyzer)
     {
       _db = db;
       _rateExtractor =rateExtractor;
 
-      _monthAnalizer = monthAnalizer;
-      MonthSaldo = _monthAnalizer.AnalizeMonth(DateTime.Today);
+      _monthAnalyzer = monthAnalyzer;
+      MonthSaldo = _monthAnalyzer.AnalizeMonth(DateTime.Today);
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }
@@ -382,14 +382,14 @@ namespace Keeper.ViewModels
 
     public void ShowPreviousMonth()
     {
-      MonthSaldo = _monthAnalizer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
+      MonthSaldo = _monthAnalyzer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
       StartDate = MonthSaldo.StartDate; 
       FillInLists();
     }
 
     public void ShowNextMonth()
     {
-      MonthSaldo = _monthAnalizer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
+      MonthSaldo = _monthAnalyzer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }

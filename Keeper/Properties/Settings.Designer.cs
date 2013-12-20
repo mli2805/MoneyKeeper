@@ -49,7 +49,7 @@ namespace Keeper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\Leonid\\Dropbox\\Keeper\\_DB\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\Leonid\\Dropbox\\Keeper\\DB\\")]
         public string DbPath {
             get {
                 return ((string)(this["DbPath"]));

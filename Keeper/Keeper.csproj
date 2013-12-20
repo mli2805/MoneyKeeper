@@ -172,7 +172,7 @@
     <Compile Include="Utils\MEF\InstanceExportDescriptor.cs" />
     <Compile Include="Utils\MEF\IStartUp.cs" />
     <Compile Include="Utils\MEF\ServiceStarter.cs" />
-    <Compile Include="Utils\MonthAnalizer.cs" />
+    <Compile Include="Utils\MonthAnalyzer.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
