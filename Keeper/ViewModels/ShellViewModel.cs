@@ -381,6 +381,7 @@ namespace Keeper.ViewModels
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
       new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
     }
 
@@ -390,6 +391,7 @@ namespace Keeper.ViewModels
       Message = "Currency rates";
       UsefulLists.FillLists(Db);
       WindowManager.ShowDialog(new RatesViewModel(Db));
+      if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
     }
 
@@ -501,10 +503,10 @@ namespace Keeper.ViewModels
       get { return _balanceDate; }
       set
       {
-        if (value.Equals(_balanceDate)) return;
-        _balanceDate = value.Date.AddDays(1).AddMilliseconds(-1);
+        _balanceDate = new DayProcessor(value.Date).AfterThisDay(); 
         var period = new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay());
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", 
+          _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
       }
     }
 
@@ -513,7 +515,6 @@ namespace Keeper.ViewModels
       get { return _paymentsPeriod; }
       set
       {
-        if (Equals(value, _paymentsPeriod)) return;
         _paymentsPeriod = value;
         AccountBalanceInUsd = string.Format("{0:#,#} usd",
                           _balanceCalculator.CountBalances(SelectedAccount, _paymentsPeriod, BalanceList));
