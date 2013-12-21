@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-
 using Caliburn.Micro;
-
 using Keeper.DomainModel;
 using Keeper.ViewModels;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Balances
 {
   class BalanceTrio
   {

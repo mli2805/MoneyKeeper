@@ -41,7 +41,7 @@ namespace Keeper.Utils.DbInputOutput
       Db = FullDbLoadProcess();
     }
 
-    KeeperDb FullDbLoadProcess()
+    private KeeperDb FullDbLoadProcess()
     {
       var filename = _fileSystem.PathCombine(Settings.Default.DbPath, Settings.Default.DbxFile);
       if (!_fileSystem.GetFile(filename).Exists)

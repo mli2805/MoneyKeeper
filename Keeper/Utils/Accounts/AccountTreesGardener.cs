@@ -6,7 +6,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.ViewModels;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Accounts
 {
   class AccountTreesGardener
   {
@@ -62,7 +62,7 @@ namespace Keeper.Utils
       selectedAccount.Children.Add(accountInWork);
 
       _db.AccountsPlaneList.Clear();
-      _db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(_db.Accounts);
+      _db.AccountsPlaneList = new AccountTreeStraightener().FillInAccountsPlaneList(_db.Accounts);
       UsefulLists.FillLists(_db);
     }
 

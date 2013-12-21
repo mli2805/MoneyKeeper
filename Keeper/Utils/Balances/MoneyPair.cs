@@ -1,7 +1,7 @@
 using System;
 using Keeper.DomainModel;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Balances
 {
   public class MoneyPair : IComparable
   {

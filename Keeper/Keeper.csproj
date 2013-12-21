@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="Utils\Accounts\AccountInTreeSeeker.cs" />
     <Compile Include="DomainModel\IKeeperDb.cs" />
+    <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
     <Compile Include="Utils\DbInputOutput\DbFromZipLoader.cs" />
     <Compile Include="Utils\DbInputOutput\IDbFromZipLoader.cs" />
     <Compile Include="Utils\Balances\MoneyPair.cs" />

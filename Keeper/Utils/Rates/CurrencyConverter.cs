@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Composition;
 using Keeper.DomainModel;
+using Keeper.Utils.Balances;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Rates
 {
   [Export(typeof(ICurrencyConverter))]
   public class CurrencyConverter : ICurrencyConverter

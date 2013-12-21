@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Keeper.Utils;
+using Keeper.Utils.Balances;
 
 namespace Keeper.DomainModel
 {
