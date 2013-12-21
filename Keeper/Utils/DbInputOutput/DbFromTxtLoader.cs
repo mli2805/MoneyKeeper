@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Keeper.DomainModel;
-using Keeper.Properties;
+using Keeper.Utils.Accounts;
 
 namespace Keeper.Utils.DbInputOutput
 {
@@ -20,7 +20,7 @@ namespace Keeper.Utils.DbInputOutput
     {
       LoadAccounts(ref db, path);
       if (Result.Code != 0) { db = null; return Result; }
-      db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(db.Accounts);
+      db.AccountsPlaneList = new AccountTreeStraightener().FillInAccountsPlaneList(db.Accounts);
 
       db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
       if (Result.Code != 0) { db = null; return Result; }
@@ -41,7 +41,7 @@ namespace Keeper.Utils.DbInputOutput
         return null;
       }
 
-      var content = File.ReadAllLines(fullFilename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s));
+      var content = File.ReadAllLines(fullFilename, Encoding1251).Where(s => !String.IsNullOrWhiteSpace(s));
       var wrongContent = new List<string>();
       var result = new ObservableCollection<T>();
 
@@ -74,7 +74,7 @@ namespace Keeper.Utils.DbInputOutput
         return;
       }
 
-      var content = File.ReadAllLines(filename, Encoding1251).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+      var content = File.ReadAllLines(filename, Encoding1251).Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
 
       // промежуточная сортировка действующих депозитов
       var sortedContent = SortActiveDepositAccountsByEndDate(content);
@@ -190,5 +190,5 @@ namespace Keeper.Utils.DbInputOutput
       return association;
     }
     #endregion
-  }
+	}
 }

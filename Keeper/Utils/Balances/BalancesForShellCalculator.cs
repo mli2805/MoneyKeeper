@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
-
 using Keeper.DomainModel;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Balances
 {
-[Export]
+  [Export]
   public class BalancesForShellCalculator
   {
     private readonly BalanceCalculator _balanceCalculator;

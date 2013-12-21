@@ -5,6 +5,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Balances;
 
 namespace Keeper.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Keeper.ViewModels
 	{
 	  private readonly KeeperDb _db;
     private readonly BalanceCalculator _balanceCalculator;
-	  private AccountInTreeSeeker _accountInTreeSeeker;
+	  private readonly AccountInTreeSeeker _accountInTreeSeeker;
 
 		private Deposit _oldDeposit;
 		public Account NewDeposit { get; set; }
@@ -74,7 +75,7 @@ namespace Keeper.ViewModels
 			parent.Children.Add(newDepositAccount);
 
 			_db.AccountsPlaneList.Clear();
-			_db.AccountsPlaneList = KeeperDb.FillInAccountsPlaneList(_db.Accounts);
+			_db.AccountsPlaneList = new AccountTreeStraightener().FillInAccountsPlaneList(_db.Accounts);
 			UsefulLists.FillLists(_db);
 
 			return newDepositAccount;

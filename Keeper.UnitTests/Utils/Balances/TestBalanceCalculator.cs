@@ -4,17 +4,18 @@ using System.IO;
 using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
+using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput;
 using NUnit.Framework;
 using FluentAssertions;
 
-namespace Keeper.UnitTests.Utils
+namespace Keeper.UnitTests.Utils.Balances
 {
   [TestFixture]
   public class TestBalanceCalculator
   {
     private readonly KeeperDb _db;
-    private BalanceCalculator _underTest;
+    private readonly BalanceCalculator _underTest;
 
     public TestBalanceCalculator()
     {

@@ -2,6 +2,8 @@
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.Utils.Balances;
+using Keeper.Utils.Rates;
 
 namespace Keeper.Utils
 {

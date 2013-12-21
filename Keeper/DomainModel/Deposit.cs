@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Utils;
+using Keeper.Utils.Balances;
 
 namespace Keeper.DomainModel
 {

@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Balances;
 
 namespace Keeper.ViewModels
 {

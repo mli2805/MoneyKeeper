@@ -1,15 +1,13 @@
 using System;
-
 using FakeItEasy;
-
 using FluentAssertions;
-
 using Keeper.DomainModel;
 using Keeper.Utils;
-
+using Keeper.Utils.Balances;
+using Keeper.Utils.Rates;
 using NUnit.Framework;
 
-namespace Keeper.UnitTests.Utils
+namespace Keeper.UnitTests.Utils.Rates
 {
   [TestFixture]
 	public class TestCurrencyExchanger
