@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.DbInputOutput;
 
 
@@ -26,6 +27,7 @@ namespace Keeper.ViewModels
     public KeeperDb Db;
 
     private readonly AccountTreesGardener _accountTreesGardener;
+    private readonly AccountInTreeSeeker _accountInTreeSeeker;
     private readonly BalancesForShellCalculator _balanceCalculator;
     private readonly DiagramDataCtors _diagramDataCtor;
 
@@ -184,7 +186,7 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public ShellViewModel(KeeperDb db, BalancesForShellCalculator balancesForShellCalculator)
+    public ShellViewModel(KeeperDb db, BalancesForShellCalculator balancesForShellCalculator, AccountInTreeSeeker accountInTreeSeeker)
     {
       Db = db;
       _isDbLoadingSuccessed = Db != null;
@@ -200,7 +202,8 @@ namespace Keeper.ViewModels
       InitBalanceControls();
 
       _balanceCalculator = balancesForShellCalculator;
-      _diagramDataCtor = new DiagramDataCtors(Db);
+      _accountInTreeSeeker = accountInTreeSeeker;
+      _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
     }
 
     private void InitBalanceControls()

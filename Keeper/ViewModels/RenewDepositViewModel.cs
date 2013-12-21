@@ -4,14 +4,16 @@ using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
 {
 	[Export]
 	class RenewDepositViewModel : Screen
 	{
-	  private KeeperDb _db;
-    private BalanceCalculator _balanceCalculator;
+	  private readonly KeeperDb _db;
+    private readonly BalanceCalculator _balanceCalculator;
+	  private AccountInTreeSeeker _accountInTreeSeeker;
 
 		private Deposit _oldDeposit;
 		public Account NewDeposit { get; set; }
@@ -24,10 +26,11 @@ namespace Keeper.ViewModels
 		public string NewDepositName { get; set; }
 
 		[ImportingConstructor]
-		public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator)
+		public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator, AccountInTreeSeeker accountInTreeSeeker)
 		{
 		  _db = db;
 		  _balanceCalculator = balanceCalculator;
+		  _accountInTreeSeeker = accountInTreeSeeker;
 		}
 
 		public void SetOldDeposit(Deposit oldDeposit)
@@ -50,7 +53,7 @@ namespace Keeper.ViewModels
 		private Account FindBankAccount()
 		{
 			var st = OldDepositName.Substring(0, OldDepositName.IndexOf(' '));
-			return _db.FindAccountInTree(st);
+			return _accountInTreeSeeker.FindAccountInTree(st);
 		}
 
 		private string BuildNewName()
@@ -66,7 +69,7 @@ namespace Keeper.ViewModels
 			var newDepositAccount = new Account(NewDepositName);
 			newDepositAccount.Id = (from account in _db.AccountsPlaneList select account.Id).Max() + 1;
 
-			var parent = _db.FindAccountInTree("Депозиты");
+			var parent = _accountInTreeSeeker.FindAccountInTree("Депозиты");
 			newDepositAccount.Parent = parent;
 			parent.Children.Add(newDepositAccount);
 
@@ -96,7 +99,7 @@ namespace Keeper.ViewModels
 				  Credit = _oldDeposit.Account,
 				  Amount = Procents,
 				  Currency = _oldDeposit.MainCurrency,
-				  Article = _db.FindAccountInTree("Проценты по депозитам"),
+				  Article = _accountInTreeSeeker.FindAccountInTree("Проценты по депозитам"),
 				  Comment = "причисление процентов при закрытии"
 			  };
 
@@ -123,10 +126,10 @@ namespace Keeper.ViewModels
 
 		private void RemoveOldAccountToClosed()
 		{
-			var parent = _db.FindAccountInTree("Депозиты");
+			var parent = _accountInTreeSeeker.FindAccountInTree("Депозиты");
 			parent.Children.Remove(_oldDeposit.Account);
 
-			parent = _db.FindAccountInTree("Закрытые депозиты");
+			parent = _accountInTreeSeeker.FindAccountInTree("Закрытые депозиты");
 			_oldDeposit.Account.Parent = parent;
 			parent.Children.Add(_oldDeposit.Account);
 		}

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Diagram;
 
 namespace Keeper.Utils
@@ -12,13 +13,15 @@ namespace Keeper.Utils
   class DiagramDataCtors
   {
     private readonly KeeperDb _db;
+    private readonly AccountInTreeSeeker _accountInTreeSeeker;
 
     private DiagramDataExtractorFromDb ExtractorFromDb { get; set; }
 
     [ImportingConstructor]
-    public DiagramDataCtors(KeeperDb db)
+    public DiagramDataCtors(KeeperDb db, AccountInTreeSeeker accountInTreeSeeker)
     {
       _db = db;
+      _accountInTreeSeeker = accountInTreeSeeker;
       ExtractorFromDb = new DiagramDataExtractorFromDb(db);
     }
 
@@ -162,7 +165,7 @@ namespace Keeper.Utils
 
     public DiagramData MonthlyOutcomesDiagramCtor()
     {
-      var outcomes = _db.FindAccountInTree("Все расходы");
+      var outcomes = _accountInTreeSeeker.FindAccountInTree("Все расходы");
       var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta, 
                                            Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
       var colorsEnumerator = outcomeColors.GetEnumerator();

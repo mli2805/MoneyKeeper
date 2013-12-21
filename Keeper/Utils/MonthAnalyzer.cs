@@ -10,16 +10,16 @@ namespace Keeper.Utils
   {
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
-		readonly ICurrencyExchanger _currencyExchanger;
+		readonly ICurrencyConverter _currencyConverter;
 		private readonly BalanceCalculator _balanceCalculator;
 
     [ImportingConstructor]
-    public MonthAnalyzer(KeeperDb db, BalanceCalculator balanceCalculator, RateExtractor rateExtractor, ICurrencyExchanger currencyExchanger)
+    public MonthAnalyzer(KeeperDb db, BalanceCalculator balanceCalculator, RateExtractor rateExtractor, ICurrencyConverter currencyConverter)
     {
 	    _db = db;
 	    _balanceCalculator = balanceCalculator;
 	    _rateExtractor = rateExtractor;
-	    _currencyExchanger = currencyExchanger;
+	    _currencyConverter = currencyConverter;
     }
 
 	  public Saldo AnalizeMonth(DateTime initialDay)
@@ -31,7 +31,7 @@ namespace Keeper.Utils
 
       result.StartDate = initialDay.AddDays(-initialDay.Day + 1);
       result.BeginBalanceInCurrencies = _balanceCalculator.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate).ToList();
-      result.BeginBalance = _currencyExchanger.BalancePairsToUsd(result.BeginBalanceInCurrencies, result.StartDate.AddDays(-1));
+      result.BeginBalance = _currencyConverter.BalancePairsToUsd(result.BeginBalanceInCurrencies, result.StartDate.AddDays(-1));
       result.BeginByrRate = (decimal)_rateExtractor.GetRateThisDayOrBefore(CurrencyCodes.BYR, result.StartDate.AddDays(-1));
 
       var transactions = (from transaction in _db.Transactions
@@ -54,7 +54,7 @@ namespace Keeper.Utils
 
       result.EndBalanceInCurrencies =
         _balanceCalculator.AccountBalancePairsBeforeDay(myAccountsRoot, result.StartDate.AddMonths(1)).ToList();
-      result.EndBalance = _currencyExchanger.BalancePairsToUsd(result.EndBalanceInCurrencies,
+      result.EndBalance = _currencyConverter.BalancePairsToUsd(result.EndBalanceInCurrencies,
                                                     result.StartDate.AddMonths(1).AddDays(-1));
       if (!transactions.Any())
       {

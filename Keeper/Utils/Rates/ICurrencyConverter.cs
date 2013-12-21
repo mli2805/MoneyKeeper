@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Keeper.Utils
 {
-  public interface ICurrencyExchanger {
+  public interface ICurrencyConverter {
     decimal BalancePairsToUsd(IEnumerable<MoneyPair> inCurrencies, DateTime dateTime);
   }
 }
