@@ -77,9 +77,9 @@
     <Compile Include="Utils\DbInputOutput\TestDbGeneralLoader.cs" />
     <Compile Include="TestMef.cs" />
     <Compile Include="DomainModel\TestPeriod.cs" />
-    <Compile Include="Utils\TestBalanceCalculator.cs" />
-    <Compile Include="Utils\TestCurrencyExchanger.cs" />
-    <Compile Include="Utils\TestRate.cs" />
+    <Compile Include="Utils\Balances\TestBalanceCalculator.cs" />
+    <Compile Include="Utils\Rates\TestCurrencyExchanger.cs" />
+    <Compile Include="Utils\Rates\TestRate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

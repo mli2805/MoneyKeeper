@@ -14,7 +14,7 @@ namespace Keeper.UnitTests.Utils
   [TestFixture]
 	public class TestCurrencyExchanger
 	{
-		private CurrencyExchanger _underTest;
+		private CurrencyConverter _underTest;
 		private IRateExtractor _rate;
 		private readonly static DateTime Monday = new DateTime(2000, 1, 1);
 
@@ -22,7 +22,7 @@ namespace Keeper.UnitTests.Utils
 		public void SetUp()
 		{
 			_rate = A.Fake<IRateExtractor>();
-			_underTest = new CurrencyExchanger(_rate);
+			_underTest = new CurrencyConverter(_rate);
 		
 		}
 		[Test]

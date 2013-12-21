@@ -118,12 +118,14 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Accounts\AccountInTreeSeeker.cs" />
+    <Compile Include="DomainModel\IKeeperDb.cs" />
     <Compile Include="Utils\DbInputOutput\DbFromZipLoader.cs" />
     <Compile Include="Utils\DbInputOutput\IDbFromZipLoader.cs" />
-    <Compile Include="Utils\MoneyPair.cs" />
-    <Compile Include="Utils\BalancesForShellCalculator.cs" />
-    <Compile Include="Utils\BalancesForTransactionsCalculator.cs" />
-    <Compile Include="Utils\CurrencyExchanger.cs" />
+    <Compile Include="Utils\Balances\MoneyPair.cs" />
+    <Compile Include="Utils\Balances\BalancesForShellCalculator.cs" />
+    <Compile Include="Utils\Balances\BalancesForTransactionsCalculator.cs" />
+    <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\DayProcessor.cs" />
     <Compile Include="Utils\DbInputOutput\DbGeneralLoader.cs" />
     <Compile Include="DomainModel\Account.cs" />
@@ -136,8 +138,8 @@
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
-    <Compile Include="Utils\AccountTreesGardener.cs" />
-    <Compile Include="Utils\BalanceCalculator.cs" />
+    <Compile Include="Utils\Accounts\AccountTreesGardener.cs" />
+    <Compile Include="Utils\Balances\BalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\DbLoadError.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
     <Compile Include="Utils\DbInputOutput\DbBackupOrganizer.cs" />
@@ -165,7 +167,7 @@
     <Compile Include="Utils\FileSystem\IFile.cs" />
     <Compile Include="Utils\FileSystem\IFileSystem.cs" />
     <Compile Include="Utils\FunctionsWithEvery.cs" />
-    <Compile Include="Utils\ICurrencyExchanger.cs" />
+    <Compile Include="Utils\Rates\ICurrencyConverter.cs" />
     <Compile Include="Utils\MEF\ContainerBuilder.cs" />
     <Compile Include="Utils\MEF\ContainerConfigurationExtensions.cs" />
     <Compile Include="Utils\MEF\InstanceDescriptorProvider.cs" />
@@ -190,7 +192,7 @@
     <Compile Include="Utils\DbInputOutput\DbToTxtSaver.cs" />
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="DomainModel\Period.cs" />
-    <Compile Include="Utils\RateExtractor.cs" />
+    <Compile Include="Utils\Rates\RateExtractor.cs" />
     <Compile Include="Behaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ScrollToPreviousExitPointOrBottomOnLoadBehavior.cs" />
     <Compile Include="Behaviors\ScrollToBottomOnLoadDatagridBehavior.cs" />

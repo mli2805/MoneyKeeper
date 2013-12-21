@@ -5,13 +5,13 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils
 {
-  [Export(typeof(ICurrencyExchanger))]
-  public class CurrencyExchanger : ICurrencyExchanger
+  [Export(typeof(ICurrencyConverter))]
+  public class CurrencyConverter : ICurrencyConverter
   {
     private readonly IRateExtractor _rateExtractor;
 
     [ImportingConstructor]
-    public CurrencyExchanger(IRateExtractor rateExtractor)
+    public CurrencyConverter(IRateExtractor rateExtractor)
     {
       _rateExtractor = rateExtractor;
     }

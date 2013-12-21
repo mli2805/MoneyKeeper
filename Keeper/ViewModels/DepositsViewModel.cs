@@ -7,6 +7,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Diagram;
 
 namespace Keeper.ViewModels
@@ -42,8 +43,9 @@ namespace Keeper.ViewModels
   {
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
-    private readonly RateExtractor _rateExtractor;
     private readonly KeeperDb _db;
+    private readonly RateExtractor _rateExtractor;
+	  private AccountInTreeSeeker _accountInTreeSeeker;
 
     public List<Deposit> DepositsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
@@ -52,10 +54,11 @@ namespace Keeper.ViewModels
     public Style MyTitleStyle { get; set; }
 
 	  [ImportingConstructor]
-    public DepositsViewModel(KeeperDb db)
+    public DepositsViewModel(KeeperDb db, AccountInTreeSeeker accountInTreeSeeker)
     {
       _db = db;
-      _rateExtractor = new RateExtractor(db);
+	    _accountInTreeSeeker = accountInTreeSeeker;
+	    _rateExtractor = new RateExtractor(db);
 
       MyTitleStyle = new Style();
 
@@ -133,7 +136,7 @@ namespace Keeper.ViewModels
       SeriesUsd = new List<DateProcentPoint>();
       SeriesByr = new List<DateProcentPoint>();
       SeriesEuro = new List<DateProcentPoint>();
-      var rootDepo = _db.FindAccountInTree("Депозиты");
+      var rootDepo = _accountInTreeSeeker.FindAccountInTree("Депозиты");
       var inMoney = calculator.AccountBalancesForPeriodInCurrencies(rootDepo,
                                                                  new Period(new DateTime(2001, 12, 31), DateTime.Now),false);
       foreach (var pair in inMoney)
