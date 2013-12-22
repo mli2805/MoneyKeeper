@@ -121,11 +121,13 @@
     <Compile Include="Utils\Accounts\AccountInTreeSeeker.cs" />
     <Compile Include="DomainModel\IKeeperDb.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
-    <Compile Include="Utils\DbInputOutput\DbFromZipLoader.cs" />
-    <Compile Include="Utils\DbInputOutput\IDbFromZipLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\DbUnzipper.cs" />
+    <Compile Include="Utils\DbInputOutput\FileExistenceChecker.cs" />
+    <Compile Include="Utils\DbInputOutput\IDbUnzipper.cs" />
     <Compile Include="Utils\Balances\MoneyPair.cs" />
     <Compile Include="Utils\Balances\BalancesForShellCalculator.cs" />
     <Compile Include="Utils\Balances\BalancesForTransactionsCalculator.cs" />
+    <Compile Include="Utils\DbInputOutput\IFileExistenceChecker.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\DayProcessor.cs" />
     <Compile Include="Utils\DbInputOutput\DbGeneralLoader.cs" />
