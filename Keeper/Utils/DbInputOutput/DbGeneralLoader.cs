@@ -91,7 +91,7 @@ namespace Keeper.Utils.DbInputOutput
 
       filename = _openFileDialog.Show("*.*",
                                       "All files (*.*)|*.*|Keeper Database (.dbx)|*.dbx|Zip archive (with keeper database .zip)|*.zip|Text files (with data for keeper .txt)|*.txt",
-                                      Path.GetFullPath(Settings.Default.TestDbPath));
+                                      "");
       if (filename == "")
       {
         LoadResult.Set(0x15, "Standart dbx file not found. User refused selection");

@@ -59,7 +59,6 @@ namespace Keeper.Utils.Balances
 				   };
 		}
 
-    // TODO Test
 		public IEnumerable<MoneyPair> ArticleBalancePairs(Account balancedAccount, Period period)
 		{
 			return from t in _db.Transactions
@@ -80,10 +79,10 @@ namespace Keeper.Utils.Balances
 		/// <returns></returns>
 		public IEnumerable<MoneyPair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
 		{
-      var period = new Period(new DateTime(0), new DayProcessor(dateTime).BeforeThisDay());
+			var period = new Period(new DateTime(0), new DayProcessor(dateTime).BeforeThisDay());
 			if (balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы"))
 				return ArticleBalancePairs(balancedAccount, period);
-			else return AccountBalancePairs(balancedAccount, period);
+			return AccountBalancePairs(balancedAccount, period);
 		}
 
 		/// <summary>

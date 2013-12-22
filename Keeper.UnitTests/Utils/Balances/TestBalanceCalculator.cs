@@ -20,15 +20,16 @@ namespace Keeper.UnitTests.Utils.Balances
     public TestBalanceCalculator()
     {
       _db = new KeeperDb();
-      new DbFromTxtLoader().LoadDbFromTxt(ref _db, Path.GetFullPath(Settings.Default.TestDbPath));
+	  new DbFromTxtLoader().LoadDbFromTxt(ref _db, Path.GetFullPath("TestDb"));
       _underTest = new BalanceCalculator(_db);
     }
 
-    [Test]
+	[Test]
     public void ArticleBalancePairs_Without_Appropriate_Transactions_Should_Return_Empty_List()
     {
       var testedCategory = new Account("Зарплата");
-      _underTest.ArticleBalancePairs(testedCategory, new Period(new DateTime(2013, 11, 15), new DateTime(2013, 12, 1))).ShouldBeEquivalentTo(new List<MoneyPair>());
+      _underTest.ArticleBalancePairs(testedCategory, 
+		  new Period(new DateTime(2013, 11, 15), new DateTime(2013, 12, 1))).ShouldBeEquivalentTo(new List<MoneyPair>());
     }
 
     [Test]
@@ -41,7 +42,8 @@ namespace Keeper.UnitTests.Utils.Balances
       };
 
       var testedCategory = new Account("Зарплата");
-      _underTest.ArticleBalancePairs(testedCategory, new Period(new DateTime(2013, 11, 1), new DateTime(2013,12,1))).ShouldBeEquivalentTo(expectation);
+      _underTest.ArticleBalancePairs(testedCategory, 
+		  new Period(new DateTime(2013, 11, 1), new DateTime(2013,12,1))).ShouldBeEquivalentTo(expectation);
     }
 
     [Test]
@@ -54,7 +56,8 @@ namespace Keeper.UnitTests.Utils.Balances
       };
 
       var testedCategory = new Account("Одежда");
-      _underTest.ArticleBalancePairs(testedCategory, new Period(new DateTime(2013, 11, 1), new DateTime(2013, 12, 1))).ShouldBeEquivalentTo(expectation);
+      _underTest.ArticleBalancePairs(testedCategory,
+		  new Period(new DateTime(2013, 11, 1), new DateTime(2013, 12, 1))).ShouldBeEquivalentTo(expectation);
     }
 
     [Test]
@@ -67,7 +70,8 @@ namespace Keeper.UnitTests.Utils.Balances
       };
 
       var testedCategory = new Account("Одежда");
-      _underTest.ArticleBalancePairs(testedCategory, new Period(new DateTime(2013, 11, 1), new DateTime(2013, 11, 19))).ShouldBeEquivalentTo(expectation);
+      _underTest.ArticleBalancePairs(testedCategory, 
+		  new Period(new DateTime(2013, 11, 1), new DateTime(2013, 11, 19))).ShouldBeEquivalentTo(expectation);
     }
 
   }

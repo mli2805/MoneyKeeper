@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -155,7 +156,7 @@ namespace Keeper.Utils.DbInputOutput
     {
       var transaction = new Transaction();
       var substrings = s.Split(';');
-      transaction.Timestamp = Convert.ToDateTime(substrings[0]);
+      transaction.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
       transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
       transaction.Debet = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
       transaction.Credit = accountsPlaneList.First(account => account.Name == substrings[3].Trim());
@@ -174,7 +175,7 @@ namespace Keeper.Utils.DbInputOutput
     {
       var rate = new CurrencyRate();
       int next = s.IndexOf(';');
-      rate.BankDay = Convert.ToDateTime(s.Substring(0, next));
+      rate.BankDay = Convert.ToDateTime(s.Substring(0, next), new CultureInfo("ru-RU"));
       rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
       next += 6;
       rate.Rate = Convert.ToDouble(s.Substring(next + 2));
