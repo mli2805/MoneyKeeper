@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\DbInputOutput\TestDbExporter.cs" />
     <Compile Include="Utils\DbInputOutput\TestDbGeneralLoader.cs" />
     <Compile Include="TestMef.cs" />
     <Compile Include="DomainModel\TestPeriod.cs" />
