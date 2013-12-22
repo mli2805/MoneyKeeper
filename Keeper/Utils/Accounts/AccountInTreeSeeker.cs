@@ -14,7 +14,7 @@ namespace Keeper.Utils.Accounts
       _db = db;
     }
 
-    public Account FindAccountInBranch(string toFind, Account branch)
+	Account FindAccountInBranch(string toFind, Account branch)
     {
       foreach (var child in branch.Children)
       {

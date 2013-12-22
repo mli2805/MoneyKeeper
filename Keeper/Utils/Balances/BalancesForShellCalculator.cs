@@ -13,7 +13,7 @@ namespace Keeper.Utils.Balances
     private readonly RateExtractor _rateExtractor;
 
     [ImportingConstructor]
-    public BalancesForShellCalculator(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator)
+    public BalancesForShellCalculator(RateExtractor rateExtractor, BalanceCalculator balanceCalculator)
     {
 	    _rateExtractor = rateExtractor;
 	    _balanceCalculator = balanceCalculator;
