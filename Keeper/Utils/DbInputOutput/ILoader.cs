@@ -2,7 +2,7 @@
 {
 	public interface ILoader
 	{
-		string SupportedExtension { get; }
+		string AssociatedExtension { get; }
 		DbLoadResult Load(string filename);
 	}
 }

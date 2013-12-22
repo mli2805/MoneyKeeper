@@ -21,8 +21,11 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 		[SetUp]
 		public void SetUp()
 		{
-			mLoader = A.Fake<ILoader>();
 			mLocator = A.Fake<IDbLocator>();
+
+			mLoader = A.Fake<ILoader>();
+			A.CallTo(() => mLoader.AssociatedExtension).Returns(".txt");
+
 			mUnderTest = new DbGeneralLoader(mLocator, new[] { mLoader });
 		}
 
@@ -31,13 +34,27 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 		{
 			var dbLoadResult = new DbLoadResult(null);
 			A.CallTo(() => mLocator.Locate()).Returns("file.txt");
-			A.CallTo(() => mLoader.SupportedExtension).Returns(".txt");
 			A.CallTo(() => mLoader.Load("file.txt")).Returns(dbLoadResult);
 			
 
 			var result = mUnderTest.LoadByExtension();
 			result.Should().Be(dbLoadResult);
 		}
+		[Test]
+		public void LoadByExtension_When_Locate_Returns_Null_Should_Return_User_Refused_Error()
+		{
+			A.CallTo(() => mLocator.Locate()).Returns(null);
+			var result = mUnderTest.LoadByExtension();
+			result.Explanation.Should().Be("User refused to choose another file");
+		}
+		[Test]
+		public void LoadByExtension_When_Locate_Returns_Wrong_Extension_Return_WrongExtension_Error()
+		{
+			A.CallTo(() => mLocator.Locate()).Returns("file.wrong");
+			var result = mUnderTest.LoadByExtension();
+			result.Explanation.Should().Be("User has chosen file with wrong extension");
+		}
+
 	}
 
 }

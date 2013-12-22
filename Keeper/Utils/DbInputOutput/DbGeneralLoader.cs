@@ -22,8 +22,10 @@ namespace Keeper.Utils.DbInputOutput
 		public DbLoadResult LoadByExtension()
 		{
 			var filename = mLocator.Locate();
+			if (filename == null) return new DbLoadResult(52354, "User refused to choose another file");
 			var extension = Path.GetExtension(filename);
-			var selectedLoader = mLoaders.Single(loader => loader.SupportedExtension == extension);
+			var selectedLoader = mLoaders.FirstOrDefault(loader => loader.AssociatedExtension == extension);
+			if (selectedLoader == null) return new DbLoadResult(52355, "User has chosen file with wrong extension");
 			return selectedLoader.Load(filename);
 		}
 

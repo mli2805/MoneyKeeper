@@ -79,6 +79,7 @@
     <Compile Include="TestMef.cs" />
     <Compile Include="DomainModel\TestPeriod.cs" />
     <Compile Include="Utils\Balances\TestBalanceCalculator.cs" />
+    <Compile Include="Utils\DbInputOutput\TestDbLocator.cs" />
     <Compile Include="Utils\Rates\TestCurrencyExchanger.cs" />
     <Compile Include="Utils\Rates\TestRate.cs" />
   </ItemGroup>
