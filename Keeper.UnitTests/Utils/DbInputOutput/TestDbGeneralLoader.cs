@@ -2,6 +2,7 @@
 using FakeItEasy;
 using FluentAssertions;
 using Keeper.DomainModel;
+using Keeper.Properties;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.Dialogs;
 using Keeper.Utils.FileSystem;
@@ -17,7 +18,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 		IMyOpenFileDialog mOpenFileDialog;
 		IDbSerializer mDbSerializer;
 		IDbFromTxtLoader mFromTxtLoader;
-		IDbFromZipLoader mFromZipLoader;
+		IDbUnzipper mUnzipper;
 		IFileSystem mFileSystem;
 		IFile mFile;
 		KeeperDb mKeeperDb;
@@ -29,7 +30,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mOpenFileDialog = A.Fake<IMyOpenFileDialog>();
 			mDbSerializer = A.Fake<IDbSerializer>();
 			mFromTxtLoader = A.Fake<IDbFromTxtLoader>();
-			mFromZipLoader = A.Fake<IDbFromZipLoader>();
+			mUnzipper = A.Fake<IDbUnzipper>();
 			mFileSystem = A.Fake<IFileSystem>();
 			
 			mFile = A.Fake<IFile>();
@@ -46,7 +47,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
       A.CallTo(() => mFile.Exists).Returns(true);
 
 			// Act
-			var underTest = new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
+			var underTest = new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mUnzipper);
 
 			// Assert
 			underTest.Db.Should().Be(mKeeperDb);
@@ -61,7 +62,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
       A.CallTo(() => mFile.Exists).Returns(false);
 			
 			// Act
-      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mUnzipper);
 
       A.CallTo(() => mMessageBoxer.Show(A<string>.Ignored,
 			                                  "Error!", MessageBoxButton.YesNo, MessageBoxImage.Warning)).MustHaveHappened();
@@ -77,7 +78,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 
 
 			// Act
-      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);			
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mUnzipper);			
 
 			// Assert
       A.CallTo(() => mOpenFileDialog.Show("*.*",
@@ -95,7 +96,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
       A.CallTo(() => mFile.Exists).Returns(true);
 
 			// Act
-      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mUnzipper);
 
       A.CallTo(() => mDbSerializer.DecryptAndDeserialize("illegal.dbx")).Returns(null);
     }
@@ -109,11 +110,11 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
       A.CallTo(() => mFileSystem.GetFile("illegal.dbx")).Returns(mFile);
       A.CallTo(() => mFile.Exists).Returns(true);
       A.CallTo(() => mFromTxtLoader.LoadDbFromTxt(ref mKeeperDb, "file.txt"))
-			 .Returns(new DbLoadError())
+			 .Returns(new DbLoadResult(newKeeperdb))
        .AssignsOutAndRefParameters(mKeeperDb);
 
 			// Act
-      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);			
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mUnzipper);			
 
 			// Assert
       mKeeperDb.ShouldBeEquivalentTo(newKeeperdb);
@@ -127,15 +128,18 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
       A.CallTo(() => mFileSystem.PathCombine(A<string>.Ignored, A<string>.Ignored)).Returns("illegal.dbx");
       A.CallTo(() => mFileSystem.GetFile("illegal.dbx")).Returns(mFile);
       A.CallTo(() => mFile.Exists).Returns(true);
-      A.CallTo(() => mFromZipLoader.LoadDbFromZip(ref mKeeperDb, "file.zip"))
-       .Returns(new DbLoadError())
+      A.CallTo(() => mUnzipper.UnzipArchive("file.zip"))
+	   .Returns(new DbLoadResult(newKeeperdb))
        .AssignsOutAndRefParameters(mKeeperDb);
 
+
       // Act
-      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);
+      new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mUnzipper);
 
       // Assert
-      mKeeperDb.ShouldBeEquivalentTo(newKeeperdb);
+
+//	  A.CallTo(() => mFromTxtLoader.LoadDbFromTxt(ref mKeeperDb,Settings.Default.TemporaryTxtDbPath));
+	  mKeeperDb.ShouldBeEquivalentTo(newKeeperdb);
     }
 
 		[Test]
@@ -145,10 +149,10 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mKeeperDb = null;
 
 			A.CallTo(() => mDbSerializer.DecryptAndDeserialize("full path")).Returns(null);
-      A.CallTo(() => mFromTxtLoader.LoadDbFromTxt(ref mKeeperDb, "full path")).Returns(new DbLoadError { Code = 5 });
+      A.CallTo(() => mFromTxtLoader.LoadDbFromTxt(ref mKeeperDb, "full path")).Returns(new DbLoadResult(5,"explanation")  );
 
 			// Act
-      var result = new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mFromZipLoader);			
+      var result = new DbGeneralLoader(mMessageBoxer, mOpenFileDialog, mDbSerializer, mFromTxtLoader, mFileSystem, mUnzipper);			
 
 			// Assert
 			result.Db.Should().BeNull();

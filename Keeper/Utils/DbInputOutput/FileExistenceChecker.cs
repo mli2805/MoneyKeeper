@@ -6,7 +6,7 @@ using Keeper.Utils.FileSystem;
 
 namespace Keeper.Utils.DbInputOutput
 {
-	[Export (typeof(IFileExistenceChecker))]
+	[Export(typeof(IFileExistenceChecker))]
 	public class FileExistenceChecker : IFileExistenceChecker
 	{
 		readonly IFileSystem mFileSystem;
@@ -17,12 +17,12 @@ namespace Keeper.Utils.DbInputOutput
 			mFileSystem = fileSystem;
 		}
 
-		public DbLoadError Check(Dictionary<string, int> files)
+		public DbLoadResult Check(Dictionary<string, int> files)
 		{
 			foreach (var pair in files)
 				if (!mFileSystem.GetFile(mFileSystem.PathCombine(Settings.Default.TemporaryTxtDbPath, pair.Key)).Exists)
-					return new DbLoadError { Code = pair.Value, Explanation = pair.Key + " not found!" };
-			return new DbLoadError();
+					return new DbLoadResult(pair.Value, pair.Key + " not found!");
+			return null;
 		}
 	}
 }

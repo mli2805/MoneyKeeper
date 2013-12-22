@@ -26,7 +26,7 @@ namespace Keeper.ViewModels
 
     //    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public KeeperDb Db;
-	  readonly DbLoadError mLoadError;
+	  readonly DbLoadResult mLoadResult;
 
 	  private readonly AccountTreesGardener _accountTreesGardener;
     private readonly AccountInTreeSeeker _accountInTreeSeeker;
@@ -188,16 +188,16 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public ShellViewModel(KeeperDb db, DbLoadError loadError, BalancesForShellCalculator balancesForShellCalculator, AccountInTreeSeeker accountInTreeSeeker)
+    public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator, AccountInTreeSeeker accountInTreeSeeker)
     {
       Db = db;
-	    mLoadError = loadError;
+	    mLoadResult = loadResult;
 
 	    _isDbLoadingSuccessed = Db != null;
       if (!_isDbLoadingSuccessed)
       {
         // TODO How to get DbLoadResult from MEF
-        MessageBox.Show("Application will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(mLoadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
 

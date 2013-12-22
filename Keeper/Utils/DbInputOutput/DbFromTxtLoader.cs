@@ -15,20 +15,20 @@ namespace Keeper.Utils.DbInputOutput
   class DbFromTxtLoader : IDbFromTxtLoader
 	{
     public Encoding Encoding1251 = Encoding.GetEncoding(1251);
-    public DbLoadError Result = new DbLoadError();
+	  public DbLoadResult Result;
 
-    public DbLoadError LoadDbFromTxt(ref KeeperDb db, string path)
+    public DbLoadResult LoadDbFromTxt(ref KeeperDb db, string path)
     {
       LoadAccounts(ref db, path);
-      if (Result.Code != 0) { db = null; return Result; }
+      if (Result != null) { db = null; return Result; }
       db.AccountsPlaneList = new AccountTreeStraightener().FillInAccountsPlaneList(db.Accounts);
 
       db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
-      if (Result.Code != 0) { db = null; return Result; }
+      if (Result != null) { db = null; return Result; }
       db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, db.AccountsPlaneList);
-      if (Result.Code != 0) { db = null; return Result; }
+      if (Result != null) { db = null; return Result; }
       db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", CurrencyRateFromString, db.AccountsPlaneList);
-      if (Result.Code != 0) { db = null; return Result; }
+      if (Result != null) { db = null; return Result; }
 
       return Result;
     }
@@ -38,7 +38,7 @@ namespace Keeper.Utils.DbInputOutput
       var fullFilename = Path.Combine(path, filename);
       if (!File.Exists(fullFilename))
       {
-        Result.Set(325, "File <"+fullFilename+"> not found");
+        Result = new DbLoadResult(325, "File <"+fullFilename+"> not found");
         return null;
       }
 
@@ -60,7 +60,7 @@ namespace Keeper.Utils.DbInputOutput
       if (wrongContent.Count != 0)
       {
         File.WriteAllLines(Path.ChangeExtension(Path.Combine(path, filename), "err"), wrongContent, Encoding1251);
-        Result.Set(326, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
+        Result = new DbLoadResult(326, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
       }
       return result;
     }
@@ -71,7 +71,7 @@ namespace Keeper.Utils.DbInputOutput
       var filename = Path.Combine(path, "Accounts.txt");
       if (!File.Exists(filename))
       {
-        Result.Set(315, "File <Accounts.txt> not found");
+        Result = new DbLoadResult(315, "File <Accounts.txt> not found");
         return;
       }
 
