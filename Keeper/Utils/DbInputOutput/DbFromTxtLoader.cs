@@ -193,7 +193,7 @@ namespace Keeper.Utils.DbInputOutput
     }
     #endregion
 
-	  public string SupportedExtension { get { return ".txt"; } }
+	  public string AssociatedExtension { get { return ".txt"; } }
 	  public DbLoadResult Load(string filename)
 	  {
 		  var db = new KeeperDb();
