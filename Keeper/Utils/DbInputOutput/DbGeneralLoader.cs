@@ -15,6 +15,8 @@ namespace Keeper.Utils.DbInputOutput
     [Export]
     [Export(typeof(IKeeperDb))]
     public KeeperDb Db { get; private set; }
+	[Export]
+	public DbLoadError LoadResult { get; private set; }
 
     readonly IMessageBoxer _messageBoxer;
     readonly IMyOpenFileDialog _openFileDialog;
@@ -23,7 +25,6 @@ namespace Keeper.Utils.DbInputOutput
     readonly IDbFromTxtLoader _fromTxtLoader;
     readonly IFileSystem _fileSystem;
 
-    public DbLoadError LoadResult;
 
     [ImportingConstructor]
     public DbGeneralLoader(IMessageBoxer messageBoxer, IMyOpenFileDialog openFileDialog,
@@ -46,7 +47,8 @@ namespace Keeper.Utils.DbInputOutput
       var filename = _fileSystem.PathCombine(Settings.Default.DbPath, Settings.Default.DbxFile);
       if (!_fileSystem.GetFile(filename).Exists)
       {
-        if (!AskUserForAnotherFile(ref filename)) return null;
+        if (!AskUserForAnotherFile(ref filename))
+			return null;
       }
       return LoadInAppropriateWay(filename);
     }

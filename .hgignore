@@ -11,3 +11,5 @@ Keeper.psess
 *.orig
 *.ncrunchproject
 _NCrunch_Keeper
+Keeper.UnitTests/TestDb/*.zip
+Keeper.UnitTests/TestDb/Keeper.dbx
