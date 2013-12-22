@@ -12,7 +12,8 @@ using Keeper.Utils.Accounts;
 namespace Keeper.Utils.DbInputOutput
 {
   [Export(typeof(IDbFromTxtLoader))]
-  class DbFromTxtLoader : IDbFromTxtLoader
+  [Export(typeof(ILoader))]
+  class DbFromTxtLoader : IDbFromTxtLoader, ILoader
 	{
     public Encoding Encoding1251 = Encoding.GetEncoding(1251);
 	  public DbLoadResult Result;
@@ -191,5 +192,13 @@ namespace Keeper.Utils.DbInputOutput
       return association;
     }
     #endregion
+
+	  public string SupportedExtension { get { return ".txt"; } }
+	  public DbLoadResult Load(string filename)
+	  {
+		  var db = new KeeperDb();
+		  var loadResult = LoadDbFromTxt(ref db, Path.GetDirectoryName(filename));
+		  return loadResult ?? new DbLoadResult(db);
+	  }
 	}
 }
