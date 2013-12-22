@@ -1,5 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
+
 using Caliburn.Micro;
 using Keeper.ViewModels;
 
@@ -183,7 +185,7 @@ namespace Keeper.DomainModel
       DateTime result;
       try
       {
-        result = Convert.ToDateTime(s.Substring(p - 2, n - p + 2));
+        result = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
       }
       catch (Exception)
       {
