@@ -11,6 +11,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Balances;
+using Keeper.Utils.Rates;
 
 namespace Keeper.ViewModels
 {

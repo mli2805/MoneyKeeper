@@ -9,7 +9,6 @@ namespace Keeper.Utils.DbInputOutput
 	internal class DbExporter
 	{
 		[Export]
-		[Export(typeof(IKeeperDb))]
 		public KeeperDb Db { get; private set; }
 		[Export]
 		public DbLoadResult LoadResult { get; private set; }

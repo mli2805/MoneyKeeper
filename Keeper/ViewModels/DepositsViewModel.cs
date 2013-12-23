@@ -9,6 +9,7 @@ using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Diagram;
+using Keeper.Utils.Rates;
 
 namespace Keeper.ViewModels
 {
@@ -253,8 +254,6 @@ namespace Keeper.ViewModels
           index++;
           if (index == transactionsArray.Count()) break;
           tr = transactionsArray[index];
-//          if (tr.Timestamp.Date < dt.Date) 
-//            break;
         }
 
         dailyCashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));

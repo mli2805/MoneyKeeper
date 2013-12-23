@@ -3,7 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Rates
 {
 	public interface IRateExtractor {
 		double GetRate(CurrencyCodes currency, DateTime day);
@@ -17,9 +17,9 @@ namespace Keeper.Utils
 	[Export(typeof(IRateExtractor))]
 	public class RateExtractor : IRateExtractor
 	{
-	  private readonly IKeeperDb _db;
+	  private readonly KeeperDb _db;
 		[ImportingConstructor]
-		public RateExtractor(IKeeperDb db)
+		public RateExtractor(KeeperDb db)
 		{
 			_db = db;
 		}
