@@ -28,7 +28,7 @@ namespace Keeper.ViewModels
     public KeeperDb Db;
 	  readonly DbLoadResult mLoadResult;
 
-	  private readonly AccountTreesGardener _accountTreesGardener;
+    private readonly AccountTreesGardener _accountTreesGardener;
     private readonly AccountInTreeSeeker _accountInTreeSeeker;
     private readonly BalancesForShellCalculator _balanceCalculator;
     private readonly DiagramDataCtors _diagramDataCtor;
@@ -193,7 +193,7 @@ namespace Keeper.ViewModels
       Db = db;
 	    mLoadResult = loadResult;
 
-	    _isDbLoadingSuccessed = Db != null;
+      _isDbLoadingSuccessed = Db != null;
       if (!_isDbLoadingSuccessed)
       {
         // TODO How to get DbLoadResult from MEF
