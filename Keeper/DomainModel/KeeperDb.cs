@@ -9,7 +9,7 @@ namespace Keeper.DomainModel
 	/// <see cref="DbGeneralLoader"/> is factory for the KeeperDb
 	/// </summary>
 	[Serializable]
-	public class KeeperDb : IKeeperDb
+	public class KeeperDb
 	{
 		public ObservableCollection<Account> Accounts { get; set; }
 		public ObservableCollection<Transaction> Transactions { get; set; }

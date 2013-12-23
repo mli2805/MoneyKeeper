@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Utils;
 using Keeper.Utils.Balances;
+using Keeper.Utils.Rates;
 
 namespace Keeper.DomainModel
 {

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using FakeItEasy;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Rates;
 using NUnit.Framework;
 using FluentAssertions;
 
@@ -11,7 +12,7 @@ namespace Keeper.UnitTests.Utils
 	[TestFixture]
 	public class TestRateExtractor
 	{
-		private IKeeperDb _keeperDb;
+		private KeeperDb _keeperDb;
 		private readonly static DateTime FirstDay = new DateTime(2002, 1, 1);
 		private readonly static DateTime SecondDay = new DateTime(2002, 1, 2);
 		private readonly static DateTime ThirdDay = new DateTime(2002, 1, 3);
@@ -20,9 +21,9 @@ namespace Keeper.UnitTests.Utils
 		[SetUp]
 		public void SetUp()
 		{
-			_keeperDb = A.Fake<IKeeperDb>();
+			_keeperDb = new KeeperDb();
 			_underTest = new RateExtractor(_keeperDb);
-			A.CallTo(() => _keeperDb.CurrencyRates).Returns(new ObservableCollection<CurrencyRate>
+			_keeperDb.CurrencyRates = new ObservableCollection<CurrencyRate>
 				{
 					new CurrencyRate
 						{
@@ -42,7 +43,7 @@ namespace Keeper.UnitTests.Utils
 							Currency = CurrencyCodes.EUR,
 							Rate = 7,
 						},
-				});
+				};
 		}
 		[Test]
 		public void GetRate_When_No_Rate_For_Date_Should_Return_0()

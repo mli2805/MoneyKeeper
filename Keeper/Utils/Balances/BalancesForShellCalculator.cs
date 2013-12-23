@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
 using Keeper.DomainModel;
+using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.Balances
 {

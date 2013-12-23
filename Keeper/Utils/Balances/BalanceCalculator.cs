@@ -9,10 +9,10 @@ namespace Keeper.Utils.Balances
   [Export]
 	public class BalanceCalculator
 	{
-	  private readonly IKeeperDb _db;
+	  private readonly KeeperDb _db;
 
 		[ImportingConstructor]
-		public BalanceCalculator(IKeeperDb db)
+		public BalanceCalculator(KeeperDb db)
 		{
 			_db = db;
 		}
