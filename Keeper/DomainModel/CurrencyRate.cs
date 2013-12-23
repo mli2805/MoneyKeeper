@@ -15,7 +15,7 @@ namespace Keeper.DomainModel
 
     public string ToDump()
     {
-      return BankDay + " ; " + Currency + " ; " + Math.Round(Rate, 4);
+      return Convert.ToString(BankDay,new CultureInfo("ru-Ru")) + " ; " + Currency + " ; " + Math.Round(Rate, 4);
     }
 
    #region Поля для показа на форме "Курсы валют"

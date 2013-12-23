@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Utils;
@@ -176,7 +177,7 @@ namespace Keeper.DomainModel
 
     public string ToDumpWithNames()
     {
-      var s = Timestamp + " ; " + Operation + " ; " +
+      var s = Convert.ToString(Timestamp, new CultureInfo("ru-Ru")) + " ; " + Operation + " ; " +
               Debet + " ; " + Credit + " ; " +
               Amount + " ; " + Currency + " ; " + Amount2 + " ; ";
              
