@@ -227,7 +227,7 @@ namespace Keeper.ViewModels
 
       decimal cashInUsd = 0, depoInUsd = 0;
       var dt = new DateTime(2001, 12, 31);
-      var transactionsArray = _db.Transactions.ToArray();
+      var transactionsArray = _db.Transactions.OrderBy(t => t.Timestamp).ToArray();
       int index = 0;
       Transaction tr = transactionsArray[0];
 
@@ -253,10 +253,12 @@ namespace Keeper.ViewModels
           index++;
           if (index == transactionsArray.Count()) break;
           tr = transactionsArray[index];
+//          if (tr.Timestamp.Date < dt.Date) 
+//            break;
         }
 
         dailyCashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-        if (index == transactionsArray.Count()) break;
+        if (index >= transactionsArray.Count()) break;
         dt = dt.AddDays(1);
       }
 
