@@ -4,12 +4,12 @@ using Keeper.Properties;
 
 namespace Keeper.Utils.DbInputOutput
 {
-  class DbBackupOrganizer
+  public class DbBackupOrganizer
   {
     public void RemoveIdenticalBackups()
     {
       var backupFiles = Directory.EnumerateFiles(Settings.Default.DbPath,"DB*.zip").ToList();
-      for (int i = 0; i < backupFiles.Count()-1; i++)
+      for (var i = 0; i < backupFiles.Count()-1; i++)
       {
         var file = new FileInfo(backupFiles[i]);
         var file2 = new FileInfo(backupFiles[i + 1]);

@@ -18,6 +18,14 @@ namespace Keeper.Utils.DbInputOutput
     public Encoding Encoding1251 = Encoding.GetEncoding(1251);
 	  public DbLoadResult Result;
 
+    public string FileExtension { get { return ".txt"; } }
+    public DbLoadResult Load(string filename)
+    {
+      var db = new KeeperDb();
+      var loadResult = LoadDbFromTxt(ref db, Path.GetDirectoryName(filename));
+      return loadResult ?? new DbLoadResult(db);
+    }
+
     public DbLoadResult LoadDbFromTxt(ref KeeperDb db, string path)
     {
       LoadAccounts(ref db, path);
@@ -193,12 +201,5 @@ namespace Keeper.Utils.DbInputOutput
     }
     #endregion
 
-	  public string AssociatedExtension { get { return ".txt"; } }
-	  public DbLoadResult Load(string filename)
-	  {
-		  var db = new KeeperDb();
-		  var loadResult = LoadDbFromTxt(ref db, Path.GetDirectoryName(filename));
-		  return loadResult ?? new DbLoadResult(db);
-	  }
 	}
 }

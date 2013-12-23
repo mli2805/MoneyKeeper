@@ -2,7 +2,7 @@
 {
 	public interface ILoader
 	{
-		string AssociatedExtension { get; }
+		string FileExtension { get; }
 		DbLoadResult Load(string filename);
 	}
 }

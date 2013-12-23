@@ -20,11 +20,5 @@ namespace Keeper.Utils.DbInputOutput
 			Explanation = explanation;
 		}
 
-		public void Set(int code, string explanation)
-		{
-			Code = code;
-			Explanation += explanation + "\n";
-		}
-
 	}
 }
