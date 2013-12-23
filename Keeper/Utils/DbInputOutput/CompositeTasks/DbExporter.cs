@@ -1,5 +1,4 @@
 ﻿using System.Composition;
-
 using Keeper.DomainModel;
 
 namespace Keeper.Utils.DbInputOutput

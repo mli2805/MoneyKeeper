@@ -1,19 +1,24 @@
-using System;
 using System.Collections.Generic;
 using System.Composition;
-using System.IO;
 using Ionic.Zip;
-using Keeper.DomainModel;
 using Keeper.Properties;
 using Keeper.Utils.FileSystem;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils.DbInputOutput.ZipTasks
 {
 
 	[Export(typeof(IDbUnzipper))]
 	class DbUnzipper : IDbUnzipper
 	{
-		readonly IFileSystem mFileSystem;
+    private readonly Dictionary<string, int> mFiles = new Dictionary<string, int>
+			{
+				{ "Accounts.txt", 215 },
+				{ "ArticlesAssociations.txt", 225 },
+				{ "CurrencyRates.txt", 235 },
+				{ "Transactions.txt", 245 },
+			};
+    
+    readonly IFileSystem mFileSystem;
 		readonly IFileExistenceChecker mExistenceChecker;
 
 		[ImportingConstructor]
@@ -33,15 +38,5 @@ namespace Keeper.Utils.DbInputOutput
 			}
 			return mExistenceChecker.Check(mFiles);
 		}
-
-
-		private readonly Dictionary<string, int> mFiles = new Dictionary<string, int>
-			{
-				{ "Accounts.txt", 215 },
-				{ "ArticlesAssociations.txt", 225 },
-				{ "CurrencyRates.txt", 235 },
-				{ "Transactions.txt", 245 },
-			};
-
 	}
 }

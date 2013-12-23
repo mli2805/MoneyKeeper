@@ -17,7 +17,7 @@ namespace Keeper.Utils.DbInputOutput
 			mTxtLoader = txtLoader;
 		}
 
-		public string AssociatedExtension { get { return ".zip"; } }
+		public string FileExtension { get { return ".zip"; } }
 		public DbLoadResult Load(string filename)
 		{
 			var loadResult = mUnzipper.UnzipArchive(filename);

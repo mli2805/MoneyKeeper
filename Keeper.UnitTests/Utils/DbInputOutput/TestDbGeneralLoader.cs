@@ -24,7 +24,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
 			mLocator = A.Fake<IDbLocator>();
 
 			mLoader = A.Fake<ILoader>();
-			A.CallTo(() => mLoader.AssociatedExtension).Returns(".txt");
+			A.CallTo(() => mLoader.FileExtension).Returns(".txt");
 
 			mUnderTest = new DbGeneralLoader(mLocator, new[] { mLoader });
 		}

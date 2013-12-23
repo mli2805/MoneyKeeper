@@ -12,6 +12,8 @@ using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.Utils.DbInputOutput.TxtTasks;
 
 
 namespace Keeper.ViewModels
@@ -30,6 +32,8 @@ namespace Keeper.ViewModels
 
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly AccountInTreeSeeker _accountInTreeSeeker;
+    private readonly DbToTxtSaver _txtSaver;
+    private readonly DbBackuper _backuper;
     private readonly BalancesForShellCalculator _balanceCalculator;
     private readonly DiagramDataCtors _diagramDataCtor;
 
@@ -188,7 +192,8 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator, AccountInTreeSeeker accountInTreeSeeker)
+    public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator, 
+      AccountInTreeSeeker accountInTreeSeeker, DbToTxtSaver txtSaver, DbBackuper backuper)
     {
       Db = db;
 	    mLoadResult = loadResult;
@@ -207,6 +212,8 @@ namespace Keeper.ViewModels
 
       _balanceCalculator = balancesForShellCalculator;
       _accountInTreeSeeker = accountInTreeSeeker;
+      _txtSaver = txtSaver;
+      _backuper = backuper;
       _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
     }
 
@@ -261,7 +268,7 @@ namespace Keeper.ViewModels
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
         new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)); // сериализует БД в dbx файл
-        new DbToTxtSaver().MakeDbBackupCopy(Db); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+        _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
       }
       callback(true);
     }
@@ -281,7 +288,7 @@ namespace Keeper.ViewModels
 
     private void ReorderDepositAccounts()
     {
-      new DbToTxtSaver().SaveDbInTxt(Db);
+      _txtSaver.SaveDbInTxt();
       var result = new DbFromTxtLoader().LoadDbFromTxt(ref Db, Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
       //      else InitVariablesToShowAccounts();
@@ -341,12 +348,12 @@ namespace Keeper.ViewModels
 
     public void MakeDatabaseBackup()
     {
-      new DbToTxtSaver().MakeDbBackupCopy(Db);
+      _backuper.MakeDbBackupCopy();
     }
 
     public void ExportDatabaseToTxt()
     {
-      new DbToTxtSaver().SaveDbInTxt(Db);
+      _txtSaver.SaveDbInTxt();
     }
 
     public void ImportDatabaseFromTxt()

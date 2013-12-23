@@ -120,22 +120,24 @@
     </Compile>
     <Compile Include="Utils\Accounts\AccountInTreeSeeker.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
-    <Compile Include="Utils\DbInputOutput\DbExporter.cs" />
-    <Compile Include="Utils\DbInputOutput\DbLocator.cs" />
-    <Compile Include="Utils\DbInputOutput\DbUnzipper.cs" />
-    <Compile Include="Utils\DbInputOutput\FileExistenceChecker.cs" />
-    <Compile Include="Utils\DbInputOutput\IDbGeneralLoader.cs" />
-    <Compile Include="Utils\DbInputOutput\IDbLocator.cs" />
-    <Compile Include="Utils\DbInputOutput\IDbUnzipper.cs" />
+    <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
+    <Compile Include="Utils\DbInputOutput\FileTasks\DbLocator.cs" />
+    <Compile Include="Utils\DbInputOutput\CompositeTasks\DbBackuper.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\IDbToTxtSaver.cs" />
+    <Compile Include="Utils\DbInputOutput\ZipTasks\DbUnzipper.cs" />
+    <Compile Include="Utils\DbInputOutput\FileTasks\FileExistenceChecker.cs" />
+    <Compile Include="Utils\DbInputOutput\CompositeTasks\IDbGeneralLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\FileTasks\IDbLocator.cs" />
+    <Compile Include="Utils\DbInputOutput\ZipTasks\IDbUnzipper.cs" />
     <Compile Include="Utils\Balances\MoneyPair.cs" />
     <Compile Include="Utils\Balances\BalancesForShellCalculator.cs" />
     <Compile Include="Utils\Balances\BalancesForTransactionsCalculator.cs" />
-    <Compile Include="Utils\DbInputOutput\IFileExistenceChecker.cs" />
-    <Compile Include="Utils\DbInputOutput\ILoader.cs" />
-    <Compile Include="Utils\DbInputOutput\ZippedTxtLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\FileTasks\IFileExistenceChecker.cs" />
+    <Compile Include="Utils\DbInputOutput\CompositeTasks\ILoader.cs" />
+    <Compile Include="Utils\DbInputOutput\ZipTasks\ZippedTxtLoader.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\DayProcessor.cs" />
-    <Compile Include="Utils\DbInputOutput\DbGeneralLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\CompositeTasks\DbGeneralLoader.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
@@ -148,11 +150,11 @@
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="Utils\Accounts\AccountTreesGardener.cs" />
     <Compile Include="Utils\Balances\BalanceCalculator.cs" />
-    <Compile Include="Utils\DbInputOutput\DbLoadResult.cs" />
+    <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
-    <Compile Include="Utils\DbInputOutput\DbBackupOrganizer.cs" />
-    <Compile Include="Utils\DbInputOutput\DbFromTxtLoader.cs" />
-    <Compile Include="Utils\DbInputOutput\IDbFromTxtLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\FileTasks\DbBackupOrganizer.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\DbFromTxtLoader.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\IDbFromTxtLoader.cs" />
     <Compile Include="Utils\DbInputOutput\IDbSerializer.cs" />
     <Compile Include="Utils\Dialogs\IMessageBoxer.cs" />
     <Compile Include="Utils\Dialogs\IMyOpenFileDialog.cs" />
@@ -196,8 +198,8 @@
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
-    <Compile Include="Utils\DbInputOutput\DbCleaner.cs" />
-    <Compile Include="Utils\DbInputOutput\DbToTxtSaver.cs" />
+    <Compile Include="Utils\DbCleaner.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\DbToTxtSaver.cs" />
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="DomainModel\Period.cs" />
     <Compile Include="Utils\Rates\RateExtractor.cs" />
