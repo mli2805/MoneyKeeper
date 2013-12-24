@@ -13,7 +13,7 @@ using FluentAssertions;
 
 namespace Keeper.UnitTests.Utils.DbInputOutput
 {
-	[TestFixture]
+  [TestFixture]
 	public sealed class TestDbLocator
 	{
 		DbLocator mUnderTest;

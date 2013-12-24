@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Composition;
-
 using Keeper.Properties;
 using Keeper.Utils.FileSystem;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils.DbInputOutput.FileTasks
 {
 	[Export(typeof(IFileExistenceChecker))]
 	public class FileExistenceChecker : IFileExistenceChecker
