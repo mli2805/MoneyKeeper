@@ -51,8 +51,7 @@ namespace Keeper.Utils.DbInputOutput
 		public DbLoadResult Load(string filename)
 		{
 			var db = DecryptAndDeserialize(filename);
-			if (db == null) return new DbLoadResult(0x11, "Problem with dbx file!");
-			return new DbLoadResult(db);
+			return db == null ? new DbLoadResult(0x11, "Problem with dbx file!") : new DbLoadResult(db);
 		}
 	}
 }

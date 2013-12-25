@@ -19,27 +19,27 @@ namespace Keeper.Utils.DbInputOutput
 	  public DbLoadResult Result;
 
     public string FileExtension { get { return ".txt"; } }
+
     public DbLoadResult Load(string filename)
     {
-      var db = new KeeperDb();
-      var loadResult = LoadDbFromTxt(ref db, Path.GetDirectoryName(filename));
-      return loadResult ?? new DbLoadResult(db);
+      return LoadDbFromTxt(Path.GetDirectoryName(filename));
     }
 
-    public DbLoadResult LoadDbFromTxt(ref KeeperDb db, string path)
+    public DbLoadResult LoadDbFromTxt(string path)
     {
-      LoadAccounts(ref db, path);
-      if (Result != null) { db = null; return Result; }
+      var db = new KeeperDb();
+      db.Accounts = LoadAccounts(path);
+      if (Result != null) return Result; 
       db.AccountsPlaneList = new AccountTreeStraightener().FillInAccountsPlaneList(db.Accounts);
 
       db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
-      if (Result != null) { db = null; return Result; }
+      if (Result != null) return Result;
       db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, db.AccountsPlaneList);
-      if (Result != null) { db = null; return Result; }
+      if (Result != null) return Result;
       db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", CurrencyRateFromString, db.AccountsPlaneList);
-      if (Result != null) { db = null; return Result; }
+      if (Result != null) return Result;
 
-      return Result;
+      return new DbLoadResult(db);
     }
 
     private ObservableCollection<T> LoadFrom<T>(string path, string filename, Func<string, List<Account>, T> parseLine, List<Account> accountsPlaneList)
@@ -75,13 +75,13 @@ namespace Keeper.Utils.DbInputOutput
     }
 
     #region // Accounts
-    private void LoadAccounts(ref KeeperDb db, string path)
+    private ObservableCollection<Account> LoadAccounts(string path)
     {
       var filename = Path.Combine(path, "Accounts.txt");
       if (!File.Exists(filename))
       {
         Result = new DbLoadResult(315, "File <Accounts.txt> not found");
-        return;
+        return null;
       }
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
@@ -89,7 +89,7 @@ namespace Keeper.Utils.DbInputOutput
       // промежуточная сортировка действующих депозитов
       var sortedContent = SortActiveDepositAccountsByEndDate(content);
 
-      db.Accounts = new ObservableCollection<Account>();
+      var accounts = new ObservableCollection<Account>();
       foreach (var s in sortedContent)
       {
         int parentId;
@@ -97,9 +97,10 @@ namespace Keeper.Utils.DbInputOutput
         if (parentId == 0)
         {
           BuildBranchFromRoot(account, sortedContent);
-          db.Accounts.Add(account);
+          accounts.Add(account);
         }
       }
+      return accounts;
     }
 
     private List<string> SortActiveDepositAccountsByEndDate(IEnumerable<string> content)

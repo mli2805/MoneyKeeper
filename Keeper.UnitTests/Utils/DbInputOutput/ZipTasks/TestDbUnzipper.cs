@@ -52,8 +52,9 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
         .Returns(false);
 
       //Action & Assert
-      _underTest.UnzipArchive("archive.zip").Code.Should().Be(21);
-      _underTest.UnzipArchive("archive.zip").Explanation.Should().Be("Bad password!");
+      var testResult = _underTest.UnzipArchive("archive.zip");
+      testResult.Code.Should().Be(21);
+      testResult.Explanation.Should().Be("Bad password!");
     }
   }
 }
