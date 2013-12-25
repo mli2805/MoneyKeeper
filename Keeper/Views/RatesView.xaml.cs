@@ -18,6 +18,10 @@ namespace Keeper.Views
     {
       RatesGrid.ScrollIntoView(RatesGrid.Items[RatesGrid.Items.Count-1]);
     }
-    
+
+    public void Connect(int connectionId, object target)
+    {
+      throw new System.NotImplementedException();
+    }
   }
 }

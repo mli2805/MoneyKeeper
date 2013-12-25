@@ -289,9 +289,13 @@ namespace Keeper.ViewModels
     private void ReorderDepositAccounts()
     {
       _txtSaver.SaveDbInTxt();
-      var result = new DbFromTxtLoader().LoadDbFromTxt(ref Db, Settings.Default.TemporaryTxtDbPath);
+      var result = new DbFromTxtLoader().LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
-      //      else InitVariablesToShowAccounts();
+            else
+      {
+        Db = result.Db;
+//        InitVariablesToShowAccounts();
+      }
     }
 
     public void ChangeSelectedAccount()
@@ -358,9 +362,13 @@ namespace Keeper.ViewModels
 
     public void ImportDatabaseFromTxt()
     {
-      var result = new DbFromTxtLoader().LoadDbFromTxt(ref Db, Settings.Default.TemporaryTxtDbPath);
+      var result = new DbFromTxtLoader().LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
-            else InitVariablesToShowAccounts();
+            else
+      {
+        Db = result.Db;
+        InitVariablesToShowAccounts();
+      }
     }
 
     public void RemoveExtraBackups()

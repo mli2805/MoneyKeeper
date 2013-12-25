@@ -43,8 +43,9 @@ namespace Keeper.UnitTests.Utils.DbInputOutput
       A.CallTo(() => _file.Exists).Returns(false);
 
       //Action & Assert
-      _underTest.Check(TxtFilesForDb.Dict).Explanation.Should().Be("Accounts.txt not found!");
-      _underTest.Check(TxtFilesForDb.Dict).Code.Should().Be(215);
+      var testResult = _underTest.Check(TxtFilesForDb.Dict);
+      testResult.Explanation.Should().Be("Accounts.txt not found!");
+      testResult.Code.Should().Be(215);
     }
   }
 }

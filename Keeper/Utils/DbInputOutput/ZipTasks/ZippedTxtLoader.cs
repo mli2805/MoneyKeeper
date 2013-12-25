@@ -20,12 +20,10 @@ namespace Keeper.Utils.DbInputOutput
 		public string FileExtension { get { return ".zip"; } }
 		public DbLoadResult Load(string filename)
 		{
-			var loadResult = mUnzipper.UnzipArchive(filename);
+			 var loadResult = mUnzipper.UnzipArchive(filename);
 			if (loadResult != null) return loadResult;
 
-			var db = new KeeperDb();
-			loadResult = mTxtLoader.LoadDbFromTxt(ref db, Settings.Default.TemporaryTxtDbPath);
-			return loadResult ?? new DbLoadResult(db);
+			return mTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
 		}
 	}
 }

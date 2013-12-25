@@ -86,6 +86,7 @@
     <Compile Include="Utils\DbInputOutput\FileTasks\TestDbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\TestDbUnzipper.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TestFileExistenceChecker.cs" />
+    <Compile Include="Utils\DbInputOutput\ZipTasks\TestZippedTxtLoader.cs" />
     <Compile Include="Utils\Rates\TestCurrencyExchanger.cs" />
     <Compile Include="Utils\Rates\TestRate.cs" />
   </ItemGroup>

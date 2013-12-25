@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Keeper.DomainModel;
-using Keeper.Properties;
 using Keeper.Utils;
 using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput;
@@ -14,14 +13,13 @@ namespace Keeper.UnitTests.Utils.Balances
   [TestFixture]
   public class TestBalanceCalculator
   {
-    private readonly KeeperDb _db;
+    private readonly DbLoadResult _loadResult;
     private readonly BalanceCalculator _underTest;
 
     public TestBalanceCalculator()
     {
-      _db = new KeeperDb();
-	  new DbFromTxtLoader().LoadDbFromTxt(ref _db, Path.GetFullPath("TestDb"));
-      _underTest = new BalanceCalculator(_db);
+	  _loadResult = new DbFromTxtLoader().LoadDbFromTxt(Path.GetFullPath("TestDb"));
+      _underTest = new BalanceCalculator(_loadResult.Db);
     }
 
 	[Test]
