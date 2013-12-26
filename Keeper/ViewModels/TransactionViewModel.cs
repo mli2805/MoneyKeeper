@@ -15,15 +15,16 @@ using Keeper.Utils.Rates;
 
 namespace Keeper.ViewModels
 {
-	[Export]
-	[Shared] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
+  [Export]
+  [Shared] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
     private readonly KeeperDb _db;
 
     private readonly RateExtractor _rateExtractor;
     private readonly BalanceCalculator _balanceCalculator;
-    private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculatorCalculator;
+    private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
+    private readonly AssociationFinder _associationFinder ;
 
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }
@@ -145,7 +146,7 @@ namespace Keeper.ViewModels
     private int _selectedTransactionIndex;
     private bool _isTransactionInWorkChanged;
     private Transaction _transactionInWork;
-    private bool _isInAddTransactionMode;   
+    private bool _isInAddTransactionMode;
 
     public int SelectedTabIndex
     {
@@ -155,7 +156,45 @@ namespace Keeper.ViewModels
         if (value == _selectedTabIndex) return;
         _selectedTabIndex = value;
         NotifyOfPropertyChange(() => SelectedTabIndex);
-        TransactionInWork.Operation = (OperationType)SelectedTabIndex;
+        AccommodateAccountsWithOperationType((OperationType)SelectedTabIndex);
+      }
+    }
+
+    private void AccommodateAccountsWithOperationType(OperationType newOperationType)
+    {
+      TransactionInWork.Operation = newOperationType;
+      switch (TransactionInWork.Operation)
+      {
+        case OperationType.Доход:
+          if (!UsefulLists.AccountsWhoGivesMeMoney.Contains(TransactionInWork.Debet))
+          {
+            TransactionInWork.Debet = UsefulLists.AccountsWhoGivesMeMoney.First();
+            TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Debet);
+          }
+          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Credit))
+            TransactionInWork.Credit = UsefulLists.MyAccounts.First();
+          break;
+        case OperationType.Расход:
+          if (!UsefulLists.AccountsWhoTakesMyMoney.Contains(TransactionInWork.Credit))
+          {
+            TransactionInWork.Credit = UsefulLists.AccountsWhoTakesMyMoney.First();
+            TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Credit);
+          }
+          if (!UsefulLists.MyAccountsForShopping.Contains(TransactionInWork.Debet))
+            TransactionInWork.Debet = UsefulLists.MyAccountsForShopping.First();
+          break;
+        case OperationType.Перенос:
+          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Debet))
+            TransactionInWork.Debet = UsefulLists.MyAccounts.First();
+          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Credit))
+            TransactionInWork.Credit = UsefulLists.MyAccounts.First();
+          break;
+        case OperationType.Обмен:
+          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Debet))
+            TransactionInWork.Debet = UsefulLists.MyAccounts.First();
+          if (!UsefulLists.BankAccounts.Contains(TransactionInWork.Credit))
+            TransactionInWork.Credit = UsefulLists.BankAccounts.First();
+          break;
       }
     }
 
@@ -184,23 +223,8 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
         NotifyOfPropertyChange(() => CreditAccountBalance);
         NotifyOfPropertyChange(() => ExchangeRate);
-        DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-        EndDayBalances = _balancesForTransactionsCalculatorCalculator.EndDayBalances(SelectedTransaction.Timestamp);
-
-        Transaction tr = null;
-        bool fl = false;
-        foreach (var transaction in Rows)
-        {
-          if (transaction.IsSelected)
-          {
-            if (tr != null) { Console.WriteLine(tr.ToDumpWithNames()); fl = true; }
-            tr = transaction;
-          }
-        }
-        if (fl)
-        {
-          Console.WriteLine(tr.ToDumpWithNames());
-        }
+        DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+        EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
       }
     }
 
@@ -268,7 +292,7 @@ namespace Keeper.ViewModels
     }
 
     private bool _canFillInReceipt;
-    public bool CanFillInReceipt  
+    public bool CanFillInReceipt
     {
       get { return _canFillInReceipt; }
       set
@@ -403,18 +427,24 @@ namespace Keeper.ViewModels
 
     #endregion
 
-		[ImportingConstructor]
-    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, 
-			BalanceCalculator balanceCalculator, BalancesForTransactionsCalculator balancesForTransactionsCalculator)
+    [ImportingConstructor]
+    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor,
+      BalanceCalculator balanceCalculator, BalancesForTransactionsCalculator balancesForTransactionsCalculator)
     {
       _db = db;
 
       _rateExtractor = rateExtractor;
       _balanceCalculator = balanceCalculator;
-      _balancesForTransactionsCalculatorCalculator = balancesForTransactionsCalculator;
+      _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
+      _associationFinder = new AssociationFinder(_db);
 
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;
+      InitializeSelectedTransactionIndex();
+    }
+
+    private void InitializeSelectedTransactionIndex()
+    {
       foreach (var transaction in _db.Transactions)
       {
         if (transaction.IsSelected)
@@ -450,29 +480,23 @@ namespace Keeper.ViewModels
       IsInAddTransactionMode = false;
     }
 
-    /// <summary>
-    /// Какое именно свойство в инстансе TransactionInWork класса Transaction можно узнать из  e.PropertyName ,
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     void TransactionInWorkPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
       if (_isInTransactionSelectionProcess) return;
       if (e.PropertyName == "Comment") return;
 
       IsTransactionInWorkChanged = true;
-      var associationFinder = new AssociationFinder(_db);
 
       if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
-        TransactionInWork.Article = associationFinder.GetAssociation(TransactionInWork.Debet);
+        TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Debet);
       if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
-        TransactionInWork.Article = associationFinder.GetAssociation(TransactionInWork.Credit);
+        TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Credit);
 
       if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
           e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
       {
         NotifyOfPropertyChange(() => AmountInUsd);
-        DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+        DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
       }
 
       NotifyOfPropertyChange(() => DebetAccountBalance);
@@ -538,8 +562,8 @@ namespace Keeper.ViewModels
       }
       else SelectedTransaction.CloneFrom(TransactionInWork);
 
-      DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-      EndDayBalances = _balancesForTransactionsCalculatorCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+      DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+      EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
       IsTransactionInWorkChanged = false;
       IsInAddTransactionMode = false;
       CanFillInReceipt = false;
@@ -574,7 +598,6 @@ namespace Keeper.ViewModels
       IsInAddTransactionMode = false;
       CanFillInReceipt = false;
     }
-
 
     public void AddTransactionBeforeSelected()
     {
@@ -647,8 +670,8 @@ namespace Keeper.ViewModels
       if (SelectedTransactionIndex == 0) SelectedTransactionIndex++; else SelectedTransactionIndex--;
       Rows.Remove(transactionForRemoval);
 
-      DayResults = _balancesForTransactionsCalculatorCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-      EndDayBalances = _balancesForTransactionsCalculatorCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+      DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+      EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
       IsInAddTransactionMode = false;
     }
 
@@ -664,8 +687,8 @@ namespace Keeper.ViewModels
 
     public void FillInReceipt()
     {
-      var receiptViewModel = new ReceiptViewModel(TransactionInWork.Timestamp,TransactionInWork.Credit.Name,
-                                     TransactionInWork.Currency,TransactionInWork.Amount,TransactionInWork.Article);
+      var receiptViewModel = new ReceiptViewModel(TransactionInWork.Timestamp, TransactionInWork.Credit.Name,
+                                     TransactionInWork.Currency, TransactionInWork.Amount, TransactionInWork.Article);
       WindowManager.ShowDialog(receiptViewModel);
       if (receiptViewModel.Result) // добавить транзакции
       {
