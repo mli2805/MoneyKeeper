@@ -443,6 +443,7 @@ namespace Keeper.ViewModels
       SortedRows.Filter += OnFilter;
 
       TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
+      IsTransactionInWorkChanged = false;
       CanSaveTransactionChanges = false;
       CanCancelTransactionChanges = false;
       CanFillInReceipt = false;
