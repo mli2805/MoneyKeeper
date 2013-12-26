@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.IO;
 using Caliburn.Micro;
 
@@ -5,6 +6,9 @@ namespace LongOperationExample
 {
     public class ShellViewModel : Screen, IShell
     {
+      private BackgroundWorker _backgroundWorker;
+
+
       private string _statusBarItem0;
       private string _statusBarItem1;
       public string StatusBarItem0
@@ -31,14 +35,36 @@ namespace LongOperationExample
 
       public ShellViewModel()
       {
+        _backgroundWorker = new BackgroundWorker();
+        _backgroundWorker.WorkerReportsProgress = true;
+        _backgroundWorker.WorkerSupportsCancellation = true;
+        _backgroundWorker.DoWork += BackgroundWorkerDoWork;
+        _backgroundWorker.ProgressChanged += _backgroundWorker_ProgressChanged;
+        _backgroundWorker.RunWorkerCompleted += BackgroundWorkerRunWorkerCompleted;
+
         StatusBarItem0 = "Idle";
       }
+
+      void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+      {
+        LongOperationProcess();
+      }
+
+      void _backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+      {
+        throw new System.NotImplementedException();
+      }
+
+      void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+      {
+        StatusBarItem0 = "Long operation has ended.";
+      }
+
 
       public void StartLongOperation()
       {
         StatusBarItem0 = "Long operation is started...";
-        LongOperationProcess();
-        StatusBarItem0 = "Long operation has ended.";
+        _backgroundWorker.RunWorkerAsync(); 
       }
 
       public void LongOperationProcess()
