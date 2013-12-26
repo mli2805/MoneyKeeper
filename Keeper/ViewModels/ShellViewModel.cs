@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -25,10 +26,12 @@ namespace Keeper.ViewModels
   {
     [Import]
     public IWindowManager WindowManager { get; set; }
+    private readonly BackgroundWorker _backgroundWorker;
+    private bool _isBackgroundWorkerBusy;
 
     //    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public KeeperDb Db;
-	  readonly DbLoadResult mLoadResult;
+    readonly DbLoadResult mLoadResult;
 
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly AccountInTreeSeeker _accountInTreeSeeker;
@@ -42,6 +45,7 @@ namespace Keeper.ViewModels
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
     private string _message;
     private string _statusBarItem0;
+    private Visibility _isProgressBarVisible;
     private Account _selectedAccount;
     private int _openedAccountPage;
     private string _accountBalanceInUsd;
@@ -72,6 +76,17 @@ namespace Keeper.ViewModels
         if (value.Equals(_statusBarItem0)) return;
         _statusBarItem0 = value;
         NotifyOfPropertyChange(() => StatusBarItem0);
+      }
+    }
+
+    public Visibility IsProgressBarVisible
+    {
+      get { return _isProgressBarVisible; }
+      set
+      {
+        if (Equals(value, _isProgressBarVisible)) return;
+        _isProgressBarVisible = value;
+        NotifyOfPropertyChange(() => IsProgressBarVisible);
       }
     }
 
@@ -192,11 +207,11 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator, 
+    public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
       AccountInTreeSeeker accountInTreeSeeker, DbToTxtSaver txtSaver, DbBackuper backuper)
     {
       Db = db;
-	    mLoadResult = loadResult;
+      mLoadResult = loadResult;
 
       _isDbLoadingSuccessed = Db != null;
       if (!_isDbLoadingSuccessed)
@@ -205,6 +220,15 @@ namespace Keeper.ViewModels
         MessageBox.Show(mLoadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
+
+      _backgroundWorker = new BackgroundWorker();
+      _backgroundWorker.WorkerReportsProgress = true;
+      _backgroundWorker.WorkerSupportsCancellation = true;
+      _backgroundWorker.DoWork += BackgroundWorkerDoWork;
+      _backgroundWorker.RunWorkerCompleted += BackgroundWorkerRunWorkerCompleted;
+      _isBackgroundWorkerBusy = false;
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
 
       _accountTreesGardener = new AccountTreesGardener(Db);
       InitVariablesToShowAccounts();
@@ -215,6 +239,29 @@ namespace Keeper.ViewModels
       _txtSaver = txtSaver;
       _backuper = backuper;
       _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
+    }
+
+    // выполняется в другом потоке! не обращаться к GUI !
+    private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+    {
+        
+      switch ((int)e.Argument)
+      {
+        case 1: new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+          break;
+        case 2: _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+          break;
+
+        case 3: e.Result = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
+          break;
+      }
+    }
+
+    private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
+      _isBackgroundWorkerBusy = false;
     }
 
     private void InitBalanceControls()
@@ -267,10 +314,32 @@ namespace Keeper.ViewModels
       {
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
-        new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)); // сериализует БД в dbx файл
+                new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)); // сериализует БД в dbx файл
+//        LaunchLongTaskInBackground(1);
         _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+//        LaunchLongTaskInBackground(2);
       }
       callback(true);
+    }
+
+    public void LaunchLongTaskInBackground(int number)
+    {
+      while (_isBackgroundWorkerBusy) { }
+      _isBackgroundWorkerBusy = true;
+      switch (number)
+      {
+        case 1:
+          StatusBarItem0 = "Сохранение данных на диск";
+          break;
+        case 2:
+          StatusBarItem0 = "Создание резервной копии БД";
+          break;
+        case 3:
+          StatusBarItem0 = "Подготовка данных для диаграммы расходов";
+          break;
+      }
+      IsProgressBarVisible = Visibility.Visible;
+      _backgroundWorker.RunWorkerAsync(number);
     }
 
     #region // методы реализации контекстного меню на дереве счетов
@@ -291,10 +360,10 @@ namespace Keeper.ViewModels
       _txtSaver.SaveDbInTxt();
       var result = new DbFromTxtLoader().LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
-            else
+      else
       {
         Db = result.Db;
-//        InitVariablesToShowAccounts();
+        //        InitVariablesToShowAccounts();
       }
     }
 
@@ -364,7 +433,7 @@ namespace Keeper.ViewModels
     {
       var result = new DbFromTxtLoader().LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
-            else
+      else
       {
         Db = result.Db;
         InitVariablesToShowAccounts();
@@ -402,7 +471,10 @@ namespace Keeper.ViewModels
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
-      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+
+      //      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      LaunchLongTaskInBackground(1);
+
       if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
     }
@@ -525,9 +597,9 @@ namespace Keeper.ViewModels
       get { return _balanceDate; }
       set
       {
-        _balanceDate = new DayProcessor(value.Date).AfterThisDay(); 
+        _balanceDate = new DayProcessor(value.Date).AfterThisDay();
         var period = new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay());
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", 
+        AccountBalanceInUsd = String.Format("{0:#,#} usd",
           _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
       }
     }

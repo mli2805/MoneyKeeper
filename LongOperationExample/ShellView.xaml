@@ -13,8 +13,8 @@
         <ItemsPanelTemplate>
           <Grid>
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="auto"/>
+              <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
           </Grid>
         </ItemsPanelTemplate>
@@ -23,7 +23,8 @@
         <TextBlock Margin="5,0,0,0" Text="{Binding StatusBarItem0}"/>
       </StatusBarItem>
       <StatusBarItem Grid.Column ="1">
-        <TextBlock Margin="0,0,10,0" Text="{Binding StatusBarItem1}"/>
+        <ProgressBar Margin="5,0" Height="15" Width="380" Foreground="Blue" 
+                     IsIndeterminate="True" Visibility="{Binding IsProgressBarVisible}"/>
       </StatusBarItem>
     </StatusBar>
 	</Grid>
