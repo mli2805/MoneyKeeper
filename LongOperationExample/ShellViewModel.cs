@@ -1,16 +1,29 @@
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 using Caliburn.Micro;
 
 namespace LongOperationExample 
 {
     public class ShellViewModel : Screen, IShell
     {
-      private BackgroundWorker _backgroundWorker;
+      private readonly BackgroundWorker _backgroundWorker;
+      public Visibility IsProgressBarVisible
+      {
+        get { return _isProgressBarVisible; }
+        set
+        {
+          if (Equals(value, _isProgressBarVisible)) return;
+          _isProgressBarVisible = value;
+          NotifyOfPropertyChange(() => IsProgressBarVisible);
+        }
+      }
 
 
       private string _statusBarItem0;
       private string _statusBarItem1;
+      private Visibility _isProgressBarVisible;
+
       public string StatusBarItem0
       {
         get { return _statusBarItem0; }
@@ -43,6 +56,7 @@ namespace LongOperationExample
         _backgroundWorker.RunWorkerCompleted += BackgroundWorkerRunWorkerCompleted;
 
         StatusBarItem0 = "Idle";
+        IsProgressBarVisible = Visibility.Collapsed;
       }
 
       void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
@@ -58,12 +72,14 @@ namespace LongOperationExample
       void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
       {
         StatusBarItem0 = "Long operation has ended.";
+        IsProgressBarVisible = Visibility.Collapsed;
       }
 
 
       public void StartLongOperation()
       {
         StatusBarItem0 = "Long operation is started...";
+        IsProgressBarVisible = Visibility.Visible;
         _backgroundWorker.RunWorkerAsync(); 
       }
 
