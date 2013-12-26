@@ -125,13 +125,15 @@ namespace Keeper.ViewModels
 
 
     #region // подготовка данных для чартов
+
     // распределение вкладов по валютам в течении периода наблюдений
     public List<DateProcentPoint> SeriesUsd { get; set; }
     public List<DateProcentPoint> SeriesByr { get; set; }
     public List<DateProcentPoint> SeriesEuro { get; set; }
-
     public void DepoCurrenciesProportionChartCtor()
     {
+      return;
+
       var calculator = new DiagramDataExtractorFromDb(_db);
 
       SeriesUsd = new List<DateProcentPoint>();
