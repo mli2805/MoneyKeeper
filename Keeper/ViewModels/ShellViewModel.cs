@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Composition;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -335,8 +336,9 @@ namespace Keeper.ViewModels
       {
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
-          new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)); // сериализует БД в dbx файл
-     //     _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+        SerializeWithProgressBar();
+        MakeBackupWithProgressBar();
+        _task1.Wait();
       }
       callback(true);
     }
@@ -452,6 +454,35 @@ namespace Keeper.ViewModels
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
+    private async void SerializeWithProgressBar()
+    {
+      StatusBarItem0 = "Сохранение данных на диск";
+      IsProgressBarVisible = Visibility.Visible;
+      await
+        Task.Run(() => new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)));
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
+    }
+
+    void MakeBackupWithProgressBarTask()
+    {
+      _backuper.MakeDbBackupCopy();
+    }
+
+    // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+    private Task _task1;
+    private void MakeBackupWithProgressBar()
+    {
+      StatusBarItem0 = "Создание резервной копии БД";
+      IsProgressBarVisible = Visibility.Visible;
+      
+      _task1 = new Task(MakeBackupWithProgressBarTask);
+      _task1.Start();
+
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
+    }
+
     #region // меню формы - вызовы дочерних окон
 
     public bool ShowLogonForm()
@@ -470,10 +501,7 @@ namespace Keeper.ViewModels
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
-
-      //      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
-      LaunchLongTaskInBackground(1);
-
+      SerializeWithProgressBar();
       if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
     }
@@ -484,6 +512,7 @@ namespace Keeper.ViewModels
       Message = "Currency rates";
       UsefulLists.FillLists(Db);
       WindowManager.ShowDialog(new RatesViewModel(Db));
+      SerializeWithProgressBar();
       if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
     }
