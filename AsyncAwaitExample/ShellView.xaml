@@ -1,13 +1,17 @@
-<Window x:Class="LongOperationExample.ShellView"
+<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="392.771" Width="533.869">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="AsyncAwaitExample.ShellView"
+        Width="381.681" Height="192.771">
+
   <Grid Background="White">
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
       <RowDefinition Height="35"/>
       <RowDefinition Height="35"/>
     </Grid.RowDefinitions>
-    <Button Name="StartLongOperation" Content="Start long operation" IsDefault="True" Grid.Row="1" Grid.Column="1" Margin="5" Width="180" HorizontalAlignment="Left" />
+    <Button Name="StartSeriesLongOperation" Content="Start series of long operations" IsEnabled="{Binding IsStartButtonEnabled}"
+            IsDefault="True" Grid.Row="1" Grid.Column="1" Margin="5" Width="180" HorizontalAlignment="Left" />
     <StatusBar Grid.Row="2" Margin="5">
       <StatusBar.ItemsPanel>
         <ItemsPanelTemplate>
@@ -27,6 +31,6 @@
                      IsIndeterminate="True" Visibility="{Binding IsProgressBarVisible}"/>
       </StatusBarItem>
     </StatusBar>
-	</Grid>
+  </Grid>
 
 </Window>
