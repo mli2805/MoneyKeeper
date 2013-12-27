@@ -335,11 +335,8 @@ namespace Keeper.ViewModels
       {
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
-                new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)); // сериализует БД в dbx файл
-//        LaunchLongTaskInBackground(1);
-//        _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
-        LaunchLongTaskInBackground(2);
-        while (_isBackgroundWorkerBusy) {}
+          new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)); // сериализует БД в dbx файл
+     //     _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
       }
       callback(true);
     }
@@ -572,10 +569,7 @@ namespace Keeper.ViewModels
 
     public void ShowMonthlyOutcomeDiagram()
     {
-//      var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
-
-
-      var monthlyOutcomes = (DiagramData)_backgroundWorkerResult.Result;
+      var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
 
       var diagramForm = new DiagramViewModel(monthlyOutcomes);
       _launchedForms.Add(diagramForm);

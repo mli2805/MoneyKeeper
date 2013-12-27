@@ -301,34 +301,35 @@
         </ListView>
         <TextBlock Grid.Row="1" Margin="8,-25,5,5" Text="{Binding AccountBalanceInUsd}" Foreground="Blue" />
         <Controls:ShellViewPeriodSelectControl Visibility="{Binding PaymentsPeriodSelectControl}" 
-                  SelectedPeriod="{Binding PaymentsPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,5" Grid.Row="2"/>
+                  SelectedPeriod="{Binding PaymentsPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="2"/>
         <Controls:ShellViewDateSelectControl Visibility="{Binding BalanceDateSelectControl}" 
-                  SelectedDay="{Binding BalanceDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="3"/>
+                  SelectedDay="{Binding BalanceDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,0" Grid.Row="3"/>
       </Grid>
     </Grid>
 
-    <StatusBar Margin="0" Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="1" Background="White" BorderBrush="Gray">
-      <StatusBar.ItemsPanel>
-        <ItemsPanelTemplate>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="200"/>
-              <ColumnDefinition Width="200"/>
-              <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-          </Grid>
-        </ItemsPanelTemplate>
-      </StatusBar.ItemsPanel>
-      <StatusBarItem Grid.Column ="0" >
-        <TextBlock Margin="5,0,0,0" Text="{Binding StatusBarItem0}"/>
-      </StatusBarItem>
-      <StatusBarItem Grid.Column ="1">
-        <ProgressBar Margin="5,0" Height="15" Width="190" Foreground="Blue" 
+    <DockPanel Name="ForStatusBar" Grid.Row="2">
+      <TextBlock DockPanel.Dock="Right" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Message}"/>
+
+      <StatusBar Margin="0" Grid.Row="2"  Grid.ColumnSpan="3" Background="White" BorderBrush="Gray">
+        <StatusBar.ItemsPanel>
+          
+          <ItemsPanelTemplate>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="250"/>
+              </Grid.ColumnDefinitions>
+            </Grid>
+          </ItemsPanelTemplate>
+        </StatusBar.ItemsPanel>
+        <StatusBarItem Grid.Column ="0">
+          <TextBlock Margin="5,0,0,0" Text="{Binding StatusBarItem0}"/>
+        </StatusBarItem>
+        <StatusBarItem Grid.Column ="1">
+          <ProgressBar Margin="5,0" Height="15" Width="250" Background="Blue" Foreground="White" 
                      IsIndeterminate="True" Visibility="{Binding IsProgressBarVisible}"/>
-      </StatusBarItem>
-      <StatusBarItem Grid.Column ="2">
-        <TextBlock Margin="0,0,10,0" HorizontalAlignment="Right" Text="{Binding Message}"/>
-      </StatusBarItem>
-    </StatusBar>
+        </StatusBarItem>
+      </StatusBar>
+    </DockPanel>
   </Grid>
 </Window>
