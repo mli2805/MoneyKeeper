@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper.UnitTests", "Keeper.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LongOperationExample", "LongOperationExample\LongOperationExample.csproj", "{EB6800A7-14D3-41D3-BD99-24187C9AD29A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitExample", "AsyncAwaitExample\AsyncAwaitExample.csproj", "{C4FC562A-612A-4AA8-BA07-BA31F3B9E3F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{EB6800A7-14D3-41D3-BD99-24187C9AD29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB6800A7-14D3-41D3-BD99-24187C9AD29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB6800A7-14D3-41D3-BD99-24187C9AD29A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4FC562A-612A-4AA8-BA07-BA31F3B9E3F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FC562A-612A-4AA8-BA07-BA31F3B9E3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FC562A-612A-4AA8-BA07-BA31F3B9E3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4FC562A-612A-4AA8-BA07-BA31F3B9E3F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

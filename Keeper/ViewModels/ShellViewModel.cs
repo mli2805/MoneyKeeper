@@ -15,6 +15,7 @@ using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
+using Keeper.Utils.Diagram;
 
 
 namespace Keeper.ViewModels
@@ -216,7 +217,6 @@ namespace Keeper.ViewModels
       _isDbLoadingSuccessed = Db != null;
       if (!_isDbLoadingSuccessed)
       {
-        // TODO How to get DbLoadResult from MEF
         MessageBox.Show(mLoadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
@@ -225,7 +225,7 @@ namespace Keeper.ViewModels
       _backgroundWorker.WorkerReportsProgress = true;
       _backgroundWorker.WorkerSupportsCancellation = true;
       _backgroundWorker.DoWork += BackgroundWorkerDoWork;
-      _backgroundWorker.RunWorkerCompleted += BackgroundWorkerRunWorkerCompleted;
+      _backgroundWorker.RunWorkerCompleted += BackgroundWorkCompleted;
       _isBackgroundWorkerBusy = false;
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
@@ -241,24 +241,45 @@ namespace Keeper.ViewModels
       _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
     }
 
-    // выполняется в другом потоке! не обращаться к GUI !
+    public void LaunchLongTaskInBackground(int number)
+    {
+      while (_isBackgroundWorkerBusy) { }
+      _isBackgroundWorkerBusy = true;
+      switch (number)
+      {
+        case 1:
+          StatusBarItem0 = "Сохранение данных на диск";
+          break;
+        case 2:
+          StatusBarItem0 = "Создание резервной копии БД";
+          break;
+        case 3:
+          StatusBarItem0 = "Подготовка данных для диаграммы расходов";
+          break;
+      }
+      IsProgressBarVisible = Visibility.Visible;
+      _backgroundWorker.RunWorkerAsync(number);
+    }
+
+    // весь этот метод выполняется в другом потоке! 
+    // не обращаться к разделяемым данным (таким как поля класса окна) или объектам пользовательского интерфейса.
     private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
     {
-        
       switch ((int)e.Argument)
       {
         case 1: new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
           break;
         case 2: _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
           break;
-
         case 3: e.Result = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
           break;
       }
     }
 
-    private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    private RunWorkerCompletedEventArgs _backgroundWorkerResult;
+    private void BackgroundWorkCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
+      _backgroundWorkerResult = e;
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
       _isBackgroundWorkerBusy = false;
@@ -316,30 +337,11 @@ namespace Keeper.ViewModels
           launchedForm.TryClose();
                 new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)); // сериализует БД в dbx файл
 //        LaunchLongTaskInBackground(1);
-        _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
-//        LaunchLongTaskInBackground(2);
+//        _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+        LaunchLongTaskInBackground(2);
+        while (_isBackgroundWorkerBusy) {}
       }
       callback(true);
-    }
-
-    public void LaunchLongTaskInBackground(int number)
-    {
-      while (_isBackgroundWorkerBusy) { }
-      _isBackgroundWorkerBusy = true;
-      switch (number)
-      {
-        case 1:
-          StatusBarItem0 = "Сохранение данных на диск";
-          break;
-        case 2:
-          StatusBarItem0 = "Создание резервной копии БД";
-          break;
-        case 3:
-          StatusBarItem0 = "Подготовка данных для диаграммы расходов";
-          break;
-      }
-      IsProgressBarVisible = Visibility.Visible;
-      _backgroundWorker.RunWorkerAsync(number);
     }
 
     #region // методы реализации контекстного меню на дереве счетов
@@ -570,7 +572,10 @@ namespace Keeper.ViewModels
 
     public void ShowMonthlyOutcomeDiagram()
     {
-      var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
+//      var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
+
+
+      var monthlyOutcomes = (DiagramData)_backgroundWorkerResult.Result;
 
       var diagramForm = new DiagramViewModel(monthlyOutcomes);
       _launchedForms.Add(diagramForm);
