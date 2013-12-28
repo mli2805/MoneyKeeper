@@ -1,9 +1,9 @@
 using System.ComponentModel;
-using System.IO;
+using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 
-namespace LongOperationExample 
+namespace BackgroundWorkerExample 
 {
     public class ShellViewModel : Screen, IShell
     {
@@ -83,10 +83,12 @@ namespace LongOperationExample
         _backgroundWorker.RunWorkerAsync(); 
       }
 
-      public void LongOperationProcess()
+      private void LongOperationProcess()
       {
-        var store = File.ReadAllBytes(@"h:\t2300.sql");
-        File.WriteAllBytes(@"h:\q_t2300.sql",store);
+//        var store = File.ReadAllBytes(@"h:\t2300.sql");
+//        File.WriteAllBytes(@"h:\q_t2300.sql",store);
+
+        Thread.Sleep(7000);
       }
     }
 }
