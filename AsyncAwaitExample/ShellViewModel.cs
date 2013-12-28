@@ -50,12 +50,12 @@ namespace AsyncAwaitExample
       StatusBarItem0 = "Idle";
     }
 
-    public void StartSeriesLongOperation()
+    public void StartButton()
     {
-      FirstLongOperation();
+      StartSeriesLongOperation();
     }
 
-    private async void FirstLongOperation()
+    private async void StartSeriesLongOperation()
     {
       IsStartButtonEnabled = false;
       IsProgressBarVisible = Visibility.Visible;

@@ -1,4 +1,4 @@
-namespace LongOperationExample
+namespace BackgroundWorkerExample
 {
 	using System;
 	using System.Collections.Generic;

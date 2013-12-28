@@ -28,8 +28,6 @@ namespace Keeper.ViewModels
   {
     [Import]
     public IWindowManager WindowManager { get; set; }
-    private readonly BackgroundWorker _backgroundWorker;
-    private bool _isBackgroundWorkerBusy;
 
     //    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public KeeperDb Db;
@@ -222,12 +220,6 @@ namespace Keeper.ViewModels
         return;
       }
 
-      _backgroundWorker = new BackgroundWorker();
-      _backgroundWorker.WorkerReportsProgress = true;
-      _backgroundWorker.WorkerSupportsCancellation = true;
-      _backgroundWorker.DoWork += BackgroundWorkerDoWork;
-      _backgroundWorker.RunWorkerCompleted += BackgroundWorkCompleted;
-      _isBackgroundWorkerBusy = false;
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
 
@@ -240,50 +232,6 @@ namespace Keeper.ViewModels
       _txtSaver = txtSaver;
       _backuper = backuper;
       _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
-    }
-
-    public void LaunchLongTaskInBackground(int number)
-    {
-      while (_isBackgroundWorkerBusy) { }
-      _isBackgroundWorkerBusy = true;
-      switch (number)
-      {
-        case 1:
-          StatusBarItem0 = "Сохранение данных на диск";
-          break;
-        case 2:
-          StatusBarItem0 = "Создание резервной копии БД";
-          break;
-        case 3:
-          StatusBarItem0 = "Подготовка данных для диаграммы расходов";
-          break;
-      }
-      IsProgressBarVisible = Visibility.Visible;
-      _backgroundWorker.RunWorkerAsync(number);
-    }
-
-    // весь этот метод выполняется в другом потоке! 
-    // не обращаться к разделяемым данным (таким как поля класса окна) или объектам пользовательского интерфейса.
-    private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
-    {
-      switch ((int)e.Argument)
-      {
-        case 1: new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
-          break;
-        case 2: _backuper.MakeDbBackupCopy(); // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
-          break;
-        case 3: e.Result = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
-          break;
-      }
-    }
-
-    private RunWorkerCompletedEventArgs _backgroundWorkerResult;
-    private void BackgroundWorkCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-      _backgroundWorkerResult = e;
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
-      _isBackgroundWorkerBusy = false;
     }
 
     private void InitBalanceControls()
@@ -326,19 +274,19 @@ namespace Keeper.ViewModels
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
       OpenedAccountPage = 0;
 
-      //      if (!ShowLogonForm()) TryClose();
-
+      if (!ShowLogonForm()) TryClose();
     }
 
-    public override void CanClose(Action<bool> callback)
+    public override async void CanClose(Action<bool> callback)
     {
       if (_isDbLoadingSuccessed)
       {
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
-        SerializeWithProgressBar();
-        MakeBackupWithProgressBar();
-        _task1.Wait();
+        await Task.Run(() => SerializeWithProgressBar());
+        await Task.Run(() => MakeBackupWithProgressBar());
+        StatusBarItem0 = "Idle";
+        IsProgressBarVisible = Visibility.Collapsed;
       }
       callback(true);
     }
@@ -400,9 +348,11 @@ namespace Keeper.ViewModels
     #endregion
 
     #region // меню файл
-    public void SaveDatabase()
+    public async void SaveDatabase()
     {
-      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      await Task.Run(() => SerializeWithProgressBar());
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
     }
 
     public void LoadDatabase()
@@ -420,9 +370,11 @@ namespace Keeper.ViewModels
       MineAccountsRoot.Clear();
     }
 
-    public void MakeDatabaseBackup()
+    public async void MakeDatabaseBackup()
     {
-      _backuper.MakeDbBackupCopy();
+      await Task.Run(()=> MakeBackupWithProgressBar());
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
     }
 
     public void ExportDatabaseToTxt()
@@ -454,33 +406,19 @@ namespace Keeper.ViewModels
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
-    private async void SerializeWithProgressBar()
+    private void SerializeWithProgressBar()
     {
       StatusBarItem0 = "Сохранение данных на диск";
       IsProgressBarVisible = Visibility.Visible;
-      await
-        Task.Run(() => new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)));
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
-    }
-
-    void MakeBackupWithProgressBarTask()
-    {
-      _backuper.MakeDbBackupCopy();
+      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
     }
 
     // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
-    private Task _task1;
     private void MakeBackupWithProgressBar()
     {
       StatusBarItem0 = "Создание резервной копии БД";
       IsProgressBarVisible = Visibility.Visible;
-      
-      _task1 = new Task(MakeBackupWithProgressBarTask);
-      _task1.Start();
-
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
+      _backuper.MakeDbBackupCopy();
     }
 
     #region // меню формы - вызовы дочерних окон
@@ -502,6 +440,8 @@ namespace Keeper.ViewModels
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
       SerializeWithProgressBar();
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
       if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
     }
@@ -513,6 +453,8 @@ namespace Keeper.ViewModels
       UsefulLists.FillLists(Db);
       WindowManager.ShowDialog(new RatesViewModel(Db));
       SerializeWithProgressBar();
+      StatusBarItem0 = "Idle";
+      IsProgressBarVisible = Visibility.Collapsed;
       if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
     }
