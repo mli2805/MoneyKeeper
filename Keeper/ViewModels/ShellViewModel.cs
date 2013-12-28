@@ -129,9 +129,9 @@ namespace Keeper.ViewModels
       {
         _selectedAccount = value;
         Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
+         AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccount);
-        IsDeposit = value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        IsDeposit = value != null && value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
       }
     }
 
@@ -358,16 +358,15 @@ namespace Keeper.ViewModels
     public void LoadDatabase()
     {
       Db = new DbSerializer().DecryptAndDeserialize(Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      InitVariablesToShowAccounts();
+      InitBalanceControls();
     }
 
     public void ClearDatabase()
     {
       new DbCleaner().ClearAllTables(Db);
-
-      IncomesRoot.Clear();
-      ExpensesRoot.Clear();
-      ExternalAccountsRoot.Clear();
-      MineAccountsRoot.Clear();
+      InitVariablesToShowAccounts();
+      SelectedAccount = null;
     }
 
     public async void MakeDatabaseBackup()
@@ -390,6 +389,7 @@ namespace Keeper.ViewModels
       {
         Db = result.Db;
         InitVariablesToShowAccounts();
+        InitBalanceControls();
       }
     }
 
