@@ -130,7 +130,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
       activeDepos.Sort(Account.CompareEndDepositDates);
 
-      sortedContent.AddRange(activeDepos.Select(account => account.ToDump(4)));
+      sortedContent.AddRange(activeDepos.Select(account => account.ToDepositFormat()));
       return sortedContent;
     }
 

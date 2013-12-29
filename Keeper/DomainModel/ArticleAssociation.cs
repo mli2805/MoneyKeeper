@@ -10,12 +10,7 @@ namespace Keeper.DomainModel
     public OperationType OperationType { get; set; }
     public Account AssociatedArticle { get; set; }
 
-    public string ToDumpWithNames()
-    {
-      return ExternalAccount + " ; " + OperationType + " ; " + AssociatedArticle;
-    }
-
-    public int CompareTo(object obj)
+	  public int CompareTo(object obj)
     {
       return String.Compare(ExternalAccount.Name, ((Account) obj).Name, StringComparison.Ordinal);
     }
