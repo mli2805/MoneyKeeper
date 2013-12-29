@@ -1,11 +1,13 @@
 using FakeItEasy;
+
 using FluentAssertions;
-using Keeper.DomainModel;
+
 using Keeper.Properties;
 using Keeper.Utils.DbInputOutput;
+
 using NUnit.Framework;
 
-namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
+namespace Keeper.UnitTests.Utils.DbInputOutput.ZipTasks
 {
 	[TestFixture]
 	public sealed class TestZippedTxtLoader
