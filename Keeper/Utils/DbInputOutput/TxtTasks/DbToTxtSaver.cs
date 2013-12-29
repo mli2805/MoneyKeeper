@@ -17,10 +17,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
 		public void SaveDbInTxt()
 		{
-			mWriter.GetValue("Accounts.txt", mEntriesToStringListsConverter.AccountsToList());
-			mWriter.GetValue("Transactions.txt", mEntriesToStringListsConverter.SaveTransactions());
-			mWriter.GetValue("ArticlesAssociations.txt", mEntriesToStringListsConverter.SaveArticlesAssociations());
-			mWriter.GetValue("CurrencyRates.txt", mEntriesToStringListsConverter.SaveCurrencyRates());
+			mWriter.WriteDbFile("Accounts.txt", mEntriesToStringListsConverter.AccountsToList());
+			mWriter.WriteDbFile("Transactions.txt", mEntriesToStringListsConverter.SaveTransactions());
+			mWriter.WriteDbFile("ArticlesAssociations.txt", mEntriesToStringListsConverter.SaveArticlesAssociations());
+			mWriter.WriteDbFile("CurrencyRates.txt", mEntriesToStringListsConverter.SaveCurrencyRates());
 		}
 
 	}
