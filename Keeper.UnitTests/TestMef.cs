@@ -8,7 +8,7 @@ using Keeper.Utils.MEF;
 
 using NUnit.Framework;
 
-namespace Keeper.UnitTests.Utils.DbInputOutput
+namespace Keeper.UnitTests
 {
 	[TestFixture]
 	public sealed class TestMef

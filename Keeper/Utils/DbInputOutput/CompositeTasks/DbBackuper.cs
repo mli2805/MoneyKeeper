@@ -61,7 +61,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
       }
       catch (Exception ex1)
       {
-        MessageBox.Show("Exception during database ziping: " + ex1);
+        MessageBox.Show("Exception during database zipping: " + ex1);
       }
     }
  
