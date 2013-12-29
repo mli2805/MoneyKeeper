@@ -1,4 +1,4 @@
-﻿namespace Keeper.Utils.DbInputOutput
+﻿namespace Keeper.Utils.DbInputOutput.FileTasks
 {
 	public interface IDbLocator {
 		string Locate();

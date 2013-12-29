@@ -1,4 +1,6 @@
-namespace Keeper.Utils.DbInputOutput
+using Keeper.Utils.DbInputOutput.CompositeTasks;
+
+namespace Keeper.Utils.DbInputOutput.ZipTasks
 {
   internal interface IDbUnzipper
   {

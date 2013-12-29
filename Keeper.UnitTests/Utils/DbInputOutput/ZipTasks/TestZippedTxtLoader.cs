@@ -4,6 +4,9 @@ using FluentAssertions;
 
 using Keeper.Properties;
 using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.Utils.DbInputOutput.TxtTasks;
+using Keeper.Utils.DbInputOutput.ZipTasks;
 
 using NUnit.Framework;
 

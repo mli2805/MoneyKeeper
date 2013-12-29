@@ -7,6 +7,8 @@ using Ionic.Zip;
 
 using Keeper.Properties;
 using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.DbInputOutput.ZipTasks;
 using Keeper.Utils.FileSystem;
 

@@ -4,11 +4,11 @@ using System.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
-using Keeper.Utils.Diagram;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Diagram
 {
   class DiagramDataCtors
   {

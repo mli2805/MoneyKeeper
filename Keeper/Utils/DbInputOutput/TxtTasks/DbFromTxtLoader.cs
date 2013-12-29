@@ -6,10 +6,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
   [Export(typeof(IDbFromTxtLoader))]
   [Export(typeof(ILoader))]

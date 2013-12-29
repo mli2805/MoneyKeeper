@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Keeper.DomainModel;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils
 {
   class DbCleaner
   {

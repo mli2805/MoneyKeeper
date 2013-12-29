@@ -6,7 +6,7 @@ using Keeper.Properties;
 using Keeper.Utils.Dialogs;
 using Keeper.Utils.FileSystem;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils.DbInputOutput.FileTasks
 {
 	[Export(typeof(IDbLocator))]
 	public class DbLocator : IDbLocator

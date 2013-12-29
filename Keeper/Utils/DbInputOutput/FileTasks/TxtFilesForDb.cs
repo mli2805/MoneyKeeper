@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Keeper.Utils.DbInputOutput.ZipTasks
+namespace Keeper.Utils.DbInputOutput.FileTasks
 {
 	public static class TxtFilesForDb
 	{

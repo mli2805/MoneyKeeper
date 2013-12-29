@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
 using System.IO;
 using System.Linq;
 
-namespace Keeper.Utils.DbInputOutput
+using Keeper.Utils.DbInputOutput.FileTasks;
+
+namespace Keeper.Utils.DbInputOutput.CompositeTasks
 {
 	[Export(typeof(IDbGeneralLoader))]
 	internal class DbGeneralLoader : IDbGeneralLoader

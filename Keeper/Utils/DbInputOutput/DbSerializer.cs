@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Keeper.DomainModel;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 namespace Keeper.Utils.DbInputOutput
 {
