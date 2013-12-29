@@ -40,8 +40,8 @@ namespace Keeper.ViewModels
 	  readonly IDbFromTxtLoader mDbFromTxtLoader;
 	  private readonly BalancesForShellCalculator _balanceCalculator;
     private readonly DiagramDataFactory mDiagramDataFactory;
-
-    #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
+	  readonly IUsefulLists mUsefulLists;
+	  #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
     private string _message;
@@ -210,7 +210,7 @@ namespace Keeper.ViewModels
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
        DbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader,
-		AccountTreesGardener accountTreesGardener, DiagramDataFactory diagramDataFactory)
+		AccountTreesGardener accountTreesGardener, DiagramDataFactory diagramDataFactory, IUsefulLists usefulLists)
     {
       Db = db;
       mLoadResult = loadResult;
@@ -227,6 +227,7 @@ namespace Keeper.ViewModels
 
 	  _accountTreesGardener = accountTreesGardener;
 	    mDiagramDataFactory = diagramDataFactory;
+	    mUsefulLists = usefulLists;
 	    InitVariablesToShowAccounts();
       InitBalanceControls();
 
@@ -436,7 +437,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Input operations";
-      UsefulLists.FillLists(Db);
+      mUsefulLists.FillLists();
       WindowManager.ShowDialog(IoC.Get<TransactionViewModel>());
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
@@ -452,7 +453,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Currency rates";
-      UsefulLists.FillLists(Db);
+      mUsefulLists.FillLists();
       WindowManager.ShowDialog(new RatesViewModel(Db));
       SerializeWithProgressBar();
       StatusBarItem0 = "Idle";
@@ -465,7 +466,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Articles' associations";
-      UsefulLists.FillLists(Db);
+      mUsefulLists.FillLists();
       WindowManager.ShowDialog(new ArticlesAssociationsViewModel(Db));
       Message = arcMessage;
     }
