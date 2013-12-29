@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Accounts;
@@ -14,7 +15,7 @@ using FluentAssertions;
 
 namespace Keeper.UnitTests.Utils.Balances
 {
-  [TestFixture]
+	[TestFixture]
   public class TestBalanceCalculator
   {
     private readonly DbLoadResult _loadResult;

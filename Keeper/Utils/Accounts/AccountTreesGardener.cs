@@ -12,16 +12,17 @@ namespace Keeper.Utils.Accounts
 	public class AccountTreesGardener
 	{
 		readonly IWindowManager mWindowManager;
-
+		readonly IMyFactory mMyFactory;
 		private readonly KeeperDb _db;
 		readonly AccountTreeStraightener mAccountTreeStraightener;
 		readonly IUsefulLists mUsefulLists;
 
 		[ImportingConstructor]
 		public AccountTreesGardener(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
-			IUsefulLists usefulLists, IWindowManager windowManager)
+			IUsefulLists usefulLists, IWindowManager windowManager, IMyFactory myFactory)
 		{
 			mWindowManager = windowManager;
+			mMyFactory = myFactory;
 			_db = db;
 			mAccountTreeStraightener = accountTreeStraightener;
 			mUsefulLists = usefulLists;
@@ -59,8 +60,9 @@ namespace Keeper.Utils.Accounts
 
 		public void AddAccount(Account selectedAccount)
 		{
-			var accountInWork = new Account { Parent = selectedAccount };
-			if (mWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
+			var accountInWork = mMyFactory.CreateAccount(selectedAccount);
+			var vm = mMyFactory.CreateAddAndEditAccountViewModel(accountInWork, "Добавить");
+			if (mWindowManager.ShowDialog(vm) != true) return;
 
 			selectedAccount = accountInWork.Parent;
 			accountInWork.Id = (from account in mAccountTreeStraightener.Flatten(_db.Accounts) select account.Id).Max() + 1;
@@ -83,5 +85,29 @@ namespace Keeper.Utils.Accounts
 			else selectedAccount.Name = accountInWork.Name;
 		}
 
+	}
+	public interface IMyFactory {
+		AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string title);
+		Account CreateAccount();
+		Account CreateAccount(Account parent);
+	}
+
+	[Export (typeof(IMyFactory))]
+	public class MyFactory : IMyFactory
+	{
+		public AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string title)
+		{
+			return new AddAndEditAccountViewModel(account, title);
+		}
+
+		public Account CreateAccount()
+		{
+			return new Account();
+		}
+
+		public Account CreateAccount(Account parent)
+		{
+			return new Account(){Parent = parent};
+		}
 	}
 }

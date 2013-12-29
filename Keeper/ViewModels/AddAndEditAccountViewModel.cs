@@ -5,7 +5,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
-  class AddAndEditAccountViewModel : Screen
+	public class AddAndEditAccountViewModel : Screen
   {
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 

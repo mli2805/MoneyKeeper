@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Balances\TestAccountTreesGardener.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\TestDbExporter.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\TestDbGeneralLoader.cs" />
     <Compile Include="TestMef.cs" />
