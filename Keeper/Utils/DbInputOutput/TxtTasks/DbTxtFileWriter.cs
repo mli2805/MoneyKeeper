@@ -19,7 +19,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 			mFileSystem = fileSystem;
 		}
 
-		public void GetValue(string accountsTxt, IEnumerable<string> accountsToList)
+		public void WriteDbFile(string accountsTxt, IEnumerable<string> accountsToList)
 		{
 			var directory = mFileSystem.GetDirectory(Settings.Default.TemporaryTxtDbPath);
 			if (!directory.Exists) directory.Create();
