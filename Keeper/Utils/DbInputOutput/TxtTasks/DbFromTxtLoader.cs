@@ -15,9 +15,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
   [Export(typeof(IDbFromTxtLoader))]
   [Export(typeof(ILoader))]
-  class DbFromTxtLoader : IDbFromTxtLoader, ILoader
+  public class DbFromTxtLoader : IDbFromTxtLoader, ILoader
 	{
-    public Encoding Encoding1251 = Encoding.GetEncoding(1251);
+	  readonly AccountTreeStraightener mAccountTreeStraightener;
+	  public Encoding Encoding1251 = Encoding.GetEncoding(1251);
 	  public DbLoadResult Result;
 
     public string FileExtension { get { return ".txt"; } }
@@ -27,12 +28,18 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       return LoadDbFromTxt(Path.GetDirectoryName(filename));
     }
 
-    public DbLoadResult LoadDbFromTxt(string path)
+	  [ImportingConstructor]
+	  public DbFromTxtLoader(AccountTreeStraightener accountTreeStraightener)
+	  {
+		  mAccountTreeStraightener = accountTreeStraightener;
+	  }
+
+	  public DbLoadResult LoadDbFromTxt(string path)
     {
       var db = new KeeperDb();
       db.Accounts = LoadAccounts(path);
-      if (Result != null) return Result; 
-      db.AccountsPlaneList = new AccountTreeStraightener().FillInAccountsPlaneList(db.Accounts);
+      if (Result != null) return Result;
+	  db.AccountsPlaneList = mAccountTreeStraightener.Flatten(db.Accounts);
 
       db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
       if (Result != null) return Result;

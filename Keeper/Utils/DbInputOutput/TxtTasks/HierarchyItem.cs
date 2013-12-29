@@ -2,11 +2,11 @@
 {
 	public class HierarchyItem<T>
 	{
-		public int Depth { get; set; }
+		public int Level { get; set; }
 		public T Item { get; set; }
-		public HierarchyItem(int depth, T item)
+		public HierarchyItem(int level, T item)
 		{
-			Depth = depth;
+			Level = level;
 			Item = item;
 		}
 	}
