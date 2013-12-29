@@ -27,7 +27,7 @@ namespace Keeper.Utils.Diagram
 
     public DiagramSeries AccountDailyBalancesToSeries(string name, Brush positiveBrush)
     {
-      var balancedAccount = (from account in _db.AccountsPlaneList where account.Name == name select account).FirstOrDefault();
+      var balancedAccount = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) where account.Name == name select account).FirstOrDefault();
       var balances = ExtractorFromDb.AccountBalancesForPeriodInUsd(balancedAccount, new Period(new DateTime(2001, 12, 31), DateTime.Now), Every.Day);
       var data = balances.Select(pair => new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList();
 

@@ -50,7 +50,6 @@ namespace Keeper.Utils.Accounts
 			if (MessageBox.Show("Проверено, счет не используется в транзакциях.\n Удаление счета\n\n <<" + selectedAccount.Name + ">>\n          Удалить?", "Confirm",
 								MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) return;
 
-			_db.AccountsPlaneList.Remove(selectedAccount);
 			selectedAccount.Parent.Children.Remove(selectedAccount);
 
 		}
@@ -61,10 +60,9 @@ namespace Keeper.Utils.Accounts
 			if (mWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
 			selectedAccount = accountInWork.Parent;
-			accountInWork.Id = (from account in _db.AccountsPlaneList select account.Id).Max() + 1;
+			accountInWork.Id = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) select account.Id).Max() + 1;
 			selectedAccount.Children.Add(accountInWork);
 
-			_db.AccountsPlaneList = mAccountTreeStraightener.Flatten(_db.Accounts).ToList();
 			UsefulLists.FillLists(_db);
 		}
 

@@ -39,19 +39,18 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       var db = new KeeperDb();
       db.Accounts = LoadAccounts(path);
       if (Result != null) return Result;
-	  db.AccountsPlaneList = mAccountTreeStraightener.Flatten(db.Accounts).ToList();
 
-      db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
+		  db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts));
       if (Result != null) return Result;
-      db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, db.AccountsPlaneList);
+      db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts));
       if (Result != null) return Result;
-      db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", CurrencyRateFromString, db.AccountsPlaneList);
+      db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", CurrencyRateFromString, new AccountTreeStraightener().Flatten(db.Accounts));
       if (Result != null) return Result;
 
       return new DbLoadResult(db);
     }
 
-    private ObservableCollection<T> LoadFrom<T>(string path, string filename, Func<string, List<Account>, T> parseLine, List<Account> accountsPlaneList)
+    private ObservableCollection<T> LoadFrom<T>(string path, string filename, Func<string, IEnumerable<Account>, T> parseLine, IEnumerable<Account> accountsPlaneList)
     {
       var fullFilename = Path.Combine(path, filename);
       if (!File.Exists(fullFilename))
@@ -171,7 +170,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     #endregion
 
     #region // Parsing
-    private Transaction TransactionFromStringWithNames(string s, List<Account> accountsPlaneList)
+    private Transaction TransactionFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
     {
       var transaction = new Transaction();
       var substrings = s.Split(';');
@@ -190,7 +189,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
       return transaction;
     }
-    private CurrencyRate CurrencyRateFromString(string s, List<Account> accountsPlaneList)
+	private CurrencyRate CurrencyRateFromString(string s, IEnumerable<Account> accountsPlaneList)
     {
       var rate = new CurrencyRate();
       int next = s.IndexOf(';');
@@ -200,7 +199,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       rate.Rate = Convert.ToDouble(s.Substring(next + 2));
       return rate;
     }
-    private ArticleAssociation ArticleAssociationFromStringWithNames(string s, List<Account> accountsPlaneList)
+	private ArticleAssociation ArticleAssociationFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
     {
       var association = new ArticleAssociation();
       var substrings = s.Split(';');
