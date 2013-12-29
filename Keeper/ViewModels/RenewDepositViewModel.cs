@@ -16,6 +16,7 @@ namespace Keeper.ViewModels
 	  private readonly KeeperDb _db;
     private readonly BalanceCalculator _balanceCalculator;
 		readonly AccountTreeStraightener mAccountTreeStraightener;
+		readonly IUsefulLists mUsefulLists;
 		private Deposit _oldDeposit;
 		public Account NewDeposit { get; set; }
 
@@ -28,11 +29,12 @@ namespace Keeper.ViewModels
 
 		[ImportingConstructor]
 		public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator, 
-			 AccountTreeStraightener accountTreeStraightener)
+			 AccountTreeStraightener accountTreeStraightener, IUsefulLists usefulLists)
 		{
 		  _db = db;
 		  _balanceCalculator = balanceCalculator;
 			mAccountTreeStraightener = accountTreeStraightener;
+			mUsefulLists = usefulLists;
 		}
 
 		public void SetOldDeposit(Deposit oldDeposit)
@@ -75,7 +77,7 @@ namespace Keeper.ViewModels
 			newDepositAccount.Parent = parent;
 			parent.Children.Add(newDepositAccount);
 
-			UsefulLists.FillLists(_db);
+			mUsefulLists.FillLists();
 
 			return newDepositAccount;
 		}

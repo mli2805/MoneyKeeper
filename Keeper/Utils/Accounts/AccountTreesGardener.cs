@@ -15,13 +15,16 @@ namespace Keeper.Utils.Accounts
 
 		private readonly KeeperDb _db;
 		readonly AccountTreeStraightener mAccountTreeStraightener;
+		readonly IUsefulLists mUsefulLists;
 
 		[ImportingConstructor]
-		public AccountTreesGardener(KeeperDb db, AccountTreeStraightener accountTreeStraightener, IWindowManager windowManager)
+		public AccountTreesGardener(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
+			IUsefulLists usefulLists, IWindowManager windowManager)
 		{
 			mWindowManager = windowManager;
 			_db = db;
 			mAccountTreeStraightener = accountTreeStraightener;
+			mUsefulLists = usefulLists;
 		}
 
 		public void RemoveAccount(Account selectedAccount)
@@ -37,9 +40,9 @@ namespace Keeper.Utils.Accounts
 				return;
 			}
 			// такой запрос возвращает не коллекцию, а энумератор
-			IEnumerable<Transaction> tr = from transaction in _db.Transactions
-										  where transaction.Debet == selectedAccount || transaction.Credit == selectedAccount || transaction.Article == selectedAccount
-										  select transaction;
+			var tr = from transaction in _db.Transactions
+					 where transaction.Debet == selectedAccount || transaction.Credit == selectedAccount || transaction.Article == selectedAccount
+					 select transaction;
 
 			// Any() пытается двинуться по этому энумератору и если может, то true
 			if (tr.Any())
@@ -60,10 +63,10 @@ namespace Keeper.Utils.Accounts
 			if (mWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Добавить")) != true) return;
 
 			selectedAccount = accountInWork.Parent;
-			accountInWork.Id = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) select account.Id).Max() + 1;
+			accountInWork.Id = (from account in mAccountTreeStraightener.Flatten(_db.Accounts) select account.Id).Max() + 1;
 			selectedAccount.Children.Add(accountInWork);
 
-			UsefulLists.FillLists(_db);
+			mUsefulLists.FillLists();
 		}
 
 		public void ChangeAccount(Account selectedAccount)
