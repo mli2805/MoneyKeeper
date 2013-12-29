@@ -2,7 +2,7 @@ using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
-	interface IDbFromTxtLoader
+	public interface IDbFromTxtLoader
 	{
 		DbLoadResult LoadDbFromTxt(string path);
 	}

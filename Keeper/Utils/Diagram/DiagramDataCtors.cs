@@ -10,19 +10,19 @@ using Keeper.Utils.Accounts;
 
 namespace Keeper.Utils.Diagram
 {
-  class DiagramDataCtors
+	[Export]
+	public class DiagramDataFactory
   {
     private readonly KeeperDb _db;
-    private readonly AccountInTreeSeeker _accountInTreeSeeker;
-
-    private DiagramDataExtractorFromDb ExtractorFromDb { get; set; }
+	  readonly AccountTreeStraightener mAccountTreeStraightener;
+	  private DiagramDataExtractorFromDb ExtractorFromDb { get; set; }
 
     [ImportingConstructor]
-    public DiagramDataCtors(KeeperDb db, AccountInTreeSeeker accountInTreeSeeker)
+    public DiagramDataFactory(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
-      _accountInTreeSeeker = accountInTreeSeeker;
-      ExtractorFromDb = new DiagramDataExtractorFromDb(db);
+	    mAccountTreeStraightener = accountTreeStraightener;
+	    ExtractorFromDb = new DiagramDataExtractorFromDb(db);
     }
 
     public DiagramSeries AccountDailyBalancesToSeries(string name, Brush positiveBrush)
@@ -165,7 +165,7 @@ namespace Keeper.Utils.Diagram
 
     public DiagramData MonthlyOutcomesDiagramCtor()
     {
-      var outcomes = _accountInTreeSeeker.FindAccountInTree("Все расходы");
+		var outcomes = mAccountTreeStraightener.Seek("Все расходы", _db.Accounts);
       var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta, 
                                            Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
       var colorsEnumerator = outcomeColors.GetEnumerator();

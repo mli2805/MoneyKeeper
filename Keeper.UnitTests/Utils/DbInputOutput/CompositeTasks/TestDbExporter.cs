@@ -1,4 +1,7 @@
-﻿using FakeItEasy;
+﻿using System;
+using System.Collections.Generic;
+
+using FakeItEasy;
 
 using Keeper.DomainModel;
 using Keeper.Utils.DbInputOutput;

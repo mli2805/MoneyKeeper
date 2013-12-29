@@ -39,7 +39,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       var db = new KeeperDb();
       db.Accounts = LoadAccounts(path);
       if (Result != null) return Result;
-	  db.AccountsPlaneList = mAccountTreeStraightener.Flatten(db.Accounts);
+	  db.AccountsPlaneList = mAccountTreeStraightener.Flatten(db.Accounts).ToList();
 
       db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, db.AccountsPlaneList);
       if (Result != null) return Result;

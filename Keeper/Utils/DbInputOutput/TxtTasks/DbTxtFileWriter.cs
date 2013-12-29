@@ -14,6 +14,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 		readonly IFileSystem mFileSystem;
 		readonly Encoding mEncoding1251 = Encoding.GetEncoding(1251);
 
+		[ImportingConstructor]
 		public DbTxtFileWriter(IFileSystem fileSystem)
 		{
 			mFileSystem = fileSystem;

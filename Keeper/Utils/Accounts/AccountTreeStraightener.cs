@@ -10,10 +10,16 @@ namespace Keeper.Utils.Accounts
   [Export]
   public class AccountTreeStraightener
   {
-    public List<Account> Flatten(IEnumerable<Account> roots)
+	  public Account Seek(string name, IEnumerable<Account> accounts)
+	  {
+		  return Flatten(accounts).FirstOrDefault(a => a.Name == name);
+	  }
+
+    public IEnumerable<Account> Flatten(IEnumerable<Account> roots)
     {
-	    return FlattenWithLevels(roots).Select(a => a.Item).ToList();
+	    return FlattenWithLevels(roots).Select(a => a.Item);
     }
+
 	public IEnumerable<HierarchyItem<Account>> FlattenWithLevels(IEnumerable<Account> accounts)
 	{
 		return accounts.SelectMany(accountsRoot => RecursiveWalk(accountsRoot, 0));
