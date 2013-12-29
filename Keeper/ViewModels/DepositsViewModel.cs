@@ -64,7 +64,7 @@ namespace Keeper.ViewModels
       MyTitleStyle = new Style();
 
       DepositsList = new List<Deposit>();
-      foreach (var account in _db.AccountsPlaneList)
+      foreach (var account in new AccountTreeStraightener().Flatten(_db.Accounts))
       {
         if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
         {

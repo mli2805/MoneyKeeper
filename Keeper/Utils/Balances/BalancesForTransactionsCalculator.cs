@@ -4,6 +4,7 @@ using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 using Keeper.ViewModels;
 
 namespace Keeper.Utils.Balances
@@ -87,7 +88,7 @@ namespace Keeper.Utils.Balances
       var period = new Period(new DateTime(0), new DayProcessor(dt).AfterThisDay());
       var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);
 
-      var depo = (from a in _db.AccountsPlaneList
+      var depo = (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
                   where a.Name == "Депозиты"
                   select a).First();
       var calculatedAccounts = new List<Account>(UsefulLists.MyAccountsForShopping);

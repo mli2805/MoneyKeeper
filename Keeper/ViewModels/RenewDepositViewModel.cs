@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
@@ -68,13 +69,12 @@ namespace Keeper.ViewModels
 		private Account AddNewAccountForDeposit()
 		{
 			var newDepositAccount = new Account(NewDepositName);
-			newDepositAccount.Id = (from account in _db.AccountsPlaneList select account.Id).Max() + 1;
+			newDepositAccount.Id = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) select account.Id).Max() + 1;
 
 			var parent = mAccountTreeStraightener.Seek("Депозиты", _db.Accounts);
 			newDepositAccount.Parent = parent;
 			parent.Children.Add(newDepositAccount);
 
-			_db.AccountsPlaneList = mAccountTreeStraightener.Flatten(_db.Accounts).ToList();
 			UsefulLists.FillLists(_db);
 
 			return newDepositAccount;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.Diagram
@@ -177,7 +178,7 @@ namespace Keeper.Utils.Diagram
     {
       var result = new Dictionary<DateTime, decimal>();
 
-      var accountForAnalisys = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
+      var accountForAnalisys = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) where account.Name == accountName select account).FirstOrDefault();
       var balances = AccountBalancesForPeriodInUsd(accountForAnalisys,
                                                    new Period(new DateTime(2001, 12, 31), DateTime.Now),
                                                    Every.Month).OrderBy(pair => pair.Key).ToList();
@@ -194,7 +195,7 @@ namespace Keeper.Utils.Diagram
 
     public Dictionary<DateTime, decimal> MonthlyTraffic(string accountName)
     {
-      var kategory = (from account in _db.AccountsPlaneList where account.Name == accountName select account).FirstOrDefault();
+      var kategory = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) where account.Name == accountName select account).FirstOrDefault();
 
       return KategoriesTrafficForPeriodInUsd(kategory, new Period(new DateTime(2002, 1, 1), DateTime.Now), Every.Month);
     }
