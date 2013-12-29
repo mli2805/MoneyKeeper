@@ -64,8 +64,7 @@ namespace Keeper.Utils.Accounts
 			accountInWork.Id = (from account in _db.AccountsPlaneList select account.Id).Max() + 1;
 			selectedAccount.Children.Add(accountInWork);
 
-			_db.AccountsPlaneList.Clear();
-			_db.AccountsPlaneList = mAccountTreeStraightener.Flatten(_db.Accounts);
+			_db.AccountsPlaneList = mAccountTreeStraightener.Flatten(_db.Accounts).ToList();
 			UsefulLists.FillLists(_db);
 		}
 

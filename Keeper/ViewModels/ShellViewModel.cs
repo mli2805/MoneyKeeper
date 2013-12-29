@@ -35,12 +35,11 @@ namespace Keeper.ViewModels
     readonly DbLoadResult mLoadResult;
 
     private readonly AccountTreesGardener _accountTreesGardener;
-    private readonly AccountInTreeSeeker _accountInTreeSeeker;
     private readonly DbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
-	  readonly DbFromTxtLoader mDbFromTxtLoader;
+	  readonly IDbFromTxtLoader mDbFromTxtLoader;
 	  private readonly BalancesForShellCalculator _balanceCalculator;
-    private readonly DiagramDataCtors _diagramDataCtor;
+    private readonly DiagramDataFactory mDiagramDataFactory;
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -210,8 +209,8 @@ namespace Keeper.ViewModels
 
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
-      AccountInTreeSeeker accountInTreeSeeker, DbToTxtSaver txtSaver, DbBackuper backuper, DbFromTxtLoader dbFromTxtLoader,
-		AccountTreesGardener accountTreesGardener)
+       DbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader,
+		AccountTreesGardener accountTreesGardener, DiagramDataFactory diagramDataFactory)
     {
       Db = db;
       mLoadResult = loadResult;
@@ -227,15 +226,14 @@ namespace Keeper.ViewModels
       IsProgressBarVisible = Visibility.Collapsed;
 
 	  _accountTreesGardener = accountTreesGardener;
-      InitVariablesToShowAccounts();
+	    mDiagramDataFactory = diagramDataFactory;
+	    InitVariablesToShowAccounts();
       InitBalanceControls();
 
       _balanceCalculator = balancesForShellCalculator;
-      _accountInTreeSeeker = accountInTreeSeeker;
       _txtSaver = txtSaver;
       _backuper = backuper;
 	    mDbFromTxtLoader = dbFromTxtLoader;
-	    _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
     }
 
     private void InitBalanceControls()
@@ -509,7 +507,7 @@ namespace Keeper.ViewModels
 
     public void ShowDailyBalancesDiagram()
     {
-      var balances = _diagramDataCtor.DailyBalancesCtor();
+      var balances = mDiagramDataFactory.DailyBalancesCtor();
       var diagramForm = new DiagramViewModel(balances);
       _launchedForms.Add(diagramForm);
       WindowManager.ShowWindow(diagramForm);
@@ -517,7 +515,7 @@ namespace Keeper.ViewModels
 
     public void ShowRatesDiagram()
     {
-      var rate = _diagramDataCtor.RatesCtor();
+      var rate = mDiagramDataFactory.RatesCtor();
 
       var diagramForm = new DiagramViewModel(rate);
       _launchedForms.Add(diagramForm);
@@ -526,7 +524,7 @@ namespace Keeper.ViewModels
 
     public void ShowMonthlyResultDiagram()
     {
-      var monthlyResults = _diagramDataCtor.MonthlyResultsDiagramCtor();
+      var monthlyResults = mDiagramDataFactory.MonthlyResultsDiagramCtor();
 
       var barDiagramForm = new DiagramViewModel(monthlyResults);
       _launchedForms.Add(barDiagramForm);
@@ -535,7 +533,7 @@ namespace Keeper.ViewModels
 
     public void ShowMonthlyIncomeDiagram()
     {
-      var monthlyIncomes = _diagramDataCtor.MonthlyIncomesDiagramCtor();
+      var monthlyIncomes = mDiagramDataFactory.MonthlyIncomesDiagramCtor();
 
       var diagramForm = new DiagramViewModel(monthlyIncomes);
       _launchedForms.Add(diagramForm);
@@ -544,7 +542,7 @@ namespace Keeper.ViewModels
 
     public void ShowMonthlyOutcomeDiagram()
     {
-      var monthlyOutcomes = _diagramDataCtor.MonthlyOutcomesDiagramCtor();
+      var monthlyOutcomes = mDiagramDataFactory.MonthlyOutcomesDiagramCtor();
 
       var diagramForm = new DiagramViewModel(monthlyOutcomes);
       _launchedForms.Add(diagramForm);
@@ -553,7 +551,7 @@ namespace Keeper.ViewModels
 
     public void ShowAverageSignificancesDiagram()
     {
-      var averageSignificances = _diagramDataCtor.AverageSignificancesDiagramCtor();
+      var averageSignificances = mDiagramDataFactory.AverageSignificancesDiagramCtor();
 
       var diagramForm = new DiagramViewModel(averageSignificances);
       _launchedForms.Add(diagramForm);
