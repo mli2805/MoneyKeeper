@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -21,7 +22,7 @@ namespace Keeper.UnitTests.Utils.Balances
 
     public TestBalanceCalculator()
     {
-	  _loadResult = new DbFromTxtLoader().LoadDbFromTxt(Path.GetFullPath("TestDb"));
+	  _loadResult = new DbFromTxtLoader(new AccountTreeStraightener()).LoadDbFromTxt(Path.GetFullPath("TestDb"));
       _underTest = new BalanceCalculator(_loadResult.Db);
     }
 

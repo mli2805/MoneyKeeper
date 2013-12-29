@@ -38,7 +38,8 @@ namespace Keeper.ViewModels
     private readonly AccountInTreeSeeker _accountInTreeSeeker;
     private readonly DbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
-    private readonly BalancesForShellCalculator _balanceCalculator;
+	  readonly DbFromTxtLoader mDbFromTxtLoader;
+	  private readonly BalancesForShellCalculator _balanceCalculator;
     private readonly DiagramDataCtors _diagramDataCtor;
 
     #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
@@ -209,7 +210,8 @@ namespace Keeper.ViewModels
 
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
-      AccountInTreeSeeker accountInTreeSeeker, DbToTxtSaver txtSaver, DbBackuper backuper)
+      AccountInTreeSeeker accountInTreeSeeker, DbToTxtSaver txtSaver, DbBackuper backuper, DbFromTxtLoader dbFromTxtLoader,
+		AccountTreesGardener accountTreesGardener)
     {
       Db = db;
       mLoadResult = loadResult;
@@ -224,7 +226,7 @@ namespace Keeper.ViewModels
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
 
-      _accountTreesGardener = new AccountTreesGardener(Db);
+	  _accountTreesGardener = accountTreesGardener;
       InitVariablesToShowAccounts();
       InitBalanceControls();
 
@@ -232,7 +234,8 @@ namespace Keeper.ViewModels
       _accountInTreeSeeker = accountInTreeSeeker;
       _txtSaver = txtSaver;
       _backuper = backuper;
-      _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
+	    mDbFromTxtLoader = dbFromTxtLoader;
+	    _diagramDataCtor = new DiagramDataCtors(Db, _accountInTreeSeeker);
     }
 
     private void InitBalanceControls()
@@ -308,7 +311,7 @@ namespace Keeper.ViewModels
     private void ReorderDepositAccounts()
     {
       _txtSaver.SaveDbInTxt();
-      var result = new DbFromTxtLoader().LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
+	  var result = mDbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
       else
       {
@@ -384,7 +387,7 @@ namespace Keeper.ViewModels
 
     public void ImportDatabaseFromTxt()
     {
-      var result = new DbFromTxtLoader().LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
+		var result = mDbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
       else
       {

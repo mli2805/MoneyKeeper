@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
@@ -13,7 +14,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 	{
 		public string Dump(HierarchyItem<Account> account)
 		{
-			var shiftedName = new string(' ', account.Depth * 2) + account.Item.Name;
+			var shiftedName = new string(' ', account.Level * 2) + account.Item.Name;
 			var parentForDump = account.Item.Parent == null ? 0 : account.Item.Parent.Id;
 			return account.Item.Id + " ; " + shiftedName + " ; " + parentForDump + " ; " + account.Item.IsExpanded;
 		}
@@ -48,23 +49,23 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 	public class DbEntriesToStringListsConverter : IDbEntriesToStringListsConverter
 	{
 		private readonly KeeperDb _db;
-		readonly DbAccountsWalker mDbAccountsWalker;
+		readonly AccountTreeStraightener mAccountTreeStraightener;
 		readonly Dumper mDumper;
 
 		[ImportingConstructor]
-		public DbEntriesToStringListsConverter(KeeperDb db, DbAccountsWalker dbAccountsWalker, Dumper dumper)
+		public DbEntriesToStringListsConverter(KeeperDb db, AccountTreeStraightener accountTreeStraightener, Dumper dumper)
 		{
 			_db = db;
-			mDbAccountsWalker = dbAccountsWalker;
+			mAccountTreeStraightener = accountTreeStraightener;
 			mDumper = dumper;
 		}
 
 		public IEnumerable<string> AccountsToList()
 		{
-			foreach (var account in mDbAccountsWalker.Walk(_db.Accounts))
+			foreach (var account in mAccountTreeStraightener.FlattenWithLevels(_db.Accounts))
 			{
 				yield return mDumper.Dump(account);
-				if (account.Depth == 0) yield return "";
+				if (account.Level == 0) yield return "";
 			}
 		}
 
