@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Composition;
 using Keeper.Properties;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.Utils.FileSystem;
 
 namespace Keeper.Utils.DbInputOutput.FileTasks

@@ -5,6 +5,9 @@ using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.Utils.DbInputOutput.TxtTasks;
+
 using NUnit.Framework;
 using FluentAssertions;
 

@@ -1,4 +1,4 @@
-﻿namespace Keeper.Utils.DbInputOutput
+﻿namespace Keeper.Utils.DbInputOutput.CompositeTasks
 {
 	public interface ILoader
 	{

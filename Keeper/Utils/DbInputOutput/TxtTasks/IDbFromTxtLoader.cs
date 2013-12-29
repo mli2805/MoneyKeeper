@@ -1,6 +1,6 @@
-using Keeper.DomainModel;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
 	interface IDbFromTxtLoader
 	{

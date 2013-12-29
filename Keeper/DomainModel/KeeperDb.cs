@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 namespace Keeper.DomainModel
 {

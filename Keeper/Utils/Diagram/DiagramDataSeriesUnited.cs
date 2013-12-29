@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-using Keeper.Utils.Diagram;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Diagram
 {
   public class DiagramDataExtremums
   {

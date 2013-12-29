@@ -2,6 +2,7 @@
 
 using Keeper.DomainModel;
 using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 using NUnit.Framework;
 

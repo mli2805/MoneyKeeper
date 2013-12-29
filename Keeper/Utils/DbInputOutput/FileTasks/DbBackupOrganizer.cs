@@ -1,8 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
+
 using Keeper.Properties;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils.DbInputOutput.FileTasks
 {
   public class DbBackupOrganizer
   {

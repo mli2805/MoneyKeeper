@@ -1,9 +1,10 @@
 ﻿using System.Composition;
 
-using Keeper.DomainModel;
 using Keeper.Properties;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.Utils.DbInputOutput.TxtTasks;
 
-namespace Keeper.Utils.DbInputOutput
+namespace Keeper.Utils.DbInputOutput.ZipTasks
 {
 	[Export(typeof(ILoader))]
 	class ZippedTxtLoader : ILoader
