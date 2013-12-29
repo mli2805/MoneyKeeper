@@ -12,13 +12,7 @@ namespace Keeper.DomainModel
     public DateTime BankDay { get; set; }
     public CurrencyCodes Currency { get; set; }
     public Double Rate { get; set; }
-
-    public string ToDump()
-    {
-      return Convert.ToString(BankDay,new CultureInfo("ru-Ru")) + " ; " + Currency + " ; " + Math.Round(Rate, 4);
-    }
-
-   #region Поля для показа на форме "Курсы валют"
+	  #region Поля для показа на форме "Курсы валют"
   
     public string RateOnScreen
     {

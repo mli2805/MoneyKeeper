@@ -174,21 +174,7 @@ namespace Keeper.DomainModel
       }
     }
     #endregion
-
-    public string ToDumpWithNames()
-    {
-      var s = Convert.ToString(Timestamp, new CultureInfo("ru-Ru")) + " ; " + Operation + " ; " +
-              Debet + " ; " + Credit + " ; " +
-              Amount + " ; " + Currency + " ; " + Amount2 + " ; ";
-             
-      if (Currency2 == null || Currency2 == 0) s = s + "null"; else s = s + Currency2;
-
-      s = s + " ; " + Article + " ; " + Comment;
-
-      return s;
-    }
-
-    /// <summary>
+	  /// <summary>
     /// создает новый инстанс и в нем возвращает полную копию данного инстанса, кроме Id
     /// </summary>
     /// <returns></returns>
