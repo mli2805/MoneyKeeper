@@ -5,10 +5,10 @@ using Keeper.Utils.FileSystem;
 
 namespace Keeper.Utils.DbInputOutput.ZipTasks
 {
-  [Export(typeof(IDbUnzipper))]
+	[Export(typeof(IDbUnzipper))]
 	class DbUnzipper : IDbUnzipper
 	{
-    readonly IFileSystem mFileSystem;
+		readonly IFileSystem mFileSystem;
 		readonly IFileExistenceChecker mExistenceChecker;
 
 		[ImportingConstructor]

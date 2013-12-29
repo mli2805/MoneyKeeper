@@ -1,60 +1,77 @@
+using System.Collections;
+using System.Collections.Generic;
+
 using FakeItEasy;
-using FluentAssertions;
+
 using Ionic.Zip;
+
+using Keeper.Properties;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.ZipTasks;
 using Keeper.Utils.FileSystem;
+
 using NUnit.Framework;
 
-namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
+using FluentAssertions;
+
+namespace Keeper.UnitTests.Utils.DbInputOutput.ZipTasks
 {
-  [TestFixture]
-  public sealed class TestDbUnzipper
-  {
-    DbUnzipper _underTest;
-    IFileSystem _fileSystem;
-    IFileExistenceChecker _existenceChecker;
-    IZipFile _zipFile;
-    IZipEntry _zipEntry;
+	[TestFixture]
+	public sealed class TestDbUnzipper
+	{
+		DbUnzipper mUnderTest;
+		IFileSystem mFileSystem;
+		IFile mZipFile;
+		IZipFile mZip;
+		IZipEntry mZipEntry;
+		IFileExistenceChecker mFileExistenceChecker;
+		readonly DbLoadResult mDbLoadResult = new DbLoadResult(0,"");
 
-    [SetUp]
-    public void SetUp()
-    {
-      _fileSystem = A.Fake<IFileSystem>();
-      _existenceChecker = A.Fake<IFileExistenceChecker>();
-      _zipFile = A.Fake<IZipFile>();
-      _zipEntry = A.Fake<IZipEntry>();
+		[SetUp]
+		public void SetUp()
+		{
+			mFileSystem = A.Fake<IFileSystem>();
+			mZipFile = A.Fake<IFile>();
+			A.CallTo(() => mFileSystem.GetFile("zip file name")).Returns(mZipFile);
+			mZip = A.Fake<IZipFile>();
+			A.CallTo(() => mZipFile.ReadZip()).Returns(mZip);
+			mZipEntry = A.Fake<IZipEntry>();
+			IEnumerator<IZipEntry> enumerator = new List<IZipEntry>() {mZipEntry}.GetEnumerator();
+			A.CallTo(() => mZip.GetEnumerator()).Returns(enumerator);
+			mFileExistenceChecker = A.Fake<IFileExistenceChecker>();
+			mUnderTest = new DbUnzipper(mFileSystem, mFileExistenceChecker);
+			Settings.Default.TemporaryTxtDbPath = "unpack directory";
+		}
 
-      A.CallTo(() => _fileSystem.GetFile("archive.zip").ReadZip()).Returns(_zipFile);
-      A.CallTo(() => _zipFile.GetEnumerator().Current).Returns(_zipEntry);
+		[Test]
+		public void UnzipArchive_Should_Unpack_Files_To_The_Temporary_Folder()
+		{
+			mUnderTest.UnzipArchive("zip file name");
 
-      _underTest = new DbUnzipper(_fileSystem, _existenceChecker);
-    }
+			A.CallTo(() => mZipEntry.ExtractWithPassword("unpack directory", ExtractExistingFileAction.OverwriteSilently, "!opa1526"))
+				.MustHaveHappened();
+		}
 
-    [Test]
-    public void UnzipArchive_Should_Return_Null_If_All_Right()
-    {
-      // Arrange
-      A.CallTo(
-        () => _zipEntry.ExtractWithPassword(A<string>.Ignored, ExtractExistingFileAction.OverwriteSilently, "password"))
-        .Returns(true);
-      A.CallTo(() => _existenceChecker.Check(TxtFilesForDb.Dict)).WithAnyArguments().Returns(null);
+		[Test]
+		public void UnzipArchive_When_Password_Is_Wrong_Should_Return_Bad_Password_Result()
+		{
+			A.CallTo(() => mZipEntry.ExtractWithPassword("unpack directory", ExtractExistingFileAction.OverwriteSilently, "!opa1526"))
+			 .Returns(false);
 
-      //Action & Assert
-      _underTest.UnzipArchive("archive.zip").Should().BeNull();
-    }
+			var result = mUnderTest.UnzipArchive("zip file name");
+			result.ShouldBeEquivalentTo(new DbLoadResult(21, "Bad password!"));
+		}
 
-    public void UnzipArchive_When_Password_Is_Wrong_Should_Returns_Result_Bad_Password_Code_And_Explanation()
-    {
-      // Arrange
-      A.CallTo(
-        () => _zipEntry.ExtractWithPassword(A<string>.Ignored, ExtractExistingFileAction.OverwriteSilently, "wrong password"))
-        .Returns(false);
+		[Test]
+		public void UnzipArchive_Should_Return_What_ExistenceChecker_Returns()
+		{
+			A.CallTo(() => mZipEntry.ExtractWithPassword("unpack directory", ExtractExistingFileAction.OverwriteSilently, "!opa1526"))
+			 .Returns(true);
+			A.CallTo(() => mFileExistenceChecker.Check(TxtFilesForDb.Dict)).Returns(mDbLoadResult);
 
-      //Action & Assert
-      var testResult = _underTest.UnzipArchive("archive.zip");
-      testResult.Code.Should().Be(21);
-      testResult.Explanation.Should().Be("Bad password!");
-    }
-  }
+			var result = mUnderTest.UnzipArchive("zip file name");
+			result.Should().BeSameAs(mDbLoadResult);
+		}
+	}
+
 }
