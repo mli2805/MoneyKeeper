@@ -1,12 +1,15 @@
 using FakeItEasy;
+
 using FluentAssertions;
+
 using Keeper.Properties;
 using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.DbInputOutput.ZipTasks;
 using Keeper.Utils.FileSystem;
+
 using NUnit.Framework;
 
-namespace Keeper.UnitTests.Utils.DbInputOutput
+namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
 {
   [TestFixture]
   public sealed class TestFileExistenceChecker

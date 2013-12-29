@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 using FluentAssertions;
 
-namespace Keeper.UnitTests.Utils.DbInputOutput
+namespace Keeper.UnitTests.Utils.DbInputOutput.CompositeTasks
 {
 	[TestFixture]
 	public sealed class TestDbExporter

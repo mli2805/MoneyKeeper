@@ -1,15 +1,12 @@
-﻿using System.Windows;
-using FakeItEasy;
+﻿using FakeItEasy;
+
 using FluentAssertions;
-using Keeper.DomainModel;
-using Keeper.Properties;
+
 using Keeper.Utils.DbInputOutput;
-using Keeper.Utils.Dialogs;
-using Keeper.Utils.FileSystem;
 
 using NUnit.Framework;
 
-namespace Keeper.UnitTests.Utils.DbInputOutput
+namespace Keeper.UnitTests.Utils.DbInputOutput.CompositeTasks
 {
 	[TestFixture]
 	public sealed class TestDbGeneralLoader
