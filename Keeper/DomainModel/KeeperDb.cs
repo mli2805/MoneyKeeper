@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
-using Keeper.Utils.Accounts;
-using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 namespace Keeper.DomainModel
 {
   /// <summary>
-	/// <see cref="DbGeneralLoader"/> is factory for the KeeperDb
+  /// <see cref="DbExporter"/> is factory for the KeeperDb
 	/// </summary>
 	[Serializable]
 	public class KeeperDb
