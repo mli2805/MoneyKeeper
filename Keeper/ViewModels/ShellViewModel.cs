@@ -33,6 +33,7 @@ namespace Keeper.ViewModels
     //    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     public KeeperDb Db;
     readonly DbLoadResult mLoadResult;
+    private readonly List<Screen> _launchedForms = new List<Screen>();
 
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly DbToTxtSaver _txtSaver;
@@ -221,6 +222,7 @@ namespace Keeper.ViewModels
         MessageBox.Show(mLoadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
+      mUsefulLists.FillLists();
 
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
@@ -350,6 +352,21 @@ namespace Keeper.ViewModels
 
     #endregion
 
+    private void SerializeWithProgressBar()
+    {
+      StatusBarItem0 = "Сохранение данных на диск";
+      IsProgressBarVisible = Visibility.Visible;
+      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+    }
+
+    // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
+    private void MakeBackupWithProgressBar()
+    {
+      StatusBarItem0 = "Создание резервной копии БД";
+      IsProgressBarVisible = Visibility.Visible;
+      _backuper.MakeDbBackupCopy();
+    }
+
     #region // меню файл
     public async void SaveDatabase()
     {
@@ -407,31 +424,8 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    private readonly List<Screen> _launchedForms = new List<Screen>();
-
-    private void SerializeWithProgressBar()
-    {
-      StatusBarItem0 = "Сохранение данных на диск";
-      IsProgressBarVisible = Visibility.Visible;
-      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
-    }
-
-    // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
-    private void MakeBackupWithProgressBar()
-    {
-      StatusBarItem0 = "Создание резервной копии БД";
-      IsProgressBarVisible = Visibility.Visible;
-      _backuper.MakeDbBackupCopy();
-    }
 
     #region // меню формы - вызовы дочерних окон
-
-    public bool ShowLogonForm()
-    {
-      var logonViewModel = new LogonViewModel("1");
-      WindowManager.ShowDialog(logonViewModel);
-      return logonViewModel.Result;
-    }
 
     public void ShowTransactionsForm()
     {
@@ -478,11 +472,6 @@ namespace Keeper.ViewModels
       WindowManager.ShowWindow(toDoForm);
     }
 
-    public void ProgramExit()
-    {
-      TryClose();
-    }
-
     public void ShowMonthAnalisysForm()
     {
       var arcMessage = Message;
@@ -508,60 +497,56 @@ namespace Keeper.ViewModels
 
     public void ShowDailyBalancesDiagram()
     {
-      var balances = mDiagramDataFactory.DailyBalancesCtor();
-      var diagramForm = new DiagramViewModel(balances);
-      _launchedForms.Add(diagramForm);
-      WindowManager.ShowWindow(diagramForm);
+      OpenDiagramForm(mDiagramDataFactory.DailyBalancesCtor());
     }
 
     public void ShowRatesDiagram()
     {
-      var rate = mDiagramDataFactory.RatesCtor();
-
-      var diagramForm = new DiagramViewModel(rate);
-      _launchedForms.Add(diagramForm);
-      WindowManager.ShowWindow(diagramForm);
+      OpenDiagramForm(mDiagramDataFactory.RatesCtor());
     }
 
     public void ShowMonthlyResultDiagram()
     {
-      var monthlyResults = mDiagramDataFactory.MonthlyResultsDiagramCtor();
-
-      var barDiagramForm = new DiagramViewModel(monthlyResults);
-      _launchedForms.Add(barDiagramForm);
-      WindowManager.ShowWindow(barDiagramForm);
+      OpenDiagramForm(mDiagramDataFactory.MonthlyResultsDiagramCtor());
     }
 
     public void ShowMonthlyIncomeDiagram()
     {
-      var monthlyIncomes = mDiagramDataFactory.MonthlyIncomesDiagramCtor();
-
-      var diagramForm = new DiagramViewModel(monthlyIncomes);
-      _launchedForms.Add(diagramForm);
-      WindowManager.ShowWindow(diagramForm);
+      OpenDiagramForm(mDiagramDataFactory.MonthlyIncomesDiagramCtor());
     }
 
     public void ShowMonthlyOutcomeDiagram()
     {
-      var monthlyOutcomes = mDiagramDataFactory.MonthlyOutcomesDiagramCtor();
-
-      var diagramForm = new DiagramViewModel(monthlyOutcomes);
-      _launchedForms.Add(diagramForm);
-      WindowManager.ShowWindow(diagramForm);
+      OpenDiagramForm(mDiagramDataFactory.MonthlyOutcomesDiagramCtor());
     }
 
     public void ShowAverageSignificancesDiagram()
     {
-      var averageSignificances = mDiagramDataFactory.AverageSignificancesDiagramCtor();
+      OpenDiagramForm(mDiagramDataFactory.AverageSignificancesDiagramCtor());
+    }
 
-      var diagramForm = new DiagramViewModel(averageSignificances);
+    public void OpenDiagramForm(DiagramData diagramData)
+    {
+      var diagramForm = new DiagramViewModel(diagramData);
       _launchedForms.Add(diagramForm);
       WindowManager.ShowWindow(diagramForm);
     }
     #endregion
 
+    public bool ShowLogonForm()
+    {
+      var logonViewModel = new LogonViewModel("1");
+      WindowManager.ShowDialog(logonViewModel);
+      return logonViewModel.Result;
+    }
+
     public void TempItem()
     {
+    }
+
+    public void ProgramExit()
+    {
+      TryClose();
     }
 
     #region date\period selection properties

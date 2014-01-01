@@ -30,7 +30,6 @@ namespace Keeper.ViewModels
 		}
 
 		public static List<CurrencyCodes> CurrencyList { get; private set; }
-		public static List<OperationType> OperationTypeList { get; private set; }
 
 		public static List<Account> AllAccounts { get; set; } // т.е. счета, но не категории
 		public static List<Account> AllArticles { get; set; } // т.е. категории, но не счета
@@ -50,7 +49,6 @@ namespace Keeper.ViewModels
 		public void FillLists()
 		{
 			CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-			OperationTypeList = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
 
 			AllAccounts = (mAccountTreeStraightener.Flatten(mDb.Accounts).Where(account =>
 							(account.GetRootName() == "Мои" || account.GetRootName() == "Внешние") && account.Children.Count == 0)).ToList();
