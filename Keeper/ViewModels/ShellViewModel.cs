@@ -222,7 +222,6 @@ namespace Keeper.ViewModels
         MessageBox.Show(mLoadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
-      mUsefulLists.FillLists();
 
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
@@ -230,7 +229,8 @@ namespace Keeper.ViewModels
 	  _accountTreesGardener = accountTreesGardener;
 	    mDiagramDataFactory = diagramDataFactory;
 	    mUsefulLists = usefulLists;
-	    InitVariablesToShowAccounts();
+      mUsefulLists.FillLists();
+      InitVariablesToShowAccounts();
       InitBalanceControls();
 
       _balanceCalculator = balancesForShellCalculator;

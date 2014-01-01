@@ -1,18 +1,22 @@
 <Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="AsyncAwaitExample.ShellView"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Control="clr-namespace:AsyncAwaitExample" mc:Ignorable="d" x:Class="AsyncAwaitExample.ShellView"
         Width="382" Height="192">
 
   <Grid Background="White">
     <Grid.RowDefinitions>
+      <RowDefinition Height="35"/>
       <RowDefinition Height="1*"/>
       <RowDefinition Height="35"/>
       <RowDefinition Height="35"/>
     </Grid.RowDefinitions>
+    <Control:MainMenu/>
+
     <Button Name="StartButton" Content="Start series of long operations" IsEnabled="{Binding IsStartButtonEnabled}"
-            IsDefault="True" Grid.Row="1" Grid.Column="1" Margin="5" Width="180" HorizontalAlignment="Left" />
-    <StatusBar Grid.Row="2" Margin="5">
+            IsDefault="True" Grid.Row="2" Grid.Column="1" Margin="5" Width="180" HorizontalAlignment="Left" />
+    <StatusBar Grid.Row="3" Margin="5">
       <StatusBar.ItemsPanel>
         <ItemsPanelTemplate>
           <Grid>
