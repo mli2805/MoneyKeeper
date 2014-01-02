@@ -25,13 +25,15 @@ namespace Keeper.Utils.DbInputOutput.FileTasks
 		readonly IMessageBoxer mMessageBoxer;
 		readonly IMyOpenFileDialog mOpenFileDialog;
 		readonly IFileSystem mFileSystem;
+	  private readonly IMySettings _mySettings;
 
-		[ImportingConstructor]
-		public DbLocator(IMessageBoxer messageBoxer, IMyOpenFileDialog openFileDialog, IFileSystem fileSystem)
+	  [ImportingConstructor]
+		public DbLocator(IMessageBoxer messageBoxer, IMyOpenFileDialog openFileDialog, IFileSystem fileSystem, IMySettings mySettings)
 		{
 			mMessageBoxer = messageBoxer;
 			mOpenFileDialog = openFileDialog;
 			mFileSystem = fileSystem;
+		  _mySettings = mySettings;
 		}
 
 		public string Locate()
@@ -48,8 +50,8 @@ namespace Keeper.Utils.DbInputOutput.FileTasks
 
 			if (another == "") return null;
 
-			Settings.Default.DbPath = Path.GetDirectoryName(another);
-			Settings.Default.Save();
+      _mySettings.DbPath = Path.GetDirectoryName(another);
+      _mySettings.Save();
 			return another;
 		}
 	}

@@ -140,6 +140,7 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\ILoader.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\ZippedTxtLoader.cs" />
+    <Compile Include="Utils\MySettings.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\DayProcessor.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbGeneralLoader.cs" />

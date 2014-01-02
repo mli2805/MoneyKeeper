@@ -2,6 +2,7 @@
 using System.Windows;
 using FakeItEasy;
 using Keeper.Properties;
+using Keeper.Utils;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.Dialogs;
@@ -20,6 +21,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
     IMyOpenFileDialog mOpenFileDialog;
     IFileSystem mFileSystem;
     IFile mFile;
+    IMySettings mySettings;
 
     [SetUp]
     public void SetUp()
@@ -28,13 +30,14 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
       mOpenFileDialog = A.Fake<IMyOpenFileDialog>();
       mFileSystem = A.Fake<IFileSystem>();
       mFile = A.Fake<IFile>();
+      mySettings = A.Fake<IMySettings>();
 
       Settings.Default.DbPath = "path";
       Settings.Default.DbxFile = "file.dbx";
       A.CallTo(() => mFileSystem.PathCombine("path", "file.dbx")).Returns(@"path\file.dbx");
       A.CallTo(() => mFileSystem.GetFile(@"path\file.dbx")).Returns(mFile);
 
-      mUnderTest = new DbLocator(mMessageBoxer, mOpenFileDialog, mFileSystem);
+      mUnderTest = new DbLocator(mMessageBoxer, mOpenFileDialog, mFileSystem, mySettings);
     }
 
     [Test]
