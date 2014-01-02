@@ -5,40 +5,24 @@ namespace Keeper.Utils
 {
   public interface IMySettings
   {
-    string DbxFile { get; set; }
-    string TemporaryTxtDbPath { get; set; }
-    string DbPath { get; set; }
-    string KeeperInDropBox { get; set; }
+    object GetSetting(string name);
+    void SetSetting(string name, object value);
     void Save();
   }
 
-  [Export (typeof(IMySettings))]
+  [Export(typeof(IMySettings))]
   class MySettings : IMySettings
   {
-    public string DbxFile 
+    public object GetSetting(string name)
     {
-      get { return Settings.Default.DbxFile; }
-      set { Settings.Default.DbxFile = value; } 
+      return Settings.Default[name];
     }
 
-    public string TemporaryTxtDbPath 
-    { 
-      get { return Settings.Default.TemporaryTxtDbPath; } 
-      set { Settings.Default.TemporaryTxtDbPath = value;} 
-    }
-
-    public string DbPath 
+    public void SetSetting(string name, object value)
     {
-      get { return Settings.Default.DbPath; }
-      set { Settings.Default.DbPath = value; } 
+      Settings.Default[name] = value;
     }
 
-    public string KeeperInDropBox 
-    {
-      get { return Settings.Default.KeeperInDropBox; }
-      set { Settings.Default.KeeperInDropBox = value; } 
-    }
-
-    public void Save() { Settings.Default.Save();}
+    public void Save() { Settings.Default.Save(); }
   }
 }
