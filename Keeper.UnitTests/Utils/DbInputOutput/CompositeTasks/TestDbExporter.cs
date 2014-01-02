@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-using FakeItEasy;
+﻿using FakeItEasy;
 
 using Keeper.DomainModel;
-using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 using NUnit.Framework;

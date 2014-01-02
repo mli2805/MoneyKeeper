@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition.Hosting;
-using System.Linq;
-using System.Reflection;
 using Caliburn.Micro;
 
 using Keeper.Utils.MEF;

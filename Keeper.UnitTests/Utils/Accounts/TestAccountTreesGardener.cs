@@ -30,8 +30,6 @@ namespace Keeper.UnitTests.Utils.Balances
 			mSelectedAccount = new Account();
 		}
 
-		
-
 		[Test]
 		public void AddAccount_Should_Show_AddAndEditAccountView_Dialog()
 		{
