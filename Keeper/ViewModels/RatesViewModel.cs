@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Composition;
 using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
@@ -9,6 +10,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
+  [Export]
 	public class RatesViewModel : Screen
 	{
 		private readonly KeeperDb _db;
@@ -41,7 +43,8 @@ namespace Keeper.ViewModels
 		private DateTime _newDate;
 		private double _lastEurRate;
 
-		public IEnumerable<CurrencyRatesFilter> FilterList { get; private set; }
+    public static List<CurrencyCodes> CurrencyList { get; private set; }
+    public IEnumerable<CurrencyRatesFilter> FilterList { get; private set; }
 
 		private CurrencyRatesFilter _selectedFilter;
 		public CurrencyRatesFilter SelectedFilter
@@ -133,12 +136,14 @@ namespace Keeper.ViewModels
 			}
 		}
 
+    [ImportingConstructor]
 		public RatesViewModel(KeeperDb db)
 		{
 			_db = db;
+      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
 
 			Rows = _db.CurrencyRates;
-			InitFilterList();
+      InitFilterList();
 			SelectedFilter = FilterList.First(f => !f.IsOn);
 
 			var view = CollectionViewSource.GetDefaultView(Rows);
@@ -151,8 +156,6 @@ namespace Keeper.ViewModels
 
 		protected override void OnViewLoaded(object view)
 		{
-
-
 			DisplayName = "Курсы валют";
 			SelectedFilter = FilterList.First(f => !f.IsOn);
 		}

@@ -29,13 +29,13 @@
       <DataGrid.Columns>
         <DataGridComboBoxColumn Header="Контрагент" Width="170"
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding ExternalAccount}"
-                                ItemsSource="{x:Static  ViewModels:UsefulLists.ExternalAccounts}">
+                                SelectedItemBinding ="{Binding ExternalAccount, Mode=TwoWay}"
+                                ItemsSource="{x:Static ViewModels:ArticlesAssociationsViewModel.ExternalAccounts}">
         </DataGridComboBoxColumn>
         <DataGridComboBoxColumn Header="Ассоциированная категория" Width="190" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
                                 SelectedItemBinding ="{Binding AssociatedArticle}"
-                                ItemsSource="{x:Static ViewModels:UsefulLists.AssociatedArticles}">
+                                ItemsSource="{x:Static ViewModels:ArticlesAssociationsViewModel.AssociatedArticles}">
         </DataGridComboBoxColumn>
       </DataGrid.Columns>
     </DataGrid>

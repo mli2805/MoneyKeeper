@@ -40,7 +40,6 @@ namespace Keeper.ViewModels
 	  readonly IDbFromTxtLoader mDbFromTxtLoader;
 	  private readonly BalancesForShellCalculator _balanceCalculator;
     private readonly DiagramDataFactory mDiagramDataFactory;
-	  readonly IUsefulLists mUsefulLists;
 	  #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
     // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
@@ -210,7 +209,7 @@ namespace Keeper.ViewModels
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
        DbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader,
-		AccountTreesGardener accountTreesGardener, DiagramDataFactory diagramDataFactory, IUsefulLists usefulLists)
+		AccountTreesGardener accountTreesGardener, DiagramDataFactory diagramDataFactory)
     {
       Db = db;
       mLoadResult = loadResult;
@@ -227,8 +226,6 @@ namespace Keeper.ViewModels
 
 	  _accountTreesGardener = accountTreesGardener;
 	    mDiagramDataFactory = diagramDataFactory;
-	    mUsefulLists = usefulLists;
-      mUsefulLists.FillLists();
       InitVariablesToShowAccounts();
       InitBalanceControls();
 
@@ -288,7 +285,7 @@ namespace Keeper.ViewModels
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
         await Task.Run(() => SerializeWithProgressBar());
-        await Task.Run(() => MakeBackupWithProgressBar());
+//        await Task.Run(() => MakeBackupWithProgressBar());
         StatusBarItem0 = "Idle";
         IsProgressBarVisible = Visibility.Collapsed;
       }
@@ -430,7 +427,6 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Input operations";
-      mUsefulLists.FillLists();
       WindowManager.ShowDialog(IoC.Get<TransactionViewModel>());
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
       var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
@@ -446,8 +442,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Currency rates";
-      mUsefulLists.FillLists();
-      WindowManager.ShowDialog(new RatesViewModel(Db));
+      WindowManager.ShowDialog(IoC.Get<RatesViewModel>());
       SerializeWithProgressBar();
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
@@ -459,8 +454,7 @@ namespace Keeper.ViewModels
     {
       var arcMessage = Message;
       Message = "Articles' associations";
-      mUsefulLists.FillLists();
-      WindowManager.ShowDialog(new ArticlesAssociationsViewModel(Db));
+      WindowManager.ShowDialog(IoC.Get<ArticlesAssociationsViewModel>());
       Message = arcMessage;
     }
 

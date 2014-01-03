@@ -218,14 +218,12 @@
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
     <Compile Include="ViewModels\DepositsViewModel.cs" />
     <Compile Include="ViewModels\DepositViewModel.cs" />
-    <Compile Include="ViewModels\ListsForComboboxes\UsefulLists.cs" />
     <Compile Include="Utils\AssociationFinder.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\MonthAnalisysViewModel.cs" />
     <Compile Include="ViewModels\ReceiptViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\AccountFilter.cs" />
-    <Compile Include="ViewModels\TransactionViewFilters\FilterListsForComboboxes.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilerListForCombo.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilter.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />

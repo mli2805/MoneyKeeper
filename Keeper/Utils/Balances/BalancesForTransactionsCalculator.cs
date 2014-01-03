@@ -25,14 +25,16 @@ namespace Keeper.Utils.Balances
 	public class BalancesForTransactionsCalculator
   {
     private readonly KeeperDb _db;
+	  private readonly AccountTreeStraightener _accountTreeStraightener;
 
-    [ImportingConstructor]
-    public BalancesForTransactionsCalculator(KeeperDb db)
+	  [ImportingConstructor]
+    public BalancesForTransactionsCalculator(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
+      _accountTreeStraightener = accountTreeStraightener;
     }
 
-    public List<string> CalculateDayResults(DateTime dt)
+	  public List<string> CalculateDayResults(DateTime dt)
     {
       var dayResults = new List<string> { String.Format("                              {0:dd MMMM yyyy}", dt.Date) };
 
@@ -91,7 +93,8 @@ namespace Keeper.Utils.Balances
       var depo = (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
                   where a.Name == "Депозиты"
                   select a).First();
-      var calculatedAccounts = new List<Account>(UsefulLists.MyAccountsForShopping);
+      var calculatedAccounts = new List<Account>((_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+        account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))));
       calculatedAccounts.Add(depo);
       foreach (var account in calculatedAccounts)
       {

@@ -98,10 +98,15 @@ namespace Keeper.ViewModels
       }
     }
 
+    public List<Account> ExpenseArticles { get; set; }
+    public List<CurrencyCodes> CurrencyList { get; private set; }
+
     public bool Result { get; set; }
 
-    public ReceiptViewModel(DateTime receiptDate, string acceptor, CurrencyCodes currency, decimal totalAmount, Account article)
+    public ReceiptViewModel(DateTime receiptDate, string acceptor, CurrencyCodes currency, decimal totalAmount, Account article, List<Account> list)
     {
+      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+      ExpenseArticles = list;
       Expense = new List<Tuple<decimal, Account, string>>();
       ReceiptDate = receiptDate;
       Acceptor = acceptor;

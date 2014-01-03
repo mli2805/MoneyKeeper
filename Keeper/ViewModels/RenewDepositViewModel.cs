@@ -15,8 +15,7 @@ namespace Keeper.ViewModels
 	{
 	  private readonly KeeperDb _db;
     private readonly BalanceCalculator _balanceCalculator;
-		readonly AccountTreeStraightener mAccountTreeStraightener;
-		readonly IUsefulLists mUsefulLists;
+		readonly AccountTreeStraightener _accountTreeStraightener;
 		private Deposit _oldDeposit;
 		public Account NewDeposit { get; set; }
 
@@ -27,14 +26,17 @@ namespace Keeper.ViewModels
 		public decimal Procents { get; set; }
 		public string NewDepositName { get; set; }
 
+    public List<Account> BankAccounts { get; set; }
+
 		[ImportingConstructor]
 		public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator, 
-			 AccountTreeStraightener accountTreeStraightener, IUsefulLists usefulLists)
+			 AccountTreeStraightener accountTreeStraightener)
 		{
 		  _db = db;
 		  _balanceCalculator = balanceCalculator;
-			mAccountTreeStraightener = accountTreeStraightener;
-			mUsefulLists = usefulLists;
+      _accountTreeStraightener = accountTreeStraightener;
+
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList();
 		}
 
 		public void SetOldDeposit(Deposit oldDeposit)
@@ -57,7 +59,7 @@ namespace Keeper.ViewModels
 		private Account FindBankAccount()
 		{
 			var st = OldDepositName.Substring(0, OldDepositName.IndexOf(' '));
-			return mAccountTreeStraightener.Seek(st,_db.Accounts);
+			return _accountTreeStraightener.Seek(st,_db.Accounts);
 		}
 
 		private string BuildNewName()
@@ -73,11 +75,9 @@ namespace Keeper.ViewModels
 			var newDepositAccount = new Account(NewDepositName);
 			newDepositAccount.Id = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) select account.Id).Max() + 1;
 
-			var parent = mAccountTreeStraightener.Seek("Депозиты", _db.Accounts);
+			var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
 			newDepositAccount.Parent = parent;
 			parent.Children.Add(newDepositAccount);
-
-			mUsefulLists.FillLists();
 
 			return newDepositAccount;
 		}
@@ -101,7 +101,7 @@ namespace Keeper.ViewModels
 				  Credit = _oldDeposit.Account,
 				  Amount = Procents,
 				  Currency = _oldDeposit.MainCurrency,
-				  Article = mAccountTreeStraightener.Seek("Проценты по депозитам", _db.Accounts),
+				  Article = _accountTreeStraightener.Seek("Проценты по депозитам", _db.Accounts),
 				  Comment = "причисление процентов при закрытии"
 			  };
 
@@ -128,10 +128,10 @@ namespace Keeper.ViewModels
 
 		private void RemoveOldAccountToClosed()
 		{
-			var parent = mAccountTreeStraightener.Seek("Депозиты", _db.Accounts);
+			var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
 			parent.Children.Remove(_oldDeposit.Account);
 
-			parent = mAccountTreeStraightener.Seek("Закрытые депозиты", _db.Accounts);
+			parent = _accountTreeStraightener.Seek("Закрытые депозиты", _db.Accounts);
 			_oldDeposit.Account.Parent = parent;
 			parent.Children.Add(_oldDeposit.Account);
 		}

@@ -28,7 +28,7 @@
     <TextBlock Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,8,0,8" 
                Text="Банк "/>
     <ComboBox Grid.Row="4" HorizontalAlignment="Right" Margin="0,5,20,5" Width="120" Height="22"
-              ItemsSource="{x:Static ViewModels:UsefulLists.AccountsWhoGivesMeMoney}"
+              ItemsSource="{Binding BankAccounts}"
               SelectedItem="{Binding BankAccount}"/>
     <TextBlock Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,8,0,8" 
                Text="начислено процентов ,"/>

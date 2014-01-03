@@ -111,7 +111,7 @@
         <DataGridComboBoxColumn Header="Валюта" 
                                 ElementStyle="{StaticResource comboBoxToRightStyle}"
                                 SelectedItemBinding ="{Binding CurrencyLeft}"
-                                ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}">
+                                ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}">
         </DataGridComboBoxColumn>
         <DataGridTextColumn Header="  Курс" Width="50" ElementStyle="{StaticResource textBlockToRightStyle}"
                             Binding="{Binding RateOnScreen, StringFormat=\{0:G5\}}">
@@ -127,7 +127,7 @@
 
         <DataGridComboBoxColumn Header="Валюту" ElementStyle="{StaticResource comboBoxToLeftStyle}"
                                 SelectedItemBinding ="{Binding CurrencyRight}" 
-                                ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}">
+                                ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}">
         </DataGridComboBoxColumn>
       </DataGrid.Columns>
     </DataGrid>
