@@ -55,18 +55,19 @@ namespace Keeper.Utils.Accounts
 
 		}
 
-		public void AddAccount(Account selectedAccount)
+		public Account AddAccount(Account selectedAccount)
 		{
 			var accountInWork = mMyFactory.CreateAccount(selectedAccount);
 			var vm = mMyFactory.CreateAddAndEditAccountViewModel(accountInWork, "Добавить");
-			if (mWindowManager.ShowDialog(vm) != true) return;
+			if (mWindowManager.ShowDialog(vm) != true) return null;
 
 			// Если во время тестирования не получится написать такой тест который становится красным,
 			// если удалить эту строчку, то она не нужна!
-			selectedAccount = accountInWork.Parent;
+//			selectedAccount = accountInWork.Parent;
 
 			accountInWork.Id = (from account in mAccountTreeStraightener.Flatten(_db.Accounts) select account.Id).Max() + 1;
 			selectedAccount.Children.Add(accountInWork);
+		  return accountInWork;
 		}
 
 		public void ChangeAccount(Account selectedAccount)

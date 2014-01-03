@@ -301,8 +301,14 @@ namespace Keeper.ViewModels
 
     public void AddSelectedAccount()
     {
-      _accountTreesGardener.AddAccount(SelectedAccount);
+      var newSelectedAccount = _accountTreesGardener.AddAccount(SelectedAccount);
       if (SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
+      SelectedAccount.IsSelected = false;
+      SelectedAccount = newSelectedAccount;
+      SelectedAccount.IsSelected = true;
+      NotifyOfPropertyChange(() => MineAccountsRoot);
+
+
     }
 
     private void ReorderDepositAccounts()

@@ -1,0 +1,36 @@
++ обертка над settings
+
++ избавиться от статическ филдов в UsefulLists (смотри комбик фильтров на форме курсов)
+
+ и отнести к конкретным вью-моделям - 
+  1) но часть списков используется разными моделями!
+  2) когда обычный комбобох - отлично работает, но когда DataGridComboBoxColumn 
+  (прямо датагрид привязан) не получается комбик на поле во вьюмодели перепривязать
+  ассоциации и курсы валют? просто сделал статические комбики в конкретных вьюмоделях
+
+ Как-то стандартизировать IMyFactory ???
+ почему он фейковый? придется за него все работу повторить?
+
+
+TestAccountTreesGardener
+
+ //			selectedAccount = accountInWork.Parent;
+ да строчка не работает, но как заставить дерево сменить селекшен?
+
+AccountTreeStraightener
+
+DbTxtFileWriter
+
+DbToTxtSaver
+
+Для FlattenWithLevels используй структурное сравнение ShouldBeEqTo
+// mChild1Account = new Account();
+  // mChild2Account = new Account();
+  // mParentAccount = new Account {Children = {mChild1Account, mChild2Account}};
+
+  // result.ShouldBeAllEqTo(new []{ 
+  //     new HierarchyItem<Account>(mParentAccount, 0), 
+  //     new HierarchyItem<Account>(mChild1Account, 1), )
+  //
+
+yield
