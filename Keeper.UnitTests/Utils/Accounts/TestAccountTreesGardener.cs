@@ -24,7 +24,6 @@ namespace Keeper.UnitTests.Utils.Balances
 			mWindowManager = A.Fake<IWindowManager>();
 			mMyFactory = A.Fake<IMyFactory>();
 			mUnderTest = new AccountTreesGardener(new KeeperDb(), new AccountTreeStraightener(), 
-			                                      new UsefulLists(new KeeperDb(), new AccountTreeStraightener()),
 			                                      mWindowManager, mMyFactory);
 
 			mSelectedAccount = new Account();
