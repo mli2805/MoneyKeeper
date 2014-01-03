@@ -32,8 +32,8 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
       mFile = A.Fake<IFile>();
       mySettings = A.Fake<IMySettings>();
 
-      Settings.Default.DbPath = "path";
-      Settings.Default.DbxFile = "file.dbx";
+      A.CallTo(() => mySettings.GetSetting("DbPath")).Returns("path");
+      A.CallTo(() => mySettings.GetSetting("DbxFile")).Returns("file.dbx");
       A.CallTo(() => mFileSystem.PathCombine("path", "file.dbx")).Returns(@"path\file.dbx");
       A.CallTo(() => mFileSystem.GetFile(@"path\file.dbx")).Returns(mFile);
 
