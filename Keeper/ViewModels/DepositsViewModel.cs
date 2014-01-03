@@ -15,7 +15,7 @@ namespace Keeper.ViewModels
 {
   public class ChartPoint
   {
-	  public string Subject { get; set; }
+    public string Subject { get; set; }
     public int Amount { get; set; }
 
     public ChartPoint() { }
@@ -39,14 +39,14 @@ namespace Keeper.ViewModels
     }
   }
 
-	[Export]
+  [Export]
   public class DepositsViewModel : Screen
   {
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
     private readonly KeeperDb _db;
-		readonly AccountTreeStraightener mAccountTreeStraightener;
-		private readonly RateExtractor _rateExtractor;
+    readonly AccountTreeStraightener mAccountTreeStraightener;
+    private readonly RateExtractor _rateExtractor;
 
     public List<Deposit> DepositsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
@@ -54,12 +54,12 @@ namespace Keeper.ViewModels
 
     public Style MyTitleStyle { get; set; }
 
-	  [ImportingConstructor]
+    [ImportingConstructor]
     public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
-		  mAccountTreeStraightener = accountTreeStraightener;
-	    _rateExtractor = new RateExtractor(db);
+      mAccountTreeStraightener = accountTreeStraightener;
+      _rateExtractor = new RateExtractor(db);
 
       MyTitleStyle = new Style();
 
@@ -68,15 +68,15 @@ namespace Keeper.ViewModels
       {
         if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
         {
-	        var deposit = IoC.Get<Deposit>();
-			deposit.Account = account;
-			deposit.CollectInfo();
-			DepositsList.Add(deposit);
+          var deposit = IoC.Get<Deposit>();
+          deposit.Account = account;
+          deposit.CollectInfo();
+          DepositsList.Add(deposit);
         }
       }
       SelectedDeposit = DepositsList[0];
-     
-      UpperRow = new GridLength(1,GridUnitType.Star);
+
+      UpperRow = new GridLength(1, GridUnitType.Star);
       LowerRow = new GridLength(1, GridUnitType.Star);
       LeftColumn = new GridLength(1, GridUnitType.Star);
       RightColumn = new GridLength(1, GridUnitType.Star);
@@ -84,7 +84,7 @@ namespace Keeper.ViewModels
       var sw = new Stopwatch();
       sw.Start();
 
-      DepoCurrenciesProportionChartCtor();
+      //      DepoCurrenciesProportionChartCtor();
       YearsProfitCtor();
       TotalBalancesCtor();
       CashDepoProportionChartCtor();
@@ -114,11 +114,11 @@ namespace Keeper.ViewModels
         var depositView = (from d in LaunchedViewModels
                            where d.Deposit.Account == SelectedDeposit.Account
                            select d).FirstOrDefault();
-        if (depositView != null) 
-			depositView.TryClose();
+        if (depositView != null)
+          depositView.TryClose();
       }
       var depositViewModel = IoC.Get<DepositViewModel>();
-	  depositViewModel.SetAccount(SelectedDeposit.Account);
+      depositViewModel.SetAccount(SelectedDeposit.Account);
       LaunchedViewModels.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
     }
@@ -132,16 +132,14 @@ namespace Keeper.ViewModels
     public List<DateProcentPoint> SeriesEuro { get; set; }
     public void DepoCurrenciesProportionChartCtor()
     {
-      return;
-
       var calculator = new DiagramDataExtractorFromDb(_db);
 
       SeriesUsd = new List<DateProcentPoint>();
       SeriesByr = new List<DateProcentPoint>();
       SeriesEuro = new List<DateProcentPoint>();
-	  var rootDepo = mAccountTreeStraightener.Seek("Депозиты",_db.Accounts);
+      var rootDepo = mAccountTreeStraightener.Seek("Депозиты", _db.Accounts);
       var inMoney = calculator.AccountBalancesForPeriodInCurrencies(rootDepo,
-                                                                 new Period(new DateTime(2001, 12, 31), DateTime.Now),false);
+                                                                 new Period(new DateTime(2001, 12, 31), DateTime.Now), false);
       foreach (var pair in inMoney)
       {
         var date = pair.Key;
@@ -265,11 +263,11 @@ namespace Keeper.ViewModels
 
       // средняя по месяцам
       MonthlyCashSeries = (from p in dailyCashSeries
-                           group p by new { year = p.Date.Year, month = p.Date.Month}
+                           group p by new { year = p.Date.Year, month = p.Date.Month }
                              into g
                              select new DateProcentPoint
                              {
-                               Date = new DateTime(g.Key.year,g.Key.month,15),
+                               Date = new DateTime(g.Key.year, g.Key.month, 15),
                                Procent = Math.Round(g.Average(a => a.Procent))
                              }).ToList();
     }
@@ -277,7 +275,7 @@ namespace Keeper.ViewModels
     #endregion
 
     #region // Fun with Charts Expand
-    
+
     private GridLength _upperRow;
     private GridLength _lowerRow;
     private GridLength _leftColumn;

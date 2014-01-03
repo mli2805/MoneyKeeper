@@ -22,7 +22,7 @@
              Text="{Binding TotalAmount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" />
     <ComboBox Grid.Row="1" Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="325,0,0,0" 
               Background="White" VerticalAlignment="top" Width="50"
-              ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
+              ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding Currency}" Height="22" />
     <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,5">Осталось</TextBlock>
     <!--    поля ввода-->
@@ -32,7 +32,7 @@
     <TextBlock HorizontalAlignment="Left" Margin="82,4,0,0" Grid.Row="2" Width="30" Text="{Binding Currency}" VerticalAlignment="Top"/>
     <ComboBox Name="Article" HorizontalAlignment="Left" Margin="120,0,0,0" Grid.Row="2" Background="White" 
               VerticalAlignment="Top" Width="130"
-              ItemsSource="{x:Static ViewModels:UsefulLists.ExpenseArticles}"
+              ItemsSource="{Binding ExpenseArticles}"
               SelectedItem="{Binding PartialArticle}" Height="22" />
     <TextBox Name="Comment" HorizontalAlignment="Left" Margin="260,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="115" 
              BorderBrush="#555555" Height="22"

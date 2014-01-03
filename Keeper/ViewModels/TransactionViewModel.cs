@@ -10,6 +10,7 @@ using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.Rates;
 
@@ -24,6 +25,7 @@ namespace Keeper.ViewModels
     private readonly RateExtractor _rateExtractor;
     private readonly BalanceCalculator _balanceCalculator;
     private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
+    private readonly AccountTreeStraightener _accountTreeStraightener;
     private readonly AssociationFinder _associationFinder ;
 
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
@@ -31,6 +33,10 @@ namespace Keeper.ViewModels
     public ICollectionView SortedRows { get; set; }
 
     #region  // фильтрация и переход к дате
+    public List<AccountFilter> DebetFilterList { get; set; }
+    public List<AccountFilter> CreditFilterList { get; set; }
+    public List<AccountFilter> ArticleFilterList { get; set; }
+
     private OperationTypesFilter _selectedOperationTypeFilter;
     private AccountFilter _selectedDebetFilter;
     private AccountFilter _selectedCreditFilter;
@@ -38,12 +44,44 @@ namespace Keeper.ViewModels
     private string _commentFilter;
     private DateTime _dateToGo;
 
+    private void InitializeFiltersLists()
+    {
+      DebetFilterList = new List<AccountFilter>();
+
+      // <no filter>
+      var filter = new AccountFilter();
+      DebetFilterList.Add(filter);
+
+      var debetAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
+              (account.GetRootName() == "Мои" || account.GetRootName() == "Внешние") && account.Children.Count == 0)).ToList();
+      foreach (var account in debetAccounts)
+      {
+        filter = new AccountFilter(account);
+        DebetFilterList.Add(filter);
+      }
+
+      CreditFilterList = DebetFilterList;
+
+      ArticleFilterList = new List<AccountFilter>();
+      // <no filter>
+      filter = new AccountFilter();
+      ArticleFilterList.Add(filter);
+
+      var articleAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
+              (account.GetRootName() == "Все доходы" || account.GetRootName() == "Все расходы") && account.Children.Count == 0)).ToList();
+      foreach (var account in articleAccounts)
+      {
+        filter = new AccountFilter(account);
+        ArticleFilterList.Add(filter);
+      }
+    }
+
     public void ClearAllFilters()
     {
       SelectedOperationTypeFilter = OperationTypesFilerListForCombo.FilterList.First(f => !f.IsOn);
-      SelectedDebetFilter = FilterListsForComboboxes.DebetFilterList.First(f => !f.IsOn);
-      SelectedCreditFilter = FilterListsForComboboxes.CreditFilterList.First(f => !f.IsOn);
-      SelectedArticleFilter = FilterListsForComboboxes.ArticleFilterList.First(f => !f.IsOn);
+      SelectedDebetFilter = DebetFilterList.First(f => !f.IsOn);
+      SelectedCreditFilter = CreditFilterList.First(f => !f.IsOn);
+      SelectedArticleFilter = ArticleFilterList.First(f => !f.IsOn);
       CommentFilter = "";
     }
 
@@ -140,6 +178,17 @@ namespace Keeper.ViewModels
     #endregion
 
     #region // группа свойств для биндинга селектов и др.
+
+    public List<CurrencyCodes> CurrencyList { get; private set; }
+    public List<Account> MyAccounts { get; set; }
+    public List<Account> MyAccountsForShopping { get; set; }
+    public List<Account> AccountsWhoTakesMyMoney { get; set; }
+    public List<Account> AccountsWhoGivesMeMoney { get; set; }
+    public List<Account> IncomeArticles { get; set; }
+    public List<Account> ExpenseArticles { get; set; }
+    public List<Account> BankAccounts { get; set; }
+
+
     private bool _isInTransactionSelectionProcess;
     private int _selectedTabIndex;
     private Transaction _selectedTransaction;
@@ -166,34 +215,34 @@ namespace Keeper.ViewModels
       switch (TransactionInWork.Operation)
       {
         case OperationType.Доход:
-          if (!UsefulLists.AccountsWhoGivesMeMoney.Contains(TransactionInWork.Debet))
+          if (!AccountsWhoGivesMeMoney.Contains(TransactionInWork.Debet))
           {
-            TransactionInWork.Debet = UsefulLists.AccountsWhoGivesMeMoney.First();
+            TransactionInWork.Debet = AccountsWhoGivesMeMoney.First();
             TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Debet);
           }
-          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Credit))
-            TransactionInWork.Credit = UsefulLists.MyAccounts.First();
+          if (!MyAccounts.Contains(TransactionInWork.Credit))
+            TransactionInWork.Credit = MyAccounts.First();
           break;
         case OperationType.Расход:
-          if (!UsefulLists.AccountsWhoTakesMyMoney.Contains(TransactionInWork.Credit))
+          if (!AccountsWhoTakesMyMoney.Contains(TransactionInWork.Credit))
           {
-            TransactionInWork.Credit = UsefulLists.AccountsWhoTakesMyMoney.First();
+            TransactionInWork.Credit = AccountsWhoTakesMyMoney.First();
             TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Credit);
           }
-          if (!UsefulLists.MyAccountsForShopping.Contains(TransactionInWork.Debet))
-            TransactionInWork.Debet = UsefulLists.MyAccountsForShopping.First();
+          if (!MyAccountsForShopping.Contains(TransactionInWork.Debet))
+            TransactionInWork.Debet = MyAccountsForShopping.First();
           break;
         case OperationType.Перенос:
-          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Debet))
-            TransactionInWork.Debet = UsefulLists.MyAccounts.First();
-          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Credit))
-            TransactionInWork.Credit = UsefulLists.MyAccounts.First();
+          if (!MyAccounts.Contains(TransactionInWork.Debet))
+            TransactionInWork.Debet = MyAccounts.First();
+          if (!MyAccounts.Contains(TransactionInWork.Credit))
+            TransactionInWork.Credit = MyAccounts.First();
           break;
         case OperationType.Обмен:
-          if (!UsefulLists.MyAccounts.Contains(TransactionInWork.Debet))
-            TransactionInWork.Debet = UsefulLists.MyAccounts.First();
-          if (!UsefulLists.BankAccounts.Contains(TransactionInWork.Credit))
-            TransactionInWork.Credit = UsefulLists.BankAccounts.First();
+          if (!MyAccounts.Contains(TransactionInWork.Debet))
+            TransactionInWork.Debet = MyAccounts.First();
+          if (!BankAccounts.Contains(TransactionInWork.Credit))
+            TransactionInWork.Credit = BankAccounts.First();
           break;
       }
     }
@@ -428,18 +477,36 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor,
-      BalanceCalculator balanceCalculator, BalancesForTransactionsCalculator balancesForTransactionsCalculator)
+    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator, 
+      BalancesForTransactionsCalculator balancesForTransactionsCalculator, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
 
       _rateExtractor = rateExtractor;
       _balanceCalculator = balanceCalculator;
       _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
+      _accountTreeStraightener = accountTreeStraightener;
       _associationFinder = new AssociationFinder(_db);
+
+      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+      MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+           account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
+      MyAccountsForShopping = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+        account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))).ToList();
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList();
+      AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
+        account.Children.Count == 0)).ToList();
+      AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
+        account.IsDescendantOf("Банки")) && account.Children.Count == 0)).ToList();
+      IncomeArticles = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все доходы" &&
+        account.Children.Count == 0)).ToList();
+      ExpenseArticles = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все расходы" &&
+        account.Children.Count == 0)).ToList();
+
 
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;
+      InitializeFiltersLists();
       InitializeSelectedTransactionIndex();
     }
 
@@ -688,7 +755,7 @@ namespace Keeper.ViewModels
     public void FillInReceipt()
     {
       var receiptViewModel = new ReceiptViewModel(TransactionInWork.Timestamp, TransactionInWork.Credit.Name,
-                                     TransactionInWork.Currency, TransactionInWork.Amount, TransactionInWork.Article);
+                                     TransactionInWork.Currency, TransactionInWork.Amount, TransactionInWork.Article, ExpenseArticles);
       WindowManager.ShowDialog(receiptViewModel);
       if (receiptViewModel.Result) // добавить транзакции
       {

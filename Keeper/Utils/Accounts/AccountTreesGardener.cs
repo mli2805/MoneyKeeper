@@ -15,17 +15,15 @@ namespace Keeper.Utils.Accounts
 		readonly IMyFactory mMyFactory;
 		private readonly KeeperDb _db;
 		readonly AccountTreeStraightener mAccountTreeStraightener;
-		readonly IUsefulLists mUsefulLists;
 
 		[ImportingConstructor]
 		public AccountTreesGardener(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
-			IUsefulLists usefulLists, IWindowManager windowManager, IMyFactory myFactory)
+			IWindowManager windowManager, IMyFactory myFactory)
 		{
 			mWindowManager = windowManager;
 			mMyFactory = myFactory;
 			_db = db;
 			mAccountTreeStraightener = accountTreeStraightener;
-			mUsefulLists = usefulLists;
 		}
 
 		public void RemoveAccount(Account selectedAccount)
@@ -70,8 +68,6 @@ namespace Keeper.Utils.Accounts
 
 			accountInWork.Id = (from account in mAccountTreeStraightener.Flatten(_db.Accounts) select account.Id).Max() + 1;
 			selectedAccount.Children.Add(accountInWork);
-
-			mUsefulLists.FillLists();
 		}
 
 		public void ChangeAccount(Account selectedAccount)

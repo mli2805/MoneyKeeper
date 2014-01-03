@@ -134,15 +134,15 @@
         <DatePicker HorizontalAlignment="Left" Margin="5,0,0,0" Background="White" VerticalAlignment="Center" Width="100" Grid.Row="1" 
                     Text="{Binding DateToGo, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
         <ComboBox HorizontalAlignment="Left" Margin="110,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
-                  ItemsSource="{x:Static ViewModels:FilterListsForComboboxes.DebetFilterList}" SelectedItem="{Binding SelectedDebetFilter}" />
+                  ItemsSource="{Binding DebetFilterList}" SelectedItem="{Binding SelectedDebetFilter}" />
         <ComboBox HorizontalAlignment="Left" Margin="260,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
-                  ItemsSource="{x:Static ViewModels:FilterListsForComboboxes.CreditFilterList}" SelectedItem="{Binding SelectedCreditFilter}" />
+                  ItemsSource="{Binding CreditFilterList}" SelectedItem="{Binding SelectedCreditFilter}" />
         <ComboBox HorizontalAlignment="Left" Margin="414,0,0,0" Background="White" VerticalAlignment="Center" Width="80" Grid.Row="1"
                   ItemsSource="{x:Static ViewModels:OperationTypesFilerListForCombo.FilterList}" SelectedItem="{Binding SelectedOperationTypeFilter}"/>
         <Button Content="Очистить все фильтры" Name="ClearAllFilters" 
                   HorizontalAlignment="Left" Margin="507,-20,0,0" Background="White" VerticalAlignment="Center" Width="140" Grid.Row="1" Height="30"/>
         <ComboBox HorizontalAlignment="Left" Margin="660,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
-                  ItemsSource="{x:Static ViewModels:FilterListsForComboboxes.ArticleFilterList}" SelectedItem="{Binding SelectedArticleFilter}" />
+                  ItemsSource="{Binding ArticleFilterList}" SelectedItem="{Binding SelectedArticleFilter}" />
         <Label Content="Поиск по *подстроке*" Margin="820,0,0,0"/>
         <TextBox HorizontalAlignment="Left" Margin="815,0,0,0" Background="White" VerticalAlignment="Center" Width="170" Grid.Row="1"  BorderBrush="#555555"
                  Text="{Binding CommentFilter}"/>
@@ -236,22 +236,22 @@
             </Grid.RowDefinitions>
             <Label Content="Кто" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
             <ComboBox Name="IncomeDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.AccountsWhoGivesMeMoney}"
+              ItemsSource="{Binding AccountsWhoGivesMeMoney}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
             <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
             <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.MyAccounts}"
+              ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <ComboBox Name="IncomeArticle" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
-              ItemsSource="{x:Static ViewModels:UsefulLists.IncomeArticles}"
+              ItemsSource="{Binding IncomeArticles}"
               SelectedItem="{Binding TransactionInWork.Article}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="IncomeAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" 
                      Width="80" BorderBrush="#555555" TextAlignment="Right" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" />
             <ComboBox Name="IncomeCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
-              ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
+              ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
           </Grid>
         </TabItem>
@@ -265,21 +265,21 @@
             </Grid.RowDefinitions>
             <Label Content="Откуда" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
             <ComboBox Name="ExpenseDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.MyAccountsForShopping}"
+              ItemsSource="{Binding MyAccountsForShopping}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
             <Label Content="Кому" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
             <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.AccountsWhoTakesMyMoney}"
+              ItemsSource="{Binding AccountsWhoTakesMyMoney}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="За что" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <ComboBox Name="ExpenseArticle" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
-              ItemsSource="{x:Static ViewModels:UsefulLists.ExpenseArticles}"
+              ItemsSource="{Binding ExpenseArticles}"
               SelectedItem="{Binding TransactionInWork.Article}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExpenseAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="50" Background="White"
-              ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
+              ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
             <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,9" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22" Background="Transparent" VerticalAlignment="Bottom">
             </Button>
@@ -295,17 +295,17 @@
             </Grid.RowDefinitions>
             <Label Content="Откуда" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
             <ComboBox Name="TransferDebet" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.MyAccounts}"
+              ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
             <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
             <ComboBox Name="TransferCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.MyAccounts}"
+              ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="TransferAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="TransferCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
-              ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
+              ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
           </Grid>
         </TabItem>
@@ -320,22 +320,22 @@
             <Label Content="Кошелек" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
             <ComboBox Name="ExchangeDebet" HorizontalAlignment="Left" Margin="70,0,0,0" Grid.Row="1" Background="White" 
                       VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.MyAccounts}" SelectedItem="{Binding TransactionInWork.Debet}" />
+              ItemsSource="{Binding MyAccounts}" SelectedItem="{Binding TransactionInWork.Debet}" />
             <Label Content="Банк" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
             <ComboBox Name="ExchangeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
-              ItemsSource="{x:Static ViewModels:UsefulLists.BankAccounts}"
+              ItemsSource="{Binding BankAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="Сдано" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountPassed" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="ExchangeCurrencyPassed" HorizontalAlignment="Left" Margin="150,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
-              ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
+              ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
             <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount2, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
             <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
-              ItemsSource="{x:Static ViewModels:UsefulLists.CurrencyList}"
+              ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency2}" />
 
           </Grid>
