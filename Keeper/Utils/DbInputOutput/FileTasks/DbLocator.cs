@@ -1,8 +1,6 @@
 ﻿using System.Composition;
 using System.IO;
 using System.Windows;
-
-using Keeper.Properties;
 using Keeper.Utils.Dialogs;
 using Keeper.Utils.FileSystem;
 

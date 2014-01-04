@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils.Dialogs;
 using Keeper.ViewModels;
 
 namespace Keeper.Utils.Accounts
@@ -10,18 +11,26 @@ namespace Keeper.Utils.Accounts
 	[Export]
 	public class AccountTreesGardener
 	{
+    const string ROOT_ACCOUNT_COULDNT_BE_REMOVED = "Корневой счет нельзя удалять!";
+	  const string ONLY_LEAVES_COULD_BE_REMOVED = "Удалять разрешено \n только конечные листья дерева счетов!";
+	  const string ACCOUNT_USED_IN_TRANSACTIONS_COULDNT_BE_REMOVED = "Этот счет используется в проводках!";
+    public const string CONFIRMATION_QUESTION =
+	    "Проверено, счет не используется в транзакциях.\n Удаление счета\n\n <<{0}>>\n          Удалить?";
+
 		readonly IWindowManager mWindowManager;
 		readonly IMyFactory mMyFactory;
-		private readonly KeeperDb _db;
+	  private readonly IMessageBoxer _messageBoxer;
+	  private readonly KeeperDb _db;
 		readonly AccountTreeStraightener mAccountTreeStraightener;
 
 		[ImportingConstructor]
 		public AccountTreesGardener(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
-			IWindowManager windowManager, IMyFactory myFactory)
+			IWindowManager windowManager, IMyFactory myFactory, IMessageBoxer messageBoxer)
 		{
 			mWindowManager = windowManager;
 			mMyFactory = myFactory;
-			_db = db;
+		  _messageBoxer = messageBoxer;
+		  _db = db;
 			mAccountTreeStraightener = accountTreeStraightener;
 		}
 
@@ -29,12 +38,12 @@ namespace Keeper.Utils.Accounts
 		{
 			if (selectedAccount.Parent == null)
 			{
-				MessageBox.Show("Корневой счет нельзя удалять!", "Отказ!");
+        _messageBoxer.Show("Корневой счет нельзя удалять!", "Отказ!",MessageBoxButton.OK, MessageBoxImage.Stop);
 				return;
 			}
 			if (selectedAccount.Children.Count > 0)
 			{
-				MessageBox.Show("Удалять разрешено \n только конечные листья дерева счетов!", "Отказ!");
+        _messageBoxer.Show("Удалять разрешено \n только конечные листья дерева счетов!", "Отказ!",MessageBoxButton.OK, MessageBoxImage.Stop);
 				return;
 			}
 			// такой запрос возвращает не коллекцию, а энумератор
@@ -45,16 +54,15 @@ namespace Keeper.Utils.Accounts
 			// Any() пытается двинуться по этому энумератору и если может, то true
 			if (tr.Any())
 			{
-				MessageBox.Show("Этот счет используется в проводках!", "Отказ!");
+        _messageBoxer.Show("Этот счет используется в проводках!", "Отказ!",MessageBoxButton.OK, MessageBoxImage.Stop);
 				return;
 			}
-			if (MessageBox.Show("Проверено, счет не используется в транзакциях.\n Удаление счета\n\n <<" + selectedAccount.Name + ">>\n          Удалить?", "Confirm",
-								MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) return;
-
-			selectedAccount.Parent.Children.Remove(selectedAccount);
-
+      if (_messageBoxer.Show(string.Format(CONFIRMATION_QUESTION, selectedAccount.Name), "Confirm",
+								MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) 
+			                                             selectedAccount.Parent.Children.Remove(selectedAccount);
 		}
 
+    // если при добавлении поменять родителя - проблемы
 		public Account AddAccount(Account selectedAccount)
 		{
 			var accountInWork = mMyFactory.CreateAccount(selectedAccount);
@@ -72,16 +80,17 @@ namespace Keeper.Utils.Accounts
 
 		public void ChangeAccount(Account selectedAccount)
 		{
-			var accountInWork = new Account();
+		  var accountInWork = mMyFactory.CreateAccount();
 			Account.CopyForEdit(accountInWork, selectedAccount);
-			if (mWindowManager.ShowDialog(new AddAndEditAccountViewModel(accountInWork, "Редактировать")) != true) return;
+      var vm = mMyFactory.CreateAddAndEditAccountViewModel(accountInWork, "Редактировать");
+      if (mWindowManager.ShowDialog(vm) != true) return;
 
 			if (selectedAccount.Parent != accountInWork.Parent)
 			{
 				accountInWork.Parent.Children.Add(accountInWork);
 				selectedAccount.Parent.Children.Remove(selectedAccount);
 			}
-			else selectedAccount.Name = accountInWork.Name;
+			selectedAccount.Name = accountInWork.Name;
 		}
 
 	}
@@ -108,5 +117,6 @@ namespace Keeper.Utils.Accounts
 		{
 			return new Account(){Parent = parent};
 		}
+
 	}
 }
