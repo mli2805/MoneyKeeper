@@ -15,7 +15,13 @@
 TestAccountTreesGardener
 
  //			selectedAccount = accountInWork.Parent;
- да строчка не работает, но как заставить дерево сменить селекшен?
+ 1) да строчка не работает, но как заставить дерево сменить селекшен?
+
+ 2) accountInWork = new Account() { Parent = mSelectedAccount }; первый же тест
+ насколько правомерно исполнение хоть какого-то кода в тесте
+
+ 3) слова, которые пишутся одинаково, но произносятся по разному
+
 
 AccountTreeStraightener
 
@@ -24,7 +30,7 @@ DbTxtFileWriter
 DbToTxtSaver
 
 Для FlattenWithLevels используй структурное сравнение ShouldBeEqTo
-// mChild1Account = new Account();
+  // mChild1Account = new Account();
   // mChild2Account = new Account();
   // mParentAccount = new Account {Children = {mChild1Account, mChild2Account}};
 
