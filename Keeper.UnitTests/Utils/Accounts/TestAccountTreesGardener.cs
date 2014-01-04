@@ -1,18 +1,15 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using Caliburn.Micro;
-
 using FakeItEasy;
-
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Dialogs;
 using Keeper.ViewModels;
-
 using NUnit.Framework;
 using FluentAssertions;
 
-namespace Keeper.UnitTests.Utils.Balances
+namespace Keeper.UnitTests.Utils.Accounts
 {
   [TestFixture]
   public sealed class TestAccountTreesGardener
@@ -23,7 +20,7 @@ namespace Keeper.UnitTests.Utils.Balances
     IMyFactory mMyFactory;
     private IMessageBoxer mMessageBoxer;
     private KeeperDb mDb;
-    
+
 
     [SetUp]
     public void SetUp()
@@ -170,7 +167,7 @@ namespace Keeper.UnitTests.Utils.Balances
       // Action
       mUnderTest.RemoveAccount(mSelectedAccount);
       // Assert
-      new AccountTreeStraightener().Seek(mSelectedAccount.Name,mDb.Accounts).Should().BeNull();
+      new AccountTreeStraightener().Seek(mSelectedAccount.Name, mDb.Accounts).Should().BeNull();
     }
   }
 }
