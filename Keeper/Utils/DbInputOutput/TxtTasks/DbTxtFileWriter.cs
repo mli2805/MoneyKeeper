@@ -8,9 +8,9 @@ using Keeper.Utils.FileSystem;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
-	[Export]
-	public class DbTxtFileWriter
-	{
+  [Export (typeof(IDbTxtFileWriter))]
+	public class DbTxtFileWriter : IDbTxtFileWriter
+  {
 		readonly IFileSystem mFileSystem;
 		readonly Encoding mEncoding1251 = Encoding.GetEncoding(1251);
 
