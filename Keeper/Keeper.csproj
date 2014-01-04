@@ -124,7 +124,7 @@
     <Compile Include="Utils\DbInputOutput\FileTasks\DbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbBackuper.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbEntriesToStringListsConverter.cs" />
-    <Compile Include="Utils\DbInputOutput\TxtTasks\HierarchyItem.cs" />
+    <Compile Include="Utils\Common\HierarchyItem.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbTxtFileWriter.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\IDbEntriesToStringListsConverter.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\IDbToTxtSaver.cs" />
@@ -140,9 +140,9 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\ILoader.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\ZippedTxtLoader.cs" />
-    <Compile Include="Utils\MySettings.cs" />
+    <Compile Include="Utils\Common\MySettings.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
-    <Compile Include="Utils\DayProcessor.cs" />
+    <Compile Include="Utils\Common\DayProcessor.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbGeneralLoader.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
@@ -182,7 +182,7 @@
     <Compile Include="Utils\FileSystem\IDirectory.cs" />
     <Compile Include="Utils\FileSystem\IFile.cs" />
     <Compile Include="Utils\FileSystem\IFileSystem.cs" />
-    <Compile Include="Utils\FunctionsWithEvery.cs" />
+    <Compile Include="Utils\Common\FunctionsWithEvery.cs" />
     <Compile Include="Utils\Rates\ICurrencyConverter.cs" />
     <Compile Include="Utils\MEF\ContainerBuilder.cs" />
     <Compile Include="Utils\MEF\ContainerConfigurationExtensions.cs" />
@@ -190,7 +190,7 @@
     <Compile Include="Utils\MEF\InstanceExportDescriptor.cs" />
     <Compile Include="Utils\MEF\IStartUp.cs" />
     <Compile Include="Utils\MEF\ServiceStarter.cs" />
-    <Compile Include="Utils\MonthAnalyzer.cs" />
+    <Compile Include="Utils\CommonKeeper\MonthAnalyzer.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
@@ -204,7 +204,7 @@
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
-    <Compile Include="Utils\DbCleaner.cs" />
+    <Compile Include="Utils\CommonKeeper\DbCleaner.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbToTxtSaver.cs" />
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="DomainModel\Period.cs" />
@@ -218,7 +218,7 @@
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
     <Compile Include="ViewModels\DepositsViewModel.cs" />
     <Compile Include="ViewModels\DepositViewModel.cs" />
-    <Compile Include="Utils\AssociationFinder.cs" />
+    <Compile Include="Utils\CommonKeeper\AssociationFinder.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\MonthAnalisysViewModel.cs" />
     <Compile Include="ViewModels\ReceiptViewModel.cs" />
