@@ -126,8 +126,11 @@
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbEntriesToStringListsConverter.cs" />
     <Compile Include="Utils\Common\HierarchyItem.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbTxtFileWriter.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\DbClassesInstanceDumper.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\IDbClassesInstanceDumper.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\IDbEntriesToStringListsConverter.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\IDbToTxtSaver.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\IDbTxtFileWriter.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\DbUnzipper.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\FileExistenceChecker.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\IDbGeneralLoader.cs" />

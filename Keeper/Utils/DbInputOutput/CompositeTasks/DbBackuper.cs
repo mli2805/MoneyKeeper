@@ -16,10 +16,10 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
   [Export]
   public class DbBackuper : IDbBackuper
   {
-    private readonly DbToTxtSaver _txtSaver;
+    private readonly IDbToTxtSaver _txtSaver;
 
     [ImportingConstructor]
-    public DbBackuper(DbToTxtSaver txtSaver)
+    public DbBackuper(IDbToTxtSaver txtSaver)
     {
       _txtSaver = txtSaver;
     }

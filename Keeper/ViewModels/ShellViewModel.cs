@@ -35,7 +35,7 @@ namespace Keeper.ViewModels
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
     private readonly AccountTreesGardener _accountTreesGardener;
-    private readonly DbToTxtSaver _txtSaver;
+    private readonly IDbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
 	  readonly IDbFromTxtLoader mDbFromTxtLoader;
 	  private readonly BalancesForShellCalculator _balanceCalculator;
@@ -208,7 +208,7 @@ namespace Keeper.ViewModels
 
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
-       DbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader,
+       IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader,
 		AccountTreesGardener accountTreesGardener, DiagramDataFactory diagramDataFactory)
     {
       Db = db;

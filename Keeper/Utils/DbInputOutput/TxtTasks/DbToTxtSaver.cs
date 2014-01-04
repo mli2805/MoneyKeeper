@@ -2,14 +2,14 @@
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
-	[Export]
+	[Export (typeof( IDbToTxtSaver))]
 	public class DbToTxtSaver : IDbToTxtSaver
 	{
 		readonly IDbEntriesToStringListsConverter mEntriesToStringListsConverter;
-		readonly DbTxtFileWriter mWriter;
+		readonly IDbTxtFileWriter mWriter;
 
 		[ImportingConstructor]
-		public DbToTxtSaver(IDbEntriesToStringListsConverter entriesToStringListsConverter, DbTxtFileWriter writer)
+		public DbToTxtSaver(IDbEntriesToStringListsConverter entriesToStringListsConverter, IDbTxtFileWriter writer)
 		{
 			mEntriesToStringListsConverter = entriesToStringListsConverter;
 			mWriter = writer;
