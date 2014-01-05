@@ -137,6 +137,7 @@ namespace Keeper.Utils.Diagram
       return result;
     }
 
+    // работает только если транзакции упорядочены !!!!!!
     public Dictionary<DateTime, decimal> KategoriesTrafficForPeriodInUsd(Account kategory, Period period, Every frequency)
     {
       var result = new Dictionary<DateTime, decimal>();
