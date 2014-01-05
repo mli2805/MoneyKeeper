@@ -25,18 +25,20 @@ TestAccountTreesGardener
 
 + AccountTreeStraightener
 
-DbTxtFileWriter
+     Для FlattenWithLevels используй структурное сравнение ShouldBeEqTo
+      // mChild1Account = new Account();
+      // mChild2Account = new Account();
+      // mParentAccount = new Account {Children = {mChild1Account, mChild2Account}};
+     
+      // result.ShouldBeAllEqTo(new []{ 
+      //     new HierarchyItem<Account>(mParentAccount, 0), 
+      //     new HierarchyItem<Account>(mChild1Account, 1), )
+      //
 
-DbToTxtSaver
++ DbTxtFileWriter
+   пришлось расширять IFile
 
-Для FlattenWithLevels используй структурное сравнение ShouldBeEqTo
-  // mChild1Account = new Account();
-  // mChild2Account = new Account();
-  // mParentAccount = new Account {Children = {mChild1Account, mChild2Account}};
++ DbToTxtSaver
 
-  // result.ShouldBeAllEqTo(new []{ 
-  //     new HierarchyItem<Account>(mParentAccount, 0), 
-  //     new HierarchyItem<Account>(mChild1Account, 1), )
-  //
 
 yield

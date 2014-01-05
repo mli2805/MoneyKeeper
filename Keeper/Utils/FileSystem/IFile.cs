@@ -31,6 +31,8 @@ namespace Keeper.Utils.FileSystem
 		string RelativeTo(IDirectory directory);
 		IFile ChangeExtension(string extension);
 		IZipFile ReadZip();
+
+    void WriteAllLines(IEnumerable<string> content, Encoding encoding);
 	}
 	public interface IZipFile : IEnumerable<IZipEntry>, IDisposable {}
 	public interface IZipEntry {

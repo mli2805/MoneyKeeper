@@ -108,7 +108,14 @@ namespace Keeper.Utils.FileSystem
 		{
 			File.Move(FullName, destination);
 		}
-	}
+
+    public void WriteAllLines(IEnumerable<string> content, Encoding encoding)
+    {
+      File.WriteAllLines(FullName, content, encoding);
+    }
+  }
+
+
 	public class ZipFileAdapter : IZipFile
 	{
 		readonly ZipFile mZipFile;
@@ -133,6 +140,8 @@ namespace Keeper.Utils.FileSystem
 			mZipFile.Dispose();
 		}
 	}
+
+
 	public class ZipEntryAdapter : IZipEntry
 	{
 		readonly ZipEntry mZipEntry;
@@ -155,5 +164,7 @@ namespace Keeper.Utils.FileSystem
 			}
 			return true;
 		}
+
+
 	}
 }

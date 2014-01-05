@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
-using System.IO;
 using System.Text;
-
-using Keeper.Properties;
 using Keeper.Utils.FileSystem;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
@@ -12,21 +9,24 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 	public class DbTxtFileWriter : IDbTxtFileWriter
   {
 		readonly IFileSystem mFileSystem;
-		readonly Encoding mEncoding1251 = Encoding.GetEncoding(1251);
+    private readonly IMySettings _mySettings;
+    readonly Encoding mEncoding1251 = Encoding.GetEncoding(1251);
 
 		[ImportingConstructor]
-		public DbTxtFileWriter(IFileSystem fileSystem)
+		public DbTxtFileWriter(IFileSystem fileSystem, IMySettings mySettings)
 		{
-			mFileSystem = fileSystem;
+		  mFileSystem = fileSystem;
+		  _mySettings = mySettings;
 		}
 
-		public void WriteDbFile(string accountsTxt, IEnumerable<string> accountsToList)
-		{
-			var directory = mFileSystem.GetDirectory(Settings.Default.TemporaryTxtDbPath);
+    public void WriteDbFile(string filename, IEnumerable<string> content)
+    {
+      var path = (string)_mySettings.GetSetting("TemporaryTxtDbPath");
+			var directory = mFileSystem.GetDirectory(path);
 			if (!directory.Exists) directory.Create();
 
-			var fullPath = Path.Combine(Settings.Default.TemporaryTxtDbPath, accountsTxt);
-			File.WriteAllLines(fullPath, accountsToList, mEncoding1251);
+			var fullPath = mFileSystem.PathCombine(path, filename);
+      mFileSystem.GetFile(fullPath).WriteAllLines(content, mEncoding1251);
 		}
 	}
 }
