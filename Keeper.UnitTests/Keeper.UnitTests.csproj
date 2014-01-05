@@ -88,6 +88,7 @@
     <Compile Include="DomainModel\TestPeriod.cs" />
     <Compile Include="Utils\Balances\TestBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TestDbLocator.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\TestDbToTxtSaver.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\TestDbUnzipper.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TestFileExistenceChecker.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\TestZippedTxtLoader.cs" />
