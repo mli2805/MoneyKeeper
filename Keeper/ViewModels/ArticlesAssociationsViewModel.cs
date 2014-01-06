@@ -26,9 +26,7 @@ namespace Keeper.ViewModels
       _db = db;
       _accountTreeStraightener = accountTreeStraightener;
 
-      ExternalAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.IsDescendantOf("Внешние") && account.Children.Count == 0)).ToList();
-      AssociatedArticles = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
-                                           (account.GetRootName() == "Все доходы" || account.GetRootName() == "Все расходы") && account.Children.Count == 0)).ToList();
+      InitializeListsForCombobox();
 
       Rows = _db.ArticlesAssociations;
 
@@ -36,8 +34,20 @@ namespace Keeper.ViewModels
       view.SortDescriptions.Add(new SortDescription("ExternalAccount", ListSortDirection.Ascending));
     }
 
+    private void InitializeListsForCombobox()
+    {
+      ExternalAccounts =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(
+          account => account.IsDescendantOf("Внешние") && account.Children.Count == 0)).ToList();
+      AssociatedArticles = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
+                                                                                 (account.GetRootName() == "Все доходы" ||
+                                                                                  account.GetRootName() == "Все расходы") &&
+                                                                                 account.Children.Count == 0)).ToList();
+    }
+
     protected override void OnViewLoaded(object view)
     {
+      InitializeListsForCombobox();
       DisplayName = "Ассоциации категорий";
     }
 
