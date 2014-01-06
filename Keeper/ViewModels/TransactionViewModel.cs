@@ -266,6 +266,35 @@ namespace Keeper.ViewModels
       }
     }
 
+    private void InitializeListsForCombobox()
+    {
+      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+      MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+                                                                                    account.Children.Count == 0 ||
+                                                                                    account.Name ==
+                                                                                    "Для ввода стартовых остатков")).ToList();
+      MyAccountsForShopping =
+       (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+                                                                        account.Children.Count == 0 &&
+                                                                        !account.IsDescendantOf("Депозиты"))).ToList();
+      BankAccounts =
+        _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList
+          ();
+      AccountsWhoTakesMyMoney =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
+                                                                         account.Children.Count == 0)).ToList();
+      AccountsWhoGivesMeMoney =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
+                                                                          account.IsDescendantOf("Банки")) &&
+                                                                         account.Children.Count == 0)).ToList();
+      IncomeArticles =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все доходы" &&
+                                                                         account.Children.Count == 0)).ToList();
+      ExpenseArticles =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все расходы" &&
+                                                                         account.Children.Count == 0)).ToList();
+    }
+
     #endregion
 
     #region группа свойств для биндинга селектов и др.
@@ -581,35 +610,6 @@ namespace Keeper.ViewModels
       Rows = _db.Transactions;
       InitializeFiltersLists();
       InitializeSelectedTransactionIndex();
-    }
-
-    private void InitializeListsForCombobox()
-    {
-      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-      MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
-                                                                                    account.Children.Count == 0 ||
-                                                                                    account.Name ==
-                                                                                    "Для ввода стартовых остатков")).ToList();
-      MyAccountsForShopping =
-       (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
-                                                                        account.Children.Count == 0 &&
-                                                                        !account.IsDescendantOf("Депозиты"))).ToList();
-      BankAccounts =
-        _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList
-          ();
-      AccountsWhoTakesMyMoney =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
-                                                                         account.Children.Count == 0)).ToList();
-      AccountsWhoGivesMeMoney =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
-                                                                          account.IsDescendantOf("Банки")) &&
-                                                                         account.Children.Count == 0)).ToList();
-      IncomeArticles =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все доходы" &&
-                                                                         account.Children.Count == 0)).ToList();
-      ExpenseArticles =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все расходы" &&
-                                                                         account.Children.Count == 0)).ToList();
     }
 
     private void InitializeSelectedTransactionIndex()

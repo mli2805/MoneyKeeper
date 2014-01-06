@@ -53,7 +53,8 @@ namespace Keeper.ViewModels
 
 		protected override void OnViewLoaded(object view)
 		{
-			DisplayName = "Переоформление";
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList();
+      DisplayName = "Переоформление";
 		}
 
 		private Account FindBankAccount()
