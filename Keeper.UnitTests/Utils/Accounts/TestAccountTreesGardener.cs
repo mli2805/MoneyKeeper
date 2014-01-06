@@ -35,10 +35,9 @@ namespace Keeper.UnitTests.Utils.Accounts
     }
 
     [Test]
-    public void AddAccount_Should_Create_And_Return_Child_For_Incoming_Account()
+    public void AddAccount_Should_Create_And_Return_New_Account_And_Add_Child_For_His_Parent()
     {
       mDb.Accounts.Add(new Account("example"));
-      var oldSelection = mSelectedAccount;
 
       // парный арренджмент. нужен если в коде есть = new TypeCtor();
       // тогда получаем в переменную результат этого конструктора и
@@ -55,10 +54,10 @@ namespace Keeper.UnitTests.Utils.Accounts
 
       // Action
       var result = mUnderTest.AddAccount(mSelectedAccount);
-
+      var isChildAdded = result.Parent.Children.Contains(result);
       // Assert
       result.Should().Be(accountInWork);
-      result.Parent.Should().Be(oldSelection);
+      isChildAdded.Should().Be(true);
     }
 
     [Test]
