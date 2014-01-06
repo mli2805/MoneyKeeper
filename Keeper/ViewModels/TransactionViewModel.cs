@@ -26,13 +26,13 @@ namespace Keeper.ViewModels
     private readonly BalanceCalculator _balanceCalculator;
     private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
     private readonly AccountTreeStraightener _accountTreeStraightener;
-    private readonly AssociationFinder _associationFinder ;
+    private readonly AssociationFinder _associationFinder;
 
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }
     public ICollectionView SortedRows { get; set; }
 
-    #region  // фильтрация и переход к дате
+    #region  фильтрация и переход к дате
     public List<AccountFilter> DebetFilterList { get; set; }
     public List<AccountFilter> CreditFilterList { get; set; }
     public List<AccountFilter> ArticleFilterList { get; set; }
@@ -177,17 +177,98 @@ namespace Keeper.ViewModels
     }
     #endregion
 
-    #region // группа свойств для биндинга селектов и др.
+    #region Списки для комбобоксов
+    public List<CurrencyCodes> CurrencyList
+    {
+      get { return _currencyList; }
+      private set
+      {
+        if (Equals(value, _currencyList)) return;
+        _currencyList = value;
+        NotifyOfPropertyChange(() => CurrencyList);
+      }
+    }
 
-    public List<CurrencyCodes> CurrencyList { get; private set; }
-    public List<Account> MyAccounts { get; set; }
-    public List<Account> MyAccountsForShopping { get; set; }
-    public List<Account> AccountsWhoTakesMyMoney { get; set; }
-    public List<Account> AccountsWhoGivesMeMoney { get; set; }
-    public List<Account> IncomeArticles { get; set; }
-    public List<Account> ExpenseArticles { get; set; }
-    public List<Account> BankAccounts { get; set; }
+    public List<Account> MyAccounts
+    {
+      get { return _myAccounts; }
+      set
+      {
+        if (Equals(value, _myAccounts)) return;
+        _myAccounts = value;
+        NotifyOfPropertyChange(() => MyAccounts);
+      }
+    }
 
+    public List<Account> MyAccountsForShopping
+    {
+      get { return _myAccountsForShopping; }
+      set
+      {
+        if (Equals(value, _myAccountsForShopping)) return;
+        _myAccountsForShopping = value;
+        NotifyOfPropertyChange(() => MyAccountsForShopping);
+      }
+    }
+
+    public List<Account> AccountsWhoTakesMyMoney
+    {
+      get { return _accountsWhoTakesMyMoney; }
+      set
+      {
+        if (Equals(value, _accountsWhoTakesMyMoney)) return;
+        _accountsWhoTakesMyMoney = value;
+        NotifyOfPropertyChange(() => AccountsWhoTakesMyMoney);
+      }
+    }
+
+    public List<Account> AccountsWhoGivesMeMoney
+    {
+      get { return _accountsWhoGivesMeMoney; }
+      set
+      {
+        if (Equals(value, _accountsWhoGivesMeMoney)) return;
+        _accountsWhoGivesMeMoney = value;
+        NotifyOfPropertyChange(() => AccountsWhoGivesMeMoney);
+      }
+    }
+
+    public List<Account> IncomeArticles
+    {
+      get { return _incomeArticles; }
+      set
+      {
+        if (Equals(value, _incomeArticles)) return;
+        _incomeArticles = value;
+        NotifyOfPropertyChange(() => IncomeArticles);
+      }
+    }
+
+    public List<Account> ExpenseArticles
+    {
+      get { return _expenseArticles; }
+      set
+      {
+        if (Equals(value, _expenseArticles)) return;
+        _expenseArticles = value;
+        NotifyOfPropertyChange(() => ExpenseArticles);
+      }
+    }
+
+    public List<Account> BankAccounts
+    {
+      get { return _bankAccounts; }
+      set
+      {
+        if (Equals(value, _bankAccounts)) return;
+        _bankAccounts = value;
+        NotifyOfPropertyChange(() => BankAccounts);
+      }
+    }
+
+    #endregion
+
+    #region группа свойств для биндинга селектов и др.
 
     private bool _isInTransactionSelectionProcess;
     private int _selectedTabIndex;
@@ -325,7 +406,7 @@ namespace Keeper.ViewModels
     }
     #endregion
 
-    #region // свойства Can для нескольких кнопок
+    #region свойства Can для нескольких кнопок
     private bool _canEditDate;
     public bool CanSaveTransactionChanges { get; set; }
     public bool CanCancelTransactionChanges { get; set; }
@@ -354,7 +435,7 @@ namespace Keeper.ViewModels
 
     #endregion
 
-    #region // свойства для показа сумм остатков на счетах и перевода операции в доллары
+    #region свойства для показа сумм остатков на счетах и перевода операции в доллары
     public string AmountInUsd
     {
       get
@@ -462,6 +543,14 @@ namespace Keeper.ViewModels
     }
 
     private string _endDayBalances;
+    private List<Account> _myAccounts;
+    private List<CurrencyCodes> _currencyList;
+    private List<Account> _myAccountsForShopping;
+    private List<Account> _accountsWhoTakesMyMoney;
+    private List<Account> _accountsWhoGivesMeMoney;
+    private List<Account> _incomeArticles;
+    private List<Account> _expenseArticles;
+    private List<Account> _bankAccounts;
 
     public string EndDayBalances
     {
@@ -477,7 +566,7 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator, 
+    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator,
       BalancesForTransactionsCalculator balancesForTransactionsCalculator, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
@@ -487,27 +576,40 @@ namespace Keeper.ViewModels
       _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
       _accountTreeStraightener = accountTreeStraightener;
       _associationFinder = new AssociationFinder(_db);
-
-      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-      MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
-           account.Children.Count == 0 || account.Name == "Для ввода стартовых остатков")).ToList();
-      MyAccountsForShopping = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
-        account.Children.Count == 0 && !account.IsDescendantOf("Депозиты"))).ToList();
-      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList();
-      AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
-        account.Children.Count == 0)).ToList();
-      AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
-        account.IsDescendantOf("Банки")) && account.Children.Count == 0)).ToList();
-      IncomeArticles = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все доходы" &&
-        account.Children.Count == 0)).ToList();
-      ExpenseArticles = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все расходы" &&
-        account.Children.Count == 0)).ToList();
-
-
+      InitializeListsForCombobox();
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;
       InitializeFiltersLists();
       InitializeSelectedTransactionIndex();
+    }
+
+    private void InitializeListsForCombobox()
+    {
+      CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+      MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+                                                                                    account.Children.Count == 0 ||
+                                                                                    account.Name ==
+                                                                                    "Для ввода стартовых остатков")).ToList();
+      MyAccountsForShopping =
+       (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+                                                                        account.Children.Count == 0 &&
+                                                                        !account.IsDescendantOf("Депозиты"))).ToList();
+      BankAccounts =
+        _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList
+          ();
+      AccountsWhoTakesMyMoney =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
+                                                                         account.Children.Count == 0)).ToList();
+      AccountsWhoGivesMeMoney =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
+                                                                          account.IsDescendantOf("Банки")) &&
+                                                                         account.Children.Count == 0)).ToList();
+      IncomeArticles =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все доходы" &&
+                                                                         account.Children.Count == 0)).ToList();
+      ExpenseArticles =
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все расходы" &&
+                                                                         account.Children.Count == 0)).ToList();
     }
 
     private void InitializeSelectedTransactionIndex()
@@ -532,6 +634,7 @@ namespace Keeper.ViewModels
     /// <param name="view"></param>
     protected override void OnViewLoaded(object view)
     {
+      InitializeListsForCombobox();
       DisplayName = "Ежедневные операции";
 
       SortedRows = CollectionViewSource.GetDefaultView(Rows);

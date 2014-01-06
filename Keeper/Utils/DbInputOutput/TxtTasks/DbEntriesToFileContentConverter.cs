@@ -9,21 +9,21 @@ using Keeper.Utils.Accounts;
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
   [Export(typeof(IDbEntriesToStringListsConverter))]
-	public class DbEntriesToStringListsConverter : IDbEntriesToStringListsConverter
+	public class DbEntriesToFileContentConverter : IDbEntriesToStringListsConverter
 	{
 		private readonly KeeperDb _db;
 		readonly AccountTreeStraightener mAccountTreeStraightener;
 		readonly DbClassesInstanceDumper _mDbClassesInstanceDumper;
 
 		[ImportingConstructor]
-		public DbEntriesToStringListsConverter(KeeperDb db, AccountTreeStraightener accountTreeStraightener, DbClassesInstanceDumper dbClassesInstanceDumper)
+		public DbEntriesToFileContentConverter(KeeperDb db, AccountTreeStraightener accountTreeStraightener, DbClassesInstanceDumper dbClassesInstanceDumper)
 		{
 			_db = db;
 			mAccountTreeStraightener = accountTreeStraightener;
 			_mDbClassesInstanceDumper = dbClassesInstanceDumper;
 		}
 
-		public IEnumerable<string> AccountsToList()
+		public IEnumerable<string> ConvertAccountsToFileContent()
 		{
 			foreach (var account in mAccountTreeStraightener.FlattenWithLevels(_db.Accounts))
 			{
@@ -32,7 +32,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 			}
 		}
 
-		public IEnumerable<string> SaveTransactions()
+		public IEnumerable<string> ConvertTransactionsToFileContent()
 		{
 			var orderedTransactions = from transaction in _db.Transactions
 									  orderby transaction.Timestamp
@@ -48,12 +48,13 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 			}
 		}
 
-		public IEnumerable<string> SaveArticlesAssociations()
+		public IEnumerable<string> ConvertArticlesAssociationsToFileContent()
 		{
-			return _db.ArticlesAssociations.Select(_mDbClassesInstanceDumper.Dump);
+//			return _db.ArticlesAssociations.Select(_mDbClassesInstanceDumper.Dump);
+		  return _db.ArticlesAssociations.Select(articlesAssociation => _mDbClassesInstanceDumper.Dump(articlesAssociation));
 		}
 
-		public IEnumerable<string> SaveCurrencyRates()
+    public IEnumerable<string> ConvertCurrencyRatesToFileContent()
 		{
 			return from rate in _db.CurrencyRates
 				   orderby rate.BankDay

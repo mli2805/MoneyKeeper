@@ -123,7 +123,7 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\DbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbBackuper.cs" />
-    <Compile Include="Utils\DbInputOutput\TxtTasks\DbEntriesToStringListsConverter.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\DbEntriesToFileContentConverter.cs" />
     <Compile Include="Utils\Common\HierarchyItem.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbTxtFileWriter.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbClassesInstanceDumper.cs" />

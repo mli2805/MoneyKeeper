@@ -4,9 +4,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
 	public interface IDbEntriesToStringListsConverter
 	{
-		IEnumerable<string> SaveTransactions();
-		IEnumerable<string> SaveArticlesAssociations();
-		IEnumerable<string> SaveCurrencyRates();
-		IEnumerable<string> AccountsToList();
+		IEnumerable<string> ConvertTransactionsToFileContent();
+		IEnumerable<string> ConvertArticlesAssociationsToFileContent();
+		IEnumerable<string> ConvertCurrencyRatesToFileContent();
+		IEnumerable<string> ConvertAccountsToFileContent();
 	}
 }

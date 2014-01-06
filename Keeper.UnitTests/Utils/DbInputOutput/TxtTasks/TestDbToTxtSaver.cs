@@ -28,13 +28,13 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.TxtTasks
     {
       // Arrangement
       var accountsToList = new List<string>();
-      A.CallTo(() => _dbEntriesToStringListsConverter.AccountsToList()).Returns(accountsToList);
+      A.CallTo(() => _dbEntriesToStringListsConverter.ConvertAccountsToFileContent()).Returns(accountsToList);
       var transactionsToList = new List<string>();
-      A.CallTo(() => _dbEntriesToStringListsConverter.SaveTransactions()).Returns(transactionsToList);
+      A.CallTo(() => _dbEntriesToStringListsConverter.ConvertTransactionsToFileContent()).Returns(transactionsToList);
       var associationsToList = new List<string>();
-      A.CallTo(() => _dbEntriesToStringListsConverter.SaveArticlesAssociations()).Returns(associationsToList);
+      A.CallTo(() => _dbEntriesToStringListsConverter.ConvertArticlesAssociationsToFileContent()).Returns(associationsToList);
       var ratesToList = new List<string>();
-      A.CallTo(() => _dbEntriesToStringListsConverter.SaveCurrencyRates()).Returns(ratesToList);
+      A.CallTo(() => _dbEntriesToStringListsConverter.ConvertCurrencyRatesToFileContent()).Returns(ratesToList);
       // Act
       mUnderTest.SaveDbInTxt();
       // Assert
