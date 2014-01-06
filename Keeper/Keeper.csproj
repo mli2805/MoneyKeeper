@@ -120,6 +120,8 @@
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
+    <Compile Include="Utils\Accounts\IMyFactory.cs" />
+    <Compile Include="Utils\Accounts\MyFactory.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\DbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbBackuper.cs" />

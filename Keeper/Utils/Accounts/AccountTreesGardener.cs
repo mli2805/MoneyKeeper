@@ -4,7 +4,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Dialogs;
-using Keeper.ViewModels;
 
 namespace Keeper.Utils.Accounts
 {
@@ -71,7 +70,7 @@ namespace Keeper.Utils.Accounts
 
 			// Если во время тестирования не получится написать такой тест который становится красным,
 			// если удалить эту строчку, то она не нужна!
-//			selectedAccount = accountInWork.Parent;
+			selectedAccount = accountInWork.Parent;
 
 			accountInWork.Id = (from account in mAccountTreeStraightener.Flatten(_db.Accounts) select account.Id).Max() + 1;
 			selectedAccount.Children.Add(accountInWork);
@@ -91,31 +90,6 @@ namespace Keeper.Utils.Accounts
 				selectedAccount.Parent.Children.Remove(selectedAccount);
 			}
 			selectedAccount.Name = accountInWork.Name;
-		}
-
-	}
-	public interface IMyFactory {
-		AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string title);
-		Account CreateAccount();
-		Account CreateAccount(Account parent);
-	}
-
-	[Export (typeof(IMyFactory))]
-	public class MyFactory : IMyFactory
-	{
-		public AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string title)
-		{
-			return new AddAndEditAccountViewModel(account, title);
-		}
-
-		public Account CreateAccount()
-		{
-			return new Account();
-		}
-
-		public Account CreateAccount(Account parent)
-		{
-			return new Account(){Parent = parent};
 		}
 
 	}
