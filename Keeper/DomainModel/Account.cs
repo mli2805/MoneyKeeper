@@ -38,6 +38,7 @@ namespace Keeper.DomainModel
 			{
 				if (value.Equals(_isSelected)) return;
 				_isSelected = value;
+				NotifyOfPropertyChange();
 				if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccount = this;
 			}
 		}

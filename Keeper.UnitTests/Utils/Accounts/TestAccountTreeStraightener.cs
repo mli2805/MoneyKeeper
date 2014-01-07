@@ -39,7 +39,7 @@ namespace Keeper.UnitTests.Utils.Accounts
     }
 
     [Test]
-    public void Seek_If_Thereisnt_Account_With_Such_Name_Should_Return_Null()
+    public void Seek_If_No_Such_Name_Should_Return_Null()
     {
       mUnderTest.Seek("ExOsting account", mDb.Accounts).Should().BeNull();
     }
