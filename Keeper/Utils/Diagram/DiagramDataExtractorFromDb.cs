@@ -53,7 +53,7 @@ namespace Keeper.Utils.Diagram
           }
         }
 
-        if (transaction.Debet.IsTheSameOrDescendantOf(balancedAccount))
+        if (transaction.Debet.Is(balancedAccount))
         {
           if (!balanceInCurrencies.ContainsKey(transaction.Currency))
             balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
@@ -66,7 +66,7 @@ namespace Keeper.Utils.Diagram
           }
         }
 
-        if (transaction.Credit.IsTheSameOrDescendantOf(balancedAccount))
+        if (transaction.Credit.Is(balancedAccount))
         {
           if (!balanceInCurrencies.ContainsKey(transaction.Currency)) balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
           else balanceInCurrencies[transaction.Currency] += transaction.Amount;
@@ -85,7 +85,7 @@ namespace Keeper.Utils.Diagram
     private static void TakeAmountIfItsNecessary(Account balancedAccount, Transaction transaction,
                                              ref Dictionary<CurrencyCodes, decimal> balanceInCurrencies)
     {
-      if (transaction.Debet.IsTheSameOrDescendantOf(balancedAccount))
+      if (transaction.Debet.Is(balancedAccount))
       {
         if (!balanceInCurrencies.ContainsKey(transaction.Currency))
           balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
@@ -98,7 +98,7 @@ namespace Keeper.Utils.Diagram
         }
       }
 
-      if (transaction.Credit.IsTheSameOrDescendantOf(balancedAccount))
+      if (transaction.Credit.Is(balancedAccount))
       {
         if (!balanceInCurrencies.ContainsKey(transaction.Currency))
           balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
@@ -161,9 +161,9 @@ namespace Keeper.Utils.Diagram
           currentDate = transaction.Timestamp.Date;
         }
 
-        if (transaction.Article == null || !transaction.Article.IsTheSameOrDescendantOf(kategory)) continue;
+        if (transaction.Article == null || !transaction.Article.Is(kategory)) continue;
 
-        if (transaction.Debet.IsTheSameOrDescendantOf("Мои"))
+        if (transaction.Debet.Is("Мои"))
           movement -= _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
         else
           movement += _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);

@@ -168,7 +168,7 @@ namespace Keeper.ViewModels
       {
         _startDate = value;
         AnalyzedPeriod = new Period(StartDate.Date, StartDate.Date.AddMonths(1).AddMinutes(-1));
-        if (AnalyzedPeriod.IsDateTimeIn(DateTime.Today))
+        if (AnalyzedPeriod.Contains(DateTime.Today))
         {
           _isMonthEnded = false;
           ForecastListVisibility = Visibility.Visible;
@@ -283,7 +283,7 @@ namespace Keeper.ViewModels
       ExpenseList = new ObservableCollection<string> { "Расходы за месяц\n" };
       LargeExpenseList = new ObservableCollection<string> { "В том числе крупные траты этого месяца\n" };
       var expenseTransactions = from t in _db.Transactions
-                                where AnalyzedPeriod.IsDateTimeIn(t.Timestamp) && t.Operation == OperationType.Расход
+                                where AnalyzedPeriod.Contains(t.Timestamp) && t.Operation == OperationType.Расход
                                 orderby t.Timestamp
                                 select t;
 
@@ -309,7 +309,7 @@ namespace Keeper.ViewModels
       foreach (var expense in expenseRoot.Children)
       {
         decimal amountInUsd = (from e in expenseTransactionsInUsd
-                               where e.Article.IsTheSameOrDescendantOf(expense.Name)
+                               where e.Article.Is(expense.Name)
                                select e).Sum(a => a.AmountInUsd);
         if (amountInUsd != 0) ExpenseList.Add(String.Format("{0:#,0} $ - {1}", amountInUsd, expense.Name));
       }

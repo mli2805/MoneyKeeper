@@ -151,19 +151,17 @@ namespace Keeper.DomainModel
 		/// </summary>
 		/// <param name="ancestor"></param>
 		/// <returns></returns>
-		public bool IsTheSameOrDescendantOf(string ancestor)  // Descendant - потомок ; Ancestor - предок
+		public bool Is(string ancestor)  // Descendant - потомок ; Ancestor - предок
 		{
 			if (Name == ancestor) return true;
-			return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
+			return Parent != null && Parent.Is(ancestor);
 		}
 
-		public bool IsTheSameOrDescendantOf(Account ancestor)
+		public bool Is(Account ancestor)
 		{
 			if (this == ancestor) return true;
-			return Parent == null ? false : Parent.IsTheSameOrDescendantOf(ancestor);
+			return Parent != null && Parent.Is(ancestor);
 		}
-
-
 
 		public int CompareTo(object obj)
 		{

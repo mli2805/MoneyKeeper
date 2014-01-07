@@ -26,7 +26,7 @@ namespace Keeper.Utils.Balances
       totalInUsd = 0;
       if (balancedAccount == null) return balance;
 
-      var kind = balancedAccount.IsTheSameOrDescendantOf("Все доходы") || balancedAccount.IsTheSameOrDescendantOf("Все расходы");
+      var kind = balancedAccount.Is("Все доходы") || balancedAccount.Is("Все расходы");
       var balancePairs = kind ? 
          _balanceCalculator.ArticleBalancePairs(balancedAccount, period) :
          _balanceCalculator.AccountBalancePairs(balancedAccount, period);
