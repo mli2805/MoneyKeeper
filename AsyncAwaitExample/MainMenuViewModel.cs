@@ -8,7 +8,7 @@ using Caliburn.Micro;
 
 namespace AsyncAwaitExample
 {
-  class MainMenuViewModel : Screen
+	public class MainMenuViewModel : Screen
   {
     public MainMenuViewModel()
     {

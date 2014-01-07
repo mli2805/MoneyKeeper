@@ -18,9 +18,9 @@ namespace AsyncAwaitExample
   /// <summary>
   /// Interaction logic for MainMenu.xaml
   /// </summary>
-  public partial class MainMenu : UserControl
+  public partial class MainMenuView : UserControl
   {
-    public MainMenu()
+    public MainMenuView()
     {
       InitializeComponent();
     }

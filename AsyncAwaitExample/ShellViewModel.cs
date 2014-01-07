@@ -42,12 +42,14 @@ namespace AsyncAwaitExample
         NotifyOfPropertyChange(() => IsStartButtonEnabled);
       }
     }
+	public MainMenuViewModel MainMenuViewModelInstance { get; set;  }
 
-    public ShellViewModel()
+	  public ShellViewModel()
     {
       IsStartButtonEnabled = true;
       IsProgressBarVisible = Visibility.Collapsed;
       StatusBarItem0 = "Idle";
+	  MainMenuViewModelInstance = new MainMenuViewModel();
     }
 
     public void StartButton()

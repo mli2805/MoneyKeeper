@@ -16,8 +16,9 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.TxtTasks
     private IFileSystem _fileSystem;
     private IMySettings _mySettings;
     private IDirectory _directory;
+	  IFile mFile;
 
-    [SetUp]
+	  [SetUp]
     public void SetUp()
     {
       _fileSystem = A.Fake<IFileSystem>();
@@ -28,22 +29,22 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.TxtTasks
 
       A.CallTo(() => _mySettings.GetSetting("TemporaryTxtDbPath")).Returns("path");
       A.CallTo(() => _fileSystem.GetDirectory("path")).Returns(_directory);
-    }
+	  // WriteDbFile Base scenario
+	  A.CallTo(() => _directory.Exists).Returns(true);
+	  A.CallTo(() => _fileSystem.PathCombine("path", "filename")).Returns("fullpath");
+	  mFile = A.Fake<IFile>();
+	  A.CallTo(() => _fileSystem.GetFile("fullpath")).Returns(mFile);
+	}
 
     [Test]
     public void WriteDbFile_Should_Write_Content_To_File()
     {
-      //Arrange
-      A.CallTo(() => _directory.Exists).Returns(true);
-      A.CallTo(() => _fileSystem.PathCombine("path", "filename")).Returns("fullpath");
-      var file = A.Fake<IFile>();
-      A.CallTo(() => _fileSystem.GetFile("fullpath")).Returns(file);
-
-      //Act
-      var content = new List<string>();
+		// Arrange
+		var content = new List<string>();
+		//Act
       mUnderTest.WriteDbFile("filename",content);
       //Assert
-      A.CallTo(() => file.WriteAllLines(content,Encoding.GetEncoding(1251))).MustHaveHappened();
+      A.CallTo(() => mFile.WriteAllLines(content,Encoding.GetEncoding(1251))).MustHaveHappened();
     }
 
     [Test]
