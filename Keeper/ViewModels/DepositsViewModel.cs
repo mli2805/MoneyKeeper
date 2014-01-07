@@ -210,7 +210,7 @@ namespace Keeper.ViewModels
       {
         while (tr.Timestamp.Date == dt.Date)
         {
-          if (tr.Debet.IsTheSameOrDescendantOf("На руках"))
+          if (tr.Debet.Is("На руках"))
           {
             cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
             if (tr.Operation == OperationType.Обмен)
@@ -218,11 +218,11 @@ namespace Keeper.ViewModels
                              ? tr.Amount2
                              : tr.Amount2 / (decimal)_rateExtractor.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
           }
-          if (tr.Credit.IsTheSameOrDescendantOf("На руках"))
+          if (tr.Credit.Is("На руках"))
             cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
-          if (tr.Debet.IsTheSameOrDescendantOf("Депозиты"))
+          if (tr.Debet.Is("Депозиты"))
             depoInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
-          if (tr.Credit.IsTheSameOrDescendantOf("Депозиты"))
+          if (tr.Credit.Is("Депозиты"))
             depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
 
           index++;
