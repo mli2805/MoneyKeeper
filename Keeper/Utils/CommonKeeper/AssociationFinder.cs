@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Caliburn.Micro;
+
 using Keeper.DomainModel;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.CommonKeeper
 {
   public class AssociationFinder
   {

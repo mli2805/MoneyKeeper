@@ -8,12 +8,7 @@ using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Keeper.Utils.DbInputOutput.CompositeTasks
 {
-  public interface IDbBackuper
-  {
-    void MakeDbBackupCopy();
-  }
-
-  [Export]
+	[Export]
   public class DbBackuper : IDbBackuper
   {
     private readonly IDbToTxtSaver _txtSaver;

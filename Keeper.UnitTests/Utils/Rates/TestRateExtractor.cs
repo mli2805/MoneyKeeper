@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using FakeItEasy;
+
 using Keeper.DomainModel;
-using Keeper.Utils;
 using Keeper.Utils.Rates;
+
 using NUnit.Framework;
+
 using FluentAssertions;
 
-namespace Keeper.UnitTests.Utils
+namespace Keeper.UnitTests.Utils.Rates
 {
 	[TestFixture]
 	public class TestRateExtractor

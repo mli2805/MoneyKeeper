@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Keeper.DomainModel;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.TransactionViewFilters
 {
   /// <summary>
   /// Filter's list for combobox on Transactions window

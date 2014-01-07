@@ -12,7 +12,9 @@ using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
+using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.Rates;
+using Keeper.ViewModels.TransactionViewFilters;
 
 namespace Keeper.ViewModels
 {

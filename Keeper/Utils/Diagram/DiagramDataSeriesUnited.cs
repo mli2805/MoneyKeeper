@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 
+using Keeper.Utils.Common;
+
 namespace Keeper.Utils.Diagram
 {
-  public class DiagramDataExtremums
-  {
-    public DateTime MinDate, MaxDate;
-    public double MinValue, MaxValue;
-  }
-
-  public class DiagramDataSeriesUnited
+	public class DiagramDataSeriesUnited
   {
     public SortedList<DateTime, List<double>> DiagramData;
     public List<Brush> PositiveBrushes;

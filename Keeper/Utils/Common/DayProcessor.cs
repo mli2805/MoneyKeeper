@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Common
 {
   class DayProcessor
   {

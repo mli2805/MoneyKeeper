@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
+using Keeper.Utils.Common;
+
 namespace Keeper.Utils.Diagram
 {
   class DiagramHintCreator

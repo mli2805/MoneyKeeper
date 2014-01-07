@@ -7,6 +7,7 @@ using System.Windows.Media;
 
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Common;
 
 namespace Keeper.Utils.Diagram
 {

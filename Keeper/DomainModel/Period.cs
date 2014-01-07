@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Keeper.DomainModel;
 
-namespace Keeper.Utils
+namespace Keeper.DomainModel
 {
-  enum ShiftDay
-  {
-    BeforeThisDay,
-    AsIs,
-    AfterThisDay
-  }
-
-  public class Period
+	public class Period
   {
 	  public Period()
     {

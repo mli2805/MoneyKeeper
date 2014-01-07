@@ -4,6 +4,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Common;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.Diagram

@@ -1,16 +1,10 @@
 ﻿using System.Composition;
+
 using Keeper.Properties;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Common
 {
-  public interface IMySettings
-  {
-    object GetSetting(string name);
-    void SetSetting(string name, object value);
-    void Save();
-  }
-
-  [Export(typeof(IMySettings))]
+	[Export(typeof(IMySettings))]
   class MySettings : IMySettings
   {
     public object GetSetting(string name)

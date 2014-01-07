@@ -1,17 +1,8 @@
 using System;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Common
 {
-  public enum Every
-  {
-    Day,
-    Week,
-    Month,
-    Quarter,
-    Year
-  }
-
-  internal class FunctionsWithEvery
+	internal class FunctionsWithEvery
   {
     public static bool IsLastDayOf(DateTime date, Every period)
     {

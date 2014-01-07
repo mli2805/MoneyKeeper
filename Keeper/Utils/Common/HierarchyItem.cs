@@ -1,4 +1,4 @@
-﻿namespace Keeper.Utils.DbInputOutput.TxtTasks
+﻿namespace Keeper.Utils.Common
 {
 	public class HierarchyItem<T>
 	{

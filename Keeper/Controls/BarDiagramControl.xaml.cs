@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Keeper.Utils;
+using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 
 namespace Keeper.Controls
