@@ -119,10 +119,16 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DomainModel\DbIdGenerator.cs" />
+    <Compile Include="DomainModel\DbIntegrity.cs" />
+    <Compile Include="DomainModel\DbOperations.cs" />
+    <Compile Include="DomainModel\DeleteReasons.cs" />
     <Compile Include="DomainModel\ShiftDay.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AskUser.cs" />
     <Compile Include="Utils\Accounts\IMyFactory.cs" />
     <Compile Include="Utils\Accounts\MyFactory.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\TellUser.cs" />
     <Compile Include="Utils\Balances\BalanceTrio.cs" />
     <Compile Include="Utils\Common\Every.cs" />
     <Compile Include="Utils\Common\IMySettings.cs" />
@@ -172,7 +178,7 @@
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
-    <Compile Include="Utils\Accounts\AccountTreesGardener.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AccountTreesGardener.cs" />
     <Compile Include="Utils\Balances\BalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
@@ -413,6 +419,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\square_lock.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ByFunctional\Balance\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
