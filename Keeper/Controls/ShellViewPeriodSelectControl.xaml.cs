@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+
+using Keeper.DomainModel;
 using Keeper.Utils;
+using Keeper.Utils.Common;
 
 namespace Keeper.Controls
 {

@@ -1,6 +1,6 @@
 ﻿using Keeper.DomainModel;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.TransactionViewFilters
 {
   public class OperationTypesFilter
   {

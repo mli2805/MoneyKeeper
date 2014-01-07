@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
 
 using Ionic.Zip;
-
-using System.Linq;
 
 namespace Keeper.Utils.FileSystem
 {
@@ -114,57 +111,4 @@ namespace Keeper.Utils.FileSystem
       File.WriteAllLines(FullName, content, encoding);
     }
   }
-
-
-	public class ZipFileAdapter : IZipFile
-	{
-		readonly ZipFile mZipFile;
-
-		public ZipFileAdapter(ZipFile zipFile)
-		{
-			mZipFile = zipFile;
-		}
-
-		public IEnumerator<IZipEntry> GetEnumerator()
-		{
-			return mZipFile.Select(f => new ZipEntryAdapter(f)).GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-
-		public void Dispose()
-		{
-			mZipFile.Dispose();
-		}
-	}
-
-
-	public class ZipEntryAdapter : IZipEntry
-	{
-		readonly ZipEntry mZipEntry;
-
-		public ZipEntryAdapter(ZipEntry zipEntry)
-		{
-			mZipEntry = zipEntry;
-		}
-
-		public bool ExtractWithPassword(string unpackDirectory, ExtractExistingFileAction extractExistingFileAction, string password)
-		{
-			try
-			{
-				mZipEntry.ExtractWithPassword(unpackDirectory, extractExistingFileAction, password);
-			}
-			catch (Exception exception)
-			{
-				if (exception is BadPasswordException) return false;
-				throw;
-			}
-			return true;
-		}
-
-
-	}
 }

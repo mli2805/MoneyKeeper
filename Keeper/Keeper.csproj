@@ -119,10 +119,15 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DomainModel\ShiftDay.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
     <Compile Include="Utils\Accounts\IMyFactory.cs" />
     <Compile Include="Utils\Accounts\MyFactory.cs" />
+    <Compile Include="Utils\Balances\BalanceTrio.cs" />
+    <Compile Include="Utils\Common\Every.cs" />
+    <Compile Include="Utils\Common\IMySettings.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
+    <Compile Include="Utils\DbInputOutput\CompositeTasks\IDbBackuper.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\DbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbBackuper.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbEntriesToFileContentConverter.cs" />
@@ -146,6 +151,14 @@
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\ZippedTxtLoader.cs" />
     <Compile Include="Utils\Common\MySettings.cs" />
+    <Compile Include="Utils\Diagram\DiagramDataExtremums.cs" />
+    <Compile Include="Utils\Diagram\DiagramMode.cs" />
+    <Compile Include="Utils\Diagram\DiagramPair.cs" />
+    <Compile Include="Utils\Diagram\DiagramSeries.cs" />
+    <Compile Include="Utils\FileSystem\IZipEntry.cs" />
+    <Compile Include="Utils\FileSystem\IZipFile.cs" />
+    <Compile Include="Utils\FileSystem\ZipEntryAdapter.cs" />
+    <Compile Include="Utils\FileSystem\ZipFileAdapter.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\Common\DayProcessor.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbGeneralLoader.cs" />
@@ -176,7 +189,7 @@
     <Compile Include="Utils\Diagram\DiagramDrawer.cs" />
     <Compile Include="Utils\Diagram\DiagramDataExtractorFromDb.cs" />
     <Compile Include="Utils\Diagram\DiagramDataSeriesUnited.cs" />
-    <Compile Include="Utils\Diagram\DiagramDataCtors.cs" />
+    <Compile Include="Utils\Diagram\DiagramDataFactory.cs" />
     <Compile Include="Utils\Diagram\DiagramDrawingCalculator.cs" />
     <Compile Include="Utils\Diagram\DiagramHintCreator.cs" />
     <Compile Include="Utils\Diagram\DiagramLegendCreator.cs" />
@@ -196,6 +209,9 @@
     <Compile Include="Utils\MEF\IStartUp.cs" />
     <Compile Include="Utils\MEF\ServiceStarter.cs" />
     <Compile Include="Utils\CommonKeeper\MonthAnalyzer.cs" />
+    <Compile Include="Utils\Rates\IRateExtractor.cs" />
+    <Compile Include="ViewModels\ChartPoint.cs" />
+    <Compile Include="ViewModels\DateProcentPoint.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
@@ -264,6 +280,7 @@
     <Compile Include="Views\TransactionView.xaml.cs">
       <DependentUpon>TransactionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamlExtensions\WhatToShow.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />

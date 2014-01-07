@@ -6,13 +6,6 @@ using System.Windows.Interactivity;
 
 namespace Keeper.XamlExtensions
 {
-  public enum WhatToShow
-  {
-    ListView,
-    AsFirstly,
-    Charts
-  }
-
 	public class CollapseAction : TriggerAction<Button>
 	{
 		public Dock Direction { get; set; }

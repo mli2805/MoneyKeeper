@@ -3,7 +3,7 @@ using System.Linq;
 
 using Keeper.DomainModel;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.CommonKeeper
 {
   class DbCleaner
   {

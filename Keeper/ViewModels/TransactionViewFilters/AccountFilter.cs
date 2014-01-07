@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Keeper.DomainModel;
+﻿using Keeper.DomainModel;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.TransactionViewFilters
 {
   public class AccountFilter
   {

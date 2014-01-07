@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
-
-using Ionic.Zip;
 
 namespace Keeper.Utils.FileSystem
 {
@@ -33,10 +30,5 @@ namespace Keeper.Utils.FileSystem
 		IZipFile ReadZip();
 
     void WriteAllLines(IEnumerable<string> content, Encoding encoding);
-	}
-	public interface IZipFile : IEnumerable<IZipEntry>, IDisposable {}
-	public interface IZipEntry {
-		/// <returns>false if password is wrong</returns>
-		bool ExtractWithPassword(string unpackDirectory, ExtractExistingFileAction extractExistingFileAction, string password);
 	}
 }

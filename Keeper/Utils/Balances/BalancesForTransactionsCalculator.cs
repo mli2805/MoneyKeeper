@@ -5,22 +5,11 @@ using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Common;
 using Keeper.ViewModels;
 
 namespace Keeper.Utils.Balances
 {
-  class BalanceTrio
-  {
-    public Account MyAccount;
-    public decimal Amount;
-    public CurrencyCodes Currency;
-
-    public new string ToString()
-    {
-      return String.Format("{0}  {1:#,0} {2}", MyAccount.Name, Amount, Currency.ToString().ToLower());
-    }
-  }
-
 	[Export]
 	public class BalancesForTransactionsCalculator
   {

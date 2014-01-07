@@ -3,6 +3,7 @@ using System.Windows;
 using FakeItEasy;
 using Keeper.Properties;
 using Keeper.Utils;
+using Keeper.Utils.Common;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.Dialogs;

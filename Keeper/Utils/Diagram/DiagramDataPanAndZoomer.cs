@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
+using Keeper.Utils.Common;
+
 namespace Keeper.Utils.Diagram
 {
   class DiagramDataPanAndZoomer
