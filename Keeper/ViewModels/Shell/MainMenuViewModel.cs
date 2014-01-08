@@ -1,34 +1,43 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Composition;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Properties;
-using Keeper.Utils.Common;
-using Keeper.Utils.CommonKeeper;
-using Keeper.Utils.DbInputOutput;
-using Keeper.Utils.DbInputOutput.FileTasks;
+using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Diagram;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Shell
 {
   [Export]
 	public class MainMenuViewModel : Screen
   {
-	  private readonly DiagramDataFactory _diagramDataFactory;
-
-	  [Import]
+    [Import]
     private IWindowManager WindowManager { get; set; }
 
+    private readonly KeeperDb _db;
+    private readonly IDbToTxtSaver _txtSaver;
+    private readonly DbBackuper _backuper;
+    private readonly IDbFromTxtLoader _dbFromTxtLoader;
+    private readonly DiagramDataFactory _diagramDataFactory;
+
+    public string Message { get; set; }
+    public string StatusBarItem0 { get; set; }
+    public bool IsDbChanged { get; set; } // TwoWay binding needed
+    private readonly List<Screen> _launchedForms = new List<Screen>();
+
     [ImportingConstructor]
-    public MainMenuViewModel(DiagramDataFactory diagramDataFactory)
+    public MainMenuViewModel(KeeperDb db, IDbToTxtSaver txtSaver, DbBackuper backuper, 
+                             IDbFromTxtLoader dbFromTxtLoader, DiagramDataFactory diagramDataFactory)
     {
+      _db = db;
+      _txtSaver = txtSaver;
+      _backuper = backuper;
+      _dbFromTxtLoader = dbFromTxtLoader;
       _diagramDataFactory = diagramDataFactory;
       WindowManager = new WindowManager();
     }
-
+    /*
     #region меню Файл
     public async void SaveDatabase()
     {
@@ -39,14 +48,14 @@ namespace Keeper.ViewModels
 
     public void LoadDatabase()
     {
-      Db = new DbSerializer().DecryptAndDeserialize(Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      _db = new DbSerializer().DecryptAndDeserialize(Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
       InitVariablesToShowAccounts();
       InitBalanceControls();
     }
 
     public void ClearDatabase()
     {
-      new DbCleaner().ClearAllTables(Db);
+      new DbCleaner().ClearAllTables(_db);
       InitVariablesToShowAccounts();
       SelectedAccount = null;
     }
@@ -65,11 +74,11 @@ namespace Keeper.ViewModels
 
     public void ImportDatabaseFromTxt()
     {
-      var result = mDbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
+      var result = _dbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
       else
       {
-        Db = result.Db;
+        _db = result.Db;
         InitVariablesToShowAccounts();
         InitBalanceControls();
       }
@@ -85,7 +94,7 @@ namespace Keeper.ViewModels
     }
 
     #endregion
-
+    */
     #region меню Формы
 
     public void ShowTransactionsForm()
@@ -93,14 +102,13 @@ namespace Keeper.ViewModels
       var arcMessage = Message;
       Message = "Input operations";
       WindowManager.ShowDialog(IoC.Get<TransactionViewModel>());
-      // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      var period = _openedAccountPage == 0 ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay()) : PaymentsPeriod;
-      _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
-      SerializeWithProgressBar();
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
-      if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
+
+//      RefreshBalanceList();
+
+//      SerializeWithProgressBar();
+//      StatusBarItem0 = "Idle";
+//      IsProgressBarVisible = Visibility.Collapsed;
     }
 
     public void ShowCurrencyRatesForm()
@@ -108,26 +116,21 @@ namespace Keeper.ViewModels
       var arcMessage = Message;
       Message = "Currency rates";
       WindowManager.ShowDialog(IoC.Get<RatesViewModel>());
-      SerializeWithProgressBar();
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
-      if (OpenedAccountPage == 0) BalanceDate = BalanceDate; else PaymentsPeriod = PaymentsPeriod;
       Message = arcMessage;
-    }
 
+//      RefreshBalanceList();
+
+//      SerializeWithProgressBar();
+//      StatusBarItem0 = "Idle";
+//      IsProgressBarVisible = Visibility.Collapsed;
+    }
+    
     public void ShowArticlesAssociationsForm()
     {
       var arcMessage = Message;
       Message = "Articles' associations";
       WindowManager.ShowDialog(IoC.Get<ArticlesAssociationsViewModel>());
       Message = arcMessage;
-    }
-
-    public void ShowToDoForm()
-    {
-      var toDoForm = new ToDoViewModel();
-      _launchedForms.Add(toDoForm);
-      WindowManager.ShowWindow(toDoForm);
     }
 
     public void ShowMonthAnalisysForm()
@@ -186,7 +189,7 @@ namespace Keeper.ViewModels
 	  private void OpenDiagramForm(DiagramData diagramData)
     {
       var diagramForm = new DiagramViewModel(diagramData);
-//      _launchedForms.Add(diagramForm);
+      _launchedForms.Add(diagramForm);
       WindowManager.ShowWindow(diagramForm);
     }
     #endregion
@@ -196,6 +199,13 @@ namespace Keeper.ViewModels
       var diagramData = _diagramDataFactory.MonthlyResultsDiagramCtor();
       var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
       WindowManager.ShowDialog(diagramOxyplotViewModel);
+    }
+
+    public void ShowToDoForm()
+    {
+      var toDoForm = new ToDoViewModel();
+      _launchedForms.Add(toDoForm);
+      WindowManager.ShowWindow(toDoForm);
     }
 
   }

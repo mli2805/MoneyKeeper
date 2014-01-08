@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Keeper.Views
+namespace Keeper.Views.Shell
 {
   /// <summary>
   /// Interaction logic for ShellView.xaml

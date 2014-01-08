@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace Keeper.Views
+namespace Keeper.Views.Shell
 {
   /// <summary>
   /// Interaction logic for MainMenu.xaml

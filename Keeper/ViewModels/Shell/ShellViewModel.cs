@@ -9,19 +9,14 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
-using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.Common;
-using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
-using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
-using Keeper.Utils.Diagram;
 
-
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Shell
 {
   [Export(typeof(IShell))] // это для загрузчика, который ищет главное окно проги
   [Export(typeof(ShellViewModel))]
@@ -362,6 +357,17 @@ namespace Keeper.ViewModels
       StatusBarItem0 = "Сохранение данных на диск";
       IsProgressBarVisible = Visibility.Visible;
       new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+    }
+
+    private void RefreshBalanceList()
+    {
+      // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
+      var period = _openedAccountPage == 0
+                     ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay())
+                     : PaymentsPeriod;
+      _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
+      if (OpenedAccountPage == 0) BalanceDate = BalanceDate;
+      else PaymentsPeriod = PaymentsPeriod;
     }
 
     // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
