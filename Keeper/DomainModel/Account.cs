@@ -4,6 +4,7 @@ using System.Globalization;
 
 using Caliburn.Micro;
 using Keeper.ViewModels;
+using Keeper.ViewModels.Shell;
 
 namespace Keeper.DomainModel
 {
