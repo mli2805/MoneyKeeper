@@ -230,6 +230,7 @@
     <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
+    <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
     <Compile Include="Views\DiagramOxyplotView.xaml.cs">
       <DependentUpon>DiagramOxyplotView.xaml</DependentUpon>
@@ -239,6 +240,9 @@
     </Compile>
     <Compile Include="Views\LogonView.xaml.cs">
       <DependentUpon>LogonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
@@ -378,6 +382,10 @@
     <Page Include="Views\LogonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainMenuView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MonthAnalisysView.xaml">
       <SubType>Designer</SubType>
