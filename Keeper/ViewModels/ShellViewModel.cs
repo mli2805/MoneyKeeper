@@ -543,6 +543,10 @@ namespace Keeper.ViewModels
 
     public void TempItem()
     {
+      var diagramData = mDiagramDataFactory.MonthlyResultsDiagramCtor();
+      var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
+      WindowManager.ShowDialog(diagramOxyplotViewModel);
+
     }
 
     public void ProgramExit()
