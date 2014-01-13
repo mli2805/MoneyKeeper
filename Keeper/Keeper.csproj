@@ -116,6 +116,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="Controls\BalancesListControl.xaml.cs">
+      <DependentUpon>BalancesListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BarDiagramControl.xaml.cs">
       <DependentUpon>BarDiagramControl.xaml</DependentUpon>
     </Compile>
@@ -339,6 +342,10 @@
     <Resource Include="Resources\keeper.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\BalancesListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BarDiagramControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

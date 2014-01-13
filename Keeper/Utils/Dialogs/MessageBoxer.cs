@@ -7,13 +7,13 @@ namespace Keeper.Utils.Dialogs
 	[Shared]
 	class MessageBoxer : IMessageBoxer
 	{
-		bool mIsFirstTime= true;
+		public bool IsBeforeNormal= true;
 		public MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton messageBoxButton, MessageBoxImage messageBoxImage)
 		{
-			if (mIsFirstTime)
+			if (IsBeforeNormal)
 			{
 				MessageBox.Show("");
-				mIsFirstTime = false;
+				IsBeforeNormal = false;
 			}
 			return MessageBox.Show(messageBoxText, caption, messageBoxButton, messageBoxImage);
 		}

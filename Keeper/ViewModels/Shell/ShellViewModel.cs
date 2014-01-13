@@ -29,14 +29,14 @@ namespace Keeper.ViewModels.Shell
     public MainMenuViewModel MainMenuViewModel { get; set; }
 
     //    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-    public KeeperDb Db;
-    readonly DbLoadResult mLoadResult;
+    private KeeperDb _db;
+    readonly DbLoadResult _loadResult;
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly IDbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
-	  readonly IDbFromTxtLoader mDbFromTxtLoader;
+	  readonly IDbFromTxtLoader _dbFromTxtLoader;
 	  private readonly BalancesForShellCalculator _balanceCalculator;
 	  #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
 
@@ -58,7 +58,7 @@ namespace Keeper.ViewModels.Shell
     public string Message
     {
       get { return _message; }
-      set
+      private set
       {
         if (value == _message) return;
         _message = value;
@@ -69,7 +69,7 @@ namespace Keeper.ViewModels.Shell
     public string StatusBarItem0
     {
       get { return _statusBarItem0; }
-      set
+      private set
       {
         if (value.Equals(_statusBarItem0)) return;
         _statusBarItem0 = value;
@@ -80,7 +80,7 @@ namespace Keeper.ViewModels.Shell
     public Visibility IsProgressBarVisible
     {
       get { return _isProgressBarVisible; }
-      set
+      private set
       {
         if (Equals(value, _isProgressBarVisible)) return;
         _isProgressBarVisible = value;
@@ -91,7 +91,7 @@ namespace Keeper.ViewModels.Shell
     public string AccountBalanceInUsd
     {
       get { return _accountBalanceInUsd; }
-      set
+      private set
       {
         if (value == _accountBalanceInUsd) return;
         _accountBalanceInUsd = value;
@@ -102,10 +102,10 @@ namespace Keeper.ViewModels.Shell
     // во ViewModel создается public property к которому будет биндиться компонент из View
     // далее содержимое этого свойства изменяется и это должно быть отображено на экране
     // поэтому вместо обычного List создаем ObservableCollection
-    public ObservableCollection<Account> MineAccountsRoot { get; set; }
-    public ObservableCollection<Account> ExternalAccountsRoot { get; set; }
-    public ObservableCollection<Account> IncomesRoot { get; set; }
-    public ObservableCollection<Account> ExpensesRoot { get; set; }
+    public ObservableCollection<Account> MineAccountsRoot { get; private set; }
+    public ObservableCollection<Account> ExternalAccountsRoot { get; private set; }
+    public ObservableCollection<Account> IncomesRoot { get; private set; }
+    public ObservableCollection<Account> ExpensesRoot { get; private set; }
 
     public Visibility IsDeposit
     {
@@ -209,13 +209,13 @@ namespace Keeper.ViewModels.Shell
        IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader,
 		AccountTreesGardener accountTreesGardener)
     {
-      Db = db;
-      mLoadResult = loadResult;
+      _db = db;
+      _loadResult = loadResult;
 
-      _isDbLoadingSuccessed = Db != null;
+      _isDbLoadingSuccessed = _db != null;
       if (!_isDbLoadingSuccessed)
       {
-        MessageBox.Show(mLoadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(_loadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
 
@@ -230,7 +230,7 @@ namespace Keeper.ViewModels.Shell
       _balanceCalculator = balancesForShellCalculator;
       _txtSaver = txtSaver;
       _backuper = backuper;
-	    mDbFromTxtLoader = dbFromTxtLoader;
+	    _dbFromTxtLoader = dbFromTxtLoader;
     }
 
     private void InitBalanceControls()
@@ -243,16 +243,16 @@ namespace Keeper.ViewModels.Shell
 
     public void InitVariablesToShowAccounts()
     {
-      MineAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts
+      MineAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                            where account.Name == "Мои"
                                                            select account);
-      ExternalAccountsRoot = new ObservableCollection<Account>(from account in Db.Accounts
+      ExternalAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                                where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков"
                                                                select account);
-      IncomesRoot = new ObservableCollection<Account>(from account in Db.Accounts
+      IncomesRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                       where account.Name == "Все доходы"
                                                       select account);
-      ExpensesRoot = new ObservableCollection<Account>(from account in Db.Accounts
+      ExpensesRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                        where account.Name == "Все расходы"
                                                        select account);
 
@@ -312,11 +312,11 @@ namespace Keeper.ViewModels.Shell
     private void ReorderDepositAccounts()
     {
       _txtSaver.SaveDbInTxt();
-	  var result = mDbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
+	  var result = _dbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
       else
       {
-        Db = result.Db;
+        _db = result.Db;
         //        InitVariablesToShowAccounts();
       }
     }
@@ -356,7 +356,7 @@ namespace Keeper.ViewModels.Shell
     {
       StatusBarItem0 = "Сохранение данных на диск";
       IsProgressBarVisible = Visibility.Visible;
-      new DbSerializer().EncryptAndSerialize(Db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
     }
 
     private void RefreshBalanceList()
