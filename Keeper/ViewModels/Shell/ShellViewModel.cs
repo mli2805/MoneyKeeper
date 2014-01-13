@@ -385,7 +385,6 @@ namespace Keeper.ViewModels.Shell
       return logonViewModel.Result;
     }
 
-
     public void ProgramExit()
     {
       TryClose();
@@ -398,9 +397,8 @@ namespace Keeper.ViewModels.Shell
       set
       {
         _balanceDate = new DayProcessor(value.Date).AfterThisDay();
-        var period = new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay());
         AccountBalanceInUsd = String.Format("{0:#,#} usd",
-          _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
+          _balanceCalculator.CountBalances(SelectedAccount, new Period(new DateTime(0), _balanceDate), BalanceList));
       }
     }
 
