@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-
 using Keeper.DomainModel;
-using Keeper.Utils;
 using Keeper.Utils.Common;
 
 namespace Keeper.Controls
@@ -22,7 +20,6 @@ namespace Keeper.Controls
       get { return (Period)GetValue(SelectedPeriodProperty); }
       set
       {
-        if (SelectedPeriod.Equals(value)) return;
         SetValue(SelectedPeriodProperty, value);
         StartDatePicker.SelectedDate = value.Start;
         FinishDatePicker.SelectedDate = value.Finish;
