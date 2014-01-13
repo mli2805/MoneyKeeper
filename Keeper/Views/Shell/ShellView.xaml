@@ -42,17 +42,17 @@
               <ContextMenu>
                 <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/plus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/minus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/edit16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Депозит" cal:Message.Attach="ShowDeposit" BorderBrush="{x:Null}" Background="White" Visibility="{Binding IsDeposit}">
@@ -74,17 +74,17 @@
               <ContextMenu>
                 <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/plus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/minus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/edit16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
               </ContextMenu>
@@ -104,17 +104,17 @@
               <ContextMenu>
                 <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/plus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/minus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/edit16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
               </ContextMenu>
@@ -134,17 +134,17 @@
               <ContextMenu>
                 <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/plus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/minus16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
                   <MenuItem.Icon>
-                    <Image Source="..\Resources/edit16.ico" Width="16"/>
+                    <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
                   </MenuItem.Icon>
                 </MenuItem>
               </ContextMenu>
