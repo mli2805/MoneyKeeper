@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="Keeper.Views.Shell.AccountTreesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:DomainModel="clr-namespace:Keeper.DomainModel" xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             >
+  <UserControl.Resources>
+    <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
+      <TextBlock Text="{Binding Name}" Margin="0,0,20,0"/>
+    </HierarchicalDataTemplate>
+  </UserControl.Resources>
+
+  <Grid>
+    <TabControl Name="AccountsTree" Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding OpenedAccountPage, Mode=TwoWay}">
+      <TabItem Header="Мои счета" Background="{x:Null}">
+        <TreeView cal:Message.Attach="MineAccountsTreeView" ItemsSource="{Binding MineAccountsRoot}"
+      		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Депозит" cal:Message.Attach="ShowDeposit" BorderBrush="{x:Null}" Background="White" Visibility="{Binding IsDeposit}">
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+      <TabItem Header="Контрагенты" Background="{x:Null}">
+        <TreeView cal:Message.Attach="ExternalAccountsTreeView" ItemsSource="{Binding ExternalAccountsRoot}" 
+      		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+      <TabItem Header="Доходы" Background="{x:Null}">
+        <TreeView cal:Message.Attach="IncomeTreeView" ItemsSource="{Binding IncomesRoot}" 
+      		ItemTemplate="{DynamicResource AccountTemplate}">
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+      <TabItem Header="Расходы" Background="{x:Null}">
+        <TreeView cal:Message.Attach="ExpenseTreeView" ItemsSource="{Binding ExpensesRoot}" 
+      		ItemTemplate="{DynamicResource AccountTemplate}">
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" >
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/plus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/minus16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Изменить" cal:Message.Attach="ChangeSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                <MenuItem.Icon>
+                  <Image Source="/Keeper;component/Resources/edit16.ico" Width="16"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.ItemContainerStyle>
+        </TreeView>
+      </TabItem>
+    </TabControl>
+
+
+  </Grid>
+</UserControl>
