@@ -28,33 +28,57 @@ namespace Keeper.ViewModels.Shell
 
     public MainMenuViewModel MainMenuViewModel { get; set; }
 
-    //    public static KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
     private KeeperDb _db;
     readonly DbLoadResult _loadResult;
     private readonly List<Screen> _launchedForms = new List<Screen>();
+    private bool _isDbLoadingSuccessed;
 
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly IDbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
-	  readonly IDbFromTxtLoader _dbFromTxtLoader;
-	  private readonly BalancesForShellCalculator _balanceCalculator;
-	  #region // поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
+    readonly IDbFromTxtLoader _dbFromTxtLoader;
+    private readonly BalancesForShellCalculator _balanceCalculator;
 
-    // чисто по приколу, label на вьюхе, которая по ходу программы может меняться - поэтому свойство с нотификацией
-    private string _message;
-    private string _statusBarItem0;
-    private Visibility _isProgressBarVisible;
+    #region  поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
     private Account _selectedAccount;
-    private int _openedAccountPage;
-    private string _accountBalanceInUsd;
-    private Visibility _isDeposit;
-    private bool _isDbLoadingSuccessed;
+    public Account SelectedAccount
+    {
+      get { return _selectedAccount; }
+      set
+      {
+        _selectedAccount = value;
+        Period period = value.Is("Мои") ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
+        NotifyOfPropertyChange(() => SelectedAccount);
+      }
+    }
 
+
+
+    #region BalancesList
+    public ObservableCollection<string> BalanceList { get; set; }
+    private string _accountBalanceInUsd;
+    public string AccountBalanceInUsd
+    {
+      get { return _accountBalanceInUsd; }
+      private set
+      {
+        if (value == _accountBalanceInUsd) return;
+        _accountBalanceInUsd = value;
+        NotifyOfPropertyChange(() => AccountBalanceInUsd);
+      }
+    }
+    #endregion
+
+    #region DatesSelection
     private DateTime _balanceDate;
     private Period _paymentsPeriod;
     private Visibility _balanceDateSelectControl;
     private Visibility _paymentsPeriodSelectControl;
+    #endregion
 
+    #region StatusBar
+    private string _message;
     public string Message
     {
       get { return _message; }
@@ -66,6 +90,7 @@ namespace Keeper.ViewModels.Shell
       }
     }
 
+    private string _statusBarItem0;
     public string StatusBarItem0
     {
       get { return _statusBarItem0; }
@@ -77,6 +102,7 @@ namespace Keeper.ViewModels.Shell
       }
     }
 
+    private Visibility _isProgressBarVisible;
     public Visibility IsProgressBarVisible
     {
       get { return _isProgressBarVisible; }
@@ -87,127 +113,13 @@ namespace Keeper.ViewModels.Shell
         NotifyOfPropertyChange(() => IsProgressBarVisible);
       }
     }
+    #endregion
 
-    public string AccountBalanceInUsd
-    {
-      get { return _accountBalanceInUsd; }
-      private set
-      {
-        if (value == _accountBalanceInUsd) return;
-        _accountBalanceInUsd = value;
-        NotifyOfPropertyChange(() => AccountBalanceInUsd);
-      }
-    }
-
-    // во ViewModel создается public property к которому будет биндиться компонент из View
-    // далее содержимое этого свойства изменяется и это должно быть отображено на экране
-    // поэтому вместо обычного List создаем ObservableCollection
-    public ObservableCollection<Account> MineAccountsRoot { get; private set; }
-    public ObservableCollection<Account> ExternalAccountsRoot { get; private set; }
-    public ObservableCollection<Account> IncomesRoot { get; private set; }
-    public ObservableCollection<Account> ExpensesRoot { get; private set; }
-
-    public Visibility IsDeposit
-    {
-      get { return _isDeposit; }
-      set
-      {
-        if (value.Equals(_isDeposit)) return;
-        _isDeposit = value;
-        NotifyOfPropertyChange(() => IsDeposit);
-      }
-    }
-
-    public ObservableCollection<string> BalanceList { get; set; }
-
-    public Account SelectedAccount
-    {
-      get { return _selectedAccount; }
-      set
-      {
-        _selectedAccount = value;
-        Period period = _openedAccountPage == 0 ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
-         AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
-        NotifyOfPropertyChange(() => SelectedAccount);
-        IsDeposit = value != null && value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-      }
-    }
-
-    public int OpenedAccountPage
-    {
-      get { return _openedAccountPage; }
-      set
-      {
-        _openedAccountPage = value;
-        if (value == 0)
-        {
-          BalanceDateSelectControl = Visibility.Visible;
-          PaymentsPeriodSelectControl = Visibility.Collapsed;
-        }
-        else
-        {
-          BalanceDateSelectControl = Visibility.Collapsed;
-          PaymentsPeriodSelectControl = Visibility.Visible;
-        }
-        var a = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
-        SelectedAccount = a;
-      }
-    }
-
-    private Account GetSelectedInBranch(Account account)
-    {
-      if (account.IsSelected) return account;
-      foreach (var child in account.Children)
-      {
-        var result = GetSelectedInBranch(child);
-        if (result != null) return result;
-      }
-      return null;
-    }
-
-    private Account GetSelectedInCollection(IEnumerable<Account> roots)
-    {
-      foreach (var branch in roots)
-      {
-        var result = GetSelectedInBranch(branch);
-        if (result != null) return result;
-      }
-      return null;
-    }
-
-    private Account FindSelectedOrAssignFirstAccountOnPage(int pageNumber)
-    {
-      ObservableCollection<Account> collection;
-      switch (pageNumber)
-      {
-        case 0:
-          collection = MineAccountsRoot; break;
-        case 1:
-          collection = ExternalAccountsRoot; break;
-        case 2:
-          collection = IncomesRoot; break;
-        case 3:
-          collection = ExpensesRoot; break;
-        default:
-          collection = MineAccountsRoot; break;
-      }
-
-      var result = GetSelectedInCollection(collection);
-
-      if (result == null && collection.Count != 0)
-      {
-        result = (from account in collection
-                  select account).First();
-        result.IsSelected = true;
-      }
-      return result;
-    }
     #endregion
 
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
-       IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader,
-		AccountTreesGardener accountTreesGardener)
+       IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader, AccountTreesGardener accountTreesGardener)
     {
       _db = db;
       _loadResult = loadResult;
@@ -223,14 +135,13 @@ namespace Keeper.ViewModels.Shell
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
 
-	  _accountTreesGardener = accountTreesGardener;
-      InitVariablesToShowAccounts();
+      _accountTreesGardener = accountTreesGardener;
       InitBalanceControls();
 
       _balanceCalculator = balancesForShellCalculator;
       _txtSaver = txtSaver;
       _backuper = backuper;
-	    _dbFromTxtLoader = dbFromTxtLoader;
+      _dbFromTxtLoader = dbFromTxtLoader;
     }
 
     private void InitBalanceControls()
@@ -239,27 +150,6 @@ namespace Keeper.ViewModels.Shell
       _paymentsPeriod = new Period(new DayProcessor(DateTime.Today).BeforeThisDay(), new DayProcessor(DateTime.Today).AfterThisDay());
       BalanceList = new ObservableCollection<string>();
       _isDbLoadingSuccessed = true;
-    }
-
-    public void InitVariablesToShowAccounts()
-    {
-      MineAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                           where account.Name == "Мои"
-                                                           select account);
-      ExternalAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                               where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков"
-                                                               select account);
-      IncomesRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                      where account.Name == "Все доходы"
-                                                      select account);
-      ExpensesRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                       where account.Name == "Все расходы"
-                                                       select account);
-
-      NotifyOfPropertyChange(() => MineAccountsRoot);
-      NotifyOfPropertyChange(() => ExternalAccountsRoot);
-      NotifyOfPropertyChange(() => IncomesRoot);
-      NotifyOfPropertyChange(() => ExpensesRoot);
     }
 
     protected override void OnViewLoaded(object view)
@@ -271,7 +161,6 @@ namespace Keeper.ViewModels.Shell
       }
       DisplayName = "Keeper (c) 2012-13";
       Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
-      OpenedAccountPage = 0;
 
       if (!ShowLogonForm()) TryClose();
     }
@@ -283,74 +172,13 @@ namespace Keeper.ViewModels.Shell
         foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
           launchedForm.TryClose();
         await Task.Run(() => SerializeWithProgressBar());
-//        await Task.Run(() => MakeBackupWithProgressBar());
+        //        await Task.Run(() => MakeBackupWithProgressBar());
         StatusBarItem0 = "Idle";
         IsProgressBarVisible = Visibility.Collapsed;
       }
       callback(true);
     }
 
-    #region // методы реализации контекстного меню на дереве счетов
-
-    public void RemoveSelectedAccount()
-    {
-      _accountTreesGardener.RemoveAccount(SelectedAccount);
-    }
-
-    public void AddSelectedAccount()
-    {
-      var newSelectedAccount = _accountTreesGardener.AddAccount(SelectedAccount);
-      if (SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
-      SelectedAccount.IsSelected = false;
-      SelectedAccount = newSelectedAccount;
-      SelectedAccount.IsSelected = true;
-      NotifyOfPropertyChange(() => MineAccountsRoot);
-
-
-    }
-
-    private void ReorderDepositAccounts()
-    {
-      _txtSaver.SaveDbInTxt();
-	  var result = _dbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
-      if (result.Code != 0) MessageBox.Show(result.Explanation);
-      else
-      {
-        _db = result.Db;
-        //        InitVariablesToShowAccounts();
-      }
-    }
-
-    public void ChangeSelectedAccount()
-    {
-      _accountTreesGardener.ChangeAccount(SelectedAccount);
-    }
-
-    public List<DepositViewModel> LaunchedViewModels { get; set; }
-    public void ShowDeposit()
-    {
-      if (!SelectedAccount.IsDescendantOf("Депозиты") || SelectedAccount.Children.Count != 0) return;
-
-      foreach (var launchedForm in _launchedForms)
-      {
-        if (launchedForm is DepositViewModel && launchedForm.IsActive
-          && ((DepositViewModel)launchedForm).Deposit.Account == SelectedAccount) launchedForm.TryClose();
-      }
-
-      var depositForm = IoC.Get<DepositViewModel>();
-      depositForm.SetAccount(SelectedAccount);
-      _launchedForms.Add(depositForm);
-      depositForm.Renewed += DepositViewModelRenewed; // ?
-      WindowManager.ShowWindow(depositForm);
-    }
-
-    void DepositViewModelRenewed(object sender, Account newAccount)
-    {
-      SelectedAccount.IsSelected = false;
-      SelectedAccount = newAccount;
-    }
-
-    #endregion
 
     private void SerializeWithProgressBar()
     {
@@ -362,11 +190,11 @@ namespace Keeper.ViewModels.Shell
     private void RefreshBalanceList()
     {
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      var period = _openedAccountPage == 0
+      var period = SelectedAccount.Is("Мои")
                      ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay())
                      : PaymentsPeriod;
       _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
-      if (OpenedAccountPage == 0) BalanceDate = BalanceDate;
+      if (SelectedAccount.Is("Мои")) BalanceDate = BalanceDate;
       else PaymentsPeriod = PaymentsPeriod;
     }
 
