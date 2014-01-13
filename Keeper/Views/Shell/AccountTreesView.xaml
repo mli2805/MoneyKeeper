@@ -15,7 +15,7 @@
   <Grid>
     <TabControl Name="AccountsTree" Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding OpenedAccountPage, Mode=TwoWay}">
       <TabItem Header="Мои счета" Background="{x:Null}">
-        <TreeView cal:Message.Attach="MineAccountsTreeView" ItemsSource="{Binding MineAccountsRoot}"
+        <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MineAccountsRoot}"
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -47,7 +47,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Контрагенты" Background="{x:Null}">
-        <TreeView cal:Message.Attach="ExternalAccountsTreeView" ItemsSource="{Binding ExternalAccountsRoot}" 
+        <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding ExternalAccountsRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -77,7 +77,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Доходы" Background="{x:Null}">
-        <TreeView cal:Message.Attach="IncomeTreeView" ItemsSource="{Binding IncomesRoot}" 
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -107,7 +107,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Расходы" Background="{x:Null}">
-        <TreeView cal:Message.Attach="ExpenseTreeView" ItemsSource="{Binding ExpensesRoot}" 
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
