@@ -23,5 +23,11 @@ namespace Keeper.Views
     {
       throw new System.NotImplementedException();
     }
+
+//    protected override void OnActivated(System.EventArgs e)
+//    {
+//      base.OnActivated(e);
+//      RatesGrid.ScrollIntoView(RatesGrid.Items[RatesGrid.Items.Count - 1]);
+//    }
   }
 }
