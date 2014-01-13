@@ -27,6 +27,7 @@ namespace Keeper.ViewModels.Shell
     public IWindowManager WindowManager { get; set; }
 
     public MainMenuViewModel MainMenuViewModel { get; set; }
+    public AccountTreesViewModel AccountTreesViewModel { get; set; }
 
     private KeeperDb _db;
     readonly DbLoadResult _loadResult;
@@ -117,6 +118,7 @@ namespace Keeper.ViewModels.Shell
 
     #endregion
 
+
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
        IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader, AccountTreesGardener accountTreesGardener)
@@ -142,6 +144,8 @@ namespace Keeper.ViewModels.Shell
       _txtSaver = txtSaver;
       _backuper = backuper;
       _dbFromTxtLoader = dbFromTxtLoader;
+
+      AccountTreesViewModel = IoC.Get<AccountTreesViewModel>();
     }
 
     private void InitBalanceControls()

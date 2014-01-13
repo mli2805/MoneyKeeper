@@ -15,15 +15,15 @@ using Keeper.Utils.DbInputOutput.TxtTasks;
 namespace Keeper.ViewModels.Shell
 {
   [Export]
-  class AccountTreesViewModel : Screen
+  public class AccountTreesViewModel : Screen
   {
     [Import]
     public IWindowManager WindowManager { get; set; }
 
     private KeeperDb _db;
     private readonly AccountTreesGardener _accountTreesGardener;
-    private readonly DbFromTxtLoader _dbFromTxtLoader;
-    private readonly DbToTxtSaver _dbToTxtSaver;
+    private readonly IDbFromTxtLoader _dbFromTxtLoader;
+    private readonly IDbToTxtSaver _dbToTxtSaver;
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
@@ -123,7 +123,7 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public AccountTreesViewModel(KeeperDb db, AccountTreesGardener accountTreesGardener, 
-                                 DbFromTxtLoader dbFromTxtLoader, DbToTxtSaver dbToTxtSaver)
+                                 IDbFromTxtLoader dbFromTxtLoader, IDbToTxtSaver dbToTxtSaver)
     {
       _db = db;
       _accountTreesGardener = accountTreesGardener;
