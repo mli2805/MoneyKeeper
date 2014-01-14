@@ -34,7 +34,6 @@ namespace Keeper.ViewModels.Shell
     private readonly List<Screen> _launchedForms = new List<Screen>();
     private bool _isDbLoadingSuccessed;
 
-    private readonly AccountTreesGardener _accountTreesGardener;
     private readonly IDbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
     readonly IDbFromTxtLoader _dbFromTxtLoader;
@@ -48,34 +47,46 @@ namespace Keeper.ViewModels.Shell
       set
       {
         _selectedAccountInShell = value;
+        IsPeriodModeInShell = !value.Is("Мои");
         Period period = value.Is("Мои") ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList));
+//        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccountInShell);
       }
     }
 
 
 
-    #region BalancesList
-    public ObservableCollection<string> BalanceList { get; set; }
-    private string _accountBalanceInUsd;
-    public string AccountBalanceInUsd
-    {
-      get { return _accountBalanceInUsd; }
-      private set
-      {
-        if (value == _accountBalanceInUsd) return;
-        _accountBalanceInUsd = value;
-        NotifyOfPropertyChange(() => AccountBalanceInUsd);
-      }
-    }
-    #endregion
+//    #region BalancesList
+//    public ObservableCollection<string> BalanceList { get; set; }
+//    private string _accountBalanceInUsd;
+//    public string AccountBalanceInUsd
+//    {
+//      get { return _accountBalanceInUsd; }
+//      private set
+//      {
+//        if (value == _accountBalanceInUsd) return;
+//        _accountBalanceInUsd = value;
+//        NotifyOfPropertyChange(() => AccountBalanceInUsd);
+//      }
+//    }
+//    #endregion
 
     #region DatesSelection
+    public bool IsPeriodModeInShell 
+    {
+      get { return _isPeriodModeInShell; }
+      set
+      {
+        if (value.Equals(_isPeriodModeInShell)) return;
+        _isPeriodModeInShell = value;
+        NotifyOfPropertyChange(() => IsPeriodModeInShell);
+      }
+    }
+
     private DateTime _balanceDate;
     private Period _paymentsPeriod;
-    private Visibility _balanceDateSelectControl;
-    private Visibility _paymentsPeriodSelectControl;
+//    private Visibility _balanceDateSelectControl;
+//    private Visibility _paymentsPeriodSelectControl;
     #endregion
 
     #region StatusBar
@@ -104,6 +115,8 @@ namespace Keeper.ViewModels.Shell
     }
 
     private Visibility _isProgressBarVisible;
+    private bool _isPeriodModeInShell;
+
     public Visibility IsProgressBarVisible
     {
       get { return _isProgressBarVisible; }
@@ -121,7 +134,7 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
-       IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader, AccountTreesGardener accountTreesGardener)
+       IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader)
     {
       _db = db;
       _loadResult = loadResult;
@@ -137,7 +150,6 @@ namespace Keeper.ViewModels.Shell
       StatusBarItem0 = "Idle";
       IsProgressBarVisible = Visibility.Collapsed;
 
-      _accountTreesGardener = accountTreesGardener;
       InitBalanceControls();
 
       _balanceCalculator = balancesForShellCalculator;
@@ -152,7 +164,7 @@ namespace Keeper.ViewModels.Shell
     {
       _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
       _paymentsPeriod = new Period(new DayProcessor(DateTime.Today).BeforeThisDay(), new DayProcessor(DateTime.Today).AfterThisDay());
-      BalanceList = new ObservableCollection<string>();
+//      BalanceList = new ObservableCollection<string>();
       _isDbLoadingSuccessed = true;
     }
 
@@ -191,16 +203,16 @@ namespace Keeper.ViewModels.Shell
       new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
     }
 
-    private void RefreshBalanceList()
-    {
-      // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      var period = SelectedAccountInShell.Is("Мои")
-                     ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay())
-                     : PaymentsPeriod;
-      _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList);
-      if (SelectedAccountInShell.Is("Мои")) BalanceDate = BalanceDate;
-      else PaymentsPeriod = PaymentsPeriod;
-    }
+//    private void RefreshBalanceList()
+//    {
+//       по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
+//      var period = SelectedAccountInShell.Is("Мои")
+//                     ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay())
+//                     : PaymentsPeriod;
+//      _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList);
+//      if (SelectedAccountInShell.Is("Мои")) BalanceDate = BalanceDate;
+//      else PaymentsPeriod = PaymentsPeriod;
+//    }
 
     // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
     private void MakeBackupWithProgressBar()
@@ -223,14 +235,16 @@ namespace Keeper.ViewModels.Shell
     }
 
     #region date\period selection properties
+
+
     public DateTime BalanceDate
     {
       get { return _balanceDate; }
       set
       {
         _balanceDate = new DayProcessor(value.Date).AfterThisDay();
-        AccountBalanceInUsd = String.Format("{0:#,#} usd",
-          _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _balanceDate), BalanceList));
+//        AccountBalanceInUsd = String.Format("{0:#,#} usd",
+//          _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _balanceDate), BalanceList));
       }
     }
 
@@ -240,32 +254,32 @@ namespace Keeper.ViewModels.Shell
       set
       {
         _paymentsPeriod = value;
-        AccountBalanceInUsd = string.Format("{0:#,#} usd",
-                          _balanceCalculator.CountBalances(SelectedAccountInShell, _paymentsPeriod, BalanceList));
+//        AccountBalanceInUsd = string.Format("{0:#,#} usd",
+//                          _balanceCalculator.CountBalances(SelectedAccountInShell, _paymentsPeriod, BalanceList));
       }
     }
 
-    public Visibility BalanceDateSelectControl
-    {
-      get { return _balanceDateSelectControl; }
-      set
-      {
-        if (Equals(value, _balanceDateSelectControl)) return;
-        _balanceDateSelectControl = value;
-        NotifyOfPropertyChange(() => BalanceDateSelectControl);
-      }
-    }
+//    public Visibility BalanceDateSelectControl
+//    {
+//      get { return _balanceDateSelectControl; }
+//      set
+//      {
+//        if (Equals(value, _balanceDateSelectControl)) return;
+//        _balanceDateSelectControl = value;
+//        NotifyOfPropertyChange(() => BalanceDateSelectControl);
+//      }
+//    }
 
-    public Visibility PaymentsPeriodSelectControl
-    {
-      get { return _paymentsPeriodSelectControl; }
-      set
-      {
-        if (Equals(value, _paymentsPeriodSelectControl)) return;
-        _paymentsPeriodSelectControl = value;
-        NotifyOfPropertyChange(() => PaymentsPeriodSelectControl);
-      }
-    }
+//    public Visibility PaymentsPeriodSelectControl
+//    {
+//      get { return _paymentsPeriodSelectControl; }
+//      set
+//      {
+//        if (Equals(value, _paymentsPeriodSelectControl)) return;
+//        _paymentsPeriodSelectControl = value;
+//        NotifyOfPropertyChange(() => PaymentsPeriodSelectControl);
+//      }
+//    }
 
     #endregion
   }
