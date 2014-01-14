@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
   
-    <Grid Visibility="{Binding ControlVisibility}"  VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="3">
+    <Grid VerticalAlignment="Bottom" Height="130" Margin="0,0,0,5" Grid.Row="3">
       <Grid.RowDefinitions>
         <RowDefinition Height="30" />
         <RowDefinition Height="50" />

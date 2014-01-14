@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Properties;
-using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.Common;
 using Keeper.Utils.DbInputOutput;
@@ -28,6 +26,8 @@ namespace Keeper.ViewModels.Shell
 
     public MainMenuViewModel MainMenuViewModel { get; set; }
     public AccountForestViewModel AccountForestViewModel { get; set; }
+    public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
+    public BalanceListViewModel BalanceListViewModel { get; set; }
 
     private KeeperDb _db;
     readonly DbLoadResult _loadResult;
@@ -47,7 +47,7 @@ namespace Keeper.ViewModels.Shell
       set
       {
         _selectedAccountInShell = value;
-        IsPeriodModeInShell = !value.Is("Мои");
+        TwoSelectorsViewModel.IsPeriodMode = !value.Is("Мои");
         Period period = value.Is("Мои") ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
 //        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccountInShell);
@@ -72,16 +72,6 @@ namespace Keeper.ViewModels.Shell
 //    #endregion
 
     #region DatesSelection
-    public bool IsPeriodModeInShell 
-    {
-      get { return _isPeriodModeInShell; }
-      set
-      {
-        if (value.Equals(_isPeriodModeInShell)) return;
-        _isPeriodModeInShell = value;
-        NotifyOfPropertyChange(() => IsPeriodModeInShell);
-      }
-    }
 
     private DateTime _balanceDate;
     private Period _paymentsPeriod;
@@ -115,8 +105,6 @@ namespace Keeper.ViewModels.Shell
     }
 
     private Visibility _isProgressBarVisible;
-    private bool _isPeriodModeInShell;
-
     public Visibility IsProgressBarVisible
     {
       get { return _isProgressBarVisible; }
@@ -158,6 +146,9 @@ namespace Keeper.ViewModels.Shell
       _dbFromTxtLoader = dbFromTxtLoader;
 
       AccountForestViewModel = IoC.Get<AccountForestViewModel>();
+      TwoSelectorsViewModel = IoC.Get<TwoSelectorsViewModel>();
+      TwoSelectorsViewModel.IsPeriodMode = false;
+      BalanceListViewModel = IoC.Get<BalanceListViewModel>();
     }
 
     private void InitBalanceControls()
@@ -258,28 +249,6 @@ namespace Keeper.ViewModels.Shell
 //                          _balanceCalculator.CountBalances(SelectedAccountInShell, _paymentsPeriod, BalanceList));
       }
     }
-
-//    public Visibility BalanceDateSelectControl
-//    {
-//      get { return _balanceDateSelectControl; }
-//      set
-//      {
-//        if (Equals(value, _balanceDateSelectControl)) return;
-//        _balanceDateSelectControl = value;
-//        NotifyOfPropertyChange(() => BalanceDateSelectControl);
-//      }
-//    }
-
-//    public Visibility PaymentsPeriodSelectControl
-//    {
-//      get { return _paymentsPeriodSelectControl; }
-//      set
-//      {
-//        if (Equals(value, _paymentsPeriodSelectControl)) return;
-//        _paymentsPeriodSelectControl = value;
-//        NotifyOfPropertyChange(() => PaymentsPeriodSelectControl);
-//      }
-//    }
 
     #endregion
   }
