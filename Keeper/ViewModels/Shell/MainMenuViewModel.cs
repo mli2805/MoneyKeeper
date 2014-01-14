@@ -57,7 +57,7 @@ namespace Keeper.ViewModels.Shell
     {
       new DbCleaner().ClearAllTables(_db);
       InitVariablesToShowAccounts();
-      SelectedAccount = null;
+      SelectedAccountInShell = null;
     }
 
     public async void MakeDatabaseBackup()

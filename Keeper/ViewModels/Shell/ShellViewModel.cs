@@ -20,14 +20,14 @@ namespace Keeper.ViewModels.Shell
 {
   [Export(typeof(IShell))] // это для загрузчика, который ищет главное окно проги
   [Export(typeof(ShellViewModel))]
-  [Shared] // это для класса Account чтобы засунуть в свойство SelectedAccount 
+  [Shared] // это для класса Account чтобы засунуть в свойство SelectedAccountInShell 
   public class ShellViewModel : Screen, IShell
   {
     [Import]
     public IWindowManager WindowManager { get; set; }
 
     public MainMenuViewModel MainMenuViewModel { get; set; }
-    public AccountTreesViewModel AccountTreesViewModel { get; set; }
+    public AccountForestViewModel AccountForestViewModel { get; set; }
 
     private KeeperDb _db;
     readonly DbLoadResult _loadResult;
@@ -41,16 +41,16 @@ namespace Keeper.ViewModels.Shell
     private readonly BalancesForShellCalculator _balanceCalculator;
 
     #region  поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
-    private Account _selectedAccount;
-    public Account SelectedAccount
+    private Account _selectedAccountInShell;
+    public Account SelectedAccountInShell
     {
-      get { return _selectedAccount; }
+      get { return _selectedAccountInShell; }
       set
       {
-        _selectedAccount = value;
+        _selectedAccountInShell = value;
         Period period = value.Is("Мои") ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
-        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList));
-        NotifyOfPropertyChange(() => SelectedAccount);
+        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList));
+        NotifyOfPropertyChange(() => SelectedAccountInShell);
       }
     }
 
@@ -145,7 +145,7 @@ namespace Keeper.ViewModels.Shell
       _backuper = backuper;
       _dbFromTxtLoader = dbFromTxtLoader;
 
-      AccountTreesViewModel = IoC.Get<AccountTreesViewModel>();
+      AccountForestViewModel = IoC.Get<AccountForestViewModel>();
     }
 
     private void InitBalanceControls()
@@ -194,11 +194,11 @@ namespace Keeper.ViewModels.Shell
     private void RefreshBalanceList()
     {
       // по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-      var period = SelectedAccount.Is("Мои")
+      var period = SelectedAccountInShell.Is("Мои")
                      ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay())
                      : PaymentsPeriod;
-      _balanceCalculator.CountBalances(SelectedAccount, period, BalanceList);
-      if (SelectedAccount.Is("Мои")) BalanceDate = BalanceDate;
+      _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList);
+      if (SelectedAccountInShell.Is("Мои")) BalanceDate = BalanceDate;
       else PaymentsPeriod = PaymentsPeriod;
     }
 
@@ -230,7 +230,7 @@ namespace Keeper.ViewModels.Shell
       {
         _balanceDate = new DayProcessor(value.Date).AfterThisDay();
         AccountBalanceInUsd = String.Format("{0:#,#} usd",
-          _balanceCalculator.CountBalances(SelectedAccount, new Period(new DateTime(0), _balanceDate), BalanceList));
+          _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _balanceDate), BalanceList));
       }
     }
 
@@ -241,7 +241,7 @@ namespace Keeper.ViewModels.Shell
       {
         _paymentsPeriod = value;
         AccountBalanceInUsd = string.Format("{0:#,#} usd",
-                          _balanceCalculator.CountBalances(SelectedAccount, _paymentsPeriod, BalanceList));
+                          _balanceCalculator.CountBalances(SelectedAccountInShell, _paymentsPeriod, BalanceList));
       }
     }
 

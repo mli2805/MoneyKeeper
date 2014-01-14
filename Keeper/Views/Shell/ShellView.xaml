@@ -4,15 +4,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
-        xmlns:cal="http://www.caliburnproject.org" 
-        xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:Controls="clr-namespace:Keeper.Controls" 
-        xmlns:Shell="clr-namespace:Keeper.ViewModels.Shell"
-        xmlns:UserControl="clr-namespace:Keeper.Views.Shell" 
-        mc:Ignorable="d" Height="762" SizeToContent="Width"
+        xmlns:Shell="clr-namespace:Keeper.ViewModels.Shell" mc:Ignorable="d" Height="762" SizeToContent="Width"
         WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
         d:DataContext="{d:DesignInstance {x:Type Shell:ShellViewModel}}"
         TextOptions.TextFormattingMode="Display">
@@ -32,8 +25,7 @@
         <ColumnDefinition Width="310"/>
       </Grid.ColumnDefinitions>
 
-      <ContentControl x:Name="AccountTreesViewModel"/>
-<!--      <UserControl:AccountTreesView/>-->
+      <ContentControl x:Name="AccountForestViewModel"/>
       <Grid Name="ForListAndDateControls" Grid.Column="2" Grid.Row="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="*"/>
