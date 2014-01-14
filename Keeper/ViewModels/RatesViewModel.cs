@@ -157,7 +157,7 @@ namespace Keeper.ViewModels
 		protected override void OnViewLoaded(object view)
 		{
 			DisplayName = "Курсы валют";
-			SelectedFilter = FilterList.First(f => !f.IsOn);
+//		  SelectedFilter = FilterList.First(f => f.Currency == CurrencyCodes.BYR); just for test
 		}
 
 		void InitFilterList()
