@@ -37,7 +37,7 @@ namespace Keeper.DomainModel
 			get { return _isSelected; }
 			set
 			{
-				if (value.Equals(_isSelected)) return;
+//				if (value.Equals(_isSelected)) return;
 				_isSelected = value;
 				NotifyOfPropertyChange();
 				if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccountInShell = this;

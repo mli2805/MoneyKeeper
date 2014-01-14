@@ -48,8 +48,8 @@ namespace Keeper.ViewModels.Shell
       set
       {
         _openedAccountPage = value;
-        var a = MyForest.FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
-        SelectedAccountInControl = a;
+        SelectedAccountInControl = MyForest.FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
+        SelectedAccountInControl.IsSelected = true;
       }
     }
 

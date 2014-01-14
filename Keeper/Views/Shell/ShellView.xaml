@@ -35,10 +35,9 @@
         </Grid.RowDefinitions>
         <Controls:BalancesListControl />
         <TextBlock Grid.Row="1" Margin="8,-25,5,5" Text="{Binding AccountBalanceInUsd}" Foreground="Blue" />
-        <Controls:ShellViewPeriodSelectControl Visibility="{Binding PaymentsPeriodSelectControl}" 
-                  SelectedPeriod="{Binding PaymentsPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="2"/>
-        <Controls:ShellViewDateSelectControl Visibility="{Binding BalanceDateSelectControl}" 
-                  SelectedDay="{Binding BalanceDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,0" Grid.Row="3"/>
+        <Controls:DateOrPeriodAggregateControl IsPeriodMode="{Binding IsPeriodModeInShell, Mode=TwoWay}"
+                  SelectedPeriod="{Binding PaymentsPeriod, Mode=TwoWay}"  SelectedDay="{Binding BalanceDate, Mode=TwoWay}"
+                                               VerticalAlignment="Bottom" Height="Auto" Margin="0,0,0,0" Grid.Row="2"/>
       </Grid>
     </Grid>
 
