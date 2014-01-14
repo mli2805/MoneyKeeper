@@ -6,9 +6,9 @@ namespace Keeper.Views.Shell
   /// <summary>
   /// Interaction logic for AccountTreesView.xaml
   /// </summary>
-  public partial class AccountTreesView : UserControl
+  public partial class AccountForestView : UserControl
   {
-    public AccountTreesView()
+    public AccountForestView()
     {
       InitializeComponent();
     }

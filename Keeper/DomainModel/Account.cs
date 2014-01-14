@@ -40,8 +40,9 @@ namespace Keeper.DomainModel
 				if (value.Equals(_isSelected)) return;
 				_isSelected = value;
 				NotifyOfPropertyChange();
-				if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccount = this;
-			}
+				if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccountInShell = this;
+        if (_isSelected) IoC.Get<AccountForestViewModel>().SelectedAccountInControl = this;
+      }
 		}
 		#endregion
 

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Keeper.Views.Shell.AccountTreesView"
+﻿<UserControl x:Class="Keeper.Views.Shell.AccountForestView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,7 +15,7 @@
   <Grid>
     <TabControl Name="AccountsTree" Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding OpenedAccountPage, Mode=TwoWay}">
       <TabItem Header="Мои счета" Background="{x:Null}">
-        <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MineAccountsRoot}"
+        <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MyForest.MineAccountsRoot}"
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -47,7 +47,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Контрагенты" Background="{x:Null}">
-        <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding ExternalAccountsRoot}" 
+        <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding MyForest.ExternalAccountsRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -77,7 +77,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Доходы" Background="{x:Null}">
-        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding IncomesRoot}" 
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding MyForest.IncomesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -107,7 +107,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Расходы" Background="{x:Null}">
-        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding ExpensesRoot}" 
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding MyForest.ExpensesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
