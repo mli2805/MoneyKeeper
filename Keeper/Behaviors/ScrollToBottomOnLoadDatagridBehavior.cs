@@ -13,6 +13,7 @@ namespace Keeper.Behaviors
 
     private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
     {
+      if (AssociatedObject.Items.Count > 0)
       AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
     }
   }
