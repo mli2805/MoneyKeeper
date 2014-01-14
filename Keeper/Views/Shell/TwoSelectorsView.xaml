@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Keeper.Controls.DateOrPeriodAggregateControl"
+﻿<UserControl x:Class="Keeper.Views.Shell.TwoSelectorsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,10 +10,11 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Controls:BalancesListControl />
-    <Controls:ShellViewPeriodSelectControl Visibility="{Binding PeriodSelectControlVisibility}" 
+
+    <Controls:ShellViewPeriodSelectControl Visibility="{Binding PeriodSelectControlVisibility}"  
                   SelectedPeriod="{Binding TranslatedPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="0"/>
-    <Controls:ShellViewDateSelectControl Visibility="{Binding DateSelectControlVisibility}" 
+    <Controls:ShellViewDateSelectControl Visibility="{Binding DateSelectControlVisibility}"  
                   SelectedDay="{Binding TranslatedDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,0" Grid.Row="1"/>
+
   </Grid>
 </UserControl>

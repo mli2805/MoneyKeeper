@@ -30,14 +30,10 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="*"/>
           <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Controls:BalancesListControl />
-        <TextBlock Grid.Row="1" Margin="8,-25,5,5" Text="{Binding AccountBalanceInUsd}" Foreground="Blue" />
-        <Controls:DateOrPeriodAggregateControl IsPeriodMode="{Binding IsPeriodModeInShell, Mode=TwoWay}"
-                  SelectedPeriod="{Binding PaymentsPeriod, Mode=TwoWay}"  SelectedDay="{Binding BalanceDate, Mode=TwoWay}"
-                                               VerticalAlignment="Bottom" Height="Auto" Margin="0,0,0,0" Grid.Row="2"/>
+        <ContentControl x:Name="BalanceListViewModel" Grid.Row="0"/>
+        <ContentControl x:Name="TwoSelectorsViewModel" Grid.Row="1"/>
+        
       </Grid>
     </Grid>
 

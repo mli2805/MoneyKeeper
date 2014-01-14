@@ -116,14 +116,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScrollToBottomOnResizeBehavior.cs" />
-    <Compile Include="Controls\BalancesListControl.xaml.cs">
-      <DependentUpon>BalancesListControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\BarDiagramControl.xaml.cs">
       <DependentUpon>BarDiagramControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DateOrPeriodAggregateControl.xaml.cs">
-      <DependentUpon>DateOrPeriodAggregateControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PasswordControl.xaml.cs">
       <DependentUpon>PasswordControl.xaml</DependentUpon>
@@ -238,8 +232,10 @@
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForest.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
+    <Compile Include="ViewModels\Shell\BalanceListViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
+    <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
     <Compile Include="Views\DiagramOxyplotView.xaml.cs">
       <DependentUpon>DiagramOxyplotView.xaml</DependentUpon>
     </Compile>
@@ -252,11 +248,17 @@
     <Compile Include="Views\Shell\AccountForestView.xaml.cs">
       <DependentUpon>AccountForestView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shell\BalanceListView.xaml.cs">
+      <DependentUpon>BalanceListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shell\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
+      <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\CollapseAction.cs" />
     <Compile Include="Utils\CommonKeeper\DbCleaner.cs" />
@@ -350,15 +352,7 @@
     <Resource Include="Resources\keeper.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\BalancesListControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\BarDiagramControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DateOrPeriodAggregateControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -406,6 +400,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Shell\BalanceListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Shell\MainMenuView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -427,6 +425,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shell\TwoSelectorsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
