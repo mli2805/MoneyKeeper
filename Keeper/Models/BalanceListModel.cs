@@ -7,6 +7,7 @@ namespace Keeper.ViewModels.Shell
   {
     private ObservableCollection<string> _balanceList;
     private string _accountBalanceInUsd;
+    private string _caption;
 
     public BalanceListModel()
     {
@@ -34,5 +35,17 @@ namespace Keeper.ViewModels.Shell
         NotifyOfPropertyChange(() => AccountBalanceInUsd);
       }
     }
+
+    public string Caption
+    {
+      get { return _caption; }
+      set
+      {
+        if (value == _caption) return;
+        _caption = value;
+        NotifyOfPropertyChange(() => Caption);
+      }
+    }
+
   }
 }

@@ -28,8 +28,9 @@ namespace Keeper.ViewModels.Shell
 
     public MainMenuViewModel MainMenuViewModel { get; set; }
     public AccountForestViewModel AccountForestViewModel { get; set; }
-    public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
     public BalanceListViewModel BalanceListViewModel { get; set; }
+    public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
+    public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
 
     private readonly ShellModel _shellModel;
     private KeeperDb _db;
@@ -42,88 +43,7 @@ namespace Keeper.ViewModels.Shell
     readonly IDbFromTxtLoader _dbFromTxtLoader;
     private readonly BalancesForShellCalculator _balanceCalculator;
 
-    #region  поля/свойства в классе Модели к которым биндятся визуальные элементы из Вью
-    private Account _selectedAccountInShell;
-    public Account SelectedAccountInShell
-    {
-      get { return _selectedAccountInShell; }
-      set
-      {
-        _selectedAccountInShell = value;
-        _shellModel.MyTwoSelectorsModel.IsPeriodMode = !value.Is("Мои");
-        Period period = value.Is("Мои") ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
-//        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList));
-        NotifyOfPropertyChange(() => SelectedAccountInShell);
-      }
-    }
-
-
-
-//    #region BalancesList
-//    public ObservableCollection<string> BalanceList { get; set; }
-//    private string _accountBalanceInUsd;
-//    public string AccountBalanceInUsd
-//    {
-//      get { return _accountBalanceInUsd; }
-//      private set
-//      {
-//        if (value == _accountBalanceInUsd) return;
-//        _accountBalanceInUsd = value;
-//        NotifyOfPropertyChange(() => AccountBalanceInUsd);
-//      }
-//    }
-//    #endregion
-
-    #region DatesSelection
-
-    private DateTime _balanceDate;
-    private Period _paymentsPeriod;
-//    private Visibility _balanceDateSelectControl;
-//    private Visibility _paymentsPeriodSelectControl;
-    #endregion
-
-    #region StatusBar
-    private string _message;
-    public string Message
-    {
-      get { return _message; }
-      private set
-      {
-        if (value == _message) return;
-        _message = value;
-        NotifyOfPropertyChange(() => Message);
-      }
-    }
-
-    private string _statusBarItem0;
-    public string StatusBarItem0
-    {
-      get { return _statusBarItem0; }
-      private set
-      {
-        if (value.Equals(_statusBarItem0)) return;
-        _statusBarItem0 = value;
-        NotifyOfPropertyChange(() => StatusBarItem0);
-      }
-    }
-
-    private Visibility _isProgressBarVisible;
-    public Visibility IsProgressBarVisible
-    {
-      get { return _isProgressBarVisible; }
-      private set
-      {
-        if (Equals(value, _isProgressBarVisible)) return;
-        _isProgressBarVisible = value;
-        NotifyOfPropertyChange(() => IsProgressBarVisible);
-      }
-    }
-    #endregion
-
-    #endregion
-
-
-    [ImportingConstructor]
+ [ImportingConstructor]
     public ShellViewModel(ShellModel shellModel, KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
        IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader)
     {
@@ -247,31 +167,6 @@ namespace Keeper.ViewModels.Shell
       TryClose();
     }
 
-    #region date\period selection properties
-
-
-    public DateTime BalanceDate
-    {
-      get { return _balanceDate; }
-      set
-      {
-        _balanceDate = new DayProcessor(value.Date).AfterThisDay();
-//        AccountBalanceInUsd = String.Format("{0:#,#} usd",
-//          _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _balanceDate), BalanceList));
-      }
-    }
-
-    public Period PaymentsPeriod
-    {
-      get { return _paymentsPeriod; }
-      set
-      {
-        _paymentsPeriod = value;
-//        AccountBalanceInUsd = string.Format("{0:#,#} usd",
-//                          _balanceCalculator.CountBalances(SelectedAccountInShell, _paymentsPeriod, BalanceList));
-      }
-    }
-
-    #endregion
+ 
   }
 }
