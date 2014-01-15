@@ -11,10 +11,10 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <Controls:ShellViewPeriodSelectControl Visibility="{Binding PeriodSelectControlVisibility}"  
-                  SelectedPeriod="{Binding TranslatedPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="0"/>
-    <Controls:ShellViewDateSelectControl Visibility="{Binding DateSelectControlVisibility}"  
-                  SelectedDay="{Binding TranslatedDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,0" Grid.Row="1"/>
+    <Controls:ShellViewPeriodSelectControl Visibility="{Binding MyTwoSelectorsModel.PeriodSelectControlVisibility}"  
+                  SelectedPeriod="{Binding MyTwoSelectorsModel.TranslatedPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="0"/>
+    <Controls:ShellViewDateSelectControl Visibility="{Binding MyTwoSelectorsModel.DateSelectControlVisibility}"  
+                  SelectedDay="{Binding MyTwoSelectorsModel.TranslatedDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,0" Grid.Row="1"/>
 
   </Grid>
 </UserControl>

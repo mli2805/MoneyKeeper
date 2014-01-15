@@ -67,6 +67,7 @@ namespace Keeper.Models
       {
         _selectedAccount = value;
         IsDeposit = value != null && value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        NotifyOfPropertyChange(()=>SelectedAccount);
       }
     }
 
@@ -79,6 +80,7 @@ namespace Keeper.Models
         _openedAccountPage = value;
         SelectedAccount = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
         SelectedAccount.IsSelected = true;
+        NotifyOfPropertyChange(()=>OpenedAccountPage);
       }
     }
 
@@ -93,8 +95,6 @@ namespace Keeper.Models
         NotifyOfPropertyChange(() => IsDeposit);
       }
     }
-
-
 
   }
 }

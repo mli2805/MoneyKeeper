@@ -133,6 +133,7 @@
     <Compile Include="DomainModel\DbOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
     <Compile Include="DomainModel\ShiftDay.cs" />
+    <Compile Include="Models\StatusBarModel.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
     <Compile Include="ByFunctional\EditingAccounts\AskUser.cs" />
     <Compile Include="Utils\Accounts\IMyFactory.cs" />
@@ -232,10 +233,12 @@
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="Models\AccountForestModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
+    <Compile Include="Models\BalanceListModel.cs" />
     <Compile Include="ViewModels\Shell\BalanceListViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
     <Compile Include="Models\ShellModel.cs" />
+    <Compile Include="Models\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
     <Compile Include="Views\DiagramOxyplotView.xaml.cs">
       <DependentUpon>DiagramOxyplotView.xaml</DependentUpon>

@@ -51,7 +51,6 @@ namespace Keeper.ViewModels.Shell
 
     public void InitVariablesToShowAccounts()
     {
-      if (MyForestModel == null)  MyForestModel = new AccountForestModel();
       MyForestModel.MineAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                                     where account.Name == "Мои"
                                                                     select account);
