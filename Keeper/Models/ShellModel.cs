@@ -15,6 +15,7 @@ namespace Keeper.Models
     public AccountForestModel MyForestModel { get; set; }
     public BalanceListModel MyBalanceListModel { get; set; }
     public TwoSelectorsModel MyTwoSelectorsModel { get; set; }
+    public StatusBarModel MyStatusBarModel { get; set; }
 
     [ImportingConstructor]
     public ShellModel(BalancesForShellCalculator balancesForShellCalculator)
@@ -26,6 +27,7 @@ namespace Keeper.Models
       MyBalanceListModel = new BalanceListModel();
       MyTwoSelectorsModel = new TwoSelectorsModel();
       MyTwoSelectorsModel.PropertyChanged += MyTwoSelectorsModel_PropertyChanged;
+      MyStatusBarModel = new StatusBarModel();
     }
 
     void MyTwoSelectorsModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -43,20 +45,19 @@ namespace Keeper.Models
     void MyForestModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       if (e.PropertyName == "SelectedAccount")
+      {
+        MyBalanceListModel.Caption = MyForestModel.SelectedAccount.Name;
         if (MyTwoSelectorsModel.IsPeriodMode)
         {
-          MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd",
-                                                                 _balancesForShellCalculator.CountBalances(
-                                                                   MyForestModel.SelectedAccount,
-                                                                   MyTwoSelectorsModel.TranslatedPeriod,
-                                                                   MyBalanceListModel.BalanceList));
+          MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
+            MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList));
         }
         else
         {
           MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
             MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList));
         }
-
+      }
 
       if (e.PropertyName == "OpenedAccountPage")
         MyTwoSelectorsModel.IsPeriodMode = MyForestModel.OpenedAccountPage != 0;

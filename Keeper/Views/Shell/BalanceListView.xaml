@@ -14,7 +14,7 @@
     <ListView Margin="0,0,0,5" ItemsSource="{Binding MyBalanceListModel.BalanceList}" BorderBrush="DarkGray">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="{Binding SelectedAccount}" Width="300"/>
+          <GridViewColumn Header="{Binding MyBalanceListModel.Caption}" Width="300"/>
         </GridView>
       </ListView.View>
     </ListView>

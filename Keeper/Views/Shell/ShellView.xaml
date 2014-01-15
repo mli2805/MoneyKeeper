@@ -37,29 +37,5 @@
       </Grid>
     </Grid>
 
-    <DockPanel Name="ForStatusBar" Grid.Row="2">
-      <TextBlock DockPanel.Dock="Right" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Message}"/>
-
-      <StatusBar Margin="0" Grid.Row="2"  Grid.ColumnSpan="3" Background="White" BorderBrush="Gray">
-        <StatusBar.ItemsPanel>
-          
-          <ItemsPanelTemplate>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="250"/>
-              </Grid.ColumnDefinitions>
-            </Grid>
-          </ItemsPanelTemplate>
-        </StatusBar.ItemsPanel>
-        <StatusBarItem Grid.Column ="0">
-          <TextBlock Margin="5,0,0,0" Text="{Binding StatusBarItem0}"/>
-        </StatusBarItem>
-        <StatusBarItem Grid.Column ="1">
-          <ProgressBar Margin="5,0" Height="15" Width="250" Background="Blue" Foreground="White" 
-                     IsIndeterminate="True" Visibility="{Binding IsProgressBarVisible}"/>
-        </StatusBarItem>
-      </StatusBar>
-    </DockPanel>
   </Grid>
 </Window>

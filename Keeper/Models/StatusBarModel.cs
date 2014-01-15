@@ -10,7 +10,7 @@ using Caliburn.Micro;
 namespace Keeper.Models
 {
   [Export]
-  class StatusBarModel : PropertyChangedBase
+  public class StatusBarModel : PropertyChangedBase
   {
     private string _item0;
     private Visibility _progressBarVisibility;

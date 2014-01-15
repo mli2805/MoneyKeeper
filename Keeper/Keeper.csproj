@@ -239,6 +239,7 @@
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
     <Compile Include="Models\ShellModel.cs" />
     <Compile Include="Models\TwoSelectorsModel.cs" />
+    <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
     <Compile Include="Views\DiagramOxyplotView.xaml.cs">
       <DependentUpon>DiagramOxyplotView.xaml</DependentUpon>
@@ -260,6 +261,9 @@
     </Compile>
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shell\StatusBarViewModel.xaml.cs">
+      <DependentUpon>StatusBarViewModel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
@@ -429,6 +433,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shell\StatusBarViewModel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
