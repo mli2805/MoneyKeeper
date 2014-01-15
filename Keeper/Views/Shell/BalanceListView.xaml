@@ -11,14 +11,14 @@
       <RowDefinition Height="30"/>
     </Grid.RowDefinitions>
 
-    <ListView Margin="0,0,0,5" ItemsSource="{Binding BalanceList}" BorderBrush="DarkGray">
+    <ListView Margin="0,0,0,5" ItemsSource="{Binding MyBalanceListModel.BalanceList}" BorderBrush="DarkGray">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="{Binding SelectedAccount}" Width="300"/>
         </GridView>
       </ListView.View>
     </ListView>
-    <TextBlock Grid.Row="1" Margin="8,-25,5,5" Text="{Binding AccountBalanceInUsd}" Foreground="Blue"/>
+    <TextBlock Grid.Row="1" Margin="8,-25,5,5" Text="{Binding MyBalanceListModel.AccountBalanceInUsd}" Foreground="Blue"/>
 
 
   </Grid>

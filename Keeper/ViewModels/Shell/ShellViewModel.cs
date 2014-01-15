@@ -50,7 +50,7 @@ namespace Keeper.ViewModels.Shell
       set
       {
         _selectedAccountInShell = value;
-        TwoSelectorsViewModel.IsPeriodMode = !value.Is("Мои");
+        _shellModel.MyTwoSelectorsModel.IsPeriodMode = !value.Is("Мои");
         Period period = value.Is("Мои") ? new Period(new DateTime(0), BalanceDate) : PaymentsPeriod;
 //        AccountBalanceInUsd = String.Format("{0:#,#} usd", _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList));
         NotifyOfPropertyChange(() => SelectedAccountInShell);
@@ -151,8 +151,8 @@ namespace Keeper.ViewModels.Shell
 
       AccountForestViewModel = IoC.Get<AccountForestViewModel>();
       TwoSelectorsViewModel = IoC.Get<TwoSelectorsViewModel>();
-      TwoSelectorsViewModel.IsPeriodMode = false;
-      TwoSelectorsViewModel.PropertyChanged += TwoSelectorsViewModel_PropertyChanged;
+      _shellModel.MyTwoSelectorsModel.IsPeriodMode = false;
+      _shellModel.MyTwoSelectorsModel.PropertyChanged += TwoSelectorsViewModel_PropertyChanged;
 
       BalanceListViewModel = IoC.Get<BalanceListViewModel>();
     }
@@ -163,13 +163,13 @@ namespace Keeper.ViewModels.Shell
       {
         var BalanceList = new ObservableCollection<string>();
         var AccountBalanceInUsd = String.Format("{0:#,#} usd",
-                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), TwoSelectorsViewModel.TranslatedDate), BalanceList));
+                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _shellModel.MyTwoSelectorsModel.TranslatedDate), BalanceList));
       }
       if (e.PropertyName == "TranslatedDate")
       {
         var BalanceList = new ObservableCollection<string>();
         var AccountBalanceInUsd = String.Format("{0:#,#} usd",
-                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), TwoSelectorsViewModel.TranslatedDate), BalanceList));
+                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _shellModel.MyTwoSelectorsModel.TranslatedDate), BalanceList));
       }
     }
 
