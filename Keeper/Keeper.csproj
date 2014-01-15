@@ -230,11 +230,12 @@
     <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
-    <Compile Include="ViewModels\Shell\AccountForest.cs" />
+    <Compile Include="Models\AccountForestModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
     <Compile Include="ViewModels\Shell\BalanceListViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\RenewDepositViewModel.cs" />
+    <Compile Include="Models\ShellModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
     <Compile Include="Views\DiagramOxyplotView.xaml.cs">
       <DependentUpon>DiagramOxyplotView.xaml</DependentUpon>

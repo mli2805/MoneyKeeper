@@ -13,7 +13,11 @@ namespace Keeper.ViewModels.Shell
     public DateTime TranslatedDate
     {
       get { return _translatedDate; }
-      set { _translatedDate = value; }
+      set 
+      { 
+        _translatedDate = value;
+        NotifyOfPropertyChange(() => TranslatedDate);
+      }
     }
 
     private bool _isPeriodMode;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Models;
 using Keeper.Properties;
 using Keeper.Utils.Balances;
 using Keeper.Utils.Common;
@@ -29,6 +31,7 @@ namespace Keeper.ViewModels.Shell
     public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
     public BalanceListViewModel BalanceListViewModel { get; set; }
 
+    private readonly ShellModel _shellModel;
     private KeeperDb _db;
     readonly DbLoadResult _loadResult;
     private readonly List<Screen> _launchedForms = new List<Screen>();
@@ -121,9 +124,10 @@ namespace Keeper.ViewModels.Shell
 
 
     [ImportingConstructor]
-    public ShellViewModel(KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
+    public ShellViewModel(ShellModel shellModel, KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
        IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader)
     {
+      _shellModel = shellModel;
       _db = db;
       _loadResult = loadResult;
 
@@ -148,7 +152,25 @@ namespace Keeper.ViewModels.Shell
       AccountForestViewModel = IoC.Get<AccountForestViewModel>();
       TwoSelectorsViewModel = IoC.Get<TwoSelectorsViewModel>();
       TwoSelectorsViewModel.IsPeriodMode = false;
+      TwoSelectorsViewModel.PropertyChanged += TwoSelectorsViewModel_PropertyChanged;
+
       BalanceListViewModel = IoC.Get<BalanceListViewModel>();
+    }
+
+    void TwoSelectorsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == "TranslatedDate")
+      {
+        var BalanceList = new ObservableCollection<string>();
+        var AccountBalanceInUsd = String.Format("{0:#,#} usd",
+                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), TwoSelectorsViewModel.TranslatedDate), BalanceList));
+      }
+      if (e.PropertyName == "TranslatedDate")
+      {
+        var BalanceList = new ObservableCollection<string>();
+        var AccountBalanceInUsd = String.Format("{0:#,#} usd",
+                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), TwoSelectorsViewModel.TranslatedDate), BalanceList));
+      }
     }
 
     private void InitBalanceControls()

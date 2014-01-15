@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using Caliburn.Micro;
 using Keeper.DomainModel;
 
-namespace Keeper.ViewModels.Shell
+namespace Keeper.Models
 {
-  public class AccountForest
+  public class AccountForestModel : PropertyChangedBase
   {
     public ObservableCollection<Account> MineAccountsRoot { get; set; }
     public ObservableCollection<Account> ExternalAccountsRoot { get; set; }
@@ -55,5 +57,44 @@ namespace Keeper.ViewModels.Shell
       }
       return result;
     }
+
+
+    private Account _selectedAccount;
+    public Account SelectedAccount
+    {
+      get { return _selectedAccount; }
+      set
+      {
+        _selectedAccount = value;
+        IsDeposit = value != null && value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+      }
+    }
+
+    private int _openedAccountPage;
+    public int OpenedAccountPage
+    {
+      get { return _openedAccountPage; }
+      set
+      {
+        _openedAccountPage = value;
+        SelectedAccount = FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
+        SelectedAccount.IsSelected = true;
+      }
+    }
+
+    private Visibility _isDeposit;
+    public Visibility IsDeposit
+    {
+      get { return _isDeposit; }
+      set
+      {
+        if (value.Equals(_isDeposit)) return;
+        _isDeposit = value;
+        NotifyOfPropertyChange(() => IsDeposit);
+      }
+    }
+
+
+
   }
 }
