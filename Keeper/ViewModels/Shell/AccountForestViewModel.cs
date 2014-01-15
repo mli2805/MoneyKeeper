@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Models;
 using Keeper.Properties;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.DbInputOutput.TxtTasks;
@@ -27,49 +25,17 @@ namespace Keeper.ViewModels.Shell
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
-    private Account _selectedAccountInControl;
-    public Account SelectedAccountInControl
-    {
-      get { return _selectedAccountInControl; }
-      set
-      {
-        _selectedAccountInControl = value;
-        IsDeposit = value != null && value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-      }
-    }
 
     #region Fields for binding
-    public AccountForest MyForest { get; set; }
+    public AccountForestModel MyForestModel { get; set; }
 
-    private int _openedAccountPage;
-    public int OpenedAccountPage
-    {
-      get { return _openedAccountPage; }
-      set
-      {
-        _openedAccountPage = value;
-        SelectedAccountInControl = MyForest.FindSelectedOrAssignFirstAccountOnPage(_openedAccountPage);
-        SelectedAccountInControl.IsSelected = true;
-      }
-    }
-
-    private Visibility _isDeposit;
-    public Visibility IsDeposit
-    {
-      get { return _isDeposit; }
-      set
-      {
-        if (value.Equals(_isDeposit)) return;
-        _isDeposit = value;
-        NotifyOfPropertyChange(() => IsDeposit);
-      }
-    }
     #endregion
 
     [ImportingConstructor]
-    public AccountForestViewModel(KeeperDb db, AccountTreesGardener accountTreesGardener,
+    public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
                                  IDbFromTxtLoader dbFromTxtLoader, IDbToTxtSaver dbToTxtSaver)
     {
+      MyForestModel = shellModel.MyForestModel;
       _db = db;
       _accountTreesGardener = accountTreesGardener;
       _dbFromTxtLoader = dbFromTxtLoader;
@@ -80,44 +46,44 @@ namespace Keeper.ViewModels.Shell
 
     protected override void OnViewLoaded(object view)
     {
-      OpenedAccountPage = 0;
+      MyForestModel.OpenedAccountPage = 0;
     }
 
     public void InitVariablesToShowAccounts()
     {
-      if (MyForest == null)  MyForest = new AccountForest();
-      MyForest.MineAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
+      if (MyForestModel == null)  MyForestModel = new AccountForestModel();
+      MyForestModel.MineAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                                     where account.Name == "Мои"
                                                                     select account);
-      MyForest.ExternalAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
+      MyForestModel.ExternalAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                                         where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков"
                                                                         select account);
-      MyForest.IncomesRoot = new ObservableCollection<Account>(from account in _db.Accounts
+      MyForestModel.IncomesRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                                where account.Name == "Все доходы"
                                                                select account);
-      MyForest.ExpensesRoot = new ObservableCollection<Account>(from account in _db.Accounts
+      MyForestModel.ExpensesRoot = new ObservableCollection<Account>(from account in _db.Accounts
                                                                 where account.Name == "Все расходы"
                                                                 select account);
 
-      NotifyOfPropertyChange(() => MyForest.MineAccountsRoot);
-      NotifyOfPropertyChange(() => MyForest.ExternalAccountsRoot);
-      NotifyOfPropertyChange(() => MyForest.IncomesRoot);
-      NotifyOfPropertyChange(() => MyForest.ExpensesRoot);
+      NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
+      NotifyOfPropertyChange(() => MyForestModel.ExternalAccountsRoot);
+      NotifyOfPropertyChange(() => MyForestModel.IncomesRoot);
+      NotifyOfPropertyChange(() => MyForestModel.ExpensesRoot);
     }
 
     #region // методы реализации контекстного меню на дереве счетов
 
     public void RemoveSelectedAccount()
     {
-      _accountTreesGardener.RemoveAccount(SelectedAccountInControl);
+      _accountTreesGardener.RemoveAccount(MyForestModel.SelectedAccount);
     }
 
     public void AddSelectedAccount()
     {
-      var newSelectedAccount = _accountTreesGardener.AddAccount(SelectedAccountInControl);
-      if (SelectedAccountInControl.Name == "Депозиты") ReorderDepositAccounts();
-      SelectedAccountInControl = newSelectedAccount;
-      NotifyOfPropertyChange(() => MyForest.MineAccountsRoot);
+      var newSelectedAccount = _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount);
+      if (MyForestModel.SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
+      MyForestModel.SelectedAccount = newSelectedAccount;
+      NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
     }
 
     private void ReorderDepositAccounts()
@@ -134,21 +100,21 @@ namespace Keeper.ViewModels.Shell
 
     public void ChangeSelectedAccount()
     {
-      _accountTreesGardener.ChangeAccount(SelectedAccountInControl);
+      _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
     }
 
     public void ShowDeposit()
     {
-      if (!SelectedAccountInControl.IsDescendantOf("Депозиты") || SelectedAccountInControl.Children.Count != 0) return;
+      if (!MyForestModel.SelectedAccount.IsDescendantOf("Депозиты") || MyForestModel.SelectedAccount.Children.Count != 0) return;
 
       foreach (var launchedForm in _launchedForms)
       {
         if (launchedForm is DepositViewModel && launchedForm.IsActive
-          && ((DepositViewModel)launchedForm).Deposit.Account == SelectedAccountInControl) launchedForm.TryClose();
+          && ((DepositViewModel)launchedForm).Deposit.Account == MyForestModel.SelectedAccount) launchedForm.TryClose();
       }
 
       var depositForm = IoC.Get<DepositViewModel>();
-      depositForm.SetAccount(SelectedAccountInControl);
+      depositForm.SetAccount(MyForestModel.SelectedAccount);
       _launchedForms.Add(depositForm);
       depositForm.Renewed += DepositViewModelRenewed; // ?
       WindowManager.ShowWindow(depositForm);
@@ -156,8 +122,8 @@ namespace Keeper.ViewModels.Shell
 
     void DepositViewModelRenewed(object sender, Account newAccount)
     {
-      SelectedAccountInControl.IsSelected = false;
-      SelectedAccountInControl = newAccount;
+      MyForestModel.SelectedAccount.IsSelected = false;
+      MyForestModel.SelectedAccount = newAccount;
     }
 
     #endregion

@@ -25,7 +25,7 @@
         <ColumnDefinition Width="310"/>
       </Grid.ColumnDefinitions>
 
-      <ContentControl x:Name="AccountForestViewModel"/>
+      <ContentControl x:Name="AccountForestViewModel" />
       <Grid Name="ForListAndDateControls" Grid.Column="2" Grid.Row="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="*"/>

@@ -13,9 +13,9 @@
   </UserControl.Resources>
 
   <Grid>
-    <TabControl Name="AccountsTree" Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding OpenedAccountPage, Mode=TwoWay}">
+    <TabControl Name="AccountsTree" Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding MyForestModel.OpenedAccountPage, Mode=TwoWay}">
       <TabItem Header="Мои счета" Background="{x:Null}">
-        <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MyForest.MineAccountsRoot}"
+        <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MyForestModel.MineAccountsRoot}"
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -47,7 +47,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Контрагенты" Background="{x:Null}">
-        <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding MyForest.ExternalAccountsRoot}" 
+        <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding MyForestModel.ExternalAccountsRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -77,7 +77,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Доходы" Background="{x:Null}">
-        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding MyForest.IncomesRoot}" 
+        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding MyForestModel.IncomesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -107,7 +107,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Расходы" Background="{x:Null}">
-        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding MyForest.ExpensesRoot}" 
+        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding MyForestModel.ExpensesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>

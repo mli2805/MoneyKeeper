@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 
 using Caliburn.Micro;
+using Keeper.Models;
 using Keeper.ViewModels;
 using Keeper.ViewModels.Shell;
 
@@ -40,8 +41,8 @@ namespace Keeper.DomainModel
 //				if (value.Equals(_isSelected)) return;
 				_isSelected = value;
 				NotifyOfPropertyChange();
-				if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccountInShell = this;
-        if (_isSelected) IoC.Get<AccountForestViewModel>().SelectedAccountInControl = this;
+//				if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccountInShell = this;
+        if (_isSelected) IoC.Get<ShellModel>().MyForestModel.SelectedAccount = this;
       }
 		}
 		#endregion
