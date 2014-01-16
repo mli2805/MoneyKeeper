@@ -133,6 +133,7 @@
     <Compile Include="DomainModel\DbOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
     <Compile Include="DomainModel\ShiftDay.cs" />
+    <Compile Include="Models\MainMenuModel.cs" />
     <Compile Include="Models\StatusBarModel.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
     <Compile Include="ByFunctional\EditingAccounts\AskUser.cs" />

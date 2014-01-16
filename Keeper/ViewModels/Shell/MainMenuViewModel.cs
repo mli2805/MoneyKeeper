@@ -1,70 +1,101 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Models;
+using Keeper.Properties;
+using Keeper.Utils.CommonKeeper;
+using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Diagram;
 
 namespace Keeper.ViewModels.Shell
 {
   [Export]
-	public class MainMenuViewModel : Screen
+  public class MainMenuViewModel : Screen
   {
     [Import]
     private IWindowManager WindowManager { get; set; }
 
-    private readonly KeeperDb _db;
+    public MainMenuModel MyMainMenuModel { get; set; }
+    private readonly DbLoadResult _loadResult;
+    private KeeperDb _db;
     private readonly IDbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
     private readonly IDbFromTxtLoader _dbFromTxtLoader;
+    private readonly DbCleaner _dbCleaner;
     private readonly DiagramDataFactory _diagramDataFactory;
 
     public string Message { get; set; }
     public string StatusBarItem0 { get; set; }
-    public bool IsDbChanged { get; set; } // TwoWay binding needed
     private readonly List<Screen> _launchedForms = new List<Screen>();
+    private bool _isExitRequired;
+    public bool IsExitRequired
+    {
+      get { return _isExitRequired; }
+      set
+      {
+        if (value.Equals(_isExitRequired)) return;
+        _isExitRequired = value;
+        NotifyOfPropertyChange(() => IsExitRequired);
+      }
+    }
+
+    public bool IsDbLoadingFailed { get; set; }
 
     [ImportingConstructor]
-    public MainMenuViewModel(KeeperDb db, IDbToTxtSaver txtSaver, DbBackuper backuper, 
-                             IDbFromTxtLoader dbFromTxtLoader, DiagramDataFactory diagramDataFactory)
+    public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
+                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory)
     {
+      _loadResult = loadResult;
+      IsDbLoadingFailed = _loadResult.Db == null;
+      if (IsDbLoadingFailed)
+      {
+        MessageBox.Show(_loadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+
+      MyMainMenuModel = shellModel.MyMainMenuModel;
+
       _db = db;
       _txtSaver = txtSaver;
       _backuper = backuper;
       _dbFromTxtLoader = dbFromTxtLoader;
+      _dbCleaner = dbCleaner;
       _diagramDataFactory = diagramDataFactory;
       WindowManager = new WindowManager();
     }
-    /*
+
     #region меню Файл
-    public async void SaveDatabase()
+    public void SaveDatabase()
     {
-      await Task.Run(() => SerializeWithProgressBar());
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
+      new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      MyMainMenuModel.Action = Actions.Idle;
     }
 
     public void LoadDatabase()
     {
       _db = new DbSerializer().DecryptAndDeserialize(Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
-      InitVariablesToShowAccounts();
-      InitBalanceControls();
+      MyMainMenuModel.Action = Actions.DatabaseLoaded;
     }
 
     public void ClearDatabase()
     {
-      new DbCleaner().ClearAllTables(_db);
-      InitVariablesToShowAccounts();
-      SelectedAccountInShell = null;
+      _dbCleaner.ClearAllTables(_db);
+      MyMainMenuModel.Action = Actions.DatabaseCleaned;
     }
 
     public async void MakeDatabaseBackup()
     {
-      await Task.Run(() => MakeBackupWithProgressBar());
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
+      _backuper.MakeDbBackupCopy();
+      MyMainMenuModel.Action = Actions.Idle;
     }
 
     public void ExportDatabaseToTxt()
@@ -79,8 +110,6 @@ namespace Keeper.ViewModels.Shell
       else
       {
         _db = result.Db;
-        InitVariablesToShowAccounts();
-        InitBalanceControls();
       }
     }
 
@@ -94,7 +123,6 @@ namespace Keeper.ViewModels.Shell
     }
 
     #endregion
-    */
     #region меню Формы
 
     public void ShowTransactionsForm()
@@ -104,11 +132,11 @@ namespace Keeper.ViewModels.Shell
       WindowManager.ShowDialog(IoC.Get<TransactionViewModel>());
       Message = arcMessage;
 
-//      RefreshBalanceList();
+      //      RefreshBalanceList();
 
-//      SerializeWithProgressBar();
-//      StatusBarItem0 = "Idle";
-//      IsProgressBarVisible = Visibility.Collapsed;
+      //      SerializeWithProgressBar();
+      //      StatusBarItem0 = "Idle";
+      //      IsProgressBarVisible = Visibility.Collapsed;
     }
 
     public void ShowCurrencyRatesForm()
@@ -118,13 +146,13 @@ namespace Keeper.ViewModels.Shell
       WindowManager.ShowDialog(IoC.Get<RatesViewModel>());
       Message = arcMessage;
 
-//      RefreshBalanceList();
+      //      RefreshBalanceList();
 
-//      SerializeWithProgressBar();
-//      StatusBarItem0 = "Idle";
-//      IsProgressBarVisible = Visibility.Collapsed;
+      //      SerializeWithProgressBar();
+      //      StatusBarItem0 = "Idle";
+      //      IsProgressBarVisible = Visibility.Collapsed;
     }
-    
+
     public void ShowArticlesAssociationsForm()
     {
       var arcMessage = Message;
@@ -186,7 +214,7 @@ namespace Keeper.ViewModels.Shell
       OpenDiagramForm(_diagramDataFactory.AverageSignificancesDiagramCtor());
     }
 
-	  private void OpenDiagramForm(DiagramData diagramData)
+    private void OpenDiagramForm(DiagramData diagramData)
     {
       var diagramForm = new DiagramViewModel(diagramData);
       _launchedForms.Add(diagramForm);
@@ -208,5 +236,23 @@ namespace Keeper.ViewModels.Shell
       WindowManager.ShowWindow(toDoForm);
     }
 
+    public bool ShowLogonForm()
+    {
+      var logonViewModel = new LogonViewModel("1");
+      WindowManager.ShowDialog(logonViewModel);
+      return logonViewModel.Result;
+    }
+
+    public void CloseAllLaunchedForms()
+    {
+      foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
+        launchedForm.TryClose();
+
+    }
+
+    public void ProgramExit()
+    {
+      IsExitRequired = true;
+    }
   }
 }

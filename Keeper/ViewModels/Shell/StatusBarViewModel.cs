@@ -21,7 +21,7 @@ namespace Keeper.ViewModels.Shell
     {
       MyStatusBarModel.Item0 = "Idle";
       MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
-      MyStatusBarModel.Message = DateTime.Today.Date.ToString();
+      MyStatusBarModel.Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
 
     }
   }
