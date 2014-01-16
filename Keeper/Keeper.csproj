@@ -262,8 +262,8 @@
     <Compile Include="Views\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Shell\StatusBarViewModel.xaml.cs">
-      <DependentUpon>StatusBarViewModel.xaml</DependentUpon>
+    <Compile Include="Views\Shell\StatusBarView.xaml.cs">
+      <DependentUpon>StatusBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
@@ -436,7 +436,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Shell\StatusBarViewModel.xaml">
+    <Page Include="Views\Shell\StatusBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -25,11 +25,7 @@ namespace Keeper.ViewModels.Shell
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
-
-    #region Fields for binding
     public AccountForestModel MyForestModel { get; set; }
-
-    #endregion
 
     [ImportingConstructor]
     public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,

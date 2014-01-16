@@ -30,7 +30,7 @@ namespace Keeper.ViewModels.Shell
     public AccountForestViewModel AccountForestViewModel { get; set; }
     public BalanceListViewModel BalanceListViewModel { get; set; }
     public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
-    public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
+    public StatusBarViewModel StatusBarViewModel { get; set; }
 
     private readonly ShellModel _shellModel;
     private KeeperDb _db;
@@ -41,10 +41,9 @@ namespace Keeper.ViewModels.Shell
     private readonly IDbToTxtSaver _txtSaver;
     private readonly DbBackuper _backuper;
     readonly IDbFromTxtLoader _dbFromTxtLoader;
-    private readonly BalancesForShellCalculator _balanceCalculator;
 
- [ImportingConstructor]
-    public ShellViewModel(ShellModel shellModel, KeeperDb db, DbLoadResult loadResult, BalancesForShellCalculator balancesForShellCalculator,
+    [ImportingConstructor]
+    public ShellViewModel(ShellModel shellModel, KeeperDb db, DbLoadResult loadResult, 
        IDbToTxtSaver txtSaver, DbBackuper backuper, IDbFromTxtLoader dbFromTxtLoader)
     {
       _shellModel = shellModel;
@@ -57,48 +56,18 @@ namespace Keeper.ViewModels.Shell
         MessageBox.Show(_loadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
+      _isDbLoadingSuccessed = true;
 
       MainMenuViewModel = IoC.Get<MainMenuViewModel>();
-      StatusBarItem0 = "Idle";
-      IsProgressBarVisible = Visibility.Collapsed;
 
-      InitBalanceControls();
-
-      _balanceCalculator = balancesForShellCalculator;
       _txtSaver = txtSaver;
       _backuper = backuper;
       _dbFromTxtLoader = dbFromTxtLoader;
 
       AccountForestViewModel = IoC.Get<AccountForestViewModel>();
       TwoSelectorsViewModel = IoC.Get<TwoSelectorsViewModel>();
-      _shellModel.MyTwoSelectorsModel.IsPeriodMode = false;
-      _shellModel.MyTwoSelectorsModel.PropertyChanged += TwoSelectorsViewModel_PropertyChanged;
-
       BalanceListViewModel = IoC.Get<BalanceListViewModel>();
-    }
-
-    void TwoSelectorsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-      if (e.PropertyName == "TranslatedDate")
-      {
-        var BalanceList = new ObservableCollection<string>();
-        var AccountBalanceInUsd = String.Format("{0:#,#} usd",
-                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _shellModel.MyTwoSelectorsModel.TranslatedDate), BalanceList));
-      }
-      if (e.PropertyName == "TranslatedDate")
-      {
-        var BalanceList = new ObservableCollection<string>();
-        var AccountBalanceInUsd = String.Format("{0:#,#} usd",
-                  _balanceCalculator.CountBalances(SelectedAccountInShell, new Period(new DateTime(0), _shellModel.MyTwoSelectorsModel.TranslatedDate), BalanceList));
-      }
-    }
-
-    private void InitBalanceControls()
-    {
-      _balanceDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-      _paymentsPeriod = new Period(new DayProcessor(DateTime.Today).BeforeThisDay(), new DayProcessor(DateTime.Today).AfterThisDay());
-//      BalanceList = new ObservableCollection<string>();
-      _isDbLoadingSuccessed = true;
+      StatusBarViewModel = IoC.Get<StatusBarViewModel>();
     }
 
     protected override void OnViewLoaded(object view)
@@ -109,7 +78,7 @@ namespace Keeper.ViewModels.Shell
         return;
       }
       DisplayName = "Keeper (c) 2012-13";
-      Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
+      StatusBarViewModel.MyStatusBarModel.Message = DateTime.Today.ToString("dddd , dd MMMM yyyy");
 
       if (!ShowLogonForm()) TryClose();
     }
@@ -122,8 +91,8 @@ namespace Keeper.ViewModels.Shell
           launchedForm.TryClose();
         await Task.Run(() => SerializeWithProgressBar());
         //        await Task.Run(() => MakeBackupWithProgressBar());
-        StatusBarItem0 = "Idle";
-        IsProgressBarVisible = Visibility.Collapsed;
+        StatusBarViewModel.MyStatusBarModel.Item0 = "Idle";
+        StatusBarViewModel.MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
       }
       callback(true);
     }
@@ -131,27 +100,27 @@ namespace Keeper.ViewModels.Shell
 
     private void SerializeWithProgressBar()
     {
-      StatusBarItem0 = "Сохранение данных на диск";
-      IsProgressBarVisible = Visibility.Visible;
+      StatusBarViewModel.MyStatusBarModel.Item0 = "Сохранение данных на диск";
+      StatusBarViewModel.MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
       new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
     }
 
-//    private void RefreshBalanceList()
-//    {
-//       по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
-//      var period = SelectedAccountInShell.Is("Мои")
-//                     ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay())
-//                     : PaymentsPeriod;
-//      _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList);
-//      if (SelectedAccountInShell.Is("Мои")) BalanceDate = BalanceDate;
-//      else PaymentsPeriod = PaymentsPeriod;
-//    }
+    //    private void RefreshBalanceList()
+    //    {
+    //       по возвращении на главную форму пересчитать остаток/оборот по выделенному счету/категории
+    //      var period = SelectedAccountInShell.Is("Мои")
+    //                     ? new Period(new DateTime(0), new DayProcessor(BalanceDate).AfterThisDay())
+    //                     : PaymentsPeriod;
+    //      _balanceCalculator.CountBalances(SelectedAccountInShell, period, BalanceList);
+    //      if (SelectedAccountInShell.Is("Мои")) BalanceDate = BalanceDate;
+    //      else PaymentsPeriod = PaymentsPeriod;
+    //    }
 
     // сохраняет резервную копию БД в текстовом виде , в шифрованный zip
     private void MakeBackupWithProgressBar()
     {
-      StatusBarItem0 = "Создание резервной копии БД";
-      IsProgressBarVisible = Visibility.Visible;
+      StatusBarViewModel.MyStatusBarModel.Item0 = "Создание резервной копии БД";
+      StatusBarViewModel.MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
       _backuper.MakeDbBackupCopy();
     }
 
@@ -167,6 +136,6 @@ namespace Keeper.ViewModels.Shell
       TryClose();
     }
 
- 
+
   }
 }

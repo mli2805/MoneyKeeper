@@ -1,20 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Composition;
+using System.Windows;
 using Caliburn.Micro;
 using Keeper.Models;
 
 namespace Keeper.ViewModels.Shell
 {
-  class StatusBarViewModel : Screen
+  [Export]
+  public class StatusBarViewModel : Screen
   {
     public StatusBarModel MyStatusBarModel { get; set; }
 
+    [ImportingConstructor]
     public StatusBarViewModel(ShellModel shellModel)
     {
       MyStatusBarModel = shellModel.MyStatusBarModel;
+    }
+
+    protected override void OnViewLoaded(object view)
+    {
+      MyStatusBarModel.Item0 = "Idle";
+      MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
+      MyStatusBarModel.Message = DateTime.Today.Date.ToString();
+
     }
   }
 }
