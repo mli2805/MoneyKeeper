@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Composition;
+using System.Windows;
 using Keeper.DomainModel;
 using Keeper.Utils.Balances;
 using Keeper.ViewModels.Shell;
@@ -12,6 +13,7 @@ namespace Keeper.Models
   {
     private readonly BalancesForShellCalculator _balancesForShellCalculator;
 
+    public MainMenuModel MyMainMenuModel { get; set; }
     public AccountForestModel MyForestModel { get; set; }
     public BalanceListModel MyBalanceListModel { get; set; }
     public TwoSelectorsModel MyTwoSelectorsModel { get; set; }
@@ -22,12 +24,31 @@ namespace Keeper.Models
     {
       _balancesForShellCalculator = balancesForShellCalculator;
 
+      MyMainMenuModel = new MainMenuModel();
+      MyMainMenuModel.PropertyChanged += MyMainMenuModel_PropertyChanged;
       MyForestModel = new AccountForestModel();
       MyForestModel.PropertyChanged += MyForestModel_PropertyChanged;
       MyBalanceListModel = new BalanceListModel();
       MyTwoSelectorsModel = new TwoSelectorsModel();
       MyTwoSelectorsModel.PropertyChanged += MyTwoSelectorsModel_PropertyChanged;
       MyStatusBarModel = new StatusBarModel();
+    }
+
+    void MyMainMenuModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == "Action")
+      {
+        switch (MyMainMenuModel.Action)
+        {
+          case Actions.SaveWithProgressBar :
+            MyStatusBarModel.Item0 = "Сохранение данных на диск";
+            MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
+          break;
+          case Actions.Quit :
+            break;
+          default : return;
+        }
+      }
     }
 
     void MyTwoSelectorsModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

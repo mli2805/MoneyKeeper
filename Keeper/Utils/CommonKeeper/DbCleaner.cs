@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Composition;
 using System.Linq;
 
 using Keeper.DomainModel;
 
 namespace Keeper.Utils.CommonKeeper
 {
-  class DbCleaner
+  [Export]
+  public class DbCleaner
   {
 
     public void ClearAllTables(KeeperDb db)
