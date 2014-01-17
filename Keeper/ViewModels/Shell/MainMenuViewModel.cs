@@ -36,17 +36,19 @@ namespace Keeper.ViewModels.Shell
     public string Message { get; set; }
     public string StatusBarItem0 { get; set; }
     private readonly List<Screen> _launchedForms = new List<Screen>();
-    private bool _isExitRequired;
-    public bool IsExitRequired
+    private bool _isExitPreparationDone;
+    public bool IsExitPreparationDone
     {
-      get { return _isExitRequired; }
+      get { return _isExitPreparationDone; }
       set
       {
-        if (value.Equals(_isExitRequired)) return;
-        _isExitRequired = value;
-        NotifyOfPropertyChange(() => IsExitRequired);
+        if (value.Equals(_isExitPreparationDone)) return;
+        _isExitPreparationDone = value;
+        NotifyOfPropertyChange(() => IsExitPreparationDone);
       }
     }
+
+
 
     public bool IsDbLoadingFailed { get; set; }
 
@@ -123,6 +125,7 @@ namespace Keeper.ViewModels.Shell
     }
 
     #endregion
+
     #region меню Формы
 
     public void ShowTransactionsForm()
@@ -252,7 +255,20 @@ namespace Keeper.ViewModels.Shell
 
     public void ProgramExit()
     {
-      IsExitRequired = true;
+      MadeExitPreparations();
     }
+
+    public async void MadeExitPreparations()
+    {
+      MyMainMenuModel.Action = Actions.PreparingExit;
+      CloseAllLaunchedForms();
+      await Task.Run(() => SaveDatabase());
+      await Task.Run(() => MakeDatabaseBackup());
+      Task.WaitAll();
+      MyMainMenuModel.Action = Actions.Idle;
+      IsExitPreparationDone = true;
+    }
+
+
   }
 }
