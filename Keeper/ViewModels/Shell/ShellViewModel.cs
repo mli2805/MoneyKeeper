@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Composition;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 
 namespace Keeper.ViewModels.Shell
@@ -14,6 +13,7 @@ namespace Keeper.ViewModels.Shell
     public BalanceListViewModel BalanceListViewModel { get; set; }
     public TwoSelectorsViewModel TwoSelectorsViewModel { get; set; }
     public StatusBarViewModel StatusBarViewModel { get; set; }
+
 
     [ImportingConstructor]
     public ShellViewModel()
@@ -30,8 +30,8 @@ namespace Keeper.ViewModels.Shell
 
     void MainMenuViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-      if (e.PropertyName == "IsExitRequired")
-        if (MainMenuViewModel.IsExitRequired) TryClose();
+      if (e.PropertyName == "IsExitPreparationDone")
+        if (MainMenuViewModel.IsExitPreparationDone) TryClose();
     }
 
     protected override void OnViewLoaded(object view)
@@ -48,14 +48,14 @@ namespace Keeper.ViewModels.Shell
 
     public override void CanClose(Action<bool> callback)
     {
-      if (!MainMenuViewModel.IsDbLoadingFailed)
+      if (MainMenuViewModel.IsDbLoadingFailed || MainMenuViewModel.IsExitPreparationDone)
       {
-        MainMenuViewModel.CloseAllLaunchedForms();
-//        await Task.Run(() => MainMenuViewModel.SaveDatabase());
-        MainMenuViewModel.SaveDatabase();
-        MainMenuViewModel.MakeDatabaseBackup();
+        callback(true);
+        return;
       }
-      callback(true);
+
+      MainMenuViewModel.MadeExitPreparations();
+      callback(false);
     }
   }
 }

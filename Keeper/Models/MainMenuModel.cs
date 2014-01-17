@@ -8,6 +8,7 @@ namespace Keeper.Models
     DatabaseLoaded,
     DatabaseCleaned,
     SaveWithProgressBar,
+    PreparingExit,
     Quit
   }
 

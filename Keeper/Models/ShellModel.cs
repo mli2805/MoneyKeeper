@@ -25,45 +25,49 @@ namespace Keeper.Models
       _balancesForShellCalculator = balancesForShellCalculator;
 
       MyMainMenuModel = new MainMenuModel();
-      MyMainMenuModel.PropertyChanged += MyMainMenuModel_PropertyChanged;
+      MyMainMenuModel.PropertyChanged += MyMainMenuModelPropertyChanged;
       MyForestModel = new AccountForestModel();
-      MyForestModel.PropertyChanged += MyForestModel_PropertyChanged;
+      MyForestModel.PropertyChanged += MyForestModelPropertyChanged;
       MyBalanceListModel = new BalanceListModel();
       MyTwoSelectorsModel = new TwoSelectorsModel();
-      MyTwoSelectorsModel.PropertyChanged += MyTwoSelectorsModel_PropertyChanged;
+      MyTwoSelectorsModel.PropertyChanged += MyTwoSelectorsModelPropertyChanged;
       MyStatusBarModel = new StatusBarModel();
     }
 
-    void MyMainMenuModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    void MyMainMenuModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       if (e.PropertyName == "Action")
       {
         switch (MyMainMenuModel.Action)
         {
-          case Actions.SaveWithProgressBar :
+          case Actions.SaveWithProgressBar:
             MyStatusBarModel.Item0 = "Сохранение данных на диск";
             MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
-          break;
-          case Actions.Quit :
             break;
-          default : return;
+          case Actions.PreparingExit:
+            MyStatusBarModel.Item0 = "Идет завершение программы...";
+            MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
+            break;
+          case Actions.Quit:
+            break;
+          default: return;
         }
       }
     }
 
-    void MyTwoSelectorsModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    void MyTwoSelectorsModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       if (e.PropertyName == "TranslatedPeriod")
-        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd",_balancesForShellCalculator.CountBalances(
+        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
           MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList));
 
       if (e.PropertyName == "TranslatedDate")
-        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd",_balancesForShellCalculator.CountBalances(
+        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
           MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList));
 
     }
 
-    void MyForestModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    void MyForestModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       if (e.PropertyName == "SelectedAccount")
       {
