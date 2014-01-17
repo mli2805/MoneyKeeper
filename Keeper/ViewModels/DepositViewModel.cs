@@ -69,8 +69,5 @@ namespace Keeper.ViewModels
 		{
 			if (Renewed != null) Renewed(this, newAccount);
 		}
-
-
-
 	}
 }

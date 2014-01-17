@@ -2,8 +2,9 @@ using System;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils.Common;
 
-namespace Keeper.ViewModels.Shell
+namespace Keeper.Models.ShellModels
 {
   public class TwoSelectorsModel : PropertyChangedBase
   {
@@ -20,7 +21,7 @@ namespace Keeper.ViewModels.Shell
 
     public DateTime TranslatedDate
     {
-      get { return _translatedDate; }
+      get { return new DayProcessor(_translatedDate).AfterThisDay(); }
       set 
       { 
         _translatedDate = value;

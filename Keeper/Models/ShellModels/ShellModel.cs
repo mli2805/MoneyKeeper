@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Windows;
 using Keeper.DomainModel;
+using Keeper.Models.ShellModels;
 using Keeper.Utils.Balances;
 using Keeper.ViewModels.Shell;
 

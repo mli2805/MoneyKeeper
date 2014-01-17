@@ -6,6 +6,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Models;
+using Keeper.Models.ShellModels;
 using Keeper.Properties;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.DbInputOutput.TxtTasks;
