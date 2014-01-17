@@ -54,7 +54,7 @@ namespace Keeper.ViewModels.Shell
         return;
       }
 
-      MainMenuViewModel.MadeExitPreparations();
+      MainMenuViewModel.MadeExitPreparationsAsynchronously();
       callback(false);
     }
   }

@@ -5,11 +5,20 @@ namespace Keeper.Models
   public enum Actions
   {
     Idle,
-    DatabaseLoaded,
-    DatabaseCleaned,
-    SaveWithProgressBar,
-    PreparingExit,
-    Quit
+
+    InputTransactions,
+    InputRates,
+    InputAssociates,
+    ShowAnalisys,
+
+    LoadDatabase,
+    LoadFromFiles,
+    CleanDatabase,
+    SaveDatabase,
+    RemoveIdenticalBackups,
+    PrepareExit,
+
+    RefreshBalanceList
   }
 
   public class MainMenuModel : PropertyChangedBase

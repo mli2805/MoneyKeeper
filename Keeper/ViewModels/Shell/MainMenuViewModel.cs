@@ -33,8 +33,7 @@ namespace Keeper.ViewModels.Shell
     private readonly DbCleaner _dbCleaner;
     private readonly DiagramDataFactory _diagramDataFactory;
 
-    public string Message { get; set; }
-    public string StatusBarItem0 { get; set; }
+    public bool IsDbLoadingFailed { get; set; }
     private readonly List<Screen> _launchedForms = new List<Screen>();
     private bool _isExitPreparationDone;
     public bool IsExitPreparationDone
@@ -47,10 +46,6 @@ namespace Keeper.ViewModels.Shell
         NotifyOfPropertyChange(() => IsExitPreparationDone);
       }
     }
-
-
-
-    public bool IsDbLoadingFailed { get; set; }
 
     [ImportingConstructor]
     public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
@@ -76,27 +71,38 @@ namespace Keeper.ViewModels.Shell
     }
 
     #region меню Файл
-    public void SaveDatabase()
+    public async void SaveDatabase()
     {
-      new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+      MyMainMenuModel.Action = Actions.SaveDatabase;
+      await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)));
+      Task.WaitAll();
       MyMainMenuModel.Action = Actions.Idle;
     }
 
-    public void LoadDatabase()
+    public void DeserializeWithoutReturn()
     {
       _db = new DbSerializer().DecryptAndDeserialize(Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
-      MyMainMenuModel.Action = Actions.DatabaseLoaded;
+    }
+
+    public async void LoadDatabase()
+    {
+      MyMainMenuModel.Action = Actions.LoadDatabase;
+      await Task.Run(() => DeserializeWithoutReturn());
+      Task.WaitAll();
+      MyMainMenuModel.Action = Actions.RefreshBalanceList;
     }
 
     public void ClearDatabase()
     {
       _dbCleaner.ClearAllTables(_db);
-      MyMainMenuModel.Action = Actions.DatabaseCleaned;
+      MyMainMenuModel.Action = Actions.CleanDatabase;
     }
 
     public async void MakeDatabaseBackup()
     {
-      _backuper.MakeDbBackupCopy();
+      MyMainMenuModel.Action = Actions.SaveDatabase;
+      await Task.Run(() => _backuper.MakeDbBackupCopy());
+      Task.WaitAll();
       MyMainMenuModel.Action = Actions.Idle;
     }
 
@@ -105,7 +111,7 @@ namespace Keeper.ViewModels.Shell
       _txtSaver.SaveDbInTxt();
     }
 
-    public void ImportDatabaseFromTxt()
+    public void LoadFromWithoutReturn()
     {
       var result = _dbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
       if (result.Code != 0) MessageBox.Show(result.Explanation);
@@ -115,13 +121,20 @@ namespace Keeper.ViewModels.Shell
       }
     }
 
-    public void RemoveExtraBackups()
+    public async void ImportDatabaseFromTxt()
     {
-      String arcMessage = Message;
-      Message = "Удаление идентичных резервных копий";
-      new DbBackupOrganizer().RemoveIdenticalBackups();
-      Message = arcMessage;
-      StatusBarItem0 = "Готово";
+      MyMainMenuModel.Action = Actions.LoadFromFiles;
+      await Task.Run(() => LoadFromWithoutReturn());
+      Task.WaitAll();
+      MyMainMenuModel.Action = Actions.RefreshBalanceList;
+    }
+
+    public async void RemoveExtraBackups()
+    {
+      MyMainMenuModel.Action = Actions.RemoveIdenticalBackups;
+      await Task.Run(() =>new DbBackupOrganizer().RemoveIdenticalBackups());
+      Task.WaitAll();
+      MyMainMenuModel.Action = Actions.Idle;
     }
 
     #endregion
@@ -130,46 +143,32 @@ namespace Keeper.ViewModels.Shell
 
     public void ShowTransactionsForm()
     {
-      var arcMessage = Message;
-      Message = "Input operations";
+      MyMainMenuModel.Action = Actions.InputTransactions;
       WindowManager.ShowDialog(IoC.Get<TransactionViewModel>());
-      Message = arcMessage;
-
-      //      RefreshBalanceList();
-
-      //      SerializeWithProgressBar();
-      //      StatusBarItem0 = "Idle";
-      //      IsProgressBarVisible = Visibility.Collapsed;
+      SaveDatabase();
+      MyMainMenuModel.Action = Actions.RefreshBalanceList;
     }
 
     public void ShowCurrencyRatesForm()
     {
-      var arcMessage = Message;
-      Message = "Currency rates";
+      MyMainMenuModel.Action = Actions.InputRates;
       WindowManager.ShowDialog(IoC.Get<RatesViewModel>());
-      Message = arcMessage;
-
-      //      RefreshBalanceList();
-
-      //      SerializeWithProgressBar();
-      //      StatusBarItem0 = "Idle";
-      //      IsProgressBarVisible = Visibility.Collapsed;
+      SaveDatabase();
+      MyMainMenuModel.Action = Actions.RefreshBalanceList;
     }
 
     public void ShowArticlesAssociationsForm()
     {
-      var arcMessage = Message;
-      Message = "Articles' associations";
+      MyMainMenuModel.Action = Actions.InputAssociates;
       WindowManager.ShowDialog(IoC.Get<ArticlesAssociationsViewModel>());
-      Message = arcMessage;
+      SaveDatabase();
     }
 
     public void ShowMonthAnalisysForm()
     {
-      var arcMessage = Message;
-      Message = "MonthAnalisys";
+      MyMainMenuModel.Action = Actions.ShowAnalisys;
       WindowManager.ShowDialog(IoC.Get<MonthAnalisysViewModel>());
-      Message = arcMessage;
+      MyMainMenuModel.Action = Actions.Idle;
     }
 
     public void ShowDepositsForm()
@@ -250,25 +249,23 @@ namespace Keeper.ViewModels.Shell
     {
       foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
         launchedForm.TryClose();
-
     }
 
     public void ProgramExit()
     {
-      MadeExitPreparations();
+      MadeExitPreparationsAsynchronously();
     }
 
-    public async void MadeExitPreparations()
+    public async void MadeExitPreparationsAsynchronously()
     {
-      MyMainMenuModel.Action = Actions.PreparingExit;
+      MyMainMenuModel.Action = Actions.PrepareExit;
       CloseAllLaunchedForms();
-      await Task.Run(() => SaveDatabase());
-      await Task.Run(() => MakeDatabaseBackup());
+      await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)));
+      await Task.Run(() => _backuper.MakeDbBackupCopy());
       Task.WaitAll();
       MyMainMenuModel.Action = Actions.Idle;
       IsExitPreparationDone = true;
     }
-
 
   }
 }
