@@ -655,10 +655,10 @@ namespace Keeper.ViewModels
     void TransactionInWorkPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
       if (_isInTransactionSelectionProcess) return;
-      if (e.PropertyName == "Comment") return;
 
       IsTransactionInWorkChanged = true;
 
+      if (e.PropertyName == "Comment") return;
       if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
         TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Debet);
       if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
@@ -718,12 +718,6 @@ namespace Keeper.ViewModels
 
       if (isDateChanged)
       {
-        //            все же SQL запрос пока наглядней чем LINQ форма
-        //      var transactionBefore = (from transaction in Db.Transactions
-        //                             where transaction.Timestamp.Date == TransactionInWork.Timestamp.Date
-        //                             orderby transaction.Timestamp
-        //                             select transaction).LastOrDefault();
-
         var transactionBefore = _db.Transactions.Where(
           transaction => transaction.Timestamp.Date == TransactionInWork.Timestamp.Date).OrderBy(
             transaction => transaction.Timestamp).LastOrDefault();
