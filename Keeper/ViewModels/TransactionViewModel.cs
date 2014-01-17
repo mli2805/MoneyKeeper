@@ -361,18 +361,11 @@ namespace Keeper.ViewModels
 
     public Transaction SelectedTransaction
     {
-      get { return _selectedTransaction; }
       set
       {
-        if (value == null)
-        {
-          MessageBox.Show("SelectedTransaction is null!");
-          return;
-        }
-
         if (_selectedTransaction != null) _selectedTransaction.SetIsSelectedWithoutNotification(false);
 
-        _selectedTransaction = value;
+        _selectedTransaction = value ?? Rows.Last();
         _selectedTransaction.IsSelected = true;
 
         _isInTransactionSelectionProcess = true;
@@ -387,6 +380,7 @@ namespace Keeper.ViewModels
         DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
         EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
       }
+      get { return _selectedTransaction; }
     }
 
     public int SelectedTransactionIndex
