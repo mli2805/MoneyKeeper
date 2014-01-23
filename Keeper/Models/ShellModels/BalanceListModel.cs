@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 
-namespace Keeper.ViewModels.Shell
+namespace Keeper.Models.ShellModels
 {
   public class BalanceListModel : PropertyChangedBase
   {
