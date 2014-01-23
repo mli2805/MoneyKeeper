@@ -36,7 +36,7 @@ namespace Keeper.ViewModels
 		  _balanceCalculator = balanceCalculator;
       _accountTreeStraightener = accountTreeStraightener;
 
-      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList();
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
 		}
 
 		public void SetOldDeposit(Deposit oldDeposit)
@@ -53,7 +53,7 @@ namespace Keeper.ViewModels
 
 		protected override void OnViewLoaded(object view)
 		{
-      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList();
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
       DisplayName = "Переоформление";
 		}
 

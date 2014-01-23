@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Composition;
+﻿using System.Composition;
 using Caliburn.Micro;
-using Keeper.DomainModel;
 using Keeper.Models;
 
 namespace Keeper.ViewModels.Shell

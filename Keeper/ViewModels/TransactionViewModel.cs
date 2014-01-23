@@ -278,16 +278,16 @@ namespace Keeper.ViewModels
       MyAccountsForShopping =
        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
                                                                         account.Children.Count == 0 &&
-                                                                        !account.IsDescendantOf("Депозиты"))).ToList();
+                                                                        !account.Is("Депозиты"))).ToList();
       BankAccounts =
-        _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsDescendantOf("Банки") && a.Children.Count == 0).ToList
+        _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList
           ();
       AccountsWhoTakesMyMoney =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.IsDescendantOf("ДеньгоПолучатели") &&
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.Is("ДеньгоПолучатели") &&
                                                                          account.Children.Count == 0)).ToList();
       AccountsWhoGivesMeMoney =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.IsDescendantOf("ДеньгоДатели") ||
-                                                                          account.IsDescendantOf("Банки")) &&
+        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.Is("ДеньгоДатели") ||
+                                                                          account.Is("Банки")) &&
                                                                          account.Children.Count == 0)).ToList();
       IncomeArticles =
         (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все доходы" &&
@@ -488,7 +488,7 @@ namespace Keeper.ViewModels
     {
       get
       {
-        if (TransactionInWork.Debet == null || !TransactionInWork.Debet.IsDescendantOf("Мои")) return "";
+        if (TransactionInWork.Debet == null || !TransactionInWork.Debet.Is("Мои")) return "";
 
         var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore = _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Debet, period, TransactionInWork.Currency);
@@ -518,7 +518,7 @@ namespace Keeper.ViewModels
     {
       get
       {
-        if (TransactionInWork.Credit == null || !TransactionInWork.Credit.IsDescendantOf("Мои")) return "";
+        if (TransactionInWork.Credit == null || !TransactionInWork.Credit.Is("Мои")) return "";
 
         var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore = _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Credit, period, TransactionInWork.Currency);

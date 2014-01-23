@@ -1,11 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
-
 using Caliburn.Micro;
 using Keeper.Models;
-using Keeper.ViewModels;
-using Keeper.ViewModels.Shell;
 
 namespace Keeper.DomainModel
 {
@@ -41,7 +38,6 @@ namespace Keeper.DomainModel
 //				if (value.Equals(_isSelected)) return;
 				_isSelected = value;
 				NotifyOfPropertyChange();
-//				if (_isSelected) IoC.Get<ShellViewModel>().SelectedAccountInShell = this;
         if (_isSelected) IoC.Get<ShellModel>().MyForestModel.SelectedAccount = this;
       }
 		}
@@ -131,24 +127,6 @@ namespace Keeper.DomainModel
 			return Parent == null ? Name : Parent.GetRootName();
 		}
 
-
-		/// <summary>
-		/// true если инстанс потомок счета-параметра, но не сам этот счет
-		/// </summary>
-		/// <param name="ancestor"></param>
-		/// <returns></returns>
-		public bool IsDescendantOf(string ancestor)  // Descendant - потомок ; Ancestor - предок
-		{
-			if (Parent == null) return false;
-			return Parent.Name == ancestor || Parent.IsDescendantOf(ancestor);
-		}
-
-		public bool IsDescendantOf(Account ancestor)
-		{
-			if (Parent == null) return false;
-			return Parent == ancestor || Parent.IsDescendantOf(ancestor);
-		}
-
 		/// <summary>
 		/// true если инстанс или потомок счета-параметра или сам Ё“ќ“ счет
 		/// </summary>
@@ -190,14 +168,6 @@ namespace Keeper.DomainModel
 				result = new DateTime(0);
 			}
 			return result;
-		}
-
-		public int CompareOnEndDepositDateBasis(Account other)
-		{
-			if (Parent == null || Parent.Name != "ƒепозиты") return 0;
-			if (other == null || other.Parent.Name != "ƒепозиты") return 0;
-
-			return DateTime.Compare(GetEndDepositDate(Name), GetEndDepositDate(other.Name));
 		}
 
 		public static int CompareEndDepositDates(Account a, Account b)

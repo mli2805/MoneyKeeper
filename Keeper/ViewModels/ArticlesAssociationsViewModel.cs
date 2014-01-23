@@ -38,7 +38,7 @@ namespace Keeper.ViewModels
     {
       ExternalAccounts =
         (_accountTreeStraightener.Flatten(_db.Accounts).Where(
-          account => account.IsDescendantOf("Внешние") && account.Children.Count == 0)).ToList();
+          account => account.Is("Внешние") && account.Children.Count == 0)).ToList();
       AssociatedArticles = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
                                                                                  (account.GetRootName() == "Все доходы" ||
                                                                                   account.GetRootName() == "Все расходы") &&

@@ -240,7 +240,7 @@ namespace Keeper.DomainModel
 
     public int SignForAmount(Account a)
     {
-      if (Credit == a || Credit.IsDescendantOf(a.Name)) return 1;
+      if (Credit.Is(a)) return 1;
       return -1;
     }
 

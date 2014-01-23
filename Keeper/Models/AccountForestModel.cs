@@ -66,7 +66,7 @@ namespace Keeper.Models
       set
       {
         _selectedAccount = value;
-        IsDeposit = value != null && value.IsDescendantOf("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        IsDeposit = value != null && value.Is("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         NotifyOfPropertyChange(()=>SelectedAccount);
       }
     }

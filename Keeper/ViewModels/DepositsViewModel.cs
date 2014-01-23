@@ -40,7 +40,7 @@ namespace Keeper.ViewModels
       DepositsList = new List<Deposit>();
       foreach (var account in new AccountTreeStraightener().Flatten(_db.Accounts))
       {
-        if (account.IsDescendantOf("Депозиты") && account.Children.Count == 0)
+        if (account.Is("Депозиты") && account.Children.Count == 0)
         {
           var deposit = IoC.Get<Deposit>();
           deposit.Account = account;
