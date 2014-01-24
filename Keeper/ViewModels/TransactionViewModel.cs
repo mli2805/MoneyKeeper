@@ -22,6 +22,8 @@ namespace Keeper.ViewModels
   [Shared] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
+    public bool ShouldChangesBeSerialized { get; set; }
+
     private readonly KeeperDb _db;
 
     private readonly RateExtractor _rateExtractor;
@@ -604,8 +606,14 @@ namespace Keeper.ViewModels
       InitializeListsForCombobox();
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;
+      Rows.CollectionChanged += Rows_CollectionChanged;
       InitializeFiltersLists();
       InitializeSelectedTransactionIndex();
+    }
+
+    void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      ShouldChangesBeSerialized = true;
     }
 
     private void InitializeSelectedTransactionIndex()
@@ -632,6 +640,7 @@ namespace Keeper.ViewModels
     {
       InitializeListsForCombobox();
       DisplayName = "Ежедневные операции";
+      ShouldChangesBeSerialized = false;
 
       SortedRows = CollectionViewSource.GetDefaultView(Rows);
       SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
@@ -727,6 +736,7 @@ namespace Keeper.ViewModels
       IsTransactionInWorkChanged = false;
       IsInAddTransactionMode = false;
       CanFillInReceipt = false;
+      ShouldChangesBeSerialized = true;
     }
 
     private void CleanUselessFieldsBeforeSave()

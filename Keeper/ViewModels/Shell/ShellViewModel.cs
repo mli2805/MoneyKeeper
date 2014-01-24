@@ -41,7 +41,7 @@ namespace Keeper.ViewModels.Shell
         TryClose();
         return;
       }
-      DisplayName = "Keeper (c) 2012-13";
+      DisplayName = "Keeper (c) 2012-14";
 
       if (!MainMenuViewModel.ShowLogonForm()) TryClose();
     }
