@@ -47,6 +47,12 @@ namespace Keeper.DomainModel
     public List<BalanceTrio> Categories { get; set; }
     public decimal TotalForLargeInUsd { get; set; }
     public decimal TotalInUsd { get; set; }
+
+    public ExtendedTrafficWithCategories()
+    {
+      LargeTransactions = new List<Transaction>();
+      Categories = new List<BalanceTrio>();
+    }
   }
 
   class Saldo
