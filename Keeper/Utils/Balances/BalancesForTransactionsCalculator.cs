@@ -27,53 +27,63 @@ namespace Keeper.Utils.Balances
     {
       var dayResults = new List<string> { String.Format("                              {0:dd MMMM yyyy}", dt.Date) };
 
-      var incomes = from t in _db.Transactions
-                    where t.Operation == OperationType.Доход && t.Timestamp.Date == dt.Date
-                    group t by new
-                    {
-                      t.Credit,
-                      t.Currency
-                    }
-                      into g
-                      select new BalanceTrio
-                      {
-                        MyAccount = g.Key.Credit,
-                        Currency = g.Key.Currency,
-                        Amount = g.Sum(a => a.Amount)
-                      };
-
-      if (incomes.Any()) dayResults.Add("  Доходы");
-      foreach (var balanceTrio in incomes)
+      var incomes = GetMyDayIncomes(dt);
+      if (incomes.Any())
       {
-        dayResults.Add(balanceTrio.ToString());
+        dayResults.Add("  Доходы");
+        dayResults.AddRange(incomes.Select(element => element.ToString()));
+        dayResults.Add("");
       }
 
-      var expense = from t in _db.Transactions
-                    where t.Operation == OperationType.Расход && t.Timestamp.Date == dt.Date
-                    group t by new
-                    {
-                      t.Debet,
-                      t.Currency
-                    }
-                      into g
-                      select new BalanceTrio
-                      {
-                        MyAccount = g.Key.Debet,
-                        Currency = g.Key.Currency,
-                        Amount = g.Sum(a => a.Amount)
-                      };
-
-      if (dayResults.Count > 0) dayResults.Add("");
-      if (expense.Any()) dayResults.Add("  Расходы");
-      foreach (var balanceTrio in expense)
+	    var expense = GetMyDayExpense(dt);
+      if (expense.Any())
       {
-        dayResults.Add(balanceTrio.ToString());
+        dayResults.Add("  Расходы");
+        dayResults.AddRange(expense.Select(element => element.ToString()));
       }
 
-      return dayResults;
+	    return dayResults;
     }
 
-    public string EndDayBalances(DateTime dt)
+	  private IEnumerable<BalanceTrio> GetMyDayExpense(DateTime dt)
+	  {
+	    var expense = from t in _db.Transactions
+	                  where t.Operation == OperationType.Расход && t.Timestamp.Date == dt.Date
+	                  group t by new
+	                               {
+	                                 t.Debet,
+	                                 t.Currency
+	                               }
+	                  into g
+	                  select new BalanceTrio
+	                           {
+	                             MyAccount = g.Key.Debet,
+	                             Currency = g.Key.Currency,
+	                             Amount = g.Sum(a => a.Amount)
+	                           };
+	    return expense;
+	  }
+
+	  private IEnumerable<BalanceTrio> GetMyDayIncomes(DateTime dt)
+	  {
+	    var incomes = from t in _db.Transactions
+	                  where t.Operation == OperationType.Доход && t.Timestamp.Date == dt.Date
+	                  group t by new
+	                               {
+	                                 t.Credit,
+	                                 t.Currency
+	                               }
+	                  into g
+	                  select new BalanceTrio
+	                           {
+	                             MyAccount = g.Key.Credit,
+	                             Currency = g.Key.Currency,
+	                             Amount = g.Sum(a => a.Amount)
+	                           };
+	    return incomes;
+	  }
+
+	  public string EndDayBalances(DateTime dt)
     {
 	    var balanceCalculator = IoC.Get<BalanceCalculator>();
       var period = new Period(new DateTime(0), new DayProcessor(dt).AfterThisDay());
@@ -82,6 +92,7 @@ namespace Keeper.Utils.Balances
       var depo = (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
                   where a.Name == "Депозиты"
                   select a).First();
+
       var calculatedAccounts = new List<Account>((_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
         account.Children.Count == 0 && !account.Is("Депозиты"))));
       calculatedAccounts.Add(depo);

@@ -141,6 +141,10 @@
     <Compile Include="Utils\Accounts\MyFactory.cs" />
     <Compile Include="ByFunctional\EditingAccounts\TellUser.cs" />
     <Compile Include="Utils\Balances\BalanceTrio.cs" />
+    <Compile Include="Utils\Balances\Ilya\Money.cs" />
+    <Compile Include="Utils\Balances\Ilya\MoneyBag.cs" />
+    <Compile Include="Utils\Balances\Ilya\MoneyExtensions.cs" />
+    <Compile Include="Utils\Balances\Ilya\TransactionExtensions.cs" />
     <Compile Include="Utils\Common\Every.cs" />
     <Compile Include="Utils\Common\IMySettings.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
