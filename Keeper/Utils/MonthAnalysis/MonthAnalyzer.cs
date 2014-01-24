@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.Rates;
 
-namespace Keeper.Utils.CommonKeeper
+namespace Keeper.Utils.MonthAnalysis
 {
 	[Export]
-  class MonthAnalysisModel
+  class MonthAnalyzer
   {
     public Saldo Result { get; set; }
 
@@ -22,7 +21,7 @@ namespace Keeper.Utils.CommonKeeper
 	  private readonly AccountTreeStraightener _accountTreeStraightener;
 
 	  [ImportingConstructor]
-    public MonthAnalysisModel(KeeperDb db, BalanceCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor, ICurrencyConverter currencyConverter)
+    public MonthAnalyzer(KeeperDb db, BalanceCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor, ICurrencyConverter currencyConverter)
     {
 	    _db = db;
 	    _balanceCalculator = balanceCalculator;
