@@ -4,7 +4,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.Utils.Balances
 {
-	class BalanceTrio
+  public class BalanceTrio
 	{
 		public Account MyAccount;
 		public decimal Amount;
