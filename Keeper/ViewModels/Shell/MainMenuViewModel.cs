@@ -8,6 +8,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Models;
+using Keeper.Models.ShellModels;
 using Keeper.Properties;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
@@ -144,9 +145,13 @@ namespace Keeper.ViewModels.Shell
     public void ShowTransactionsForm()
     {
       MyMainMenuModel.Action = Actions.InputTransactions;
-      WindowManager.ShowDialog(IoC.Get<TransactionViewModel>());
-      SaveDatabase();
-      MyMainMenuModel.Action = Actions.RefreshBalanceList;
+      var tvm = IoC.Get<TransactionViewModel>();
+      WindowManager.ShowDialog(tvm);
+      if (tvm.ShouldChangesBeSerialized)
+      {
+        SaveDatabase();
+        MyMainMenuModel.Action = Actions.RefreshBalanceList;
+      }
     }
 
     public void ShowCurrencyRatesForm()
