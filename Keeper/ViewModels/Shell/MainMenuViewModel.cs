@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -8,7 +7,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Models;
-using Keeper.Models.ShellModels;
 using Keeper.Properties;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
