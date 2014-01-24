@@ -41,16 +41,26 @@ namespace Keeper.DomainModel
     }
   }
 
+  class ConvertedTransaction
+  {
+    public DateTime Timestamp { get; set; }
+    public decimal Amount { get; set; }
+    public CurrencyCodes Currency { get; set; }
+    public decimal AmountInUsd { get; set; }
+    public Account Article { get; set; }
+    public string Comment { get; set; }
+ }
+
   class ExtendedTrafficWithCategories
   {
-    public List<Transaction> LargeTransactions { get; set; }
+    public List<ConvertedTransaction> LargeTransactions { get; set; }
     public List<BalanceTrio> Categories { get; set; }
     public decimal TotalForLargeInUsd { get; set; }
     public decimal TotalInUsd { get; set; }
 
     public ExtendedTrafficWithCategories()
     {
-      LargeTransactions = new List<Transaction>();
+      LargeTransactions = new List<ConvertedTransaction>();
       Categories = new List<BalanceTrio>();
     }
   }
