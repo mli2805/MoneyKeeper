@@ -20,25 +20,25 @@ namespace Keeper.ViewModels
     private readonly RateExtractor _rateExtractor;
     private readonly KeeperDb _db;
 
-    private readonly MonthAnalyzer _monthAnalyzer;
+    private readonly MonthAnalysisModel _monthAnalysisModel;
 
     private bool _isMonthEnded;
 
+    #region Lists
     private ObservableCollection<string> _beforeList;
-    private ObservableCollection<string> _beforeListByCurrency;
+    private ObservableCollection<string> _beforeListOnHands;
+    private ObservableCollection<string> _beforeListOnDeposits;
     private ObservableCollection<string> _incomesList;
     private ObservableCollection<string> _expenseList;
     private ObservableCollection<string> _largeExpenseList;
     private ObservableCollection<string> _afterList;
-    private ObservableCollection<string> _afterListByCurrency;
+    private ObservableCollection<string> _afterListOnHands;
+    private ObservableCollection<string> _afterListOnDeposits;
     private ObservableCollection<string> _resultList;
     private ObservableCollection<string> _forecastListIncomes;
     private ObservableCollection<string> _forecastListExpense;
     private ObservableCollection<string> _forecastListBalance;
 
-    private DateTime _startDate;
-    private Brush _resultForeground;
-    private Visibility _forecastListVisibility;
 
     public ObservableCollection<string> BeforeList
     {
@@ -50,14 +50,24 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => BeforeList);
       }
     }
-    public ObservableCollection<string> BeforeListByCurrency
+    public ObservableCollection<string> BeforeListOnHands
     {
-      get { return _beforeListByCurrency; }
+      get { return _beforeListOnHands; }
       set
       {
-        if (Equals(value, _beforeListByCurrency)) return;
-        _beforeListByCurrency = value;
-        NotifyOfPropertyChange(() => BeforeListByCurrency);
+        if (Equals(value, _beforeListOnHands)) return;
+        _beforeListOnHands = value;
+        NotifyOfPropertyChange(() => _beforeListOnHands);
+      }
+    }
+    public ObservableCollection<string> BeforeListOnDeposits
+    {
+      get { return _beforeListOnDeposits; }
+      set
+      {
+        if (Equals(value, _beforeListOnDeposits)) return;
+        _beforeListOnDeposits = value;
+        NotifyOfPropertyChange(() => BeforeListOnDeposits);
       }
     }
     public ObservableCollection<string> IncomesList
@@ -100,14 +110,24 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => AfterList);
       }
     }
-    public ObservableCollection<string> AfterListByCurrency
+    public ObservableCollection<string> AfterListOnHands
     {
-      get { return _afterListByCurrency; }
+      get { return _afterListOnHands; }
       set
       {
-        if (Equals(value, _afterListByCurrency)) return;
-        _afterListByCurrency = value;
-        NotifyOfPropertyChange(() => AfterListByCurrency);
+        if (Equals(value, _afterListOnHands)) return;
+        _afterListOnHands = value;
+        NotifyOfPropertyChange(() => AfterListOnHands);
+      }
+    }
+    public ObservableCollection<string> AfterListOnDeposits
+    {
+      get { return _afterListOnDeposits; }
+      set
+      {
+        if (Equals(value, _afterListOnDeposits)) return;
+        _afterListOnDeposits = value;
+        NotifyOfPropertyChange(() => AfterListOnDeposits);
       }
     }
     public ObservableCollection<string> ResultList
@@ -150,6 +170,11 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => ForecastListBalance);
       }
     }
+    #endregion
+
+    private DateTime _startDate;
+    private Brush _resultForeground;
+    private Visibility _forecastListVisibility;
 
     public Visibility ForecastListVisibility
     {
@@ -202,13 +227,13 @@ namespace Keeper.ViewModels
     }
 
 	  [ImportingConstructor]
-    public MonthAnalisysViewModel(KeeperDb db, RateExtractor rateExtractor, MonthAnalyzer monthAnalyzer)
+    public MonthAnalisysViewModel(KeeperDb db, RateExtractor rateExtractor, MonthAnalysisModel monthAnalysisModel)
     {
       _db = db;
       _rateExtractor =rateExtractor;
 
-      _monthAnalyzer = monthAnalyzer;
-      MonthSaldo = _monthAnalyzer.AnalizeMonth(DateTime.Today);
+      _monthAnalysisModel = monthAnalysisModel;
+      MonthSaldo = _monthAnalysisModel.AnalizeMonth(DateTime.Today);
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }
@@ -225,29 +250,33 @@ namespace Keeper.ViewModels
 
     private void FillInBeginList()
     {
-      BeforeList = new ObservableCollection<string> { "Входящий остаток на начало месяца                \n"};
-      BeforeListByCurrency = FillListWithDateBalance(MonthSaldo.BeginBalanceInCurrencies, MonthSaldo.StartDate);
-      BeforeList.Add(String.Format("Итого {0:#,0} usd", MonthSaldo.BeginBalance));
+      BeforeList = FillListWithDateBalanceInCurrencies(MonthSaldo.BeginBalance.Common, MonthSaldo.StartDate, "Входящий остаток на начало месяца");
+      BeforeListOnHands = FillListWithDateBalanceInCurrencies(MonthSaldo.BeginBalance.OnHands, MonthSaldo.StartDate, "На руках                       ");
+      BeforeListOnDeposits = FillListWithDateBalanceInCurrencies(MonthSaldo.BeginBalance.OnDeposits, MonthSaldo.StartDate, "Депозиты");
     }
 
-    private ObservableCollection<string> FillListWithDateBalance(List<MoneyPair> balanceInCurrencies, DateTime date)
+    private ObservableCollection<string> FillListWithDateBalanceInCurrencies(ExtendedBalance balance, DateTime date, string caption)
     {
-      var list = new ObservableCollection<string>();
-      list.Add("В разрезе валют:");
-      foreach (var balancePair in balanceInCurrencies)    
+      var content = new ObservableCollection<string>();
+      content.Add(caption);
+      content.Add("");
+      foreach (var balancePair in balance.InCurrencies)    
       {
         if (balancePair.Amount == 0) continue;
         if (balancePair.Currency == CurrencyCodes.USD)
         {
-          list.Add(balancePair.ToString());
+          content.Add(balancePair.ToString());
         }
         else
         {                                                          
           decimal amountInUsd = _rateExtractor.GetUsdEquivalent(balancePair.Amount, balancePair.Currency, date.AddDays(-1));
-          list.Add(String.Format("{0}  (= {1:#,0} $)", balancePair.ToString(), amountInUsd));
+          content.Add(String.Format("{0}  (= {1:#,0} $)", balancePair.ToString(), amountInUsd));
         }
       }
-      return list;
+      content.Add("");
+      content.Add(String.Format("Итого {0:#,0} usd", balance.TotalInUsd));
+
+      return content;
     }
 
     private void FillInIncomesList()
@@ -337,21 +366,20 @@ namespace Keeper.ViewModels
 
     private void FillInEndList()
     {
-      AfterList = new ObservableCollection<string> { "Исходящий остаток на конец месяца                \n" };
-      AfterListByCurrency = FillListWithDateBalance(MonthSaldo.EndBalanceInCurrencies, 
-                         MonthSaldo.LastDayWithTransactionsInMonth.AddDays(1));
+      AfterList = FillListWithDateBalanceInCurrencies(MonthSaldo.EndBalance.Common, MonthSaldo.LastDayWithTransactionsInMonth.AddDays(1), "Исходящий остаток на конец месяца");
+      AfterListOnHands = FillListWithDateBalanceInCurrencies(MonthSaldo.EndBalance.OnHands, MonthSaldo.LastDayWithTransactionsInMonth.AddDays(1), "На руках                         ");
+      AfterListOnDeposits = FillListWithDateBalanceInCurrencies(MonthSaldo.EndBalance.OnDeposits, MonthSaldo.LastDayWithTransactionsInMonth.AddDays(1), "Депозиты");
                                             // если не добавить день - получишь остаток на утро последнего дня
-      AfterList.Add(String.Format("Итого {0:#,0} usd", MonthSaldo.EndBalance));
     }  
 
     private void FillInResultList()
     {
-      ResultForeground = MonthSaldo.BeginBalance > MonthSaldo.EndBalance ? Brushes.Red : Brushes.Blue;
+      ResultForeground = MonthSaldo.BeginBalance.Common.TotalInUsd > MonthSaldo.EndBalance.Common.TotalInUsd ? Brushes.Red : Brushes.Blue;
       ResultList = new ObservableCollection<string> {String.Format( "Финансовый результат месяца {0:#,0} - {1:#,0} = {2:#,0} usd\n",
                                       MonthSaldo.Incomes, MonthSaldo.Expense, MonthSaldo.SaldoIncomesExpense)};
 
       ResultList.Add(String.Format("Курсовые разницы {4:#,0} - ({0:#,0} + {1:#,0} - {2:#,0}) = {3:#,0} usd (с плюсом - в мою пользу)",
-        MonthSaldo.BeginBalance, MonthSaldo.Incomes, MonthSaldo.Expense, MonthSaldo.ExchangeDifference, MonthSaldo.EndBalance));
+        MonthSaldo.BeginBalance.Common.TotalInUsd, MonthSaldo.Incomes, MonthSaldo.Expense, MonthSaldo.ExchangeDifference, MonthSaldo.EndBalance.Common.TotalInUsd));
       ResultList.Add(String.Format("Курсы Byr/Usd на начало и конец месца:  {0:#,0} - {1:#,0} \n", MonthSaldo.BeginByrRate, MonthSaldo.EndByrRate));
 
       ResultList.Add(String.Format("С учетом курсовых разниц {0:#,0} - {1:#,0} + {2:#,0} = {3:#,0} usd",
@@ -385,14 +413,14 @@ namespace Keeper.ViewModels
 
     public void ShowPreviousMonth()
     {
-      MonthSaldo = _monthAnalyzer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
+      MonthSaldo = _monthAnalysisModel.AnalizeMonth(MonthSaldo.StartDate.AddMonths(-1));
       StartDate = MonthSaldo.StartDate; 
       FillInLists();
     }
 
     public void ShowNextMonth()
     {
-      MonthSaldo = _monthAnalyzer.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
+      MonthSaldo = _monthAnalysisModel.AnalizeMonth(MonthSaldo.StartDate.AddMonths(1));
       StartDate = MonthSaldo.StartDate;
       FillInLists();
     }
