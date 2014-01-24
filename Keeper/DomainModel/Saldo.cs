@@ -6,8 +6,8 @@ namespace Keeper.DomainModel
 {
   class ExtendedBalance
   {
-    public decimal TotalInUsd { get; set; }
     public List<MoneyPair> InCurrencies { get; set; }
+    public decimal TotalInUsd { get; set; }
   }
 
   class ExtendedBalanceForAnalysis
@@ -15,28 +15,51 @@ namespace Keeper.DomainModel
     public ExtendedBalance Common { get; set; }
     public ExtendedBalance OnHands { get; set; }
     public ExtendedBalance OnDeposits { get; set; }
+  }
 
-    public ExtendedBalanceForAnalysis()
+  class ExtendedTraffic
+  {
+    public List<Transaction> Transactions { get; set; }
+    public decimal TotalInUsd { get; set; }
+
+    public ExtendedTraffic()
     {
-      Common = new ExtendedBalance();
-      OnHands = new ExtendedBalance();
-      OnDeposits = new ExtendedBalance();
+      Transactions = new List<Transaction>();
     }
+  }
+
+  class ExtendedIncomes
+  {
+    public ExtendedTraffic OnDeposits { get; set; }
+    public ExtendedTraffic OnHands { get; set; }
+    public decimal TotalInUsd { get { return OnDeposits.TotalInUsd + OnHands.TotalInUsd; } }
+
+    public ExtendedIncomes()
+    {
+      OnHands = new ExtendedTraffic();
+      OnDeposits = new ExtendedTraffic(); 
+    }
+  }
+
+  class ExtendedTrafficWithCategories
+  {
+    public List<Transaction> LargeTransactions { get; set; }
+    public List<BalanceTrio> Categories { get; set; }
+    public decimal TotalForLargeInUsd { get; set; }
+    public decimal TotalInUsd { get; set; }
   }
 
   class Saldo
   {
     public DateTime StartDate { get; set; }
     public ExtendedBalanceForAnalysis BeginBalance { get; set; }
-    public decimal BeginByrRate { get; set; }
-    public decimal Incomes { get; set; }
-    public decimal Expense { get; set; }
-    public decimal LargeExpense { get; set; }
-    public decimal ExchangeDifference { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd - Incomes + Expense; } }
+    public List<CurrencyRate> BeginRates { get; set; }
+    public ExtendedIncomes Incomes { get; set; }
+    public ExtendedTrafficWithCategories Expense { get; set; }
+    public decimal ExchangeDifference { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd - Incomes.TotalInUsd + Expense.TotalInUsd; } }
     public ExtendedBalanceForAnalysis EndBalance { get; set; }
-    public decimal EndByrRate { get; set; }
-    public DateTime LastDayWithTransactionsInMonth { get; set; }
-    public decimal SaldoIncomesExpense { get { return Incomes - Expense; } }
+    public List<CurrencyRate> EndRates { get; set; }
+    public decimal SaldoIncomesExpense { get { return Incomes.TotalInUsd - Expense.TotalInUsd; } }
     public decimal Result { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd; } }
 
     public decimal ForecastIncomes { get; set; }
@@ -46,8 +69,9 @@ namespace Keeper.DomainModel
 
     public Saldo()
     {
-      BeginBalance = new ExtendedBalanceForAnalysis();
-      EndBalance = new ExtendedBalanceForAnalysis();
+      Incomes = new ExtendedIncomes();
+      Expense = new ExtendedTrafficWithCategories();
     }
   }
+ 
 }

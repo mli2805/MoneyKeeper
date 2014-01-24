@@ -36,10 +36,7 @@ namespace Keeper.Utils.CommonKeeper
     private IEnumerable<Transaction> GetMonthTransactionsForAnalysis(DateTime someDate, IEnumerable<Transaction> transactions)
     {
       return (from transaction in transactions
-              where (transaction.Operation == OperationType.Доход ||
-                 transaction.Operation == OperationType.Расход) &&
-                transaction.Timestamp.Month == someDate.Month &&
-                 transaction.Timestamp.Year == someDate.Year
+              where transaction.Timestamp.Month == someDate.Month && transaction.Timestamp.Year == someDate.Year
               select transaction);
     }
 
@@ -62,39 +59,70 @@ namespace Keeper.Utils.CommonKeeper
                                          };
     }
 
+    private void RegisterTransaction(Transaction transaction)
+    {
+      if (transaction.Operation == OperationType.Доход) RegisterIncome(transaction);
+      if (transaction.Operation == OperationType.Расход) RegisterExpense(transaction);
+      if (transaction.Operation == OperationType.Перенос) RegisterTransfer(transaction);
+    }
+
+    private void RegisterIncome(Transaction transaction)
+    {
+      var amountInUsd = _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+      if (transaction.Credit.Is("Депозиты"))
+      {
+        Result.Incomes.OnDeposits.Transactions.Add(transaction);
+        Result.Incomes.OnDeposits.TotalInUsd += amountInUsd;
+      }
+      else
+      {
+        Result.Incomes.OnHands.Transactions.Add(transaction);
+        Result.Incomes.OnHands.TotalInUsd += amountInUsd;
+      }
+    }
+
+    private void RegisterExpense(Transaction transaction)
+    {
+      var amountInUsd = _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
+      Result.Expense.TotalInUsd += amountInUsd;
+      if (amountInUsd >= 50)
+      {
+        Result.Expense.LargeTransactions.Add(transaction);
+        Result.Expense.TotalForLargeInUsd += amountInUsd;
+      }
+     
+    }
+    private void RegisterTransfer(Transaction transaction){}
+
+    private List<CurrencyRate> InitializeRates(DateTime date)
+    {
+      var result = new List<CurrencyRate>();
+      var currencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>();
+      foreach (CurrencyCodes currencyCode in currencyList)
+      {
+        if (currencyCode != CurrencyCodes.USD) result.Add(_rateExtractor.FindRateForDateOrBefore(currencyCode, date));
+       
+      }
+      return result;
+    }
+
 	  public Saldo AnalizeMonth(DateTime initialDay)
 	  {
+      Result = new Saldo();
       Result.StartDate = initialDay.AddDays(-initialDay.Day + 1);
 	    Result.BeginBalance = InitializeWithBalanceBeforeDate(Result.StartDate);
-      Result.BeginByrRate = (decimal)_rateExtractor.GetRateThisDayOrBefore(CurrencyCodes.BYR, Result.StartDate.AddDays(-1));
+      Result.BeginRates = InitializeRates(Result.StartDate);
 
 	    var transactions = GetMonthTransactionsForAnalysis(Result.StartDate, _db.Transactions);
-        
+
       foreach (var transaction in transactions)
-      {
-        var amountInUsd = _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
-        if (transaction.Operation == OperationType.Доход)
-          Result.Incomes += amountInUsd;
-        else
-        {
-          Result.Expense += amountInUsd;
-          if (amountInUsd >= 50) Result.LargeExpense += amountInUsd;
-        }
+      { 
+        RegisterTransaction(transaction);
       }
 
 	    Result.EndBalance = InitializeWithBalanceBeforeDate(Result.StartDate.AddMonths(1));
 
-      if (!transactions.Any())
-      {
-        Result.LastDayWithTransactionsInMonth = Result.StartDate;
-        Result.EndByrRate = Result.BeginByrRate;
-      }
-      else
-      {
-        var lastTransaction = transactions.Last();
-        Result.LastDayWithTransactionsInMonth = lastTransaction.Timestamp.Date;
-        Result.EndByrRate = (decimal)_rateExtractor.GetRate(CurrencyCodes.BYR, lastTransaction.Timestamp);
-      }
+      Result.EndRates = InitializeRates(Result.StartDate.AddMonths(1));
 
       return Result;
     }
