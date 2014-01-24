@@ -19,8 +19,9 @@
   <Grid>
     <StackPanel>
       <DockPanel LastChildFill="True">
-        <ListBox Name="BeforeList" Margin="2,2,0,0" Padding="2,2,7,4" BorderThickness="1,1,0,1"/>
-        <ListBox Name="BeforeListByCurrency" Margin="0,2,2,0" Padding="2,2,7,4" BorderThickness="0,1,1,1"/>
+        <ListBox Name="BeforeList" Margin="2,2,0,0" Padding="2,2,7,4" />
+        <ListBox Name="BeforeListOnHands" Margin="2,2,0,0" Padding="2,2,7,4" />
+        <ListBox Name="BeforeListOnDeposits" Margin="2,2,2,0" Padding="2,2,7,4"/>
       </DockPanel>
       <ListBox Name="IncomesList" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="2,2,2,0" Padding="2,2,7,4"
                Foreground="Blue"/>
@@ -29,8 +30,9 @@
         <ListBox Name="LargeExpenseList" Margin="2,2,2,0" Padding="5,2,7,4" Foreground="Red"/>
       </DockPanel>
       <DockPanel LastChildFill="True">
-        <ListBox Name="AfterList" Margin="2,2,0,0" Padding="2,2,7,4" BorderThickness="1,1,0,1"/>
-        <ListBox Name="AfterListByCurrency" Margin="0,2,2,0" Padding="2,2,7,4" BorderThickness="0,1,1,1"/>
+        <ListBox Name="AfterList" Margin="2,2,0,0" Padding="2,2,7,4"/>
+        <ListBox Name="AfterListOnHands" Margin="2,2,0,0" Padding="2,2,7,4" />
+        <ListBox Name="AfterListOnDeposits" Margin="2,2,2,0" Padding="2,2,7,4" />
       </DockPanel>
       <ListBox Name="ResultList" Margin="2,2,2,0" Padding="2,2,7,4" Foreground="{Binding Path=ResultForeground}"/>
       <DockPanel LastChildFill="True">
