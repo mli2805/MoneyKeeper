@@ -23,8 +23,11 @@
         <ListBox Name="BeforeListOnHands" Margin="2,2,0,0" Padding="2,2,7,4" />
         <ListBox Name="BeforeListOnDeposits" Margin="2,2,2,0" Padding="2,2,7,4"/>
       </DockPanel>
-      <ListBox Name="IncomesList" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="2,2,2,0" Padding="2,2,7,4"
-               Foreground="Blue"/>
+      <DockPanel LastChildFill="True">
+        <ListBox Name="IncomesToHandsList" Margin="2,2,0,0" Padding="2,2,7,4" Foreground="Blue" BorderThickness="1,1,1,0"/>
+        <ListBox Name="IncomesToDepositsList" Margin="0,2,2,0" Padding="2,2,7,4" Foreground="Blue" BorderThickness="0,1,1,0"/>
+      </DockPanel>
+      <ListBox Name="IncomesTotal" Margin="2,0,2,2" HorizontalAlignment="Stretch" Foreground="Blue" BorderThickness="1,0,1,1"></ListBox>
       <DockPanel LastChildFill="True">
         <ListBox Name="ExpenseList" Margin="2,2,0,0" Padding="2,2,7,4" Foreground="Red"/>
         <ListBox Name="LargeExpenseList" Margin="2,2,2,0" Padding="5,2,7,4" Foreground="Red"/>

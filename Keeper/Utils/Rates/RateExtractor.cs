@@ -16,6 +16,14 @@ namespace Keeper.Utils.Rates
 			_db = db;
 		}
 
+    public CurrencyRate FindRateForDateOrBefore(CurrencyCodes currency, DateTime date)
+    {
+      return (from currencyRate in _db.CurrencyRates
+                  where currencyRate.BankDay.Date <= date.Date && currencyRate.Currency == currency
+                  orderby currencyRate.BankDay
+                  select currencyRate).LastOrDefault();
+    }
+
 		public double GetRate(CurrencyCodes currency, DateTime day)
 		{
 			var rate = (from currencyRate in _db.CurrencyRates
