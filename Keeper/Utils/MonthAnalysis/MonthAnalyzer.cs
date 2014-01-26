@@ -104,9 +104,16 @@ namespace Keeper.Utils.MonthAnalysis
 	    }
 	  }
 
-	  private IEnumerable<ConvertedTransaction> ConvertTransactions(IEnumerable<Transaction> expenseTransactions)
+
+    /// <summary>
+    /// работает гораздо быстрее чем ConvertTransactions
+    /// но если нет курса за день операции, не может взять предшествующий курс
+    /// </summary>
+    /// <param name="expenseTransactions"></param>
+    /// <returns></returns>
+	  private IEnumerable<ConvertedTransaction> ConvertTransactionsQuery(IEnumerable<Transaction> expenseTransactions)
 	  {
-	    return from t in expenseTransactions
+      return from t in expenseTransactions
 	           join r in _db.CurrencyRates
 	             on new {t.Timestamp.Date, t.Currency} equals new {r.BankDay.Date, r.Currency} into g
 	           from rate in g.DefaultIfEmpty()
@@ -120,6 +127,24 @@ namespace Keeper.Utils.MonthAnalysis
 	                      Comment = t.Comment
 	                    };
 	  }
+
+    private IEnumerable<ConvertedTransaction> ConvertTransactions(IEnumerable<Transaction> expenseTransactions)
+    {
+      foreach (var t in expenseTransactions)
+      {
+        yield return new ConvertedTransaction
+        {
+          Timestamp = t.Timestamp,
+          Amount = t.Amount,
+          Currency = t.Currency,
+          Article = t.Article,
+          AmountInUsd = t.Currency != CurrencyCodes.USD ? 
+            t.Amount / (decimal)_rateExtractor.GetRateThisDayOrBefore(t.Currency, t.Timestamp) 
+            : t.Amount,
+          Comment = t.Comment
+        };
+      }
+    }
 
 	  private List<CurrencyRate> InitializeRates(DateTime date)
     {
