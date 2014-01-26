@@ -72,11 +72,16 @@ namespace Keeper.DomainModel
     public List<CurrencyRate> BeginRates { get; set; }
     public ExtendedIncomes Incomes { get; set; }
     public ExtendedTrafficWithCategories Expense { get; set; }
+
     public decimal ExchangeDifference { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd - Incomes.TotalInUsd + Expense.TotalInUsd; } }
+    public decimal ExchangeDepositDifference { get
+      { return EndBalance.OnDeposits.TotalInUsd - BeginBalance.OnDeposits.TotalInUsd - Incomes.OnDeposits.TotalInUsd - TransferToDeposit + TransferFromDeposit; } }
+
     public ExtendedBalanceForAnalysis EndBalance { get; set; }
     public List<CurrencyRate> EndRates { get; set; }
-    public decimal SaldoIncomesExpense { get { return Incomes.TotalInUsd - Expense.TotalInUsd; } }
-    public decimal Result { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd; } }
+
+    public decimal TransferToDeposit { get; set; }
+    public decimal TransferFromDeposit { get; set; }
 
     public decimal ForecastIncomes { get; set; }
     public decimal ForecastExpense { get; set; }

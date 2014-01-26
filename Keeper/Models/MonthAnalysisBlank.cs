@@ -17,7 +17,9 @@ namespace Keeper.Models
     public ObservableCollection<string> AfterListOnHands{ get; set; }
     public ObservableCollection<string> AfterListOnDeposits{ get; set; }
     public ObservableCollection<string> ResultList{ get; set; }
-    public ObservableCollection<string> ForecastListIncomes{ get; set; }
+    public ObservableCollection<string> DepositResultList { get; set; }
+    public ObservableCollection<string> RatesList { get; set; }
+    public ObservableCollection<string> ForecastListIncomes { get; set; }
     public ObservableCollection<string> ForecastListExpense{ get; set; }
     public ObservableCollection<string> ForecastListBalance{ get; set; }
   }
