@@ -104,7 +104,6 @@ namespace Keeper.Utils.MonthAnalysis
 	    }
 	  }
 
-
     /// <summary>
     /// работает гораздо быстрее чем ConvertTransactions
     /// но если нет курса за день операции, не может взять предшествующий курс
@@ -146,6 +145,19 @@ namespace Keeper.Utils.MonthAnalysis
       }
     }
 
+    private void RegisterFromDeposits(IEnumerable<Transaction> transferTransactions)
+    {
+       Result.TransferFromDeposit = transferTransactions.
+         Where(t => t.Debet.Is("Депозиты") && !t.Credit.Is("Депозиты")).
+         Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
+    }
+    private void RegisterToDeposits(IEnumerable<Transaction> transferTransactions)
+    {
+      Result.TransferToDeposit = transferTransactions.
+        Where(t => !t.Debet.Is("Депозиты") && t.Credit.Is("Депозиты")).
+        Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
+    }
+
 	  private List<CurrencyRate> InitializeRates(DateTime date)
     {
       var result = new List<CurrencyRate>();
@@ -168,6 +180,8 @@ namespace Keeper.Utils.MonthAnalysis
       foreach (var transaction in incomeTransactions) RegisterIncome(transaction);
 
 	    RegisterExpense(GetMonthTransactionsForAnalysis(OperationType.Расход, Result.StartDate, _db.Transactions));
+      RegisterFromDeposits(GetMonthTransactionsForAnalysis(OperationType.Перенос, Result.StartDate, _db.Transactions));
+      RegisterToDeposits(GetMonthTransactionsForAnalysis(OperationType.Перенос, Result.StartDate, _db.Transactions));
 
 	    Result.EndBalance = InitializeWithBalanceBeforeDate(Result.StartDate.AddMonths(1));
 
