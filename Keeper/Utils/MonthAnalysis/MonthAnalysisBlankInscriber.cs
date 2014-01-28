@@ -152,20 +152,36 @@ namespace Keeper.Utils.MonthAnalysis
       Blank.DepositResultList = new ObservableCollection<string> {
                                   String.Format("Открытие или доп.взносы {0:#,0} usd", s.TransferToDeposit)};
       Blank.DepositResultList.Add(String.Format("Закрытие или расходные {0:#,0} usd", s.TransferFromDeposit));
-      Blank.DepositResultList.Add(String.Format("\nПроценты по депозитам {0:#,0} usd", s.Incomes.OnDeposits.TotalInUsd));
-      Blank.DepositResultList.Add(String.Format("Курсовые разницы {0:#,0} usd", s.ExchangeDepositDifference));
+      Blank.DepositResultList.Add(String.Format("\nПроценты по депозитам (*)  {0:#,0} usd", s.Incomes.OnDeposits.TotalInUsd));
+      Blank.DepositResultList.Add(String.Format("Курсовые разницы  {0:#,0} usd", s.ExchangeDepositDifference));
       Blank.DepositResultList.Add(String.Format("\nПрибыль с учетом курсовых разниц {0:#,0} usd",
         s.Incomes.OnDeposits.TotalInUsd + s.ExchangeDepositDifference));
     }
 
+    private string HowCurrencyChanged(double a, double b)
+    {
+      if (a > b) return string.Format("упал");
+      if (a < b) return string.Format("вырос");
+      return string.Format("без изменений");
+    }
+
     private void FillInRatesList(Saldo s)
     {
+      var byrBegin = s.BeginRates.First(t => t.Currency == CurrencyCodes.BYR).Rate;
+      var byrEnd = s.EndRates.First(t => t.Currency == CurrencyCodes.BYR).Rate;
+      var euroBegin = 1/s.BeginRates.First(t => t.Currency == CurrencyCodes.EUR).Rate;
+      var euroEnd = 1/s.EndRates.First(t => t.Currency == CurrencyCodes.EUR).Rate;
       Blank.RatesList = new ObservableCollection<string>
-         { String.Format( "Изменение курсов\n\n  Byr/Usd:  {0:#,0} - {1:#,0}\n  Usd/Euro:  {2:0.###} - {3:0.###} \n",
-          s.BeginRates.First(t => t.Currency == CurrencyCodes.BYR).Rate,
-          s.EndRates.First(t => t.Currency == CurrencyCodes.BYR).Rate,
-          1/s.BeginRates.First(t => t.Currency == CurrencyCodes.EUR).Rate,
-          1/s.EndRates.First(t => t.Currency == CurrencyCodes.EUR).Rate)};
+         { String.Format( "Изменение курсов\n\n  Byr {0}:  {1:#,0} - {2:#,0}\n  Euro {3}:  {4:0.###} - {5:0.###} \n",
+          HowCurrencyChanged(byrEnd, byrBegin),
+          byrBegin,
+          byrEnd,
+          HowCurrencyChanged(euroBegin, euroEnd),
+          euroBegin,
+          euroEnd)};
+
+//      Blank.ByrRates = string.Format("Byr/Usd:  {0:#,0} - {1:#,0}", s.BeginRates.First(t => t.Currency == CurrencyCodes.BYR).Rate, s.EndRates.First(t => t.Currency == CurrencyCodes.BYR).Rate);
+//      Blank.EuroRates = string.Format("Usd/Euro:  {0:0.###} - {1:0.###}", 1 / s.BeginRates.First(t => t.Currency == CurrencyCodes.EUR).Rate, 1 / s.EndRates.First(t => t.Currency == CurrencyCodes.EUR).Rate);
     }
 
     private void CalculateForecast(Saldo s)
