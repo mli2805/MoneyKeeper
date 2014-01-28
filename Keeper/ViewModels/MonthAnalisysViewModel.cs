@@ -42,6 +42,7 @@ namespace Keeper.ViewModels
       {
         _monthSaldo = value;
         ResultForeground = MonthSaldo.BeginBalance.Common.TotalInUsd > MonthSaldo.EndBalance.Common.TotalInUsd ? Brushes.Red : Brushes.Blue;
+        DepositResultForeground = MonthSaldo.Incomes.OnDeposits.TotalInUsd + MonthSaldo.ExchangeDepositDifference < 0 ? Brushes.Red : Brushes.Blue;
         Blank = _inscriber.FillInBlank(MonthSaldo, _isMonthEnded);
       }
     }
@@ -71,6 +72,8 @@ namespace Keeper.ViewModels
     }
 
     private Brush _resultForeground;
+    private Brush _depositResultForeground;
+
     public Brush ResultForeground
     {
       get { return _resultForeground; }
@@ -81,6 +84,18 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => ResultForeground);
       }
     }
+
+    public Brush DepositResultForeground
+    {
+      get { return _depositResultForeground; }
+      set
+      {
+        if (Equals(value, _depositResultForeground)) return;
+        _depositResultForeground = value;
+        NotifyOfPropertyChange(() => DepositResultForeground);
+      }
+    }
+
     public string MonthAnalisysViewCaption { get; set; }
 
     [ImportingConstructor]
