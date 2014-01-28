@@ -16,7 +16,6 @@ namespace Keeper.ViewModels
     {
       DisplayName = ModelDataProperty.Caption; 
     }
-
   }
 
 }

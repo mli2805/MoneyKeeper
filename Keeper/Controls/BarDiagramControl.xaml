@@ -38,7 +38,19 @@
         </ContextMenu>
       </Image.ContextMenu>
     </Image>
-      <Image Name="LegendImage" Grid.Column="1" Width="150" Visibility="Collapsed" Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,100,5,5"/>
+      <ListView Name="Legend" Visibility="Collapsed" FontSize="18" Grid.Column="1" Margin="5">
+        <ListView.ItemContainerStyle>
+          <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Foreground" Value="{Binding FontColor}"/>
+          </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.View>
+          <GridView>
+            <GridViewColumn DisplayMemberBinding="{Binding SeriesName}" />
+          </GridView>
+        </ListView.View>
+      </ListView>
+
     </Grid>
     <TextBlock Name="StatusBar" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="1"/>
   </Grid>

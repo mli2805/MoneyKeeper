@@ -213,7 +213,6 @@
     <Compile Include="Utils\Diagram\DiagramDataFactory.cs" />
     <Compile Include="Utils\Diagram\DiagramDrawingCalculator.cs" />
     <Compile Include="Utils\Diagram\DiagramHintCreator.cs" />
-    <Compile Include="Utils\Diagram\DiagramLegendCreator.cs" />
     <Compile Include="Utils\Diagram\DiagramPointAnalyzer.cs" />
     <Compile Include="Utils\FileSystem\DirectoryImpl.cs" />
     <Compile Include="Utils\FileSystem\FileImpl.cs" />
@@ -233,6 +232,7 @@
     <Compile Include="Utils\Rates\IRateExtractor.cs" />
     <Compile Include="ViewModels\ChartPoint.cs" />
     <Compile Include="ViewModels\DateProcentPoint.cs" />
+    <Compile Include="Utils\Diagram\DiagramLegendItem.cs" />
     <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />

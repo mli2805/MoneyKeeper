@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Keeper.Utils;
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
+using Keeper.ViewModels;
 
 namespace Keeper.Controls
 {
@@ -105,6 +107,8 @@ namespace Keeper.Controls
 
     public DiagramDrawingCalculator Calculator { get; set; }
 
+    public ObservableCollection<DiagramLegendItem> DiagramLegend { get; set; }
+
     #region class essential methods
 
     public BarDiagramControl()
@@ -137,8 +141,18 @@ namespace Keeper.Controls
       var window = Window.GetWindow(this);
       if (window != null) window.KeyDown += OnKeyDown;
 
-      var diagramLegendCreator = new DiagramLegendCreator(AllDiagramData);
-      LegendImage.Source = diagramLegendCreator.Create();
+//      var diagramLegendCreator = new DiagramLegendCreator(AllDiagramData);
+//      LegendImage.Source = diagramLegendCreator.Create();
+
+
+
+      DiagramLegend = new ObservableCollection<DiagramLegendItem>();
+      foreach (var series in AllDiagramData.Data)
+      {
+        DiagramLegend.Add(new DiagramLegendItem() { SeriesName = series.Name, FontColor = series.PositiveBrushColor });
+      }
+      Legend.ItemsSource = DiagramLegend;
+
       StatusBar.Text = "Ctrl+LeftButton - сдвиг изображения; LeftButton - зум прямоугольника";
     }
 
@@ -212,7 +226,7 @@ namespace Keeper.Controls
     {
       if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
       if (e.Key == Key.F5) Draw();
-      if (e.Key == Key.F1) LegendImage.Visibility = LegendImage.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+      if (e.Key == Key.F1) Legend.Visibility = Legend.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
       if (e.Key == Key.F2) ChangeLine();
     }
 
