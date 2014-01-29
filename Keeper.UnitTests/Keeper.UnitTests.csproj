@@ -121,9 +121,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TODO1.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="ByFunctional\Balance\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
