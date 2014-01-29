@@ -132,7 +132,6 @@
     <Compile Include="DomainModel\DbIntegrity.cs" />
     <Compile Include="DomainModel\DbOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
-    <Compile Include="DomainModel\ShiftDay.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />
     <Compile Include="Models\Shell\StatusBarModel.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
