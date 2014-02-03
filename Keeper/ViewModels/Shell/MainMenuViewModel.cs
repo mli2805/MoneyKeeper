@@ -35,6 +35,7 @@ namespace Keeper.ViewModels.Shell
     private readonly OldTransactionsReorderer _oldTransactionsReorderer;
 
     public bool IsDbLoadingFailed { get; set; }
+    public bool IsAuthorizationFailed { get; set; }
     private readonly List<Screen> _launchedForms = new List<Screen>();
     private bool _isExitPreparationDone;
     public bool IsExitPreparationDone
@@ -248,8 +249,10 @@ namespace Keeper.ViewModels.Shell
 
     public bool ShowLogonForm()
     {
+      IsAuthorizationFailed = true;
       var logonViewModel = new LogonViewModel("1");
       WindowManager.ShowDialog(logonViewModel);
+      IsAuthorizationFailed = !logonViewModel.Result;
       return logonViewModel.Result;
     }
 
