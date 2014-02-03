@@ -29,5 +29,10 @@ namespace Keeper.Views.Shell
     {
       throw new NotImplementedException();
     }
+
+    private void ShellViewPeriodSelectControl_Loaded_1(object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }

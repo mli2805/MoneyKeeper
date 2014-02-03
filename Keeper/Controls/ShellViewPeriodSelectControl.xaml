@@ -37,8 +37,19 @@
 
     <Button Name="Today" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
               Height="30" Width="85" Content="Сегодня" Style="{StaticResource MyButtonStyle}" Click="TodayClick" />
-    <Button Name="Yesterday" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
-              Height="30" Width="85" Content="Вчера" Style="{StaticResource MyButtonStyle}" Click="YesterdayClick" />
+    <Button Name="FromVeryBegin" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,5,0,5"
+              Height="30" Width="85" Style="{StaticResource MyButtonStyle}" Click="FromVeryBeginClick">
+      <ContentControl >
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+          <TextBlock Text="С начала" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+          <TextBlock Text="времен" Grid.Row="1" HorizontalAlignment="Center" FontSize="11" VerticalAlignment="Top"/>
+        </Grid>
+      </ContentControl>
+    </Button>
 
     <Button Name="ThisMonth" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="112,5"
               Height="30" Width="86" Content="Этот месяц" Style="{StaticResource MyButtonStyle}" Click="ThisMonthClick" />

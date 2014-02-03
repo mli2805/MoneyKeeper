@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Composition;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
-using Keeper.Utils.DbInputOutput.TxtTasks;
-
 using System.Linq;
 
 namespace Keeper.Utils.Accounts
@@ -34,4 +32,5 @@ namespace Keeper.Utils.Accounts
     }
 
   }
+
 }

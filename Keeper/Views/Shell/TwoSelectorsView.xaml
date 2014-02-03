@@ -12,7 +12,7 @@
     </Grid.RowDefinitions>
 
     <Controls:ShellViewPeriodSelectControl Visibility="{Binding MyTwoSelectorsModel.PeriodSelectControlVisibility}"  
-                  SelectedPeriod="{Binding MyTwoSelectorsModel.TranslatedPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="0"/>
+                  SelectedPeriod="{Binding MyTwoSelectorsModel.TranslatedPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="0" Loaded="ShellViewPeriodSelectControl_Loaded_1"/>
     <Controls:ShellViewDateSelectControl Visibility="{Binding MyTwoSelectorsModel.DateSelectControlVisibility}"  
                   SelectedDay="{Binding MyTwoSelectorsModel.TranslatedDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,0" Grid.Row="1"/>
 
