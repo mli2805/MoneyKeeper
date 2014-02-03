@@ -48,7 +48,7 @@ namespace Keeper.ViewModels.Shell
 
     public override void CanClose(Action<bool> callback)
     {
-      if (MainMenuViewModel.IsDbLoadingFailed || MainMenuViewModel.IsExitPreparationDone)
+      if (MainMenuViewModel.IsDbLoadingFailed || MainMenuViewModel.IsAuthorizationFailed || MainMenuViewModel.IsExitPreparationDone)
       {
         callback(true);
         return;
