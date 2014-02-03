@@ -13,7 +13,6 @@ namespace Keeper.ViewModels.Shell
       get { return _translatedPeriod; }
       set
       {
-        if (Equals(value, _translatedPeriod)) return;
         _translatedPeriod = value;
         NotifyOfPropertyChange(() => TranslatedPeriod);
       }

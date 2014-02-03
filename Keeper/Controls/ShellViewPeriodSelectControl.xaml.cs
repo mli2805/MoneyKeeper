@@ -93,7 +93,7 @@ namespace Keeper.Controls
         SelectedPeriod = new Period(new DayProcessor((DateTime)StartDatePicker.SelectedDate).BeforeThisDay(), SelectedPeriod.Finish);
     }
 
-    private void FinishDatePickerSelectedDateChanged(object sender, SelectionChangedEventArgs e)
+    public void FinishDatePickerSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
       if (FinishDatePicker.SelectedDate == null) FinishDatePicker.SelectedDate = SelectedPeriod.Finish; 
       else
