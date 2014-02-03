@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Composition;
 using System.Windows;
 using Caliburn.Micro;
 
-namespace Keeper.Models
+namespace Keeper.Models.Shell
 {
   [Export]
   public class StatusBarModel : PropertyChangedBase

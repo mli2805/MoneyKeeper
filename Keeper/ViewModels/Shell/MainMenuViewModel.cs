@@ -7,6 +7,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Models;
+using Keeper.Models.Shell;
 using Keeper.Properties;
 using Keeper.Utils;
 using Keeper.Utils.CommonKeeper;

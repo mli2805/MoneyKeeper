@@ -3,10 +3,9 @@ using System.Composition;
 using System.Windows;
 using Keeper.DomainModel;
 using Keeper.Utils.Balances;
-using Keeper.Utils.Common;
 using Keeper.ViewModels.Shell;
 
-namespace Keeper.Models
+namespace Keeper.Models.Shell
 {
   [Export]
   [Shared]

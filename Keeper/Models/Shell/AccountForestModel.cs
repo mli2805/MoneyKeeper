@@ -5,7 +5,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 
-namespace Keeper.Models
+namespace Keeper.Models.Shell
 {
   public class AccountForestModel : PropertyChangedBase
   {

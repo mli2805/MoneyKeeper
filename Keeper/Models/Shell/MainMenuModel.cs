@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 
-namespace Keeper.Models
+namespace Keeper.Models.Shell
 {
   public enum Actions
   {
