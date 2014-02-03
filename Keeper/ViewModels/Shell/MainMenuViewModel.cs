@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Models;
 using Keeper.Properties;
+using Keeper.Utils;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -31,6 +32,7 @@ namespace Keeper.ViewModels.Shell
     private readonly IDbFromTxtLoader _dbFromTxtLoader;
     private readonly DbCleaner _dbCleaner;
     private readonly DiagramDataFactory _diagramDataFactory;
+    private readonly OldTransactionsReorderer _oldTransactionsReorderer;
 
     public bool IsDbLoadingFailed { get; set; }
     private readonly List<Screen> _launchedForms = new List<Screen>();
@@ -48,7 +50,7 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
-                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory)
+                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory, OldTransactionsReorderer oldTransactionsReorderer)
     {
       _loadResult = loadResult;
       IsDbLoadingFailed = _loadResult.Db == null;
@@ -66,6 +68,7 @@ namespace Keeper.ViewModels.Shell
       _dbFromTxtLoader = dbFromTxtLoader;
       _dbCleaner = dbCleaner;
       _diagramDataFactory = diagramDataFactory;
+      _oldTransactionsReorderer = oldTransactionsReorderer;
       WindowManager = new WindowManager();
     }
 
@@ -229,9 +232,11 @@ namespace Keeper.ViewModels.Shell
 
     public void TempItem()
     {
-      var diagramData = _diagramDataFactory.MonthlyResultsDiagramCtor();
-      var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
-      WindowManager.ShowDialog(diagramOxyplotViewModel);
+//      var diagramData = _diagramDataFactory.MonthlyResultsDiagramCtor();
+//      var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
+//      WindowManager.ShowDialog(diagramOxyplotViewModel);
+
+      _oldTransactionsReorderer.MarkOldAvtoExpenseBySpecialArticle();
     }
 
     public void ShowToDoForm()
