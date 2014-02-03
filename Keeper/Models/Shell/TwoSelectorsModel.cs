@@ -4,7 +4,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
 
-namespace Keeper.ViewModels.Shell
+namespace Keeper.Models.Shell
 {
   public class TwoSelectorsModel : PropertyChangedBase
   {
