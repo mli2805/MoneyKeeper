@@ -65,6 +65,20 @@ namespace Keeper.Utils.Balances
 				   };
 		}
 
+    public decimal ArticleTraffic(Account article, Period period)
+    {
+      var transactionsWithRates = from t in _db.Transactions
+                                  where t.Article != null && t.Article.Is(article.Name) && period.IsDateIn(t.Timestamp)
+                                  join r in _db.CurrencyRates on new {t.Timestamp.Date, t.Currency} equals new {r.BankDay.Date, r.Currency}
+                                  select new { AmountInUsd = r != null ? t.Amount / (decimal)r.Rate : t.Amount };
+
+      var am = transactionsWithRates.Sum(t => t.AmountInUsd);
+
+
+
+      return am;
+    }
+
 		/// <summary>
 		/// вызов с параметром 2 февраля 2013 - вернет остаток по счету на утро 2 февраля 2013 
 		/// </summary>
@@ -77,20 +91,6 @@ namespace Keeper.Utils.Balances
 			if (balancedAccount.Is("Все доходы") || balancedAccount.Is("Все расходы"))
 				return ArticleBalancePairs(balancedAccount, period);
 			return AccountBalancePairs(balancedAccount, period);
-		}
-
-		/// <summary>
-		/// вызов с параметром 2 февраля 2013 - вернет остаток по счету после 2 февраля 2013 
-		/// </summary>
-		/// <param name="balancedAccount">счет, по которому будет вычислен остаток</param>
-		/// <param name="dateTime">день, после которого остаток</param>
-		/// <returns></returns>
-		public IEnumerable<MoneyPair> AccountBalancePairsAfterDay(Account balancedAccount, DateTime dateTime)
-		{
-			var period = new Period(new DateTime(0), new DayProcessor(dateTime).AfterThisDay());
-			if (balancedAccount.Is("Все доходы") || balancedAccount.Is("Все расходы"))
-				return ArticleBalancePairs(balancedAccount, period);
-			else return AccountBalancePairs(balancedAccount, period);
 		}
 
 		/// <summary>
@@ -114,3 +114,21 @@ namespace Keeper.Utils.Balances
 		}
 	}
 }
+/*
+private IEnumerable<ConvertedTransaction> ConvertTransactionsQuery(IEnumerable<Transaction> expenseTransactions)
+	  {
+      return from t in expenseTransactions
+	           join r in _db.CurrencyRates
+	             on new {t.Timestamp.Date, t.Currency} equals new {r.BankDay.Date, r.Currency} into g
+	           from rate in g.DefaultIfEmpty()
+	           select new ConvertedTransaction
+	                    {
+	                      Timestamp = t.Timestamp,
+	                      Amount = t.Amount,
+	                      Currency = t.Currency,
+	                      Article = t.Article,
+	                      AmountInUsd = rate != null ? t.Amount/(decimal) rate.Rate : t.Amount,
+	                      Comment = t.Comment
+	                    };
+	  }
+*/

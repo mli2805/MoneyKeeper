@@ -26,10 +26,7 @@ namespace Keeper.Utils.Balances
       totalInUsd = 0;
       if (balancedAccount == null) return balance;
 
-      var kind = balancedAccount.Is("Все доходы") || balancedAccount.Is("Все расходы");
-      var balancePairs = kind ? 
-         _balanceCalculator.ArticleBalancePairs(balancedAccount, period) :
-         _balanceCalculator.AccountBalancePairs(balancedAccount, period);
+      var balancePairs = _balanceCalculator.AccountBalancePairs(balancedAccount, period);
 
       foreach (var item in balancePairs)
       {
@@ -40,11 +37,18 @@ namespace Keeper.Utils.Balances
       return balance;
     }
 
-    public decimal CountBalances(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
+    public decimal FillListForShellView(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
     {
       balanceList.Clear();
       if (selectedAccount == null) return 0;
+      if (selectedAccount.Is("Все доходы") || selectedAccount.Is("Все расходы"))
+        return FillListWithTraffic(selectedAccount, period, balanceList);
+      else return FillListWithBalance(selectedAccount, period, balanceList);
 
+    }
+
+    private decimal FillListWithBalance(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
+    {
       decimal inUsd;
       var b = OneBalance(selectedAccount, period, out inUsd);
       foreach (var st in b)
@@ -60,5 +64,17 @@ namespace Keeper.Utils.Balances
       }
       return inUsd;
     }
+
+    private decimal FillListWithTraffic(Account selectedAccount, Period period, ObservableCollection<string> trafficList)
+    {
+      trafficList.Clear();
+
+      var b = _balanceCalculator.ArticleTraffic(selectedAccount, period);
+      trafficList.Add(string.Format("{0} {1}", selectedAccount.Name, b));
+
+      return b;
+    }
+
+
   }
 }

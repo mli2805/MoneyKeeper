@@ -97,10 +97,10 @@ namespace Keeper.Models.Shell
     private void RefreshBalanceListAccordinglyDatesInSelector()
     {
       if (MyTwoSelectorsModel.IsPeriodMode)
-        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
+        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.FillListForShellView(
           MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList));
       else
-        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
+        MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.FillListForShellView(
           MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate),
           MyBalanceListModel.BalanceList));
     }
@@ -117,12 +117,12 @@ namespace Keeper.Models.Shell
         MyBalanceListModel.Caption = MyForestModel.SelectedAccount.Name;
         if (MyTwoSelectorsModel.IsPeriodMode)
         {
-          MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
+          MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.FillListForShellView(
             MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList));
         }
         else
         {
-          MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.CountBalances(
+          MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,#} usd", _balancesForShellCalculator.FillListForShellView(
             MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList));
         }
       }
