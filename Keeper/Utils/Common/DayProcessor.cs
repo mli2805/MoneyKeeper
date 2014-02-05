@@ -19,6 +19,14 @@ namespace Keeper.Utils.Common
       return new DateTime(yy, mm, dd, 0, 0, 0, 0);
     }
 
+    public DateTime BeforeThisMonth()
+    {
+      var yy = _day.Year;
+      var mm = _day.Month;
+      var dd = _day.Day;
+      return new DateTime(yy, mm, 1, 0, 0, 0, 0);
+    }
+
     public DateTime AfterThisDay()
     {
       var yy = _day.Year;

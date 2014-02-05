@@ -37,16 +37,6 @@ namespace Keeper.Utils.Balances
       return balance;
     }
 
-    public decimal FillListForShellView(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
-    {
-      balanceList.Clear();
-      if (selectedAccount == null) return 0;
-      if (selectedAccount.Is("Все доходы") || selectedAccount.Is("Все расходы"))
-        return FillListWithTraffic(selectedAccount, period, balanceList);
-      else return FillListWithBalance(selectedAccount, period, balanceList);
-
-    }
-
     private decimal FillListWithBalance(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
     {
       decimal inUsd;
@@ -70,9 +60,27 @@ namespace Keeper.Utils.Balances
       trafficList.Clear();
 
       var b = _balanceCalculator.ArticleTraffic(selectedAccount, period);
-      trafficList.Add(string.Format("{0} {1}", selectedAccount.Name, b));
+      trafficList.Add(b == 0
+                        ? "В данном периоде не найдено движение по выбранному счету"
+                        : string.Format("{0}   {1:#,0} usd", selectedAccount.Name, b));
+
+      foreach (var child in selectedAccount.Children)
+      {
+        decimal c = _balanceCalculator.ArticleTraffic(child, period);
+        if (c != 0) trafficList.Add(string.Format("   {0}   {1:#,0} usd", child.Name, c));
+      }
 
       return b;
+    }
+
+    public decimal FillListForShellView(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
+    {
+      balanceList.Clear();
+      if (selectedAccount == null) return 0;
+      if (selectedAccount.Is("Все доходы") || selectedAccount.Is("Все расходы"))
+        return FillListWithTraffic(selectedAccount, period, balanceList);
+      else return FillListWithBalance(selectedAccount, period, balanceList);
+
     }
 
 
