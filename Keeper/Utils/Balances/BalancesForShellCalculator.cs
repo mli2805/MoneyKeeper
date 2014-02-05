@@ -58,17 +58,21 @@ namespace Keeper.Utils.Balances
     private decimal FillListWithTraffic(Account selectedAccount, Period period, ObservableCollection<string> trafficList)
     {
       trafficList.Clear();
-
-      var b = _balanceCalculator.ArticleTraffic(selectedAccount, period);
+      var firstTransactions = new List<string>();
+      var b = _balanceCalculator.ArticleTraffic(selectedAccount, period, firstTransactions);
       trafficList.Add(b == 0
-                        ? "В данном периоде не найдено движение по выбранному счету"
+                        ? "В данном периоде \nдвижение по выбранному счету не найдено"
                         : string.Format("{0}   {1:#,0} usd", selectedAccount.Name, b));
 
       foreach (var child in selectedAccount.Children)
       {
-        decimal c = _balanceCalculator.ArticleTraffic(child, period);
+        decimal c = _balanceCalculator.ArticleTraffic(child, period, firstTransactions);
         if (c != 0) trafficList.Add(string.Format("   {0}   {1:#,0} usd", child.Name, c));
       }
+
+      if (selectedAccount.Children.Count == 0)
+        foreach (var transaction in firstTransactions)
+          trafficList.Add(transaction);
 
       return b;
     }

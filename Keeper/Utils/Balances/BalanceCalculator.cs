@@ -65,17 +65,29 @@ namespace Keeper.Utils.Balances
 				   };
 		}
 
-    public decimal ArticleTraffic(Account article, Period period)
+    public decimal ArticleTraffic(Account article, Period period, List<string> firstTransactions)
     {
-      var transactionsWithRates = from t in _db.Transactions
+      var transactionsWithRates = (from t in _db.Transactions
                                   where t.Article != null && t.Article.Is(article.Name) && period.IsDateIn(t.Timestamp)
                                   join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
                                   from rate in g.DefaultIfEmpty()
-                                  select new { AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount };
+                                  select new
+                                           {
+                                             t.Timestamp,
+                                             AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
+                                             t.Comment
+                                           }).ToList();
 
       var am = transactionsWithRates.Sum(t => t.AmountInUsd);
 
-
+      if (am != 0 && article.Children.Count == 0)
+      {
+        firstTransactions.Clear();
+        for (var i = 0; i < transactionsWithRates.Count(); i++)
+        {
+          firstTransactions.Add(string.Format("  {0:dd/MM/yyyy} ${1:#,0} {2}",transactionsWithRates[i].Timestamp, transactionsWithRates[i].AmountInUsd, transactionsWithRates[i].Comment.Trim()));
+        }
+      }
 
       return am;
     }
