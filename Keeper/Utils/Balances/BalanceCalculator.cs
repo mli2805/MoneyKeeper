@@ -69,8 +69,9 @@ namespace Keeper.Utils.Balances
     {
       var transactionsWithRates = from t in _db.Transactions
                                   where t.Article != null && t.Article.Is(article.Name) && period.IsDateIn(t.Timestamp)
-                                  join r in _db.CurrencyRates on new {t.Timestamp.Date, t.Currency} equals new {r.BankDay.Date, r.Currency}
-                                  select new { AmountInUsd = r != null ? t.Amount / (decimal)r.Rate : t.Amount };
+                                  join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
+                                  from rate in g.DefaultIfEmpty()
+                                  select new { AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount };
 
       var am = transactionsWithRates.Sum(t => t.AmountInUsd);
 
@@ -114,21 +115,3 @@ namespace Keeper.Utils.Balances
 		}
 	}
 }
-/*
-private IEnumerable<ConvertedTransaction> ConvertTransactionsQuery(IEnumerable<Transaction> expenseTransactions)
-	  {
-      return from t in expenseTransactions
-	           join r in _db.CurrencyRates
-	             on new {t.Timestamp.Date, t.Currency} equals new {r.BankDay.Date, r.Currency} into g
-	           from rate in g.DefaultIfEmpty()
-	           select new ConvertedTransaction
-	                    {
-	                      Timestamp = t.Timestamp,
-	                      Amount = t.Amount,
-	                      Currency = t.Currency,
-	                      Article = t.Article,
-	                      AmountInUsd = rate != null ? t.Amount/(decimal) rate.Rate : t.Amount,
-	                      Comment = t.Comment
-	                    };
-	  }
-*/
