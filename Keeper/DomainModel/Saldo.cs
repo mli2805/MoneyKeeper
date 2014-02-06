@@ -65,6 +65,25 @@ namespace Keeper.DomainModel
     }
   }
 
+  public class EstimatedMoney
+  {
+    public decimal Amount { get; set; }
+    public CurrencyCodes Currency { get; set; }
+    public string ArticleName { get; set; }
+  }
+
+  public class EstimatedIncomes
+  {
+    public List<EstimatedMoney> Incomes { get; set; }
+    public decimal EstimatedIncomesSum { get; set; }
+    public decimal TotalInUsd { get; set; }
+
+    public EstimatedIncomes()
+    {
+      Incomes = new List<EstimatedMoney>();
+    }
+  }
+
   public class Saldo
   {
     public DateTime StartDate { get; set; }
@@ -83,9 +102,9 @@ namespace Keeper.DomainModel
     public decimal TransferToDeposit { get; set; }
     public decimal TransferFromDeposit { get; set; }
 
-    public decimal ForecastIncomes { get; set; }
+    public EstimatedIncomes ForecastIncomes { get; set; }
     public decimal ForecastExpense { get; set; }
-    public decimal ForecastFinResult { get { return ForecastIncomes - ForecastExpense; } }
+    public decimal ForecastFinResult { get { return ForecastIncomes.TotalInUsd - ForecastExpense; } }
     public decimal ForecastEndBalance { get { return BeginBalance.Common.TotalInUsd + ForecastFinResult; } }
 
     public Saldo()

@@ -179,16 +179,18 @@ namespace Keeper.Utils.MonthAnalysis
           HowCurrencyChanged(euroBegin, euroEnd),
           euroBegin,
           euroEnd)};
-
-//      Blank.ByrRates = string.Format("Byr/Usd:  {0:#,0} - {1:#,0}", s.BeginRates.First(t => t.Currency == CurrencyCodes.BYR).Rate, s.EndRates.First(t => t.Currency == CurrencyCodes.BYR).Rate);
-//      Blank.EuroRates = string.Format("Usd/Euro:  {0:0.###} - {1:0.###}", 1 / s.BeginRates.First(t => t.Currency == CurrencyCodes.EUR).Rate, 1 / s.EndRates.First(t => t.Currency == CurrencyCodes.EUR).Rate);
     }
 
     private void CalculateForecast(Saldo s)
     {
-      Blank.ForecastListIncomes = new ObservableCollection<string> { "Прогноз доходов            \n\n\n\n\n" };
-      s.ForecastIncomes = s.Incomes.TotalInUsd;
-      Blank.ForecastListIncomes.Add(String.Format("  {0:#,0} usd", s.ForecastIncomes));
+      Blank.ForecastListIncomes = new ObservableCollection<string> { "Прогноз доходов           \n" };
+      foreach (var income in s.ForecastIncomes.Incomes)
+      {
+        Blank.ForecastListIncomes.Add(String.Format("{0:#,0} {1} {2}", income.Amount, income.Currency.ToString().ToLower(), income.ArticleName));
+      }
+      if (s.ForecastIncomes.EstimatedIncomesSum > 0)
+        Blank.ForecastListIncomes.Add(String.Format("\nЕще ожидается  {0:#,0} usd", s.ForecastIncomes.EstimatedIncomesSum));
+      Blank.ForecastListIncomes.Add(String.Format("\nИтого  {0:#,0} usd", s.ForecastIncomes.TotalInUsd));
 
       var daysInMonth = s.StartDate.AddMonths(1).AddDays(-1).Day;
       var passedDays = DateTime.Today.Year == s.StartDate.Year && DateTime.Today.Month == s.StartDate.Month

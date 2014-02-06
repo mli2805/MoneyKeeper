@@ -17,17 +17,20 @@ namespace Keeper.Utils.MonthAnalysis
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
 		readonly ICurrencyConverter _currencyConverter;
-		private readonly BalanceCalculator _balanceCalculator;
+	  private readonly MonthForecaster _monthForecaster;
+	  private readonly BalanceCalculator _balanceCalculator;
 	  private readonly AccountTreeStraightener _accountTreeStraightener;
 
 	  [ImportingConstructor]
-    public MonthAnalyzer(KeeperDb db, BalanceCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor, ICurrencyConverter currencyConverter)
+    public MonthAnalyzer(KeeperDb db, BalanceCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener, 
+      RateExtractor rateExtractor, ICurrencyConverter currencyConverter, MonthForecaster monthForecaster)
     {
 	    _db = db;
 	    _balanceCalculator = balanceCalculator;
       _accountTreeStraightener = accountTreeStraightener;
       _rateExtractor = rateExtractor;
 	    _currencyConverter = currencyConverter;
+	    _monthForecaster = monthForecaster;
 
 	    Result = new Saldo();
     }
@@ -186,6 +189,8 @@ namespace Keeper.Utils.MonthAnalysis
 	    Result.EndBalance = InitializeWithBalanceBeforeDate(Result.StartDate.AddMonths(1));
 
       Result.EndRates = InitializeRates(Result.StartDate.AddMonths(1));
+
+_monthForecaster.CollectEstimates(Result);
 
       return Result;
     }
