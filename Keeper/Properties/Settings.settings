@@ -14,5 +14,11 @@
     <Setting Name="KeeperInDropBox" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\</Value>
     </Setting>
+    <Setting Name="IniFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">KeeperOptions.json</Value>
+    </Setting>
+    <Setting Name="BackupPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\Backup\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
