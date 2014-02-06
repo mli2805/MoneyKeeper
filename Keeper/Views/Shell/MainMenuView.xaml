@@ -26,6 +26,9 @@
     <ei:KeyTrigger Key="T">
       <cal:ActionMessage MethodName="TempItem"/>
     </ei:KeyTrigger>
+    <ei:KeyTrigger Key="S">
+      <cal:ActionMessage MethodName="ShowOptionsForm"/>
+    </ei:KeyTrigger>
   </i:Interaction.Triggers>
   <Grid >
 		<Menu  Margin="10,3,10,6" Height="20"  Grid.ColumnSpan="3">
@@ -129,9 +132,11 @@
 			</MenuItem>
 			<MenuItem Header="TOOLS">
 				<MenuItem x:Name="TempItem" Header="Временный пункт (жми T)"/>
-			</MenuItem>
+        <MenuItem x:Name="ShowToDoForm" Header="Надо сделать" />
+        <Separator Style="{DynamicResource SeparatorStyle}"/>
+        <MenuItem x:Name="ShowOptionsForm" Header="Настройки" />
+      </MenuItem>
 			<MenuItem Header="СПРАВКА">
-				<MenuItem x:Name="ShowToDoForm" Header="СДЕЛАТЬ" />
 				<MenuItem x:Name="AboutForm" Header="О ПРОГРАММЕ"/>
 				<Separator Style="{DynamicResource SeparatorStyle}"/>
 				<MenuItem x:Name="ProgramExit" Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye"/>
