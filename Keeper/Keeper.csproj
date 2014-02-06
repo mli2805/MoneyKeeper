@@ -181,6 +181,7 @@
     <Compile Include="Utils\FileSystem\IZipFile.cs" />
     <Compile Include="Utils\FileSystem\ZipEntryAdapter.cs" />
     <Compile Include="Utils\FileSystem\ZipFileAdapter.cs" />
+    <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Utils\OldTransactionsReorderer.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\Common\DayProcessor.cs" />
