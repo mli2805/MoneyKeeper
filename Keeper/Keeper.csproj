@@ -76,6 +76,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Controls.DataVisualization.Toolkit">
@@ -132,6 +133,7 @@
     <Compile Include="DomainModel\DbIntegrity.cs" />
     <Compile Include="DomainModel\DbOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
+    <Compile Include="DomainModel\Ini.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />
     <Compile Include="Models\Shell\StatusBarModel.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />

@@ -33,7 +33,7 @@ namespace Keeper.ViewModels.Shell
     private readonly IDbFromTxtLoader _dbFromTxtLoader;
     private readonly DbCleaner _dbCleaner;
     private readonly DiagramDataFactory _diagramDataFactory;
-    private readonly OldTransactionsReorderer _oldTransactionsReorderer;
+    private readonly IniProvider _iniProvider;
 
     public bool IsDbLoadingFailed { get; set; }
     public bool IsAuthorizationFailed { get; set; }
@@ -52,7 +52,7 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
-                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory, OldTransactionsReorderer oldTransactionsReorderer)
+                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory, IniProvider iniProvider)
     {
       _loadResult = loadResult;
       IsDbLoadingFailed = _loadResult.Db == null;
@@ -70,7 +70,7 @@ namespace Keeper.ViewModels.Shell
       _dbFromTxtLoader = dbFromTxtLoader;
       _dbCleaner = dbCleaner;
       _diagramDataFactory = diagramDataFactory;
-      _oldTransactionsReorderer = oldTransactionsReorderer;
+      _iniProvider = iniProvider;
       WindowManager = new WindowManager();
     }
 
@@ -238,7 +238,6 @@ namespace Keeper.ViewModels.Shell
 //      var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
 //      WindowManager.ShowDialog(diagramOxyplotViewModel);
 
-      _oldTransactionsReorderer.MarkOldAvtoExpenseBySpecialArticle();
     }
 
     public void ShowToDoForm()

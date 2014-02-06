@@ -39,7 +39,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
     public void ZipTxtDb()
     {
       var archiveName = String.Format("DB{0:yyyy-MM-dd-HH-mm-ss}.zip", DateTime.Now);
-      var zipFileToCreate = Path.Combine(Settings.Default.DbPath, archiveName);
+      var zipFileToCreate = Path.Combine(Settings.Default.BackupPath, archiveName);
       var directoryToZip = Settings.Default.TemporaryTxtDbPath;
       try
       {
