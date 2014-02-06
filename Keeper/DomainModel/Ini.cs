@@ -3,29 +3,39 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Keeper.Utils.Common;
+using Keeper.Utils.Rates;
 
 namespace Keeper.DomainModel
 {
   [DataContract]
-  class MonthlyTraffic
+  public class MonthlyTraffic
   {
+    private readonly RateExtractor _rateExtractor;
+
     [DataMember]
-    internal decimal SalaryCard { get; set; }
-    internal decimal SalaryEnvelope { get; set; }
+    public decimal SalaryFull { get; set; }
+    [DataMember]
+    public decimal SalaryCard { get; set; }
+    public decimal SalaryEnvelope { get { return SalaryFull - SalaryCard/(decimal)_rateExtractor.GetLastRate(CurrencyCodes.BYR); } }
+
+    [ImportingConstructor]
+    public MonthlyTraffic(RateExtractor rateExtractor)
+    {
+      _rateExtractor = rateExtractor;
+    }
   }
 
   [DataContract]
   public class Ini
   {
     [DataMember]
-    internal decimal SalaryFull { get; set; }
-    [DataMember]
-    internal MonthlyTraffic MonthlyTraffic { get; set; }
+    public MonthlyTraffic MonthlyTraffic { get; set; }
 
-    public Ini()
-    {
-      MonthlyTraffic = new MonthlyTraffic();
-    }
+    [DataMember]
+    public int GskPaymentAlarmDay { get; set; }
+
+    [DataMember]
+    public int UtilityPaymentsAlarmDay { get; set; }
   }
 
   [Export]

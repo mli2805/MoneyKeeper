@@ -232,6 +232,7 @@ namespace Keeper.ViewModels.Shell
     }
     #endregion
 
+    #region меню Tools
     public void TempItem()
     {
 //      var diagramData = _diagramDataFactory.MonthlyResultsDiagramCtor();
@@ -246,6 +247,14 @@ namespace Keeper.ViewModels.Shell
       _launchedForms.Add(toDoForm);
       WindowManager.ShowWindow(toDoForm);
     }
+
+    public void ShowOptionsForm()
+    {
+      var optionsForm = IoC.Get<OptionsViewModel>();
+      _launchedForms.Add(optionsForm);
+      WindowManager.ShowWindow(optionsForm);
+    }
+    #endregion
 
     public bool ShowLogonForm()
     {
