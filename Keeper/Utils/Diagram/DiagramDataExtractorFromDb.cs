@@ -138,14 +138,13 @@ namespace Keeper.Utils.Diagram
       return result;
     }
 
-    // работает только если транзакции упорядочены !!!!!!
     public Dictionary<DateTime, decimal> KategoriesTrafficForPeriodInUsd(Account kategory, Period period, Every frequency)
     {
       var result = new Dictionary<DateTime, decimal>();
       decimal movement = 0;
       var currentDate = period.Start;
 
-      foreach (var transaction in _db.Transactions)
+      foreach (var transaction in _db.Transactions.OrderBy(t => t.Timestamp))
       {
         if (transaction.Timestamp.Date < period.Start) continue;
         if (transaction.Timestamp.Date > period.Finish) break;
