@@ -1,18 +1,21 @@
-﻿using System.Composition;
+﻿using System.Collections.ObjectModel;
+using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils;
 
 namespace Keeper.ViewModels
 {
 	[Export]
 	public class DepositViewModel : Screen
 	{
-		private bool _canRenew;
+	  private readonly DepositReporter _depositReporter;
+	  private bool _canRenew;
 
 		public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
-		private readonly KeeperDb _db;
 		public Deposit Deposit { get; set; }
+    public ObservableCollection<string> Report { get; set; }
 		public Account NewAccountForDeposit { get; set; }
 		public bool CanRenew
 		{
@@ -26,21 +29,21 @@ namespace Keeper.ViewModels
 		}
 
 		[ImportingConstructor]
-		public DepositViewModel(KeeperDb db, Deposit deposit)
+		public DepositViewModel(DepositReporter depositReporter)
 		{
-			_db = db;
-			Deposit = deposit;
-			NewAccountForDeposit = null;
+		  _depositReporter = depositReporter;
+		  NewAccountForDeposit = null;
 		}
-		public void SetAccount(Account account)
+
+	  public void SetAccount(Deposit deposit)
 		{
-			Deposit.Account = account;
+		  Deposit = deposit;
+	    Report = _depositReporter.BuildReport(deposit);
 		}
 
 		protected override void OnViewLoaded(object view)
 		{
 			DisplayName = Deposit.Account.Name;
-			Deposit.CollectInfo();
 			CanRenew = Deposit.State != DepositStates.Закрыт;
 		}
 
@@ -52,7 +55,6 @@ namespace Keeper.ViewModels
 			if (renewDepositViewModel.NewDeposit != null)
 			{
 				NewAccountForDeposit = renewDepositViewModel.NewDeposit;
-				Deposit.CollectInfo();
 				CanRenew = Deposit.State != DepositStates.Закрыт;
 				OnRenewed(NewAccountForDeposit);
 			}

@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis
@@ -12,13 +13,15 @@ namespace Keeper.Utils.MonthAnalysis
     private readonly KeeperDb _db;
     private readonly Ini _optionSet;
     private readonly RateExtractor _rateExtractor;
+    private readonly AccountTreeStraightener _accountTreeStraightener;
 
     [ImportingConstructor]
-    public MonthForecaster(KeeperDb db, Ini optionSet, RateExtractor rateExtractor)
+    public MonthForecaster(KeeperDb db, Ini optionSet, RateExtractor rateExtractor, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
       _optionSet = optionSet;
       _rateExtractor = rateExtractor;
+      _accountTreeStraightener = accountTreeStraightener;
     }
 
     public void CollectEstimates(Saldo s)
@@ -67,7 +70,11 @@ namespace Keeper.Utils.MonthAnalysis
 
     private void CheckDeposits(Saldo s)
     {
-      
+      foreach (var deposit in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
+      {
+        if (deposit.Children.Count != 0) continue;
+
+      }
     }
 
   }

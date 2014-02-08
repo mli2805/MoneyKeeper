@@ -19,8 +19,9 @@ namespace Keeper.ViewModels
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
     private readonly KeeperDb _db;
-    readonly AccountTreeStraightener mAccountTreeStraightener;
-    private readonly RateExtractor _rateExtractor;
+    readonly AccountTreeStraightener _accountTreeStraightener;
+	  private readonly DepositParser _depositParser;
+	  private readonly RateExtractor _rateExtractor;
 
     public List<Deposit> DepositsList { get; set; }
     public Deposit SelectedDeposit { get; set; }
@@ -29,11 +30,13 @@ namespace Keeper.ViewModels
     public Style MyTitleStyle { get; set; }
 
     [ImportingConstructor]
-    public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+    public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, 
+                             DepositParser depositParser, RateExtractor rateExtractor)
     {
       _db = db;
-      mAccountTreeStraightener = accountTreeStraightener;
-      _rateExtractor = new RateExtractor(db);
+      _accountTreeStraightener = accountTreeStraightener;
+      _depositParser = depositParser;
+      _rateExtractor = rateExtractor;
 
       MyTitleStyle = new Style();
 
@@ -42,10 +45,7 @@ namespace Keeper.ViewModels
       {
         if (account.Is("Депозиты") && account.Children.Count == 0)
         {
-          var deposit = IoC.Get<Deposit>();
-          deposit.Account = account;
-          deposit.CollectInfo();
-          DepositsList.Add(deposit);
+          DepositsList.Add(_depositParser.Analyze(account));
         }
       }
       SelectedDeposit = DepositsList[0];
@@ -92,7 +92,7 @@ namespace Keeper.ViewModels
           depositView.TryClose();
       }
       var depositViewModel = IoC.Get<DepositViewModel>();
-      depositViewModel.SetAccount(SelectedDeposit.Account);
+      depositViewModel.SetAccount(SelectedDeposit);
       LaunchedViewModels.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
     }
@@ -111,7 +111,7 @@ namespace Keeper.ViewModels
       SeriesUsd = new List<DateProcentPoint>();
       SeriesByr = new List<DateProcentPoint>();
       SeriesEuro = new List<DateProcentPoint>();
-      var rootDepo = mAccountTreeStraightener.Seek("Депозиты", _db.Accounts);
+      var rootDepo = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
       var inMoney = calculator.AccountBalancesForPeriodInCurrencies(rootDepo,
                                                                  new Period(new DateTime(2001, 12, 31), DateTime.Now), false);
       foreach (var pair in inMoney)

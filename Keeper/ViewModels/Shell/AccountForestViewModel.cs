@@ -5,9 +5,9 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Models;
 using Keeper.Models.Shell;
 using Keeper.Properties;
+using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 
@@ -23,6 +23,7 @@ namespace Keeper.ViewModels.Shell
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly IDbFromTxtLoader _dbFromTxtLoader;
     private readonly IDbToTxtSaver _dbToTxtSaver;
+    private readonly DepositParser _depositParser;
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
 
@@ -30,13 +31,14 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
-                                 IDbFromTxtLoader dbFromTxtLoader, IDbToTxtSaver dbToTxtSaver)
+                                 IDbFromTxtLoader dbFromTxtLoader, IDbToTxtSaver dbToTxtSaver, DepositParser depositParser)
     {
       MyForestModel = shellModel.MyForestModel;
       _db = db;
       _accountTreesGardener = accountTreesGardener;
       _dbFromTxtLoader = dbFromTxtLoader;
       _dbToTxtSaver = dbToTxtSaver;
+      _depositParser = depositParser;
 
       InitVariablesToShowAccounts();
     }
@@ -110,7 +112,7 @@ namespace Keeper.ViewModels.Shell
       }
 
       var depositForm = IoC.Get<DepositViewModel>();
-      depositForm.SetAccount(MyForestModel.SelectedAccount);
+      depositForm.SetAccount(_depositParser.Analyze(MyForestModel.SelectedAccount));
       _launchedForms.Add(depositForm);
       depositForm.Renewed += DepositViewModelRenewed; // ?
       WindowManager.ShowWindow(depositForm);
