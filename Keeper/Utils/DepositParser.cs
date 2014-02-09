@@ -51,6 +51,7 @@ namespace Keeper.Utils
     private void ExtractInfoFromName(Deposit deposit)
     {
       var s = deposit.Account.Name;
+      deposit.Bank = s.Substring(0, s.IndexOf(' '));
       var p = s.IndexOf('/');
       var n = s.IndexOf(' ', p);
       deposit.Start = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));

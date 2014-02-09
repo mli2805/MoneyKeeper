@@ -14,14 +14,17 @@ namespace Keeper.Utils.MonthAnalysis
     private readonly Ini _optionSet;
     private readonly RateExtractor _rateExtractor;
     private readonly AccountTreeStraightener _accountTreeStraightener;
+    private readonly DepositParser _depositParser;
 
     [ImportingConstructor]
-    public MonthForecaster(KeeperDb db, Ini optionSet, RateExtractor rateExtractor, AccountTreeStraightener accountTreeStraightener)
+    public MonthForecaster(KeeperDb db, Ini optionSet, RateExtractor rateExtractor, 
+       AccountTreeStraightener accountTreeStraightener, DepositParser depositParser)
     {
       _db = db;
       _optionSet = optionSet;
       _rateExtractor = rateExtractor;
       _accountTreeStraightener = accountTreeStraightener;
+      _depositParser = depositParser;
     }
 
     public void CollectEstimates(Saldo s)
@@ -61,21 +64,28 @@ namespace Keeper.Utils.MonthAnalysis
 
     private void CheckApartmentsToLet(Saldo s)
     {
-      if ((from income in s.Incomes.OnHands.Transactions where income.Article.Name == "Сдача квартиры" select income).FirstOrDefault() == null)
-      {
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = _optionSet.MonthlyTraffic.ApartmentsToLet, ArticleName = "Сдача квартиры", Currency = CurrencyCodes.USD });
-        s.ForecastIncomes.EstimatedIncomesSum += _optionSet.MonthlyTraffic.ApartmentsToLet;
-      }
+      if ((from income in s.Incomes.OnHands.Transactions where income.Article.Name == "Сдача квартиры" select income).FirstOrDefault() != null) return;
+      s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = _optionSet.MonthlyTraffic.ApartmentsToLet, ArticleName = "Сдача квартиры", Currency = CurrencyCodes.USD });
+      s.ForecastIncomes.EstimatedIncomesSum += _optionSet.MonthlyTraffic.ApartmentsToLet;
     }
 
     private void CheckDeposits(Saldo s)
     {
-      foreach (var deposit in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
+      foreach (var account in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
       {
-        if (deposit.Children.Count != 0) continue;
-
+        if (account.Children.Count != 0) continue;
+        var deposit = _depositParser.Analyze(account);
+        if (!IsMonthTheSame(deposit.Finish, s.StartDate)) continue;
+        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = deposit.Forecast, 
+          ArticleName = string.Format("%%  {0} {1:dd MMM}",deposit.Bank ,deposit.Finish), 
+          Currency = deposit.MainCurrency });
+        s.ForecastIncomes.EstimatedIncomesSum += _rateExtractor.GetUsdEquivalent(deposit.Forecast, deposit.MainCurrency, DateTime.Today);
       }
     }
 
+    private bool IsMonthTheSame(DateTime day1, DateTime day2)
+    {
+      return (day1.Year == day2.Year && day1.Month == day2.Month);
+    }
   }
 }
