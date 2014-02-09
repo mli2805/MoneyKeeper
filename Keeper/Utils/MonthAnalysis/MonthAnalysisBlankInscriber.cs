@@ -80,7 +80,8 @@ namespace Keeper.Utils.MonthAnalysis
         Blank.IncomesToDepositsList.Add(TransactionForIncomesList(transaction));
       }
 
-      Blank.IncomesTotal = new ObservableCollection<string> { string.Format("                                       Всего доходы  {0:0,0} usd", s.Incomes.TotalInUsd) };
+      Blank.IncomesTotal = new ObservableCollection<string> 
+       { string.Format("                                                                          Всего доходы  {0:#,0} usd", s.Incomes.TotalInUsd) };
     }
 
     private string TransactionForIncomesList(Transaction tr)
