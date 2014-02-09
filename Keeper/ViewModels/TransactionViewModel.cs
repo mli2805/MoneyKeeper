@@ -1,15 +1,12 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Composition;
 using System.Linq;
-using System.Windows;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.CommonKeeper;
@@ -22,8 +19,6 @@ namespace Keeper.ViewModels
   [Shared] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
   public class TransactionViewModel : Screen
   {
-    public bool ShouldChangesBeSerialized { get; set; }
-
     private readonly KeeperDb _db;
 
     private readonly RateExtractor _rateExtractor;
@@ -34,6 +29,7 @@ namespace Keeper.ViewModels
 
     public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
     public ObservableCollection<Transaction> Rows { get; set; }
+    public bool IsCollectionChanged { get; set; }
     public ICollectionView SortedRows { get; set; }
 
     #region  фильтрация и переход к дате
@@ -606,14 +602,15 @@ namespace Keeper.ViewModels
       InitializeListsForCombobox();
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;
-      Rows.CollectionChanged += Rows_CollectionChanged;
+      Rows.CollectionChanged += RowsCollectionChanged;
+      IsCollectionChanged = false;
       InitializeFiltersLists();
       InitializeSelectedTransactionIndex();
     }
 
-    void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    void RowsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-      ShouldChangesBeSerialized = true;
+      IsCollectionChanged = true;
     }
 
     private void InitializeSelectedTransactionIndex()
@@ -640,7 +637,6 @@ namespace Keeper.ViewModels
     {
       InitializeListsForCombobox();
       DisplayName = "Ежедневные операции";
-      ShouldChangesBeSerialized = false;
 
       SortedRows = CollectionViewSource.GetDefaultView(Rows);
       SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
@@ -736,7 +732,7 @@ namespace Keeper.ViewModels
       IsTransactionInWorkChanged = false;
       IsInAddTransactionMode = false;
       CanFillInReceipt = false;
-      ShouldChangesBeSerialized = true;
+      IsCollectionChanged = true;
     }
 
     private void CleanUselessFieldsBeforeSave()

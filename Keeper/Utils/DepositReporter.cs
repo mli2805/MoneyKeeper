@@ -70,7 +70,7 @@ namespace Keeper.Utils
     private void BuildReportFoot(Deposit deposit)
     {
       Report.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", deposit.Profit));
-      Report.Add(ForecastProfit(deposit));
+      Report.Add(ProfitForecastToLineInReport(deposit));
     }
 
     private string TransactionToLineInReport(Transaction transaction, Deposit deposit)
@@ -87,17 +87,14 @@ namespace Keeper.Utils
       return s;
     }
 
-    private string ForecastProfit(Deposit deposit)
+    private string ProfitForecastToLineInReport(Deposit deposit)
     {
       if (deposit.CurrentBalance == 0) return "";
 
-      var forecastInUsd = deposit.Forecast;
+      var forecastInUsd = (deposit.MainCurrency != CurrencyCodes.USD) ?
+         deposit.Forecast / (decimal)_rateExtractor.GetLastRate(deposit.MainCurrency) :
+         deposit.Forecast;
 
-      if (deposit.MainCurrency != CurrencyCodes.USD)
-      {
-        var todayRate = _rateExtractor.GetLastRate(deposit.MainCurrency);
-        forecastInUsd = forecastInUsd / (decimal)todayRate;
-      }
       return String.Format("Прогноз по депозиту {0:#,0} usd", forecastInUsd);
     }
 

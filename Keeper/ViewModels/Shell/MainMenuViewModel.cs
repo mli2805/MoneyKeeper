@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Models;
 using Keeper.Models.Shell;
 using Keeper.Properties;
-using Keeper.Utils;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -33,10 +31,10 @@ namespace Keeper.ViewModels.Shell
     private readonly IDbFromTxtLoader _dbFromTxtLoader;
     private readonly DbCleaner _dbCleaner;
     private readonly DiagramDataFactory _diagramDataFactory;
-    private readonly IniProvider _iniProvider;
 
     public bool IsDbLoadingFailed { get; set; }
     public bool IsAuthorizationFailed { get; set; }
+    private bool IsDbChanged { get; set; }
     private readonly List<Screen> _launchedForms = new List<Screen>();
     private bool _isExitPreparationDone;
     public bool IsExitPreparationDone
@@ -52,7 +50,7 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
-                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory, IniProvider iniProvider)
+                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory)
     {
       _loadResult = loadResult;
       IsDbLoadingFailed = _loadResult.Db == null;
@@ -70,7 +68,7 @@ namespace Keeper.ViewModels.Shell
       _dbFromTxtLoader = dbFromTxtLoader;
       _dbCleaner = dbCleaner;
       _diagramDataFactory = diagramDataFactory;
-      _iniProvider = iniProvider;
+      IsDbChanged = false;
       WindowManager = new WindowManager();
     }
 
@@ -107,6 +105,7 @@ namespace Keeper.ViewModels.Shell
       MyMainMenuModel.Action = Actions.SaveDatabase;
       await Task.Run(() => _backuper.MakeDbBackupCopy());
       Task.WaitAll();
+      IsDbChanged = false;
       MyMainMenuModel.Action = Actions.Idle;
     }
 
@@ -150,9 +149,10 @@ namespace Keeper.ViewModels.Shell
       MyMainMenuModel.Action = Actions.InputTransactions;
       var tvm = IoC.Get<TransactionViewModel>();
       WindowManager.ShowDialog(tvm);
-      if (tvm.ShouldChangesBeSerialized)
+      if (tvm.IsCollectionChanged)
       {
         SaveDatabase();
+        IsDbChanged = true;
         MyMainMenuModel.Action = Actions.RefreshBalanceList;
       }
     }
@@ -160,8 +160,13 @@ namespace Keeper.ViewModels.Shell
     public void ShowCurrencyRatesForm()
     {
       MyMainMenuModel.Action = Actions.InputRates;
-      WindowManager.ShowDialog(IoC.Get<RatesViewModel>());
-      SaveDatabase();
+      var ratesViewModel = IoC.Get<RatesViewModel>();
+      WindowManager.ShowDialog(ratesViewModel);
+      if (ratesViewModel.IsCollectionChanged)
+      {
+        SaveDatabase();
+        IsDbChanged = true;
+      }
       MyMainMenuModel.Action = Actions.RefreshBalanceList;
     }
 
@@ -281,7 +286,7 @@ namespace Keeper.ViewModels.Shell
       MyMainMenuModel.Action = Actions.PrepareExit;
       CloseAllLaunchedForms();
       await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)));
-      await Task.Run(() => _backuper.MakeDbBackupCopy());
+      if (IsDbChanged) await Task.Run(() => _backuper.MakeDbBackupCopy());
       Task.WaitAll();
       MyMainMenuModel.Action = Actions.Idle;
       IsExitPreparationDone = true;

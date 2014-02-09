@@ -36,7 +36,6 @@ namespace Keeper.ViewModels
 		 * в различных частях программы - действовать будет последний
 		*/
 
-
 		private string _expanderHeader;
 		private bool _isInInputMode;
 		private double _lastByrRate;
@@ -58,9 +57,8 @@ namespace Keeper.ViewModels
 			}
 		}
 
-		//*****************************************************************************
-
 		public ObservableCollection<CurrencyRate> Rows { get; set; }
+    public bool IsCollectionChanged { get; set; }
 
 		public DateTime NewDate
 		{
@@ -143,6 +141,7 @@ namespace Keeper.ViewModels
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
 
 			Rows = _db.CurrencyRates;
+      IsCollectionChanged = false;
       InitFilterList();
 			SelectedFilter = FilterList.First(f => !f.IsOn);
 
@@ -158,7 +157,14 @@ namespace Keeper.ViewModels
 		{
 			DisplayName = "Курсы валют";
 //		  SelectedFilter = FilterList.First(f => f.Currency == CurrencyCodes.BYR); just for test
+
+      Rows.CollectionChanged += Rows_CollectionChanged;
 		}
+
+    void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      IsCollectionChanged = true;
+    }
 
 		void InitFilterList()
 		{
