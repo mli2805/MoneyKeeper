@@ -23,7 +23,6 @@ namespace Keeper.Utils.Common
     {
       var yy = _day.Year;
       var mm = _day.Month;
-      var dd = _day.Day;
       return new DateTime(yy, mm, 1, 0, 0, 0, 0);
     }
 

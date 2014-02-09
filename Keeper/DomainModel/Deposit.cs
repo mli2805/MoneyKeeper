@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Windows.Media;
 
@@ -9,6 +8,7 @@ namespace Keeper.DomainModel
 	public class Deposit
 	{
 		public Account Account { get; set; }
+    public string Bank { get; set; }
 		public DateTime Start { get; set; }
 		public DateTime Finish { get; set; }
 		public CurrencyCodes MainCurrency { get; set; }
