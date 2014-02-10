@@ -5,6 +5,24 @@ using System.Windows.Media;
 
 namespace Keeper.DomainModel
 {
+  public enum DepositOperations
+  {
+    Открытие,
+    Допвзнос,
+    Проценты,
+    Расход,
+    Закрытие
+  }
+
+  public class DepositTransaction
+  {
+    public DateTime Timestamp { get; set; }
+    public DepositOperations TransactionType { get; set; }
+    public Decimal Amount { get; set; }
+    public CurrencyCodes Currency { get; set; }
+    public string Comment { get; set; }
+  }
+
 	public class Deposit
 	{
 		public Account Account { get; set; }

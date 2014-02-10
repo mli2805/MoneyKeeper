@@ -1,4 +1,5 @@
 using System.Composition;
+using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.ViewModels;
 
@@ -7,9 +8,9 @@ namespace Keeper.Utils.Accounts
 	[Export(typeof(IMyFactory))]
 	public class MyFactory : IMyFactory
 	{
-		public AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string title)
+		public AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string windowTitle)
 		{
-			return new AddAndEditAccountViewModel(account, title);
+      return new AddAndEditAccountViewModel(account, windowTitle);
 		}
 
 		public Account CreateAccount()
@@ -28,6 +29,11 @@ namespace Keeper.Utils.Accounts
 		{
 			return new Account() { Parent = parent };
 		}
+
+    public OpenOrEditDepositViewModel CreateOpenOrEditDepositViewModel(Deposit deposit, string windowTitle)
+    {
+      return new OpenOrEditDepositViewModel(deposit, windowTitle);
+    }
 
 	}
 }

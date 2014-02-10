@@ -44,7 +44,6 @@ namespace Keeper.Utils.Accounts
 			}
 		}
 
-
 		public Account AddAccount(Account selectedAccount)
 		{
 			var accountInWork = mMyFactory.CreateAccount(selectedAccount);
