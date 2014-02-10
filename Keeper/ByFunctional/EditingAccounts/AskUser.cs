@@ -44,5 +44,17 @@ namespace Keeper.Utils.Accounts
 			return false;
 		}
 
-	}
+    public bool ToAddDeposit(Deposit depositInWork)
+    {
+      var vm = mMyFactory.CreateOpenOrEditDepositViewModel(depositInWork, "Добавить");
+      if (mWindowManager.ShowDialog(vm) != true) return true;
+      return false;
+    }
+    public bool ToEditDeposit(Deposit depositInWork)
+    {
+      var vm = mMyFactory.CreateOpenOrEditDepositViewModel(depositInWork, "Редактировать");
+      if (mWindowManager.ShowDialog(vm) != true) return true;
+      return false;
+    }
+  }
 }

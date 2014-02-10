@@ -244,6 +244,7 @@
     <Compile Include="Models\Shell\AccountForestModel.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthAnalysisBlankInscriber.cs" />
     <Compile Include="Models\MonthAnalysisBlank.cs" />
+    <Compile Include="ViewModels\OpenOrEditDepositViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
     <Compile Include="Models\Shell\BalanceListModel.cs" />
@@ -262,6 +263,9 @@
     </Compile>
     <Compile Include="Views\LogonView.xaml.cs">
       <DependentUpon>LogonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OpenOrEditDepositView.xaml.cs">
+      <DependentUpon>OpenOrEditDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OptionsView.xaml.cs">
       <DependentUpon>OptionsView.xaml</DependentUpon>
@@ -417,6 +421,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LogonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OpenOrEditDepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
