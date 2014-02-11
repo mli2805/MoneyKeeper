@@ -1,61 +1,75 @@
 ﻿using System.Composition;
-
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 
-namespace Keeper.Utils.Accounts
+namespace Keeper.ByFunctional.EditingAccounts
 {
 	[Export]
 	public class AccountTreesGardener
 	{
-		readonly IMyFactory mMyFactory;
-		readonly TellUser mTellUser;
-		readonly AccountOperations mAccountOperations;
-		readonly DbIntegrity mDbIntegrity;
-		readonly AskUser mAskUser;
+		readonly IMyFactory _myFactory;
+		readonly TellUser _tellUser;
+		readonly AccountOperations _accountOperations;
+		readonly DbIntegrity _dbIntegrity;
+		readonly AskUser _askUser;
 
 		[ImportingConstructor]
 		public AccountTreesGardener(IMyFactory myFactory, TellUser tellUser,
 			AccountOperations accountOperations, DbIntegrity dbIntegrity, AskUser askUser)
 		{
-			mMyFactory = myFactory;
-			mTellUser = tellUser;
-			mAccountOperations = accountOperations;
-			mDbIntegrity = dbIntegrity;
-			mAskUser = askUser;
+			_myFactory = myFactory;
+			_tellUser = tellUser;
+			_accountOperations = accountOperations;
+			_dbIntegrity = dbIntegrity;
+			_askUser = askUser;
 		}
 
 		public void RemoveAccount(Account selectedAccount)
 		{
-			switch (mDbIntegrity.CanDelete(selectedAccount))
+			switch (_dbIntegrity.CanDelete(selectedAccount))
 			{
 				case DeleteReasons.CanDelete:
-					if (mAskUser.ToDeleteAccount(selectedAccount))
-						mAccountOperations.RemoveNode(selectedAccount);
+					if (_askUser.ToDeleteAccount(selectedAccount))
+						_accountOperations.RemoveNode(selectedAccount);
 					break;
 				case DeleteReasons.IsRoot:
-					mTellUser.YouCannotRemoveRootAccount();
+					_tellUser.YouCannotRemoveRootAccount();
 					break;
 				case DeleteReasons.HasChildren:
-					mTellUser.YouCannotRemoveAccountWithChildren();
+					_tellUser.YouCannotRemoveAccountWithChildren();
 					break;
 				case DeleteReasons.HasRelatedTransactions:
-					mTellUser.YouCannotRemoveAccountThatHasRelatedTransactions();
+					_tellUser.YouCannotRemoveAccountThatHasRelatedTransactions();
 					break;
 			}
 		}
 
 		public Account AddAccount(Account selectedAccount)
 		{
-			var accountInWork = mMyFactory.CreateAccount(selectedAccount);
-			if (mAskUser.ToAddAccount(accountInWork)) return null;
-			return mAccountOperations.AddNode(accountInWork);
+			var accountInWork = _myFactory.CreateAccount(selectedAccount);
+			if (!_askUser.ToAddAccount(accountInWork)) return null;
+			return _accountOperations.AddNode(accountInWork);
 		}
 
 		public void ChangeAccount(Account selectedAccount)
 		{
-			var accountInWork = mMyFactory.CloneAccount(selectedAccount);
-			if (mAskUser.ToEditAccount(accountInWork)) return;
-			mAccountOperations.ApplyEdit(selectedAccount, accountInWork);
+			var accountInWork = _myFactory.CloneAccount(selectedAccount);
+			if (!_askUser.ToEditAccount(accountInWork)) return;
+			_accountOperations.ApplyEdit(selectedAccount, accountInWork);
 		}
+
+    public Account AddDeposit(Account selectedAccount)
+    {
+      var accountInWork = _myFactory.CreateAccount(selectedAccount);
+      var depositInWork = new Deposit {Account = accountInWork};
+
+      if (!_askUser.ToAddDeposit(depositInWork)) return null;
+      // сохранить Deposit
+
+      //
+      return _accountOperations.AddNode(accountInWork);
+    }
+
+
 	}
 }
