@@ -156,7 +156,7 @@
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Наименование" Width="350" DisplayMemberBinding="{Binding Account}" />
-          <GridViewColumn Header="Вал"            Width="40" DisplayMemberBinding="{Binding MainCurrency}" />
+          <GridViewColumn Header="Вал"            Width="40" DisplayMemberBinding="{Binding Currency}" />
           <GridViewColumn Header="Сумма открытия" Width="100" CellTemplate="{StaticResource StartAmountColumnStyle}" />
           <GridViewColumn Header="Доп взносы"     Width="100" CellTemplate="{StaticResource AdditionalAmountsColumnStyle}" />
           <GridViewColumn Header="Текущий остаток" Width="100" CellTemplate="{StaticResource CurrentBalanceColumnStyle}" />

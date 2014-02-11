@@ -170,10 +170,10 @@ namespace Keeper.ViewModels
       {
         if (deposit.CurrentBalance == 0) continue;
         decimal total;
-        if (totalBalances.TryGetValue(deposit.MainCurrency, out total))
-          totalBalances[deposit.MainCurrency] = total + deposit.CurrentBalance;
+        if (totalBalances.TryGetValue(deposit.Currency, out total))
+          totalBalances[deposit.Currency] = total + deposit.CurrentBalance;
         else
-          totalBalances.Add(deposit.MainCurrency, deposit.CurrentBalance);
+          totalBalances.Add(deposit.Currency, deposit.CurrentBalance);
       }
 
       foreach (var currency in totalBalances.Keys)
