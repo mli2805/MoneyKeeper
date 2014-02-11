@@ -33,13 +33,13 @@ namespace Keeper.Utils
       if (deposit.CurrentBalance == 0) Report.Add("Депозит закрыт. Остаток 0.\n");
       else
       {
-        Report.Add(deposit.Finish < DateTime.Today ? "!!! Срок депозита истек !!!\n" : "Действующий депозит.\n");
-        var balanceString = deposit.MainCurrency != CurrencyCodes.USD
+        Report.Add(deposit.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!\n" : "Действующий депозит.\n");
+        var balanceString = deposit.Currency != CurrencyCodes.USD
                               ? String.Format("{0:#,0} {2}  ($ {1:#,0} )",
                                               deposit.CurrentBalance,
                                               deposit.CurrentBalance /
-                                              (decimal)_rateExtractor.GetLastRate(deposit.MainCurrency),
-                                              deposit.MainCurrency.ToString().ToLower())
+                                              (decimal)_rateExtractor.GetLastRate(deposit.Currency),
+                                              deposit.Currency.ToString().ToLower())
                               : String.Format("{0:#,0} usd", deposit.CurrentBalance);
         Report.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }
@@ -49,31 +49,31 @@ namespace Keeper.Utils
     private void BuildReportBody(Deposit deposit)
     {
       var isFirst = true;
-      foreach (var transaction in deposit.Transactions)
+      foreach (var operation in deposit.Traffic)
       {
-        string comment;
-        if (transaction.Credit == deposit.Account)
-        {
-          if (transaction.Operation == OperationType.Перенос)
-            comment = isFirst ? "открытие депозита" : "доп взнос";
-          else comment = "начисление процентов";
-        }
-        else
-          comment = (deposit.CurrentBalance == 0 && transaction == deposit.Transactions.Last()) ?
+        string comment = "";
+        if (operation.TransactionType == DepositOperations.Явнес) comment = isFirst ? "открытие депозита" : "доп взнос";
+        if (operation.TransactionType == DepositOperations.Проценты) comment = "начисление процентов";
+        if (operation.TransactionType == DepositOperations.Расход) comment = (deposit.CurrentBalance == 0 && operation == deposit.Traffic.Last()) ?
                              "закрытие депозита" : "частичное снятие";
 
-        Report.Add(String.Format("{0}     {1}", TransactionToLineInReport(transaction, deposit), comment));
+        Report.Add(String.Format("{0}     {1}", TransactionToLineInReport(operation), comment));
         isFirst = false;
       }
     }
 
     private void BuildReportFoot(Deposit deposit)
     {
-      Report.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", deposit.Profit));
-      Report.Add(ProfitForecastToLineInReport(deposit));
+      Report.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", deposit.CurrentProfit));
+      if (deposit.CurrentBalance == 0) return;
+      if (deposit.Currency == CurrencyCodes.USD)
+           Report.Add(String.Format("Еще ожидаются проценты {0:#,0} usd", deposit.EstimatedProcents));
+      else Report.Add(String.Format("Еще ожидаются проценты {0:#,0} {1}   (${2:#,0})", deposit.EstimatedProcents, deposit.Currency.ToString().ToLower(),
+                                                         _rateExtractor.GetUsdEquivalent(deposit.EstimatedProcents, deposit.Currency, DateTime.Today)));
+      Report.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd \n", deposit.EstimatedProfitInUsd));
     }
 
-    private string TransactionToLineInReport(Transaction transaction, Deposit deposit)
+    private string TransactionToLineInReport(DepositTransaction transaction)
     {
       var s = transaction.Timestamp.ToString("dd/MM/yyyy");
 
@@ -81,22 +81,10 @@ namespace Keeper.Utils
         String.Format("{0:#,0} {1}  ($ {2:#,0} )",
          transaction.Amount, transaction.Currency.ToString().ToLower(), transaction.Amount / (decimal)_rateExtractor.GetRate(transaction.Currency, transaction.Timestamp)) :
         String.Format("{0:#,0} usd", transaction.Amount);
-      if (transaction.Debet == deposit.Account) s = s + "   " + sum;
+      if (transaction.TransactionType == DepositOperations.Расход) s = s + "   " + sum;
       else s = s + "                                           " + sum;
 
       return s;
     }
-
-    private string ProfitForecastToLineInReport(Deposit deposit)
-    {
-      if (deposit.CurrentBalance == 0) return "";
-
-      var forecastInUsd = (deposit.MainCurrency != CurrencyCodes.USD) ?
-         deposit.Forecast / (decimal)_rateExtractor.GetLastRate(deposit.MainCurrency) :
-         deposit.Forecast;
-
-      return String.Format("Прогноз по депозиту {0:#,0} usd", forecastInUsd);
-    }
-
   }
 }

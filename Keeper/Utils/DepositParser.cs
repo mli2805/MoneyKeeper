@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Composition;
 using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Utils.Balances;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils
@@ -15,33 +13,23 @@ namespace Keeper.Utils
   {
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
-    private readonly BalanceCalculator _balanceCalculator;
 
     [ImportingConstructor]
-    public DepositParser(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator)
+    public DepositParser(KeeperDb db, RateExtractor rateExtractor)
     {
       _db = db;
       _rateExtractor = rateExtractor;
-      _balanceCalculator = balanceCalculator;
     }
 
     public Deposit Analyze(Account account)
     {
-      return CollectInfo(new Deposit{Account = account});
-    }
-
-    private Deposit CollectInfo(Deposit deposit)
-    {
+      var deposit = new Deposit{Account = account};
       ExtractInfoFromName(deposit);
-      SelectTransactions(deposit);
-      if (deposit.Transactions.Count == 0)
-      {
-        deposit.State = DepositStates.Пустой;
-        return deposit;
-      }
-      deposit.MainCurrency = deposit.Transactions.First().Currency;
-      Calculate(deposit);
-//      if (deposit.Finish > DateTime.Today) ForecastProfit(deposit);
+      ExtractTraffic(deposit);
+      deposit.Currency = deposit.Traffic.First().Currency;
+      EvaluateTraffic(deposit);
+      DefineCurrentState(deposit);
+      MakeForecast(deposit);
       return deposit;
     }
 
@@ -54,67 +42,56 @@ namespace Keeper.Utils
       deposit.Bank = s.Substring(0, s.IndexOf(' '));
       var p = s.IndexOf('/');
       var n = s.IndexOf(' ', p);
-      deposit.Start = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
+      deposit.StartDate = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
       p = s.IndexOf('/', n);
       n = s.IndexOf(' ', p);
-      deposit.Finish = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
+      deposit.FinishDate = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
       p = s.IndexOf('%', n);
       deposit.DepositRate = Convert.ToDecimal(s.Substring(n, p - n));
     }
 
-    private void SelectTransactions(Deposit deposit)
+    private void ExtractTraffic(Deposit deposit)
     {
-      deposit.Transactions = (from transaction in _db.Transactions
-                              where transaction.Debet == deposit.Account || transaction.Credit == deposit.Account
-                      orderby transaction.Timestamp
-                      select transaction).ToList();
+      deposit.Traffic = (from t in _db.Transactions
+                         where t.Debet == deposit.Account || t.Credit == deposit.Account
+                         orderby t.Timestamp
+                         join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
+                         from rate in g.DefaultIfEmpty()
+                         select new DepositTransaction{Amount = t.Amount, Timestamp = t.Timestamp, Currency = t.Currency, Comment = t.Comment,
+                                                       AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
+                                                       TransactionType = t.Operation == OperationType.Доход ? 
+                                                                                           DepositOperations.Проценты : 
+                                                                                           t.Debet == deposit.Account ? 
+                                                                                                  DepositOperations.Расход : 
+                                                                                                  DepositOperations.Явнес}).ToList();
     }
 
-    private void Calculate(Deposit deposit)
+    private void EvaluateTraffic(Deposit deposit)
     {
-      deposit.CurrentBalance = _balanceCalculator.GetBalanceInCurrency(deposit.Account,
-                                                                   new Period(new DateTime(0), DateTime.Today),
-                                                                   deposit.MainCurrency);
+      deposit.TotalMyIns = deposit.Traffic.Where(t=>t.TransactionType == DepositOperations.Явнес).Sum(t => t.Amount);
+      deposit.TotalMyOuts = deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.Amount);
+      deposit.TotalPercent = deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Проценты).Sum(t => t.Amount);
+
+      deposit.CurrentProfit = _rateExtractor.GetUsdEquivalent(deposit.CurrentBalance, deposit.Currency, DateTime.Today)
+                              - deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Явнес).Sum(t => t.AmountInUsd) 
+                              + deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.AmountInUsd); 
+    }
+
+    private void DefineCurrentState(Deposit deposit)
+    {
       if (deposit.CurrentBalance == 0)
         deposit.State = DepositStates.Закрыт;
       else
-        deposit.State = deposit.Finish < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
+        deposit.State = deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
+    }
 
-      deposit.Profit = 0;
-      decimal balanceAfterTransaction = 0;
-      foreach (var transaction in deposit.Transactions)
-      {
-        var rate = transaction.Currency != CurrencyCodes.USD
-                     ? _rateExtractor.GetRate(transaction.Currency, transaction.Timestamp)
-                     : 1.0;
+    private void MakeForecast(Deposit deposit)
+    {
+      var lastProcentTransaction = deposit.Traffic.LastOrDefault(t => t.TransactionType == DepositOperations.Проценты);
+      var lastProcentDate = lastProcentTransaction == null ? deposit.StartDate : lastProcentTransaction.Timestamp;
 
-        if (transaction.Credit == deposit.Account)
-        {
-          if (transaction.Operation == OperationType.Перенос)
-          {
-            if (balanceAfterTransaction == 0)
-              deposit.StartAmount = transaction.Amount;
-            else
-              deposit.AdditionalAmounts += transaction.Amount;
-            deposit.Profit = deposit.Profit - transaction.Amount / (decimal)rate;
-          }
-
-          balanceAfterTransaction += transaction.Amount;
-        }
-        else
-        {
-          deposit.Profit = deposit.Profit + transaction.Amount / (decimal)rate;
-          balanceAfterTransaction -= transaction.Amount;
-        }
-
-      }
-
-      if (deposit.CurrentBalance != 0)
-      {
-        var todayRate = deposit.MainCurrency != CurrencyCodes.USD ? _rateExtractor.GetLastRate(deposit.MainCurrency) : 1.0;
-        deposit.Profit += deposit.CurrentBalance / (decimal)todayRate;
-      }
-      deposit.Forecast = deposit.CurrentBalance * deposit.DepositRate / 100 * (deposit.Finish - deposit.Start).Days / 365;
+      deposit.EstimatedProcents = deposit.CurrentBalance * deposit.DepositRate / 100 * (deposit.FinishDate - lastProcentDate).Days / 365;
+      deposit.EstimatedProfitInUsd = deposit.CurrentProfit + _rateExtractor.GetUsdEquivalent(deposit.EstimatedProcents, deposit.Currency, DateTime.Today);
     }
   }
 }

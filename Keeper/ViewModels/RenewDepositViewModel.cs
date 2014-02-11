@@ -43,11 +43,11 @@ namespace Keeper.ViewModels
 		{
 			_oldDeposit = oldDeposit;
 
-			TransactionsDate = _oldDeposit.Finish;
+			TransactionsDate = _oldDeposit.FinishDate;
 			OldDepositName = _oldDeposit.Account.Name;
-			DepositCurrency = _oldDeposit.MainCurrency.ToString().ToLower();
+			DepositCurrency = _oldDeposit.Currency.ToString().ToLower();
 			BankAccount = FindBankAccount();
-			Procents = _oldDeposit.Forecast;
+			Procents = _oldDeposit.EstimatedProcents;
 			NewDepositName = BuildNewName();
 		}
 
@@ -66,8 +66,8 @@ namespace Keeper.ViewModels
 		private string BuildNewName()
 		{
 			var st = OldDepositName.Substring(0, OldDepositName.IndexOf('/') - 2).Trim();
-			DateTime newFinish = _oldDeposit.Finish + (_oldDeposit.Finish - _oldDeposit.Start);
-			string period = String.Format("{0:d/MM/yyyy} - {1:d/MM/yyyy}", _oldDeposit.Finish, newFinish).Replace('.', '/');
+			DateTime newFinish = _oldDeposit.FinishDate + (_oldDeposit.FinishDate - _oldDeposit.StartDate);
+			string period = String.Format("{0:d/MM/yyyy} - {1:d/MM/yyyy}", _oldDeposit.FinishDate, newFinish).Replace('.', '/');
 			return String.Format("{0} {1} {2}%", st, period, _oldDeposit.DepositRate);
 		}
 
@@ -101,7 +101,7 @@ namespace Keeper.ViewModels
 				  Debet = BankAccount,
 				  Credit = _oldDeposit.Account,
 				  Amount = Procents,
-				  Currency = _oldDeposit.MainCurrency,
+				  Currency = _oldDeposit.Currency,
 				  Article = _accountTreeStraightener.Seek("Проценты по депозитам", _db.Accounts),
 				  Comment = "причисление процентов при закрытии"
 			  };
@@ -119,8 +119,8 @@ namespace Keeper.ViewModels
 				Credit = NewDeposit,
 				Amount = _balanceCalculator.GetBalanceInCurrency(_oldDeposit.Account,
                             new Period(new DateTime(0), GetTimestampForTransactions()),
-													  _oldDeposit.MainCurrency),
-				Currency = _oldDeposit.MainCurrency,
+													  _oldDeposit.Currency),
+				Currency = _oldDeposit.Currency,
 				Comment = "переоформление вклада"
 			};
 

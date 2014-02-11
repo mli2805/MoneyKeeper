@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Icon="/Keeper;component/Resources/safe.ico" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
-        mc:Ignorable="d" Title="DepositView" Height="300" Width="700"
+        mc:Ignorable="d" Title="DepositView" Height="400" Width="700"
         d:DataContext="{d:DesignInstance ViewModels:DepositViewModel}">
     <Grid>
     <Grid.RowDefinitions>

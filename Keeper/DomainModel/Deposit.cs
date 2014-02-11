@@ -7,11 +7,9 @@ namespace Keeper.DomainModel
 {
   public enum DepositOperations
   {
-    Открытие,
-    Допвзнос,
+    Явнес,
     Проценты,
     Расход,
-    Закрытие
   }
 
   public class DepositTransaction
@@ -20,25 +18,41 @@ namespace Keeper.DomainModel
     public DepositOperations TransactionType { get; set; }
     public Decimal Amount { get; set; }
     public CurrencyCodes Currency { get; set; }
+    public Decimal AmountInUsd { get; set; }
     public string Comment { get; set; }
+  }
+
+  public class DepositRateLine
+  {
+    public decimal AmountFrom { get; set; }
+    public decimal AmountTo { get; set; }
+    public DateTime DateFrom { get; set; }
+    public DateTime DateTo { get; set; }
+    public decimal Rate { get; set; }
   }
 
 	public class Deposit
 	{
 		public Account Account { get; set; }
     public string Bank { get; set; }
-		public DateTime Start { get; set; }
-		public DateTime Finish { get; set; }
-		public CurrencyCodes MainCurrency { get; set; }
-		public decimal StartAmount { get; set; }
-		public decimal AdditionalAmounts { get; set; }
-		public List<Transaction> Transactions { get; set; }
-		public decimal CurrentBalance { get; set; }
-		public DepositStates State { get; set; }
-		public decimal DepositRate { get; set; }
+    public string Title { get; set; }
+		public DateTime StartDate { get; set; }
+		public DateTime FinishDate { get; set; }
+		public CurrencyCodes Currency { get; set; }
+    public DepositStates State { get; set; }
 
-		public decimal Profit { get; set; }
-		public decimal Forecast { get; set; }
+    public decimal DepositRate { get; set; }
+    public List<DepositRateLine> DepositRateLines { get; set; }
+
+    public List<DepositTransaction> Traffic { get; set; }
+    public decimal TotalMyIns { get; set; }
+    public decimal TotalPercent { get; set; }
+    public decimal TotalMyOuts { get; set; }
+    public decimal CurrentBalance { get { return TotalMyIns + TotalPercent - TotalMyOuts; } }
+    public decimal CurrentProfit { get; set; }
+
+    public decimal EstimatedProcents { get; set; }
+    public decimal EstimatedProfitInUsd { get; set; }
 
 		public Brush FontColor
 		{
@@ -52,24 +66,24 @@ namespace Keeper.DomainModel
 
     public decimal GetProfitForYear(int year)
     {
-      if (Profit == 0) return 0;
-      int startYear = Transactions.First().Timestamp.Year;
-      int finishYear = Transactions.Last().Timestamp.AddDays(-1).Year;
+      if (CurrentProfit == 0) return 0;
+      int startYear = Traffic.First().Timestamp.Year;
+      int finishYear = Traffic.Last().Timestamp.AddDays(-1).Year;
       if (year < startYear || year > finishYear) return 0;
-      if (startYear == finishYear) return Profit;
-      int allDaysCount = (Transactions.Last().Timestamp.AddDays(-1) - Transactions.First().Timestamp).Days;
+      if (startYear == finishYear) return CurrentProfit;
+      int allDaysCount = (Traffic.Last().Timestamp.AddDays(-1) - Traffic.First().Timestamp).Days;
       if (year == startYear)
       {
-        int startYearDaysCount = (new DateTime(startYear, 12, 31) - Transactions.First().Timestamp).Days;
-        return Profit * startYearDaysCount / allDaysCount;
+        int startYearDaysCount = (new DateTime(startYear, 12, 31) - Traffic.First().Timestamp).Days;
+        return CurrentProfit * startYearDaysCount / allDaysCount;
       }
       if (year == finishYear)
       {
-        int finishYearDaysCount = (Transactions.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
-        return Profit * finishYearDaysCount / allDaysCount;
+        int finishYearDaysCount = (Traffic.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
+        return CurrentProfit * finishYearDaysCount / allDaysCount;
       }
       int yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
-      return Profit * yearDaysCount / allDaysCount;
+      return CurrentProfit * yearDaysCount / allDaysCount;
     }
 
   }
