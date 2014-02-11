@@ -4,6 +4,7 @@ using System.Composition;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
 using Keeper.Properties;

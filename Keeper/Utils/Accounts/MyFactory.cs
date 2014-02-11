@@ -30,9 +30,9 @@ namespace Keeper.Utils.Accounts
 			return new Account() { Parent = parent };
 		}
 
-    public OpenOrEditDepositViewModel CreateOpenOrEditDepositViewModel(Deposit deposit, string windowTitle)
+    public OpenOrEditDepositViewModel CreateOpenOrEditDepositViewModel()
     {
-      return new OpenOrEditDepositViewModel(deposit, windowTitle);
+      return IoC.Get<OpenOrEditDepositViewModel>(); 
     }
 
 	}

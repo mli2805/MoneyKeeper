@@ -178,6 +178,15 @@ namespace Keeper.ViewModels
     #endregion
 
     #region Списки для комбобоксов
+    private List<Account> _myAccounts;
+    private List<CurrencyCodes> _currencyList;
+    private List<Account> _myAccountsForShopping;
+    private List<Account> _accountsWhoTakesMyMoney;
+    private List<Account> _accountsWhoGivesMeMoney;
+    private List<Account> _incomeArticles;
+    private List<Account> _expenseArticles;
+    private List<Account> _bankAccounts;
+
     public List<CurrencyCodes> CurrencyList
     {
       get { return _currencyList; }
@@ -277,9 +286,7 @@ namespace Keeper.ViewModels
        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
                                                                         account.Children.Count == 0 &&
                                                                         !account.Is("Депозиты"))).ToList();
-      BankAccounts =
-        _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList
-          ();
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
       AccountsWhoTakesMyMoney =
         (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.Is("ДеньгоПолучатели") &&
                                                                          account.Children.Count == 0)).ToList();
@@ -566,15 +573,6 @@ namespace Keeper.ViewModels
     }
 
     private string _endDayBalances;
-    private List<Account> _myAccounts;
-    private List<CurrencyCodes> _currencyList;
-    private List<Account> _myAccountsForShopping;
-    private List<Account> _accountsWhoTakesMyMoney;
-    private List<Account> _accountsWhoGivesMeMoney;
-    private List<Account> _incomeArticles;
-    private List<Account> _expenseArticles;
-    private List<Account> _bankAccounts;
-
     public string EndDayBalances
     {
       get { return _endDayBalances; }
