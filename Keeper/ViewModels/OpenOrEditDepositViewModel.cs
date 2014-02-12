@@ -13,7 +13,7 @@ namespace Keeper.ViewModels
   [Export]
   public class OpenOrEditDepositViewModel : Screen
   {
-    private Deposit Deposit { get; set; }
+    public Deposit DepositInWork { get; set; }
     private string _windowTitle;
     private readonly KeeperDb _db;
     private readonly AccountTreeStraightener _accountTreeStraightener;
@@ -62,13 +62,30 @@ namespace Keeper.ViewModels
 
     public void InitializeForm(Deposit deposit, string windowTitle)
     {
-      Deposit = deposit;
       _windowTitle = windowTitle;
+      DepositInWork = deposit;
+
+      if (windowTitle == "Добавить")
+      {
+        DepositInWork.Bank = BankAccounts.First();
+        DepositInWork.StartDate = DateTime.Today;
+        DepositInWork.FinishDate = DateTime.Today.AddMonths(1);
+        DepositInWork.Currency = CurrencyCodes.BYR;
+        DepositInWork.DepositRate = 6;
+      }
+
     }
 
     protected override void OnViewLoaded(object view)
     {
       DisplayName = _windowTitle;
+    }
+
+    public void SaveDeposit()
+    {
+      DepositInWork.Account.Name = string.Format("{0} {1} {2:d/MM/yyyy} - {3:d/MM/yyyy} {4:0.#}%", 
+         DepositInWork.Bank.Name, DepositInWork.Title, DepositInWork.StartDate, DepositInWork.FinishDate, DepositInWork.DepositRate);
+      TryClose(true);
     }
 
 

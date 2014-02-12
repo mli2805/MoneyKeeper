@@ -64,7 +64,7 @@ namespace Keeper.ByFunctional.EditingAccounts
       var depositInWork = new Deposit {Account = accountInWork};
 
       if (!_askUser.ToAddDeposit(depositInWork)) return null;
-      // сохранить Deposit
+      // сохранить depositInWork
 
       //
       return _accountOperations.AddNode(accountInWork);

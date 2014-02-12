@@ -1,17 +1,16 @@
 ﻿<Window x:Class="Keeper.Views.AddAndEditAccountView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-        xmlns:u="clr-namespace:Keeper.Utils"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" xmlns:DomainModel="clr-namespace:Keeper.DomainModel"
+        xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:Behaviors="clr-namespace:Keeper.Behaviors" mc:Ignorable="d"
         Title="{Binding Title}" Height="176" Width="447"
         d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}">
     <Grid>
     <TextBox HorizontalAlignment="Left" Height="23" Margin="75,58,0,0" TextWrapping="Wrap" 
-             VerticalAlignment="Top" Width="344"
+             VerticalAlignment="Top" Width="344" BorderBrush="#555555" 
              Text="{Binding AccountInWork.Name}">
     <i:Interaction.Behaviors>
       <Behaviors:SetFocusOnLoadBehavior />
