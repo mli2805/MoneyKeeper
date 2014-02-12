@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using Caliburn.Micro;
 
 namespace Keeper.DomainModel
 {
@@ -31,10 +32,10 @@ namespace Keeper.DomainModel
     public decimal Rate { get; set; }
   }
 
-	public class Deposit
+	public class Deposit : PropertyChangedBase
 	{
 		public Account Account { get; set; }
-    public string Bank { get; set; }
+    public Account Bank { get; set; }
     public string Title { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime FinishDate { get; set; }
@@ -44,6 +45,7 @@ namespace Keeper.DomainModel
     public decimal DepositRate { get; set; }
     public List<DepositRateLine> DepositRateLines { get; set; }
 
+    // дальше вычислимое , не должно храниться?
     public List<DepositTransaction> Traffic { get; set; }
     public decimal TotalMyIns { get; set; }
     public decimal TotalPercent { get; set; }

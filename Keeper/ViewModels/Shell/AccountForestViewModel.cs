@@ -79,7 +79,9 @@ namespace Keeper.ViewModels.Shell
 
     public void AddSelectedAccount()
     {
-      var newSelectedAccount = _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount);
+      var newSelectedAccount = MyForestModel.SelectedAccount.Name == "Депозиты" ? 
+        _accountTreesGardener.AddDeposit(MyForestModel.SelectedAccount) :
+        _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount) ;
       if (newSelectedAccount == null) return;
       if (MyForestModel.SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
       MyForestModel.SelectedAccount = newSelectedAccount;

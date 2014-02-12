@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils
@@ -13,12 +14,14 @@ namespace Keeper.Utils
   {
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
+    private readonly AccountTreeStraightener _accountTreeStraightener;
 
     [ImportingConstructor]
-    public DepositParser(KeeperDb db, RateExtractor rateExtractor)
+    public DepositParser(KeeperDb db, RateExtractor rateExtractor, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
       _rateExtractor = rateExtractor;
+      _accountTreeStraightener = accountTreeStraightener;
     }
 
     public Deposit Analyze(Account account)
@@ -39,7 +42,7 @@ namespace Keeper.Utils
     private void ExtractInfoFromName(Deposit deposit)
     {
       var s = deposit.Account.Name;
-      deposit.Bank = s.Substring(0, s.IndexOf(' '));
+      deposit.Bank = _accountTreeStraightener.Seek(s.Substring(0, s.IndexOf(' ')), _db.Accounts);
       var p = s.IndexOf('/');
       var n = s.IndexOf(' ', p);
       deposit.StartDate = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
