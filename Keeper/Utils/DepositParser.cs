@@ -24,16 +24,17 @@ namespace Keeper.Utils
       _accountTreeStraightener = accountTreeStraightener;
     }
 
-    public Deposit Analyze(Account account)
+    public DepositEvaluations Analyze(Account account)
     {
       var deposit = new Deposit{Account = account};
+      var depositEvaluations = new DepositEvaluations{DepositCore = deposit};
       ExtractInfoFromName(deposit);
-      ExtractTraffic(deposit);
-      deposit.Currency = deposit.Traffic.First().Currency;
-      EvaluateTraffic(deposit);
-      DefineCurrentState(deposit);
-      MakeForecast(deposit);
-      return deposit;
+      ExtractTraffic(depositEvaluations);
+      deposit.Currency = depositEvaluations.Traffic.First().Currency;
+      EvaluateTraffic(depositEvaluations);
+      DefineCurrentState(depositEvaluations);
+      if (depositEvaluations.State != DepositStates.Закрыт) MakeForecast(depositEvaluations);
+      return depositEvaluations;
     }
 
     /// <summary>
@@ -53,48 +54,72 @@ namespace Keeper.Utils
       deposit.DepositRate = Convert.ToDecimal(s.Substring(n, p - n));
     }
 
-    private void ExtractTraffic(Deposit deposit)
+    private void ExtractTraffic(DepositEvaluations depositEvaluations)
     {
-      deposit.Traffic = (from t in _db.Transactions
-                         where t.Debet == deposit.Account || t.Credit == deposit.Account
-                         orderby t.Timestamp
-                         join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
-                         from rate in g.DefaultIfEmpty()
-                         select new DepositTransaction{Amount = t.Amount, Timestamp = t.Timestamp, Currency = t.Currency, Comment = t.Comment,
-                                                       AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-                                                       TransactionType = t.Operation == OperationType.Доход ? 
-                                                                                           DepositOperations.Проценты : 
-                                                                                           t.Debet == deposit.Account ? 
-                                                                                                  DepositOperations.Расход : 
-                                                                                                  DepositOperations.Явнес}).ToList();
+      depositEvaluations.Traffic = (from t in _db.Transactions
+                                    where t.Debet == depositEvaluations.DepositCore.Account || t.Credit == depositEvaluations.DepositCore.Account
+                                    orderby t.Timestamp
+                                    join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
+                                    from rate in g.DefaultIfEmpty()
+                                    select new DepositTransaction{Amount = t.Amount, Timestamp = t.Timestamp, Currency = t.Currency, Comment = t.Comment,
+                                                                  AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
+                                                                  TransactionType = t.Operation == OperationType.Доход ? 
+                                                                                                        DepositOperations.Проценты :
+                                                                                                        t.Debet == depositEvaluations.DepositCore.Account ? 
+                                                                                                               DepositOperations.Расход : 
+                                                                                                               DepositOperations.Явнес}).ToList();
     }
 
-    private void EvaluateTraffic(Deposit deposit)
+    private void EvaluateTraffic(DepositEvaluations depositEvaluations)
     {
-      deposit.TotalMyIns = deposit.Traffic.Where(t=>t.TransactionType == DepositOperations.Явнес).Sum(t => t.Amount);
-      deposit.TotalMyOuts = deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.Amount);
-      deposit.TotalPercent = deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Проценты).Sum(t => t.Amount);
+      depositEvaluations.TotalMyIns = depositEvaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Явнес).Sum(t => t.Amount);
+      depositEvaluations.TotalMyOuts = depositEvaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.Amount);
+      depositEvaluations.TotalPercent = depositEvaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Проценты).Sum(t => t.Amount);
 
-      deposit.CurrentProfit = _rateExtractor.GetUsdEquivalent(deposit.CurrentBalance, deposit.Currency, DateTime.Today)
-                              - deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Явнес).Sum(t => t.AmountInUsd) 
-                              + deposit.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.AmountInUsd); 
+      depositEvaluations.CurrentProfit = _rateExtractor.GetUsdEquivalent(depositEvaluations.CurrentBalance, depositEvaluations.DepositCore.Currency, DateTime.Today)
+                              - depositEvaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Явнес).Sum(t => t.AmountInUsd)
+                              + depositEvaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.AmountInUsd); 
     }
 
-    private void DefineCurrentState(Deposit deposit)
+    private void DefineCurrentState(DepositEvaluations depositEvaluations)
     {
-      if (deposit.CurrentBalance == 0)
-        deposit.State = DepositStates.Закрыт;
+      if (depositEvaluations.CurrentBalance == 0)
+        depositEvaluations.State = DepositStates.Закрыт;
       else
-        deposit.State = deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
+        depositEvaluations.State = depositEvaluations.DepositCore.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
     }
 
-    private void MakeForecast(Deposit deposit)
+    private void MakeForecast(DepositEvaluations dEvaluations)
     {
-      var lastProcentTransaction = deposit.Traffic.LastOrDefault(t => t.TransactionType == DepositOperations.Проценты);
-      var lastProcentDate = lastProcentTransaction == null ? deposit.StartDate : lastProcentTransaction.Timestamp;
+      var lastProcentTransaction = dEvaluations.Traffic.LastOrDefault(t => t.TransactionType == DepositOperations.Проценты);
+      var lastProcentDate = lastProcentTransaction == null ? dEvaluations.DepositCore.StartDate : lastProcentTransaction.Timestamp;
 
-      deposit.EstimatedProcents = deposit.CurrentBalance * deposit.DepositRate / 100 * (deposit.FinishDate - lastProcentDate).Days / 365;
-      deposit.EstimatedProfitInUsd = deposit.CurrentProfit + _rateExtractor.GetUsdEquivalent(deposit.EstimatedProcents, deposit.Currency, DateTime.Today);
+      dEvaluations.EstimatedProcents = dEvaluations.CurrentBalance * dEvaluations.DepositCore.DepositRate / 100 * (dEvaluations.DepositCore.FinishDate - lastProcentDate).Days / 365;
+      dEvaluations.EstimatedProfitInUsd = dEvaluations.CurrentProfit + _rateExtractor.GetUsdEquivalent(dEvaluations.EstimatedProcents, dEvaluations.DepositCore.Currency, DateTime.Today);
     }
+
+    public decimal GetProfitForYear(DepositEvaluations depositEvaluations, int year)
+    {
+      if (depositEvaluations.CurrentProfit == 0) return 0;
+      int startYear = depositEvaluations.Traffic.First().Timestamp.Year;
+      int finishYear = depositEvaluations.Traffic.Last().Timestamp.AddDays(-1).Year;
+      if (year < startYear || year > finishYear) return 0;
+      if (startYear == finishYear) return depositEvaluations.CurrentProfit;
+      int allDaysCount = (depositEvaluations.Traffic.Last().Timestamp.AddDays(-1) - depositEvaluations.Traffic.First().Timestamp).Days;
+      if (year == startYear)
+      {
+        int startYearDaysCount = (new DateTime(startYear, 12, 31) - depositEvaluations.Traffic.First().Timestamp).Days;
+        return depositEvaluations.CurrentProfit * startYearDaysCount / allDaysCount;
+      }
+      if (year == finishYear)
+      {
+        int finishYearDaysCount = (depositEvaluations.Traffic.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
+        return depositEvaluations.CurrentProfit * finishYearDaysCount / allDaysCount;
+      }
+      int yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
+      return depositEvaluations.CurrentProfit * yearDaysCount / allDaysCount;
+    }
+
+
   }
 }

@@ -16,7 +16,7 @@ namespace Keeper.ViewModels
 	  private readonly KeeperDb _db;
     private readonly BalanceCalculator _balanceCalculator;
 		readonly AccountTreeStraightener _accountTreeStraightener;
-		private Deposit _oldDeposit;
+    private DepositEvaluations _oldDepositEvaluations;
 		public Account NewDeposit { get; set; }
 
 		public DateTime TransactionsDate { get; set; }
@@ -39,15 +39,15 @@ namespace Keeper.ViewModels
       BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
 		}
 
-		public void SetOldDeposit(Deposit oldDeposit)
+		public void SetOldDeposit(DepositEvaluations oldDepositEvaluations)
 		{
-			_oldDeposit = oldDeposit;
+      _oldDepositEvaluations = oldDepositEvaluations;
 
-			TransactionsDate = _oldDeposit.FinishDate;
-			OldDepositName = _oldDeposit.Account.Name;
-			DepositCurrency = _oldDeposit.Currency.ToString().ToLower();
+      TransactionsDate = _oldDepositEvaluations.DepositCore.FinishDate;
+      OldDepositName = _oldDepositEvaluations.DepositCore.Account.Name;
+      DepositCurrency = _oldDepositEvaluations.DepositCore.Currency.ToString().ToLower();
 			BankAccount = FindBankAccount();
-			Procents = _oldDeposit.EstimatedProcents;
+      Procents = _oldDepositEvaluations.EstimatedProcents;
 			NewDepositName = BuildNewName();
 		}
 
@@ -66,9 +66,9 @@ namespace Keeper.ViewModels
 		private string BuildNewName()
 		{
 			var st = OldDepositName.Substring(0, OldDepositName.IndexOf('/') - 2).Trim();
-			DateTime newFinish = _oldDeposit.FinishDate + (_oldDeposit.FinishDate - _oldDeposit.StartDate);
-			string period = String.Format("{0:d/MM/yyyy} - {1:d/MM/yyyy}", _oldDeposit.FinishDate, newFinish).Replace('.', '/');
-			return String.Format("{0} {1} {2}%", st, period, _oldDeposit.DepositRate);
+      DateTime newFinish = _oldDepositEvaluations.DepositCore.FinishDate + (_oldDepositEvaluations.DepositCore.FinishDate - _oldDepositEvaluations.DepositCore.StartDate);
+      string period = String.Format("{0:d/MM/yyyy} - {1:d/MM/yyyy}", _oldDepositEvaluations.DepositCore.FinishDate, newFinish).Replace('.', '/');
+      return String.Format("{0} {1} {2}%", st, period, _oldDepositEvaluations.DepositCore.DepositRate);
 		}
 
 		private Account AddNewAccountForDeposit()
@@ -99,9 +99,9 @@ namespace Keeper.ViewModels
 				  Timestamp = GetTimestampForTransactions(),
 				  Operation = OperationType.Доход,
 				  Debet = BankAccount,
-				  Credit = _oldDeposit.Account,
+          Credit = _oldDepositEvaluations.DepositCore.Account,
 				  Amount = Procents,
-				  Currency = _oldDeposit.Currency,
+          Currency = _oldDepositEvaluations.DepositCore.Currency,
 				  Article = _accountTreeStraightener.Seek("Проценты по депозитам", _db.Accounts),
 				  Comment = "причисление процентов при закрытии"
 			  };
@@ -115,12 +115,12 @@ namespace Keeper.ViewModels
 			{
 				Timestamp = GetTimestampForTransactions(),
 				Operation = OperationType.Перенос,
-				Debet = _oldDeposit.Account,
+        Debet = _oldDepositEvaluations.DepositCore.Account,
 				Credit = NewDeposit,
-				Amount = _balanceCalculator.GetBalanceInCurrency(_oldDeposit.Account,
+        Amount = _balanceCalculator.GetBalanceInCurrency(_oldDepositEvaluations.DepositCore.Account,
                             new Period(new DateTime(0), GetTimestampForTransactions()),
-													  _oldDeposit.Currency),
-				Currency = _oldDeposit.Currency,
+                            _oldDepositEvaluations.DepositCore.Currency),
+        Currency = _oldDepositEvaluations.DepositCore.Currency,
 				Comment = "переоформление вклада"
 			};
 
@@ -130,11 +130,11 @@ namespace Keeper.ViewModels
 		private void RemoveOldAccountToClosed()
 		{
 			var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
-			parent.Children.Remove(_oldDeposit.Account);
+      parent.Children.Remove(_oldDepositEvaluations.DepositCore.Account);
 
 			parent = _accountTreeStraightener.Seek("Закрытые депозиты", _db.Accounts);
-			_oldDeposit.Account.Parent = parent;
-			parent.Children.Add(_oldDeposit.Account);
+      _oldDepositEvaluations.DepositCore.Account.Parent = parent;
+      parent.Children.Add(_oldDepositEvaluations.DepositCore.Account);
 		}
 
 		public void Accept()

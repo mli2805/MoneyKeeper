@@ -32,20 +32,25 @@ namespace Keeper.DomainModel
     public decimal Rate { get; set; }
   }
 
-	public class Deposit : PropertyChangedBase
+	public class Deposit
 	{
+    public int Id { get; set; }
 		public Account Account { get; set; }
     public Account Bank { get; set; }
     public string Title { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime FinishDate { get; set; }
 		public CurrencyCodes Currency { get; set; }
-    public DepositStates State { get; set; }
 
     public decimal DepositRate { get; set; }
     public List<DepositRateLine> DepositRateLines { get; set; }
+  }
 
-    // дальше вычислимое , не должно храниться?
+  public class DepositEvaluations
+  {
+    public Deposit DepositCore { get; set; }
+
+    public DepositStates State { get; set; }
     public List<DepositTransaction> Traffic { get; set; }
     public decimal TotalMyIns { get; set; }
     public decimal TotalPercent { get; set; }
@@ -56,37 +61,6 @@ namespace Keeper.DomainModel
     public decimal EstimatedProcents { get; set; }
     public decimal EstimatedProfitInUsd { get; set; }
 
-		public Brush FontColor
-		{
-			get
-			{
-				if (State == DepositStates.Закрыт) return Brushes.Gray;
-				if (State == DepositStates.Просрочен) return Brushes.Red;
-				return Brushes.Blue;
-			}
-		}
-
-    public decimal GetProfitForYear(int year)
-    {
-      if (CurrentProfit == 0) return 0;
-      int startYear = Traffic.First().Timestamp.Year;
-      int finishYear = Traffic.Last().Timestamp.AddDays(-1).Year;
-      if (year < startYear || year > finishYear) return 0;
-      if (startYear == finishYear) return CurrentProfit;
-      int allDaysCount = (Traffic.Last().Timestamp.AddDays(-1) - Traffic.First().Timestamp).Days;
-      if (year == startYear)
-      {
-        int startYearDaysCount = (new DateTime(startYear, 12, 31) - Traffic.First().Timestamp).Days;
-        return CurrentProfit * startYearDaysCount / allDaysCount;
-      }
-      if (year == finishYear)
-      {
-        int finishYearDaysCount = (Traffic.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
-        return CurrentProfit * finishYearDaysCount / allDaysCount;
-      }
-      int yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
-      return CurrentProfit * yearDaysCount / allDaysCount;
-    }
-
+    public Brush FontColor { get { return State == DepositStates.Закрыт ? Brushes.Gray : State == DepositStates.Просрочен ? Brushes.Red : Brushes.Blue; } }
   }
 }

@@ -6,17 +6,17 @@
         xmlns:cal="http://www.caliburnproject.org" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Behaviors="clr-namespace:Keeper.Behaviors" xmlns:XamlExtensions="clr-namespace:Keeper.XamlExtensions">
   <Window.Resources>
-      <DataTemplate x:Key="StartAmountColumnStyle">
+      <DataTemplate x:Key="MyInsColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-            <Binding Path="StartAmount" StringFormat="{}{0:#,0;; }"/>
+          <Binding Path="TotalMyIns" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
-      <DataTemplate x:Key="AdditionalAmountsColumnStyle">
+      <DataTemplate x:Key="PersentsColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-            <Binding Path="AdditionalAmounts" StringFormat="{}{0:#,0;; }"/>
+          <Binding Path="TotalPercent" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
@@ -30,14 +30,14 @@
       <DataTemplate x:Key="ProfitColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-            <Binding Path="Profit" StringFormat="{}{0:#,0;; }"/>
+            <Binding Path="CurrentProfit" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
       <DataTemplate x:Key="ForecastColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-            <Binding Path="Forecast" StringFormat="{}{0:#,0;; }"/>
+          <Binding Path="EstimatedProfitInUsd" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
@@ -140,7 +140,7 @@
       <RowDefinition Height="2*"/>
     </Grid.RowDefinitions>
     <ListView Margin="2" Grid.ColumnSpan="2" 
-              ItemsSource="{Binding DepositsList}" SelectedItem="{Binding SelectedDeposit}"
+              ItemsSource="{Binding DepositEvaluationsList}" SelectedItem="{Binding SelectedDepositEvaluations}"
               cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowSelectedDeposit()]" >
       <i:Interaction.Behaviors>
         <Behaviors:ScrollToPreviousExitPointOrBottomOnLoadBehavior/>
@@ -155,13 +155,13 @@
       </ListView.ItemContainerStyle>
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Наименование" Width="350" DisplayMemberBinding="{Binding Account}" />
-          <GridViewColumn Header="Вал"            Width="40" DisplayMemberBinding="{Binding Currency}" />
-          <GridViewColumn Header="Сумма открытия" Width="100" CellTemplate="{StaticResource StartAmountColumnStyle}" />
-          <GridViewColumn Header="Доп взносы"     Width="100" CellTemplate="{StaticResource AdditionalAmountsColumnStyle}" />
+          <GridViewColumn Header="Наименование"    Width="350" DisplayMemberBinding="{Binding DepositCore.Account}" />
+          <GridViewColumn Header="Вал"             Width="40"  DisplayMemberBinding="{Binding DepositCore.Currency}" />
+          <GridViewColumn Header="Я внес"          Width="100" CellTemplate="{StaticResource MyInsColumnStyle}" />
+          <GridViewColumn Header="Проценты"        Width="100" CellTemplate="{StaticResource PersentsColumnStyle}" />
           <GridViewColumn Header="Текущий остаток" Width="100" CellTemplate="{StaticResource CurrentBalanceColumnStyle}" />
-          <GridViewColumn Header="Прибыль"        Width="100" CellTemplate="{StaticResource ProfitColumnStyle}" />
-          <GridViewColumn Header="Прогноз"        Width="100" CellTemplate="{StaticResource ForecastColumnStyle}" />
+          <GridViewColumn Header="Прибыль"         Width="100" CellTemplate="{StaticResource ProfitColumnStyle}" />
+          <GridViewColumn Header="Прогноз"         Width="100" CellTemplate="{StaticResource ForecastColumnStyle}" />
         </GridView>
       </ListView.View>
     </ListView>
