@@ -74,12 +74,12 @@ namespace Keeper.Utils.MonthAnalysis
       foreach (var account in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
       {
         if (account.Children.Count != 0) continue;
-        var deposit = _depositParser.Analyze(account);
-        if (!IsMonthTheSame(deposit.FinishDate, s.StartDate)) continue;
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = deposit.EstimatedProcents, 
-          ArticleName = string.Format("%%  {0} {1:d MMM}",deposit.Bank ,deposit.FinishDate), 
-          Currency = deposit.Currency });
-        s.ForecastIncomes.EstimatedIncomesSum += _rateExtractor.GetUsdEquivalent(deposit.EstimatedProcents, deposit.Currency, DateTime.Today);
+        var depositEvaluations = _depositParser.Analyze(account);
+        if (!IsMonthTheSame(depositEvaluations.DepositCore.FinishDate, s.StartDate)) continue;
+        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = depositEvaluations.EstimatedProcents, 
+          ArticleName = string.Format("%%  {0} {1:d MMM}",depositEvaluations.DepositCore.Bank ,depositEvaluations.DepositCore.FinishDate), 
+          Currency = depositEvaluations.DepositCore.Currency });
+        s.ForecastIncomes.EstimatedIncomesSum += _rateExtractor.GetUsdEquivalent(depositEvaluations.EstimatedProcents, depositEvaluations.DepositCore.Currency, DateTime.Today);
       }
     }
 
