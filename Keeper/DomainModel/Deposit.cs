@@ -36,8 +36,7 @@ namespace Keeper.DomainModel
   [Serializable]
 	public class Deposit
 	{
-    public int Id { get; set; }
-		public Account ParentAccount { get; set; }
+    public Account ParentAccount { get; set; }
     public Account Bank { get; set; }
     public string Title { get; set; }
 		public DateTime StartDate { get; set; }
@@ -46,12 +45,18 @@ namespace Keeper.DomainModel
 
     public decimal DepositRate { get; set; }
     public List<DepositRateLine> DepositRateLines { get; set; }
-  }
+
+    [NonSerialized]
+    private DepositEvaluations _evaluations;
+    public DepositEvaluations Evaluations
+    {
+      get { return _evaluations; }
+      set { _evaluations = value; }
+    }
+	}
 
   public class DepositEvaluations
   {
-    public Deposit DepositCore { get; set; }
-
     public DepositStates State { get; set; }
     public List<DepositTransaction> Traffic { get; set; }
     public decimal TotalMyIns { get; set; }

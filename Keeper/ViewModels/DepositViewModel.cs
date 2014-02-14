@@ -14,7 +14,7 @@ namespace Keeper.ViewModels
 
 		public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
-		public DepositEvaluations DepositEvaluations { get; set; }
+		public Deposit Deposit { get; set; }
     public ObservableCollection<string> Report { get; set; }
 		public Account NewAccountForDeposit { get; set; }
 		public bool CanRenew
@@ -35,27 +35,27 @@ namespace Keeper.ViewModels
 		  NewAccountForDeposit = null;
 		}
 
-    public void SetAccount(DepositEvaluations depositEvaluations)
+    public void SetAccount(Deposit deposit)
 		{
-      DepositEvaluations = depositEvaluations;
-      Report = _depositReporter.BuildReport(depositEvaluations);
+      Deposit = deposit;
+      Report = _depositReporter.BuildReport(deposit);
 		}
 
 		protected override void OnViewLoaded(object view)
 		{
-			DisplayName = DepositEvaluations.DepositCore.ParentAccount.Name;
-			CanRenew = DepositEvaluations.State != DepositStates.Закрыт;
+			DisplayName = Deposit.ParentAccount.Name;
+			CanRenew = Deposit.Evaluations.State != DepositStates.Закрыт;
 		}
 
 		public void Renew()
 		{
 			var renewDepositViewModel = IoC.Get<RenewDepositViewModel>();
-			renewDepositViewModel.SetOldDeposit(DepositEvaluations);
+			renewDepositViewModel.SetOldDeposit(Deposit);
 			WindowManager.ShowDialog(renewDepositViewModel);
 			if (renewDepositViewModel.NewDeposit != null)
 			{
 				NewAccountForDeposit = renewDepositViewModel.NewDeposit;
-				CanRenew = DepositEvaluations.State != DepositStates.Закрыт;
+				CanRenew = Deposit.Evaluations.State != DepositStates.Закрыт;
 				OnRenewed(NewAccountForDeposit);
 			}
 		}

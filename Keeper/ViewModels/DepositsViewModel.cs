@@ -23,8 +23,8 @@ namespace Keeper.ViewModels
 	  private readonly DepositParser _depositParser;
 	  private readonly RateExtractor _rateExtractor;
 
-    public List<DepositEvaluations> DepositEvaluationsList { get; set; }
-    public DepositEvaluations SelectedDepositEvaluations { get; set; }
+    public List<Deposit> DepositList { get; set; }
+    public Deposit SelectedDeposit { get; set; }
     public List<DepositViewModel> LaunchedViewModels { get; set; }
 
     public Style MyTitleStyle { get; set; }
@@ -40,15 +40,15 @@ namespace Keeper.ViewModels
 
       MyTitleStyle = new Style();
 
-      DepositEvaluationsList = new List<DepositEvaluations>();
+      DepositList = new List<Deposit>();
       foreach (var account in new AccountTreeStraightener().Flatten(_db.Accounts))
       {
         if (account.Is("Депозиты") && account.Children.Count == 0)
         {
-          DepositEvaluationsList.Add(_depositParser.Analyze(account));
+          DepositList.Add(_depositParser.Analyze(account));
         }
       }
-      SelectedDepositEvaluations = DepositEvaluationsList[0];
+      SelectedDeposit = DepositList[0];
 
       UpperRow = new GridLength(1, GridUnitType.Star);
       LowerRow = new GridLength(1, GridUnitType.Star);
@@ -86,13 +86,13 @@ namespace Keeper.ViewModels
       else
       {
         var depositView = (from d in LaunchedViewModels
-                           where d.DepositEvaluations.DepositCore.ParentAccount == SelectedDepositEvaluations.DepositCore.ParentAccount
+                           where d.Deposit.ParentAccount == SelectedDeposit.ParentAccount
                            select d).FirstOrDefault();
         if (depositView != null)
           depositView.TryClose();
       }
       var depositViewModel = IoC.Get<DepositViewModel>();
-      depositViewModel.SetAccount(SelectedDepositEvaluations);
+      depositViewModel.SetAccount(SelectedDeposit);
       LaunchedViewModels.Add(depositViewModel);
       WindowManager.ShowWindow(depositViewModel);
     }
@@ -146,7 +146,7 @@ namespace Keeper.ViewModels
       for (int i = 2002; i <= DateTime.Today.Year; i++)
       {
         decimal yearTotal = 0;
-        foreach (var deposit in DepositEvaluationsList)
+        foreach (var deposit in DepositList)
         {
           yearTotal += _depositParser.GetProfitForYear(deposit,i);
         }
@@ -165,14 +165,14 @@ namespace Keeper.ViewModels
       TotalsList = new List<ChartPoint>();
       var totalBalances = new Dictionary<CurrencyCodes, decimal>();
 
-      foreach (var depositEvaluations in DepositEvaluationsList)
+      foreach (var deposit in DepositList)
       {
-        if (depositEvaluations.CurrentBalance == 0) continue;
+        if (deposit.Evaluations.CurrentBalance == 0) continue;
         decimal total;
-        if (totalBalances.TryGetValue(depositEvaluations.DepositCore.Currency, out total))
-          totalBalances[depositEvaluations.DepositCore.Currency] = total + depositEvaluations.CurrentBalance;
+        if (totalBalances.TryGetValue(deposit.Currency, out total))
+          totalBalances[deposit.Currency] = total + deposit.Evaluations.CurrentBalance;
         else
-          totalBalances.Add(depositEvaluations.DepositCore.Currency, depositEvaluations.CurrentBalance);
+          totalBalances.Add(deposit.Currency, deposit.Evaluations.CurrentBalance);
       }
 
       foreach (var currency in totalBalances.Keys)
