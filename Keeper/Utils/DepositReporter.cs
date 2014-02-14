@@ -20,41 +20,41 @@ namespace Keeper.Utils
       Report = new ObservableCollection<string>();
     }
 
-    public ObservableCollection<string> BuildReport(DepositEvaluations depositEvaluations)
+    public ObservableCollection<string> BuildReport(Deposit deposit)
     {
-      BuildReportHead(depositEvaluations);
-      BuildReportBody(depositEvaluations);
-      BuildReportFoot(depositEvaluations);
+      BuildReportHead(deposit);
+      BuildReportBody(deposit);
+      BuildReportFoot(deposit);
       return Report;
     }
 
-    private void BuildReportHead(DepositEvaluations depositEvaluations)
+    private void BuildReportHead(Deposit deposit)
     {
-      if (depositEvaluations.CurrentBalance == 0) Report.Add("Депозит закрыт. Остаток 0.\n");
+      if (deposit.Evaluations.CurrentBalance == 0) Report.Add("Депозит закрыт. Остаток 0.\n");
       else
       {
-        Report.Add(depositEvaluations.DepositCore.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!\n" : "Действующий депозит.\n");
-        var balanceString = depositEvaluations.DepositCore.Currency != CurrencyCodes.USD
+        Report.Add(deposit.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!\n" : "Действующий депозит.\n");
+        var balanceString = deposit.Currency != CurrencyCodes.USD
                               ? String.Format("{0:#,0} {2}  ($ {1:#,0} )",
-                                              depositEvaluations.CurrentBalance,
-                                              depositEvaluations.CurrentBalance /
-                                              (decimal)_rateExtractor.GetLastRate(depositEvaluations.DepositCore.Currency),
-                                              depositEvaluations.DepositCore.Currency.ToString().ToLower())
-                              : String.Format("{0:#,0} usd", depositEvaluations.CurrentBalance);
+                                              deposit.Evaluations.CurrentBalance,
+                                              deposit.Evaluations.CurrentBalance /
+                                              (decimal)_rateExtractor.GetLastRate(deposit.Currency),
+                                              deposit.Currency.ToString().ToLower())
+                              : String.Format("{0:#,0} usd", deposit.Evaluations.CurrentBalance);
         Report.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }
       Report.Add("                             Расход                          Доход ");
     }
 
-    private void BuildReportBody(DepositEvaluations depositEvaluations)
+    private void BuildReportBody(Deposit deposit)
     {
       var isFirst = true;
-      foreach (var operation in depositEvaluations.Traffic)
+      foreach (var operation in deposit.Evaluations.Traffic)
       {
         string comment = "";
         if (operation.TransactionType == DepositOperations.Явнес) comment = isFirst ? "открытие депозита" : "доп взнос";
         if (operation.TransactionType == DepositOperations.Проценты) comment = "начисление процентов";
-        if (operation.TransactionType == DepositOperations.Расход) comment = (depositEvaluations.CurrentBalance == 0 && operation == depositEvaluations.Traffic.Last()) ?
+        if (operation.TransactionType == DepositOperations.Расход) comment = (deposit.Evaluations.CurrentBalance == 0 && operation == deposit.Evaluations.Traffic.Last()) ?
                              "закрытие депозита" : "частичное снятие";
 
         Report.Add(String.Format("{0}     {1}", TransactionToLineInReport(operation), comment));
@@ -62,15 +62,15 @@ namespace Keeper.Utils
       }
     }
 
-    private void BuildReportFoot(DepositEvaluations depositEvaluations)
+    private void BuildReportFoot(Deposit deposit)
     {
-      Report.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", depositEvaluations.CurrentProfit));
-      if (depositEvaluations.CurrentBalance == 0) return;
-      if (depositEvaluations.DepositCore.Currency == CurrencyCodes.USD)
-        Report.Add(String.Format("Еще ожидаются проценты {0:#,0} usd", depositEvaluations.EstimatedProcents));
-      else Report.Add(String.Format("Еще ожидаются проценты {0:#,0} {1}   (${2:#,0})", depositEvaluations.EstimatedProcents, depositEvaluations.DepositCore.Currency.ToString().ToLower(),
-                                                         _rateExtractor.GetUsdEquivalent(depositEvaluations.EstimatedProcents, depositEvaluations.DepositCore.Currency, DateTime.Today)));
-      Report.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd \n", depositEvaluations.EstimatedProfitInUsd));
+      Report.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", deposit.Evaluations.CurrentProfit));
+      if (deposit.Evaluations.CurrentBalance == 0) return;
+      if (deposit.Currency == CurrencyCodes.USD)
+        Report.Add(String.Format("Еще ожидаются проценты {0:#,0} usd", deposit.Evaluations.EstimatedProcents));
+      else Report.Add(String.Format("Еще ожидаются проценты {0:#,0} {1}   (${2:#,0})", deposit.Evaluations.EstimatedProcents, deposit.Currency.ToString().ToLower(),
+                                                         _rateExtractor.GetUsdEquivalent(deposit.Evaluations.EstimatedProcents, deposit.Currency, DateTime.Today)));
+      Report.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd \n", deposit.Evaluations.EstimatedProfitInUsd));
     }
 
     private string TransactionToLineInReport(DepositTransaction transaction)

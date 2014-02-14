@@ -111,7 +111,7 @@ namespace Keeper.ViewModels.Shell
       foreach (var launchedForm in _launchedForms)
       {
         if (launchedForm is DepositViewModel && launchedForm.IsActive
-          && ((DepositViewModel)launchedForm).DepositEvaluations.DepositCore.ParentAccount == MyForestModel.SelectedAccount) launchedForm.TryClose();
+          && ((DepositViewModel)launchedForm).Deposit.ParentAccount == MyForestModel.SelectedAccount) launchedForm.TryClose();
       }
 
       var depositForm = IoC.Get<DepositViewModel>();
