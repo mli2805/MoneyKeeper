@@ -44,7 +44,7 @@ namespace Keeper.ViewModels
       _oldDepositEvaluations = oldDepositEvaluations;
 
       TransactionsDate = _oldDepositEvaluations.DepositCore.FinishDate;
-      OldDepositName = _oldDepositEvaluations.DepositCore.Account.Name;
+      OldDepositName = _oldDepositEvaluations.DepositCore.ParentAccount.Name;
       DepositCurrency = _oldDepositEvaluations.DepositCore.Currency.ToString().ToLower();
 			BankAccount = FindBankAccount();
       Procents = _oldDepositEvaluations.EstimatedProcents;
@@ -99,7 +99,7 @@ namespace Keeper.ViewModels
 				  Timestamp = GetTimestampForTransactions(),
 				  Operation = OperationType.Доход,
 				  Debet = BankAccount,
-          Credit = _oldDepositEvaluations.DepositCore.Account,
+          Credit = _oldDepositEvaluations.DepositCore.ParentAccount,
 				  Amount = Procents,
           Currency = _oldDepositEvaluations.DepositCore.Currency,
 				  Article = _accountTreeStraightener.Seek("Проценты по депозитам", _db.Accounts),
@@ -115,9 +115,9 @@ namespace Keeper.ViewModels
 			{
 				Timestamp = GetTimestampForTransactions(),
 				Operation = OperationType.Перенос,
-        Debet = _oldDepositEvaluations.DepositCore.Account,
+        Debet = _oldDepositEvaluations.DepositCore.ParentAccount,
 				Credit = NewDeposit,
-        Amount = _balanceCalculator.GetBalanceInCurrency(_oldDepositEvaluations.DepositCore.Account,
+        Amount = _balanceCalculator.GetBalanceInCurrency(_oldDepositEvaluations.DepositCore.ParentAccount,
                             new Period(new DateTime(0), GetTimestampForTransactions()),
                             _oldDepositEvaluations.DepositCore.Currency),
         Currency = _oldDepositEvaluations.DepositCore.Currency,
@@ -130,11 +130,11 @@ namespace Keeper.ViewModels
 		private void RemoveOldAccountToClosed()
 		{
 			var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
-      parent.Children.Remove(_oldDepositEvaluations.DepositCore.Account);
+      parent.Children.Remove(_oldDepositEvaluations.DepositCore.ParentAccount);
 
 			parent = _accountTreeStraightener.Seek("Закрытые депозиты", _db.Accounts);
-      _oldDepositEvaluations.DepositCore.Account.Parent = parent;
-      parent.Children.Add(_oldDepositEvaluations.DepositCore.Account);
+      _oldDepositEvaluations.DepositCore.ParentAccount.Parent = parent;
+      parent.Children.Add(_oldDepositEvaluations.DepositCore.ParentAccount);
 		}
 
 		public void Accept()

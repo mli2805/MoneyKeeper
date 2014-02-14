@@ -26,11 +26,16 @@ namespace Keeper.Utils
 
     public DepositEvaluations Analyze(Account account)
     {
-      var deposit = new Deposit{Account = account};
-      var depositEvaluations = new DepositEvaluations{DepositCore = deposit};
-      ExtractInfoFromName(deposit);
+      if (account.Deposit.Bank == null)
+      {
+        var bankName = account.Name.Substring(0, account.Name.IndexOf(' ') - 1);
+        account.Deposit.Bank = _accountTreeStraightener.Seek(bankName, _db.Accounts);
+      }
+
+      var depositEvaluations = new DepositEvaluations { DepositCore = account.Deposit };
+
       ExtractTraffic(depositEvaluations);
-      deposit.Currency = depositEvaluations.Traffic.First().Currency;
+      account.Deposit.Currency = depositEvaluations.Traffic.First().Currency;
       EvaluateTraffic(depositEvaluations);
       DefineCurrentState(depositEvaluations);
       if (depositEvaluations.State != DepositStates.Закрыт) MakeForecast(depositEvaluations);
@@ -42,7 +47,7 @@ namespace Keeper.Utils
     /// </summary>
     private void ExtractInfoFromName(Deposit deposit)
     {
-      var s = deposit.Account.Name;
+      var s = deposit.ParentAccount.Name;
       deposit.Bank = _accountTreeStraightener.Seek(s.Substring(0, s.IndexOf(' ')), _db.Accounts);
       var p = s.IndexOf('/');
       var n = s.IndexOf(' ', p);
@@ -57,7 +62,7 @@ namespace Keeper.Utils
     private void ExtractTraffic(DepositEvaluations depositEvaluations)
     {
       depositEvaluations.Traffic = (from t in _db.Transactions
-                                    where t.Debet == depositEvaluations.DepositCore.Account || t.Credit == depositEvaluations.DepositCore.Account
+                                    where t.Debet == depositEvaluations.DepositCore.ParentAccount || t.Credit == depositEvaluations.DepositCore.ParentAccount
                                     orderby t.Timestamp
                                     join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
                                     from rate in g.DefaultIfEmpty()
@@ -65,7 +70,7 @@ namespace Keeper.Utils
                                                                   AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
                                                                   TransactionType = t.Operation == OperationType.Доход ? 
                                                                                                         DepositOperations.Проценты :
-                                                                                                        t.Debet == depositEvaluations.DepositCore.Account ? 
+                                                                                                        t.Debet == depositEvaluations.DepositCore.ParentAccount ? 
                                                                                                                DepositOperations.Расход : 
                                                                                                                DepositOperations.Явнес}).ToList();
     }
