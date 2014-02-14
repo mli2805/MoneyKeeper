@@ -43,7 +43,7 @@ namespace Keeper.ViewModels
 
 		protected override void OnViewLoaded(object view)
 		{
-			DisplayName = DepositEvaluations.DepositCore.Account.Name;
+			DisplayName = DepositEvaluations.DepositCore.ParentAccount.Name;
 			CanRenew = DepositEvaluations.State != DepositStates.Закрыт;
 		}
 

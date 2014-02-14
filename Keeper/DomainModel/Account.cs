@@ -10,7 +10,6 @@ namespace Keeper.DomainModel
 	[Serializable]
 	public class Account : PropertyChangedBase, IComparable
 	{
-
 		#region // свойства (properties) класса
 
 		public int Id { get; set; }
@@ -27,6 +26,7 @@ namespace Keeper.DomainModel
 		}
 		public Account Parent { get; set; }
 		public ObservableCollection<Account> Children { get; private set; }
+    public Deposit Deposit { get; set; }
 
 		#region ' _isSelected '
 		[NonSerialized]

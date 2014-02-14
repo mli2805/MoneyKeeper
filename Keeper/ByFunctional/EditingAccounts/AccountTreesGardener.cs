@@ -61,12 +61,10 @@ namespace Keeper.ByFunctional.EditingAccounts
     public Account AddDeposit(Account selectedAccount)
     {
       var accountInWork = _myFactory.CreateAccount(selectedAccount);
-      var depositInWork = new Deposit {Account = accountInWork};
+      var depositInWork = new Deposit {ParentAccount = accountInWork};
 
       if (!_askUser.ToAddDeposit(depositInWork)) return null;
-      // сохранить depositInWork
-
-      //
+      accountInWork.Deposit = depositInWork;
       return _accountOperations.AddNode(accountInWork);
     }
 

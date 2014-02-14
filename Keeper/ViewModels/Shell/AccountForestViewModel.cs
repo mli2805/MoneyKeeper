@@ -9,7 +9,6 @@ using Keeper.DomainModel;
 using Keeper.Models.Shell;
 using Keeper.Properties;
 using Keeper.Utils;
-using Keeper.Utils.Accounts;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Keeper.ViewModels.Shell
@@ -31,7 +30,7 @@ namespace Keeper.ViewModels.Shell
     public AccountForestModel MyForestModel { get; set; }
 
     [ImportingConstructor]
-    public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
+    public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener, 
                                  IDbFromTxtLoader dbFromTxtLoader, IDbToTxtSaver dbToTxtSaver, DepositParser depositParser)
     {
       MyForestModel = shellModel.MyForestModel;
@@ -112,7 +111,7 @@ namespace Keeper.ViewModels.Shell
       foreach (var launchedForm in _launchedForms)
       {
         if (launchedForm is DepositViewModel && launchedForm.IsActive
-          && ((DepositViewModel)launchedForm).DepositEvaluations.DepositCore.Account == MyForestModel.SelectedAccount) launchedForm.TryClose();
+          && ((DepositViewModel)launchedForm).DepositEvaluations.DepositCore.ParentAccount == MyForestModel.SelectedAccount) launchedForm.TryClose();
       }
 
       var depositForm = IoC.Get<DepositViewModel>();

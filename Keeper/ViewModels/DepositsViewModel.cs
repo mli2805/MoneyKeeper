@@ -86,7 +86,7 @@ namespace Keeper.ViewModels
       else
       {
         var depositView = (from d in LaunchedViewModels
-                           where d.DepositEvaluations.DepositCore.Account == SelectedDepositEvaluations.DepositCore.Account
+                           where d.DepositEvaluations.DepositCore.ParentAccount == SelectedDepositEvaluations.DepositCore.ParentAccount
                            select d).FirstOrDefault();
         if (depositView != null)
           depositView.TryClose();

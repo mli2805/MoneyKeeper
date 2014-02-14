@@ -23,6 +23,7 @@ namespace Keeper.DomainModel
     public string Comment { get; set; }
   }
 
+  [Serializable]
   public class DepositRateLine
   {
     public decimal AmountFrom { get; set; }
@@ -32,10 +33,11 @@ namespace Keeper.DomainModel
     public decimal Rate { get; set; }
   }
 
+  [Serializable]
 	public class Deposit
 	{
     public int Id { get; set; }
-		public Account Account { get; set; }
+		public Account ParentAccount { get; set; }
     public Account Bank { get; set; }
     public string Title { get; set; }
 		public DateTime StartDate { get; set; }

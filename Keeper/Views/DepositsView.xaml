@@ -155,7 +155,7 @@
       </ListView.ItemContainerStyle>
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Наименование"    Width="350" DisplayMemberBinding="{Binding DepositCore.Account}" />
+          <GridViewColumn Header="Наименование"    Width="350" DisplayMemberBinding="{Binding DepositCore.ParentAccount}" />
           <GridViewColumn Header="Вал"             Width="40"  DisplayMemberBinding="{Binding DepositCore.Currency}" />
           <GridViewColumn Header="Я внес"          Width="100" CellTemplate="{StaticResource MyInsColumnStyle}" />
           <GridViewColumn Header="Проценты"        Width="100" CellTemplate="{StaticResource PersentsColumnStyle}" />

@@ -83,7 +83,7 @@ namespace Keeper.ViewModels
 
     public void SaveDeposit()
     {
-      DepositInWork.Account.Name = string.Format("{0} {1} {2:d/MM/yyyy} - {3:d/MM/yyyy} {4:0.#}%", 
+      DepositInWork.ParentAccount.Name = string.Format("{0} {1} {2:d//MM/yyyy} - {3:d/MM/yyyy} {4:0.#}%", 
          DepositInWork.Bank.Name, DepositInWork.Title, DepositInWork.StartDate, DepositInWork.FinishDate, DepositInWork.DepositRate);
       TryClose(true);
     }
