@@ -45,6 +45,7 @@ namespace Keeper.DomainModel
 
     public decimal DepositRate { get; set; }
     public List<DepositRateLine> DepositRateLines { get; set; }
+    public string Comment { get; set; }
 
     [NonSerialized]
     private DepositEvaluations _evaluations;
