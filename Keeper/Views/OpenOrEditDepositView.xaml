@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Keeper.Views.OpenOrEditDepositView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="OpenDepositView" Height="300" Width="300" WindowStartupLocation="CenterScreen">
+        Title="OpenDepositView" Height="350" Width="400" WindowStartupLocation="CenterScreen">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
@@ -15,33 +15,44 @@
         <RowDefinition Height="35"/>
         <RowDefinition Height="35"/>
         <RowDefinition Height="35"/>
+        <RowDefinition Height="10"/>
         <RowDefinition Height="35"/>
       </Grid.RowDefinitions>
       <TextBlock Margin="5" Text="Банк" VerticalAlignment="Center"/>
-      <ComboBox Margin="5" Width="230" HorizontalAlignment="Right" ItemsSource="{Binding BankAccounts}" 
+      <ComboBox Margin="58,5,5,5" Width="110" HorizontalAlignment="Left" ItemsSource="{Binding BankAccounts}" 
                 SelectedItem="{Binding DepositInWork.Bank}"/>
-
-      <TextBlock Grid.Row="1" Margin="5" Text="Вклад" VerticalAlignment="Center"/>
-      <TextBox Grid.Row="1" Margin="5" HorizontalAlignment="Right" Width="230" BorderBrush="#555555" 
-               Text="{Binding DepositInWork.Title}"/>
-      
-      <TextBlock Grid.Row="2" Margin="5" Text="C" Width="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-      <DatePicker Grid.Row="2" Margin="20,5,5,5" Width="115" HorizontalAlignment="Left" FirstDayOfWeek="Monday"
-                  SelectedDate="{Binding DepositInWork.StartDate}"/>
-      <TextBlock Grid.Row="2" Margin="145,5,5,5" Text="по" Width="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-      <DatePicker Grid.Row="2" Margin="5" Width="115" HorizontalAlignment="Right" FirstDayOfWeek="Monday"
-                  SelectedDate="{Binding DepositInWork.FinishDate}"/>
-
-      <TextBlock Grid.Row="3" Margin="5" Text="Валюта вклада" VerticalAlignment="Center"/>
-      <ComboBox Grid.Row="3" Margin="5" Width="185" HorizontalAlignment="Right" 
+      <TextBlock Margin="205,5,5,5" Text="Валюта вклада" VerticalAlignment="Center"/>
+      <ComboBox Margin="5" Width="75" HorizontalAlignment="Right" 
                 ItemsSource="{Binding CurrencyList}" SelectedItem="{Binding DepositInWork.Currency}"/>
 
-      <TextBlock Grid.Row="4" Margin="5" Text="Cтавка" VerticalAlignment="Center"/>
-      <TextBox Grid.Row="4" Margin="55,5,5,5" HorizontalAlignment="Left" Width="40" 
+      <TextBlock Grid.Row="1" Margin="5" Text="Вклад" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="1" Margin="5" HorizontalAlignment="Right" Width="330" BorderBrush="#555555" 
+               Text="{Binding DepositInWork.Title}"/>
+      
+      <TextBlock Grid.Row="2" Margin="35,5,5,5" Text="C" Width="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+      <DatePicker Grid.Row="2" Margin="58,5,5,5" Width="115" HorizontalAlignment="Left" FirstDayOfWeek="Monday"
+                  SelectedDate="{Binding DepositInWork.StartDate}"/>
+      <TextBlock Grid.Row="2" Margin="185,5,5,5" Text="по" Width="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+      <DatePicker Grid.Row="2" Margin="205,5,5,5" Width="115" HorizontalAlignment="Left" FirstDayOfWeek="Monday"
+                  SelectedDate="{Binding DepositInWork.FinishDate}"/>
+
+      <TextBlock Grid.Row="3" Margin="5" Text="Cтавка" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="3" Margin="58,5,5,5" HorizontalAlignment="Left" Width="40" 
                BorderBrush="#555555" TextAlignment="Right" Text="{Binding DepositInWork.DepositRate}"/>
-      <TextBlock Grid.Row="4" Margin="105,5,5,5" Text="% годовых" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-      <Button Name="DepositRates" Grid.Row="4" Margin="5" Width="80" HorizontalAlignment="Right" 
+      <TextBlock Grid.Row="3" Margin="105,5,5,5" Text="% годовых" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+      <Button Name="DepositRates" Grid.Row="3" Margin="5" Width="80" HorizontalAlignment="Right" 
               Content="Таблица" Style="{StaticResource MyButtonStyle}"/>
+
+      <TextBlock Grid.Row="4" Margin="5" Text="Примечание" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="4" Margin="5" HorizontalAlignment="Right" Width="300" BorderBrush="#555555" 
+               Text="{Binding DepositInWork.Comment}"/>
+      <Rectangle Grid.Row="5" Margin="3,5,3,4" Stroke="Gray" StrokeThickness="1,0" />
+      
+      <TextBlock Grid.Row="6" Margin="5" Text="Счет" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="6" Margin="40,5,5,5" HorizontalAlignment="Left" Width="280" BorderBrush="#555555" 
+               Text="{Binding DepositInWork.ParentAccout.Name}"/>
+      <Button Grid.Row="6" Margin="5" HorizontalAlignment="Right" Width="50" Content="Auto"
+              Name="CompileAccountName"/>
     </Grid>
     <Rectangle Grid.Row="1" Margin="3,0,3,9" Stroke="Gray" StrokeThickness="1,0" />
     <Button Name="SaveDeposit" Grid.Row="2" Margin="35,1,5,9" Width="100" HorizontalAlignment="Left" 

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
@@ -83,11 +81,14 @@ namespace Keeper.ViewModels
 
     public void SaveDeposit()
     {
-      DepositInWork.ParentAccount.Name = string.Format("{0} {1} {2:d//MM/yyyy} - {3:d/MM/yyyy} {4:0.#}%", 
-         DepositInWork.Bank.Name, DepositInWork.Title, DepositInWork.StartDate, DepositInWork.FinishDate, DepositInWork.DepositRate);
       TryClose(true);
     }
 
+    public void CompileAccountName()
+    {
+      DepositInWork.ParentAccount.Name = string.Format("{0} {1} {2:d//MM/yyyy} - {3:d/MM/yyyy} {4:0.#}%",
+         DepositInWork.Bank.Name, DepositInWork.Title, DepositInWork.StartDate, DepositInWork.FinishDate, DepositInWork.DepositRate);
+    }
 
   }
 }
