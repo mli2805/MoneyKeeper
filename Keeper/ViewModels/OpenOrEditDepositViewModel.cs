@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -16,10 +17,21 @@ namespace Keeper.ViewModels
     private readonly KeeperDb _db;
     private readonly AccountTreeStraightener _accountTreeStraightener;
 
+    public string Junction
+    {
+      get { return DepositInWork.ParentAccount.Name; }
+      set
+      {
+        if (value == DepositInWork.ParentAccount.Name) return;
+        DepositInWork.ParentAccount.Name = value;
+        NotifyOfPropertyChange(() => Junction);
+      }
+    }
+
     #region Списки для комбобоксов
     private List<CurrencyCodes> _currencyList;
     private List<Account> _bankAccounts;
-    
+
     public List<CurrencyCodes> CurrencyList
     {
       get { return _currencyList; }
@@ -86,8 +98,11 @@ namespace Keeper.ViewModels
 
     public void CompileAccountName()
     {
-      DepositInWork.ParentAccount.Name = string.Format("{0} {1} {2:d//MM/yyyy} - {3:d/MM/yyyy} {4:0.#}%",
-         DepositInWork.Bank.Name, DepositInWork.Title, DepositInWork.StartDate, DepositInWork.FinishDate, DepositInWork.DepositRate);
+      Junction = string.Format("{0} {1} {2} - {3} {4:0.#}%",
+         DepositInWork.Bank.Name, DepositInWork.Title, 
+         DepositInWork.StartDate.ToString("d/MM/yyyy",CultureInfo.InvariantCulture),
+         DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture), 
+         DepositInWork.DepositRate);
     }
 
   }
