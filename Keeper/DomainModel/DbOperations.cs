@@ -1,4 +1,6 @@
-﻿using System.Composition;
+﻿using System.Collections.Generic;
+using System.Composition;
+using System.Linq;
 
 namespace Keeper.DomainModel
 {
@@ -36,5 +38,16 @@ namespace Keeper.DomainModel
 //			edited.Name = changesSource.Name;
 			Account.CopyForEdit(edited,changesSource);
 		}
+
+    public void SortDepositAccounts(Account depositRoot)
+    {
+      var activeDeposits = depositRoot.Children.ToList();
+      depositRoot.Children.Clear();
+      activeDeposits.Sort(Account.CompareAccountsByDepositFinishDate);
+      foreach (var deposit in activeDeposits)
+      {
+        depositRoot.Children.Add(deposit);
+      }
+    }
 	}
 }
