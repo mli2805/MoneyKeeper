@@ -151,34 +151,11 @@ namespace Keeper.DomainModel
 			return String.Compare(Name, ((Account)obj).Name, StringComparison.Ordinal);
 		}
 
-		public static DateTime GetEndDepositDate(string depositName)
-		{
-			var s = depositName;
-			var p = s.IndexOf('/'); if (p == -1) return new DateTime(0);
-			var n = s.IndexOf(' ', p); if (n == -1) return new DateTime(0);
-			p = s.IndexOf('/', n); if (p == -1) return new DateTime(0);
-			n = s.IndexOf(' ', p); if (n == -1) return new DateTime(0);
-
-			DateTime result;
-			try
-			{
-				result = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
-			}
-			catch (Exception)
-			{
-
-				result = new DateTime(0);
-			}
-			return result;
-		}
-
-		public static int CompareEndDepositDates(Account a, Account b)
-		{
-			// проверка депозит ли это не осуществляется здесь
-			// но если имя счета не соответствует шабону для депозита 
-			// то в качестве даты конца вклада будет возвращен 1/01/0001
-			return DateTime.Compare(GetEndDepositDate(a.Name), GetEndDepositDate(b.Name));
-		}
+    public static int CompareAccountsByDepositFinishDate(Account a, Account b)
+    {
+      if (a.Deposit == null || b.Deposit == null) return 0;
+      return DateTime.Compare(a.Deposit.FinishDate, b.Deposit.FinishDate);
+    }
 
 	}
 }

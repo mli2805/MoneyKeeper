@@ -21,6 +21,7 @@ namespace Keeper.ViewModels.Shell
 
     private KeeperDb _db;
     private readonly AccountTreesGardener _accountTreesGardener;
+    private readonly AccountOperations _accountOperations;
     private readonly IDbFromTxtLoader _dbFromTxtLoader;
     private readonly IDbToTxtSaver _dbToTxtSaver;
     private readonly DepositParser _depositParser;
@@ -30,12 +31,14 @@ namespace Keeper.ViewModels.Shell
     public AccountForestModel MyForestModel { get; set; }
 
     [ImportingConstructor]
-    public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener, 
+    public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
+      AccountOperations accountOperations,
                                  IDbFromTxtLoader dbFromTxtLoader, IDbToTxtSaver dbToTxtSaver, DepositParser depositParser)
     {
       MyForestModel = shellModel.MyForestModel;
       _db = db;
       _accountTreesGardener = accountTreesGardener;
+      _accountOperations = accountOperations;
       _dbFromTxtLoader = dbFromTxtLoader;
       _dbToTxtSaver = dbToTxtSaver;
       _depositParser = depositParser;
@@ -82,23 +85,12 @@ namespace Keeper.ViewModels.Shell
         _accountTreesGardener.AddDeposit(MyForestModel.SelectedAccount) :
         _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount) ;
       if (newSelectedAccount == null) return;
-      if (MyForestModel.SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
+      if (MyForestModel.SelectedAccount.Name == "Депозиты")
+        _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount);
       MyForestModel.SelectedAccount.IsSelected = false;
       MyForestModel.SelectedAccount = newSelectedAccount;
       MyForestModel.SelectedAccount.IsSelected = true;
       NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
-    }
-
-    private void ReorderDepositAccounts()
-    {
-      _dbToTxtSaver.SaveDbInTxt();
-      var result = _dbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
-      if (result.Code != 0) MessageBox.Show(result.Explanation);
-      else
-      {
-        _db = result.Db;
-        InitVariablesToShowAccounts();
-      }
     }
 
     public void ChangeSelectedAccount()
