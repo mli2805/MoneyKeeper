@@ -93,7 +93,7 @@ namespace Keeper.Utils.Balances
                   where a.Name == "Депозиты"
                   select a).First();
 
-      var calculatedAccounts = new List<Account>((_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
+      var calculatedAccounts = new List<Account>((_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.Is("Мои") &&
         account.Children.Count == 0 && !account.Is("Депозиты"))));
       calculatedAccounts.Add(depo);
       foreach (var account in calculatedAccounts)

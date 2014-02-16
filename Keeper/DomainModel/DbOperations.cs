@@ -26,14 +26,15 @@ namespace Keeper.DomainModel
 			node.Parent.Children.Remove(node);
 		}
 
-		public void ApplyEdit(Account edited, Account changesSource)
+		public void ApplyEdit(ref Account edited, Account changesSource)
 		{
 			if (edited.Parent != changesSource.Parent)
 			{
 				changesSource.Parent.Children.Add(changesSource);
 				edited.Parent.Children.Remove(edited);
 			}
-			edited.Name = changesSource.Name;
+//			edited.Name = changesSource.Name;
+			Account.CopyForEdit(edited,changesSource);
 		}
 	}
 }

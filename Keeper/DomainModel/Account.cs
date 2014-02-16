@@ -103,7 +103,13 @@ namespace Keeper.DomainModel
 			destination.Name = source.Name;
 			destination.Parent = source.Parent;
 
-			foreach (var account in source.Children)
+      if (source.Deposit != null)
+      {
+        destination.Deposit = (Deposit) source.Deposit.Clone();
+        destination.Deposit.ParentAccount = destination;
+      }
+
+		  foreach (var account in source.Children)
 			{
 				var child = new Account();
 				CopyForEdit(child, account);
@@ -121,11 +127,6 @@ namespace Keeper.DomainModel
 		public override string ToString()
 		{
 			return Name;
-		}
-
-		public string GetRootName()
-		{
-			return Parent == null ? Name : Parent.GetRootName();
 		}
 
 		/// <summary>

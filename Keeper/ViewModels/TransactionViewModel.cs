@@ -53,7 +53,7 @@ namespace Keeper.ViewModels
       DebetFilterList.Add(filter);
 
       var debetAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
-              (account.GetRootName() == "Мои" || account.GetRootName() == "Внешние") && account.Children.Count == 0)).ToList();
+              (account.Is("Мои") || account.Is("Внешние")) && account.Children.Count == 0)).ToList();
       foreach (var account in debetAccounts)
       {
         filter = new AccountFilter(account);
@@ -68,7 +68,7 @@ namespace Keeper.ViewModels
       ArticleFilterList.Add(filter);
 
       var articleAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
-              (account.GetRootName() == "Все доходы" || account.GetRootName() == "Все расходы") && account.Children.Count == 0)).ToList();
+              (account.Is("Все доходы") || account.Is("Все расходы")) && account.Children.Count == 0)).ToList();
       foreach (var account in articleAccounts)
       {
         filter = new AccountFilter(account);
@@ -278,28 +278,21 @@ namespace Keeper.ViewModels
     private void InitializeListsForCombobox()
     {
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-      MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
-                                                                                    account.Children.Count == 0 ||
-                                                                                    account.Name ==
-                                                                                    "Для ввода стартовых остатков")).ToList();
+      MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).
+        Where(account => account.Is("Мои") && account.Children.Count == 0 
+                 || account.Name == "Для ввода стартовых остатков")).ToList();
       MyAccountsForShopping =
-       (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Мои" &&
-                                                                        account.Children.Count == 0 &&
-                                                                        !account.Is("Депозиты"))).ToList();
+       (_accountTreeStraightener.Flatten(_db.Accounts).
+          Where(account => account.Is("Мои") && account.Children.Count == 0 && !account.Is("Депозиты"))).ToList();
       BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
-      AccountsWhoTakesMyMoney =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.Is("ДеньгоПолучатели") &&
-                                                                         account.Children.Count == 0)).ToList();
-      AccountsWhoGivesMeMoney =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => (account.Is("ДеньгоДатели") ||
-                                                                          account.Is("Банки")) &&
-                                                                         account.Children.Count == 0)).ToList();
-      IncomeArticles =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все доходы" &&
-                                                                         account.Children.Count == 0)).ToList();
-      ExpenseArticles =
-        (_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.GetRootName() == "Все расходы" &&
-                                                                         account.Children.Count == 0)).ToList();
+      AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
+          Where(account => account.Is("ДеньгоПолучатели") && account.Children.Count == 0)).ToList();
+      AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
+          Where(account => (account.Is("ДеньгоДатели") || account.Is("Банки")) && account.Children.Count == 0)).ToList();
+      IncomeArticles =  (_accountTreeStraightener.Flatten(_db.Accounts).
+          Where(account => account.Is("Все доходы") && account.Children.Count == 0)).ToList();
+      ExpenseArticles = (_accountTreeStraightener.Flatten(_db.Accounts).
+          Where(account => account.Is("Все расходы") && account.Children.Count == 0)).ToList();
     }
 
     #endregion

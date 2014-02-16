@@ -83,7 +83,9 @@ namespace Keeper.ViewModels.Shell
         _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount) ;
       if (newSelectedAccount == null) return;
       if (MyForestModel.SelectedAccount.Name == "Депозиты") ReorderDepositAccounts();
+      MyForestModel.SelectedAccount.IsSelected = false;
       MyForestModel.SelectedAccount = newSelectedAccount;
+      MyForestModel.SelectedAccount.IsSelected = true;
       NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
     }
 
@@ -101,7 +103,10 @@ namespace Keeper.ViewModels.Shell
 
     public void ChangeSelectedAccount()
     {
-      _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
+      if (MyForestModel.SelectedAccount.Is("Депозиты"))
+        _accountTreesGardener.ChangeDeposit(MyForestModel.SelectedAccount);
+      else
+        _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
     }
 
     public void ShowDeposit()
