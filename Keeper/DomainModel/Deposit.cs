@@ -32,7 +32,7 @@ namespace Keeper.DomainModel
   }
 
   [Serializable]
-	public class Deposit
+	public class Deposit : ICloneable
 	{
     public Account ParentAccount { get; set; }
     public Account Bank { get; set; }
@@ -51,6 +51,13 @@ namespace Keeper.DomainModel
     {
       get { return _evaluations; }
       set { _evaluations = value; }
+    }
+
+    public object Clone()
+    {
+      var newdDeposit = (Deposit)this.MemberwiseClone();
+      if (DepositRateLines != null) newdDeposit.DepositRateLines = new List<DepositRateLine>(DepositRateLines);
+      return newdDeposit;
     }
 	}
 

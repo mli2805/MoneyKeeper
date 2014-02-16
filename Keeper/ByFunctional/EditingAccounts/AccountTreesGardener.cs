@@ -55,7 +55,7 @@ namespace Keeper.ByFunctional.EditingAccounts
 		{
 			var accountInWork = _myFactory.CloneAccount(selectedAccount);
 			if (!_askUser.ToEditAccount(accountInWork)) return;
-			_accountOperations.ApplyEdit(selectedAccount, accountInWork);
+			_accountOperations.ApplyEdit(ref selectedAccount, accountInWork);
 		}
 
     public Account AddDeposit(Account selectedAccount)
@@ -66,6 +66,14 @@ namespace Keeper.ByFunctional.EditingAccounts
       if (!_askUser.ToAddDeposit(depositInWork)) return null;
       accountInWork.Deposit = depositInWork;
       return _accountOperations.AddNode(accountInWork);
+    }
+
+    public void ChangeDeposit(Account selectedAccount)
+    {
+      var accountInWork = _myFactory.CloneAccount(selectedAccount);
+      var depositInWork = accountInWork.Deposit;
+      if (!_askUser.ToEditDeposit(depositInWork)) return;
+      _accountOperations.ApplyEdit(ref selectedAccount, accountInWork);
     }
 
 
