@@ -279,21 +279,21 @@ namespace Keeper.ViewModels
     {
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
       MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(account => account.Is("Мои") && account.Children.Count == 0 
-                 || account.Name == "Для ввода стартовых остатков")).ToList();
-      MyAccountsForShopping =
-       (_accountTreeStraightener.Flatten(_db.Accounts).
-          Where(account => account.Is("Мои") && account.Children.Count == 0 && !account.Is("Депозиты"))).ToList();
-      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
+        Where(a => (a.IsLeaf("Мои") || a.Name == "Для ввода стартовых остатков") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
+      MyAccountsForShopping = (_accountTreeStraightener.Flatten(_db.Accounts).
+        Where(a => a.IsLeaf("Мои") && !a.IsLeaf("Депозиты") && (a.IsActive||!_filterOnlyActiveAccounts))).ToList();
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsLeaf("Банки") && (a.IsActive || !_filterOnlyActiveAccounts)).ToList();
       AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
-          Where(account => account.Is("ДеньгоПолучатели") && account.Children.Count == 0)).ToList();
+        Where(a => a.IsLeaf("ДеньгоПолучатели") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
       AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
-          Where(account => (account.Is("ДеньгоДатели") || account.Is("Банки")) && account.Children.Count == 0)).ToList();
+        Where(a => a.IsLeaf("ДеньгоДатели") || a.IsLeaf("Банки") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
       IncomeArticles =  (_accountTreeStraightener.Flatten(_db.Accounts).
-          Where(account => account.Is("Все доходы") && account.Children.Count == 0)).ToList();
+        Where(a => a.IsLeaf("Все доходы") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
       ExpenseArticles = (_accountTreeStraightener.Flatten(_db.Accounts).
-          Where(account => account.Is("Все расходы") && account.Children.Count == 0)).ToList();
+        Where(a => a.IsLeaf("Все расходы") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
     }
+
+    private bool _filterOnlyActiveAccounts;
 
     #endregion
 
@@ -590,6 +590,7 @@ namespace Keeper.ViewModels
       _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
       _accountTreeStraightener = accountTreeStraightener;
       _associationFinder = new AssociationFinder(_db);
+      _filterOnlyActiveAccounts = true;
       InitializeListsForCombobox();
       TransactionInWork = new Transaction();
       Rows = _db.Transactions;
@@ -859,6 +860,12 @@ namespace Keeper.ViewModels
         }
         CancelTransactionChanges();
       }
+    }
+
+    public void ChangeComboboxFilters()
+    {
+      _filterOnlyActiveAccounts = !_filterOnlyActiveAccounts;
+      InitializeListsForCombobox();
     }
 
   }
