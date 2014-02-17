@@ -6,32 +6,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:Behaviors="clr-namespace:Keeper.Behaviors" mc:Ignorable="d"
-        Title="{Binding Title}" Height="176" Width="447"
-        d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}">
+        Title="{Binding ViewTitle}" Height="204" Width="447"
+        d:DataContext="{d:DesignInstance ViewModels:AddAndEditAccountViewModel}" WindowStartupLocation="CenterOwner">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="40"/>
+    </Grid.RowDefinitions>
     <Grid>
-    <TextBox HorizontalAlignment="Left" Height="23" Margin="75,58,0,0" TextWrapping="Wrap" 
-             VerticalAlignment="Top" Width="344" BorderBrush="#555555" 
-             Text="{Binding AccountInWork.Name}">
-    <i:Interaction.Behaviors>
-      <Behaviors:SetFocusOnLoadBehavior />
-      </i:Interaction.Behaviors>
-    </TextBox>
-    <Button x:Name="Accept" Content="Принять" HorizontalAlignment="Left" Margin="116,104,0,0" 
-            VerticalAlignment="Top" Width="75" IsDefault="True" Style="{StaticResource MyButtonStyle}"/>
-    <Button x:Name="Decline" Content="Отклонить" HorizontalAlignment="Left" Margin="235,104,0,0" 
-            VerticalAlignment="Top" Width="75" IsCancel="True" Style="{StaticResource MyButtonStyle}"/>
-    <Label Content="Название" HorizontalAlignment="Left" Margin="8,56,0,0" VerticalAlignment="Top"/>
-    <ComboBox HorizontalAlignment="Left" Margin="75,18,0,0" VerticalAlignment="Top" Width="344"
+      <Grid.RowDefinitions>
+        <RowDefinition Height="40" />
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="10"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <ComboBox HorizontalAlignment="Left" Margin="75,0,0,0" VerticalAlignment="Center" Width="344"
               ItemsSource="{Binding CategoriesForParentList}" SelectedItem="{Binding SelectedParent}">
-<!--      если ItemTemplate нет , то для отображения в комбике прибинженного содержимого используется ToString-->
-<!--      но если это класс, а показывать надо только поле Name (например), то можно задать ItemTemplate-->
-<!--      или определить ToString, т.к. стандартный для класса выводит имя класса-->
-<!--      <ComboBox.ItemTemplate>-->
-<!--        <DataTemplate DataType="DomainModel:Account">-->
-<!--          <TextBlock Text="{Binding Name}"/>-->
-<!--        </DataTemplate>-->
-<!--      </ComboBox.ItemTemplate>-->
-    </ComboBox>
+        <!--      если ItemTemplate нет , то для отображения в комбике прибинженного содержимого используется ToString-->
+        <!--      но если это класс, а показывать надо только поле Name (например), то можно задать ItemTemplate-->
+        <!--      или определить ToString, т.к. стандартный для класса выводит имя класса-->
+        <!--      <ComboBox.ItemTemplate>-->
+        <!--        <DataTemplate DataType="DomainModel:Account">-->
+        <!--          <TextBlock Text="{Binding Name}"/>-->
+        <!--        </DataTemplate>-->
+        <!--      </ComboBox.ItemTemplate>-->
+      </ComboBox>
+      <Label Content="Название" Grid.Row="1" HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="75,0,0,0" TextWrapping="Wrap" 
+             VerticalAlignment="Center" Width="344" BorderBrush="#555555" 
+             Text="{Binding AccountInWork.Name}">
+        <i:Interaction.Behaviors>
+          <Behaviors:SetFocusOnLoadBehavior />
+        </i:Interaction.Behaviors>
+      </TextBox>
+      <CheckBox Grid.Row="2" VerticalAlignment="Center" Margin="75,0,0,0" Content="Активный" IsChecked="{Binding AccountInWork.IsActive}"/>
 
+      <Rectangle Grid.Row="3" Margin="3,5,3,4" Stroke="LightGray" StrokeThickness="1,0"/>
     </Grid>
+    <Button x:Name="Accept" Grid.Row="2" Content="Принять" HorizontalAlignment="Left" Margin="116,8,0,0" 
+            VerticalAlignment="Top" Width="75" IsDefault="True" Style="{StaticResource MyButtonStyle}"/>
+    <Button x:Name="Decline" Grid.Row="2" Content="Отклонить" HorizontalAlignment="Left" Margin="235,8,0,0" 
+            VerticalAlignment="Top" Width="75" IsCancel="True" Style="{StaticResource MyButtonStyle}"/>
+
+  </Grid>
 </Window>

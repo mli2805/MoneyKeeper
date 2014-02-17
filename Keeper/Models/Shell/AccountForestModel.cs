@@ -66,7 +66,8 @@ namespace Keeper.Models.Shell
       set
       {
         _selectedAccount = value;
-        IsDeposit = value != null && value.Is("Депозиты") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        DepositEvaluationVisibility = value != null && value.Deposit != null ? Visibility.Visible : Visibility.Collapsed;
+        AddNewAccountVisibility = value != null && value.Deposit == null ? Visibility.Visible : Visibility.Collapsed;
         NotifyOfPropertyChange(()=>SelectedAccount);
       }
     }
@@ -84,17 +85,29 @@ namespace Keeper.Models.Shell
       }
     }
 
-    private Visibility _isDeposit;
-    public Visibility IsDeposit
+    private Visibility _depositEvaluationVisibility;
+
+    public Visibility DepositEvaluationVisibility
     {
-      get { return _isDeposit; }
+      get { return _depositEvaluationVisibility; }
       set
       {
-        if (value.Equals(_isDeposit)) return;
-        _isDeposit = value;
-        NotifyOfPropertyChange(() => IsDeposit);
+        if (value.Equals(_depositEvaluationVisibility)) return;
+        _depositEvaluationVisibility = value;
+        NotifyOfPropertyChange(() => DepositEvaluationVisibility);
       }
     }
 
+    private Visibility _addNewAccountVisibility;
+    public Visibility AddNewAccountVisibility
+    {
+      get { return _addNewAccountVisibility; }
+      set
+      {
+        if (Equals(value, _addNewAccountVisibility)) return;
+        _addNewAccountVisibility = value;
+        NotifyOfPropertyChange(() => AddNewAccountVisibility);
+      }
+    }
   }
 }

@@ -13,7 +13,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     {
       var shiftedName = new string(' ', account.Level * 2) + account.Item.Name;
       var parentForDump = account.Item.Parent == null ? 0 : account.Item.Parent.Id;
-      return account.Item.Id + " ; " + shiftedName + " ; " + parentForDump + " ; " + account.Item.IsExpanded;
+      return account.Item.Id + " ; " + shiftedName + " ; " + parentForDump + " ; " + account.Item.IsExpanded + " ; " + account.Item.IsActive;
     }
     public string Dump(ArticleAssociation association)
     {

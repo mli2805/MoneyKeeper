@@ -17,5 +17,10 @@ namespace Keeper.Views
     {
       throw new NotImplementedException();
     }
+
+    private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }

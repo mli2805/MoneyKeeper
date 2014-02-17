@@ -26,6 +26,14 @@ namespace Keeper.DomainModel
 		}
 		public Account Parent { get; set; }
 		public ObservableCollection<Account> Children { get; private set; }
+
+    /* IsActive == false не только закрытые депозиты и счета(карточки) 
+     * но и например контрагенты, с которыми больше не сотрудничаем 
+     * (например, предыдущие работадатели)
+     * статьи более не используемые (типа иррациональные)
+     */
+    public bool IsActive { get; set; }
+
     public Deposit Deposit { get; set; }
 
 		#region ' _isSelected '
@@ -101,6 +109,7 @@ namespace Keeper.DomainModel
 		{
 			destination.Id = source.Id;
 			destination.Name = source.Name;
+		  destination.IsActive = source.IsActive;
 			destination.Parent = source.Parent;
 
       if (source.Deposit != null)
@@ -115,13 +124,6 @@ namespace Keeper.DomainModel
 				CopyForEdit(child, account);
 				destination.Children.Add(child);
 			}
-		}
-
-		public string ToDepositFormat()
-		{
-			// BUG: Dirty hack 
-			var shiftedName = new string(' ', 4) + Name;
-			return Id + " ; " + shiftedName + " ; " + (Parent == null ? 0 : Parent.Id) + " ; " + IsExpanded;
 		}
 
 		public override string ToString()
@@ -145,6 +147,11 @@ namespace Keeper.DomainModel
 			if (this == ancestor) return true;
 			return Parent != null && Parent.Is(ancestor);
 		}
+
+    public bool IsLeaf(string ancestor)
+    {
+      return Is(ancestor) && Children.Count == 0;
+    }
 
 		public int CompareTo(object obj)
 		{
