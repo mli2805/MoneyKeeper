@@ -15,9 +15,16 @@ namespace Keeper.ViewModels.Shell
     public StatusBarViewModel StatusBarViewModel { get; set; }
 
 
+    System.Threading.Mutex _mut;
     [ImportingConstructor]
     public ShellViewModel()
     {
+      bool createdNew;
+      _mut = new System.Threading.Mutex(true, "Приложение", out createdNew);
+      if (!createdNew)
+      {
+        return;
+      }
       MainMenuViewModel = IoC.Get<MainMenuViewModel>();
       if (MainMenuViewModel.IsDbLoadingFailed) return;
       MainMenuViewModel.PropertyChanged += MainMenuViewModelPropertyChanged;
