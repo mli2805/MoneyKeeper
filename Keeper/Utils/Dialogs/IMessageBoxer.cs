@@ -2,7 +2,9 @@
 
 namespace Keeper.Utils.Dialogs
 {
-	public interface IMessageBoxer {
+	public interface IMessageBoxer
+	{
 		MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton messageBoxButton, MessageBoxImage messageBoxImage);
+	  void DropEmptyBox();
 	}
 }

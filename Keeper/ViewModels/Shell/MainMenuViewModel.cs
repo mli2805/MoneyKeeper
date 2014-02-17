@@ -14,6 +14,7 @@ using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Diagram;
+using Keeper.Utils.Dialogs;
 
 namespace Keeper.ViewModels.Shell
 {
@@ -31,6 +32,7 @@ namespace Keeper.ViewModels.Shell
     private readonly IDbFromTxtLoader _dbFromTxtLoader;
     private readonly DbCleaner _dbCleaner;
     private readonly DiagramDataFactory _diagramDataFactory;
+    private readonly IMessageBoxer _messageBoxer;
 
     public bool IsDbLoadingFailed { get; set; }
     public bool IsAuthorizationFailed { get; set; }
@@ -50,13 +52,15 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
-                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory)
+                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory, IMessageBoxer messageBoxer)
     {
       _loadResult = loadResult;
+      _messageBoxer = messageBoxer;
+
       IsDbLoadingFailed = _loadResult.Db == null;
       if (IsDbLoadingFailed)
       {
-        MessageBox.Show(_loadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        _messageBoxer.Show(_loadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
 
@@ -70,6 +74,7 @@ namespace Keeper.ViewModels.Shell
       _diagramDataFactory = diagramDataFactory;
       IsDbChanged = false;
       WindowManager = new WindowManager();
+      _messageBoxer.DropEmptyBox();
     }
 
     #region меню Файл
