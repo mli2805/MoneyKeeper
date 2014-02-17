@@ -9,26 +9,25 @@ namespace Keeper.ViewModels
   {
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
-    public String Title { get; set; }
+    public String ViewTitle { get; set; }
     public Account AccountInWork { get; set; }
 
     public List<Account> CategoriesForParentList { get; set; }
     public Account SelectedParent { get; set; }
 
-    public AddAndEditAccountViewModel(Account account, string title)
+    public AddAndEditAccountViewModel(Account account, string viewTitle)
     {
-      Title = title;
+      ViewTitle = viewTitle;
       AccountInWork = account;
       PrepareParentComboBox();
     }
 
     public Account GetRoot(Account account)
     {
-      if (account.Parent == null) return account;
-      return GetRoot(account.Parent);
+      return account.Parent == null ? account : GetRoot(account.Parent);
     }
 
-    public void GetBranchFromPoint(Account point, List<Account> list)
+	  public void GetBranchFromPoint(Account point, List<Account> list)
     {
       list.Add(point);
       foreach (var child in point.Children)

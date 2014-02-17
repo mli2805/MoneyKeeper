@@ -2,14 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
-using System.Windows;
 using Caliburn.Micro;
 using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
-using Keeper.Properties;
 using Keeper.Utils;
-using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Keeper.ViewModels.Shell
 {
@@ -19,11 +16,9 @@ namespace Keeper.ViewModels.Shell
     [Import]
     public IWindowManager WindowManager { get; set; }
 
-    private KeeperDb _db;
+    private readonly KeeperDb _db;
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly AccountOperations _accountOperations;
-    private readonly IDbFromTxtLoader _dbFromTxtLoader;
-    private readonly IDbToTxtSaver _dbToTxtSaver;
     private readonly DepositParser _depositParser;
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
@@ -32,15 +27,12 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
-      AccountOperations accountOperations,
-                                 IDbFromTxtLoader dbFromTxtLoader, IDbToTxtSaver dbToTxtSaver, DepositParser depositParser)
+      AccountOperations accountOperations, DepositParser depositParser)
     {
       MyForestModel = shellModel.MyForestModel;
       _db = db;
       _accountTreesGardener = accountTreesGardener;
       _accountOperations = accountOperations;
-      _dbFromTxtLoader = dbFromTxtLoader;
-      _dbToTxtSaver = dbToTxtSaver;
       _depositParser = depositParser;
 
       InitVariablesToShowAccounts();
@@ -53,18 +45,14 @@ namespace Keeper.ViewModels.Shell
 
     public void InitVariablesToShowAccounts()
     {
-      MyForestModel.MineAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                                    where account.Name == "Мои"
-                                                                    select account);
-      MyForestModel.ExternalAccountsRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                                        where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков"
-                                                                        select account);
-      MyForestModel.IncomesRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                               where account.Name == "Все доходы"
-                                                               select account);
-      MyForestModel.ExpensesRoot = new ObservableCollection<Account>(from account in _db.Accounts
-                                                                where account.Name == "Все расходы"
-                                                                select account);
+      MyForestModel.MineAccountsRoot = new ObservableCollection<Account>
+          (from account in _db.Accounts where account.Name == "Мои" select account);
+      MyForestModel.ExternalAccountsRoot = new ObservableCollection<Account>
+          (from account in _db.Accounts where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков" select account);
+      MyForestModel.IncomesRoot = new ObservableCollection<Account>
+          (from account in _db.Accounts where account.Name == "Все доходы" select account);
+      MyForestModel.ExpensesRoot = new ObservableCollection<Account>
+        (from account in _db.Accounts where account.Name == "Все расходы" select account);
 
       NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
       NotifyOfPropertyChange(() => MyForestModel.ExternalAccountsRoot);
@@ -95,7 +83,7 @@ namespace Keeper.ViewModels.Shell
 
     public void ChangeSelectedAccount()
     {
-      if (MyForestModel.SelectedAccount.Is("Депозиты"))
+      if (MyForestModel.SelectedAccount.IsLeaf("Депозиты"))
         _accountTreesGardener.ChangeDeposit(MyForestModel.SelectedAccount);
       else
         _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
