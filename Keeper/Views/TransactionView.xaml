@@ -396,6 +396,8 @@
                 HorizontalAlignment="Center" Margin="0,120,0,0" Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top"  Width="90"/>
         <Button Content="Удалить"     Name="DeleteTransaction"      ToolTip="Удаление выделенной транзакции Ctrl+Del"  
                 HorizontalAlignment="Center" Margin="0,150,0,0" Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top" Width="90"/>
+        <Button Content="Списки"     Name="ChangeComboboxFilters"      ToolTip="Вкл/выкл фильтрации списков в комбобоксах"  
+                HorizontalAlignment="Center" Margin="0,210,0,0" Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top" Width="90"/>
       </Grid>
     </StackPanel>
 
