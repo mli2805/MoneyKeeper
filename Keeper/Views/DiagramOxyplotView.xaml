@@ -1,0 +1,9 @@
+﻿<Window x:Class="Keeper.Views.DiagramOxyplotView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="http://oxyplot.codeplex.com"
+        Title="DiagramOxyplotView" Height="300" Width="300">
+    <Grid>
+    <oxy:Plot Model="{Binding MyPlotModel}"/>
+
+  </Grid>
+</Window>
