@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Keeper.Utils;
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 using Keeper.ViewModels;
+using Point = System.Windows.Point;
 
 namespace Keeper.Controls
 {
@@ -260,20 +261,20 @@ namespace Keeper.Controls
 
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
-      //      var pt = e.GetPosition(this);
-      //      var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
-      //      string context;
-      //      Brush backgroundBrush;
-      //      if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
-      //      {
-      //        BarHint.IsOpen = true;
-      //        BarHint.HorizontalOffset = pt.X;
-      //        BarHint.VerticalOffset = pt.Y - 5;
+            var pt = e.GetPosition(this);
+            var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
+            string context;
+            System.Windows.Media.Brush backgroundBrush;
+            if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
+            {
+              BarHint.IsOpen = true;
+              BarHint.HorizontalOffset = pt.X;
+              BarHint.VerticalOffset = pt.Y - 5;
 
-      //        BarHintText.Background = backgroundBrush;
-      //        BarHintText.Text = context;
-      //      }
-      //      else BarHint.IsOpen = false;
+              BarHintText.Background = backgroundBrush;
+              BarHintText.Text = context;
+            }
+            else BarHint.IsOpen = false;
     }
 
     #endregion
