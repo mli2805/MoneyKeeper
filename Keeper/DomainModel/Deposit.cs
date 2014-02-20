@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Media;
 
 namespace Keeper.DomainModel
@@ -42,7 +43,7 @@ namespace Keeper.DomainModel
 		public CurrencyCodes Currency { get; set; }
 
     public decimal DepositRate { get; set; }
-    public List<DepositRateLine> DepositRateLines { get; set; }
+    public ObservableCollection<DepositRateLine> DepositRateLines { get; set; }
     public string Comment { get; set; }
 
     [NonSerialized]
@@ -56,7 +57,7 @@ namespace Keeper.DomainModel
     public object Clone()
     {
       var newdDeposit = (Deposit)this.MemberwiseClone();
-      if (DepositRateLines != null) newdDeposit.DepositRateLines = new List<DepositRateLine>(DepositRateLines);
+      if (DepositRateLines != null) newdDeposit.DepositRateLines = new ObservableCollection<DepositRateLine>(DepositRateLines);
       return newdDeposit;
     }
 	}

@@ -15,6 +15,7 @@ namespace Keeper.ViewModels
     public Deposit DepositInWork { get; set; }
     private string _windowTitle;
     private readonly KeeperDb _db;
+    private readonly IWindowManager _windowManager;
     private readonly AccountTreeStraightener _accountTreeStraightener;
 
     public string Junction
@@ -63,9 +64,10 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public OpenOrEditDepositViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+    public OpenOrEditDepositViewModel(KeeperDb db, IWindowManager windowManager, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
+      _windowManager = windowManager;
       _accountTreeStraightener = accountTreeStraightener;
       InitializeListsForCombobox();
     }
@@ -103,6 +105,11 @@ namespace Keeper.ViewModels
          DepositInWork.StartDate.ToString("d/MM/yyyy",CultureInfo.InvariantCulture),
          DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture), 
          DepositInWork.DepositRate);
+    }
+
+    public void FillDepositRatesTable()
+    {
+      _windowManager.ShowDialog(new DepositRatesViewModel(DepositInWork));
     }
 
   }
