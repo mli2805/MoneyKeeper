@@ -8,7 +8,6 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
 using Keeper.Properties;
-using Keeper.Utils.Accounts;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -250,6 +249,11 @@ namespace Keeper.ViewModels.Shell
 //      var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
 //      WindowManager.ShowDialog(diagramOxyplotViewModel);
 
+//      var ats = new AccountTreeStraightener();
+//      foreach (var account in ats.Flatten(_db.Accounts))
+//      {
+//        if (account.IsLeaf("Закрытые депозиты") || account.IsLeaf("Закрытые") || account.IsLeaf("Иррациональные")) account.IsActive = false;
+//      }
     }
 
     public void ShowToDoForm()
