@@ -47,8 +47,8 @@ namespace Keeper.ByFunctional.EditingAccounts
 		public Account AddAccount(Account selectedAccount)
 		{
 			var accountInWork = _myFactory.CreateAccount(selectedAccount);
-			if (!_askUser.ToAddAccount(accountInWork)) return null;
-			return _accountOperations.AddNode(accountInWork);
+      accountInWork.IsActive = !selectedAccount.Is("Закрытые");
+      return !_askUser.ToAddAccount(accountInWork) ? null : _accountOperations.AddNode(accountInWork);
 		}
 
 		public void ChangeAccount(Account selectedAccount)
@@ -61,6 +61,7 @@ namespace Keeper.ByFunctional.EditingAccounts
     public Account AddDeposit(Account selectedAccount)
     {
       var accountInWork = _myFactory.CreateAccount(selectedAccount);
+      accountInWork.IsActive = !selectedAccount.Is("Закрытые депозиты"); 
       var depositInWork = new Deposit {ParentAccount = accountInWork};
 
       if (!_askUser.ToAddDeposit(depositInWork)) return null;
