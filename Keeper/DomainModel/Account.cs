@@ -1,8 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using Caliburn.Micro;
-using Keeper.Models;
 using Keeper.Models.Shell;
 
 namespace Keeper.DomainModel
