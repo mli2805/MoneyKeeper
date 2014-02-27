@@ -5,7 +5,7 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels
 {
-	public class AddAndEditAccountViewModel : Screen
+  public class AddAndEditAccountViewModel : Screen
   {
     public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
 
@@ -27,7 +27,7 @@ namespace Keeper.ViewModels
       return account.Parent == null ? account : GetRoot(account.Parent);
     }
 
-	  public void GetBranchFromPoint(Account point, List<Account> list)
+    public void GetBranchFromPoint(Account point, List<Account> list)
     {
       list.Add(point);
       foreach (var child in point.Children)
@@ -40,7 +40,7 @@ namespace Keeper.ViewModels
     {
       var root = GetRoot(AccountInWork);
       CategoriesForParentList = new List<Account>();
-      GetBranchFromPoint(root,CategoriesForParentList);
+      GetBranchFromPoint(root, CategoriesForParentList);
       CategoriesForParentList.Remove(AccountInWork); // не работает, т.к. разные инстансы , надо перегружать операцию сравнения (по Id)
       SelectedParent = AccountInWork.Parent;
     }
@@ -51,6 +51,10 @@ namespace Keeper.ViewModels
       TryClose(true);
     }
 
-
+    public void ConvertToDeposit()
+    {
+      AccountInWork.Deposit = new Deposit();
+      TryClose(true);
+    }
   }
 }
