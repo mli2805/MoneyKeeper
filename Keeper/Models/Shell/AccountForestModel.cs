@@ -58,7 +58,6 @@ namespace Keeper.Models.Shell
       return result;
     }
 
-
     private Account _selectedAccount;
     public Account SelectedAccount
     {
