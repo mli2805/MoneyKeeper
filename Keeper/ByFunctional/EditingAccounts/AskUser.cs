@@ -34,14 +34,12 @@ namespace Keeper.Utils.Accounts
 		public bool ToAddAccount(Account accountInWork)
 		{
 			var vm = mMyFactory.CreateAddAndEditAccountViewModel(accountInWork, "Добавить");
-			if (mWindowManager.ShowDialog(vm) != true) return false;
-			return true;
+			return mWindowManager.ShowDialog(vm) == true;
 		}
 		public bool ToEditAccount(Account accountInWork)
 		{
 			var vm = mMyFactory.CreateAddAndEditAccountViewModel(accountInWork, "Редактировать");
-			if (mWindowManager.ShowDialog(vm) != true) return false;
-			return true;
+			return mWindowManager.ShowDialog(vm) == true;
 		}
 
     public bool ToAddDeposit(Deposit depositInWork)
@@ -49,15 +47,13 @@ namespace Keeper.Utils.Accounts
       var vm = mMyFactory.CreateOpenOrEditDepositViewModel();
       vm.InitializeForm(depositInWork, "Добавить");
       
-      if (mWindowManager.ShowDialog(vm) != true) return false;
-      return true;
+      return mWindowManager.ShowDialog(vm) == true;
     }
     public bool ToEditDeposit(Deposit depositInWork)
     {
       var vm = mMyFactory.CreateOpenOrEditDepositViewModel();
       vm.InitializeForm(depositInWork, "Редактировать");
-      if (mWindowManager.ShowDialog(vm) != true) return false;
-      return true;
+      return mWindowManager.ShowDialog(vm) == true;
     }
   }
 }
