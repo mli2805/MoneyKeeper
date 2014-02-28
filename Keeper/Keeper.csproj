@@ -173,6 +173,7 @@
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\ZippedTxtLoader.cs" />
     <Compile Include="Utils\Common\MySettings.cs" />
+    <Compile Include="Utils\DepositEvaluator.cs" />
     <Compile Include="Utils\DepositParser.cs" />
     <Compile Include="Utils\DepositReporter.cs" />
     <Compile Include="Utils\Diagram\DiagramDataExtremums.cs" />
