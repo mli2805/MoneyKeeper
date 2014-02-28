@@ -20,13 +20,14 @@
       <RowDefinition Height="40"/>
       <RowDefinition Height="40"/>
       <RowDefinition Height="40"/>
+      <RowDefinition Height="40"/>
     </Grid.RowDefinitions>
     <DataGrid x:Name="RatesGrid" Margin="5,5,5,0" Padding="5" 
               ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3" VerticalScrollBarVisibility="Visible">
       <DataGrid.Columns>
-        <DataGridTextColumn Header="C даты" Width="90" 
+        <DataGridTextColumn Header="с даты" Width="90" 
                             Binding="{Binding DateFrom, StringFormat='dd MMM yyyy'}">
         </DataGridTextColumn>
         <DataGridTextColumn Header="с суммы" Width="110" ElementStyle="{StaticResource textBlockToRightStyle}"
@@ -43,6 +44,8 @@
     <Button Name="AddLine" Grid.Row="1" Margin="7" Width="150" HorizontalAlignment="Left" Content="Добавить строку" />
     <Button Name="RepeatDay" Grid.Row="2" Margin="7,7,0,7" Width="263" HorizontalAlignment="Left" Content="Скопировать последний день на дату" />
     <DatePicker Grid.Row="2" Margin="0,7,7,7" HorizontalAlignment="Right" SelectedDate="{Binding NewDate}" Width="96" />
-    <Button Name="Close" Grid.Row="3" Margin="7" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
+    <Button Name="RepeatFromDeposit" Grid.Row="3" Margin="7,7,0,7" Width="107" HorizontalAlignment="Left" Content="Взять таблицу из" />
+    <ComboBox Grid.Row="3" Margin="0,7,7,7" Width="262" HorizontalAlignment="Right" ItemsSource="{Binding Deposits}" SelectedItem="{Binding DepositDonor}"/>
+    <Button Name="Close" Grid.Row="4" Margin="7" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
   </Grid>
 </Window>
