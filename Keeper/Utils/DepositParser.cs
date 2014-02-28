@@ -6,6 +6,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Balances;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils
@@ -16,13 +17,15 @@ namespace Keeper.Utils
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
     private readonly AccountTreeStraightener _accountTreeStraightener;
+    private readonly DepositEvaluator _depositEvaluator;
 
     [ImportingConstructor]
-    public DepositParser(KeeperDb db, RateExtractor rateExtractor, AccountTreeStraightener accountTreeStraightener)
+    public DepositParser(KeeperDb db, RateExtractor rateExtractor, AccountTreeStraightener accountTreeStraightener, DepositEvaluator depositEvaluator)
     {
       _db = db;
       _rateExtractor = rateExtractor;
       _accountTreeStraightener = accountTreeStraightener;
+      _depositEvaluator = depositEvaluator;
     }
 
     public Deposit Analyze(Account account)
@@ -114,8 +117,21 @@ namespace Keeper.Utils
       var lastProcentTransaction = account.Deposit.Evaluations.Traffic.LastOrDefault(t => t.TransactionType == DepositOperations.Проценты);
       var lastProcentDate = lastProcentTransaction == null ? account.Deposit.StartDate : lastProcentTransaction.Timestamp;
 
-      account.Deposit.Evaluations.EstimatedProcents = account.Deposit.Evaluations.CurrentBalance * account.Deposit.DepositRate / 100 * (account.Deposit.FinishDate - lastProcentDate).Days / 365;
+      account.Deposit.Evaluations.EstimatedProcents = ProcentEvaluation(account, lastProcentDate);
       account.Deposit.Evaluations.EstimatedProfitInUsd = account.Deposit.Evaluations.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.EstimatedProcents, account.Deposit.Currency, DateTime.Today);
+    }
+
+    private decimal ProcentEvaluation(Account account, DateTime lastProcentDate)
+    {
+      // старый метод расчета не учитывал изменение ежедневных остатков и изменение ставок с течением времени и в зависимости от величины остатка
+      return account.Deposit.Evaluations.CurrentBalance*account.Deposit.DepositRate/100*
+             (account.Deposit.FinishDate - lastProcentDate).Days/365;
+    }
+
+    private decimal ProcentEvaluationNew(Account account, DateTime lastProcentDate)
+    {
+// новый метод
+        return _depositEvaluator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
     }
 
     public decimal GetProfitForYear(Deposit deposit, int year)
