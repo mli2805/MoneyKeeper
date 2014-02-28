@@ -25,10 +25,9 @@ namespace Keeper.DomainModel
   [Serializable]
   public class DepositRateLine
   {
+    public DateTime DateFrom { get; set; }
     public decimal AmountFrom { get; set; }
     public decimal AmountTo { get; set; }
-    public DateTime DateFrom { get; set; }
-    public DateTime DateTo { get; set; }
     public decimal Rate { get; set; }
   }
 
@@ -38,6 +37,7 @@ namespace Keeper.DomainModel
     public Account ParentAccount { get; set; }
     public Account Bank { get; set; }
     public string Title { get; set; }
+    public string AgreementNumber { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime FinishDate { get; set; }
 		public CurrencyCodes Currency { get; set; }

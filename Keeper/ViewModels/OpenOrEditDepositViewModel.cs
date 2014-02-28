@@ -109,8 +109,9 @@ namespace Keeper.ViewModels
 
     public void FillDepositRatesTable()
     {
-      _windowManager.ShowDialog(new DepositRatesViewModel(DepositInWork));
+      var depositRatesViewModel = IoC.Get<DepositRatesViewModel>();
+      depositRatesViewModel.Initialize(DepositInWork);
+      _windowManager.ShowDialog(depositRatesViewModel);
     }
-
   }
 }

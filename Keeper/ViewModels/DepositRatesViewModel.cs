@@ -1,26 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Composition;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
 {
+  [Export]
   class DepositRatesViewModel : Screen
   {
+    private readonly KeeperDb _db;
+    private readonly AccountTreeStraightener _accountTreeStraightener;
     public DateTime NewDate { get; set; }
+    public List<Account> Deposits { get; set; }
+    public Account DepositDonor { get; set; }
 
     public ObservableCollection<DepositRateLine> Rows { get; set; }
 
-    public DepositRatesViewModel(Deposit deposit)
+    [ImportingConstructor]
+    public DepositRatesViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
     {
+      _db = db;
+      _accountTreeStraightener = accountTreeStraightener;
       NewDate = DateTime.Today;
+      Deposits = accountTreeStraightener.Flatten(_db.Accounts).Where(a=>a.Deposit != null).ToList();
+    }
+
+    public void Initialize(Deposit deposit)
+    {
       if (deposit.DepositRateLines == null) deposit.DepositRateLines = new ObservableCollection<DepositRateLine>();
       Rows = deposit.DepositRateLines;
       if (Rows.Count == 0)
-        Rows.Add(new DepositRateLine { DateFrom = deposit.StartDate, DateTo = deposit.FinishDate, AmountFrom = 0, AmountTo = 999999999999, Rate = deposit.DepositRate });
+        Rows.Add(new DepositRateLine { DateFrom = deposit.StartDate, AmountFrom = 0, AmountTo = 999999999999, Rate = deposit.DepositRate });
+    }
+
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = "Таблица процентных ставок по вкладу";
     }
 
     public void AddLine()
@@ -47,6 +67,20 @@ namespace Keeper.ViewModels
       foreach (var line in lastDateLines)
       {
         Rows.Add(new DepositRateLine{DateFrom = NewDate, AmountFrom = line.AmountFrom, AmountTo = line.AmountTo, Rate = line.Rate});
+      }
+    }
+
+    public void RepeatFromDeposit()
+    {
+      if (DepositDonor.Deposit == null || DepositDonor.Deposit.DepositRateLines == null || DepositDonor.Deposit.DepositRateLines.Count == 0) return;
+      var otherRows = DepositDonor.Deposit.DepositRateLines;
+
+      var lastDate = otherRows[otherRows.Count - 1].DateFrom;
+      var lastDateLines = otherRows.Where(depositRateLine => depositRateLine.DateFrom == lastDate).ToList();
+
+      foreach (var line in lastDateLines)
+      {
+        Rows.Add(new DepositRateLine { DateFrom = NewDate, AmountFrom = line.AmountFrom, AmountTo = line.AmountTo, Rate = line.Rate });
       }
     }
 
