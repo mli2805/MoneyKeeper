@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
+using Keeper.Utils.Deposits;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils
@@ -32,7 +33,7 @@ namespace Keeper.Utils
     {
       if (account.Deposit == null)
       {
-        account.Deposit = new Deposit{ParentAccount = account};
+        account.Deposit = new Deposit { ParentAccount = account };
         ExtractInfoFromName(account);
       }
 
@@ -59,15 +60,15 @@ namespace Keeper.Utils
       var banks = _accountTreeStraightener.Seek("Банки", _db.Accounts);
       foreach (var bank in banks.Children)
       {
-        if (bank.Name.Substring(0,3) != bankName.Substring(0,3)) continue;
+        if (bank.Name.Substring(0, 3) != bankName.Substring(0, 3)) continue;
         account.Deposit.Bank = bank;
         break;
       }
       if (account.Deposit.Bank == null) MessageBox.Show(bankName);
 
-      s = s.Substring(n+1);
+      s = s.Substring(n + 1);
       var p = s.IndexOf('/');
-      account.Deposit.Title = s.Substring(0, p-2);
+      account.Deposit.Title = s.Substring(0, p - 2);
 
       n = s.IndexOf(' ', p);
       account.Deposit.StartDate = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
@@ -81,16 +82,22 @@ namespace Keeper.Utils
     private void ExtractTraffic(Account account)
     {
       account.Deposit.Evaluations.Traffic = (from t in _db.Transactions
-                                    where t.Debet == account || t.Credit == account
-                                    orderby t.Timestamp
-                                    join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
-                                    from rate in g.DefaultIfEmpty()
-                                    select new DepositTransaction{Amount = t.Amount, Timestamp = t.Timestamp, Currency = t.Currency, Comment = t.Comment,
-                                                                  AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-                                                                  TransactionType = t.Operation == OperationType.Доход ? 
-                                                                                                        DepositOperations.Проценты : t.Debet == account ? 
-                                                                                                               DepositOperations.Расход : 
-                                                                                                               DepositOperations.Явнес}).ToList();
+                                             where t.Debet == account || t.Credit == account
+                                             orderby t.Timestamp
+                                             join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
+                                             from rate in g.DefaultIfEmpty()
+                                             select new DepositTransaction
+                                             {
+                                               Amount = t.Amount,
+                                               Timestamp = t.Timestamp,
+                                               Currency = t.Currency,
+                                               Comment = t.Comment,
+                                               AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
+                                               TransactionType = t.Operation == OperationType.Доход ?
+                                                                                     DepositOperations.Проценты : t.Debet == account ?
+                                                                                            DepositOperations.Расход :
+                                                                                            DepositOperations.Явнес
+                                             }).ToList();
     }
 
     private void EvaluateTraffic(Account account)
@@ -101,7 +108,7 @@ namespace Keeper.Utils
 
       account.Deposit.Evaluations.CurrentProfit = _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.CurrentBalance, account.Deposit.Currency, DateTime.Today)
                               - account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Явнес).Sum(t => t.AmountInUsd)
-                              + account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.AmountInUsd); 
+                              + account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.AmountInUsd);
     }
 
     private void DefineCurrentState(Account account)
@@ -117,21 +124,25 @@ namespace Keeper.Utils
       var lastProcentTransaction = account.Deposit.Evaluations.Traffic.LastOrDefault(t => t.TransactionType == DepositOperations.Проценты);
       var lastProcentDate = lastProcentTransaction == null ? account.Deposit.StartDate : lastProcentTransaction.Timestamp;
 
-      account.Deposit.Evaluations.EstimatedProcents = ProcentEvaluation(account, lastProcentDate);
+      account.Deposit.Evaluations.EstimatedProcents = ProcentEvaluationNew(account, lastProcentDate);
       account.Deposit.Evaluations.EstimatedProfitInUsd = account.Deposit.Evaluations.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.EstimatedProcents, account.Deposit.Currency, DateTime.Today);
     }
 
     private decimal ProcentEvaluation(Account account, DateTime lastProcentDate)
     {
       // старый метод расчета не учитывал изменение ежедневных остатков и изменение ставок с течением времени и в зависимости от величины остатка
-      return account.Deposit.Evaluations.CurrentBalance*account.Deposit.DepositRate/100*
-             (account.Deposit.FinishDate - lastProcentDate).Days/365;
+      return account.Deposit.Evaluations.CurrentBalance * account.Deposit.DepositRate / 100 *
+             (account.Deposit.FinishDate - lastProcentDate).Days / 365;
     }
 
     private decimal ProcentEvaluationNew(Account account, DateTime lastProcentDate)
     {
-// новый метод
+      // новый метод
+      if (account.Deposit.DepositRateLines != null)
         return _depositEvaluator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
+
+      MessageBox.Show("Не заведена таблица процентных ставок!");
+      return 0;
     }
 
     public decimal GetProfitForYear(Deposit deposit, int year)
