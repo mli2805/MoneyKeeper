@@ -151,6 +151,21 @@ namespace Keeper.DomainModel
       return Is(ancestor) && Children.Count == 0;
     }
 
+    public bool IsLeaf()
+    {
+      return Children.Count == 0;
+    }
+
+    public bool IsDeposit()
+    {
+      return Deposit != null;
+    }
+
+    public bool IsMyNonDeposit()
+    {
+      return Is("Мои") && Deposit == null;
+    }
+
 		public int CompareTo(object obj)
 		{
 			return String.Compare(Name, ((Account)obj).Name, StringComparison.Ordinal);

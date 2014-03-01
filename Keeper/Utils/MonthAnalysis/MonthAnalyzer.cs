@@ -16,20 +16,18 @@ namespace Keeper.Utils.MonthAnalysis
 
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
-    readonly ICurrencyConverter _currencyConverter;
     private readonly MonthForecaster _monthForecaster;
-    private readonly BalanceCalculator _balanceCalculator;
+    private readonly BalanceForMonthAnalysisCalculator _balanceCalculator;
     private readonly AccountTreeStraightener _accountTreeStraightener;
 
     [ImportingConstructor]
-    public MonthAnalyzer(KeeperDb db, BalanceCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener,
-      RateExtractor rateExtractor, ICurrencyConverter currencyConverter, MonthForecaster monthForecaster)
+    public MonthAnalyzer(KeeperDb db, BalanceForMonthAnalysisCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener,
+      RateExtractor rateExtractor, MonthForecaster monthForecaster)
     {
       _db = db;
       _balanceCalculator = balanceCalculator;
       _accountTreeStraightener = accountTreeStraightener;
       _rateExtractor = rateExtractor;
-      _currencyConverter = currencyConverter;
       _monthForecaster = monthForecaster;
 
       Result = new Saldo();
@@ -42,25 +40,6 @@ namespace Keeper.Utils.MonthAnalysis
               where transaction.Operation == operationType &&
               transaction.Timestamp.Month == someDate.Month && transaction.Timestamp.Year == someDate.Year
               select transaction);
-    }
-
-    private ExtendedBalance InitializeWithBalanceBeforeDate(DateTime startDay, string accountName)
-    {
-      var extendedBalance = new ExtendedBalance();
-      var account = _accountTreeStraightener.Seek(accountName, _db.Accounts);
-      extendedBalance.InCurrencies = _balanceCalculator.AccountBalancePairsBeforeDay(account, startDay).ToList();
-      extendedBalance.TotalInUsd = _currencyConverter.BalancePairsToUsd(extendedBalance.InCurrencies, startDay.AddDays(-1));
-      return extendedBalance;
-    }
-
-    private ExtendedBalanceForAnalysis InitializeWithBalanceBeforeDate(DateTime startDay)
-    {
-      return new ExtendedBalanceForAnalysis
-                                         {
-                                           Common = InitializeWithBalanceBeforeDate(startDay, "Мои"),
-                                           OnHands = InitializeWithBalanceBeforeDate(startDay, "На руках"),
-                                           OnDeposits = InitializeWithBalanceBeforeDate(startDay, "Депозиты")
-                                         };
     }
 
     private void RegisterIncome(Transaction transaction)
@@ -175,7 +154,7 @@ namespace Keeper.Utils.MonthAnalysis
     {
       Result = new Saldo();
       Result.StartDate = initialDay.AddDays(-initialDay.Day + 1);
-      Result.BeginBalance = InitializeWithBalanceBeforeDate(Result.StartDate);
+      Result.BeginBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate);
       Result.BeginRates = InitializeRates(Result.StartDate);
 
       var incomeTransactions = GetMonthTransactionsForAnalysis(OperationType.Доход, Result.StartDate, _db.Transactions);
@@ -185,7 +164,7 @@ namespace Keeper.Utils.MonthAnalysis
       RegisterFromDeposits(GetMonthTransactionsForAnalysis(OperationType.Перенос, Result.StartDate, _db.Transactions));
       RegisterToDeposits(GetMonthTransactionsForAnalysis(OperationType.Перенос, Result.StartDate, _db.Transactions));
 
-      Result.EndBalance = InitializeWithBalanceBeforeDate(Result.StartDate.AddMonths(1));
+      Result.EndBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate.AddMonths(1));
 
       Result.EndRates = InitializeRates(Result.StartDate.AddMonths(1));
 

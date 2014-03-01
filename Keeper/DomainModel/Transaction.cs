@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Utils;
+using Keeper.Utils.Balances;
+using Keeper.Utils.MonthAnalysis;
 
 namespace Keeper.DomainModel
 {
@@ -240,9 +242,46 @@ namespace Keeper.DomainModel
 
     public int SignForAmount(Account a)
     {
-      if (Credit.Is(a)) return 1;
-      return -1;
+      return Credit.Is(a) ? 1 : -1;
     }
+
+    public int SignForAnalysis(TransactionTypeForAnalysis flag)
+    {
+      if (flag == TransactionTypeForAnalysis.Депозитная) return Credit.IsDeposit() ? 1 : -1;
+      if (flag == TransactionTypeForAnalysis.МояНоНеДепозитная) return Credit.IsMyNonDeposit() ? 1 : -1;
+      return Credit.Is("Мои") ? 1 : -1;
+    }
+
+    private bool DebetXorCreditIsDeposit()
+    {
+      return Debet.IsDeposit() != Credit.IsDeposit();
+    }
+
+    private bool DebetXorCreditIsMyNonDeposit()
+    {
+      return Debet.IsMyNonDeposit() != Credit.IsMyNonDeposit();
+    }
+
+    private bool DebetXorCreditIsMy()
+    {
+      return Debet.Is("Мои") != Credit.Is("Мои");
+    }
+
+    public bool IsAcceptableForMonthAnalysisAs(TransactionTypeForAnalysis flag)
+    {
+      switch (flag)
+      {
+        case TransactionTypeForAnalysis.Депозитная:
+          return DebetXorCreditIsDeposit();
+        case TransactionTypeForAnalysis.МояНоНеДепозитная:
+          return DebetXorCreditIsMyNonDeposit();
+        case TransactionTypeForAnalysis.ЛюбаяМоя:
+          return DebetXorCreditIsMy();
+        default:
+          return false;
+      }
+    }
+
 
   }
 
