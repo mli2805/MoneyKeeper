@@ -41,6 +41,7 @@ namespace Keeper.DomainModel
 		public DateTime StartDate { get; set; }
 		public DateTime FinishDate { get; set; }
 		public CurrencyCodes Currency { get; set; }
+    public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
 
     public decimal DepositRate { get; set; }
     public ObservableCollection<DepositRateLine> DepositRateLines { get; set; }
