@@ -59,7 +59,7 @@ namespace Keeper.Utils.MonthAnalysis
 
     private void RegisterExpense(IEnumerable<Transaction> expenseTransactions)
     {
-      var expenseTransactionsInUsd = ConvertTransactions(expenseTransactions);
+      var expenseTransactionsInUsd = ConvertTransactionsQuery(expenseTransactions);
       GroupExpenseByCategories(expenseTransactionsInUsd);
       Result.Expense.TotalInUsd = expenseTransactionsInUsd.Sum(t => t.AmountInUsd);
 
@@ -108,6 +108,12 @@ namespace Keeper.Utils.MonthAnalysis
                       };
     }
 
+    /// <summary>
+    /// работает гораздо медленнее чем через запрос
+    /// при переходе между месяцами заметна пауза
+    /// </summary>
+    /// <param name="expenseTransactions"></param>
+    /// <returns></returns>
     private IEnumerable<ConvertedTransaction> ConvertTransactions(IEnumerable<Transaction> expenseTransactions)
     {
       foreach (var t in expenseTransactions)
@@ -126,16 +132,14 @@ namespace Keeper.Utils.MonthAnalysis
       }
     }
 
-    private void RegisterFromDeposits(IEnumerable<Transaction> transferTransactions)
+    private void RegisterDepositsTraffic(List<Transaction> transferTransactions)
     {
       Result.TransferFromDeposit = transferTransactions.
-        Where(t => t.Debet.Is("Депозиты") && !t.Credit.Is("Депозиты")).
+        Where(t => t.Debet.IsDeposit() && !t.Credit.IsDeposit()).
         Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
-    }
-    private void RegisterToDeposits(IEnumerable<Transaction> transferTransactions)
-    {
+
       Result.TransferToDeposit = transferTransactions.
-        Where(t => !t.Debet.Is("Депозиты") && t.Credit.Is("Депозиты")).
+        Where(t => !t.Debet.IsDeposit() && t.Credit.IsDeposit()).
         Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
     }
 
@@ -161,8 +165,7 @@ namespace Keeper.Utils.MonthAnalysis
       foreach (var transaction in incomeTransactions) RegisterIncome(transaction);
 
       RegisterExpense(GetMonthTransactionsForAnalysis(OperationType.Расход, Result.StartDate, _db.Transactions));
-      RegisterFromDeposits(GetMonthTransactionsForAnalysis(OperationType.Перенос, Result.StartDate, _db.Transactions));
-      RegisterToDeposits(GetMonthTransactionsForAnalysis(OperationType.Перенос, Result.StartDate, _db.Transactions));
+      RegisterDepositsTraffic(GetMonthTransactionsForAnalysis(OperationType.Перенос, Result.StartDate, _db.Transactions).ToList());
 
       Result.EndBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate.AddMonths(1));
 
