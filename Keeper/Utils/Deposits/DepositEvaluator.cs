@@ -25,11 +25,11 @@ namespace Keeper.Utils.Deposits
     public DepositEvaluator(KeeperDb db)
     {
       _db = db;
-      Result = new List<ProcentEvaluationDailyLine>();
     }
 
     public decimal ProcentsForPeriod(Account account, Period period)
     {
+      Result = new List<ProcentEvaluationDailyLine>();
       FillinBalances(account, period);
       EvaluateProfit(account.Deposit);
       return Result.Sum(line => line.DayProfit);

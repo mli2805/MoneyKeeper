@@ -282,7 +282,8 @@ namespace Keeper.ViewModels
         Where(a => (a.IsLeaf("Мои") || a.Name == "Для ввода стартовых остатков") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
       MyAccountsForShopping = (_accountTreeStraightener.Flatten(_db.Accounts).
         Where(a => a.IsLeaf("Мои") && !a.IsLeaf("Депозиты") && (a.IsActive||!_filterOnlyActiveAccounts))).ToList();
-      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.IsLeaf("Банки") && (a.IsActive || !_filterOnlyActiveAccounts)).ToList();
+      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).
+        Where(a => a.IsLeaf("Банки") && (a.IsActive || !_filterOnlyActiveAccounts) || a.Is("Мой кошелек")).ToList();
       AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
         Where(a => a.IsLeaf("ДеньгоПолучатели") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
       AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
