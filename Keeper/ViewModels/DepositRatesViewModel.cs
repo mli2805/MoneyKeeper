@@ -35,7 +35,7 @@ namespace Keeper.ViewModels
       if (deposit.DepositRateLines == null) deposit.DepositRateLines = new ObservableCollection<DepositRateLine>();
       Rows = deposit.DepositRateLines;
       if (Rows.Count == 0)
-        Rows.Add(new DepositRateLine { DateFrom = deposit.StartDate, AmountFrom = 0, AmountTo = 999999999999, Rate = deposit.DepositRate });
+        Rows.Add(new DepositRateLine { DateFrom = deposit.StartDate, AmountFrom = 0, AmountTo = 999999999999, Rate = 100 });
     }
 
     protected override void OnViewLoaded(object view)

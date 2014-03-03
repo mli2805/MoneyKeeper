@@ -43,7 +43,7 @@ namespace Keeper.DomainModel
 		public CurrencyCodes Currency { get; set; }
     public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
 
-    public decimal DepositRate { get; set; }
+//    public decimal DepositRate { get; set; }
     public ObservableCollection<DepositRateLine> DepositRateLines { get; set; }
     public string Comment { get; set; }
 
@@ -77,5 +77,16 @@ namespace Keeper.DomainModel
     public decimal EstimatedProfitInUsd { get; set; }
 
     public Brush FontColor { get { return State == DepositStates.Закрыт ? Brushes.Gray : State == DepositStates.Просрочен ? Brushes.Red : Brushes.Blue; } }
+
+    public List<ProcentEvaluationDailyLine> ProcentEvaluation { get; set; }
   }
+
+  public class ProcentEvaluationDailyLine
+  {
+    public DateTime Date { get; set; }
+    public decimal Balance { get; set; }
+    public decimal DepoRate { get; set; }
+    public decimal DayProfit { get; set; }
+  }
+
 }

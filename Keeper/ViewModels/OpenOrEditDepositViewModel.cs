@@ -96,7 +96,6 @@ namespace Keeper.ViewModels
         DepositInWork.StartDate = DateTime.Today;
         DepositInWork.FinishDate = DateTime.Today.AddMonths(1);
         DepositInWork.Currency = CurrencyCodes.BYR;
-        DepositInWork.DepositRate = 6;
       }
 
     }
@@ -118,11 +117,14 @@ namespace Keeper.ViewModels
 
     public void CompileAccountName()
     {
+      var rate = DepositInWork.DepositRateLines == null || DepositInWork.DepositRateLines.LastOrDefault() == null
+                   ? 0
+                   : DepositInWork.DepositRateLines.Last().Rate;
       Junction = string.Format("{0} {1} {2} - {3} {4:0.#}%",
          DepositInWork.Bank.Name, DepositInWork.Title, 
          DepositInWork.StartDate.ToString("d/MM/yyyy",CultureInfo.InvariantCulture),
          DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture), 
-         DepositInWork.DepositRate);
+         rate);
     }
 
     public void FillDepositRatesTable()

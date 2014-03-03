@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Composition;
 using System.Globalization;
 using System.Linq;
@@ -76,7 +77,8 @@ namespace Keeper.Utils
       n = s.IndexOf(' ', p);
       account.Deposit.FinishDate = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
       p = s.IndexOf('%', n);
-      account.Deposit.DepositRate = Convert.ToDecimal(s.Substring(n, p - n));
+      account.Deposit.DepositRateLines = new ObservableCollection<DepositRateLine> 
+         { new DepositRateLine{ AmountFrom = 0, AmountTo = 999999999999, DateFrom = account.Deposit.StartDate, Rate = Convert.ToDecimal(s.Substring(n, p - n))} };
     }
 
     private void ExtractTraffic(Account account)
@@ -128,12 +130,12 @@ namespace Keeper.Utils
       account.Deposit.Evaluations.EstimatedProfitInUsd = account.Deposit.Evaluations.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.EstimatedProcents, account.Deposit.Currency, DateTime.Today);
     }
 
-    private decimal ProcentEvaluation(Account account, DateTime lastProcentDate)
-    {
-      // старый метод расчета не учитывал изменение ежедневных остатков и изменение ставок с течением времени и в зависимости от величины остатка
-      return account.Deposit.Evaluations.CurrentBalance * account.Deposit.DepositRate / 100 *
-             (account.Deposit.FinishDate - lastProcentDate).Days / 365;
-    }
+//       старый метод расчета не учитывал изменение ежедневных остатков и изменение ставок с течением времени и в зависимости от величины остатка
+//    private decimal ProcentEvaluation(Account account, DateTime lastProcentDate)
+//    {
+//      return account.Deposit.Evaluations.CurrentBalance * account.Deposit.DepositRate / 100 *
+//             (account.Deposit.FinishDate - lastProcentDate).Days / 365;
+//    }
 
     private decimal ProcentEvaluationNew(Account account, DateTime lastProcentDate)
     {
