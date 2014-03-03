@@ -54,14 +54,29 @@ namespace Keeper.ViewModels
       xlApp.Visible = true;
       var wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
       var ws = (Worksheet)wb.Worksheets[1];
+      ws.Range["B1"].EntireColumn.ColumnWidth = 15;
+      ws.Range["B1"].EntireColumn.NumberFormat = "dd MMM yyyy";
+      ws.Range["C1"].EntireColumn.ColumnWidth = 15;
+      ws.Range["C1"].EntireColumn.NumberFormat = "#,0";
+      ws.Range["D1"].EntireColumn.ColumnWidth = 5;
+      ws.Range["E1"].EntireColumn.ColumnWidth = 5;
+      ws.Range["F1"].EntireColumn.ColumnWidth = 10;
+      ws.Range["F1"].EntireColumn.NumberFormat = "#,0";
+      ws.Range["G1"].EntireColumn.ColumnWidth = 12;
+      ws.Range["G1"].EntireColumn.NumberFormat = "[Blue]#,0";
 
       int i = 0;
+      decimal total = 0;
       foreach (var line in Deposit.Evaluations.ProcentEvaluation)
       {
+        total += line.DayProfit;
+
         ws.Cells[i+2, 2] = line.Date;
         ws.Cells[i+2, 3] = line.Balance;
         ws.Cells[i+2, 4] = line.DepoRate;
-        ws.Cells[i+2, 5] = line.DayProfit;
+        ws.Cells[i+2, 5] = "%";
+        ws.Cells[i+2, 6] = line.DayProfit;
+        ws.Cells[i+2, 7] = total;
 
         i++;
       }
