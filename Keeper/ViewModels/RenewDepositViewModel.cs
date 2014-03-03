@@ -65,10 +65,15 @@ namespace Keeper.ViewModels
 
 		private string BuildNewName()
 		{
+      var rate = _oldDeposit.DepositRateLines == null || _oldDeposit.DepositRateLines.LastOrDefault() == null
+             ? 0
+             : _oldDeposit.DepositRateLines.Last().Rate;
+
+
 			var st = OldDepositName.Substring(0, OldDepositName.IndexOf('/') - 2).Trim();
       DateTime newFinish = _oldDeposit.FinishDate + (_oldDeposit.FinishDate - _oldDeposit.StartDate);
       string period = String.Format("{0:d/MM/yyyy} - {1:d/MM/yyyy}", _oldDeposit.FinishDate, newFinish).Replace('.', '/');
-      return String.Format("{0} {1} {2}%", st, period, _oldDeposit.DepositRate);
+      return String.Format("{0} {1} {2}%", st, period, rate);
 		}
 
 		private Account AddNewAccountForDeposit()
