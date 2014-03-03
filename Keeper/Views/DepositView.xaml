@@ -6,17 +6,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Icon="/Keeper;component/Resources/safe.ico" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
-        mc:Ignorable="d" Title="DepositView" Height="400" Width="700"
+        mc:Ignorable="d" Title="DepositView" Height="500" Width="700"
         d:DataContext="{d:DesignInstance ViewModels:DepositViewModel}">
     <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="100"/>
       <RowDefinition Height="1*"/>
       <RowDefinition Height="40"/>
     </Grid.RowDefinitions>
-      <ListBox Name="De" ItemsSource="{Binding Report}"  />
-    <Button Grid.Row="1" Height="22" Width="100" Margin="10,0" HorizontalAlignment="Left" 
+      <ListBox Name="De" Grid.Row="1" ItemsSource="{Binding Report}"  />
+    <Button Grid.Row="2" Height="22" Width="100" Margin="10,0" HorizontalAlignment="Left" 
             Name="Renew" Content="Переоформить" Style="{StaticResource MyButtonStyle}" />
-    <Button Grid.Row="1" Height="22" Width="100" Margin="140,0" HorizontalAlignment="Left" 
+    <Button Grid.Row="2" Height="22" Width="200" Margin="140,0" HorizontalAlignment="Left" 
+            Name="ExtractEvaluationsToExcel" Content="Ежедневный расчет в excel" Style="{StaticResource MyButtonStyle}" />
+    <Button Grid.Row="2" Height="22" Width="100" Margin="0,0,20,0" HorizontalAlignment="Right" 
             Name="Exit" Content="Закрыть" IsCancel="True" IsDefault="True" Style="{StaticResource MyButtonStyle}" />
   </Grid>
 </Window>

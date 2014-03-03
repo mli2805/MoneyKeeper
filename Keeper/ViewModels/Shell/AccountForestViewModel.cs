@@ -94,7 +94,7 @@ namespace Keeper.ViewModels.Shell
 
     public void ShowDeposit()
     {
-      if (!MyForestModel.SelectedAccount.Is("Депозиты") || MyForestModel.SelectedAccount.Children.Count != 0) return;
+      if (!MyForestModel.SelectedAccount.IsDeposit() || MyForestModel.SelectedAccount.Children.Count != 0) return;
 
       foreach (var launchedForm in _launchedForms)
       {

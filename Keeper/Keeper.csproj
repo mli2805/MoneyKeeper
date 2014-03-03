@@ -46,6 +46,9 @@
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\lib\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86" />
     <Reference Include="OxyPlot">
       <HintPath>..\packages\OxyPlot.Core.2014.1.1.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
