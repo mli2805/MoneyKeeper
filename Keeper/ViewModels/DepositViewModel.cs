@@ -3,6 +3,7 @@ using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
+using Microsoft.Office.Interop.Excel;
 
 namespace Keeper.ViewModels
 {
@@ -46,6 +47,25 @@ namespace Keeper.ViewModels
 			DisplayName = Deposit.ParentAccount.Name;
 			CanRenew = Deposit.Evaluations.State != DepositStates.Закрыт;
 		}
+
+    public void ExtractEvaluationsToExcel()
+    {
+      var xlApp = new Application();
+      xlApp.Visible = true;
+      var wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+      var ws = (Worksheet)wb.Worksheets[1];
+
+      int i = 0;
+      foreach (var line in Deposit.Evaluations.ProcentEvaluation)
+      {
+        ws.Cells[i+2, 2] = line.Date;
+        ws.Cells[i+2, 3] = line.Balance;
+        ws.Cells[i+2, 4] = line.DepoRate;
+        ws.Cells[i+2, 5] = line.DayProfit;
+
+        i++;
+      }
+    }
 
 		public void Renew()
 		{
