@@ -105,14 +105,14 @@ namespace Keeper.ViewModels.Shell
       var depositForm = IoC.Get<DepositViewModel>();
       depositForm.SetAccount(_depositParser.Analyze(MyForestModel.SelectedAccount));
       _launchedForms.Add(depositForm);
-      depositForm.Renewed += DepositViewModelRenewed; // ?
+      depositForm.RenewPressed += DepositViewModelRenewed; // подписываемся на переофрмление депозита, если оно произойдет надо сменить селекшен
       WindowManager.ShowWindow(depositForm);
     }
 
-    void DepositViewModelRenewed(object sender, Account newAccount)
+    void DepositViewModelRenewed(object sender, RenewPressedEventArgs e)
     {
       MyForestModel.SelectedAccount.IsSelected = false;
-      MyForestModel.SelectedAccount = newAccount;
+      MyForestModel.SelectedAccount = e.NewAccount;
     }
 
     #endregion

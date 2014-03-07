@@ -91,7 +91,7 @@ namespace Keeper.ViewModels
 			{
 				NewAccountForDeposit = renewDepositViewModel.NewDeposit;
 				CanRenew = Deposit.Evaluations.State != DepositStates.Закрыт;
-				OnRenewed(NewAccountForDeposit);
+        OnRenewPressed(new RenewPressedEventArgs(NewAccountForDeposit));
 			}
 		}
 
@@ -100,11 +100,22 @@ namespace Keeper.ViewModels
 			TryClose();
 		}
 
-		public delegate void RenewedEventHandler(object sender, Account newAccount);
-		public event RenewedEventHandler Renewed;
-		protected void OnRenewed(Account newAccount)
+    public event RenewPressedEventHandler RenewPressed;
+    protected virtual void OnRenewPressed(RenewPressedEventArgs e)
 		{
-			if (Renewed != null) Renewed(this, newAccount);
+      if (RenewPressed != null) RenewPressed(this, e);
 		}
 	}
+
+  public class RenewPressedEventArgs : System.EventArgs
+  {
+    public readonly Account NewAccount;
+
+    public RenewPressedEventArgs(Account newAccount)
+    {
+      NewAccount = newAccount;
+    }
+  }
+  public delegate void RenewPressedEventHandler(object sender, RenewPressedEventArgs e);
+
 }
