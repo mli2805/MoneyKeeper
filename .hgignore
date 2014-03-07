@@ -1,0 +1,15 @@
+syntax: glob
+_ReSharper*
+packages
+obj
+bin
+*.suo
+*.ncrunchsolution
+*.user
+Keeper.psess
+*.vsp
+*.orig
+*.ncrunchproject
+_NCrunch_Keeper
+Keeper.UnitTests/TestDb/*.zip
+Keeper.UnitTests/TestDb/Keeper.dbx
