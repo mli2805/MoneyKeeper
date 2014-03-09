@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Utils;
+using Keeper.Utils.Deposits;
 using Microsoft.Office.Interop.Excel;
 
 namespace Keeper.ViewModels
@@ -16,7 +17,9 @@ namespace Keeper.ViewModels
 		public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
 		public Deposit Deposit { get; set; }
-    public ObservableCollection<string> Report { get; set; }
+    public ObservableCollection<string> ReportHeader { get; set; }
+    public ObservableCollection<DepositReportBodyLine> ReportBody { get; set; }
+    public ObservableCollection<string> ReportFooter { get; set; }
 		public Account NewAccountForDeposit { get; set; }
 		public bool CanRenew
 		{
@@ -39,7 +42,9 @@ namespace Keeper.ViewModels
     public void SetAccount(Deposit deposit)
 		{
       Deposit = deposit;
-      Report = _depositReporter.BuildReport(deposit);
+      ReportHeader = _depositReporter.BuildReportHeader(deposit);
+      ReportBody = _depositReporter.BuildReportBody(deposit);
+      ReportFooter = _depositReporter.BuildReportFooter(deposit);
 		}
 
 		protected override void OnViewLoaded(object view)
