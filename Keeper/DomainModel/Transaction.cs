@@ -1,11 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.Utils;
 using Keeper.Utils.Balances;
-using Keeper.Utils.MonthAnalysis;
 
 namespace Keeper.DomainModel
 {

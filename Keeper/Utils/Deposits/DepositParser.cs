@@ -7,11 +7,9 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
-using Keeper.Utils.Balances;
-using Keeper.Utils.Deposits;
 using Keeper.Utils.Rates;
 
-namespace Keeper.Utils
+namespace Keeper.Utils.Deposits
 {
   [Export]
   public class DepositParser : PropertyChangedBase
@@ -93,13 +91,28 @@ namespace Keeper.Utils
                                                Amount = t.Amount,
                                                Timestamp = t.Timestamp,
                                                Currency = t.Currency,
-                                               Comment = t.Comment,
+                                               Comment = GetDepositOperationComment(t,account),
                                                AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-                                               TransactionType = t.Operation == OperationType.Доход ?
-                                                                                     DepositOperations.Проценты : t.Debet == account ?
-                                                                                            DepositOperations.Расход :
-                                                                                            DepositOperations.Явнес
+                                               TransactionType = GetDepositOperationType(t,account)
                                              }).ToList();
+    }
+
+    private DepositOperations GetDepositOperationType(Transaction t, Account depositAccount)
+    {
+      return t.Operation == OperationType.Доход
+               ? DepositOperations.Проценты
+               : t.Debet == depositAccount
+                   ? DepositOperations.Расход
+                   : DepositOperations.Явнес;
+    }
+
+    private string GetDepositOperationComment(Transaction t, Account depositAccount)
+    {
+      if (t.Comment != "") return t.Comment;
+      if (t.Article != null) return t.Article.Name.ToLower();
+      if (t.Credit.Is("Мой кошелек")) return "снял наличными";
+      if (t.Debet.Is("БИБ Зарплатная GOLD")) return "перекинул с зарплатной";
+      return "";
     }
 
     private void EvaluateTraffic(Account account)
@@ -130,16 +143,8 @@ namespace Keeper.Utils
       account.Deposit.Evaluations.EstimatedProfitInUsd = account.Deposit.Evaluations.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.EstimatedProcents, account.Deposit.Currency, DateTime.Today);
     }
 
-//       старый метод расчета не учитывал изменение ежедневных остатков и изменение ставок с течением времени и в зависимости от величины остатка
-//    private decimal ProcentEvaluation(Account account, DateTime lastProcentDate)
-//    {
-//      return account.Deposit.Evaluations.CurrentBalance * account.Deposit.DepositRate / 100 *
-//             (account.Deposit.FinishDate - lastProcentDate).Days / 365;
-//    }
-
     private decimal ProcentEvaluationNew(Account account, DateTime lastProcentDate)
     {
-      // новый метод
       if (account.Deposit.DepositRateLines != null)
         return _depositEvaluator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
 
@@ -150,25 +155,24 @@ namespace Keeper.Utils
     public decimal GetProfitForYear(Deposit deposit, int year)
     {
       if (deposit.Evaluations.CurrentProfit == 0) return 0;
-      int startYear = deposit.Evaluations.Traffic.First().Timestamp.Year;
-      int finishYear = deposit.Evaluations.Traffic.Last().Timestamp.AddDays(-1).Year;
+      var startYear = deposit.Evaluations.Traffic.First().Timestamp.Year;
+      var finishYear = deposit.Evaluations.Traffic.Last().Timestamp.AddDays(-1).Year;
       if (year < startYear || year > finishYear) return 0;
       if (startYear == finishYear) return deposit.Evaluations.CurrentProfit;
-      int allDaysCount = (deposit.Evaluations.Traffic.Last().Timestamp.AddDays(-1) - deposit.Evaluations.Traffic.First().Timestamp).Days;
+      var allDaysCount = (deposit.Evaluations.Traffic.Last().Timestamp.AddDays(-1) - deposit.Evaluations.Traffic.First().Timestamp).Days;
       if (year == startYear)
       {
-        int startYearDaysCount = (new DateTime(startYear, 12, 31) - deposit.Evaluations.Traffic.First().Timestamp).Days;
+        var startYearDaysCount = (new DateTime(startYear, 12, 31) - deposit.Evaluations.Traffic.First().Timestamp).Days;
         return deposit.Evaluations.CurrentProfit * startYearDaysCount / allDaysCount;
       }
       if (year == finishYear)
       {
-        int finishYearDaysCount = (deposit.Evaluations.Traffic.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
+        var finishYearDaysCount = (deposit.Evaluations.Traffic.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
         return deposit.Evaluations.CurrentProfit * finishYearDaysCount / allDaysCount;
       }
-      int yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
+      var yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
       return deposit.Evaluations.CurrentProfit * yearDaysCount / allDaysCount;
     }
-
 
   }
 }

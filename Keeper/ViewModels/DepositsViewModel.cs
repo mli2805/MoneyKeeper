@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Deposits;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.Rates;
 

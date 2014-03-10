@@ -43,7 +43,6 @@ namespace Keeper.DomainModel
 		public CurrencyCodes Currency { get; set; }
     public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
 
-//    public decimal DepositRate { get; set; }
     public ObservableCollection<DepositRateLine> DepositRateLines { get; set; }
     public string Comment { get; set; }
 

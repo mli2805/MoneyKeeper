@@ -45,7 +45,7 @@ namespace Keeper.Utils.Deposits
         reportHeader.Add(String.Format(" Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }
        
-      reportHeader.Add("    Дата           До операции           Приход              Расход        После операции     Примечание");
+      reportHeader.Add("    Дата             До операции               Приход                Расход                 После     Примечание");
       return reportHeader;
     }
 
@@ -74,7 +74,7 @@ namespace Keeper.Utils.Deposits
         beforeOperation = beforeOperation + line.IncomeColumn - line.ExpenseColumn;
         line.AfterOperation = beforeOperation;
 //        line.Comment += operation.Comment;
-        line.Comment = operation.Comment;
+        if (operation.Comment != "") line.Comment = operation.Comment;
         reportBody.Add(line);
         isFirst = false;
       }
