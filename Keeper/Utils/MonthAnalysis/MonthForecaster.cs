@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Deposits;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis
