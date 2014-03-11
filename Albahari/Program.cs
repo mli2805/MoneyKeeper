@@ -11,9 +11,10 @@ namespace Albahari
       Console.WriteLine(natural());
       Console.WriteLine(natural());
 
-// my implementation      
-      Console.WriteLine(Nat());
-      Console.WriteLine(Nat());
+// my implementation    
+      natural = Nat;
+      Console.WriteLine(natural());
+      Console.WriteLine(natural());
 
       Console.ReadKey();
     }

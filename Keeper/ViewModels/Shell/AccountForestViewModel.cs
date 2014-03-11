@@ -87,7 +87,9 @@ namespace Keeper.ViewModels.Shell
       if (MyForestModel.SelectedAccount.Deposit != null)
       {
         _accountTreesGardener.ChangeDeposit(MyForestModel.SelectedAccount);
+        var selection = MyForestModel.SelectedAccount;
         _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount.Parent);
+        MyForestModel.SelectedAccount = selection;
       }
       else
         _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
