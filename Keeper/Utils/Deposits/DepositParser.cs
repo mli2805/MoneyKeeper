@@ -143,7 +143,7 @@ namespace Keeper.Utils.Deposits
       account.Deposit.Evaluations.EstimatedProfitInUsd = account.Deposit.Evaluations.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.EstimatedProcents, account.Deposit.Currency, DateTime.Today);
     }
 
-    private decimal ProcentEvaluationNew(Account account, DateTime lastProcentDate)
+    public decimal ProcentEvaluationNew(Account account, DateTime lastProcentDate)
     {
       if (account.Deposit.DepositRateLines != null)
         return _depositEvaluator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
