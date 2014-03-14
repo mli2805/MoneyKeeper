@@ -5,14 +5,15 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Deposits;
-using Microsoft.Office.Interop.Excel;
 
 namespace Keeper.ViewModels
 {
-	[Export]
+  [Export]
 	public class DepositViewModel : Screen
 	{
+	  private readonly DepositParser _depositParser;
 	  private readonly DepositReporter _depositReporter;
+	  private readonly DepositExcelReporter _depositExcelReporter;
 	  private bool _canRenew;
 
 		public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
@@ -34,9 +35,11 @@ namespace Keeper.ViewModels
 		}
 
 		[ImportingConstructor]
-		public DepositViewModel(DepositReporter depositReporter)
+		public DepositViewModel(DepositParser depositParser, DepositReporter depositReporter, DepositExcelReporter depositExcelReporter)
 		{
+		  _depositParser = depositParser;
 		  _depositReporter = depositReporter;
+		  _depositExcelReporter = depositExcelReporter;
 		  NewAccountForDeposit = null;
 		}
 
@@ -56,70 +59,11 @@ namespace Keeper.ViewModels
 
     public void ExtractEvaluationsToExcel()
     {
-      var xlApp = new Microsoft.Office.Interop.Excel.Application { Visible = true };
-      var wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-      var ws = (Worksheet)wb.Worksheets[1];
-
-      SetFormatForData(ws);
-      ImportEvaluationData(ws);
-
-      ImportEvaluationHeader(ws);
-      SetFormatForHeader(ws);
-
+      _depositParser.ProcentEvaluationNew(Deposit.ParentAccount, Deposit.StartDate);
+      _depositExcelReporter.Run(Deposit);
     }
 
-	  private void SetFormatForHeader(Worksheet ws)
-	  {
-      ws.Range["A1"].EntireRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-      ws.Range["A1"].EntireRow.WrapText = true; // высота строки не должна была быть выставлена явно
-      ws.Range["D1", "E1"].Merge();
-	    ws.Range["A1"].EntireRow.VerticalAlignment = XlVAlign.xlVAlignCenter;
-	  }
-
-	  private void ImportEvaluationHeader(Worksheet ws)
-    {
-      ws.Cells[1, 2] = "Дата";
-      ws.Cells[1, 3] = "Остаток на конец дня";
-      ws.Cells[1, 4] = "Ставка";
-      ws.Cells[1, 6] = "Проценты за предыдущую ночь";
-      ws.Cells[1, 7] = "Проценты нарастающим итогом";
-    }
-
-	  private static void SetFormatForData(Worksheet ws)
-	  {
-	    ws.Range["B1"].EntireColumn.ColumnWidth = 12;
-	    ws.Range["B1"].EntireColumn.NumberFormat = "dd MMM yyyy";
-      ws.Range["B1"].EntireColumn.HorizontalAlignment = XlHAlign.xlHAlignCenter; 
-	    ws.Range["C1"].EntireColumn.ColumnWidth = 15;
-	    ws.Range["C1"].EntireColumn.NumberFormat = "#,0";
-	    ws.Range["D1"].EntireColumn.ColumnWidth = 5;
-	    ws.Range["E1"].EntireColumn.ColumnWidth = 2;
-	    ws.Range["F1"].EntireColumn.ColumnWidth = 15;
-	    ws.Range["F1"].EntireColumn.NumberFormat = "#,0";
-	    ws.Range["G1"].EntireColumn.ColumnWidth = 15;
-	    ws.Range["G1"].EntireColumn.NumberFormat = "[Blue]#,0";
-	  }
-
-	  private void ImportEvaluationData(Worksheet ws)
-	  {
-	    int i = 3;
-	    decimal total = 0;
-	    foreach (var line in Deposit.Evaluations.ProcentEvaluation)
-	    {
-	      total += line.DayProfit;
-
-	      ws.Cells[i, 2] = line.Date;
-	      ws.Cells[i, 3] = line.Balance;
-	      ws.Cells[i, 4] = line.DepoRate;
-	      ws.Cells[i, 5] = "%";
-	      ws.Cells[i, 6] = line.DayProfit;
-	      ws.Cells[i, 7] = total;
-
-	      i++;
-	    }
-	  }
-
-	  public void Renew()
+    public void Renew()
 		{
 			var renewDepositViewModel = IoC.Get<RenewDepositViewModel>();
 			renewDepositViewModel.SetOldDeposit(Deposit);
@@ -144,7 +88,8 @@ namespace Keeper.ViewModels
 		}
 	}
 
-  public class RenewPressedEventArgs : System.EventArgs
+  public delegate void RenewPressedEventHandler(object sender, RenewPressedEventArgs e);
+  public class RenewPressedEventArgs : EventArgs
   {
     public readonly Account NewAccount;
 
@@ -153,6 +98,5 @@ namespace Keeper.ViewModels
       NewAccount = newAccount;
     }
   }
-  public delegate void RenewPressedEventHandler(object sender, RenewPressedEventArgs e);
 
 }
