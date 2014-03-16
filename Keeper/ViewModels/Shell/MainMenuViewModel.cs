@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
 using Keeper.Properties;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -15,6 +16,7 @@ using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.Dialogs;
+using Keeper.Utils.OxyPlots;
 
 namespace Keeper.ViewModels.Shell
 {
@@ -33,6 +35,7 @@ namespace Keeper.ViewModels.Shell
     private readonly DbCleaner _dbCleaner;
     private readonly DiagramDataFactory _diagramDataFactory;
     private readonly IMessageBoxer _messageBoxer;
+    private readonly ExpensePartingDataProvider _expensePartingDataProvider;
 
     public bool IsDbLoadingFailed { get; set; }
     public bool IsAuthorizationFailed { get; set; }
@@ -52,10 +55,12 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
-                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory, IMessageBoxer messageBoxer)
+                             IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory,
+                             IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider)
     {
       _loadResult = loadResult;
       _messageBoxer = messageBoxer;
+      _expensePartingDataProvider = expensePartingDataProvider;
 
       IsDbLoadingFailed = _loadResult.Db == null;
       if (IsDbLoadingFailed)
@@ -229,6 +234,13 @@ namespace Keeper.ViewModels.Shell
       OpenDiagramForm(_diagramDataFactory.MonthlyOutcomesDiagramCtor());
     }
 
+    public void ShowExpensePartingOxyPlotDiagram()
+    {
+      var diagramData = _expensePartingDataProvider.Get();
+      var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
+      WindowManager.ShowDialog(diagramOxyplotViewModel);
+    }
+
     public void ShowAverageSignificancesDiagram()
     {
       OpenDiagramForm(_diagramDataFactory.AverageSignificancesDiagramCtor());
@@ -245,15 +257,7 @@ namespace Keeper.ViewModels.Shell
     #region меню Tools
     public void TempItem()
     {
-//      var diagramData = _diagramDataFactory.MonthlyResultsDiagramCtor();
-//      var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
-//      WindowManager.ShowDialog(diagramOxyplotViewModel);
-
-//      var ats = new AccountTreeStraightener();
-//      foreach (var account in ats.Flatten(_db.Accounts))
-//      {
-//        if (account.IsLeaf("Закрытые депозиты") || account.IsLeaf("Закрытые") || account.IsLeaf("Иррациональные")) account.IsActive = false;
-//      }
+      ShowExpensePartingOxyPlotDiagram();
     }
 
     public void ShowToDoForm()

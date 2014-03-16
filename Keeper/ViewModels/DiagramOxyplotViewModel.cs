@@ -1,59 +1,107 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using Caliburn.Micro;
-using Keeper.Utils.Diagram;
+using Keeper.Utils.OxyPlots;
 using OxyPlot;
-using OxyPlot.Axes;
 using OxyPlot.Series;
+using System.Linq;
 
 namespace Keeper.ViewModels
 {
   [Export]
-  class DiagramOxyplotViewModel : Screen
+  internal class DiagramOxyplotViewModel : Screen
   {
-    private readonly DiagramData _diagramData;
-    public PlotModel MyPlotModel { get; set; }
+    private readonly List<ExpensePartingDataElement> _diagramData;
+    private int _currentYear;
+    private int _currentMonth;
+    private int _type;
+    private string _title;
+    private PlotModel _myPlotModel;
 
-    public DiagramOxyplotViewModel(DiagramData diagramData)
+    public string Title
     {
-      _diagramData = diagramData;
-      InitializeModel();
+      get { return _title; }
+      set
+      {
+        if (value == _title) return;
+        _title = value;
+        NotifyOfPropertyChange(() => Title);
+      }
     }
 
-    private void InitializeModel()
+    public PlotModel MyPlotModel
     {
-      var temp = new PlotModel(_diagramData.Caption);
-
-      foreach (var diagramSeries in _diagramData.Data)
+      get { return _myPlotModel; }
+      set
       {
-        temp.Series.Add(InitializeColumnSeries(diagramSeries));
+        if (Equals(value, _myPlotModel)) return;
+        _myPlotModel = value;
+        NotifyOfPropertyChange(() => MyPlotModel);
       }
-      temp.Axes.Add(new LinearAxis(AxisPosition.Left));
-      temp.Axes.Add(new CategoryAxis(AxisPosition.Bottom));
+    }
+
+    public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
+    {
+      _diagramData = diagramData;
+      _currentYear = DateTime.Today.Year;
+      _currentMonth = DateTime.Today.Month;
+      _type = 2; // month
+
+      InitializeDiagram();
+    }
+
+    protected override void OnViewLoaded(object view)
+    {
+      DisplayName = "Распределение расходов";
+    }
+
+    private void InitializeDiagram()
+    {
+      var temp = new PlotModel();
+      temp.Series.Add(InitializePieSeries(ExtractMonth(_currentYear, _currentMonth)));
       MyPlotModel = temp; // this is raising the INotifyPropertyChanged event			
     }
 
-
-
-    private Series InitializeLinearSeries(DiagramSeries diagramSeries)
+    private Series InitializePieSeries(IEnumerable<ExpensePartingDataElement> pieData)
     {
-      var ls = new LineSeries();
-
-      foreach (var diagramPair in diagramSeries.Data)
+      var series = new PieSeries();
+      foreach (var element in pieData)
       {
-        ls.Points.Add(new DataPoint(DateTimeAxis.ToDouble(diagramPair.CoorXdate), (int)diagramPair.CoorYdouble));
+        series.Slices.Add(new PieSlice(element.Kategory.Name,(double)element.Amount));
       }
-      return ls;
+      return series;
     }
-    private Series InitializeColumnSeries(DiagramSeries diagramSeries)
+
+    private IEnumerable<ExpensePartingDataElement> ExtractMonth(int year, int month)
     {
-      var ls = new ColumnSeries();
-
-      foreach (var diagramPair in diagramSeries.Data)
-      {
-        ls.Items.Add(new ColumnItem((int)diagramPair.CoorYdouble));
-      }
-      return ls;
+      return _diagramData.Where(a => a.Month == month && a.Year == year);
     }
+
+    public void PreviousPeriod()
+    {
+      ChangePeriod(-1);
+    }
+
+    public void NextPeriod()
+    {
+      ChangePeriod(1);
+    }
+
+    private void ChangePeriod(int destination)
+    {
+      if (_type == 2)
+      {
+        var newDate = new DateTime(_currentYear, _currentMonth, 1).AddMonths(destination);
+        _currentYear = newDate.Year;
+        _currentMonth = newDate.Month;
+      }
+      if (_type == 1)
+        _currentYear += destination;
+
+      Title = string.Format("   {0:MMMM yyyy}",new DateTime(_currentYear, _currentMonth, 1));
+      InitializeDiagram();
+    }
+
   }
 }

@@ -1,9 +1,32 @@
 ﻿<Window x:Class="Keeper.Views.DiagramOxyplotView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="http://oxyplot.codeplex.com"
-        Title="DiagramOxyplotView" Height="300" Width="300">
-    <Grid>
-    <oxy:Plot Model="{Binding MyPlotModel}"/>
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:cal="http://www.caliburnproject.org"
+        Title="DiagramOxyplotView" Height="700" Width="1000">
+  <i:Interaction.Triggers>
+    <ei:KeyTrigger Key="F2" >
+      <cal:ActionMessage MethodName="PreviousPeriod"/>
+    </ei:KeyTrigger>
+    <ei:KeyTrigger Key="F3" >
+      <cal:ActionMessage MethodName="NextPeriod"/>
+    </ei:KeyTrigger>
+  </i:Interaction.Triggers>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="180"/>
+    </Grid.ColumnDefinitions>
 
+    <oxy:Plot Model="{Binding MyPlotModel}" Margin="5"/>
+    <Grid Grid.Column="1" Margin="5">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="35"/>
+        <RowDefinition Height="35"/>
+        <RowDefinition Height="35"/>
+        <RowDefinition Height="35"/>
+      </Grid.RowDefinitions>
+      <TextBlock Text="{Binding Title}"/>
+    </Grid>
   </Grid>
 </Window>
