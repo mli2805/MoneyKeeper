@@ -245,6 +245,7 @@
     <Compile Include="DomainModel\ChartPoint.cs" />
     <Compile Include="DomainModel\DateProcentPoint.cs" />
     <Compile Include="Utils\Diagram\DiagramLegendItem.cs" />
+    <Compile Include="Utils\Deposits\DepositExcelReporter.cs" />
     <Compile Include="ViewModels\DepositRatesViewModel.cs" />
     <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
