@@ -33,8 +33,8 @@ namespace Keeper.Utils.Deposits
       foreach (DateTime day in period)
       {
         var date = day;
-        balance += trs.Where(t => t.Timestamp.Date == date.Date).Sum(t => t.Amount);
         account.Deposit.Evaluations.ProcentEvaluation.Add(new ProcentEvaluationDailyLine { Date = day, Balance = balance });
+        balance += trs.Where(t => t.Timestamp.Date == date.Date).Sum(t => t.Amount);
       }
     } 
 
