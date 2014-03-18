@@ -8,7 +8,7 @@
   <Grid Background="White" >
     <Grid.RowDefinitions>
       <RowDefinition Height="40"/>
-      <RowDefinition Height="25"/>
+      <RowDefinition Height="20"/>
     </Grid.RowDefinitions>
     <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
@@ -16,14 +16,14 @@
         <ColumnDefinition Width="32"/>
         <ColumnDefinition Width="20"/>
       </Grid.ColumnDefinitions>
-      <Rectangle Margin="-20,1,0,-20" Stroke="Black"/>
+      <Rectangle Margin="-20,1,0,-40" Stroke="Black"/>
       <Rectangle Grid.Column="1" Stroke="White"/>
-      <Rectangle Margin="0,1,-20,-20" Grid.Column="2" Stroke="Black" StrokeThickness="1"/>
+      <Rectangle Margin="0,1,-20,-40" Grid.Column="2" Stroke="Black" StrokeThickness="1" />
       
       <Button Height="25" Width="10" Margin="243,0,0,0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Cursor="SizeWE" Background="White"/>
       <Button Height="25" Width="10" Margin="275,0,0,0" HorizontalAlignment="Left" Grid.ColumnSpan="3" Cursor="SizeWE" Background="White"/>
     </Grid>
-    <ScrollBar Grid.Row="1" Maximum="20" LargeChange="5" SmallChange="1" Orientation="Horizontal" Margin="0" 
-               BorderBrush="Black" BorderThickness="2" Background="White" Value="20" ViewportSize="3" />
+    <Rectangle Grid.Row="1" Stroke="DarkGray"/>
+    <ScrollBar Grid.Row="1" Maximum="20" LargeChange="5" SmallChange="1" Orientation="Horizontal" Background="White" Value="20" ViewportSize="3" Height="Auto" Margin="0,1,0,1" />
   </Grid>
 </UserControl>
