@@ -44,7 +44,7 @@ namespace Keeper.Utils.Balances
     public IEnumerable<MoneyPair> ArticleBalancePairs(Account balancedAccount, Period period)
     {
       return from t in _db.Transactions
-             where t.Article != null && t.Article.Is(balancedAccount.Name) && period.IsDateIn(t.Timestamp)
+             where t.Article != null && t.Article.Is(balancedAccount.Name) && period.ContainsButTimeNotChecking(t.Timestamp)
              group t by t.Currency into g
              select new MoneyPair
              {
@@ -56,7 +56,7 @@ namespace Keeper.Utils.Balances
     public decimal ArticleTraffic(Account article, Period period, List<string> firstTransactions)
     {
       var transactionsWithRates = (from t in _db.Transactions
-                                   where t.Article != null && t.Article.Is(article.Name) && period.IsDateIn(t.Timestamp)
+                                   where t.Article != null && t.Article.Is(article.Name) && period.ContainsButTimeNotChecking(t.Timestamp)
                                    join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
                                    from rate in g.DefaultIfEmpty()
                                    select new
@@ -88,7 +88,7 @@ namespace Keeper.Utils.Balances
     /// <returns></returns>
     public IEnumerable<MoneyPair> AccountBalancePairsBeforeDay(Account balancedAccount, DateTime dateTime)
     {
-      var period = new Period(new DateTime(0), new DayProcessor(dateTime).BeforeThisDay());
+      var period = new Period(new DateTime(0), dateTime.GetStartOfDate());
       if (balancedAccount.Is("Все доходы") || balancedAccount.Is("Все расходы"))
         return ArticleBalancePairs(balancedAccount, period);
       return AccountBalancePairs(balancedAccount, period);

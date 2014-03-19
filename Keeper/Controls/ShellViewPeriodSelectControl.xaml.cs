@@ -35,8 +35,7 @@ namespace Keeper.Controls
 
     void ShellViewPeriodSelectControlLoaded(object sender, RoutedEventArgs e)
     {
-      SelectedPeriod = new Period(new DayProcessor(DateTime.Today).BeforeThisMonth(),
-        new DayProcessor(DateTime.Today).AfterThisDay());
+      SelectedPeriod = DateTime.Today.GetPassedPartOfMonthWithFullThisDate();
     }
 
     public void Connect(int connectionId, object target)
@@ -80,8 +79,7 @@ namespace Keeper.Controls
     private void ThisYearPaymentsClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.DayOfYear + 1), DateTime.Today); }
     private void LastYearPaymentsClick(object sender, RoutedEventArgs e)
     {
-      var finish = new DayProcessor(DateTime.Today.AddDays(-DateTime.Today.DayOfYear)).AfterThisDay();
-      SelectedPeriod = new Period(finish.AddDays(-finish.DayOfYear + 1), finish);
+      SelectedPeriod = new Period(new DateTime(DateTime.Today.Year-1,1,1), new DateTime(DateTime.Today.Year,1,1).AddSeconds(-1));
     }
 
     private bool IsLastDayOfMonth(DateTime date) { return date.Month != date.AddDays(1).Month; }
@@ -90,14 +88,14 @@ namespace Keeper.Controls
     {
       if (StartDatePicker.SelectedDate == null) StartDatePicker.SelectedDate = SelectedPeriod.Start;
       else
-        SelectedPeriod = new Period(new DayProcessor((DateTime)StartDatePicker.SelectedDate).BeforeThisDay(), SelectedPeriod.Finish);
+        SelectedPeriod = new Period(((DateTime)StartDatePicker.SelectedDate).GetStartOfDate(), SelectedPeriod.Finish);
     }
 
     public void FinishDatePickerSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
       if (FinishDatePicker.SelectedDate == null) FinishDatePicker.SelectedDate = SelectedPeriod.Finish; 
       else
-        SelectedPeriod = new Period(SelectedPeriod.Start, new DayProcessor((DateTime)FinishDatePicker.SelectedDate).AfterThisDay());
+        SelectedPeriod = new Period(SelectedPeriod.Start, ((DateTime)FinishDatePicker.SelectedDate).GetEndOfDate());
     }
 
   }

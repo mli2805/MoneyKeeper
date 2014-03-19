@@ -196,7 +196,7 @@
     <Compile Include="Utils\OldTransactionsReorderer.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
-    <Compile Include="Utils\Common\DayProcessor.cs" />
+    <Compile Include="Utils\Common\DateTimeExtantions.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbGeneralLoader.cs" />
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />

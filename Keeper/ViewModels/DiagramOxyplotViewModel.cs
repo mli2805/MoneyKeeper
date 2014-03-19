@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Composition;
 using Caliburn.Micro;
+using Keeper.DomainModel;
+using Keeper.Utils.Common;
 using Keeper.Utils.OxyPlots;
 using OxyPlot;
 using OxyPlot.Series;
@@ -13,8 +15,10 @@ namespace Keeper.ViewModels
   internal class DiagramOxyplotViewModel : Screen
   {
     private readonly List<ExpensePartingDataElement> _diagramData;
-    private int _currentYear;
-    private int _currentMonth;
+    private int _currentYearFrom;
+    private int _currentYearTo;
+    private int _currentMonthFrom;
+    private int _currentMonthTo;
     private int _type;
     private string _title;
     private PlotModel _myPlotModel;
@@ -44,8 +48,8 @@ namespace Keeper.ViewModels
     public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
     {
       _diagramData = diagramData;
-      _currentYear = DateTime.Today.Year;
-      _currentMonth = DateTime.Today.Month;
+      _currentYearFrom = _currentYearTo = DateTime.Today.Year;
+      _currentMonthFrom = _currentMonthTo = DateTime.Today.Month;
       _type = 2; // month
 
       InitializeDiagram();
@@ -59,7 +63,7 @@ namespace Keeper.ViewModels
     private void InitializeDiagram()
     {
       var temp = new PlotModel();
-      temp.Series.Add(InitializePieSeries(ExtractMonth(_currentYear, _currentMonth)));
+      temp.Series.Add(InitializePieSeries(Extract(new Period(new DateTime(_currentYearFrom,_currentMonthFrom,1), new DateTime(_currentYearTo, _currentMonthTo,1).GetEndOfMonthForDate()))));
       MyPlotModel = temp; // this is raising the INotifyPropertyChanged event			
     }
 
@@ -73,9 +77,9 @@ namespace Keeper.ViewModels
       return series;
     }
 
-    private IEnumerable<ExpensePartingDataElement> ExtractMonth(int year, int month)
+    private IEnumerable<ExpensePartingDataElement> Extract(Period period)
     {
-      return _diagramData.Where(a => a.Month == month && a.Year == year);
+      return _diagramData.Where(a => period.Contains(new DateTime(a.Year, a.Month, 15)));
     }
 
     public void PreviousPeriod()
@@ -92,15 +96,39 @@ namespace Keeper.ViewModels
     {
       if (_type == 2)
       {
-        var newDate = new DateTime(_currentYear, _currentMonth, 1).AddMonths(destination);
-        _currentYear = newDate.Year;
-        _currentMonth = newDate.Month;
+        var newDate = new DateTime(_currentYearFrom, _currentMonthFrom, 1).AddMonths(destination);
+        _currentYearFrom = newDate.Year;
+        _currentMonthFrom = newDate.Month;
+        newDate = new DateTime(_currentYearTo, _currentMonthTo, 1).AddMonths(destination);
+        _currentYearTo = newDate.Year;
+        _currentMonthTo = newDate.Month;
       }
       if (_type == 1)
-        _currentYear += destination;
+        _currentYearFrom += destination;
 
-      Title = string.Format("   {0:MMMM yyyy}",new DateTime(_currentYear, _currentMonth, 1));
+      CombineTitle();
       InitializeDiagram();
+    }
+
+    private void CombineTitle()
+    {
+      if (_type == 2) // месяца
+      {
+        if (_currentYearFrom == _currentYearTo && _currentMonthFrom == _currentMonthTo)
+          Title = string.Format("   {0:MMMM yyyy}", new DateTime(_currentYearFrom, _currentMonthFrom, 1));
+        else
+          Title = string.Format("   {0:MMMM yyyy}  {1:MMMM yyyy}",
+                                    new DateTime(_currentYearFrom, _currentMonthFrom, 1),
+                                    new DateTime(_currentYearTo, _currentMonthTo, 1));
+      }
+      if (_type == 1) // годы
+      {
+        if (_currentYearFrom == _currentYearTo)
+          Title = string.Format("   {0} год", _currentYearFrom);
+        else
+          Title = string.Format("   {0} - {1} годы", _currentYearFrom, _currentYearTo);
+      }
+
     }
 
   }

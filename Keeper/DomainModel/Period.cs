@@ -53,7 +53,7 @@ namespace Keeper.DomainModel
       return checkDate >= Start && checkDate <= Finish;
     }
 
-    public bool IsDateIn(DateTime checkDate)
+    public bool ContainsButTimeNotChecking(DateTime checkDate)
     {
       return checkDate.Date >= Start.Date && checkDate.Date <= Finish.Date;
     }

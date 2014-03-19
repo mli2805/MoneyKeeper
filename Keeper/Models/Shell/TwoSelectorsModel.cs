@@ -20,7 +20,7 @@ namespace Keeper.Models.Shell
 
     public DateTime TranslatedDate
     {
-      get { return new DayProcessor(_translatedDate).AfterThisDay(); }
+      get { return _translatedDate.GetEndOfDate(); }
       set 
       { 
         _translatedDate = value;
