@@ -21,7 +21,7 @@
     </Grid.ColumnDefinitions>
 
     <oxy:Plot Grid.Column="0" Grid.ColumnSpan="2" Model="{Binding MyPlotModel}" Margin="5"/>
-    <Controls:DiagramPeriodSelectorControl Grid.Column="1" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Bottom" />
+    <Controls:DiagramPeriodSelectorControl Grid.Column="1" Grid.ColumnSpan="2" Margin="15" VerticalAlignment="Bottom" />
     <Grid Grid.Column="2" Margin="5">
       <Grid.RowDefinitions>
         <RowDefinition Height="35"/>

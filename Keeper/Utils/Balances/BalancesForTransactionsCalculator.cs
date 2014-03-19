@@ -86,7 +86,7 @@ namespace Keeper.Utils.Balances
 	  public string EndDayBalances(DateTime dt)
     {
 	    var balanceCalculator = IoC.Get<BalanceCalculator>();
-      var period = new Period(new DateTime(0), new DayProcessor(dt).AfterThisDay());
+      var period = new Period(new DateTime(0), dt.GetEndOfDate());
       var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);
 
       var depo = (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
