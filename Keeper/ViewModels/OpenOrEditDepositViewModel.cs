@@ -32,7 +32,7 @@ namespace Keeper.ViewModels
     #region Списки для комбобоксов
     private List<CurrencyCodes> _currencyList;
     private List<Account> _bankAccounts;
-    private List<Account> _myAccounts;
+    private List<Account> _myFolders;
 
     public List<CurrencyCodes> CurrencyList
     {
@@ -56,14 +56,14 @@ namespace Keeper.ViewModels
       }
     }
 
-    public List<Account> MyAccounts
+    public List<Account> MyFolders
     {
-      get { return _myAccounts; }
+      get { return _myFolders; }
       set
       {
-        if (Equals(value, _myAccounts)) return;
-        _myAccounts = value;
-        NotifyOfPropertyChange(() => MyAccounts);
+        if (Equals(value, _myFolders)) return;
+        _myFolders = value;
+        NotifyOfPropertyChange(() => MyFolders);
       }
     }
 
@@ -71,7 +71,7 @@ namespace Keeper.ViewModels
     {
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
       BankAccounts =_accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
-      MyAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Мои") && a.Children.Count != 0).ToList();
+      MyFolders = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Мои") && a.IsFolder).ToList();
     }
 
     #endregion
