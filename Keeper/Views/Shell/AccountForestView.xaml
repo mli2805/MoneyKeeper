@@ -17,7 +17,7 @@
       <TabItem Header="Мои счета" Background="{x:Null}">
         <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MyForestModel.MineAccountsRoot}"
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True" 
-                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowDeposit()]">
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowDepositReport()]">
           <TreeView.ContextMenu>
             <ContextMenu>
               <MenuItem Header="Добавить" cal:Message.Attach="AddSelectedAccount" BorderBrush="{x:Null}" Background="White" Visibility="{Binding MyForestModel.AddNewAccountVisibility}">
