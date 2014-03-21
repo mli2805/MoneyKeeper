@@ -10,7 +10,6 @@ namespace Keeper.DomainModel
 		readonly DbIdGenerator _dbIdGenerator;
 
 		[ImportingConstructor]
-
 		public AccountOperations(DbIdGenerator dbIdGenerator)
 		{
 			_dbIdGenerator = dbIdGenerator;
@@ -33,7 +32,7 @@ namespace Keeper.DomainModel
 			if (edited.Parent != changesSource.Parent)
 			{
 				changesSource.Parent.Children.Add(changesSource);
-        changesSource.IsActive = !(changesSource.Parent.Is("Закрытые") || changesSource.Parent.Is("Закрытые депозиты"));
+        changesSource.IsClosed = (changesSource.Parent.Is("Закрытые") || changesSource.Parent.Is("Закрытые депозиты"));
 				edited.Parent.Children.Remove(edited);
 			}
 			Account.CopyForEdit(edited,changesSource);

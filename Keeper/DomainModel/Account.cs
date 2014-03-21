@@ -30,7 +30,7 @@ namespace Keeper.DomainModel
      * (например, предыдущие работадатели)
      * статьи более не используемые (типа иррациональные)
      */
-    public bool IsActive { get; set; }
+    public bool IsClosed { get; set; }
 
     public Deposit Deposit { get; set; }
 
@@ -50,6 +50,7 @@ namespace Keeper.DomainModel
 		}
 		#endregion
 
+    public bool IsFolder { get; set; }
 		public bool IsExpanded { get; set; }
 		#endregion
 
@@ -107,7 +108,8 @@ namespace Keeper.DomainModel
 		{
 			destination.Id = source.Id;
 			destination.Name = source.Name;
-		  destination.IsActive = source.IsActive;
+      destination.IsFolder = source.IsFolder;
+		  destination.IsClosed = source.IsClosed;
 			destination.Parent = source.Parent;
 
       if (source.Deposit != null)
@@ -149,11 +151,6 @@ namespace Keeper.DomainModel
     public bool IsLeaf(string ancestor)
     {
       return Is(ancestor) && Children.Count == 0;
-    }
-
-    public bool IsLeaf()
-    {
-      return Children.Count == 0;
     }
 
     public bool IsDeposit()

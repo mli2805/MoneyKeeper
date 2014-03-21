@@ -66,7 +66,7 @@ namespace Keeper.Models.Shell
       {
         _selectedAccount = value;
         DepositEvaluationVisibility = value != null && value.Deposit != null ? Visibility.Visible : Visibility.Collapsed;
-        AddNewAccountVisibility = value != null && value.Deposit == null ? Visibility.Visible : Visibility.Collapsed;
+        AddNewAccountVisibility = value != null && value.IsFolder ? Visibility.Visible : Visibility.Collapsed;
         NotifyOfPropertyChange(()=>SelectedAccount);
       }
     }

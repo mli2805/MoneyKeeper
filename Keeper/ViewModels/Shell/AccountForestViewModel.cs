@@ -70,12 +70,20 @@ namespace Keeper.ViewModels.Shell
 
     public void AddSelectedAccount()
     {
-      var newSelectedAccount = MyForestModel.SelectedAccount.Name == "Депозиты" ? 
-        _accountTreesGardener.AddDeposit(MyForestModel.SelectedAccount) :
-        _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount) ;
+      var newSelectedAccount = _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount);
       if (newSelectedAccount == null) return;
-      if (MyForestModel.SelectedAccount.Name == "Депозиты")
-        _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount);
+
+      MyForestModel.SelectedAccount.IsSelected = false;
+      MyForestModel.SelectedAccount = newSelectedAccount;
+      MyForestModel.SelectedAccount.IsSelected = true;
+      NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
+    }
+
+    public void AddSelectedDeposit()
+    {
+      var newSelectedAccount = _accountTreesGardener.AddDeposit(MyForestModel.SelectedAccount);
+      if (newSelectedAccount == null) return;
+      _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount);
       MyForestModel.SelectedAccount.IsSelected = false;
       MyForestModel.SelectedAccount = newSelectedAccount;
       MyForestModel.SelectedAccount.IsSelected = true;
@@ -95,7 +103,7 @@ namespace Keeper.ViewModels.Shell
         _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
     }
 
-    public void ShowDeposit()
+    public void ShowDepositReport()
     {
       if (!MyForestModel.SelectedAccount.IsDeposit() || MyForestModel.SelectedAccount.Children.Count != 0) return;
 

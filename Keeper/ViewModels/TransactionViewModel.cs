@@ -279,19 +279,19 @@ namespace Keeper.ViewModels
     {
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
       MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => (a.IsLeaf("Мои") || a.Name == "Для ввода стартовых остатков") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
+        Where(a => (a.IsLeaf("Мои") || a.Name == "Для ввода стартовых остатков") && (a.IsClosed || !_filterOnlyActiveAccounts))).ToList();
       MyAccountsForShopping = (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => a.IsLeaf("Мои") && !a.IsLeaf("Депозиты") && (a.IsActive||!_filterOnlyActiveAccounts))).ToList();
+        Where(a => a.IsLeaf("Мои") && !a.IsLeaf("Депозиты") && (a.IsClosed||!_filterOnlyActiveAccounts))).ToList();
       BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => a.IsLeaf("Банки") && (a.IsActive || !_filterOnlyActiveAccounts) || a.Is("Мой кошелек")).ToList();
+        Where(a => a.IsLeaf("Банки") && (a.IsClosed || !_filterOnlyActiveAccounts) || a.Is("Мой кошелек")).ToList();
       AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => a.IsLeaf("ДеньгоПолучатели") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
+        Where(a => a.IsLeaf("ДеньгоПолучатели") && (a.IsClosed || !_filterOnlyActiveAccounts))).ToList();
       AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => a.IsLeaf("ДеньгоДатели") || a.IsLeaf("Банки") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
+        Where(a => a.IsLeaf("ДеньгоДатели") || a.IsLeaf("Банки") && (a.IsClosed || !_filterOnlyActiveAccounts))).ToList();
       IncomeArticles =  (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => a.IsLeaf("Все доходы") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
+        Where(a => a.IsLeaf("Все доходы") && (a.IsClosed || !_filterOnlyActiveAccounts))).ToList();
       ExpenseArticles = (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => a.IsLeaf("Все расходы") && (a.IsActive || !_filterOnlyActiveAccounts))).ToList();
+        Where(a => a.IsLeaf("Все расходы") && (a.IsClosed || !_filterOnlyActiveAccounts))).ToList();
     }
 
     private bool _filterOnlyActiveAccounts;
