@@ -5,6 +5,7 @@ using System.Linq;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
+using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis
@@ -16,18 +17,20 @@ namespace Keeper.Utils.MonthAnalysis
 
     private readonly KeeperDb _db;
     private readonly RateExtractor _rateExtractor;
+    private readonly TransactionSetConvertor _transactionSetConvertor;
     private readonly MonthForecaster _monthForecaster;
     private readonly BalanceForMonthAnalysisCalculator _balanceCalculator;
     private readonly AccountTreeStraightener _accountTreeStraightener;
 
     [ImportingConstructor]
     public MonthAnalyzer(KeeperDb db, BalanceForMonthAnalysisCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener,
-      RateExtractor rateExtractor, MonthForecaster monthForecaster)
+      RateExtractor rateExtractor, TransactionSetConvertor transactionSetConvertor, MonthForecaster monthForecaster)
     {
       _db = db;
       _balanceCalculator = balanceCalculator;
       _accountTreeStraightener = accountTreeStraightener;
       _rateExtractor = rateExtractor;
+      _transactionSetConvertor = transactionSetConvertor;
       _monthForecaster = monthForecaster;
 
       Result = new Saldo();
@@ -67,7 +70,7 @@ namespace Keeper.Utils.MonthAnalysis
 
     private void RegisterExpense(IEnumerable<Transaction> expenseTransactions)
     {
-      var expenseTransactionsInUsd = ConvertTransactionsQuery(expenseTransactions);
+      var expenseTransactionsInUsd = _transactionSetConvertor.ConvertTransactionsQuery(expenseTransactions);
       GroupExpenseByCategories(expenseTransactionsInUsd);
       Result.Expense.TotalInUsd = expenseTransactionsInUsd.Sum(t => t.AmountInUsd);
 
@@ -93,53 +96,7 @@ namespace Keeper.Utils.MonthAnalysis
       }
     }
 
-    /// <summary>
-    /// работает гораздо быстрее чем ConvertTransactions
-    /// но если нет курса за день операции, не может взять предшествующий курс
-    /// </summary>
-    /// <param name="expenseTransactions"></param>
-    /// <returns></returns>
-    private IEnumerable<ConvertedTransaction> ConvertTransactionsQuery(IEnumerable<Transaction> expenseTransactions)
-    {
-      return from t in expenseTransactions
-             join r in _db.CurrencyRates
-               on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
-             from rate in g.DefaultIfEmpty()
-             select new ConvertedTransaction
-                      {
-                        Timestamp = t.Timestamp,
-                        Amount = t.Amount,
-                        Currency = t.Currency,
-                        Article = t.Article,
-                        AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-                        Comment = t.Comment
-                      };
-    }
-
-    /// <summary>
-    /// работает гораздо медленнее чем через запрос
-    /// при переходе между месяцами заметна пауза
-    /// </summary>
-    /// <param name="expenseTransactions"></param>
-    /// <returns></returns>
-    private IEnumerable<ConvertedTransaction> ConvertTransactions(IEnumerable<Transaction> expenseTransactions)
-    {
-      foreach (var t in expenseTransactions)
-      {
-        yield return new ConvertedTransaction
-        {
-          Timestamp = t.Timestamp,
-          Amount = t.Amount,
-          Currency = t.Currency,
-          Article = t.Article,
-          AmountInUsd = t.Currency != CurrencyCodes.USD ?
-            t.Amount / (decimal)_rateExtractor.GetRateThisDayOrBefore(t.Currency, t.Timestamp)
-            : t.Amount,
-          Comment = t.Comment
-        };
-      }
-    }
-
+ 
     private void RegisterDepositsTraffic(List<Transaction> allMonthTransactions)
     {
       Result.TransferFromDeposit = allMonthTransactions.
