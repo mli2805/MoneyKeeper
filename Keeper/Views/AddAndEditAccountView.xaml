@@ -40,7 +40,8 @@
           <Behaviors:SetFocusOnLoadBehavior />
         </i:Interaction.Behaviors>
       </TextBox>
-      <CheckBox Grid.Row="2" VerticalAlignment="Center" Margin="75,0,0,0" Content="Активный" IsChecked="{Binding AccountInWork.IsActive}"/>
+      <CheckBox Grid.Row="2" VerticalAlignment="Center" Margin="75,0,0,0" Content="Папка" Width="80" HorizontalAlignment="Left" IsChecked="{Binding AccountInWork.IsFolder}"/>
+      <CheckBox Grid.Row="2" VerticalAlignment="Center" Margin="175,0,0,0" Content="Закрытый" Width="80" HorizontalAlignment="Left" IsChecked="{Binding AccountInWork.IsClosed}"/>
       <Button Name="ConvertToDeposit" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0" Content="Считать депозитом" />
 
       <Rectangle Grid.Row="3" Margin="3,5,3,4" Stroke="LightGray" StrokeThickness="1,0"/>
