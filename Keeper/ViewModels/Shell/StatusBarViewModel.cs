@@ -2,7 +2,6 @@
 using System.Composition;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper.Models;
 using Keeper.Models.Shell;
 
 namespace Keeper.ViewModels.Shell

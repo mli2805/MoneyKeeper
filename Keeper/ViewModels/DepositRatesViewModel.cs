@@ -84,7 +84,7 @@ namespace Keeper.ViewModels
       }
     }
 
-    public void Close(){TryClose(true);}
+    public void CloseForm(){TryClose(true);}
 
 
   }

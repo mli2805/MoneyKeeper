@@ -46,6 +46,6 @@
     <DatePicker Grid.Row="2" Margin="0,7,7,7" HorizontalAlignment="Right" SelectedDate="{Binding NewDate}" Width="96" />
     <Button Name="RepeatFromDeposit" Grid.Row="3" Margin="7,7,0,7" Width="107" HorizontalAlignment="Left" Content="Взять таблицу из" />
     <ComboBox Grid.Row="3" Margin="0,7,7,7" Width="262" HorizontalAlignment="Right" ItemsSource="{Binding Deposits}" SelectedItem="{Binding DepositDonor}"/>
-    <Button Name="Close" Grid.Row="4" Margin="7" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
+    <Button Name="CloseForm" Grid.Row="4" Margin="7" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
   </Grid>
 </Window>

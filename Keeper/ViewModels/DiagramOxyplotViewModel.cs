@@ -14,25 +14,24 @@ namespace Keeper.ViewModels
   [Export]
   internal class DiagramOxyplotViewModel : Screen
   {
-    private readonly List<ExpensePartingDataElement> _diagramData;
-    private int _currentYearFrom;
-    private int _currentYearTo;
-    private int _currentMonthFrom;
-    private int _currentMonthTo;
-    private int _type;
-    private string _title;
-    private PlotModel _myPlotModel;
-
-    public string Title
+    public Period SelectedInterval
     {
-      get { return _title; }
+      get { return _selectedInterval; }
       set
       {
-        if (value == _title) return;
-        _title = value;
-        NotifyOfPropertyChange(() => Title);
+        _selectedInterval = value;
+        TitleInterval = value;
+        InitializeDiagram();
       }
     }
+
+    public Period TitleInterval { get; set; }
+
+    public int IntervalMode { get; set; }
+
+    private readonly List<ExpensePartingDataElement> _diagramData;
+    private PlotModel _myPlotModel;
+    private Period _selectedInterval;
 
     public PlotModel MyPlotModel
     {
@@ -48,9 +47,8 @@ namespace Keeper.ViewModels
     public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
     {
       _diagramData = diagramData;
-      _currentYearFrom = _currentYearTo = DateTime.Today.Year;
-      _currentMonthFrom = _currentMonthTo = DateTime.Today.Month;
-      _type = 2; // month
+      SelectedInterval = new Period(DateTime.Today.GetStartOfMonthForDate(), DateTime.Today.GetEndOfDate());
+      IntervalMode = 2; // month
 
       InitializeDiagram();
     }
@@ -63,7 +61,7 @@ namespace Keeper.ViewModels
     private void InitializeDiagram()
     {
       var temp = new PlotModel();
-      temp.Series.Add(InitializePieSeries(Extract(new Period(new DateTime(_currentYearFrom,_currentMonthFrom,1), new DateTime(_currentYearTo, _currentMonthTo,1).GetEndOfMonthForDate()))));
+      temp.Series.Add(InitializePieSeries(Extract(SelectedInterval)));
       MyPlotModel = temp; // this is raising the INotifyPropertyChanged event			
     }
 
@@ -72,7 +70,7 @@ namespace Keeper.ViewModels
       var series = new PieSeries();
       foreach (var element in pieData)
       {
-        series.Slices.Add(new PieSlice(element.Kategory.Name,(double)element.Amount));
+        series.Slices.Add(new PieSlice(element.Kategory.Name, (double)element.Amount));
       }
       return series;
     }
@@ -84,51 +82,16 @@ namespace Keeper.ViewModels
 
     public void PreviousPeriod()
     {
-      ChangePeriod(-1);
+      var copy = (Period) SelectedInterval.Clone();
+      if (IntervalMode == 2) copy.MonthBack();
+      else copy.YearBack();
+      SelectedInterval = copy;
     }
 
     public void NextPeriod()
     {
-      ChangePeriod(1);
-    }
-
-    private void ChangePeriod(int destination)
-    {
-      if (_type == 2)
-      {
-        var newDate = new DateTime(_currentYearFrom, _currentMonthFrom, 1).AddMonths(destination);
-        _currentYearFrom = newDate.Year;
-        _currentMonthFrom = newDate.Month;
-        newDate = new DateTime(_currentYearTo, _currentMonthTo, 1).AddMonths(destination);
-        _currentYearTo = newDate.Year;
-        _currentMonthTo = newDate.Month;
-      }
-      if (_type == 1)
-        _currentYearFrom += destination;
-
-      CombineTitle();
-      InitializeDiagram();
-    }
-
-    private void CombineTitle()
-    {
-      if (_type == 2) // месяца
-      {
-        if (_currentYearFrom == _currentYearTo && _currentMonthFrom == _currentMonthTo)
-          Title = string.Format("   {0:MMMM yyyy}", new DateTime(_currentYearFrom, _currentMonthFrom, 1));
-        else
-          Title = string.Format("   {0:MMMM yyyy}  {1:MMMM yyyy}",
-                                    new DateTime(_currentYearFrom, _currentMonthFrom, 1),
-                                    new DateTime(_currentYearTo, _currentMonthTo, 1));
-      }
-      if (_type == 1) // годы
-      {
-        if (_currentYearFrom == _currentYearTo)
-          Title = string.Format("   {0} год", _currentYearFrom);
-        else
-          Title = string.Format("   {0} - {1} годы", _currentYearFrom, _currentYearTo);
-      }
-
+      if (IntervalMode == 2) SelectedInterval.MonthForward();
+      else SelectedInterval.YearForward();
     }
 
   }
