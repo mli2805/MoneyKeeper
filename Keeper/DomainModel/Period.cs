@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
+using Caliburn.Micro;
 
 namespace Keeper.DomainModel
 {
-	public class Period
+	public class Period : PropertyChangedBase, ICloneable
   {
 	  public Period()
     {
@@ -46,7 +47,12 @@ namespace Keeper.DomainModel
       return Start.GetHashCode();
     }
 
-    #endregion
+	  public object Clone()
+	  {
+	    return new Period(this.Start, this.Finish);
+	  }
+
+	  #endregion
 
     public bool Contains(DateTime checkDate)
     {
@@ -68,6 +74,30 @@ namespace Keeper.DomainModel
         yield return dt;
       }
     }
-  
+
+    public void MonthBack()
+    {
+      Start = Start.AddMonths(-1);
+      Finish = Finish.AddMonths(-1);
+    }
+
+    public void MonthForward()
+    {
+      Start = Start.AddMonths(1);
+      Finish = Finish.AddMonths(1);
+    }
+
+    public void YearBack()
+    {
+      Start = Start.AddYears(-1);
+      Finish = Finish.AddYears(-1);
+    }
+
+    public void YearForward()
+    {
+      Start = Start.AddYears(1);
+      Finish = Finish.AddYears(1);
+    }
+
   }
 }
