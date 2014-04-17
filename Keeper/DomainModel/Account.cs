@@ -168,9 +168,27 @@ namespace Keeper.DomainModel
 			return String.Compare(Name, ((Account)obj).Name, StringComparison.Ordinal);
 		}
 
+    /// <summary>
+    /// только дл€ депозитов! 
+    /// дл€ обычных счетов не примен€ть!
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     public static int CompareAccountsByDepositFinishDate(Account a, Account b)
     {
+      if (a.IsFolder && !b.IsFolder) return 1;
+      if (!a.IsFolder && b.IsFolder) return -1;
+
+      if (a.IsFolder && b.IsFolder)
+      {
+        if (a.Name == "«акрытые депозиты") return 1;
+        if (b.Name == "«акрытые депозиты") return -1;
+        return 0;
+      }
+
       if (a.Deposit == null || b.Deposit == null) return 0;
+
       return DateTime.Compare(a.Deposit.FinishDate, b.Deposit.FinishDate);
     }
 

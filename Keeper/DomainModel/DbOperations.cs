@@ -45,6 +45,7 @@ namespace Keeper.DomainModel
       activeDeposits.Sort(Account.CompareAccountsByDepositFinishDate);
       foreach (var deposit in activeDeposits)
       {
+        SortDepositAccounts(deposit);
         depositRoot.Children.Add(deposit);
       }
     }

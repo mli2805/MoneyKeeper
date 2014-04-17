@@ -7,6 +7,7 @@ using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
 using Keeper.Utils;
+using Keeper.Utils.Accounts;
 using Keeper.Utils.Deposits;
 
 namespace Keeper.ViewModels.Shell
@@ -20,6 +21,7 @@ namespace Keeper.ViewModels.Shell
     private readonly KeeperDb _db;
     private readonly AccountTreesGardener _accountTreesGardener;
     private readonly AccountOperations _accountOperations;
+    private readonly AccountTreeStraightener _accountTreeStraightener;
     private readonly DepositParser _depositParser;
 
     private readonly List<Screen> _launchedForms = new List<Screen>();
@@ -28,12 +30,13 @@ namespace Keeper.ViewModels.Shell
 
     [ImportingConstructor]
     public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
-      AccountOperations accountOperations, DepositParser depositParser)
+      AccountOperations accountOperations, AccountTreeStraightener accountTreeStraightener, DepositParser depositParser)
     {
       MyForestModel = shellModel.MyForestModel;
       _db = db;
       _accountTreesGardener = accountTreesGardener;
       _accountOperations = accountOperations;
+      _accountTreeStraightener = accountTreeStraightener;
       _depositParser = depositParser;
 
       InitVariablesToShowAccounts();
@@ -83,7 +86,8 @@ namespace Keeper.ViewModels.Shell
     {
       var newSelectedAccount = _accountTreesGardener.AddDeposit(MyForestModel.SelectedAccount);
       if (newSelectedAccount == null) return;
-      _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount);
+//      _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount);
+      _accountOperations.SortDepositAccounts(_accountTreeStraightener.Seek("Депозиты",_db.Accounts));
       MyForestModel.SelectedAccount.IsSelected = false;
       MyForestModel.SelectedAccount = newSelectedAccount;
       MyForestModel.SelectedAccount.IsSelected = true;
@@ -96,7 +100,8 @@ namespace Keeper.ViewModels.Shell
       {
         _accountTreesGardener.ChangeDeposit(MyForestModel.SelectedAccount);
         var selection = MyForestModel.SelectedAccount;
-        _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount.Parent);
+//        _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount.Parent);
+        _accountOperations.SortDepositAccounts(_accountTreeStraightener.Seek("Депозиты", _db.Accounts));
         MyForestModel.SelectedAccount = selection;
       }
       else
