@@ -58,7 +58,39 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       account.IsExpanded = Convert.ToBoolean(substrings[3]);
       return account;
     }
+    public Deposit DepositFromString(string s, IEnumerable<Account> accountsPlaneList)
+    {
+      var deposit = new Deposit();
+      var substrings = s.Split(';');
+      deposit.ParentAccount = accountsPlaneList.First(account => account.Id == Convert.ToInt32(substrings[0]));
+      deposit.Bank = accountsPlaneList.First(account => account.Id == Convert.ToInt32(substrings[1]));
+      deposit.Title = substrings[2].Trim(); 
+      deposit.AgreementNumber = substrings[3].Trim();
+      deposit.StartDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
+      deposit.FinishDate = Convert.ToDateTime(substrings[5], new CultureInfo("ru-RU"));
+      deposit.Currency = (CurrencyCodes) Enum.Parse(typeof (CurrencyCodes), substrings[6]);
+      deposit.IsFactDays = substrings[7].Trim() == "28-31/365";
+      deposit.Comment = substrings[8].Replace("|", "\r\n");
 
+      deposit.ParentAccount.Deposit = deposit;
+
+      return deposit;
+    }
+
+    public DepositRateLine DepositRateLineFromString(string s, IEnumerable<Account> accountsPlaneList)
+    {
+      var depositRateLine = new DepositRateLine();
+      var substrings = s.Split(';');
+      var depositAccount = accountsPlaneList.First(account => account.Id == Convert.ToInt32(substrings[0]));
+      depositRateLine.DateFrom = Convert.ToDateTime(substrings[1], new CultureInfo("ru-RU"));
+      depositRateLine.AmountFrom = Convert.ToDecimal(substrings[2]);
+      depositRateLine.AmountTo = Convert.ToDecimal(substrings[3]);
+      depositRateLine.Rate = Convert.ToDecimal(substrings[4]);
+
+      depositAccount.Deposit.DepositRateLines.Add(depositRateLine);
+
+      return depositRateLine;
+    }
 
 
   }
