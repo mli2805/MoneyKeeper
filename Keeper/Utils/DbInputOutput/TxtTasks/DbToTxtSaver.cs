@@ -18,7 +18,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 		public void SaveDbInTxt()
 		{
 			_dbTxtFileWriter.WriteDbFile("Accounts.txt", _dbEntriesToStringListsConverter.ConvertAccountsToFileContent());
-			_dbTxtFileWriter.WriteDbFile("Transactions.txt", _dbEntriesToStringListsConverter.ConvertTransactionsToFileContent());
+      _dbTxtFileWriter.WriteDbFile("Deposits.txt", _dbEntriesToStringListsConverter.ConvertDepositsToFileContent());
+      _dbTxtFileWriter.WriteDbFile("DepositsRates.txt", _dbEntriesToStringListsConverter.ConvertDepositsRatesToFileContent());
+      _dbTxtFileWriter.WriteDbFile("Transactions.txt", _dbEntriesToStringListsConverter.ConvertTransactionsToFileContent());
 			_dbTxtFileWriter.WriteDbFile("ArticlesAssociations.txt", _dbEntriesToStringListsConverter.ConvertArticlesAssociationsToFileContent());
 			_dbTxtFileWriter.WriteDbFile("CurrencyRates.txt", _dbEntriesToStringListsConverter.ConvertCurrencyRatesToFileContent());
 		}

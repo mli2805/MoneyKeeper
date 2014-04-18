@@ -67,7 +67,7 @@
 						<ToolTip>
 							<StackPanel>
 								<TextBlock Text="Создается копия БД на данный момент" />
-								<TextBlock Text="в виде набора из 4 txt файлов"/>
+								<TextBlock Text="в виде набора из 6 txt файлов"/>
 								<TextBlock Text="запакованных в шифрованный zip "/>
 								<TextBlock Text="(лежит в dropbox\keeper)" />
 							</StackPanel>
@@ -79,7 +79,7 @@
 						<ToolTip>
 							<StackPanel>
 								<TextBlock Text="Выгружает копию БД на данный момент"/>
-								<TextBlock Text="в виде набора из 4 txt файлов"/>
+								<TextBlock Text="в виде набора из 6 txt файлов"/>
 								<TextBlock Text="Лежит в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
 								<TextBlock Text="При выходе из программы каталог будет очищен."/>
 							</StackPanel>
@@ -90,7 +90,7 @@
 					<MenuItem.ToolTip>
 						<ToolTip>
 							<StackPanel>
-								<TextBlock Text="Загружает БД из набора из 4 txt файлов,"/>
+								<TextBlock Text="Загружает БД из набора из 6 txt файлов,"/>
 								<TextBlock Text="лежащих в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
 								<TextBlock Text="Файлы вручную достать из шифрованного zip"/>
 								<TextBlock Text="(лежат в dropbox\keeper)"/>
