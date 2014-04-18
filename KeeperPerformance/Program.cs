@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 
 using Keeper.DomainModel;
-using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 
@@ -13,7 +12,7 @@ namespace Perf
 	{
 		static void Main(string[] args)
 		{
-			mKeeperDb = new DbFromTxtLoader(new AccountTreeStraightener()).LoadDbFromTxt(Path.GetFullPath("TestDb")).Db;
+			mKeeperDb = new DbFromTxtLoader(new DbClassesInstanceParser()).LoadDbFromTxt(Path.GetFullPath("TestDb")).Db;
 			MeasureTime();
 			Console.ReadKey();
 		}

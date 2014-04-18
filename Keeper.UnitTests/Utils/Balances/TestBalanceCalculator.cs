@@ -21,7 +21,7 @@ namespace Keeper.UnitTests.Utils.Balances
 
 		public TestBalanceCalculator()
 		{
-			_loadResult = new DbFromTxtLoader(new AccountTreeStraightener()).LoadDbFromTxt(Path.GetFullPath("TestDb"));
+			_loadResult = new DbFromTxtLoader(new DbClassesInstanceParser()).LoadDbFromTxt(Path.GetFullPath("TestDb"));
 			_underTest = new BalanceCalculator(_loadResult.Db);
 		}
 

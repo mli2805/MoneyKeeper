@@ -17,8 +17,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
   [Export(typeof(ILoader))]
   public class DbFromTxtLoader : IDbFromTxtLoader, ILoader
 	{
-	  readonly AccountTreeStraightener mAccountTreeStraightener;
-	  public Encoding Encoding1251 = Encoding.GetEncoding(1251);
+    private readonly DbClassesInstanceParser _dbClassesInstanceParser;
+    public Encoding Encoding1251 = Encoding.GetEncoding(1251);
 	  public DbLoadResult Result;
 
     public string FileExtension { get { return ".txt"; } }
@@ -29,22 +29,22 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     }
 
 	  [ImportingConstructor]
-	  public DbFromTxtLoader(AccountTreeStraightener accountTreeStraightener)
+	  public DbFromTxtLoader(DbClassesInstanceParser dbClassesInstanceParser)
 	  {
-		  mAccountTreeStraightener = accountTreeStraightener;
+	    _dbClassesInstanceParser = dbClassesInstanceParser;
 	  }
 
-	  public DbLoadResult LoadDbFromTxt(string path)
+    public DbLoadResult LoadDbFromTxt(string path)
     {
       var db = new KeeperDb();
       db.Accounts = LoadAccounts(path);
       if (Result != null) return Result;
 
-		  db.Transactions = LoadFrom(path,"Transactions.txt", TransactionFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts));
+      db.Transactions = LoadFrom(path, "Transactions.txt", _dbClassesInstanceParser.TransactionFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts));
       if (Result != null) return Result;
-      db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", ArticleAssociationFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts));
+      db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", _dbClassesInstanceParser.ArticleAssociationFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts));
       if (Result != null) return Result;
-      db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", CurrencyRateFromString, new AccountTreeStraightener().Flatten(db.Accounts));
+      db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", _dbClassesInstanceParser.CurrencyRateFromString, new AccountTreeStraightener().Flatten(db.Accounts));
       if (Result != null) return Result;
 
       return new DbLoadResult(db);
@@ -98,7 +98,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       foreach (var s in content)
       {
         int parentId;
-        var account = AccountFromString(s, out parentId);
+        var account = _dbClassesInstanceParser.AccountFromString(s, out parentId);
         if (parentId == 0)
         {
           BuildBranchFromRoot(account, content);
@@ -108,24 +108,13 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       return accounts;
     }
 
-    private Account AccountFromString(string s, out int parentId)
-    {
-      var account = new Account();
-      var substrings = s.Split(';');
-      account.Id = Convert.ToInt32(substrings[0]);
-      account.Name = substrings[1].Trim();
-      parentId = Convert.ToInt32(substrings[2]);
-      account.IsExpanded = Convert.ToBoolean(substrings[3]);
-      return account;
-    }
-
     private void BuildBranchFromRoot(Account root, List<string> content)
     {
       foreach (var s in content)
       {
         if (s == "") continue;
         int parentId;
-        var account = AccountFromString(s, out parentId);
+        var account = _dbClassesInstanceParser.AccountFromString(s, out parentId);
         if (parentId == root.Id)
         {
           account.Parent = root;
@@ -137,46 +126,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
     #endregion
 
-    #region // Parsing
-    private Transaction TransactionFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
-    {
-      var transaction = new Transaction();
-      var substrings = s.Split(';');
-      transaction.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
-      transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-      transaction.Debet = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
-      transaction.Credit = accountsPlaneList.First(account => account.Name == substrings[3].Trim());
-      transaction.Amount = Convert.ToDecimal(substrings[4]);
-      transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
-      transaction.Amount2 = Convert.ToDecimal(substrings[6]);
-      if (substrings[7].Trim() == "null" || substrings[7].Trim() == "0") transaction.Currency2 = null;
-      else
-        transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]);
-      transaction.Article = substrings[8].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[8].Trim()) : null;
-      transaction.Comment = substrings[9].Trim();
-
-      return transaction;
-    }
-	private CurrencyRate CurrencyRateFromString(string s, IEnumerable<Account> accountsPlaneList)
-    {
-      var rate = new CurrencyRate();
-      int next = s.IndexOf(';');
-      rate.BankDay = Convert.ToDateTime(s.Substring(0, next), new CultureInfo("ru-RU"));
-      rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
-      next += 6;
-      rate.Rate = Convert.ToDouble(s.Substring(next + 2));
-      return rate;
-    }
-	private ArticleAssociation ArticleAssociationFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
-    {
-      var association = new ArticleAssociation();
-      var substrings = s.Split(';');
-      association.ExternalAccount = accountsPlaneList.First(account => account.Name == substrings[0].Trim());
-      association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-      association.AssociatedArticle = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
-      return association;
-    }
-    #endregion
 
 	}
 }
