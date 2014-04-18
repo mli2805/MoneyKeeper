@@ -7,6 +7,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 		IEnumerable<string> ConvertTransactionsToFileContent();
 		IEnumerable<string> ConvertArticlesAssociationsToFileContent();
 		IEnumerable<string> ConvertCurrencyRatesToFileContent();
+		IEnumerable<string> ConvertDepositsRatesToFileContent();
+		IEnumerable<string> ConvertDepositsToFileContent();
 		IEnumerable<string> ConvertAccountsToFileContent();
 	}
 }

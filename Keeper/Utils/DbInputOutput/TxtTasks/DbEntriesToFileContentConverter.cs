@@ -12,27 +12,48 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 	public class DbEntriesToFileContentConverter : IDbEntriesToStringListsConverter
 	{
 		private readonly KeeperDb _db;
-		readonly AccountTreeStraightener mAccountTreeStraightener;
-		readonly DbClassesInstanceDumper _mDbClassesInstanceDumper;
+		readonly AccountTreeStraightener _accountTreeStraightener;
+		readonly DbClassesInstanceDumper _dbClassesInstanceDumper;
 
 		[ImportingConstructor]
 		public DbEntriesToFileContentConverter(KeeperDb db, AccountTreeStraightener accountTreeStraightener, DbClassesInstanceDumper dbClassesInstanceDumper)
 		{
 			_db = db;
-			mAccountTreeStraightener = accountTreeStraightener;
-			_mDbClassesInstanceDumper = dbClassesInstanceDumper;
+			_accountTreeStraightener = accountTreeStraightener;
+			_dbClassesInstanceDumper = dbClassesInstanceDumper;
 		}
 
 		public IEnumerable<string> ConvertAccountsToFileContent()
 		{
-			foreach (var account in mAccountTreeStraightener.FlattenWithLevels(_db.Accounts))
+			foreach (var account in _accountTreeStraightener.FlattenWithLevels(_db.Accounts))
 			{
-				yield return _mDbClassesInstanceDumper.Dump(account);
+				yield return _dbClassesInstanceDumper.Dump(account);
 				if (account.Level == 0) yield return "";
 			}
 		}
 
-		public IEnumerable<string> ConvertTransactionsToFileContent()
+    public IEnumerable<string> ConvertDepositsToFileContent()
+    {
+      foreach (var account in _accountTreeStraightener.FlattenWithLevels(_db.Accounts))
+      {
+        if (account.Item.Deposit == null) continue;
+        yield return _dbClassesInstanceDumper.Dump(account.Item.Deposit);
+      }
+    }
+
+    public IEnumerable<string> ConvertDepositsRatesToFileContent()
+    {
+      foreach (var account in _accountTreeStraightener.FlattenWithLevels(_db.Accounts))
+      {
+        if (account.Item.Deposit == null || account.Item.Deposit.DepositRateLines == null) continue;
+        foreach (var depositRateLine in account.Item.Deposit.DepositRateLines)
+        {
+          yield return _dbClassesInstanceDumper.Dump(depositRateLine, account.Item.Id);
+        }
+      }
+    }
+
+    public IEnumerable<string> ConvertTransactionsToFileContent()
 		{
 			var orderedTransactions = from transaction in _db.Transactions
 									  orderby transaction.Timestamp
@@ -43,7 +64,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 			{
 				if (transaction.Timestamp <= prevTimestamp)
 					transaction.Timestamp = prevTimestamp.AddMinutes(1);
-				yield return _mDbClassesInstanceDumper.Dump(transaction);
+				yield return _dbClassesInstanceDumper.Dump(transaction);
 				prevTimestamp = transaction.Timestamp;
 			}
 		}
@@ -51,14 +72,14 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 		public IEnumerable<string> ConvertArticlesAssociationsToFileContent()
 		{
 //			return _db.ArticlesAssociations.Select(_mDbClassesInstanceDumper.Dump);
-		  return _db.ArticlesAssociations.Select(articlesAssociation => _mDbClassesInstanceDumper.Dump(articlesAssociation));
+		  return _db.ArticlesAssociations.Select(articlesAssociation => _dbClassesInstanceDumper.Dump(articlesAssociation));
 		}
 
     public IEnumerable<string> ConvertCurrencyRatesToFileContent()
 		{
 			return from rate in _db.CurrencyRates
 				   orderby rate.BankDay
-				   select _mDbClassesInstanceDumper.Dump(rate);
+				   select _dbClassesInstanceDumper.Dump(rate);
 		}
 
 	}
