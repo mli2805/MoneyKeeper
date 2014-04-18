@@ -163,6 +163,7 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\IDbBackuper.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\DbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbBackuper.cs" />
+    <Compile Include="Utils\DbInputOutput\TxtTasks\DbClassesInstanceParser.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbEntriesToFileContentConverter.cs" />
     <Compile Include="Utils\Common\HierarchyItem.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbTxtFileWriter.cs" />

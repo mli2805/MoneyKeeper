@@ -22,7 +22,7 @@ namespace Keeper.IntegrationTests
 		[SetUp]
 		public void SetUp()
 		{
-			mKeeperDb = new DbFromTxtLoader(new AccountTreeStraightener()).LoadDbFromTxt(Path.GetFullPath("TestDb")).Db;
+			mKeeperDb = new DbFromTxtLoader(new DbClassesInstanceParser()).LoadDbFromTxt(Path.GetFullPath("TestDb")).Db;
 		}
 
 		void RunOld(int iterations, Stopwatch sw)
