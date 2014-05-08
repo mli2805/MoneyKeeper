@@ -40,6 +40,8 @@ namespace Keeper.Utils.Deposits
 
       ExtractTraffic(account);
 
+      if (account.Deposit.Evaluations.Traffic.Count == 0) MessageBox.Show("Нет движения по счету!");
+
       account.Deposit.Currency = account.Deposit.Evaluations.Traffic.First().Currency;
 
       EvaluateTraffic(account);
