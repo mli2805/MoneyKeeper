@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:DomainModel="clr-namespace:Keeper.DomainModel" xmlns:cal="http://www.caliburnproject.org"
-             mc:Ignorable="d" 
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" mc:Ignorable="d" 
              >
   <UserControl.Resources>
     <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
@@ -12,6 +13,11 @@
     </HierarchicalDataTemplate>
   </UserControl.Resources>
 
+  <i:Interaction.Triggers>
+    <ei:KeyTrigger Key="I">
+      <cal:ActionMessage MethodName="AccountDebugInfoIntoConsole"/>
+    </ei:KeyTrigger>
+  </i:Interaction.Triggers>
   <Grid>
     <TabControl Name="AccountsTree" Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding MyForestModel.OpenedAccountPage, Mode=TwoWay}">
       <TabItem Header="Мои счета" Background="{x:Null}">
