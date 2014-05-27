@@ -10,10 +10,11 @@ namespace Keeper.ViewModels
   class ToDoViewModel : Screen
   {
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-    public static string FullFileName = Path.Combine(Settings.Default.KeeperInDropBox, "ToDo.txt");
+    public static string FullFileName = Path.Combine(Settings.Default.KeeperInDropBox, Settings.Default.ToDoFile);
 
     private ObservableCollection<string> _toDoList;
     private string _newJob;
+    private bool _isEscapePressed;
 
     public ObservableCollection<string> ToDoList
     {
@@ -42,11 +43,13 @@ namespace Keeper.ViewModels
       DisplayName = "TODO List";
 
       ToDoList = new ObservableCollection<string>(File.ReadAllLines(FullFileName,Encoding1251));
+      _isEscapePressed = false;
     }
 
     public override void CanClose(Action<bool> callback)
     {
-      File.WriteAllLines(FullFileName, ToDoList, Encoding1251);
+      if (!_isEscapePressed)
+         File.WriteAllLines(FullFileName, ToDoList, Encoding1251);
       callback(true);
     }
 
@@ -55,6 +58,18 @@ namespace Keeper.ViewModels
       ToDoList.Add(NewJob);
       NewJob = "";
     }
+
+    public void SaveClose()
+    {
+      TryClose();
+    }
+
+    public void CloseWithoutSaving()
+    {
+      _isEscapePressed = true;
+      TryClose();
+    }
+
 
   }
 

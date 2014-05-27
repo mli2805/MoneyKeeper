@@ -20,5 +20,8 @@
     <Setting Name="BackupPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\Backup\</Value>
     </Setting>
+    <Setting Name="ToDoFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ToDo.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

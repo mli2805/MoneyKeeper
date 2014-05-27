@@ -94,5 +94,17 @@ namespace Keeper.Properties {
                 this["BackupPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ToDo.txt")]
+        public string ToDoFile {
+            get {
+                return ((string)(this["ToDoFile"]));
+            }
+            set {
+                this["ToDoFile"] = value;
+            }
+        }
     }
 }
