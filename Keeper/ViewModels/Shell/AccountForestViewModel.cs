@@ -67,7 +67,6 @@ namespace Keeper.ViewModels.Shell
 
     public void AccountDebugInfoIntoConsole()
     {
-      Console.WriteLine("Parent name: {0}", MyForestModel.SelectedAccount.Parent.Name);
       Console.WriteLine("Account name: {0} ;  id = {1} ", MyForestModel.SelectedAccount.Name, MyForestModel.SelectedAccount.Id);
       Console.WriteLine("Parent name: {0}", MyForestModel.SelectedAccount.Parent.Name);
 
