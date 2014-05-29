@@ -27,15 +27,16 @@ namespace Keeper.DomainModel
 			node.Parent.Children.Remove(node);
 		}
 
-		public void ApplyEdit(ref Account edited, Account changesSource)
+		public void ApplyEdit(ref Account destination, Account source)
 		{
-			if (edited.Parent != changesSource.Parent)
+			if (destination.Parent != source.Parent)
 			{
-				changesSource.Parent.Children.Add(changesSource);
-        changesSource.IsClosed = (changesSource.Parent.Is("Закрытые") || changesSource.Parent.Is("Закрытые депозиты"));
-				edited.Parent.Children.Remove(edited);
+				source.Parent.Children.Add(source);
+        source.IsClosed = (source.Parent.Is("Закрытые") || source.Parent.Is("Закрытые депозиты"));
+				destination.Parent.Children.Remove(destination);
+			  destination.Parent = source.Parent;
 			}
-			Account.CopyForEdit(edited,changesSource);
+			Account.CopyForEdit(destination,source);
 		}
 
     public void SortDepositAccounts(Account depositRoot)

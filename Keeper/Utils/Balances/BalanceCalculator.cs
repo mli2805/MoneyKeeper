@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
-using System.IO;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -27,6 +26,7 @@ namespace Keeper.Utils.Balances
                          where interval.Contains(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount)
                          select t;
 
+             
       IEnumerable<MoneyPair> moneyPairs = from t in transactions
                                           group t by t.Currency
                                             into g

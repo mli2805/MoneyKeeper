@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Keeper.Utils.Balances
 {
@@ -45,7 +47,21 @@ namespace Keeper.Utils.Balances
     }
     public static bool EitherDebitOrCreditIs(this Transaction transaction, Account account)
     {
-      return transaction.Credit.Is(account) != transaction.Debet.Is(account);
+      var damper = IoC.Get<DbClassesInstanceDumper>();
+//      return transaction.Credit.Is(account) != transaction.Debet.Is(account);
+      if (transaction.Credit.Is(account) != transaction.Debet.Is(account))
+      {
+        if (account.Id == 424)
+        {
+          if (transaction.Credit.Is(account))
+               Console.WriteLine(damper.Dump(transaction));
+        }
+        return true;
+      }
+      else
+      {
+        return false;
+      }
     }
   }
 }
