@@ -144,6 +144,7 @@
     <Compile Include="DomainModel\DbOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
     <Compile Include="DomainModel\Ini.cs" />
+    <Compile Include="DomainModel\RegularPayment.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />
     <Compile Include="Models\Shell\StatusBarModel.cs" />
     <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Models\MonthAnalysisBlank.cs" />
     <Compile Include="ViewModels\OpenOrEditDepositViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
+    <Compile Include="ViewModels\RegularPaymentsViewModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
     <Compile Include="Models\Shell\BalanceListModel.cs" />
     <Compile Include="ViewModels\Shell\BalanceListViewModel.cs" />
@@ -289,6 +291,9 @@
     </Compile>
     <Compile Include="Views\OptionsView.xaml.cs">
       <DependentUpon>OptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegularPaymentsView.xaml.cs">
+      <DependentUpon>RegularPaymentsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\AccountForestView.xaml.cs">
       <DependentUpon>AccountForestView.xaml</DependentUpon>
@@ -461,6 +466,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RegularPaymentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
