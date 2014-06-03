@@ -257,7 +257,14 @@ namespace Keeper.ViewModels.Shell
     #region меню Tools
     public void TempItem()
     {
-      ShowExpensePartingOxyPlotDiagram();
+//      ShowExpensePartingOxyPlotDiagram();
+      ShowRegularPaymentsForm();
+    }
+
+    public void ShowRegularPaymentsForm()
+    {
+      var form = IoC.Get<RegularPaymentsViewModel>();
+      WindowManager.ShowDialog(form);
     }
 
     public void ShowToDoForm()
