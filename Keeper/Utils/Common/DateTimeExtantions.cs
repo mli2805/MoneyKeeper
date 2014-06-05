@@ -45,6 +45,11 @@ namespace Keeper.Utils.Common
       return new Period(GetStartOfMonthForDate(day), DateTime.Today.GetEndOfDate());
     }
 
+    public static bool IsMonthTheSame(this DateTime day, DateTime otherDay)
+    {
+      return (day.Year == otherDay.Year && day.Month == otherDay.Month);
+    }
+
   }
 
 }

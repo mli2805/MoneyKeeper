@@ -59,7 +59,7 @@ namespace Keeper.ViewModels
 
     public void ExtractEvaluationsToExcel()
     {
-      _depositParser.ProcentEvaluationNew(Deposit.ParentAccount, Deposit.StartDate);
+      _depositParser.EvaluateProcent(Deposit.ParentAccount, Deposit.StartDate);
       _depositExcelReporter.Run(Deposit);
     }
 

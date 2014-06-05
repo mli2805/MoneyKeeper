@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using Keeper.DomainModel;
 using System.Linq;
+using Keeper.Utils.Common;
 
 namespace Keeper.Utils.Deposits
 {
@@ -17,12 +18,15 @@ namespace Keeper.Utils.Deposits
       _db = db;
     }
 
-    public decimal ProcentsForPeriod(Account account, Period period)
+    public void ProcentsForPeriod(Account account, Period period)
     {
       account.Deposit.Evaluations.ProcentEvaluation = new List<ProcentEvaluationDailyLine>();
       FillinBalances(account, period);
       EvaluateProfit(account.Deposit);
-      return account.Deposit.Evaluations.ProcentEvaluation.Sum(line => line.DayProfit);
+      account.Deposit.Evaluations.EstimatedProcentsInThisMonth =
+        account.Deposit.Evaluations.ProcentEvaluation.Where(line => line.Date.IsMonthTheSame(DateTime.Today)).Sum(line => line.DayProfit);
+      account.Deposit.Evaluations.EstimatedProcents =
+        account.Deposit.Evaluations.ProcentEvaluation.Sum(line => line.DayProfit);
     }
     
     private void FillinBalances(Account account, Period period)
