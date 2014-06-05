@@ -93,7 +93,7 @@ namespace Keeper.Utils.Deposits
                                                Amount = t.Amount,
                                                Timestamp = t.Timestamp,
                                                Currency = t.Currency,
-                                               Comment = GetDepositOperationComment(t,account),
+                                               Comment = GetDepositOperationComment(t),
                                                AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
                                                TransactionType = GetDepositOperationType(t,account)
                                              }).ToList();
@@ -108,7 +108,7 @@ namespace Keeper.Utils.Deposits
                    : DepositOperations.Явнес;
     }
 
-    private string GetDepositOperationComment(Transaction t, Account depositAccount)
+    private string GetDepositOperationComment(Transaction t)
     {
       if (t.Comment != "") return t.Comment;
       if (t.Article != null) return t.Article.Name.ToLower();
@@ -141,17 +141,16 @@ namespace Keeper.Utils.Deposits
       var lastProcentTransaction = account.Deposit.Evaluations.Traffic.LastOrDefault(t => t.TransactionType == DepositOperations.Проценты);
       var lastProcentDate = lastProcentTransaction == null ? account.Deposit.StartDate : lastProcentTransaction.Timestamp;
 
-      account.Deposit.Evaluations.EstimatedProcents = ProcentEvaluationNew(account, lastProcentDate);
+      EvaluateProcent(account, lastProcentDate);
       account.Deposit.Evaluations.EstimatedProfitInUsd = account.Deposit.Evaluations.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.EstimatedProcents, account.Deposit.Currency, DateTime.Today);
     }
 
-    public decimal ProcentEvaluationNew(Account account, DateTime lastProcentDate)
+    public void EvaluateProcent(Account account, DateTime lastProcentDate)
     {
       if (account.Deposit.DepositRateLines != null)
-        return _depositEvaluator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
-
-      MessageBox.Show("Не заведена таблица процентных ставок!");
-      return 0;
+        _depositEvaluator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
+      else
+        MessageBox.Show("Не заведена таблица процентных ставок!");
     }
 
     public decimal GetProfitForYear(Deposit deposit, int year)

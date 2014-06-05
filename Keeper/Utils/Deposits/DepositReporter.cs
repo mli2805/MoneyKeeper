@@ -88,12 +88,20 @@ namespace Keeper.Utils.Deposits
 
       reportFooter.Add(String.Format("\nДоход по депозиту {0:#,0} usd \n", deposit.Evaluations.CurrentProfit));
       if (deposit.Evaluations.CurrentBalance == 0) return reportFooter;
-      if (deposit.Currency == CurrencyCodes.USD)
-        reportFooter.Add(String.Format("Еще ожидаются проценты {0:#,0} usd", deposit.Evaluations.EstimatedProcents));
-      else reportFooter.Add(String.Format("Еще ожидаются проценты {0:#,0} {1}   (${2:#,0})", deposit.Evaluations.EstimatedProcents, deposit.Currency.ToString().ToLower(),
-                                                         _rateExtractor.GetUsdEquivalent(deposit.Evaluations.EstimatedProcents, deposit.Currency, DateTime.Today)));
+      reportFooter.Add(String.Format("В этом месяце ожидаются проценты {0}", 
+        AmountRepresentation(deposit.Evaluations.EstimatedProcentsInThisMonth,deposit.Currency)));
+      reportFooter.Add(String.Format("Всего ожидается процентов {0}", 
+        AmountRepresentation(deposit.Evaluations.EstimatedProcents,deposit.Currency)));
       reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd", deposit.Evaluations.EstimatedProfitInUsd));
       return reportFooter;
+    }
+
+    public string AmountRepresentation(decimal amount, CurrencyCodes currency)
+    {
+      if (currency == CurrencyCodes.USD)
+        return String.Format("{0:#,0} usd", amount);
+      return String.Format("{0:#,0} {1}   (${2:#,0})", amount, currency.ToString().ToLower(),
+                    _rateExtractor.GetUsdEquivalent(amount, currency, DateTime.Today));
     }
 
   }

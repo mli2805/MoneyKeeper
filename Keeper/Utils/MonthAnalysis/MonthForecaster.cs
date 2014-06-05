@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Common;
 using Keeper.Utils.Deposits;
 using Keeper.Utils.Rates;
 
@@ -76,17 +77,17 @@ namespace Keeper.Utils.MonthAnalysis
       {
         if (account.Children.Count != 0) continue;
         var deposit = _depositParser.Analyze(account);
-        if (!IsMonthTheSame(deposit.FinishDate, s.StartDate)) continue;
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = deposit.Evaluations.EstimatedProcents, 
+
+        if (deposit.Evaluations.EstimatedProcentsInThisMonth == 0) continue;
+
+        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = deposit.Evaluations.EstimatedProcentsInThisMonth, 
           ArticleName = string.Format("%%  {0} {1:d MMM}",deposit.Bank ,deposit.FinishDate), 
           Currency = deposit.Currency });
-        s.ForecastIncomes.EstimatedIncomesSum += _rateExtractor.GetUsdEquivalent(deposit.Evaluations.EstimatedProcents, deposit.Currency, DateTime.Today);
+
+        s.ForecastIncomes.EstimatedIncomesSum += 
+          _rateExtractor.GetUsdEquivalent(deposit.Evaluations.EstimatedProcentsInThisMonth, deposit.Currency, DateTime.Today);
       }
     }
 
-    private bool IsMonthTheSame(DateTime day1, DateTime day2)
-    {
-      return (day1.Year == day2.Year && day1.Month == day2.Month);
-    }
   }
 }
