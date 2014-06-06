@@ -6,7 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -38,6 +38,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     {
       var db = new KeeperDb();
       db.Accounts = LoadAccounts(path);
+      var ats = IoC.Get<AccountTreeStraightener>();
+      var plainList = ats.Flatten(db.Accounts).ToList();
+      LoadDeposits(path,plainList);
+      LoadDepositsRates(path, plainList);
       if (Result != null) return Result;
 
       db.Transactions = LoadFrom(path, "Transactions.txt", _dbClassesInstanceParser.TransactionFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts));
@@ -82,6 +86,38 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       return result;
     }
 
+    private void LoadDepositsRates(string path, List<Account> plainList)
+    {
+      var filename = Path.Combine(path, "DepositsRates.txt");
+      if (!File.Exists(filename))
+      {
+        Result = new DbLoadResult(315, "File <DepositsRates.txt> not found");
+        return;
+      }
+
+      var content = File.ReadAllLines(filename, Encoding1251).Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
+      foreach (var s in content)
+      {
+        _dbClassesInstanceParser.DepositRateLineFromString(s, plainList);
+      }
+    }
+
+    private void LoadDeposits(string path, List<Account> plainList)
+    {
+      var filename = Path.Combine(path, "Deposits.txt");
+      if (!File.Exists(filename))
+      {
+        Result = new DbLoadResult(315, "File <Deposits.txt> not found");
+        return;
+      }
+
+      var content = File.ReadAllLines(filename, Encoding1251).Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
+      foreach (var s in content)
+      {
+        _dbClassesInstanceParser.DepositFromString(s, plainList);
+      }
+    }
+    
     #region // Accounts
     private ObservableCollection<Account> LoadAccounts(string path)
     {
@@ -93,7 +129,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       }
 
       var content = File.ReadAllLines(filename, Encoding1251).Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
-
       var accounts = new ObservableCollection<Account>();
       foreach (var s in content)
       {

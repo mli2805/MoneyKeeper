@@ -59,7 +59,8 @@ namespace Keeper.Utils.Deposits
 
     private decimal EvaluateDayProfit(Deposit deposit, decimal depoRate, decimal balance)
     {
-      var year = deposit.IsFactDays ? 365 : 360;
+//      var year = deposit.IsFactDays ? 365 : 360;
+      var year = deposit.ProcentsEvaluated.IsFactDays ? 365 : 360;
       return balance*depoRate/100/year;
     }
   }

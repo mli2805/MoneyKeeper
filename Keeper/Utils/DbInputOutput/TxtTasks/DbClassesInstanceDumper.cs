@@ -40,16 +40,29 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       return s;
     }
 
+    public string Dump(DepositProcentsEvaluated rules)
+    {
+      var result = "";
+
+      result += rules.IsFactDays ? "1" : "0";
+      result += rules.OnlyAtTheEnd ? "1" : "0";
+      result += rules.EveryStartDay ? "1" : "0";
+      result += rules.EveryFirstDayOfMonth ? "1" : "0";
+      result += rules.EveryLastDayOfMonth ? "1" : "0";
+      result += rules.IsCapitalized ? "1" : "0";
+
+      return result;
+    }
+
     public string Dump(Deposit deposit)
     {
       var startDate = string.Format("{0:dd/MM/yyyy}", deposit.StartDate.Date);
       var finishDate = string.Format("{0:dd/MM/yyyy}", deposit.FinishDate.Date);
-      var dayPolitic = deposit.IsFactDays ? "28-31/365" : "30/360";
+      var rules = Dump(deposit.ProcentsEvaluated);
       var comment = deposit.Comment == null ? "" : deposit.Comment.Replace("\r\n", "|");
     
-
       return deposit.ParentAccount.Id + " ; " + deposit.Bank.Id + " ; " + deposit.Title + " ; " + deposit.AgreementNumber + 
-          " ; " + startDate + " ; " + finishDate + " ; " + deposit.Currency + " ; " + dayPolitic + " ; " + comment;
+          " ; " + startDate + " ; " + finishDate + " ; " + deposit.Currency + " ; " + rules + " ; " + comment;
     }
 
     public string Dump(DepositRateLine depositRateLine, int accountId)
