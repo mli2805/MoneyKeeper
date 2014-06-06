@@ -29,11 +29,20 @@ namespace Keeper.DomainModel
     public decimal AmountFrom { get; set; }
     public decimal AmountTo { get; set; }
     public decimal Rate { get; set; }
+
+    [NonSerialized] public int AccountId;
+
   }
 
   [Serializable]
 	public class Deposit : ICloneable
 	{
+    public Deposit()
+    {
+      ProcentsEvaluated = new DepositProcentsEvaluated();
+      DepositRateLines = new ObservableCollection<DepositRateLine>();
+    }
+
     public Account ParentAccount { get; set; }
     public Account Bank { get; set; }
     public string Title { get; set; }
@@ -41,10 +50,11 @@ namespace Keeper.DomainModel
 		public DateTime StartDate { get; set; }
 		public DateTime FinishDate { get; set; }
 		public CurrencyCodes Currency { get; set; }
-    public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
 
     public ObservableCollection<DepositRateLine> DepositRateLines { get; set; }
     public string Comment { get; set; }
+
+    public DepositProcentsEvaluated ProcentsEvaluated { get; set; }
 
     [NonSerialized]
     private DepositEvaluations _evaluations;
@@ -80,11 +90,13 @@ namespace Keeper.DomainModel
 
     public List<ProcentEvaluationDailyLine> ProcentEvaluation { get; set; }
 
-    public bool IsProcentsCapitalized { get; set; }
   }
 
-  public class DepositEvaluated
+  [Serializable]
+  public class DepositProcentsEvaluated
   {
+    public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
+
     public bool OnlyAtTheEnd { get; set; } // некоторые депозиты начисляют проценты только в конце срока
     // иначе
     public bool EveryStartDay { get; set; } // каждое число открытия
@@ -92,6 +104,8 @@ namespace Keeper.DomainModel
     public bool EveryFirstDayOfMonth { get; set; } // каждое первое число месяца
     // и/или
     public bool EveryLastDayOfMonth { get; set; } // каждый последний день месяца
+    // и эти проценты
+    public bool IsCapitalized { get; set; }
   }
 
   public class ProcentEvaluationDailyLine

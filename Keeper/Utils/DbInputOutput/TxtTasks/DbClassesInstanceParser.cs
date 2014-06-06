@@ -58,7 +58,18 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       account.IsExpanded = Convert.ToBoolean(substrings[3]);
       return account;
     }
-    public Deposit DepositFromString(string s, IEnumerable<Account> accountsPlaneList)
+    public DepositProcentsEvaluated DepositProcentEvaluationRulesFromString(string s)
+    {
+      var rules = new DepositProcentsEvaluated();
+      rules.IsFactDays = s[0] == '1';
+      rules.OnlyAtTheEnd = s[1] == '1';
+      rules.EveryStartDay = s[2] == '1';
+      rules.EveryFirstDayOfMonth = s[3] == '1';
+      rules.EveryLastDayOfMonth = s[4] == '1';
+      rules.IsCapitalized = s[5] == '1';
+      return rules;
+    }
+    public void DepositFromString(string s, IEnumerable<Account> accountsPlaneList)
     {
       var deposit = new Deposit();
       var substrings = s.Split(';');
@@ -69,12 +80,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       deposit.StartDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
       deposit.FinishDate = Convert.ToDateTime(substrings[5], new CultureInfo("ru-RU"));
       deposit.Currency = (CurrencyCodes) Enum.Parse(typeof (CurrencyCodes), substrings[6]);
-      deposit.IsFactDays = substrings[7].Trim() == "28-31/365";
+      deposit.ProcentsEvaluated = DepositProcentEvaluationRulesFromString(substrings[7]);
       deposit.Comment = substrings[8].Replace("|", "\r\n");
 
       deposit.ParentAccount.Deposit = deposit;
-
-      return deposit;
     }
 
     public DepositRateLine DepositRateLineFromString(string s, IEnumerable<Account> accountsPlaneList)

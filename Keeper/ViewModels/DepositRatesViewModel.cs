@@ -14,9 +14,8 @@ namespace Keeper.ViewModels
   class DepositRatesViewModel : Screen
   {
     private readonly KeeperDb _db;
-    private readonly AccountTreeStraightener _accountTreeStraightener;
     public DateTime NewDate { get; set; }
-    public List<Account> Deposits { get; set; }
+    public List<Account> DepositsForCombobox { get; set; }
     public Account DepositDonor { get; set; }
 
     public ObservableCollection<DepositRateLine> Rows { get; set; }
@@ -25,9 +24,8 @@ namespace Keeper.ViewModels
     public DepositRatesViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
-      _accountTreeStraightener = accountTreeStraightener;
       NewDate = DateTime.Today;
-      Deposits = accountTreeStraightener.Flatten(_db.Accounts).Where(a=>a.Deposit != null).ToList();
+      DepositsForCombobox = accountTreeStraightener.Flatten(_db.Accounts).Where(a=>a.Deposit != null).ToList();
     }
 
     public void Initialize(Deposit deposit)
