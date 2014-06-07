@@ -106,5 +106,17 @@ namespace Keeper.Properties {
                 this["ToDoFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("KeeperRegPays.json")]
+        public string RegularPaymentsFile {
+            get {
+                return ((string)(this["RegularPaymentsFile"]));
+            }
+            set {
+                this["RegularPaymentsFile"] = value;
+            }
+        }
     }
 }

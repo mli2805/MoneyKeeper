@@ -11,43 +11,37 @@ namespace Keeper.ViewModels
   [Export]
   class RegularPaymentsViewModel : Screen
   {
-    public RegularPaymentsViewModel()
+    public static List<CurrencyCodes> CurrencyList { get; private set; }
+
+    public RegularPayments Payments { get; set; }
+    private readonly RegularPaymentsProvider _provider;
+
+    [ImportingConstructor]
+    public RegularPaymentsViewModel(RegularPaymentsProvider provider)
     {
+      _provider = provider;
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
     }
-
-
-    public static List<CurrencyCodes> CurrencyList { get; private set; }
-    
-    public ObservableCollection<RegularPayment> Income { get; set; }
-    public ObservableCollection<RegularPayment> Expenses { get; set; }
 
     protected override void OnViewLoaded(object view)
     {
       DisplayName = "Регулярные платежи";
 
-      Income = ReadRegularIncome();
-      Expenses = ReadRegularExpenses();
+      Payments = (RegularPayments)_provider.RegularPayments.Clone();
     }
 
-    private ObservableCollection<RegularPayment> ReadRegularIncome()
+    public void SavePayments()
     {
-      return new ObservableCollection<RegularPayment>();
+      _provider.RegularPayments = Payments;
+      _provider.Write();
+
+      TryClose();
     }
 
-    private ObservableCollection<RegularPayment> ReadRegularExpenses()
+    public void CancelChanges()
     {
-      return new ObservableCollection<RegularPayment>();
+      TryClose();
     }
 
-    private void SaveRegularIncome()
-    {
-      
-    }
-
-    private void SaveRegularExpenses()
-    {
-
-    }
   }
 }

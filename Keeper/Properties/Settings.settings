@@ -23,5 +23,8 @@
     <Setting Name="ToDoFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">ToDo.txt</Value>
     </Setting>
+    <Setting Name="RegularPaymentsFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">KeeperRegPays.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
