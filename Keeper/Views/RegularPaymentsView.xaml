@@ -92,10 +92,17 @@
                                 SelectedItemBinding ="{Binding CurrencyLeft}"
                                 ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}">
         </DataGridComboBoxColumn>
+        <DataGridTextColumn Header="  Сумма" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
+                            Binding="{Binding Amount, StringFormat=\{0:G5\}}">
+        </DataGridTextColumn>
+        <DataGridTextColumn Header="  Число" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
+                            Binding="{Binding DayOfMonth, StringFormat=\{0:G5\}}">
+        </DataGridTextColumn>
+
 
       </DataGrid.Columns>
     </DataGrid>
-    <Button Content="Ok" Grid.Row="2" Height="25" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Button>
-    <Button Content="Cancel" Grid.Row="2" Height="25" Width="100" HorizontalAlignment="Left" Margin="150,0,0,0"></Button>
+    <Button Name="SavePayments" Content="Ok" Grid.Row="2" Height="25" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Button>
+    <Button Name="CancelChanges"  Content="Cancel" Grid.Row="2" Height="25" Width="100" HorizontalAlignment="Left" Margin="150,0,0,0"></Button>
   </Grid>
 </Window>
