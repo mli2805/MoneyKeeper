@@ -255,10 +255,23 @@ namespace Keeper.ViewModels.Shell
     #endregion
 
     #region меню Tools
+
+    public void SetIsFolders()
+    {
+      var ats = IoC.Get<AccountTreeStraightener>();
+      var plainList = ats.Flatten(_db.Accounts);
+      foreach (var account in plainList)
+      {
+        if (account.Children.Count > 0) account.IsFolder = true;
+      }
+
+    }
+
     public void TempItem()
     {
 //      ShowExpensePartingOxyPlotDiagram();
       ShowRegularPaymentsForm();
+//      SetIsFolders();
     }
 
     public void ShowRegularPaymentsForm()
