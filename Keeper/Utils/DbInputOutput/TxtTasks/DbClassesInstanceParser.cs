@@ -55,7 +55,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       account.Id = Convert.ToInt32(substrings[0]);
       account.Name = substrings[1].Trim();
       parentId = Convert.ToInt32(substrings[2]);
-      account.IsExpanded = Convert.ToBoolean(substrings[3]);
+      account.IsFolder = Convert.ToBoolean(substrings[3]);
+      account.IsClosed = Convert.ToBoolean(substrings[4]);
+      account.IsExpanded = Convert.ToBoolean(substrings[5]);
       return account;
     }
     public DepositProcentsEvaluated DepositProcentEvaluationRulesFromString(string s)

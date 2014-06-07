@@ -14,9 +14,20 @@ namespace Keeper.ViewModels
   class DepositRatesViewModel : Screen
   {
     private readonly KeeperDb _db;
+    private Deposit _depositInWork;
     public DateTime NewDate { get; set; }
     public List<Account> DepositsForCombobox { get; set; }
     public Account DepositDonor { get; set; }
+    public Deposit DepositInWork  
+    {
+      get { return _depositInWork; }
+      set
+      {
+        if (Equals(value, _depositInWork)) return;
+        _depositInWork = value;
+        NotifyOfPropertyChange(() => DepositInWork);
+      }
+    }
 
     public ObservableCollection<DepositRateLine> Rows { get; set; }
 
@@ -30,6 +41,7 @@ namespace Keeper.ViewModels
 
     public void Initialize(Deposit deposit)
     {
+      DepositInWork = deposit;
       if (deposit.DepositRateLines == null) deposit.DepositRateLines = new ObservableCollection<DepositRateLine>();
       Rows = deposit.DepositRateLines;
       if (Rows.Count == 0)
@@ -82,7 +94,10 @@ namespace Keeper.ViewModels
       }
     }
 
-    public void CloseForm(){TryClose(true);}
+    public void CloseForm()
+    {
+      TryClose(true);
+    }
 
 
   }
