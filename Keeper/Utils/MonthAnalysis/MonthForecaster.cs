@@ -13,17 +13,17 @@ namespace Keeper.Utils.MonthAnalysis
   class MonthForecaster
   {
     private readonly KeeperDb _db;
-    private readonly Ini _optionSet;
+    private readonly RegularPaymentsProvider _regularPaymentsProvider;
     private readonly RateExtractor _rateExtractor;
     private readonly AccountTreeStraightener _accountTreeStraightener;
     private readonly DepositParser _depositParser;
 
     [ImportingConstructor]
-    public MonthForecaster(KeeperDb db, Ini optionSet, RateExtractor rateExtractor, 
+    public MonthForecaster(KeeperDb db, RegularPaymentsProvider regularPaymentsProvider, RateExtractor rateExtractor, 
        AccountTreeStraightener accountTreeStraightener, DepositParser depositParser)
     {
       _db = db;
-      _optionSet = optionSet;
+      _regularPaymentsProvider = regularPaymentsProvider;
       _rateExtractor = rateExtractor;
       _accountTreeStraightener = accountTreeStraightener;
       _depositParser = depositParser;
@@ -32,43 +32,20 @@ namespace Keeper.Utils.MonthAnalysis
     public void CollectEstimates(Saldo s)
     {
       s.ForecastIncomes = new EstimatedIncomes();
-      CheckSalary(s);
-      CheckApartmentsToLet(s);
+      CheckRegularPayments(s);
       CheckDeposits(s);
       s.ForecastIncomes.TotalInUsd = s.Incomes.TotalInUsd + s.ForecastIncomes.EstimatedIncomesSum;
-
     }
 
-    private void CheckSalary(Saldo s)
+    private void CheckRegularPayments(Saldo s)
     {
-      decimal estimatedSalaryInEnvelope;
+      var regularIncome = _regularPaymentsProvider.RegularPayments.Income;
 
-      var tr = (from income in s.Incomes.OnHands.Transactions where income.Article.Name == "Моя з/пл официальная" select income).FirstOrDefault();
-      if (tr == null)
+      foreach (var payment in regularIncome)
       {
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney{Amount = _optionSet.MonthlyTraffic.SalaryCard, ArticleName = "Моя з/пл официальная", Currency = CurrencyCodes.BYR});
-        var estimatedSalaryOnCard = _rateExtractor.GetUsdEquivalent(_optionSet.MonthlyTraffic.SalaryCard, CurrencyCodes.BYR, DateTime.Today);
-        s.ForecastIncomes.EstimatedIncomesSum += estimatedSalaryOnCard;
-        estimatedSalaryInEnvelope = _optionSet.MonthlyTraffic.SalaryFull - estimatedSalaryOnCard;
+        if (false) continue;
+        s.ForecastIncomes.Incomes.Add(new EstimatedMoney{Amount = payment.Amount, Currency = payment.Currency, ArticleName = payment.Article});
       }
-      else
-      {
-        estimatedSalaryInEnvelope = _optionSet.MonthlyTraffic.SalaryFull - _rateExtractor.GetUsdEquivalent(tr.Amount, tr.Currency, tr.Timestamp); 
-      }
-
-      if ((from income in s.Incomes.OnHands.Transactions where income.Article.Name == "Моя з/пл конверт" select income).FirstOrDefault() == null)
-      {
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = estimatedSalaryInEnvelope, ArticleName = "Моя з/пл конверт", Currency = CurrencyCodes.USD });
-        s.ForecastIncomes.EstimatedIncomesSum += estimatedSalaryInEnvelope;
-      }
-
-    }
-
-    private void CheckApartmentsToLet(Saldo s)
-    {
-      if ((from income in s.Incomes.OnHands.Transactions where income.Article.Name == "Сдача квартиры" select income).FirstOrDefault() != null) return;
-      s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = _optionSet.MonthlyTraffic.ApartmentsToLet, ArticleName = "Сдача квартиры", Currency = CurrencyCodes.USD });
-      s.ForecastIncomes.EstimatedIncomesSum += _optionSet.MonthlyTraffic.ApartmentsToLet;
     }
 
     private void CheckDeposits(Saldo s)

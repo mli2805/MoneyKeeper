@@ -26,8 +26,8 @@
     <ei:KeyTrigger Key="T">
       <cal:ActionMessage MethodName="TempItem"/>
     </ei:KeyTrigger>
-    <ei:KeyTrigger Key="S">
-      <cal:ActionMessage MethodName="ShowOptionsForm"/>
+    <ei:KeyTrigger Key="R">
+      <cal:ActionMessage MethodName="ShowRegularPaymentsForm"/>
     </ei:KeyTrigger>
   </i:Interaction.Triggers>
   <Grid >
@@ -132,11 +132,11 @@
 				<MenuItem x:Name="ShowRatesDiagram" Header="Курсы валют"/>
 			</MenuItem>
 			<MenuItem Header="TOOLS">
-				<MenuItem x:Name="TempItem" Header="Временный пункт (жми T)"/>
-        <MenuItem x:Name="ShowToDoForm" Header="Надо сделать" />
-        <Separator Style="{DynamicResource SeparatorStyle}"/>
-        <MenuItem x:Name="ShowOptionsForm" Header="Настройки" />
-      </MenuItem>
+			  <MenuItem x:Name="ShowRegularPaymentsForm" Header="Регулярные платежи" />
+			  <MenuItem x:Name="TempItem" Header="Временный пункт (жми T)"/>
+			  <Separator Style="{DynamicResource SeparatorStyle}"/>
+			  <MenuItem x:Name="ShowToDoForm" Header="Надо сделать" />
+			</MenuItem>
 			<MenuItem Header="СПРАВКА">
 				<MenuItem x:Name="AboutForm" Header="О ПРОГРАММЕ"/>
 				<Separator Style="{DynamicResource SeparatorStyle}"/>

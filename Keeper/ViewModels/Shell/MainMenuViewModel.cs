@@ -269,15 +269,8 @@ namespace Keeper.ViewModels.Shell
 
     public void TempItem()
     {
-//      ShowExpensePartingOxyPlotDiagram();
-      ShowRegularPaymentsForm();
+      ShowExpensePartingOxyPlotDiagram();
 //      SetIsFolders();
-    }
-
-    public void ShowRegularPaymentsForm()
-    {
-      var form = IoC.Get<RegularPaymentsViewModel>();
-      WindowManager.ShowDialog(form);
     }
 
     public void ShowToDoForm()
@@ -287,11 +280,11 @@ namespace Keeper.ViewModels.Shell
       WindowManager.ShowWindow(toDoForm);
     }
 
-    public void ShowOptionsForm()
+    public void ShowRegularPaymentsForm()
     {
-      var optionsForm = IoC.Get<OptionsViewModel>();
-      _launchedForms.Add(optionsForm);
-      WindowManager.ShowWindow(optionsForm);
+      var regularPaymentsForm = IoC.Get<RegularPaymentsViewModel>();
+      _launchedForms.Add(regularPaymentsForm);
+      WindowManager.ShowWindow(regularPaymentsForm);
     }
     #endregion
 

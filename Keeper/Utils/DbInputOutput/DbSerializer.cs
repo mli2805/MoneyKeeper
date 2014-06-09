@@ -64,3 +64,5 @@ namespace Keeper.Utils.DbInputOutput
 // XML serialization
 // дженерик проглотила нормально
 // сломалась на дереве счетов - Account содержит Account
+
+// DataContractJsonSerializer тоже сломался на счетах (цикл)

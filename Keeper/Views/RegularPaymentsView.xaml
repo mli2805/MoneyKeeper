@@ -91,9 +91,11 @@
               ColumnHeaderStyle="{StaticResource headerTextStyle}" 
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <DataGrid.Columns>
-        <DataGridTextColumn Header=" Доходы         " ElementStyle="{StaticResource textBlockToRightStyle}"
-                            Binding="{Binding Comment}">
-        </DataGridTextColumn>
+        <DataGridComboBoxColumn Header="Доходы" 
+                                ElementStyle="{StaticResource comboBoxToRightStyle}"
+                                SelectedItemBinding ="{Binding Article}"
+                                ItemsSource="{x:Static ViewModels:RegularPaymentsViewModel.ArticleList}">
+        </DataGridComboBoxColumn>
         <DataGridTextColumn Header="  Сумма" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
                             Binding="{Binding Amount, StringFormat=\{0:N\}}">
         </DataGridTextColumn>
@@ -111,9 +113,11 @@
               ColumnHeaderStyle="{StaticResource headerTextStyle}" 
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <DataGrid.Columns>
-        <DataGridTextColumn Header=" Расходы         " ElementStyle="{StaticResource textBlockToRightStyle}"
-                            Binding="{Binding Comment}">
-        </DataGridTextColumn>
+        <DataGridComboBoxColumn Header="Расходы" 
+                                ElementStyle="{StaticResource comboBoxToRightStyle}"
+                                SelectedItemBinding ="{Binding Article}"
+                                ItemsSource="{x:Static ViewModels:RegularPaymentsViewModel.ArticleList}">
+        </DataGridComboBoxColumn>
         <DataGridTextColumn Header="  Сумма" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
                             Binding="{Binding Amount, StringFormat=\{0:N\}}">
         </DataGridTextColumn>
