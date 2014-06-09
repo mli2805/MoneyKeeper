@@ -31,11 +31,12 @@ namespace Keeper.Utils.MonthAnalysis
 
     public void CollectEstimates(Saldo s)
     {
-      s.ForecastIncomes = new EstimatedIncomes();
+      s.ForecastRegularIncome = new EstimatedPayments();
       CheckRegularIncome(s);
       CheckRegularExpenses(s);
       CheckDeposits(s);
-      s.ForecastIncomes.TotalInUsd = s.Incomes.TotalInUsd + s.ForecastIncomes.EstimatedIncomesSum;
+      s.ForecastRegularIncome.TotalInUsd = s.Incomes.TotalInUsd + s.ForecastRegularIncome.EstimatedSum;
+      s.ForecastRegularExpense.TotalInUsd = s.Expense.TotalInUsd + s.ForecastRegularExpense.EstimatedSum;
     }
 
     private void CheckRegularIncome(Saldo s)
@@ -43,7 +44,7 @@ namespace Keeper.Utils.MonthAnalysis
       var regularIncome = _regularPaymentsProvider.RegularPayments.Income;
       foreach (var payment in regularIncome.Where(payment => !CheckIncomePayment(s, payment)))
       {
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney{Amount = payment.Amount, Currency = payment.Currency, ArticleName = payment.Article});
+        s.ForecastRegularIncome.Payments.Add(new EstimatedMoney{Amount = payment.Amount, Currency = payment.Currency, ArticleName = payment.Article});
       }
     }
 
@@ -52,7 +53,7 @@ namespace Keeper.Utils.MonthAnalysis
       var regularExpenses = _regularPaymentsProvider.RegularPayments.Expenses;
       foreach (var payment in regularExpenses.Where(payment => !CheckExpensePayment(s, payment)))
       {
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = payment.Amount, Currency = payment.Currency, ArticleName = payment.Article });
+        s.ForecastRegularExpense.Payments.Add(new EstimatedMoney { Amount = payment.Amount, Currency = payment.Currency, ArticleName = payment.Article });
       }
       
     }
@@ -65,7 +66,12 @@ namespace Keeper.Utils.MonthAnalysis
 
     private bool CheckExpensePayment(Saldo s, RegularPayment payment)
     {
-      return true;
+      return (from tr in _db.Transactions
+              where tr.Timestamp.IsMonthTheSame(s.StartDate)
+                    && tr.Article != null
+                    && tr.Article.Name == payment.Article
+              select tr).FirstOrDefault() != null;
+
     }
 
     private void CheckDeposits(Saldo s)
@@ -77,11 +83,11 @@ namespace Keeper.Utils.MonthAnalysis
 
         if (deposit.Evaluations.EstimatedProcentsInThisMonth == 0) continue;
 
-        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = deposit.Evaluations.EstimatedProcentsInThisMonth, 
+        s.ForecastRegularIncome.Payments.Add(new EstimatedMoney { Amount = deposit.Evaluations.EstimatedProcentsInThisMonth, 
           ArticleName = string.Format("%%  {0} {1:d MMM}",deposit.Bank ,deposit.FinishDate), 
           Currency = deposit.Currency });
 
-        s.ForecastIncomes.EstimatedIncomesSum += 
+        s.ForecastRegularIncome.EstimatedSum += 
           _rateExtractor.GetUsdEquivalent(deposit.Evaluations.EstimatedProcentsInThisMonth, deposit.Currency, DateTime.Today);
       }
     }
