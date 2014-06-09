@@ -32,20 +32,40 @@ namespace Keeper.Utils.MonthAnalysis
     public void CollectEstimates(Saldo s)
     {
       s.ForecastIncomes = new EstimatedIncomes();
-      CheckRegularPayments(s);
+      CheckRegularIncome(s);
+      CheckRegularExpenses(s);
       CheckDeposits(s);
       s.ForecastIncomes.TotalInUsd = s.Incomes.TotalInUsd + s.ForecastIncomes.EstimatedIncomesSum;
     }
 
-    private void CheckRegularPayments(Saldo s)
+    private void CheckRegularIncome(Saldo s)
     {
       var regularIncome = _regularPaymentsProvider.RegularPayments.Income;
-
-      foreach (var payment in regularIncome)
+      foreach (var payment in regularIncome.Where(payment => !CheckIncomePayment(s, payment)))
       {
-        if (false) continue;
         s.ForecastIncomes.Incomes.Add(new EstimatedMoney{Amount = payment.Amount, Currency = payment.Currency, ArticleName = payment.Article});
       }
+    }
+
+    private void CheckRegularExpenses(Saldo s)
+    {
+      var regularExpenses = _regularPaymentsProvider.RegularPayments.Expenses;
+      foreach (var payment in regularExpenses.Where(payment => !CheckExpensePayment(s, payment)))
+      {
+        s.ForecastIncomes.Incomes.Add(new EstimatedMoney { Amount = payment.Amount, Currency = payment.Currency, ArticleName = payment.Article });
+      }
+      
+    }
+
+    private bool CheckIncomePayment(Saldo s, RegularPayment payment)
+    {
+      return (from income in s.Incomes.OnHands.Transactions 
+               where income.Article.Name == payment.Article select income).FirstOrDefault() != null;
+    }
+
+    private bool CheckExpensePayment(Saldo s, RegularPayment payment)
+    {
+      return true;
     }
 
     private void CheckDeposits(Saldo s)
