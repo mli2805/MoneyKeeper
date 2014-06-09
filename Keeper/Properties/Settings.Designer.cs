@@ -74,12 +74,12 @@ namespace Keeper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("KeeperOptions.json")]
-        public string IniFile {
+        public string OptionsFile {
             get {
-                return ((string)(this["IniFile"]));
+                return ((string)(this["OptionsFile"]));
             }
             set {
-                this["IniFile"] = value;
+                this["OptionsFile"] = value;
             }
         }
         
@@ -116,6 +116,18 @@ namespace Keeper.Properties {
             }
             set {
                 this["RegularPaymentsFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10000")]
+        public decimal IgnoreMonthlyDepositProfitBelowByr {
+            get {
+                return ((decimal)(this["IgnoreMonthlyDepositProfitBelowByr"]));
+            }
+            set {
+                this["IgnoreMonthlyDepositProfitBelowByr"] = value;
             }
         }
     }

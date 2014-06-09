@@ -4,6 +4,7 @@ using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
 {
@@ -11,6 +12,7 @@ namespace Keeper.ViewModels
   class RegularPaymentsViewModel : Screen
   {
     public static List<CurrencyCodes> CurrencyList { get; private set; }
+    public static List<string> ArticleList { get; private set; }
 
     private RegularPayments _payments;
 
@@ -26,12 +28,22 @@ namespace Keeper.ViewModels
     }
 
     private readonly RegularPaymentsProvider _provider;
+    private readonly KeeperDb _db;
+    private readonly AccountTreeStraightener _accountTreeStraightener;
 
     [ImportingConstructor]
-    public RegularPaymentsViewModel(RegularPaymentsProvider provider)
+    public RegularPaymentsViewModel(RegularPaymentsProvider provider, KeeperDb db, AccountTreeStraightener accountTreeStraightener)
     {
       _provider = provider;
+      _db = db;
+      _accountTreeStraightener = accountTreeStraightener;
       CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+      ArticleList = new List<string>();
+      var accounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Все доходы") || a.Is("Все расходы")).ToList();
+      foreach (var account in accounts)
+      {
+      ArticleList.Add(account.Name);
+      }
     }
 
     protected override void OnViewLoaded(object view)

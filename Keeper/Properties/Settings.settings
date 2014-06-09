@@ -14,7 +14,7 @@
     <Setting Name="KeeperInDropBox" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\</Value>
     </Setting>
-    <Setting Name="IniFile" Type="System.String" Scope="User">
+    <Setting Name="OptionsFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">KeeperOptions.json</Value>
     </Setting>
     <Setting Name="BackupPath" Type="System.String" Scope="User">
@@ -25,6 +25,9 @@
     </Setting>
     <Setting Name="RegularPaymentsFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">KeeperRegPays.json</Value>
+    </Setting>
+    <Setting Name="IgnoreMonthlyDepositProfitBelowByr" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">10000</Value>
     </Setting>
   </Settings>
 </SettingsFile>
