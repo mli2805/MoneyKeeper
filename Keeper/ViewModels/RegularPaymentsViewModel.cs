@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
@@ -28,6 +27,7 @@ namespace Keeper.ViewModels
       DisplayName = "Регулярные платежи";
 
       Payments = (RegularPayments)_provider.RegularPayments.Clone();
+      Payments.Income.Add(new RegularPayment(){Amount = 1000, Comment = "1", Currency = CurrencyCodes.USD, DayOfMonth = 3});
     }
 
     public void SavePayments()

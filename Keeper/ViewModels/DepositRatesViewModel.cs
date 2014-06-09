@@ -18,6 +18,7 @@ namespace Keeper.ViewModels
     public DateTime NewDate { get; set; }
     public List<Account> DepositsForCombobox { get; set; }
     public Account DepositDonor { get; set; }
+
     public Deposit DepositInWork  
     {
       get { return _depositInWork; }
@@ -28,7 +29,6 @@ namespace Keeper.ViewModels
         NotifyOfPropertyChange(() => DepositInWork);
       }
     }
-
     public ObservableCollection<DepositRateLine> Rows { get; set; }
 
     [ImportingConstructor]
@@ -41,7 +41,9 @@ namespace Keeper.ViewModels
 
     public void Initialize(Deposit deposit)
     {
+      if (deposit.ProcentsEvaluated == null) deposit.ProcentsEvaluated = new DepositProcentsEvaluated();
       DepositInWork = deposit;
+
       if (deposit.DepositRateLines == null) deposit.DepositRateLines = new ObservableCollection<DepositRateLine>();
       Rows = deposit.DepositRateLines;
       if (Rows.Count == 0)
