@@ -6,7 +6,7 @@
         mc:Ignorable="d" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         d:DataContext="{d:DesignInstance ViewModels:RegularPaymentsViewModel}"
-        Title="RegularPaymentsView" Height="300" Width="500">
+        Title="RegularPaymentsView" Height="400" Width="500">
   <Window.Resources>
     <ResourceDictionary>
       <Style x:Key="comboBoxToRightStyle" TargetType="{x:Type ComboBox}">
@@ -82,32 +82,53 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
+      <RowDefinition Height="10" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="40" />
+      <RowDefinition Height="50" />
     </Grid.RowDefinitions>
-    <DataGrid ItemsSource="{Binding Payments.Income}" AutoGenerateColumns="False" 
+    
+    <DataGrid Grid.Row="0" ItemsSource="{Binding Payments.Income}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource headerTextStyle}" 
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <DataGrid.Columns>
-        <DataGridTextColumn Header=" Комментарий         " ElementStyle="{StaticResource textBlockToRightStyle}"
+        <DataGridTextColumn Header=" Доходы         " ElementStyle="{StaticResource textBlockToRightStyle}"
                             Binding="{Binding Comment}">
+        </DataGridTextColumn>
+        <DataGridTextColumn Header="  Сумма" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
+                            Binding="{Binding Amount, StringFormat=\{0:N\}}">
         </DataGridTextColumn>
         <DataGridComboBoxColumn Header="Валюта" 
                                 ElementStyle="{StaticResource comboBoxToRightStyle}"
-                                SelectedItemBinding ="{Binding CurrencyLeft}"
-                                ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}">
+                                SelectedItemBinding ="{Binding Currency}"
+                                ItemsSource="{x:Static ViewModels:RegularPaymentsViewModel.CurrencyList}">
         </DataGridComboBoxColumn>
-        <DataGridTextColumn Header="  Сумма" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
-                            Binding="{Binding Amount, StringFormat=\{0:G5\}}">
-        </DataGridTextColumn>
-        <DataGridTextColumn Header="  Число" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
+        <DataGridTextColumn Header="Число" Width="50" ElementStyle="{StaticResource textBlockToRightStyle}"
                             Binding="{Binding DayOfMonth, StringFormat=\{0:G5\}}">
         </DataGridTextColumn>
-
-
       </DataGrid.Columns>
     </DataGrid>
-    <Button Name="SavePayments" Content="Ok" Grid.Row="2" Height="25" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Button>
-    <Button Name="CancelChanges"  Content="Cancel" Grid.Row="2" Height="25" Width="100" HorizontalAlignment="Left" Margin="150,0,0,0"></Button>
+    <DataGrid Grid.Row="2" ItemsSource="{Binding Payments.Expenses}" AutoGenerateColumns="False" 
+              ColumnHeaderStyle="{StaticResource headerTextStyle}" 
+              Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header=" Расходы         " ElementStyle="{StaticResource textBlockToRightStyle}"
+                            Binding="{Binding Comment}">
+        </DataGridTextColumn>
+        <DataGridTextColumn Header="  Сумма" Width="100" ElementStyle="{StaticResource textBlockToRightStyle}"
+                            Binding="{Binding Amount, StringFormat=\{0:N\}}">
+        </DataGridTextColumn>
+        <DataGridComboBoxColumn Header="Валюта" 
+                                ElementStyle="{StaticResource comboBoxToRightStyle}"
+                                SelectedItemBinding ="{Binding Currency}"
+                                ItemsSource="{x:Static ViewModels:RegularPaymentsViewModel.CurrencyList}">
+        </DataGridComboBoxColumn>
+        <DataGridTextColumn Header="Число" Width="50" ElementStyle="{StaticResource textBlockToRightStyle}"
+                            Binding="{Binding DayOfMonth, StringFormat=\{0:G5\}}">
+        </DataGridTextColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+
+    <Button Name="SavePayments" Content="Ok" Grid.Row="3" Height="25" Width="100" HorizontalAlignment="Left" Margin="20,5,0,0"></Button>
+    <Button Name="CancelChanges"  Content="Cancel" Grid.Row="3" Height="25" Width="100" HorizontalAlignment="Left" Margin="150,5,0,0"></Button>
   </Grid>
 </Window>

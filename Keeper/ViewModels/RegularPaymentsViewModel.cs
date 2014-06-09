@@ -12,7 +12,19 @@ namespace Keeper.ViewModels
   {
     public static List<CurrencyCodes> CurrencyList { get; private set; }
 
-    public RegularPayments Payments { get; set; }
+    private RegularPayments _payments;
+
+    public RegularPayments Payments
+    {
+      get { return _payments; }
+      set
+      {
+        if (Equals(value, _payments)) return;
+        _payments = value;
+        NotifyOfPropertyChange(() => Payments);
+      }
+    }
+
     private readonly RegularPaymentsProvider _provider;
 
     [ImportingConstructor]
@@ -27,7 +39,6 @@ namespace Keeper.ViewModels
       DisplayName = "Регулярные платежи";
 
       Payments = (RegularPayments)_provider.RegularPayments.Clone();
-      Payments.Income.Add(new RegularPayment(){Amount = 1000, Comment = "1", Currency = CurrencyCodes.USD, DayOfMonth = 3});
     }
 
     public void SavePayments()
