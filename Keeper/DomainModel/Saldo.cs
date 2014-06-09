@@ -72,15 +72,15 @@ namespace Keeper.DomainModel
     public string ArticleName { get; set; }
   }
 
-  public class EstimatedIncomes
+  public class EstimatedPayments
   {
-    public List<EstimatedMoney> Incomes { get; set; }
-    public decimal EstimatedIncomesSum { get; set; }
+    public List<EstimatedMoney> Payments { get; set; }
+    public decimal EstimatedSum { get; set; }
     public decimal TotalInUsd { get; set; }
 
-    public EstimatedIncomes()
+    public EstimatedPayments()
     {
-      Incomes = new List<EstimatedMoney>();
+      Payments = new List<EstimatedMoney>();
     }
   }
 
@@ -102,15 +102,17 @@ namespace Keeper.DomainModel
     public decimal TransferToDeposit { get; set; }
     public decimal TransferFromDeposit { get; set; }
 
-    public EstimatedIncomes ForecastIncomes { get; set; }
+    public EstimatedPayments ForecastRegularIncome { get; set; }
+    public EstimatedPayments ForecastRegularExpense { get; set; }
     public decimal ForecastExpense { get; set; }
-    public decimal ForecastFinResult { get { return ForecastIncomes.TotalInUsd - ForecastExpense; } }
+    public decimal ForecastFinResult { get { return ForecastRegularIncome.TotalInUsd - ForecastExpense; } }
     public decimal ForecastEndBalance { get { return BeginBalance.Common.TotalInUsd + ForecastFinResult; } }
 
     public Saldo()
     {
       Incomes = new ExtendedIncomes();
       Expense = new ExtendedTrafficWithCategories();
+      ForecastRegularExpense = new EstimatedPayments();
     }
   }
  

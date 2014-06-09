@@ -185,13 +185,13 @@ namespace Keeper.Utils.MonthAnalysis
     private void CalculateForecast(Saldo s)
     {
       Blank.ForecastListIncomes = new ObservableCollection<string> { "Прогноз доходов           \n" };
-      foreach (var income in s.ForecastIncomes.Incomes)
+      foreach (var income in s.ForecastRegularIncome.Payments)
       {
         Blank.ForecastListIncomes.Add(String.Format("{0:#,0} {1} {2}", income.Amount, income.Currency.ToString().ToLower(), income.ArticleName));
       }
-      if (s.ForecastIncomes.EstimatedIncomesSum > 0)
-        Blank.ForecastListIncomes.Add(String.Format("\nЕще ожидается  {0:#,0} usd", s.ForecastIncomes.EstimatedIncomesSum));
-      Blank.ForecastListIncomes.Add(String.Format("\nИтого  {0:#,0} usd", s.ForecastIncomes.TotalInUsd));
+      if (s.ForecastRegularIncome.EstimatedSum > 0)
+        Blank.ForecastListIncomes.Add(String.Format("\nЕще ожидается  {0:#,0} usd", s.ForecastRegularIncome.EstimatedSum));
+      Blank.ForecastListIncomes.Add(String.Format("\nИтого  {0:#,0} usd", s.ForecastRegularIncome.TotalInUsd));
 
       var daysInMonth = s.StartDate.AddMonths(1).AddDays(-1).Day;
       var passedDays = DateTime.Today.Year == s.StartDate.Year && DateTime.Today.Month == s.StartDate.Month
