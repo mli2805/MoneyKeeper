@@ -49,7 +49,7 @@ namespace Keeper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\Leonid\\Dropbox\\Keeper\\DB\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("j:\\Keeper\\DB\\")]
         public string DbPath {
             get {
                 return ((string)(this["DbPath"]));
@@ -61,7 +61,7 @@ namespace Keeper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\Leonid\\Dropbox\\Keeper\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("j:\\Keeper\\")]
         public string KeeperInDropBox {
             get {
                 return ((string)(this["KeeperInDropBox"]));
@@ -85,7 +85,7 @@ namespace Keeper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\Leonid\\Dropbox\\Keeper\\Backup\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("j:\\Keeper\\Backup\\")]
         public string BackupPath {
             get {
                 return ((string)(this["BackupPath"]));

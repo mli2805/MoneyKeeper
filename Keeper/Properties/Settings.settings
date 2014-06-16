@@ -9,16 +9,16 @@
       <Value Profile="(Default)">c:\Temp\dr5g6-egr6e-wegffs-w34ger\</Value>
     </Setting>
     <Setting Name="DbPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\DB\</Value>
+      <Value Profile="(Default)">j:\Keeper\DB\</Value>
     </Setting>
     <Setting Name="KeeperInDropBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\</Value>
+      <Value Profile="(Default)">j:\Keeper\</Value>
     </Setting>
     <Setting Name="OptionsFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">KeeperOptions.json</Value>
     </Setting>
     <Setting Name="BackupPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Users\Leonid\Dropbox\Keeper\Backup\</Value>
+      <Value Profile="(Default)">j:\Keeper\Backup\</Value>
     </Setting>
     <Setting Name="ToDoFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">ToDo.txt</Value>
