@@ -63,12 +63,15 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     public DepositProcentsEvaluated DepositProcentEvaluationRulesFromString(string s)
     {
       var rules = new DepositProcentsEvaluated();
-      rules.IsFactDays = s[0] == '1';
-      rules.OnlyAtTheEnd = s[1] == '1';
-      rules.EveryStartDay = s[2] == '1';
-      rules.EveryFirstDayOfMonth = s[3] == '1';
-      rules.EveryLastDayOfMonth = s[4] == '1';
-      rules.IsCapitalized = s[5] == '1';
+      if (s != "  ")
+      {
+        rules.IsFactDays = s[0] == '1';
+        rules.OnlyAtTheEnd = s[1] == '1';
+        rules.EveryStartDay = s[2] == '1';
+        rules.EveryFirstDayOfMonth = s[3] == '1';
+        rules.EveryLastDayOfMonth = s[4] == '1';
+        rules.IsCapitalized = s[5] == '1';
+      }
       return rules;
     }
     public void DepositFromString(string s, IEnumerable<Account> accountsPlaneList)
