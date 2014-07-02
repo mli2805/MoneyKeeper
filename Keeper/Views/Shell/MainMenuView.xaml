@@ -132,7 +132,9 @@
 				<MenuItem x:Name="ShowRatesDiagram" Header="Курсы валют"/>
 			</MenuItem>
 			<MenuItem Header="TOOLS">
-			  <MenuItem x:Name="ShowRegularPaymentsForm" Header="Регулярные платежи" />
+                <MenuItem x:Name="ShowSettings" Header="Settings" />
+                <Separator Style="{DynamicResource SeparatorStyle}"/>
+                <MenuItem x:Name="ShowRegularPaymentsForm" Header="Регулярные платежи" />
 			  <MenuItem x:Name="TempItem" Header="Временный пункт (жми T)"/>
 			  <Separator Style="{DynamicResource SeparatorStyle}"/>
 			  <MenuItem x:Name="ShowToDoForm" Header="Надо сделать" />
