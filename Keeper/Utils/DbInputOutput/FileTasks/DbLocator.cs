@@ -1,4 +1,5 @@
-﻿using System.Composition;
+﻿using System;
+using System.Composition;
 using System.IO;
 using System.Windows;
 
@@ -38,7 +39,7 @@ namespace Keeper.Utils.DbInputOutput.FileTasks
 
     public string Locate()
     {
-      var filename = mFileSystem.PathCombine((string)_mySettings.GetSetting("DbPath"), (string)_mySettings.GetSetting("DbxFile"));
+        var filename = _mySettings.GetCombinedSetting("DbFileFullPath");
       if (mFileSystem.GetFile(filename).Exists) return filename;
 
       var answer = mMessageBoxer.Show(string.Format(CHOOSE_ANOTHER_FILE, filename),
@@ -48,9 +49,12 @@ namespace Keeper.Utils.DbInputOutput.FileTasks
 
       var another = mOpenFileDialog.Show("*.*", FILTERS, "");
 
-      if (another == "") return null;
+      if (String.IsNullOrEmpty(another)) return null;
+      var anotherPath = Path.GetDirectoryName(another);
+      var length = anotherPath.Length;
 
-      _mySettings.SetSetting("DbPath", Path.GetDirectoryName(another));
+      var keeperFolder = anotherPath.Substring(0, length  - 2);
+        _mySettings.SetSetting("KeeperFolder", keeperFolder);
       _mySettings.Save();
       return another;
     }

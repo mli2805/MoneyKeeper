@@ -37,8 +37,9 @@ namespace Keeper.ViewModels.Shell
     private readonly DiagramDataFactory _diagramDataFactory;
     private readonly IMessageBoxer _messageBoxer;
     private readonly ExpensePartingDataProvider _expensePartingDataProvider;
+      private readonly MySettings _mySettings;
 
-    public bool IsDbLoadingFailed { get; set; }
+      public bool IsDbLoadingFailed { get; set; }
     public bool IsAuthorizationFailed { get; set; }
     private bool IsDbChanged { get; set; }
     private readonly List<Screen> _launchedForms = new List<Screen>();
@@ -57,13 +58,14 @@ namespace Keeper.ViewModels.Shell
     [ImportingConstructor]
     public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
                              IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory,
-                             IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider)
+                             IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider, MySettings mySettings)
     {
       _loadResult = loadResult;
       _messageBoxer = messageBoxer;
       _expensePartingDataProvider = expensePartingDataProvider;
+        _mySettings = mySettings;
 
-      IsDbLoadingFailed = _loadResult.Db == null;
+        IsDbLoadingFailed = _loadResult.Db == null;
       if (IsDbLoadingFailed)
       {
         _messageBoxer.Show(_loadResult.Explanation + "\nApplication will be closed!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -87,14 +89,14 @@ namespace Keeper.ViewModels.Shell
     public async void SaveDatabase()
     {
       MyMainMenuModel.Action = Actions.SaveDatabase;
-      await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)));
+      await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db,  _mySettings.GetCombinedSetting("DbFileFullPath") ));
       Task.WaitAll();
       MyMainMenuModel.Action = Actions.Idle;
     }
 
     public void DeserializeWithoutReturn()
     {
-      _db = new DbSerializer().DecryptAndDeserialize(Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile));
+        _db = new DbSerializer().DecryptAndDeserialize(_mySettings.GetCombinedSetting("DbFileFullPath"));
     }
 
     public async void LoadDatabase()
@@ -127,7 +129,7 @@ namespace Keeper.ViewModels.Shell
 
     public void LoadFromWithoutReturn()
     {
-      var result = _dbFromTxtLoader.LoadDbFromTxt(Settings.Default.TemporaryTxtDbPath);
+      var result = _dbFromTxtLoader.LoadDbFromTxt((string)_mySettings.GetSetting("TemporaryTxtDbPath"));
       if (result.Code != 0) MessageBox.Show(result.Explanation);
       else
       {
@@ -321,7 +323,8 @@ namespace Keeper.ViewModels.Shell
     {
       MyMainMenuModel.Action = Actions.PrepareExit;
       CloseAllLaunchedForms();
-      await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, Path.Combine(Settings.Default.DbPath, Settings.Default.DbxFile)));
+      var pp = _mySettings.GetCombinedSetting("DbFileFullPath");
+      await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, pp));
       if (IsDbChanged) await Task.Run(() => _backuper.MakeDbBackupCopy());
       Task.WaitAll();
       MyMainMenuModel.Action = Actions.Idle;
