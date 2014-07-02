@@ -9,6 +9,7 @@ using Keeper.DomainModel;
 using Keeper.Models.Shell;
 using Keeper.Properties;
 using Keeper.Utils.Accounts;
+using Keeper.Utils.Common;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -255,6 +256,14 @@ namespace Keeper.ViewModels.Shell
     #endregion
 
     #region меню Tools
+    public void ShowSettings()
+    {
+        var settings = IoC.Get<MySettings>();
+        var settingsForm = new SettingsViewModel(settings);
+        _launchedForms.Add(settingsForm);
+        WindowManager.ShowWindow(settingsForm);
+    }
+
 
     public void SetIsFolders()
     {
