@@ -155,8 +155,8 @@
       <i:Interaction.Behaviors>
         <Behaviors:ScrollToDisappearedDueDateChangeBehavior />
         <Behaviors:ScrollToPreviousExitPointOrBottomOnLoadBehavior />
-        <Behaviors:ScrollToBottomOnAddBehavior />
-        <Behaviors:SetFocusOnLoadBehavior />
+                <Behaviors:ScrollToBottomOnAddBehavior />
+                <Behaviors:SetFocusOnLoadBehavior />
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">
