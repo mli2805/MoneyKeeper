@@ -27,6 +27,21 @@ namespace Keeper.Utils.Common
       return Settings.Default[name];
     }
 
+	    public string GetCombinedSetting(string name)
+	    {
+	        switch (name)
+	        {
+                case "DbFileFullPath" :
+	                return (string) Settings.Default["KeeperFolder"] + (string) Settings.Default["DbFolder"] + (string) Settings.Default["DbxFile"];
+                case "RegularPaymentsFileFullPath":
+                    return (string)Settings.Default["KeeperFolder"] + (string)Settings.Default["DbFolder"] + (string)Settings.Default["RegularPaymentsFile"];
+                case "BackupPath":
+                    return (string)Settings.Default["KeeperFolder"] + (string)Settings.Default["BackupFolder"];
+                default:
+	                return "";
+	        }
+	    }
+
     public void SetSetting(string name, object value)
     {
       Settings.Default[name] = value;
@@ -38,10 +53,9 @@ namespace Keeper.Utils.Common
 	    {
 	        yield return new OneSetting("DbxFile", (string)Settings.Default["DbxFile"]);
             yield return new OneSetting("TemporaryTxtDbPath", (string)Settings.Default["TemporaryTxtDbPath"]);
-            yield return new OneSetting("DbPath", (string)Settings.Default["DbPath"]);
-            yield return new OneSetting("KeeperInDropBox", (string)Settings.Default["KeeperInDropBox"]);
-            yield return new OneSetting("OptionsFile", (string)Settings.Default["OptionsFile"]);
-            yield return new OneSetting("BackupPath", (string)Settings.Default["BackupPath"]);
+            yield return new OneSetting("DbFolder", (string)Settings.Default["DbFolder"]);
+            yield return new OneSetting("KeeperFolder", (string)Settings.Default["KeeperFolder"]);
+            yield return new OneSetting("BackupFolder", (string)Settings.Default["BackupFolder"]);
             yield return new OneSetting("ToDoFile", (string)Settings.Default["ToDoFile"]);
             yield return new OneSetting("RegularPaymentsFile", (string)Settings.Default["RegularPaymentsFile"]);
 	        yield return new OneSetting("IgnoreMonthlyDepositProfitBelowByr", ((decimal)Settings.Default["IgnoreMonthlyDepositProfitBelowByr"]).ToString());

@@ -10,7 +10,7 @@ namespace Keeper.ViewModels
   class ToDoViewModel : Screen
   {
     public static Encoding Encoding1251 = Encoding.GetEncoding(1251);
-    public static string FullFileName = Path.Combine(Settings.Default.KeeperInDropBox, Settings.Default.ToDoFile);
+    public static string FullFileName = Path.Combine(Settings.Default.KeeperFolder, Settings.Default.ToDoFile);
 
     private ObservableCollection<string> _toDoList;
     private string _newJob;
