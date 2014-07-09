@@ -18,9 +18,7 @@ namespace Keeper.DomainModel
     [ImportingConstructor]
     public RegularPaymentsProvider(IMySettings mySettings)
     {
-      _filename = Path.Combine((string) mySettings.GetSetting("DbPath"),
-                               (string) mySettings.GetSetting("RegularPaymentsFile"));
-
+        _filename = mySettings.GetCombinedSetting("RegularPaymentsFileFullPath");
       RegularPayments = Read() ?? new RegularPayments();
     }
 
