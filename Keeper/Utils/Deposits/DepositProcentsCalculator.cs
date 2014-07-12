@@ -8,12 +8,12 @@ using Keeper.Utils.Common;
 namespace Keeper.Utils.Deposits
 {
   [Export]
-  public class DepositEvaluator
+  public class DepositProcentsCalculator
   {
     private readonly KeeperDb _db;
 
     [ImportingConstructor]
-    public DepositEvaluator(KeeperDb db)
+    public DepositProcentsCalculator(KeeperDb db)
     {
       _db = db;
     }
@@ -21,15 +21,15 @@ namespace Keeper.Utils.Deposits
     public void ProcentsForPeriod(Account account, Period period)
     {
       account.Deposit.Evaluations.ProcentEvaluation = new List<ProcentEvaluationDailyLine>();
-      FillinBalances(account, period);
-      EvaluateProfit(account.Deposit);
+      FillinDailyBalances(account, period);
+      CalculateDailyProcents(account.Deposit);
       account.Deposit.Evaluations.EstimatedProcentsInThisMonth =
         account.Deposit.Evaluations.ProcentEvaluation.Where(line => line.Date.IsMonthTheSame(DateTime.Today)).Sum(line => line.DayProfit);
       account.Deposit.Evaluations.EstimatedProcents =
         account.Deposit.Evaluations.ProcentEvaluation.Sum(line => line.DayProfit);
     }
     
-    private void FillinBalances(Account account, Period period)
+    private void FillinDailyBalances(Account account, Period period)
     {
       var trs = _db.Transactions.Where(t=>t.Debet.Is(account) || t.Credit.Is(account)).ToList();
 
@@ -38,16 +38,17 @@ namespace Keeper.Utils.Deposits
       {
         var date = day;
         account.Deposit.Evaluations.ProcentEvaluation.Add(new ProcentEvaluationDailyLine { Date = day, Balance = balance });
-        balance += trs.Where(t => t.Timestamp.Date == date.Date).Sum(t => t.Amount);
+        balance += trs.Where(t => t.Timestamp.Date <= date.Date && t.Debet.Is(account)).Sum(t => t.Amount);
+        balance -= trs.Where(t => t.Timestamp.Date <= date.Date && t.Credit.Is(account)).Sum(t => t.Amount);
       }
     } 
 
-    private void EvaluateProfit(Deposit deposit)
+    private void CalculateDailyProcents(Deposit deposit)
     {
       foreach (var line in deposit.Evaluations.ProcentEvaluation)
       {
         line.DepoRate = GetCorrespondingDepoRate(deposit, line.Balance, line.Date);
-        line.DayProfit = EvaluateDayProfit(deposit, line.DepoRate, line.Balance);
+        line.DayProfit = CalculateOneDayProcents(deposit, line.DepoRate, line.Balance);
       }
     }
 
@@ -57,7 +58,7 @@ namespace Keeper.Utils.Deposits
       return line == null ? 0 : line.Rate;
     } 
 
-    private decimal EvaluateDayProfit(Deposit deposit, decimal depoRate, decimal balance)
+    private decimal CalculateOneDayProcents(Deposit deposit, decimal depoRate, decimal balance)
     {
 //      var year = deposit.IsFactDays ? 365 : 360;
       var year = deposit.ProcentsEvaluated.IsFactDays ? 365 : 360;

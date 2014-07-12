@@ -16,17 +16,17 @@ namespace Keeper.Utils.MonthAnalysis
     private readonly RegularPaymentsProvider _regularPaymentsProvider;
     private readonly RateExtractor _rateExtractor;
     private readonly AccountTreeStraightener _accountTreeStraightener;
-    private readonly DepositParser _depositParser;
+    private readonly DepositExtractor _depositExtractor;
 
     [ImportingConstructor]
     public MonthForecaster(KeeperDb db, RegularPaymentsProvider regularPaymentsProvider, RateExtractor rateExtractor, 
-       AccountTreeStraightener accountTreeStraightener, DepositParser depositParser)
+       AccountTreeStraightener accountTreeStraightener, DepositExtractor depositExtractor)
     {
       _db = db;
       _regularPaymentsProvider = regularPaymentsProvider;
       _rateExtractor = rateExtractor;
       _accountTreeStraightener = accountTreeStraightener;
-      _depositParser = depositParser;
+      _depositExtractor = depositExtractor;
     }
 
     public void CollectEstimates(Saldo s)
@@ -79,7 +79,7 @@ namespace Keeper.Utils.MonthAnalysis
       foreach (var account in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
       {
         if (account.Children.Count != 0) continue;
-        var deposit = _depositParser.Analyze(account);
+        var deposit = _depositExtractor.Extract(account);
 
         if (deposit.Evaluations.EstimatedProcentsInThisMonth == 0) continue;
 
