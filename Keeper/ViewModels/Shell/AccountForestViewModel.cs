@@ -13,142 +13,146 @@ using Keeper.Utils.Deposits;
 
 namespace Keeper.ViewModels.Shell
 {
-  [Export]
-  public class AccountForestViewModel : Screen
-  {
-    [Import]
-    public IWindowManager WindowManager { get; set; }
-
-    private readonly KeeperDb _db;
-    private readonly AccountTreesGardener _accountTreesGardener;
-    private readonly AccountOperations _accountOperations;
-    private readonly AccountTreeStraightener _accountTreeStraightener;
-    private readonly DepositParser _depositParser;
-
-    private readonly List<Screen> _launchedForms = new List<Screen>();
-
-    public AccountForestModel MyForestModel { get; set; }
-
-    [ImportingConstructor]
-    public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
-      AccountOperations accountOperations, AccountTreeStraightener accountTreeStraightener, DepositParser depositParser)
+    [Export]
+    public class AccountForestViewModel : Screen
     {
-      MyForestModel = shellModel.MyForestModel;
-      _db = db;
-      _accountTreesGardener = accountTreesGardener;
-      _accountOperations = accountOperations;
-      _accountTreeStraightener = accountTreeStraightener;
-      _depositParser = depositParser;
+        [Import]
+        public IWindowManager WindowManager { get; set; }
 
-      InitVariablesToShowAccounts();
-    }
+        private readonly KeeperDb _db;
+        private readonly AccountTreesGardener _accountTreesGardener;
+        private readonly AccountOperations _accountOperations;
+        private readonly AccountTreeStraightener _accountTreeStraightener;
+        private readonly DepositExtractor _depositExtractor;
+        private readonly DepositAnalyser _depositAnalyser;
 
-    protected override void OnViewLoaded(object view)
-    {
-      MyForestModel.OpenedAccountPage = 0;
-    }
+        private readonly List<Screen> _launchedForms = new List<Screen>();
 
-    public void InitVariablesToShowAccounts()
-    {
-      MyForestModel.MineAccountsRoot = new ObservableCollection<Account>
-          (from account in _db.Accounts where account.Name == "Мои" select account);
-      MyForestModel.ExternalAccountsRoot = new ObservableCollection<Account>
-          (from account in _db.Accounts where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков" select account);
-      MyForestModel.IncomesRoot = new ObservableCollection<Account>
-          (from account in _db.Accounts where account.Name == "Все доходы" select account);
-      MyForestModel.ExpensesRoot = new ObservableCollection<Account>
-        (from account in _db.Accounts where account.Name == "Все расходы" select account);
+        public AccountForestModel MyForestModel { get; set; }
 
-      NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
-      NotifyOfPropertyChange(() => MyForestModel.ExternalAccountsRoot);
-      NotifyOfPropertyChange(() => MyForestModel.IncomesRoot);
-      NotifyOfPropertyChange(() => MyForestModel.ExpensesRoot);
-    }
-
-    public void AccountDebugInfoIntoConsole()
-    {
-      Console.WriteLine("Account name: {0} ;  id = {1} ", MyForestModel.SelectedAccount.Name, MyForestModel.SelectedAccount.Id);
-      Console.WriteLine("Parent name: {0}", MyForestModel.SelectedAccount.Parent.Name);
-
-      if (MyForestModel.SelectedAccount.Children.Count > 0)
-      {
-        Console.WriteLine("Children names:");
-
-        foreach (var child in MyForestModel.SelectedAccount.Children)
+        [ImportingConstructor]
+        public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
+          AccountOperations accountOperations, AccountTreeStraightener accountTreeStraightener, DepositExtractor depositExtractor, DepositAnalyser depositAnalyser)
         {
-          Console.WriteLine("      "+child.Name);
+            MyForestModel = shellModel.MyForestModel;
+            _db = db;
+            _accountTreesGardener = accountTreesGardener;
+            _accountOperations = accountOperations;
+            _accountTreeStraightener = accountTreeStraightener;
+            _depositExtractor = depositExtractor;
+            _depositAnalyser = depositAnalyser;
 
+            InitVariablesToShowAccounts();
         }
-      }
+
+        protected override void OnViewLoaded(object view)
+        {
+            MyForestModel.OpenedAccountPage = 0;
+        }
+
+        public void InitVariablesToShowAccounts()
+        {
+            MyForestModel.MineAccountsRoot = new ObservableCollection<Account>
+                (from account in _db.Accounts where account.Name == "Мои" select account);
+            MyForestModel.ExternalAccountsRoot = new ObservableCollection<Account>
+                (from account in _db.Accounts where account.Name == "Внешние" || account.Name == "Для ввода стартовых остатков" select account);
+            MyForestModel.IncomesRoot = new ObservableCollection<Account>
+                (from account in _db.Accounts where account.Name == "Все доходы" select account);
+            MyForestModel.ExpensesRoot = new ObservableCollection<Account>
+              (from account in _db.Accounts where account.Name == "Все расходы" select account);
+
+            NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
+            NotifyOfPropertyChange(() => MyForestModel.ExternalAccountsRoot);
+            NotifyOfPropertyChange(() => MyForestModel.IncomesRoot);
+            NotifyOfPropertyChange(() => MyForestModel.ExpensesRoot);
+        }
+
+        public void AccountDebugInfoIntoConsole()
+        {
+            Console.WriteLine("Account name: {0} ;  id = {1} ", MyForestModel.SelectedAccount.Name, MyForestModel.SelectedAccount.Id);
+            Console.WriteLine("Parent name: {0}", MyForestModel.SelectedAccount.Parent.Name);
+
+            if (MyForestModel.SelectedAccount.Children.Count > 0)
+            {
+                Console.WriteLine("Children names:");
+
+                foreach (var child in MyForestModel.SelectedAccount.Children)
+                {
+                    Console.WriteLine("      " + child.Name);
+
+                }
+            }
+        }
+
+        #region // методы реализации контекстного меню на дереве счетов
+
+        public void RemoveSelectedAccount()
+        {
+            _accountTreesGardener.RemoveAccount(MyForestModel.SelectedAccount);
+        }
+
+        public void AddSelectedAccount()
+        {
+            var newSelectedAccount = _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount);
+            if (newSelectedAccount == null) return;
+
+            MyForestModel.SelectedAccount.IsSelected = false;
+            MyForestModel.SelectedAccount = newSelectedAccount;
+            MyForestModel.SelectedAccount.IsSelected = true;
+            NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
+        }
+
+        public void AddSelectedDeposit()
+        {
+            var newSelectedAccount = _accountTreesGardener.AddDeposit(MyForestModel.SelectedAccount);
+            if (newSelectedAccount == null) return;
+            //      _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount);
+            _accountOperations.SortDepositAccounts(_accountTreeStraightener.Seek("Депозиты", _db.Accounts));
+            MyForestModel.SelectedAccount.IsSelected = false;
+            MyForestModel.SelectedAccount = newSelectedAccount;
+            MyForestModel.SelectedAccount.IsSelected = true;
+            NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
+        }
+
+        public void ChangeSelectedAccount()
+        {
+            if (MyForestModel.SelectedAccount.Deposit != null)
+            {
+                _accountTreesGardener.ChangeDeposit(MyForestModel.SelectedAccount);
+                var selection = MyForestModel.SelectedAccount;
+                //        _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount.Parent);
+                _accountOperations.SortDepositAccounts(_accountTreeStraightener.Seek("Депозиты", _db.Accounts));
+                MyForestModel.SelectedAccount = selection;
+            }
+            else
+                _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
+        }
+
+        public void ShowDepositReport()
+        {
+            if (!MyForestModel.SelectedAccount.IsDeposit() || MyForestModel.SelectedAccount.Children.Count != 0) return;
+
+            foreach (var launchedForm in _launchedForms)
+            {
+                if (launchedForm is DepositViewModel && launchedForm.IsActive
+                  && ((DepositViewModel)launchedForm).Deposit.ParentAccount == MyForestModel.SelectedAccount) launchedForm.TryClose();
+            }
+
+            var depositForm = IoC.Get<DepositViewModel>();
+            _depositExtractor.Extract(MyForestModel.SelectedAccount);
+            _depositAnalyser.MakeForecast(MyForestModel.SelectedAccount);
+            depositForm.SetAccount(MyForestModel.SelectedAccount);
+            _launchedForms.Add(depositForm);
+            depositForm.RenewPressed += DepositViewModelRenewed; // подписываемся на переофрмление депозита, если оно произойдет надо сменить селекшен
+            WindowManager.ShowWindow(depositForm);
+        }
+
+        void DepositViewModelRenewed(object sender, RenewPressedEventArgs e)
+        {
+            MyForestModel.SelectedAccount.IsSelected = false;
+            MyForestModel.SelectedAccount = e.NewAccount;
+        }
+
+        #endregion
     }
-
-    #region // методы реализации контекстного меню на дереве счетов
-
-    public void RemoveSelectedAccount()
-    {
-      _accountTreesGardener.RemoveAccount(MyForestModel.SelectedAccount);
-    }
-
-    public void AddSelectedAccount()
-    {
-      var newSelectedAccount = _accountTreesGardener.AddAccount(MyForestModel.SelectedAccount);
-      if (newSelectedAccount == null) return;
-
-      MyForestModel.SelectedAccount.IsSelected = false;
-      MyForestModel.SelectedAccount = newSelectedAccount;
-      MyForestModel.SelectedAccount.IsSelected = true;
-      NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
-    }
-
-    public void AddSelectedDeposit()
-    {
-      var newSelectedAccount = _accountTreesGardener.AddDeposit(MyForestModel.SelectedAccount);
-      if (newSelectedAccount == null) return;
-//      _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount);
-      _accountOperations.SortDepositAccounts(_accountTreeStraightener.Seek("Депозиты",_db.Accounts));
-      MyForestModel.SelectedAccount.IsSelected = false;
-      MyForestModel.SelectedAccount = newSelectedAccount;
-      MyForestModel.SelectedAccount.IsSelected = true;
-      NotifyOfPropertyChange(() => MyForestModel.MineAccountsRoot);
-    }
-
-    public void ChangeSelectedAccount()
-    {
-      if (MyForestModel.SelectedAccount.Deposit != null)
-      {
-        _accountTreesGardener.ChangeDeposit(MyForestModel.SelectedAccount);
-        var selection = MyForestModel.SelectedAccount;
-//        _accountOperations.SortDepositAccounts(MyForestModel.SelectedAccount.Parent);
-        _accountOperations.SortDepositAccounts(_accountTreeStraightener.Seek("Депозиты", _db.Accounts));
-        MyForestModel.SelectedAccount = selection;
-      }
-      else
-        _accountTreesGardener.ChangeAccount(MyForestModel.SelectedAccount);
-    }
-
-    public void ShowDepositReport()
-    {
-      if (!MyForestModel.SelectedAccount.IsDeposit() || MyForestModel.SelectedAccount.Children.Count != 0) return;
-
-      foreach (var launchedForm in _launchedForms)
-      {
-        if (launchedForm is DepositViewModel && launchedForm.IsActive
-          && ((DepositViewModel)launchedForm).Deposit.ParentAccount == MyForestModel.SelectedAccount) launchedForm.TryClose();
-      }
-
-      var depositForm = IoC.Get<DepositViewModel>();
-      depositForm.SetAccount(_depositParser.Analyze(MyForestModel.SelectedAccount));
-      _launchedForms.Add(depositForm);
-      depositForm.RenewPressed += DepositViewModelRenewed; // подписываемся на переофрмление депозита, если оно произойдет надо сменить селекшен
-      WindowManager.ShowWindow(depositForm);
-    }
-
-    void DepositViewModelRenewed(object sender, RenewPressedEventArgs e)
-    {
-      MyForestModel.SelectedAccount.IsSelected = false;
-      MyForestModel.SelectedAccount = e.NewAccount;
-    }
-
-    #endregion
-  }
 }
