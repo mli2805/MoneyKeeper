@@ -59,6 +59,7 @@ namespace Keeper.Utils.Common
             yield return new OneSetting("ToDoFile", (string)Settings.Default["ToDoFile"]);
             yield return new OneSetting("RegularPaymentsFile", (string)Settings.Default["RegularPaymentsFile"]);
 	        yield return new OneSetting("IgnoreMonthlyDepositProfitBelowByr", ((decimal)Settings.Default["IgnoreMonthlyDepositProfitBelowByr"]).ToString());
+            yield return new OneSetting("LargeExpenseUsd", ((decimal)Settings.Default["LargeExpenseUsd"]).ToString());
 
 	    }
 
