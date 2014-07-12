@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance ViewModels:DepositViewModel}">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="90"/>
+      <RowDefinition Height="80"/>
       <RowDefinition Height="1*"/>
       <RowDefinition Height="120"/>
       <RowDefinition Height="40"/>

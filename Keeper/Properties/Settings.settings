@@ -26,5 +26,8 @@
     <Setting Name="IgnoreMonthlyDepositProfitBelowByr" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">10000</Value>
     </Setting>
+    <Setting Name="LargeExpenseUsd" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
