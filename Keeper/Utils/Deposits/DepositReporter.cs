@@ -31,17 +31,17 @@ namespace Keeper.Utils.Deposits
     {
       var reportHeader = new ObservableCollection<string>();
 
-      if (deposit.Evaluations.CurrentBalance == 0) reportHeader.Add("Депозит закрыт. Остаток 0.\n");
+      if (deposit.CalculatedTotals.CurrentBalance == 0) reportHeader.Add("Депозит закрыт. Остаток 0.\n");
       else
       {
         reportHeader.Add(deposit.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!" : "Действующий депозит.");
         var balanceString = deposit.Currency != CurrencyCodes.USD
                               ? String.Format("{0:#,0} {2}  ($ {1:#,0} )",
-                                              deposit.Evaluations.CurrentBalance,
-                                              deposit.Evaluations.CurrentBalance /
+                                              deposit.CalculatedTotals.CurrentBalance,
+                                              deposit.CalculatedTotals.CurrentBalance /
                                               (decimal)_rateExtractor.GetLastRate(deposit.Currency),
                                               deposit.Currency.ToString().ToLower())
-                              : String.Format("{0:#,0} usd", deposit.Evaluations.CurrentBalance);
+                              : String.Format("{0:#,0} usd", deposit.CalculatedTotals.CurrentBalance);
         reportHeader.Add(String.Format("Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }
        
@@ -55,13 +55,13 @@ namespace Keeper.Utils.Deposits
 
       var isFirst = true;
       decimal beforeOperation = 0;
-      foreach (var operation in deposit.Evaluations.Traffic)
+      foreach (var operation in deposit.CalculatedTotals.Traffic)
       {
         var line = new DepositReportBodyLine{Day = operation.Timestamp.Date, BeforeOperation = beforeOperation};
         if (operation.TransactionType == DepositTransactionTypes.Расход)
         {
           line.ExpenseColumn = operation.Amount;
-          line.Comment = (deposit.Evaluations.CurrentBalance == 0 && operation == deposit.Evaluations.Traffic.Last())
+          line.Comment = (deposit.CalculatedTotals.CurrentBalance == 0 && operation == deposit.CalculatedTotals.Traffic.Last())
                            ? "закрытие депозита"
                            : "частичное снятие";
         }
@@ -86,13 +86,13 @@ namespace Keeper.Utils.Deposits
     {
       var reportFooter = new ObservableCollection<string>();
 
-      reportFooter.Add(String.Format("Доход по депозиту {0:#,0} usd \n", deposit.Evaluations.CurrentProfit));
-      if (deposit.Evaluations.CurrentBalance == 0) return reportFooter;
+      reportFooter.Add(String.Format("Доход по депозиту {0:#,0} usd \n", deposit.CalculatedTotals.CurrentProfit));
+      if (deposit.CalculatedTotals.CurrentBalance == 0) return reportFooter;
       reportFooter.Add(String.Format("В этом месяце ожидаются проценты {0}", 
-        AmountRepresentation(deposit.Evaluations.EstimatedProcentsInThisMonth,deposit.Currency)));
+        AmountRepresentation(deposit.CalculatedTotals.EstimatedProcentsInThisMonth,deposit.Currency)));
       reportFooter.Add(String.Format("Всего ожидается процентов {0}", 
-        AmountRepresentation(deposit.Evaluations.EstimatedProcents,deposit.Currency)));
-      reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd", deposit.Evaluations.EstimatedProfitInUsd));
+        AmountRepresentation(deposit.CalculatedTotals.EstimatedProcents,deposit.Currency)));
+      reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd", deposit.CalculatedTotals.EstimatedProfitInUsd));
       return reportFooter;
     }
 

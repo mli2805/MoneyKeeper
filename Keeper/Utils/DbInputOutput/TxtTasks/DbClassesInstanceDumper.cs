@@ -59,7 +59,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     {
       var startDate = string.Format("{0:dd/MM/yyyy}", deposit.StartDate.Date);
       var finishDate = string.Format("{0:dd/MM/yyyy}", deposit.FinishDate.Date);
-      var rules = deposit.ProcentsEvaluated == null ? "" : Dump(deposit.ProcentsEvaluated);
+      var rules = deposit.ProcentsCalculatingRules == null ? "" : Dump(deposit.ProcentsCalculatingRules);
       var comment = deposit.Comment == null ? "" : deposit.Comment.Replace("\r\n", "|");
     
       return deposit.ParentAccount.Id + " ; " + deposit.Bank.Id + " ; " + deposit.Title + " ; " + deposit.AgreementNumber + 

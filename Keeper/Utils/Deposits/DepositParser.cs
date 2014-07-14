@@ -48,7 +48,7 @@ namespace Keeper.Utils.Deposits
             n = s.IndexOf(' ', p);
             account.Deposit.FinishDate = Convert.ToDateTime(s.Substring(p - 2, n - p + 2), new CultureInfo("ru-RU"));
             p = s.IndexOf('%', n);
-            account.Deposit.DepositRateLines = new ObservableCollection<DepositRateLine> { new DepositRateLine { AmountFrom = 0, AmountTo = 999999999999, DateFrom = account.Deposit.StartDate, Rate = Convert.ToDecimal(s.Substring(n, p - n)) } };
+            account.Deposit.RateLines = new ObservableCollection<DepositRateLine> { new DepositRateLine { AmountFrom = 0, AmountTo = 999999999999, DateFrom = account.Deposit.StartDate, Rate = Convert.ToDecimal(s.Substring(n, p - n)) } };
         }
 
 

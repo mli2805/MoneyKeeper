@@ -41,11 +41,11 @@ namespace Keeper.ViewModels
 
     public void Initialize(Deposit deposit)
     {
-      if (deposit.ProcentsEvaluated == null) deposit.ProcentsEvaluated = new DepositProcentsCalculatingRules();
+      if (deposit.ProcentsCalculatingRules == null) deposit.ProcentsCalculatingRules = new DepositProcentsCalculatingRules();
       DepositInWork = deposit;
 
-      if (deposit.DepositRateLines == null) deposit.DepositRateLines = new ObservableCollection<DepositRateLine>();
-      Rows = deposit.DepositRateLines;
+      if (deposit.RateLines == null) deposit.RateLines = new ObservableCollection<DepositRateLine>();
+      Rows = deposit.RateLines;
       if (Rows.Count == 0)
         Rows.Add(new DepositRateLine { DateFrom = deposit.StartDate, AmountFrom = 0, AmountTo = 999999999999, Rate = 100 });
     }
@@ -84,8 +84,8 @@ namespace Keeper.ViewModels
 
     public void RepeatFromDeposit()
     {
-      if (DepositDonor.Deposit == null || DepositDonor.Deposit.DepositRateLines == null || DepositDonor.Deposit.DepositRateLines.Count == 0) return;
-      var otherRows = DepositDonor.Deposit.DepositRateLines;
+      if (DepositDonor == null || DepositDonor.Deposit == null || DepositDonor.Deposit.RateLines == null || DepositDonor.Deposit.RateLines.Count == 0) return;
+      var otherRows = DepositDonor.Deposit.RateLines;
 
       var lastDate = otherRows[otherRows.Count - 1].DateFrom;
       var lastDateLines = otherRows.Where(depositRateLine => depositRateLine.DateFrom == lastDate).ToList();
