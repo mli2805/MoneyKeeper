@@ -58,7 +58,7 @@ namespace Keeper.Utils.Deposits
       foreach (var operation in deposit.Evaluations.Traffic)
       {
         var line = new DepositReportBodyLine{Day = operation.Timestamp.Date, BeforeOperation = beforeOperation};
-        if (operation.TransactionType == DepositOperations.Расход)
+        if (operation.TransactionType == DepositTransactionTypes.Расход)
         {
           line.ExpenseColumn = operation.Amount;
           line.Comment = (deposit.Evaluations.CurrentBalance == 0 && operation == deposit.Evaluations.Traffic.Last())
@@ -68,8 +68,8 @@ namespace Keeper.Utils.Deposits
         else
         {
           line.IncomeColumn = operation.Amount;
-          if (operation.TransactionType == DepositOperations.Явнес) line.Comment = isFirst ? "открытие депозита" : "доп взнос";
-          if (operation.TransactionType == DepositOperations.Проценты) line.Comment = "начисление процентов";
+          if (operation.TransactionType == DepositTransactionTypes.Явнес) line.Comment = isFirst ? "открытие депозита" : "доп взнос";
+          if (operation.TransactionType == DepositTransactionTypes.Проценты) line.Comment = "начисление процентов";
         }
         beforeOperation = beforeOperation + line.IncomeColumn - line.ExpenseColumn;
         line.AfterOperation = beforeOperation;

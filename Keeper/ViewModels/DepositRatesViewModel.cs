@@ -41,7 +41,7 @@ namespace Keeper.ViewModels
 
     public void Initialize(Deposit deposit)
     {
-      if (deposit.ProcentsEvaluated == null) deposit.ProcentsEvaluated = new DepositProcentsEvaluated();
+      if (deposit.ProcentsEvaluated == null) deposit.ProcentsEvaluated = new DepositProcentsCalculatingRules();
       DepositInWork = deposit;
 
       if (deposit.DepositRateLines == null) deposit.DepositRateLines = new ObservableCollection<DepositRateLine>();

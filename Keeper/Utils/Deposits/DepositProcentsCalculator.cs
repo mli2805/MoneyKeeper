@@ -20,7 +20,7 @@ namespace Keeper.Utils.Deposits
 
     public void ProcentsForPeriod(Account account, Period period)
     {
-      account.Deposit.Evaluations.ProcentEvaluation = new List<ProcentEvaluationDailyLine>();
+      account.Deposit.Evaluations.ProcentEvaluation = new List<DepositDailyLine>();
       FillinDailyBalances(account, period);
       CalculateDailyProcents(account.Deposit);
       account.Deposit.Evaluations.EstimatedProcentsInThisMonth =
@@ -37,7 +37,7 @@ namespace Keeper.Utils.Deposits
       foreach (DateTime day in period)
       {
         var date = day;
-        account.Deposit.Evaluations.ProcentEvaluation.Add(new ProcentEvaluationDailyLine { Date = day, Balance = balance });
+        account.Deposit.Evaluations.ProcentEvaluation.Add(new DepositDailyLine { Date = day, Balance = balance });
         balance += trs.Where(t => t.Timestamp.Date <= date.Date && t.Debet.Is(account)).Sum(t => t.Amount);
         balance -= trs.Where(t => t.Timestamp.Date <= date.Date && t.Credit.Is(account)).Sum(t => t.Amount);
       }

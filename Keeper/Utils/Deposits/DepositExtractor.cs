@@ -31,7 +31,7 @@ namespace Keeper.Utils.Deposits
                 _depositParser.ExtractInfoFromName(account);
             }
 
-            account.Deposit.Evaluations = new DepositEvaluations();
+            account.Deposit.Evaluations = new DepositCalculatedTotals();
 
             ExtractTraffic(account);
 
@@ -63,13 +63,13 @@ namespace Keeper.Utils.Deposits
                                                    }).ToList();
         }
 
-        private DepositOperations GetDepositOperationType(Transaction t, Account depositAccount)
+        private DepositTransactionTypes GetDepositOperationType(Transaction t, Account depositAccount)
         {
             return t.Operation == OperationType.Доход
-                     ? DepositOperations.Проценты
+                     ? DepositTransactionTypes.Проценты
                      : t.Debet == depositAccount
-                         ? DepositOperations.Расход
-                         : DepositOperations.Явнес;
+                         ? DepositTransactionTypes.Расход
+                         : DepositTransactionTypes.Явнес;
         }
 
         private string GetDepositOperationComment(Transaction t)
@@ -83,13 +83,13 @@ namespace Keeper.Utils.Deposits
 
         private void EvaluateTraffic(Account account)
         {
-            account.Deposit.Evaluations.TotalMyIns = account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Явнес).Sum(t => t.Amount);
-            account.Deposit.Evaluations.TotalMyOuts = account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.Amount);
-            account.Deposit.Evaluations.TotalPercent = account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Проценты).Sum(t => t.Amount);
+            account.Deposit.Evaluations.TotalMyIns = account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.Amount);
+            account.Deposit.Evaluations.TotalMyOuts = account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
+            account.Deposit.Evaluations.TotalPercent = account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.Amount);
 
             account.Deposit.Evaluations.CurrentProfit = _rateExtractor.GetUsdEquivalent(account.Deposit.Evaluations.CurrentBalance, account.Deposit.Currency, DateTime.Today)
-                                    - account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Явнес).Sum(t => t.AmountInUsd)
-                                    + account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositOperations.Расход).Sum(t => t.AmountInUsd);
+                                    - account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd)
+                                    + account.Deposit.Evaluations.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
         }
 
         private void DefineCurrentState(Account account)
