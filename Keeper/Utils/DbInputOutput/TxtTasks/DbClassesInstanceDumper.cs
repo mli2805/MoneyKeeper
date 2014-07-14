@@ -41,7 +41,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
       return s;
     }
 
-    public string Dump(DepositProcentsEvaluated rules)
+    public string Dump(DepositProcentsCalculatingRules rules)
     {
       var result = "";
 

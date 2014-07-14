@@ -22,7 +22,7 @@ namespace Keeper.Utils.Deposits
 
         public void MakeForecast(Account account)
         {
-            var lastProcentTransaction = account.Deposit.Evaluations.Traffic.LastOrDefault(t => t.TransactionType == DepositOperations.Проценты);
+            var lastProcentTransaction = account.Deposit.Evaluations.Traffic.LastOrDefault(t => t.TransactionType == DepositTransactionTypes.Проценты);
             var lastProcentDate = lastProcentTransaction == null ? account.Deposit.StartDate : lastProcentTransaction.Timestamp;
 
             CalculateProcentsForPeriod(account, lastProcentDate);

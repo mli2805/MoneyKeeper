@@ -142,6 +142,12 @@
     <Compile Include="DomainModel\DbIntegrity.cs" />
     <Compile Include="DomainModel\DbOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
+    <Compile Include="DomainModel\Deposit\DepositCalculatedTotals.cs" />
+    <Compile Include="DomainModel\Deposit\DepositTransactionTypes.cs" />
+    <Compile Include="DomainModel\Deposit\DepositProcentsCalculatingRules.cs" />
+    <Compile Include="DomainModel\Deposit\DepositRateLine.cs" />
+    <Compile Include="DomainModel\Deposit\DepositTransaction.cs" />
+    <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
     <Compile Include="DomainModel\RegularPayments.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\RegularPayment.cs" />
@@ -209,8 +215,8 @@
     <Compile Include="DomainModel\Account.cs" />
     <Compile Include="DomainModel\ArticleAssociation.cs" />
     <Compile Include="DomainModel\CurrencyRate.cs" />
-    <Compile Include="DomainModel\Deposit.cs" />
-    <Compile Include="DomainModel\DepositStates.cs" />
+    <Compile Include="DomainModel\Deposit\Deposit.cs" />
+    <Compile Include="DomainModel\Deposit\DepositStates.cs" />
     <Compile Include="DomainModel\KeeperDb.cs" />
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
