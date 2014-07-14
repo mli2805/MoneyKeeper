@@ -45,8 +45,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     {
       foreach (var account in _accountTreeStraightener.FlattenWithLevels(_db.Accounts))
       {
-        if (account.Item.Deposit == null || account.Item.Deposit.DepositRateLines == null) continue;
-        foreach (var depositRateLine in account.Item.Deposit.DepositRateLines)
+        if (account.Item.Deposit == null || account.Item.Deposit.RateLines == null) continue;
+        foreach (var depositRateLine in account.Item.Deposit.RateLines)
         {
           yield return _dbClassesInstanceDumper.Dump(depositRateLine, account.Item.Id);
         }

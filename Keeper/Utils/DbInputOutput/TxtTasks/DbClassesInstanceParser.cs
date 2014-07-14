@@ -87,7 +87,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             deposit.StartDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
             deposit.FinishDate = Convert.ToDateTime(substrings[5], new CultureInfo("ru-RU"));
             deposit.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[6]);
-            deposit.ProcentsEvaluated = DepositProcentEvaluationRulesFromString(substrings[7]);
+            deposit.ProcentsCalculatingRules = DepositProcentEvaluationRulesFromString(substrings[7]);
             deposit.Comment = substrings[8].Replace("|", "\r\n");
 
             deposit.ParentAccount.Deposit = deposit;
@@ -103,7 +103,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             depositRateLine.AmountTo = Convert.ToDecimal(substrings[3]);
             depositRateLine.Rate = Convert.ToDecimal(substrings[4]);
 
-            depositAccount.Deposit.DepositRateLines.Add(depositRateLine);
+            depositAccount.Deposit.RateLines.Add(depositRateLine);
 
             return depositRateLine;
         }

@@ -117,9 +117,9 @@ namespace Keeper.ViewModels
 
     public void CompileAccountName()
     {
-      var rate = DepositInWork.DepositRateLines == null || DepositInWork.DepositRateLines.LastOrDefault() == null
+      var rate = DepositInWork.RateLines == null || DepositInWork.RateLines.LastOrDefault() == null
                    ? 0
-                   : DepositInWork.DepositRateLines.Last().Rate;
+                   : DepositInWork.RateLines.Last().Rate;
       Junction = string.Format("{0} {1} {2} - {3} {4:0.#}%",
          DepositInWork.Bank.Name, DepositInWork.Title, 
          DepositInWork.StartDate.ToString("d/MM/yyyy",CultureInfo.InvariantCulture),

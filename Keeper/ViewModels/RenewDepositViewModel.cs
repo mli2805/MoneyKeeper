@@ -47,7 +47,7 @@ namespace Keeper.ViewModels
       OldDepositName = _oldDeposit.ParentAccount.Name;
       DepositCurrency = _oldDeposit.Currency.ToString().ToLower();
 			BankAccount = FindBankAccount();
-      Procents = _oldDeposit.Evaluations.EstimatedProcents;
+      Procents = _oldDeposit.CalculatedTotals.EstimatedProcents;
 			NewDepositName = BuildNewName();
 		}
 
@@ -65,9 +65,9 @@ namespace Keeper.ViewModels
 
 		private string BuildNewName()
 		{
-      var rate = _oldDeposit.DepositRateLines == null || _oldDeposit.DepositRateLines.LastOrDefault() == null
+      var rate = _oldDeposit.RateLines == null || _oldDeposit.RateLines.LastOrDefault() == null
              ? 0
-             : _oldDeposit.DepositRateLines.Last().Rate;
+             : _oldDeposit.RateLines.Last().Rate;
 
 
 			var st = OldDepositName.Substring(0, OldDepositName.IndexOf('/') - 2).Trim();

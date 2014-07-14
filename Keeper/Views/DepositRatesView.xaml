@@ -49,17 +49,17 @@
     <ComboBox Grid.Row="3" Margin="0,7,7,7" Width="262" HorizontalAlignment="Right" ItemsSource="{Binding DepositsForCombobox}" SelectedItem="{Binding DepositDonor}"/>
     
     <CheckBox Name="IsFactDays" Grid.Row="4" Content="исходя из фактического количества дней в году" Margin="10,10,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsEvaluated.IsFactDays}"/>
+              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.IsFactDays}"/>
     <CheckBox Name="OnlyAtTheEnd" Grid.Row="4" Content="только в конце срока" Margin="10,40,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsEvaluated.OnlyAtTheEnd}"/>
+              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.OnlyAtTheEnd}"/>
     <CheckBox Name="EveryFirstDayOfMonth" Grid.Row="4" Content="каждое первое число месяца" Margin="10,70,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsEvaluated.EveryFirstDayOfMonth}"/>
+              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.EveryFirstDayOfMonth}"/>
     <CheckBox Name="EveryLastDayOfMonth" Grid.Row="4" Content="каждый последний день месяца" Margin="10,100,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsEvaluated.EveryLastDayOfMonth}"/>
+              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.EveryLastDayOfMonth}"/>
     <CheckBox Name="EveryStartDay" Grid.Row="4" Content="каждое число открытия" Margin="10,130,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsEvaluated.EveryStartDay}"/>
+              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.EveryStartDay}"/>
     <CheckBox Name="IsCapitalized" Grid.Row="4" Content="проценты капитализируются" Margin="10,160,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsEvaluated.IsCapitalized}"/>
+              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.IsCapitalized}"/>
 
     <Button Name="CloseForm" Grid.Row="5" Margin="7" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
   </Grid>

@@ -8,8 +8,8 @@ namespace Keeper.DomainModel
     {
         public Deposit()
         {
-            ProcentsEvaluated = new DepositProcentsCalculatingRules();
-            DepositRateLines = new ObservableCollection<DepositRateLine>();
+            ProcentsCalculatingRules = new DepositProcentsCalculatingRules();
+            RateLines = new ObservableCollection<DepositRateLine>();
         }
 
         public Account ParentAccount { get; set; }
@@ -20,23 +20,23 @@ namespace Keeper.DomainModel
         public DateTime FinishDate { get; set; }
         public CurrencyCodes Currency { get; set; }
 
-        public ObservableCollection<DepositRateLine> DepositRateLines { get; set; }
+        public DepositProcentsCalculatingRules ProcentsCalculatingRules { get; set; }
+        public ObservableCollection<DepositRateLine> RateLines { get; set; }
         public string Comment { get; set; }
 
-        public DepositProcentsCalculatingRules ProcentsEvaluated { get; set; }
 
         [NonSerialized]
-        private DepositCalculatedTotals _evaluations;
-        public DepositCalculatedTotals Evaluations
+        private DepositCalculatedTotals _calculatedTotals;
+        public DepositCalculatedTotals CalculatedTotals
         {
-            get { return _evaluations; }
-            set { _evaluations = value; }
+            get { return _calculatedTotals; }
+            set { _calculatedTotals = value; }
         }
 
         public object Clone()
         {
             var newdDeposit = (Deposit)this.MemberwiseClone();
-            if (DepositRateLines != null) newdDeposit.DepositRateLines = new ObservableCollection<DepositRateLine>(DepositRateLines);
+            if (RateLines != null) newdDeposit.RateLines = new ObservableCollection<DepositRateLine>(RateLines);
             return newdDeposit;
         }
     }

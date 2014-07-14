@@ -59,7 +59,7 @@ namespace Keeper.ViewModels
         protected override void OnViewLoaded(object view)
         {
             DisplayName = Deposit.ParentAccount.Name;
-            CanRenew = Deposit.Evaluations.State != DepositStates.Закрыт;
+            CanRenew = Deposit.CalculatedTotals.State != DepositStates.Закрыт;
         }
 
         public void ExtractEvaluationsToExcel()
@@ -76,7 +76,7 @@ namespace Keeper.ViewModels
             if (renewDepositViewModel.NewDeposit != null)
             {
                 NewAccountForDeposit = renewDepositViewModel.NewDeposit;
-                CanRenew = Deposit.Evaluations.State != DepositStates.Закрыт;
+                CanRenew = Deposit.CalculatedTotals.State != DepositStates.Закрыт;
                 OnRenewPressed(new RenewPressedEventArgs(NewAccountForDeposit));
             }
         }
