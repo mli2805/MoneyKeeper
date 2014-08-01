@@ -142,6 +142,7 @@
     <Compile Include="DomainModel\DbIntegrity.cs" />
     <Compile Include="DomainModel\DbOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
+    <Compile Include="DomainModel\Deposit\BankDepositOffer.cs" />
     <Compile Include="DomainModel\Deposit\DepositCalculatedTotals.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransactionTypes.cs" />
     <Compile Include="DomainModel\Deposit\DepositProcentsCalculatingRules.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="DomainModel\DateProcentPoint.cs" />
     <Compile Include="Utils\Diagram\DiagramLegendItem.cs" />
     <Compile Include="Utils\Deposits\DepositExcelReporter.cs" />
+    <Compile Include="ViewModels\BankDepositOffersViewModel.cs" />
     <Compile Include="ViewModels\DepositRatesViewModel.cs" />
     <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
@@ -282,6 +284,9 @@
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
+    <Compile Include="Views\BankDepositOffersView.xaml.cs">
+      <DependentUpon>BankDepositOffersView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DepositRatesView.xaml.cs">
       <DependentUpon>DepositRatesView.xaml</DependentUpon>
     </Compile>
@@ -442,6 +447,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ArticlesAssociationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BankDepositOffersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

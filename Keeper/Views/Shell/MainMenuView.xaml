@@ -120,6 +120,7 @@
 				<MenuItem x:Name="ShowDepositsForm" Header="ДЕПОЗИТЫ"/>
 				<MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
 				<MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
+				<MenuItem x:Name="ShowBankDepositOffersForm" Header="БАНКОВСКИЕ ДЕПОЗИТЫ"/>
 			</MenuItem>
 			<MenuItem Header="ДИАГРАММЫ">
 				<MenuItem x:Name="ShowDailyBalancesDiagram" Header="Ежедневные остатки"/>

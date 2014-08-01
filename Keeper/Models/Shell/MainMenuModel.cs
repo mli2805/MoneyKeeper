@@ -10,6 +10,7 @@ namespace Keeper.Models.Shell
     InputRates,
     InputAssociates,
     ShowAnalisys,
+      InputBankDepositOffers,
 
     LoadDatabase,
     LoadFromFiles,

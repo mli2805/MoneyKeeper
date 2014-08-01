@@ -29,7 +29,7 @@
       <DataGrid.Columns>
         <DataGridComboBoxColumn Header="Контрагент" Width="170"
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding ExternalAccount, Mode=TwoWay}"
+                                SelectedItemBinding ="{Binding ExternalAccount}"
                                 ItemsSource="{x:Static ViewModels:ArticlesAssociationsViewModel.ExternalAccounts}">
         </DataGridComboBoxColumn>
         <DataGridComboBoxColumn Header="Ассоциированная категория" Width="190" 
