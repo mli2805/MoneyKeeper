@@ -264,15 +264,15 @@
     <Compile Include="DomainModel\DateProcentPoint.cs" />
     <Compile Include="Utils\Diagram\DiagramLegendItem.cs" />
     <Compile Include="Utils\Deposits\DepositExcelReporter.cs" />
-    <Compile Include="ViewModels\BankDepositOffersViewModel.cs" />
-    <Compile Include="ViewModels\DepositRatesViewModel.cs" />
+    <Compile Include="ViewModels\Deposits\BankDepositOffersViewModel.cs" />
+    <Compile Include="ViewModels\Deposits\BankDepositRatesAndRulesViewModel.cs" />
     <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="Models\Shell\AccountForestModel.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthAnalysisBlankInscriber.cs" />
     <Compile Include="Models\MonthAnalysisBlank.cs" />
-    <Compile Include="ViewModels\OpenOrEditDepositViewModel.cs" />
+    <Compile Include="ViewModels\Deposits\OpenOrEditDepositViewModel.cs" />
     <Compile Include="ViewModels\RegularPaymentsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
@@ -284,11 +284,11 @@
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
-    <Compile Include="Views\BankDepositOffersView.xaml.cs">
+    <Compile Include="Views\Deposits\BankDepositOffersView.xaml.cs">
       <DependentUpon>BankDepositOffersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DepositRatesView.xaml.cs">
-      <DependentUpon>DepositRatesView.xaml</DependentUpon>
+    <Compile Include="Views\Deposits\BankDepositRatesAndRulesView.xaml.cs">
+      <DependentUpon>BankDepositRatesAndRulesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DiagramOxyplotView.xaml.cs">
       <DependentUpon>DiagramOxyplotView.xaml</DependentUpon>
@@ -299,7 +299,7 @@
     <Compile Include="Views\LogonView.xaml.cs">
       <DependentUpon>LogonView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OpenOrEditDepositView.xaml.cs">
+    <Compile Include="Views\Deposits\OpenOrEditDepositView.xaml.cs">
       <DependentUpon>OpenOrEditDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegularPaymentsView.xaml.cs">
@@ -339,8 +339,8 @@
     <Compile Include="Behaviors\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
-    <Compile Include="ViewModels\DepositsViewModel.cs" />
-    <Compile Include="ViewModels\DepositViewModel.cs" />
+    <Compile Include="ViewModels\Deposits\DepositsViewModel.cs" />
+    <Compile Include="ViewModels\Deposits\DepositViewModel.cs" />
     <Compile Include="Utils\CommonKeeper\AssociationFinder.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\MonthAnalisysViewModel.cs" />
@@ -358,10 +358,10 @@
     <Compile Include="Views\ArticlesAssociationsView.xaml.cs">
       <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DepositsView.xaml.cs">
+    <Compile Include="Views\Deposits\DepositsView.xaml.cs">
       <DependentUpon>DepositsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DepositView.xaml.cs">
+    <Compile Include="Views\Deposits\DepositView.xaml.cs">
       <DependentUpon>DepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MonthAnalisysView.xaml.cs">
@@ -450,19 +450,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BankDepositOffersView.xaml">
+    <Page Include="Views\Deposits\BankDepositOffersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DepositRatesView.xaml">
+    <Page Include="Views\Deposits\BankDepositRatesAndRulesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DepositsView.xaml">
+    <Page Include="Views\Deposits\DepositsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DepositView.xaml">
+    <Page Include="Views\Deposits\DepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -478,7 +478,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\OpenOrEditDepositView.xaml">
+    <Page Include="Views\Deposits\OpenOrEditDepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
