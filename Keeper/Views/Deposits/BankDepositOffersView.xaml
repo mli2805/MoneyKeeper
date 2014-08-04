@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance ViewModels:BankDepositOffersViewModel}"
-        Title="BankDepositOffersView" Height="300" Width="810">
+        Title="BankDepositOffersView" Height="300" Width="910">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
@@ -15,6 +15,7 @@
             <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
+
         </ResourceDictionary>
     </Window.Resources>
 
@@ -40,6 +41,23 @@
                                 SelectedItemBinding ="{Binding Currency}"
                                 ItemsSource="{x:Static ViewModels:BankDepositOffersViewModel.CurrencyList}">
                 </DataGridComboBoxColumn>
+                <DataGridTemplateColumn Header="Ставки и правила" Width="120">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <Button Name="EditRatesAndRules" Margin="2" Content=". . ." />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Margin="3" CornerRadius="3" BorderThickness="1" BorderBrush="SteelBlue">
+                            <TextBlock Text="edit" Foreground="DimGray" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Комментарий" Width="300" 
+                                    Binding ="{Binding Comment}">
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Row="1" Name="CloseView" IsCancel="True"/>
