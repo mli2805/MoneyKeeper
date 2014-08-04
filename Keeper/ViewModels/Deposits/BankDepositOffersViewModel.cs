@@ -40,6 +40,11 @@ namespace Keeper.ViewModels
               (_accountTreeStraightener.Flatten(_db.Accounts).Where(
                 account => account.Is("Банки") && account.Children.Count == 0)).ToList();
         }
+
+        public void EditRatesAndRules()
+        {
+            //
+        }
         public void CloseView()
         {
             TryClose();

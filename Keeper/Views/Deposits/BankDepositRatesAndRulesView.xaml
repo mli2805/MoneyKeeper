@@ -1,8 +1,8 @@
-﻿<Window x:Class="Keeper.Views.DepositRatesView"
+﻿<Window x:Class="Keeper.Views.BankDepositRatesAndRulesView"
         xml:lang="ru-RU"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DepositRatesView" Height="550" SizeToContent="Width" WindowStartupLocation="CenterScreen">
+        Title="BankDepositRatesAndRulesView" Height="550" SizeToContent="Width" WindowStartupLocation="CenterScreen">
   <Window.Resources>
     <ResourceDictionary>
       <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">

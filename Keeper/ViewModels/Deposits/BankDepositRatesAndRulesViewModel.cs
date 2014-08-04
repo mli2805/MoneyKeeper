@@ -11,7 +11,7 @@ using Keeper.Utils.Accounts;
 namespace Keeper.ViewModels
 {
   [Export]
-  class DepositRatesViewModel : Screen
+  class BankDepositRatesAndRulesViewModel : Screen
   {
     private readonly KeeperDb _db;
     private Deposit _depositInWork;
@@ -32,7 +32,7 @@ namespace Keeper.ViewModels
     public ObservableCollection<DepositRateLine> Rows { get; set; }
 
     [ImportingConstructor]
-    public DepositRatesViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+    public BankDepositRatesAndRulesViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
       NewDate = DateTime.Today;
