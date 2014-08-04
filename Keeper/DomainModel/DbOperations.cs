@@ -17,7 +17,7 @@ namespace Keeper.DomainModel
 
 		public Account AddNode(Account node)
 		{
-			node.Id = _dbIdGenerator.Generate();
+			node.Id = _dbIdGenerator.GenerateAccountId();
 			node.Parent.Children.Add(node);
 			return node;
 		}
