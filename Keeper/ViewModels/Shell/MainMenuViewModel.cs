@@ -188,6 +188,7 @@ namespace Keeper.ViewModels.Shell
             MyMainMenuModel.Action = Actions.InputAssociates;
             WindowManager.ShowDialog(IoC.Get<ArticlesAssociationsViewModel>());
             SaveDatabase();
+            IsDbChanged = true;
         }
 
         public void ShowMonthAnalisysForm()
@@ -214,6 +215,7 @@ namespace Keeper.ViewModels.Shell
             MyMainMenuModel.Action = Actions.InputBankDepositOffers;
             WindowManager.ShowDialog(IoC.Get<BankDepositOffersViewModel>());
             SaveDatabase();
+            IsDbChanged = true;
         }
 
 
