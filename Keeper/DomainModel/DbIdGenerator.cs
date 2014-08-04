@@ -26,6 +26,7 @@ namespace Keeper.DomainModel
 
 	    public int GenerateBankDepositOfferId()
 	    {
+	        if (_db.BankDepositOffers.Count == 0) return 1;
             return (from offer in _db.BankDepositOffers
                     select offer.Id).Max() + 1; 
 	    }
