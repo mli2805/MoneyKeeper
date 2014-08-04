@@ -52,7 +52,7 @@ namespace Keeper.ViewModels
 
     protected override void OnViewLoaded(object view)
     {
-      DisplayName = "Таблица процентных ставок по вкладу";
+      DisplayName = "Ставки и правила";
     }
 
     public void AddLine()

@@ -129,9 +129,9 @@ namespace Keeper.ViewModels
 
     public void FillDepositRatesTable()
     {
-      var depositRatesViewModel = IoC.Get<BankDepositRatesAndRulesViewModel>();
-      depositRatesViewModel.Initialize(DepositInWork);
-      _windowManager.ShowDialog(depositRatesViewModel);
+      var bankDepositRatesAndRulesViewModel = IoC.Get<BankDepositRatesAndRulesViewModel>();
+      bankDepositRatesAndRulesViewModel.Initialize(DepositInWork);
+      _windowManager.ShowDialog(bankDepositRatesAndRulesViewModel);
     }
   }
 }
