@@ -22,6 +22,8 @@ namespace Keeper.DomainModel
         {
             var idGenerator = IoC.Get<DbIdGenerator>();
             Id = idGenerator.GenerateBankDepositOfferId();
+            CalculatingRules = new DepositProcentsCalculatingRules();
+            RateLines = new ObservableCollection<DepositRateLine>();
         }
     }
 }
