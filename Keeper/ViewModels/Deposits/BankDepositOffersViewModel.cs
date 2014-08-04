@@ -14,16 +14,18 @@ namespace Keeper.ViewModels
     {
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
+        private readonly IWindowManager _windowManager;
         public ObservableCollection<BankDepositOffer> Rows { get; set; }
 
         public static List<Account> BankAccounts { get; private set; }
         public static List<CurrencyCodes> CurrencyList { get; private set; }
 
         [ImportingConstructor]
-        public BankDepositOffersViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+        public BankDepositOffersViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, IWindowManager windowManager)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
+            _windowManager = windowManager;
             if (db.BankDepositOffers == null) db.BankDepositOffers = new ObservableCollection<BankDepositOffer>();
             Rows = db.BankDepositOffers;
             InitializeListsForCombobox();
@@ -43,7 +45,11 @@ namespace Keeper.ViewModels
 
         public void EditRatesAndRules()
         {
-            //
+            var fakeDeposit = new Deposit();
+
+            var bankDepositRatesAndRulesViewModel = IoC.Get<BankDepositRatesAndRulesViewModel>();
+            bankDepositRatesAndRulesViewModel.Initialize(fakeDeposit);
+            _windowManager.ShowDialog(bankDepositRatesAndRulesViewModel);
         }
         public void CloseView()
         {

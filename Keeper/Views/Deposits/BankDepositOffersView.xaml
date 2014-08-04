@@ -4,6 +4,8 @@
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance ViewModels:BankDepositOffersViewModel}"
         Title="BankDepositOffersView" Height="300" Width="910">
@@ -15,7 +17,6 @@
             <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
-
         </ResourceDictionary>
     </Window.Resources>
 
@@ -44,7 +45,14 @@
                 <DataGridTemplateColumn Header="Ставки и правила" Width="120">
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <Button Name="EditRatesAndRules" Margin="2" Content=". . ." />
+                            <Button Name="EditRatesAndRules" 
+                                    Margin="3" Background="White" Height="15" Content="edit" FontSize="10">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <cal:ActionMessage MethodName="EditRatesAndRules" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                     <DataGridTemplateColumn.CellTemplate>
