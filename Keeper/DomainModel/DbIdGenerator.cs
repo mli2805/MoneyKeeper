@@ -8,20 +8,26 @@ namespace Keeper.DomainModel
 	[Export]
 	public sealed class DbIdGenerator
 	{
-		readonly KeeperDb mKeeperDb;
-		readonly AccountTreeStraightener mAccountTreeStraightener;
+		readonly KeeperDb _db;
+		readonly AccountTreeStraightener _accountTreeStraightener;
 
 		[ImportingConstructor]
 		public DbIdGenerator(KeeperDb keeperDb, AccountTreeStraightener accountTreeStraightener)
 		{
-			mKeeperDb = keeperDb;
-			mAccountTreeStraightener = accountTreeStraightener;
+			_db = keeperDb;
+			_accountTreeStraightener = accountTreeStraightener;
 		}
 
-		public int Generate()
+		public int GenerateAccountId()
 		{
-			return (from account in mAccountTreeStraightener.Flatten(mKeeperDb.Accounts) 
+			return (from account in _accountTreeStraightener.Flatten(_db.Accounts) 
 			        select account.Id).Max() + 1;
 		}
+
+	    public int GenerateBankDepositOfferId()
+	    {
+            return (from offer in _db.BankDepositOffers
+                    select offer.Id).Max() + 1; 
+	    }
 	}
 }

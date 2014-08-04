@@ -7,8 +7,6 @@ namespace Keeper.ViewModels
 {
   public class AddAndEditAccountViewModel : Screen
   {
-    public KeeperDb Db { get { return IoC.Get<KeeperDb>(); } }
-
     public String ViewTitle { get; set; }
     public Account AccountInWork { get; set; }
 

@@ -26,7 +26,7 @@
             <RowDefinition Height="1"/>
         </Grid.RowDefinitions>
         <DataGrid Margin="5" Padding="1" 
-                  ItemsSource="{Binding Rows}"  AutoGenerateColumns="False" 
+                  ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedOffer}" AutoGenerateColumns="False" 
                   ColumnHeaderStyle="{StaticResource headerTextStyle}">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Банк" Width="170"

@@ -16,6 +16,7 @@ namespace Keeper.ViewModels
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly IWindowManager _windowManager;
         public ObservableCollection<BankDepositOffer> Rows { get; set; }
+        public BankDepositOffer SelectedOffer { get; set; }
 
         public static List<Account> BankAccounts { get; private set; }
         public static List<CurrencyCodes> CurrencyList { get; private set; }
@@ -46,10 +47,15 @@ namespace Keeper.ViewModels
         public void EditRatesAndRules()
         {
             var fakeDeposit = new Deposit();
+            fakeDeposit.ProcentsCalculatingRules = SelectedOffer.CalculatingRules;
+            fakeDeposit.RateLines = SelectedOffer.RateLines;
 
             var bankDepositRatesAndRulesViewModel = IoC.Get<BankDepositRatesAndRulesViewModel>();
             bankDepositRatesAndRulesViewModel.Initialize(fakeDeposit);
             _windowManager.ShowDialog(bankDepositRatesAndRulesViewModel);
+
+            SelectedOffer.RateLines = fakeDeposit.RateLines;
+            SelectedOffer.CalculatingRules = fakeDeposit.ProcentsCalculatingRules;
         }
         public void CloseView()
         {
