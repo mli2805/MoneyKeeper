@@ -110,6 +110,8 @@ namespace Keeper.ViewModels
             DepositInWork.ProcentsCalculatingRules.IsCapitalized        = DepositDonor.Deposit.ProcentsCalculatingRules.IsCapitalized       ;
             DepositInWork.ProcentsCalculatingRules.IsFactDays           = DepositDonor.Deposit.ProcentsCalculatingRules.IsFactDays          ;
             DepositInWork.ProcentsCalculatingRules.OnlyAtTheEnd         = DepositDonor.Deposit.ProcentsCalculatingRules.OnlyAtTheEnd        ;
+            NotifyOfPropertyChange(() => DepositInWork);
+
         }
 
         public void CloseForm()

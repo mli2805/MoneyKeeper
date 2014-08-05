@@ -2,6 +2,7 @@
 using System.Composition;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
@@ -289,9 +290,23 @@ namespace Keeper.ViewModels.Shell
 
         }
 
+        private void SetBankDepositOfferForEveryDeposit()
+        {
+            var oldOffer = _db.BankDepositOffers.FirstOrDefault(o => o.BankAccount.Name == "безвестный");
+
+            var ats = IoC.Get<AccountTreeStraightener>();
+            var plainList = ats.Flatten(_db.Accounts);
+            foreach (var account in plainList.Where(a=>a.Deposit != null))
+            {
+                account.Deposit.DepositOffer = oldOffer;
+            }
+            
+        }
+
         public void TempItem()
         {
-            ShowExpensePartingOxyPlotDiagram();
+            SetBankDepositOfferForEveryDeposit();
+//            ShowExpensePartingOxyPlotDiagram();
             //      SetIsFolders();
         }
 
