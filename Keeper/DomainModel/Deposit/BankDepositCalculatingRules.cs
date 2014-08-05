@@ -1,9 +1,9 @@
 using System;
 
-namespace Keeper.DomainModel
+namespace Keeper.DomainModel.Deposit
 {
     [Serializable]
-    public class DepositProcentsCalculatingRules
+    public class BankDepositCalculatingRules
     {
         public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
 
