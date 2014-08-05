@@ -140,7 +140,7 @@
     </Compile>
     <Compile Include="DomainModel\DbIdGenerator.cs" />
     <Compile Include="DomainModel\DbIntegrity.cs" />
-    <Compile Include="DomainModel\DbOperations.cs" />
+    <Compile Include="DomainModel\AccountOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
     <Compile Include="DomainModel\Deposit\BankDepositOffer.cs" />
     <Compile Include="DomainModel\Deposit\DepositCalculatedTotals.cs" />
@@ -193,10 +193,12 @@
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\ZippedTxtLoader.cs" />
     <Compile Include="Utils\Common\MySettings.cs" />
+    <Compile Include="Utils\Deposits\BankDepositCalculatorType001.cs" />
     <Compile Include="Utils\Deposits\DepositAnalyser.cs" />
     <Compile Include="Utils\Deposits\DepositProcentsCalculator.cs" />
     <Compile Include="Utils\Deposits\DepositExtractor.cs" />
     <Compile Include="Utils\Deposits\DepositReporter.cs" />
+    <Compile Include="Utils\Deposits\IBankDepositCalculator.cs" />
     <Compile Include="Utils\Diagram\DiagramDataExtremums.cs" />
     <Compile Include="Utils\Diagram\DiagramMode.cs" />
     <Compile Include="Utils\Diagram\DiagramPair.cs" />

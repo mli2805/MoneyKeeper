@@ -9,11 +9,11 @@ namespace Keeper
 {
   public class AppBootstrapper : Bootstrapper<IShell>
   {
-	  CompositionHost mCompositionHost;
+	  CompositionHost _compositionHost;
 
     protected override void Configure()
     {
-		mCompositionHost = new ContainerBuilder()
+		_compositionHost = new ContainerBuilder()
 			.WithAssemblies(AssemblySource.Instance)
 			.WithInstance<IWindowManager>(new WindowManager())
 			.WithInstance<IEventAggregator>(new EventAggregator())
@@ -24,12 +24,12 @@ namespace Keeper
 
 	protected override object GetInstance(Type serviceType, string key)
 	{
-		return mCompositionHost.GetExport(serviceType, key);
+		return _compositionHost.GetExport(serviceType, key);
 	}
 
 	protected override IEnumerable<object> GetAllInstances(Type serviceType)
 	{
-		return mCompositionHost.GetExports(serviceType);
+		return _compositionHost.GetExports(serviceType);
 	}
 
   }

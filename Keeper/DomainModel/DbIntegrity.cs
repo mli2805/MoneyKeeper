@@ -6,12 +6,12 @@ namespace Keeper.DomainModel
 	[Export]
 	public sealed class DbIntegrity
 	{
-		readonly KeeperDb mKeeperDb;
+		readonly KeeperDb _keeperDb;
 
 		[ImportingConstructor]
 		public DbIntegrity(KeeperDb keeperDb)
 		{
-			mKeeperDb = keeperDb;
+			_keeperDb = keeperDb;
 		}
 
 		public DeleteReasons CanDelete(Account account)
@@ -26,7 +26,7 @@ namespace Keeper.DomainModel
 			}
 
 			var hasRelatedTransactions = 
-				(from transaction in mKeeperDb.Transactions
+				(from transaction in _keeperDb.Transactions
 				 where transaction.Debet == account 
 				       || transaction.Credit == account
 				       || transaction.Article == account

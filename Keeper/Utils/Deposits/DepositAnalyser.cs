@@ -11,29 +11,23 @@ namespace Keeper.Utils.Deposits
     [Export]
     public class DepositAnalyser
     {
-        private readonly RateExtractor _rateExtractor;
-        private readonly DepositProcentsCalculator _depositProcentsCalculator;
+        private readonly BankDepositCalculatorType001 _bankDepositCalculator;
 
         [ImportingConstructor]
-        public DepositAnalyser(RateExtractor rateExtractor, DepositProcentsCalculator depositProcentsCalculator)
+        public DepositAnalyser(BankDepositCalculatorType001 bankDepositCalculator)
         {
-            _rateExtractor = rateExtractor;
-            _depositProcentsCalculator = depositProcentsCalculator;
+            _bankDepositCalculator = bankDepositCalculator;
         }
 
         public void MakeForecast(Account account)
         {
-            var lastProcentTransaction = account.Deposit.CalculatedTotals.Traffic.LastOrDefault(t => t.TransactionType == DepositTransactionTypes.Проценты);
-            var lastProcentDate = lastProcentTransaction == null ? account.Deposit.StartDate : lastProcentTransaction.Timestamp;
-
-            CalculateProcentsForPeriod(account, lastProcentDate);
-            account.Deposit.CalculatedTotals.EstimatedProfitInUsd = account.Deposit.CalculatedTotals.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.CalculatedTotals.EstimatedProcents, account.Deposit.DepositOffer.Currency, DateTime.Today);
+            account.Deposit.CalculatedTotals.EstimatedProcentsInThisMonth = _bankDepositCalculator.GetThisMonthEstimatedProcents(account.Deposit);
         }
 
         public void CalculateProcentsForPeriod(Account account, DateTime lastProcentDate)
         {
             if (account.Deposit.DepositOffer.RateLines != null)
-                _depositProcentsCalculator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
+                _bankDepositCalculator.GetEstimatedProcentsForPeriod(account.Deposit, new Period(lastProcentDate, account.Deposit.FinishDate));
             else
                 MessageBox.Show("Не заведена таблица процентных ставок!");
         }
