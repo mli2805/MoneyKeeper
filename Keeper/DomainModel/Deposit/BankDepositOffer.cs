@@ -25,5 +25,10 @@ namespace Keeper.DomainModel
             CalculatingRules = new DepositProcentsCalculatingRules();
             RateLines = new ObservableCollection<DepositRateLine>();
         }
+
+        public override string ToString()
+        {
+            return BankAccount.Name + " " + DepositTitle + " " + Currency;
+        }
     }
 }

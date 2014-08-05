@@ -2,7 +2,7 @@
         xml:lang="ru-RU"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BankDepositRatesAndRulesView" Height="550" SizeToContent="Width" WindowStartupLocation="CenterScreen">
+        Title="BankDepositRatesAndRulesView" Height="690" SizeToContent="Width" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
