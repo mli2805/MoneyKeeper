@@ -1,5 +1,6 @@
 ﻿using System.Composition;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Accounts;
 
 namespace Keeper.ByFunctional.EditingAccounts

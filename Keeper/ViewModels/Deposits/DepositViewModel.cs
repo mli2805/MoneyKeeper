@@ -4,6 +4,7 @@ using System.Composition;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Deposits;
 
 namespace Keeper.ViewModels

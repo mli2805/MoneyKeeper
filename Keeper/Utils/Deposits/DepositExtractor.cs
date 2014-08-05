@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.Deposits
@@ -13,31 +14,21 @@ namespace Keeper.Utils.Deposits
     {
         private readonly KeeperDb _db;
         private readonly RateExtractor _rateExtractor;
-        private readonly DepositParser _depositParser;
 
         [ImportingConstructor]
-        public DepositExtractor(KeeperDb db, RateExtractor rateExtractor, DepositParser depositParser)
+        public DepositExtractor(KeeperDb db, RateExtractor rateExtractor)
         {
             _db = db;
             _rateExtractor = rateExtractor;
-            _depositParser = depositParser;
         }
 
         public Deposit Extract(Account account)
         {
-            if (account.Deposit == null)
-            {
-                account.Deposit = new Deposit { ParentAccount = account };
-                _depositParser.ExtractInfoFromName(account);
-            }
-
             account.Deposit.CalculatedTotals = new DepositCalculatedTotals();
 
             ExtractTraffic(account);
 
             if (account.Deposit.CalculatedTotals.Traffic.Count == 0) MessageBox.Show("Нет движения по счету!");
-
-            account.Deposit.Currency = account.Deposit.CalculatedTotals.Traffic.First().Currency;
 
             EvaluateTraffic(account);
             DefineCurrentState(account);
@@ -87,7 +78,7 @@ namespace Keeper.Utils.Deposits
             account.Deposit.CalculatedTotals.TotalMyOuts = account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
             account.Deposit.CalculatedTotals.TotalPercent = account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.Amount);
 
-            account.Deposit.CalculatedTotals.CurrentProfit = _rateExtractor.GetUsdEquivalent(account.Deposit.CalculatedTotals.CurrentBalance, account.Deposit.Currency, DateTime.Today)
+            account.Deposit.CalculatedTotals.CurrentProfit = _rateExtractor.GetUsdEquivalent(account.Deposit.CalculatedTotals.CurrentBalance, account.Deposit.DepositOffer.Currency, DateTime.Today)
                                     - account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd)
                                     + account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
         }

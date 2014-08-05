@@ -1,5 +1,6 @@
 using System.Composition;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Microsoft.Office.Interop.Excel;
 
 namespace Keeper.Utils.Deposits

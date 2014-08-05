@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using System.Windows;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.Deposits
@@ -26,12 +27,12 @@ namespace Keeper.Utils.Deposits
             var lastProcentDate = lastProcentTransaction == null ? account.Deposit.StartDate : lastProcentTransaction.Timestamp;
 
             CalculateProcentsForPeriod(account, lastProcentDate);
-            account.Deposit.CalculatedTotals.EstimatedProfitInUsd = account.Deposit.CalculatedTotals.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.CalculatedTotals.EstimatedProcents, account.Deposit.Currency, DateTime.Today);
+            account.Deposit.CalculatedTotals.EstimatedProfitInUsd = account.Deposit.CalculatedTotals.CurrentProfit + _rateExtractor.GetUsdEquivalent(account.Deposit.CalculatedTotals.EstimatedProcents, account.Deposit.DepositOffer.Currency, DateTime.Today);
         }
 
         public void CalculateProcentsForPeriod(Account account, DateTime lastProcentDate)
         {
-            if (account.Deposit.RateLines != null)
+            if (account.Deposit.DepositOffer.RateLines != null)
                 _depositProcentsCalculator.ProcentsForPeriod(account, new Period(lastProcentDate, account.Deposit.FinishDate));
             else
                 MessageBox.Show("Не заведена таблица процентных ставок!");

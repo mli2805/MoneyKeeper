@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
@@ -105,10 +106,9 @@ namespace Keeper.ViewModels
 
             if (windowTitle == "Добавить")
             {
-                DepositInWork.Bank = BankAccounts.First();
+                DepositInWork.DepositOffer = _db.BankDepositOffers.First();
                 DepositInWork.StartDate = DateTime.Today;
                 DepositInWork.FinishDate = DateTime.Today.AddMonths(1);
-                DepositInWork.Currency = CurrencyCodes.BYR;
             }
 
         }
@@ -130,11 +130,11 @@ namespace Keeper.ViewModels
 
         public void CompileAccountName()
         {
-            var rate = DepositInWork.RateLines == null || DepositInWork.RateLines.LastOrDefault() == null
+            var rate = DepositInWork.DepositOffer.RateLines == null || DepositInWork.DepositOffer.RateLines.LastOrDefault() == null
                          ? 0
-                         : DepositInWork.RateLines.Last().Rate;
+                         : DepositInWork.DepositOffer.RateLines.Last().Rate;
             Junction = string.Format("{0} {1} {2} - {3} {4:0.#}%",
-               DepositInWork.Bank.Name, DepositInWork.Title,
+               DepositInWork.DepositOffer.BankAccount.Name, DepositInWork.DepositOffer.DepositTitle,
                DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture),
                DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture),
                rate);
@@ -143,7 +143,7 @@ namespace Keeper.ViewModels
         public void FillDepositRatesTable()
         {
             var bankDepositRatesAndRulesViewModel = IoC.Get<BankDepositRatesAndRulesViewModel>();
-            bankDepositRatesAndRulesViewModel.Initialize(DepositInWork);
+            bankDepositRatesAndRulesViewModel.Initialize(DepositInWork.DepositOffer);
             _windowManager.ShowDialog(bankDepositRatesAndRulesViewModel);
         }
     }

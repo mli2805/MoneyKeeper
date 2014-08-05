@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.Deposits
@@ -35,12 +36,12 @@ namespace Keeper.Utils.Deposits
       else
       {
         reportHeader.Add(deposit.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!" : "Действующий депозит.");
-        var balanceString = deposit.Currency != CurrencyCodes.USD
+        var balanceString = deposit.DepositOffer.Currency != CurrencyCodes.USD
                               ? String.Format("{0:#,0} {2}  ($ {1:#,0} )",
                                               deposit.CalculatedTotals.CurrentBalance,
                                               deposit.CalculatedTotals.CurrentBalance /
-                                              (decimal)_rateExtractor.GetLastRate(deposit.Currency),
-                                              deposit.Currency.ToString().ToLower())
+                                              (decimal)_rateExtractor.GetLastRate(deposit.DepositOffer.Currency),
+                                              deposit.DepositOffer.Currency.ToString().ToLower())
                               : String.Format("{0:#,0} usd", deposit.CalculatedTotals.CurrentBalance);
         reportHeader.Add(String.Format("Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
       }
@@ -89,9 +90,9 @@ namespace Keeper.Utils.Deposits
       reportFooter.Add(String.Format("Доход по депозиту {0:#,0} usd \n", deposit.CalculatedTotals.CurrentProfit));
       if (deposit.CalculatedTotals.CurrentBalance == 0) return reportFooter;
       reportFooter.Add(String.Format("В этом месяце ожидаются проценты {0}", 
-        AmountRepresentation(deposit.CalculatedTotals.EstimatedProcentsInThisMonth,deposit.Currency)));
+        AmountRepresentation(deposit.CalculatedTotals.EstimatedProcentsInThisMonth,deposit.DepositOffer.Currency)));
       reportFooter.Add(String.Format("Всего ожидается процентов {0}", 
-        AmountRepresentation(deposit.CalculatedTotals.EstimatedProcents,deposit.Currency)));
+        AmountRepresentation(deposit.CalculatedTotals.EstimatedProcents,deposit.DepositOffer.Currency)));
       reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd", deposit.CalculatedTotals.EstimatedProfitInUsd));
       return reportFooter;
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using Keeper.DomainModel;
 using System.Linq;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Common;
 
 namespace Keeper.Utils.Deposits
@@ -54,14 +55,14 @@ namespace Keeper.Utils.Deposits
 
     private decimal GetCorrespondingDepoRate(Deposit deposit, decimal balance, DateTime date)
     {
-      var line = deposit.RateLines.LastOrDefault(l => l.AmountFrom <= balance && l.AmountTo >= balance && l.DateFrom < date);
+      var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.AmountFrom <= balance && l.AmountTo >= balance && l.DateFrom < date);
       return line == null ? 0 : line.Rate;
     } 
 
     private decimal CalculateOneDayProcents(Deposit deposit, decimal depoRate, decimal balance)
     {
 //      var year = deposit.IsFactDays ? 365 : 360;
-      var year = deposit.ProcentsCalculatingRules.IsFactDays ? 365 : 360;
+      var year = deposit.DepositOffer.CalculatingRules.IsFactDays ? 365 : 360;
       return balance*depoRate/100/year;
     }
   }

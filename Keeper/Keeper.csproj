@@ -145,7 +145,7 @@
     <Compile Include="DomainModel\Deposit\BankDepositOffer.cs" />
     <Compile Include="DomainModel\Deposit\DepositCalculatedTotals.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransactionTypes.cs" />
-    <Compile Include="DomainModel\Deposit\DepositProcentsCalculatingRules.cs" />
+    <Compile Include="DomainModel\Deposit\BankDepositCalculatingRules.cs" />
     <Compile Include="DomainModel\Deposit\DepositRateLine.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransaction.cs" />
     <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
@@ -196,7 +196,6 @@
     <Compile Include="Utils\Deposits\DepositAnalyser.cs" />
     <Compile Include="Utils\Deposits\DepositProcentsCalculator.cs" />
     <Compile Include="Utils\Deposits\DepositExtractor.cs" />
-    <Compile Include="Utils\Deposits\DepositParser.cs" />
     <Compile Include="Utils\Deposits\DepositReporter.cs" />
     <Compile Include="Utils\Diagram\DiagramDataExtremums.cs" />
     <Compile Include="Utils\Diagram\DiagramMode.cs" />

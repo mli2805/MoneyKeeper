@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 
-namespace Keeper.DomainModel
+namespace Keeper.DomainModel.Deposit
 {
     [Serializable]
     public class Deposit : ICloneable
     {
-          public Account Bank { get; set; }
-          public string Title { get; set; }
-          public CurrencyCodes Currency { get; set; }
-          public DepositProcentsCalculatingRules ProcentsCalculatingRules { get; set; }
-          public ObservableCollection<DepositRateLine> RateLines { get; set; }
-
         public BankDepositOffer DepositOffer { get; set; }
 
         public string AgreementNumber { get; set; }
@@ -28,16 +21,9 @@ namespace Keeper.DomainModel
             set { _calculatedTotals = value; }
         }
 
-        public Deposit()
-        {
-            ProcentsCalculatingRules = new DepositProcentsCalculatingRules();
-            RateLines = new ObservableCollection<DepositRateLine>();
-        }
-
         public object Clone()
         {
             var newdDeposit = (Deposit)this.MemberwiseClone();
-            if (RateLines != null) newdDeposit.RateLines = new ObservableCollection<DepositRateLine>(RateLines);
             return newdDeposit;
         }
     }

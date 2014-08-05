@@ -51,18 +51,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             return _db.BankDepositOffers.Select(bankDepositOffer => _dbClassesInstanceDumper.Dump(bankDepositOffer));
         }
 
-        public IEnumerable<string> ConvertDepositsRatesToFileContent()
-        {
-            foreach (var account in _accountTreeStraightener.FlattenWithLevels(_db.Accounts))
-            {
-                if (account.Item.Deposit == null || account.Item.Deposit.RateLines == null) continue;
-                foreach (var depositRateLine in account.Item.Deposit.RateLines)
-                {
-                    yield return _dbClassesInstanceDumper.Dump(depositRateLine, account.Item.Id);
-                }
-            }
-        }
-
         public IEnumerable<string> ConvertTransactionsToFileContent()
         {
             var orderedTransactions = from transaction in _db.Transactions

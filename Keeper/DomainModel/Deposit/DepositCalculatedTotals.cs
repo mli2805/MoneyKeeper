@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 
-namespace Keeper.DomainModel
+namespace Keeper.DomainModel.Deposit
 {
     public class DepositCalculatedTotals
     {

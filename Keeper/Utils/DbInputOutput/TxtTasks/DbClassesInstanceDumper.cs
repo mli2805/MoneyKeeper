@@ -2,6 +2,7 @@ using System;
 using System.Composition;
 using System.Globalization;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Common;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
@@ -41,7 +42,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             return s;
         }
 
-        public string Dump(DepositProcentsCalculatingRules rules)
+        public string Dump(BankDepositCalculatingRules rules)
         {
             var result = "";
             if (rules == null) return "000000";
@@ -60,11 +61,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         {
             var startDate = string.Format("{0:dd/MM/yyyy}", deposit.StartDate.Date);
             var finishDate = string.Format("{0:dd/MM/yyyy}", deposit.FinishDate.Date);
-            var rules = deposit.ProcentsCalculatingRules == null ? "" : Dump(deposit.ProcentsCalculatingRules);
             var comment = deposit.Comment == null ? "" : deposit.Comment.Replace("\r\n", "|");
 
-            return deposit.ParentAccount.Id + " ; " + deposit.Bank.Id + " ; " + deposit.Title + " ; " + deposit.AgreementNumber +
-                " ; " + startDate + " ; " + finishDate + " ; " + deposit.Currency + " ; " + rules + " ; " + comment;
+            return deposit.ParentAccount.Id + " ; " + deposit.DepositOffer.Id + " ; " + deposit.AgreementNumber +
+                " ; " + startDate + " ; " + finishDate + " ; " + comment;
         }
 
         public string Dump(DepositRateLine depositRateLine, int accountId)
