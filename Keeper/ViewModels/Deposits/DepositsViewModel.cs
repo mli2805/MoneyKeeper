@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Deposits;
@@ -172,10 +173,10 @@ namespace Keeper.ViewModels
             {
                 if (deposit.CalculatedTotals.CurrentBalance == 0) continue;
                 decimal total;
-                if (totalBalances.TryGetValue(deposit.Currency, out total))
-                    totalBalances[deposit.Currency] = total + deposit.CalculatedTotals.CurrentBalance;
+                if (totalBalances.TryGetValue(deposit.DepositOffer.Currency, out total))
+                    totalBalances[deposit.DepositOffer.Currency] = total + deposit.CalculatedTotals.CurrentBalance;
                 else
-                    totalBalances.Add(deposit.Currency, deposit.CalculatedTotals.CurrentBalance);
+                    totalBalances.Add(deposit.DepositOffer.Currency, deposit.CalculatedTotals.CurrentBalance);
             }
 
             foreach (var currency in totalBalances.Keys)

@@ -4,158 +4,159 @@ using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
 
 namespace Keeper.ViewModels
 {
-	[Export]
-	class RenewDepositViewModel : Screen
-	{
-	  private readonly KeeperDb _db;
-    private readonly BalanceCalculator _balanceCalculator;
-		readonly AccountTreeStraightener _accountTreeStraightener;
-    private Deposit _oldDeposit;
-		public Account NewDeposit { get; set; }
+    [Export]
+    class RenewDepositViewModel : Screen
+    {
+        private readonly KeeperDb _db;
+        private readonly BalanceCalculator _balanceCalculator;
+        readonly AccountTreeStraightener _accountTreeStraightener;
+        private Deposit _oldDeposit;
+        public Account NewDeposit { get; set; }
 
-		public DateTime TransactionsDate { get; set; }
-		public string OldDepositName { get; set; }
-		public string DepositCurrency { get; set; }
-		public Account BankAccount { get; set; }
-		public decimal Procents { get; set; }
-		public string NewDepositName { get; set; }
+        public DateTime TransactionsDate { get; set; }
+        public string OldDepositName { get; set; }
+        public string DepositCurrency { get; set; }
+        public Account BankAccount { get; set; }
+        public decimal Procents { get; set; }
+        public string NewDepositName { get; set; }
 
-    public List<Account> BankAccounts { get; set; }
+        public List<Account> BankAccounts { get; set; }
 
-		[ImportingConstructor]
-		public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator, 
-			 AccountTreeStraightener accountTreeStraightener)
-		{
-		  _db = db;
-		  _balanceCalculator = balanceCalculator;
-      _accountTreeStraightener = accountTreeStraightener;
+        [ImportingConstructor]
+        public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator,
+             AccountTreeStraightener accountTreeStraightener)
+        {
+            _db = db;
+            _balanceCalculator = balanceCalculator;
+            _accountTreeStraightener = accountTreeStraightener;
 
-      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
-		}
+            BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
+        }
 
-		public void SetOldDeposit(Deposit oldDeposit)
-		{
-      _oldDeposit = oldDeposit;
+        public void SetOldDeposit(Deposit oldDeposit)
+        {
+            _oldDeposit = oldDeposit;
 
-      TransactionsDate = _oldDeposit.FinishDate;
-      OldDepositName = _oldDeposit.ParentAccount.Name;
-      DepositCurrency = _oldDeposit.Currency.ToString().ToLower();
-			BankAccount = FindBankAccount();
-      Procents = _oldDeposit.CalculatedTotals.EstimatedProcents;
-			NewDepositName = BuildNewName();
-		}
+            TransactionsDate = _oldDeposit.FinishDate;
+            OldDepositName = _oldDeposit.ParentAccount.Name;
+            DepositCurrency = _oldDeposit.DepositOffer.Currency.ToString().ToLower();
+            BankAccount = FindBankAccount();
+            Procents = _oldDeposit.CalculatedTotals.EstimatedProcents;
+            NewDepositName = BuildNewName();
+        }
 
-		protected override void OnViewLoaded(object view)
-		{
-      BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
-      DisplayName = "Переоформление";
-		}
+        protected override void OnViewLoaded(object view)
+        {
+            BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
+            DisplayName = "Переоформление";
+        }
 
-		private Account FindBankAccount()
-		{
-			var st = OldDepositName.Substring(0, OldDepositName.IndexOf(' '));
-			return _accountTreeStraightener.Seek(st,_db.Accounts);
-		}
+        private Account FindBankAccount()
+        {
+            var st = OldDepositName.Substring(0, OldDepositName.IndexOf(' '));
+            return _accountTreeStraightener.Seek(st, _db.Accounts);
+        }
 
-		private string BuildNewName()
-		{
-      var rate = _oldDeposit.RateLines == null || _oldDeposit.RateLines.LastOrDefault() == null
-             ? 0
-             : _oldDeposit.RateLines.Last().Rate;
+        private string BuildNewName()
+        {
+            var rate = _oldDeposit.DepositOffer.RateLines == null || _oldDeposit.DepositOffer.RateLines.LastOrDefault() == null
+                   ? 0
+                   : _oldDeposit.DepositOffer.RateLines.Last().Rate;
 
 
-			var st = OldDepositName.Substring(0, OldDepositName.IndexOf('/') - 2).Trim();
-      DateTime newFinish = _oldDeposit.FinishDate + (_oldDeposit.FinishDate - _oldDeposit.StartDate);
-      string period = String.Format("{0:d/MM/yyyy} - {1:d/MM/yyyy}", _oldDeposit.FinishDate, newFinish).Replace('.', '/');
-      return String.Format("{0} {1} {2}%", st, period, rate);
-		}
+            var st = OldDepositName.Substring(0, OldDepositName.IndexOf('/') - 2).Trim();
+            DateTime newFinish = _oldDeposit.FinishDate + (_oldDeposit.FinishDate - _oldDeposit.StartDate);
+            string period = String.Format("{0:d/MM/yyyy} - {1:d/MM/yyyy}", _oldDeposit.FinishDate, newFinish).Replace('.', '/');
+            return String.Format("{0} {1} {2}%", st, period, rate);
+        }
 
-		private Account AddNewAccountForDeposit()
-		{
-			var newDepositAccount = new Account(NewDepositName);
-			newDepositAccount.Id = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) select account.Id).Max() + 1;
+        private Account AddNewAccountForDeposit()
+        {
+            var newDepositAccount = new Account(NewDepositName);
+            newDepositAccount.Id = (from account in new AccountTreeStraightener().Flatten(_db.Accounts) select account.Id).Max() + 1;
 
-			var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
-			newDepositAccount.Parent = parent;
-			parent.Children.Add(newDepositAccount);
+            var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
+            newDepositAccount.Parent = parent;
+            parent.Children.Add(newDepositAccount);
 
-			return newDepositAccount;
-		}
+            return newDepositAccount;
+        }
 
-		private DateTime GetTimestampForTransactions()
-		{
-			var lastTransactionInDay =
-			   (from t in _db.Transactions where t.Timestamp.Date == TransactionsDate.Date select t).LastOrDefault();
-			return lastTransactionInDay == null ?
-			  TransactionsDate.AddHours(9) :
-			  lastTransactionInDay.Timestamp.AddMinutes(1);
-		}
+        private DateTime GetTimestampForTransactions()
+        {
+            var lastTransactionInDay =
+               (from t in _db.Transactions where t.Timestamp.Date == TransactionsDate.Date select t).LastOrDefault();
+            return lastTransactionInDay == null ?
+              TransactionsDate.AddHours(9) :
+              lastTransactionInDay.Timestamp.AddMinutes(1);
+        }
 
-		private void MakeTransactionProcents()
-		{
-			var transactionProcents = new Transaction
-			  {
-				  Timestamp = GetTimestampForTransactions(),
-				  Operation = OperationType.Доход,
-				  Debet = BankAccount,
-          Credit = _oldDeposit.ParentAccount,
-				  Amount = Procents,
-          Currency = _oldDeposit.Currency,
-				  Article = _accountTreeStraightener.Seek("Проценты по депозитам", _db.Accounts),
-				  Comment = "причисление процентов при закрытии"
-			  };
+        private void MakeTransactionProcents()
+        {
+            var transactionProcents = new Transaction
+              {
+                  Timestamp = GetTimestampForTransactions(),
+                  Operation = OperationType.Доход,
+                  Debet = BankAccount,
+                  Credit = _oldDeposit.ParentAccount,
+                  Amount = Procents,
+                  Currency = _oldDeposit.DepositOffer.Currency,
+                  Article = _accountTreeStraightener.Seek("Проценты по депозитам", _db.Accounts),
+                  Comment = "причисление процентов при закрытии"
+              };
 
-			_db.Transactions.Add(transactionProcents);
-		}
+            _db.Transactions.Add(transactionProcents);
+        }
 
-		private void MakeTransactionTransfer()
-		{
-			var transactionProcents = new Transaction
-			{
-				Timestamp = GetTimestampForTransactions(),
-				Operation = OperationType.Перенос,
-        Debet = _oldDeposit.ParentAccount,
-				Credit = NewDeposit,
-        Amount = _balanceCalculator.GetBalanceInCurrency(_oldDeposit.ParentAccount,
-                            new Period(new DateTime(0), GetTimestampForTransactions()),
-                            _oldDeposit.Currency),
-        Currency = _oldDeposit.Currency,
-				Comment = "переоформление вклада"
-			};
+        private void MakeTransactionTransfer()
+        {
+            var transactionProcents = new Transaction
+            {
+                Timestamp = GetTimestampForTransactions(),
+                Operation = OperationType.Перенос,
+                Debet = _oldDeposit.ParentAccount,
+                Credit = NewDeposit,
+                Amount = _balanceCalculator.GetBalanceInCurrency(_oldDeposit.ParentAccount,
+                                    new Period(new DateTime(0), GetTimestampForTransactions()),
+                                    _oldDeposit.DepositOffer.Currency),
+                Currency = _oldDeposit.DepositOffer.Currency,
+                Comment = "переоформление вклада"
+            };
 
-			_db.Transactions.Add(transactionProcents);
-		}
+            _db.Transactions.Add(transactionProcents);
+        }
 
-		private void RemoveOldAccountToClosed()
-		{
-			var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
-      parent.Children.Remove(_oldDeposit.ParentAccount);
+        private void RemoveOldAccountToClosed()
+        {
+            var parent = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
+            parent.Children.Remove(_oldDeposit.ParentAccount);
 
-			parent = _accountTreeStraightener.Seek("Закрытые депозиты", _db.Accounts);
-      _oldDeposit.ParentAccount.Parent = parent;
-      parent.Children.Add(_oldDeposit.ParentAccount);
-		}
+            parent = _accountTreeStraightener.Seek("Закрытые депозиты", _db.Accounts);
+            _oldDeposit.ParentAccount.Parent = parent;
+            parent.Children.Add(_oldDeposit.ParentAccount);
+        }
 
-		public void Accept()
-		{
-			MakeTransactionProcents();
-			NewDeposit = AddNewAccountForDeposit();
-			MakeTransactionTransfer();
-			RemoveOldAccountToClosed();
-			TryClose();
-		}
+        public void Accept()
+        {
+            MakeTransactionProcents();
+            NewDeposit = AddNewAccountForDeposit();
+            MakeTransactionTransfer();
+            RemoveOldAccountToClosed();
+            TryClose();
+        }
 
-		public void Decline()
-		{
-		}
+        public void Decline()
+        {
+        }
 
-	}
+    }
 
 
 }

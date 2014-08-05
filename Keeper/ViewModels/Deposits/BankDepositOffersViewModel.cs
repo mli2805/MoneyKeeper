@@ -5,6 +5,7 @@ using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
@@ -46,16 +47,9 @@ namespace Keeper.ViewModels
 
         public void EditRatesAndRules()
         {
-            var fakeDeposit = new Deposit();
-            fakeDeposit.ProcentsCalculatingRules = SelectedOffer.CalculatingRules;
-            fakeDeposit.RateLines = SelectedOffer.RateLines;
-
             var bankDepositRatesAndRulesViewModel = IoC.Get<BankDepositRatesAndRulesViewModel>();
-            bankDepositRatesAndRulesViewModel.Initialize(fakeDeposit);
+            bankDepositRatesAndRulesViewModel.Initialize(SelectedOffer);
             _windowManager.ShowDialog(bankDepositRatesAndRulesViewModel);
-
-            SelectedOffer.RateLines = fakeDeposit.RateLines;
-            SelectedOffer.CalculatingRules = fakeDeposit.ProcentsCalculatingRules;
         }
         public void CloseView()
         {

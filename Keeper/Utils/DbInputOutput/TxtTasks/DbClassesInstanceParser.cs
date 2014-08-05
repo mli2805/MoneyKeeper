@@ -1,15 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
     [System.Composition.Export]
     public class DbClassesInstanceParser
     {
+
+        public BankDepositOffer BankDepositOfferFromString(string s, IEnumerable<Account> accountsPlaneList)
+        {
+            var substrings = s.Split(';');
+            var offer = new BankDepositOffer(Convert.ToInt32(substrings[0]));
+            offer.BankAccount = accountsPlaneList.First(account => account.Name == substrings[1].Trim());
+            offer.DepositTitle = substrings[2].Trim();
+            offer.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[3]);
+            offer.CalculatingRules = DepositOfferRulesFromString(substrings[4]);
+            offer.Comment = substrings[5].Trim();
+
+            return offer;
+        }
+
         public Transaction TransactionFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
         {
             var transaction = new Transaction();
@@ -60,9 +76,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             account.IsExpanded = Convert.ToBoolean(substrings[5]);
             return account;
         }
-        public DepositProcentsCalculatingRules DepositProcentEvaluationRulesFromString(string s)
+        public BankDepositCalculatingRules DepositOfferRulesFromString(string s)
         {
-            var rules = new DepositProcentsCalculatingRules();
+            var rules = new BankDepositCalculatingRules();
             if (s != "  ")
             {
                 s = s.Trim();
@@ -76,34 +92,32 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             }
             return rules;
         }
-        public void DepositFromString(string s, IEnumerable<Account> accountsPlaneList)
+        public void DepositFromString(string s, IEnumerable<Account> accountsPlaneList, IEnumerable<BankDepositOffer> depositOffers)
         {
             var deposit = new Deposit();
             var substrings = s.Split(';');
             deposit.ParentAccount = accountsPlaneList.First(account => account.Id == Convert.ToInt32(substrings[0]));
-            deposit.Bank = accountsPlaneList.First(account => account.Id == Convert.ToInt32(substrings[1]));
-            deposit.Title = substrings[2].Trim();
-            deposit.AgreementNumber = substrings[3].Trim();
-            deposit.StartDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
-            deposit.FinishDate = Convert.ToDateTime(substrings[5], new CultureInfo("ru-RU"));
-            deposit.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[6]);
-            deposit.ProcentsCalculatingRules = DepositProcentEvaluationRulesFromString(substrings[7]);
-            deposit.Comment = substrings[8].Replace("|", "\r\n");
+            deposit.DepositOffer = depositOffers.First(offer => offer.Id == Convert.ToInt32(substrings[1]));
+            deposit.AgreementNumber = substrings[2].Trim();
+            deposit.StartDate = Convert.ToDateTime(substrings[3], new CultureInfo("ru-RU"));
+            deposit.FinishDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
+            deposit.Comment = substrings[5].Replace("|", "\r\n");
 
             deposit.ParentAccount.Deposit = deposit;
         }
 
-        public DepositRateLine DepositRateLineFromString(string s, IEnumerable<Account> accountsPlaneList)
+        public DepositRateLine DepositRateLineFromString(string s, IEnumerable<BankDepositOffer> depositOffers)
         {
             var depositRateLine = new DepositRateLine();
             var substrings = s.Split(';');
-            var depositAccount = accountsPlaneList.First(account => account.Id == Convert.ToInt32(substrings[0]));
+            var depositOffer = depositOffers.First(offer => offer.Id == Convert.ToInt32(substrings[0]));
+            if (depositOffer.RateLines == null) depositOffer.RateLines = new ObservableCollection<DepositRateLine>();
             depositRateLine.DateFrom = Convert.ToDateTime(substrings[1], new CultureInfo("ru-RU"));
             depositRateLine.AmountFrom = Convert.ToDecimal(substrings[2]);
             depositRateLine.AmountTo = Convert.ToDecimal(substrings[3]);
             depositRateLine.Rate = Convert.ToDecimal(substrings[4]);
 
-            depositAccount.Deposit.RateLines.Add(depositRateLine);
+            depositOffer.RateLines.Add(depositRateLine);
 
             return depositRateLine;
         }

@@ -84,11 +84,11 @@ namespace Keeper.Utils.MonthAnalysis
         if (deposit.CalculatedTotals.EstimatedProcentsInThisMonth == 0) continue;
 
         s.ForecastRegularIncome.Payments.Add(new EstimatedMoney { Amount = deposit.CalculatedTotals.EstimatedProcentsInThisMonth, 
-          ArticleName = string.Format("%%  {0} {1:d MMM}",deposit.Bank ,deposit.FinishDate), 
-          Currency = deposit.Currency });
+          ArticleName = string.Format("%%  {0} {1:d MMM}",deposit.DepositOffer.BankAccount ,deposit.FinishDate), 
+          Currency = deposit.DepositOffer.Currency });
 
         s.ForecastRegularIncome.EstimatedSum += 
-          _rateExtractor.GetUsdEquivalent(deposit.CalculatedTotals.EstimatedProcentsInThisMonth, deposit.Currency, DateTime.Today);
+          _rateExtractor.GetUsdEquivalent(deposit.CalculatedTotals.EstimatedProcentsInThisMonth, deposit.DepositOffer.Currency, DateTime.Today);
       }
     }
 

@@ -1,4 +1,5 @@
 using Keeper.DomainModel;
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Common;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-
+using Keeper.DomainModel.Deposit;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 namespace Keeper.DomainModel

@@ -23,9 +23,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             _dbTxtFileWriter.WriteDbFile("CurrencyRates.txt", _dbEntriesToStringListsConverter.ConvertCurrencyRatesToFileContent());
             _dbTxtFileWriter.WriteDbFile("BankDepositOffers.txt", _dbEntriesToStringListsConverter.ConvertBankDepositOffersToFileContent());
             _dbTxtFileWriter.WriteDbFile("BankDepositOffersRates.txt", _dbEntriesToStringListsConverter.ConvertBankDepositOffersRatesToFileContent());
-
             _dbTxtFileWriter.WriteDbFile("Deposits.txt", _dbEntriesToStringListsConverter.ConvertDepositsToFileContent());
-            _dbTxtFileWriter.WriteDbFile("DepositsRates.txt", _dbEntriesToStringListsConverter.ConvertDepositsRatesToFileContent());
         }
 
     }

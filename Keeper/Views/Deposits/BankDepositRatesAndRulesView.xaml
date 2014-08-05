@@ -50,20 +50,20 @@
         <TextBlock Grid.Row="3" Margin="222,15,151,9" Text="или" VerticalAlignment="Center"/>
         <Button Name="ImportFrom" Grid.Row="3" Margin="0,7,7,7" Width="129" HorizontalAlignment="Right" Content="Импортировать все" />
 
-        <ComboBox Grid.Row="4" Margin="0,7,7,7" Width="362" HorizontalAlignment="Right" ItemsSource="{Binding DepositsForCombobox}" SelectedItem="{Binding DepositDonor}"/>
+        <ComboBox Grid.Row="4" Margin="0,7,7,7" Width="362" HorizontalAlignment="Right" ItemsSource="{Binding DepositsForCombobox}" SelectedItem="{Binding DepositOfferDonor}"/>
 
         <CheckBox Name="IsFactDays" Grid.Row="5" Content="исходя из фактического количества дней в году" Margin="10,10,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.IsFactDays, Mode=TwoWay}"/>
+              IsChecked="{Binding DepositOfferInWork.CalculatingRules.IsFactDays, Mode=TwoWay}"/>
         <CheckBox Name="OnlyAtTheEnd" Grid.Row="5" Content="только в конце срока" Margin="10,40,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.OnlyAtTheEnd, Mode=TwoWay}"/>
+              IsChecked="{Binding DepositOfferInWork.CalculatingRules.OnlyAtTheEnd, Mode=TwoWay}"/>
         <CheckBox Name="EveryFirstDayOfMonth" Grid.Row="5" Content="каждое первое число месяца" Margin="10,70,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.EveryFirstDayOfMonth, Mode=TwoWay}"/>
+              IsChecked="{Binding DepositOfferInWork.CalculatingRules.EveryFirstDayOfMonth, Mode=TwoWay}"/>
         <CheckBox Name="EveryLastDayOfMonth" Grid.Row="5" Content="каждый последний день месяца" Margin="10,100,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.EveryLastDayOfMonth, Mode=TwoWay}"/>
+              IsChecked="{Binding DepositOfferInWork.CalculatingRules.EveryLastDayOfMonth, Mode=TwoWay}"/>
         <CheckBox Name="EveryStartDay" Grid.Row="5" Content="каждое число открытия" Margin="10,130,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.EveryStartDay, Mode=TwoWay}"/>
+              IsChecked="{Binding DepositOfferInWork.CalculatingRules.EveryStartDay, Mode=TwoWay}"/>
         <CheckBox Name="IsCapitalized" Grid.Row="5" Content="проценты капитализируются" Margin="10,160,0,0"
-              IsChecked="{Binding DepositInWork.ProcentsCalculatingRules.IsCapitalized, Mode=TwoWay}"/>
+              IsChecked="{Binding DepositOfferInWork.CalculatingRules.IsCapitalized, Mode=TwoWay}"/>
 
         <Button Name="CloseForm" Grid.Row="6" Margin="7" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
     </Grid>

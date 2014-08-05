@@ -1,6 +1,6 @@
 using System;
 
-namespace Keeper.DomainModel
+namespace Keeper.DomainModel.Deposit
 {
     [Serializable]
     public class DepositRateLine

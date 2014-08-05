@@ -1,4 +1,4 @@
-﻿namespace Keeper.DomainModel
+﻿namespace Keeper.DomainModel.Deposit
 {
   public enum DepositStates
   {
