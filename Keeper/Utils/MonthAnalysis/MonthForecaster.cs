@@ -16,17 +16,17 @@ namespace Keeper.Utils.MonthAnalysis
     private readonly RegularPaymentsProvider _regularPaymentsProvider;
     private readonly RateExtractor _rateExtractor;
     private readonly AccountTreeStraightener _accountTreeStraightener;
-    private readonly DepositExtractor _depositExtractor;
+      private readonly DepositCalculationAggregator _depositCalculationAggregator;
 
     [ImportingConstructor]
     public MonthForecaster(KeeperDb db, RegularPaymentsProvider regularPaymentsProvider, RateExtractor rateExtractor, 
-       AccountTreeStraightener accountTreeStraightener, DepositExtractor depositExtractor)
+       AccountTreeStraightener accountTreeStraightener, DepositCalculationAggregator depositCalculationAggregator)
     {
       _db = db;
       _regularPaymentsProvider = regularPaymentsProvider;
       _rateExtractor = rateExtractor;
       _accountTreeStraightener = accountTreeStraightener;
-      _depositExtractor = depositExtractor;
+        _depositCalculationAggregator = depositCalculationAggregator;
     }
 
     public void CollectEstimates(Saldo s)
@@ -79,16 +79,19 @@ namespace Keeper.Utils.MonthAnalysis
       foreach (var account in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
       {
         if (account.Children.Count != 0) continue;
-        var deposit = _depositExtractor.Extract(account);
+        _depositCalculationAggregator.FillinFieldsForMonthAnalysis(account.Deposit);
 
-        if (deposit.CalculationData.EstimatedProcentsInThisMonth == 0) continue;
+        if (account.Deposit.CalculationData.EstimatedProcentsInThisMonth == 0) continue;
 
-        s.ForecastRegularIncome.Payments.Add(new EstimatedMoney { Amount = deposit.CalculationData.EstimatedProcentsInThisMonth, 
-          ArticleName = string.Format("%%  {0} {1:d MMM}",deposit.DepositOffer.BankAccount ,deposit.FinishDate), 
-          Currency = deposit.DepositOffer.Currency });
+        s.ForecastRegularIncome.Payments.Add(new EstimatedMoney
+        {
+            Amount = account.Deposit.CalculationData.EstimatedProcentsInThisMonth,
+            ArticleName = string.Format("%%  {0} {1:d MMM}", account.Deposit.DepositOffer.BankAccount, account.Deposit.FinishDate),
+            Currency = account.Deposit.DepositOffer.Currency
+        });
 
-        s.ForecastRegularIncome.EstimatedSum += 
-          _rateExtractor.GetUsdEquivalent(deposit.CalculationData.EstimatedProcentsInThisMonth, deposit.DepositOffer.Currency, DateTime.Today);
+        s.ForecastRegularIncome.EstimatedSum +=
+          _rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.EstimatedProcentsInThisMonth, account.Deposit.DepositOffer.Currency, DateTime.Today);
       }
     }
 

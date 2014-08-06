@@ -22,9 +22,8 @@ namespace Keeper.ViewModels
 
         private readonly KeeperDb _db;
         readonly AccountTreeStraightener _accountTreeStraightener;
-        private readonly DepositExtractor _depositExtractor;
         private readonly RateExtractor _rateExtractor;
-        private readonly DepositCalculator _depositCalculator;
+        private readonly DepositCalculationAggregator _depositCalculatorAggregator;
 
         public List<Deposit> DepositList { get; set; }
         public Deposit SelectedDeposit { get; set; }
@@ -33,14 +32,13 @@ namespace Keeper.ViewModels
         public Style MyTitleStyle { get; set; }
 
         [ImportingConstructor]
-        public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
-                                 DepositExtractor depositExtractor, RateExtractor rateExtractor, DepositCalculator depositCalculator)
+        public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
+                                 DepositExtractor depositExtractor,  DepositCalculationAggregator depositCalculatorAggregator)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
-            _depositExtractor = depositExtractor;
             _rateExtractor = rateExtractor;
-            _depositCalculator = depositCalculator;
+            _depositCalculatorAggregator = depositCalculatorAggregator;
 
             MyTitleStyle = new Style();
 
@@ -49,7 +47,7 @@ namespace Keeper.ViewModels
             {
                 if (account.Is("Депозиты") && account.Children.Count == 0)
                 {
-                    DepositList.Add(_depositExtractor.Extract(account));
+                    DepositList.Add(depositExtractor.Extract(account));
                 }
             }
             SelectedDeposit = DepositList[0];
@@ -152,7 +150,7 @@ namespace Keeper.ViewModels
                 decimal yearTotal = 0;
                 foreach (var deposit in DepositList)
                 {
-                    yearTotal += _depositCalculator.GetProfitForYear(deposit, i);
+                    yearTotal += _depositCalculatorAggregator.GetProfitForYear(deposit, i);
                 }
                 if (yearTotal != 0)
                     YearsList.Add(
