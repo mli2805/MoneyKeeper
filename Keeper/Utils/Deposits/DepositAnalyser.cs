@@ -21,7 +21,7 @@ namespace Keeper.Utils.Deposits
 
         public void MakeForecast(Account account)
         {
-            account.Deposit.CalculatedTotals.EstimatedProcentsInThisMonth = _bankDepositCalculator.GetThisMonthEstimatedProcents(account.Deposit);
+            account.Deposit.CalculationData.EstimatedProcentsInThisMonth = _bankDepositCalculator.GetThisMonthEstimatedProcents(account.Deposit);
         }
 
         public void CalculateProcentsForPeriod(Account account, DateTime lastProcentDate)
@@ -34,24 +34,24 @@ namespace Keeper.Utils.Deposits
 
         public decimal GetProfitForYear(Deposit deposit, int year)
         {
-            if (deposit.CalculatedTotals.CurrentProfit == 0) return 0;
-            var startYear = deposit.CalculatedTotals.Traffic.First().Timestamp.Year;
-            var finishYear = deposit.CalculatedTotals.Traffic.Last().Timestamp.AddDays(-1).Year;
+            if (deposit.CalculationData.CurrentProfit == 0) return 0;
+            var startYear = deposit.CalculationData.Traffic.First().Timestamp.Year;
+            var finishYear = deposit.CalculationData.Traffic.Last().Timestamp.AddDays(-1).Year;
             if (year < startYear || year > finishYear) return 0;
-            if (startYear == finishYear) return deposit.CalculatedTotals.CurrentProfit;
-            var allDaysCount = (deposit.CalculatedTotals.Traffic.Last().Timestamp.AddDays(-1) - deposit.CalculatedTotals.Traffic.First().Timestamp).Days;
+            if (startYear == finishYear) return deposit.CalculationData.CurrentProfit;
+            var allDaysCount = (deposit.CalculationData.Traffic.Last().Timestamp.AddDays(-1) - deposit.CalculationData.Traffic.First().Timestamp).Days;
             if (year == startYear)
             {
-                var startYearDaysCount = (new DateTime(startYear, 12, 31) - deposit.CalculatedTotals.Traffic.First().Timestamp).Days;
-                return deposit.CalculatedTotals.CurrentProfit * startYearDaysCount / allDaysCount;
+                var startYearDaysCount = (new DateTime(startYear, 12, 31) - deposit.CalculationData.Traffic.First().Timestamp).Days;
+                return deposit.CalculationData.CurrentProfit * startYearDaysCount / allDaysCount;
             }
             if (year == finishYear)
             {
-                var finishYearDaysCount = (deposit.CalculatedTotals.Traffic.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
-                return deposit.CalculatedTotals.CurrentProfit * finishYearDaysCount / allDaysCount;
+                var finishYearDaysCount = (deposit.CalculationData.Traffic.Last().Timestamp.AddDays(-1) - new DateTime(finishYear, 1, 1)).Days;
+                return deposit.CalculationData.CurrentProfit * finishYearDaysCount / allDaysCount;
             }
             var yearDaysCount = (new DateTime(year, 12, 31) - new DateTime(year, 1, 1)).Days;
-            return deposit.CalculatedTotals.CurrentProfit * yearDaysCount / allDaysCount;
+            return deposit.CalculationData.CurrentProfit * yearDaysCount / allDaysCount;
         }
 
     }

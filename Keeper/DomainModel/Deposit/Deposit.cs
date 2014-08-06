@@ -14,11 +14,11 @@ namespace Keeper.DomainModel.Deposit
         public Account ParentAccount { get; set; }
 
         [NonSerialized]
-        private DepositCalculatedTotals _calculatedTotals;
-        public DepositCalculatedTotals CalculatedTotals
+        private DepositCalculationData _calculationData;
+        public DepositCalculationData CalculationData
         {
-            get { return _calculatedTotals; }
-            set { _calculatedTotals = value; }
+            get { return _calculationData; }
+            set { _calculationData = value; }
         }
 
         public object Clone()

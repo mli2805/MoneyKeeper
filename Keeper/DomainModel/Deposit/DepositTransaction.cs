@@ -10,5 +10,10 @@ namespace Keeper.DomainModel.Deposit
         public CurrencyCodes Currency { get; set; }
         public Decimal AmountInUsd { get; set; }
         public string Comment { get; set; }
+
+        public int Destination()
+        {
+            return TransactionType == DepositTransactionTypes.Расход ? -1 : 1;
+        }
     }
 }

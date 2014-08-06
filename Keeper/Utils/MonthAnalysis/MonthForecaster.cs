@@ -81,14 +81,14 @@ namespace Keeper.Utils.MonthAnalysis
         if (account.Children.Count != 0) continue;
         var deposit = _depositExtractor.Extract(account);
 
-        if (deposit.CalculatedTotals.EstimatedProcentsInThisMonth == 0) continue;
+        if (deposit.CalculationData.EstimatedProcentsInThisMonth == 0) continue;
 
-        s.ForecastRegularIncome.Payments.Add(new EstimatedMoney { Amount = deposit.CalculatedTotals.EstimatedProcentsInThisMonth, 
+        s.ForecastRegularIncome.Payments.Add(new EstimatedMoney { Amount = deposit.CalculationData.EstimatedProcentsInThisMonth, 
           ArticleName = string.Format("%%  {0} {1:d MMM}",deposit.DepositOffer.BankAccount ,deposit.FinishDate), 
           Currency = deposit.DepositOffer.Currency });
 
         s.ForecastRegularIncome.EstimatedSum += 
-          _rateExtractor.GetUsdEquivalent(deposit.CalculatedTotals.EstimatedProcentsInThisMonth, deposit.DepositOffer.Currency, DateTime.Today);
+          _rateExtractor.GetUsdEquivalent(deposit.CalculationData.EstimatedProcentsInThisMonth, deposit.DepositOffer.Currency, DateTime.Today);
       }
     }
 
