@@ -24,7 +24,7 @@ namespace Keeper.ViewModels
         readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly DepositExtractor _depositExtractor;
         private readonly RateExtractor _rateExtractor;
-        private readonly DepositAnalyser _depositAnalyser;
+        private readonly DepositCalculator _depositCalculator;
 
         public List<Deposit> DepositList { get; set; }
         public Deposit SelectedDeposit { get; set; }
@@ -34,13 +34,13 @@ namespace Keeper.ViewModels
 
         [ImportingConstructor]
         public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
-                                 DepositExtractor depositExtractor, RateExtractor rateExtractor, DepositAnalyser depositAnalyser)
+                                 DepositExtractor depositExtractor, RateExtractor rateExtractor, DepositCalculator depositCalculator)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
             _depositExtractor = depositExtractor;
             _rateExtractor = rateExtractor;
-            _depositAnalyser = depositAnalyser;
+            _depositCalculator = depositCalculator;
 
             MyTitleStyle = new Style();
 
@@ -152,7 +152,7 @@ namespace Keeper.ViewModels
                 decimal yearTotal = 0;
                 foreach (var deposit in DepositList)
                 {
-                    yearTotal += _depositAnalyser.GetProfitForYear(deposit, i);
+                    yearTotal += _depositCalculator.GetProfitForYear(deposit, i);
                 }
                 if (yearTotal != 0)
                     YearsList.Add(
