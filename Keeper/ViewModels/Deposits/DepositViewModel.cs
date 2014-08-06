@@ -12,11 +12,9 @@ namespace Keeper.ViewModels
     [Export]
     public class DepositViewModel : Screen
     {
-        private readonly DepositExtractor _depositExtractor;
-        private readonly DepositProcentsCalculator _depositProcentsCalculator;
+        private readonly DepositCalculator _depositCalculator;
         private readonly DepositReporter _depositReporter;
         private readonly DepositExcelReporter _depositExcelReporter;
-        private readonly DepositAnalyser _depositAnalyser;
         private bool _canRenew;
 
         public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
@@ -38,14 +36,12 @@ namespace Keeper.ViewModels
         }
 
         [ImportingConstructor]
-        public DepositViewModel(DepositExtractor depositExtractor, DepositProcentsCalculator depositProcentsCalculator, 
-            DepositReporter depositReporter, DepositExcelReporter depositExcelReporter, DepositAnalyser depositAnalyser)
+        public DepositViewModel(DepositCalculator depositCalculator, 
+            DepositReporter depositReporter, DepositExcelReporter depositExcelReporter)
         {
-            _depositExtractor = depositExtractor;
-            _depositProcentsCalculator = depositProcentsCalculator;
+            _depositCalculator = depositCalculator;
             _depositReporter = depositReporter;
             _depositExcelReporter = depositExcelReporter;
-            _depositAnalyser = depositAnalyser;
             NewAccountForDeposit = null;
         }
 
@@ -65,7 +61,6 @@ namespace Keeper.ViewModels
 
         public void ExtractEvaluationsToExcel()
         {
-            _depositAnalyser.CalculateProcentsForPeriod(Deposit.ParentAccount, DateTime.Today);
             _depositExcelReporter.Run(Deposit);
         }
 

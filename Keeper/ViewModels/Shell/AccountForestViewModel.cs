@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
-using Keeper.Utils;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Deposits;
 
@@ -23,8 +22,7 @@ namespace Keeper.ViewModels.Shell
         private readonly AccountTreesGardener _accountTreesGardener;
         private readonly AccountOperations _accountOperations;
         private readonly AccountTreeStraightener _accountTreeStraightener;
-        private readonly DepositExtractor _depositExtractor;
-        private readonly DepositAnalyser _depositAnalyser;
+        private readonly DepositCalculator _depositCalculator;
 
         private readonly List<Screen> _launchedForms = new List<Screen>();
 
@@ -32,15 +30,14 @@ namespace Keeper.ViewModels.Shell
 
         [ImportingConstructor]
         public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
-          AccountOperations accountOperations, AccountTreeStraightener accountTreeStraightener, DepositExtractor depositExtractor, DepositAnalyser depositAnalyser)
+          AccountOperations accountOperations, AccountTreeStraightener accountTreeStraightener, DepositCalculator depositCalculator)
         {
             MyForestModel = shellModel.MyForestModel;
             _db = db;
             _accountTreesGardener = accountTreesGardener;
             _accountOperations = accountOperations;
             _accountTreeStraightener = accountTreeStraightener;
-            _depositExtractor = depositExtractor;
-            _depositAnalyser = depositAnalyser;
+            _depositCalculator = depositCalculator;
 
             InitVariablesToShowAccounts();
         }
@@ -139,8 +136,7 @@ namespace Keeper.ViewModels.Shell
             }
 
             var depositForm = IoC.Get<DepositViewModel>();
-            _depositExtractor.Extract(MyForestModel.SelectedAccount);
-            _depositAnalyser.MakeForecast(MyForestModel.SelectedAccount);
+            _depositCalculator.Calculate(MyForestModel.SelectedAccount.Deposit);
             depositForm.SetAccount(MyForestModel.SelectedAccount);
             _launchedForms.Add(depositForm);
             depositForm.RenewPressed += DepositViewModelRenewed; // подписываемся на переофрмление депозита, если оно произойдет надо сменить селекшен
