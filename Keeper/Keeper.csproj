@@ -143,7 +143,7 @@
     <Compile Include="DomainModel\AccountOperations.cs" />
     <Compile Include="DomainModel\DeleteReasons.cs" />
     <Compile Include="DomainModel\Deposit\BankDepositOffer.cs" />
-    <Compile Include="DomainModel\Deposit\DepositCalculatedTotals.cs" />
+    <Compile Include="DomainModel\Deposit\DepositCalculationData.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransactionTypes.cs" />
     <Compile Include="DomainModel\Deposit\BankDepositCalculatingRules.cs" />
     <Compile Include="DomainModel\Deposit\DepositRateLine.cs" />
@@ -344,7 +344,7 @@
     <Compile Include="ViewModels\Deposits\DepositViewModel.cs" />
     <Compile Include="Utils\CommonKeeper\AssociationFinder.cs" />
     <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
-    <Compile Include="ViewModels\MonthAnalisysViewModel.cs" />
+    <Compile Include="ViewModels\MonthAnalysisViewModel.cs" />
     <Compile Include="ViewModels\ReceiptViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\AccountFilter.cs" />
@@ -365,8 +365,8 @@
     <Compile Include="Views\Deposits\DepositView.xaml.cs">
       <DependentUpon>DepositView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MonthAnalisysView.xaml.cs">
-      <DependentUpon>MonthAnalisysView.xaml</DependentUpon>
+    <Compile Include="Views\MonthAnalysisView.xaml.cs">
+      <DependentUpon>MonthAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReceiptView.xaml.cs">
       <DependentUpon>ReceiptView.xaml</DependentUpon>
@@ -411,6 +411,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Utils\Deposits\DepositsCalculationScheme.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -503,7 +504,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MonthAnalisysView.xaml">
+    <Page Include="Views\MonthAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

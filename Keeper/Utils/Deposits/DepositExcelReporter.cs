@@ -62,7 +62,7 @@ namespace Keeper.Utils.Deposits
     {
       int i = 3;
       decimal total = 0;
-      foreach (var line in deposit.CalculatedTotals.ProcentEvaluation)
+      foreach (var line in deposit.CalculationData.DailyTable)
       {
         total += line.DayProfit;
 

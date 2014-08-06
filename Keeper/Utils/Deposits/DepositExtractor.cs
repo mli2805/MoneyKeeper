@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Windows;
@@ -15,6 +16,8 @@ namespace Keeper.Utils.Deposits
         private readonly KeeperDb _db;
         private readonly RateExtractor _rateExtractor;
 
+        private Deposit _deposit;
+
         [ImportingConstructor]
         public DepositExtractor(KeeperDb db, RateExtractor rateExtractor)
         {
@@ -24,22 +27,20 @@ namespace Keeper.Utils.Deposits
 
         public Deposit Extract(Account account)
         {
-            account.Deposit.CalculatedTotals = new DepositCalculatedTotals();
+            _deposit = account.Deposit;
 
-            ExtractTraffic(account);
-
-            if (account.Deposit.CalculatedTotals.Traffic.Count == 0) MessageBox.Show("Нет движения по счету!");
-
-            EvaluateTraffic(account);
-            DefineCurrentState(account);
-            //            if (account.Deposit.CalculatedTotals.State != DepositStates.Закрыт) MakeForecast(account);
-            return account.Deposit;
+            _deposit.CalculationData = new DepositCalculationData();
+            ExtractTraffic();
+            EvaluateTraffic();
+            FillinDailyBalances();
+            DefineCurrentState();
+            return _deposit;
         }
 
-        private void ExtractTraffic(Account account)
+        private void ExtractTraffic()
         {
-            account.Deposit.CalculatedTotals.Traffic = (from t in _db.Transactions
-                                                   where t.Debet == account || t.Credit == account
+            _deposit.CalculationData.Traffic = (from t in _db.Transactions
+                                                   where t.Debet == _deposit.ParentAccount || t.Credit == _deposit.ParentAccount
                                                    orderby t.Timestamp
                                                    join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
                                                    from rate in g.DefaultIfEmpty()
@@ -50,7 +51,7 @@ namespace Keeper.Utils.Deposits
                                                        Currency = t.Currency,
                                                        Comment = GetDepositOperationComment(t),
                                                        AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-                                                       TransactionType = GetDepositOperationType(t, account)
+                                                       TransactionType = GetDepositOperationType(t, _deposit.ParentAccount)
                                                    }).ToList();
         }
 
@@ -72,25 +73,38 @@ namespace Keeper.Utils.Deposits
             return "";
         }
 
-        private void EvaluateTraffic(Account account)
+        private void EvaluateTraffic()
         {
-            account.Deposit.CalculatedTotals.TotalMyIns = account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.Amount);
-            account.Deposit.CalculatedTotals.TotalMyOuts = account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
-            account.Deposit.CalculatedTotals.TotalPercent = account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.Amount);
+            _deposit.CalculationData.TotalMyIns = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.Amount);
+            _deposit.CalculationData.TotalMyOuts = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
+            _deposit.CalculationData.TotalPercent = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.Amount);
 
-            account.Deposit.CalculatedTotals.CurrentProfit = _rateExtractor.GetUsdEquivalent(account.Deposit.CalculatedTotals.CurrentBalance, account.Deposit.DepositOffer.Currency, DateTime.Today)
-                                    - account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd)
-                                    + account.Deposit.CalculatedTotals.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
+            _deposit.CalculationData.CurrentProfit = _rateExtractor.GetUsdEquivalent(_deposit.CalculationData.CurrentBalance, _deposit.DepositOffer.Currency, DateTime.Today)
+                                    - _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd)
+                                    + _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
         }
 
-        private void DefineCurrentState(Account account)
+        private void FillinDailyBalances()
         {
-            if (account.Deposit.CalculatedTotals.CurrentBalance == 0)
-                account.Deposit.CalculatedTotals.State = DepositStates.Закрыт;
+            var period = new Period(_deposit.StartDate, _deposit.FinishDate);
+            _deposit.CalculationData.DailyTable = new List<DepositDailyLine>();
+            decimal balance = 0;
+
+            foreach (DateTime day in period)
+            {
+                var date = day;
+                _deposit.CalculationData.DailyTable.Add(new DepositDailyLine { Date = day, Balance = balance });
+                balance += _deposit.CalculationData.Traffic.Where(t => t.Timestamp.Date == date.Date).Sum(t => t.Amount*t.Destination());
+            }
+        }
+
+        private void DefineCurrentState()
+        {
+            if (_deposit.CalculationData.CurrentBalance == 0)
+                _deposit.CalculationData.State = DepositStates.Закрыт;
             else
-                account.Deposit.CalculatedTotals.State = account.Deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
+                _deposit.CalculationData.State = _deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
         }
-
 
     }
 }

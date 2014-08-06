@@ -26,26 +26,26 @@ namespace Keeper.Utils.Deposits
 
         public decimal GetThisMonthEstimatedProcents(Deposit deposit)
         {
-            var lastProcentTransaction = deposit.CalculatedTotals.Traffic.LastOrDefault(t => t.TransactionType == DepositTransactionTypes.Проценты);
+            var lastProcentTransaction = deposit.CalculationData.Traffic.LastOrDefault(t => t.TransactionType == DepositTransactionTypes.Проценты);
             var lastProcentDate = lastProcentTransaction == null ? deposit.StartDate : lastProcentTransaction.Timestamp;
             if (lastProcentDate.IsMonthTheSame(DateTime.Today))
             {
-                deposit.CalculatedTotals.EstimatedProcentsInThisMonth = 0;
+                deposit.CalculationData.EstimatedProcentsInThisMonth = 0;
                 return 0;
             }
 
-            _depositProcentsCalculator.FillinProcents(deposit.ParentAccount);
+            _depositProcentsCalculator.FillinProcents(deposit.ParentAccount); // вот здесь считаются проценты за каждый день
             var periodWithoutProcent = new Period(lastProcentDate.AddDays(1),
                 new DateTime(DateTime.Today.Year, DateTime.Today.Month, lastProcentDate.Day));
 
-            deposit.CalculatedTotals.EstimatedProcentsInThisMonth =
-                deposit.CalculatedTotals.ProcentEvaluation.Where(l=>periodWithoutProcent.Contains(l.Date)).Sum(l => l.DayProfit);
-            return deposit.CalculatedTotals.EstimatedProcentsInThisMonth;
+            deposit.CalculationData.EstimatedProcentsInThisMonth =
+                deposit.CalculationData.DailyTable.Where(l=>periodWithoutProcent.Contains(l.Date)).Sum(l => l.DayProfit);
+            return deposit.CalculationData.EstimatedProcentsInThisMonth;
         }
 
         public decimal GetUpToEndEstimatedProcents(Deposit deposit)
         {
-            deposit.CalculatedTotals.EstimatedProcents = 10;
+            deposit.CalculationData.EstimatedProcents = 10;
             return 10;
         }
 

@@ -3,11 +3,11 @@
 namespace Keeper.Views
 {
   /// <summary>
-  /// Interaction logic for MonthAnalisysView.xaml
+  /// Interaction logic for MonthAnalysisView.xaml
   /// </summary>
-  public partial class MonthAnalisysView : Window
+  public partial class MonthAnalysisView : Window
   {
-    public MonthAnalisysView()
+    public MonthAnalysisView()
     {
       InitializeComponent();
     }

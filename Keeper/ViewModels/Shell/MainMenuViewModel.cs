@@ -195,7 +195,7 @@ namespace Keeper.ViewModels.Shell
         public void ShowMonthAnalisysForm()
         {
             MyMainMenuModel.Action = Actions.ShowAnalisys;
-            WindowManager.ShowDialog(IoC.Get<MonthAnalisysViewModel>());
+            WindowManager.ShowDialog(IoC.Get<MonthAnalysisViewModel>());
             MyMainMenuModel.Action = Actions.Idle;
         }
 

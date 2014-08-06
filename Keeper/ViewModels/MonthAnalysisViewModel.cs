@@ -10,7 +10,7 @@ using Keeper.Utils.MonthAnalysis;
 namespace Keeper.ViewModels
 {
   [Export]
-  class MonthAnalisysViewModel : Screen
+  class MonthAnalysisViewModel : Screen
   {
     private readonly MonthAnalyzer _monthAnalyzer;
     private readonly MonthAnalysisBlankInscriber _inscriber;
@@ -99,7 +99,7 @@ namespace Keeper.ViewModels
     public string MonthAnalisysViewCaption { get; set; }
 
     [ImportingConstructor]
-    public MonthAnalisysViewModel(MonthAnalyzer monthAnalyzer, MonthAnalysisBlankInscriber inscriber)
+    public MonthAnalysisViewModel(MonthAnalyzer monthAnalyzer, MonthAnalysisBlankInscriber inscriber)
     {
       _monthAnalyzer = monthAnalyzer;
       _inscriber = inscriber;
