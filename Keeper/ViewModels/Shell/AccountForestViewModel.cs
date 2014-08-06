@@ -22,7 +22,7 @@ namespace Keeper.ViewModels.Shell
         private readonly AccountTreesGardener _accountTreesGardener;
         private readonly AccountOperations _accountOperations;
         private readonly AccountTreeStraightener _accountTreeStraightener;
-        private readonly DepositCalculator _depositCalculator;
+        private readonly DepositCalculationAggregator _depositCalculationAggregator;
 
         private readonly List<Screen> _launchedForms = new List<Screen>();
 
@@ -30,14 +30,14 @@ namespace Keeper.ViewModels.Shell
 
         [ImportingConstructor]
         public AccountForestViewModel(ShellModel shellModel, KeeperDb db, AccountTreesGardener accountTreesGardener,
-          AccountOperations accountOperations, AccountTreeStraightener accountTreeStraightener, DepositCalculator depositCalculator)
+          AccountOperations accountOperations, AccountTreeStraightener accountTreeStraightener, DepositCalculationAggregator depositCalculationAggregator)
         {
             MyForestModel = shellModel.MyForestModel;
             _db = db;
             _accountTreesGardener = accountTreesGardener;
             _accountOperations = accountOperations;
             _accountTreeStraightener = accountTreeStraightener;
-            _depositCalculator = depositCalculator;
+            _depositCalculationAggregator = depositCalculationAggregator;
 
             InitVariablesToShowAccounts();
         }
@@ -136,7 +136,7 @@ namespace Keeper.ViewModels.Shell
             }
 
             var depositForm = IoC.Get<DepositViewModel>();
-            _depositCalculator.Calculate(MyForestModel.SelectedAccount.Deposit);
+            _depositCalculationAggregator.FillinFieldsForOneDepositReport(MyForestModel.SelectedAccount.Deposit);
             depositForm.SetAccount(MyForestModel.SelectedAccount);
             _launchedForms.Add(depositForm);
             depositForm.RenewPressed += DepositViewModelRenewed; // подписываемся на переофрмление депозита, если оно произойдет надо сменить селекшен
