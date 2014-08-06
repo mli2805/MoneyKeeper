@@ -13,3 +13,4 @@ Keeper.psess
 _NCrunch_Keeper
 Keeper.UnitTests/TestDb/*.zip
 Keeper.UnitTests/TestDb/Keeper.dbx
+Keeper/Utils/Deposits/~$DepositsCalculationScheme.xlsx
