@@ -48,11 +48,11 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             if (rules == null) return "000000";
 
             result += rules.IsFactDays ? "1" : "0";
-            result += rules.OnlyAtTheEnd ? "1" : "0";
             result += rules.EveryStartDay ? "1" : "0";
             result += rules.EveryFirstDayOfMonth ? "1" : "0";
             result += rules.EveryLastDayOfMonth ? "1" : "0";
             result += rules.IsCapitalized ? "1" : "0";
+            result += rules.IsRateFixed ? "1" : "0";
 
             return result;
         }

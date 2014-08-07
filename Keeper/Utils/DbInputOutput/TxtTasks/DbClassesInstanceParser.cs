@@ -84,11 +84,11 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
                 s = s.Trim();
 
                 rules.IsFactDays = s[0] == '1';
-                rules.OnlyAtTheEnd = s[1] == '1';
                 rules.EveryStartDay = s[2] == '1';
                 rules.EveryFirstDayOfMonth = s[3] == '1';
                 rules.EveryLastDayOfMonth = s[4] == '1';
                 rules.IsCapitalized = s[5] == '1';
+                rules.IsRateFixed = s[1] == '1';
             }
             return rules;
         }

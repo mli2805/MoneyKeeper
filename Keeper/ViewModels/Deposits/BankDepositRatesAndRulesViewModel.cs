@@ -96,7 +96,7 @@ namespace Keeper.ViewModels
             DepositOfferInWork.CalculatingRules.EveryStartDay        = DepositOfferDonor.CalculatingRules.EveryStartDay       ;
             DepositOfferInWork.CalculatingRules.IsCapitalized        = DepositOfferDonor.CalculatingRules.IsCapitalized       ;
             DepositOfferInWork.CalculatingRules.IsFactDays           = DepositOfferDonor.CalculatingRules.IsFactDays          ;
-            DepositOfferInWork.CalculatingRules.OnlyAtTheEnd         = DepositOfferDonor.CalculatingRules.OnlyAtTheEnd        ;
+            DepositOfferInWork.CalculatingRules.IsRateFixed          = DepositOfferDonor.CalculatingRules.IsRateFixed         ;
             NotifyOfPropertyChange(() => DepositOfferInWork);
 
         }

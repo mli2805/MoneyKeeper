@@ -40,7 +40,7 @@ namespace Keeper.Utils.Deposits
                 deposit.CalculationData.EstimatedProcentsInThisMonth = 0;
             }
 
-            var periodWithoutProcent = new Period(lastProcentDate.AddDays(1),
+            var periodWithoutProcent = new Period(lastProcentDate,
                 new DateTime(day.Year, day.Month, lastProcentDate.Day));
 
             deposit.CalculationData.EstimatedProcentsInThisMonth =
