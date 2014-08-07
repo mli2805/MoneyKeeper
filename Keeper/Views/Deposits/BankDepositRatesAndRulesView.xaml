@@ -54,8 +54,8 @@
 
         <CheckBox Name="IsFactDays" Grid.Row="5" Content="исходя из фактического количества дней в году" Margin="10,10,0,0"
               IsChecked="{Binding DepositOfferInWork.CalculatingRules.IsFactDays, Mode=TwoWay}"/>
-        <CheckBox Name="OnlyAtTheEnd" Grid.Row="5" Content="только в конце срока" Margin="10,40,0,0"
-              IsChecked="{Binding DepositOfferInWork.CalculatingRules.OnlyAtTheEnd, Mode=TwoWay}"/>
+        <CheckBox Name="IsRateFixed" Grid.Row="5" Content="процентная ставка фиксированная" Margin="10,40,0,0"
+              IsChecked="{Binding DepositOfferInWork.CalculatingRules.IsRateFixed, Mode=TwoWay}"/>
         <CheckBox Name="EveryFirstDayOfMonth" Grid.Row="5" Content="каждое первое число месяца" Margin="10,70,0,0"
               IsChecked="{Binding DepositOfferInWork.CalculatingRules.EveryFirstDayOfMonth, Mode=TwoWay}"/>
         <CheckBox Name="EveryLastDayOfMonth" Grid.Row="5" Content="каждый последний день месяца" Margin="10,100,0,0"

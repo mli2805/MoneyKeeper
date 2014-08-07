@@ -24,11 +24,10 @@ namespace Keeper.Utils.Deposits
             _depositExtractor.Extract(deposit.ParentAccount);
             _deposit = deposit;
 
-            if ((deposit.DepositOffer.BankAccount.Name == "АПБ" && deposit.DepositOffer.DepositTitle == "Старт!") ||
-                 (deposit.DepositOffer.BankAccount.Name == "ВТБ-Беларусь" && deposit.DepositOffer.DepositTitle == "Бонус"))
+            if (deposit.DepositOffer.CalculatingRules.IsRateFixed)
                                            CalculateDailyProcents(_depositCalculationFunctions.GetCorrespondingDepoRateFix);
-            if (deposit.DepositOffer.BankAccount.Name == "ВТБ-Беларусь" && deposit.DepositOffer.DepositTitle == "Скарбонка")
-                                           CalculateDailyProcents(_depositCalculationFunctions.GetCorrespondingDepoRateFix3Month);
+            else
+                                           CalculateDailyProcents(_depositCalculationFunctions.GetCorrespondingDepoRateNotFix);
         }
 
         private void CalculateDailyProcents(Action<Deposit, DepositDailyLine> getCorrespondingDepoRate)

@@ -17,7 +17,7 @@ namespace Keeper.Utils.Deposits.BankDepositOffers
         /// <param name="dailyLine"></param>
         public void GetCorrespondingDepoRateFix(Deposit deposit, DepositDailyLine dailyLine)
         {
-            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.DateFrom <= deposit.StartDate);
+            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.AmountFrom <= dailyLine.Balance && l.AmountTo >= dailyLine.Balance && l.DateFrom <= deposit.StartDate);
             dailyLine.DepoRate = line == null ? 0 : line.Rate;
         }
 
@@ -29,13 +29,19 @@ namespace Keeper.Utils.Deposits.BankDepositOffers
         /// Тогда таблица ставок по Скарбонка будет содержать ставки для нужного счета, при вводе ставок
         /// учитывать когда истекает 3 месяца, а не с какого числа ВТБ вводит ставку
         /// 
+        /// Т.о. можно говорить что ставка не фикс, какая есть в таблице на интересующую дату
+        /// такую и использовать.
+        /// 
+        /// ВТБ Скарбонка
+        /// любая сберкарта
+        /// 
         /// От суммы не зависит
         /// </summary>
         /// <param name="deposit"></param>
         /// <param name="dailyLine"></param>
-        public void GetCorrespondingDepoRateFix3Month(Deposit deposit, DepositDailyLine dailyLine)
+        public void GetCorrespondingDepoRateNotFix(Deposit deposit, DepositDailyLine dailyLine)
         {
-            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.DateFrom <= dailyLine.Date);
+            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.AmountFrom <= dailyLine.Balance && l.AmountTo >= dailyLine.Balance && l.DateFrom < dailyLine.Date);
             dailyLine.DepoRate = line == null ? 0 : line.Rate;
         }
 
