@@ -81,7 +81,7 @@ namespace Keeper.Utils.MonthAnalysis
             foreach (var account in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
             {
                 if (account.Children.Count != 0) continue;
-                _depositCalculationAggregator.FillinFieldsForMonthAnalysis(account.Deposit);
+                _depositCalculationAggregator.FillinFieldsForMonthAnalysis(account.Deposit, s.StartDate);
 
                 if (account.Deposit.CalculationData.EstimatedProcentsInThisMonth == 0) continue;
 

@@ -32,8 +32,8 @@ namespace Keeper.Utils.Deposits
             _deposit.CalculationData = new DepositCalculationData();
             ExtractTraffic();
             EvaluateTraffic();
-            FillinDailyBalances();
             DefineCurrentState();
+            FillinDailyBalances();
             return _deposit;
         }
 
@@ -84,6 +84,14 @@ namespace Keeper.Utils.Deposits
                                     + _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
         }
 
+        private void DefineCurrentState()
+        {
+            if (_deposit.CalculationData.CurrentBalance == 0)
+                _deposit.CalculationData.State = DepositStates.Закрыт;
+            else
+                _deposit.CalculationData.State = _deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
+        }
+
         private void FillinDailyBalances()
         {
             var period = new Period(_deposit.StartDate, _deposit.FinishDate);
@@ -93,18 +101,11 @@ namespace Keeper.Utils.Deposits
             foreach (DateTime day in period)
             {
                 var date = day;
-                _deposit.CalculationData.DailyTable.Add(new DepositDailyLine { Date = day, Balance = balance });
                 balance += _deposit.CalculationData.Traffic.Where(t => t.Timestamp.Date == date.Date).Sum(t => t.Amount*t.Destination());
+                _deposit.CalculationData.DailyTable.Add(new DepositDailyLine { Date = day, Balance = balance });
             }
         }
 
-        private void DefineCurrentState()
-        {
-            if (_deposit.CalculationData.CurrentBalance == 0)
-                _deposit.CalculationData.State = DepositStates.Закрыт;
-            else
-                _deposit.CalculationData.State = _deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
-        }
 
     }
 }
