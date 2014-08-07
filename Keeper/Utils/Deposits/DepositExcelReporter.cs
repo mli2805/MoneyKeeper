@@ -37,10 +37,11 @@ namespace Keeper.Utils.Deposits
     private void ImportEvaluationHeader(Worksheet ws)
     {
       ws.Cells[1, 2] = "Дата";
-      ws.Cells[1, 3] = "Остаток на начало дня";
+      ws.Cells[1, 3] = "Остаток на конец дня";
       ws.Cells[1, 4] = "Ставка";
-      ws.Cells[1, 6] = "Проценты за предыдущую ночь";
-      ws.Cells[1, 7] = "Проценты нарастающим итогом";
+      ws.Cells[1, 6] = "Проценты за эту ночь";
+      ws.Cells[1, 7] = "Не выплаченные проценты";
+      ws.Cells[1, 8] = "Проценты нарастающим итогом";
     }
 
     private static void SetFormatForData(Worksheet ws)
@@ -55,7 +56,9 @@ namespace Keeper.Utils.Deposits
       ws.Range["F1"].EntireColumn.ColumnWidth = 15;
       ws.Range["F1"].EntireColumn.NumberFormat = "#,0";
       ws.Range["G1"].EntireColumn.ColumnWidth = 15;
-      ws.Range["G1"].EntireColumn.NumberFormat = "[Blue]#,0";
+      ws.Range["G1"].EntireColumn.NumberFormat = "[Green]#,0";
+      ws.Range["H1"].EntireColumn.ColumnWidth = 15;
+      ws.Range["H1"].EntireColumn.NumberFormat = "[Blue]#,0";
     }
 
     private void ImportEvaluationData(Worksheet ws, Deposit deposit)
@@ -71,7 +74,8 @@ namespace Keeper.Utils.Deposits
         ws.Cells[i, 4] = line.DepoRate;
         ws.Cells[i, 5] = "%";
         ws.Cells[i, 6] = line.DayProfit;
-        ws.Cells[i, 7] = total;
+        ws.Cells[i, 7] = line.NotPaidProfit;
+        ws.Cells[i, 8] = total;
 
         i++;
       }

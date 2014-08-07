@@ -8,5 +8,7 @@ namespace Keeper.DomainModel.Deposit
         public decimal Balance { get; set; }
         public decimal DepoRate { get; set; }
         public decimal DayProfit { get; set; }
+
+        public decimal NotPaidProfit { get; set; }
     }
 }

@@ -25,26 +25,39 @@ namespace Keeper.Utils.Deposits
             CalculateUpToEndEstimatedProcents(deposit);
         }
 
-        public void FillinFieldsForMonthAnalysis(Deposit deposit)
+        public void FillinFieldsForMonthAnalysis(Deposit deposit, DateTime day)
         {
             _depositCalculator.Calculate(deposit);
-            CalculateThisMonthEstimatedProcents(deposit);
+            CalculateMonthEstimatedProcents(deposit, day);
         }
 
-        private void CalculateThisMonthEstimatedProcents(Deposit deposit)
+
+        private void CalculateMonthEstimatedProcents(Deposit deposit, DateTime day)
         {
-            var lastProcentTransaction = deposit.CalculationData.Traffic.LastOrDefault(t => t.TransactionType == DepositTransactionTypes.Проценты);
-            var lastProcentDate = lastProcentTransaction == null ? deposit.StartDate : lastProcentTransaction.Timestamp;
-            if (lastProcentDate.IsMonthTheSame(DateTime.Today))
+            var lastProcentDate = GetLastProcentDate(deposit);
+            if (lastProcentDate.IsMonthTheSame(day))
             {
                 deposit.CalculationData.EstimatedProcentsInThisMonth = 0;
             }
 
             var periodWithoutProcent = new Period(lastProcentDate.AddDays(1),
-                new DateTime(DateTime.Today.Year, DateTime.Today.Month, lastProcentDate.Day));
+                new DateTime(day.Year, day.Month, lastProcentDate.Day));
 
             deposit.CalculationData.EstimatedProcentsInThisMonth =
                 deposit.CalculationData.DailyTable.Where(l => periodWithoutProcent.Contains(l.Date)).Sum(l => l.DayProfit);
+
+        }
+
+        private void CalculateThisMonthEstimatedProcents(Deposit deposit)
+        {
+            CalculateMonthEstimatedProcents(deposit, DateTime.Today);
+        }
+
+        private static DateTime GetLastProcentDate(Deposit deposit)
+        {
+            var lastProcentTransaction =
+                deposit.CalculationData.Traffic.LastOrDefault(t => t.TransactionType == DepositTransactionTypes.Проценты);
+            return lastProcentTransaction == null ? deposit.StartDate : lastProcentTransaction.Timestamp;
         }
 
         private void CalculateUpToEndEstimatedProcents(Deposit deposit)
@@ -52,7 +65,7 @@ namespace Keeper.Utils.Deposits
             var lastProcentTransaction = deposit.CalculationData.Traffic.LastOrDefault(t => t.TransactionType == DepositTransactionTypes.Проценты);
             var lastProcentDate = lastProcentTransaction == null ? deposit.StartDate : lastProcentTransaction.Timestamp;
 
-            var periodFromLastProcentToEnd = new Period(lastProcentDate.AddDays(1),deposit.FinishDate);
+            var periodFromLastProcentToEnd = new Period(lastProcentDate.AddDays(1), deposit.FinishDate);
 
             deposit.CalculationData.EstimatedProcents =
                 deposit.CalculationData.DailyTable.Where(l => periodFromLastProcentToEnd.Contains(l.Date)).Sum(l => l.DayProfit);
