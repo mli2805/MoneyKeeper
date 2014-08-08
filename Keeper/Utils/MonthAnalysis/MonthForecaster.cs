@@ -78,24 +78,31 @@ namespace Keeper.Utils.MonthAnalysis
 
         private void CheckDeposits(Saldo s)
         {
-            foreach (var account in _accountTreeStraightener.Seek("Депозиты", _db.Accounts).Children)
+            CheckDepositFolder(s, "Депозиты");
+            CheckDepositFolder(s, "Карточки");
+        }
+
+        private void CheckDepositFolder(Saldo s, string folder)
+        {
+            foreach (var account in _accountTreeStraightener.Seek(folder, _db.Accounts).Children)
             {
-                if (account.Children.Count != 0) continue;
+                if (account.Children.Count != 0 || !account.IsDeposit()) continue;
                 _depositCalculationAggregator.FillinFieldsForMonthAnalysis(account.Deposit, s.StartDate);
 
-                if (account.Deposit.CalculationData.EstimatedProcentsInThisMonth == 0) continue;
+                if (_rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.EstimatedProcentsInThisMonth,account.Deposit.DepositOffer.Currency,DateTime.Today) < 1) continue;
 
                 s.ForecastRegularIncome.Payments.Add(new EstimatedMoney
                 {
                     Amount = account.Deposit.CalculationData.EstimatedProcentsInThisMonth,
-                    ArticleName = string.Format("%%  {0} {1:d MMM}", account.Deposit.DepositOffer.BankAccount, account.Deposit.FinishDate),
+                    ArticleName =
+                        string.Format("%%  {0} {1:d MMM}", account.Deposit.DepositOffer.BankAccount, account.Deposit.FinishDate),
                     Currency = account.Deposit.DepositOffer.Currency
                 });
 
                 s.ForecastRegularIncome.EstimatedSum +=
-                  _rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.EstimatedProcentsInThisMonth, account.Deposit.DepositOffer.Currency, DateTime.Today);
+                    _rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.EstimatedProcentsInThisMonth,
+                        account.Deposit.DepositOffer.Currency, DateTime.Today);
             }
         }
-
     }
 }

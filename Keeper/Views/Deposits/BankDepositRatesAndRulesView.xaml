@@ -50,7 +50,7 @@
         <TextBlock Grid.Row="3" Margin="222,15,151,9" Text="или" VerticalAlignment="Center"/>
         <Button Name="ImportFrom" Grid.Row="3" Margin="0,7,7,7" Width="129" HorizontalAlignment="Right" Content="Импортировать все" />
 
-        <ComboBox Grid.Row="4" Margin="0,7,7,7" Width="362" HorizontalAlignment="Right" ItemsSource="{Binding DepositsForCombobox}" SelectedItem="{Binding DepositOfferDonor}"/>
+        <ComboBox Grid.Row="4" Margin="0,7,7,7" Width="362" HorizontalAlignment="Right" ItemsSource="{Binding DepositOffersForCombobox}" SelectedItem="{Binding DepositOfferDonor}"/>
 
         <CheckBox Name="IsFactDays" Grid.Row="5" Content="исходя из фактического количества дней в году" Margin="10,10,0,0"
               IsChecked="{Binding DepositOfferInWork.CalculatingRules.IsFactDays, Mode=TwoWay}"/>

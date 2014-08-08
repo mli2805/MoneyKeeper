@@ -17,7 +17,7 @@ namespace Keeper.ViewModels
         private readonly KeeperDb _db;
         private BankDepositOffer _depositOfferInWork;
         public DateTime NewDate { get; set; }
-        public List<Account> DepositsForCombobox { get; set; }
+        public List<BankDepositOffer> DepositOffersForCombobox { get; set; }
         public BankDepositOffer DepositOfferDonor { get; set; }
 
         public BankDepositOffer DepositOfferInWork
@@ -37,7 +37,8 @@ namespace Keeper.ViewModels
         {
             _db = db;
             NewDate = DateTime.Today;
-            DepositsForCombobox = accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Deposit != null).ToList();
+//            DepositOffersForCombobox = accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Deposit != null).ToList();
+            DepositOffersForCombobox = _db.BankDepositOffers.ToList();
         }
 
         public void Initialize(BankDepositOffer depositOffer)
