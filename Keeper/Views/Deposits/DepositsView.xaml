@@ -9,35 +9,35 @@
       <DataTemplate x:Key="MyInsColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-          <Binding Path="Evaluations.TotalMyIns" StringFormat="{}{0:#,0;; }"/>
+                    <Binding Path="CalculationData.TotalMyIns" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
       <DataTemplate x:Key="PersentsColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-          <Binding Path="Evaluations.TotalPercent" StringFormat="{}{0:#,0;; }"/>
+                    <Binding Path="CalculationData.TotalPercent" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
       <DataTemplate x:Key="CurrentBalanceColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-          <Binding Path="Evaluations.CurrentBalance" StringFormat="{}{0:#,0;; }"/>
+                    <Binding Path="CalculationData.CurrentBalance" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
       <DataTemplate x:Key="ProfitColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-          <Binding Path="Evaluations.CurrentProfit" StringFormat="{}{0:#,0;; }"/>
+                    <Binding Path="CalculationData.CurrentProfit" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
       <DataTemplate x:Key="ForecastColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-          <Binding Path="Evaluations.EstimatedProfitInUsd" StringFormat="{}{0:#,0;; }"/>
+                    <Binding Path="CalculationData.EstimatedProfitInUsd" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
@@ -148,7 +148,7 @@
       </i:Interaction.Behaviors>
       <ListView.ItemContainerStyle>
         <Style TargetType="{x:Type ListViewItem}">
-          <Setter Property="Foreground" Value="{Binding Evaluations.FontColor}"/>
+                    <Setter Property="Foreground" Value="{Binding CalculationData.FontColor}"/>
           <Setter Property="BorderBrush" Value="LightGray"/>
           <Setter Property="BorderThickness" Value="0,0,0,1"/>
         </Style>
@@ -156,7 +156,7 @@
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Наименование"    Width="350" DisplayMemberBinding="{Binding ParentAccount}" />
-          <GridViewColumn Header="Вал"             Width="40"  DisplayMemberBinding="{Binding Currency}" />
+                    <GridViewColumn Header="Вал"             Width="40"  DisplayMemberBinding="{Binding DepositOffer.Currency}" />
           <GridViewColumn Header="Я внес"          Width="100" CellTemplate="{StaticResource MyInsColumnStyle}" />
           <GridViewColumn Header="Проценты"        Width="100" CellTemplate="{StaticResource PersentsColumnStyle}" />
           <GridViewColumn Header="Текущий остаток" Width="100" CellTemplate="{StaticResource CurrentBalanceColumnStyle}" />
