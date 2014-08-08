@@ -34,18 +34,30 @@ namespace Keeper.Utils.Deposits
 
         private void CalculateMonthEstimatedProcents(Deposit deposit, DateTime day)
         {
-            var lastProcentDate = GetLastProcentDate(deposit);
-            if (lastProcentDate.IsMonthTheSame(day))
-            {
-                deposit.CalculationData.EstimatedProcentsInThisMonth = 0;
-            }
+            deposit.CalculationData.EstimatedProcentsInThisMonth = 0;
+            if (day > deposit.FinishDate) return;
 
-            var periodWithoutProcent = new Period(lastProcentDate,
-                new DateTime(day.Year, day.Month, lastProcentDate.Day));
+            var lastProcentDate = GetLastProcentDate(deposit);
+            if (lastProcentDate.IsMonthTheSame(day)) return;
+
+            if (!day.IsMonthTheSame(DateTime.Today)) lastProcentDate = GetLastPaidDay(deposit, day.AddMonths(-1));
+
+            var periodWithoutProcent = new Period(lastProcentDate,GetLastPaidDay(deposit, day));
 
             deposit.CalculationData.EstimatedProcentsInThisMonth =
                 deposit.CalculationData.DailyTable.Where(l => periodWithoutProcent.Contains(l.Date)).Sum(l => l.DayProfit);
 
+        }
+
+        private static DateTime GetLastPaidDay(Deposit deposit, DateTime day)
+        {
+            var upToDate = day;
+            if (deposit.DepositOffer.CalculatingRules.EveryStartDay)
+                upToDate = new DateTime(day.Year, day.Month, deposit.StartDate.Day);
+            if (deposit.DepositOffer.CalculatingRules.EveryLastDayOfMonth)
+                upToDate = day.AddMonths(1).AddDays(-1);
+            if (day.IsMonthTheSame(deposit.FinishDate)) upToDate = deposit.FinishDate;
+            return upToDate;
         }
 
         private void CalculateThisMonthEstimatedProcents(Deposit deposit)
