@@ -28,13 +28,24 @@ namespace Keeper.Models.Shell
       }
     }
 
-    private bool _isPeriodMode;
+      public bool ChangeControlTypeTranslatedEvent
+      {
+          get { return _changeControlTypeTranslatedEvent; }
+          set
+          {
+              _changeControlTypeTranslatedEvent = value;
+              NotifyOfPropertyChange(() => ChangeControlTypeTranslatedEvent);
+          }
+      }
+
+      private bool _isPeriodMode;
     private Visibility _periodSelectControlVisibility;
     private Visibility _dateSelectControlVisibility;
     private DateTime _translatedDate;
     private Period _translatedPeriod;
+    private bool _changeControlTypeTranslatedEvent;
 
-    public bool IsPeriodMode
+      public bool IsPeriodMode
     {
       get
       {
