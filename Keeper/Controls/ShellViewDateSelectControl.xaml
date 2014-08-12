@@ -6,15 +6,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
   
-    <Grid VerticalAlignment="Bottom" Height="130" Margin="0,2,0,5">
+    <Grid VerticalAlignment="Bottom" Height="140" Margin="0,2,0,5">
       <Grid.RowDefinitions>
-        <RowDefinition Height="30" />
+        <RowDefinition Height="40" />
         <RowDefinition Height="50" />
         <RowDefinition Height="40" />
         <RowDefinition Height="10" />
       </Grid.RowDefinitions>
       <Rectangle Stroke="DarkGray" StrokeThickness="1" Grid.RowSpan="4"></Rectangle>
-      <TextBlock Text="Показать остатки по: (включительно)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      <Button Content="Показать остатки по: (включительно)" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"
+              Style="{StaticResource MyButtonStyle}" Click="ChangeControlType" />
       <DatePicker Name="MyDatePicker" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" SelectedDateChanged="MyDatePickerSelectedDateChanged" />
       <Button Name="OneDayBefore" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="70,0,0,0"
               Height="20" Width="25" Content="-Д" Style="{StaticResource MyButtonStyle}" FontSize="9" Click="OneDayBeforeClick" />

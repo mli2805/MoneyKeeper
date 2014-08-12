@@ -11,10 +11,16 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <Controls:ShellViewPeriodSelectControl Visibility="{Binding MyTwoSelectorsModel.PeriodSelectControlVisibility}"  
-                  SelectedPeriod="{Binding MyTwoSelectorsModel.TranslatedPeriod, Mode=TwoWay}" VerticalAlignment="Bottom" Height="200" Margin="0,0,0,0" Grid.Row="0" Loaded="ShellViewPeriodSelectControl_Loaded_1"/>
-    <Controls:ShellViewDateSelectControl Visibility="{Binding MyTwoSelectorsModel.DateSelectControlVisibility}"  
-                  SelectedDay="{Binding MyTwoSelectorsModel.TranslatedDate, Mode=TwoWay}" VerticalAlignment="Bottom" Height="130" Margin="0,0,0,0" Grid.Row="1"/>
+    <Controls:ShellViewPeriodSelectControl 
+                  Visibility="{Binding MyTwoSelectorsModel.PeriodSelectControlVisibility}"  
+                  SelectedPeriod="{Binding MyTwoSelectorsModel.TranslatedPeriod, Mode=TwoWay}"
+                  ChangeControlTypeEvent="{Binding MyTwoSelectorsModel.ChangeControlTypeTranslatedEvent, Mode=TwoWay}"
+                  VerticalAlignment="Bottom" Height="220" Margin="0,0,0,0" Grid.Row="0" />
+    <Controls:ShellViewDateSelectControl 
+                  Visibility="{Binding MyTwoSelectorsModel.DateSelectControlVisibility}"  
+                  SelectedDay="{Binding MyTwoSelectorsModel.TranslatedDate, Mode=TwoWay}"
+                  ChangeControlTypeEvent="{Binding MyTwoSelectorsModel.ChangeControlTypeTranslatedEvent, Mode=TwoWay}"
+                  VerticalAlignment="Bottom" Height="150" Margin="0,0,0,0" Grid.Row="1"/>
 
   </Grid>
 </UserControl>
