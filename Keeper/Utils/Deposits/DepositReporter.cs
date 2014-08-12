@@ -87,13 +87,15 @@ namespace Keeper.Utils.Deposits
     {
       var reportFooter = new ObservableCollection<string>();
 
-      reportFooter.Add(String.Format("Доход по депозиту {0:#,0} usd \n", deposit.CalculationData.CurrentProfit));
+      reportFooter.Add(String.Format("Доход по депозиту {0:#,0} usd \n", deposit.CalculationData.CurrentProfitInUsd));
       if (deposit.CalculationData.CurrentBalance == 0) return reportFooter;
       reportFooter.Add(String.Format("В этом месяце ожидаются проценты {0}", 
         AmountRepresentation(deposit.CalculationData.EstimatedProcentsInThisMonth,deposit.DepositOffer.Currency)));
       reportFooter.Add(String.Format("Всего ожидается процентов {0}", 
         AmountRepresentation(deposit.CalculationData.EstimatedProcents,deposit.DepositOffer.Currency)));
-      reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd", deposit.CalculationData.EstimatedProfitInUsd));
+      reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd",
+            _rateExtractor.GetUsdEquivalent(deposit.CalculationData.EstimatedProcents, deposit.DepositOffer.Currency, DateTime.Today) 
+            + deposit.CalculationData.CurrentProfitInUsd));
       return reportFooter;
     }
 

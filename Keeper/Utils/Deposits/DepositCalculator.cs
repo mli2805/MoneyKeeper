@@ -2,7 +2,6 @@
 using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel.Deposit;
-using Keeper.Utils.Deposits.BankDepositOffers;
 
 namespace Keeper.Utils.Deposits
 {
@@ -38,7 +37,7 @@ namespace Keeper.Utils.Deposits
             {
                 var commonFunctionProvider = IoC.Get<DepositCalculationFunctions>();
 
-                if (commonFunctionProvider.IsProcentDay(_deposit, dailyLine.Date))
+                if (commonFunctionProvider.IsItDayToPayProcents(_deposit, dailyLine.Date))
                 {
                     if (_deposit.DepositOffer.CalculatingRules.IsCapitalized)
                         capitalizedProfit += notPaidProfit;

@@ -3,7 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.Deposit;
 
-namespace Keeper.Utils.Deposits.BankDepositOffers
+namespace Keeper.Utils.Deposits
 {
     [Export]
     public class DepositCalculationFunctions
@@ -45,13 +45,7 @@ namespace Keeper.Utils.Deposits.BankDepositOffers
             dailyLine.DepoRate = line == null ? 0 : line.Rate;
         }
 
-        public void CalculateOneDayProcents(DepositDailyLine dailyLine, bool isFactDays)
-        {
-            GetBareDayProcent(dailyLine, isFactDays);
-            MindBankDayPolitic(dailyLine, isFactDays);
-        }
-
-        public bool IsProcentDay(Deposit deposit, DateTime date)
+        public bool IsItDayToPayProcents(Deposit deposit, DateTime date)
         {
             if (deposit.DepositOffer.CalculatingRules.EveryFirstDayOfMonth && date.Day == 1) return true;
             if (deposit.DepositOffer.CalculatingRules.EveryLastDayOfMonth && date.AddDays(1).Day == 1) return true;
@@ -59,6 +53,12 @@ namespace Keeper.Utils.Deposits.BankDepositOffers
             if (deposit.FinishDate == date) return true;
 
             return false;
+        }
+
+        public void CalculateOneDayProcents(DepositDailyLine dailyLine, bool isFactDays)
+        {
+            GetBareDayProcent(dailyLine, isFactDays);
+            MindBankDayPolitic(dailyLine, isFactDays);
         }
 
         private static void MindBankDayPolitic(DepositDailyLine dailyLine, bool isFactDays)
