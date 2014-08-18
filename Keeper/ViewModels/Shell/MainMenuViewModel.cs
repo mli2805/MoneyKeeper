@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -278,36 +279,9 @@ namespace Keeper.ViewModels.Shell
             WindowManager.ShowWindow(settingsForm);
         }
 
-
-        public void SetIsFolders()
-        {
-            var ats = IoC.Get<AccountTreeStraightener>();
-            var plainList = ats.Flatten(_db.Accounts);
-            foreach (var account in plainList)
-            {
-                if (account.Children.Count > 0) account.IsFolder = true;
-            }
-
-        }
-
-        private void SetBankDepositOfferForEveryDeposit()
-        {
-            var oldOffer = _db.BankDepositOffers.FirstOrDefault(o => o.BankAccount.Name == "безвестный");
-
-            var ats = IoC.Get<AccountTreeStraightener>();
-            var plainList = ats.Flatten(_db.Accounts);
-            foreach (var account in plainList.Where(a=>a.Deposit != null))
-            {
-                account.Deposit.DepositOffer = oldOffer;
-            }
-            
-        }
-
         public void TempItem()
         {
-            SetBankDepositOfferForEveryDeposit();
 //            ShowExpensePartingOxyPlotDiagram();
-            //      SetIsFolders();
         }
 
         public void ShowToDoForm()
