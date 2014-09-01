@@ -29,7 +29,6 @@ namespace Keeper.Utils.Deposits
                                            CalculateDailyProcents(_depositCalculationFunctions.GetCorrespondingDepoRateNotFix);
         }
 
-
         private void CalculateDailyProcents(Action<Deposit, DepositDailyLine> getCorrespondingDepoRate)
         {
             decimal notPaidProfit = 0;
