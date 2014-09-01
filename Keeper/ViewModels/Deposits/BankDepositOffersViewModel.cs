@@ -51,6 +51,19 @@ namespace Keeper.ViewModels
             bankDepositRatesAndRulesViewModel.Initialize(SelectedOffer);
             _windowManager.ShowDialog(bankDepositRatesAndRulesViewModel);
         }
+
+        private void ValidateInput()
+        {
+            var tempList =  _db.BankDepositOffers.ToList();
+            tempList.RemoveAll(item => item.IsInvalid());
+            _db.BankDepositOffers = new ObservableCollection<BankDepositOffer>(tempList);
+        }
+
+        public override void CanClose(Action<bool> callback)
+        {
+            ValidateInput();
+            base.CanClose(callback);
+        }
         public void CloseView()
         {
             TryClose();

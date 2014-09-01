@@ -30,8 +30,13 @@ namespace Keeper.DomainModel.Deposit
             Id = id;
         }
 
+        public bool IsInvalid()
+        {
+            return (BankAccount == null || DepositTitle == null || Currency == 0);
+        }
         public override string ToString()
         {
+            if (IsInvalid()) return "ввод не окончен";
             return BankAccount.Name + " " + DepositTitle + " " + Currency;
         }
     }
