@@ -5,6 +5,7 @@ using System.Linq;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Balances;
+using Keeper.Utils.Common;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Rates;
@@ -20,12 +21,14 @@ namespace Keeper.Utils.MonthAnalysis
     private readonly RateExtractor _rateExtractor;
     private readonly TransactionSetConvertor _transactionSetConvertor;
     private readonly MonthForecaster _monthForecaster;
+    private readonly MySettings _mySettings;
     private readonly BalanceForMonthAnalysisCalculator _balanceCalculator;
     private readonly AccountTreeStraightener _accountTreeStraightener;
 
     [ImportingConstructor]
-    public MonthAnalyzer(KeeperDb db, BalanceForMonthAnalysisCalculator balanceCalculator, AccountTreeStraightener accountTreeStraightener,
-      RateExtractor rateExtractor, TransactionSetConvertor transactionSetConvertor, MonthForecaster monthForecaster)
+    public MonthAnalyzer(KeeperDb db, BalanceForMonthAnalysisCalculator balanceCalculator, MySettings mySettings,
+                         AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor, 
+                         TransactionSetConvertor transactionSetConvertor, MonthForecaster monthForecaster)
     {
       _db = db;
       _balanceCalculator = balanceCalculator;
@@ -33,6 +36,7 @@ namespace Keeper.Utils.MonthAnalysis
       _rateExtractor = rateExtractor;
       _transactionSetConvertor = transactionSetConvertor;
       _monthForecaster = monthForecaster;
+      _mySettings = mySettings;
 
       Result = new Saldo();
     }
@@ -75,7 +79,7 @@ namespace Keeper.Utils.MonthAnalysis
       GroupExpenseByCategories(expenseTransactionsInUsd);
       Result.Expense.TotalInUsd = expenseTransactionsInUsd.Sum(t => t.AmountInUsd);
 
-      var largeTransactions = expenseTransactionsInUsd.Where(transaction => transaction.AmountInUsd > 50);
+      var largeTransactions = expenseTransactionsInUsd.Where(transaction => Math.Abs(transaction.AmountInUsd) > (decimal)_mySettings.GetSetting("LargeExpenseUsd"));
       foreach (var transaction in largeTransactions)
       {
         Result.Expense.LargeTransactions.Add(transaction);

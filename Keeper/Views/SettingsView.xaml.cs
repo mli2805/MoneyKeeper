@@ -23,5 +23,10 @@ namespace Keeper.Views
         {
             InitializeComponent();
         }
+
+      public void Connect(int connectionId, object target)
+      {
+        throw new NotImplementedException();
+      }
     }
 }
