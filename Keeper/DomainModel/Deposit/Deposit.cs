@@ -47,15 +47,15 @@ namespace Keeper.DomainModel.Deposit
             return upToDate;
         }
 
-        /// <summary>
-        /// Если запрос про месяц в будущем , то предполагается что все , что должно быть оплачено в предыдущих месяцах , будет таки оплачено.
-        /// Если по вкладу есть долги, предполагается , что все они будут оплачены в текущем месяце, 
-        /// в будущих периодах только с даты последней оплаты предудущего месяца, по последнюю оплачиваемую дату анализируемого месяца.
-        /// А вот если вопрос по текущему месяцу, то все что неоплачено должно быть здесь указано.
-        /// </summary>
-        /// <param name="firstDayOfAnalyzedMonth"></param>
-        /// <returns></returns>
-        public Period GetPeriodWhichShouldBePaidInAnalysidMonth(DateTime firstDayOfAnalyzedMonth)
+      /// <summary>
+      /// Если запрос про месяц в будущем , то предполагается что все , что должно быть оплачено в предыдущих месяцах , будет таки оплачено.
+      /// Если по вкладу есть долги, предполагается , что все они будут оплачены в текущем месяце, 
+      /// в будущих периодах только с даты последней оплаты предудущего месяца, по последнюю оплачиваемую дату анализируемого месяца.
+      /// А вот если вопрос по текущему месяцу, то все что неоплачено должно быть здесь указано.
+      /// </summary>
+      /// <param name="firstDayOfAnalyzedMonth"></param>
+      /// <returns></returns>
+      public Period GetPeriodWhichShouldBePaidInAnalysedMonth(DateTime firstDayOfAnalyzedMonth)
         {
             var startOfPeriod = firstDayOfAnalyzedMonth.IsMonthTheSame(DateTime.Today)
                 ? GetDateOfLastProcentTransaction()

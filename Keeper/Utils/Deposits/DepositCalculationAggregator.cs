@@ -32,9 +32,10 @@ namespace Keeper.Utils.Deposits
         
         private void CalculateMonthEstimatedProcents(Deposit deposit, DateTime firstDayOfAnalyzedMonth)
         {
-            var periodWhichShouldBePaidInAnalysidMonth = deposit.GetPeriodWhichShouldBePaidInAnalysidMonth(firstDayOfAnalyzedMonth);
-            deposit.CalculationData.EstimatedProcentsInThisMonth =
-                deposit.CalculationData.DailyTable.Where(l => periodWhichShouldBePaidInAnalysidMonth.Contains(l.Date)).Sum(l => l.DayProfit);
+            var periodWhichShouldBePaidInAnalysidMonth = deposit.GetPeriodWhichShouldBePaidInAnalysedMonth(firstDayOfAnalyzedMonth);
+            deposit.CalculationData.EstimatedProcentsInThisMonth = periodWhichShouldBePaidInAnalysidMonth.ShouldBePaid() ?
+                deposit.CalculationData.DailyTable.Where(l => periodWhichShouldBePaidInAnalysidMonth.Contains(l.Date)).Sum(l => l.DayProfit)
+                : 0;
         }
 
 
