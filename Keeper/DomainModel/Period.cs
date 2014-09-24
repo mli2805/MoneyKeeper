@@ -99,5 +99,10 @@ namespace Keeper.DomainModel
       Finish = Finish.AddYears(1);
     }
 
+    public bool ShouldBePaid()
+    {
+      return Finish.Date > Start.Date; 
+    }
+
   }
 }
