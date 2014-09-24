@@ -14,6 +14,7 @@ namespace Keeper.DomainModel.Deposit
         public DateTime FinishDate { get; set; }
         public string Comment { get; set; }
         public Account ParentAccount { get; set; }
+        public string ShortName { get; set; }
 
         [NonSerialized]
         private DepositCalculationData _calculationData;

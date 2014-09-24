@@ -64,7 +64,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var comment = deposit.Comment == null ? "" : deposit.Comment.Replace("\r\n", "|");
 
             return deposit.ParentAccount.Id + " ; " + deposit.DepositOffer.Id + " ; " + deposit.AgreementNumber +
-                " ; " + startDate + " ; " + finishDate + " ; " + comment;
+                " ; " + startDate + " ; " + finishDate + " ; " + deposit.ShortName + " ; " + comment;
         }
 
         public string Dump(DepositRateLine depositRateLine, int accountId)
