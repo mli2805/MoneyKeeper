@@ -86,14 +86,15 @@ namespace Keeper.Utils.MonthAnalysis
 
     private string TransactionForIncomesList(Transaction tr)
     {
+      var shortDepositName = tr.Credit.Deposit == null ? "" : tr.Credit.Deposit.ShortName; 
       return (tr.Currency == CurrencyCodes.USD) ?
-             String.Format("{1:#,0}  {2}  {3} {4} , {0:d MMM}",
-             tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(), 
-             (tr.Article.Name == "Проценты по депозитам") ? "" : tr.Article.Name, tr.Comment) :
-             String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
+             String.Format("{1:#,0}  {2}  {3} {4} {5}, {0:d MMM}",
              tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(),
-             _rateExtractor.GetUsdEquivalent(tr.Amount, tr.Currency, tr.Timestamp),              
-             (tr.Article.Name == "Проценты по депозитам") ? "" : tr.Article.Name, tr.Comment);
+             (tr.Article.Name == "Проценты по депозитам") ? "" : tr.Article.Name, shortDepositName, tr.Comment) :
+             String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} {6}, {0:d MMM}",
+             tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(),
+             _rateExtractor.GetUsdEquivalent(tr.Amount, tr.Currency, tr.Timestamp),
+             (tr.Article.Name == "Проценты по депозитам") ? "" : tr.Article.Name, shortDepositName, tr.Comment);
     }
 
     private void FillInExpenseList(Saldo s)

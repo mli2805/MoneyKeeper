@@ -101,7 +101,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             deposit.AgreementNumber = substrings[2].Trim();
             deposit.StartDate = Convert.ToDateTime(substrings[3], new CultureInfo("ru-RU"));
             deposit.FinishDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
-            deposit.Comment = substrings[5].Replace("|", "\r\n");
+            deposit.ShortName = substrings[5].Trim();
+            deposit.Comment = substrings[6].Replace("|", "\r\n");
 
             deposit.ParentAccount.Deposit = deposit;
         }
