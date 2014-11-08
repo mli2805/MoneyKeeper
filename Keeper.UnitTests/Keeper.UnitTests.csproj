@@ -108,21 +108,42 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestDb\Accounts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestDb\ArticlesAssociations.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestDb\CurrencyRates.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestDb\Transactions.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="TestDb\Transactions.full" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ByFunctional\Balance\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestDb\forBalanceEvaluationTest\BankDepositOffers.txt" />
+    <Content Include="TestDb\forBalanceEvaluationTest\BankDepositOffersRates.txt" />
+    <Content Include="TestDb\forBalanceEvaluationTest\Deposits.txt" />
+    <None Include="TestDb\forBalanceEvaluationTest\Transactions.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="TestDb\forDepositCalculationTest\BankDepositOffers.txt" />
+    <Content Include="TestDb\forDepositCalculationTest\BankDepositOffersRates.txt" />
+    <Content Include="TestDb\forDepositCalculationTest\Deposits.txt" />
+    <None Include="TestDb\forDepositCalculationTest\Transactions.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestDb\forDepositCalculationTest\CurrencyRates.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestDb\forDepositCalculationTest\ArticlesAssociations.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestDb\forDepositCalculationTest\Accounts.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestDb\forBalanceEvaluationTest\CurrencyRates.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestDb\forBalanceEvaluationTest\ArticlesAssociations.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestDb\forBalanceEvaluationTest\Accounts.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

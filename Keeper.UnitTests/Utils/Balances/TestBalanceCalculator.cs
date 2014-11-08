@@ -52,13 +52,14 @@ namespace Keeper.UnitTests.Utils.Balances
 		{
 			var expectation = new List<MoneyPair> 
 			{
-				new MoneyPair{Amount = -100, Currency = CurrencyCodes.USD},
-				new MoneyPair{Amount = 373700, Currency = CurrencyCodes.BYR}
+				new MoneyPair{Amount = 30, Currency = CurrencyCodes.USD},
+				new MoneyPair{Amount = -150, Currency = CurrencyCodes.EUR},
+				new MoneyPair{Amount = 1017450, Currency = CurrencyCodes.BYR}
 			};
 
 			var testedCategory = new Account("Одежда");
 			_underTest.ArticleBalancePairs(testedCategory,
-			new Period(new DateTime(2013, 11, 1), new DateTime(2013, 12, 1))).ShouldBeEquivalentTo(expectation);
+			new Period(new DateTime(2014, 10, 30), new DateTime(2014, 11, 2))).ShouldBeEquivalentTo(expectation);
 		}
 
 		[Test]

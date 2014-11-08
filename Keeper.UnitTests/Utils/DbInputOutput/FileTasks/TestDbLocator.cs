@@ -33,10 +33,8 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
       mFile = A.Fake<IFile>();
       mySettings = A.Fake<IMySettings>();
 
-      A.CallTo(() => mySettings.GetSetting("DbPath")).Returns("path");
-      A.CallTo(() => mySettings.GetSetting("DbxFile")).Returns("file.dbx");
-      A.CallTo(() => mFileSystem.PathCombine("path", "file.dbx")).Returns(@"path\file.dbx");
-      A.CallTo(() => mFileSystem.GetFile(@"path\file.dbx")).Returns(mFile);
+      A.CallTo(() => mySettings.GetCombinedSetting("DbFileFullPath")).Returns(@"folder\file.dbx");
+      A.CallTo(() => mFileSystem.GetFile(@"folder\file.dbx")).Returns(mFile);
 
       mUnderTest = new DbLocator(mMessageBoxer, mOpenFileDialog, mFileSystem, mySettings);
     }
@@ -45,7 +43,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
     public void Locate_Should_Return_Filename_From_Settings()
     {
       A.CallTo(() => mFile.Exists).Returns(true);
-      mUnderTest.Locate().Should().Be(@"path\file.dbx");
+      mUnderTest.Locate().Should().Be(@"folder\file.dbx");
     }
 
     [Test]
@@ -53,7 +51,7 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.FileTasks
     {
       A.CallTo(() => mFile.Exists).Returns(false);
       mUnderTest.Locate();
-      A.CallTo(() => mMessageBoxer.Show("File 'path\\file.dbx' not found. \n" +
+      A.CallTo(() => mMessageBoxer.Show("File 'folder\\file.dbx' not found. \n" +
         "\n You will be offered to choose database file. \n" +
         "\n Folder with chosen file will be accepted as new location for the database. " +
         "\n When exiting the program database and archive will be saved in this new folder.\n" +
