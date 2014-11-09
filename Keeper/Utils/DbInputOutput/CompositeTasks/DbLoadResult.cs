@@ -12,6 +12,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
 		public DbLoadResult(KeeperDb db)
 		{
 			Db = db;
+		  Code = 0;
 			Explanation = "OK";
 		}
 		public DbLoadResult(int code, string explanation)

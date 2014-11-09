@@ -85,7 +85,7 @@ namespace Keeper.Utils.Balances
 
 	  public string EndDayBalances(DateTime dt)
     {
-	    var balanceCalculator = IoC.Get<BalanceCalculator>();
+	    var balanceCalculator = IoC.Get<AccountBalanceCalculator>();
       var period = new Period(new DateTime(0), dt.GetEndOfDate());
       var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);
 
@@ -98,7 +98,7 @@ namespace Keeper.Utils.Balances
       calculatedAccounts.Add(depo);
       foreach (var account in calculatedAccounts)
       {
-        var pairs = balanceCalculator.AccountBalancePairs(account, period).ToList();
+        var pairs = balanceCalculator.GetAccountBalancePairsWithTimeChecking(account, period).ToList();
         foreach (var balancePair in pairs.ToArray())
           if (balancePair.Amount == 0) pairs.Remove(balancePair);
         if (pairs.Any())

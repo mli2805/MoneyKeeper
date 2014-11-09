@@ -150,6 +150,7 @@
     <Compile Include="DomainModel\Deposit\DepositTransaction.cs" />
     <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
     <Compile Include="DomainModel\RegularPayments.cs" />
+    <Compile Include="Utils\Balances\ArticleBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\RegularPayment.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />
@@ -224,7 +225,7 @@
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="ByFunctional\EditingAccounts\AccountTreesGardener.cs" />
-    <Compile Include="Utils\Balances\BalanceCalculator.cs" />
+    <Compile Include="Utils\Balances\AccountBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\DbBackupOrganizer.cs" />

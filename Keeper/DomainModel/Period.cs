@@ -54,7 +54,7 @@ namespace Keeper.DomainModel
 
 	  #endregion
 
-    public bool Contains(DateTime checkDate)
+    public bool ContainsAndTimeWasChecked(DateTime checkDate)
     {
       return checkDate >= Start && checkDate <= Finish;
     }

@@ -14,7 +14,7 @@ namespace Keeper.IntegrationTests
 	[TestFixture]
 	public sealed class IntegrationTest_BalanceCalculator_Performance
 	{
-		BalanceCalculator mUnderTest;
+		AccountBalanceCalculator mUnderTest;
 		readonly Random mRnd = new Random();
 		KeeperDb mKeeperDb;
 		static readonly Period sPeriod = new Period(new DateTime(2000, 1, 1), new DateTime(3000, 1, 1));
@@ -22,7 +22,7 @@ namespace Keeper.IntegrationTests
 		[SetUp]
 		public void SetUp()
 		{
-			mKeeperDb = new DbFromTxtLoader(new DbClassesInstanceParser()).LoadDbFromTxt(Path.GetFullPath("TestDb")).Db;
+			mKeeperDb = new DbFromTxtLoader(new DbClassesInstanceParser(), new AccountTreeStraightener()).LoadDbFromTxt(Path.GetFullPath("TestDb")).Db;
 		}
 
 		void RunOld(int iterations, Stopwatch sw)
@@ -33,8 +33,8 @@ namespace Keeper.IntegrationTests
 			sw.Start();
 			for (int i = 0; i < iterations; i++)
 			{
-				mUnderTest = new BalanceCalculator(mKeeperDb);
-				foreach (var _ in mUnderTest.AccountBalancePairs(targetAccount, sPeriod)) { }
+				mUnderTest = new AccountBalanceCalculator(mKeeperDb);
+        foreach (var _ in mUnderTest.GetAccountBalancePairsWithTimeChecking(targetAccount, sPeriod)) { }
 			}
 			sw.Stop();
 		}
@@ -87,7 +87,7 @@ namespace Keeper.IntegrationTests
 				RunOld(iterations, sw);
 			}
 			sw.Stop();
-			Console.WriteLine("One call to AccountBalancePairs takes: {0} ms", sw.Elapsed.TotalMilliseconds / (count * iterations));
+			Console.WriteLine("One call to GetAccountBalancePairs takes: {0} ms", sw.Elapsed.TotalMilliseconds / (count * iterations));
 		}	
 		[Test]
 		public void MeasureNewTime()
@@ -100,7 +100,7 @@ namespace Keeper.IntegrationTests
 				RunNew(iterations, sw);
 			}
 			sw.Stop();
-			Console.WriteLine("One call to AccountBalancePairs takes: {0} ms", sw.Elapsed.TotalMilliseconds / (count * iterations));
+			Console.WriteLine("One call to GetAccountBalancePairs takes: {0} ms", sw.Elapsed.TotalMilliseconds / (count * iterations));
 		}
 	}
 }

@@ -10,14 +10,16 @@ namespace Keeper.Utils.Balances
   [Export]
   public class BalancesForShellCalculator
   {
-    private readonly BalanceCalculator _balanceCalculator;
+    private readonly AccountBalanceCalculator _accountBalanceCalculator;
+    private readonly ArticleBalanceCalculator _articleBalanceCalculator;
     private readonly RateExtractor _rateExtractor;
 
     [ImportingConstructor]
-    public BalancesForShellCalculator(RateExtractor rateExtractor, BalanceCalculator balanceCalculator)
+    public BalancesForShellCalculator(RateExtractor rateExtractor, AccountBalanceCalculator accountBalanceCalculator, ArticleBalanceCalculator articleBalanceCalculator)
     {
 	    _rateExtractor = rateExtractor;
-	    _balanceCalculator = balanceCalculator;
+	    _accountBalanceCalculator = accountBalanceCalculator;
+      _articleBalanceCalculator = articleBalanceCalculator;
     }
 
 	  private List<string> OneBalance(Account balancedAccount, Period period, out decimal totalInUsd)
@@ -26,7 +28,7 @@ namespace Keeper.Utils.Balances
       totalInUsd = 0;
       if (balancedAccount == null) return balance;
 
-      var balancePairs = _balanceCalculator.AccountBalancePairs(balancedAccount, period);
+      var balancePairs = _accountBalanceCalculator.GetAccountBalancePairsFromMidnightToMidnight(balancedAccount, period);
 
       foreach (var item in balancePairs)
       {
@@ -59,14 +61,14 @@ namespace Keeper.Utils.Balances
     {
       trafficList.Clear();
       var firstTransactions = new List<string>();
-      var b = _balanceCalculator.ArticleTraffic(selectedAccount, period, firstTransactions);
+      var b = _articleBalanceCalculator.ArticleTraffic(selectedAccount, period, firstTransactions);
       trafficList.Add(b == 0
                         ? "В данном периоде \nдвижение по выбранному счету не найдено"
                         : string.Format("{0}   {1:#,0} usd", selectedAccount.Name, b));
 
       foreach (var child in selectedAccount.Children)
       {
-        decimal c = _balanceCalculator.ArticleTraffic(child, period, firstTransactions);
+        decimal c = _articleBalanceCalculator.ArticleTraffic(child, period, firstTransactions);
         if (c != 0) trafficList.Add(string.Format("   {0}   {1:#,0} usd", child.Name, c));
       }
 

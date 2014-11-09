@@ -22,7 +22,7 @@ namespace Keeper.ViewModels
     private readonly KeeperDb _db;
 
     private readonly RateExtractor _rateExtractor;
-    private readonly BalanceCalculator _balanceCalculator;
+    private readonly AccountBalanceCalculator _accountBalanceCalculator;
     private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
     private readonly AccountTreeStraightener _accountTreeStraightener;
     private readonly AssociationFinder _associationFinder;
@@ -506,7 +506,7 @@ namespace Keeper.ViewModels
         if (TransactionInWork.Debet == null || !TransactionInWork.Debet.Is("Мои")) return "";
 
         var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
-        var balanceBefore = _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Debet, period, TransactionInWork.Currency);
+        var balanceBefore = _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(TransactionInWork.Debet, period, TransactionInWork.Currency);
 
         return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
              balanceBefore, balanceBefore - TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
@@ -522,7 +522,7 @@ namespace Keeper.ViewModels
 
         var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
         var balanceBefore =
-          _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Debet, period, (CurrencyCodes)TransactionInWork.Currency2);
+          _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(TransactionInWork.Debet, period, (CurrencyCodes)TransactionInWork.Currency2);
 
         return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
              balanceBefore, balanceBefore + TransactionInWork.Amount2, TransactionInWork.Currency2.ToString().ToLower());
@@ -536,7 +536,7 @@ namespace Keeper.ViewModels
         if (TransactionInWork.Credit == null || !TransactionInWork.Credit.Is("Мои")) return "";
 
         var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
-        var balanceBefore = _balanceCalculator.GetBalanceInCurrency(TransactionInWork.Credit, period, TransactionInWork.Currency);
+        var balanceBefore = _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(TransactionInWork.Credit, period, TransactionInWork.Currency);
 
         return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
              balanceBefore, balanceBefore + TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
@@ -597,13 +597,13 @@ namespace Keeper.ViewModels
     #endregion
 
     [ImportingConstructor]
-    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, BalanceCalculator balanceCalculator,
+    public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, AccountBalanceCalculator accountBalanceCalculator,
       BalancesForTransactionsCalculator balancesForTransactionsCalculator, AccountTreeStraightener accountTreeStraightener)
     {
       _db = db;
 
       _rateExtractor = rateExtractor;
-      _balanceCalculator = balanceCalculator;
+      _accountBalanceCalculator = accountBalanceCalculator;
       _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
       _accountTreeStraightener = accountTreeStraightener;
       _associationFinder = new AssociationFinder(_db);

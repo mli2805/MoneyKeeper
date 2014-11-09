@@ -5,7 +5,6 @@ using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.Utils.Accounts;
@@ -18,6 +17,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     public class DbFromTxtLoader : IDbFromTxtLoader, ILoader
     {
         private readonly DbClassesInstanceParser _dbClassesInstanceParser;
+        private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly Encoding _encoding1251 = Encoding.GetEncoding(1251);
         public DbLoadResult Result;
 
@@ -29,31 +29,34 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
 
         [ImportingConstructor]
-        public DbFromTxtLoader(DbClassesInstanceParser dbClassesInstanceParser)
+        public DbFromTxtLoader(DbClassesInstanceParser dbClassesInstanceParser, AccountTreeStraightener accountTreeStraightener)
         {
-            _dbClassesInstanceParser = dbClassesInstanceParser;
+          _dbClassesInstanceParser = dbClassesInstanceParser;
+          _accountTreeStraightener = accountTreeStraightener;
         }
 
-        public DbLoadResult LoadDbFromTxt(string path)
+      public DbLoadResult LoadDbFromTxt(string path)
         {
-            var db = new KeeperDb();
-            db.Accounts = LoadAccounts(path);
+            var db = new KeeperDb {Accounts = LoadAccounts(path)};
 
-            var ats = IoC.Get<AccountTreeStraightener>();
-            var plainList = ats.Flatten(db.Accounts).ToList();
+            var accountsPlaneList = _accountTreeStraightener.Flatten(db.Accounts).ToList();
 
-            db.BankDepositOffers = LoadFrom(path, "BankDepositOffers.txt", _dbClassesInstanceParser.BankDepositOfferFromString, new AccountTreeStraightener().Flatten(db.Accounts).ToList());
+            db.BankDepositOffers = LoadFrom(path, "BankDepositOffers.txt", 
+                           _dbClassesInstanceParser.BankDepositOfferFromString, accountsPlaneList);
             if (Result != null) return Result;
             LoadDepositOffersRates(path, db.BankDepositOffers.ToList());
 
-            LoadDeposits(path, plainList, db.BankDepositOffers.ToList());
+            LoadDeposits(path, accountsPlaneList, db.BankDepositOffers.ToList());
             if (Result != null) return Result;
 
-            db.Transactions = LoadFrom(path, "Transactions.txt", _dbClassesInstanceParser.TransactionFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts).ToList());
+            db.Transactions = LoadFrom(path, "Transactions.txt",
+                           _dbClassesInstanceParser.TransactionFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;
-            db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", _dbClassesInstanceParser.ArticleAssociationFromStringWithNames, new AccountTreeStraightener().Flatten(db.Accounts).ToList());
+            db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", 
+                           _dbClassesInstanceParser.ArticleAssociationFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;
-            db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", _dbClassesInstanceParser.CurrencyRateFromString, new AccountTreeStraightener().Flatten(db.Accounts).ToList());
+            db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", 
+                           _dbClassesInstanceParser.CurrencyRateFromString, accountsPlaneList);
             if (Result != null) return Result;
 
             return new DbLoadResult(db);

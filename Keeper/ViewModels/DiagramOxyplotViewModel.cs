@@ -77,7 +77,7 @@ namespace Keeper.ViewModels
 
     private IEnumerable<ExpensePartingDataElement> Extract(Period period)
     {
-      return _diagramData.Where(a => period.Contains(new DateTime(a.Year, a.Month, 15)));
+      return _diagramData.Where(a => period.ContainsAndTimeWasChecked(new DateTime(a.Year, a.Month, 15)));
     }
 
     public void PreviousPeriod()

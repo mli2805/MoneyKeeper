@@ -3,7 +3,6 @@ using FluentAssertions;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Common;
-using Keeper.Utils.DbInputOutput.TxtTasks;
 using NUnit.Framework;
 
 namespace Keeper.UnitTests.Utils.Accounts

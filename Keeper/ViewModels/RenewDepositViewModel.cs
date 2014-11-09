@@ -15,7 +15,7 @@ namespace Keeper.ViewModels
     class RenewDepositViewModel : Screen
     {
         private readonly KeeperDb _db;
-        private readonly BalanceCalculator _balanceCalculator;
+        private readonly AccountBalanceCalculator _accountBalanceCalculator;
         readonly AccountTreeStraightener _accountTreeStraightener;
         private Deposit _oldDeposit;
         public Account NewDeposit { get; set; }
@@ -30,11 +30,11 @@ namespace Keeper.ViewModels
         public List<Account> BankAccounts { get; set; }
 
         [ImportingConstructor]
-        public RenewDepositViewModel(KeeperDb db, BalanceCalculator balanceCalculator,
+        public RenewDepositViewModel(KeeperDb db, AccountBalanceCalculator accountBalanceCalculator,
              AccountTreeStraightener accountTreeStraightener)
         {
             _db = db;
-            _balanceCalculator = balanceCalculator;
+            _accountBalanceCalculator = accountBalanceCalculator;
             _accountTreeStraightener = accountTreeStraightener;
 
             BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
@@ -123,7 +123,7 @@ namespace Keeper.ViewModels
                 Operation = OperationType.Перенос,
                 Debet = _oldDeposit.ParentAccount,
                 Credit = NewDeposit,
-                Amount = _balanceCalculator.GetBalanceInCurrency(_oldDeposit.ParentAccount,
+                Amount = _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(_oldDeposit.ParentAccount,
                                     new Period(new DateTime(0), GetTimestampForTransactions()),
                                     _oldDeposit.DepositOffer.Currency),
                 Currency = _oldDeposit.DepositOffer.Currency,
