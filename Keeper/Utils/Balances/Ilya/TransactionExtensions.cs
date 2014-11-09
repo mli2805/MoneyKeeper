@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Micro;
 using Keeper.DomainModel;
-using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Keeper.Utils.Balances
 {
@@ -36,9 +34,10 @@ namespace Keeper.Utils.Balances
       predicate = predicate ?? (tr => true);
       return transactions.Where(predicate).Sum(t => t.Credit() - t.Debit());
     }
+
     public static MoneyBag Balance(this IEnumerable<Transaction> transactions, Account balancedAccount, Period interval)
     {
-      return transactions.Balance(t => interval.Contains(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount));
+      return transactions.Balance(t => interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount));
     }
 
     public static bool DebitOrCreditIs(this Transaction transaction, Account account)
@@ -47,21 +46,7 @@ namespace Keeper.Utils.Balances
     }
     public static bool EitherDebitOrCreditIs(this Transaction transaction, Account account)
     {
-      var damper = IoC.Get<DbClassesInstanceDumper>();
-//      return transaction.Credit.Is(account) != transaction.Debet.Is(account);
-      if (transaction.Credit.Is(account) != transaction.Debet.Is(account))
-      {
-        if (account.Id == 424)
-        {
-          if (transaction.Credit.Is(account))
-               Console.WriteLine(damper.Dump(transaction));
-        }
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+      return transaction.Credit.Is(account) != transaction.Debet.Is(account);
     }
   }
 }

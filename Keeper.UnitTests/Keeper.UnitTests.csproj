@@ -88,7 +88,7 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\TestDbGeneralLoader.cs" />
     <Compile Include="TestMef.cs" />
     <Compile Include="DomainModel\TestPeriod.cs" />
-    <Compile Include="Utils\Balances\TestBalanceCalculator.cs" />
+    <Compile Include="Utils\Balances\TestAccountBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TestDbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\TestDbToTxtSaver.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\TestDbTxtFileWriter.cs" />
@@ -114,15 +114,27 @@
     <Folder Include="ByFunctional\Balance\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestDb\forBalanceEvaluationTest\BankDepositOffers.txt" />
-    <Content Include="TestDb\forBalanceEvaluationTest\BankDepositOffersRates.txt" />
-    <Content Include="TestDb\forBalanceEvaluationTest\Deposits.txt" />
+    <Content Include="TestDb\forBalanceEvaluationTest\BankDepositOffers.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDb\forBalanceEvaluationTest\BankDepositOffersRates.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDb\forBalanceEvaluationTest\Deposits.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="TestDb\forBalanceEvaluationTest\Transactions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="TestDb\forDepositCalculationTest\BankDepositOffers.txt" />
-    <Content Include="TestDb\forDepositCalculationTest\BankDepositOffersRates.txt" />
-    <Content Include="TestDb\forDepositCalculationTest\Deposits.txt" />
+    <Content Include="TestDb\forDepositCalculationTest\BankDepositOffers.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDb\forDepositCalculationTest\BankDepositOffersRates.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDb\forDepositCalculationTest\Deposits.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="TestDb\forDepositCalculationTest\Transactions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
