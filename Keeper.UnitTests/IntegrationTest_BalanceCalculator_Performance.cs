@@ -22,7 +22,8 @@ namespace Keeper.IntegrationTests
 		[SetUp]
 		public void SetUp()
 		{
-			mKeeperDb = new DbFromTxtLoader(new DbClassesInstanceParser(), new AccountTreeStraightener()).LoadDbFromTxt(Path.GetFullPath("TestDb")).Db;
+			mKeeperDb = new DbFromTxtLoader(new DbClassesInstanceParser(),
+        new AccountTreeStraightener()).LoadDbFromTxt(Path.GetFullPath("TestDb\\forBalanceEvaluationTest")).Db;
 		}
 
 		void RunOld(int iterations, Stopwatch sw)
