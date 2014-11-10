@@ -4,7 +4,7 @@ using Keeper.DomainModel;
 using Keeper.Utils.Common;
 using System.Linq;
 
-namespace Keeper.ByFunctional.EditingAccounts
+namespace Keeper.ByFunctional.AccountEditing
 {
   [Export]
   public class AccountTreeStraightener
