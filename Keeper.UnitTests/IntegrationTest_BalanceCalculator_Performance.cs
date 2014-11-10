@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Keeper.ByFunctional.EditingAccounts;
-using Keeper.ByFunctional.EvaluatingBalances;
-using Keeper.ByFunctional.EvaluatingBalances.Ilya;
+using Keeper.ByFunctional.AccountEditing;
+using Keeper.ByFunctional.BalanceEvaluating;
+using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 

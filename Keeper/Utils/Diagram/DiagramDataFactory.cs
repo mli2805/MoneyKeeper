@@ -4,7 +4,7 @@ using System.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Keeper.ByFunctional.EditingAccounts;
+using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
 

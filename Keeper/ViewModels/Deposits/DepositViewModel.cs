@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Windows;
 using Caliburn.Micro;
+using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
-using Keeper.Utils.Deposits;
 
 namespace Keeper.ViewModels
 {

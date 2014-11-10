@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using Keeper.ByFunctional.DepositProcessing;
 
 namespace Keeper.DomainModel.Deposit
 {

@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper.ByFunctional.EditingAccounts;
+using Keeper.ByFunctional.AccountEditing;
+using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.Utils;
-using Keeper.Utils.Deposits;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.Rates;
 
@@ -23,6 +23,7 @@ namespace Keeper.ViewModels
         private readonly KeeperDb _db;
         readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly RateExtractor _rateExtractor;
+        private readonly DepositTrafficEvaluator _depositTrafficEvaluator;
         private readonly DepositCalculationAggregator _depositCalculatorAggregator;
 
         public List<Deposit> DepositList { get; set; }
@@ -33,11 +34,13 @@ namespace Keeper.ViewModels
 
         [ImportingConstructor]
         public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
-                                 DepositExtractor depositExtractor,  DepositCalculationAggregator depositCalculatorAggregator)
+                                 DepositTrafficExtractor depositTrafficExtractor, DepositTrafficEvaluator depositTrafficEvaluator,
+                                 DepositCalculationAggregator depositCalculatorAggregator)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
             _rateExtractor = rateExtractor;
+            _depositTrafficEvaluator = depositTrafficEvaluator;
             _depositCalculatorAggregator = depositCalculatorAggregator;
 
             MyTitleStyle = new Style();
@@ -47,7 +50,7 @@ namespace Keeper.ViewModels
             {
                 if (account.Is("Депозиты") && account.Children.Count == 0)
                 {
-                    DepositList.Add(depositExtractor.Extract(account));
+                    DepositList.Add(depositTrafficEvaluator.EvaluateTraffic(depositTrafficExtractor.ExtractTraffic(account)));
                 }
             }
             SelectedDeposit = DepositList[0];

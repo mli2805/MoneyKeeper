@@ -1,8 +1,6 @@
 ﻿using System;
 
 using Keeper.DomainModel;
-using Keeper.Utils;
-
 using NUnit.Framework;
 
 using FluentAssertions;
