@@ -1,8 +1,7 @@
 ﻿using System;
-
 using Keeper.DomainModel;
 
-namespace Keeper.Utils.Balances
+namespace Keeper.ByFunctional.EvaluatingBalances
 {
   public class BalanceTrio
 	{

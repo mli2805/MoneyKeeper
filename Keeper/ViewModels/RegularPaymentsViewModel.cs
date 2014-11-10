@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
-using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
 {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
+using Keeper.ByFunctional.EvaluatingBalances.Ilya;
 using Keeper.DomainModel;
-using Keeper.Utils.Balances;
 using Keeper.Utils.Common;
 
 namespace Keeper.ByFunctional.EvaluatingBalances

@@ -1,4 +1,4 @@
-﻿namespace Keeper.DomainModel
+﻿namespace Keeper.ByFunctional.EditingAccounts
 {
 	public enum AccountCantBeDeletedReasons
 	{

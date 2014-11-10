@@ -1,7 +1,8 @@
 ﻿using System.Composition;
 using System.Linq;
+using Keeper.DomainModel;
 
-namespace Keeper.DomainModel
+namespace Keeper.ByFunctional.EditingAccounts
 {
 	[Export(typeof(IAccountCantBeDeletedChecker))]
 	public sealed class AccountCantBeDeletedChecker : IAccountCantBeDeletedChecker

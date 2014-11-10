@@ -5,7 +5,7 @@ using System.Linq;
 using Keeper.DomainModel;
 using Keeper.Utils.Rates;
 
-namespace Keeper.Utils.Balances
+namespace Keeper.ByFunctional.EvaluatingBalances
 {
   public enum TransactionTypeForAnalysis
   {

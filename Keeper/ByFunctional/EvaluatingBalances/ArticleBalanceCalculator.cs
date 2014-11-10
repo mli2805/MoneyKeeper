@@ -4,7 +4,7 @@ using System.Linq;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
 
-namespace Keeper.Utils.Balances
+namespace Keeper.ByFunctional.EvaluatingBalances
 {
     [Export]
     public class ArticleBalanceCalculator

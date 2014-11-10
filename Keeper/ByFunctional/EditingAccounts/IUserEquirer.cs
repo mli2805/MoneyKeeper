@@ -1,7 +1,7 @@
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 
-namespace Keeper.Utils.Accounts
+namespace Keeper.ByFunctional.EditingAccounts
 {
     public interface IUserEquirer
     {

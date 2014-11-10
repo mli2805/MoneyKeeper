@@ -3,7 +3,6 @@ using FakeItEasy;
 using FluentAssertions;
 using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
-using Keeper.Utils.Accounts;
 using NUnit.Framework;
 
 namespace Keeper.UnitTests.ByFunctional.EditingAccounts

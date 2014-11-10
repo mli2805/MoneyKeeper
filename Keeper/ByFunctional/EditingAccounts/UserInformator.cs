@@ -1,9 +1,8 @@
 ﻿using System.Composition;
 using System.Windows;
-
 using Keeper.Utils.Dialogs;
 
-namespace Keeper.Utils.Accounts
+namespace Keeper.ByFunctional.EditingAccounts
 {
 	[Export(typeof(IUserInformator))]
 	public sealed class UserInformator : IUserInformator

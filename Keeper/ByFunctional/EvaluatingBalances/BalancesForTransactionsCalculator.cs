@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.ByFunctional.EvaluatingBalances;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
-using Keeper.Utils.Accounts;
 using Keeper.Utils.Common;
-using Keeper.ViewModels;
 
-namespace Keeper.Utils.Balances
+namespace Keeper.ByFunctional.EvaluatingBalances
 {
 	[Export]
 	public class BalancesForTransactionsCalculator
