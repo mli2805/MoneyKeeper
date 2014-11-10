@@ -4,25 +4,25 @@ using System.Linq;
 namespace Keeper.DomainModel
 {
 	[Export]
-	public sealed class DbIntegrity
+	public sealed class AccountCantBeDeletedChecker : IAccountCantBeDeletedChecker
 	{
 		readonly KeeperDb _keeperDb;
 
 		[ImportingConstructor]
-		public DbIntegrity(KeeperDb keeperDb)
+		public AccountCantBeDeletedChecker(KeeperDb keeperDb)
 		{
 			_keeperDb = keeperDb;
 		}
 
-		public DeleteReasons CanDelete(Account account)
+		public AccountCantBeDeletedReasons Check(Account account)
 		{
 			if (account.Parent == null)
 			{
-				return DeleteReasons.IsRoot;
+				return AccountCantBeDeletedReasons.IsRoot;
 			}
 			if (account.Children.Count > 0)
 			{
-				return DeleteReasons.HasChildren;
+				return AccountCantBeDeletedReasons.HasChildren;
 			}
 
 			var hasRelatedTransactions = 
@@ -33,8 +33,8 @@ namespace Keeper.DomainModel
 				 select transaction).Any();	
 
 			return hasRelatedTransactions ?
-				       DeleteReasons.HasRelatedTransactions 
-				       : DeleteReasons.CanDelete;
+				       AccountCantBeDeletedReasons.HasRelatedTransactions 
+				       : AccountCantBeDeletedReasons.CanDelete;
 		}
 	}
 }

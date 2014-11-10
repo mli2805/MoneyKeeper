@@ -47,7 +47,7 @@ namespace Keeper.UnitTests.Utils.Accounts
     public void Flatten_Should()
     {
       var result = mUnderTest.Flatten(mDb.Accounts);
-      result.ShouldBeEquivalentTo(new[] { mParentAccount, mChild2Account, mChild1Account });// порядок в списке не проверяет
+      result.ShouldBeEquivalentTo(new[] { mParentAccount, mChild2Account, mChild1Account });// ShouldBeEquivalentTo порядок в списке не проверяет
     }
 
     [Test]

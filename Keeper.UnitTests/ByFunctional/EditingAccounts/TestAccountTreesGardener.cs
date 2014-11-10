@@ -4,7 +4,6 @@ using FluentAssertions;
 using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
-using Keeper.Utils.Dialogs;
 using NUnit.Framework;
 
 namespace Keeper.UnitTests.ByFunctional.EditingAccounts
@@ -12,65 +11,61 @@ namespace Keeper.UnitTests.ByFunctional.EditingAccounts
 	[TestFixture]
 	public sealed class TestAccountTreesGardener
 	{
-	  private AccountTreesGardener _underTest;
+        private AccountTreesGardener _underTest;
 
-    private IMyFactory _myFactory;
-    private TellUser _tellUser;
-    private AccountOperations _accountOperations;
-    private DbIntegrity _dbIntegrity;
-    private AskUser _askUser;
+        private IAccountFactory _accountFactory;
+        private IUserInformator _userInformator;
+        private IAccountOperator _accountOperator;
+        private IAccountCantBeDeletedChecker _accountCantBeDeletedChecker;
+        private IUserEquirer _userEquirer;
 
-    private KeeperDb _db;
-    private Account _auxiliaryChildAccount;
-    private Account _childAccountWithOperation;
-    private Account _emptyChildAccount;
-    private Account _parentAccount;
-    private Account _rootAccount;
-	  private Account _rootAccountWithoutChildren;
+        private KeeperDb _db;
+        private Account _childAccountWithOperation;
+        private Account _emptyChildAccount;
+        private Account _parentAccount;
+        private Account _rootAccount;
+        private Account _rootAccountWithoutChildren;
 
-    [SetUp]
-    public void SetUp()
-    {
-      PrepareTestDb();
+        [SetUp]
+        public void SetUp()
+        {
+            PrepareTestDb();
 
-      _myFactory = A.Fake<IMyFactory>();
-      _tellUser = A.Fake<TellUser>();  // нужен мессаж боксер как параметр конструктора
-      _accountOperations = A.Fake<AccountOperations>();
-      _dbIntegrity = A.Fake<DbIntegrity>();
-      _askUser = A.Fake<AskUser>();
+            _accountFactory = A.Fake<IAccountFactory>();
+            _userInformator = A.Fake<IUserInformator>(); 
+            _accountOperator = A.Fake<IAccountOperator>();
+            _accountCantBeDeletedChecker = A.Fake<IAccountCantBeDeletedChecker>();
+            _userEquirer = A.Fake<IUserEquirer>();
 
-      _underTest = new AccountTreesGardener(_myFactory, _tellUser, _accountOperations, _dbIntegrity, _askUser);
-    }
+            _underTest = new AccountTreesGardener(_accountFactory, _userInformator, _accountOperator, _accountCantBeDeletedChecker, _userEquirer);
+        }
 
-	  private void PrepareTestDb()
-	  {
-	    _rootAccountWithoutChildren = new Account("RootWithoutChildren");
-	    _rootAccount = new Account("Root");
-	    _parentAccount = new Account("Parent account");
-	    _emptyChildAccount = new Account("Empty child account");
-	    _childAccountWithOperation = new Account("Child account with operation");
-	    _auxiliaryChildAccount = new Account("Auxiliary child account");
+        private void PrepareTestDb()
+        {
+            _rootAccountWithoutChildren = new Account("RootWithoutChildren");
+            _rootAccount = new Account("Root");
+            _parentAccount = new Account("Parent account");
+            _emptyChildAccount = new Account("Empty child account");
+            _childAccountWithOperation = new Account("Child account with operation");
 
-	    _rootAccount.Children.Add(_parentAccount);
-	    _parentAccount.Children.Add(_emptyChildAccount);
-	    _parentAccount.Children.Add(_childAccountWithOperation);
-	    _parentAccount.Children.Add(_auxiliaryChildAccount);
+            _rootAccount.Children.Add(_parentAccount);
+            _parentAccount.Children.Add(_emptyChildAccount);
+            _parentAccount.Children.Add(_childAccountWithOperation);
 
-	    _db = new KeeperDb
-	            {Accounts = new ObservableCollection<Account>(), Transactions = new ObservableCollection<Transaction>()};
-	    _db.Accounts.Add(_rootAccount);
-	    _db.Accounts.Add(_rootAccountWithoutChildren);
-	    _db.Transactions.Add(new Transaction() {Debet = _childAccountWithOperation});
-	  }
+            _db = new KeeperDb { Accounts = new ObservableCollection<Account>(), Transactions = new ObservableCollection<Transaction>() };
+            _db.Accounts.Add(_rootAccount);
+            _db.Accounts.Add(_rootAccountWithoutChildren);
+            _db.Transactions.Add(new Transaction() { Debet = _childAccountWithOperation });
+        }
 
-	  [Test]
-    public void RemoveAccount_Should_Remove_Account()
-    {
-      // Act
-      _underTest.RemoveAccount(_emptyChildAccount);
+        [Test]
+        public void RemoveAccount_Should_Remove_Account()
+        {
+            // Act
+            _underTest.RemoveAccount(_emptyChildAccount);
 
-      // Assert
-      _parentAccount.Children.Count.Should().Be(2);
-    }
+            // Assert
+            _parentAccount.Children.Count.Should().Be(2);
+        }
 	}
 }

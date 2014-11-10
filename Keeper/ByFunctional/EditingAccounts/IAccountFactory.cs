@@ -3,7 +3,7 @@ using Keeper.ViewModels;
 
 namespace Keeper.Utils.Accounts
 {
-  public interface IMyFactory 
+  public interface IAccountFactory 
   {
     AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string windowTitle);
     OpenOrEditDepositViewModel CreateOpenOrEditDepositViewModel();
