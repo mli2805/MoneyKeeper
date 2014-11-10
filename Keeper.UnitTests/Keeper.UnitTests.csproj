@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ByFunctional\EvaluatingBalances\TestArticleBalanceCalculator.cs" />
     <Compile Include="IntegrationTest_BalanceCalculator_Performance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ByFunctional\EditingAccounts\TestAccountTreesGardener.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\TestDbGeneralLoader.cs" />
     <Compile Include="TestMef.cs" />
     <Compile Include="DomainModel\TestPeriod.cs" />
-    <Compile Include="Utils\Balances\TestAccountBalanceCalculator.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\TestAccountBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TestDbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\TestDbToTxtSaver.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\TestDbTxtFileWriter.cs" />
@@ -110,9 +111,7 @@
   <ItemGroup>
     <None Include="TestDb\Transactions.full" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ByFunctional\Balance\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="TestDb\forBalanceEvaluationTest\BankDepositOffers.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

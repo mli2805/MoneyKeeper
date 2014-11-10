@@ -61,14 +61,14 @@ namespace Keeper.Utils.Balances
     {
       trafficList.Clear();
       var firstTransactions = new List<string>();
-      var b = _articleBalanceCalculator.ArticleTraffic(selectedAccount, period, firstTransactions);
+      var b = _articleBalanceCalculator.GetArticleBalanceInUsdPlus(selectedAccount, period, firstTransactions);
       trafficList.Add(b == 0
                         ? "В данном периоде \nдвижение по выбранному счету не найдено"
                         : string.Format("{0}   {1:#,0} usd", selectedAccount.Name, b));
 
       foreach (var child in selectedAccount.Children)
       {
-        decimal c = _articleBalanceCalculator.ArticleTraffic(child, period, firstTransactions);
+        decimal c = _articleBalanceCalculator.GetArticleBalanceInUsdPlus(child, period, firstTransactions);
         if (c != 0) trafficList.Add(string.Format("   {0}   {1:#,0} usd", child.Name, c));
       }
 
