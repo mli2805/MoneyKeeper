@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
+using Keeper.ByFunctional.EvaluatingBalances;
 using Keeper.DomainModel;
 using Keeper.Utils.Accounts;
 using Keeper.Utils.Common;
