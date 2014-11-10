@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.Utils.Balances;
 using Keeper.Utils.Common;
 
-namespace Keeper.Utils.Balances
+namespace Keeper.ByFunctional.EvaluatingBalances
 {
   [Export]
   public class AccountBalanceCalculator
@@ -50,7 +50,7 @@ namespace Keeper.Utils.Balances
 
     public IEnumerable<MoneyPair> GetAccountBalancePairsWithTimeChecking(Account balancedAccount, Period interval)
     {
-      return GetAccountBalancePairs(balancedAccount, interval);
+        return GetAccountBalancePairs(balancedAccount, interval);
     }
 
 

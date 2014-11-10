@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.Utils.Common;
 
 namespace Keeper.Utils.Balances
 {
@@ -24,10 +25,10 @@ namespace Keeper.Utils.Balances
         /// <param name="period">временной интервал</param>
         /// <param name="transactions">список</param>
         /// <returns></returns>
-        public decimal GetArticleBalanceInUsdPlus(Account article, Period period, List<string> transactions)
+        private decimal GetArticleBalanceInUsdPlus(Account article, Period period, List<string> transactions)
         {
             var transactionsWithRates = (from t in _db.Transactions
-                                         where t.Article != null && t.Article.Is(article.Name) && period.ContainsButTimeNotChecking(t.Timestamp)
+                                         where t.Article != null && t.Article.Is(article.Name) && period.ContainsAndTimeWasChecked(t.Timestamp)
                                          join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
                                          from rate in g.DefaultIfEmpty()
                                          select new
@@ -50,6 +51,13 @@ namespace Keeper.Utils.Balances
 
             return am;
         }
+
+        public decimal GetArticleBalanceInUsdPlusFromMidnightToMidnight(Account article, Period period, List<string> transactions)
+        {
+            var intervalUpToMidnight = new Period(period.Start.GetStartOfDate(), period.Finish.GetEndOfDate());
+            return GetArticleBalanceInUsdPlus(article, intervalUpToMidnight, transactions);
+        }
+
 
     }
 }
