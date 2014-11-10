@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Keeper.DomainModel;
 
-namespace Keeper.Utils.Balances
+namespace Keeper.ByFunctional.EvaluatingBalances.Ilya
 {
   public static class TransactionExtensions
   {

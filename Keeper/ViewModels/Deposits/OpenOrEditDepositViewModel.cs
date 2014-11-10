@@ -4,9 +4,9 @@ using System.Composition;
 using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
-using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
 {

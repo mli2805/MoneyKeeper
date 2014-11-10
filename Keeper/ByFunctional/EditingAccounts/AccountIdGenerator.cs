@@ -1,9 +1,8 @@
 ﻿using System.Composition;
 using System.Linq;
+using Keeper.DomainModel;
 
-using Keeper.Utils.Accounts;
-
-namespace Keeper.DomainModel
+namespace Keeper.ByFunctional.EditingAccounts
 {
 	[Export]
 	public sealed class AccountIdGenerator

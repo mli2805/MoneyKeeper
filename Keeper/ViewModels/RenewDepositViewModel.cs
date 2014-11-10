@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.ByFunctional.EvaluatingBalances;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.Utils;
-using Keeper.Utils.Accounts;
-using Keeper.Utils.Balances;
 
 namespace Keeper.ViewModels
 {

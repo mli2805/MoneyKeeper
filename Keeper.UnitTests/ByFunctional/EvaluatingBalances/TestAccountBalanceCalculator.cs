@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.ByFunctional.EvaluatingBalances;
 using Keeper.DomainModel;
-using Keeper.Utils.Accounts;
-using Keeper.Utils.Balances;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 

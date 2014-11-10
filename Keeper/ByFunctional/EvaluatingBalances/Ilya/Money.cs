@@ -1,6 +1,6 @@
 using Keeper.DomainModel;
 
-namespace Keeper.Utils.Balances
+namespace Keeper.ByFunctional.EvaluatingBalances.Ilya
 {
   public sealed class Money
   {

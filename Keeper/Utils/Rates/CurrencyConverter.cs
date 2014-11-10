@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Composition;
+using Keeper.ByFunctional.EvaluatingBalances;
 using Keeper.DomainModel;
-using Keeper.Utils.Balances;
 
 namespace Keeper.Utils.Rates
 {

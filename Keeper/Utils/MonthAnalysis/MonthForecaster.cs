@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
-using Keeper.Utils.Accounts;
 using Keeper.Utils.Common;
 using Keeper.Utils.Deposits;
 using Keeper.Utils.Rates;

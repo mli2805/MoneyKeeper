@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
-using Keeper.Utils.Accounts;
 using Keeper.Utils.Deposits;
 
 namespace Keeper.ViewModels.Shell

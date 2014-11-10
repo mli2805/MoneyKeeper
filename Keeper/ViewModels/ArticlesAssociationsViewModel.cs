@@ -5,8 +5,8 @@ using System.Composition;
 using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
+using Keeper.ByFunctional.EditingAccounts;
 using Keeper.DomainModel;
-using Keeper.Utils.Accounts;
 
 namespace Keeper.ViewModels
 {

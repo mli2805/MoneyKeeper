@@ -3,7 +3,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.ViewModels;
 
-namespace Keeper.Utils.Accounts
+namespace Keeper.ByFunctional.EditingAccounts
 {
     [Export(typeof(IAccountFactory))]
     public class AccountFactory : IAccountFactory
@@ -27,7 +27,7 @@ namespace Keeper.Utils.Accounts
 
         public Account CreateAccount(Account parent)
         {
-            return new Account() { Parent = parent };
+            return new Account { Parent = parent };
         }
 
 

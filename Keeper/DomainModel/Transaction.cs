@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.Utils.Balances;
+using Keeper.ByFunctional.EvaluatingBalances;
 
 namespace Keeper.DomainModel
 {

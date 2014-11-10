@@ -1,4 +1,6 @@
-﻿namespace Keeper.DomainModel
+﻿using Keeper.DomainModel;
+
+namespace Keeper.ByFunctional.EditingAccounts
 {
     public interface IAccountLowLevelOperator
     {

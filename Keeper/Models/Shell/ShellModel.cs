@@ -2,8 +2,8 @@
 using System.Composition;
 using System.Security.AccessControl;
 using System.Windows;
+using Keeper.ByFunctional.EvaluatingBalances;
 using Keeper.DomainModel;
-using Keeper.Utils.Balances;
 using Keeper.ViewModels.Shell;
 
 namespace Keeper.Models.Shell

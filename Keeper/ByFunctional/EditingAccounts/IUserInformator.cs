@@ -1,4 +1,4 @@
-﻿namespace Keeper.Utils.Accounts
+﻿namespace Keeper.ByFunctional.EditingAccounts
 {
     public interface IUserInformator
     {
