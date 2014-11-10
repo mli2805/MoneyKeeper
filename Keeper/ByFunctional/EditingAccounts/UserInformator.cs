@@ -5,7 +5,7 @@ using Keeper.Utils.Dialogs;
 
 namespace Keeper.Utils.Accounts
 {
-	[Export]
+	[Export(typeof(IUserInformator))]
 	public sealed class UserInformator : IUserInformator
 	{
 		readonly IMessageBoxer _messageBoxer;

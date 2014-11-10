@@ -9,7 +9,7 @@ using Keeper.Utils.Dialogs;
 
 namespace Keeper.Utils.Accounts
 {
-	[Export]
+	[Export(typeof(IUserEquirer))]
 	public sealed class UserEquirer : IUserEquirer
 	{
 		const string CONFIRMATION_QUESTION =

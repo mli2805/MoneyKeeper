@@ -153,7 +153,7 @@
     <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
     <Compile Include="DomainModel\RegularPayments.cs" />
     <Compile Include="ByFunctional\EditingAccounts\IAccountCantBeDeletedChecker.cs" />
-    <Compile Include="ByFunctional\EditingAccounts\IAccountOperator.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\IAccountLowLevelOperator.cs" />
     <Compile Include="Utils\Deposits\DepositOfferIdGenerator.cs" />
     <Compile Include="Utils\Balances\ArticleBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />

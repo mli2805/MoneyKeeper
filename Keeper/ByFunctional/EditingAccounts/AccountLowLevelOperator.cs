@@ -3,8 +3,9 @@ using System.Linq;
 
 namespace Keeper.DomainModel
 {
-	[Export]
-	public sealed class AccountLowLevelOperator : IAccountOperator
+	[Export(typeof(IAccountLowLevelOperator))]
+    [Export]
+	public sealed class AccountLowLevelOperator : IAccountLowLevelOperator
 	{
 		readonly AccountIdGenerator _accountIdGenerator;
 
