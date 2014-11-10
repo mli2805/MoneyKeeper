@@ -155,7 +155,7 @@
     <Compile Include="ByFunctional\EditingAccounts\IAccountCantBeDeletedChecker.cs" />
     <Compile Include="ByFunctional\EditingAccounts\IAccountLowLevelOperator.cs" />
     <Compile Include="Utils\Deposits\DepositOfferIdGenerator.cs" />
-    <Compile Include="Utils\Balances\ArticleBalanceCalculator.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\ArticleBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\RegularPayment.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />
@@ -165,11 +165,11 @@
     <Compile Include="ByFunctional\EditingAccounts\IAccountFactory.cs" />
     <Compile Include="ByFunctional\EditingAccounts\AccountFactory.cs" />
     <Compile Include="ByFunctional\EditingAccounts\UserInformator.cs" />
-    <Compile Include="Utils\Balances\BalanceTrio.cs" />
-    <Compile Include="Utils\Balances\Ilya\Money.cs" />
-    <Compile Include="Utils\Balances\Ilya\MoneyBag.cs" />
-    <Compile Include="Utils\Balances\Ilya\MoneyExtensions.cs" />
-    <Compile Include="Utils\Balances\Ilya\TransactionExtensions.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\BalanceTrio.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\Ilya\Money.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\Ilya\MoneyBag.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\Ilya\MoneyExtensions.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\Ilya\TransactionExtensions.cs" />
     <Compile Include="Utils\CommonKeeper\TransactionSetConvertor.cs" />
     <Compile Include="Utils\Common\Every.cs" />
     <Compile Include="Utils\Common\IMySettings.cs" />
@@ -191,9 +191,9 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\IDbGeneralLoader.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\IDbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\IDbUnzipper.cs" />
-    <Compile Include="Utils\Balances\MoneyPair.cs" />
-    <Compile Include="Utils\Balances\BalancesForShellCalculator.cs" />
-    <Compile Include="Utils\Balances\BalancesForTransactionsCalculator.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\MoneyPair.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\BalancesForShellCalculator.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\BalancesForTransactionsCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\IFileExistenceChecker.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\ILoader.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
@@ -212,7 +212,7 @@
     <Compile Include="Utils\FileSystem\IZipFile.cs" />
     <Compile Include="Utils\FileSystem\ZipEntryAdapter.cs" />
     <Compile Include="Utils\FileSystem\ZipFileAdapter.cs" />
-    <Compile Include="Utils\Balances\BalanceForMonthAnalysisCalculator.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Utils\OldTransactionsReorderer.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
@@ -230,7 +230,7 @@
     <Compile Include="DomainModel\Saldo.cs" />
     <Compile Include="DomainModel\Transaction.cs" />
     <Compile Include="ByFunctional\EditingAccounts\AccountTreesGardener.cs" />
-    <Compile Include="Utils\Balances\AccountBalanceCalculator.cs" />
+    <Compile Include="ByFunctional\EvaluatingBalances\AccountBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\DbBackupOrganizer.cs" />
