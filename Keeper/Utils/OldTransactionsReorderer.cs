@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Composition;
-using Keeper.ByFunctional.EditingAccounts;
+using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 
 namespace Keeper.Utils

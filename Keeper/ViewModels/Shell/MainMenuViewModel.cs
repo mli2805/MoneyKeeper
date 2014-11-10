@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper.ByFunctional.EditingAccounts;
+using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
 using Keeper.Properties;

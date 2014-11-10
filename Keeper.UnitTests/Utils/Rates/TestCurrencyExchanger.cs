@@ -1,7 +1,7 @@
 using System;
 using FakeItEasy;
 using FluentAssertions;
-using Keeper.ByFunctional.EvaluatingBalances;
+using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.Utils;
 using Keeper.Utils.Rates;

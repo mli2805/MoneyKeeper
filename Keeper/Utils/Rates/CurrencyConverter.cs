@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Composition;
-using Keeper.ByFunctional.EvaluatingBalances;
+using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 
 namespace Keeper.Utils.Rates

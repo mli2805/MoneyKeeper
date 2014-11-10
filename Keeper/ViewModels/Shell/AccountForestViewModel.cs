@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.ByFunctional.EditingAccounts;
+using Keeper.ByFunctional.AccountEditing;
+using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
-using Keeper.Utils.Deposits;
 
 namespace Keeper.ViewModels.Shell
 {

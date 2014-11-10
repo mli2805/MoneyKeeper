@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
-using Keeper.ByFunctional.EditingAccounts;
+using Keeper.ByFunctional.AccountEditing;
+using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
-using Keeper.Utils.Deposits;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis

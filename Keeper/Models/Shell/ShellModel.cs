@@ -2,7 +2,7 @@
 using System.Composition;
 using System.Security.AccessControl;
 using System.Windows;
-using Keeper.ByFunctional.EvaluatingBalances;
+using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.ViewModels.Shell;
 

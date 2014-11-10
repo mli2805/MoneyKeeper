@@ -5,7 +5,7 @@ using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Keeper.ByFunctional.EditingAccounts;
+using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
