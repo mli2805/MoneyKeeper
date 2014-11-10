@@ -5,8 +5,8 @@ using Keeper.ViewModels;
 
 namespace Keeper.Utils.Accounts
 {
-    [Export(typeof(IMyFactory))]
-    public class MyFactory : IMyFactory
+    [Export(typeof(IAccountFactory))]
+    public class AccountFactory : IAccountFactory
     {
         public AddAndEditAccountViewModel CreateAddAndEditAccountViewModel(Account account, string windowTitle)
         {

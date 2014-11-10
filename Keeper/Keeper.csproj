@@ -120,6 +120,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\IUserEquirer.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\IUserInformator.cs" />
     <Compile Include="Controls\BarDiagramControl.xaml.cs">
       <DependentUpon>BarDiagramControl.xaml</DependentUpon>
     </Compile>
@@ -138,10 +140,10 @@
     <Compile Include="Controls\ShellViewPeriodSelectControl.xaml.cs">
       <DependentUpon>ShellViewPeriodSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DomainModel\DbIdGenerator.cs" />
-    <Compile Include="DomainModel\DbIntegrity.cs" />
-    <Compile Include="DomainModel\AccountOperations.cs" />
-    <Compile Include="DomainModel\DeleteReasons.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AccountIdGenerator.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AccountCantBeDeletedChecker.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AccountLowLevelOperator.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AccountCantBeDeletedReasons.cs" />
     <Compile Include="DomainModel\Deposit\BankDepositOffer.cs" />
     <Compile Include="DomainModel\Deposit\DepositCalculationData.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransactionTypes.cs" />
@@ -150,16 +152,19 @@
     <Compile Include="DomainModel\Deposit\DepositTransaction.cs" />
     <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
     <Compile Include="DomainModel\RegularPayments.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\IAccountCantBeDeletedChecker.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\IAccountOperator.cs" />
+    <Compile Include="Utils\Deposits\DepositOfferIdGenerator.cs" />
     <Compile Include="Utils\Balances\ArticleBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\RegularPayment.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />
     <Compile Include="Models\Shell\StatusBarModel.cs" />
-    <Compile Include="Utils\Accounts\AccountTreeStraightener.cs" />
-    <Compile Include="ByFunctional\EditingAccounts\AskUser.cs" />
-    <Compile Include="Utils\Accounts\IMyFactory.cs" />
-    <Compile Include="Utils\Accounts\MyFactory.cs" />
-    <Compile Include="ByFunctional\EditingAccounts\TellUser.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AccountTreeStraightener.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\UserEquirer.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\IAccountFactory.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\AccountFactory.cs" />
+    <Compile Include="ByFunctional\EditingAccounts\UserInformator.cs" />
     <Compile Include="Utils\Balances\BalanceTrio.cs" />
     <Compile Include="Utils\Balances\Ilya\Money.cs" />
     <Compile Include="Utils\Balances\Ilya\MoneyBag.cs" />

@@ -6,13 +6,13 @@ using Keeper.Utils.Accounts;
 namespace Keeper.DomainModel
 {
 	[Export]
-	public sealed class DbIdGenerator
+	public sealed class AccountIdGenerator
 	{
 		readonly KeeperDb _db;
 		readonly AccountTreeStraightener _accountTreeStraightener;
 
 		[ImportingConstructor]
-		public DbIdGenerator(KeeperDb keeperDb, AccountTreeStraightener accountTreeStraightener)
+		public AccountIdGenerator(KeeperDb keeperDb, AccountTreeStraightener accountTreeStraightener)
 		{
 			_db = keeperDb;
 			_accountTreeStraightener = accountTreeStraightener;
@@ -24,11 +24,5 @@ namespace Keeper.DomainModel
 			        select account.Id).Max() + 1;
 		}
 
-	    public int GenerateBankDepositOfferId()
-	    {
-	        if (_db.BankDepositOffers.Count == 0) return 1;
-            return (from offer in _db.BankDepositOffers
-                    select offer.Id).Max() + 1; 
-	    }
 	}
 }

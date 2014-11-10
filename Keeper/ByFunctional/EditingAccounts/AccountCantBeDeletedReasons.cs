@@ -1,6 +1,6 @@
 ﻿namespace Keeper.DomainModel
 {
-	public enum DeleteReasons
+	public enum AccountCantBeDeletedReasons
 	{
 		CanDelete, IsRoot, HasChildren, HasRelatedTransactions
 	}
