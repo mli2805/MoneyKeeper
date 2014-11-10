@@ -15,7 +15,7 @@ namespace Keeper.UnitTests.ByFunctional.EditingAccounts
 
         private IAccountFactory _accountFactory;
         private IUserInformator _userInformator;
-        private IAccountOperator _accountOperator;
+        private IAccountLowLevelOperator _accountLowLevelOperator;
         private IAccountCantBeDeletedChecker _accountCantBeDeletedChecker;
         private IUserEquirer _userEquirer;
 
@@ -33,11 +33,11 @@ namespace Keeper.UnitTests.ByFunctional.EditingAccounts
 
             _accountFactory = A.Fake<IAccountFactory>();
             _userInformator = A.Fake<IUserInformator>(); 
-            _accountOperator = A.Fake<IAccountOperator>();
+            _accountLowLevelOperator = A.Fake<IAccountLowLevelOperator>();
             _accountCantBeDeletedChecker = A.Fake<IAccountCantBeDeletedChecker>();
             _userEquirer = A.Fake<IUserEquirer>();
 
-            _underTest = new AccountTreesGardener(_accountFactory, _userInformator, _accountOperator, _accountCantBeDeletedChecker, _userEquirer);
+            _underTest = new AccountTreesGardener(_accountFactory, _userInformator, _accountLowLevelOperator, _accountCantBeDeletedChecker, _userEquirer);
         }
 
         private void PrepareTestDb()

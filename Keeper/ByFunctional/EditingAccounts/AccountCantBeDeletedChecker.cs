@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Keeper.DomainModel
 {
-	[Export]
+	[Export(typeof(IAccountCantBeDeletedChecker))]
 	public sealed class AccountCantBeDeletedChecker : IAccountCantBeDeletedChecker
 	{
 		readonly KeeperDb _keeperDb;

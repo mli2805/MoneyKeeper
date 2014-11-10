@@ -1,6 +1,6 @@
 ﻿namespace Keeper.DomainModel
 {
-    public interface IAccountOperator
+    public interface IAccountLowLevelOperator
     {
         Account AddNode(Account node);
         void RemoveNode(Account node);
