@@ -41,6 +41,8 @@ namespace Keeper.ByFunctional.DepositProcessing
       ws.Cells[1, 6] = "Проценты за эту ночь";
       ws.Cells[1, 7] = "Не выплаченные проценты";
       ws.Cells[1, 8] = "Проценты нарастающим итогом";
+      ws.Cells[1, 9] = "Девальвация за день";
+      ws.Cells[1, 10] = "Девальвация нарастающим итогом";
     }
 
     private static void SetFormatForData(Worksheet ws)
@@ -58,23 +60,31 @@ namespace Keeper.ByFunctional.DepositProcessing
       ws.Range["G1"].EntireColumn.NumberFormat = "[Green]#,0";
       ws.Range["H1"].EntireColumn.ColumnWidth = 15;
       ws.Range["H1"].EntireColumn.NumberFormat = "[Blue]#,0";
+      ws.Range["I1"].EntireColumn.ColumnWidth = 12;
+      ws.Range["I1"].EntireColumn.NumberFormat = "[Red]#,0";
+      ws.Range["J1"].EntireColumn.ColumnWidth = 12;
+      ws.Range["J1"].EntireColumn.NumberFormat = "[Red]#,0";
     }
 
     private void ImportEvaluationData(Worksheet ws, Deposit deposit)
     {
       int i = 3;
-      decimal total = 0;
+      decimal totalProcents = 0;
+      decimal totalDevaluation = 0;
       foreach (var line in deposit.CalculationData.DailyTable)
       {
-        total += line.DayProfit;
+        totalProcents += line.DayProcents;
+        totalDevaluation += line.DayDevaluation;
 
         ws.Cells[i, 2] = line.Date;
         ws.Cells[i, 3] = line.Balance;
         ws.Cells[i, 4] = line.DepoRate;
         ws.Cells[i, 5] = "%";
-        ws.Cells[i, 6] = line.DayProfit;
-        ws.Cells[i, 7] = line.NotPaidProfit;
-        ws.Cells[i, 8] = total;
+        ws.Cells[i, 6] = line.DayProcents;
+        ws.Cells[i, 7] = line.NotPaidProcents;
+        ws.Cells[i, 8] = totalProcents;
+        ws.Cells[i, 9] = line.DayDevaluation;
+        ws.Cells[i, 10] = totalDevaluation;
 
         i++;
       }
