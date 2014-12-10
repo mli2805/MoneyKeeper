@@ -60,16 +60,10 @@ namespace Keeper.ViewModels
             LeftColumn = new GridLength(1, GridUnitType.Star);
             RightColumn = new GridLength(1, GridUnitType.Star);
 
-            var sw = new Stopwatch();
-            sw.Start();
-
             //      DepoCurrenciesProportionChartCtor();
             YearsProfitCtor();
             TotalBalancesCtor();
             CashDepoProportionChartCtor();
-
-            sw.Stop();
-            Console.WriteLine(sw.Elapsed);
         }
 
         protected override void OnViewLoaded(object view)

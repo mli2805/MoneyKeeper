@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
@@ -113,22 +114,6 @@ namespace Keeper.Utils.MonthAnalysis
         Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp)) - Result.Incomes.OnDeposits.TotalInUsd;
     }
 
-    private void GetDepositsTraffic(List<Transaction> allMonthTransactions)
-    {
-      var minus = allMonthTransactions.
-        Where(t => t.Debet.IsDeposit() && !t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).ToList();
-
-      foreach (var transaction in minus)
-      {
-        var dd = new DbClassesInstanceDumper();
-        Console.WriteLine(dd.Dump(transaction));
-      }  
-
-      var plus = allMonthTransactions.
-        Where(t => !t.Debet.IsDeposit() && t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).ToList();
-     
-    }
-
     private List<CurrencyRate> InitializeRates(DateTime date)
     {
       var result = new List<CurrencyRate>();
@@ -142,6 +127,9 @@ namespace Keeper.Utils.MonthAnalysis
 
     public Saldo AnalizeMonth(DateTime initialDay)
     {
+        var sw = new Stopwatch();
+        sw.Start();
+
       Result = new Saldo();
       Result.StartDate = initialDay.AddDays(-initialDay.Day + 1);
       Result.BeginBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate);
@@ -152,7 +140,6 @@ namespace Keeper.Utils.MonthAnalysis
 
       RegisterExpense(GetMonthTransactionsForAnalysis(OperationType.Расход, Result.StartDate, _db.Transactions));
 
-      GetDepositsTraffic(GetMonthTransactionsForAnalysis(Result.StartDate, _db.Transactions).ToList());
       RegisterDepositsTraffic(GetMonthTransactionsForAnalysis(Result.StartDate, _db.Transactions).ToList());
 
       Result.EndBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate.AddMonths(1));
@@ -161,7 +148,11 @@ namespace Keeper.Utils.MonthAnalysis
 
       _monthForecaster.CollectEstimates(Result);
 
+      sw.Stop();
+      Console.WriteLine("Month analysis takes {0}", sw.Elapsed);
+
       return Result;
+
     }
 
   }
