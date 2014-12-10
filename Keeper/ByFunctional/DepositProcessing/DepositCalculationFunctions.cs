@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
+using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
+using Keeper.Utils.Rates;
 
 namespace Keeper.ByFunctional.DepositProcessing
 {
@@ -55,6 +57,18 @@ namespace Keeper.ByFunctional.DepositProcessing
             return false;
         }
 
+        public void CalculateOneDayDevalvation(DepositDailyLine dailyLine, decimal previousBalance, CurrencyCodes depositCurrency, RateExtractor rateExtractor)
+        {
+            if (previousBalance == 0 || depositCurrency == CurrencyCodes.USD)
+            {
+                dailyLine.DayDevaluation = 0;
+                return;
+            }
+
+            dailyLine.DayDevaluation = rateExtractor.GetUsdEquivalent(previousBalance, depositCurrency, dailyLine.Date) -
+                                        rateExtractor.GetUsdEquivalent(previousBalance, depositCurrency, dailyLine.Date.AddDays(-1));
+        }
+
         public void CalculateOneDayProcents(DepositDailyLine dailyLine, bool isFactDays)
         {
             GetBareDayProcent(dailyLine, isFactDays);
@@ -65,12 +79,12 @@ namespace Keeper.ByFunctional.DepositProcessing
         {
             if (!isFactDays)
             {
-                if (dailyLine.Date.Day == 31) dailyLine.DayProfit = 0;
+                if (dailyLine.Date.Day == 31) dailyLine.DayProcents = 0;
 
                 if (dailyLine.Date.Month == 2 && dailyLine.Date.Day == 28 && !DateTime.IsLeapYear(dailyLine.Date.Year))
-                    dailyLine.DayProfit *= 3;
+                    dailyLine.DayProcents *= 3;
                 if (dailyLine.Date.Month == 2 && dailyLine.Date.Day == 29 && DateTime.IsLeapYear(dailyLine.Date.Year))
-                    dailyLine.DayProfit *= 2;
+                    dailyLine.DayProcents *= 2;
             }
         }
 
@@ -80,7 +94,7 @@ namespace Keeper.ByFunctional.DepositProcessing
                 ? 360
                 : DateTime.IsLeapYear(dailyLine.Date.Year) ? 366 : 365;
 
-            dailyLine.DayProfit = dailyLine.Balance * dailyLine.DepoRate / 100 / yearDayQuantity;
+            dailyLine.DayProcents = dailyLine.Balance * dailyLine.DepoRate / 100 / yearDayQuantity;
         }
 
     }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Composition;
 using Caliburn.Micro;
+using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
+using Keeper.Utils.Rates;
 
 namespace Keeper.ByFunctional.DepositProcessing
 {
@@ -10,14 +12,17 @@ namespace Keeper.ByFunctional.DepositProcessing
     {
         private readonly DepositTrafficExtractor _depositTrafficExtractor;
         private readonly DepositTrafficEvaluator _depositTrafficEvaluator;
+        private readonly RateExtractor _rateExtractor;
         private readonly DepositCalculationFunctions _depositCalculationFunctions;
         private Deposit _deposit;
         [ImportingConstructor]
-        public DepositCalculator(DepositTrafficExtractor depositTrafficExtractor, 
-             DepositTrafficEvaluator depositTrafficEvaluator, DepositCalculationFunctions depositCalculationFunctions)
+        public DepositCalculator(DepositTrafficExtractor depositTrafficExtractor,
+             DepositTrafficEvaluator depositTrafficEvaluator, RateExtractor rateExtractor,
+             DepositCalculationFunctions depositCalculationFunctions)
         {
             _depositTrafficExtractor = depositTrafficExtractor;
             _depositTrafficEvaluator = depositTrafficEvaluator;
+            _rateExtractor = rateExtractor;
             _depositCalculationFunctions = depositCalculationFunctions;
         }
 
@@ -26,24 +31,24 @@ namespace Keeper.ByFunctional.DepositProcessing
             _deposit = _depositTrafficEvaluator.EvaluateTraffic(_depositTrafficExtractor.ExtractTraffic(deposit.ParentAccount));
 
             if (deposit.DepositOffer.CalculatingRules.IsRateFixed)
-                                           CalculateDailyProcents(_depositCalculationFunctions.GetCorrespondingDepoRateFix);
+                CalculateDailyValues(_depositCalculationFunctions.GetCorrespondingDepoRateFix, deposit.DepositOffer.Currency);
             else
-                                           CalculateDailyProcents(_depositCalculationFunctions.GetCorrespondingDepoRateNotFix);
+                CalculateDailyValues(_depositCalculationFunctions.GetCorrespondingDepoRateNotFix, deposit.DepositOffer.Currency);
         }
 
-        private void CalculateDailyProcents(Action<Deposit, DepositDailyLine> getCorrespondingDepoRate)
+        private void CalculateDailyValues(Action<Deposit, DepositDailyLine> getCorrespondingDepoRate, CurrencyCodes depositCurrency)
         {
-            decimal notPaidProfit = 0;
+            decimal notPaidProcents = 0;
             decimal capitalizedProfit = 0;
+            decimal previousBalance = 0;
+            var commonFunctionProvider = IoC.Get<DepositCalculationFunctions>();
             foreach (var dailyLine in _deposit.CalculationData.DailyTable)
             {
-                var commonFunctionProvider = IoC.Get<DepositCalculationFunctions>();
-
                 if (commonFunctionProvider.IsItDayToPayProcents(_deposit, dailyLine.Date))
                 {
                     if (_deposit.DepositOffer.CalculatingRules.IsCapitalized)
-                        capitalizedProfit += notPaidProfit;
-                    notPaidProfit = 0;  // даже если нет капитализации, но есть выплата процентов, начисленные за период проценты выплачиваются на спец счет
+                        capitalizedProfit += notPaidProcents;
+                    notPaidProcents = 0;  // даже если нет капитализации, но есть выплата процентов, начисленные за период проценты выплачиваются на спец счет
                 }
 
                 dailyLine.Balance += capitalizedProfit;
@@ -52,8 +57,12 @@ namespace Keeper.ByFunctional.DepositProcessing
 
                 getCorrespondingDepoRate(_deposit, dailyLine);
                 commonFunctionProvider.CalculateOneDayProcents(dailyLine, _deposit.DepositOffer.CalculatingRules.IsFactDays);
-                dailyLine.NotPaidProfit = notPaidProfit + dailyLine.DayProfit;
-                notPaidProfit = dailyLine.NotPaidProfit;
+                dailyLine.NotPaidProcents = notPaidProcents + dailyLine.DayProcents;
+                notPaidProcents = dailyLine.NotPaidProcents;
+
+                commonFunctionProvider.CalculateOneDayDevalvation(dailyLine, previousBalance, depositCurrency, _rateExtractor);
+                previousBalance = dailyLine.Balance;
+
             }
         }
 

@@ -34,7 +34,7 @@ namespace Keeper.ByFunctional.DepositProcessing
         {
             var periodWhichShouldBePaidInAnalysedMonth = deposit.GetPeriodWhichShouldBePaidInAnalysedMonth(firstDayOfAnalyzedMonth);
             deposit.CalculationData.EstimatedProcentsInThisMonth = periodWhichShouldBePaidInAnalysedMonth.ShouldBePaid() ?
-                deposit.CalculationData.DailyTable.Where(l => periodWhichShouldBePaidInAnalysedMonth.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProfit)
+                deposit.CalculationData.DailyTable.Where(l => periodWhichShouldBePaidInAnalysedMonth.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProcents)
                 : 0;
         }
 
@@ -43,7 +43,7 @@ namespace Keeper.ByFunctional.DepositProcessing
         {
             var periodFromLastProcentToEnd = new Period(deposit.GetDateOfLastProcentTransaction(), deposit.FinishDate);
             deposit.CalculationData.EstimatedProcents =
-                deposit.CalculationData.DailyTable.Where(l => periodFromLastProcentToEnd.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProfit);
+                deposit.CalculationData.DailyTable.Where(l => periodFromLastProcentToEnd.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProcents);
         }
 
         public decimal GetProfitForYear(Deposit deposit, int year)

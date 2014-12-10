@@ -23,14 +23,14 @@ namespace Keeper.ByFunctional.DepositProcessing
         public Deposit EvaluateTraffic(Deposit deposit)
         {
             _deposit = deposit;
-            EvaluateTraffic();
+            SummarizeTraffic();
             DefineCurrentState();
             FillinDailyBalances();
 
             return _deposit;
         }
 
-        private void EvaluateTraffic()
+        private void SummarizeTraffic()
         {
             _deposit.CalculationData.TotalMyIns = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.явнес).Sum(t => t.Amount);
             _deposit.CalculationData.TotalMyOuts = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.–асход).Sum(t => t.Amount);
