@@ -28,7 +28,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             SummarizeTraffic();
             DefineCurrentState();
             FillinDailyBalances();
-            DefineUsdEquivalents();
+            if (_deposit.DepositOffer.Currency != CurrencyCodes.USD) DefineCurrencyRates();
 
             return _deposit;
         }
@@ -65,53 +65,37 @@ namespace Keeper.ByFunctional.DepositProcessing
 
             foreach (DateTime day in period)
             {
-                var date = day;
-                balance += _deposit.CalculationData.Traffic.Where(t => t.Timestamp.Date == date.Date).Sum(t => t.Amount * t.Destination());
-                _deposit.CalculationData.DailyTable.Add(new DepositDailyLine { Date = day, Balance = balance });
+                balance += _deposit.CalculationData.Traffic.Where(t => t.Timestamp.Date == day.Date).Sum(t => t.Amount * t.Destination());
+                _deposit.CalculationData.DailyTable.Add(new DepositDailyLine{ Date = day, Balance = balance});
             }
         }
 
-
-        public class Myclass
-        {
-            DateTime Date { get; set; }
-            decimal Balance { get; set; }
-            double Rate { get; set; }
-            decimal BalanceInUsd { get; set; }
-
-            public Myclass(DateTime date, decimal balance, double rate, decimal balanceInUsd)
-            {
-                Date = date;
-                Balance = balance;
-                Rate = rate;
-                BalanceInUsd = balanceInUsd;
-            }
-        }
-
-        public class CurrencyPair
-        {
-            private CurrencyCodes _currency;
-            private DateTime _date;
-
-            public CurrencyPair(CurrencyCodes currency, DateTime date)
-            {
-                _currency = currency;
-                _date = date;
-            }
-        }
 
         /// <summary>
         /// http://msdn.microsoft.com/ru-ru/library/bb311040.aspx
+        /// http://stackoverflow.com/questions/3404975/left-outer-join-in-linq
         /// </summary>
-        private void DefineUsdEquivalents()
+        private void DefineCurrencyRates()
         {
+            // inner join - если в одно из таблиц нет строки с ключем , то и из второй таблицы данные не попадают в объединение
             var temp =
-                from line in _deposit.CalculationData.DailyTable orderby line.Date
-                join rate in _db.CurrencyRates 
-                  on new CurrencyPair(_deposit.DepositOffer.Currency, line.Date) equals new CurrencyPair(rate.Currency, rate.BankDay)
-                select new { line.Date,  line.Balance, rate.Rate,  InUsd = line.Balance / (decimal)rate.Rate};
+                from line in _deposit.CalculationData.DailyTable
+                join rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency)
+                    on line.Date equals rate.BankDay 
+                select new DepositDailyLine { Date = line.Date, Balance = line.Balance, CurrencyRate = (decimal)rate.Rate };
+           _deposit.CalculationData.DailyTable = temp.ToList();
 
+            // нужен outer join
+/*
+      дл€ анонимных классов join ругаетс€ не может вывести тип
+      а дл€ именованных получаетс€ пустой результат
+      предположительно сравнивает экземпл€ры класса по указател€м, а не по содержимому
+      не пон€тно как переопредел€ть equals
+      on new CurrencyPair(_deposit.DepositOffer.Currency, line.Date) equals new CurrencyPair(rate.Currency, rate.BankDay)
+*/
 
+            /*
+             */
         }
     }
 }

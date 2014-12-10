@@ -59,13 +59,12 @@ namespace Keeper.ByFunctional.DepositProcessing
 
                 dailyLine.Balance += capitalizedProfit;
 
-//                if (depositCurrency != CurrencyCodes.USD)
+                if (depositCurrency != CurrencyCodes.USD)
                 {
-                    dailyLine.CurrencyRate = (decimal)_rateExtractor.GetRate(depositCurrency, dailyLine.Date);
                     if (previousBalance != 0) _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, previousCurrencyRate);
-                    previousBalance = dailyLine.Balance;
                     previousCurrencyRate = dailyLine.CurrencyRate;
                 }
+                previousBalance = dailyLine.Balance;
             }
         }
 
