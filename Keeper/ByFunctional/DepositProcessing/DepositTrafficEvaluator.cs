@@ -11,12 +11,14 @@ namespace Keeper.ByFunctional.DepositProcessing
     [Export]
     public class DepositTrafficEvaluator
     {
+        private readonly KeeperDb _db;
         private readonly RateExtractor _rateExtractor;
         private Deposit _deposit;
 
         [ImportingConstructor]
-        public DepositTrafficEvaluator(RateExtractor rateExtractor)
+        public DepositTrafficEvaluator(KeeperDb db, RateExtractor rateExtractor)
         {
+            _db = db;
             _rateExtractor = rateExtractor;
         }
 
@@ -26,6 +28,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             SummarizeTraffic();
             DefineCurrentState();
             FillinDailyBalances();
+            DefineUsdEquivalents();
 
             return _deposit;
         }
@@ -68,5 +71,47 @@ namespace Keeper.ByFunctional.DepositProcessing
             }
         }
 
+
+        public class Myclass
+        {
+            DateTime Date { get; set; }
+            decimal Balance { get; set; }
+            double Rate { get; set; }
+            decimal BalanceInUsd { get; set; }
+
+            public Myclass(DateTime date, decimal balance, double rate, decimal balanceInUsd)
+            {
+                Date = date;
+                Balance = balance;
+                Rate = rate;
+                BalanceInUsd = balanceInUsd;
+            }
+        }
+
+        public class CurrencyPair
+        {
+            private CurrencyCodes _currency;
+            private DateTime _date;
+
+            public CurrencyPair(CurrencyCodes currency, DateTime date)
+            {
+                _currency = currency;
+                _date = date;
+            }
+        }
+
+        /// <summary>
+        /// http://msdn.microsoft.com/ru-ru/library/bb311040.aspx
+        /// </summary>
+        private void DefineUsdEquivalents()
+        {
+            var temp =
+                from line in _deposit.CalculationData.DailyTable orderby line.Date
+                join rate in _db.CurrencyRates 
+                  on new CurrencyPair(_deposit.DepositOffer.Currency, line.Date) equals new CurrencyPair(rate.Currency, rate.BankDay)
+                select new { line.Date,  line.Balance, rate.Rate,  InUsd = line.Balance / (decimal)rate.Rate};
+
+
+        }
     }
 }

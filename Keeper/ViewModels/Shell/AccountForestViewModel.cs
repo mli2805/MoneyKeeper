@@ -63,23 +63,6 @@ namespace Keeper.ViewModels.Shell
             NotifyOfPropertyChange(() => MyForestModel.ExpensesRoot);
         }
 
-        public void AccountDebugInfoIntoConsole()
-        {
-            Console.WriteLine("Account name: {0} ;  id = {1} ", MyForestModel.SelectedAccount.Name, MyForestModel.SelectedAccount.Id);
-            Console.WriteLine("Parent name: {0}", MyForestModel.SelectedAccount.Parent.Name);
-
-            if (MyForestModel.SelectedAccount.Children.Count > 0)
-            {
-                Console.WriteLine("Children names:");
-
-                foreach (var child in MyForestModel.SelectedAccount.Children)
-                {
-                    Console.WriteLine("      " + child.Name);
-
-                }
-            }
-        }
-
         #region // методы реализации контекстного меню на дереве счетов
 
         public void RemoveSelectedAccount()
