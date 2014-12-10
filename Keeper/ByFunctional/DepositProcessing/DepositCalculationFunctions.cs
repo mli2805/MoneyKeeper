@@ -65,7 +65,7 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         public void CalculateOneDayDevalvation(DepositDailyLine dailyLine, decimal previousBalance, decimal previousCurrencyRate)
         {
-            dailyLine.DayDevaluation = dailyLine.Balance*dailyLine.CurrencyRate - previousBalance*previousCurrencyRate;
+            dailyLine.DayDevaluation = dailyLine.Balance/dailyLine.CurrencyRate - previousBalance/previousCurrencyRate;
         }
 
         /// <summary>

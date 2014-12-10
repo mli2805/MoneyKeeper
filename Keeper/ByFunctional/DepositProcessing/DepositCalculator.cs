@@ -61,7 +61,7 @@ namespace Keeper.ByFunctional.DepositProcessing
 
 //                if (depositCurrency != CurrencyCodes.USD)
                 {
-                    dailyLine.CurrencyRate = (decimal)_rateExtractor.GetRate(depositCurrency, dailyLine.Date);
+                    dailyLine.CurrencyRate = (decimal)_rateExtractor.GetRateThisDayOrBefore(depositCurrency, dailyLine.Date);
                     if (previousBalance != 0) _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, previousCurrencyRate);
                     previousBalance = dailyLine.Balance;
                     previousCurrencyRate = dailyLine.CurrencyRate;
