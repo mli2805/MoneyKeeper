@@ -6,13 +6,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Icon="/Keeper;component/Resources/safe.ico" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
-        mc:Ignorable="d" Title="DepositView" Height="500" Width="700"
+        mc:Ignorable="d" Title="DepositView" Height="900" Width="700"
         d:DataContext="{d:DesignInstance ViewModels:DepositViewModel}">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="80"/>
       <RowDefinition Height="1*"/>
-      <RowDefinition Height="120"/>
+      <RowDefinition Height="160"/>
       <RowDefinition Height="40"/>
     </Grid.RowDefinitions>
     <ListBox Name="Header" Grid.Row="0" ItemsSource="{Binding ReportHeader}"/>

@@ -63,16 +63,9 @@ namespace Keeper.ByFunctional.DepositProcessing
             return false;
         }
 
-        public void CalculateOneDayDevalvation(DepositDailyLine dailyLine, decimal previousBalance, CurrencyCodes depositCurrency, RateExtractor rateExtractor)
+        public void CalculateOneDayDevalvation(DepositDailyLine dailyLine, decimal previousBalance, decimal previousCurrencyRate)
         {
-            if (previousBalance == 0 || depositCurrency == CurrencyCodes.USD)
-            {
-                dailyLine.DayDevaluation = 0;
-                return;
-            }
-
-            dailyLine.DayDevaluation = rateExtractor.GetUsdEquivalent(previousBalance, depositCurrency, dailyLine.Date) -
-                                        rateExtractor.GetUsdEquivalent(previousBalance, depositCurrency, dailyLine.Date.AddDays(-1));
+            dailyLine.DayDevaluation = dailyLine.Balance*dailyLine.CurrencyRate - previousBalance*previousCurrencyRate;
         }
 
         /// <summary>

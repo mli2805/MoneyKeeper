@@ -11,6 +11,7 @@ namespace Keeper.DomainModel.Deposit
         public decimal DayProcents { get; set; }
         public decimal NotPaidProcents { get; set; }
 
+        public decimal CurrencyRate { get; set; }
         public decimal DayDevaluation { get; set; }
     }
 }
