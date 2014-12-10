@@ -41,10 +41,9 @@ namespace Keeper.ByFunctional.DepositProcessing
             decimal notPaidProcents = 0;
             decimal capitalizedProfit = 0;
             decimal previousBalance = 0;
+            decimal previousCurrencyRate = 0;
             foreach (var dailyLine in _deposit.CalculationData.DailyTable)
             {
-//                if (dailyLine.Date == _deposit.StartDate) continue; // ни процентов , ни девальвации
-
                 getCorrespondingDepoRate(_deposit, dailyLine);
                 dailyLine.DayProcents = _depositCalculationFunctions.CalculateOneDayProcents(previousBalance, dailyLine.Date, 
                                                            dailyLine.DepoRate, _deposit.DepositOffer.CalculatingRules.IsFactDays);
@@ -60,9 +59,13 @@ namespace Keeper.ByFunctional.DepositProcessing
 
                 dailyLine.Balance += capitalizedProfit;
 
-                _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, depositCurrency, _rateExtractor);
-                previousBalance = dailyLine.Balance;
-
+                if (depositCurrency != CurrencyCodes.USD)
+                {
+                    dailyLine.CurrencyRate = (decimal)_rateExtractor.GetRate(depositCurrency, dailyLine.Date);
+                    if (previousBalance != 0) _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, previousCurrencyRate);
+                    previousBalance = dailyLine.Balance;
+                    previousCurrencyRate = dailyLine.CurrencyRate;
+                }
             }
         }
 

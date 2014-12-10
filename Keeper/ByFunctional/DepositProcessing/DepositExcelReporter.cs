@@ -59,7 +59,7 @@ namespace Keeper.ByFunctional.DepositProcessing
       ws.Range["G1"].EntireColumn.ColumnWidth = 15;
       ws.Range["G1"].EntireColumn.NumberFormat = "[Green]#,0";
       ws.Range["H1"].EntireColumn.ColumnWidth = 15;
-      ws.Range["H1"].EntireColumn.NumberFormat = "[Blue]#,0";
+      ws.Range["H1"].EntireColumn.NumberFormat = "[Green]#,0";
       ws.Range["I1"].EntireColumn.ColumnWidth = 12;
       ws.Range["I1"].EntireColumn.NumberFormat = "[Red]#,0";
       ws.Range["J1"].EntireColumn.ColumnWidth = 12;

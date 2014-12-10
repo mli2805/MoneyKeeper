@@ -13,6 +13,7 @@ namespace Keeper.DomainModel.Deposit
         public decimal TotalMyIns { get; set; }
         public decimal TotalPercent { get; set; }
         public decimal TotalMyOuts { get; set; }
+        public decimal TotalMyOutsInUsd { get; set; }
         public decimal CurrentBalance { get { return TotalMyIns + TotalPercent - TotalMyOuts; } }
         public decimal CurrentProfitInUsd { get; set; }
 
