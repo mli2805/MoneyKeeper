@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper", "Keeper\Keeper.csproj", "{4F7AD566-C071-42F3-9BE9-139C827641DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9831E8DF-7981-4D51-ABF2-22346AC51837}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper.UnitTests", "Keeper.UnitTests\Keeper.UnitTests.csproj", "{9FABEAFB-B26F-4133-82D8-187EE078686D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeeperPerformance", "KeeperPerformance\KeeperPerformance.csproj", "{256673C9-D625-45FA-9567-E5FC65F0624B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65DF484C-F041-48C2-9B45-C225655D1242}"
+	ProjectSection(SolutionItems) = preProject
+		account moving problem.txt = account moving problem.txt
+		TODO.txt = TODO.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albahari", "Albahari\Albahari.csproj", "{D78A4E49-A1AD-4450-9CD9-4000E32501E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F7AD566-C071-42F3-9BE9-139C827641DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F7AD566-C071-42F3-9BE9-139C827641DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F7AD566-C071-42F3-9BE9-139C827641DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F7AD566-C071-42F3-9BE9-139C827641DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{256673C9-D625-45FA-9567-E5FC65F0624B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{256673C9-D625-45FA-9567-E5FC65F0624B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{256673C9-D625-45FA-9567-E5FC65F0624B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{256673C9-D625-45FA-9567-E5FC65F0624B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D78A4E49-A1AD-4450-9CD9-4000E32501E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D78A4E49-A1AD-4450-9CD9-4000E32501E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D78A4E49-A1AD-4450-9CD9-4000E32501E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D78A4E49-A1AD-4450-9CD9-4000E32501E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
