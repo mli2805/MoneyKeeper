@@ -41,10 +41,17 @@ namespace Keeper.ByFunctional.DepositProcessing
             decimal notPaidProcents = 0;
             decimal capitalizedProfit = 0;
             decimal previousBalance = 0;
-            var commonFunctionProvider = IoC.Get<DepositCalculationFunctions>();
             foreach (var dailyLine in _deposit.CalculationData.DailyTable)
             {
-                if (commonFunctionProvider.IsItDayToPayProcents(_deposit, dailyLine.Date))
+//                if (dailyLine.Date == _deposit.StartDate) continue; // ни процентов , ни девальвации
+
+                getCorrespondingDepoRate(_deposit, dailyLine);
+                dailyLine.DayProcents = _depositCalculationFunctions.CalculateOneDayProcents(previousBalance, dailyLine.Date, 
+                                                           dailyLine.DepoRate, _deposit.DepositOffer.CalculatingRules.IsFactDays);
+                dailyLine.NotPaidProcents = notPaidProcents + dailyLine.DayProcents;
+                notPaidProcents = dailyLine.NotPaidProcents;
+
+                if (_depositCalculationFunctions.IsItDayToPayProcents(_deposit, dailyLine.Date))
                 {
                     if (_deposit.DepositOffer.CalculatingRules.IsCapitalized)
                         capitalizedProfit += notPaidProcents;
@@ -53,14 +60,7 @@ namespace Keeper.ByFunctional.DepositProcessing
 
                 dailyLine.Balance += capitalizedProfit;
 
-                if (dailyLine.Date == _deposit.FinishDate) continue;
-
-                getCorrespondingDepoRate(_deposit, dailyLine);
-                commonFunctionProvider.CalculateOneDayProcents(dailyLine, _deposit.DepositOffer.CalculatingRules.IsFactDays);
-                dailyLine.NotPaidProcents = notPaidProcents + dailyLine.DayProcents;
-                notPaidProcents = dailyLine.NotPaidProcents;
-
-                commonFunctionProvider.CalculateOneDayDevalvation(dailyLine, previousBalance, depositCurrency, _rateExtractor);
+                _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, depositCurrency, _rateExtractor);
                 previousBalance = dailyLine.Balance;
 
             }

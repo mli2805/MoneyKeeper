@@ -24,6 +24,10 @@ namespace Keeper.ByFunctional.DepositProcessing
         }
 
         /// <summary>
+        /// Если ставка в день D была X % , а в день D+1 стала Y %, 
+        /// то запрос ставки для дня D+1 должен вернуть X %,
+        /// т.к. проценты за ночь с D на D+1 начисляются по ставке X %
+        /// 
         /// ВТБ Скарбонка - фикс первые 3 месяца, далее ставка установленная для определенной группы счетов
         /// которая отличается от ставки для вновь открываемых и ставки для других счетов открытых в другие даты
         /// 
@@ -43,7 +47,9 @@ namespace Keeper.ByFunctional.DepositProcessing
         /// <param name="dailyLine"></param>
         public void GetCorrespondingDepoRateNotFix(Deposit deposit, DepositDailyLine dailyLine)
         {
-            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.AmountFrom <= dailyLine.Balance && l.AmountTo >= dailyLine.Balance && l.DateFrom < dailyLine.Date);
+            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.AmountFrom <= dailyLine.Balance && l.AmountTo >= dailyLine.Balance &&
+                //  знак равно, т.к. эта ночь еще под старую ставку
+                                                                                                                     l.DateFrom <= dailyLine.Date);
             dailyLine.DepoRate = line == null ? 0 : line.Rate;
         }
 
@@ -69,32 +75,39 @@ namespace Keeper.ByFunctional.DepositProcessing
                                         rateExtractor.GetUsdEquivalent(previousBalance, depositCurrency, dailyLine.Date.AddDays(-1));
         }
 
-        public void CalculateOneDayProcents(DepositDailyLine dailyLine, bool isFactDays)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="balance"></param>
+        /// <param name="date"></param>
+        /// <param name="rate"></param>
+        /// <param name="isFactDays"></param>
+        /// <returns></returns>
+        public decimal CalculateOneDayProcents(decimal balance, DateTime date, decimal rate, bool isFactDays)
         {
-            GetBareDayProcent(dailyLine, isFactDays);
-            MindBankDayPolitic(dailyLine, isFactDays);
+            var dayProcents = balance * rate / 100 / GetBankDayInYear(date.Year, isFactDays);
+            return isFactDays ?
+                dayProcents :
+                MindBankDayPolitic(dayProcents, date);
         }
 
-        private static void MindBankDayPolitic(DepositDailyLine dailyLine, bool isFactDays)
+        private static decimal MindBankDayPolitic(decimal dayProcents, DateTime date)
         {
-            if (!isFactDays)
-            {
-                if (dailyLine.Date.Day == 31) dailyLine.DayProcents = 0;
+            if (date.Day == 31) return 0;
 
-                if (dailyLine.Date.Month == 2 && dailyLine.Date.Day == 28 && !DateTime.IsLeapYear(dailyLine.Date.Year))
-                    dailyLine.DayProcents *= 3;
-                if (dailyLine.Date.Month == 2 && dailyLine.Date.Day == 29 && DateTime.IsLeapYear(dailyLine.Date.Year))
-                    dailyLine.DayProcents *= 2;
-            }
+            if (date.Month == 2 && date.Day == 28 && !DateTime.IsLeapYear(date.Year))
+                return dayProcents * 3;
+            if (date.Month == 2 && date.Day == 29 && DateTime.IsLeapYear(date.Year))
+                return dayProcents * 2;
+
+            return dayProcents;
         }
 
-        private void GetBareDayProcent(DepositDailyLine dailyLine, bool isFactDays)
+        private static int GetBankDayInYear(int year, bool isFactDays)
         {
-            var yearDayQuantity = !isFactDays
+            return !isFactDays
                 ? 360
-                : DateTime.IsLeapYear(dailyLine.Date.Year) ? 366 : 365;
-
-            dailyLine.DayProcents = dailyLine.Balance * dailyLine.DepoRate / 100 / yearDayQuantity;
+                : DateTime.IsLeapYear(year) ? 366 : 365;
         }
 
     }
