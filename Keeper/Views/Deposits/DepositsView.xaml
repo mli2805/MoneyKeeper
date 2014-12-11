@@ -30,7 +30,7 @@
       <DataTemplate x:Key="ProfitColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-                    <Binding Path="CalculationData.CurrentProfit" StringFormat="{}{0:#,0;; }"/>
+                    <Binding Path="CalculationData.CurrentProfitInUsd" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>

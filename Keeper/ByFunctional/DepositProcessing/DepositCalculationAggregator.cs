@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
+using Keeper.Utils.Rates;
 
 namespace Keeper.ByFunctional.DepositProcessing
 {
@@ -10,11 +11,13 @@ namespace Keeper.ByFunctional.DepositProcessing
     public class DepositCalculationAggregator
     {
         private readonly DepositCalculator _depositCalculator;
+        private readonly RateExtractor _rateExtractor;
 
         [ImportingConstructor]
-        public DepositCalculationAggregator(DepositCalculator depositCalculator)
+        public DepositCalculationAggregator(DepositCalculator depositCalculator, RateExtractor rateExtractor)
         {
             _depositCalculator = depositCalculator;
+            _rateExtractor = rateExtractor;
         }
 
         public void FillinFieldsForOneDepositReport(Deposit deposit)
@@ -29,7 +32,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             _depositCalculator.Calculate(deposit);
             CalculateMonthEstimatedProcents(deposit, day);
         }
-        
+
         private void CalculateMonthEstimatedProcents(Deposit deposit, DateTime firstDayOfAnalyzedMonth)
         {
             var periodWhichShouldBePaidInAnalysedMonth = deposit.GetPeriodWhichShouldBePaidInAnalysedMonth(firstDayOfAnalyzedMonth);
@@ -39,11 +42,25 @@ namespace Keeper.ByFunctional.DepositProcessing
         }
 
 
+        private void MindDevaluation(Deposit deposit)
+        {
+            deposit.CalculationData.EstimatedCurrencyRateOnFinish = ForecastCurrencyRateOnFinish(deposit);
+        }
+
+        private decimal ForecastCurrencyRateOnFinish(Deposit deposit)
+        {
+            var currentRate = (decimal)_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today);
+            var delta = (currentRate - (decimal)_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today.AddDays(-30))) / 30;
+            return currentRate + (deposit.FinishDate - DateTime.Today).Days * delta;
+        }
+
         private void CalculateUpToEndEstimatedProcents(Deposit deposit)
         {
             var periodFromLastProcentToEnd = new Period(deposit.GetDateOfLastProcentTransaction(), deposit.FinishDate);
             deposit.CalculationData.EstimatedProcents =
                 deposit.CalculationData.DailyTable.Where(l => periodFromLastProcentToEnd.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProcents);
+
+            if (deposit.DepositOffer.Currency != CurrencyCodes.USD) MindDevaluation(deposit);
         }
 
         public decimal GetProfitForYear(Deposit deposit, int year)
