@@ -61,6 +61,8 @@ namespace Keeper.ByFunctional.DepositProcessing
 
                 if (depositCurrency != CurrencyCodes.USD)
                 {
+                    // курсы в таблицу загнаны left outer join - могут быть нули
+                    if (dailyLine.CurrencyRate == 0) dailyLine.CurrencyRate = previousCurrencyRate;
                     if (previousBalance != 0) _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, previousCurrencyRate);
                     previousCurrencyRate = dailyLine.CurrencyRate;
                 }

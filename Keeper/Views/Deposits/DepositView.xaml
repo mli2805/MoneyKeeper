@@ -6,8 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Icon="/Keeper;component/Resources/safe.ico" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
-        mc:Ignorable="d" Title="DepositView" Height="900" Width="700"
-        d:DataContext="{d:DesignInstance ViewModels:DepositViewModel}">
+        mc:Ignorable="d" Title="DepositView" Height="750" Width="700" Left="200" Top="200"
+        d:DataContext="{d:DesignInstance ViewModels:DepositViewModel}" WindowStartupLocation="Manual">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="80"/>
