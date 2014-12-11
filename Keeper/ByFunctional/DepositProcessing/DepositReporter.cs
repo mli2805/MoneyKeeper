@@ -77,9 +77,11 @@ namespace Keeper.ByFunctional.DepositProcessing
         {
             var reportFooter = new ObservableCollection<string>();
 
-            reportFooter.Add(String.Format("Уже получено на руки  {0:#,0} usd ", deposit.CalculationData.TotalMyOutsInUsd));
+            reportFooter.Add(deposit.DepositOffer.CalculatingRules.IsCapitalized
+                ? String.Format("Причислено процентов  {0:#,0} usd ", deposit.CalculationData.TotalPercentInUsd)
+                : String.Format("Уже получено на руки  {0:#,0} usd ", deposit.CalculationData.TotalMyOutsInUsd));
             reportFooter.Add(String.Format("Девальвация тела  {0:#,0} usd",
-                deposit.CalculationData.DailyTable.Where(d => d.Date <= DateTime.Today).Sum(l => l.DayDevaluation)));
+                                                               deposit.CalculationData.CurrentDevaluationInUsd));
             reportFooter.Add(String.Format("Профит с учетом девальвации {0:#,0} usd\n",
                 deposit.CalculationData.CurrentProfitInUsd)); 
 

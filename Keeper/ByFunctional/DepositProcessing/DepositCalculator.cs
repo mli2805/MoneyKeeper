@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Composition;
+using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
@@ -34,6 +35,8 @@ namespace Keeper.ByFunctional.DepositProcessing
                 CalculateDailyValues(_depositCalculationFunctions.GetCorrespondingDepoRateFix, deposit.DepositOffer.Currency);
             else
                 CalculateDailyValues(_depositCalculationFunctions.GetCorrespondingDepoRateNotFix, deposit.DepositOffer.Currency);
+            deposit.CalculationData.CurrentDevaluationInUsd =
+                            deposit.CalculationData.DailyTable.Where(d => d.Date <= DateTime.Today).Sum(l => l.DayDevaluation);
         }
 
         private void CalculateDailyValues(Action<Deposit, DepositDailyLine> getCorrespondingDepoRate, CurrencyCodes depositCurrency)
@@ -57,7 +60,7 @@ namespace Keeper.ByFunctional.DepositProcessing
                     notPaidProcents = 0;  // даже если нет капитализации, но есть выплата процентов, начисленные за период проценты выплачиваются на спец счет
                 }
 
-                dailyLine.Balance += capitalizedProfit;
+//                dailyLine.Balance += capitalizedProfit;
 
                 if (depositCurrency != CurrencyCodes.USD)
                 {
