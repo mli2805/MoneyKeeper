@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper", "Keeper\Keeper.csproj", "{4F7AD566-C071-42F3-9BE9-139C827641DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9831E8DF-7981-4D51-ABF2-22346AC51837}"
@@ -21,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albahari", "Albahari\Albahari.csproj", "{D78A4E49-A1AD-4450-9CD9-4000E32501E8}"
+EndProject
+Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "ModelingProject1", "ModelingProject1\ModelingProject1.modelproj", "{653BF6A2-450F-49E2-AB7B-84856F41DFA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +48,10 @@ Global
 		{D78A4E49-A1AD-4450-9CD9-4000E32501E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D78A4E49-A1AD-4450-9CD9-4000E32501E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D78A4E49-A1AD-4450-9CD9-4000E32501E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{653BF6A2-450F-49E2-AB7B-84856F41DFA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{653BF6A2-450F-49E2-AB7B-84856F41DFA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{653BF6A2-450F-49E2-AB7B-84856F41DFA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{653BF6A2-450F-49E2-AB7B-84856F41DFA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
