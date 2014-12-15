@@ -48,7 +48,7 @@ namespace Keeper.ViewModels
             OldDepositName = _oldDeposit.ParentAccount.Name;
             DepositCurrency = _oldDeposit.DepositOffer.Currency.ToString().ToLower();
             BankAccount = FindBankAccount();
-            Procents = _oldDeposit.CalculationData.EstimatedProcents;
+            Procents = _oldDeposit.CalculationData.Estimations.ProcentsUpToFinish;
             NewDepositName = BuildNewName();
         }
 
