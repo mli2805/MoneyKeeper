@@ -77,26 +77,29 @@ namespace Keeper.ByFunctional.DepositProcessing
         {
             var reportFooter = new ObservableCollection<string>();
 
-            reportFooter.Add(deposit.DepositOffer.CalculatingRules.IsCapitalized
-                ? String.Format("Причислено процентов  {0:#,0} usd ", deposit.CalculationData.TotalPercentInUsd)
-                : String.Format("Уже получено на руки  {0:#,0} usd ", deposit.CalculationData.TotalMyOutsInUsd));
-            reportFooter.Add(String.Format("Девальвация тела  {0:#,0} usd",
-                                                               deposit.CalculationData.CurrentDevaluationInUsd));
-            reportFooter.Add(String.Format("Профит с учетом девальвации {0:#,0} usd\n",
-                deposit.CalculationData.CurrentProfitInUsd)); 
+            if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
+                reportFooter.Add(String.Format("Причислено процентов  {0:#,0}$     девальвация тела  {1:#,0}$     профит с учетом девальвации {2:#,0}$", 
+                    deposit.CalculationData.TotalPercentInUsd, deposit.CalculationData.CurrentDevaluationInUsd, deposit.CalculationData.CurrentProfitInUsd));
+            else
+                reportFooter.Add(String.Format("Причислено процентов  {0:#,0} usd ", deposit.CalculationData.TotalPercentInUsd));
 
-            if (deposit.CalculationData.CurrentBalance == 0) return reportFooter;
-            reportFooter.Add(String.Format("В этом месяце ожидаются проценты {0}",
-              AmountRepresentation(deposit.CalculationData.EstimatedProcentsInThisMonth, deposit.DepositOffer.Currency)));
-            reportFooter.Add(String.Format("Всего ожидается процентов {0}",
-              AmountRepresentation(deposit.CalculationData.EstimatedProcents, deposit.DepositOffer.Currency)));
-            reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd",
-                  _rateExtractor.GetUsdEquivalent(deposit.CalculationData.EstimatedProcents, deposit.DepositOffer.Currency, DateTime.Today)
-                  + deposit.CalculationData.CurrentProfitInUsd));
+            if (deposit.CalculationData.CurrentBalance != 0) ReportEstimations(deposit, reportFooter);
             return reportFooter;
         }
 
-        public string AmountRepresentation(decimal amount, CurrencyCodes currency)
+        private void ReportEstimations(Deposit deposit, ObservableCollection<string> reportFooter)
+        {
+            reportFooter.Add(String.Format("\nВ этом месяце ожидаются проценты {0}",
+                AmountRepresentation(deposit.CalculationData.Estimations.ProcentsInThisMonth, deposit.DepositOffer.Currency)));
+            reportFooter.Add(String.Format("Всего ожидается процентов {0}",
+                AmountRepresentation(deposit.CalculationData.Estimations.ProcentsUpToFinish, deposit.DepositOffer.Currency)));
+            reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd",
+                _rateExtractor.GetUsdEquivalent(deposit.CalculationData.Estimations.ProcentsUpToFinish,
+                    deposit.DepositOffer.Currency, DateTime.Today)
+                + deposit.CalculationData.CurrentProfitInUsd));
+        }
+
+        private string AmountRepresentation(decimal amount, CurrencyCodes currency)
         {
             if (currency == CurrencyCodes.USD)
                 return String.Format("{0:#,0} usd", amount);

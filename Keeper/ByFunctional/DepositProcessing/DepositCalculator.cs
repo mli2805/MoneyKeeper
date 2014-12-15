@@ -53,7 +53,7 @@ namespace Keeper.ByFunctional.DepositProcessing
                 dailyLine.NotPaidProcents = notPaidProcents + dailyLine.DayProcents;
                 notPaidProcents = dailyLine.NotPaidProcents;
 
-                if (_depositCalculationFunctions.IsItDayToPayProcents(_deposit, dailyLine.Date))
+                if (_deposit.IsItDayToPayProcents(dailyLine.Date))
                 {
                     if (_deposit.DepositOffer.CalculatingRules.IsCapitalized)
                         capitalizedProfit += notPaidProcents;
@@ -64,8 +64,11 @@ namespace Keeper.ByFunctional.DepositProcessing
 
                 if (depositCurrency != CurrencyCodes.USD)
                 {
-                    // курсы в таблицу загнаны left outer join - могут быть нули
-                    if (dailyLine.CurrencyRate == 0) dailyLine.CurrencyRate = previousCurrencyRate;
+                    var currencyGradient = (decimal)(_rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today) -
+                                            _rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today.AddDays(-30)))/30;
+                    // на этапе DepositTrafficEvaluator курсы в таблицу загнаны left outer join - могут быть нули
+                    if (dailyLine.CurrencyRate == 0)
+                        dailyLine.CurrencyRate = dailyLine.Date > DateTime.Today ? previousCurrencyRate + currencyGradient : previousCurrencyRate;
                     if (previousBalance != 0) _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, previousCurrencyRate);
                     previousCurrencyRate = dailyLine.CurrencyRate;
                 }

@@ -36,15 +36,27 @@ namespace Keeper.ByFunctional.DepositProcessing
         private void CalculateMonthEstimatedProcents(Deposit deposit, DateTime firstDayOfAnalyzedMonth)
         {
             var periodWhichShouldBePaidInAnalysedMonth = deposit.GetPeriodWhichShouldBePaidInAnalysedMonth(firstDayOfAnalyzedMonth);
-            deposit.CalculationData.EstimatedProcentsInThisMonth = periodWhichShouldBePaidInAnalysedMonth.ShouldBePaid() ?
+            deposit.CalculationData.Estimations = new DepositEstimations();
+            deposit.CalculationData.Estimations.ProcentsInThisMonth = periodWhichShouldBePaidInAnalysedMonth.ShouldBePaid() ?
                 deposit.CalculationData.DailyTable.Where(l => periodWhichShouldBePaidInAnalysedMonth.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProcents)
                 : 0;
+        }
+
+        /// <summary>
+        /// Предсказание по последним 30 дням
+        /// </summary>
+        /// <param name="deposit"></param>
+        /// <param name="dateForPredicion"></param>
+        private void CalculateCurrencyRateOnThisMonthPayment(Deposit deposit, DateTime dateForPredicion)
+        {
+            deposit.CalculationData.Estimations.CurrencyRateOnThisMonthPayment =
+                deposit.CalculationData.DailyTable.First(l => l.Date == dateForPredicion).CurrencyRate;
         }
 
 
         private void MindDevaluation(Deposit deposit)
         {
-            deposit.CalculationData.EstimatedCurrencyRateOnFinish = ForecastCurrencyRateOnFinish(deposit);
+            deposit.CalculationData.Estimations.CurrencyRateOnFinish = ForecastCurrencyRateOnFinish(deposit);
         }
 
         private decimal ForecastCurrencyRateOnFinish(Deposit deposit)
@@ -57,7 +69,7 @@ namespace Keeper.ByFunctional.DepositProcessing
         private void CalculateUpToEndEstimatedProcents(Deposit deposit)
         {
             var periodFromLastProcentToEnd = new Period(deposit.GetDateOfLastProcentTransaction(), deposit.FinishDate);
-            deposit.CalculationData.EstimatedProcents =
+            deposit.CalculationData.Estimations.ProcentsUpToFinish =
                 deposit.CalculationData.DailyTable.Where(l => periodFromLastProcentToEnd.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProcents);
 
             if (deposit.DepositOffer.Currency != CurrencyCodes.USD) MindDevaluation(deposit);

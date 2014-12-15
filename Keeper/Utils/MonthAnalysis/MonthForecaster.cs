@@ -89,18 +89,18 @@ namespace Keeper.Utils.MonthAnalysis
                 if (account.Children.Count != 0 || !account.IsDeposit()) continue;
                 _depositCalculationAggregator.FillinFieldsForMonthAnalysis(account.Deposit, s.StartDate);
 
-                if (_rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.EstimatedProcentsInThisMonth,account.Deposit.DepositOffer.Currency,DateTime.Today) < 1) continue;
+                if (_rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.Estimations.ProcentsInThisMonth,account.Deposit.DepositOffer.Currency,DateTime.Today) < 1) continue;
 
                 s.ForecastRegularIncome.Payments.Add(new EstimatedMoney
                 {
-                    Amount = account.Deposit.CalculationData.EstimatedProcentsInThisMonth,
+                    Amount = account.Deposit.CalculationData.Estimations.ProcentsInThisMonth,
                     ArticleName =
                         string.Format("%%  {0}", account.Deposit.ShortName),
                     Currency = account.Deposit.DepositOffer.Currency
                 });
 
                 s.ForecastRegularIncome.EstimatedSum +=
-                    _rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.EstimatedProcentsInThisMonth,
+                    _rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.Estimations.ProcentsInThisMonth,
                         account.Deposit.DepositOffer.Currency, DateTime.Today);
             }
         }

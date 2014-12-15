@@ -53,16 +53,6 @@ namespace Keeper.ByFunctional.DepositProcessing
             dailyLine.DepoRate = line == null ? 0 : line.Rate;
         }
 
-        public bool IsItDayToPayProcents(Deposit deposit, DateTime date)
-        {
-            if (deposit.DepositOffer.CalculatingRules.EveryFirstDayOfMonth && date.Day == 1) return true;
-            if (deposit.DepositOffer.CalculatingRules.EveryLastDayOfMonth && date.AddDays(1).Day == 1) return true;
-            if (deposit.DepositOffer.CalculatingRules.EveryStartDay && date.Day == deposit.StartDate.Day) return true;
-            if (deposit.FinishDate == date) return true;
-
-            return false;
-        }
-
         public void CalculateOneDayDevalvation(DepositDailyLine dailyLine, decimal previousBalance, decimal previousCurrencyRate)
         {
             dailyLine.DayDevaluation = previousBalance / dailyLine.CurrencyRate - previousBalance / previousCurrencyRate;
