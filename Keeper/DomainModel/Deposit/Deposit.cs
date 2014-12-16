@@ -40,9 +40,9 @@ namespace Keeper.DomainModel.Deposit
         {
             var upToDate = firstDayOfAnalyzedMonth;
             if (DepositOffer.CalculatingRules.EveryStartDay)
-                upToDate = new DateTime(firstDayOfAnalyzedMonth.Year, firstDayOfAnalyzedMonth.Month, StartDate.Day).AddSeconds(-1);
+                upToDate = new DateTime(firstDayOfAnalyzedMonth.Year, firstDayOfAnalyzedMonth.Month, StartDate.Day);
             if (DepositOffer.CalculatingRules.EveryLastDayOfMonth)
-                upToDate = firstDayOfAnalyzedMonth.AddMonths(1).AddDays(-1);
+                upToDate = firstDayOfAnalyzedMonth.AddMonths(1);
             if (firstDayOfAnalyzedMonth.IsMonthTheSame(FinishDate)) upToDate = FinishDate;
             return upToDate;
         }
@@ -58,7 +58,7 @@ namespace Keeper.DomainModel.Deposit
       public Period GetPeriodWhichShouldBePaidInAnalysedMonth(DateTime firstDayOfAnalyzedMonth)
         {
             var startOfPeriod = firstDayOfAnalyzedMonth.IsMonthTheSame(DateTime.Today)
-                ? GetDateOfLastProcentTransaction().Date
+                ? GetDateOfLastProcentTransaction().AddDays(1)
                 : GetLastDayWhichShouldBePaidInAnalyzedMonth(firstDayOfAnalyzedMonth.AddMonths(-1));
             return new Period(startOfPeriod,GetLastDayWhichShouldBePaidInAnalyzedMonth(firstDayOfAnalyzedMonth));
         }
