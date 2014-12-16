@@ -23,15 +23,10 @@ namespace Keeper.DomainModel.Deposit
 
 
         public Brush FontColor { get { return State == DepositStates.Закрыт ? Brushes.Gray : State == DepositStates.Просрочен ? Brushes.Red : Brushes.Blue; } }
-    }
 
-    public class DepositEstimations
-    {
-        public decimal ProcentsInThisMonth { get; set; }
-        public decimal CurrencyRateOnThisMonthPayment { get; set; }
-        public decimal ProcentsUpToFinish { get; set; }
-        public decimal CurrencyRateOnFinish { get; set; }
-        public decimal DevaluationInUsd { get; set; }
-        public decimal ProfitInUsd { get; set; }
+        public DepositCalculationData()
+        {
+            Estimations = new DepositEstimations();
+        }
     }
 }

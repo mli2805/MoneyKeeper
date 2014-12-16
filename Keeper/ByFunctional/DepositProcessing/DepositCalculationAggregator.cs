@@ -33,30 +33,20 @@ namespace Keeper.ByFunctional.DepositProcessing
             CalculateMonthEstimatedProcents(deposit, day);
         }
 
-        private void CalculateMonthEstimatedProcents(Deposit deposit, DateTime firstDayOfAnalyzedMonth)
+        private static void CalculateMonthEstimatedProcents(Deposit deposit, DateTime firstDayOfAnalyzedMonth)
         {
-            var periodWhichShouldBePaidInAnalysedMonth = deposit.GetPeriodWhichShouldBePaidInAnalysedMonth(firstDayOfAnalyzedMonth);
-            deposit.CalculationData.Estimations = new DepositEstimations();
-            deposit.CalculationData.Estimations.ProcentsInThisMonth = periodWhichShouldBePaidInAnalysedMonth.ShouldBePaid() ?
-                deposit.CalculationData.DailyTable.Where(l => periodWhichShouldBePaidInAnalysedMonth.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProcents)
-                : 0;
-        }
+            deposit.CalculationData.Estimations.PeriodForThisMonthPayment = deposit.GetPeriodWhichShouldBePaidInAnalysedMonth(firstDayOfAnalyzedMonth);
+            if (deposit.CalculationData.Estimations.PeriodForThisMonthPayment.ShouldBePaid())
+            {
+                deposit.CalculationData.Estimations.ProcentsInThisMonth =
+                    deposit.CalculationData.DailyTable.Where(
+                        l => deposit.CalculationData.Estimations.PeriodForThisMonthPayment.ContainsButTimeNotChecking(l.Date))
+                        .Sum(l => l.DayProcents);
+                deposit.CalculationData.Estimations.CurrencyRateOnThisMonthPayment =
+                    deposit.CalculationData.DailyTable.First(l => l.Date.Date == deposit.CalculationData.Estimations.PeriodForThisMonthPayment.Finish.Date).CurrencyRate;
 
-        /// <summary>
-        /// Предсказание по последним 30 дням
-        /// </summary>
-        /// <param name="deposit"></param>
-        /// <param name="dateForPredicion"></param>
-        private void CalculateCurrencyRateOnThisMonthPayment(Deposit deposit, DateTime dateForPredicion)
-        {
-            deposit.CalculationData.Estimations.CurrencyRateOnThisMonthPayment =
-                deposit.CalculationData.DailyTable.First(l => l.Date == dateForPredicion).CurrencyRate;
-        }
-
-
-        private void MindDevaluation(Deposit deposit)
-        {
-            deposit.CalculationData.Estimations.CurrencyRateOnFinish = ForecastCurrencyRateOnFinish(deposit);
+            }
+            else deposit.CalculationData.Estimations.ProcentsInThisMonth = 0;
         }
 
         private decimal ForecastCurrencyRateOnFinish(Deposit deposit)
@@ -68,11 +58,12 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         private void CalculateUpToEndEstimatedProcents(Deposit deposit)
         {
-            var periodFromLastProcentToEnd = new Period(deposit.GetDateOfLastProcentTransaction(), deposit.FinishDate);
+            deposit.CalculationData.Estimations.PeriodForUpToEndPayment = new Period(deposit.GetDateOfLastProcentTransaction().AddDays(1), deposit.FinishDate);
             deposit.CalculationData.Estimations.ProcentsUpToFinish =
-                deposit.CalculationData.DailyTable.Where(l => periodFromLastProcentToEnd.ContainsAndTimeWasChecked(l.Date)).Sum(l => l.DayProcents);
+                deposit.CalculationData.DailyTable.Where(l => deposit.CalculationData.Estimations.PeriodForUpToEndPayment.ContainsButTimeNotChecking(l.Date)).Sum(l => l.DayProcents);
 
-            if (deposit.DepositOffer.Currency != CurrencyCodes.USD) MindDevaluation(deposit);
+            if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
+                deposit.CalculationData.Estimations.CurrencyRateOnFinish = ForecastCurrencyRateOnFinish(deposit);
         }
 
         public decimal GetProfitForYear(Deposit deposit, int year)
