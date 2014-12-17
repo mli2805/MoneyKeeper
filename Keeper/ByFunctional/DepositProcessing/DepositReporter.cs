@@ -92,26 +92,35 @@ namespace Keeper.ByFunctional.DepositProcessing
             reportFooter.Add(String.Format("\nВ этом месяце ожидаются проценты {0}", ProcentPredictionRepresentation(
                 deposit.CalculationData.Estimations.ProcentsInThisMonth, 
                 deposit.DepositOffer.Currency, 
-                deposit.CalculationData.Estimations.CurrencyRateOnThisMonthPayment,
+                deposit.CalculationData.DailyTable.First
+                 (l => l.Date.Date == deposit.CalculationData.Estimations.PeriodForThisMonthPayment.Finish.Date).CurrencyRate,
                 deposit.CalculationData.Estimations.PeriodForThisMonthPayment)));
             reportFooter.Add(String.Format("Всего ожидается процентов {0}", ProcentPredictionRepresentation(
                 deposit.CalculationData.Estimations.ProcentsUpToFinish,
                 deposit.DepositOffer.Currency,
-                deposit.CalculationData.Estimations.CurrencyRateOnFinish,
+                deposit.CalculationData.DailyTable.Last().CurrencyRate,
                 deposit.CalculationData.Estimations.PeriodForUpToEndPayment)));
-            reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd",
-                _rateExtractor.GetUsdEquivalent(deposit.CalculationData.Estimations.ProcentsUpToFinish,
-                    deposit.DepositOffer.Currency, DateTime.Today)
-                + deposit.CalculationData.CurrentProfitInUsd));
-        }
 
+            if (deposit.DepositOffer.Currency == CurrencyCodes.USD)
+                reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0} usd",
+                    deposit.CalculationData.Estimations.ProfitInUsd));
+            else
+            {
+                reportFooter.Add(String.Format("\nИтоговый прогноз: "));
+                reportFooter.Add(String.Format("    Всего процентов {0:#,0}$     девальвация тела  {1:#,0}$     профит с учетом девальвации {2:#,0}$", 
+                    deposit.CalculationData.TotalPercentInUsd + deposit.CalculationData.Estimations.ProcentsUpToFinish / deposit.CalculationData.DailyTable.Last().CurrencyRate,
+                    deposit.CalculationData.CurrentDevaluationInUsd + deposit.CalculationData.Estimations.DevaluationInUsd,
+                    deposit.CalculationData.Estimations.ProfitInUsd
+                    ));
+            }
+        }
 
         private static string ProcentPredictionRepresentation(decimal amount, CurrencyCodes currency, decimal rate, Period period)
         {
             if (amount == 0)
                 return currency == CurrencyCodes.USD ? "0 usd" : String.Format("0 {0}    ($0)", currency.ToString().ToLower());
 
-            if (currency == CurrencyCodes.USD) return String.Format("{0:#,0} usd", amount);
+            if (currency == CurrencyCodes.USD) return String.Format("(за период {0})  {1:#,0} usd", period.ToStringOnlyDates(), amount);
             return String.Format("(за период {4})  {0:#,0} {1}   (по курсу {2} = ${3:#,0})", 
                  amount, currency.ToString().ToLower(), (int)rate, amount / rate, period.ToStringOnlyDates());
         }

@@ -25,6 +25,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             _depositCalculator.Calculate(deposit);
             CalculateMonthEstimatedProcents(deposit, DateTime.Today);
             CalculateUpToEndEstimatedProcents(deposit);
+            ForecastResult(deposit);
         }
 
         public void FillinFieldsForMonthAnalysis(Deposit deposit, DateTime day)
@@ -42,18 +43,8 @@ namespace Keeper.ByFunctional.DepositProcessing
                     deposit.CalculationData.DailyTable.Where(
                         l => deposit.CalculationData.Estimations.PeriodForThisMonthPayment.ContainsButTimeNotChecking(l.Date))
                         .Sum(l => l.DayProcents);
-                deposit.CalculationData.Estimations.CurrencyRateOnThisMonthPayment =
-                    deposit.CalculationData.DailyTable.First(l => l.Date.Date == deposit.CalculationData.Estimations.PeriodForThisMonthPayment.Finish.Date).CurrencyRate;
-
             }
             else deposit.CalculationData.Estimations.ProcentsInThisMonth = 0;
-        }
-
-        private decimal ForecastCurrencyRateOnFinish(Deposit deposit)
-        {
-            var currentRate = (decimal)_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today);
-            var delta = (currentRate - (decimal)_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today.AddDays(-30))) / 30;
-            return currentRate + (deposit.FinishDate - DateTime.Today).Days * delta;
         }
 
         private void CalculateUpToEndEstimatedProcents(Deposit deposit)
@@ -61,9 +52,27 @@ namespace Keeper.ByFunctional.DepositProcessing
             deposit.CalculationData.Estimations.PeriodForUpToEndPayment = new Period(deposit.GetDateOfLastProcentTransaction().AddDays(1), deposit.FinishDate);
             deposit.CalculationData.Estimations.ProcentsUpToFinish =
                 deposit.CalculationData.DailyTable.Where(l => deposit.CalculationData.Estimations.PeriodForUpToEndPayment.ContainsButTimeNotChecking(l.Date)).Sum(l => l.DayProcents);
+        }
 
+        private void ForecastResult(Deposit deposit)
+        {
             if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
-                deposit.CalculationData.Estimations.CurrencyRateOnFinish = ForecastCurrencyRateOnFinish(deposit);
+            {
+                var todayLine = deposit.CalculationData.DailyTable.First(l => l.Date.Date == DateTime.Today.Date);
+                var finishLine = deposit.CalculationData.DailyTable.Last();
+                deposit.CalculationData.Estimations.DevaluationInUsd = finishLine.Balance/finishLine.CurrencyRate -
+                                                                       todayLine.Balance/todayLine.CurrencyRate;
+
+                deposit.CalculationData.Estimations.ProfitInUsd =
+                    deposit.CalculationData.TotalPercentInUsd
+                    + deposit.CalculationData.Estimations.ProcentsUpToFinish / deposit.CalculationData.DailyTable.Last().CurrencyRate
+                    + deposit.CalculationData.CurrentDevaluationInUsd
+                    + deposit.CalculationData.Estimations.DevaluationInUsd;
+            }
+            else
+                deposit.CalculationData.Estimations.ProfitInUsd =
+                    deposit.CalculationData.TotalPercentInUsd + deposit.CalculationData.Estimations.ProcentsUpToFinish;
+
         }
 
         public decimal GetProfitForYear(Deposit deposit, int year)

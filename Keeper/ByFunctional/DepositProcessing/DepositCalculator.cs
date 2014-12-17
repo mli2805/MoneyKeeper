@@ -45,6 +45,10 @@ namespace Keeper.ByFunctional.DepositProcessing
             decimal capitalizedProfit = 0;
             decimal previousBalance = 0;
             decimal previousCurrencyRate = 0;
+            decimal currencyGradient = 0;
+            if (depositCurrency != CurrencyCodes.USD)
+                 currencyGradient = (decimal)(_rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today) -
+                                       _rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today.AddDays(-30)))/30;
             foreach (var dailyLine in _deposit.CalculationData.DailyTable)
             {
                 getCorrespondingDepoRate(_deposit, dailyLine);
@@ -60,12 +64,8 @@ namespace Keeper.ByFunctional.DepositProcessing
                     notPaidProcents = 0;  // даже если нет капитализации, но есть выплата процентов, начисленные за период проценты выплачиваются на спец счет
                 }
 
-//                dailyLine.Balance += capitalizedProfit;
-
                 if (depositCurrency != CurrencyCodes.USD)
                 {
-                    var currencyGradient = (decimal)(_rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today) -
-                                            _rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today.AddDays(-30)))/30;
                     // на этапе DepositTrafficEvaluator курсы в таблицу загнаны left outer join - могут быть нули
                     if (dailyLine.CurrencyRate == 0)
                         dailyLine.CurrencyRate = dailyLine.Date > DateTime.Today ? previousCurrencyRate + currencyGradient : previousCurrencyRate;
