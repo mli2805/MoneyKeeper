@@ -37,6 +37,9 @@ namespace Keeper.ViewModels
                                  DepositTrafficExtractor depositTrafficExtractor, DepositTrafficEvaluator depositTrafficEvaluator,
                                  DepositCalculationAggregator depositCalculatorAggregator)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
             _rateExtractor = rateExtractor;
@@ -64,6 +67,9 @@ namespace Keeper.ViewModels
             YearsProfitCtor();
             TotalBalancesCtor();
             CashDepoProportionChartCtor();
+
+            sw.Stop();
+            Console.WriteLine("DepositViewModel ctor takes {0}", sw.Elapsed);
         }
 
         protected override void OnViewLoaded(object view)

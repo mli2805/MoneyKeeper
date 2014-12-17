@@ -37,7 +37,7 @@
       <DataTemplate x:Key="ForecastColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-                    <Binding Path="CalculationData.EstimatedProfitInUsd" StringFormat="{}{0:#,0;; }"/>
+                    <Binding Path="CalculationData.Estimations.ProfitInUsd" StringFormat="{}{0:#,0;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
