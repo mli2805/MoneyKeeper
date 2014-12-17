@@ -13,7 +13,6 @@ namespace Keeper.ByFunctional.DepositProcessing
     {
         private readonly KeeperDb _db;
         private readonly RateExtractor _rateExtractor;
-        private Deposit _deposit;
 
         [ImportingConstructor]
         public DepositTrafficEvaluator(KeeperDb db, RateExtractor rateExtractor)
@@ -22,51 +21,51 @@ namespace Keeper.ByFunctional.DepositProcessing
             _rateExtractor = rateExtractor;
         }
 
-        public Deposit EvaluateTraffic(Deposit deposit)
+        public void EvaluateTraffic(Deposit deposit)
         {
-            _deposit = deposit;
-            SummarizeTraffic();
-            DefineCurrentState();
-            FillinDailyBalances();
-            if (_deposit.DepositOffer.Currency != CurrencyCodes.USD) DefineCurrencyRates();
+            SummarizeTraffic(deposit);
+            DefineCurrentState(deposit);
+            FillinDailyBalances(deposit);
+            if (deposit.DepositOffer.Currency != CurrencyCodes.USD) DefineCurrencyRates(deposit);
 
-            return _deposit;
         }
 
-        private void SummarizeTraffic()
+        private void SummarizeTraffic(Deposit deposit)
         {
-            _deposit.CalculationData.TotalMyIns = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.Amount);
+            deposit.CalculationData.TotalMyIns = deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.Amount);
 
-            _deposit.CalculationData.TotalMyOuts = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
-            _deposit.CalculationData.TotalMyOutsInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
+            deposit.CalculationData.TotalMyOuts = 
+                deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
+            deposit.CalculationData.TotalMyOutsInUsd = 
+                deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
 
-            _deposit.CalculationData.TotalPercent = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.Amount);
-            _deposit.CalculationData.TotalPercentInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.AmountInUsd);
+            deposit.CalculationData.TotalPercent = deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.Amount);
+            deposit.CalculationData.TotalPercentInUsd = deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.AmountInUsd);
 
-            _deposit.CalculationData.CurrentProfitInUsd =
-                _rateExtractor.GetUsdEquivalent(_deposit.CalculationData.CurrentBalance, _deposit.DepositOffer.Currency, DateTime.Today)
-                - _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd)
-                + _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
+            deposit.CalculationData.CurrentProfitInUsd =
+                _rateExtractor.GetUsdEquivalent(deposit.CalculationData.CurrentBalance, deposit.DepositOffer.Currency, DateTime.Today)
+                - deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd)
+                + deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
         }
 
-        private void DefineCurrentState()
+        private void DefineCurrentState(Deposit deposit)
         {
-            if (_deposit.CalculationData.CurrentBalance == 0)
-                _deposit.CalculationData.State = DepositStates.Закрыт;
+            if (deposit.CalculationData.CurrentBalance == 0)
+                deposit.CalculationData.State = DepositStates.Закрыт;
             else
-                _deposit.CalculationData.State = _deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
+                deposit.CalculationData.State = deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
         }
 
-        private void FillinDailyBalances()
+        private void FillinDailyBalances(Deposit deposit)
         {
-            var period = new Period(_deposit.StartDate, _deposit.FinishDate);
-            _deposit.CalculationData.DailyTable = new List<DepositDailyLine>();
+            var period = new Period(deposit.StartDate, deposit.FinishDate);
+            deposit.CalculationData.DailyTable = new List<DepositDailyLine>();
             decimal balance = 0;
 
             foreach (DateTime day in period)
             {
-                balance += _deposit.CalculationData.Traffic.Where(t => t.Timestamp.Date == day.Date).Sum(t => t.Amount * t.Destination());
-                _deposit.CalculationData.DailyTable.Add(new DepositDailyLine { Date = day, Balance = balance });
+                balance += deposit.CalculationData.Traffic.Where(t => t.Timestamp.Date == day.Date).Sum(t => t.Amount * t.Destination());
+                deposit.CalculationData.DailyTable.Add(new DepositDailyLine { Date = day, Balance = balance });
             }
         }
 
@@ -75,12 +74,12 @@ namespace Keeper.ByFunctional.DepositProcessing
         /// http://msdn.microsoft.com/ru-ru/library/bb311040.aspx
         /// http://smehrozalam.wordpress.com/2009/06/10/c-left-outer-joins-with-linq/
         /// </summary>
-        private void DefineCurrencyRates()
+        private void DefineCurrencyRates(Deposit deposit)
         {
-            LeftOuterJoin();
+            LeftOuterJoin(deposit);
         }
 
-        private void LeftOuterJoin()
+        private void LeftOuterJoin(Deposit deposit)
         {
             /* вынесение курсов нужной валюты в промежуточный список 
              * и затем left outer join по дате
@@ -94,18 +93,18 @@ namespace Keeper.ByFunctional.DepositProcessing
              * left outer join позволяет только подставить какое-либо значение по умолчанию
              *  это должно учитываться далее!
 
-             * var temp = (from line in _deposit.CalculationData.DailyTable
-             *       from rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency)
+             * var temp = (from line in deposit.CalculationData.DailyTable
+             *       from rate in _db.CurrencyRates.Where(r => r.Currency == deposit.DepositOffer.Currency)
              * .Where(rt => line.Date == rt.BankDay).DefaultIfEmpty()
              * 
-             * var temp = (from line in _deposit.CalculationData.DailyTable
-             *      from rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency && r.BankDay == line.Date).DefaultIfEmpty()
+             * var temp = (from line in deposit.CalculationData.DailyTable
+             *      from rate in _db.CurrencyRates.Where(r => r.Currency == deposit.DepositOffer.Currency && r.BankDay == line.Date).DefaultIfEmpty()
             */
 
             var oneCurrencyRates =
-                _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency).ToList();
+                _db.CurrencyRates.Where(r => r.Currency == deposit.DepositOffer.Currency).ToList();
 
-            var temp = (from line in _deposit.CalculationData.DailyTable
+            var temp = (from line in deposit.CalculationData.DailyTable
                           from rate in oneCurrencyRates
                                .Where(rt => line.Date == rt.BankDay).DefaultIfEmpty()
                   select
@@ -116,19 +115,19 @@ namespace Keeper.ByFunctional.DepositProcessing
                         CurrencyRate = rate != null ? (decimal) rate.Rate : 0
                     }
                 );
-            _deposit.CalculationData.DailyTable = temp.ToList();
+            deposit.CalculationData.DailyTable = temp.ToList();
         }
 
-        private void InnerJoin()
+        private void InnerJoin(Deposit deposit)
         {
             // inner join - если в одно из таблиц нет строки с ключем , 
             // то и из второй таблицы данные не попадают в объединение
             var temp =
-                from line in _deposit.CalculationData.DailyTable
-                join rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency)
+                from line in deposit.CalculationData.DailyTable
+                join rate in _db.CurrencyRates.Where(r => r.Currency == deposit.DepositOffer.Currency)
                     on line.Date equals rate.BankDay
                 select new DepositDailyLine {Date = line.Date, Balance = line.Balance, CurrencyRate = (decimal) rate.Rate};
-            _deposit.CalculationData.DailyTable = temp.ToList();
+            deposit.CalculationData.DailyTable = temp.ToList();
         }
     }
 }

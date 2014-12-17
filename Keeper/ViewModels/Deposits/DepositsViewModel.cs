@@ -23,7 +23,6 @@ namespace Keeper.ViewModels
         private readonly KeeperDb _db;
         readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly RateExtractor _rateExtractor;
-        private readonly DepositTrafficEvaluator _depositTrafficEvaluator;
         private readonly DepositCalculationAggregator _depositCalculatorAggregator;
 
         public List<Deposit> DepositList { get; set; }
@@ -34,16 +33,15 @@ namespace Keeper.ViewModels
 
         [ImportingConstructor]
         public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
-                                 DepositTrafficExtractor depositTrafficExtractor, DepositTrafficEvaluator depositTrafficEvaluator,
                                  DepositCalculationAggregator depositCalculatorAggregator)
         {
             var sw = new Stopwatch();
+            Console.WriteLine("DepositViewModel ctor starts {0}", sw.Elapsed);
             sw.Start();
 
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
             _rateExtractor = rateExtractor;
-            _depositTrafficEvaluator = depositTrafficEvaluator;
             _depositCalculatorAggregator = depositCalculatorAggregator;
 
             MyTitleStyle = new Style();
@@ -51,10 +49,9 @@ namespace Keeper.ViewModels
             DepositList = new List<Deposit>();
             foreach (var account in new AccountTreeStraightener().Flatten(_db.Accounts))
             {
-                if (account.Is("Депозиты") && account.Children.Count == 0)
-                {
-                    DepositList.Add(depositTrafficEvaluator.EvaluateTraffic(depositTrafficExtractor.ExtractTraffic(account)));
-                }
+                if (!account.Is("Депозиты") || account.Children.Count != 0) continue;
+                _depositCalculatorAggregator.FillinFieldsForOneDepositReport(account.Deposit);
+                DepositList.Add(account.Deposit);
             }
             SelectedDeposit = DepositList[0];
 
