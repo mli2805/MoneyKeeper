@@ -15,7 +15,6 @@ namespace Keeper.ByFunctional.DepositProcessing
         private readonly DepositTrafficEvaluator _depositTrafficEvaluator;
         private readonly RateExtractor _rateExtractor;
         private readonly DepositCalculationFunctions _depositCalculationFunctions;
-        private Deposit _deposit;
         [ImportingConstructor]
         public DepositCalculator(DepositTrafficExtractor depositTrafficExtractor,
              DepositTrafficEvaluator depositTrafficEvaluator, RateExtractor rateExtractor,
@@ -29,47 +28,49 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         public void Calculate(Deposit deposit)
         {
-            _deposit = _depositTrafficEvaluator.EvaluateTraffic(_depositTrafficExtractor.ExtractTraffic(deposit.ParentAccount));
+            _depositTrafficEvaluator.EvaluateTraffic(_depositTrafficExtractor.ExtractTraffic(deposit.ParentAccount));
+            if (deposit.CalculationData.State == DepositStates.Закрыт) return;
 
             if (deposit.DepositOffer.CalculatingRules.IsRateFixed)
-                CalculateDailyValues(_depositCalculationFunctions.GetCorrespondingDepoRateFix, deposit.DepositOffer.Currency);
+                CalculateDailyValues(deposit, _depositCalculationFunctions.GetCorrespondingDepoRateFix);
             else
-                CalculateDailyValues(_depositCalculationFunctions.GetCorrespondingDepoRateNotFix, deposit.DepositOffer.Currency);
+                CalculateDailyValues(deposit, _depositCalculationFunctions.GetCorrespondingDepoRateNotFix);
             deposit.CalculationData.CurrentDevaluationInUsd =
                             deposit.CalculationData.DailyTable.Where(d => d.Date <= DateTime.Today).Sum(l => l.DayDevaluation);
         }
 
-        private void CalculateDailyValues(Action<Deposit, DepositDailyLine> getCorrespondingDepoRate, CurrencyCodes depositCurrency)
+        private void CalculateDailyValues(Deposit deposit, Action<Deposit, DepositDailyLine> getCorrespondingDepoRate)
         {
             decimal notPaidProcents = 0;
             decimal capitalizedProfit = 0;
             decimal previousBalance = 0;
             decimal previousCurrencyRate = 0;
             decimal currencyGradient = 0;
-            if (depositCurrency != CurrencyCodes.USD)
-                 currencyGradient = (decimal)(_rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today) -
-                                       _rateExtractor.GetRateThisDayOrBefore(depositCurrency, DateTime.Today.AddDays(-30)))/30;
-            foreach (var dailyLine in _deposit.CalculationData.DailyTable)
+            if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
+                currencyGradient = (decimal)(_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today) -
+                                       _rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today.AddDays(-30))) / 30;
+            foreach (var dailyLine in deposit.CalculationData.DailyTable)
             {
-                getCorrespondingDepoRate(_deposit, dailyLine);
+                getCorrespondingDepoRate(deposit, dailyLine);
                 dailyLine.DayProcents = _depositCalculationFunctions.CalculateOneDayProcents(previousBalance, dailyLine.Date, 
-                                                           dailyLine.DepoRate, _deposit.DepositOffer.CalculatingRules.IsFactDays);
+                                                           dailyLine.DepoRate, deposit.DepositOffer.CalculatingRules.IsFactDays);
                 dailyLine.NotPaidProcents = notPaidProcents + dailyLine.DayProcents;
                 notPaidProcents = dailyLine.NotPaidProcents;
 
-                if (_deposit.IsItDayToPayProcents(dailyLine.Date))
+                if (deposit.IsItDayToPayProcents(dailyLine.Date))
                 {
-                    if (_deposit.DepositOffer.CalculatingRules.IsCapitalized)
+                    if (deposit.DepositOffer.CalculatingRules.IsCapitalized)
                         capitalizedProfit += notPaidProcents;
                     notPaidProcents = 0;  // даже если нет капитализации, но есть выплата процентов, начисленные за период проценты выплачиваются на спец счет
                 }
 
-                if (depositCurrency != CurrencyCodes.USD)
+                if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
                 {
                     // на этапе DepositTrafficEvaluator курсы в таблицу загнаны left outer join - могут быть нули
                     if (dailyLine.CurrencyRate == 0)
                         dailyLine.CurrencyRate = dailyLine.Date > DateTime.Today ? previousCurrencyRate + currencyGradient : previousCurrencyRate;
-                    if (previousBalance != 0) _depositCalculationFunctions.CalculateOneDayDevalvation(dailyLine, previousBalance, previousCurrencyRate);
+                    if (previousBalance != 0)
+                        dailyLine.DayDevaluation = previousBalance / dailyLine.CurrencyRate - previousBalance / previousCurrencyRate;
                     previousCurrencyRate = dailyLine.CurrencyRate;
                 }
                 previousBalance = dailyLine.Balance;

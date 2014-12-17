@@ -11,18 +11,17 @@ namespace Keeper.ByFunctional.DepositProcessing
     public class DepositCalculationAggregator
     {
         private readonly DepositCalculator _depositCalculator;
-        private readonly RateExtractor _rateExtractor;
 
         [ImportingConstructor]
-        public DepositCalculationAggregator(DepositCalculator depositCalculator, RateExtractor rateExtractor)
+        public DepositCalculationAggregator(DepositCalculator depositCalculator)
         {
             _depositCalculator = depositCalculator;
-            _rateExtractor = rateExtractor;
         }
 
         public void FillinFieldsForOneDepositReport(Deposit deposit)
         {
             _depositCalculator.Calculate(deposit);
+            if (deposit.CalculationData.State == DepositStates.Закрыт) return;
             CalculateMonthEstimatedProcents(deposit, DateTime.Today);
             CalculateUpToEndEstimatedProcents(deposit);
             ForecastResult(deposit);
