@@ -78,10 +78,12 @@ namespace Keeper.ByFunctional.DepositProcessing
             var reportFooter = new ObservableCollection<string>();
 
             if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
-                reportFooter.Add(String.Format("Причислено процентов  {0:#,0}$     девальвация тела  {1:#,0}$     профит с учетом девальвации {2:#,0}$", 
-                    deposit.CalculationData.TotalPercentInUsd, deposit.CalculationData.CurrentDevaluationInUsd, deposit.CalculationData.CurrentProfitInUsd));
+                reportFooter.Add(String.Format("Внесено  {0:#,0}$  причислено проц  {1:#,0}$     девальвация тела  {2:#,0}$     профит с учетом девальв. {3:#,0}$",
+                    deposit.CalculationData.TotalMyInsInUsd, deposit.CalculationData.TotalPercentInUsd, 
+                    deposit.CalculationData.CurrentDevaluationInUsd, deposit.CalculationData.CurrentProfitInUsd));
             else
-                reportFooter.Add(String.Format("Причислено процентов  {0:#,0} usd ", deposit.CalculationData.TotalPercentInUsd));
+                reportFooter.Add(String.Format("Внесено  {0:#,0} usd    причислено процентов {1:#,0} usd",
+                    deposit.CalculationData.TotalMyInsInUsd, deposit.CalculationData.TotalPercentInUsd));
 
             if (deposit.CalculationData.CurrentBalance != 0) ReportEstimations(deposit, reportFooter);
             return reportFooter;

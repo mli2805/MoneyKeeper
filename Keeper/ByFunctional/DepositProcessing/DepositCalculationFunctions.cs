@@ -24,10 +24,6 @@ namespace Keeper.ByFunctional.DepositProcessing
         }
 
         /// <summary>
-        /// Если ставка в день D была X % , а в день D+1 стала Y %, 
-        /// то запрос ставки для дня D+1 должен вернуть X %,
-        /// т.к. проценты за ночь с D на D+1 начисляются по ставке X %
-        /// 
         /// ВТБ Скарбонка - фикс первые 3 месяца, далее ставка установленная для определенной группы счетов
         /// которая отличается от ставки для вновь открываемых и ставки для других счетов открытых в другие даты
         /// 
@@ -47,9 +43,7 @@ namespace Keeper.ByFunctional.DepositProcessing
         /// <param name="dailyLine"></param>
         public void GetCorrespondingDepoRateNotFix(Deposit deposit, DepositDailyLine dailyLine)
         {
-            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.AmountFrom <= dailyLine.Balance && l.AmountTo >= dailyLine.Balance &&
-                //  знак равно, т.к. эта ночь еще под старую ставку
-                                                                                                                     l.DateFrom <= dailyLine.Date);
+            var line = deposit.DepositOffer.RateLines.LastOrDefault(l => l.AmountFrom <= dailyLine.Balance && l.AmountTo >= dailyLine.Balance && l.DateFrom <= dailyLine.Date);
             dailyLine.DepoRate = line == null ? 0 : line.Rate;
         }
 

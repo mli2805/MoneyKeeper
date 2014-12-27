@@ -76,20 +76,21 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             account.IsExpanded = Convert.ToBoolean(substrings[5]);
             return account;
         }
-        public BankDepositCalculatingRules DepositOfferRulesFromString(string s)
+        public BankDepositCalculatingRules DepositOfferRulesFromString(string str)
         {
             var rules = new BankDepositCalculatingRules();
-            if (s != "  ")
-            {
-                s = s.Trim();
+            var array = str.Split(';');
+            var s = array[0].Trim();
 
-                rules.IsFactDays = s[0] == '1';
-                rules.EveryStartDay = s[1] == '1';
-                rules.EveryFirstDayOfMonth = s[2] == '1';
-                rules.EveryLastDayOfMonth = s[3] == '1';
-                rules.IsCapitalized = s[4] == '1';
-                rules.IsRateFixed = s[5] == '1';
-            }
+            rules.IsFactDays = s[0] == '1';
+            rules.EveryStartDay = s[1] == '1';
+            rules.EveryFirstDayOfMonth = s[2] == '1';
+            rules.EveryLastDayOfMonth = s[3] == '1';
+            rules.IsCapitalized = s[4] == '1';
+            rules.IsRateFixed = s[5] == '1';
+            rules.HasAdditionalProcent = s[6] == '1';
+
+            rules.AdditionalProcent = Decimal.Parse(array[1]);
             return rules;
         }
         public void DepositFromString(string s, IEnumerable<Account> accountsPlaneList, IEnumerable<BankDepositOffer> depositOffers)

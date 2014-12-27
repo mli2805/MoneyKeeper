@@ -138,6 +138,7 @@
     <Compile Include="ByFunctional\AccountEditing\IUserEquirer.cs" />
     <Compile Include="ByFunctional\AccountEditing\IUserInformator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
+    <Compile Include="ByFunctional\OfficialRateFromWebsiteGetter.cs" />
     <Compile Include="DomainModel\Deposit\DepositEstimations.cs" />
     <Compile Include="DomainModel\Deposit\DepositReportBodyLine.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositTrafficEvaluator.cs" />

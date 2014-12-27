@@ -11,6 +11,7 @@ namespace Keeper.DomainModel.Deposit
         public List<DepositTransaction> Traffic { get; set; }
         public List<DepositDailyLine> DailyTable { get; set; }
         public decimal TotalMyIns { get; set; }
+        public decimal TotalMyInsInUsd { get; set; }
         public decimal TotalPercent { get; set; }
         public decimal TotalPercentInUsd { get; set; }
         public decimal TotalMyOuts { get; set; }

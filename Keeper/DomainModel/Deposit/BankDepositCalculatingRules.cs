@@ -16,5 +16,8 @@ namespace Keeper.DomainModel.Deposit
         public bool IsCapitalized { get; set; }
 
         public bool IsRateFixed { get; set; }
+
+        public bool HasAdditionalProcent { get; set; }
+        public decimal AdditionalProcent { get; set; }
     }
 }

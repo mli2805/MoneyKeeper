@@ -98,6 +98,8 @@ namespace Keeper.ViewModels
             DepositOfferInWork.CalculatingRules.IsCapitalized        = DepositOfferDonor.CalculatingRules.IsCapitalized       ;
             DepositOfferInWork.CalculatingRules.IsFactDays           = DepositOfferDonor.CalculatingRules.IsFactDays          ;
             DepositOfferInWork.CalculatingRules.IsRateFixed          = DepositOfferDonor.CalculatingRules.IsRateFixed         ;
+            DepositOfferInWork.CalculatingRules.HasAdditionalProcent = DepositOfferDonor.CalculatingRules.HasAdditionalProcent;
+            DepositOfferInWork.CalculatingRules.AdditionalProcent    = DepositOfferDonor.CalculatingRules.AdditionalProcent   ;
             NotifyOfPropertyChange(() => DepositOfferInWork);
 
         }

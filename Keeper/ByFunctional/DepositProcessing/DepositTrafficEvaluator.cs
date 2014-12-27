@@ -36,6 +36,7 @@ namespace Keeper.ByFunctional.DepositProcessing
         private void SummarizeTraffic()
         {
             _deposit.CalculationData.TotalMyIns = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.Amount);
+            _deposit.CalculationData.TotalMyInsInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd);
 
             _deposit.CalculationData.TotalMyOuts = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
             _deposit.CalculationData.TotalMyOutsInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
@@ -59,7 +60,9 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         private void FillinDailyBalances()
         {
-            var period = new Period(_deposit.StartDate, _deposit.FinishDate);
+            var period = (_deposit.CalculationData.State != DepositStates.Закрыт) ? 
+                new Period(_deposit.StartDate, _deposit.FinishDate) :
+                new Period(_deposit.StartDate, _deposit.CalculationData.Traffic.Last().Timestamp);
             _deposit.CalculationData.DailyTable = new List<DepositDailyLine>();
             decimal balance = 0;
 
@@ -106,15 +109,15 @@ namespace Keeper.ByFunctional.DepositProcessing
                 _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency).ToList();
 
             var temp = (from line in _deposit.CalculationData.DailyTable
-                          from rate in oneCurrencyRates
-                               .Where(rt => line.Date == rt.BankDay).DefaultIfEmpty()
-                  select
-                    new DepositDailyLine
-                    {
-                        Date = line.Date,
-                        Balance = line.Balance,
-                        CurrencyRate = rate != null ? (decimal) rate.Rate : 0
-                    }
+                        from rate in oneCurrencyRates
+                             .Where(rt => line.Date == rt.BankDay).DefaultIfEmpty()
+                        select
+                          new DepositDailyLine
+                          {
+                              Date = line.Date,
+                              Balance = line.Balance,
+                              CurrencyRate = rate != null ? (decimal)rate.Rate : 0
+                          }
                 );
             _deposit.CalculationData.DailyTable = temp.ToList();
         }
@@ -127,7 +130,7 @@ namespace Keeper.ByFunctional.DepositProcessing
                 from line in _deposit.CalculationData.DailyTable
                 join rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency)
                     on line.Date equals rate.BankDay
-                select new DepositDailyLine {Date = line.Date, Balance = line.Balance, CurrencyRate = (decimal) rate.Rate};
+                select new DepositDailyLine { Date = line.Date, Balance = line.Balance, CurrencyRate = (decimal)rate.Rate };
             _deposit.CalculationData.DailyTable = temp.ToList();
         }
     }

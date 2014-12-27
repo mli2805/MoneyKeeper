@@ -17,5 +17,17 @@ namespace Keeper.Views
     {
       throw new NotImplementedException();
     }
+
+    private void HasAdditionalProcent_Click(object sender, RoutedEventArgs e)
+    {
+        AdditionalProcent.Visibility = HasAdditionalProcent.IsChecked != true ? Visibility.Hidden : Visibility.Visible;
+
+    }
+
+    private void Window_Activated(object sender, EventArgs e)
+    {
+        AdditionalProcent.Visibility = HasAdditionalProcent.IsChecked != true ? Visibility.Hidden : Visibility.Visible;
+
+    }
   }
 }

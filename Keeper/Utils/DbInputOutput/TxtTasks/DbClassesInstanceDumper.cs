@@ -45,7 +45,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public string Dump(BankDepositCalculatingRules rules)
         {
             var result = "";
-            if (rules == null) return "000000";
+            if (rules == null) return "0000000 ; 0.0";
 
             result += rules.IsFactDays ? "1" : "0";
             result += rules.EveryStartDay ? "1" : "0";
@@ -53,6 +53,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             result += rules.EveryLastDayOfMonth ? "1" : "0";
             result += rules.IsCapitalized ? "1" : "0";
             result += rules.IsRateFixed ? "1" : "0";
+            result += rules.HasAdditionalProcent ? "1" : "0";
+
+            result += " ; ";
+            result += rules.AdditionalProcent;
 
             return result;
         }

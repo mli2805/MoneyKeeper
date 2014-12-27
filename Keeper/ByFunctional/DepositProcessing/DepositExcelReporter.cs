@@ -41,7 +41,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             ws.Cells[1, 2] = "Дата";
             ws.Cells[1, 3] = "Остаток на конец дня";
             ws.Cells[1, 4] = "Ставка";
-            ws.Cells[1, 6] = "Проценты за эту ночь";
+            ws.Cells[1, 6] = "Проценты за прошедшую ночь";
             ws.Cells[1, 7] = "Не выплаченные проценты";
             ws.Cells[1, 8] = "Проценты нарастающим итогом";
             ws.Cells[1, 9] = "Курс";
