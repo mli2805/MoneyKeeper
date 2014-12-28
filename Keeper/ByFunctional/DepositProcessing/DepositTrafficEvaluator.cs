@@ -28,7 +28,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             SummarizeTraffic();
             DefineCurrentState();
             FillinDailyBalances();
-            if (_deposit.DepositOffer.Currency != CurrencyCodes.USD) DefineCurrencyRates();
+            if (_deposit.DepositOffer.Currency != CurrencyCodes.USD) DefineDailyCurrencyRatesByLeftOuterJoin();
 
             return _deposit;
         }
@@ -78,12 +78,7 @@ namespace Keeper.ByFunctional.DepositProcessing
         /// http://msdn.microsoft.com/ru-ru/library/bb311040.aspx
         /// http://smehrozalam.wordpress.com/2009/06/10/c-left-outer-joins-with-linq/
         /// </summary>
-        private void DefineCurrencyRates()
-        {
-            LeftOuterJoin();
-        }
-
-        private void LeftOuterJoin()
+        private void DefineDailyCurrencyRatesByLeftOuterJoin()
         {
             /* вынесение курсов нужной валюты в промежуточный список 
              * и затем left outer join по дате
@@ -122,10 +117,10 @@ namespace Keeper.ByFunctional.DepositProcessing
             _deposit.CalculationData.DailyTable = temp.ToList();
         }
 
-        private void InnerJoin()
+        private void DefineDailyCurrencyRatesByInnerJoin()
         {
             // inner join - если в одно из таблиц нет строки с ключем , 
-            // то и из второй таблицы данные не попадают в объединение
+            // то и из другой таблицы данные не попадают в объединение
             var temp =
                 from line in _deposit.CalculationData.DailyTable
                 join rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency)

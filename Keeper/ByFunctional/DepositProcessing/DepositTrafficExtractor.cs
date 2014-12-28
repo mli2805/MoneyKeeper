@@ -21,11 +21,11 @@ namespace Keeper.ByFunctional.DepositProcessing
         {
             _deposit = account.Deposit;
             _deposit.CalculationData = new DepositCalculationData();
-            ExtractTraffic();
+            ExtractViaSqlRequest();
             return _deposit;
         }
 
-        private void ExtractTraffic()
+        private void ExtractViaSqlRequest()
         {
             _deposit.CalculationData.Traffic = 
                 (from t in _db.Transactions

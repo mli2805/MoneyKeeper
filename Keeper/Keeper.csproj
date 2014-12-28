@@ -436,7 +436,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="ByFunctional\DepositProcessing\DepositsCalculationScheme.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
