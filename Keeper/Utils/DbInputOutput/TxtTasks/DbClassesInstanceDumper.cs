@@ -71,10 +71,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
                 " ; " + startDate + " ; " + finishDate + " ; " + deposit.ShortName + " ; " + comment;
         }
 
-        public string Dump(DepositRateLine depositRateLine, int accountId)
+        public string Dump(BankDepositRateLine bankDepositRateLine, int accountId)
         {
-            var dateFrom = string.Format("{0:dd/MM/yyyy}", depositRateLine.DateFrom);
-            return accountId + " ; " + dateFrom + " ; " + depositRateLine.AmountFrom + " ; " + depositRateLine.AmountTo + " ; " + depositRateLine.Rate;
+            var dateFrom = string.Format("{0:dd/MM/yyyy}", bankDepositRateLine.DateFrom);
+            return accountId + " ; " + dateFrom + " ; " + bankDepositRateLine.AmountFrom + " ; " + bankDepositRateLine.AmountTo + " ; " + bankDepositRateLine.Rate;
         }
 
         public string Dump(BankDepositOffer offer)

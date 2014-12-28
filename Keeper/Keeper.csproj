@@ -169,7 +169,7 @@
     <Compile Include="DomainModel\Deposit\DepositCalculationData.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransactionTypes.cs" />
     <Compile Include="DomainModel\Deposit\BankDepositCalculatingRules.cs" />
-    <Compile Include="DomainModel\Deposit\DepositRateLine.cs" />
+    <Compile Include="DomainModel\Deposit\BankDepositRateLine.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransaction.cs" />
     <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
     <Compile Include="DomainModel\RegularPayments.cs" />
