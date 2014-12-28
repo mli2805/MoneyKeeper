@@ -22,7 +22,7 @@ namespace Keeper.ByFunctional.DepositProcessing
         public void FillinFieldsForOneDepositReport(Deposit deposit)
         {
             _depositCalculator.Calculate(deposit);
-            if (deposit.CalculationData.State == DepositStates.Закрыт) return;
+            if (deposit.CalculationData.State == DepositStates.Закрыт || deposit.CalculationData.State == DepositStates.Просрочен) return;
             CalculateMonthEstimatedProcents(deposit, DateTime.Today);
             CalculateUpToEndEstimatedProcents(deposit);
             ForecastResult(deposit);
