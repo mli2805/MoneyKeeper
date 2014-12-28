@@ -14,7 +14,7 @@ namespace Keeper.DomainModel.Deposit
         public CurrencyCodes Currency { get; set; }
 
         public BankDepositCalculatingRules CalculatingRules { get; set; }
-        public ObservableCollection<DepositRateLine> RateLines { get; set; }
+        public ObservableCollection<BankDepositRateLine> RateLines { get; set; }
 
         public string Comment { get; set; }
 
@@ -23,7 +23,7 @@ namespace Keeper.DomainModel.Deposit
             var idGenerator = IoC.Get<DepositOfferIdGenerator>();
             Id = idGenerator.GenerateNewBankDepositOfferId();
             CalculatingRules = new BankDepositCalculatingRules();
-            RateLines = new ObservableCollection<DepositRateLine>();
+            RateLines = new ObservableCollection<BankDepositRateLine>();
         }
 
         public BankDepositOffer(int id)

@@ -30,7 +30,7 @@ namespace Keeper.ViewModels
                 NotifyOfPropertyChange(() => DepositOfferInWork);
             }
         }
-        public ObservableCollection<DepositRateLine> Rows { get; set; }
+        public ObservableCollection<BankDepositRateLine> Rows { get; set; }
 
         [ImportingConstructor]
         public BankDepositRatesAndRulesViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
@@ -46,10 +46,10 @@ namespace Keeper.ViewModels
             if (depositOffer.CalculatingRules == null) depositOffer.CalculatingRules = new BankDepositCalculatingRules();
             DepositOfferInWork = depositOffer;
 
-            if (depositOffer.RateLines == null) depositOffer.RateLines = new ObservableCollection<DepositRateLine>();
+            if (depositOffer.RateLines == null) depositOffer.RateLines = new ObservableCollection<BankDepositRateLine>();
             Rows = depositOffer.RateLines;
             if (Rows.Count == 0)
-                Rows.Add(new DepositRateLine { DateFrom = DateTime.Today, AmountFrom = 0, AmountTo = 999999999999, Rate = 100 });
+                Rows.Add(new BankDepositRateLine { DateFrom = DateTime.Today, AmountFrom = 0, AmountTo = 999999999999, Rate = 100 });
         }
 
         protected override void OnViewLoaded(object view)
@@ -61,7 +61,7 @@ namespace Keeper.ViewModels
         {
             if (Rows.Count == 0) return;
             var lastLine = Rows[Rows.Count - 1];
-            var newLine = new DepositRateLine
+            var newLine = new BankDepositRateLine
                             {
                                 DateFrom = lastLine.DateFrom,
                                 AmountFrom = lastLine.AmountTo + 1,
@@ -80,7 +80,7 @@ namespace Keeper.ViewModels
 
             foreach (var line in lastDateLines)
             {
-                Rows.Add(new DepositRateLine { DateFrom = NewDate, AmountFrom = line.AmountFrom, AmountTo = line.AmountTo, Rate = line.Rate });
+                Rows.Add(new BankDepositRateLine { DateFrom = NewDate, AmountFrom = line.AmountFrom, AmountTo = line.AmountTo, Rate = line.Rate });
             }
         }
 
@@ -90,7 +90,7 @@ namespace Keeper.ViewModels
             Rows.Clear();
             foreach (var line in DepositOfferDonor.RateLines)
             {
-                Rows.Add(new DepositRateLine { DateFrom = line.DateFrom, AmountFrom = line.AmountFrom, AmountTo = line.AmountTo, Rate = line.Rate });
+                Rows.Add(new BankDepositRateLine { DateFrom = line.DateFrom, AmountFrom = line.AmountFrom, AmountTo = line.AmountTo, Rate = line.Rate });
             }
             DepositOfferInWork.CalculatingRules.EveryFirstDayOfMonth = DepositOfferDonor.CalculatingRules.EveryFirstDayOfMonth;
             DepositOfferInWork.CalculatingRules.EveryLastDayOfMonth  = DepositOfferDonor.CalculatingRules.EveryLastDayOfMonth ;

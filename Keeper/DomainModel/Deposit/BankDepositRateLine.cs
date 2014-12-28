@@ -3,7 +3,7 @@ using System;
 namespace Keeper.DomainModel.Deposit
 {
     [Serializable]
-    public class DepositRateLine
+    public class BankDepositRateLine
     {
         public DateTime DateFrom { get; set; }
         public decimal AmountFrom { get; set; }

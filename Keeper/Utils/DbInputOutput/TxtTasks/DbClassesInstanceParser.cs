@@ -108,12 +108,12 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             deposit.ParentAccount.Deposit = deposit;
         }
 
-        public DepositRateLine DepositRateLineFromString(string s, IEnumerable<BankDepositOffer> depositOffers)
+        public BankDepositRateLine DepositRateLineFromString(string s, IEnumerable<BankDepositOffer> depositOffers)
         {
-            var depositRateLine = new DepositRateLine();
+            var depositRateLine = new BankDepositRateLine();
             var substrings = s.Split(';');
             var depositOffer = depositOffers.First(offer => offer.Id == Convert.ToInt32(substrings[0]));
-            if (depositOffer.RateLines == null) depositOffer.RateLines = new ObservableCollection<DepositRateLine>();
+            if (depositOffer.RateLines == null) depositOffer.RateLines = new ObservableCollection<BankDepositRateLine>();
             depositRateLine.DateFrom = Convert.ToDateTime(substrings[1], new CultureInfo("ru-RU"));
             depositRateLine.AmountFrom = Convert.ToDecimal(substrings[2]);
             depositRateLine.AmountTo = Convert.ToDecimal(substrings[3]);
