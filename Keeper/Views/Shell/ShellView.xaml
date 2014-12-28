@@ -1,0 +1,41 @@
+﻿<Window x:Class="Keeper.Views.Shell.ShellView"
+        xml:lang="ru-RU"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Shell="clr-namespace:Keeper.ViewModels.Shell" mc:Ignorable="d" Height="762" SizeToContent="Width"
+        WindowStartupLocation="CenterScreen" Icon="/Keeper;component/Resources/keeper.ico"
+        d:DataContext="{d:DesignInstance {x:Type Shell:ShellViewModel}}"
+        TextOptions.TextFormattingMode="Display">
+  <!--attached property для сглаживания шрифтов-->
+  <Grid Name="Main" Margin="5" Width="Auto">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="32"/>
+      <RowDefinition/>
+      <RowDefinition Height="23"/>
+    </Grid.RowDefinitions>
+    <ContentControl x:Name="MainMenuViewModel"/>
+
+    <Grid Name="BeetwenMenuAndStatusbar" Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="310"/>
+      </Grid.ColumnDefinitions>
+
+      <ContentControl x:Name="AccountForestViewModel" />
+      <Grid Name="ForListAndDateControls" Grid.Column="2" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ContentControl x:Name="BalanceListViewModel" Grid.Row="0"/>
+        <ContentControl x:Name="TwoSelectorsViewModel" Grid.Row="1"/>
+        
+      </Grid>
+    </Grid>
+    
+    <ContentControl x:Name="StatusBarViewModel" Grid.Row="2"/>
+  </Grid>
+</Window>
