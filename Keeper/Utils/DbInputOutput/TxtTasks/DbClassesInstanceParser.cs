@@ -20,8 +20,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             offer.BankAccount = accountsPlaneList.First(account => account.Name == substrings[1].Trim());
             offer.DepositTitle = substrings[2].Trim();
             offer.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[3]);
-            offer.CalculatingRules = DepositOfferRulesFromString(substrings[4]);
-            offer.Comment = substrings[5].Trim();
+            offer.CalculatingRules = DepositOfferRulesFromString(substrings[4] + " ; " + substrings[5]);
+            offer.Comment = substrings[6].Trim();
 
             return offer;
         }
