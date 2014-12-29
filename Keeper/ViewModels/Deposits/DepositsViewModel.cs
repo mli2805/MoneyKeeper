@@ -61,8 +61,11 @@ namespace Keeper.ViewModels
             RightColumn = new GridLength(1, GridUnitType.Star);
 
             //      DepoCurrenciesProportionChartCtor();
+            Console.WriteLine("DepositViewModel ctor 1 {0}", sw.Elapsed);
             YearsProfitCtor();
+            Console.WriteLine("DepositViewModel ctor 2 {0}", sw.Elapsed);
             TotalBalancesCtor();
+            Console.WriteLine("DepositViewModel ctor 3 {0}", sw.Elapsed);
             CashDepoProportionChartCtor();
 
             sw.Stop();
