@@ -62,7 +62,7 @@ namespace Keeper.Utils.MonthAnalysis
         private void RegisterIncome(Transaction transaction)
         {
             var amountInUsd = _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
-            if (transaction.Credit.Deposit != null)
+            if (transaction.Credit.Deposit != null || transaction.Credit.Is("Депозиты"))
             {
                 Result.Incomes.OnDeposits.Transactions.Add(transaction);
                 Result.Incomes.OnDeposits.TotalInUsd += amountInUsd;
