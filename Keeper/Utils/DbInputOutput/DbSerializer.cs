@@ -11,6 +11,16 @@ namespace Keeper.Utils.DbInputOutput
 	[Export(typeof(ILoader))]
 	class DbSerializer : IDbSerializer, ILoader
 	{
+	    private void MadeDbxBackup(string filename)
+	    {
+	        if (!File.Exists(filename)) return;
+
+	        var ss = filename.Split('.');
+	        var backupFilename = ss[0] + ".bac";
+//            if (File.Exists(backupFilename)) File.Delete(backupFilename);
+            File.Copy(filename, backupFilename, true);
+	    }
+
 		public void EncryptAndSerialize(KeeperDb db, string filename)
 		{
 			byte[] key = { 0xc5, 0x51, 0xf6, 0x4e, 0x97, 0xdc, 0xa0, 0x54, 0x89, 0x1d, 0xe6, 0x62, 0x3f, 0x27, 0x00, 0xca };
@@ -51,7 +61,9 @@ namespace Keeper.Utils.DbInputOutput
 		public string FileExtension { get { return ".dbx"; } }
 		public DbLoadResult Load(string filename)
 		{
-			var db = DecryptAndDeserialize(filename);
+            MadeDbxBackup(filename);
+
+            var db = DecryptAndDeserialize(filename);
 			return db == null ? new DbLoadResult(0x11, "Problem with dbx file!") : new DbLoadResult(db);
 		}
 	}
