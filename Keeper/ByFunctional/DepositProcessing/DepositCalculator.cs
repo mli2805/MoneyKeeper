@@ -47,8 +47,12 @@ namespace Keeper.ByFunctional.DepositProcessing
             decimal previousCurrencyRate = 0;
             decimal currencyGradient = 0;
             if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
-                currencyGradient = (decimal)(_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today) -
-                                       _rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today.AddDays(-30))) / 30;
+            {
+                currencyGradient = (decimal)
+                    (_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today) -
+                     _rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today.AddDays(-30)))/ 30;
+                currencyGradient = 1 + currencyGradient/(decimal)_rateExtractor.GetRateThisDayOrBefore(deposit.DepositOffer.Currency, DateTime.Today);
+            }
             foreach (var dailyLine in deposit.CalculationData.DailyTable)
             {
                 getCorrespondingDepoRate(deposit, dailyLine);
@@ -68,7 +72,7 @@ namespace Keeper.ByFunctional.DepositProcessing
                 {
                     // на этапе DepositTrafficEvaluator курсы в таблицу загнаны left outer join - могут быть нули
                     if (dailyLine.CurrencyRate == 0)
-                        dailyLine.CurrencyRate = dailyLine.Date > DateTime.Today ? previousCurrencyRate + currencyGradient : previousCurrencyRate;
+                        dailyLine.CurrencyRate = dailyLine.Date > DateTime.Today ? previousCurrencyRate * currencyGradient : previousCurrencyRate;
                     if (previousBalance != 0)
                         dailyLine.DayDevaluation = previousBalance / dailyLine.CurrencyRate - previousBalance / previousCurrencyRate;
                     previousCurrencyRate = dailyLine.CurrencyRate;
