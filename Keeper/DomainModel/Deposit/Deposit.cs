@@ -43,7 +43,7 @@ namespace Keeper.DomainModel.Deposit
                 upToDate = new DateTime(firstDayOfAnalyzedMonth.Year, firstDayOfAnalyzedMonth.Month, StartDate.Day);
             if (DepositOffer.CalculatingRules.EveryLastDayOfMonth)
                 upToDate = firstDayOfAnalyzedMonth.AddMonths(1);
-            if (firstDayOfAnalyzedMonth.IsMonthTheSame(FinishDate)) upToDate = FinishDate;
+            if (firstDayOfAnalyzedMonth.IsMonthTheSame(FinishDate) || upToDate > FinishDate) upToDate = FinishDate;
             return upToDate;
         }
 
