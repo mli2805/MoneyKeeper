@@ -85,7 +85,10 @@ namespace Keeper.ByFunctional.DepositProcessing
                 reportFooter.Add(String.Format("Внесено  {0:#,0} usd    причислено процентов {1:#,0} usd",
                     deposit.CalculationData.TotalMyInsInUsd, deposit.CalculationData.TotalPercentInUsd));
 
-            if (deposit.CalculationData.CurrentBalance != 0) ReportEstimations(deposit, reportFooter);
+//            if (deposit.CalculationData.CurrentBalance != 0) ReportEstimations(deposit, reportFooter);
+            if (deposit.CalculationData.State != DepositStates.Закрыт 
+                && deposit.CalculationData.State != DepositStates.Просрочен
+                && deposit.CalculationData.CurrentBalance != 0) ReportEstimations(deposit, reportFooter);
             return reportFooter;
         }
 
