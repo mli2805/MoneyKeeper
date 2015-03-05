@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.ByFunctional.BalanceEvaluating;
@@ -127,7 +126,6 @@ namespace Keeper.DomainModel
         #region ' _isSelected '
         private bool _isSelected;
 
-        [NotMapped]
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -147,7 +145,6 @@ namespace Keeper.DomainModel
         #endregion
 
         #region // два вычислимых поля содержащих цвет шрифта и фона для отображения транзакции
-        [NotMapped]
         public Brush DayBackgroundColor
         {
             get
@@ -160,7 +157,6 @@ namespace Keeper.DomainModel
             }
         }
 
-        [NotMapped]
         public Brush TransactionFontColor
         {
             get
