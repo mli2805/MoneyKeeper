@@ -18,53 +18,53 @@ namespace Keeper.Utils.Common
         }
     }
 
-	[Export(typeof(IMySettings))]
-	[Export(typeof(MySettings))]
-	public class MySettings : IMySettings, IEnumerable<OneSetting>
-	{
-    public object GetSetting(string name)
+    [Export(typeof(IMySettings))]
+    [Export(typeof(MySettings))]
+    public class MySettings : IMySettings, IEnumerable<OneSetting>
     {
-      return Settings.Default[name];
-    }
+        public object GetSetting(string name)
+        {
+            return Settings.Default[name];
+        }
 
-	    public string GetCombinedSetting(string name)
-	    {
-	        switch (name)
-	        {
-                case "DbFileFullPath" :
-	                return (string) Settings.Default["KeeperFolder"] + (string) Settings.Default["DbFolder"] + (string) Settings.Default["DbxFile"];
+        public string GetCombinedSetting(string name)
+        {
+            switch (name)
+            {
+                case "DbFileFullPath":
+                    return (string)Settings.Default["KeeperFolder"] + (string)Settings.Default["DbFolder"] + (string)Settings.Default["DbxFile"];
                 case "RegularPaymentsFileFullPath":
                     return (string)Settings.Default["KeeperFolder"] + (string)Settings.Default["DbFolder"] + (string)Settings.Default["RegularPaymentsFile"];
                 case "BackupPath":
                     return (string)Settings.Default["KeeperFolder"] + (string)Settings.Default["BackupFolder"];
                 default:
-	                return "";
-	        }
-	    }
+                    return "";
+            }
+        }
 
-    public void SetSetting(string name, object value)
-    {
-      Settings.Default[name] = value;
-    }
+        public void SetSetting(string name, object value)
+        {
+            Settings.Default[name] = value;
+        }
 
-    public void Save() { Settings.Default.Save(); }
+        public void Save() { Settings.Default.Save(); }
 
-	    public IEnumerator<OneSetting> GetEnumerator()
-	    {
-	        yield return new OneSetting("DbxFile", (string)Settings.Default["DbxFile"]);
+        public IEnumerator<OneSetting> GetEnumerator()
+        {
+            yield return new OneSetting("DbxFile", (string)Settings.Default["DbxFile"]);
             yield return new OneSetting("TemporaryTxtDbPath", (string)Settings.Default["TemporaryTxtDbPath"]);
             yield return new OneSetting("DbFolder", (string)Settings.Default["DbFolder"]);
             yield return new OneSetting("KeeperFolder", (string)Settings.Default["KeeperFolder"]);
             yield return new OneSetting("BackupFolder", (string)Settings.Default["BackupFolder"]);
             yield return new OneSetting("ToDoFile", (string)Settings.Default["ToDoFile"]);
             yield return new OneSetting("RegularPaymentsFile", (string)Settings.Default["RegularPaymentsFile"]);
-	        yield return new OneSetting("IgnoreMonthlyDepositProfitBelowByr", ((decimal)Settings.Default["IgnoreMonthlyDepositProfitBelowByr"]).ToString());
+            yield return new OneSetting("IgnoreMonthlyDepositProfitBelowByr", ((decimal)Settings.Default["IgnoreMonthlyDepositProfitBelowByr"]).ToString());
             yield return new OneSetting("LargeExpenseUsd", ((decimal)Settings.Default["LargeExpenseUsd"]).ToString());
-	    }
+        }
 
-	    IEnumerator IEnumerable.GetEnumerator()
-	    {
-	        return GetEnumerator();
-	    }
-	}
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
 }
