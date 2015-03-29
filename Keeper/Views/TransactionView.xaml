@@ -356,15 +356,13 @@
 
       <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,10" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" IsEnabled="{Binding CanEditDate}"
-              Style="{StaticResource TriangleLButtonStyle}">
-      </Button>
+              Style="{StaticResource TriangleLButtonStyle}"/>
       <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,8,0,8" Grid.Row="1" 
                   VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
                   Text="{Binding TransactionInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" Height="24" />
       <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,10" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" IsEnabled="{Binding CanEditDate}"
-              Style="{StaticResource TriangleRButtonStyle}">
-      </Button>
+              Style="{StaticResource TriangleRButtonStyle}"/>
       <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="1" VerticalAlignment="Center" Height="24" Width="81"/>
       <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,10,0,10" Grid.Row="1" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="20" />
