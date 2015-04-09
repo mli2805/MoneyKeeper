@@ -147,28 +147,35 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="30"/>
           <RowDefinition Height="30"/>
+          <RowDefinition Height="30"/>
           <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         
         <Button Name="MinusDay" Style="{StaticResource TriangleLButtonStyle}"  Width="20" Height="20"
-                 Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Column="1" Grid.RowSpan="2"/>
+                 Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Column="1" Grid.RowSpan="3"/>
         
         <TextBox VerticalAlignment="Center" Width="100" Height="24" Text="{Binding NewDate, StringFormat='ddd, dd/MM/yy'}" 
-                 Grid.Column="1" Margin="0" Grid.RowSpan="2" FontSize="13" FontWeight="SemiBold" />
+                 Grid.Column="1" Margin="0" Grid.RowSpan="3" FontSize="13" FontWeight="SemiBold" />
         
         <Button Name="PlusDay"  Style="{StaticResource TriangleRButtonStyle}" Width="20" Height="20"
-                Margin="0,0,10,0" HorizontalAlignment="Right" Grid.Column="1" Grid.RowSpan="2"/>
+                Margin="0,0,10,0" HorizontalAlignment="Right" Grid.Column="1" Grid.RowSpan="3"/>
 
-        <TextBlock Grid.Column="2" Text="BYR" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,7" Height="16" Width="21" />
+        <TextBlock Grid.Column="2" Text="BYR" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,7" Height="16"/>
         <TextBox Grid.Column="3" Margin="5" Text="{Binding LastByrRate}" FontSize="13" FontWeight="SemiBold"/>
-        <TextBlock Grid.Column="4" Text="USD" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,7" Height="16" Width="23"/>
+        <TextBlock Grid.Column="4" Text="USD" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,7" Height="16"/>
         
-        <TextBlock Grid.Column="2" Grid.Row="1" Text="USD" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,7,68,7" Height="16" Width="23"/>
+        <TextBlock Grid.Column="2" Grid.Row="1" Text="USD" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,7,68,7" Height="16" />
         <TextBox Grid.Column="3" Grid.Row="1" Margin="5" Text="{Binding LastEurRate}" FontSize="13" FontWeight="SemiBold"/>
-        <TextBlock Grid.Column="4" Grid.Row="1" Text="EUR" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,7" Height="16" Width="21"/>
+        <TextBlock Grid.Column="4" Grid.Row="1" Text="EUR" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,7" Height="16"/>
 
-        <Button Name="SaveNewRates" Content="Сохранить" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Margin="0,4,10,4" Style="{StaticResource MyButtonStyle}" Height="22"/>
-        <Button Name="CancelNewRates" Content="Отмена" Grid.Column="5" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Margin="0,4,10,4" Style="{StaticResource MyButtonStyle}" Height="22"/>
+        <TextBlock Grid.Column="2" Grid.Row="2" Text="USD" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,7,68,7" Height="16" />
+        <TextBox Grid.Column="3" Grid.Row="2" Margin="5" Text="{Binding LastRurRate}" FontSize="13" FontWeight="SemiBold"/>
+        <TextBlock Grid.Column="4" Grid.Row="2" Text="RUR" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,7" Height="16" />
+
+        <Button Name="SaveNewRates" Content="Сохранить" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                Width="100" Margin="0,10,10,4" Style="{StaticResource MyButtonStyle}" Height="22" Grid.RowSpan="2"/>
+        <Button Name="CancelNewRates" Content="Отмена" Grid.Column="5" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                Width="100" Margin="0,10,10,4" Style="{StaticResource MyButtonStyle}" Height="22" Grid.RowSpan="2"/>
       </Grid>
     </Expander>
   </Grid>
