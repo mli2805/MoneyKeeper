@@ -39,7 +39,7 @@
                 </DataGridTextColumn>
                 <DataGridComboBoxColumn Header="Валюта" Width="70"
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding Currency}"
+                                SelectedItemBinding ="{Binding Currency}" 
                                 ItemsSource="{x:Static ViewModels:BankDepositOffersViewModel.CurrencyList}">
                 </DataGridComboBoxColumn>
                 <DataGridTemplateColumn Header="Ставки и правила" Width="120">
