@@ -22,6 +22,7 @@ namespace Keeper.DomainModel.Deposit
         {
             var idGenerator = IoC.Get<DepositOfferIdGenerator>();
             Id = idGenerator.GenerateNewBankDepositOfferId();
+            Currency = CurrencyCodes.BYR;
             CalculatingRules = new BankDepositCalculatingRules();
             RateLines = new ObservableCollection<BankDepositRateLine>();
         }
