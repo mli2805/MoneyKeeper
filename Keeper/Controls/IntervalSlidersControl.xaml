@@ -20,7 +20,7 @@
       <Rectangle Grid.Column="1" Stroke="White"/>
       <Rectangle Margin="0,1,-20,-40" Grid.Column="2" Stroke="DarkGray" StrokeThickness="1" />
       
-      <Button Height="17" Width="8" Margin="244,0,0,0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Cursor="SizeWE" Background="White"/>
+      <Button Height="17" Width="8" Margin="244,0,0,0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Cursor="SizeWE" Background="White" DragEnter="Button_DragEnter"/>
       <Button Height="17" Width="8" Margin="276,0,0,0" HorizontalAlignment="Left" Grid.ColumnSpan="3" Cursor="SizeWE" Background="White"/>
     </Grid>
     <Rectangle Grid.Row="1" Stroke="DarkGray"/>

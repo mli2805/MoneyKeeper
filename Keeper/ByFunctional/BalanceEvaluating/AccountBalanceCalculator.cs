@@ -27,30 +27,6 @@ namespace Keeper.ByFunctional.BalanceEvaluating
                          where interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount)
                          select t).ToList();
 
-//        var dumpContent = new List<string>();
-        var dumper = new DbClassesInstanceDumper();
-//        foreach (var transaction in transactions)
-//        {
-//            dumpContent.Add(dumper.Dump(transaction));
-//        }
-//        File.WriteAllLines(@"c:\temp\dump.txt", dumpContent);
-
-        Console.WriteLine("-----------------------------------------------------------");
-        var mp = new MoneyPair() {Amount = 0, Currency = CurrencyCodes.BYR};
-
-        foreach (var transaction in transactions)
-        {
-            if (transaction.Currency == CurrencyCodes.BYR)
-            {
-                if (transaction.Debet.Is(balancedAccount)) mp.Amount -= transaction.Amount;
-                else
-                {
-                    mp.Amount += transaction.Amount;
-                }
-                if (transaction.Timestamp.Date == new DateTime(2015,03,17)) Console.WriteLine(dumper.Dump(transaction));
-            }
-        }  
- 
       List<MoneyPair> moneyPairs = (from t in transactions
                                           group t by t.Currency
                                           into g
