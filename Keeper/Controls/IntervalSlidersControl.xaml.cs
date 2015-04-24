@@ -59,5 +59,10 @@ namespace Keeper.Controls
 
       var delta = pointUp.X - _pointDown.X;
     }
+
+    private void Button_DragEnter(object sender, DragEventArgs e)
+    {
+
+    }
   }
 }
