@@ -52,7 +52,7 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         private void DefineCurrentState()
         {
-            if (_deposit.CalculationData.CurrentBalance == 0)
+            if (_deposit.CalculationData.Traffic.Count > 0 && _deposit.CalculationData.CurrentBalance == 0)
                 _deposit.CalculationData.State = DepositStates.Закрыт;
             else
                 _deposit.CalculationData.State = _deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
