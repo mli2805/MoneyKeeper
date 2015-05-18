@@ -21,11 +21,24 @@
         <ei:KeyTrigger Key="Right">
             <cal:ActionMessage MethodName="ShowNextMonth"/>
         </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Control" Key="Right">
+            <cal:ActionMessage MethodName="ShowNextYear"/>
+        </ei:KeyTrigger>
         <ei:KeyTrigger Key="Left">
             <cal:ActionMessage MethodName="ShowPreviousMonth"/>
         </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Control" Key="Left">
+            <cal:ActionMessage MethodName="ShowPreviousYear"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Shift" Key="Left">
+            <cal:ActionMessage MethodName="ShowPreviousQuarter"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Shift" Key="Right">
+            <cal:ActionMessage MethodName="ShowNextQuarter"/>
+        </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
+        <Button Margin="100,-20,0,0" Height="24">Month</Button>
         <StackPanel>
             <DockPanel LastChildFill="True">
                 <ListView ItemsSource="{Binding Blank.BeforeList}" Margin="2,2,0,0" Padding="2,2,7,4" />
