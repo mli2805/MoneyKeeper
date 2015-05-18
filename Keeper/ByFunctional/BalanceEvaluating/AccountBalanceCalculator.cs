@@ -24,7 +24,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
     private IEnumerable<MoneyPair> GetAccountBalancePairs(Account balancedAccount, Period interval)
     {
       List<Transaction> transactions = (from t in _db.Transactions
-                         where interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount)
+                         where interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount) 
                          select t).ToList();
 
       List<MoneyPair> moneyPairs = (from t in transactions
@@ -35,7 +35,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
       // учесть вторую сторону обмена - приход денег в другой валюте
       List<MoneyPair> moneyPairsExchange =
        ( from t in _db.Transactions
-        where t.Amount2 != 0 && interval.ContainsAndTimeWasChecked(t.Timestamp) && (t.Credit.Is(balancedAccount.Name) || t.Debet.Is(balancedAccount.Name))
+         where t.Amount2 != 0 && interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount) 
         group t by t.Currency2 into g
         select new MoneyPair { Currency = (CurrencyCodes)g.Key, Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1) }).ToList();
 

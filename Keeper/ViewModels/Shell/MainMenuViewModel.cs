@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
-using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
-using Keeper.Properties;
 using Keeper.Utils.Common;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.DbInputOutput;
