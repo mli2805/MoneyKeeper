@@ -133,7 +133,7 @@ namespace Keeper.Utils.MonthAnalysis
             Result = new Saldo();
             Result.StartDate = initialDay.AddDays(-initialDay.Day + 1);
             Result.BeginBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate);
-            Result.BeginRates = InitializeRates(Result.StartDate);
+            Result.BeginRates = InitializeRates(Result.StartDate.AddDays(-1));
 
             var incomeTransactions = GetMonthTransactionsForAnalysis(OperationType.Доход, Result.StartDate, _db.Transactions);
             foreach (var transaction in incomeTransactions) RegisterIncome(transaction);

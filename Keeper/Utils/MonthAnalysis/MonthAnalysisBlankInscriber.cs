@@ -162,8 +162,8 @@ namespace Keeper.Utils.MonthAnalysis
 
     private string HowCurrencyChanged(double a, double b)
     {
-      if (a > b) return string.Format("упал");
-      if (a < b) return string.Format("вырос");
+      if (a < b) return string.Format("упал");
+      if (a > b) return string.Format("вырос");
       return string.Format("без изменений");
     }
 
@@ -173,14 +173,19 @@ namespace Keeper.Utils.MonthAnalysis
       var byrEnd = s.EndRates.First(t => t.Currency == CurrencyCodes.BYR).Rate;
       var euroBegin = 1/s.BeginRates.First(t => t.Currency == CurrencyCodes.EUR).Rate;
       var euroEnd = 1/s.EndRates.First(t => t.Currency == CurrencyCodes.EUR).Rate;
+      var rurBegin = s.BeginRates.First(t => t.Currency == CurrencyCodes.RUB).Rate;
+      var rurEnd = s.EndRates.First(t => t.Currency == CurrencyCodes.RUB).Rate;
       Blank.RatesList = new ObservableCollection<string>
-         { String.Format( "Изменение курсов\n\n  Byr {0}:  {1:#,0} - {2:#,0}\n  Euro {3}:  {4:0.###} - {5:0.###} \n",
-          HowCurrencyChanged(byrEnd, byrBegin),
+         { String.Format( "Изменение курсов\n\n  Byr {0}:  {1:#,0} - {2:#,0}\n  Euro {3}:  {4:0.###} - {5:0.###} \n  Rur {6}:  {7:0.###} - {8:0.###} \n",
+          HowCurrencyChanged(byrBegin, byrEnd),
           byrBegin,
           byrEnd,
-          HowCurrencyChanged(euroBegin, euroEnd),
+          HowCurrencyChanged(euroEnd, euroBegin),
           euroBegin,
-          euroEnd)};
+          euroEnd,
+          HowCurrencyChanged(rurBegin, rurEnd),
+          rurBegin,
+          rurEnd)};
     }
 
     private void CalculateForecast(Saldo s)
@@ -211,8 +216,10 @@ namespace Keeper.Utils.MonthAnalysis
       Blank.ForecastListBalance = new ObservableCollection<string>
                                     {
                                       "Прогноз результата\n\n",
-                                      String.Format("Финансовый результат  {0:#,0} usd\n\n", s.ForecastFinResult),
-                                      String.Format("Исходящий остаток  {0:#,0} usd", s.ForecastEndBalance)
+                                      String.Format("Финансовый результат  {0:#,0} usd", s.ForecastFinResult),
+                                      String.Format(" (с учетом курсовых разниц  {0:#,0} usd)\n", s.ForecastFinResult+s.ExchangeDifference),
+                                      String.Format("Исходящий остаток  {0:#,0} usd", s.ForecastEndBalance),
+                                      String.Format(" (с учетом курсовых разниц  {0:#,0} usd)", s.ForecastEndBalance+s.ExchangeDifference)
                                     };
     }
   }
