@@ -5,5 +5,7 @@ namespace Keeper.DomainModel.Deposit
         Явнес,
         Проценты,
         Расход,
+        ОбменРасход,
+        ОбменДоход
     }
 }

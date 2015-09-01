@@ -56,6 +56,16 @@ namespace Keeper.ByFunctional.DepositProcessing
                                      ? "закрытие депозита"
                                      : "частичное снятие";
                 }
+                else if (operation.TransactionType == DepositTransactionTypes.ОбменРасход)
+                {
+                    line.ExpenseColumn = operation.Amount;
+                    line.Comment = "обмен (сдал)";
+                }
+                else if (operation.TransactionType == DepositTransactionTypes.ОбменДоход)
+                {
+                    line.IncomeColumn = operation.Amount;
+                    line.Comment = "обмен (получил)";
+                }
                 else
                 {
                     line.IncomeColumn = operation.Amount;

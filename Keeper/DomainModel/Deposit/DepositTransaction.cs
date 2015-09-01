@@ -13,7 +13,7 @@ namespace Keeper.DomainModel.Deposit
 
         public int Destination()
         {
-            return TransactionType == DepositTransactionTypes.Расход ? -1 : 1;
+            return TransactionType == DepositTransactionTypes.Расход || TransactionType == DepositTransactionTypes.ОбменРасход ? -1 : 1;
         }
     }
 }
