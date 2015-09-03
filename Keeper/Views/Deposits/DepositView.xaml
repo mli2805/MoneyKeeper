@@ -42,7 +42,7 @@
             </TextBlock>
             <TextBlock Grid.Column="2" HorizontalAlignment="Right">
               <TextBlock.Text>
-                <Binding Path="IncomeColumn" StringFormat="{}{0:#,#;; }"/>
+                <Binding Path="IncomeColumn" StringFormat="{}{0:#,#.00;; }"/>
               </TextBlock.Text>
             </TextBlock>
             <TextBlock Grid.Column="3" HorizontalAlignment="Right">
