@@ -338,8 +338,8 @@ namespace Keeper.ViewModels
 
         private void AccommodateAccountsWithOperationType(OperationType newOperationType)
         {
-            TransactionInWork.Operation = newOperationType;
-            switch (TransactionInWork.Operation)
+//            TransactionInWork.Operation = newOperationType;
+            switch (newOperationType)
             {
                 case OperationType.Доход:
                     if (!AccountsWhoGivesMeMoney.Contains(TransactionInWork.Debet))
@@ -510,14 +510,15 @@ namespace Keeper.ViewModels
                 // одинарные операции не в остальных валютах
                 if (SelectedTabIndex != 3) return res0 + res1;
 
-                if (TransactionInWork.Currency2 == null) TransactionInWork.Currency2 = CurrencyCodes.BYR;
-                var res2 = _rateExtractor.GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
+//                if (TransactionInWork.Currency2 == null) TransactionInWork.Currency2 = CurrencyCodes.BYR;
+//                var res2 = _rateExtractor.GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
                 // обменные операции: доллары на другую валюту
-                if (SelectedTabIndex == 3 && TransactionInWork.Currency == CurrencyCodes.USD) return res0 + res2;
+//                if (SelectedTabIndex == 3 && TransactionInWork.Currency == CurrencyCodes.USD) return res0 + res2;
                 // обменные операции: другая валюта на доллары
-                if (SelectedTabIndex == 3 && TransactionInWork.Currency2 == CurrencyCodes.USD) return res1;
+//                if (SelectedTabIndex == 3 && TransactionInWork.Currency2 == CurrencyCodes.USD) return res1;
                 // обменные операции: не доллары на не доллары
-                return res1 + "                                 " + res2;
+//                return res1 + "                                 " + res2;
+                return "?";
             }
         }
 
