@@ -301,7 +301,7 @@ namespace Keeper.ViewModels
       BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).
         Where(a => a.IsLeaf("Банки") || a.Is("Мой кошелек")).ToList();
       AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
-        Where(a => a.IsLeaf("ДеньгоПолучатели"))).ToList();
+        Where(a => a.IsLeaf("ДеньгоПолучатели") || a.IsLeaf("Банки"))).ToList();
       AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
         Where(a => a.IsLeaf("ДеньгоДатели") || a.IsLeaf("Банки"))).ToList();
       IncomeArticles =  (_accountTreeStraightener.Flatten(_db.Accounts).
@@ -386,7 +386,7 @@ namespace Keeper.ViewModels
         _isInTransactionSelectionProcess = true;
         TransactionInWork.CloneFrom(_selectedTransaction);
         _isInTransactionSelectionProcess = false;
-        SelectedTabIndex = (int)_transactionInWork.Operation;
+          SelectedTabIndex = _transactionInWork.Guid != Guid.Empty ? 3 : (int)_transactionInWork.Operation;
         NotifyOfPropertyChange(() => AmountInUsd);
         NotifyOfPropertyChange(() => DebetAccountBalance);
         NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
