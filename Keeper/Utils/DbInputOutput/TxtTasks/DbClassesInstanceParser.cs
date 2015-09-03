@@ -42,6 +42,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
                 transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]);
             transaction.Article = substrings[8].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[8].Trim()) : null;
             transaction.Comment = substrings[9].Trim();
+            transaction.Guid = new Guid(substrings[10].Trim());
 
             return transaction;
         }
