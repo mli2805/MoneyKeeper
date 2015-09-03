@@ -38,7 +38,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             if (transaction.Currency2 == null || transaction.Currency2 == 0) s = s + "null";
             else s = s + transaction.Currency2;
 
-            s = s + " ; " + transaction.Article + " ; " + transaction.Comment;
+            s = s + " ; " + transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
             return s;
         }
 

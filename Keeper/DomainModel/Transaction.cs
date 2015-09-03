@@ -20,6 +20,8 @@ namespace Keeper.DomainModel
         private string _comment;
 
         public int Id { get; set; }
+
+        public Guid Guid { get; set; }
         public DateTime Timestamp
         {
             get { return _timestamp; }
@@ -170,7 +172,7 @@ namespace Keeper.DomainModel
         }
         #endregion
         /// <summary>
-        /// создает новый инстанс и в нем возвращает полную копию данного инстанса, кроме Id
+        /// создает новый инстанс и в нем возвращает полную копию данного инстанса, кроме Id 
         /// </summary>
         /// <returns></returns>
         public Transaction Clone()
