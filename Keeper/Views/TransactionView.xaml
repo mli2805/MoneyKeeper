@@ -40,10 +40,34 @@
   </i:Interaction.Triggers>
   <Window.Resources>
     <ResourceDictionary>
+            <XamlExtensions:AccountTemplateSelector x:Key="MyAccountTemplateSelector">
+                
+                <XamlExtensions:AccountTemplateSelector.AmountStyleForByr>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="Amount" StringFormat="{}{0:#,#;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </XamlExtensions:AccountTemplateSelector.AmountStyleForByr>
+                
+                <XamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="Amount" StringFormat="{}{0:#,#.00;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </XamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
+                
+            </XamlExtensions:AccountTemplateSelector>
+        
       <DataTemplate x:Key="AmountColumnStyle">
         <TextBlock HorizontalAlignment="Right">
           <TextBlock.Text>
-            <Binding Path="Amount" StringFormat="{}{0:#,#;; }"/>
+            <Binding Path="Amount" StringFormat="{}{0:#,#.00;; }"/>
           </TextBlock.Text>
         </TextBlock>
       </DataTemplate>
@@ -205,7 +229,8 @@
           <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy h:mm'}" />
           <GridViewColumn Header="Дебет" Width="150" DisplayMemberBinding="{Binding Debet}" />
           <GridViewColumn Header="Кредит" Width="150" DisplayMemberBinding="{Binding Credit}" />
-          <GridViewColumn Header="Сумма" Width="90" CellTemplate="{StaticResource AmountColumnStyle}" />
+<!--          <GridViewColumn Header="Сумма" Width="90" CellTemplate ="{StaticResource AmountColumnStyle}" />-->
+                    <GridViewColumn Header="Сумма" Width="90" CellTemplateSelector ="{StaticResource MyAccountTemplateSelector}" />
           <GridViewColumn Header="Вал" Width="35" DisplayMemberBinding="{Binding Currency}" />
           <GridViewColumn Header="Сумма2" Width="90" CellTemplate="{StaticResource Amount2ColumnStyle}" />
           <GridViewColumn Header="Вал2" Width="35" DisplayMemberBinding="{Binding Currency2}" />
@@ -250,7 +275,7 @@
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="IncomeAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" 
                      Width="80" BorderBrush="#555555" TextAlignment="Right" 
-                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" />
+                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#.00}'}" />
             <ComboBox Name="IncomeCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />

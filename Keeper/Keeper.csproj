@@ -355,6 +355,7 @@
     <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamlExtensions\AccountTemplateSelector.cs" />
     <Compile Include="XamlExtensions\CollapseAction.cs" />
     <Compile Include="Utils\CommonKeeper\DbCleaner.cs" />
     <Compile Include="Utils\DbInputOutput\TxtTasks\DbToTxtSaver.cs" />
