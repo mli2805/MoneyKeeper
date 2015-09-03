@@ -46,7 +46,7 @@ namespace Keeper.Utils.MonthAnalysis
                                               DateTime someDate, IEnumerable<Transaction> transactions)
         {
             return (from transaction in transactions
-                    where transaction.Operation == operationType &&
+                    where transaction.Guid == Guid.Empty && transaction.Operation == operationType &&
                     transaction.Timestamp.Month == someDate.Month && transaction.Timestamp.Year == someDate.Year
                     select transaction);
         }

@@ -51,7 +51,27 @@
                         </TextBlock>
                     </DataTemplate>
                 </XamlExtensions:AccountTemplateSelector.AmountStyleForByr>
-                
+
+                <XamlExtensions:AccountTemplateSelector.AmountStyleForByrToExchange>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="Amount" StringFormat="{}{0:#,#;; } >> "/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </XamlExtensions:AccountTemplateSelector.AmountStyleForByrToExchange>
+
+                <XamlExtensions:AccountTemplateSelector.AmountStyleForByrFromExchange>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Left">
+                            <TextBlock.Text>
+                                <Binding Path="Amount" StringFormat="{} >> {0:#,#;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </XamlExtensions:AccountTemplateSelector.AmountStyleForByrFromExchange>
+
                 <XamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
@@ -61,7 +81,27 @@
                         </TextBlock>
                     </DataTemplate>
                 </XamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
-                
+
+                <XamlExtensions:AccountTemplateSelector.AmountStyleForOthersToExchange>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="Amount" StringFormat="{}{0:#,#.00;; } >> "/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </XamlExtensions:AccountTemplateSelector.AmountStyleForOthersToExchange>
+
+                <XamlExtensions:AccountTemplateSelector.AmountStyleForOthersFromExchange>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Left">
+                            <TextBlock.Text>
+                                <Binding Path="Amount" StringFormat="{} >> {0:#,#.00;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </XamlExtensions:AccountTemplateSelector.AmountStyleForOthersFromExchange>
+
             </XamlExtensions:AccountTemplateSelector>
         
       <DataTemplate x:Key="AmountColumnStyle">

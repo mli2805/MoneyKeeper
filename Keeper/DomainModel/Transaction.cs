@@ -163,9 +163,9 @@ namespace Keeper.DomainModel
         {
             get
             {
+                if (Guid != Guid.Empty || Operation == OperationType.Обмен) return Brushes.DarkGreen;
                 if (Operation == OperationType.Доход) return Brushes.Blue;
                 if (Operation == OperationType.Расход) return Brushes.Red;
-                if (Operation == OperationType.Обмен) return Brushes.DarkGreen;
                 if (Operation == OperationType.Перенос) return Brushes.Black;
                 return Brushes.Gray;
             }
@@ -211,6 +211,7 @@ namespace Keeper.DomainModel
             Currency2 = storage.Currency2;
             Article = storage.Article;
             Comment = storage.Comment ?? "";
+            Guid = storage.Guid;
         }
 
 
