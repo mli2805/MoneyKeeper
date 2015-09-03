@@ -8,6 +8,7 @@ namespace Keeper.DomainModel
     [Serializable]
     public class Transaction : PropertyChangedBase
     {
+        private Guid _guid;
         private DateTime _timestamp;
         private OperationType _operation;
         private Account _debet;
@@ -21,7 +22,17 @@ namespace Keeper.DomainModel
 
         public int Id { get; set; }
 
-        public Guid Guid { get; set; }
+        public Guid Guid
+        {
+            get { return _guid; }
+            set
+            {
+                if (value.Equals(_guid)) return;
+                _guid = value;
+                NotifyOfPropertyChange(() => Guid);
+            }
+        }
+
         public DateTime Timestamp
         {
             get { return _timestamp; }
@@ -171,6 +182,9 @@ namespace Keeper.DomainModel
             }
         }
         #endregion
+
+        public bool IsExchange() { return Guid != Guid.Empty; }
+
         /// <summary>
         /// создает новый инстанс и в нем возвращает полную копию данного инстанса, кроме Id 
         /// </summary>
