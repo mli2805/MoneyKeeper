@@ -534,15 +534,15 @@ namespace Keeper.ViewModels
                 // одинарные операции не в остальных валютах
                 if (SelectedTabIndex != 3) return res0 + res1;
 
-                //                if (TransactionInWork.Currency2 == null) TransactionInWork.Currency2 = CurrencyCodes.BYR;
-                //                var res2 = _rateExtractor.GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
-                // обменные операции: доллары на другую валюту
-                //                if (SelectedTabIndex == 3 && TransactionInWork.Currency == CurrencyCodes.USD) return res0 + res2;
-                // обменные операции: другая валюта на доллары
-                //                if (SelectedTabIndex == 3 && TransactionInWork.Currency2 == CurrencyCodes.USD) return res1;
-                // обменные операции: не доллары на не доллары
-                //                return res1 + "                                 " + res2;
-                return "?";
+                res1 = TransactionInWork.Currency == CurrencyCodes.USD ? "                                           " :
+                    _rateExtractor.GetUsdEquivalentString(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
+                var res2 = RelatedTransactionInWork.Currency == CurrencyCodes.USD ? "" : 
+                    _rateExtractor.GetUsdEquivalentString(RelatedTransactionInWork.Amount, RelatedTransactionInWork.Currency, RelatedTransactionInWork.Timestamp);
+
+                return TransactionInWork.Operation == OperationType.Расход
+                    ? res1 + "                                      " + res2
+                    : res2 + "----------" + res1;
+
             }
         }
 
@@ -584,7 +584,7 @@ namespace Keeper.ViewModels
             get
             {
 
-                if (TransactionInWork.Operation == OperationType.Доход)
+                if (TransactionInWork.Operation == OperationType.Доход || TransactionInWork.Operation == OperationType.Перенос)
                 {
                     if (TransactionInWork.Credit == null || !TransactionInWork.Credit.Is("Мои")) return "";
 
@@ -597,7 +597,7 @@ namespace Keeper.ViewModels
                         balanceBefore, balanceBefore + TransactionInWork.Amount,
                         TransactionInWork.Currency.ToString().ToLower());
                 }
-                else if (TransactionInWork.Guid != Guid.Empty)
+                else if (TransactionInWork.IsExchange())
                 {
                     var periodBefore = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
                     var balanceBefore =
@@ -616,26 +616,32 @@ namespace Keeper.ViewModels
         {
             get
             {
-                if (TransactionInWork.Operation != OperationType.Обмен) return "";
+                if (!TransactionInWork.IsExchange()) return "";
+                if (TransactionInWork.Currency == RelatedTransactionInWork.Currency) return "ошибка - одинаковая валюта";
 
                 if (TransactionInWork.Currency == CurrencyCodes.BYR)
-                {
-                    return TransactionInWork.Amount2 != 0 ? String.Format("обменный курс - {0:#,0}", TransactionInWork.Amount / TransactionInWork.Amount2) : "";
-                }
-                if (TransactionInWork.Currency2 == CurrencyCodes.BYR)
-                {
-                    return TransactionInWork.Amount != 0 ? String.Format("обменный курс - {0:#,0}", TransactionInWork.Amount2 / TransactionInWork.Amount) : "";
-                }
+                    return RateToString(TransactionInWork.Amount, RelatedTransactionInWork.Amount);
+                if (RelatedTransactionInWork.Currency == CurrencyCodes.BYR)
+                    return RateToString(RelatedTransactionInWork.Amount, TransactionInWork.Amount);
+
+                if (TransactionInWork.Currency == CurrencyCodes.RUB)
+                    return RateToString(TransactionInWork.Amount, RelatedTransactionInWork.Amount);
+                if (RelatedTransactionInWork.Currency == CurrencyCodes.RUB)
+                    return RateToString(RelatedTransactionInWork.Amount, TransactionInWork.Amount);
+
                 if (TransactionInWork.Currency == CurrencyCodes.USD)
-                {
-                    return TransactionInWork.Amount != 0 ? String.Format("обменный курс - {0:#,00}", TransactionInWork.Amount2 / TransactionInWork.Amount) : "";
-                }
-                if (TransactionInWork.Currency2 == CurrencyCodes.USD)
-                {
-                    return TransactionInWork.Amount2 != 0 ? String.Format("обменный курс - {0:#,00}", TransactionInWork.Amount / TransactionInWork.Amount2) : "";
-                }
-                return "не понял!";
+                    return RateToString(TransactionInWork.Amount, RelatedTransactionInWork.Amount);
+                if (RelatedTransactionInWork.Currency == CurrencyCodes.USD)
+                    return RateToString(RelatedTransactionInWork.Amount, TransactionInWork.Amount);
+
+                return "EUR is the most expensive currency in my enum";
+
             }
+        }
+
+        public string RateToString(decimal cheapCurrency, decimal expensiveCurrency)
+        {
+            return expensiveCurrency != 0 ? String.Format("по курсу {0:#,0}", cheapCurrency / expensiveCurrency) : "";
         }
 
         private List<string> _dayResults;
@@ -740,6 +746,13 @@ namespace Keeper.ViewModels
         {
             if (_isInTransactionSelectionProcess) return;
             IsTransactionInWorkChanged = true;
+
+            if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
+                e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
+            {
+                NotifyOfPropertyChange(() => AmountInUsd);
+                DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+            }
         }
 
         void TransactionInWorkPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -960,7 +973,7 @@ namespace Keeper.ViewModels
             var transactionForRemoval = SelectedTransaction;
             var guid = SelectedTransaction.Guid;
 
-            if (SelectedTransactionIndex == 0) SelectedTransactionIndex++; 
+            if (SelectedTransactionIndex == 0) SelectedTransactionIndex++;
             else
                 if (guid == Guid.Empty) SelectedTransactionIndex--;
                 else
