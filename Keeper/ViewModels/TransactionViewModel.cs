@@ -332,16 +332,16 @@ namespace Keeper.ViewModels
                 if (value == _selectedTabIndex) return;
                 _selectedTabIndex = value;
                 NotifyOfPropertyChange(() => SelectedTabIndex);
-                AccommodateAccountsWithOperationType((OperationType)SelectedTabIndex);
+                AccommodateAccountsWithOperationType(SelectedTabIndex);
             }
         }
 
-        private void AccommodateAccountsWithOperationType(OperationType newOperationType)
+        private void AccommodateAccountsWithOperationType(int newTab)
         {
-//            TransactionInWork.Operation = newOperationType;
-            switch (newOperationType)
+            if (newTab != 3) TransactionInWork.Operation = (OperationType)newTab;
+            switch (newTab)
             {
-                case OperationType.Доход:
+                case 0: //Доход
                     if (!AccountsWhoGivesMeMoney.Contains(TransactionInWork.Debet))
                     {
                         TransactionInWork.Debet = AccountsWhoGivesMeMoney.First();
@@ -350,7 +350,7 @@ namespace Keeper.ViewModels
                     if (!MyAccounts.Contains(TransactionInWork.Credit))
                         TransactionInWork.Credit = MyAccounts.First();
                     break;
-                case OperationType.Расход:
+                case 1: //Расход
                     if (!AccountsWhoTakesMyMoney.Contains(TransactionInWork.Credit))
                     {
                         TransactionInWork.Credit = AccountsWhoTakesMyMoney.First();
@@ -359,17 +359,26 @@ namespace Keeper.ViewModels
                     if (!MyAccountsForShopping.Contains(TransactionInWork.Debet))
                         TransactionInWork.Debet = MyAccountsForShopping.First();
                     break;
-                case OperationType.Перенос:
+                case 2: //Перенос
                     if (!MyAccounts.Contains(TransactionInWork.Debet))
                         TransactionInWork.Debet = MyAccounts.First();
                     if (!MyAccounts.Contains(TransactionInWork.Credit))
                         TransactionInWork.Credit = MyAccounts.First();
                     break;
-                case OperationType.Обмен:
+                case 3: //Обмен
                     if (!MyAccounts.Contains(TransactionInWork.Debet))
                         TransactionInWork.Debet = MyAccounts.First();
                     if (!BankAccounts.Contains(TransactionInWork.Credit))
                         TransactionInWork.Credit = BankAccounts.First();
+
+                    if (RelatedTransaction == null) RelatedTransaction = new Transaction();
+
+                    if (!MyAccounts.Contains(RelatedTransactionInWork.Credit))
+                        RelatedTransactionInWork.Credit = TransactionInWork.Debet;
+                    if (!CurrencyList.Contains(TransactionInWork.Currency))
+                        TransactionInWork.Currency = CurrencyCodes.BYR;
+                    RelatedTransactionInWork.Currency = TransactionInWork.Currency == CurrencyCodes.BYR ? CurrencyCodes.USD : CurrencyCodes.BYR;
+
                     break;
             }
         }
@@ -385,7 +394,7 @@ namespace Keeper.ViewModels
 
                 _isInTransactionSelectionProcess = true;
 
-                if (_selectedTransaction.Guid != Guid.Empty)
+                if (_selectedTransaction.IsExchange())
                 {
                     RelatedTransaction =
                         (from t in Rows where t.Guid == _selectedTransaction.Guid && t != _selectedTransaction select t)
@@ -402,7 +411,11 @@ namespace Keeper.ViewModels
                         RelatedTransactionInWork.CloneFrom(_selectedTransaction);
                     }
                 }
-                else TransactionInWork.CloneFrom(_selectedTransaction);
+                else
+                {
+                    TransactionInWork.CloneFrom(_selectedTransaction);
+                    RelatedTransaction = null;
+                }
 
                 _isInTransactionSelectionProcess = false;
                 SelectedTabIndex = GetTabIndexFromTransaction(_transactionInWork);
@@ -478,6 +491,7 @@ namespace Keeper.ViewModels
         }
         #endregion
 
+
         #region свойства Can для нескольких кнопок
         private bool _canEditDate;
         public bool CanSaveTransactionChanges { get; set; }
@@ -520,14 +534,14 @@ namespace Keeper.ViewModels
                 // одинарные операции не в остальных валютах
                 if (SelectedTabIndex != 3) return res0 + res1;
 
-//                if (TransactionInWork.Currency2 == null) TransactionInWork.Currency2 = CurrencyCodes.BYR;
-//                var res2 = _rateExtractor.GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
+                //                if (TransactionInWork.Currency2 == null) TransactionInWork.Currency2 = CurrencyCodes.BYR;
+                //                var res2 = _rateExtractor.GetUsdEquivalent(TransactionInWork.Amount2, (CurrencyCodes)TransactionInWork.Currency2, TransactionInWork.Timestamp);
                 // обменные операции: доллары на другую валюту
-//                if (SelectedTabIndex == 3 && TransactionInWork.Currency == CurrencyCodes.USD) return res0 + res2;
+                //                if (SelectedTabIndex == 3 && TransactionInWork.Currency == CurrencyCodes.USD) return res0 + res2;
                 // обменные операции: другая валюта на доллары
-//                if (SelectedTabIndex == 3 && TransactionInWork.Currency2 == CurrencyCodes.USD) return res1;
+                //                if (SelectedTabIndex == 3 && TransactionInWork.Currency2 == CurrencyCodes.USD) return res1;
                 // обменные операции: не доллары на не доллары
-//                return res1 + "                                 " + res2;
+                //                return res1 + "                                 " + res2;
                 return "?";
             }
         }
@@ -673,6 +687,7 @@ namespace Keeper.ViewModels
             IsCollectionChanged = false;
             InitializeFiltersLists();
             InitializeSelectedTransactionIndex();
+
         }
 
         void RowsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -712,7 +727,7 @@ namespace Keeper.ViewModels
 
             TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
 
-            RelatedTransactionInWork.PropertyChanged += RelatedTransactionInWork_PropertyChanged;    
+            RelatedTransactionInWork.PropertyChanged += RelatedTransactionInWork_PropertyChanged;
 
             IsTransactionInWorkChanged = false;
             CanSaveTransactionChanges = false;
@@ -791,7 +806,7 @@ namespace Keeper.ViewModels
             //     из-за смены типа операции во время ввода/редактирования в некоторых полях TransactionInWork могли остаться ненужные данные
             CleanUselessFieldsBeforeSave();
 
-            var isDateChanged = SelectedTransaction.Timestamp != TransactionInWork.Timestamp;
+            var isDateChanged = SelectedTransaction.Timestamp.Date != TransactionInWork.Timestamp.Date;
 
             if (isDateChanged)
             {
@@ -807,8 +822,31 @@ namespace Keeper.ViewModels
             }
             else
             {
-                SelectedTransaction.CloneFrom(TransactionInWork);
-                RelatedTransaction.CloneFrom(RelatedTransactionInWork);
+                if (SelectedTabIndex != 3)
+                    SelectedTransaction.CloneFrom(TransactionInWork);
+                else
+                {
+
+                    RelatedTransactionInWork.Debet = TransactionInWork.Credit;
+                    if (TransactionInWork.Guid == Guid.Empty) // новая операция а не редактирование старой
+                    {
+                        TransactionInWork.Guid = Guid.NewGuid();
+                        RelatedTransactionInWork.Guid = TransactionInWork.Guid;
+                        RelatedTransactionInWork.Timestamp = TransactionInWork.Timestamp.AddMinutes(1);
+                        Rows.Add(RelatedTransaction);
+                    }
+
+                    if (RelatedTransaction.Operation == OperationType.Доход)
+                    {
+                        SelectedTransaction.CloneFrom(TransactionInWork);
+                        RelatedTransaction.CloneFrom(RelatedTransactionInWork);
+                    }
+                    else
+                    {
+                        SelectedTransaction.CloneFrom(RelatedTransactionInWork);
+                        RelatedTransaction.CloneFrom(TransactionInWork);
+                    }
+                }
             }
 
             DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
@@ -840,7 +878,7 @@ namespace Keeper.ViewModels
 
         private int GetTabIndexFromTransaction(Transaction tr)
         {
-            return tr.IsExchange() ? 3 : (int) tr.Operation;
+            return tr.IsExchange() ? 3 : (int)tr.Operation;
         }
         public void CancelTransactionChanges()
         {
@@ -920,9 +958,27 @@ namespace Keeper.ViewModels
         public void DeleteTransaction()
         {
             var transactionForRemoval = SelectedTransaction;
+            var guid = SelectedTransaction.Guid;
 
-            if (SelectedTransactionIndex == 0) SelectedTransactionIndex++; else SelectedTransactionIndex--;
+            if (SelectedTransactionIndex == 0) SelectedTransactionIndex++; 
+            else
+                if (guid == Guid.Empty) SelectedTransactionIndex--;
+                else
+                {
+                    if (SelectedTransaction.Operation == OperationType.Расход) SelectedTransactionIndex--;
+                    else
+                    {
+                        SelectedTransactionIndex -= 2;
+                    }
+                }
+
             Rows.Remove(transactionForRemoval);
+            if (guid != Guid.Empty)
+            {
+                transactionForRemoval = Rows.First(t => t.Guid == guid);
+                Rows.Remove(transactionForRemoval);
+            }
+            if (SelectedTransactionIndex == -1) SelectedTransactionIndex = Rows.Count - 1;
 
             DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
             EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
