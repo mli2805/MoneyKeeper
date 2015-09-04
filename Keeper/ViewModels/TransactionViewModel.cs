@@ -338,7 +338,7 @@ namespace Keeper.ViewModels
 
         private void AccommodateAccountsWithOperationType(int newTab)
         {
-            if (newTab != 3) TransactionInWork.Operation = (OperationType)newTab;
+            if (newTab != 3) TransactionInWork.Operation = (OperationType)newTab; else TransactionInWork.Operation = OperationType.Расход;
             switch (newTab)
             {
                 case 0: //Доход
@@ -371,10 +371,12 @@ namespace Keeper.ViewModels
                     if (!BankAccounts.Contains(TransactionInWork.Credit))
                         TransactionInWork.Credit = BankAccounts.First();
 
-                    if (RelatedTransaction == null) RelatedTransaction = new Transaction();
-
-                    if (!MyAccounts.Contains(RelatedTransactionInWork.Credit))
-                        RelatedTransactionInWork.Credit = TransactionInWork.Debet;
+                    if (RelatedTransaction == null)
+                    {
+                        RelatedTransaction = new Transaction();
+                        RelatedTransactionInWork = new Transaction();
+                    }
+                    RelatedTransactionInWork.Credit = TransactionInWork.Debet;
                     if (!CurrencyList.Contains(TransactionInWork.Currency))
                         TransactionInWork.Currency = CurrencyCodes.BYR;
                     RelatedTransactionInWork.Currency = TransactionInWork.Currency == CurrencyCodes.BYR ? CurrencyCodes.USD : CurrencyCodes.BYR;
@@ -539,10 +541,7 @@ namespace Keeper.ViewModels
                 var res2 = RelatedTransactionInWork.Currency == CurrencyCodes.USD ? "" : 
                     _rateExtractor.GetUsdEquivalentString(RelatedTransactionInWork.Amount, RelatedTransactionInWork.Currency, RelatedTransactionInWork.Timestamp);
 
-                return TransactionInWork.Operation == OperationType.Расход
-                    ? res1 + "                                      " + res2
-                    : res2 + "----------" + res1;
-
+                return res1 + "                                      " + res2;
             }
         }
 
@@ -859,6 +858,7 @@ namespace Keeper.ViewModels
                         SelectedTransaction.CloneFrom(RelatedTransactionInWork);
                         RelatedTransaction.CloneFrom(TransactionInWork);
                     }
+                    SelectedTransactionIndex += 2;
                 }
             }
 
