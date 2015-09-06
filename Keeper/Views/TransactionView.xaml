@@ -410,8 +410,6 @@
 
       <Label Name="DebetAccountBalance" Content="ddd ddd ddd byr - nnn nnn nnn byr"
              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="205,40,0,0"/>
-      <Label Name="DebetAccountBalanceSecondCurrency" Content="ddd ddd ddd - стало после "
-             Height="30" Width="160" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="205,57,0,0"/>
       <Label Name="CreditAccountBalance" Content="ddd ddd ddd - стало после"
               Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="510,67,0,0"/>
       <Label Name="ExchangeRate" Content="обменный курс - "
