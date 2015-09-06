@@ -180,6 +180,7 @@
     <Compile Include="ByFunctional\AccountEditing\IAccountLowLevelOperator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositOfferIdGenerator.cs" />
     <Compile Include="ByFunctional\BalanceEvaluating\ArticleBalanceCalculator.cs" />
+    <Compile Include="Utils\CommonKeeper\TransactionChangesVisualizer.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\RegularPayment.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />

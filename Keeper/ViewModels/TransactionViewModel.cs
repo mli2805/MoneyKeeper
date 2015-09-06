@@ -25,6 +25,7 @@ namespace Keeper.ViewModels
         private readonly AccountBalanceCalculator _accountBalanceCalculator;
         private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
         private readonly AccountTreeStraightener _accountTreeStraightener;
+        private readonly TransactionChangesVisualizer _transactionChangesVisualizer;
         private readonly AssociationFinder _associationFinder;
 
         public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
@@ -423,7 +424,6 @@ namespace Keeper.ViewModels
                 SelectedTabIndex = GetTabIndexFromTransaction(_transactionInWork);
                 NotifyOfPropertyChange(() => AmountInUsd);
                 NotifyOfPropertyChange(() => DebetAccountBalance);
-                NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
                 NotifyOfPropertyChange(() => CreditAccountBalance);
                 NotifyOfPropertyChange(() => ExchangeRate);
                 DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
@@ -549,66 +549,13 @@ namespace Keeper.ViewModels
         {
             get
             {
-                if (TransactionInWork.Debet == null || !TransactionInWork.Debet.Is("Мои")) return "";
-
-                var period = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
-                var balanceBefore = _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(TransactionInWork.Debet, period, TransactionInWork.Currency);
-
-                return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
-                     balanceBefore, balanceBefore - TransactionInWork.Amount, TransactionInWork.Currency.ToString().ToLower());
-            }
-        }
-
-        public string DebetAccountBalanceSecondCurrency
-        {
-            get
-            {
-                if (TransactionInWork.Debet == null || TransactionInWork.Guid == Guid.Empty) return "";
-
-                var periodBefore = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
-                var balanceBefore =
-                  _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(TransactionInWork.Debet, periodBefore, RelatedTransactionInWork.Currency);
-
-                var periodAfter = new Period(new DateTime(0), RelatedTransactionInWork.Timestamp.AddSeconds(1));
-                var balanceAfter =
-                  _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(TransactionInWork.Debet, periodAfter, RelatedTransactionInWork.Currency);
-
-                return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
-                     balanceBefore, balanceAfter, RelatedTransactionInWork.Currency.ToString().ToLower());
+                return _transactionChangesVisualizer.GetDebetAccountBalance(TransactionInWork);
             }
         }
 
         public string CreditAccountBalance
         {
-            get
-            {
-
-                if (TransactionInWork.Operation == OperationType.Доход || TransactionInWork.Operation == OperationType.Перенос)
-                {
-                    if (TransactionInWork.Credit == null || !TransactionInWork.Credit.Is("Мои")) return "";
-
-                    var periodBefore = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
-                    var balanceBefore =
-                        _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(TransactionInWork.Credit,
-                            periodBefore, TransactionInWork.Currency);
-
-                    return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
-                        balanceBefore, balanceBefore + TransactionInWork.Amount,
-                        TransactionInWork.Currency.ToString().ToLower());
-                }
-                else if (TransactionInWork.IsExchange())
-                {
-                    var periodBefore = new Period(new DateTime(0), TransactionInWork.Timestamp.AddSeconds(-1));
-                    var balanceBefore =
-                        _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(RelatedTransactionInWork.Credit,
-                            periodBefore, RelatedTransactionInWork.Currency);
-
-                    return String.Format("{0:#,0} {2} -> {1:#,0} {2}",
-                        balanceBefore, balanceBefore + RelatedTransactionInWork.Amount,
-                        RelatedTransactionInWork.Currency.ToString().ToLower());
-                }
-                else return "";
-            }
+            get { return _transactionChangesVisualizer.GetCreditAccountBalance(TransactionInWork, RelatedTransactionInWork); }
         }
 
         public string ExchangeRate
@@ -651,7 +598,7 @@ namespace Keeper.ViewModels
 
         [ImportingConstructor]
         public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, AccountBalanceCalculator accountBalanceCalculator,
-          BalancesForTransactionsCalculator balancesForTransactionsCalculator, AccountTreeStraightener accountTreeStraightener)
+          BalancesForTransactionsCalculator balancesForTransactionsCalculator, AccountTreeStraightener accountTreeStraightener, TransactionChangesVisualizer transactionChangesVisualizer)
         {
             _db = db;
 
@@ -659,6 +606,7 @@ namespace Keeper.ViewModels
             _accountBalanceCalculator = accountBalanceCalculator;
             _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
             _accountTreeStraightener = accountTreeStraightener;
+            _transactionChangesVisualizer = transactionChangesVisualizer;
             _associationFinder = new AssociationFinder(_db);
             _filterOnlyActiveAccounts = true;
             InitializeListsForCombobox();
@@ -753,7 +701,6 @@ namespace Keeper.ViewModels
             }
 
             NotifyOfPropertyChange(() => DebetAccountBalance);
-            NotifyOfPropertyChange(() => DebetAccountBalanceSecondCurrency);
             NotifyOfPropertyChange(() => CreditAccountBalance);
             NotifyOfPropertyChange(() => ExchangeRate);
         }

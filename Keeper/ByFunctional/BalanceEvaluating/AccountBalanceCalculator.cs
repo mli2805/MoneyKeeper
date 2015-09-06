@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
-using System.IO;
 using System.Linq;
 using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
-using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Keeper.ByFunctional.BalanceEvaluating
 {
