@@ -36,13 +36,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             transaction.Credit = accountsPlaneList.First(account => account.Name == substrings[3].Trim());
             transaction.Amount = Convert.ToDecimal(substrings[4]);
             transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
-            transaction.Amount2 = Convert.ToDecimal(substrings[6]);
-            if (substrings[7].Trim() == "null" || substrings[7].Trim() == "0") transaction.Currency2 = null;
-            else
-                transaction.Currency2 = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]);
-            transaction.Article = substrings[8].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[8].Trim()) : null;
-            transaction.Comment = substrings[9].Trim();
-            transaction.Guid = new Guid(substrings[10].Trim());
+            transaction.Article = substrings[6].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[6].Trim()) : null;
+            transaction.Comment = substrings[7].Trim();
+            transaction.Guid = new Guid(substrings[8].Trim());
 
             return transaction;
         }

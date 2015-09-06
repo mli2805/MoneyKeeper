@@ -4,7 +4,6 @@ namespace Keeper.DomainModel
   {
     Доход,
     Расход,
-    Перенос,
-    Обмен
+    Перенос
   };
 }

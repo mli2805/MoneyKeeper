@@ -31,15 +31,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
         public string Dump(Transaction transaction)
         {
-            var s = Convert.ToString(transaction.Timestamp, new CultureInfo("ru-Ru")) + " ; " + transaction.Operation + " ; " +
-                    transaction.Debet + " ; " + transaction.Credit + " ; " + transaction.Amount + " ; " + transaction.Currency + " ; " +
-                    transaction.Amount2 + " ; ";
-
-            if (transaction.Currency2 == null || transaction.Currency2 == 0) s = s + "null";
-            else s = s + transaction.Currency2;
-
-            s = s + " ; " + transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
-            return s;
+            return Convert.ToString(transaction.Timestamp, new CultureInfo("ru-Ru")) + " ; " + transaction.Operation + " ; " +
+                   transaction.Debet + " ; " + transaction.Credit + " ; " + transaction.Amount + " ; " + transaction.Currency + " ; " +
+                   transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
         }
 
         public string Dump(BankDepositCalculatingRules rules)

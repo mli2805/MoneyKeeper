@@ -538,7 +538,7 @@ namespace Keeper.ViewModels
 
                 res1 = TransactionInWork.Currency == CurrencyCodes.USD ? "                                           " :
                     _rateExtractor.GetUsdEquivalentString(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
-                var res2 = RelatedTransactionInWork.Currency == CurrencyCodes.USD ? "" : 
+                var res2 = RelatedTransactionInWork.Currency == CurrencyCodes.USD ? "" :
                     _rateExtractor.GetUsdEquivalentString(RelatedTransactionInWork.Amount, RelatedTransactionInWork.Currency, RelatedTransactionInWork.Timestamp);
 
                 return res1 + "                                      " + res2;
@@ -615,36 +615,13 @@ namespace Keeper.ViewModels
         {
             get
             {
-                if (!TransactionInWork.IsExchange()) return "";
-                if (TransactionInWork.Currency == RelatedTransactionInWork.Currency) return "ошибка - одинаковая валюта";
-
-                if (TransactionInWork.Currency == CurrencyCodes.BYR)
-                    return RateToString(TransactionInWork.Amount, RelatedTransactionInWork.Amount);
-                if (RelatedTransactionInWork.Currency == CurrencyCodes.BYR)
-                    return RateToString(RelatedTransactionInWork.Amount, TransactionInWork.Amount);
-
-                if (TransactionInWork.Currency == CurrencyCodes.RUB)
-                    return RateToString(TransactionInWork.Amount, RelatedTransactionInWork.Amount);
-                if (RelatedTransactionInWork.Currency == CurrencyCodes.RUB)
-                    return RateToString(RelatedTransactionInWork.Amount, TransactionInWork.Amount);
-
-                if (TransactionInWork.Currency == CurrencyCodes.USD)
-                    return RateToString(TransactionInWork.Amount, RelatedTransactionInWork.Amount);
-                if (RelatedTransactionInWork.Currency == CurrencyCodes.USD)
-                    return RateToString(RelatedTransactionInWork.Amount, TransactionInWork.Amount);
-
-                return "EUR is the most expensive currency in my enum";
-
+                return TransactionInWork.IsExchange() ?
+                RateDefiner.GetExpression(TransactionInWork.Currency, TransactionInWork.Amount,
+                RelatedTransactionInWork.Currency, RelatedTransactionInWork.Amount) : "";
             }
         }
 
-        public string RateToString(decimal cheapCurrency, decimal expensiveCurrency)
-        {
-            return expensiveCurrency != 0 ? String.Format("по курсу {0:#,0}", cheapCurrency / expensiveCurrency) : "";
-        }
-
         private List<string> _dayResults;
-
         public List<string> DayResults
         {
             get { return _dayResults; }
@@ -816,7 +793,8 @@ namespace Keeper.ViewModels
         public void SaveTransactionChanges()
         {
             //     из-за смены типа операции во время ввода/редактирования в некоторых полях TransactionInWork могли остаться ненужные данные
-            CleanUselessFieldsBeforeSave();
+            if (TransactionInWork.IsExchange() || TransactionInWork.Operation == OperationType.Перенос)
+                TransactionInWork.Article = null;
 
             var isDateChanged = SelectedTransaction.Timestamp.Date != TransactionInWork.Timestamp.Date;
 
@@ -868,20 +846,6 @@ namespace Keeper.ViewModels
             IsInAddTransactionMode = false;
             CanFillInReceipt = false;
             IsCollectionChanged = true;
-        }
-
-        private void CleanUselessFieldsBeforeSave()
-        {
-            if (TransactionInWork.Operation != OperationType.Обмен)
-            {
-                TransactionInWork.Amount2 = 0;
-                TransactionInWork.Currency2 = null;
-            }
-
-            if (TransactionInWork.IsExchange() || (TransactionInWork.Operation != OperationType.Доход && TransactionInWork.Operation != OperationType.Расход))
-            {
-                TransactionInWork.Article = null;
-            }
         }
 
         public void EscapeButtonPressed()
@@ -1032,7 +996,6 @@ namespace Keeper.ViewModels
             _filterOnlyActiveAccounts = !_filterOnlyActiveAccounts;
             InitializeListsForCombobox();
         }
-
     }
 }
 

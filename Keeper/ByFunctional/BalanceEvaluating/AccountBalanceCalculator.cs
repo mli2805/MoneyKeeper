@@ -31,17 +31,8 @@ namespace Keeper.ByFunctional.BalanceEvaluating
                                           group t by t.Currency
                                           into g
                                           select new MoneyPair{ Currency = g.Key, Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount)) }).ToList();
-      
-      // учесть вторую сторону обмена - приход денег в другой валюте
-      List<MoneyPair> moneyPairsExchange =
-       ( from t in _db.Transactions
-         where t.Amount2 != 0 && interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount) 
-        group t by t.Currency2 into g
-        select new MoneyPair { Currency = (CurrencyCodes)g.Key, Amount = g.Sum(a => a.Amount2 * a.SignForAmount(balancedAccount) * -1) }).ToList();
 
-      var tempBalance = moneyPairs.Concat(moneyPairsExchange);
-
-      IEnumerable<MoneyPair> accountBalancePairs = from b in tempBalance group b by b.Currency into g select new MoneyPair { Currency = g.Key, Amount = g.Sum(a => a.Amount) };
+      IEnumerable<MoneyPair> accountBalancePairs = from b in moneyPairs group b by b.Currency into g select new MoneyPair { Currency = g.Key, Amount = g.Sum(a => a.Amount) };
       return accountBalancePairs;
     }
 

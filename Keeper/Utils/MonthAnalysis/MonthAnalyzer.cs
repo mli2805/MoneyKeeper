@@ -105,13 +105,13 @@ namespace Keeper.Utils.MonthAnalysis
 
         private void RegisterDepositsTraffic(List<Transaction> allMonthTransactions)
         {
-            Result.TransferFromDeposit = allMonthTransactions.
-              Where(t => t.Debet.IsDeposit() && !t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).
-              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
+//            Result.TransferFromDeposit = allMonthTransactions.
+//              Where(t => t.Debet.IsDeposit() && !t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).
+//              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
 
-            Result.TransferToDeposit = allMonthTransactions.
-              Where(t => !t.Debet.IsDeposit() && t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).
-              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp)) - Result.Incomes.OnDeposits.TotalInUsd;
+//            Result.TransferToDeposit = allMonthTransactions.
+//              Where(t => !t.Debet.IsDeposit() && t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).
+//              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp)) - Result.Incomes.OnDeposits.TotalInUsd;
         }
 
         private List<CurrencyRate> InitializeRates(DateTime date)

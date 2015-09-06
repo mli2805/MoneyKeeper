@@ -5,7 +5,7 @@ namespace Keeper.Utils.Rates
 {
     class RateDefiner
     {
-        public string GetExpression(CurrencyCodes currency1, Decimal amount1, CurrencyCodes currency2, Decimal amount2)
+        public static string GetExpression(CurrencyCodes currency1, Decimal amount1, CurrencyCodes currency2, Decimal amount2)
         {
             if (currency1 == currency2) return "ошибка - одинаковая валюта";
 
@@ -27,7 +27,7 @@ namespace Keeper.Utils.Rates
             return "EUR is the most expensive currency in my enum";
         }
 
-        private string RateToString(decimal cheapCurrency, decimal expensiveCurrency)
+        private static  string RateToString(decimal cheapCurrency, decimal expensiveCurrency)
         {
             return expensiveCurrency != 0 ? String.Format("по курсу {0:#,0}", cheapCurrency / expensiveCurrency) : "";
         }
