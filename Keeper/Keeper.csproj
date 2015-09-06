@@ -293,6 +293,7 @@
     <Compile Include="DomainModel\DateProcentPoint.cs" />
     <Compile Include="Utils\Diagram\DiagramLegendItem.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExcelReporter.cs" />
+    <Compile Include="Utils\Rates\RateDefiner.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositOffersViewModel.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositRatesAndRulesViewModel.cs" />
     <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
