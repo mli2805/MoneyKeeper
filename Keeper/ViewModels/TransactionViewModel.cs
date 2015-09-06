@@ -376,12 +376,11 @@ namespace Keeper.ViewModels
                     {
                         RelatedTransaction = new Transaction();
                         RelatedTransactionInWork = new Transaction();
+                        RelatedTransactionInWork.Credit = TransactionInWork.Debet;
+                        if (!CurrencyList.Contains(TransactionInWork.Currency))
+                            TransactionInWork.Currency = CurrencyCodes.BYR;
+                        RelatedTransactionInWork.Currency = TransactionInWork.Currency == CurrencyCodes.BYR ? CurrencyCodes.USD : CurrencyCodes.BYR;
                     }
-                    RelatedTransactionInWork.Credit = TransactionInWork.Debet;
-                    if (!CurrencyList.Contains(TransactionInWork.Currency))
-                        TransactionInWork.Currency = CurrencyCodes.BYR;
-                    RelatedTransactionInWork.Currency = TransactionInWork.Currency == CurrencyCodes.BYR ? CurrencyCodes.USD : CurrencyCodes.BYR;
-
                     break;
             }
         }
@@ -420,8 +419,8 @@ namespace Keeper.ViewModels
                     RelatedTransaction = null;
                 }
 
-                _isInTransactionSelectionProcess = false;
                 SelectedTabIndex = GetTabIndexFromTransaction(_transactionInWork);
+                _isInTransactionSelectionProcess = false;
                 NotifyOfPropertyChange(() => AmountInUsd);
                 NotifyOfPropertyChange(() => DebetAccountBalance);
                 NotifyOfPropertyChange(() => CreditAccountBalance);
