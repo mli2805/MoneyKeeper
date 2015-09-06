@@ -312,7 +312,7 @@
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="IncomeAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" 
                      Width="80" BorderBrush="#555555" TextAlignment="Right" 
-                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#.00}'}" />
+                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" />
             <ComboBox Name="IncomeCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
@@ -340,7 +340,7 @@
               SelectedItem="{Binding TransactionInWork.Article}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExpenseAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
             <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="50" Background="White"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
@@ -366,7 +366,7 @@
               SelectedItem="{Binding TransactionInWork.Credit}" />
             <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="TransferAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
             <ComboBox Name="TransferCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
@@ -393,12 +393,12 @@
               
             <Label Content="Сдано" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountPassed" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#.00}'}" TextAlignment="Right"/>
+                 Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
             <ComboBox Name="ExchangeCurrencyPassed" HorizontalAlignment="Left" Margin="150,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}" SelectedItem="{Binding TransactionInWork.Currency}" />
             <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
-                 Text="{Binding RelatedTransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#.00}'}" TextAlignment="Right"/>
+                 Text="{Binding RelatedTransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
             <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}" SelectedItem="{Binding RelatedTransactionInWork.Currency}" />
 

@@ -12,25 +12,22 @@ namespace Keeper.ByFunctional.DepositProcessing
     {
         private readonly KeeperDb _db;
         private Deposit _deposit;
-        private RateExtractor _rateExtractor;
 
         [ImportingConstructor]
-        public DepositTrafficExtractor(KeeperDb db, RateExtractor rateExtractor)
+        public DepositTrafficExtractor(KeeperDb db)
         {
             _db = db;
-            _rateExtractor = rateExtractor;
         }
 
         public Deposit ExtractTraffic(Account account) // используется при месячном анализе
         {
             _deposit = account.Deposit;
             _deposit.CalculationData = new DepositCalculationData();
-            ExtractViaSqlRequest();   // быстрый
-//            ExtractInCombainedMode();
+            ExtractViaSqlRequest();  
             return _deposit;
         }
 
-        private void ExtractViaSqlRequest() // проблемы с операциями обмена (должны отобразиться в обе стороны)
+        private void ExtractViaSqlRequest()
         {
             _deposit.CalculationData.Traffic = 
                 (from t in _db.Transactions
@@ -49,67 +46,9 @@ namespace Keeper.ByFunctional.DepositProcessing
                  }).ToList();
         }
 
-        private void ExtractInCombainedMode()
-        {
-            var trs = from t in _db.Transactions
-                      where t.Debet == _deposit.ParentAccount || t.Credit == _deposit.ParentAccount
-                      select t;
-
-            _deposit.CalculationData.Traffic = new List<DepositTransaction>();
-            foreach (var tr in trs) 
-            {
-//                if (tr.Operation == OperationType.Обмен)
-//                    _deposit.CalculationData.Traffic.AddRange(ConvertExchangeTransactionToDepositTransaction(tr));
-//                else
-//                    _deposit.CalculationData.Traffic.Add(ConvertCommonTransactionToDepositTransaction(tr));
-
-            }
-        }
-
-        private DepositTransaction ConvertCommonTransactionToDepositTransaction(Transaction t)
-        {
-            var result = new DepositTransaction()
-                {
-                    Amount = t.Amount,
-                    Timestamp = t.Timestamp,
-                    Currency = t.Currency,
-                    Comment = GetDepositOperationComment(t),
-                    AmountInUsd = _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp),
-                    TransactionType = GetDepositOperationType(t, _deposit.ParentAccount)
-                };
-            return result;
-        }
-
-        private IEnumerable<DepositTransaction> ConvertExchangeTransactionToDepositTransaction(Transaction t)
-        {
-            var result = new List<DepositTransaction>();
-
-            result.Add(new DepositTransaction()
-            {
-                    Amount = t.Amount,
-                    Timestamp = t.Timestamp,
-                    Currency = t.Currency,
-                    Comment = GetDepositOperationComment(t),
-                    AmountInUsd = _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp),
-                    TransactionType = DepositTransactionTypes.ОбменРасход
-            });
-
-//            result.Add(new DepositTransaction()
-//            {
-//                Amount = t.Amount2,
-//                Timestamp = t.Timestamp,
-//                Currency = (CurrencyCodes)t.Currency2,
-//                Comment = GetDepositOperationComment(t),
-//                AmountInUsd = _rateExtractor.GetUsdEquivalent(t.Amount2, (CurrencyCodes)t.Currency2, t.Timestamp),
-//                TransactionType = DepositTransactionTypes.ОбменДоход
-//            });
-
-            return result;
-        }
-
         private DepositTransactionTypes GetDepositOperationType(Transaction t, Account depositAccount)
         {
-            return t.Operation == OperationType.Доход
+            return (t.Operation == OperationType.Доход && !t.IsExchange())
                      ? DepositTransactionTypes.Проценты
                      : t.Debet == depositAccount
                          ? DepositTransactionTypes.Расход

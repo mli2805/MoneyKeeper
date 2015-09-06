@@ -8,7 +8,6 @@ using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
 using Keeper.Utils.CommonKeeper;
-using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis
@@ -105,13 +104,13 @@ namespace Keeper.Utils.MonthAnalysis
 
         private void RegisterDepositsTraffic(List<Transaction> allMonthTransactions)
         {
-//            Result.TransferFromDeposit = allMonthTransactions.
-//              Where(t => t.Debet.IsDeposit() && !t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).
-//              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
+            Result.TransferFromDeposit = allMonthTransactions.
+              Where(t => t.Debet.IsDeposit() && !t.Credit.IsDeposit()).
+              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
 
-//            Result.TransferToDeposit = allMonthTransactions.
-//              Where(t => !t.Debet.IsDeposit() && t.Credit.IsDeposit() && t.Operation != OperationType.Обмен).
-//              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp)) - Result.Incomes.OnDeposits.TotalInUsd;
+            Result.TransferToDeposit = allMonthTransactions.
+              Where(t => !t.Debet.IsDeposit() && t.Credit.IsDeposit()).
+              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp)) - Result.Incomes.OnDeposits.TotalInUsd;
         }
 
         private List<CurrencyRate> InitializeRates(DateTime date)
@@ -152,7 +151,6 @@ namespace Keeper.Utils.MonthAnalysis
             Console.WriteLine("Month analysis takes {0}", sw.Elapsed);
 
             return Result;
-
         }
 
     }
