@@ -42,24 +42,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
                                                     Amount = g.Sum(t => t.Amount * t.SignForAnalysis(flag))
                                                   };
 
-      // учесть вторую сторону обмена - приход денег в другой валюте
-      var exchangeTransactions = from t in _db.Transactions
-                                 where t.Timestamp.Date < startDay.Date &&
-                                       t.Amount2 != 0 && t.IsAcceptableForMonthAnalysisAs(flag)
-                                 select t;
-
-
-      IEnumerable<MoneyPair> secondPart = from t in exchangeTransactions
-                                          group t by t.Currency2 into g
-                                          select new MoneyPair
-                                                   {
-                                                     Currency = (CurrencyCodes)g.Key,
-                                                     Amount = g.Sum(t => t.Amount2 * -t.SignForAnalysis(flag))
-                                                   };
-
-      var tempBalance = firstPart.Concat(secondPart);
-
-      IEnumerable<MoneyPair> accountBalancePairs = from b in tempBalance
+      IEnumerable<MoneyPair> accountBalancePairs = from b in firstPart
                                                    group b by b.Currency into g
                                                    select new MoneyPair { Currency = g.Key, Amount = g.Sum(a => a.Amount) };
       return accountBalancePairs;

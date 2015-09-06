@@ -214,14 +214,14 @@ namespace Keeper.ViewModels
             {
                 while (tr.Timestamp.Date == dt.Date)
                 {
-                    if (tr.Debet.Is("На руках"))
-                    {
-                        cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
-                        if (tr.Operation == OperationType.Обмен)
-                            cashInUsd += tr.Currency2 == CurrencyCodes.USD
-                                           ? tr.Amount2
-                                           : tr.Amount2 / (decimal)_rateExtractor.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
-                    }
+//                    if (tr.Debet.Is("На руках"))
+//                    {
+//                        cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
+//                        if (tr.Operation == OperationType.Обмен)
+//                            cashInUsd += tr.Currency2 == CurrencyCodes.USD
+//                                           ? tr.Amount2
+//                                           : tr.Amount2 / (decimal)_rateExtractor.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
+//                    }
                     if (tr.Credit.Is("На руках"))
                         cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
                     if (tr.Debet.Is("Депозиты"))

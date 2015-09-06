@@ -58,10 +58,10 @@ namespace Keeper.ByFunctional.DepositProcessing
             _deposit.CalculationData.Traffic = new List<DepositTransaction>();
             foreach (var tr in trs) 
             {
-                if (tr.Operation == OperationType.Обмен)
-                    _deposit.CalculationData.Traffic.AddRange(ConvertExchangeTransactionToDepositTransaction(tr));
-                else
-                    _deposit.CalculationData.Traffic.Add(ConvertCommonTransactionToDepositTransaction(tr));
+//                if (tr.Operation == OperationType.Обмен)
+//                    _deposit.CalculationData.Traffic.AddRange(ConvertExchangeTransactionToDepositTransaction(tr));
+//                else
+//                    _deposit.CalculationData.Traffic.Add(ConvertCommonTransactionToDepositTransaction(tr));
 
             }
         }
@@ -94,15 +94,15 @@ namespace Keeper.ByFunctional.DepositProcessing
                     TransactionType = DepositTransactionTypes.ОбменРасход
             });
 
-            result.Add(new DepositTransaction()
-            {
-                Amount = t.Amount2,
-                Timestamp = t.Timestamp,
-                Currency = (CurrencyCodes)t.Currency2,
-                Comment = GetDepositOperationComment(t),
-                AmountInUsd = _rateExtractor.GetUsdEquivalent(t.Amount2, (CurrencyCodes)t.Currency2, t.Timestamp),
-                TransactionType = DepositTransactionTypes.ОбменДоход
-            });
+//            result.Add(new DepositTransaction()
+//            {
+//                Amount = t.Amount2,
+//                Timestamp = t.Timestamp,
+//                Currency = (CurrencyCodes)t.Currency2,
+//                Comment = GetDepositOperationComment(t),
+//                AmountInUsd = _rateExtractor.GetUsdEquivalent(t.Amount2, (CurrencyCodes)t.Currency2, t.Timestamp),
+//                TransactionType = DepositTransactionTypes.ОбменДоход
+//            });
 
             return result;
         }

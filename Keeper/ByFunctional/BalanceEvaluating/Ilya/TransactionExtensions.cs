@@ -13,9 +13,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating.Ilya
     }
     public static Money Credit(this Transaction transaction)
     {
-      return transaction.Operation != OperationType.Ξαμεν
-               ? new Money(transaction.Currency, transaction.Amount)
-               : new Money(transaction.Currency2.GetValueOrDefault(), transaction.Amount2);
+        return new Money(transaction.Currency, transaction.Amount);
     }
 
     public static MoneyBag Credit(this IEnumerable<Transaction> transactions, Func<Transaction, bool> predicate = null)

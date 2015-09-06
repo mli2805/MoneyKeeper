@@ -64,7 +64,7 @@
 
                 <XamlExtensions:AccountTemplateSelector.AmountStyleForByrFromExchange>
                     <DataTemplate>
-                        <TextBlock HorizontalAlignment="Left">
+                        <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
                                 <Binding Path="Amount" StringFormat="{} >> {0:#,#;; }"/>
                             </TextBlock.Text>
@@ -94,7 +94,7 @@
 
                 <XamlExtensions:AccountTemplateSelector.AmountStyleForOthersFromExchange>
                     <DataTemplate>
-                        <TextBlock HorizontalAlignment="Left">
+                        <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
                                 <Binding Path="Amount" StringFormat="{} >> {0:#,#.00;; }"/>
                             </TextBlock.Text>
@@ -267,15 +267,12 @@
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy h:mm'}" />
-          <GridViewColumn Header="Дебет" Width="150" DisplayMemberBinding="{Binding Debet}" />
-          <GridViewColumn Header="Кредит" Width="150" DisplayMemberBinding="{Binding Credit}" />
-<!--          <GridViewColumn Header="Сумма" Width="90" CellTemplate ="{StaticResource AmountColumnStyle}" />-->
-                    <GridViewColumn Header="Сумма" Width="90" CellTemplateSelector ="{StaticResource MyAccountTemplateSelector}" />
+          <GridViewColumn Header="Дебет" Width="190" DisplayMemberBinding="{Binding Debet}" />
+          <GridViewColumn Header="Кредит" Width="190" DisplayMemberBinding="{Binding Credit}" />
+          <GridViewColumn Header="Сумма" Width="115" CellTemplateSelector ="{StaticResource MyAccountTemplateSelector}" />
           <GridViewColumn Header="Вал" Width="35" DisplayMemberBinding="{Binding Currency}" />
-          <GridViewColumn Header="Сумма2" Width="90" CellTemplate="{StaticResource Amount2ColumnStyle}" />
-          <GridViewColumn Header="Вал2" Width="35" DisplayMemberBinding="{Binding Currency2}" />
-          <GridViewColumn Header="Категория" Width="150" DisplayMemberBinding="{Binding Article}" />
-          <GridViewColumn Header="Примечание" Width="180" DisplayMemberBinding="{Binding Comment}" />
+          <GridViewColumn Header="Категория" Width="164" DisplayMemberBinding="{Binding Article}" />
+          <GridViewColumn Header="Примечание" Width="190" DisplayMemberBinding="{Binding Comment}" />
         </GridView>
       </ListView.View>
     </ListView>

@@ -15,8 +15,6 @@ namespace Keeper.DomainModel
         private Account _credit;
         private decimal _amount;
         private CurrencyCodes _currency;
-        private decimal _amount2;
-        private CurrencyCodes? _currency2;
         private Account _article;
         private string _comment;
 
@@ -93,28 +91,6 @@ namespace Keeper.DomainModel
                 NotifyOfPropertyChange(() => Currency);
             }
         }
-        public decimal Amount2
-        {
-            get { return _amount2; }
-            set
-            {
-                if (value == _amount2) return;
-                _amount2 = value;
-                NotifyOfPropertyChange(() => Amount2);
-            }
-        }
-
-        public CurrencyCodes? Currency2
-        {
-            get { return _currency2; }
-            set
-            {
-                if (value.Equals(_currency2)) return;
-                _currency2 = value;
-                NotifyOfPropertyChange(() => Currency2);
-            }
-        }
-
         public Account Article
         {
             get { return _article; }
@@ -174,7 +150,7 @@ namespace Keeper.DomainModel
         {
             get
             {
-                if (Guid != Guid.Empty || Operation == OperationType.Обмен) return Brushes.DarkGreen;
+                if (Guid != Guid.Empty) return Brushes.DarkGreen;
                 if (Operation == OperationType.Доход) return Brushes.Blue;
                 if (Operation == OperationType.Расход) return Brushes.Red;
                 if (Operation == OperationType.Перенос) return Brushes.Black;
@@ -199,8 +175,6 @@ namespace Keeper.DomainModel
                                          Credit = Credit,
                                          Amount = Amount,
                                          Currency = Currency,
-                                         Amount2 = Amount2,
-                                         Currency2 = Currency2,
                                          Article = Article,
                                      };
 
@@ -221,8 +195,6 @@ namespace Keeper.DomainModel
             Credit = storage.Credit;
             Amount = storage.Amount;
             Currency = storage.Currency;
-            Amount2 = storage.Amount2;
-            Currency2 = storage.Currency2;
             Article = storage.Article;
             Comment = storage.Comment ?? "";
             Guid = storage.Guid;
@@ -244,7 +216,6 @@ namespace Keeper.DomainModel
             preformTransaction.Debet = Debet;
             preformTransaction.Credit = Credit;
             preformTransaction.Currency = Currency;
-            preformTransaction.Currency2 = Currency2;
             preformTransaction.Article = Article;
 
             return preformTransaction;

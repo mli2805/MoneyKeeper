@@ -58,24 +58,24 @@ namespace Keeper.Utils.Diagram
           if (!balanceInCurrencies.ContainsKey(transaction.Currency))
             balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
           else balanceInCurrencies[transaction.Currency] -= transaction.Amount;
-          if (transaction.Amount2 != 0)
-          {
-            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
-              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, transaction.Amount2);
-            else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] += transaction.Amount2;
-          }
+//          if (transaction.Amount2 != 0)
+//          {
+//            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+//              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, transaction.Amount2);
+//            else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] += transaction.Amount2;
+//          }
         }
 
         if (transaction.Credit.Is(balancedAccount))
         {
           if (!balanceInCurrencies.ContainsKey(transaction.Currency)) balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
           else balanceInCurrencies[transaction.Currency] += transaction.Amount;
-          if (transaction.Amount2 != 0)
-          {
-            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
-              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, -transaction.Amount2);
-            else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] -= transaction.Amount2;
-          }
+//          if (transaction.Amount2 != 0)
+//          {
+//            if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+//              balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, -transaction.Amount2);
+//            else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] -= transaction.Amount2;
+//          }
         }
 
       }
@@ -90,12 +90,12 @@ namespace Keeper.Utils.Diagram
         if (!balanceInCurrencies.ContainsKey(transaction.Currency))
           balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
         else balanceInCurrencies[transaction.Currency] -= transaction.Amount;
-        if (transaction.Amount2 != 0)
-        {
-          if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
-            balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, transaction.Amount2);
-          else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] += transaction.Amount2;
-        }
+//        if (transaction.Amount2 != 0)
+//        {
+//          if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+//            balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, transaction.Amount2);
+//          else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] += transaction.Amount2;
+//        }
       }
 
       if (transaction.Credit.Is(balancedAccount))
@@ -103,12 +103,12 @@ namespace Keeper.Utils.Diagram
         if (!balanceInCurrencies.ContainsKey(transaction.Currency))
           balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
         else balanceInCurrencies[transaction.Currency] += transaction.Amount;
-        if (transaction.Amount2 != 0)
-        {
-          if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
-            balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, -transaction.Amount2);
-          else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] -= transaction.Amount2;
-        }
+//        if (transaction.Amount2 != 0)
+//        {
+//          if (!balanceInCurrencies.ContainsKey((CurrencyCodes)transaction.Currency2))
+//            balanceInCurrencies.Add((CurrencyCodes)transaction.Currency2, -transaction.Amount2);
+//          else balanceInCurrencies[(CurrencyCodes)transaction.Currency2] -= transaction.Amount2;
+//        }
       }
     }
 
