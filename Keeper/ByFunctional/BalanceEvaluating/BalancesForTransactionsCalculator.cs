@@ -4,6 +4,7 @@ using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
+using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
 
@@ -14,12 +15,14 @@ namespace Keeper.ByFunctional.BalanceEvaluating
     {
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
+        private readonly AccountBalanceCalculator _accountBalanceCalculator;
 
         [ImportingConstructor]
-        public BalancesForTransactionsCalculator(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+        public BalancesForTransactionsCalculator(KeeperDb db, AccountTreeStraightener accountTreeStraightener, AccountBalanceCalculator accountBalanceCalculator)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
+            _accountBalanceCalculator = accountBalanceCalculator;
         }
 
         public List<string> CalculateDayResults(DateTime dt)
@@ -82,22 +85,33 @@ namespace Keeper.ByFunctional.BalanceEvaluating
             return incomes;
         }
 
+
+        private IEnumerable<Account> PrepareAccountList()
+        {
+            var allMyAccounts = new List<Account>((_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.Is("Мои") &&
+              account.Children.Count == 0 && !account.Is("Депозиты"))));
+            var depoRoot = (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
+                            where a.Name == "Депозиты"
+                            select a).First();
+            allMyAccounts.Add(depoRoot);
+            return allMyAccounts;
+        }
+
+        private IEnumerable<Account> OmitNotUsedAccounts(IEnumerable<Account> list)
+        {
+            return (from account in list let tr = _db.Transactions.LastOrDefault(t => t.EitherDebitOrCreditIs(account)) 
+                                   where tr != null && (DateTime.Now - tr.Timestamp).TotalDays < 40 select account).ToList();
+        }
         public string EndDayBalances(DateTime dt)
         {
-            var balanceCalculator = IoC.Get<AccountBalanceCalculator>();
             var period = new Period(new DateTime(0), dt.GetEndOfDate());
-            var result = String.Format(" На конец {0:dd MMMM yyyy} :   ", dt.Date);
+            var result = String.Format(" На конец {0:d MMMM yyyy} :   ", dt.Date);
 
-            var depo = (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
-                        where a.Name == "Депозиты"
-                        select a).First();
-
-            var calculatedAccounts = new List<Account>((_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.Is("Мои") &&
-              account.Children.Count == 0 && !account.Is("Депозиты"))));
-            calculatedAccounts.Add(depo);
+            var calculatedAccounts = OmitNotUsedAccounts(PrepareAccountList());
             foreach (var account in calculatedAccounts)
             {
-                var pairs = balanceCalculator.GetAccountBalancePairsWithTimeChecking(account, period).ToList();
+                var pairs = _accountBalanceCalculator.GetAccountBalancePairsWithTimeChecking(account, period).ToList();
+                if (account.Name == "Депозиты") result += "\n";
                 foreach (var balancePair in pairs.ToArray())
                     if (balancePair.Amount == 0) pairs.Remove(balancePair);
                 if (pairs.Any())
