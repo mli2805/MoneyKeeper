@@ -32,7 +32,10 @@ namespace Keeper.ByFunctional.BalanceEvaluating
 
             foreach (var item in balancePairs)
             {
-                if (item.Amount != 0) balance.Add(String.Format("{0:#,#} {1}", item.Amount, item.Currency));
+                if (item.Amount != 0)
+                    balance.Add(item.Currency == CurrencyCodes.BYR
+                        ? String.Format("{0:#,#} {1}", item.Amount, item.Currency)
+                        : String.Format("{0:#,0.##} {1}", item.Amount, item.Currency));
                 totalInUsd += _rateExtractor.GetUsdEquivalent(item.Amount, item.Currency, period.Finish);
             }
 
@@ -83,12 +86,9 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         {
             balanceList.Clear();
             if (selectedAccount == null) return 0;
-            if (selectedAccount.Is("Все доходы") || selectedAccount.Is("Все расходы"))
-                return FillListWithTraffic(selectedAccount, period, balanceList);
-            else return FillListWithBalance(selectedAccount, period, balanceList);
-
+            return (selectedAccount.Is("Все доходы") || selectedAccount.Is("Все расходы")) ?
+                FillListWithTraffic(selectedAccount, period, balanceList) :
+                FillListWithBalance(selectedAccount, period, balanceList) ;
         }
-
-
     }
 }
