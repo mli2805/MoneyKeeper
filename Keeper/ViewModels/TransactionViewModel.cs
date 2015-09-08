@@ -692,8 +692,7 @@ namespace Keeper.ViewModels
             if (e.PropertyName == "Credit" && TransactionInWork.IsExchange())
                 RelatedTransactionInWork.Debet = TransactionInWork.Credit;
 
-            if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
-                e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
+            if (e.PropertyName == "Amount" || e.PropertyName == "Currency" )
             {
                 NotifyOfPropertyChange(() => AmountInUsd);
                 DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
@@ -768,7 +767,7 @@ namespace Keeper.ViewModels
                     {
                         TransactionInWork.Guid = Guid.NewGuid();
                         RelatedTransactionInWork.Guid = TransactionInWork.Guid;
-                        RelatedTransactionInWork.Timestamp = TransactionInWork.Timestamp.AddMinutes(1);
+                        RelatedTransactionInWork.Timestamp = TransactionInWork.Timestamp.AddSeconds(10);
                         Rows.Add(RelatedTransaction);
                     }
 
@@ -782,7 +781,8 @@ namespace Keeper.ViewModels
                         SelectedTransaction.CloneFrom(RelatedTransactionInWork);
                         RelatedTransaction.CloneFrom(TransactionInWork);
                     }
-                    SelectedTransactionIndex += 2;
+                    SortedRows.Refresh();
+                    SelectedTransactionIndex ++;
                 }
             }
 
