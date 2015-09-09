@@ -104,21 +104,6 @@
 
             </XamlExtensions:AccountTemplateSelector>
         
-      <DataTemplate x:Key="AmountColumnStyle">
-        <TextBlock HorizontalAlignment="Right">
-          <TextBlock.Text>
-            <Binding Path="Amount" StringFormat="{}{0:#,#.00;; }"/>
-          </TextBlock.Text>
-        </TextBlock>
-      </DataTemplate>
-      <DataTemplate x:Key="Amount2ColumnStyle">
-        <TextBlock HorizontalAlignment="Right">
-          <TextBlock.Text>
-            <Binding Path="Amount2" StringFormat="{}{0:#,#;; }"/>
-          </TextBlock.Text>
-        </TextBlock>
-      </DataTemplate>
-
       <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
       <SolidColorBrush x:Key="TriangleFocusedBrush" Color="Gray" />
       <SolidColorBrush x:Key="TrianglePressedBrush" Color="#646464" />
@@ -276,7 +261,7 @@
         </GridView>
       </ListView.View>
     </ListView>
-    <Grid Grid.Row="2">
+    <Grid Name="AddEditArea"  Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*"/>
         <ColumnDefinition Width="192"/>
