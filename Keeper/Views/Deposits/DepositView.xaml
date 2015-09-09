@@ -20,6 +20,7 @@
       <ListBox.ItemTemplate>
         <DataTemplate>
           <Grid Margin="0,2">
+              
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="70" />
               <ColumnDefinition Width="90" />

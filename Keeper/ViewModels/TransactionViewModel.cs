@@ -692,8 +692,7 @@ namespace Keeper.ViewModels
             if (e.PropertyName == "Credit" && TransactionInWork.IsExchange())
                 RelatedTransactionInWork.Debet = TransactionInWork.Credit;
 
-            if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
-                e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
+            if (e.PropertyName == "Amount" || e.PropertyName == "Currency")
             {
                 NotifyOfPropertyChange(() => AmountInUsd);
                 DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
@@ -712,28 +711,47 @@ namespace Keeper.ViewModels
 
         public void MoveTransactionUp()
         {
-            var currentTransaction = SelectedTransaction;
-            SelectedTransactionIndex--;
-            var nearbyTransaction = SelectedTransaction;
-
-            currentTransaction.Timestamp = nearbyTransaction.Timestamp;
-            nearbyTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(1);
-
-            SortedRows.Refresh();
-            SelectedTransactionIndex--;
+            MoveTransaction(-1);
         }
 
         public void MoveTransactionDown()
         {
+            MoveTransaction(1);
+        }
+
+        private void MoveTransaction(int direction) // -1 - up;   +1 - down
+        {
             var currentTransaction = SelectedTransaction;
-            SelectedTransactionIndex++;
+            SelectedTransactionIndex += direction;
             var nearbyTransaction = SelectedTransaction;
 
-            currentTransaction.Timestamp = nearbyTransaction.Timestamp;
-            nearbyTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(-1);
+            if (nearbyTransaction.IsExchange())
+            {
+                Transaction relatedTransaction;
+                if (direction == 1)
+                {
+                    SelectedTransactionIndex += direction;
+                    relatedTransaction = SelectedTransaction;
+                }
+                else
+                {
+                    relatedTransaction = nearbyTransaction;
+                    SelectedTransactionIndex += direction;
+                    nearbyTransaction = SelectedTransaction;
+                }
+
+                nearbyTransaction.Timestamp = currentTransaction.Timestamp;
+                relatedTransaction.Timestamp = nearbyTransaction.Timestamp.AddSeconds(10);
+                currentTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(direction);
+            }
+            else
+            {
+                nearbyTransaction.Timestamp = currentTransaction.Timestamp;
+                currentTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(direction);
+            }
 
             SortedRows.Refresh();
-            SelectedTransactionIndex++;
+            SelectedTransactionIndex += direction;
         }
 
         public void SaveTransactionChanges()
@@ -768,7 +786,7 @@ namespace Keeper.ViewModels
                     {
                         TransactionInWork.Guid = Guid.NewGuid();
                         RelatedTransactionInWork.Guid = TransactionInWork.Guid;
-                        RelatedTransactionInWork.Timestamp = TransactionInWork.Timestamp.AddMinutes(1);
+                        RelatedTransactionInWork.Timestamp = TransactionInWork.Timestamp.AddSeconds(10);
                         Rows.Add(RelatedTransaction);
                     }
 
@@ -782,7 +800,8 @@ namespace Keeper.ViewModels
                         SelectedTransaction.CloneFrom(RelatedTransactionInWork);
                         RelatedTransaction.CloneFrom(TransactionInWork);
                     }
-                    SelectedTransactionIndex += 2;
+                    SortedRows.Refresh();
+                    SelectedTransactionIndex++;
                 }
             }
 
