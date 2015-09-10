@@ -117,16 +117,5 @@ namespace Keeper.ByFunctional.DepositProcessing
             _deposit.CalculationData.DailyTable = temp.ToList();
         }
 
-        private void DefineDailyCurrencyRatesByInnerJoin()
-        {
-            // inner join - если в одно из таблиц нет строки с ключем , 
-            // то и из другой таблицы данные не попадают в объединение
-            var temp =
-                from line in _deposit.CalculationData.DailyTable
-                join rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency)
-                    on line.Date equals rate.BankDay
-                select new DepositDailyLine { Date = line.Date, Balance = line.Balance, CurrencyRate = (decimal)rate.Rate };
-            _deposit.CalculationData.DailyTable = temp.ToList();
-        }
     }
 }

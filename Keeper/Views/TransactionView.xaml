@@ -46,7 +46,7 @@
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
-                                <Binding Path="Amount" StringFormat="{}{0:#,#;; }"/>
+                                <Binding Path="Amount" StringFormat="{}{0:#,0;; }"/>
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
@@ -56,7 +56,7 @@
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
-                                <Binding Path="Amount" StringFormat="{}{0:#,#;; } >> "/>
+                                <Binding Path="Amount" StringFormat="{}{0:#,0;; } >> "/>
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
@@ -66,7 +66,7 @@
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
-                                <Binding Path="Amount" StringFormat="{} >> {0:#,#;; }"/>
+                                <Binding Path="Amount" StringFormat="{} >> {0:#,0;; }"/>
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
@@ -76,7 +76,7 @@
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
-                                <Binding Path="Amount" StringFormat="{}{0:#,#.00;; }"/>
+                                <Binding Path="Amount" StringFormat="{}{0:#,0.00;; }"/>
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
@@ -86,7 +86,7 @@
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
-                                <Binding Path="Amount" StringFormat="{}{0:#,#.00;; } >> "/>
+                                <Binding Path="Amount" StringFormat="{}{0:#,0.00;; } >> "/>
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
@@ -96,7 +96,7 @@
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
-                                <Binding Path="Amount" StringFormat="{} >> {0:#,#.00;; }"/>
+                                <Binding Path="Amount" StringFormat="{} >> {0:#,0.00;; }"/>
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
