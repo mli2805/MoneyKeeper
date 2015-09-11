@@ -22,16 +22,18 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <ListBox Name="MyListBox" Margin="5"/>
-        <TextBox Name="AmounTextBox" Grid.Row="1" Margin="5" Grid.Column="0" Template ="{StaticResource MyControlTemplateOnlyIntegerPart}" ></TextBox>
-        <Button Name="SwitchStyle" Content="Switch" Margin="5" Grid.Row="1" Grid.Column="1" Click="SwitchStyle_Click"></Button>
-        <Button Name="Close" Content="Close" Margin="5" Grid.Row="1" Grid.Column="2" Click="Close_Click"></Button>
+        <TextBox Name="AmountTextBoxByr" Grid.Row="1" Margin="5" Grid.Column="0" Text="{Binding Amount, StringFormat='{}{0:#,0}'}"></TextBox>
+        <ComboBox Name="SwitchStyle" Margin="5" Grid.Row="1" Grid.Column="1"
+                  ItemsSource="{Binding CurrencyList}" DisplayMemberPath="CurrencyName" SelectedValuePath="Currency" SelectedValue="{Binding CurrentCurrency}"></ComboBox>
+        <TextBlock Grid.Row="1" Grid.Column="2" Margin="5" TextAlignment="Center" Text="{Binding CurrentCurrency}"></TextBlock>
+        <Button Name="Close" Content="Close" Margin="5" Grid.Row="2" Height="30" Grid.Column="2" Click="Close_Click"></Button>
+        <TextBox Name="AmountTextBoxOther" Grid.Row="2" Margin="5" Grid.Column="0" Text="{Binding Amount, StringFormat='{}{0:#,0.00}'}"></TextBox>
     </Grid>
 </Window>
