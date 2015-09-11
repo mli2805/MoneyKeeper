@@ -29,7 +29,8 @@ namespace Keeper.Utils.OxyPlots
     {
       var result = new List<ExpensePartingDataElement>();
       var kategories = GetExpenseKategories();
-      var convertedExpenseTransactions = _transactionSetConvertor.ConvertTransactionsQuery(_db.Transactions.Where(t => t.Operation == OperationType.Расход)).ToList();
+      var convertedExpenseTransactions = 
+          _transactionSetConvertor.ConvertTransactionsQuery(_db.Transactions.Where(t => t.Operation == OperationType.Расход && !t.IsExchange())).ToList();
       foreach (var kategory in kategories)
       {
         var trs = from t in convertedExpenseTransactions where t.Article.Is(kategory) select t;

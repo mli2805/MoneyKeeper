@@ -66,7 +66,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var account = new Account();
             var substrings = s.Split(';');
             account.Id = Convert.ToInt32(substrings[0]);
-            account.Name = substrings[1].Trim();
+            account.Name = substrings[1].Trim(); 
             parentId = Convert.ToInt32(substrings[2]);
             account.IsFolder = Convert.ToBoolean(substrings[3]);
             account.IsClosed = Convert.ToBoolean(substrings[4]);
