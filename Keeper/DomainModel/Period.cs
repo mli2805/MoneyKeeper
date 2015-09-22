@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Caliburn.Micro;
+using Keeper.Utils.Common;
 
 namespace Keeper.DomainModel
 {
@@ -107,6 +108,11 @@ namespace Keeper.DomainModel
         public bool ShouldBePaid()
         {
             return Finish.Date > Start.Date;
+        }
+
+        public Period ExpandFromMidnightToMidnight()
+        {
+            return new Period(Start.GetStartOfDate(), Finish.GetEndOfDate());
         }
 
     }

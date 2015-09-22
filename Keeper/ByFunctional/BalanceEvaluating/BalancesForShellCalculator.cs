@@ -64,14 +64,14 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         {
             trafficList.Clear();
             var firstTransactions = new List<string>();
-            var b = _articleBalanceCalculator.GetArticleBalanceInUsdPlusFromMidnightToMidnight(selectedAccount, period, firstTransactions);
+            var b = _articleBalanceCalculator.GetArticleSaldoInUsdPlusTransactions(selectedAccount, period.ExpandFromMidnightToMidnight(), firstTransactions);
             trafficList.Add(b == 0
                               ? "В данном периоде \nдвижение по выбранному счету не найдено"
                               : string.Format("{0}   {1:#,0} usd", selectedAccount.Name, b));
 
             foreach (var child in selectedAccount.Children)
             {
-                decimal c = _articleBalanceCalculator.GetArticleBalanceInUsdPlusFromMidnightToMidnight(child, period, firstTransactions);
+                decimal c = _articleBalanceCalculator.GetArticleSaldoInUsdPlusTransactions(child, period.ExpandFromMidnightToMidnight(), firstTransactions);
                 if (c != 0) trafficList.Add(string.Format("   {0}   {1:#,0} usd", child.Name, c));
             }
 
@@ -86,9 +86,9 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         {
             balanceList.Clear();
             if (selectedAccount == null) return 0;
-            return (selectedAccount.Is("Все доходы") || selectedAccount.Is("Все расходы")) ?
-                FillListWithTraffic(selectedAccount, period, balanceList) :
-                FillListWithBalance(selectedAccount, period, balanceList) ;
+            return (selectedAccount.Is("Мои")) ?
+                FillListWithBalance(selectedAccount, period, balanceList) :
+                FillListWithTraffic(selectedAccount, period, balanceList);
         }
     }
 }
