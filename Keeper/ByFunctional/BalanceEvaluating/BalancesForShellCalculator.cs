@@ -28,7 +28,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
             totalInUsd = 0;
             if (balancedAccount == null) return balance;
 
-            var balancePairs = _accountBalanceCalculator.GetAccountBalancePairsFromMidnightToMidnight(balancedAccount, period);
+            var balancePairs = _accountBalanceCalculator.GetAccountBalancePairs(balancedAccount, period.ExpandFromMidnightToMidnight());
 
             foreach (var item in balancePairs)
             {
@@ -64,14 +64,19 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         {
             trafficList.Clear();
             var firstTransactions = new List<string>();
-            var b = _articleBalanceCalculator.GetArticleSaldoInUsdPlusTransactions(selectedAccount, period.ExpandFromMidnightToMidnight(), firstTransactions);
+
+            var b = selectedAccount.Is("Внешние") ?
+                _accountBalanceCalculator.GetAccountSaldoInUsdPlusTransactions(selectedAccount, period.ExpandFromMidnightToMidnight(), firstTransactions) :
+                _articleBalanceCalculator.GetArticleSaldoInUsdPlusTransactions(selectedAccount, period.ExpandFromMidnightToMidnight(), firstTransactions);
             trafficList.Add(b == 0
                               ? "В данном периоде \nдвижение по выбранному счету не найдено"
                               : string.Format("{0}   {1:#,0} usd", selectedAccount.Name, b));
 
             foreach (var child in selectedAccount.Children)
             {
-                decimal c = _articleBalanceCalculator.GetArticleSaldoInUsdPlusTransactions(child, period.ExpandFromMidnightToMidnight(), firstTransactions);
+                var c = selectedAccount.Is("Внешние") ?
+                    _accountBalanceCalculator.GetAccountSaldoInUsdPlusTransactions(child, period.ExpandFromMidnightToMidnight(), firstTransactions) :
+                    _articleBalanceCalculator.GetArticleSaldoInUsdPlusTransactions(child, period.ExpandFromMidnightToMidnight(), firstTransactions);
                 if (c != 0) trafficList.Add(string.Format("   {0}   {1:#,0} usd", child.Name, c));
             }
 
