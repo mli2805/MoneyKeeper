@@ -110,7 +110,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
             var calculatedAccounts = OmitNotUsedAccounts(PrepareAccountList());
             foreach (var account in calculatedAccounts)
             {
-                var pairs = _accountBalanceCalculator.GetAccountBalancePairsWithTimeChecking(account, period).ToList();
+                var pairs = _accountBalanceCalculator.GetAccountBalancePairs(account, period).ToList();
                 if (account.Name == "Депозиты") result += "\n";
                 foreach (var balancePair in pairs.ToArray())
                     if (balancePair.Amount == 0) pairs.Remove(balancePair);
