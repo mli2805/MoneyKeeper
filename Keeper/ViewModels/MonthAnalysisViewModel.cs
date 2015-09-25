@@ -31,7 +31,7 @@ namespace Keeper.ViewModels
                 if (DateTime.Today.Year == _startDate.Date.Year && DateTime.Today.Month == _startDate.Date.Month) MonthAnalisysViewCaption += " - текущий период!";
                 NotifyOfPropertyChange(() => MonthAnalisysViewCaption);
                 MonthSaldo = _monthAnalyzer.AnalizeMonth(StartDate);
-                MonthAnalisysViewCaption = String.Format("Анализ месяца [{0}]", String.Format("{0:MMMM yyyy}", StartDate));
+                MonthAnalisysViewCaption = String.Format("[{0}]", String.Format("{0:MMMM yyyy}", StartDate));
                 NotifyOfPropertyChange(() => MonthAnalisysViewCaption);
             }
         }

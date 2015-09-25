@@ -38,7 +38,6 @@
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <Button Margin="100,-20,0,0" Height="24">Month</Button>
         <StackPanel>
             <DockPanel LastChildFill="True">
                 <ListView ItemsSource="{Binding Blank.BeforeList}" Margin="2,2,0,0" Padding="2,2,7,4" />
@@ -89,6 +88,11 @@
                 <ListView ItemsSource="{Binding Blank.ForecastListBalance}" Margin="2" Padding="2,2,7,4" Visibility="{Binding Path=ForecastListVisibility}"/>
             </DockPanel>
             <Button Name="CloseView" IsCancel="True" Height="1" />
+        </StackPanel>
+        <StackPanel Margin="0,0,10,0">
+            <TextBlock Text="стрелки - месяц" Opacity="0.03" HorizontalAlignment="Right" FontSize="24"/>
+            <TextBlock Text="+Shift - квартал" Opacity="0.05" HorizontalAlignment="Right"  FontSize="24"/>
+            <TextBlock Text="+Ctrl - год" Opacity="0.05" HorizontalAlignment="Right"  FontSize="24"/>
         </StackPanel>
     </Grid>
 </Window>
