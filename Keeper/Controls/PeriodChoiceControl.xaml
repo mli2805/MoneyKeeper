@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Keeper.Controls.PeriodChoiceControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="525" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged">
+    <Grid Name="ControlGrid">
+        <Border Name="LeftPart" Width="{Binding LeftPartWidth}"                   
+                    HorizontalAlignment="Left" BorderThickness="0,1,0,1" BorderBrush="Gray" Background="GhostWhite"/>
+        <Border Name="CentralPart" Width="{Binding CenterPartWidth}" Margin="{Binding CenterPartMargin}" 
+                    HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Gray" Background="White" 
+                    PreviewMouseDown="CenterPartPreviewMouseDown"/>
+        <Border Name="RightPart" Margin="{Binding RightPartMargin}" 
+                    HorizontalAlignment="Stretch" BorderThickness="1,1,0,1" BorderBrush="Gray" Background="GhostWhite"/>
+
+        <Button Name="BtnFrom" Height="22" Width="9" Margin="{Binding BtnFromMargin}" HorizontalAlignment="Left" Cursor="SizeWE"
+                PreviewMouseDown="BtnFromPreviewMouseDown" PreviewMouseMove="BtnFrom_PreviewMouseMove" PreviewMouseUp="BtnFromPreviewMouseUp"/>
+        <Button Name="BtnTo" Height="22" Width="9" Margin="{Binding BtnToMargin}" HorizontalAlignment="Left" Cursor="SizeWE" 
+                PreviewMouseDown="BtnToPreviewMouseDown" PreviewMouseMove="BtnToPreviewMouseMove" PreviewMouseUp="BtnToPreviewMouseUp"/>
+    </Grid>
+</UserControl>

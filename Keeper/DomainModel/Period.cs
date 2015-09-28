@@ -115,5 +115,11 @@ namespace Keeper.DomainModel
             return new Period(Start.GetStartOfDate(), Finish.GetEndOfDate());
         }
 
+        public string ToShortDateString()
+        {
+            return Start.ToShortDateString() + " - " + Finish.ToShortDateString(); 
+        }
+
+
     }
 }
