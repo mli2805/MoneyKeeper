@@ -142,6 +142,9 @@
     <Compile Include="ByFunctional\AccountEditing\IUserInformator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="ByFunctional\OfficialRateFromWebsiteGetter.cs" />
+    <Compile Include="Controls\PeriodChoiceControl.xaml.cs">
+      <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DomainModel\Deposit\DepositEstimations.cs" />
     <Compile Include="DomainModel\Deposit\DepositReportBodyLine.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositTrafficEvaluator.cs" />
@@ -180,6 +183,7 @@
     <Compile Include="ByFunctional\AccountEditing\IAccountLowLevelOperator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositOfferIdGenerator.cs" />
     <Compile Include="ByFunctional\BalanceEvaluating\ArticleBalanceCalculator.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="Utils\CommonKeeper\TransactionChangesVisualizer.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
@@ -230,6 +234,7 @@
     <Compile Include="ByFunctional\DepositProcessing\DepositTrafficExtractor.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositReporter.cs" />
     <Compile Include="Utils\Diagram\DiagramDataExtremums.cs" />
+    <Compile Include="Utils\Diagram\DiagramIntervalMode.cs" />
     <Compile Include="Utils\Diagram\DiagramMode.cs" />
     <Compile Include="Utils\Diagram\DiagramPair.cs" />
     <Compile Include="Utils\Diagram\DiagramSeries.cs" />
@@ -240,6 +245,8 @@
     <Compile Include="ByFunctional\BalanceEvaluating\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Utils\OldTransactionsReorderer.cs" />
+    <Compile Include="Utils\OxyPlots\BlackBox.cs" />
+    <Compile Include="Utils\OxyPlots\ExpensePartingDataElement.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\Common\DateTimeExtantions.cs" />
@@ -468,6 +475,10 @@
     <Page Include="Controls\PasswordControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PeriodChoiceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ShellViewDateSelectControl.xaml">
       <SubType>Designer</SubType>

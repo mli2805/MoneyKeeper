@@ -4,8 +4,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:cal="http://www.caliburnproject.org"
-        xmlns:Controls="clr-namespace:Keeper.Controls" 
-        xmlns:Wpf="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        xmlns:controls="clr-namespace:Keeper.Controls" 
+        xmlns:oxyplot="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
         Title="DiagramOxyplotView" Height="700" Width="1000">
   <i:Interaction.Triggers>
     <ei:KeyTrigger Key="F2" >
@@ -17,23 +17,19 @@
   </i:Interaction.Triggers>
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="128"/>
-      <ColumnDefinition Width="180"/>
+      <ColumnDefinition Width="5*"/>
+      <ColumnDefinition Width="2*"/>
     </Grid.ColumnDefinitions>
 
-    <Wpf:PlotView Grid.Column="0" Grid.ColumnSpan="2" Model="{Binding MyPlotModel}" Margin="5"/>
-    <Controls:IntervalSlidersControl Grid.Column="1" Grid.ColumnSpan="2" Margin="15" VerticalAlignment="Bottom" 
-                                           SliderInterval="{Binding SelectedInterval, Mode=TwoWay}"/>
-    <Grid Grid.Column="2" Margin="5">
+    <oxyplot:PlotView Grid.Column="0" Grid.ColumnSpan="2" Model="{Binding MyPlotModel}" Margin="5"/>
+    <Grid Grid.Column="1" Margin="5">
       <Grid.RowDefinitions>
-        <RowDefinition Height="35"/>
-        <RowDefinition Height="35"/>
-        <RowDefinition Height="35"/>
-        <RowDefinition Height="*"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="25"/>
+          <RowDefinition Height="35"/>
       </Grid.RowDefinitions>
-      <Controls:IntervalExpositionControl ExpositionInterval="{Binding TitleInterval, Mode=TwoWay}" 
-                                          ExpositionMode="{Binding IntervalMode, Mode=TwoWay}"/>
+        <TextBlock Name="LabelPeriod" Grid.Row="1" Text="{Binding SelectedPeriodTitle}" HorizontalAlignment="Right"></TextBlock>
+        <controls:PeriodChoiceControl x:Name="PeriodChoiceControl" Grid.Row="2" FromPoint="{Binding FromPoint, Mode=TwoWay}" ToPoint="{Binding ToPoint, Mode=TwoWay}"/>
     </Grid>
   </Grid>
 </Window>
