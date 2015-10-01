@@ -27,6 +27,13 @@ namespace Keeper.Utils.OxyPlots
                 date.Year * 12 + date.Month - _firstDate.Year * 12 + _firstDate.Month :
                 date.Year - _firstDate.Year;
         }
+
+        private DateTime DateFromIndex(double index)
+        {
+            var year = (int)index/12;
+            var month = (int)(index - year*12);
+            return _firstDate.AddYears(year).AddMonths(month);
+        }
         public Tuple<double, double> DatesToPoints(DateTime fromDate, DateTime toDate)
         {
             double fromDatePosition = DateIndex(fromDate) / DateIndex(_lastDate) * 100;
@@ -42,7 +49,13 @@ namespace Keeper.Utils.OxyPlots
 
         public Tuple<DateTime, DateTime> PointsToDates(double fromPoint, double toPoint)
         {
-            return new Tuple<DateTime, DateTime>(new DateTime(), new DateTime() );
+            var lastDateIndex = DateIndex(_lastDate);
+            var firstDateIndex = DateIndex(_firstDate);
+            var indexFrom = fromPoint/100 * (lastDateIndex - firstDateIndex) + firstDateIndex;
+            var indexTo = toPoint / 100 * (lastDateIndex - firstDateIndex) + firstDateIndex;
+
+            return new Tuple<DateTime, DateTime>(DateFromIndex(indexFrom), DateFromIndex(indexTo));
         }
+
     }
 }
