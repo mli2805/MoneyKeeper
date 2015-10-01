@@ -33,6 +33,7 @@ namespace Keeper.ViewModels
             {
                 if (value.Equals(_fromPoint)) return;
                 _fromPoint = value;
+                SelectedInterval = new Period(_boxBox.PointsToDates(_fromPoint, _toPoint));
                 NotifyOfPropertyChange();
             }
         }
@@ -44,6 +45,7 @@ namespace Keeper.ViewModels
             {
                 if (value.Equals(_toPoint)) return;
                 _toPoint = value;
+                SelectedInterval = new Period(_boxBox.PointsToDates(_fromPoint, _toPoint));
                 NotifyOfPropertyChange();
             }
         }
@@ -79,17 +81,21 @@ namespace Keeper.ViewModels
             }
         }
 
+
+        private BlackBox _boxBox;
         public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
         {
             _diagramData = diagramData;
 
-            SelectedInterval = new Period(DateTime.Today.GetStartOfMonthForDate(), DateTime.Today.GetEndOfDate());
+            var today = DateTime.Today.GetEndOfDate();
+            SelectedInterval = new Period(today.AddMonths(-1), today);
             IntervalMode = DiagramIntervalMode.Months;
 
-            var bb = new BlackBox(new DateTime(_diagramData.First().Year, _diagramData.First().Month, 15),
-                new DateTime(_diagramData.Last().Year, _diagramData.Last().Month, 15),
+            // min / max is defined by time
+            _boxBox = new BlackBox(new DateTime(_diagramData.Min().Year, _diagramData.Min().Month, 15),
+                new DateTime(_diagramData.Max().Year, _diagramData.Max().Month, 15),
                 IntervalMode);
-            var points = bb.PeriodToPoints(SelectedInterval);
+            var points = _boxBox.PeriodToPoints(SelectedInterval);
             FromPoint = points.Item1;
             ToPoint = points.Item2;
 

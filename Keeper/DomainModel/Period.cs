@@ -19,6 +19,12 @@ namespace Keeper.DomainModel
             Finish = finish;
         }
 
+        public Period(Tuple<DateTime, DateTime> tuple)
+        {
+            Start = tuple.Item1;
+            Finish = tuple.Item2;
+        }
+
         public string ToStringOnlyDates()
         {
             return string.Format("{0:d} - {1:d}", Start.Date, Finish.Date);
