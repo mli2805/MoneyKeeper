@@ -1,5 +1,6 @@
 using System;
 using Keeper.DomainModel;
+using Keeper.Utils.Common;
 
 namespace Keeper.Utils.OxyPlots
 {
@@ -7,18 +8,14 @@ namespace Keeper.Utils.OxyPlots
     {
         public Account Kategory { get; set; }
         public decimal Amount { get; set; }
-        public int Month { get; set; }
-        public int Year { get; set; }
+        public YearMonth YearMonth { get; set; }
 
-        public ExpensePartingDataElement(Account kategory, decimal amount, int month, int year)
+        public ExpensePartingDataElement(Account kategory, decimal amount, YearMonth yearMonth)
         {
             Kategory = kategory;
-            Month = month;
             Amount = amount;
-            Year = year;
+            YearMonth = yearMonth;
         }
-
-        private DateTime GetDateTime() { return new DateTime(Year,Month,1);}
 
         /// <summary>
         /// любое сравнение инстансов в том числе поиск мин/мах запросами будет использовать это сравнение
@@ -27,7 +24,7 @@ namespace Keeper.Utils.OxyPlots
         /// <returns></returns>
         public int CompareTo(ExpensePartingDataElement other)
         {
-            return this.GetDateTime().CompareTo(other.GetDateTime());
+            return this.YearMonth.CompareTo(other.YearMonth);
         }
 
     }

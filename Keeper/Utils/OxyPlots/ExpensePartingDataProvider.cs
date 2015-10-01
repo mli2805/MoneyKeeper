@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.Utils.Common;
 using Keeper.Utils.CommonKeeper;
 
 namespace Keeper.Utils.OxyPlots
@@ -37,7 +38,7 @@ namespace Keeper.Utils.OxyPlots
                 var r = from t in trs
                         group t by new { t.Timestamp.Month, t.Timestamp.Year }
                             into g
-                            select new ExpensePartingDataElement(kategory, g.Sum(a => a.AmountInUsd), g.Key.Month, g.Key.Year);
+                            select new ExpensePartingDataElement(kategory, g.Sum(a => a.AmountInUsd), new YearMonth(g.Key.Year, g.Key.Month));
                 result.AddRange(r);
             }
             return result;

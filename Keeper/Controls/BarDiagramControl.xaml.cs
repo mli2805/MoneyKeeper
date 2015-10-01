@@ -227,7 +227,7 @@ namespace Keeper.Controls
     {
       if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
       if (e.Key == Key.F5) Draw();
-      if (e.Key == Key.F1) Legend.Visibility = Legend.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+      if (e.Key == Key.F1){ Legend.Visibility = Legend.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed; this.Draw(); Console.WriteLine("actual legend width is {0}",Legend.ActualWidth);}
       if (e.Key == Key.F2) ChangeLine();
     }
 

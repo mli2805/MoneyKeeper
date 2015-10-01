@@ -186,6 +186,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="Utils\CommonKeeper\TransactionChangesVisualizer.cs" />
+    <Compile Include="Utils\Common\YearMonth.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\RegularPayment.cs" />
     <Compile Include="Models\Shell\MainMenuModel.cs" />
