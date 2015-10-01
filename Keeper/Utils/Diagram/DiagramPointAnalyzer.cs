@@ -18,6 +18,7 @@ namespace Keeper.Utils.Diagram
 
     public int PointToBar(Point point, out int leftBar, out bool byHeight)
     {
+        Console.WriteLine("current image width is {0}", _drawingCalculator.ImageWidth);
       leftBar = -1;
       byHeight = false;
       double margin = _drawingCalculator.LeftMargin + _drawingCalculator.Shift / 2 + _drawingCalculator.Gap / 2;

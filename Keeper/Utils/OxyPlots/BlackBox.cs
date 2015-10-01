@@ -1,31 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Keeper.DomainModel;
+using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 
 namespace Keeper.Utils.OxyPlots
 {
     public class BlackBox
     {
-        private readonly DateTime _firstDate;
-        private readonly DateTime _lastDate;
+        private readonly YearMonth _firstDate;
+        private readonly YearMonth _lastDate;
         private readonly DiagramIntervalMode _intervalMode;
 
-        public BlackBox(DateTime firstDate, DateTime lastDate, DiagramIntervalMode intervalMode)
+        public BlackBox(YearMonth firstDate, YearMonth lastDate, DiagramIntervalMode intervalMode)
         {
             _firstDate = firstDate;
             _lastDate = lastDate;
             _intervalMode = intervalMode;
-        }
-
-        private double DateIndex(DateTime date)
-        {
-            return _intervalMode == DiagramIntervalMode.Months ?
-                date.Year * 12 + date.Month - _firstDate.Year * 12 + _firstDate.Month :
-                date.Year - _firstDate.Year;
         }
 
         private DateTime DateFromIndex(double index)
