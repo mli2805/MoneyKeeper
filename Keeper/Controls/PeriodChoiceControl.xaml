@@ -10,7 +10,7 @@
                     HorizontalAlignment="Left" BorderThickness="0,1,0,1" BorderBrush="Gray" Background="GhostWhite"/>
         <Border Name="CentralPart" Width="{Binding CenterPartWidth}" Margin="{Binding CenterPartMargin}" 
                     HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Gray" Background="White" 
-                    PreviewMouseDown="CenterPartPreviewMouseDown"/>
+                    PreviewMouseDown="CenterPartPreviewMouseDown" PreviewMouseMove="CentralPartPreviewMouseMove" PreviewMouseUp="CentralPartPreviewMouseUp"/>
         <Border Name="RightPart" Margin="{Binding RightPartMargin}" 
                     HorizontalAlignment="Stretch" BorderThickness="1,1,0,1" BorderBrush="Gray" Background="GhostWhite"/>
 
