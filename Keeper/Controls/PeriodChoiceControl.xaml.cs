@@ -130,7 +130,7 @@ namespace Keeper.Controls
             var width = ControlGrid.ActualWidth;
             _minCenterPartWidth = (int)(width*0.1);
 
-            SetPositions(width*0.65, width*0.2);
+            SetPositions(width*FromPoint, width*(ToPoint - FromPoint));
             _btnFromIsHolded = false;
             _btnToIsHolded = false;
             _centralPartDoubleClick = false;

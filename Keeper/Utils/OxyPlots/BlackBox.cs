@@ -33,5 +33,10 @@ namespace Keeper.Utils.OxyPlots
             return new Tuple<YearMonth, YearMonth>(PointToYearMonth(fromPoint), PointToYearMonth(toPoint));
         }
 
+        public void YearMonthPeriodToPoints(Tuple<YearMonth, YearMonth> period, out double fromPoint, out double toPoint)
+        {
+            fromPoint = YearMonth.PeriodInMonths(period.Item1, _firstDate)/_delta;
+            toPoint = YearMonth.PeriodInMonths(period.Item2, _firstDate)/_delta;
+        }
     }
 }

@@ -101,16 +101,13 @@ namespace Keeper.ViewModels
         {
             _diagramData = diagramData;
 
-            SelectedInterval = new Tuple<YearMonth, YearMonth>(new YearMonth(DateTime.Today.AddMonths(-2)),new YearMonth(DateTime.Today) );
+            SelectedInterval = new Tuple<YearMonth, YearMonth>(new YearMonth(DateTime.Today.AddMonths(-24)),new YearMonth(DateTime.Today) );
             IntervalMode = DiagramIntervalMode.Months;
 
             // min / max is defined by time
             _boxBox = new BlackBox(_diagramData.Min().YearMonth, _diagramData.Max().YearMonth, IntervalMode);
 
-//            var points = _boxBox.PeriodToPoints(SelectedInterval);
-            var points = new Tuple<double, double>(87, 99);
-            _fromPoint = points.Item1;
-            _toPoint = points.Item2;
+            _boxBox.YearMonthPeriodToPoints(SelectedInterval, out _fromPoint, out _toPoint);
 
             InitializeDiagram();
         }
