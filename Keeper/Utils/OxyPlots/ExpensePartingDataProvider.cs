@@ -34,11 +34,11 @@ namespace Keeper.Utils.OxyPlots
                 _transactionSetConvertor.ConvertTransactionsQuery(_db.Transactions.Where(t => t.Operation == OperationType.Расход && !t.IsExchange())).ToList();
             foreach (var kategory in kategories)
             {
-                var trs = from t in convertedExpenseTransactions where t.Article.Is(kategory) select t;
+                var k = kategory;
+                var trs = from t in convertedExpenseTransactions where t.Article.Is(k) select t;
                 var r = from t in trs
-                        group t by new { t.Timestamp.Month, t.Timestamp.Year }
-                            into g
-                            select new ExpensePartingDataElement(kategory, g.Sum(a => a.AmountInUsd), new YearMonth(g.Key.Year, g.Key.Month));
+                        group t by new { t.Timestamp.Month, t.Timestamp.Year } into g
+                        select new ExpensePartingDataElement(k, g.Sum(a => a.AmountInUsd), new YearMonth(g.Key.Year, g.Key.Month));
                 result.AddRange(r);
             }
             return result;
