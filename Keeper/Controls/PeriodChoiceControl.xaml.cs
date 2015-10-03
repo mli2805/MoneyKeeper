@@ -48,6 +48,8 @@ namespace Keeper.Controls
         private double _btnFromStartX;
         private double _btnToStartX;
         private bool _centralPartDoubleClick;
+        private bool _centralPartIsHolded;
+        private double _centralPartStartX;
 
         private Thickness _btnFromMargin;
         private Thickness _btnToMargin;
@@ -128,9 +130,11 @@ namespace Keeper.Controls
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             var width = ControlGrid.ActualWidth;
-            _minCenterPartWidth = (int)(width*0.1);
+//            _minCenterPartWidth = (int)(width*0.07);
+            _minCenterPartWidth = 30;
 
-            SetPositions(width*FromPoint, width*(ToPoint - FromPoint));
+            Console.WriteLine("{0}  {1}", FromPoint, ToPoint);
+            SetPositions(width*FromPoint - 4, width*(ToPoint - FromPoint));
             _btnFromIsHolded = false;
             _btnToIsHolded = false;
             _centralPartDoubleClick = false;
@@ -223,6 +227,20 @@ namespace Keeper.Controls
         #endregion
 
         #region CentralPart reactions
+        private void CentralPartPreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (_centralPartIsHolded)
+            {
+                var delta = e.GetPosition(this).X - _centralPartStartX;
+                MoveCentralPart(delta);
+                _centralPartStartX = e.GetPosition(this).X;
+            }
+        }
+
+        private void MoveCentralPart(double delta)
+        {
+            Console.WriteLine("central part is moving");
+        }
         private void CenterPartPreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
@@ -234,6 +252,16 @@ namespace Keeper.Controls
                 Console.WriteLine("actual width is {0} central part starts from {1} and has width {2}", this.ActualWidth, CenterPartMargin.Left, CenterPartWidth);
                 RefreshDependencyProperties();
             }
+            else
+            {
+                _centralPartIsHolded = true;
+                _centralPartStartX = e.GetPosition(this).X;
+            }
+            
+        }
+        private void CentralPartPreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _centralPartIsHolded = false;
         }
 
         private void ExpandOnAllRange()
@@ -256,7 +284,8 @@ namespace Keeper.Controls
             if (e.WidthChanged)
             {
                 var koeff = e.NewSize.Width/e.PreviousSize.Width;
-                _minCenterPartWidth = (int)(e.NewSize.Width * 0.1);
+//                _minCenterPartWidth = (int)(e.NewSize.Width * 0.1);
+                _minCenterPartWidth = 30;
                 SetPositions(BtnFromMargin.Left * koeff, CenterPartWidth * koeff);
             }
         }
@@ -269,5 +298,7 @@ namespace Keeper.Controls
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
     }
 }
