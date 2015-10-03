@@ -12,11 +12,26 @@ namespace Keeper.Utils.Common
             Month = month;
         }
 
+        public YearMonth(DateTime date)
+        {
+            Year = date.Year;
+            Month = date.Month;
+        }
+
         public YearMonth AddMonth(int mm)
         {
             int newMonth = Month + mm;
             int newYear = Year;
-            if (newMonth > 12) newYear = newYear + newMonth/12;
+            if (newMonth > 12)
+            {
+                newYear = newYear + newMonth / 12;
+                newMonth = newMonth % 12;
+                if (newMonth == 0)
+                {
+                    newYear--;
+                    newMonth = 12;
+                }
+            }
             else if (newMonth < 1)
             {
                 newYear = newYear - newMonth/12 - 1;
@@ -37,10 +52,43 @@ namespace Keeper.Utils.Common
                 new YearMonth(instance1.Year - instance2.Year, instance1.Month - instance2.Month) ;
         }
 
+        public static bool operator <(YearMonth instance1, YearMonth instance2)
+        {
+            return instance1.Year < instance2.Year || (instance1.Year == instance2.Year && instance1.Month < instance2.Month);
+        }
+        public static bool operator >(YearMonth instance1, YearMonth instance2)
+        {
+            return instance1.Year > instance2.Year || (instance1.Year == instance2.Year && instance1.Month > instance2.Month);
+        }
 
+        /// <summary>
+        /// если finish == start возвращает 1 месяц
+        /// </summary>
+        /// <param name="finish"></param>
+        /// <param name="start"></param>
+        /// <returns></returns>
+        public static int PeriodInMonths(YearMonth finish, YearMonth start)
+        {
+            var sub = finish - start;
+            return sub.Year*12 + sub.Month + 1;
+        }
         public int CompareTo(YearMonth other)
         {
             return (Year*12 + Month).CompareTo(other.Year*12 + other.Month);
         }
+
+
+        public override string ToString()
+        {
+            var date = new DateTime(Year, Month, 1);
+            return date.ToString("MMMM yyyy");
+        }
+
+        public static string IntervalToString(Tuple<YearMonth, YearMonth> tuple)
+        {
+            return string.Format("{0} - {1}", tuple.Item1, tuple.Item2);
+        }
+
+        public bool InInterval(Tuple<YearMonth, YearMonth> interval) { return !(this < interval.Item1 || this > interval.Item2);}
     }
 }

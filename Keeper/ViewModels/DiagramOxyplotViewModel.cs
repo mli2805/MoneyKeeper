@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -15,13 +16,14 @@ namespace Keeper.ViewModels
     [Export]
     internal class DiagramOxyplotViewModel : Screen
     {
-        public Period SelectedInterval
+        private Tuple<YearMonth, YearMonth> _selectedInterval;
+        public Tuple<YearMonth, YearMonth> SelectedInterval
         {
             get { return _selectedInterval; }
             set
             {
                 _selectedInterval = value;
-                SelectedPeriodTitle = value.ToShortDateString();
+                SelectedPeriodTitle = YearMonth.IntervalToString(value);
                 InitializeDiagram();
             }
         }
@@ -33,7 +35,7 @@ namespace Keeper.ViewModels
             {
                 if (value.Equals(_fromPoint)) return;
                 _fromPoint = value;
-                SelectedInterval = new Period(_boxBox.PointsToDates(_fromPoint, _toPoint));
+                SelectedInterval = _boxBox.PointsToYearMonth(_fromPoint, _toPoint);
                 NotifyOfPropertyChange();
             }
         }
@@ -45,7 +47,7 @@ namespace Keeper.ViewModels
             {
                 if (value.Equals(_toPoint)) return;
                 _toPoint = value;
-                SelectedInterval = new Period(_boxBox.PointsToDates(_fromPoint, _toPoint));
+                SelectedInterval = _boxBox.PointsToYearMonth(_fromPoint, _toPoint);
                 NotifyOfPropertyChange();
             }
         }
@@ -65,10 +67,20 @@ namespace Keeper.ViewModels
 
         private readonly List<ExpensePartingDataElement> _diagramData;
         private PlotModel _myPlotModel;
-        private Period _selectedInterval;
         private double _fromPoint;
         private double _toPoint;
         private string _selectedPeriodTitle;
+
+        public ObservableCollection<string> LegendBindingSource
+        {
+            get { return _legendBindingSource; }
+            set
+            {
+                if (Equals(value, _legendBindingSource)) return;
+                _legendBindingSource = value;
+                NotifyOfPropertyChange(() => LegendBindingSource);
+            }
+        }
 
         public PlotModel MyPlotModel
         {
@@ -83,21 +95,22 @@ namespace Keeper.ViewModels
 
 
         private BlackBox _boxBox;
+        private ObservableCollection<string> _legendBindingSource;
+
         public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
         {
             _diagramData = diagramData;
 
-            var today = DateTime.Today.GetEndOfDate();
-            SelectedInterval = new Period(today.AddMonths(-1), today);
+            SelectedInterval = new Tuple<YearMonth, YearMonth>(new YearMonth(DateTime.Today.AddMonths(-2)),new YearMonth(DateTime.Today) );
             IntervalMode = DiagramIntervalMode.Months;
 
             // min / max is defined by time
-            _boxBox = new BlackBox(new DateTime(_diagramData.Min().Year, _diagramData.Min().Month, 15),
-                new DateTime(_diagramData.Max().Year, _diagramData.Max().Month, 15),
-                IntervalMode);
-            var points = _boxBox.PeriodToPoints(SelectedInterval);
-            FromPoint = points.Item1;
-            ToPoint = points.Item2;
+            _boxBox = new BlackBox(_diagramData.Min().YearMonth, _diagramData.Max().YearMonth, IntervalMode);
+
+//            var points = _boxBox.PeriodToPoints(SelectedInterval);
+            var points = new Tuple<double, double>(87, 99);
+            _fromPoint = points.Item1;
+            _toPoint = points.Item2;
 
             InitializeDiagram();
         }
@@ -110,8 +123,10 @@ namespace Keeper.ViewModels
         private void InitializeDiagram()
         {
             var temp = new PlotModel();
-            temp.Series.Add(InitializePieSeries(Extract(SelectedInterval)));
+            var pieData = Extract(SelectedInterval).ToList();
+            temp.Series.Add(InitializePieSeries(pieData));
             MyPlotModel = temp; // this is raising the INotifyPropertyChanged event			
+            LegendBindingSource = InitializeLegend(pieData);
         }
 
         private Series InitializePieSeries(IEnumerable<ExpensePartingDataElement> pieData)
@@ -124,23 +139,24 @@ namespace Keeper.ViewModels
             return series;
         }
 
-        private IEnumerable<ExpensePartingDataElement> Extract(Period period)
+        private ObservableCollection<string> InitializeLegend(List<ExpensePartingDataElement> pieData)
         {
-            return _diagramData.Where(a => period.ContainsAndTimeWasChecked(new DateTime(a.Year, a.Month, 15)));
+            var result = new ObservableCollection<string>();
+            var sum = pieData.Sum(a => a.Amount);
+            foreach (var element in pieData)
+            {
+                result.Add(string.Format("{0} - {1}%  (${2:0,0})", element.Kategory, Math.Round(element.Amount/sum*100,0), Math.Round(element.Amount,0)));
+            }
+            result.Add(string.Format("Всего  ${0:0,0}", Math.Round(sum)));
+            return result;
         }
 
-        public void PreviousPeriod()
+        private IEnumerable<ExpensePartingDataElement> Extract(Tuple<YearMonth, YearMonth> period)
         {
-            var copy = (Period)SelectedInterval.Clone();
-            if (IntervalMode == DiagramIntervalMode.Months) copy.MonthBack();
-            else copy.YearBack();
-            SelectedInterval = copy;
-        }
-
-        public void NextPeriod()
-        {
-            if (IntervalMode == DiagramIntervalMode.Months) SelectedInterval.MonthForward();
-            else SelectedInterval.YearForward();
+            var r = _diagramData.Where(a => a.YearMonth.InInterval(period))
+                   .GroupBy(e => e.Kategory)
+                   .Select(g => new ExpensePartingDataElement(g.First().Kategory,g.Sum(p=>p.Amount),g.First().YearMonth)).Where(k => k.Amount > 0).OrderByDescending(o => o.Amount);
+            return r;
         }
 
     }
