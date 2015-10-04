@@ -142,10 +142,14 @@
     <Compile Include="ByFunctional\AccountEditing\IUserInformator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="ByFunctional\OfficialRateFromWebsiteGetter.cs" />
-    <Compile Include="Controls\PeriodChoiceControl.xaml.cs">
+    <Compile Include="Controls\PeriodChoice\PeriodChoiceControl.xaml.cs">
       <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PeriodChoiceControlModel.cs" />
+    <Compile Include="Controls\PeriodChoice\PeriodChoiceControlBtnFromReactions.cs" />
+    <Compile Include="Controls\PeriodChoice\PeriodChoiceControlBtnToReactions.cs" />
+    <Compile Include="Controls\PeriodChoice\PeriodChoiceControlCentralPartReactions.cs" />
+    <Compile Include="Controls\PeriodChoice\PeriodChoiceControlFunctions.cs" />
+    <Compile Include="Controls\PeriodChoice\PeriodChoiceControlModel.cs" />
     <Compile Include="DomainModel\Deposit\DepositEstimations.cs" />
     <Compile Include="DomainModel\Deposit\DepositReportBodyLine.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositTrafficEvaluator.cs" />
@@ -478,7 +482,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PeriodChoiceControl.xaml">
+    <Page Include="Controls\PeriodChoice\PeriodChoiceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

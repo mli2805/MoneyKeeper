@@ -4,8 +4,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:cal="http://www.caliburnproject.org"
-        xmlns:controls="clr-namespace:Keeper.Controls" 
-        xmlns:oxyplot="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        xmlns:oxyplot="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        xmlns:periodChoice="clr-namespace:Keeper.Controls.PeriodChoice"
         Title="DiagramOxyplotView" Height="700" Width="1000">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="F2" >
@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
             <ListBox Name="LegendListBox" Grid.Column="1" Margin="0,20,0,0" ItemsSource="{Binding LegendBindingSource}" HorizontalContentAlignment="Right" BorderThickness="0"/>
             <TextBlock Name="LabelPeriod" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,10,0" Text="{Binding SelectedPeriodTitle}" HorizontalAlignment="Right"/>
-            <controls:PeriodChoiceControl x:Name="PeriodChoiceControl" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,5,0"
+            <periodChoice:PeriodChoiceControl x:Name="PeriodChoiceControl" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,5,0"
                                       FromPoint="{Binding FromPoint, Mode=TwoWay}" ToPoint="{Binding ToPoint, Mode=TwoWay}"/>
         </Grid>
     </Grid>
