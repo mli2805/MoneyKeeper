@@ -145,6 +145,7 @@
     <Compile Include="Controls\PeriodChoiceControl.xaml.cs">
       <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PeriodChoiceControlModel.cs" />
     <Compile Include="DomainModel\Deposit\DepositEstimations.cs" />
     <Compile Include="DomainModel\Deposit\DepositReportBodyLine.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositTrafficEvaluator.cs" />
