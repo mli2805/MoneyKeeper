@@ -3,18 +3,19 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using Keeper.Annotations;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.PeriodChoice
 {
     public class PeriodChoiceControlModel : INotifyPropertyChanged
     {
-        public const int MinCenterPartWidth = 30;
-        public bool _btnFromIsHolded;
-        public bool _btnToIsHolded;
-        public double _btnFromStartX;
-        public double _btnToStartX;
-        public bool _centralPartDoubleClick;
-        public bool _centralPartIsHolded;
-        public double _centralPartStartX;
+        public const int MinCenterPartWidth = 45;
+
+        public bool BtnFromIsHolded;
+        public bool BtnToIsHolded;
+        public double BtnFromStartX;
+        public double BtnToStartX;
+        public bool CentralPartDoubleClick;
+        public bool CentralPartIsHolded;
+        public double CentralPartStartX;
 
         private Thickness _btnFromMargin;
         private Thickness _btnToMargin;
