@@ -58,7 +58,7 @@ namespace Keeper.ViewModels.Shell
                                  IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory,
                                  IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider, MySettings mySettings)
         {
-            _loadResult = loadResult;
+            _loadResult = loadResult; // в конструкторе DbLoadResult происходит загрузка БД
             _messageBoxer = messageBoxer;
             _expensePartingDataProvider = expensePartingDataProvider;
             _mySettings = mySettings;

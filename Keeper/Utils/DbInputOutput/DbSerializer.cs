@@ -52,7 +52,7 @@ namespace Keeper.Utils.DbInputOutput
 				using (var cryptoStream = new CryptoStream(fStream, rmCrypto.CreateDecryptor(key, initVector), CryptoStreamMode.Read))
 				{
 					var binaryFormatter = new BinaryFormatter();
-					db = (KeeperDb)binaryFormatter.Deserialize(cryptoStream);
+					 db = (KeeperDb)binaryFormatter.Deserialize(cryptoStream);
 				}
 			}
 			return db;

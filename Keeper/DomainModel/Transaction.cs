@@ -223,7 +223,15 @@ namespace Keeper.DomainModel
 
         public int SignForAmount(Account a)
         {
-            return Credit.Is(a) ? 1 : -1;
+            if (Debet.Is(a))
+            {
+                return Credit.Is(a) ? 0 : -1;
+            }
+            else
+            {
+                return Credit.Is(a) ? 1 : 0;
+            }
+//            return Credit.Is(a) ? 1 : -1;
         }
 
         public int SignForAnalysis(TransactionTypeForAnalysis flag)
