@@ -5,10 +5,12 @@ using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
+using Keeper.ViewModels;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
@@ -16,6 +18,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     [Export(typeof(ILoader))]
     public class DbFromTxtLoader : IDbFromTxtLoader, ILoader
     {
+        public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
+
         private readonly DbClassesInstanceParser _dbClassesInstanceParser;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly Encoding _encoding1251 = Encoding.GetEncoding(1251);
@@ -36,10 +40,21 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
 
       public DbLoadResult LoadDbFromTxt(string path)
-        {
-            var db = new KeeperDb {Accounts = LoadAccounts(path)};
+      {
+//          var viewModel = new DbFromTxtLoaderProgressViewModel();
+//          viewModel.PreviousOperations = new ObservableCollection<string>();
+//          viewModel.CurrentOperation = "accounts loading...";
+//          WindowManager.ShowWindow(viewModel);
 
+            var db = new KeeperDb {Accounts = LoadAccounts(path)};
             var accountsPlaneList = _accountTreeStraightener.Flatten(db.Accounts).ToList();
+
+//            viewModel.TryClose();
+//             viewModel = new DbFromTxtLoaderProgressViewModel();
+//            viewModel.PreviousOperations = new ObservableCollection<string>();
+//            viewModel.PreviousOperations.Add("Accounts loaded.");
+//          viewModel.CurrentOperation = "deposits loading...";
+//          WindowManager.ShowWindow(viewModel);
 
             db.BankDepositOffers = LoadFrom(path, "BankDepositOffers.txt", 
                            _dbClassesInstanceParser.BankDepositOfferFromString, accountsPlaneList);
@@ -49,16 +64,24 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             LoadDeposits(path, accountsPlaneList, db.BankDepositOffers.ToList());
             if (Result != null) return Result;
 
+//            viewModel.PreviousOperations.Add("Deposits loaded.");
+//            viewModel.CurrentOperation = "transactions loading...";
             db.Transactions = LoadFrom(path, "Transactions.txt",
                            _dbClassesInstanceParser.TransactionFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;
+//            viewModel.PreviousOperations.Add("Transactions loaded.");
+//            viewModel.CurrentOperation = "associations loading...";
             db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", 
                            _dbClassesInstanceParser.ArticleAssociationFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;
+//            viewModel.PreviousOperations.Add("Associations loaded.");
+//            viewModel.CurrentOperation = "currency rates loading...";
             db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", 
                            _dbClassesInstanceParser.CurrencyRateFromString, accountsPlaneList);
             if (Result != null) return Result;
+//            viewModel.PreviousOperations.Add("Currency rates loaded.");
 
+//            viewModel.TryClose();
             return new DbLoadResult(db);
         }
 
@@ -166,9 +189,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
                 }
             }
         }
-
         #endregion
-
-
     }
 }

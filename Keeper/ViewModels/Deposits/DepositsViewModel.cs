@@ -111,7 +111,7 @@ namespace Keeper.ViewModels
         public List<DateProcentPoint> SeriesEuro { get; set; }
         public void DepoCurrenciesProportionChartCtor()
         {
-            var calculator = new DiagramDataExtractorFromDb(_db);
+            var calculator = new DiagramDataExtractorFromDb(_db, _accountTreeStraightener);
 
             SeriesUsd = new List<DateProcentPoint>();
             SeriesByr = new List<DateProcentPoint>();
