@@ -90,7 +90,14 @@ namespace Keeper.Utils.Diagram
             }
         }
 
-
+        /// <summary>
+        /// 5th version
+        /// just on linq queries
+        /// </summary>
+        /// <param name="balancedAccount"></param>
+        /// <param name="period"></param>
+        /// <param name="frequency"></param>
+        /// <returns></returns>
         public Dictionary<DateTime, decimal> AccountInUsdForPeriod(Account balancedAccount, Period period, Every frequency)
         {
 
@@ -123,7 +130,6 @@ namespace Keeper.Utils.Diagram
                 result.Add(transaction.date, total);
             }
             return result;
-
         }
 
         // получение остатка по счету за каждую дату периода 
