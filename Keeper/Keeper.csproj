@@ -150,6 +150,7 @@
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlCentralPartReactions.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlFunctions.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlModel.cs" />
+    <Compile Include="DomainModel\CurrencyRatesAsDictionary.cs" />
     <Compile Include="DomainModel\Deposit\DepositEstimations.cs" />
     <Compile Include="DomainModel\Deposit\DepositReportBodyLine.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositTrafficEvaluator.cs" />
