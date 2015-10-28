@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keeper.DomainModel
 {
@@ -15,7 +11,7 @@ namespace Keeper.DomainModel
         {
             Rates = new Dictionary<CurrencyCodes, Dictionary<DateTime, double>>
             {
-                {CurrencyCodes.USD, new Dictionary<DateTime, double>()},
+                {CurrencyCodes.BYR, new Dictionary<DateTime, double>()},
                 {CurrencyCodes.EUR, new Dictionary<DateTime, double>()},
                 {CurrencyCodes.RUB, new Dictionary<DateTime, double>()}
             };
@@ -25,12 +21,19 @@ namespace Keeper.DomainModel
             }
         }
 
-        public double GetRateThisDayOrBefore(CurrencyCodes currency, DateTime day)
+        /// <summary>
+        /// returns 0 if there's no rate for specified date
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <param name="amount"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public decimal GetUsdEquivalent(CurrencyCodes currency, decimal amount, DateTime date)
         {
-            var rate = (from r in Rates[currency]
-                        where r.Key <= day.Date 
-                        select r.Value).LastOrDefault();
-            return rate;
+            if (currency == CurrencyCodes.USD) return amount;
+
+            double rate;
+            return Rates[currency].TryGetValue(date, out rate) ? amount/(decimal)rate : 0;
         }
 
     }

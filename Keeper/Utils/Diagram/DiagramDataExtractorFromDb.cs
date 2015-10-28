@@ -14,6 +14,7 @@ namespace Keeper.Utils.Diagram
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly RateExtractor _rateExtractor;
+        private readonly CurrencyRatesAsDictionary _ratesAsDictionary;
 
         [ImportingConstructor]
         public DiagramDataExtractorFromDb(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
@@ -21,10 +22,15 @@ namespace Keeper.Utils.Diagram
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
             _rateExtractor = new RateExtractor(db);
+            _ratesAsDictionary = new CurrencyRatesAsDictionary(_db.CurrencyRates);
         }
 
         #region Core calculations
 
+        public decimal ConvertAllToUsd(Dictionary<CurrencyCodes, decimal> amounts, DateTime date)
+        {
+            return amounts.Sum(amount => _ratesAsDictionary.GetUsdEquivalent(amount.Key, amount.Value, date));
+        }
         public decimal ConvertAllCurrenciesToUsd(Dictionary<CurrencyCodes, decimal> amounts, DateTime date)
         {
             decimal inUsd = 0;
@@ -147,13 +153,15 @@ namespace Keeper.Utils.Diagram
                 while (currentDate < transaction.Timestamp.Date)
                 {
                     if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency))
-                        result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
+//                        result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
+                        result.Add(currentDate, ConvertAllToUsd(balanceInCurrencies, currentDate));
                     currentDate = currentDate.AddDays(1);
 
                 }
                 TakeAmountIfItsNecessary(balancedAccount, transaction, ref balanceInCurrencies);
             }
-            result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
+//            result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
+            result.Add(currentDate, ConvertAllToUsd(balanceInCurrencies, currentDate));
             return result;
         }
 
