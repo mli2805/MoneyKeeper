@@ -27,9 +27,30 @@ namespace Keeper.Utils.Diagram
 
         #region Core calculations
 
+        /// <summary>
+        /// если хотя бы для одной из валют в данный день нет курса, возвращаем 0 как признак что, что-то не так
+        /// </summary>
+        /// <param name="amounts"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public decimal ConvertAllToUsd(Dictionary<CurrencyCodes, decimal> amounts, DateTime date)
         {
-            return amounts.Sum(amount => _ratesAsDictionary.GetUsdEquivalent(amount.Key, amount.Value, date));
+            decimal sum = 0;
+            foreach (var amount in amounts)
+            {
+                if (amount.Value.Equals(0)) continue;
+                if (amount.Key == CurrencyCodes.USD) sum += amount.Value;
+                else
+                {
+                    double rate;
+
+                    Dictionary<DateTime, double> oneCurrency = _ratesAsDictionary.Rates[amount.Key];
+
+                    if (!oneCurrency.TryGetValue(date, out rate)) return 0;
+                    sum += amount.Value / (decimal)rate;
+                }
+            }
+            return sum;
         }
         public decimal ConvertAllCurrenciesToUsd(Dictionary<CurrencyCodes, decimal> amounts, DateTime date)
         {
@@ -96,52 +117,12 @@ namespace Keeper.Utils.Diagram
             }
         }
 
-        /// <summary>
-        /// 5th version
-        /// just on linq queries
-        /// </summary>
-        /// <param name="balancedAccount"></param>
-        /// <param name="period"></param>
-        /// <param name="frequency"></param>
-        /// <returns></returns>
-        public Dictionary<DateTime, decimal> AccountInUsdForPeriod(Account balancedAccount, Period period, Every frequency)
-        {
-
-            var transactionsGroupedByEveryAndConvertedInUsd =
-                (from t in _db.Transactions
-                where period.ContainsAndTimeWasChecked(t.Timestamp)
-                join r in _db.CurrencyRates on new {t.Timestamp.Date, t.Currency} equals
-                    new {r.BankDay.Date, r.Currency} into g
-                from rate in g.DefaultIfEmpty()
-                select new
-                {
-                    LastDayForEvery = FunctionsWithEvery.GetLastDayOfTheSamePeriod(t.Timestamp.Date, frequency),
-                    AmountInUsd =
-                        rate != null
-                            ? t.Amount/(decimal) rate.Rate*t.SignForAmount(balancedAccount)
-                            : t.Amount*t.SignForAmount(balancedAccount),
-                }).
-                GroupBy(l => l.LastDayForEvery).
-                Select(res => new
-                {
-                    date = res.First().LastDayForEvery,
-                    amount = res.Sum(s => s.AmountInUsd)
-                });
-
-            var result = new Dictionary<DateTime, decimal>();
-            decimal total = 0;
-            foreach (var transaction in transactionsGroupedByEveryAndConvertedInUsd)
-            {
-                total += transaction.amount;
-                result.Add(transaction.date, total);
-            }
-            return result;
-        }
 
         // получение остатка по счету за каждую дату периода 
         // реализовано не через функцию получения остатка на дату, вызванную для дат периода
         // а за один проход по БД с получением остатков накопительным итогом, т.к. гораздо быстрее
         // forht version
+        // изменено извлечение курсов - fifth version
         public Dictionary<DateTime, decimal> AccountBalancesForPeriodInUsd(Account balancedAccount, Period period, Every frequency)
         {
             var result = new Dictionary<DateTime, decimal>();
@@ -153,14 +134,21 @@ namespace Keeper.Utils.Diagram
                 while (currentDate < transaction.Timestamp.Date)
                 {
                     if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency))
-//                        result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
-                        result.Add(currentDate, ConvertAllToUsd(balanceInCurrencies, currentDate));
+                    {
+                        var sum = ConvertAllToUsd(balanceInCurrencies, currentDate);
+                        if (sum != 0) // если вернулся 0 - это гэпы без курсов в начале времен
+                            result.Add(currentDate, sum);
+                        else
+                        {
+                            var lastSum = result.Last().Value;
+                            result.Add(currentDate,lastSum);
+                        }
+                    }
                     currentDate = currentDate.AddDays(1);
 
                 }
                 TakeAmountIfItsNecessary(balancedAccount, transaction, ref balanceInCurrencies);
             }
-//            result.Add(currentDate, ConvertAllCurrenciesToUsd(balanceInCurrencies, currentDate));
             result.Add(currentDate, ConvertAllToUsd(balanceInCurrencies, currentDate));
             return result;
         }

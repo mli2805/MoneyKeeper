@@ -17,7 +17,7 @@ namespace Keeper.DomainModel
             };
             foreach (var currencyRate in collection)
             {
-                Rates[currencyRate.Currency].Add(currencyRate.BankDay, currencyRate.Rate);
+                Rates[currencyRate.Currency].Add(currencyRate.BankDay.Date, currencyRate.Rate);
             }
         }
 
