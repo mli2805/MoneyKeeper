@@ -22,7 +22,7 @@ namespace Keeper.Utils.Diagram
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
             _rateExtractor = new RateExtractor(db);
-            _ratesAsDictionary = new CurrencyRatesAsDictionary(_db.CurrencyRates);
+            _ratesAsDictionary = new CurrencyRatesAsDictionary(_db.CurrencyRates.ToList());
         }
 
         #region Core calculations
