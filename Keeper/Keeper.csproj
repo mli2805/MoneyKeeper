@@ -158,12 +158,6 @@
     <Compile Include="Controls\BarDiagramControl.xaml.cs">
       <DependentUpon>BarDiagramControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\IntervalSlidersControl.xaml.cs">
-      <DependentUpon>IntervalSlidersControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\IntervalExpositionControl.xaml.cs">
-      <DependentUpon>IntervalExpositionControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\PasswordControl.xaml.cs">
       <DependentUpon>PasswordControl.xaml</DependentUpon>
     </Compile>
@@ -472,14 +466,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\BarDiagramControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\IntervalSlidersControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\IntervalExpositionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
