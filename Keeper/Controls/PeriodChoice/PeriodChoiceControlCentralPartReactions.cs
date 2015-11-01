@@ -4,10 +4,14 @@ namespace Keeper.Controls.PeriodChoice
 {
     public static class PeriodChoiceControlCentralPartReactions
     {
-        public static void ReactCentralPartPreviewMouseMove(this PeriodChoiceControlModel model, double x)
+        public static void ReactCentralPartPreviewMouseMove(this PeriodChoiceControlModel model, double x, double rightPartWidth)
         {
             var delta = x - model.CentralPartStartX;
             model.CentralPartStartX = x;
+
+            if (model.BtnFromMargin.Left + delta < -4) delta = -model.BtnFromMargin.Left - 4;
+            if (rightPartWidth - delta <= 0) return;
+
             model.BtnFromMargin = new Thickness(model.BtnFromMargin.Left + delta, 0, 0, 0);
             model.LeftPartWidth = model.BtnFromMargin.Left + 4;
             model.CenterPartMargin = new Thickness(model.LeftPartWidth, 0, 0, 0);
