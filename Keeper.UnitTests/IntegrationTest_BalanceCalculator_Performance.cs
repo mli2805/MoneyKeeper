@@ -35,7 +35,7 @@ namespace Keeper.IntegrationTests
 			for (int i = 0; i < iterations; i++)
 			{
 				mUnderTest = new AccountBalanceCalculator(mKeeperDb);
-        foreach (var _ in mUnderTest.GetAccountBalancePairsWithTimeChecking(targetAccount, sPeriod)) { }
+                foreach (var _ in mUnderTest.GetAccountBalancePairs(targetAccount, sPeriod)) { }
 			}
 			sw.Stop();
 		}
@@ -59,9 +59,7 @@ namespace Keeper.IntegrationTests
 						Debet = GetRandomAccount(mKeeperDb, targetAccount),
 						Credit = GetRandomAccount(mKeeperDb, targetAccount),
 						Amount = 53,
-						Amount2 = mRnd.Next(10) == 0 ? 948 : 0,
 						Currency = CurrencyCodes.EUR,
-						Currency2 = CurrencyCodes.BYR,
 						Timestamp = mRnd.Next(5) == 0 ? new DateTime(1000, 1, 1) : new DateTime(2500, 1, 1),
 					});
 		}

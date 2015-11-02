@@ -1,5 +1,4 @@
 ﻿using System;
-using Keeper.DomainModel;
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 
@@ -30,6 +29,7 @@ namespace Keeper.Utils.OxyPlots
         }
         public Tuple<YearMonth, YearMonth> PointsToYearMonth(double fromPoint, double toPoint)
         {
+            Console.WriteLine(" {0}   {1}", fromPoint, toPoint);
             return new Tuple<YearMonth, YearMonth>(PointToYearMonth(fromPoint), PointToYearMonth(toPoint));
         }
 

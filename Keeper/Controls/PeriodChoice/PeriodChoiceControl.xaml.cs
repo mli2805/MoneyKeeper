@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using Keeper.Annotations;
@@ -13,18 +14,15 @@ namespace Keeper.Controls.PeriodChoice
                 typeof(PeriodChoiceControl));
         public double FromPoint
         {
-            get { return (double)GetValue(FromPointProperty); }
-            set
-            {
-                SetValue(FromPointProperty, value);
-            }
+            get{return (double)GetValue(FromPointProperty);}
+            set{SetValue(FromPointProperty, value);}
         }
         public static readonly DependencyProperty ToPointProperty =
             DependencyProperty.Register("ToPoint", typeof(double),
                 typeof(PeriodChoiceControl));
         public double ToPoint
         {
-            get { return (double)GetValue(ToPointProperty); }
+            get{return (double)GetValue(ToPointProperty);}
             set { SetValue(ToPointProperty, value); }
         }
         #endregion
@@ -40,15 +38,15 @@ namespace Keeper.Controls.PeriodChoice
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            var width = ControlGrid.ActualWidth;
-            Model.SetPositions(width * FromPoint - 4, width * (ToPoint - FromPoint));
+            var width = ControlGrid.ActualWidth - PeriodChoiceControlModel.MinCenterPartWidth;
+            Model.SetPositions(width * FromPoint - 4, width * (ToPoint - FromPoint) + PeriodChoiceControlModel.MinCenterPartWidth);
             Model.ResetFlags();
         }
         private void RefreshDependencyProperties()
         {
-            double k = 100 / ControlGrid.ActualWidth;
-            FromPoint = (Model.BtnFromMargin.Left + 4) * k;
-            ToPoint = (Model.BtnFromMargin.Left + 4 + Model.CenterPartWidth) * k;
+            double k = 100 / (ControlGrid.ActualWidth - PeriodChoiceControlModel.MinCenterPartWidth);
+            FromPoint = (Model.BtnFromMargin.Left + 3) * k;
+            ToPoint = (Model.BtnToMargin.Left - PeriodChoiceControlModel.MinCenterPartWidth + 4) * k;
         }
 
         #region btnFrom reactions
@@ -66,7 +64,7 @@ namespace Keeper.Controls.PeriodChoice
         {
             Model.BtnFromIsHolded = false;
         }
-        #endregion
+        #endregion 
 
         #region btnTo reactions
         private void BtnToPreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

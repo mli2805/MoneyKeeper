@@ -33,7 +33,7 @@ namespace Keeper.UnitTests.ByFunctional.BalanceEvaluating
         public void GetAccountBalancePairsWithTimeChecking_Without_Appropriate_Transactions_Should_Return_Empty_List()
 		{
 			    var testedAccount = new Account("Тумбочка");
-                _underTest.GetAccountBalancePairsWithTimeChecking(testedAccount,
+                _underTest.GetAccountBalancePairs(testedAccount,
                 new Period(new DateTime(2014, 10, 30), new DateTime(2014, 11, 3))).ShouldBeEquivalentTo(new List<MoneyPair>());
 		}
 
@@ -48,7 +48,7 @@ namespace Keeper.UnitTests.ByFunctional.BalanceEvaluating
 			};
 
             var testedAccount = new Account("Мой кошелек");
-            _underTest.GetAccountBalancePairsWithTimeChecking(testedAccount,
+            _underTest.GetAccountBalancePairs(testedAccount,
 			new Period(new DateTime(2014, 10, 30, 9, 5, 0), new DateTime(2014, 11, 3, 0, 0, 0))).ShouldBeEquivalentTo(expectation);
 		}
 
@@ -63,7 +63,7 @@ namespace Keeper.UnitTests.ByFunctional.BalanceEvaluating
 			};
 
             var testedAccount = new Account("Мой кошелек");
-            _underTest.GetAccountBalancePairsFromMidnightToMidnight(testedAccount,
+            _underTest.GetAccountBalancePairs(testedAccount,
             new Period(new DateTime(2014, 10, 30, 9, 5, 0), new DateTime(2014, 11, 3, 0, 0, 0))).ShouldBeEquivalentTo(expectation);
         }
 
