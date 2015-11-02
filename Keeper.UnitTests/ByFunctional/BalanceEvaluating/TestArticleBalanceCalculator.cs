@@ -40,7 +40,7 @@ namespace Keeper.UnitTests.ByFunctional.BalanceEvaluating
             var testedArticle = new Account("Одежда");
 
             var transactions = new List<string>();
-            _underTest.GetArticleBalanceInUsdPlusFromMidnightToMidnight(testedArticle,
+            _underTest.GetArticleSaldoInUsdPlusTransactions(testedArticle,
                                                   new Period(new DateTime(2014, 10, 30, 9, 5, 0), 
                                                              new DateTime(2014, 11, 3, 0, 0, 0)),
                                                   transactions).ShouldBeEquivalentTo(expectedSum);
