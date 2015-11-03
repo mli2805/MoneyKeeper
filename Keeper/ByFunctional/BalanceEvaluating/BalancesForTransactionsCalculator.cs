@@ -99,7 +99,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
 
         private IEnumerable<Account> OmitNotUsedAccounts(IEnumerable<Account> list)
         {
-            return (from account in list let tr = _db.Transactions.LastOrDefault(t => t.EitherDebitOrCreditIs(account)) 
+            return (from account in list let tr = _db.Transactions.LastOrDefault(t => t.EitherDebitOrCreditIsExactly(account)) 
                                    where tr != null && (DateTime.Now - tr.Timestamp).TotalDays < 40 select account).ToList();
         }
         public string EndDayBalances(DateTime dt)
