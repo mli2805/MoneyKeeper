@@ -22,7 +22,6 @@ namespace Keeper.ViewModels
         private readonly KeeperDb _db;
 
         private readonly RateExtractor _rateExtractor;
-        private readonly AccountBalanceCalculator _accountBalanceCalculator;
         private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly TransactionChangesVisualizer _transactionChangesVisualizer;
@@ -586,7 +585,6 @@ namespace Keeper.ViewModels
             _db = db;
 
             _rateExtractor = rateExtractor;
-            _accountBalanceCalculator = accountBalanceCalculator;
             _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
             _accountTreeStraightener = accountTreeStraightener;
             _transactionChangesVisualizer = transactionChangesVisualizer;
@@ -824,12 +822,26 @@ namespace Keeper.ViewModels
             CanEditDate = false;
 
             var newTransaction = SelectedTransaction.Preform("SameDate");
-            IncreaseNextTransactionTime();
+//            IncreaseNextTransactionTime();
+            AnotherWayToShiftTimeInNextTransactions();
 
             Rows.Add(newTransaction);
             SelectedTransactionIndex--;
             IsTransactionInWorkChanged = true;
             CanFillInReceipt = true;
+        }
+
+        private void AnotherWayToShiftTimeInNextTransactions()
+        {
+            var tr = from t in Rows
+                where t.Timestamp.Date == SelectedTransaction.Timestamp.Date
+                      && t.Timestamp.TimeOfDay >= SelectedTransaction.Timestamp.TimeOfDay
+                select t;
+
+            foreach (var t in tr)
+            {
+                t.Timestamp = t.Timestamp.AddMinutes(1);
+            }
         }
 
         /// <summary>
@@ -857,7 +869,8 @@ namespace Keeper.ViewModels
             {
                 SelectedTransactionIndex++;
                 if (newTransaction.Timestamp == SelectedTransaction.Timestamp)
-                    IncreaseNextTransactionTime();
+//                    IncreaseNextTransactionTime();
+                    AnotherWayToShiftTimeInNextTransactions();
                 SelectedTransactionIndex--;
             }
 
