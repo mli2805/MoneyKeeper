@@ -5,15 +5,15 @@ using Keeper.Models.Shell;
 
 namespace Keeper.ViewModels.Shell
 {
-  [Export]
-  public class BalanceListViewModel : Screen
-  {
-    public BalanceListModel MyBalanceListModel { get; set; }
-
-    [ImportingConstructor]
-    public BalanceListViewModel(ShellModel shellModel)
+    [Export]
+    public class BalanceListViewModel : Screen
     {
-      MyBalanceListModel = shellModel.MyBalanceListModel;
+        public BalanceListModel MyBalanceListModel { get; set; }
+
+        [ImportingConstructor]
+        public BalanceListViewModel(ShellModel shellModel)
+        {
+            MyBalanceListModel = shellModel.MyBalanceListModel;
+        }
     }
-  }
 }
