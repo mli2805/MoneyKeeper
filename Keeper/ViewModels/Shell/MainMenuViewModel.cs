@@ -119,12 +119,10 @@ namespace Keeper.ViewModels.Shell
             IsDbChanged = false;
             MyMainMenuModel.Action = Actions.Idle;
         }
-
         public void ExportDatabaseToTxt()
         {
             _txtSaver.SaveDbInTxt();
         }
-
         public void LoadFromWithoutReturn()
         {
             var result = _dbFromTxtLoader.LoadDbFromTxt((string)_mySettings.GetSetting("TemporaryTxtDbPath"));
@@ -134,7 +132,6 @@ namespace Keeper.ViewModels.Shell
                 _db = result.Db;
             }
         }
-
         public async void ImportDatabaseFromTxt()
         {
             MyMainMenuModel.Action = Actions.LoadFromFiles;
@@ -150,7 +147,6 @@ namespace Keeper.ViewModels.Shell
             Task.WaitAll();
             MyMainMenuModel.Action = Actions.Idle;
         }
-
         #endregion
 
         #region меню Формы
@@ -225,39 +221,32 @@ namespace Keeper.ViewModels.Shell
         {
             OpenDiagramForm(_diagramDataFactory.DailyBalancesCtor());
         }
-
         public void ShowRatesDiagram()
         {
             OpenDiagramForm(_diagramDataFactory.RatesCtor());
         }
-
         public void ShowMonthlyResultDiagram()
         {
             OpenDiagramForm(_diagramDataFactory.MonthlyResultsDiagramCtor());
         }
-
         public void ShowMonthlyIncomeDiagram()
         {
             OpenDiagramForm(_diagramDataFactory.MonthlyIncomesDiagramCtor());
         }
-
         public void ShowMonthlyOutcomeDiagram()
         {
             OpenDiagramForm(_diagramDataFactory.MonthlyOutcomesDiagramCtor());
         }
-
         public void ShowExpensePartingOxyPlotDiagram()
         {
             var diagramData = _expensePartingDataProvider.Get();
             var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
             WindowManager.ShowDialog(diagramOxyplotViewModel);
         }
-
         public void ShowAverageSignificancesDiagram()
         {
             OpenDiagramForm(_diagramDataFactory.AverageSignificancesDiagramCtor());
         }
-
         private void OpenDiagramForm(DiagramData diagramData)
         {
             var diagramForm = new DiagramViewModel(diagramData);
@@ -274,8 +263,6 @@ namespace Keeper.ViewModels.Shell
             _launchedForms.Add(settingsForm);
             WindowManager.ShowWindow(settingsForm);
         }
-
-
         public void SetIsFolders()
         {
             var ats = IoC.Get<AccountTreeStraightener>();
@@ -284,29 +271,24 @@ namespace Keeper.ViewModels.Shell
             {
                 if (account.Children.Count > 0) account.IsFolder = true;
             }
-
         }
-
         private void SetBankDepositOfferForEveryDeposit()
         {
             var oldOffer = _db.BankDepositOffers.FirstOrDefault(o => o.BankAccount.Name == "безвестный");
 
             var ats = IoC.Get<AccountTreeStraightener>();
             var plainList = ats.Flatten(_db.Accounts);
-            foreach (var account in plainList.Where(a=>a.Deposit != null))
+            foreach (var account in plainList.Where(a => a.Deposit != null))
             {
                 account.Deposit.DepositOffer = oldOffer;
             }
-            
         }
-
         public void TempItem()
         {
             SetBankDepositOfferForEveryDeposit();
-//            ShowExpensePartingOxyPlotDiagram();
+            //            ShowExpensePartingOxyPlotDiagram();
             //      SetIsFolders();
         }
-
         public void ShowToDoForm()
         {
             var toDoForm = new ToDoViewModel();
@@ -330,18 +312,15 @@ namespace Keeper.ViewModels.Shell
             IsAuthorizationFailed = !logonViewModel.Result;
             return logonViewModel.Result;
         }
-
         public void CloseAllLaunchedForms()
         {
             foreach (var launchedForm in _launchedForms.Where(launchedForm => launchedForm.IsActive))
                 launchedForm.TryClose();
         }
-
         public void ProgramExit()
         {
             MadeExitPreparationsAsynchronously();
         }
-
         public async void MadeExitPreparationsAsynchronously()
         {
             MyMainMenuModel.Action = Actions.PrepareExit;
@@ -353,6 +332,5 @@ namespace Keeper.ViewModels.Shell
             MyMainMenuModel.Action = Actions.Idle;
             IsExitPreparationDone = true;
         }
-
     }
 }

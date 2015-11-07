@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:DomainModel="clr-namespace:Keeper.DomainModel" xmlns:cal="http://www.caliburnproject.org"
+             xmlns:domainModel="clr-namespace:Keeper.DomainModel" xmlns:cal="http://www.caliburnproject.org"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" mc:Ignorable="d" 
              >
   <UserControl.Resources>
-    <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="DomainModel:Account" ItemsSource="{Binding Children}">
+    <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="domainModel:Account" ItemsSource="{Binding Children}">
       <TextBlock Text="{Binding Name}" Margin="0,0,20,0"/>
     </HierarchicalDataTemplate>
   </UserControl.Resources>
@@ -19,10 +19,10 @@
     </ei:KeyTrigger>
   </i:Interaction.Triggers>
   <Grid>
-    <TabControl Name="AccountsTree" Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding MyForestModel.OpenedAccountPage, Mode=TwoWay}">
+    <TabControl Margin="0,0,0,5" Grid.Row="0" SelectedIndex="{Binding MyForestModel.OpenedAccountPage, Mode=TwoWay}">
       <TabItem Header="Мои счета" Background="{x:Null}">
-        <TreeView x:Name="MineAccountsTreeView" ItemsSource="{Binding MyForestModel.MineAccountsRoot}"
-      		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True" 
+        <TreeView ItemsSource="{Binding MyForestModel.MineAccountsRoot}"
+      		ItemTemplate="{DynamicResource AccountTemplate}" 
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowDepositReport()]">
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -59,7 +59,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Контрагенты" Background="{x:Null}">
-        <TreeView x:Name="ExternalAccountsTreeView" ItemsSource="{Binding MyForestModel.ExternalAccountsRoot}" 
+        <TreeView ItemsSource="{Binding MyForestModel.ExternalAccountsRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}" IsManipulationEnabled="True"  >
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -89,7 +89,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Доходы" Background="{x:Null}">
-        <TreeView x:Name="IncomeTreeView" ItemsSource="{Binding MyForestModel.IncomesRoot}" 
+        <TreeView ItemsSource="{Binding MyForestModel.IncomesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
@@ -119,7 +119,7 @@
         </TreeView>
       </TabItem>
       <TabItem Header="Расходы" Background="{x:Null}">
-        <TreeView x:Name="ExpenseTreeView" ItemsSource="{Binding MyForestModel.ExpensesRoot}" 
+        <TreeView ItemsSource="{Binding MyForestModel.ExpensesRoot}" 
       		ItemTemplate="{DynamicResource AccountTemplate}">
           <TreeView.ContextMenu>
             <ContextMenu>
