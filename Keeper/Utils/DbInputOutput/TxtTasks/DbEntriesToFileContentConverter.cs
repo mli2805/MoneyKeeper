@@ -79,5 +79,12 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
                    select _dbClassesInstanceDumper.Dump(rate);
         }
 
+        public IEnumerable<string> ConvertOfficialRatesToFileContent()
+        {
+            return from rate in _db.OfficialRates
+                orderby rate.Date
+                select _dbClassesInstanceDumper.Dump(rate);
+        }
+
     }
 }

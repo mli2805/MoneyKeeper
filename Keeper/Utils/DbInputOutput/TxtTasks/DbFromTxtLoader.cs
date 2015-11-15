@@ -35,53 +35,32 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         [ImportingConstructor]
         public DbFromTxtLoader(DbClassesInstanceParser dbClassesInstanceParser, AccountTreeStraightener accountTreeStraightener)
         {
-          _dbClassesInstanceParser = dbClassesInstanceParser;
-          _accountTreeStraightener = accountTreeStraightener;
+            _dbClassesInstanceParser = dbClassesInstanceParser;
+            _accountTreeStraightener = accountTreeStraightener;
         }
 
-      public DbLoadResult LoadDbFromTxt(string path)
-      {
-//          var viewModel = new DbFromTxtLoaderProgressViewModel();
-//          viewModel.PreviousOperations = new ObservableCollection<string>();
-//          viewModel.CurrentOperation = "accounts loading...";
-//          WindowManager.ShowWindow(viewModel);
-
-            var db = new KeeperDb {Accounts = LoadAccounts(path)};
+        public DbLoadResult LoadDbFromTxt(string path)
+        {
+            var db = new KeeperDb { Accounts = LoadAccounts(path) };
             var accountsPlaneList = _accountTreeStraightener.Flatten(db.Accounts).ToList();
-
-//            viewModel.TryClose();
-//             viewModel = new DbFromTxtLoaderProgressViewModel();
-//            viewModel.PreviousOperations = new ObservableCollection<string>();
-//            viewModel.PreviousOperations.Add("Accounts loaded.");
-//          viewModel.CurrentOperation = "deposits loading...";
-//          WindowManager.ShowWindow(viewModel);
-
-            db.BankDepositOffers = LoadFrom(path, "BankDepositOffers.txt", 
+            db.BankDepositOffers = LoadFrom(path, "BankDepositOffers.txt",
                            _dbClassesInstanceParser.BankDepositOfferFromString, accountsPlaneList);
             if (Result != null) return Result;
             LoadDepositOffersRates(path, db.BankDepositOffers.ToList());
-
             LoadDeposits(path, accountsPlaneList, db.BankDepositOffers.ToList());
             if (Result != null) return Result;
-
-//            viewModel.PreviousOperations.Add("Deposits loaded.");
-//            viewModel.CurrentOperation = "transactions loading...";
             db.Transactions = LoadFrom(path, "Transactions.txt",
                            _dbClassesInstanceParser.TransactionFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;
-//            viewModel.PreviousOperations.Add("Transactions loaded.");
-//            viewModel.CurrentOperation = "associations loading...";
-            db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt", 
+            db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt",
                            _dbClassesInstanceParser.ArticleAssociationFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;
-//            viewModel.PreviousOperations.Add("Associations loaded.");
-//            viewModel.CurrentOperation = "currency rates loading...";
-            db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt", 
+            db.CurrencyRates = LoadFrom(path, "CurrencyRates.txt",
                            _dbClassesInstanceParser.CurrencyRateFromString, accountsPlaneList);
             if (Result != null) return Result;
-//            viewModel.PreviousOperations.Add("Currency rates loaded.");
-
-//            viewModel.TryClose();
+            db.OfficialRates = LoadFrom(path, "OfficialRates.txt",
+                _dbClassesInstanceParser.OfficialRateFromString, accountsPlaneList);
+            if (Result != null) return Result;
             return new DbLoadResult(db);
         }
 

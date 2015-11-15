@@ -52,6 +52,17 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             rate.Rate = Convert.ToDouble(s.Substring(next + 2));
             return rate;
         }
+
+        public NbRate OfficialRateFromString(string s, IEnumerable<Account> accountsPlaneList)
+        {
+            var rate = new NbRate();
+            var substrings = s.Split(';');
+            rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+            rate.UsdRate = Convert.ToDouble(substrings[1]);
+            rate.EurRate = Convert.ToDouble(substrings[2]);
+            rate.RurRate = Convert.ToDouble(substrings[3]);
+            return rate;
+        }
         public ArticleAssociation ArticleAssociationFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
         {
             var association = new ArticleAssociation();
