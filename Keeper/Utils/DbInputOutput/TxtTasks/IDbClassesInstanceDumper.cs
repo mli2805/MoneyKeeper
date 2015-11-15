@@ -9,6 +9,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     string Dump(HierarchyItem<Account> account);
     string Dump(ArticleAssociation association);
     string Dump(CurrencyRate rate);
+    string Dump(NbRate rate);
     string Dump(Transaction transaction);
     string Dump(Deposit deposit);
     string Dump(BankDepositRateLine bankDepositRateLine, int accountId);
