@@ -8,7 +8,7 @@
         mc:Ignorable="d" 
         xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-        xmlns:Behaviors="clr-namespace:Keeper.Behaviors"
+        xmlns:dataGridBehaviors="clr-namespace:Keeper.Behaviors.DataGridBehaviors"
         Icon="/Keeper;component/Resources/currency_rates.ico" 
         d:DataContext="{d:DesignInstance ViewModels:RatesViewModel}"
         SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
@@ -102,20 +102,17 @@
               ColumnHeaderStyle="{StaticResource headerTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3">
       <i:Interaction.Behaviors>
-        <Behaviors:ScrollToBottomOnLoadDatagridBehavior/>
+        <dataGridBehaviors:ScrollToBottomOnLoadDatagridBehavior/>
       </i:Interaction.Behaviors>
       <DataGrid.Columns>
         <DataGridTextColumn Header="               Дата" ElementStyle="{StaticResource textBlockToRightStyle}"
-                            Binding="{Binding BankDay, StringFormat='dddd, dd MMMM yyyy'}">
-        </DataGridTextColumn>
+                            Binding="{Binding BankDay, StringFormat='dddd, dd MMMM yyyy'}"/>
         <DataGridComboBoxColumn Header="Валюта" 
                                 ElementStyle="{StaticResource comboBoxToRightStyle}"
                                 SelectedItemBinding ="{Binding CurrencyLeft}"
-                                ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}">
-        </DataGridComboBoxColumn>
+                                ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}"/>
         <DataGridTextColumn Header="  Курс" Width="50" ElementStyle="{StaticResource textBlockToRightStyle}"
-                            Binding="{Binding RateOnScreen, StringFormat=\{0:G5\}}">
-        </DataGridTextColumn>
+                            Binding="{Binding RateOnScreen, StringFormat=\{0:G5\}}"/>
 
         <DataGridTemplateColumn Header="  за" Width="35">
           <DataGridTemplateColumn.CellTemplate>
@@ -127,8 +124,7 @@
 
         <DataGridComboBoxColumn Header="Валюту" ElementStyle="{StaticResource comboBoxToLeftStyle}"
                                 SelectedItemBinding ="{Binding CurrencyRight}" 
-                                ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}">
-        </DataGridComboBoxColumn>
+                                ItemsSource="{x:Static ViewModels:RatesViewModel.CurrencyList}"/>
       </DataGrid.Columns>
     </DataGrid>
     <Expander Name="InputRatesExpander" Header="{Binding ExpanderHeader}" HorizontalAlignment="Stretch" Background="#F0FFF0"

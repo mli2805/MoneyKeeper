@@ -13,8 +13,6 @@ namespace Keeper.ViewModels
     [Export]
     public class RatesViewModel : Screen
     {
-        private readonly KeeperDb _db;
-
         /*****************************************************************************
          * метод GetDefaultView получает ObservableCollection и делает из нее CollectionViewSource
          * 
@@ -157,10 +155,9 @@ namespace Keeper.ViewModels
         [ImportingConstructor]
         public RatesViewModel(KeeperDb db)
         {
-            _db = db;
             CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
 
-            Rows = _db.CurrencyRates;
+            Rows = db.CurrencyRates;
             IsCollectionChanged = false;
             InitFilterList();
             SelectedFilter = FilterList.First(f => !f.IsOn);

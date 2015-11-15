@@ -137,10 +137,12 @@
     <Compile Include="AppBootstrapper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Behaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnAddBehavior.cs" />
+    <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
     <Compile Include="ByFunctional\AccountEditing\IUserEquirer.cs" />
     <Compile Include="ByFunctional\AccountEditing\IUserInformator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
+    <Compile Include="ByFunctional\NbRbRatesExtractor.cs" />
     <Compile Include="ByFunctional\OfficialRateFromWebsiteGetter.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControl.xaml.cs">
       <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
@@ -178,6 +180,7 @@
     <Compile Include="DomainModel\Deposit\BankDepositRateLine.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransaction.cs" />
     <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
+    <Compile Include="DomainModel\NbRate.cs" />
     <Compile Include="DomainModel\RegularPayments.cs" />
     <Compile Include="ByFunctional\AccountEditing\IAccountCantBeDeletedChecker.cs" />
     <Compile Include="ByFunctional\AccountEditing\IAccountLowLevelOperator.cs" />
@@ -313,6 +316,7 @@
     <Compile Include="Utils\MonthAnalysis\MonthAnalysisBlankInscriber.cs" />
     <Compile Include="Models\MonthAnalysisBlank.cs" />
     <Compile Include="ViewModels\Deposits\OpenOrEditDepositViewModel.cs" />
+    <Compile Include="ViewModels\NbRatesViewModel.cs" />
     <Compile Include="ViewModels\RegularPaymentsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
@@ -341,6 +345,9 @@
     </Compile>
     <Compile Include="Views\Deposits\OpenOrEditDepositView.xaml.cs">
       <DependentUpon>OpenOrEditDepositView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NbRatesView.xaml.cs">
+      <DependentUpon>NbRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegularPaymentsView.xaml.cs">
       <DependentUpon>RegularPaymentsView.xaml</DependentUpon>
@@ -373,10 +380,10 @@
     <Compile Include="XamlExtensions\GridViewRowPresenterWithGridLines.cs" />
     <Compile Include="DomainModel\Period.cs" />
     <Compile Include="Utils\Rates\RateExtractor.cs" />
-    <Compile Include="Behaviors\ScrollToBottomOnAddBehavior.cs" />
-    <Compile Include="Behaviors\ScrollToPreviousExitPointOrBottomOnLoadBehavior.cs" />
-    <Compile Include="Behaviors\ScrollToBottomOnLoadDatagridBehavior.cs" />
-    <Compile Include="Behaviors\ScrollToDisappearedDueDateChangeBehavior.cs" />
+    <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnAddBehavior.cs" />
+    <Compile Include="Behaviors\ListViewBehaviors\ScrollToPreviousExitPointOrBottomOnLoadBehavior.cs" />
+    <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnLoadDatagridBehavior.cs" />
+    <Compile Include="Behaviors\ListViewBehaviors\ScrollToDisappearedDueDateChangeBehavior.cs" />
     <Compile Include="Behaviors\SetFocusOnLoadBehavior.cs" />
     <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
     <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
@@ -518,6 +525,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Deposits\OpenOrEditDepositView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NbRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

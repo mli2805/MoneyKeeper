@@ -119,6 +119,7 @@
 				<MenuItem x:Name="ShowMonthAnalisysForm" Header="АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ"/>
 				<MenuItem x:Name="ShowDepositsForm" Header="ДЕПОЗИТЫ"/>
 				<MenuItem x:Name="ShowCurrencyRatesForm" Header="КУРСЫ ВАЛЮТ"/>
+				<MenuItem x:Name="ShowOfficialRatesForm" Header="ОФИЦИАЛЬНЫЕ КУРСЫ"/>
 				<MenuItem x:Name="ShowArticlesAssociationsForm" Header="АССОЦИАЦИИ КАТЕГОРИЙ"/>
 				<MenuItem x:Name="ShowBankDepositOffersForm" Header="БАНКОВСКИЕ ДЕПОЗИТЫ"/>
 			</MenuItem>
