@@ -14,8 +14,8 @@ namespace Keeper.DomainModel
         public ObservableCollection<Account> Accounts { get; set; }
         public ObservableCollection<Transaction> Transactions { get; set; }
         public ObservableCollection<CurrencyRate> CurrencyRates { get; set; }
+        public ObservableCollection<NbRate> OfficialRates { get; set; }
         public ObservableCollection<ArticleAssociation> ArticlesAssociations { get; set; }
-
         public ObservableCollection<BankDepositOffer> BankDepositOffers { get; set; }
     }
 }

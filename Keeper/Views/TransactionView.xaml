@@ -3,46 +3,49 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ViewModels="clr-namespace:Keeper.ViewModels"
+        xmlns:viewModels="clr-namespace:Keeper.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cal="http://www.caliburnproject.org" 
         Icon="/Keeper;component/Resources/transactions.ico" 
         xmlns:ii="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
-        xmlns:Behaviors="clr-namespace:Keeper.Behaviors" xmlns:XamlExtensions="clr-namespace:Keeper.XamlExtensions"
-        xmlns:transactionViewFilters="clr-namespace:Keeper.ViewModels.TransactionViewFilters" mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance ViewModels:TransactionViewModel}" 
+        xmlns:xamlExtensions="clr-namespace:Keeper.XamlExtensions"
+        xmlns:transactionViewFilters="clr-namespace:Keeper.ViewModels.TransactionViewFilters"
+        xmlns:listViewBehaviors="clr-namespace:Keeper.Behaviors.ListViewBehaviors"
+        xmlns:behaviors="clr-namespace:Keeper.Behaviors"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:TransactionViewModel}" 
         Title="TransactionView" Height="806" MinWidth="1032" MaxWidth="1032" SizeToContent="Width"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
-  <i:Interaction.Triggers>
-    <ii:KeyTrigger Key="Escape" >
-      <cal:ActionMessage MethodName="EscapeButtonPressed"/>
-    </ii:KeyTrigger>
-    <ii:KeyTrigger Modifiers="Control" Key="Enter" >
-      <cal:ActionMessage MethodName="AddTransactionAfterSelected"/>
-    </ii:KeyTrigger>
-    <ii:KeyTrigger Key="Insert" >
-      <cal:ActionMessage MethodName="AddTransactionBeforeSelected"/>
-    </ii:KeyTrigger>
-    <ii:KeyTrigger Modifiers="Control" Key="Insert">
-      <cal:ActionMessage MethodName="AddNewDayTransaction"/>
-    </ii:KeyTrigger>
-    <ii:KeyTrigger Modifiers="Control" Key="Delete">
-      <cal:ActionMessage MethodName="DeleteTransaction"/>
-    </ii:KeyTrigger>
-    <ii:KeyTrigger Modifiers="Control" Key="OemMinus">
-      <cal:ActionMessage MethodName="MoveTransactionUp"/>
-    </ii:KeyTrigger>
-    <ii:KeyTrigger Modifiers="Control" Key="OemPlus">
-      <cal:ActionMessage MethodName="MoveTransactionDown"/>
-    </ii:KeyTrigger>
-  </i:Interaction.Triggers>
-  <Window.Resources>
-    <ResourceDictionary>
-            <XamlExtensions:AccountTemplateSelector x:Key="MyAccountTemplateSelector">
-                
-                <XamlExtensions:AccountTemplateSelector.AmountStyleForByr>
+    <i:Interaction.Triggers>
+        <ii:KeyTrigger Key="Escape" >
+            <cal:ActionMessage MethodName="EscapeButtonPressed"/>
+        </ii:KeyTrigger>
+        <ii:KeyTrigger Modifiers="Control" Key="Enter" >
+            <cal:ActionMessage MethodName="AddTransactionAfterSelected"/>
+        </ii:KeyTrigger>
+        <ii:KeyTrigger Key="Insert" >
+            <cal:ActionMessage MethodName="AddTransactionBeforeSelected"/>
+        </ii:KeyTrigger>
+        <ii:KeyTrigger Modifiers="Control" Key="Insert">
+            <cal:ActionMessage MethodName="AddNewDayTransaction"/>
+        </ii:KeyTrigger>
+        <ii:KeyTrigger Modifiers="Control" Key="Delete">
+            <cal:ActionMessage MethodName="DeleteTransaction"/>
+        </ii:KeyTrigger>
+        <ii:KeyTrigger Modifiers="Control" Key="OemMinus">
+            <cal:ActionMessage MethodName="MoveTransactionUp"/>
+        </ii:KeyTrigger>
+        <ii:KeyTrigger Modifiers="Control" Key="OemPlus">
+            <cal:ActionMessage MethodName="MoveTransactionDown"/>
+        </ii:KeyTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+        <ResourceDictionary>
+            <xamlExtensions:AccountTemplateSelector x:Key="MyAccountTemplateSelector">
+
+                <xamlExtensions:AccountTemplateSelector.AmountStyleForByr>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
@@ -50,9 +53,9 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
-                </XamlExtensions:AccountTemplateSelector.AmountStyleForByr>
+                </xamlExtensions:AccountTemplateSelector.AmountStyleForByr>
 
-                <XamlExtensions:AccountTemplateSelector.AmountStyleForByrToExchange>
+                <xamlExtensions:AccountTemplateSelector.AmountStyleForByrToExchange>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
@@ -60,9 +63,9 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
-                </XamlExtensions:AccountTemplateSelector.AmountStyleForByrToExchange>
+                </xamlExtensions:AccountTemplateSelector.AmountStyleForByrToExchange>
 
-                <XamlExtensions:AccountTemplateSelector.AmountStyleForByrFromExchange>
+                <xamlExtensions:AccountTemplateSelector.AmountStyleForByrFromExchange>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
@@ -70,9 +73,9 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
-                </XamlExtensions:AccountTemplateSelector.AmountStyleForByrFromExchange>
+                </xamlExtensions:AccountTemplateSelector.AmountStyleForByrFromExchange>
 
-                <XamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
+                <xamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
@@ -80,9 +83,9 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
-                </XamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
+                </xamlExtensions:AccountTemplateSelector.AmountStyleForOthers>
 
-                <XamlExtensions:AccountTemplateSelector.AmountStyleForOthersToExchange>
+                <xamlExtensions:AccountTemplateSelector.AmountStyleForOthersToExchange>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
@@ -90,9 +93,9 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
-                </XamlExtensions:AccountTemplateSelector.AmountStyleForOthersToExchange>
+                </xamlExtensions:AccountTemplateSelector.AmountStyleForOthersToExchange>
 
-                <XamlExtensions:AccountTemplateSelector.AmountStyleForOthersFromExchange>
+                <xamlExtensions:AccountTemplateSelector.AmountStyleForOthersFromExchange>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
                             <TextBlock.Text>
@@ -100,349 +103,349 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
-                </XamlExtensions:AccountTemplateSelector.AmountStyleForOthersFromExchange>
+                </xamlExtensions:AccountTemplateSelector.AmountStyleForOthersFromExchange>
 
-            </XamlExtensions:AccountTemplateSelector>
-        
-      <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
-      <SolidColorBrush x:Key="TriangleFocusedBrush" Color="Gray" />
-      <SolidColorBrush x:Key="TrianglePressedBrush" Color="#646464" />
+            </xamlExtensions:AccountTemplateSelector>
 
-      <Style x:Key="TriangleLButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Template">
-          <Setter.Value>
-            <ControlTemplate TargetType="{x:Type Button}">
-              <Grid>
-                <Polygon Points="18,2 8,10 18,18" Stroke="Gray" Name="Triangle" Fill="{StaticResource TriangleNeutralBrush}">
-                </Polygon>
-              </Grid>
-              <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                  <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                  <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="false">
-                  <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
-                </Trigger>
-              </ControlTemplate.Triggers>
-            </ControlTemplate>
-          </Setter.Value>
-        </Setter>
-      </Style>
-      <Style x:Key="TriangleRButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Template">
-          <Setter.Value>
-            <ControlTemplate TargetType="{x:Type Button}">
-              <Grid>
-                <Polygon Points="1,2 12,10 1,18" Stroke="#464646" Name="Triangle">
-                  <Polygon.Fill>
-                    <SolidColorBrush Color="White" />
-                  </Polygon.Fill>
-                </Polygon>
-              </Grid>
-              <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                  <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                  <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="false">
-                  <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
-                </Trigger>
-              </ControlTemplate.Triggers>
-            </ControlTemplate>
-          </Setter.Value>
-        </Setter>
-      </Style>
+            <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
+            <SolidColorBrush x:Key="TriangleFocusedBrush" Color="Gray" />
+            <SolidColorBrush x:Key="TrianglePressedBrush" Color="#646464" />
 
-    </ResourceDictionary>
-  </Window.Resources>
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="700*"/>
-      <ColumnDefinition Width="114"/>
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="54"/>
-      <RowDefinition Height="269*"/>
-      <RowDefinition Height="260"/>
-    </Grid.RowDefinitions>
-    <StackPanel Name="FilterPanel" Grid.ColumnSpan="3">
-      <Grid>
+            <Style x:Key="TriangleLButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Polygon Points="18,2 8,10 18,18" Stroke="Gray" Name="Triangle" Fill="{StaticResource TriangleNeutralBrush}">
+                                </Polygon>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TriangleRButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Polygon Points="1,2 12,10 1,18" Stroke="#464646" Name="Triangle">
+                                    <Polygon.Fill>
+                                        <SolidColorBrush Color="White" />
+                                    </Polygon.Fill>
+                                </Polygon>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="700*"/>
+            <ColumnDefinition Width="114"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-          <RowDefinition Height="24"/>
-          <RowDefinition Height="30"/>
+            <RowDefinition Height="54"/>
+            <RowDefinition Height="269*"/>
+            <RowDefinition Height="260"/>
         </Grid.RowDefinitions>
-        <Label Content="Переход к дате" Margin="5,0,0,0" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Margin="5,0,0,0" Background="White" VerticalAlignment="Center" Width="100" Grid.Row="1" 
+        <StackPanel Name="FilterPanel" Grid.ColumnSpan="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label Content="Переход к дате" Margin="5,0,0,0" VerticalAlignment="Top"/>
+                <DatePicker HorizontalAlignment="Left" Margin="5,0,0,0" Background="White" VerticalAlignment="Center" Width="100" Grid.Row="1" 
                     Text="{Binding DateToGo, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-        <ComboBox HorizontalAlignment="Left" Margin="110,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
+                <ComboBox HorizontalAlignment="Left" Margin="110,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
                   ItemsSource="{Binding DebetFilterList}" SelectedItem="{Binding SelectedDebetFilter}" />
-        <ComboBox HorizontalAlignment="Left" Margin="260,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
+                <ComboBox HorizontalAlignment="Left" Margin="260,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
                   ItemsSource="{Binding CreditFilterList}" SelectedItem="{Binding SelectedCreditFilter}" />
-        <ComboBox HorizontalAlignment="Left" Margin="414,0,0,0" Background="White" VerticalAlignment="Center" Width="80" Grid.Row="1"
+                <ComboBox HorizontalAlignment="Left" Margin="414,0,0,0" Background="White" VerticalAlignment="Center" Width="80" Grid.Row="1"
                   ItemsSource="{x:Static transactionViewFilters:OperationTypesFilerListForCombo.FilterList}" SelectedItem="{Binding SelectedOperationTypeFilter}"/>
-        <Button Content="Очистить все фильтры" Name="ClearAllFilters" 
+                <Button Content="Очистить все фильтры" Name="ClearAllFilters" 
                   HorizontalAlignment="Left" Margin="507,-20,0,0" Background="White" VerticalAlignment="Center" Width="140" Grid.Row="1" Height="30"/>
-        <ComboBox HorizontalAlignment="Left" Margin="660,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
+                <ComboBox HorizontalAlignment="Left" Margin="660,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
                   ItemsSource="{Binding ArticleFilterList}" SelectedItem="{Binding SelectedArticleFilter}" />
-        <Label Content="Поиск по *подстроке*" Margin="820,0,0,0"/>
-        <TextBox HorizontalAlignment="Left" Margin="815,0,0,0" Background="White" VerticalAlignment="Center" Width="170" Grid.Row="1"  BorderBrush="#555555"
+                <Label Content="Поиск по *подстроке*" Margin="820,0,0,0"/>
+                <TextBox HorizontalAlignment="Left" Margin="815,0,0,0" Background="White" VerticalAlignment="Center" Width="170" Grid.Row="1"  BorderBrush="#555555"
                  Text="{Binding CommentFilter}"/>
-      </Grid>
-    </StackPanel>
-    <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="4,2,4,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
+            </Grid>
+        </StackPanel>
+        <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="4,2,4,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
               ItemsSource="{Binding Rows}" SelectedIndex="{Binding SelectedTransactionIndex, Mode=TwoWay}" 
               SelectedItem="{Binding SelectedTransaction, Mode=OneWayToSource}" SelectionMode="Single"  >
-      <i:Interaction.Behaviors>
-        <Behaviors:ScrollToDisappearedDueDateChangeBehavior />
-        <Behaviors:ScrollToPreviousExitPointOrBottomOnLoadBehavior />
-                <Behaviors:ScrollToBottomOnAddBehavior />
-                <Behaviors:SetFocusOnLoadBehavior />
-      </i:Interaction.Behaviors>
-      <ListView.ItemContainerStyle>
-        <Style TargetType="{x:Type ListViewItem}">
-          <Setter Property="Margin" Value="1,0,0,0"/>
-          <Setter Property="Padding" Value="0,1"/>
-          <Setter Property="BorderBrush" Value="LightGray"/>
-          <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
-          <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
-          <Setter Property="BorderThickness" Value="0,0,0,1"/>
-          <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-          <Setter Property="Template">
-            <Setter.Value>
-              <ControlTemplate TargetType="{x:Type ListViewItem}">
-                <Border BorderBrush="{TemplateBinding BorderBrush}" 
+            <i:Interaction.Behaviors>
+                <listViewBehaviors:ScrollToDisappearedDueDateChangeBehavior />
+                <listViewBehaviors:ScrollToPreviousExitPointOrBottomOnLoadBehavior />
+                <listViewBehaviors:ScrollToBottomOnAddBehavior />
+                <behaviors:SetFocusOnLoadBehavior />
+            </i:Interaction.Behaviors>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Margin" Value="1,0,0,0"/>
+                    <Setter Property="Padding" Value="0,1"/>
+                    <Setter Property="BorderBrush" Value="LightGray"/>
+                    <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
+                    <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" 
                                                   BorderThickness="{TemplateBinding BorderThickness}" 
                                                   Background="{TemplateBinding Background}">
-                  <XamlExtensions:GridViewRowPresenterWithGridLines 
+                                    <xamlExtensions:GridViewRowPresenterWithGridLines 
                                                   Columns="{TemplateBinding GridView.ColumnCollection}"
                                                   Margin="{TemplateBinding Padding}" />
-                </Border>
-              </ControlTemplate>
-            </Setter.Value>
-          </Setter>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
 
-          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-          <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-              <Setter Property="Background" Value="#B6E6FF"/>
-            </Trigger>
-            <!--            <Trigger Property="IsEnabled" Value="False">-->
-            <!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
-            <!--            </Trigger>-->
-          </Style.Triggers>
-        </Style>
-      </ListView.ItemContainerStyle>
-      <ListView.ContextMenu>
-        <ContextMenu>
-          <MenuItem Header="Сдвинуть вверх ()" cal:Message.Attach="MoveTransactionUp" BorderBrush="{x:Null}" Background="White" ></MenuItem>
-          <MenuItem Header="Сдвинуть вниз ()" cal:Message.Attach="MoveTransactionDown" BorderBrush="{x:Null}" Background="White" ></MenuItem>
-          <MenuItem Header="Вставить перед (Insert)" cal:Message.Attach="AddTransactionBeforeSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
-          <MenuItem Header="Вставить после (Ctrl+Enter)" cal:Message.Attach="AddTransactionAfterSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
-        </ContextMenu>
-      </ListView.ContextMenu>
-      <ListView.View>
-        <GridView>
-          <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy h:mm'}" />
-          <GridViewColumn Header="Дебет" Width="190" DisplayMemberBinding="{Binding Debet}" />
-          <GridViewColumn Header="Кредит" Width="190" DisplayMemberBinding="{Binding Credit}" />
-          <GridViewColumn Header="Сумма" Width="115" CellTemplateSelector ="{StaticResource MyAccountTemplateSelector}" />
-          <GridViewColumn Header="Вал" Width="35" DisplayMemberBinding="{Binding Currency}" />
-          <GridViewColumn Header="Категория" Width="164" DisplayMemberBinding="{Binding Article}" />
-          <GridViewColumn Header="Примечание" Width="190" DisplayMemberBinding="{Binding Comment}" />
-        </GridView>
-      </ListView.View>
-    </ListView>
-    <Grid Name="AddEditArea"  Grid.Row="2">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="1*"/>
-        <ColumnDefinition Width="192"/>
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="40"/>
-        <RowDefinition Height="70"/>
-      </Grid.RowDefinitions>
-      <Rectangle Stroke="#10B7EE" StrokeThickness="2" Margin="4,4,0,4" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
-      <TabControl SelectedIndex="{Binding SelectedTabIndex}"
-                  HorizontalAlignment="Stretch" Margin="10,10,6,4" VerticalAlignment="Stretch" BorderBrush="White" BorderThickness="0" Grid.ColumnSpan="1">
-        <TabItem Name="tiIncome" Header="Доход" Width="160" Foreground="Blue" Background="#E8FFFF" >
-          <Grid Background="#E8FFFF">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#B6E6FF"/>
+                        </Trigger>
+                        <!--            <Trigger Property="IsEnabled" Value="False">-->
+                        <!--              <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
+                        <!--            </Trigger>-->
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Сдвинуть вверх ()" cal:Message.Attach="MoveTransactionUp" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                    <MenuItem Header="Сдвинуть вниз ()" cal:Message.Attach="MoveTransactionDown" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                    <MenuItem Header="Вставить перед (Insert)" cal:Message.Attach="AddTransactionBeforeSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                    <MenuItem Header="Вставить после (Ctrl+Enter)" cal:Message.Attach="AddTransactionAfterSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Дата" Width="100" DisplayMemberBinding="{Binding Timestamp, StringFormat='dd-MM-yyyy h:mm'}" />
+                    <GridViewColumn Header="Дебет" Width="190" DisplayMemberBinding="{Binding Debet}" />
+                    <GridViewColumn Header="Кредит" Width="190" DisplayMemberBinding="{Binding Credit}" />
+                    <GridViewColumn Header="Сумма" Width="115" CellTemplateSelector ="{StaticResource MyAccountTemplateSelector}" />
+                    <GridViewColumn Header="Вал" Width="35" DisplayMemberBinding="{Binding Currency}" />
+                    <GridViewColumn Header="Категория" Width="164" DisplayMemberBinding="{Binding Article}" />
+                    <GridViewColumn Header="Примечание" Width="190" DisplayMemberBinding="{Binding Comment}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Name="AddEditArea"  Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="192"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-              <RowDefinition Height="4"/>
-              <RowDefinition Height="40"/>
-              <RowDefinition Height="50"/>
-              <RowDefinition Height="1*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
-            <Label Content="Кто" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
-            <ComboBox Name="IncomeDebet" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+            <Rectangle Stroke="#10B7EE" StrokeThickness="2" Margin="4,4,0,4" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+            <TabControl SelectedIndex="{Binding SelectedTabIndex}"
+                  HorizontalAlignment="Stretch" Margin="10,10,6,4" VerticalAlignment="Stretch" BorderBrush="White" BorderThickness="0" Grid.ColumnSpan="1">
+                <TabItem Name="tiIncome" Header="Доход" Width="160" Foreground="Blue" Background="#E8FFFF" >
+                    <Grid Background="#E8FFFF">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Кто" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+                        <ComboBox Name="IncomeDebet" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding AccountsWhoGivesMeMoney}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+                        <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+                        <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
-            <Label Content="За" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-            <ComboBox Name="IncomeArticle" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
+                        <Label Content="За" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+                        <ComboBox Name="IncomeArticle" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
               ItemsSource="{Binding IncomeArticles}"
               SelectedItem="{Binding TransactionInWork.Article}" />
-            <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-            <TextBox Name="IncomeAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" 
+                        <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+                        <TextBox Name="IncomeAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" 
                      Width="80" BorderBrush="#555555" TextAlignment="Right" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" />
-            <ComboBox Name="IncomeCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+                        <ComboBox Name="IncomeCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}" SelectedItem="{Binding TransactionInWork.Currency}" />
-          </Grid>
-        </TabItem>
-        <TabItem Name="tiExpense" Header="Расход" Width="160" Foreground="DarkRed" Background="#FFE8FF">
-          <Grid Background="#FFE8FF">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="4"/>
-              <RowDefinition Height="40"/>
-              <RowDefinition Height="50"/>
-              <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <Label Content="Из" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
-            <ComboBox Name="ExpenseDebet" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+                    </Grid>
+                </TabItem>
+                <TabItem Name="tiExpense" Header="Расход" Width="160" Foreground="DarkRed" Background="#FFE8FF">
+                    <Grid Background="#FFE8FF">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Из" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+                        <ComboBox Name="ExpenseDebet" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccountsForShopping}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Кому" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+                        <Label Content="Кому" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+                        <ComboBox Name="ExpenseCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding AccountsWhoTakesMyMoney}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
-            <Label Content="За" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-            <ComboBox Name="ExpenseArticle" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
+                        <Label Content="За" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+                        <ComboBox Name="ExpenseArticle" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="170"
               ItemsSource="{Binding ExpenseArticles}"
               SelectedItem="{Binding TransactionInWork.Article}" />
-            <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-            <TextBox Name="ExpenseAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+                        <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+                        <TextBox Name="ExpenseAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
-            <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="50" Background="White"
+                        <ComboBox Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="50" Background="White"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
-            <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,9" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22" Background="Transparent" VerticalAlignment="Bottom">
-            </Button>
-          </Grid>
-        </TabItem>
-        <TabItem Name="tiTransfer" Header="Перенос" Width="160" Foreground="Black" Background="#E8E8E8">
-          <Grid Background="#E8E8E8">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="4"/>
-              <RowDefinition Height="40"/>
-              <RowDefinition Height="50"/>
-              <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <Label Content="Из" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
-            <ComboBox Name="TransferDebet" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+                        <Button Content="Чек" Name="FillInReceipt" Margin="600,0,0,9" Grid.Row="1" HorizontalAlignment="Left" Width="50" Height="22" Background="Transparent" VerticalAlignment="Bottom">
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem Name="tiTransfer" Header="Перенос" Width="160" Foreground="Black" Background="#E8E8E8">
+                    <Grid Background="#E8E8E8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Из" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+                        <ComboBox Name="TransferDebet" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-            <ComboBox Name="TransferCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
+                        <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+                        <ComboBox Name="TransferCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
               ItemsSource="{Binding MyAccounts}"
               SelectedItem="{Binding TransactionInWork.Credit}" />
-            <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-            <TextBox Name="TransferAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+                        <Label Content="Сколько" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+                        <TextBox Name="TransferAmount" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
-            <ComboBox Name="TransferCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+                        <ComboBox Name="TransferCurrency" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding TransactionInWork.Currency}" />
-          </Grid>
-        </TabItem>
-        <TabItem  Name="tiExchange" Header="Обмен" Width="160" Foreground="DarkGreen" Background="#C0FFC0">
-          <Grid Background="#E8FFE8">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="4"/>
-              <RowDefinition Height="40"/>
-              <RowDefinition Height="50"/>
-              <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <Label Content="Из" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
-            <ComboBox Name="ExchangeFrom" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" 
+                    </Grid>
+                </TabItem>
+                <TabItem  Name="tiExchange" Header="Обмен" Width="160" Foreground="DarkGreen" Background="#C0FFC0">
+                    <Grid Background="#E8FFE8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Из" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+                        <ComboBox Name="ExchangeFrom" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" 
                       VerticalAlignment="Center" Width="150" ItemsSource="{Binding MyAccounts}" SelectedItem="{Binding TransactionInWork.Debet}" />
-            <Label Content="В" HorizontalAlignment="Left" Margin="370,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
-            <ComboBox Name="ExchangeTo" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" Background="White" 
+                        <Label Content="В" HorizontalAlignment="Left" Margin="370,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
+                        <ComboBox Name="ExchangeTo" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" Background="White" 
                       VerticalAlignment="Center" Width="150" ItemsSource="{Binding MyAccounts}" SelectedItem="{Binding RelatedTransactionInWork.Credit}" />
 
-            <Label Content="через" HorizontalAlignment="Right" Margin="0,10,10,0" Padding="0" Grid.Row="2" VerticalAlignment="Top"/>
-            <ComboBox Name="ExchangeCredit" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Row="2" Background="White" VerticalAlignment="Bottom" Width="100"
+                        <Label Content="через" HorizontalAlignment="Right" Margin="0,10,10,0" Padding="0" Grid.Row="2" VerticalAlignment="Top"/>
+                        <ComboBox Name="ExchangeCredit" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Row="2" Background="White" VerticalAlignment="Bottom" Width="100"
               ItemsSource="{Binding BankAccounts}" SelectedItem="{Binding TransactionInWork.Credit}" />
-              
-            <Label Content="Сдано" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-            <TextBox Name="ExchangeAmountPassed" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+
+                        <Label Content="Сдано" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+                        <TextBox Name="ExchangeAmountPassed" HorizontalAlignment="Left" Margin="60,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
-            <ComboBox Name="ExchangeCurrencyPassed" HorizontalAlignment="Left" Margin="150,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+                        <ComboBox Name="ExchangeCurrencyPassed" HorizontalAlignment="Left" Margin="150,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}" SelectedItem="{Binding TransactionInWork.Currency}" />
-            <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
-            <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
+                        <Label Content="Получено" HorizontalAlignment="Left" Margin="230,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
+                        <TextBox Name="ExchangeAmountReceived" HorizontalAlignment="Left" Margin="300,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="80" BorderBrush="#555555" 
                  Text="{Binding RelatedTransactionInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right"/>
-            <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
+                        <ComboBox Name="ExchangeCurrencyReceived" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="2" Background="White" VerticalAlignment="Center" Width="50"
               ItemsSource="{Binding CurrencyList}" SelectedItem="{Binding RelatedTransactionInWork.Currency}" />
 
-          </Grid>
-        </TabItem>
-      </TabControl>
-      <Label Name="AmountInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <Label Name="AmountInUsd" Content="dddd $ по курсу хххх" HorizontalAlignment="Left" 
              Height="30" Width="476" Margin="75,115,0,0" VerticalAlignment="Top"/>
 
-      <Label Name="DebetAccountBalance" Content="ddd ddd ddd byr - nnn nnn nnn byr"
+            <Label Name="DebetAccountBalance" Content="ddd ddd ddd byr - nnn nnn nnn byr"
              Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="205,40,0,0"/>
-      <Label Name="CreditAccountBalance" Content="ddd ddd ddd - стало после"
+            <Label Name="CreditAccountBalance" Content="ddd ddd ddd - стало после"
               Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="510,67,0,0"/>
-      <Label Name="ExchangeRate" Content="обменный курс - "
+            <Label Name="ExchangeRate" Content="обменный курс - "
               Height="30" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="458,85,0,0"/>
 
-      <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,10" Grid.Row="1" 
+            <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,10" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" IsEnabled="{Binding CanEditDate}"
               Style="{StaticResource TriangleLButtonStyle}"/>
-      <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,8,0,8" Grid.Row="1" 
+            <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,8,0,8" Grid.Row="1" 
                   VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
                   Text="{Binding TransactionInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding CanEditDate}" Height="24" />
-      <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,10" Grid.Row="1" 
+            <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,10" Grid.Row="1" 
               VerticalAlignment="Center" Width="20" Background="White" Height="20" IsEnabled="{Binding CanEditDate}"
               Style="{StaticResource TriangleRButtonStyle}"/>
-      <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="1" VerticalAlignment="Center" Height="24" Width="81"/>
-      <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,10,0,10" Grid.Row="1" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
+            <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="1" VerticalAlignment="Center" Height="24" Width="81"/>
+            <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,10,0,10" Grid.Row="1" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
                  Text="{Binding TransactionInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="20" />
-      <ListBox Grid.Column="1" Grid.RowSpan="2" Margin="0,12,2,0" BorderThickness="0" ItemsSource="{Binding DayResults}" />
-      <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,5,5,5"
+            <ListBox Grid.Column="1" Grid.RowSpan="2" Margin="0,12,2,0" BorderThickness="0" ItemsSource="{Binding DayResults}" />
+            <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,5,5,5"
                   Text="{Binding Path=EndDayBalances}" TextWrapping="Wrap" Width="900"/>
-    </Grid>
+        </Grid>
 
-    <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" >
-      <Grid>
-        <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="252" Width="106" Margin="4" />
-        <Button Content="Сохранить"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" 
+        <StackPanel Name="ButtonsPanel" Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" >
+            <Grid>
+                <Rectangle Stroke="#10B7EE" StrokeThickness="2" Height="252" Width="106" Margin="4" />
+                <Button Content="Сохранить"   Name="SaveTransactionChanges" ToolTip="Enter"     HorizontalAlignment="Center" Margin="0,20,0,0" 
                 Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top" Width="90" IsDefault="True"/>
-        <Button Content="Отменить"   Name="CancelTransactionChanges" ToolTip="Esc"   HorizontalAlignment="Center" Margin="0,50,0,0"  
+                <Button Content="Отменить"   Name="CancelTransactionChanges" ToolTip="Esc"   HorizontalAlignment="Center" Margin="0,50,0,0"  
                 Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top" Width="90"/>
-        <Button Content="Еще одну" Name="AddTransactionAfterSelected" HorizontalAlignment="Center" Margin="0,90,0,0" 
+                <Button Content="Еще одну" Name="AddTransactionAfterSelected" HorizontalAlignment="Center" Margin="0,90,0,0" 
                 Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top" Width="90">
-          <Button.ToolTip>
-            <ToolTip ToolTipService.ShowDuration="200000">
-              <StackPanel>
-                <TextBlock Margin="2">Вставка ПОСЛЕ выделенной транзакции - КНОПКА или Ctrl+Enter,</TextBlock>
-                <TextBlock Margin="2">Если нужна вставка ПЕРЕД ней - Insert</TextBlock>
-                <TextBlock Margin="2">Смотри также контекстное меню транзакций</TextBlock>
-              </StackPanel>
-            </ToolTip>
-          </Button.ToolTip>
-        </Button>
-        <Button Content="В новый день" Name="AddNewDayTransaction"  ToolTip="Добавление транзакции с новой датой Ctrl+Ins" 
+                    <Button.ToolTip>
+                        <ToolTip ToolTipService.ShowDuration="200000">
+                            <StackPanel>
+                                <TextBlock Margin="2">Вставка ПОСЛЕ выделенной транзакции - КНОПКА или Ctrl+Enter,</TextBlock>
+                                <TextBlock Margin="2">Если нужна вставка ПЕРЕД ней - Insert</TextBlock>
+                                <TextBlock Margin="2">Смотри также контекстное меню транзакций</TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Content="В новый день" Name="AddNewDayTransaction"  ToolTip="Добавление транзакции с новой датой Ctrl+Ins" 
                 HorizontalAlignment="Center" Margin="0,120,0,0" Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top"  Width="90"/>
-        <Button Content="Удалить"     Name="DeleteTransaction"      ToolTip="Удаление выделенной транзакции Ctrl+Del"  
+                <Button Content="Удалить"     Name="DeleteTransaction"      ToolTip="Удаление выделенной транзакции Ctrl+Del"  
                 HorizontalAlignment="Center" Margin="0,150,0,0" Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top" Width="90"/>
-        <Button Content="Списки"     Name="ChangeComboboxFilters"      ToolTip="Вкл/выкл фильтрации списков в комбобоксах"  
+                <Button Content="Списки"     Name="ChangeComboboxFilters"      ToolTip="Вкл/выкл фильтрации списков в комбобоксах"  
                 HorizontalAlignment="Center" Margin="0,210,0,0" Style="{StaticResource MyButtonStyle}" VerticalAlignment="Top" Width="90"/>
-      </Grid>
-    </StackPanel>
+            </Grid>
+        </StackPanel>
 
-  </Grid>
+    </Grid>
 </Window>

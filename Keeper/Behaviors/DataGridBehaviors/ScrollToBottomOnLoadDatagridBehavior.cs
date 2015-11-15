@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace Keeper.Behaviors
+namespace Keeper.Behaviors.DataGridBehaviors
 {
   class ScrollToBottomOnLoadDatagridBehavior : Behavior<DataGrid>
   {

@@ -177,6 +177,19 @@ namespace Keeper.ViewModels.Shell
             MyMainMenuModel.Action = Actions.RefreshBalanceList;
         }
 
+        public void ShowOfficialRatesForm()
+        {
+            MyMainMenuModel.Action = Actions.DownloadRates;
+            var nbRatesViewModel = IoC.Get<NbRatesViewModel>();
+            WindowManager.ShowDialog(nbRatesViewModel);
+            if (nbRatesViewModel.IsCollectionChanged)
+            {
+                SaveDatabase();
+                IsDbChanged = true;
+            }
+            MyMainMenuModel.Action = Actions.RefreshBalanceList;
+        }
+
         public void ShowArticlesAssociationsForm()
         {
             MyMainMenuModel.Action = Actions.InputAssociates;
