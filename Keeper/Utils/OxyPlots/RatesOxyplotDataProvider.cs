@@ -23,15 +23,78 @@ namespace Keeper.Utils.OxyPlots
         {
             var diagramData = new DiagramData() {Caption = "Курсы валют", Mode = DiagramMode.Lines, Series = new List<DiagramSeries>(), TimeInterval = Every.Day};
             diagramData.Series.Add(GetNbUsdRate());
+            diagramData.Series.Add(GetNbEurRate());
+            diagramData.Series.Add(GetNbRurRate());
+            diagramData.Series.Add(GetNbBasket());
+            diagramData.Series.Add(GetMyUsdRate());
+            diagramData.Series.Add(GetMyEurRate());
+            diagramData.Series.Add(GetMyRurRate());
             return diagramData;
         }
 
         private DiagramSeries GetNbUsdRate()
         {
             var diagramSeries = new DiagramSeries(){Index = 0, Name = "Usd НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Green, Points = new List<DiagramPoint>()};
-            foreach (var rate in _db.OfficialRates.Where(rate => Math.Abs(rate.UsdRate) > 0.000000001))
+            foreach (var rate in _db.OfficialRates)
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.Date,rate.UsdRate));
+            }
+            return diagramSeries;
+        }
+
+        private DiagramSeries GetNbEurRate()
+        {
+            var diagramSeries = new DiagramSeries(){Index = 0, Name = "Euro НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Blue, Points = new List<DiagramPoint>()};
+            foreach (var rate in _db.OfficialRates.Where(rate => rate.Date > new DateTime(1999,1,10)))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date,rate.EurRate));
+            }
+            return diagramSeries;
+        }
+
+        private DiagramSeries GetNbRurRate()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Rur НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Red, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.OfficialRates)
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date, rate.RurRate));
+            }
+            return diagramSeries;
+        }
+
+        private DiagramSeries GetNbBasket()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Корзина НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Orange, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.OfficialRates.Where(rate => rate.Date >= new DateTime(2015,1,1)))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date, Math.Pow(rate.UsdRate,0.3)*Math.Pow(rate.EurRate,0.3)*Math.Pow(rate.RurRate,0.4)));
+            }
+            return diagramSeries;
+        }
+        private DiagramSeries GetMyUsdRate()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Usd мой", PositiveBrushColor = System.Windows.Media.Brushes.LightGreen, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.BYR))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
+            }
+            return diagramSeries;
+        }
+        private DiagramSeries GetMyEurRate()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Eur мой", PositiveBrushColor = System.Windows.Media.Brushes.LightSkyBlue, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.EUR))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
+            }
+            return diagramSeries;
+        }
+        private DiagramSeries GetMyRurRate()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Rur мой", PositiveBrushColor = System.Windows.Media.Brushes.LightPink, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.RUB))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
             }
             return diagramSeries;
         }
