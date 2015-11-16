@@ -1,4 +1,4 @@
-﻿<Window x:Class="Keeper.Views.DiagramView"
+﻿<Window x:Class="Keeper.Views.Diagram.DiagramView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:Controls="clr-namespace:Keeper.Controls"
