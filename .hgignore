@@ -16,3 +16,4 @@ Keeper.UnitTests/TestDb/Keeper.dbx
 Keeper/Utils/Deposits/~$DepositsCalculationScheme.xlsx
 Keeper141217.vspx
 Keeper/Resources/Thumbs.db
+*.vspx
