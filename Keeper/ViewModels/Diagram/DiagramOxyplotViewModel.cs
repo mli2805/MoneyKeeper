@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
+using System.Linq;
 using Caliburn.Micro;
+using Keeper.Controls.PeriodChoice;
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.OxyPlots;
 using OxyPlot;
 using OxyPlot.Series;
-using System.Linq;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Diagram
 {
     [Export]
     internal class DiagramOxyplotViewModel : Screen
@@ -34,7 +35,7 @@ namespace Keeper.ViewModels
             {
                 if (value.Equals(_fromPoint)) return;
                 _fromPoint = value;
-                SelectedInterval = _blackBox.PointsToYearMonth(_fromPoint, _toPoint);
+                SelectedInterval = _periodChoiceControlPointsConvertor.PointsToYearMonth(_fromPoint, _toPoint);
                 NotifyOfPropertyChange();
             }
         }
@@ -46,7 +47,7 @@ namespace Keeper.ViewModels
             {
                 if (value.Equals(_toPoint)) return;
                 _toPoint = value;
-                SelectedInterval = _blackBox.PointsToYearMonth(_fromPoint, _toPoint);
+                SelectedInterval = _periodChoiceControlPointsConvertor.PointsToYearMonth(_fromPoint, _toPoint);
                 NotifyOfPropertyChange();
             }
         }
@@ -93,7 +94,7 @@ namespace Keeper.ViewModels
         }
 
 
-        private readonly BlackBox _blackBox;
+        private readonly PeriodChoiceControlPointsConvertor _periodChoiceControlPointsConvertor;
         private ObservableCollection<string> _legendBindingSource;
 
         public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
@@ -104,9 +105,9 @@ namespace Keeper.ViewModels
             IntervalMode = DiagramIntervalMode.Months;
 
             // min / max is defined by time
-            _blackBox = new BlackBox(_diagramData.Min().YearMonth, _diagramData.Max().YearMonth, IntervalMode);
+            _periodChoiceControlPointsConvertor = new PeriodChoiceControlPointsConvertor(_diagramData.Min().YearMonth, _diagramData.Max().YearMonth, IntervalMode);
 
-            _blackBox.YearMonthPeriodToPoints(SelectedInterval, out _fromPoint, out _toPoint);
+            _periodChoiceControlPointsConvertor.YearMonthPeriodToPoints(SelectedInterval, out _fromPoint, out _toPoint);
 
             InitializeDiagram();
         }

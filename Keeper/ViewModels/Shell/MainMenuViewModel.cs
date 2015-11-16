@@ -16,6 +16,7 @@ using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.Dialogs;
 using Keeper.Utils.OxyPlots;
+using Keeper.ViewModels.Diagram;
 
 namespace Keeper.ViewModels.Shell
 {

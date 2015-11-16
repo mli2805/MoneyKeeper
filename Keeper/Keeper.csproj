@@ -249,7 +249,7 @@
     <Compile Include="ByFunctional\BalanceEvaluating\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Utils\OldTransactionsReorderer.cs" />
-    <Compile Include="Utils\OxyPlots\BlackBox.cs" />
+    <Compile Include="Controls\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataElement.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
@@ -309,8 +309,8 @@
     <Compile Include="Utils\Rates\RateDefiner.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositOffersViewModel.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositRatesAndRulesViewModel.cs" />
-    <Compile Include="ViewModels\DiagramOxyplotViewModel.cs" />
-    <Compile Include="ViewModels\DiagramViewModel.cs" />
+    <Compile Include="ViewModels\Diagram\DiagramOxyplotViewModel.cs" />
+    <Compile Include="ViewModels\Diagram\DiagramViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="Models\Shell\AccountForestModel.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthAnalysisBlankInscriber.cs" />
@@ -334,10 +334,10 @@
     <Compile Include="Views\Deposits\BankDepositRatesAndRulesView.xaml.cs">
       <DependentUpon>BankDepositRatesAndRulesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DiagramOxyplotView.xaml.cs">
+    <Compile Include="Views\Diagram\DiagramOxyplotView.xaml.cs">
       <DependentUpon>DiagramOxyplotView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DiagramView.xaml.cs">
+    <Compile Include="Views\Diagram\DiagramView.xaml.cs">
       <DependentUpon>DiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LogonView.xaml.cs">
@@ -512,11 +512,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DiagramOxyplotView.xaml">
+    <Page Include="Views\Diagram\DiagramOxyplotView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DiagramView.xaml">
+    <Page Include="Views\Diagram\DiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

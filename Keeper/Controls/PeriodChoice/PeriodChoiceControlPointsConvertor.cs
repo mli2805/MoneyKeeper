@@ -2,9 +2,9 @@
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 
-namespace Keeper.Utils.OxyPlots
+namespace Keeper.Controls.PeriodChoice
 {
-    public class BlackBox
+    public class PeriodChoiceControlPointsConvertor
     {
         private readonly YearMonth _firstDate;
         private readonly YearMonth _lastDate;
@@ -12,7 +12,7 @@ namespace Keeper.Utils.OxyPlots
         private readonly double _pointsInMonth;
         private readonly DiagramIntervalMode _intervalMode;
 
-        public BlackBox(YearMonth firstDate, YearMonth lastDate, DiagramIntervalMode intervalMode)
+        public PeriodChoiceControlPointsConvertor(YearMonth firstDate, YearMonth lastDate, DiagramIntervalMode intervalMode)
         {
             _firstDate = firstDate;
             _lastDate = lastDate;
@@ -29,7 +29,7 @@ namespace Keeper.Utils.OxyPlots
         }
         public Tuple<YearMonth, YearMonth> PointsToYearMonth(double fromPoint, double toPoint)
         {
-            Console.WriteLine(" {0}   {1}", fromPoint, toPoint);
+//            Console.WriteLine(" {0}   {1}", fromPoint, toPoint);
             return new Tuple<YearMonth, YearMonth>(PointToYearMonth(fromPoint), PointToYearMonth(toPoint));
         }
 
