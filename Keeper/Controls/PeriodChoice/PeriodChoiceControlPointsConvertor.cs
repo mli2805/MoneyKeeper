@@ -1,6 +1,7 @@
 ﻿using System;
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
+using Keeper.Utils.DiagramDomainModel;
 
 namespace Keeper.Controls.PeriodChoice
 {

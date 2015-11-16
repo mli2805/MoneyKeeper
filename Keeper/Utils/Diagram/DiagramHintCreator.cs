@@ -5,18 +5,19 @@ using System.Windows;
 using System.Windows.Media;
 
 using Keeper.Utils.Common;
+using Keeper.Utils.DiagramDomainModel;
 
 namespace Keeper.Utils.Diagram
 {
   class DiagramHintCreator
   {
-    private readonly DiagramData _allDiagramData;
+    private readonly DiagramDomainModel.DiagramData _allDiagramData;
     private readonly SortedList<DateTime, List<double>> _currentSeriesUnitedData;
     private readonly Every _groupInterval;
     private readonly DiagramMode _diagramMode;
     private readonly DiagramDrawingCalculator _diagramDrawingCalculator;
 
-    public DiagramHintCreator(DiagramData allDiagramData, SortedList<DateTime, List<double>> currentSeriesUnitedData,
+    public DiagramHintCreator(DiagramDomainModel.DiagramData allDiagramData, SortedList<DateTime, List<double>> currentSeriesUnitedData,
                     Every groupInterval, DiagramMode diagramMode, DiagramDrawingCalculator diagramDrawingCalculator)
     {
       _allDiagramData = allDiagramData;
@@ -28,7 +29,7 @@ namespace Keeper.Utils.Diagram
 
     private Brush DefineBackground(int barNumber)
     {
-      if (_allDiagramData.Data.Count == 1) return _currentSeriesUnitedData.ElementAt(barNumber).Value[0] > 0 ?
+      if (_allDiagramData.Series.Count == 1) return _currentSeriesUnitedData.ElementAt(barNumber).Value[0] > 0 ?
                                                                        Brushes.Azure : Brushes.LavenderBlush;
       return Brushes.White;
     }
@@ -40,7 +41,7 @@ namespace Keeper.Utils.Diagram
                           ? "  {0:MMMM yyyy}  "
                           : "  {0:yyyy} год  ";
 
-      if (_allDiagramData.Data.Count == 1)
+      if (_allDiagramData.Series.Count == 1)
       {
         content += "\n  {1:0} usd ";
         return string.Format(content, thisBar.Key, thisBar.Value[0]);
@@ -48,7 +49,7 @@ namespace Keeper.Utils.Diagram
 
       var i = 0;
       content = string.Format(content, thisBar.Key);
-      foreach (var series in _allDiagramData.Data)
+      foreach (var series in _allDiagramData.Series)
       {
         if (!thisBar.Value[i].Equals(0))
           content += string.Format("\n  {0} = {1:0} usd  ", series.Name, thisBar.Value[i]);

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramDomainModel
 {
 	public class DiagramSeries
 	{
@@ -9,6 +9,6 @@ namespace Keeper.Utils.Diagram
 		public Brush PositiveBrushColor;
 		public Brush NegativeBrushColor;
 		public int Index;
-		public List<DiagramPair> Data;
+		public List<DiagramPoint> Points;
 	}
 }

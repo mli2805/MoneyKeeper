@@ -1,4 +1,4 @@
-﻿namespace Keeper.Utils.Diagram
+﻿namespace Keeper.Utils.DiagramDomainModel
 {
 	public enum DiagramMode
 	{
