@@ -6,8 +6,24 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <oxyplot:PlotView Model="{Binding MyPlotModel}" Margin="5"/>
+        <DockPanel Grid.Column="1" Margin="5" LastChildFill="False">
+            <TextBlock Text="Курсы валют" FontStyle="Oblique" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,10,50,10"/>
+            <CheckBox Height="25" Content="USD НБ РБ" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedUsdNbRb, Mode=TwoWay}" />
+            <CheckBox Height="25" Content="USD мой" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedMyUsd, Mode=TwoWay}" />
+            <CheckBox Height="25" Content="EUR НБ РБ" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedEurNbRb, Mode=TwoWay}"/>
+            <CheckBox Height="25" Content="EUR мой" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedMyEur, Mode=TwoWay}"/>
+            <CheckBox Height="25" Content="RUR НБ РБ" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedRurNbRb, Mode=TwoWay}"/>
+            <CheckBox Height="25" Content="RUR мой" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedMyRur, Mode=TwoWay}"/>
+            <CheckBox Height="25" Content="Корзина НБ РБ" DockPanel.Dock="Top"  IsChecked="{Binding ContentModel.IsCheckedBusketNbRb, Mode=TwoWay}"/>
+
+            <CheckBox Height="25" Content="Логарифмические значения" DockPanel.Dock="Top"  IsChecked="{Binding ContentModel.IsCheckedLogarithm, Mode=TwoWay}" Margin="0,20,0,0"/>
+            <CheckBox Height="25" Content="Приведенные значения" DockPanel.Dock="Top"  IsChecked="{Binding ContentModel.IsCheckedUnify, Mode=TwoWay}"/>
+
+            <ListBox Height="Auto" ItemsSource="{Binding HintsSource}" DockPanel.Dock="Top" BorderThickness="0" Foreground="Gray"  Margin="0,40,0,0" IsEnabled="False"/>
+        </DockPanel>
+        <Button Grid.Column="1" Height="25" Width="100" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Close" IsCancel="True"/>
     </Grid>
 </Window>
