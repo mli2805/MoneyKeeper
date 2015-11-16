@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Keeper.Utils.Diagram;
+using Keeper.Utils.DiagramDomainModel;
 
 namespace Keeper.ViewModels.Diagram
 {

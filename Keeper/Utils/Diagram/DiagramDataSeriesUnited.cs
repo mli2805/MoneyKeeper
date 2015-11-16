@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 
 using Keeper.Utils.Common;
+using Keeper.Utils.DiagramDomainModel;
 
 namespace Keeper.Utils.Diagram
 {
@@ -33,10 +34,10 @@ namespace Keeper.Utils.Diagram
       Names = new List<string>();
       SeriesCount = 0;
 
-      foreach (var series in allSeries.Data)
+      foreach (var series in allSeries.Series)
       {
         Names.Add(series.Name);
-        foreach (var pair in series.Data)
+        foreach (var pair in series.Points)
         {
           if (!DiagramData.ContainsKey(pair.CoorXdate)) DiagramData.Add(pair.CoorXdate, new List<double>());
           while (DiagramData[pair.CoorXdate].Count < SeriesCount) DiagramData[pair.CoorXdate].Add(0);

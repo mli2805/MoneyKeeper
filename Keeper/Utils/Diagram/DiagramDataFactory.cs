@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.Utils.Common;
+using Keeper.Utils.DiagramDomainModel;
 
 namespace Keeper.Utils.Diagram
 {
@@ -35,18 +36,18 @@ namespace Keeper.Utils.Diagram
             var content = balances.Select(balance => string.Format("{0} {1:F}", balance.Key.Date, balance.Value)).ToList();
             File.WriteAllLines(@"c:\temp\tt.txt", content);
 
-            var data = balances.Select(pair => new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList();
+            var data = balances.Select(pair => new DiagramPoint(pair.Key.Date, (double)pair.Value)).ToList();
 
             return new DiagramSeries
               {
-                  Data = data,
+                  Points = data,
                   Index = 0,
                   Name = name,
                   PositiveBrushColor = positiveBrush
               };
         }
 
-        public DiagramData DailyBalancesCtor()
+        public DiagramDomainModel.DiagramData DailyBalancesCtor()
         {
             var dataForDiagram = new List<DiagramSeries>
                              {
@@ -54,10 +55,10 @@ namespace Keeper.Utils.Diagram
                                AccountDailyBalancesToSeries("Мои", Brushes.Blue)
                              };
 
-            return new DiagramData
+            return new DiagramDomainModel.DiagramData
             {
                 Caption = "Располагаемые средства",
-                Data = dataForDiagram,
+                Series = dataForDiagram,
                 Mode = DiagramMode.Lines,
                 TimeInterval = Every.Day
             };
@@ -119,7 +120,7 @@ namespace Keeper.Utils.Diagram
             return byrRates.ToDictionary(byrRate => byrRate.Key, byrRate => (decimal)Math.Log10((double)byrRate.Value));
         }
 
-        public DiagramData RatesCtor()
+        public DiagramDomainModel.DiagramData RatesCtor()
         {
             var data = new List<DiagramSeries>();
 
@@ -128,7 +129,7 @@ namespace Keeper.Utils.Diagram
                      {
                          Name = "BYR",
                          PositiveBrushColor = Brushes.Brown,
-                         Data = (from pair in byrRates select new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList()
+                         Points = (from pair in byrRates select new DiagramPoint(pair.Key.Date, (double)pair.Value)).ToList()
                      });
 
             var byrRatesLog = ByrRateLogarithm(byrRates);
@@ -136,7 +137,7 @@ namespace Keeper.Utils.Diagram
                      {
                          Name = "LogBYR",
                          PositiveBrushColor = Brushes.Chocolate,
-                         Data = (from pair in byrRatesLog select new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList()
+                         Points = (from pair in byrRatesLog select new DiagramPoint(pair.Key.Date, (double)pair.Value)).ToList()
                      });
 
             var euroRates = FillinGapsInRates(ExtractRates(CurrencyCodes.EUR));
@@ -144,13 +145,13 @@ namespace Keeper.Utils.Diagram
                      {
                          Name = "EURO",
                          PositiveBrushColor = Brushes.Blue,
-                         Data = (from pair in euroRates select new DiagramPair(pair.Key.Date, (double)pair.Value)).ToList()
+                         Points = (from pair in euroRates select new DiagramPoint(pair.Key.Date, (double)pair.Value)).ToList()
                      });
 
-            return new DiagramData
+            return new DiagramDomainModel.DiagramData
             {
                 Caption = "Курсы валют",
-                Data = data,
+                Series = data,
                 Mode = DiagramMode.SeparateLines,
                 TimeInterval = Every.Day
             };
@@ -164,12 +165,12 @@ namespace Keeper.Utils.Diagram
                          PositiveBrushColor = positiveBrush,
                          NegativeBrushColor = positiveBrush,
                          Index = 0,
-                         Data = (from pair in ExtractorFromDb.MonthlyTraffic(name)
-                                 select new DiagramPair(pair.Key, (double)pair.Value)).ToList()
+                         Points = (from pair in ExtractorFromDb.MonthlyTraffic(name)
+                                 select new DiagramPoint(pair.Key, (double)pair.Value)).ToList()
                      };
         }
 
-        public DiagramData MonthlyOutcomesDiagramCtor()
+        public DiagramDomainModel.DiagramData MonthlyOutcomesDiagramCtor()
         {
             var outcomes = mAccountTreeStraightener.Seek("Все расходы", _db.Accounts);
             var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta, 
@@ -183,16 +184,16 @@ namespace Keeper.Utils.Diagram
                 dataForDiagram.Add(ArticleMonthlyTrafficToSeries(outcome.Name, colorsEnumerator.Current));
             }
 
-            return new DiagramData
+            return new DiagramDomainModel.DiagramData
             {
                 Caption = "Ежемесячные расходы в разрезе категорий",
-                Data = dataForDiagram,
+                Series = dataForDiagram,
                 Mode = DiagramMode.BarVertical,
                 TimeInterval = Every.Month
             };
         }
 
-        public DiagramData MonthlyIncomesDiagramCtor()
+        public DiagramDomainModel.DiagramData MonthlyIncomesDiagramCtor()
         {
             var dataForDiagram = new List<DiagramSeries>
                              {
@@ -202,16 +203,16 @@ namespace Keeper.Utils.Diagram
                                ArticleMonthlyTrafficToSeries("Подарки",Brushes.DarkOrange),
                              };
 
-            return new DiagramData
+            return new DiagramDomainModel.DiagramData
             {
                 Caption = "Ежемесячные доходы (только основные категории)",
-                Data = dataForDiagram,
+                Series = dataForDiagram,
                 Mode = DiagramMode.BarVertical,
                 TimeInterval = Every.Month
             };
         }
 
-        public DiagramData MonthlyResultsDiagramCtor()
+        public DiagramDomainModel.DiagramData MonthlyResultsDiagramCtor()
         {
             var dataForDiagram = new List<DiagramSeries>
                              {
@@ -221,21 +222,21 @@ namespace Keeper.Utils.Diagram
                                    PositiveBrushColor = Brushes.Blue,
                                    NegativeBrushColor = Brushes.Red,
                                    Index = 0,
-                                   Data = (from pair in ExtractorFromDb.MonthlyResults("Мои")
-                                           select new DiagramPair(pair.Key, (double) pair.Value)).ToList()
+                                   Points = (from pair in ExtractorFromDb.MonthlyResults("Мои")
+                                           select new DiagramPoint(pair.Key, (double) pair.Value)).ToList()
                                  }
                              };
 
-            return new DiagramData
+            return new DiagramDomainModel.DiagramData
             {
                 Caption = "Сальдо",
-                Data = dataForDiagram,
+                Series = dataForDiagram,
                 Mode = DiagramMode.BarVertical,
                 TimeInterval = Every.Month
             };
         }
 
-        public DiagramData AverageSignificancesDiagramCtor()
+        public DiagramDomainModel.DiagramData AverageSignificancesDiagramCtor()
         {
             var seriesNames = new List<string> { "Все доходы", "Зарплата", "Иррациональные", "Рента", "Все расходы" };
             var seriesColors = new List<Brush> {Brushes.DarkGreen, Brushes.LimeGreen, Brushes.Black, 
@@ -253,15 +254,15 @@ namespace Keeper.Utils.Diagram
                                    {
                                        Name = seriesName,
                                        PositiveBrushColor = colorsEnumerator.Current,
-                                       Data = (from pair in average12MsDictionary
-                                               select new DiagramPair(pair.Key.Date, (double)Math.Abs(pair.Value))).ToList()
+                                       Points = (from pair in average12MsDictionary
+                                               select new DiagramPoint(pair.Key.Date, (double)Math.Abs(pair.Value))).ToList()
                                    });
             }
 
-            return new DiagramData
+            return new DiagramDomainModel.DiagramData
             {
                 Caption = "Средние за 12 месяцев по основным индикативным показателям",
-                Data = dataForDiagram,
+                Series = dataForDiagram,
                 Mode = DiagramMode.Lines,
                 TimeInterval = Every.Day
             };

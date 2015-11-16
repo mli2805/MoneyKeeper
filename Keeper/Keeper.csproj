@@ -238,10 +238,10 @@
     <Compile Include="ByFunctional\DepositProcessing\DepositTrafficExtractor.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositReporter.cs" />
     <Compile Include="Utils\Diagram\DiagramDataExtremums.cs" />
-    <Compile Include="Utils\Diagram\DiagramIntervalMode.cs" />
-    <Compile Include="Utils\Diagram\DiagramMode.cs" />
-    <Compile Include="Utils\Diagram\DiagramPair.cs" />
-    <Compile Include="Utils\Diagram\DiagramSeries.cs" />
+    <Compile Include="Utils\DiagramDomainModel\DiagramIntervalMode.cs" />
+    <Compile Include="Utils\DiagramDomainModel\DiagramMode.cs" />
+    <Compile Include="Utils\DiagramDomainModel\DiagramPoint.cs" />
+    <Compile Include="Utils\DiagramDomainModel\DiagramSeries.cs" />
     <Compile Include="Utils\FileSystem\IZipEntry.cs" />
     <Compile Include="Utils\FileSystem\IZipFile.cs" />
     <Compile Include="Utils\FileSystem\ZipEntryAdapter.cs" />
@@ -252,6 +252,7 @@
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataElement.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
+    <Compile Include="Utils\OxyPlots\RatesOxyplotDataProvider.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\Common\DateTimeExtantions.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbGeneralLoader.cs" />
@@ -277,7 +278,7 @@
     <Compile Include="Utils\Dialogs\IMyOpenFileDialog.cs" />
     <Compile Include="Utils\Dialogs\MessageBoxer.cs" />
     <Compile Include="Utils\Dialogs\MyOpenFileDialog.cs" />
-    <Compile Include="Utils\Diagram\DiagramData.cs" />
+    <Compile Include="Utils\DiagramDomainModel\DiagramData.cs" />
     <Compile Include="Utils\Diagram\DiagramDataPanAndZoomer.cs" />
     <Compile Include="Utils\Diagram\DiagramDrawer.cs" />
     <Compile Include="Utils\Diagram\DiagramDataExtractorFromDb.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="ViewModels\Deposits\BankDepositRatesAndRulesViewModel.cs" />
     <Compile Include="ViewModels\Diagram\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\Diagram\DiagramViewModel.cs" />
+    <Compile Include="ViewModels\Diagram\RatesOxyplotViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="Models\Shell\AccountForestModel.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthAnalysisBlankInscriber.cs" />
@@ -339,6 +341,9 @@
     </Compile>
     <Compile Include="Views\Diagram\DiagramView.xaml.cs">
       <DependentUpon>DiagramView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Diagram\RatesOxyplotView.xaml.cs">
+      <DependentUpon>RatesOxyplotView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LogonView.xaml.cs">
       <DependentUpon>LogonView.xaml</DependentUpon>
@@ -517,6 +522,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Diagram\DiagramView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Diagram\RatesOxyplotView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

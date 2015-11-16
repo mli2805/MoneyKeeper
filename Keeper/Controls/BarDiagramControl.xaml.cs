@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
+using Keeper.Utils.DiagramDomainModel;
 using Keeper.ViewModels;
 using Point = System.Windows.Point;
 
@@ -148,7 +149,7 @@ namespace Keeper.Controls
 
 
       DiagramLegend = new ObservableCollection<DiagramLegendItem>();
-      foreach (var series in AllDiagramData.Data)
+      foreach (var series in AllDiagramData.Series)
       {
         DiagramLegend.Add(new DiagramLegendItem() { SeriesName = series.Name, FontColor = series.PositiveBrushColor });
       }

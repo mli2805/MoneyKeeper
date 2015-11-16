@@ -6,7 +6,7 @@ using System.Linq;
 using Caliburn.Micro;
 using Keeper.Controls.PeriodChoice;
 using Keeper.Utils.Common;
-using Keeper.Utils.Diagram;
+using Keeper.Utils.DiagramDomainModel;
 using Keeper.Utils.OxyPlots;
 using OxyPlot;
 using OxyPlot.Series;
@@ -27,7 +27,6 @@ namespace Keeper.ViewModels.Diagram
                 InitializeDiagram();
             }
         }
-
         public double FromPoint
         {
             get { return _fromPoint; }
@@ -39,7 +38,6 @@ namespace Keeper.ViewModels.Diagram
                 NotifyOfPropertyChange();
             }
         }
-
         public double ToPoint
         {
             get { return _toPoint; }
@@ -51,7 +49,6 @@ namespace Keeper.ViewModels.Diagram
                 NotifyOfPropertyChange();
             }
         }
-
         public string SelectedPeriodTitle
         {
             get { return _selectedPeriodTitle; }
@@ -62,7 +59,6 @@ namespace Keeper.ViewModels.Diagram
                 NotifyOfPropertyChange();
             }
         }
-
         public DiagramIntervalMode IntervalMode { get; set; }
 
         private readonly List<ExpensePartingDataElement> _diagramData;
@@ -70,7 +66,6 @@ namespace Keeper.ViewModels.Diagram
         private double _fromPoint;
         private double _toPoint;
         private string _selectedPeriodTitle;
-
         public ObservableCollection<string> LegendBindingSource
         {
             get { return _legendBindingSource; }
@@ -81,7 +76,6 @@ namespace Keeper.ViewModels.Diagram
                 NotifyOfPropertyChange(() => LegendBindingSource);
             }
         }
-
         public PlotModel MyPlotModel
         {
             get { return _myPlotModel; }
@@ -93,10 +87,8 @@ namespace Keeper.ViewModels.Diagram
             }
         }
 
-
         private readonly PeriodChoiceControlPointsConvertor _periodChoiceControlPointsConvertor;
         private ObservableCollection<string> _legendBindingSource;
-
         public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
         {
             _diagramData = diagramData;

@@ -132,6 +132,7 @@
         <MenuItem x:Name="ShowAverageSignificancesDiagram" Header="Средние основные"/>
 				<Separator Style="{DynamicResource SeparatorStyle}"/>
 				<MenuItem x:Name="ShowRatesDiagram" Header="Курсы валют"/>
+                <MenuItem x:Name="ShowOxyplotRatesDiagram" Header="Курсы валют (Oxyplot)"/>
 			</MenuItem>
 			<MenuItem Header="TOOLS">
                 <MenuItem x:Name="ShowSettings" Header="Settings" />

@@ -14,6 +14,7 @@ using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.Utils.DbInputOutput.FileTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Diagram;
+using Keeper.Utils.DiagramDomainModel;
 using Keeper.Utils.Dialogs;
 using Keeper.Utils.OxyPlots;
 using Keeper.ViewModels.Diagram;
@@ -36,6 +37,7 @@ namespace Keeper.ViewModels.Shell
         private readonly DiagramDataFactory _diagramDataFactory;
         private readonly IMessageBoxer _messageBoxer;
         private readonly ExpensePartingDataProvider _expensePartingDataProvider;
+        private readonly RatesOxyplotDataProvider _ratesOxyplotDataProvider;
         private readonly MySettings _mySettings;
 
         public bool IsDbLoadingFailed { get; set; }
@@ -57,11 +59,12 @@ namespace Keeper.ViewModels.Shell
         [ImportingConstructor]
         public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
                                  IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory,
-                                 IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider, MySettings mySettings)
+                                 IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider, RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
         {
             _loadResult = loadResult; // в конструкторе DbLoadResult происходит загрузка БД
             _messageBoxer = messageBoxer;
             _expensePartingDataProvider = expensePartingDataProvider;
+            _ratesOxyplotDataProvider = ratesOxyplotDataProvider;
             _mySettings = mySettings;
 
             IsDbLoadingFailed = _loadResult.Db == null;
@@ -256,6 +259,12 @@ namespace Keeper.ViewModels.Shell
             var diagramData = _expensePartingDataProvider.Get();
             var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
             WindowManager.ShowDialog(diagramOxyplotViewModel);
+        }
+        public void ShowOxyplotRatesDiagram()
+        {
+            var diagramData = _ratesOxyplotDataProvider.Get();
+            var ratesOxyplotViewModel = new RatesOxyplotViewModel(diagramData);
+            WindowManager.ShowDialog(ratesOxyplotViewModel);
         }
         public void ShowAverageSignificancesDiagram()
         {
