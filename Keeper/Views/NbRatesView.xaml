@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:dataGridBehaviors="clr-namespace:Keeper.Behaviors.DataGridBehaviors"
-        Title="NbRates" Height="600" Width="418" WindowStartupLocation="CenterOwner">
+        Title="NbRates" Height="600" Width="498" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -21,6 +21,7 @@
                 <DataGridTextColumn Header="  Usd" Width="80" Binding="{Binding UsdRate, StringFormat=\{0:0.00###\}}"/>
                 <DataGridTextColumn Header="  Eur" Width="80" Binding="{Binding EurRate, StringFormat=\{0:0.00###\}}"/>
                 <DataGridTextColumn Header="  Rur" Width="80" Binding="{Binding RurRate, StringFormat=\{0:0.00###\}}"/>
+                <DataGridTextColumn Header="  Корзина" Width="80" Binding="{Binding Busket, StringFormat=\{0:0.00\}}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Label Height="25" Width="80" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Grid.Row="1" Content="{Binding ClockContent}"/>

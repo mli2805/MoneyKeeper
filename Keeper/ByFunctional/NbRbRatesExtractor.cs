@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Text;
-using System.Windows;
-using Caliburn.Micro;
 using Keeper.DomainModel;
 
 namespace Keeper.ByFunctional
@@ -29,7 +26,11 @@ namespace Keeper.ByFunctional
         public Dictionary<CurrencyCodes, double> GetRatesForDate(DateTime date)
         {
             var webData = _wc.DownloadString("http://www.nbrb.by/statistics/rates/ratesDaily.asp?fromdate="+date.ToString("yyyy-M-d"));
-//File.WriteAllLines(@"c:\temp\nbrb.txt",new string[]{webData});
+            var pos = webData.IndexOf("maxDate:", System.StringComparison.Ordinal);
+            var maxDateString = webData.Substring(pos+10, 10);
+            var maxDate = DateTime.Parse(maxDateString, CultureInfo.CreateSpecificCulture("ru-Ru"));
+            if (maxDate < date) return null;
+                
             return ParsePage(webData, date);
         }
 
@@ -53,8 +54,8 @@ namespace Keeper.ByFunctional
                         rateClearString.Append(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator);
                 }
                 double rate;
-                if (Double.TryParse(rateClearString.ToString(), out rate)) result.Add(key.Value, rate);
-//                else MessageBox.Show(String.Format("{0} {1} {2}", date, key.Key, webData.Substring(pos, 100)));
+                if (Double.TryParse(rateClearString.ToString(), NumberStyles.Any, CultureInfo.CreateSpecificCulture("ru-Ru"), out rate)) 
+                    result.Add(key.Value, rate);
             }
             return result;
         }
