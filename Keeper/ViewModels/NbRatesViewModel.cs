@@ -92,6 +92,11 @@ namespace Keeper.ViewModels
         private void DownloadRatesFromNbRbSiteForDate(DateTime date)
         {
             var dateRates = _nbRbRatesExtractor.GetRatesForDate(date);
+            if (dateRates == null)
+            {
+                MessageBox.Show(String.Format("Курсы за {0} недоступны", date));
+                return;
+            }
             Line = new NbRate() { Date = date };
             foreach (var rate in dateRates)
             {
@@ -125,7 +130,7 @@ namespace Keeper.ViewModels
             var lastLine = Rows.LastOrDefault();
             var lastDate = lastLine == null ? new DateTime(1995, 3, 31) : lastLine.Date;
 
-            while (lastDate.Date < DateTime.Today.Date)
+            while (lastDate.Date <= DateTime.Today.Date)
             {
                 DownloadRatesFromNbRbSiteForDate(lastDate.AddDays(1));
                 if (!_isWorking) break;
