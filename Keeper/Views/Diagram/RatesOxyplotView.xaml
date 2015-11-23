@@ -14,7 +14,7 @@
             <CheckBox Height="25" Content="USD НБ РБ" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedUsdNbRb, Mode=TwoWay}" />
             <CheckBox Height="25" Content="USD мой" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedMyUsd, Mode=TwoWay}" />
             <CheckBox Height="25" Content="EUR НБ РБ" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedEurNbRb, Mode=TwoWay}"/>
-            <CheckBox Height="25" Content="USD / EUR" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedUsdEur, Mode=TwoWay}"/>
+            <CheckBox Height="25" Content="EUR / USD (НБ РБ)" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedEurUsdNbRb, Mode=TwoWay}"/>
             <CheckBox Height="25" Content="RUR НБ РБ" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedRurNbRb, Mode=TwoWay}"/>
             <CheckBox Height="25" Content="RUR / USD" DockPanel.Dock="Top" IsChecked="{Binding ContentModel.IsCheckedRurUsd, Mode=TwoWay}"/>
             <CheckBox Height="25" Content="Корзина НБ РБ" DockPanel.Dock="Top"  IsChecked="{Binding ContentModel.IsCheckedBusketNbRb, Mode=TwoWay}"/>

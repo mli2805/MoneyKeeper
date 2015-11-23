@@ -34,7 +34,7 @@ namespace Keeper.ViewModels.Diagram
                 IsCheckedUsdNbRb = true,
                 IsCheckedMyUsd = false,
                 IsCheckedEurNbRb = true,
-                IsCheckedUsdEur = false,
+                IsCheckedEurUsdNbRb = false,
                 IsCheckedRurNbRb = true,
                 IsCheckedRurUsd = false,
                 IsCheckedBusketNbRb = true,
