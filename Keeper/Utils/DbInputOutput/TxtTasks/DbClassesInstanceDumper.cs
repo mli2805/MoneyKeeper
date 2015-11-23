@@ -25,17 +25,17 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
         public string Dump(CurrencyRate rate)
         {
-            return rate.BankDay.Date.ToString("dd/MM/yyyy", new CultureInfo("ru-Ru")) + " ; " +
+            return rate.BankDay.Date.ToString("dd/MM/yyyy") + " ; " +
                    rate.Currency + " ; " + rate.Rate;
         }
         public string Dump(NbRate rate)
         {
-            return rate.Date.Date.ToString("dd/MM/yyyy", new CultureInfo("ru-Ru")) + " ; " +
+            return rate.Date.Date.ToString("dd/MM/yyyy") + " ; " +
                    rate.UsdRate + " ; " + rate.EurRate + " ; " + rate.RurRate;
         }
         public string Dump(Transaction transaction)
         {
-            return Convert.ToString(transaction.Timestamp, new CultureInfo("ru-Ru")) + " ; " + transaction.Operation + " ; " +
+            return Convert.ToString(transaction.Timestamp) + " ; " + transaction.Operation + " ; " +
                    transaction.Debet + " ; " + transaction.Credit + " ; " + transaction.Amount + " ; " + transaction.Currency + " ; " +
                    transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
         }
