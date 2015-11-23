@@ -143,7 +143,6 @@
     <Compile Include="ByFunctional\AccountEditing\IUserInformator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="ByFunctional\NbRbRatesExtractor.cs" />
-    <Compile Include="ByFunctional\OfficialRateFromWebsiteGetter.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControl.xaml.cs">
       <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
     </Compile>
@@ -253,6 +252,7 @@
     <Compile Include="Utils\OxyPlots\ExpensePartingDataElement.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
     <Compile Include="Utils\OxyPlots\RatesDiagramContentModel.cs" />
+    <Compile Include="Utils\OxyPlots\RatesOxyplotBuilder.cs" />
     <Compile Include="Utils\OxyPlots\RatesOxyplotDataProvider.cs" />
     <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="Utils\Common\DateTimeExtantions.cs" />

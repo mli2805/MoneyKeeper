@@ -11,6 +11,7 @@ namespace Keeper.ViewModels.Diagram
     class RatesOxyplotViewModel : Screen
     {
         private readonly DiagramData _diagramData;
+
         private PlotModel _myPlotModel;
         public PlotModel MyPlotModel
         {
@@ -31,30 +32,31 @@ namespace Keeper.ViewModels.Diagram
             ContentModel = new RatesDiagramContentModel()
             {
                 IsCheckedUsdNbRb = true,
-                IsCheckedMyUsd = true,
+                IsCheckedMyUsd = false,
                 IsCheckedEurNbRb = true,
-                IsCheckedMyEur = true,
+                IsCheckedUsdEur = false,
                 IsCheckedRurNbRb = true,
-                IsCheckedMyRur = true,
+                IsCheckedRurUsd = false,
                 IsCheckedBusketNbRb = true,
                 IsCheckedLogarithm = false,
                 IsCheckedUnify = false
             };
+            ContentModel.PropertyChanged += ContentModel_PropertyChanged;
+
+            InitializeDiagram();
+        }
+
+        void ContentModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
             InitializeDiagram();
         }
 
         private void InitializeDiagram()
         {
             HintsSource = new List<string>(){"Mouse wheel - Zoom", "Right button - Move", "Ctrl + Right button - Select rect"};
+            var ratesOxyplotBuilder = new RatesOxyplotBuilder(_diagramData);
 
-            var temp = new PlotModel();
-            temp.Axes.Add(DefineDateTimeAxis());
-            temp.Axes.Add(DefineRateAxis());
-
-            foreach (var series in _diagramData.Series)
-            {
-                temp.Series.Add(InitializeLineSeries(series));
-            }
+            var temp = ratesOxyplotBuilder.Do(ContentModel);
             MyPlotModel = temp; // this is raising the INotifyPropertyChanged event			
         }
 
@@ -62,45 +64,5 @@ namespace Keeper.ViewModels.Diagram
         {
             DisplayName = _diagramData.Caption;
         }
-
-        private static LinearAxis DefineRateAxis()
-        {
-            var yAxis = new LinearAxis
-            {
-                Position = AxisPosition.Left,
-//                Title = "Value",
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash
-            };
-            return yAxis;
-        }
-
-        private static DateTimeAxis DefineDateTimeAxis()
-        {
-            var xAxis = new DateTimeAxis
-            {
-                Position = AxisPosition.Bottom,
-//                StringFormat = Constants.MarketData.DisplayDateFormat,
-//                Title = "End of Day",
-                IntervalLength = 75,
-                MinorIntervalType = DateTimeIntervalType.Days,
-                IntervalType = DateTimeIntervalType.Days,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-            };
-            return xAxis;
-        }
-
-        private Series InitializeLineSeries(DiagramSeries series)
-        {
-            var result = new LineSeries {Title = series.Name};
-//            result.Color = series.PositiveBrushColor;
-            foreach (var point in series.Points)
-            {
-                result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(point.CoorXdate), point.CoorYdouble));
-            }
-            return result;
-        }
-
     }
 }

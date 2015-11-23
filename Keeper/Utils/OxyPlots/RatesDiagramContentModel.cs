@@ -9,9 +9,9 @@ namespace Keeper.Utils.OxyPlots
         private bool _isCheckedUsdNbRb;
         private bool _isCheckedMyUsd;
         private bool _isCheckedEurNbRb;
-        private bool _isCheckedMyEur;
+        private bool _isCheckedUsdEur;
         private bool _isCheckedRurNbRb;
-        private bool _isCheckedMyRur;
+        private bool _isCheckedRurUsd;
         private bool _isCheckedBusketNbRb;
         private bool _isCheckedLogarithm;
         private bool _isCheckedUnify;
@@ -46,13 +46,13 @@ namespace Keeper.Utils.OxyPlots
                 OnPropertyChanged();
             }
         }
-        public bool IsCheckedMyEur
+        public bool IsCheckedUsdEur
         {
-            get { return _isCheckedMyEur; }
+            get { return _isCheckedUsdEur; }
             set
             {
-                if (value.Equals(_isCheckedMyEur)) return;
-                _isCheckedMyEur = value;
+                if (value.Equals(_isCheckedUsdEur)) return;
+                _isCheckedUsdEur = value;
                 OnPropertyChanged();
             }
         }
@@ -66,13 +66,13 @@ namespace Keeper.Utils.OxyPlots
                 OnPropertyChanged();
             }
         }
-        public bool IsCheckedMyRur
+        public bool IsCheckedRurUsd
         {
-            get { return _isCheckedMyRur; }
+            get { return _isCheckedRurUsd; }
             set
             {
-                if (value.Equals(_isCheckedMyRur)) return;
-                _isCheckedMyRur = value;
+                if (value.Equals(_isCheckedRurUsd)) return;
+                _isCheckedRurUsd = value;
                 OnPropertyChanged();
             }
         }

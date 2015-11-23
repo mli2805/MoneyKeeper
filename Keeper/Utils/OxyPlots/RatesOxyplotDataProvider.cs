@@ -34,7 +34,7 @@ namespace Keeper.Utils.OxyPlots
 
         private DiagramSeries GetNbUsdRate()
         {
-            var diagramSeries = new DiagramSeries(){Index = 0, Name = "Usd НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Green, Points = new List<DiagramPoint>()};
+            var diagramSeries = new DiagramSeries(){Index = 0, Name = "Usd НБ РБ", OxyColor = OxyPlot.OxyColors.Green, Points = new List<DiagramPoint>()};
             foreach (var rate in _db.OfficialRates)
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.Date,rate.UsdRate));
@@ -44,7 +44,7 @@ namespace Keeper.Utils.OxyPlots
 
         private DiagramSeries GetNbEurRate()
         {
-            var diagramSeries = new DiagramSeries(){Index = 0, Name = "Euro НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Blue, Points = new List<DiagramPoint>()};
+            var diagramSeries = new DiagramSeries() { Index = 1, Name = "Euro НБ РБ", OxyColor = OxyPlot.OxyColors.Blue, Points = new List<DiagramPoint>() };
             foreach (var rate in _db.OfficialRates.Where(rate => rate.Date > new DateTime(1999,1,10)))
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.Date,rate.EurRate));
@@ -54,7 +54,7 @@ namespace Keeper.Utils.OxyPlots
 
         private DiagramSeries GetNbRurRate()
         {
-            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Rur НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Red, Points = new List<DiagramPoint>() };
+            var diagramSeries = new DiagramSeries() { Index = 2, Name = "Rur НБ РБ", OxyColor = OxyPlot.OxyColors.Red, Points = new List<DiagramPoint>() };
             foreach (var rate in _db.OfficialRates)
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.Date, rate.RurRate));
@@ -64,7 +64,7 @@ namespace Keeper.Utils.OxyPlots
 
         private DiagramSeries GetNbBasket()
         {
-            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Корзина НБ РБ", PositiveBrushColor = System.Windows.Media.Brushes.Orange, Points = new List<DiagramPoint>() };
+            var diagramSeries = new DiagramSeries() { Index = 3, Name = "Корзина НБ РБ", OxyColor = OxyPlot.OxyColors.Orange, Points = new List<DiagramPoint>() };
             foreach (var rate in _db.OfficialRates.Where(rate => rate.Date >= new DateTime(2015,1,1)))
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.Date, Math.Pow(rate.UsdRate,0.3)*Math.Pow(rate.EurRate,0.3)*Math.Pow(rate.RurRate,0.4)));
@@ -73,7 +73,7 @@ namespace Keeper.Utils.OxyPlots
         }
         private DiagramSeries GetMyUsdRate()
         {
-            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Usd мой", PositiveBrushColor = System.Windows.Media.Brushes.LightGreen, Points = new List<DiagramPoint>() };
+            var diagramSeries = new DiagramSeries() { Index = 4, Name = "Usd мой", OxyColor = OxyPlot.OxyColors.LightGreen, Points = new List<DiagramPoint>() };
             foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.BYR))
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
@@ -82,7 +82,7 @@ namespace Keeper.Utils.OxyPlots
         }
         private DiagramSeries GetMyEurRate()
         {
-            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Eur мой", PositiveBrushColor = System.Windows.Media.Brushes.LightSkyBlue, Points = new List<DiagramPoint>() };
+            var diagramSeries = new DiagramSeries() { Index = 5, Name = "Usd / Eur", OxyColor = OxyPlot.OxyColors.LightSkyBlue, Points = new List<DiagramPoint>() };
             foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.EUR))
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
@@ -91,7 +91,7 @@ namespace Keeper.Utils.OxyPlots
         }
         private DiagramSeries GetMyRurRate()
         {
-            var diagramSeries = new DiagramSeries() { Index = 0, Name = "Rur мой", PositiveBrushColor = System.Windows.Media.Brushes.LightPink, Points = new List<DiagramPoint>() };
+            var diagramSeries = new DiagramSeries() { Index = 6, Name = "Rur / Usd ", OxyColor = OxyPlot.OxyColors.LightPink, Points = new List<DiagramPoint>() };
             foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.RUB))
             {
                 diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
