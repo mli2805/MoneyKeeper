@@ -30,7 +30,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         {
             var transaction = new Transaction();
             var substrings = s.Split(';');
-            transaction.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+            transaction.Timestamp = Convert.ToDateTime(substrings[0]);
             transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
             transaction.Debet = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
             transaction.Credit = accountsPlaneList.First(account => account.Name == substrings[3].Trim());
@@ -46,7 +46,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         {
             var rate = new CurrencyRate();
             int next = s.IndexOf(';');
-            rate.BankDay = Convert.ToDateTime(s.Substring(0, next), new CultureInfo("ru-RU"));
+            rate.BankDay = Convert.ToDateTime(s.Substring(0, next));
             rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
             next += 6;
             rate.Rate = Convert.ToDouble(s.Substring(next + 2));
@@ -57,7 +57,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         {
             var rate = new NbRate();
             var substrings = s.Split(';');
-            rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+            rate.Date = Convert.ToDateTime(substrings[0]);
             rate.UsdRate = Convert.ToDouble(substrings[1]);
             rate.EurRate = Convert.ToDouble(substrings[2]);
             rate.RurRate = Convert.ToDouble(substrings[3]);
@@ -116,7 +116,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             deposit.ParentAccount.Deposit = deposit;
         }
 
-        public BankDepositRateLine DepositRateLineFromString(string s, IEnumerable<BankDepositOffer> depositOffers)
+        public void DepositRateLineFromString(string s, IEnumerable<BankDepositOffer> depositOffers)
         {
             var depositRateLine = new BankDepositRateLine();
             var substrings = s.Split(';');
@@ -128,8 +128,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             depositRateLine.Rate = Convert.ToDecimal(substrings[4]);
 
             depositOffer.RateLines.Add(depositRateLine);
-
-            return depositRateLine;
         }
 
 
