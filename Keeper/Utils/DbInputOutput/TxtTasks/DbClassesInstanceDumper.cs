@@ -25,12 +25,12 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
         public string Dump(CurrencyRate rate)
         {
-            return rate.BankDay.Date.ToString("dd/MM/yyyy") + " ; " +
+            return Convert.ToString(rate.BankDay) + " ; " +
                    rate.Currency + " ; " + rate.Rate;
         }
         public string Dump(NbRate rate)
         {
-            return rate.Date.Date.ToString("dd/MM/yyyy") + " ; " +
+            return Convert.ToString(rate.Date) + " ; " +
                    rate.UsdRate + " ; " + rate.EurRate + " ; " + rate.RurRate;
         }
         public string Dump(Transaction transaction)
