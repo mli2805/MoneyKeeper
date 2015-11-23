@@ -13,12 +13,6 @@ namespace Keeper.Utils.OxyPlots
     {
         private readonly KeeperDb _db;
 
-        [ImportingConstructor]
-        public RatesOxyplotDataProvider(KeeperDb db)
-        {
-            _db = db;
-        }
-
         public DiagramData Get()
         {
             var diagramData = new DiagramData() {Caption = "Курсы валют", Mode = DiagramMode.Lines, Series = new List<DiagramSeries>(), TimeInterval = Every.Day};
@@ -26,10 +20,16 @@ namespace Keeper.Utils.OxyPlots
             diagramData.Series.Add(GetNbEurRate());
             diagramData.Series.Add(GetNbRurRate());
             diagramData.Series.Add(GetNbBasket());
+            diagramData.Series.Add(GetNbEurUsdRate());
             diagramData.Series.Add(GetMyUsdRate());
-            diagramData.Series.Add(GetMyEurRate());
-            diagramData.Series.Add(GetMyRurRate());
+            diagramData.Series.Add(GetRurUsdRate());
             return diagramData;
+        }
+
+        [ImportingConstructor]
+        public RatesOxyplotDataProvider(KeeperDb db)
+        {
+            _db = db;
         }
 
         private DiagramSeries GetNbUsdRate()
@@ -71,6 +71,17 @@ namespace Keeper.Utils.OxyPlots
             }
             return diagramSeries;
         }
+
+        private DiagramSeries GetNbEurUsdRate()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 5, Name = "Eur/Usd (НБ РБ)", OxyColor = OxyPlot.OxyColors.Blue, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.OfficialRates.Where(rate => rate.Date > new DateTime(1999, 1, 10)))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date, rate.EurRate/rate.UsdRate));
+            }
+            return diagramSeries;
+        }
+
         private DiagramSeries GetMyUsdRate()
         {
             var diagramSeries = new DiagramSeries() { Index = 4, Name = "Usd мой", OxyColor = OxyPlot.OxyColors.LightGreen, Points = new List<DiagramPoint>() };
@@ -80,21 +91,12 @@ namespace Keeper.Utils.OxyPlots
             }
             return diagramSeries;
         }
-        private DiagramSeries GetMyEurRate()
-        {
-            var diagramSeries = new DiagramSeries() { Index = 5, Name = "Usd / Eur", OxyColor = OxyPlot.OxyColors.LightSkyBlue, Points = new List<DiagramPoint>() };
-            foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.EUR))
-            {
-                diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
-            }
-            return diagramSeries;
-        }
-        private DiagramSeries GetMyRurRate()
+        private DiagramSeries GetRurUsdRate()
         {
             var diagramSeries = new DiagramSeries() { Index = 6, Name = "Rur / Usd ", OxyColor = OxyPlot.OxyColors.LightPink, Points = new List<DiagramPoint>() };
-            foreach (var rate in _db.CurrencyRates.Where(rate => rate.Currency == CurrencyCodes.RUB))
+            foreach (var rate in _db.OfficialRates)
             {
-                diagramSeries.Points.Add(new DiagramPoint(rate.BankDay, rate.Rate));
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date, rate.UsdRate / rate.RurRate));
             }
             return diagramSeries;
         }

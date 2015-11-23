@@ -50,34 +50,28 @@ namespace Keeper.Utils.OxyPlots
         }
         private void AddSeries(RatesDiagramContentModel model, ref PlotModel plotModel)
         {
-            if (model.IsCheckedUsdNbRb)
-            {
-                var lineSeries = _allSeries.First(s => (int)s.Tag == 0);
-                lineSeries.YAxisKey = "UsdNbRb";
-                plotModel.Series.Add(lineSeries);
-                plotModel.Axes.Add(DefineVerticalAxis("UsdNbRb"));
-            }
+            if (model.IsCheckedUsdNbRb) DefineLineSeries(0, "UsdNbRb", ref plotModel);
             if (model.IsCheckedEurNbRb) plotModel.Series.Add(_allSeries.First(s => (int)s.Tag == 1));
-            if (model.IsCheckedRurNbRb) plotModel.Series.Add(_allSeries.First(s => (int)s.Tag == 2));
-            if (model.IsCheckedBusketNbRb)
-            {
-                var lineSeries = _allSeries.First(s => (int)s.Tag == 3);
-                lineSeries.YAxisKey = "BusketNbRb";
-                plotModel.Series.Add(lineSeries);
-                plotModel.Axes.Add(DefineVerticalAxis("BusketNbRb", 0, 7000));
-            }
+            if (model.IsCheckedRurNbRb) DefineLineSeries(2, "RurNbRb", ref plotModel);
+            if (model.IsCheckedBusketNbRb) DefineLineSeries(3, "BusketNbRb", 0, 7000, ref plotModel);
             if (model.IsCheckedMyUsd) plotModel.Series.Add(_allSeries.First(s => (int)s.Tag == 4));
-            if (model.IsCheckedUsdEur) plotModel.Series.Add(_allSeries.First(s => (int)s.Tag == 5));
-            if (model.IsCheckedRurUsd) plotModel.Series.Add(_allSeries.First(s => (int)s.Tag == 6));
+            if (model.IsCheckedEurUsdNbRb) DefineLineSeries(5, "EurUsdNbRb", ref plotModel);
+            if (model.IsCheckedRurUsd) DefineLineSeries(6, "RurUsdNbRb", 0, 150, ref plotModel);
         }
-        private static LinearAxis DefineVerticalAxis(string key, double min, double max)
+
+        private void DefineLineSeries(int tag, string key, ref PlotModel plotModel)
         {
-            return new LinearAxis { Position = AxisPosition.Right, MajorGridlineStyle = LineStyle.Solid, Minimum = min, Maximum = max, Key = key };
-            
+            var lineSeries = _allSeries.First(s => (int)s.Tag == tag);
+            lineSeries.YAxisKey = key;
+            plotModel.Series.Add(lineSeries);
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, Key = key });
         }
-        private static LinearAxis DefineVerticalAxis(string key)
+        private void DefineLineSeries(int tag, string key, double min, double max, ref PlotModel plotModel)
         {
-            return new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, Key = key };
+            var lineSeries = _allSeries.First(s => (int)s.Tag == tag);
+            lineSeries.YAxisKey = key;
+            plotModel.Series.Add(lineSeries);
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Right, MajorGridlineStyle = LineStyle.Solid, Minimum = min, Maximum = max, Key = key });
         }
         private static DateTimeAxis DefineDateTimeAxis()
         {
