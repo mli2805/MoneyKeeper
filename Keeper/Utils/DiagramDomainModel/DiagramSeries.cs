@@ -8,6 +8,7 @@ namespace Keeper.Utils.DiagramDomainModel
 		public string Name;
 		public Brush PositiveBrushColor;
 		public Brush NegativeBrushColor;
+	    public OxyPlot.OxyColor OxyColor;
 		public int Index;
 		public List<DiagramPoint> Points;
 	}
