@@ -12,9 +12,9 @@ namespace Keeper.ViewModels
     [Export]
     public class DepositViewModel : Screen
     {
-        private readonly DepositCalculator _depositCalculator;
         private readonly DepositReporter _depositReporter;
-        private readonly DepositExcelReporter _depositExcelReporter;
+        private readonly EvaluationsToExcelExporter _evaluationsToExcelExporter;
+        private readonly TrafficToExcelExporter _trafficToExcelExporter;
         private bool _canRenew;
 
         public IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
@@ -36,12 +36,11 @@ namespace Keeper.ViewModels
         }
 
         [ImportingConstructor]
-        public DepositViewModel(DepositCalculator depositCalculator, 
-            DepositReporter depositReporter, DepositExcelReporter depositExcelReporter)
+        public DepositViewModel(DepositReporter depositReporter, EvaluationsToExcelExporter evaluationsToExcelExporter, TrafficToExcelExporter trafficToExcelExporter)
         {
-            _depositCalculator = depositCalculator;
             _depositReporter = depositReporter;
-            _depositExcelReporter = depositExcelReporter;
+            _evaluationsToExcelExporter = evaluationsToExcelExporter;
+            _trafficToExcelExporter = trafficToExcelExporter;
             NewAccountForDeposit = null;
         }
 
@@ -59,10 +58,15 @@ namespace Keeper.ViewModels
             CanRenew = Deposit.CalculationData.State != DepositStates.Закрыт;
         }
 
+        public void ExtractTrafficToExcel()
+        {
+            _trafficToExcelExporter.ExportTraffic(Deposit);
+        }
         public void ExtractEvaluationsToExcel()
         {
-            _depositExcelReporter.Run(Deposit);
+            _evaluationsToExcelExporter.ExportEvaluations(Deposit);
         }
+
 
         public void Renew()
         {

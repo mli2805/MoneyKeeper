@@ -5,16 +5,16 @@ using Microsoft.Office.Interop.Excel;
 namespace Keeper.ByFunctional.DepositProcessing
 {
     [Export]
-    public class DepositExcelReporter
+    public class EvaluationsToExcelExporter
     {
-        public void Run(Deposit deposit)
+        public void ExportEvaluations(Deposit deposit)
         {
             var ws = CreateWorksheet();
 
             SetFormatForData(ws);
-            ImportEvaluationData(ws, deposit);
+            ExportEvaluationData(ws, deposit);
 
-            ImportEvaluationHeader(ws);
+            ExportEvaluationHeader(ws);
             SetFormatForHeader(ws);
         }
 
@@ -36,7 +36,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             ws.Application.ActiveWindow.FreezePanes = true;
         }
 
-        private void ImportEvaluationHeader(Worksheet ws)
+        private void ExportEvaluationHeader(Worksheet ws)
         {
             ws.Cells[1, 2] = "Дата";
             ws.Cells[1, 3] = "Остаток на конец дня";
@@ -73,7 +73,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             ws.Range["K1"].EntireColumn.NumberFormat = "[Red]#,0";
         }
 
-        private void ImportEvaluationData(Worksheet ws, Deposit deposit)
+        private void ExportEvaluationData(Worksheet ws, Deposit deposit)
         {
             var i = 4;
             decimal totalProcents = 0;
@@ -83,7 +83,7 @@ namespace Keeper.ByFunctional.DepositProcessing
                 totalProcents += line.DayProcents;
                 totalDevaluation += line.DayDevaluation;
 
-                ImportLineData(ws, i, line, totalProcents, totalDevaluation);
+                ExportLineData(ws, i, line, totalProcents, totalDevaluation);
                 if (deposit.IsItDayToPayProcents(line.Date)) HighLightPaymentLine(ws, i);
 
                 i++;
@@ -95,7 +95,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             ws.Range["A"+i].EntireRow.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
         }
 
-        private static void ImportLineData(Worksheet ws, int i, DepositDailyLine line, decimal totalProcents,
+        private static void ExportLineData(Worksheet ws, int i, DepositDailyLine line, decimal totalProcents,
             decimal totalDevaluation)
         {
             ws.Cells[i, 2] = line.Date;

@@ -142,6 +142,7 @@
     <Compile Include="ByFunctional\AccountEditing\IUserEquirer.cs" />
     <Compile Include="ByFunctional\AccountEditing\IUserInformator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
+    <Compile Include="ByFunctional\DepositProcessing\TrafficToExcelExporter.cs" />
     <Compile Include="ByFunctional\NbRbRatesExtractor.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControl.xaml.cs">
       <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
@@ -307,7 +308,7 @@
     <Compile Include="DomainModel\ChartPoint.cs" />
     <Compile Include="DomainModel\DateProcentPoint.cs" />
     <Compile Include="Utils\Diagram\DiagramLegendItem.cs" />
-    <Compile Include="ByFunctional\DepositProcessing\DepositExcelReporter.cs" />
+    <Compile Include="ByFunctional\DepositProcessing\EvaluationsToExcelExporter.cs" />
     <Compile Include="Utils\Rates\RateDefiner.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositOffersViewModel.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositRatesAndRulesViewModel.cs" />

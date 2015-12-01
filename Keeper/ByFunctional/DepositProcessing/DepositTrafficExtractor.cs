@@ -19,7 +19,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             _db = db;
         }
 
-        public Deposit ExtractTraffic(Account account) // используется при месячном анализе
+        public Deposit ExtractTraffic(Account account) // используется при месячном анализе и выгрузке в excel
         {
             _deposit = account.Deposit;
             _deposit.CalculationData = new DepositCalculationData();
@@ -40,6 +40,7 @@ namespace Keeper.ByFunctional.DepositProcessing
                      Amount = t.Amount,
                      Timestamp = t.Timestamp,
                      Currency = t.Currency,
+                     Counteragent = GetDepositCounteragent(t),
                      Comment = GetDepositOperationComment(t),
                      AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
                      TransactionType = GetDepositOperationType(t, _deposit.ParentAccount)
@@ -55,6 +56,10 @@ namespace Keeper.ByFunctional.DepositProcessing
                          : DepositTransactionTypes.Явнес;
         }
 
+        private string GetDepositCounteragent(Transaction t)
+        {
+            return t.Debet == _deposit.ParentAccount ? t.Credit.Name : t.Debet.Name;
+        }
         private string GetDepositOperationComment(Transaction t)
         {
             if (t.Comment != "") return t.Comment;
