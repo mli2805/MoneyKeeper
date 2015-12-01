@@ -90,18 +90,21 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         {
             var allMyAccounts = new List<Account>((_accountTreeStraightener.Flatten(_db.Accounts).Where(account => account.Is("Мои") &&
               account.Children.Count == 0 && !account.Is("Депозиты"))));
-            var depoRoot = (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
-                            where a.Name == "Депозиты"
-                            select a).First();
-            allMyAccounts.Add(depoRoot);
             return allMyAccounts;
         }
 
         private IEnumerable<Account> OmitNotUsedAccounts(IEnumerable<Account> list)
         {
-            return (from account in list let tr = _db.Transactions.LastOrDefault(t => t.EitherDebitOrCreditIsExactly(account)) 
-                                   where tr != null && (DateTime.Now - tr.Timestamp).TotalDays < 40 select account).ToList();
+            foreach (var account in from account in list 
+                     let tr = _db.Transactions.OrderBy(t=>t.Timestamp).LastOrDefault(t => t.EitherDebitOrCreditIsExactly(account)) 
+                     where tr != null && (DateTime.Now - tr.Timestamp).TotalDays < 40 select account)
+                                                                                                 yield return account;
+
+            yield return (from a in new AccountTreeStraightener().Flatten(_db.Accounts)
+                where a.Name == "Депозиты"
+                select a).First();
         }
+
         public string EndDayBalances(DateTime dt)
         {
             var period = new Period(new DateTime(0), dt.GetEndOfDate());
