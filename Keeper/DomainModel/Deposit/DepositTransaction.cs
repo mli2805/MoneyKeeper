@@ -9,11 +9,17 @@ namespace Keeper.DomainModel.Deposit
         public Decimal Amount { get; set; }
         public CurrencyCodes Currency { get; set; }
         public Decimal AmountInUsd { get; set; }
+
+        public string Counteragent { get; set; }
         public string Comment { get; set; }
 
+        public bool IsIncome()
+        {
+            return !(TransactionType == DepositTransactionTypes.Расход || TransactionType == DepositTransactionTypes.ОбменРасход);
+        }
         public int Destination()
         {
-            return TransactionType == DepositTransactionTypes.Расход || TransactionType == DepositTransactionTypes.ОбменРасход ? -1 : 1;
+            return IsIncome() ? 1 : -1;
         }
     }
 }
