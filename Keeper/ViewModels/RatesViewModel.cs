@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Composition;
 using System.Linq;
@@ -178,7 +179,7 @@ namespace Keeper.ViewModels
             Rows.CollectionChanged += Rows_CollectionChanged;
         }
 
-        void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void Rows_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             IsCollectionChanged = true;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Composition;
 using Caliburn.Micro;
 
@@ -28,7 +29,7 @@ namespace Keeper.ViewModels.Shell
             StatusBarViewModel = IoC.Get<StatusBarViewModel>();
         }
 
-        void MainMenuViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void MainMenuViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsExitPreparationDone")
                 if (MainMenuViewModel.IsExitPreparationDone) TryClose();

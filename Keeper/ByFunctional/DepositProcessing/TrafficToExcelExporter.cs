@@ -20,7 +20,7 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         private static Worksheet CreateWorksheet()
         {
-            var xlApp = new Microsoft.Office.Interop.Excel.Application { Visible = true };
+            var xlApp = new Application { Visible = true };
             var wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
             return (Worksheet)wb.Worksheets[1];
         }

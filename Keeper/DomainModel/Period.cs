@@ -48,10 +48,10 @@ namespace Keeper.DomainModel
 
         public override bool Equals(object obj)
         {
-            if (object.ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(this, obj)) return true;
             var other = obj as Period;
             if (other == null) return false;
-            return (this.Start == other.Start);
+            return (Start == other.Start);
         }
 
         public override int GetHashCode()
@@ -61,7 +61,7 @@ namespace Keeper.DomainModel
 
         public object Clone()
         {
-            return new Period(this.Start, this.Finish);
+            return new Period(Start, Finish);
         }
 
         #endregion

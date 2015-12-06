@@ -24,7 +24,7 @@ namespace Keeper.Utils.OxyPlots
         /// <returns></returns>
         public int CompareTo(ExpensePartingDataElement other)
         {
-            return this.YearMonth.CompareTo(other.YearMonth);
+            return YearMonth.CompareTo(other.YearMonth);
         }
 
     }

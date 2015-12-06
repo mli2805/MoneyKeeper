@@ -75,7 +75,7 @@ namespace TextBoxStyle
                 new ComboboxItem(){Currency = CurrencyCodes.EUR, CurrencyName = "EUR"}
             };
 
-            this.DataContext = this;
+            DataContext = this;
 
             CurrentCurrencyCodesWrapper = new CurrencyCodesWrapper() {Currency = CurrencyCodes.BYR};
 
