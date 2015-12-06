@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Composition;
 using System.Security.AccessControl;
 using System.Windows;
@@ -35,7 +36,7 @@ namespace Keeper.Models.Shell
             MyStatusBarModel = new StatusBarModel();
         }
 
-        void MyMainMenuModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void MyMainMenuModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Action")
             {
@@ -106,7 +107,7 @@ namespace Keeper.Models.Shell
                   MyBalanceListModel.BalanceList));
         }
 
-        void MyTwoSelectorsModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void MyTwoSelectorsModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ChangeControlTypeTranslatedEvent") 
                 MyTwoSelectorsModel.IsPeriodMode = !MyTwoSelectorsModel.IsPeriodMode;
@@ -114,7 +115,7 @@ namespace Keeper.Models.Shell
                 RefreshBalanceListAccordinglyDatesInSelector();
         }
 
-        void MyForestModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void MyForestModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "SelectedAccount")
             {

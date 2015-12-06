@@ -11,13 +11,13 @@ namespace Keeper.Utils.Diagram
 {
   class DiagramHintCreator
   {
-    private readonly DiagramDomainModel.DiagramData _allDiagramData;
+    private readonly DiagramData _allDiagramData;
     private readonly SortedList<DateTime, List<double>> _currentSeriesUnitedData;
     private readonly Every _groupInterval;
     private readonly DiagramMode _diagramMode;
     private readonly DiagramDrawingCalculator _diagramDrawingCalculator;
 
-    public DiagramHintCreator(DiagramDomainModel.DiagramData allDiagramData, SortedList<DateTime, List<double>> currentSeriesUnitedData,
+    public DiagramHintCreator(DiagramData allDiagramData, SortedList<DateTime, List<double>> currentSeriesUnitedData,
                     Every groupInterval, DiagramMode diagramMode, DiagramDrawingCalculator diagramDrawingCalculator)
     {
       _allDiagramData = allDiagramData;

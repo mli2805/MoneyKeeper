@@ -91,10 +91,10 @@ namespace Keeper.DomainModel
 
         public override bool Equals(object obj)
         {
-            if (object.ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(this, obj)) return true;
             var other = obj as Account;
             if (other == null) return false;
-            return this.Name == other.Name;
+            return Name == other.Name;
         }
 
         public override int GetHashCode()

@@ -1,4 +1,5 @@
 using System.Composition;
+using System.Drawing;
 using Keeper.DomainModel.Deposit;
 using Microsoft.Office.Interop.Excel;
 
@@ -20,7 +21,7 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         private static Worksheet CreateWorksheet()
         {
-            var xlApp = new Microsoft.Office.Interop.Excel.Application { Visible = true };
+            var xlApp = new Application { Visible = true };
             var wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
             return (Worksheet)wb.Worksheets[1];
         }
@@ -65,7 +66,7 @@ namespace Keeper.ByFunctional.DepositProcessing
             ws.Range["H1"].EntireColumn.ColumnWidth = 15;
             ws.Range["H1"].EntireColumn.NumberFormat = "[Green]#,0";
             ws.Range["I1"].EntireColumn.ColumnWidth = 9;
-            ws.Range["I1"].EntireColumn.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
+            ws.Range["I1"].EntireColumn.Font.Color = ColorTranslator.ToOle(Color.Silver);
             ws.Range["I1"].EntireColumn.NumberFormat = "#,0";
             ws.Range["J1"].EntireColumn.ColumnWidth = 12;
             ws.Range["J1"].EntireColumn.NumberFormat = "[Red]#,0";
@@ -92,7 +93,7 @@ namespace Keeper.ByFunctional.DepositProcessing
 
         private static void HighLightPaymentLine(Worksheet ws, int i)
         {
-            ws.Range["A"+i].EntireRow.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+            ws.Range["A"+i].EntireRow.Interior.Color = ColorTranslator.ToOle(Color.Yellow);
         }
 
         private static void ExportLineData(Worksheet ws, int i, DepositDailyLine line, decimal totalProcents,

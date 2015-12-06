@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using Keeper.Annotations;
 
 namespace Keeper.Controls.PeriodChoice
@@ -50,48 +51,48 @@ namespace Keeper.Controls.PeriodChoice
         }
 
         #region btnFrom reactions
-        private void BtnFromPreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void BtnFromPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             Model.ReactBtnFromPreviewMouseDown(e.GetPosition(this).X);
         }
-        private void BtnFromPreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void BtnFromPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (!Model.BtnFromIsHolded) return;
             Model.ReactBtnFromPreviewMouseMove(e.GetPosition(this).X);
             RefreshDependencyProperties();
         }
-        private void BtnFromPreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void BtnFromPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             Model.BtnFromIsHolded = false;
         }
         #endregion 
 
         #region btnTo reactions
-        private void BtnToPreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void BtnToPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             Model.ReactBtnToPreviewMouseDown(e.GetPosition(this).X);
         }
-        private void BtnToPreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void BtnToPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (!Model.BtnToIsHolded) return;
 
             Model.ReactBtnToPreviewMouseMove(e.GetPosition(this).X, RightPart.ActualWidth);
             RefreshDependencyProperties();
         }
-        private void BtnToPreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void BtnToPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             Model.BtnToIsHolded = false;
         }
         #endregion
 
         #region CentralPart reactions
-        private void CentralPartPreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void CentralPartPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (!Model.CentralPartIsHolded) return;
             Model.ReactCentralPartPreviewMouseMove(e.GetPosition(this).X, RightPart.ActualWidth);
             RefreshDependencyProperties();
         }
-        private void CenterPartPreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void CenterPartPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
@@ -101,7 +102,7 @@ namespace Keeper.Controls.PeriodChoice
             else
                 Model.ReactCentralPartPreviewMouseDown(e.GetPosition(this).X);
         }
-        private void CentralPartPreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void CentralPartPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             Model.CentralPartIsHolded = false;
         }
@@ -109,7 +110,7 @@ namespace Keeper.Controls.PeriodChoice
 
         private void UserControlSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (!this.IsLoaded || !e.WidthChanged) return;
+            if (!IsLoaded || !e.WidthChanged) return;
             var koeff = e.NewSize.Width / e.PreviousSize.Width;
             Model.SetPositions(Model.BtnFromMargin.Left * koeff, Model.CenterPartWidth * koeff);
         }

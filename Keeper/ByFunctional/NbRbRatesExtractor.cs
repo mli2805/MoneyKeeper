@@ -26,7 +26,7 @@ namespace Keeper.ByFunctional
         public Dictionary<CurrencyCodes, double> GetRatesForDate(DateTime date)
         {
             var webData = _wc.DownloadString("http://www.nbrb.by/statistics/rates/ratesDaily.asp?fromdate="+date.ToString("yyyy-M-d"));
-            var pos = webData.IndexOf("maxDate:", System.StringComparison.Ordinal);
+            var pos = webData.IndexOf("maxDate:", StringComparison.Ordinal);
             var maxDateString = webData.Substring(pos+10, 10);
             var maxDate = DateTime.Parse(maxDateString, CultureInfo.CreateSpecificCulture("ru-Ru"));
             if (maxDate < date) return null;
@@ -40,11 +40,11 @@ namespace Keeper.ByFunctional
 
             foreach (var key in _currencies)
             {
-                var pos = webData.IndexOf(key.Key, System.StringComparison.Ordinal);                      // currency code 
+                var pos = webData.IndexOf(key.Key, StringComparison.Ordinal);                      // currency code 
                 if (pos == -1) continue;
-                pos = webData.IndexOf("<td>", pos, System.StringComparison.Ordinal);                      // currency name
-                var startRatePos = webData.IndexOf("<td>", pos, System.StringComparison.Ordinal) + 6;     // currency rate
-                var endRatePos = webData.IndexOf("</td>", startRatePos, System.StringComparison.Ordinal);
+                pos = webData.IndexOf("<td>", pos, StringComparison.Ordinal);                      // currency name
+                var startRatePos = webData.IndexOf("<td>", pos, StringComparison.Ordinal) + 6;     // currency rate
+                var endRatePos = webData.IndexOf("</td>", startRatePos, StringComparison.Ordinal);
                 var rateString = webData.Substring(startRatePos, endRatePos - startRatePos).Trim();
                 var rateClearString = new StringBuilder();
                 foreach (var symbol in rateString)
@@ -54,7 +54,7 @@ namespace Keeper.ByFunctional
                         rateClearString.Append(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator);
                 }
                 double rate;
-                if (Double.TryParse(rateClearString.ToString(), NumberStyles.Any, CultureInfo.CreateSpecificCulture("ru-Ru"), out rate)) 
+                if (Double.TryParse(rateClearString.ToString(), out rate)) 
                     result.Add(key.Value, rate);
             }
             return result;

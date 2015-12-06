@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Composition;
+using Microsoft.Win32;
 
 namespace Keeper.Utils.Dialogs
 {
@@ -8,7 +9,7 @@ namespace Keeper.Utils.Dialogs
 	{
 		public string Show(string defaultExt, string filter, string defaultPath)
 		{
-		  var dialog = new Microsoft.Win32.OpenFileDialog
+		  var dialog = new OpenFileDialog
 		                 {
 		                   DefaultExt = defaultExt, Filter = filter, InitialDirectory = defaultPath
 		                 };

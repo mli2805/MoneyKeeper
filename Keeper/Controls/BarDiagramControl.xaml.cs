@@ -9,6 +9,7 @@ using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.DiagramDomainModel;
 using Keeper.ViewModels;
+using Brush = System.Windows.Media.Brush;
 using Point = System.Windows.Point;
 
 namespace Keeper.Controls
@@ -228,7 +229,7 @@ namespace Keeper.Controls
     {
       if (e.Key == Key.A && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ShowAll();
       if (e.Key == Key.F5) Draw();
-      if (e.Key == Key.F1){ Legend.Visibility = Legend.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed; this.Draw(); Console.WriteLine("actual legend width is {0}",Legend.ActualWidth);}
+      if (e.Key == Key.F1){ Legend.Visibility = Legend.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed; Draw(); Console.WriteLine("actual legend width is {0}",Legend.ActualWidth);}
       if (e.Key == Key.F2) ChangeLine();
     }
 
@@ -265,7 +266,7 @@ namespace Keeper.Controls
             var pt = e.GetPosition(this);
             var hintCreator = new DiagramHintCreator(AllDiagramData, CurrentSeriesUnited.DiagramData, GroupInterval, DiagramMode, Calculator);
             string context;
-            System.Windows.Media.Brush backgroundBrush;
+            Brush backgroundBrush;
             if (hintCreator.CreateHint(pt, out context, out backgroundBrush))
             {
               BarHint.IsOpen = true;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Caliburn.Micro;
 using Keeper.Utils.DiagramDomainModel;
 using Keeper.Utils.OxyPlots;
@@ -46,7 +47,7 @@ namespace Keeper.ViewModels.Diagram
             InitializeDiagram();
         }
 
-        void ContentModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void ContentModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             InitializeDiagram();
         }

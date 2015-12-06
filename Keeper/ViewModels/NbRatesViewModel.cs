@@ -5,6 +5,7 @@ using System.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Keeper.ByFunctional;
 using Keeper.DomainModel;
@@ -48,7 +49,7 @@ namespace Keeper.ViewModels
         [ImportingConstructor]
         public NbRatesViewModel(KeeperDb db, NbRbRatesExtractor nbRbRatesExtractor)
         {
-            var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += DispatcherTimerTick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();

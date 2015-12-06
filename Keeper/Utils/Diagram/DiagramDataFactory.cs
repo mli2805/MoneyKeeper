@@ -47,7 +47,7 @@ namespace Keeper.Utils.Diagram
               };
         }
 
-        public DiagramDomainModel.DiagramData DailyBalancesCtor()
+        public DiagramData DailyBalancesCtor()
         {
             var dataForDiagram = new List<DiagramSeries>
                              {
@@ -55,7 +55,7 @@ namespace Keeper.Utils.Diagram
                                AccountDailyBalancesToSeries("Мои", Brushes.Blue)
                              };
 
-            return new DiagramDomainModel.DiagramData
+            return new DiagramData
             {
                 Caption = "Располагаемые средства",
                 Series = dataForDiagram,
@@ -120,7 +120,7 @@ namespace Keeper.Utils.Diagram
             return byrRates.ToDictionary(byrRate => byrRate.Key, byrRate => (decimal)Math.Log10((double)byrRate.Value));
         }
 
-        public DiagramDomainModel.DiagramData RatesCtor()
+        public DiagramData RatesCtor()
         {
             var data = new List<DiagramSeries>();
 
@@ -148,7 +148,7 @@ namespace Keeper.Utils.Diagram
                          Points = (from pair in euroRates select new DiagramPoint(pair.Key.Date, (double)pair.Value)).ToList()
                      });
 
-            return new DiagramDomainModel.DiagramData
+            return new DiagramData
             {
                 Caption = "Курсы валют",
                 Series = data,
@@ -170,7 +170,7 @@ namespace Keeper.Utils.Diagram
                      };
         }
 
-        public DiagramDomainModel.DiagramData MonthlyOutcomesDiagramCtor()
+        public DiagramData MonthlyOutcomesDiagramCtor()
         {
             var outcomes = mAccountTreeStraightener.Seek("Все расходы", _db.Accounts);
             var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta, 
@@ -184,7 +184,7 @@ namespace Keeper.Utils.Diagram
                 dataForDiagram.Add(ArticleMonthlyTrafficToSeries(outcome.Name, colorsEnumerator.Current));
             }
 
-            return new DiagramDomainModel.DiagramData
+            return new DiagramData
             {
                 Caption = "Ежемесячные расходы в разрезе категорий",
                 Series = dataForDiagram,
@@ -193,7 +193,7 @@ namespace Keeper.Utils.Diagram
             };
         }
 
-        public DiagramDomainModel.DiagramData MonthlyIncomesDiagramCtor()
+        public DiagramData MonthlyIncomesDiagramCtor()
         {
             var dataForDiagram = new List<DiagramSeries>
                              {
@@ -203,7 +203,7 @@ namespace Keeper.Utils.Diagram
                                ArticleMonthlyTrafficToSeries("Подарки",Brushes.DarkOrange),
                              };
 
-            return new DiagramDomainModel.DiagramData
+            return new DiagramData
             {
                 Caption = "Ежемесячные доходы (только основные категории)",
                 Series = dataForDiagram,
@@ -212,7 +212,7 @@ namespace Keeper.Utils.Diagram
             };
         }
 
-        public DiagramDomainModel.DiagramData MonthlyResultsDiagramCtor()
+        public DiagramData MonthlyResultsDiagramCtor()
         {
             var dataForDiagram = new List<DiagramSeries>
                              {
@@ -227,7 +227,7 @@ namespace Keeper.Utils.Diagram
                                  }
                              };
 
-            return new DiagramDomainModel.DiagramData
+            return new DiagramData
             {
                 Caption = "Сальдо",
                 Series = dataForDiagram,
@@ -236,7 +236,7 @@ namespace Keeper.Utils.Diagram
             };
         }
 
-        public DiagramDomainModel.DiagramData AverageSignificancesDiagramCtor()
+        public DiagramData AverageSignificancesDiagramCtor()
         {
             var seriesNames = new List<string> { "Все доходы", "Зарплата", "Иррациональные", "Рента", "Все расходы" };
             var seriesColors = new List<Brush> {Brushes.DarkGreen, Brushes.LimeGreen, Brushes.Black, 
@@ -259,7 +259,7 @@ namespace Keeper.Utils.Diagram
                                    });
             }
 
-            return new DiagramDomainModel.DiagramData
+            return new DiagramData
             {
                 Caption = "Средние за 12 месяцев по основным индикативным показателям",
                 Series = dataForDiagram,

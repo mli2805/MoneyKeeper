@@ -1,6 +1,7 @@
 using System;
 using System.Composition;
 using System.IO;
+using System.Net;
 using System.Windows;
 using Ionic.Zip;
 using Keeper.Properties;
@@ -53,7 +54,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
                     var filenames = Directory.GetFiles(directoryToZip, "*.txt"); // note: this does not recurse directories! 
                     foreach (var filename in filenames)
                         zip.AddFile(filename, String.Empty);
-                    zip.Comment = String.Format("This zip archive was created  on machine '{0}'", System.Net.Dns.GetHostName());
+                    zip.Comment = String.Format("This zip archive was created  on machine '{0}'", Dns.GetHostName());
                     zip.Save(zipFileToCreate);
                 }
             }

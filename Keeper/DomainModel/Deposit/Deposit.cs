@@ -26,7 +26,7 @@ namespace Keeper.DomainModel.Deposit
 
         public object Clone()
         {
-            var newdDeposit = (Deposit)this.MemberwiseClone();
+            var newdDeposit = (Deposit)MemberwiseClone();
             return newdDeposit;
         }
 

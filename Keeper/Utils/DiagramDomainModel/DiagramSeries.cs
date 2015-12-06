@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
+using OxyPlot;
 
 namespace Keeper.Utils.DiagramDomainModel
 {
@@ -8,7 +9,7 @@ namespace Keeper.Utils.DiagramDomainModel
 		public string Name;
 		public Brush PositiveBrushColor;
 		public Brush NegativeBrushColor;
-	    public OxyPlot.OxyColor OxyColor;
+	    public OxyColor OxyColor;
 		public int Index;
 		public List<DiagramPoint> Points;
 	}
