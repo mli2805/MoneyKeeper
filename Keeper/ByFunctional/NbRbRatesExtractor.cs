@@ -51,7 +51,7 @@ namespace Keeper.ByFunctional
                 {
                     if (Char.IsNumber(symbol)) rateClearString.Append(symbol);
                     else if (symbol == ',')
-                        rateClearString.Append(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator);
+                        rateClearString.Append(CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator);
                 }
                 double rate;
                 if (Double.TryParse(rateClearString.ToString(), out rate)) 
