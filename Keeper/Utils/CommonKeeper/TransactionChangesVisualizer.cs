@@ -38,9 +38,9 @@ namespace Keeper.Utils.CommonKeeper
             return BuildTip(balanceBefore, balanceBefore - transactionInWork.Amount, transactionInWork.Currency);
         }
 
-        public string GetCreditAccountBalance(Transaction transactionInWork, Transaction relatedTransactionInWork)
+        public string GetCreditAccountBalance(int selectedTabIndex, Transaction transactionInWork, Transaction relatedTransactionInWork)
         {
-            if (transactionInWork.IsExchange())
+            if (selectedTabIndex == 3)
             {
                 var periodBefore = new Period(new DateTime(0), transactionInWork.Timestamp.AddSeconds(-1));
                 var balanceBefore =

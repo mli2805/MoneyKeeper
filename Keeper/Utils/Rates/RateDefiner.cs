@@ -29,7 +29,7 @@ namespace Keeper.Utils.Rates
 
         private static  string RateToString(decimal cheapCurrency, decimal expensiveCurrency)
         {
-            return expensiveCurrency != 0 ? String.Format("по курсу {0:#,0}", cheapCurrency / expensiveCurrency) : "";
+            return expensiveCurrency != 0 ? String.Format("по курсу {0:#,0.####}", cheapCurrency / expensiveCurrency) : "";
         }
 
     }
