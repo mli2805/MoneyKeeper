@@ -353,18 +353,19 @@ namespace Keeper.ViewModels
                 case 3: //Обмен
                     if (!MyAccounts.Contains(TransactionInWork.Debet))
                         TransactionInWork.Debet = MyAccounts.First();
-                    if (!BankAccounts.Contains(TransactionInWork.Credit))
-                        TransactionInWork.Credit = BankAccounts.First();
 
-                    if (RelatedTransaction == null)
+                    if (RelatedTransactionInWork.Credit == null) RelatedTransactionInWork.Credit = MyAccounts.First();
+
+                    var bank = _associationFinder.GetBank(RelatedTransactionInWork.Credit) ??
+                               _associationFinder.GetBank(TransactionInWork.Debet);
+                    if (bank != null) TransactionInWork.Credit = bank;
+
+                    if (!CurrencyList.Contains(TransactionInWork.Currency))
                     {
-                        RelatedTransaction = new Transaction();
-                        RelatedTransactionInWork = new Transaction();
-                        RelatedTransactionInWork.Credit = TransactionInWork.Debet;
-                        if (!CurrencyList.Contains(TransactionInWork.Currency))
-                            TransactionInWork.Currency = CurrencyCodes.BYR;
-                        RelatedTransactionInWork.Currency = TransactionInWork.Currency == CurrencyCodes.BYR ? CurrencyCodes.USD : CurrencyCodes.BYR;
+                        TransactionInWork.Currency = CurrencyCodes.BYR;
+                        RelatedTransactionInWork.Currency = CurrencyCodes.USD;
                     }
+                    if (IsInAddTransactionMode) RelatedTransactionInWork.Amount = 0;
                     break;
             }
         }
@@ -400,7 +401,7 @@ namespace Keeper.ViewModels
                 else
                 {
                     TransactionInWork.CloneFrom(_selectedTransaction);
-                    RelatedTransaction = null;
+                    RelatedTransaction = new Transaction();
                 }
 
                 SelectedTabIndex = GetTabIndexFromTransaction(_transactionInWork);
@@ -538,14 +539,14 @@ namespace Keeper.ViewModels
 
         public string CreditAccountBalance
         {
-            get { return _transactionChangesVisualizer.GetCreditAccountBalance(TransactionInWork, RelatedTransactionInWork); }
+            get { return _transactionChangesVisualizer.GetCreditAccountBalance(SelectedTabIndex, TransactionInWork, RelatedTransactionInWork); }
         }
 
         public string ExchangeRate
         {
             get
             {
-                return TransactionInWork.IsExchange() ?
+                return SelectedTabIndex == 3 ?
                 RateDefiner.GetExpression(TransactionInWork.Currency, TransactionInWork.Amount,
                 RelatedTransactionInWork.Currency, RelatedTransactionInWork.Amount) : "";
             }
@@ -638,8 +639,7 @@ namespace Keeper.ViewModels
             SortedRows.Filter += OnFilter;
 
             TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
-
-            RelatedTransactionInWork.PropertyChanged += RelatedTransactionInWork_PropertyChanged;
+            RelatedTransactionInWork.PropertyChanged += RelatedTransactionInWorkPropertyChanged;
 
             IsTransactionInWorkChanged = false;
             CanSaveTransactionChanges = false;
@@ -648,30 +648,52 @@ namespace Keeper.ViewModels
             IsInAddTransactionMode = false;
         }
 
-        void RelatedTransactionInWork_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        void RelatedTransactionInWorkPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (_isInTransactionSelectionProcess) return;
             IsTransactionInWorkChanged = true;
 
-            if (e.PropertyName == "Amount" || e.PropertyName == "Currency" ||
-                e.PropertyName == "Amount2" || e.PropertyName == "Currency2")
+            if (e.PropertyName == "Credit" && IsInAddTransactionMode && SelectedTabIndex == 3)
+            {
+                RelatedTransactionInWork.Currency = _associationFinder.GetAccountLastCurrency(RelatedTransactionInWork.Credit);
+                var bank = _associationFinder.GetBank(RelatedTransactionInWork.Credit) ??
+                           _associationFinder.GetBank(TransactionInWork.Debet);
+                if (bank != null) TransactionInWork.Credit = bank;
+            }
+
+            if (e.PropertyName == "Amount" || e.PropertyName == "Currency")
             {
                 NotifyOfPropertyChange(() => AmountInUsd);
                 DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
             }
+
+            NotifyOfPropertyChange(() => CreditAccountBalance);
+            NotifyOfPropertyChange(() => ExchangeRate);
         }
 
         void TransactionInWorkPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (_isInTransactionSelectionProcess) return;
-
             IsTransactionInWorkChanged = true;
 
             if (e.PropertyName == "Comment") return;
-            if (e.PropertyName == "Debet" && TransactionInWork.Operation == OperationType.Доход && IsInAddTransactionMode)
-                TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Debet);
-            if (e.PropertyName == "Credit" && TransactionInWork.Operation == OperationType.Расход && IsInAddTransactionMode)
+
+            if (e.PropertyName == "Debet" && IsInAddTransactionMode)
+            {
+                if (SelectedTabIndex == 3)
+                {
+                    TransactionInWork.Currency = _associationFinder.GetAccountLastCurrency(TransactionInWork.Debet);
+                    var bank = _associationFinder.GetBank(RelatedTransactionInWork.Credit) ??
+                               _associationFinder.GetBank(TransactionInWork.Debet);
+                    if (bank != null) TransactionInWork.Credit = bank;
+                }
+                else if (TransactionInWork.Operation == OperationType.Доход)
+                    TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Debet);
+            }
+
+            if (e.PropertyName == "Credit" && IsInAddTransactionMode && TransactionInWork.Operation == OperationType.Расход)
                 TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Credit);
+
             if (e.PropertyName == "Credit" && TransactionInWork.IsExchange())
                 RelatedTransactionInWork.Debet = TransactionInWork.Credit;
 
@@ -809,6 +831,7 @@ namespace Keeper.ViewModels
         {
             if (IsInAddTransactionMode) DeleteTransaction();
 
+            RelatedTransactionInWork.CloneFrom(RelatedTransaction);
             TransactionInWork.CloneFrom(SelectedTransaction);
             SelectedTabIndex = GetTabIndexFromTransaction(TransactionInWork);
             IsTransactionInWorkChanged = false;
@@ -823,7 +846,7 @@ namespace Keeper.ViewModels
             CanEditDate = false;
 
             var newTransaction = SelectedTransaction.Preform("SameDate");
-//            IncreaseNextTransactionTime();
+            //            IncreaseNextTransactionTime();
             AnotherWayToShiftTimeInNextTransactions();
 
             Rows.Add(newTransaction);
@@ -835,9 +858,9 @@ namespace Keeper.ViewModels
         private void AnotherWayToShiftTimeInNextTransactions()
         {
             var tr = from t in Rows
-                where t.Timestamp.Date == SelectedTransaction.Timestamp.Date
-                      && t.Timestamp.TimeOfDay >= SelectedTransaction.Timestamp.TimeOfDay
-                select t;
+                     where t.Timestamp.Date == SelectedTransaction.Timestamp.Date
+                           && t.Timestamp.TimeOfDay >= SelectedTransaction.Timestamp.TimeOfDay
+                     select t;
 
             foreach (var t in tr)
             {
@@ -870,7 +893,7 @@ namespace Keeper.ViewModels
             {
                 SelectedTransactionIndex++;
                 if (newTransaction.Timestamp == SelectedTransaction.Timestamp)
-//                    IncreaseNextTransactionTime();
+                    //                    IncreaseNextTransactionTime();
                     AnotherWayToShiftTimeInNextTransactions();
                 SelectedTransactionIndex--;
             }
