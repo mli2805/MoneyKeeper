@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Keeper.Views
+namespace Keeper.Views.Transactions
 {
   /// <summary>
   /// Interaction logic for TransactionView.xaml

@@ -14,7 +14,7 @@ using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.Rates;
 using Keeper.ViewModels.TransactionViewFilters;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Transactions
 {
     [Export]
     [Shared] // для того чтобы в классе Transaction можно было обратиться к здешнему свойству SelectedTransaction
@@ -179,124 +179,8 @@ namespace Keeper.ViewModels
         #endregion
 
         #region Списки для комбобоксов и их инициализация
-        private List<Account> _myAccounts;
-        private List<CurrencyCodes> _currencyList;
-        private List<Account> _myAccountsForShopping;
-        private List<Account> _accountsWhoTakesMyMoney;
-        private List<Account> _accountsWhoGivesMeMoney;
-        private List<Account> _incomeArticles;
-        private List<Account> _expenseArticles;
-        private List<Account> _bankAccounts;
-
-        public List<CurrencyCodes> CurrencyList
-        {
-            get { return _currencyList; }
-            private set
-            {
-                if (Equals(value, _currencyList)) return;
-                _currencyList = value;
-                NotifyOfPropertyChange(() => CurrencyList);
-            }
-        }
-
-        public List<Account> MyAccounts
-        {
-            get { return _myAccounts; }
-            set
-            {
-                if (Equals(value, _myAccounts)) return;
-                _myAccounts = value;
-                NotifyOfPropertyChange(() => MyAccounts);
-            }
-        }
-
-        public List<Account> MyAccountsForShopping
-        {
-            get { return _myAccountsForShopping; }
-            set
-            {
-                if (Equals(value, _myAccountsForShopping)) return;
-                _myAccountsForShopping = value;
-                NotifyOfPropertyChange(() => MyAccountsForShopping);
-            }
-        }
-
-        public List<Account> AccountsWhoTakesMyMoney
-        {
-            get { return _accountsWhoTakesMyMoney; }
-            set
-            {
-                if (Equals(value, _accountsWhoTakesMyMoney)) return;
-                _accountsWhoTakesMyMoney = value;
-                NotifyOfPropertyChange(() => AccountsWhoTakesMyMoney);
-            }
-        }
-
-        public List<Account> AccountsWhoGivesMeMoney
-        {
-            get { return _accountsWhoGivesMeMoney; }
-            set
-            {
-                if (Equals(value, _accountsWhoGivesMeMoney)) return;
-                _accountsWhoGivesMeMoney = value;
-                NotifyOfPropertyChange(() => AccountsWhoGivesMeMoney);
-            }
-        }
-
-        public List<Account> IncomeArticles
-        {
-            get { return _incomeArticles; }
-            set
-            {
-                if (Equals(value, _incomeArticles)) return;
-                _incomeArticles = value;
-                NotifyOfPropertyChange(() => IncomeArticles);
-            }
-        }
-
-        public List<Account> ExpenseArticles
-        {
-            get { return _expenseArticles; }
-            set
-            {
-                if (Equals(value, _expenseArticles)) return;
-                _expenseArticles = value;
-                NotifyOfPropertyChange(() => ExpenseArticles);
-            }
-        }
-
-        public List<Account> BankAccounts
-        {
-            get { return _bankAccounts; }
-            set
-            {
-                if (Equals(value, _bankAccounts)) return;
-                _bankAccounts = value;
-                NotifyOfPropertyChange(() => BankAccounts);
-            }
-        }
-
-        private void InitializeListsForCombobox()
-        {
-            CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-            MyAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).
-              Where(a => (a.IsLeaf("Мои") || a.Name == "Для ввода стартовых остатков"))).ToList();
-            MyAccountsForShopping = (_accountTreeStraightener.Flatten(_db.Accounts).
-              Where(a => a.IsLeaf("Мои") && !a.IsLeaf("Депозиты"))).ToList();
-            BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).
-              Where(a => a.IsLeaf("Банки") || a.Is("Мой кошелек")).ToList();
-            AccountsWhoTakesMyMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
-              Where(a => a.IsLeaf("ДеньгоПолучатели") || a.IsLeaf("Банки") || a.IsLeaf("Государство"))).ToList();
-            AccountsWhoGivesMeMoney = (_accountTreeStraightener.Flatten(_db.Accounts).
-              Where(a => a.IsLeaf("ДеньгоДатели") || a.IsLeaf("Банки") || a.IsLeaf("Государство"))).ToList();
-            IncomeArticles = (_accountTreeStraightener.Flatten(_db.Accounts).
-              Where(a => a.IsLeaf("Все доходы"))).ToList();
-            ExpenseArticles = (_accountTreeStraightener.Flatten(_db.Accounts).
-              Where(a => a.IsLeaf("Все расходы"))).ToList();
-        }
-
-        private bool _filterOnlyActiveAccounts;
-
+        public ListsForComboboxes ListsForComboboxes { get; set; }
+        public void ChangeComboboxFilter() { ListsForComboboxes.ChangeComboboxFilter(_db, _accountTreeStraightener);}
         #endregion
 
         #region группа свойств для биндинга селектов и др.
@@ -327,40 +211,40 @@ namespace Keeper.ViewModels
             switch (newTab)
             {
                 case 0: //Доход
-                    if (!AccountsWhoGivesMeMoney.Contains(TransactionInWork.Debet))
+                    if (!ListsForComboboxes.AccountsWhoGivesMeMoney.Contains(TransactionInWork.Debet))
                     {
-                        TransactionInWork.Debet = AccountsWhoGivesMeMoney.First();
+                        TransactionInWork.Debet = ListsForComboboxes.AccountsWhoGivesMeMoney.First();
                         TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Debet);
                     }
-                    if (!MyAccounts.Contains(TransactionInWork.Credit))
-                        TransactionInWork.Credit = MyAccounts.First();
+                    if (!ListsForComboboxes.MyAccounts.Contains(TransactionInWork.Credit))
+                        TransactionInWork.Credit = ListsForComboboxes.MyAccounts.First();
                     break;
                 case 1: //Расход
-                    if (!AccountsWhoTakesMyMoney.Contains(TransactionInWork.Credit))
+                    if (!ListsForComboboxes.AccountsWhoTakesMyMoney.Contains(TransactionInWork.Credit))
                     {
-                        TransactionInWork.Credit = AccountsWhoTakesMyMoney.First();
+                        TransactionInWork.Credit = ListsForComboboxes.AccountsWhoTakesMyMoney.First();
                         TransactionInWork.Article = _associationFinder.GetAssociation(TransactionInWork.Credit);
                     }
-                    if (!MyAccountsForShopping.Contains(TransactionInWork.Debet))
-                        TransactionInWork.Debet = MyAccountsForShopping.First();
+                    if (!ListsForComboboxes.MyAccountsForShopping.Contains(TransactionInWork.Debet))
+                        TransactionInWork.Debet = ListsForComboboxes.MyAccountsForShopping.First();
                     break;
                 case 2: //Перенос
-                    if (!MyAccounts.Contains(TransactionInWork.Debet))
-                        TransactionInWork.Debet = MyAccounts.First();
-                    if (!MyAccounts.Contains(TransactionInWork.Credit))
-                        TransactionInWork.Credit = MyAccounts.First();
+                    if (!ListsForComboboxes.MyAccounts.Contains(TransactionInWork.Debet))
+                        TransactionInWork.Debet = ListsForComboboxes.MyAccounts.First();
+                    if (!ListsForComboboxes.MyAccounts.Contains(TransactionInWork.Credit))
+                        TransactionInWork.Credit = ListsForComboboxes.MyAccounts.First();
                     break;
                 case 3: //Обмен
-                    if (!MyAccounts.Contains(TransactionInWork.Debet))
-                        TransactionInWork.Debet = MyAccounts.First();
+                    if (!ListsForComboboxes.MyAccounts.Contains(TransactionInWork.Debet))
+                        TransactionInWork.Debet = ListsForComboboxes.MyAccounts.First();
 
-                    if (RelatedTransactionInWork.Credit == null) RelatedTransactionInWork.Credit = MyAccounts.First();
+                    if (RelatedTransactionInWork.Credit == null) RelatedTransactionInWork.Credit = ListsForComboboxes.MyAccounts.First();
 
                     var bank = _associationFinder.GetBank(RelatedTransactionInWork.Credit) ??
                                _associationFinder.GetBank(TransactionInWork.Debet);
                     if (bank != null) TransactionInWork.Credit = bank;
 
-                    if (!CurrencyList.Contains(TransactionInWork.Currency))
+                    if (!ListsForComboboxes.CurrencyList.Contains(TransactionInWork.Currency))
                     {
                         TransactionInWork.Currency = CurrencyCodes.BYR;
                         RelatedTransactionInWork.Currency = CurrencyCodes.USD;
@@ -591,8 +475,9 @@ namespace Keeper.ViewModels
             _accountTreeStraightener = accountTreeStraightener;
             _transactionChangesVisualizer = transactionChangesVisualizer;
             _associationFinder = new AssociationFinder(_db);
-            _filterOnlyActiveAccounts = true;
-            InitializeListsForCombobox();
+            ListsForComboboxes = new ListsForComboboxes();
+            ListsForComboboxes.FilterOnlyActiveAccounts = true;
+            ListsForComboboxes.InitializeListsForCombobox(_db, accountTreeStraightener);
             TransactionInWork = new Transaction();
             RelatedTransactionInWork = new Transaction();
             Rows = _db.Transactions;
@@ -630,7 +515,7 @@ namespace Keeper.ViewModels
         /// <param name="view"></param>
         protected override void OnViewLoaded(object view)
         {
-            InitializeListsForCombobox();
+//            InitializeListsForCombobox();
             DisplayName = "Ежедневные операции";
 
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
@@ -961,7 +846,7 @@ namespace Keeper.ViewModels
         public void FillInReceipt()
         {
             var receiptViewModel = new ReceiptViewModel(TransactionInWork.Timestamp, TransactionInWork.Credit.Name,
-                                           TransactionInWork.Currency, TransactionInWork.Amount, TransactionInWork.Article, ExpenseArticles);
+                                           TransactionInWork.Currency, TransactionInWork.Amount, TransactionInWork.Article, ListsForComboboxes.ExpenseArticles);
             WindowManager.ShowDialog(receiptViewModel);
             if (receiptViewModel.Result) // добавить транзакции
             {
@@ -977,11 +862,6 @@ namespace Keeper.ViewModels
             }
         }
 
-        public void ChangeComboboxFilters()
-        {
-            _filterOnlyActiveAccounts = !_filterOnlyActiveAccounts;
-            InitializeListsForCombobox();
-        }
     }
 }
 

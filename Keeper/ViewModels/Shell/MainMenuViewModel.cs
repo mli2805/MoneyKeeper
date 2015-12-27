@@ -18,6 +18,7 @@ using Keeper.Utils.DiagramDomainModel;
 using Keeper.Utils.Dialogs;
 using Keeper.Utils.OxyPlots;
 using Keeper.ViewModels.Diagram;
+using Keeper.ViewModels.Transactions;
 
 namespace Keeper.ViewModels.Shell
 {
