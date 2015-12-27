@@ -98,6 +98,9 @@ namespace Keeper.ViewModels.Transactions
                 NotifyOfPropertyChange(() => BankAccounts);
             }
         }
+        public List<Account> DebetAccounts { get; set; }
+        public List<Account> CreditAccounts { get; set; }
+        public List<Account> ArticleAccounts { get; set; }
         public void InitializeListsForCombobox(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
         {
             CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
@@ -115,6 +118,12 @@ namespace Keeper.ViewModels.Transactions
               Where(a => a.IsLeaf("Все доходы"))).ToList();
             ExpenseArticles = (accountTreeStraightener.Flatten(db.Accounts).
               Where(a => a.IsLeaf("Все расходы"))).ToList();
+            DebetAccounts = AccountsWhoGivesMeMoney;
+            DebetAccounts.AddRange(MyAccounts);
+            CreditAccounts = AccountsWhoTakesMyMoney;
+            CreditAccounts.AddRange(MyAccounts);
+            ArticleAccounts = IncomeArticles;
+            ArticleAccounts.AddRange(ExpenseArticles);
         }
 
         public bool FilterOnlyActiveAccounts;

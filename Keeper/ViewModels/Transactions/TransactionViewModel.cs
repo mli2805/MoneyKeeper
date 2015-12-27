@@ -11,7 +11,6 @@ using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.Utils.CommonKeeper;
-using Keeper.Utils.Rates;
 using Keeper.ViewModels.TransactionViewFilters;
 
 namespace Keeper.ViewModels.Transactions
@@ -22,7 +21,6 @@ namespace Keeper.ViewModels.Transactions
     {
         private readonly KeeperDb _db;
 
-        private readonly RateExtractor _rateExtractor;
         private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly TransactionChangesVisualizer _transactionChangesVisualizer;
@@ -31,73 +29,10 @@ namespace Keeper.ViewModels.Transactions
         public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
         public ObservableCollection<Transaction> Rows { get; set; }
         public bool IsCollectionChanged { get; set; }
-        public ICollectionView SortedRows { get; set; }
 
         #region  фильтрация и переход к дате
-        public List<AccountFilter> DebetFilterList { get; set; }
-        public List<AccountFilter> CreditFilterList { get; set; }
-        public List<AccountFilter> ArticleFilterList { get; set; }
-
-        private OperationTypesFilter _selectedOperationTypeFilter;
-        private AccountFilter _selectedDebetFilter;
-        private AccountFilter _selectedCreditFilter;
-        private AccountFilter _selectedArticleFilter;
-        private string _commentFilter;
+        public FiltersForTransactions FiltersModel { get; set; }
         private DateTime _dateToGo;
-
-        private void InitializeFiltersLists()
-        {
-            DebetFilterList = new List<AccountFilter>();
-
-            // <no filter>
-            var filter = new AccountFilter();
-            DebetFilterList.Add(filter);
-
-            var debetAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
-                    (account.Is("Мои") || account.Is("Внешние")) && account.Children.Count == 0)).ToList();
-            foreach (var account in debetAccounts)
-            {
-                filter = new AccountFilter(account);
-                DebetFilterList.Add(filter);
-            }
-
-            CreditFilterList = DebetFilterList;
-
-            ArticleFilterList = new List<AccountFilter>();
-            // <no filter>
-            filter = new AccountFilter();
-            ArticleFilterList.Add(filter);
-
-            var articleAccounts = (_accountTreeStraightener.Flatten(_db.Accounts).Where(account =>
-                    (account.Is("Все доходы") || account.Is("Все расходы")) && account.Children.Count == 0)).ToList();
-            foreach (var account in articleAccounts)
-            {
-                filter = new AccountFilter(account);
-                ArticleFilterList.Add(filter);
-            }
-        }
-
-        public void ClearAllFilters()
-        {
-            SelectedOperationTypeFilter = OperationTypesFilerListForCombo.FilterList.First(f => !f.IsOn);
-            SelectedDebetFilter = DebetFilterList.First(f => !f.IsOn);
-            SelectedCreditFilter = CreditFilterList.First(f => !f.IsOn);
-            SelectedArticleFilter = ArticleFilterList.First(f => !f.IsOn);
-            CommentFilter = "";
-        }
-
-        private bool OnFilter(object o)
-        {
-            var transaction = (Transaction)o;
-            if (SelectedOperationTypeFilter.IsOn && transaction.Operation != SelectedOperationTypeFilter.Operation) return false;
-            if (SelectedDebetFilter.IsOn && transaction.Debet != SelectedDebetFilter.WantedAccount) return false;
-            if (SelectedCreditFilter.IsOn && transaction.Credit != SelectedCreditFilter.WantedAccount) return false;
-            if (SelectedArticleFilter.IsOn && transaction.Article != SelectedArticleFilter.WantedAccount) return false;
-            if (CommentFilter != "" && transaction.Comment.IndexOf(CommentFilter, StringComparison.Ordinal) == -1) return false;
-
-            return true;
-        }
-
         public DateTime DateToGo
         {
             get { return _dateToGo; }
@@ -109,71 +44,6 @@ namespace Keeper.ViewModels.Transactions
                 SelectedTransaction = (from transaction in _db.Transactions
                                        where transaction.Timestamp > DateToGo
                                        select transaction).FirstOrDefault() ?? Rows.Last();
-            }
-        }
-
-        public OperationTypesFilter SelectedOperationTypeFilter
-        {
-            get { return _selectedOperationTypeFilter; }
-            set
-            {
-                if (Equals(value, _selectedOperationTypeFilter)) return;
-                _selectedOperationTypeFilter = value;
-                NotifyOfPropertyChange(() => SelectedOperationTypeFilter);
-                var view = CollectionViewSource.GetDefaultView(SortedRows);
-                view.Refresh();
-            }
-        }
-
-        public AccountFilter SelectedDebetFilter
-        {
-            get { return _selectedDebetFilter; }
-            set
-            {
-                if (Equals(value, _selectedDebetFilter)) return;
-                _selectedDebetFilter = value;
-                NotifyOfPropertyChange(() => SelectedDebetFilter);
-                var view = CollectionViewSource.GetDefaultView(SortedRows);
-                view.Refresh();
-            }
-        }
-
-        public AccountFilter SelectedCreditFilter
-        {
-            get { return _selectedCreditFilter; }
-            set
-            {
-                if (Equals(value, _selectedCreditFilter)) return;
-                _selectedCreditFilter = value;
-                NotifyOfPropertyChange(() => SelectedCreditFilter);
-                var view = CollectionViewSource.GetDefaultView(SortedRows);
-                view.Refresh();
-            }
-        }
-
-        public AccountFilter SelectedArticleFilter
-        {
-            get { return _selectedArticleFilter; }
-            set
-            {
-                if (Equals(value, _selectedArticleFilter)) return;
-                _selectedArticleFilter = value;
-                NotifyOfPropertyChange(() => SelectedArticleFilter);
-                var view = CollectionViewSource.GetDefaultView(SortedRows);
-                view.Refresh();
-            }
-        }
-
-        public string CommentFilter
-        {
-            get { return _commentFilter; }
-            set
-            {
-                if (value == _commentFilter) return;
-                _commentFilter = value;
-                NotifyOfPropertyChange(() => CommentFilter);
-                var view = CollectionViewSource.GetDefaultView(SortedRows);
-                view.Refresh();
             }
         }
         #endregion
@@ -202,7 +72,6 @@ namespace Keeper.ViewModels.Transactions
                 AccommodateAccountsWithOperationType(SelectedTabIndex);
             }
         }
-
         private void AccommodateAccountsWithOperationType(int newTab)
         {
             if (newTab != 3) TransactionInWork.Operation = (OperationType)newTab; else TransactionInWork.Operation = OperationType.Расход;
@@ -360,7 +229,6 @@ namespace Keeper.ViewModels.Transactions
         }
         #endregion
 
-
         #region свойства Can для нескольких кнопок
         private bool _canEditDate;
         public bool CanSaveTransactionChanges { get; set; }
@@ -377,6 +245,7 @@ namespace Keeper.ViewModels.Transactions
         }
 
         private bool _canFillInReceipt;
+
         public bool CanFillInReceipt
         {
             get { return _canFillInReceipt; }
@@ -400,12 +269,11 @@ namespace Keeper.ViewModels.Transactions
         #endregion
 
         [ImportingConstructor]
-        public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor,
-          BalancesForTransactionsCalculator balancesForTransactionsCalculator, AccountTreeStraightener accountTreeStraightener, TransactionChangesVisualizer transactionChangesVisualizer)
+        public TransactionViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
+          BalancesForTransactionsCalculator balancesForTransactionsCalculator, TransactionChangesVisualizer transactionChangesVisualizer)
         {
             _db = db;
 
-            _rateExtractor = rateExtractor;
             _balancesForTransactionsCalculator = balancesForTransactionsCalculator;
             _accountTreeStraightener = accountTreeStraightener;
             _transactionChangesVisualizer = transactionChangesVisualizer;
@@ -416,8 +284,8 @@ namespace Keeper.ViewModels.Transactions
             RelatedTransactionInWork = new Transaction();
             Rows = _db.Transactions;
             Rows.CollectionChanged += RowsCollectionChanged;
+            FiltersModel = new FiltersForTransactions(ListsForComboboxes, Rows);
             IsCollectionChanged = false;
-            InitializeFiltersLists();
             InitializeSelectedTransactionIndex();
         }
 
@@ -449,11 +317,6 @@ namespace Keeper.ViewModels.Transactions
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Ежедневные операции";
-
-            SortedRows = CollectionViewSource.GetDefaultView(Rows);
-            SortedRows.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Ascending));
-            ClearAllFilters();
-            SortedRows.Filter += OnFilter;
 
             TransactionInWork.PropertyChanged += TransactionInWorkPropertyChanged;
             RelatedTransactionInWork.PropertyChanged += RelatedTransactionInWorkPropertyChanged;
@@ -572,7 +435,7 @@ namespace Keeper.ViewModels.Transactions
                 currentTransaction.Timestamp = nearbyTransaction.Timestamp.AddMinutes(direction);
             }
 
-            SortedRows.Refresh();
+            FiltersModel.SortedRows.Refresh();
             SelectedTransactionIndex += direction;
         }
 
@@ -594,7 +457,7 @@ namespace Keeper.ViewModels.Transactions
                 SelectedTransaction.Timestamp = transactionBefore == null
                     ? SelectedTransaction.Timestamp.AddHours(9)
                     : transactionBefore.Timestamp.AddMinutes(1);
-                SortedRows.Refresh();
+                FiltersModel.SortedRows.Refresh();
             }
             else
             {
@@ -622,7 +485,7 @@ namespace Keeper.ViewModels.Transactions
                         SelectedTransaction.CloneFrom(RelatedTransactionInWork);
                         RelatedTransaction.CloneFrom(TransactionInWork);
                     }
-                    SortedRows.Refresh();
+                    FiltersModel.SortedRows.Refresh();
                     SelectedTransactionIndex++;
                 }
             }
@@ -794,6 +657,10 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
+        public void ClearAllFilters()
+        {
+            FiltersModel.ClearAllFilters();
+        }
     }
 }
 

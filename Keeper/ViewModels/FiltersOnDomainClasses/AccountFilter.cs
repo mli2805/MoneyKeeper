@@ -1,6 +1,6 @@
 ﻿using Keeper.DomainModel;
 
-namespace Keeper.ViewModels.TransactionViewFilters
+namespace Keeper.ViewModels
 {
   public class AccountFilter
   {
