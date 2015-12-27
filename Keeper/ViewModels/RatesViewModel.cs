@@ -43,11 +43,11 @@ namespace Keeper.ViewModels
         private double _lastRurRate;
 
         public static List<CurrencyCodes> CurrencyList { get; private set; }
-        public IEnumerable<CurrencyRatesFilter> FilterList { get; private set; }
+        public IEnumerable<CurrencyCodesFilter> FilterList { get; private set; }
 
-        private CurrencyRatesFilter _selectedFilter;
+        private CurrencyCodesFilter _selectedFilter;
 
-        public CurrencyRatesFilter SelectedFilter
+        public CurrencyCodesFilter SelectedFilter
         {
             get { return _selectedFilter; }
             set
@@ -186,17 +186,17 @@ namespace Keeper.ViewModels
 
         void InitFilterList()
         {
-            var result = new List<CurrencyRatesFilter>();
+            var result = new List<CurrencyCodesFilter>();
 
             // <no filter>
-            var filter = new CurrencyRatesFilter();
+            var filter = new CurrencyCodesFilter();
             result.Add(filter);
 
             var currencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
             // one filter for each currency in my enum, except USD
             result.AddRange(from currencyCode in currencyList
                             where currencyCode != CurrencyCodes.USD
-                            select new CurrencyRatesFilter(currencyCode));
+                            select new CurrencyCodesFilter(currencyCode));
 
             FilterList = result;
         }

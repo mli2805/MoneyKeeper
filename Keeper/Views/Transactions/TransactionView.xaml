@@ -188,18 +188,18 @@
                 <DatePicker HorizontalAlignment="Left" Margin="5,0,0,0" Background="White" VerticalAlignment="Center" Width="100" Grid.Row="1" 
                     Text="{Binding DateToGo, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                 <ComboBox HorizontalAlignment="Left" Margin="110,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
-                  ItemsSource="{Binding DebetFilterList}" SelectedItem="{Binding SelectedDebetFilter}" />
+                  ItemsSource="{Binding FiltersModel.DebetFilterList}" SelectedItem="{Binding FiltersModel.SelectedDebetFilter}" />
                 <ComboBox HorizontalAlignment="Left" Margin="260,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
-                  ItemsSource="{Binding CreditFilterList}" SelectedItem="{Binding SelectedCreditFilter}" />
+                  ItemsSource="{Binding FiltersModel.CreditFilterList}" SelectedItem="{Binding FiltersModel.SelectedCreditFilter}" />
                 <ComboBox HorizontalAlignment="Left" Margin="414,0,0,0" Background="White" VerticalAlignment="Center" Width="80" Grid.Row="1"
-                  ItemsSource="{x:Static transactionViewFilters:OperationTypesFilerListForCombo.FilterList}" SelectedItem="{Binding SelectedOperationTypeFilter}"/>
+                  ItemsSource="{x:Static transactionViewFilters:OperationTypesFilterListForCombo.FilterList}" SelectedItem="{Binding FiltersModel.SelectedOperationTypeFilter}"/>
                 <Button Content="Очистить все фильтры" Name="ClearAllFilters" 
                   HorizontalAlignment="Left" Margin="507,-20,0,0" Background="White" VerticalAlignment="Center" Width="140" Grid.Row="1" Height="30"/>
                 <ComboBox HorizontalAlignment="Left" Margin="660,0,0,0" Background="White" VerticalAlignment="Center" Width="145" Grid.Row="1"
-                  ItemsSource="{Binding ArticleFilterList}" SelectedItem="{Binding SelectedArticleFilter}" />
+                  ItemsSource="{Binding FiltersModel.ArticleFilterList}" SelectedItem="{Binding FiltersModel.SelectedArticleFilter}" />
                 <Label Content="Поиск по *подстроке*" Margin="820,0,0,0"/>
                 <TextBox HorizontalAlignment="Left" Margin="815,0,0,0" Background="White" VerticalAlignment="Center" Width="170" Grid.Row="1"  BorderBrush="#555555"
-                 Text="{Binding CommentFilter}"/>
+                 Text="{Binding FiltersModel.CommentFilter}"/>
             </Grid>
         </StackPanel>
         <ListView Grid.Row="1" HorizontalAlignment="Left" Margin="4,2,4,0" VerticalAlignment="Top" Grid.ColumnSpan="3"

@@ -333,6 +333,7 @@
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
+    <Compile Include="ViewModels\TransactionViewFilters\FiltersForTransactions.cs" />
     <Compile Include="Views\Deposits\BankDepositOffersView.xaml.cs">
       <DependentUpon>BankDepositOffersView.xaml</DependentUpon>
     </Compile>
@@ -398,13 +399,13 @@
     <Compile Include="ViewModels\Deposits\DepositsViewModel.cs" />
     <Compile Include="ViewModels\Deposits\DepositViewModel.cs" />
     <Compile Include="Utils\CommonKeeper\AssociationFinder.cs" />
-    <Compile Include="ViewModels\FiltersForComboboxes\CurrencyRatesFilter.cs" />
+    <Compile Include="ViewModels\FiltersOnDomainClasses\CurrencyCodesFilter.cs" />
     <Compile Include="ViewModels\MonthAnalysisViewModel.cs" />
     <Compile Include="ViewModels\ReceiptViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
-    <Compile Include="ViewModels\TransactionViewFilters\AccountFilter.cs" />
-    <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilerListForCombo.cs" />
-    <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilter.cs" />
+    <Compile Include="ViewModels\FiltersOnDomainClasses\AccountFilter.cs" />
+    <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilterListForCombo.cs" />
+    <Compile Include="ViewModels\FiltersOnDomainClasses\OperationTypesFilter.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />
     <Compile Include="ViewModels\Shell\ShellViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />

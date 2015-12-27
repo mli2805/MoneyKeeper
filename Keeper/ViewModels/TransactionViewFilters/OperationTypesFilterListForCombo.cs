@@ -9,11 +9,11 @@ namespace Keeper.ViewModels.TransactionViewFilters
   /// <summary>
   /// Filter's list for combobox on Transactions window
   /// </summary>
-  public static class OperationTypesFilerListForCombo
+  public static class OperationTypesFilterListForCombo
   {
     public static List<OperationTypesFilter> FilterList { get; private set; }
 
-    static OperationTypesFilerListForCombo()
+    static OperationTypesFilterListForCombo()
     {
       FilterList = new List<OperationTypesFilter>();
 
