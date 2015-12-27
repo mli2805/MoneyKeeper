@@ -178,10 +178,8 @@ namespace Keeper.ViewModels.Transactions
         }
         #endregion
 
-        #region Списки для комбобоксов и их инициализация
         public ListsForComboboxes ListsForComboboxes { get; set; }
-        public void ChangeComboboxFilter() { ListsForComboboxes.ChangeComboboxFilter(_db, _accountTreeStraightener);}
-        #endregion
+        public void ChangeComboboxFilter() { ListsForComboboxes.ChangeComboboxFilter(_db, _accountTreeStraightener); }
 
         #region группа свойств для биндинга селектов и др.
 
@@ -294,8 +292,8 @@ namespace Keeper.ViewModels.Transactions
                 NotifyOfPropertyChange(() => DebetAccountBalance);
                 NotifyOfPropertyChange(() => CreditAccountBalance);
                 NotifyOfPropertyChange(() => ExchangeRate);
-                DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-                EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+                NotifyOfPropertyChange(() => DayResults);
+                NotifyOfPropertyChange(() => EndDayBalances);
             }
             get { return _selectedTransaction; }
         }
@@ -339,6 +337,7 @@ namespace Keeper.ViewModels.Transactions
 
         public Transaction RelatedTransaction { get; set; }
 
+        private Transaction _relatedTransactionInWork;
         public Transaction RelatedTransactionInWork
         {
             get { return _relatedTransactionInWork; }
@@ -392,80 +391,16 @@ namespace Keeper.ViewModels.Transactions
         #endregion
 
         #region свойства для показа сумм остатков на счетах и перевода операции в доллары
-        public string AmountInUsd
-        {
-            get
-            {
-                // одинарные операции не долларах
-                if (TransactionInWork.Currency == CurrencyCodes.USD && SelectedTabIndex != 3) return "";
-                const string res0 = "                                                                                ";
-
-                var res1 = _rateExtractor.GetUsdEquivalentString(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
-                // одинарные операции не в остальных валютах
-                if (SelectedTabIndex != 3) return res0 + res1;
-
-                res1 = TransactionInWork.Currency == CurrencyCodes.USD ? "                                           " :
-                    _rateExtractor.GetUsdEquivalentString(TransactionInWork.Amount, TransactionInWork.Currency, TransactionInWork.Timestamp);
-                var res2 = RelatedTransactionInWork.Currency == CurrencyCodes.USD ? "" :
-                    _rateExtractor.GetUsdEquivalentString(RelatedTransactionInWork.Amount, RelatedTransactionInWork.Currency, RelatedTransactionInWork.Timestamp);
-
-                return res1 + "                                      " + res2;
-            }
-        }
-
-        public string DebetAccountBalance
-        {
-            get
-            {
-                return _transactionChangesVisualizer.GetDebetAccountBalance(TransactionInWork);
-            }
-        }
-
-        public string CreditAccountBalance
-        {
-            get { return _transactionChangesVisualizer.GetCreditAccountBalance(SelectedTabIndex, TransactionInWork, RelatedTransactionInWork); }
-        }
-
-        public string ExchangeRate
-        {
-            get
-            {
-                return SelectedTabIndex == 3 ?
-                RateDefiner.GetExpression(TransactionInWork.Currency, TransactionInWork.Amount,
-                RelatedTransactionInWork.Currency, RelatedTransactionInWork.Amount) : "";
-            }
-        }
-
-        private List<string> _dayResults;
-        public List<string> DayResults
-        {
-            get { return _dayResults; }
-            set
-            {
-                if (Equals(value, _dayResults)) return;
-                _dayResults = value;
-                NotifyOfPropertyChange(() => DayResults);
-            }
-        }
-
-        private string _endDayBalances;
-        private Transaction _relatedTransactionInWork;
-
-        public string EndDayBalances
-        {
-            get { return _endDayBalances; }
-            set
-            {
-                if (value == _endDayBalances) return;
-                _endDayBalances = value;
-                NotifyOfPropertyChange(() => EndDayBalances);
-            }
-        }
-
+        public string DebetAccountBalance { get { return _transactionChangesVisualizer.GetDebetAccountBalance(TransactionInWork); } }
+        public string CreditAccountBalance { get { return _transactionChangesVisualizer.GetCreditAccountBalance(SelectedTabIndex, TransactionInWork, RelatedTransactionInWork); } }
+        public string AmountInUsd { get { return _transactionChangesVisualizer.GetAmountInUsd(TransactionInWork, RelatedTransactionInWork, SelectedTabIndex); } }
+        public string ExchangeRate { get { return _transactionChangesVisualizer.GetExchangeRate(TransactionInWork, RelatedTransactionInWork, SelectedTabIndex); } }
+        public List<string> DayResults { get { return _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp); } }
+        public string EndDayBalances { get { return _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp); }}
         #endregion
 
         [ImportingConstructor]
-        public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor, AccountBalanceCalculator accountBalanceCalculator,
+        public TransactionViewModel(KeeperDb db, RateExtractor rateExtractor,
           BalancesForTransactionsCalculator balancesForTransactionsCalculator, AccountTreeStraightener accountTreeStraightener, TransactionChangesVisualizer transactionChangesVisualizer)
         {
             _db = db;
@@ -475,8 +410,7 @@ namespace Keeper.ViewModels.Transactions
             _accountTreeStraightener = accountTreeStraightener;
             _transactionChangesVisualizer = transactionChangesVisualizer;
             _associationFinder = new AssociationFinder(_db);
-            ListsForComboboxes = new ListsForComboboxes();
-            ListsForComboboxes.FilterOnlyActiveAccounts = true;
+            ListsForComboboxes = new ListsForComboboxes { FilterOnlyActiveAccounts = true };
             ListsForComboboxes.InitializeListsForCombobox(_db, accountTreeStraightener);
             TransactionInWork = new Transaction();
             RelatedTransactionInWork = new Transaction();
@@ -485,7 +419,6 @@ namespace Keeper.ViewModels.Transactions
             IsCollectionChanged = false;
             InitializeFiltersLists();
             InitializeSelectedTransactionIndex();
-
         }
 
         void RowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -515,7 +448,6 @@ namespace Keeper.ViewModels.Transactions
         /// <param name="view"></param>
         protected override void OnViewLoaded(object view)
         {
-//            InitializeListsForCombobox();
             DisplayName = "Ежедневные операции";
 
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
@@ -549,7 +481,7 @@ namespace Keeper.ViewModels.Transactions
             if (e.PropertyName == "Amount" || e.PropertyName == "Currency")
             {
                 NotifyOfPropertyChange(() => AmountInUsd);
-                DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+                NotifyOfPropertyChange(() => DayResults);
             }
 
             NotifyOfPropertyChange(() => CreditAccountBalance);
@@ -585,7 +517,7 @@ namespace Keeper.ViewModels.Transactions
             if (e.PropertyName == "Amount" || e.PropertyName == "Currency")
             {
                 NotifyOfPropertyChange(() => AmountInUsd);
-                DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
+                NotifyOfPropertyChange(() => DayResults);
             }
 
             NotifyOfPropertyChange(() => DebetAccountBalance);
@@ -695,8 +627,8 @@ namespace Keeper.ViewModels.Transactions
                 }
             }
 
-            DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-            EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+            NotifyOfPropertyChange(() => DayResults);
+            NotifyOfPropertyChange(() => EndDayBalances);
             IsTransactionInWorkChanged = false;
             IsInAddTransactionMode = false;
             CanFillInReceipt = false;
@@ -828,8 +760,8 @@ namespace Keeper.ViewModels.Transactions
             }
             if (SelectedTransactionIndex == -1) SelectedTransactionIndex = Rows.Count - 1;
 
-            DayResults = _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp);
-            EndDayBalances = _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp);
+            NotifyOfPropertyChange(() => DayResults);
+            NotifyOfPropertyChange(() => EndDayBalances);
             IsInAddTransactionMode = false;
         }
 
