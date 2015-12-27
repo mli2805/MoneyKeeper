@@ -188,7 +188,8 @@
     <Compile Include="ByFunctional\BalanceEvaluating\ArticleBalanceCalculator.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
-    <Compile Include="Utils\CommonKeeper\TransactionChangesVisualizer.cs" />
+    <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionChangesVisualizer.cs" />
     <Compile Include="Utils\Common\YearMonth.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\RegularPayment.cs" />
@@ -397,7 +398,7 @@
     <Compile Include="ViewModels\Deposits\DepositsViewModel.cs" />
     <Compile Include="ViewModels\Deposits\DepositViewModel.cs" />
     <Compile Include="Utils\CommonKeeper\AssociationFinder.cs" />
-    <Compile Include="ViewModels\ListsForComboboxes\CurrencyRatesFilter.cs" />
+    <Compile Include="ViewModels\FiltersForComboboxes\CurrencyRatesFilter.cs" />
     <Compile Include="ViewModels\MonthAnalysisViewModel.cs" />
     <Compile Include="ViewModels\ReceiptViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
@@ -406,7 +407,7 @@
     <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilter.cs" />
     <Compile Include="ViewModels\RatesViewModel.cs" />
     <Compile Include="ViewModels\Shell\ShellViewModel.cs" />
-    <Compile Include="ViewModels\TransactionViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
     <Compile Include="Views\AddAndEditAccountView.xaml.cs">
       <DependentUpon>AddAndEditAccountView.xaml</DependentUpon>
     </Compile>
@@ -434,7 +435,7 @@
     <Compile Include="Views\ToDoView.xaml.cs">
       <DependentUpon>ToDoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TransactionView.xaml.cs">
+    <Compile Include="Views\Transactions\TransactionView.xaml.cs">
       <DependentUpon>TransactionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\WhatToShow.cs" />
@@ -595,7 +596,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TransactionView.xaml">
+    <Page Include="Views\Transactions\TransactionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
