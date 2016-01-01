@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
@@ -27,7 +26,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
 
         public List<string> CalculateDayResults(DateTime dt)
         {
-            var dayResults = new List<string> { String.Format("                              {0:dd MMMM yyyy}", dt.Date) };
+            var dayResults = new List<string> { String.Format("                            {0:dd MMMM yyyy}", dt.Date) };
 
             var incomes = GetMyDayIncomes(dt);
             if (incomes.Any())
@@ -109,6 +108,7 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         {
             var period = new Period(new DateTime(0), dt.GetEndOfDate());
             var result = String.Format(" На конец {0:d MMMM yyyy} :   ", dt.Date);
+            var length = 0;
 
             var calculatedAccounts = OmitNotUsedAccounts(PrepareAccountList());
             foreach (var account in calculatedAccounts)
@@ -118,10 +118,21 @@ namespace Keeper.ByFunctional.BalanceEvaluating
                 foreach (var balancePair in pairs.ToArray())
                     if (balancePair.Amount == 0) pairs.Remove(balancePair);
                 if (pairs.Any())
-                    result = result + String.Format("   {0}  {1}", account.Name, pairs[0].ToString());
+                {
+                    if (account.Name == "Депозиты")
+                        result = result + String.Format(" {0}  {1}", account.Name, pairs[0].ToString());
+                    else
+                        result = result + String.Format("   {0}  {1}", account.Name, pairs[0].ToString());
+                    
+                }
                 if (pairs.Count() > 1)
                     for (var i = 1; i < pairs.Count(); i++)
                         result = result + String.Format(" + {0}", pairs[i].ToString());
+                if (result.Length - length > 140)
+                {
+                    length = result.Length;
+                    result += "\n";
+                }
             }
 
             return result;

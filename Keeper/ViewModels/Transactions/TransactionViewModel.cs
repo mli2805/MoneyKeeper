@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Composition;
 using System.Linq;
-using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
@@ -20,12 +19,10 @@ namespace Keeper.ViewModels.Transactions
     public class TransactionViewModel : Screen
     {
         private readonly KeeperDb _db;
-
         private readonly BalancesForTransactionsCalculator _balancesForTransactionsCalculator;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly TransactionChangesVisualizer _transactionChangesVisualizer;
         private readonly AssociationFinder _associationFinder;
-
         public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
         public ObservableCollection<Transaction> Rows { get; set; }
         public bool IsCollectionChanged { get; set; }
@@ -44,6 +41,7 @@ namespace Keeper.ViewModels.Transactions
                 SelectedTransaction = (from transaction in _db.Transactions
                                        where transaction.Timestamp > DateToGo
                                        select transaction).FirstOrDefault() ?? Rows.Last();
+
             }
         }
         #endregion
@@ -52,15 +50,7 @@ namespace Keeper.ViewModels.Transactions
         public void ChangeComboboxFilter() { ListsForComboboxes.ChangeComboboxFilter(_db, _accountTreeStraightener); }
 
         #region группа свойств для биндинга селектов и др.
-
-        private bool _isInTransactionSelectionProcess;
         private int _selectedTabIndex;
-        private Transaction _selectedTransaction;
-        private int _selectedTransactionIndex;
-        private bool _isTransactionInWorkChanged;
-        private Transaction _transactionInWork;
-        private bool _isInAddTransactionMode;
-
         public int SelectedTabIndex
         {
             get { return _selectedTabIndex; }
@@ -121,6 +111,8 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
+        private bool _isInTransactionSelectionProcess;
+        private Transaction _selectedTransaction;
         public Transaction SelectedTransaction
         {
             set
@@ -167,6 +159,7 @@ namespace Keeper.ViewModels.Transactions
             get { return _selectedTransaction; }
         }
 
+        private int _selectedTransactionIndex;
         public int SelectedTransactionIndex
         {
             get { return _selectedTransactionIndex; }
@@ -178,6 +171,7 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
+        private bool _isTransactionInWorkChanged;
         public bool IsTransactionInWorkChanged
         {
             get { return _isTransactionInWorkChanged; }
@@ -192,6 +186,7 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
+        private Transaction _transactionInWork;
         public Transaction TransactionInWork
         {
             get { return _transactionInWork; }
@@ -218,6 +213,7 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
+        private bool _isInAddTransactionMode;
         public bool IsInAddTransactionMode
         {
             get { return _isInAddTransactionMode; }
@@ -230,9 +226,10 @@ namespace Keeper.ViewModels.Transactions
         #endregion
 
         #region свойства Can для нескольких кнопок
-        private bool _canEditDate;
         public bool CanSaveTransactionChanges { get; set; }
         public bool CanCancelTransactionChanges { get; set; }
+
+        private bool _canEditDate;
         public bool CanEditDate
         {
             get { return _canEditDate; }
@@ -245,7 +242,6 @@ namespace Keeper.ViewModels.Transactions
         }
 
         private bool _canFillInReceipt;
-
         public bool CanFillInReceipt
         {
             get { return _canFillInReceipt; }
@@ -256,7 +252,6 @@ namespace Keeper.ViewModels.Transactions
                 NotifyOfPropertyChange(() => CanFillInReceipt);
             }
         }
-
         #endregion
 
         #region свойства для показа сумм остатков на счетах и перевода операции в доллары
@@ -264,8 +259,8 @@ namespace Keeper.ViewModels.Transactions
         public string CreditAccountBalance { get { return _transactionChangesVisualizer.GetCreditAccountBalance(SelectedTabIndex, TransactionInWork, RelatedTransactionInWork); } }
         public string AmountInUsd { get { return _transactionChangesVisualizer.GetAmountInUsd(TransactionInWork, RelatedTransactionInWork, SelectedTabIndex); } }
         public string ExchangeRate { get { return _transactionChangesVisualizer.GetExchangeRate(TransactionInWork, RelatedTransactionInWork, SelectedTabIndex); } }
-        public List<string> DayResults { get { return _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp); } }
-        public string EndDayBalances { get { return _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp); }}
+        public List<string> DayResults { get { return SelectedTransaction == null ? null : _balancesForTransactionsCalculator.CalculateDayResults(SelectedTransaction.Timestamp); } }
+        public string EndDayBalances { get { return SelectedTransaction == null ? null : _balancesForTransactionsCalculator.EndDayBalances(SelectedTransaction.Timestamp); } }
         #endregion
 
         [ImportingConstructor]
@@ -298,11 +293,9 @@ namespace Keeper.ViewModels.Transactions
         {
             foreach (var transaction in _db.Transactions)
             {
-                if (transaction.IsSelected)
-                {
-                    SelectedTransactionIndex = Rows.IndexOf(transaction);
-                    return;
-                }
+                if (!transaction.IsSelected) continue;
+                SelectedTransactionIndex = Rows.IndexOf(transaction);
+                return;
             }
             SelectedTransactionIndex = Rows.Count - 1;
             Rows.Last().IsSelected = true;
@@ -661,6 +654,20 @@ namespace Keeper.ViewModels.Transactions
         {
             FiltersModel.ClearAllFilters();
         }
+
+        #region горячие кнопки выбора из списков
+        public void ExpenseFromMyWallet() { TransactionInWork.Debet = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "Мой кошелек"); }
+        public void ExpenseFromJuliaWallet() { TransactionInWork.Debet = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "Юлин кошелек"); }
+        public void ExpenseFromBibMotznaya() { TransactionInWork.Debet = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "БИБ Сберка Моцная"); }
+        public void ExpenseFromBelGazSberka() { TransactionInWork.Debet = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "БГПБ Сберегательная"); }
+        public void ExpenseToProstor() { TransactionInWork.Credit = ListsForComboboxes.AccountsWhoTakesMyMoney.FirstOrDefault(a => a.Name == "Простор"); }
+        public void ExpenseToRadzivil() { TransactionInWork.Credit = ListsForComboboxes.AccountsWhoTakesMyMoney.FirstOrDefault(a => a.Name == "Радзивиловский"); }
+        public void ExpenseToEvroopt() { TransactionInWork.Credit = ListsForComboboxes.AccountsWhoTakesMyMoney.FirstOrDefault(a => a.Name == "Евроопт"); }
+        public void ExpenseToProchie() { TransactionInWork.Credit = ListsForComboboxes.AccountsWhoTakesMyMoney.FirstOrDefault(a => a.Name == "Прочие магазины"); }
+        public void ExpenseForProdukt() { TransactionInWork.Article = ListsForComboboxes.ArticleAccounts.FirstOrDefault(a => a.Name == "Продукты в целом"); }
+        public void ExpenseForProchie() { TransactionInWork.Article = ListsForComboboxes.ArticleAccounts.FirstOrDefault(a => a.Name == "Прочие расходы"); }
+
+        #endregion
     }
 }
 

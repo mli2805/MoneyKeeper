@@ -16,6 +16,12 @@ namespace Keeper.Behaviors.ListViewBehaviors
         protected override void OnAttached() // это стандартное место
         {
             AssociatedObject.Loaded += AssociatedObjectOnLoaded;  // а здесь подписываюсь именно на то событие, по которому должно выполняться действие
+//            AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
+        }
+
+        void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ScrollIntoViewSelectedItem();
         }
 
         /// <summary>
@@ -23,12 +29,18 @@ namespace Keeper.Behaviors.ListViewBehaviors
         /// </summary>
         private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            ScrollIntoViewSelectedItem();
+        }
+
+        private void ScrollIntoViewSelectedItem()
+        {
             if (AssociatedObject.Items.Count == 0) return;
 
             if (AssociatedObject.SelectedIndex == -1)
                 AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
             else
-            { // если при загрузке мы возвращаемся не к последней записи, то желательно ее поставить в середину таблицы
+            {
+                // если при загрузке мы возвращаемся не к последней записи, то желательно ее поставить в середину таблицы
                 int itemNumber = AssociatedObject.SelectedIndex + 10;
                 if (itemNumber > AssociatedObject.Items.Count - 1) itemNumber = AssociatedObject.Items.Count - 1;
                 AssociatedObject.ScrollIntoView(AssociatedObject.Items[itemNumber]);
