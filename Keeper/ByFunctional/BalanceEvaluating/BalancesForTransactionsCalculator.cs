@@ -114,9 +114,13 @@ namespace Keeper.ByFunctional.BalanceEvaluating
             foreach (var account in calculatedAccounts)
             {
                 var pairs = _accountBalanceCalculator.GetAccountBalancePairs(account, period).ToList();
-                if (account.Name == "Депозиты") result += "\n";
+                if (account.Name == "Депозиты" || result.Length - length > 140)
+                {
+                    length = result.Length;
+                    result += "\n";
+                }
                 foreach (var balancePair in pairs.ToArray())
-                    if (balancePair.Amount == 0) pairs.Remove(balancePair);
+                    if (balancePair.Amount < 1) pairs.Remove(balancePair);
                 if (pairs.Any())
                 {
                     if (account.Name == "Депозиты")
@@ -128,11 +132,6 @@ namespace Keeper.ByFunctional.BalanceEvaluating
                 if (pairs.Count() > 1)
                     for (var i = 1; i < pairs.Count(); i++)
                         result = result + String.Format(" + {0}", pairs[i].ToString());
-                if (result.Length - length > 140)
-                {
-                    length = result.Length;
-                    result += "\n";
-                }
             }
 
             return result;
