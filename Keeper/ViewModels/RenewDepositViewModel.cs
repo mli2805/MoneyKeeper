@@ -7,6 +7,7 @@ using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
+using Keeper.DomainModel.Transactions;
 using Keeper.Utils;
 
 namespace Keeper.ViewModels

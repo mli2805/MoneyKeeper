@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 
 namespace Keeper.ByFunctional.BalanceEvaluating
 {

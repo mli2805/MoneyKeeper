@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 
 namespace Keeper.ByFunctional.BalanceEvaluating.Ilya
 {

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 using Keeper.Models;
 using Keeper.Utils.Rates;
 

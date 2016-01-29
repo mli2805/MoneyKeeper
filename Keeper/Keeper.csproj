@@ -141,6 +141,9 @@
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="ByFunctional\DepositProcessing\TrafficToExcelExporter.cs" />
     <Compile Include="ByFunctional\NbRbRatesExtractor.cs" />
+    <Compile Include="Controls\ComboboxTreeview\ComboBoxTreeView.cs" />
+    <Compile Include="Controls\ComboboxTreeview\ExtendedTreeView.cs" />
+    <Compile Include="Controls\ComboboxTreeview\ITreeViewItemModel.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControl.xaml.cs">
       <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
     </Compile>
@@ -265,7 +268,7 @@
     <Compile Include="DomainModel\CurrencyCodes.cs" />
     <Compile Include="DomainModel\OperationType.cs" />
     <Compile Include="DomainModel\Saldo.cs" />
-    <Compile Include="DomainModel\Transaction.cs" />
+    <Compile Include="DomainModel\Transactions\Transaction.cs" />
     <Compile Include="ByFunctional\AccountEditing\AccountTreesGardener.cs" />
     <Compile Include="ByFunctional\BalanceEvaluating\AccountBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />
@@ -494,6 +497,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AddAndEditAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -657,6 +664,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
