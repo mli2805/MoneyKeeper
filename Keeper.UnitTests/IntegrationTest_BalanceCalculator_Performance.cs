@@ -5,6 +5,7 @@ using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 
 using NUnit.Framework;

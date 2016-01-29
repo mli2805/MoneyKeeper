@@ -9,6 +9,9 @@ namespace Keeper.ViewModels.Transactions
 {
     public class ListsForComboboxes : PropertyChangedBase
     {
+        public List<Account> ItemsForDebit { get; set; }
+
+
         private List<Account> _myAccounts;
         private List<CurrencyCodes> _currencyList;
         private List<Account> _myAccountsForShopping;
@@ -124,6 +127,8 @@ namespace Keeper.ViewModels.Transactions
             CreditAccounts.AddRange(MyAccounts);
             ArticleAccounts = IncomeArticles;
             ArticleAccounts.AddRange(ExpenseArticles);
+
+            ItemsForDebit = db.Accounts.Where(account => account.Name != "ДеньгоПолучатели").ToList();
         }
 
         public bool FilterOnlyActiveAccounts;

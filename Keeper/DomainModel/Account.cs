@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Caliburn.Micro;
+using Keeper.Controls.ComboboxTreeview;
 using Keeper.Models.Shell;
 
 namespace Keeper.DomainModel
 {
     [Serializable]
-    public class Account : PropertyChangedBase, IComparable
+    public class Account : PropertyChangedBase, IComparable, ITreeViewItemModel
     {
         #region // свойства (properties) класса
 
@@ -102,6 +105,32 @@ namespace Keeper.DomainModel
             return Name.GetHashCode();
         }
 
+        #endregion
+
+        #region implementation of ITreeViewItemModel
+        public string SelectedValuePath => Name;
+        public string DisplayValuePath => Name;
+
+        private IEnumerable<Account> GetAscendingHierarchy()
+        {
+            var account = this;
+
+            yield return account;
+            while (account.Parent != null)
+            {
+                yield return account.Parent;
+                account = account.Parent;
+            }
+        }
+        public IEnumerable<ITreeViewItemModel> GetHierarchy()
+        {
+            return GetAscendingHierarchy().Reverse();
+        }
+
+        public IEnumerable<ITreeViewItemModel> GetChildren()
+        {
+            return Children;
+        }
         #endregion
 
         public static void CopyForEdit(Account destination, Account source)

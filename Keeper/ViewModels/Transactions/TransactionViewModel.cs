@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 using Keeper.Utils.CommonKeeper;
 using Keeper.ViewModels.TransactionViewFilters;
 
@@ -46,6 +47,7 @@ namespace Keeper.ViewModels.Transactions
         }
         #endregion
 
+        public Account SelectedItemDebit { get; set; }
         public ListsForComboboxes ListsForComboboxes { get; set; }
         public void ChangeComboboxFilter() { ListsForComboboxes.ChangeComboboxFilter(_db, _accountTreeStraightener); }
 

@@ -6,6 +6,7 @@ using System.Linq;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 using Keeper.Utils.Common;
 using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.Rates;

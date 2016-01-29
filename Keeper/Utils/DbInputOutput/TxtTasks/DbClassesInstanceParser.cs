@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
+using Keeper.DomainModel.Transactions;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {

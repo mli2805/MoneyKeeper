@@ -3,6 +3,7 @@ using System.Composition;
 using System.Globalization;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
+using Keeper.DomainModel.Transactions;
 using Keeper.Utils.Common;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks

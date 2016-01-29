@@ -4,6 +4,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 using Keeper.Utils.Common;
 using Keeper.Utils.Rates;
 

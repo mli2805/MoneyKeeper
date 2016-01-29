@@ -13,6 +13,7 @@
         xmlns:listViewBehaviors="clr-namespace:Keeper.Behaviors.ListViewBehaviors"
         xmlns:behaviors="clr-namespace:Keeper.Behaviors"
         xmlns:transactions="clr-namespace:Keeper.ViewModels.Transactions"
+        xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance transactions:TransactionViewModel}" 
         Title="TransactionView" Height="806" MinWidth="1032" MaxWidth="1032" SizeToContent="Width"
@@ -43,8 +44,11 @@
     </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
+            <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
+                <TextBlock Text="{Binding Name}" />
+            </HierarchicalDataTemplate>
+            
             <xamlExtensions:AccountTemplateSelector x:Key="MyAccountTemplateSelector">
-
                 <xamlExtensions:AccountTemplateSelector.AmountStyleForByr>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Right">
@@ -288,6 +292,10 @@
                         <Label Content="Кто" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center" />
                         <ComboBox Name="IncomeDebet" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
                                   ItemsSource="{Binding ListsForComboboxes.AccountsWhoGivesMeMoney}" SelectedItem="{Binding TransactionInWork.Debet}" />
+
+                        <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Left" Margin="40,40,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150" Height="25"
+                                ItemsSource="{Binding ListsForComboboxes.ItemsForDebit}" SelectedItem="{Binding SelectedItemDebit, Mode=TwoWay}" ItemTemplate="{StaticResource TreeViewDataTemplate}"/>
+
                         <Label Content="Куда" HorizontalAlignment="Left" Margin="390,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
                         <ComboBox Name="IncomeCredit" HorizontalAlignment="Left" Margin="440,0,0,0" Grid.Row="1" Background="White" VerticalAlignment="Center" Width="150"
                                   ItemsSource="{Binding ListsForComboboxes.MyAccounts}" SelectedItem="{Binding TransactionInWork.Credit}" />

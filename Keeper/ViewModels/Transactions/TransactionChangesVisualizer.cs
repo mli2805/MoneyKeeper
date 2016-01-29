@@ -2,6 +2,7 @@
 using System.Composition;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Transactions;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.CommonKeeper
