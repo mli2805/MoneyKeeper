@@ -1,0 +1,55 @@
+﻿<Window x:Class="Keeper.Views.Transactions.TrView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Keeper.Behaviors"
+        xmlns:dataGridBehaviors="clr-namespace:Keeper.Behaviors.DataGridBehaviors"
+        xmlns:cal="http://www.caliburnproject.org"
+        mc:Ignorable="d"
+        Title="TrView" Height="600" Width="1100">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="CellRightAlign">
+                <Setter Property="Control.HorizontalAlignment" Value="Right" />
+                <Setter Property="Control.Margin" Value="5,0,5,0" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" SelectionChanged="DataGrid_SelectionChanged">
+            <i:Interaction.Behaviors>
+                <dataGridBehaviors:ScrollToBottomOnLoadDatagridBehavior/>
+                <dataGridBehaviors:ScrollToBottomOnAddBehavior/>
+                <behaviors:SetFocusOnLoadBehavior />
+            </i:Interaction.Behaviors>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Сдвинуть вверх ()" cal:Message.Attach="MoveTransactionUp" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                    <MenuItem Header="Сдвинуть вниз ()" cal:Message.Attach="MoveTransactionDown" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                    <MenuItem Header="Вставить перед (Insert)" cal:Message.Attach="AddTransactionBeforeSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                    <MenuItem Header="Вставить после (Ctrl+Enter)" cal:Message.Attach="AddTransactionAfterSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
+                    <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header=" Timestamp" Width="110" Binding="{Binding Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
+                <DataGridTextColumn Header="  Account" Width="200" Binding="{Binding AccountForDatagrid}" />
+                <DataGridTextColumn Header="  Amount" Width="120" Binding="{Binding AmountForDatagrid}" CellStyle="{StaticResource CellRightAlign}" />
+                <DataGridTextColumn Header="  Tags" Width="250" Binding="{Binding TagsForDatagrid}" />
+                <DataGridTextColumn Header="  Comment" Width="250" Binding="{Binding Comment}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="1" Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0" Content="Close" Name="Close"/>
+    </Grid>
+</Window>
