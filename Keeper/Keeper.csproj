@@ -180,14 +180,23 @@
     <Compile Include="DomainModel\Deposit\BankDepositRateLine.cs" />
     <Compile Include="DomainModel\Deposit\DepositTransaction.cs" />
     <Compile Include="DomainModel\Deposit\DepositDailyLine.cs" />
+    <Compile Include="DomainModel\Transactions\TrExchange.cs" />
+    <Compile Include="DomainModel\Transactions\TrExchangeWithTransfer.cs" />
+    <Compile Include="DomainModel\Transactions\TrForex.cs" />
+    <Compile Include="DomainModel\Transactions\TrIncome.cs" />
     <Compile Include="DomainModel\NbRate.cs" />
     <Compile Include="DomainModel\RegularPayments.cs" />
     <Compile Include="ByFunctional\AccountEditing\IAccountCantBeDeletedChecker.cs" />
     <Compile Include="ByFunctional\AccountEditing\IAccountLowLevelOperator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositOfferIdGenerator.cs" />
     <Compile Include="ByFunctional\BalanceEvaluating\ArticleBalanceCalculator.cs" />
+    <Compile Include="DomainModel\Transactions\TrBase.cs" />
+    <Compile Include="DomainModel\Transactions\TrOutcome.cs" />
+    <Compile Include="DomainModel\Transactions\TrOutcomeWithTransfer.cs" />
+    <Compile Include="DomainModel\Transactions\TrTransfer.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
+    <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
     <Compile Include="ViewModels\Transactions\TransactionChangesVisualizer.cs" />
     <Compile Include="Utils\Common\YearMonth.cs" />
@@ -333,6 +342,7 @@
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\TrViewModel.cs" />
     <Compile Include="ViewModels\TransactionViewFilters\FiltersForTransactions.cs" />
     <Compile Include="Views\Deposits\BankDepositOffersView.xaml.cs">
       <DependentUpon>BankDepositOffersView.xaml</DependentUpon>
@@ -381,6 +391,9 @@
     </Compile>
     <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Transactions\TrView.xaml.cs">
+      <DependentUpon>TrView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\AccountTemplateSelector.cs" />
     <Compile Include="XamlExtensions\CollapseAction.cs" />
@@ -602,6 +615,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Transactions\TransactionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Transactions\TrView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -309,9 +309,14 @@ namespace Keeper.ViewModels.Shell
         }
         public void TempItem()
         {
-            SetBankDepositOfferForEveryDeposit();
-            //            ShowExpensePartingOxyPlotDiagram();
+            //      SetBankDepositOfferForEveryDeposit();
+            //      ShowExpensePartingOxyPlotDiagram();
             //      SetIsFolders();
+
+            var trForm = new TrViewModel(_db);
+            _launchedForms.Add(trForm);
+            WindowManager.ShowWindow(trForm);
+
         }
         public void ShowToDoForm()
         {

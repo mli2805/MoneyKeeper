@@ -162,28 +162,6 @@ namespace Keeper.DomainModel.Transactions
         public bool IsExchange() { return Guid != Guid.Empty; }
 
         /// <summary>
-        /// создает новый инстанс и в нем возвращает полную копию данного инстанса, кроме Id 
-        /// </summary>
-        /// <returns></returns>
-        public Transaction Clone()
-        {
-            var cloneTransaction = new Transaction
-                                     {
-                                         Timestamp = Timestamp,
-                                         Operation = Operation,
-                                         Debet = Debet,
-                                         Credit = Credit,
-                                         Amount = Amount,
-                                         Currency = Currency,
-                                         Article = Article,
-                                     };
-
-            cloneTransaction.Comment = Comment ?? "";
-
-            return cloneTransaction;
-        }
-
-        /// <summary>
         /// засасывает в данный инстанс все поля из инстанса-хранилища (кроме Id)
         /// </summary>
         /// <param name="storage"></param>
