@@ -138,6 +138,8 @@
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
     <Compile Include="ByFunctional\AccountEditing\IUserEquirer.cs" />
     <Compile Include="ByFunctional\AccountEditing\IUserInformator.cs" />
+    <Compile Include="ByFunctional\BalanceEvaluating\AccountBalanceOnTrCalculator.cs" />
+    <Compile Include="ByFunctional\BalanceEvaluating\TrExtensions.cs" />
     <Compile Include="ByFunctional\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="ByFunctional\DepositProcessing\TrafficToExcelExporter.cs" />
     <Compile Include="ByFunctional\NbRbRatesExtractor.cs" />

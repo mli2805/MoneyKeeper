@@ -39,10 +39,6 @@ namespace Keeper.ByFunctional.BalanceEvaluating.Ilya
             return transactions.Balance(t => interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount));
         }
 
-        public static bool DebitOrCreditIs(this Transaction transaction, Account account)
-        {
-            return transaction.Credit.Is(account) || transaction.Debet.Is(account);
-        }
         public static bool EitherDebitOrCreditIs(this Transaction transaction, Account account)
         {
             return transaction.Credit.Is(account) != transaction.Debet.Is(account);

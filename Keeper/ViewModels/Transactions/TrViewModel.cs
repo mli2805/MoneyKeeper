@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -11,7 +12,6 @@ namespace Keeper.ViewModels.Transactions
     {
         private readonly KeeperDb _db;
         private ObservableCollection<TrBase> _rows;
-
         public ObservableCollection<TrBase> Rows
         {
             get { return _rows; }
@@ -23,12 +23,14 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
+  //      public string EndDayBalances { get {  _balancesForTransactionsCalculator.EndDayBalances(DateTime.Today); } }
+
         [ImportingConstructor]
         public TrViewModel(KeeperDb db)
         {
             _db = db;
-            var convertor = new TransactionsConvertor(_db);
-            Rows = convertor.Convert();
+            new TransactionsConvertor(_db).Convert();
+            Rows = _db.Trs;
         }
 
         protected override void OnViewLoaded(object view)
