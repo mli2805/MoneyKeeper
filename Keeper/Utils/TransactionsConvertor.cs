@@ -18,7 +18,7 @@ namespace Keeper.Utils
             _db = db;
         }
 
-        public ObservableCollection<TrBase> Convert()
+        public void Convert()
         {
             var result = new ObservableCollection<TrBase>();
             Transaction firstPartOfExchange = null;
@@ -33,7 +33,7 @@ namespace Keeper.Utils
                 }
                 else result.Add(ConvertOneTransaction(transaction));
             }
-            return result;
+            _db.Trs = result;
         }
 
         private TrBase ConvertExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
@@ -50,9 +50,9 @@ namespace Keeper.Utils
             {
                 Timestamp = firstPartOfExchange.Timestamp,
                 MyAccount = firstPartOfExchange.Debet,
-                Amount = (double)firstPartOfExchange.Amount,
+                Amount = firstPartOfExchange.Amount,
                 Currency = firstPartOfExchange.Currency,
-                AmountInReturn = (double)transaction.Amount,
+                AmountInReturn = transaction.Amount,
                 CurrencyInReturn = transaction.Currency,
                 Tags = new List<Account>(),
                 Comment = firstPartOfExchange.Comment
@@ -67,12 +67,12 @@ namespace Keeper.Utils
             {
                 Timestamp = firstPartOfExchange.Timestamp,
                 MyAccount = firstPartOfExchange.Debet,
-                Amount = (double)firstPartOfExchange.Amount,
+                Amount = firstPartOfExchange.Amount,
                 Currency = firstPartOfExchange.Currency,
 
                 MySecondAccount = transaction.Credit,
 
-                AmountInReturn = (double)transaction.Amount,
+                AmountInReturn = transaction.Amount,
                 CurrencyInReturn = transaction.Currency,
                 Tags = new List<Account>(),
                 Comment = firstPartOfExchange.Comment
@@ -87,12 +87,12 @@ namespace Keeper.Utils
             {
                 Timestamp = firstPartOfExchange.Timestamp,
                 MyAccount = firstPartOfExchange.Debet,
-                Amount = (double)firstPartOfExchange.Amount,
+                Amount = firstPartOfExchange.Amount,
                 Currency = firstPartOfExchange.Currency,
 
                 MySecondAccount = transaction.Credit,
 
-                AmountInReturn = (double)transaction.Amount,
+                AmountInReturn = transaction.Amount,
                 CurrencyInReturn = transaction.Currency,
                 Tags = new List<Account>(),
                 Comment = firstPartOfExchange.Comment
@@ -119,7 +119,7 @@ namespace Keeper.Utils
                 Timestamp = transaction.Timestamp,
                 MyAccount = transaction.Debet,
                 MySecondAccount = transaction.Credit,
-                Amount = (double)transaction.Amount,
+                Amount = transaction.Amount,
                 Currency = transaction.Currency,
                 Tags = new List<Account>(),
                 Comment = transaction.Comment
@@ -133,7 +133,7 @@ namespace Keeper.Utils
             {
                 Timestamp = transaction.Timestamp,
                 MyAccount = transaction.Debet,
-                Amount = (double)transaction.Amount,
+                Amount = transaction.Amount,
                 Currency = transaction.Currency,
                 Tags = new List<Account>(),
                 Comment = transaction.Comment
@@ -149,7 +149,7 @@ namespace Keeper.Utils
             {
                 Timestamp = transaction.Timestamp,
                 MyAccount = transaction.Credit,
-                Amount = (double)transaction.Amount,
+                Amount = transaction.Amount,
                 Currency = transaction.Currency,
                 Tags = new List<Account>(),
                 Comment = transaction.Comment

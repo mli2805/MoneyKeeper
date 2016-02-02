@@ -1,5 +1,9 @@
+using System;
+using Keeper.ByFunctional.BalanceEvaluating.Ilya;
+
 namespace Keeper.DomainModel.Transactions
 {
+    [Serializable]
     public class TrExchangeWithTransfer : TrExchange
     {
         private Account _mySecondAccount;
@@ -14,5 +18,16 @@ namespace Keeper.DomainModel.Transactions
             }
         }
         public new string AccountForDatagrid => $"{MyAccount} ->\n  {MySecondAccount}";
+
+        public override MoneyBag AmountForAccount(Account account)
+        {
+            var result = new MoneyBag();
+            if (MyAccount.Is(account))
+                result = result - new MoneyBag(new Money(Currency, -Amount));
+            if (MySecondAccount.Is(account))
+                result = result + new MoneyBag(new Money(CurrencyInReturn, AmountInReturn));
+            return result;
+        }
+
     }
 }

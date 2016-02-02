@@ -1,5 +1,8 @@
+using System;
+
 namespace Keeper.DomainModel.Transactions
 {
+    [Serializable]
     public class TrForex : TrExchangeWithTransfer
     {
         private int _code;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Office.Interop.Excel;
 
 namespace Keeper.DomainModel
 {
@@ -37,21 +36,5 @@ namespace Keeper.DomainModel
             }
             return dictionary;
         }
-
-        /// <summary>
-        /// returns 0 if there's no rate for specified date
-        /// </summary>
-        /// <param name="currency"></param>
-        /// <param name="amount"></param>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        public decimal GetUsdEquivalent(CurrencyCodes currency, decimal amount, DateTime date)
-        {
-            if (currency == CurrencyCodes.USD) return amount;
-
-            double rate;
-            return Rates[currency].TryGetValue(date, out rate) ? amount/(decimal)rate : 0;
-        }
-
     }
 }

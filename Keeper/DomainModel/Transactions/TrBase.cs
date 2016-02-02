@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using Caliburn.Micro;
+using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 
 namespace Keeper.DomainModel.Transactions
 {
+    [Serializable]
     public abstract class TrBase : PropertyChangedBase
     {
         private DateTime _timestamp;
         private Account _myAccount;
-        private double _amount;
+        private decimal _amount;
         private CurrencyCodes _currency;
         private List<Account> _tags;
         private string _comment;
@@ -34,7 +36,7 @@ namespace Keeper.DomainModel.Transactions
                 NotifyOfPropertyChange();
             }
         }
-        public double Amount
+        public decimal Amount
         {
             get { return _amount; }
             set
@@ -91,7 +93,7 @@ namespace Keeper.DomainModel.Transactions
         public string AccountForDatagrid => $"{MyAccount}";
         public string AmountForDatagrid => ShowAmount(_amount, _currency);
 
-        protected string ShowAmount(double amount, CurrencyCodes currency)
+        protected string ShowAmount(decimal amount, CurrencyCodes currency)
         {
             return currency == CurrencyCodes.BYR
                 ? $"{amount:0,0} {currency.ToString().ToLower()}"
@@ -108,6 +110,9 @@ namespace Keeper.DomainModel.Transactions
                 result = result + ";  " + Tags[i].ToString();
             return result;
         }
+
+        public abstract int SignForAmount(Account account);
+        public abstract MoneyBag AmountForAccount(Account account);
 
     }
 }
