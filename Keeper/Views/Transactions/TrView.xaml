@@ -43,11 +43,11 @@
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header=" Timestamp" Width="110" Binding="{Binding Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
+                <DataGridTextColumn Header=" Timestamp" Width="110" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
                 <DataGridTextColumn Header="  Account" Width="200" Binding="{Binding AccountForDatagrid}" />
                 <DataGridTextColumn Header="  Amount" Width="120" Binding="{Binding AmountForDatagrid}" CellStyle="{StaticResource CellRightAlign}" />
                 <DataGridTextColumn Header="  Tags" Width="250" Binding="{Binding TagsForDatagrid}" />
-                <DataGridTextColumn Header="  Comment" Width="250" Binding="{Binding Comment}" />
+                <DataGridTextColumn Header="  Comment" Width="250" Binding="{Binding Tran.Comment}" />
             </DataGrid.Columns>
         </DataGrid>
         <TextBlock  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,5,5,5"
