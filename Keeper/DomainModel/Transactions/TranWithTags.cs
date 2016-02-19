@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 
 namespace Keeper.DomainModel.Transactions
 {
     [Serializable]
-    public abstract class TrBase : PropertyChangedBase
+    public class TranWithTags : PropertyChangedBase
     {
         private DateTime _timestamp;
+        private OperationType _operation;
         private Account _myAccount;
+        private Account _mySecondAccount;
         private decimal _amount;
+        private decimal _amountInReturn;
         private CurrencyCodes _currency;
+        private CurrencyCodes _currencyInReturn;
         private List<Account> _tags;
         private string _comment;
 
@@ -23,6 +26,16 @@ namespace Keeper.DomainModel.Transactions
             {
                 if (value.Equals(_timestamp)) return;
                 _timestamp = value;
+                NotifyOfPropertyChange(() => Timestamp);
+            }
+        }
+        public OperationType Operation
+        {
+            get { return _operation; }
+            set
+            {
+                if (Equals(value, _operation)) return;
+                _operation = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -33,7 +46,17 @@ namespace Keeper.DomainModel.Transactions
             {
                 if (Equals(value, _myAccount)) return;
                 _myAccount = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => MyAccount);
+            }
+        }
+        public Account MySecondAccount
+        {
+            get { return _mySecondAccount; }
+            set
+            {
+                if (Equals(value, _mySecondAccount)) return;
+                _mySecondAccount = value;
+                NotifyOfPropertyChange(() => MySecondAccount);
             }
         }
         public decimal Amount
@@ -41,8 +64,18 @@ namespace Keeper.DomainModel.Transactions
             get { return _amount; }
             set
             {
-                if (value.Equals(_amount)) return;
+                if (value == _amount) return;
                 _amount = value;
+                NotifyOfPropertyChange(() => Amount);
+            }
+        }
+        public decimal AmountInReturn
+        {
+            get { return _amountInReturn; }
+            set
+            {
+                if (value == _amountInReturn) return;
+                _amountInReturn = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -51,8 +84,18 @@ namespace Keeper.DomainModel.Transactions
             get { return _currency; }
             set
             {
-                if (value == _currency) return;
+                if (Equals(value, _currency)) return;
                 _currency = value;
+                NotifyOfPropertyChange(() => Currency);
+            }
+        }
+        public CurrencyCodes CurrencyInReturn
+        {
+            get { return _currencyInReturn; }
+            set
+            {
+                if (value == _currencyInReturn) return;
+                _currencyInReturn = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -63,7 +106,7 @@ namespace Keeper.DomainModel.Transactions
             {
                 if (Equals(value, _tags)) return;
                 _tags = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => Tags);
             }
         }
         public string Comment
@@ -73,46 +116,8 @@ namespace Keeper.DomainModel.Transactions
             {
                 if (value == _comment) return;
                 _comment = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => Comment);
             }
         }
-
-        public abstract Brush TransactionFontColor { get; }
-        public Brush DayBackgroundColor
-        {
-            get
-            {
-                var daysFrom = Timestamp.Date - new DateTime(1972, 5, 28);
-                if (daysFrom.Days % 4 == 0) return Brushes.Cornsilk;
-                if (daysFrom.Days % 4 == 1) return new SolidColorBrush(Color.FromRgb(240, 255, 240));
-                if (daysFrom.Days % 4 == 2) return Brushes.GhostWhite;
-                return Brushes.Azure;
-            }
-        }
-
-        public string AccountForDatagrid => $"{MyAccount}";
-        public string AmountForDatagrid => ShowAmount(_amount, _currency);
-
-        protected string ShowAmount(decimal amount, CurrencyCodes currency)
-        {
-            return currency == CurrencyCodes.BYR
-                ? $"{amount:0,0} {currency.ToString().ToLower()}"
-                : $"{amount:0,0.00} {currency.ToString().ToLower()}";
-        }
-
-        public string TagsForDatagrid => ShowTags();
-
-        private string ShowTags()
-        {
-            string result = "";
-            if (Tags.Count > 0) result = Tags[0].ToString();
-            for (int i = 1; i < Tags.Count; i++)
-                result = result + ";  " + Tags[i].ToString();
-            return result;
-        }
-
-        public abstract int SignForAmount(Account account);
-        public abstract MoneyBag AmountForAccount(Account account);
-
     }
 }

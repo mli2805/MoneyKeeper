@@ -19,6 +19,6 @@ namespace Keeper.DomainModel
         public ObservableCollection<ArticleAssociation> ArticlesAssociations { get; set; }
         public ObservableCollection<BankDepositOffer> BankDepositOffers { get; set; }
 
-        public ObservableCollection<TrBase> Trs { get; set; }
+        public ObservableCollection<TranWithTags> TransWithTags { get; set; }
     }
 }

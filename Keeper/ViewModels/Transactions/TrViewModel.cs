@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Composition;
+using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
@@ -11,8 +12,8 @@ namespace Keeper.ViewModels.Transactions
     class TrViewModel : Screen
     {
         private readonly KeeperDb _db;
-        private ObservableCollection<TrBase> _rows;
-        public ObservableCollection<TrBase> Rows
+        private ObservableCollection<TranCocoon> _rows;
+        public ObservableCollection<TranCocoon> Rows
         {
             get { return _rows; }
             set
@@ -23,19 +24,32 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
-  //      public string EndDayBalances { get {  _balancesForTransactionsCalculator.EndDayBalances(DateTime.Today); } }
+//        public string EndDayBalances { get {return new AccountBalanceOnTrCalculator(_db).EndDayBalances(DateTime.Now); } }
 
         [ImportingConstructor]
         public TrViewModel(KeeperDb db)
         {
             _db = db;
             new TransactionsConvertor(_db).Convert();
-            Rows = _db.Trs;
+            Rows = WrapTransactions(_db.TransWithTags);
+            var sortedRows = CollectionViewSource.GetDefaultView(Rows);
+            sortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
+
+        }
+
+        private ObservableCollection<TranCocoon> WrapTransactions(ObservableCollection<TranWithTags> transactions)
+        {
+            var result = new ObservableCollection<TranCocoon>();
+            foreach (var tran in transactions)
+            {
+                result.Add(new TranCocoon() {Tran = tran});
+            }
+            return result;
         }
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Transactions with inheritance";
+            DisplayName = "Transactions with tags";
         }
 
         public void Close()

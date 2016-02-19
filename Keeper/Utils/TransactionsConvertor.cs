@@ -20,7 +20,7 @@ namespace Keeper.Utils
 
         public void Convert()
         {
-            var result = new ObservableCollection<TrBase>();
+            var result = new ObservableCollection<TranWithTags>();
             Transaction firstPartOfExchange = null;
             foreach (var transaction in _db.Transactions)
             {
@@ -33,10 +33,10 @@ namespace Keeper.Utils
                 }
                 else result.Add(ConvertOneTransaction(transaction));
             }
-            _db.Trs = result;
+            _db.TransWithTags = result;
         }
 
-        private TrBase ConvertExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
+        private TranWithTags ConvertExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
         {
             if (firstPartOfExchange.Comment.Contains("cycle")) return ConvertToForexTransaction(firstPartOfExchange, transaction);
             return firstPartOfExchange.Debet != transaction.Credit
@@ -44,11 +44,12 @@ namespace Keeper.Utils
                 : ConvertToExchangeTransaction(firstPartOfExchange, transaction);
         }
 
-        private TrExchange ConvertToExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
+        private TranWithTags ConvertToExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
         {
-            var result = new TrExchange()
+            var result = new TranWithTags()
             {
                 Timestamp = firstPartOfExchange.Timestamp,
+                Operation = OperationType.Обмен,
                 MyAccount = firstPartOfExchange.Debet,
                 Amount = firstPartOfExchange.Amount,
                 Currency = firstPartOfExchange.Currency,
@@ -61,11 +62,12 @@ namespace Keeper.Utils
             return result;  
         }
 
-        private TrExchangeWithTransfer ConvertToExchangeWithTransferTransaction(Transaction firstPartOfExchange, Transaction transaction)
+        private TranWithTags ConvertToExchangeWithTransferTransaction(Transaction firstPartOfExchange, Transaction transaction)
         {
-            var result = new TrExchangeWithTransfer
+            var result = new TranWithTags
             {
                 Timestamp = firstPartOfExchange.Timestamp,
+                Operation = OperationType.ОбменПеренос,
                 MyAccount = firstPartOfExchange.Debet,
                 Amount = firstPartOfExchange.Amount,
                 Currency = firstPartOfExchange.Currency,
@@ -81,11 +83,12 @@ namespace Keeper.Utils
             return result;
         }
 
-        private TrForex ConvertToForexTransaction(Transaction firstPartOfExchange, Transaction transaction)
+        private TranWithTags ConvertToForexTransaction(Transaction firstPartOfExchange, Transaction transaction)
         {
-            var result = new TrForex()
+            var result = new TranWithTags()
             {
                 Timestamp = firstPartOfExchange.Timestamp,
+                Operation = OperationType.Форекс,
                 MyAccount = firstPartOfExchange.Debet,
                 Amount = firstPartOfExchange.Amount,
                 Currency = firstPartOfExchange.Currency,
@@ -101,7 +104,7 @@ namespace Keeper.Utils
             return result;
         }
 
-        private TrBase ConvertOneTransaction(Transaction transaction)
+        private TranWithTags ConvertOneTransaction(Transaction transaction)
         {
             switch (transaction.Operation)
             {
@@ -112,11 +115,12 @@ namespace Keeper.Utils
             }
         }
 
-        private TrTransfer ConvertToTransferTransaction(Transaction transaction)
+        private TranWithTags ConvertToTransferTransaction(Transaction transaction)
         {
-            var result = new TrTransfer()
+            var result = new TranWithTags()
             {
                 Timestamp = transaction.Timestamp,
+                Operation = OperationType.Перенос,
                 MyAccount = transaction.Debet,
                 MySecondAccount = transaction.Credit,
                 Amount = transaction.Amount,
@@ -127,11 +131,12 @@ namespace Keeper.Utils
             return result;
         }
 
-        private TrOutcome ConvertToOutcomeTransaction(Transaction transaction)
+        private TranWithTags ConvertToOutcomeTransaction(Transaction transaction)
         {
-            var result = new TrOutcome()
+            var result = new TranWithTags()
             {
                 Timestamp = transaction.Timestamp,
+                Operation = OperationType.Расход,
                 MyAccount = transaction.Debet,
                 Amount = transaction.Amount,
                 Currency = transaction.Currency,
@@ -143,11 +148,12 @@ namespace Keeper.Utils
             return result;
         }
 
-        private TrIncome ConvertToIncomeTransaction(Transaction transaction)
+        private TranWithTags ConvertToIncomeTransaction(Transaction transaction)
         {
-            var result = new TrIncome()
+            var result = new TranWithTags()
             {
                 Timestamp = transaction.Timestamp,
+                Operation = OperationType.Доход,
                 MyAccount = transaction.Credit,
                 Amount = transaction.Amount,
                 Currency = transaction.Currency,
