@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Composition;
+using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
@@ -9,10 +10,13 @@ using Keeper.Utils;
 
 namespace Keeper.ViewModels.Transactions
 {
+    [Export]
     class TrViewModel : Screen
     {
         private readonly KeeperDb _db;
         private ObservableCollection<TranCocoon> _rows;
+        private TranCocoon _selectedTranCocoon;
+
         public ObservableCollection<TranCocoon> Rows
         {
             get { return _rows; }
@@ -24,7 +28,18 @@ namespace Keeper.ViewModels.Transactions
             }
         }
 
-//        public string EndDayBalances { get {return new AccountBalanceOnTrCalculator(_db).EndDayBalances(DateTime.Now); } }
+        public TranCocoon SelectedTranCocoon
+        {
+            get { return _selectedTranCocoon; }
+            set
+            {
+                if (Equals(value, _selectedTranCocoon)) return;
+                _selectedTranCocoon = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public TranActions ActionsHandler { get; set; }
 
         [ImportingConstructor]
         public TrViewModel(KeeperDb db)
@@ -35,6 +50,10 @@ namespace Keeper.ViewModels.Transactions
             var sortedRows = CollectionViewSource.GetDefaultView(Rows);
             sortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
 
+            Rows.Last().IsSelected = true;
+            SelectedTranCocoon = Rows.Last();
+
+            ActionsHandler = new TranActions(Rows, SelectedTranCocoon);
         }
 
         private ObservableCollection<TranCocoon> WrapTransactions(ObservableCollection<TranWithTags> transactions)
@@ -42,7 +61,7 @@ namespace Keeper.ViewModels.Transactions
             var result = new ObservableCollection<TranCocoon>();
             foreach (var tran in transactions)
             {
-                result.Add(new TranCocoon() {Tran = tran});
+                result.Add(new TranCocoon() { Tran = tran });
             }
             return result;
         }
@@ -55,6 +74,11 @@ namespace Keeper.ViewModels.Transactions
         public void Close()
         {
             TryClose();
+        }
+
+        public void ActionsMethod(int code)
+        {
+            ActionsHandler.Do(code);
         }
     }
 }

@@ -13,9 +13,5 @@ namespace Keeper.Views.Transactions
             InitializeComponent();
         }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ((DataGrid)sender).UnselectAllCells();
-        }
     }
 }

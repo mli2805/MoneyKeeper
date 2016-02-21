@@ -355,6 +355,9 @@ namespace Keeper.ViewModels.Shell
             MyMainMenuModel.Action = Actions.PrepareExit;
             CloseAllLaunchedForms();
             var pp = _mySettings.GetCombinedSetting("DbFileFullPath");
+
+            _db.TransWithTags = null;
+
             await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, pp));
             if (IsDbChanged) await Task.Run(() => _backuper.MakeDbBackupCopy());
             Task.WaitAll();

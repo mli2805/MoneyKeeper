@@ -8,21 +8,24 @@
         xmlns:dataGridBehaviors="clr-namespace:Keeper.Behaviors.DataGridBehaviors"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="TrView" Height="600" Width="1100">
+        Title="TrView" Height="600" Width="1200"
+        TextOptions.TextFormattingMode="Display">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="CellRightAlign">
                 <Setter Property="Control.HorizontalAlignment" Value="Right" />
                 <Setter Property="Control.Margin" Value="5,0,5,0" />
+                <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" SelectionChanged="DataGrid_SelectionChanged">
+        <DataGrid Grid.Row="0"  AutoGenerateColumns="False" IsReadOnly="True"
+                  ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTranCocoon, Mode=TwoWay}">
             <i:Interaction.Behaviors>
                 <dataGridBehaviors:ScrollToBottomOnLoadDatagridBehavior/>
                 <dataGridBehaviors:ScrollToBottomOnAddBehavior/>
@@ -30,28 +33,45 @@
             </i:Interaction.Behaviors>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Сдвинуть вверх ()" cal:Message.Attach="MoveTransactionUp" BorderBrush="{x:Null}" Background="White" ></MenuItem>
-                    <MenuItem Header="Сдвинуть вниз ()" cal:Message.Attach="MoveTransactionDown" BorderBrush="{x:Null}" Background="White" ></MenuItem>
-                    <MenuItem Header="Вставить перед (Insert)" cal:Message.Attach="AddTransactionBeforeSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
-                    <MenuItem Header="Вставить после (Ctrl+Enter)" cal:Message.Attach="AddTransactionAfterSelected" BorderBrush="{x:Null}" Background="White" ></MenuItem>
+                    <MenuItem Header="Изменить (Double click)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(0)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вверх (Ctrl+8)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вниз (Ctrl+2)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Вставить перед (Insert)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(3)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Вставить после (Ctrl+Enter)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Удалить (Ctrl+Del)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(5)]" BorderBrush="{x:Null}" Background="White" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
                     <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#B6E6FF"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header=" Timestamp" Width="110" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
-                <DataGridTextColumn Header="  Account" Width="200" Binding="{Binding AccountForDatagrid}" />
-                <DataGridTextColumn Header="  Amount" Width="120" Binding="{Binding AmountForDatagrid}" CellStyle="{StaticResource CellRightAlign}" />
+                <DataGridTextColumn Header="  Account" Width="300" Binding="{Binding AccountForDatagrid}"/>
+                <DataGridTextColumn Header="  Amount" Width="120" Binding="{Binding AmountForDatagrid}"/>
                 <DataGridTextColumn Header="  Tags" Width="250" Binding="{Binding TagsForDatagrid}" />
-                <DataGridTextColumn Header="  Comment" Width="250" Binding="{Binding Tran.Comment}" />
+                <DataGridTextColumn Header="  Comment" Width="350" Binding="{Binding Tran.Comment}" />
             </DataGrid.Columns>
         </DataGrid>
-        <TextBlock  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,5,5,5"
-                  Text="{Binding Path=EndDayBalances}" TextWrapping="Wrap" />
         <Button Grid.Row="1" Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0" Content="Close" Name="Close"/>
     </Grid>
 </Window>

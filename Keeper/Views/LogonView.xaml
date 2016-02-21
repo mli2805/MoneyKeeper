@@ -19,7 +19,7 @@
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="1" Orientation="Horizontal">
       <Image Height="48" Width="48" Source="/Keeper;component/Resources/Square_lock.ico" Margin="20,0,0,0"/>
-      <TextBlock Text="Keeper (c) 2012-2015 " VerticalAlignment="Center" Margin="20,5,0,5" FontSize="16"  FontWeight="Bold"/>
+      <TextBlock Text="Keeper (c) 2012-2016 " VerticalAlignment="Center" Margin="20,5,0,5" FontSize="16"  FontWeight="Bold"/>
     </StackPanel>
     <Button Grid.Row="2" Name="Escape" IsCancel="True" />
 
