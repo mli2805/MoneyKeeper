@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows.Media;
+using Caliburn.Micro;
 
 namespace Keeper.DomainModel.Transactions
 {
-    public class TranCocoon
+    public class TranCocoon : PropertyChangedBase
     {
         public TranWithTags Tran { get; set; }
 
@@ -17,13 +18,15 @@ namespace Keeper.DomainModel.Transactions
         }
         private string GetAmountForDatagrid()
         {
-            return IsOneAmountTransaction() ? ShowAmount(Tran.Amount, Tran.Currency) : ShowAmount(Tran.Amount, Tran.Currency) + " ->\n  " + ShowAmount(Tran.AmountInReturn, Tran.CurrencyInReturn);
+            return IsOneAmountTransaction() 
+                ? ShowAmount(Tran.Amount, Tran.Currency) 
+                : ShowAmount(Tran.Amount, Tran.Currency) + " ->\n    " + ShowAmount(Tran.AmountInReturn, Tran.CurrencyInReturn);
         }
         private string ShowAmount(decimal amount, CurrencyCodes currency)
         {
             return currency == CurrencyCodes.BYR
-                ? $"{amount:#,0} {currency.ToString().ToLower()}"
-                : $"{amount:#,0.00} {currency.ToString().ToLower()}";
+                ? $" {amount:#,0} {currency.ToString().ToLower()}"
+                : $" {amount:#,0.00} {currency.ToString().ToLower()}";
         }
         private string GetTagsForDatagrid()
         {
@@ -66,8 +69,22 @@ namespace Keeper.DomainModel.Transactions
                 if (Tran.Operation == OperationType.Расход) return Brushes.Red;
                 if (Tran.Operation == OperationType.Перенос) return Brushes.Black;
                 if (Tran.Operation == OperationType.Обмен || Tran.Operation == OperationType.ОбменПеренос) return Brushes.DarkGreen;
-                if (Tran.Operation == OperationType.Форекс) return Brushes.BlueViolet;
+                if (Tran.Operation == OperationType.Форекс) return Brushes.LightSeaGreen;
                 return Brushes.Gray;
+            }
+        }
+        #endregion
+
+        #region ' _isSelected '
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (value.Equals(_isSelected)) return;
+                _isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
             }
         }
         #endregion
