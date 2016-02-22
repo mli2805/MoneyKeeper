@@ -23,9 +23,8 @@ namespace Keeper.ViewModels.Transactions
                 case 0: Edit(); break;
                 case 1: MoveUp(); break;
                 case 2: MoveDown(); break;
-                case 3: AddBeforeSelected(); break;
-                case 4: AddAfterSelected(); break;
-                case 5: Delete(); break;
+                case 3: AddAfterSelected(); break;
+                case 4: Delete(); break;
                                 default : break; 
             }
 
@@ -44,11 +43,6 @@ namespace Keeper.ViewModels.Transactions
         private void MoveDown()
         {
             
-        }
-        private void AddBeforeSelected()
-        {
-            var oneTrForm = IoC.Get<OneTransactionViewModel>();
-            WindowManager.ShowWindow(oneTrForm);
         }
         private void AddAfterSelected()
         {

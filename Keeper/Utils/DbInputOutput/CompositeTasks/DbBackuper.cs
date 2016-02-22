@@ -23,7 +23,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
             _mySettings = mySettings;
         }
 
-        public void MakeDbBackupCopy()
+        public void MakeDbTxtCopy()
         {
             _txtSaver.SaveDbInTxt();
             ZipTxtDb();

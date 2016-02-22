@@ -7,6 +7,7 @@
         xmlns:behaviors="clr-namespace:Keeper.Behaviors"
         xmlns:dataGridBehaviors="clr-namespace:Keeper.Behaviors.DataGridBehaviors"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
         Title="TrView" Height="600" Width="1200"
         TextOptions.TextFormattingMode="Display">
@@ -19,6 +20,33 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Space">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="0"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="NumPad8" Modifiers="Control">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="1"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="NumPad2" Modifiers="Control">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="2"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="Insert">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="3"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="Delete" Modifiers="Control">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="4"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -33,12 +61,11 @@
             </i:Interaction.Behaviors>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Изменить (Double click)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(0)]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Сдвинуть вверх (Ctrl+8)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Сдвинуть вниз (Ctrl+2)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Вставить перед (Insert)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(3)]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Вставить после (Ctrl+Enter)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Удалить (Ctrl+Del)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(5)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Изменить (Space)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(0)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вверх (Ctrl+NumPad8)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вниз (Ctrl+NumPad2)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Вставить после (Insert)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(3)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Удалить (Ctrl+Del)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]" BorderBrush="{x:Null}" Background="White" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.CellStyle>

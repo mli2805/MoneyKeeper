@@ -119,7 +119,7 @@ namespace Keeper.ViewModels.Shell
         public async void MakeDatabaseBackup()
         {
             MyMainMenuModel.Action = Actions.SaveDatabase;
-            await Task.Run(() => _backuper.MakeDbBackupCopy());
+            await Task.Run(() => _backuper.MakeDbTxtCopy());
             Task.WaitAll();
             IsDbChanged = false;
             MyMainMenuModel.Action = Actions.Idle;
@@ -352,6 +352,7 @@ namespace Keeper.ViewModels.Shell
         }
         public async void MadeExitPreparationsAsynchronously()
         {
+            if (MyMainMenuModel.Action != Actions.Idle) return;
             MyMainMenuModel.Action = Actions.PrepareExit;
             CloseAllLaunchedForms();
             var pp = _mySettings.GetCombinedSetting("DbFileFullPath");
@@ -359,7 +360,7 @@ namespace Keeper.ViewModels.Shell
             _db.TransWithTags = null;
 
             await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, pp));
-            if (IsDbChanged) await Task.Run(() => _backuper.MakeDbBackupCopy());
+            if (IsDbChanged) await Task.Run(() => _backuper.MakeDbTxtCopy());
             Task.WaitAll();
             MyMainMenuModel.Action = Actions.Idle;
             IsExitPreparationDone = true;
