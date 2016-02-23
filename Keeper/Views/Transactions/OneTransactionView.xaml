@@ -5,34 +5,108 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Keeper.Views.Transactions"
         xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
-        mc:Ignorable="d"
+                xml:lang="ru-RU"
+mc:Ignorable="d"
         Title="OneTransactionView" Height="300" Width="700">
     <Window.Resources>
         <ResourceDictionary>
             <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
                 <TextBlock Text="{Binding Name}" />
             </HierarchicalDataTemplate>
+            <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
+            <SolidColorBrush x:Key="TriangleFocusedBrush" Color="Gray" />
+            <SolidColorBrush x:Key="TrianglePressedBrush" Color="#646464" />
+
+            <Style x:Key="TriangleLButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Polygon Points="18,2 8,10 18,18" Stroke="Gray" Name="Triangle" Fill="{StaticResource TriangleNeutralBrush}">
+                                </Polygon>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TriangleRButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Polygon Points="1,2 12,10 1,18" Stroke="#464646" Name="Triangle">
+                                    <Polygon.Fill>
+                                        <SolidColorBrush Color="White" />
+                                    </Polygon.Fill>
+                                </Polygon>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="14"/>
-            <RowDefinition Height="70"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="40,5,0,0" Orientation="Horizontal">
-            <Button Name="ExpenseFromMyWallet"     Margin="5,0,0,0" Style="{StaticResource RoundCorner}">мк</Button>
-            <Button Name="ExpenseFromJuliaWallet"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">юк</Button>
-            <Button Name="ExpenseFromBibMotznaya"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">биб</Button>
-            <Button Name="ExpenseFromBelGazSberka" Margin="5,0,0,0" Style="{StaticResource RoundCorner}">газ</Button>
-        </StackPanel>
-        <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Left" Margin="40,30,0,0" Grid.Row="1" Background="White" VerticalAlignment="Top" Width="150" Height="25"
-                                ItemsSource="{Binding ListsForComboboxes.ItemsForDebit}" SelectedItem="{Binding SelectedItemDebit, Mode=TwoWay}" ItemTemplate="{StaticResource TreeViewDataTemplate}"/>
-        <Label Grid.Row="1" Name="DebetAccountBalance" Content="ddd ddd ddd byr - nnn nnn nnn byr"
+    <UserControl>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="14"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="40,5,0,0" Orientation="Horizontal">
+                <Button Name="ExpenseFromMyWallet"     Margin="5,0,0,0" Style="{StaticResource RoundCorner}">мк</Button>
+                <Button Name="ExpenseFromJuliaWallet"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">юк</Button>
+                <Button Name="ExpenseFromBibMotznaya"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">биб</Button>
+                <Button Name="ExpenseFromBelGazSberka" Margin="5,0,0,0" Style="{StaticResource RoundCorner}">газ</Button>
+            </StackPanel>
+            <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Left" Margin="40,30,0,0" Grid.Row="1" Background="White" VerticalAlignment="Top" Width="150" Height="25"
+                                ItemsSource="{Binding ListsForComboboxes.ItemsForDebit}" SelectedItem="{Binding TranInWork.MyAccount, Mode=TwoWay}" ItemTemplate="{StaticResource TreeViewDataTemplate}"/>
+            <Label Grid.Row="1" Name="MyAccountBalance" Content="{Binding MyAccountBalance}"
              Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="205,40,0,0"/>
+            <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,10" Grid.Row="3" 
+              VerticalAlignment="Center" Width="20" Background="White" Height="20"
+              Style="{StaticResource TriangleLButtonStyle}"/>
+            <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,8,0,8" Grid.Row="3" 
+                  VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
+                  Text="{Binding TranInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="24" />
+            <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,10" Grid.Row="3" 
+              VerticalAlignment="Center" Width="20" Background="White" Height="20"
+              Style="{StaticResource TriangleRButtonStyle}"/>
+            <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="3" VerticalAlignment="Center" Height="24" Width="81"/>
+            <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,10,0,10" Grid.Row="3" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
+                 Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="20" />
 
+        </Grid>
+    </UserControl>
 
-    </Grid>
 </Window>

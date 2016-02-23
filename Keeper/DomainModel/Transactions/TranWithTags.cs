@@ -119,5 +119,22 @@ namespace Keeper.DomainModel.Transactions
                 NotifyOfPropertyChange(() => Comment);
             }
         }
+
+        public int SignForAmount(Account account, CurrencyCodes currency)
+        {
+            if (MyAccount.Is(account))
+            {
+                if (Operation == OperationType.Доход) return 1;
+                if (Operation == OperationType.Расход || Operation == OperationType.Перенос) return -1;
+                return Currency == currency ? -1 : 1;
+            }
+            else if (MySecondAccount.Is(account))
+            {
+                return CurrencyInReturn == currency ? 1 : -1;
+            }
+            else return 0;
+        }
+
+
     }
 }

@@ -191,6 +191,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="Utils\TransactionsConvertor.cs" />
+    <Compile Include="ViewModels\Transactions\BalanceDuringTransactionHinter.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
     <Compile Include="ViewModels\Transactions\OneTransactionViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TranActions.cs" />
