@@ -89,5 +89,24 @@ namespace Keeper.ByFunctional.BalanceEvaluating
             var balances = GetAccountBalancePairs(account, period);
             return (from balancePair in balances where balancePair.Currency == currency select balancePair.Amount).FirstOrDefault();
         }
+
+        public decimal GetMyAccountBalanceOnlyForCurrency(Account account, Period period, CurrencyCodes currency)
+        {
+            List<TranWithTags> transWithMyAccount = 
+                (from t in _db.TransWithTags
+                 where period.ContainsAndTimeWasChecked(t.Timestamp) && t.MyAccount.Is(account) && t.Currency == currency
+                 select t).ToList();
+
+            decimal balance = transWithMyAccount.Sum(x => x.Amount * x.SignForAmount(account, currency));
+
+            List<TranWithTags> transWithMySecondAccount = 
+                (from t in _db.TransWithTags
+                 where period.ContainsAndTimeWasChecked(t.Timestamp) && t.MySecondAccount != null && t.MySecondAccount.Is(account) && t.CurrencyInReturn == currency
+                 select t).ToList();
+
+            balance = balance + transWithMySecondAccount.Sum(x => x.Amount * x.SignForAmount(account, currency));
+
+            return balance;
+        }
     }
 }

@@ -32,7 +32,10 @@ namespace Keeper.ViewModels.Transactions
 
         private void Edit()
         {
-            
+            var oneTrForm = IoC.Get<OneTransactionViewModel>();
+            oneTrForm.SetTran(_selectedItem.Tran);
+            WindowManager.ShowWindow(oneTrForm);
+
         }
 
         private void MoveUp()
