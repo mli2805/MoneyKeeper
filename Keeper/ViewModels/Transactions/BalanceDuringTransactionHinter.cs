@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
@@ -26,7 +22,7 @@ namespace Keeper.ViewModels.Transactions
             _rateExtractor = rateExtractor;
         }
 
-        private string BuildTip(decimal before, decimal after, CurrencyCodes currency)
+        private string BuildTip(decimal before, decimal after, CurrencyCodes? currency)
         {
             return currency == CurrencyCodes.BYR
                 ? String.Format(TemplateForByr, before, after, currency.ToString().ToLower())
@@ -60,11 +56,11 @@ namespace Keeper.ViewModels.Transactions
         {
             if (transactionInWork == null || transactionInWork.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
 
-            var periodBefore = new Period(new DateTime(0), transactionInWork.Timestamp.AddSeconds(-1));
-            var balanceBefore = _accountBalanceCalculator.GetMyAccountBalanceOnlyForCurrency(
+            var periodBefore = new Period(new DateTime(0), transactionInWork.Timestamp.AddMilliseconds(-1));
+            var balanceBefore = _accountBalanceCalculator.GetMyAccountBalanceForCurrency(
                                   transactionInWork.MyAccount, periodBefore, transactionInWork.Currency);
 
-            return BuildTip(balanceBefore, balanceBefore - transactionInWork.Amount, transactionInWork.Currency);
+            return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MyAccount,transactionInWork.Currency), transactionInWork.Currency);
         }
     }
 }

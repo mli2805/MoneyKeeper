@@ -10,14 +10,11 @@ namespace Keeper.ViewModels.Transactions
 
         private ObservableCollection<TranCocoon> _rows;
         private TranCocoon _selectedItem;
-        public TranActions(ObservableCollection<TranCocoon> rows, TranCocoon selectedItem)
+
+        public void Do(int code, ObservableCollection<TranCocoon> rows, TranCocoon selectedItem)
         {
             _rows = rows;
             _selectedItem = selectedItem;
-        }
-
-        public void Do(int code)
-        {
             switch (code)
             {
                 case 0: Edit(); break;
@@ -27,7 +24,6 @@ namespace Keeper.ViewModels.Transactions
                 case 4: Delete(); break;
                                 default : break; 
             }
-
         }
 
         private void Edit()
@@ -35,7 +31,6 @@ namespace Keeper.ViewModels.Transactions
             var oneTrForm = IoC.Get<OneTransactionViewModel>();
             oneTrForm.SetTran(_selectedItem.Tran);
             WindowManager.ShowWindow(oneTrForm);
-
         }
 
         private void MoveUp()

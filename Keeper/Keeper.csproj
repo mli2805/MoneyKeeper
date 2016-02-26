@@ -187,6 +187,7 @@
     <Compile Include="ByFunctional\DepositProcessing\DepositOfferIdGenerator.cs" />
     <Compile Include="ByFunctional\BalanceEvaluating\ArticleBalanceCalculator.cs" />
     <Compile Include="DomainModel\Transactions\TranCocoon.cs" />
+    <Compile Include="DomainModel\Transactions\TranExtentions.cs" />
     <Compile Include="DomainModel\Transactions\TranWithTags.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />

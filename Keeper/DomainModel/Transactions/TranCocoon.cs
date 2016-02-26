@@ -22,7 +22,7 @@ namespace Keeper.DomainModel.Transactions
                 ? ShowAmount(Tran.Amount, Tran.Currency) 
                 : ShowAmount(Tran.Amount, Tran.Currency) + " ->\n    " + ShowAmount(Tran.AmountInReturn, Tran.CurrencyInReturn);
         }
-        private string ShowAmount(decimal amount, CurrencyCodes currency)
+        private string ShowAmount(decimal amount, CurrencyCodes? currency)
         {
             return currency == CurrencyCodes.BYR
                 ? $" {amount:#,0} {currency.ToString().ToLower()}"
