@@ -14,8 +14,8 @@ namespace Keeper.DomainModel.Transactions
         private Account _mySecondAccount;
         private decimal _amount;
         private decimal _amountInReturn;
-        private CurrencyCodes _currency;
-        private CurrencyCodes _currencyInReturn;
+        private CurrencyCodes? _currency;
+        private CurrencyCodes? _currencyInReturn;
         private List<Account> _tags;
         private string _comment;
 
@@ -79,7 +79,7 @@ namespace Keeper.DomainModel.Transactions
                 NotifyOfPropertyChange();
             }
         }
-        public CurrencyCodes Currency
+        public CurrencyCodes? Currency
         {
             get { return _currency; }
             set
@@ -89,7 +89,7 @@ namespace Keeper.DomainModel.Transactions
                 NotifyOfPropertyChange(() => Currency);
             }
         }
-        public CurrencyCodes CurrencyInReturn
+        public CurrencyCodes? CurrencyInReturn
         {
             get { return _currencyInReturn; }
             set
@@ -119,22 +119,5 @@ namespace Keeper.DomainModel.Transactions
                 NotifyOfPropertyChange(() => Comment);
             }
         }
-
-        public int SignForAmount(Account account, CurrencyCodes currency)
-        {
-            if (MyAccount.Is(account))
-            {
-                if (Operation == OperationType.Доход) return 1;
-                if (Operation == OperationType.Расход || Operation == OperationType.Перенос) return -1;
-                return Currency == currency ? -1 : 1;
-            }
-            else if (MySecondAccount.Is(account))
-            {
-                return CurrencyInReturn == currency ? 1 : -1;
-            }
-            else return 0;
-        }
-
-
     }
 }

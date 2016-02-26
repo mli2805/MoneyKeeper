@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
+using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Keeper.ByFunctional.BalanceEvaluating
 {
@@ -27,15 +29,19 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         public IEnumerable<MoneyPair> GetAccountBalancePairs(Account balancedAccount, Period interval)
         {
             List<Transaction> transactions = (from t in _db.Transactions
-                                              where interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount)
-                                              select t).ToList();
+                where interval.ContainsAndTimeWasChecked(t.Timestamp) && t.EitherDebitOrCreditIs(balancedAccount)
+                select t).ToList();
 
             List<MoneyPair> moneyPairs = (from t in transactions
-                                          group t by t.Currency
-                                              into g
-                                              select new MoneyPair { Currency = g.Key, Amount = g.Sum(a => a.Amount * a.SignForAmount(balancedAccount)) }).ToList();
+                group t by t.Currency
+                into g
+                select new MoneyPair {Currency = g.Key, Amount = g.Sum(a => a.Amount*a.SignForAmount(balancedAccount))})
+                .ToList();
 
-            IEnumerable<MoneyPair> accountBalancePairs = from b in moneyPairs group b by b.Currency into g select new MoneyPair { Currency = g.Key, Amount = g.Sum(a => a.Amount) };
+            IEnumerable<MoneyPair> accountBalancePairs = from b in moneyPairs
+                group b by b.Currency
+                into g
+                select new MoneyPair {Currency = g.Key, Amount = g.Sum(a => a.Amount)};
             return accountBalancePairs;
         }
 
@@ -49,15 +55,21 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         public decimal GetAccountSaldoInUsdPlusTransactions(Account account, Period period, List<string> transactions)
         {
             var transactionsWithRates = (from t in _db.Transactions
-                                         where period.ContainsAndTimeWasChecked(t.Timestamp) && !t.IsExchange() && (t.Debet.Is(account.Name) || t.Credit.Is(account.Name))
-                                         join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
-                                         from rate in g.DefaultIfEmpty()
-                                         select new
-                                         {
-                                             t.Timestamp,
-                                             AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate * t.SignForAmount(account) : t.Amount * t.SignForAmount(account),
-                                             t.Comment
-                                         }).ToList();
+                where
+                    period.ContainsAndTimeWasChecked(t.Timestamp) && !t.IsExchange() &&
+                    (t.Debet.Is(account.Name) || t.Credit.Is(account.Name))
+                join r in _db.CurrencyRates on new {t.Timestamp.Date, t.Currency} equals
+                    new {r.BankDay.Date, r.Currency} into g
+                from rate in g.DefaultIfEmpty()
+                select new
+                {
+                    t.Timestamp,
+                    AmountInUsd =
+                        rate != null
+                            ? t.Amount/(decimal) rate.Rate*t.SignForAmount(account)
+                            : t.Amount*t.SignForAmount(account),
+                    t.Comment
+                }).ToList();
 
             var am = transactionsWithRates.Sum(t => t.AmountInUsd);
 
@@ -66,7 +78,8 @@ namespace Keeper.ByFunctional.BalanceEvaluating
                 transactions.Clear();
                 for (var i = 0; i < transactionsWithRates.Count(); i++)
                 {
-                    transactions.Add(string.Format("  {0:dd/MM/yyyy} ${1:#,0} {2}", transactionsWithRates[i].Timestamp, transactionsWithRates[i].AmountInUsd, transactionsWithRates[i].Comment.Trim()));
+                    transactions.Add(string.Format("  {0:dd/MM/yyyy} ${1:#,0} {2}", transactionsWithRates[i].Timestamp,
+                        transactionsWithRates[i].AmountInUsd, transactionsWithRates[i].Comment.Trim()));
                 }
             }
 
@@ -87,26 +100,14 @@ namespace Keeper.ByFunctional.BalanceEvaluating
         {
             if (account == null) return 0;
             var balances = GetAccountBalancePairs(account, period);
-            return (from balancePair in balances where balancePair.Currency == currency select balancePair.Amount).FirstOrDefault();
+            return
+                (from balancePair in balances where balancePair.Currency == currency select balancePair.Amount)
+                    .FirstOrDefault();
         }
 
-        public decimal GetMyAccountBalanceOnlyForCurrency(Account account, Period period, CurrencyCodes currency)
+        public decimal GetMyAccountBalanceForCurrency(Account account, Period period, CurrencyCodes? currency)
         {
-            List<TranWithTags> transWithMyAccount = 
-                (from t in _db.TransWithTags
-                 where period.ContainsAndTimeWasChecked(t.Timestamp) && t.MyAccount.Is(account) && t.Currency == currency
-                 select t).ToList();
-
-            decimal balance = transWithMyAccount.Sum(x => x.Amount * x.SignForAmount(account, currency));
-
-            List<TranWithTags> transWithMySecondAccount = 
-                (from t in _db.TransWithTags
-                 where period.ContainsAndTimeWasChecked(t.Timestamp) && t.MySecondAccount != null && t.MySecondAccount.Is(account) && t.CurrencyInReturn == currency
-                 select t).ToList();
-
-            balance = balance + transWithMySecondAccount.Sum(x => x.Amount * x.SignForAmount(account, currency));
-
-            return balance;
+            return _db.TransWithTags.Sum(a => a.AmountForAccount(account, currency, period));
         }
     }
 }

@@ -66,6 +66,17 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             }
         }
 
+        public IEnumerable<string> ConvertTranWithTagsToFileContent()
+        {
+            var orderedTrans = from tran in _db.TransWithTags
+                               orderby tran.Timestamp
+                               select tran;
+            foreach (var tran in orderedTrans)
+            {
+                yield return _dbClassesInstanceDumper.Dump(tran);
+            }
+        }
+
         public IEnumerable<string> ConvertArticlesAssociationsToFileContent()
         {
             //			return _db.ArticlesAssociations.Select(_mDbClassesInstanceDumper.Dump);

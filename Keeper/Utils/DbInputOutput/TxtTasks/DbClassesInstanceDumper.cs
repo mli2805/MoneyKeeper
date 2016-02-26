@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Globalization;
+using System.Linq;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Transactions;
@@ -39,6 +41,26 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             return Convert.ToString(transaction.Timestamp) + " ; " + transaction.Operation + " ; " +
                    transaction.Debet + " ; " + transaction.Credit + " ; " + transaction.Amount + " ; " + transaction.Currency + " ; " +
                    transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
+        }
+
+        public string Dump(TranWithTags tranWithTags)
+        {
+            return Convert.ToString(tranWithTags.Timestamp) + " ; " + tranWithTags.Operation + " ; " +
+                   tranWithTags.MyAccount + " ; " + tranWithTags.MySecondAccount + " ; " + 
+                   tranWithTags.Amount + " ; " + tranWithTags.Currency + " ; " +
+                   tranWithTags.AmountInReturn + " ; " + tranWithTags.CurrencyInReturn + " ; " + 
+                   Dump(tranWithTags.Tags) + " ; " + tranWithTags.Comment;
+        }
+
+        private string Dump(List<Account> tags)
+        {
+            if (tags == null || tags.Count == 0) return " ";
+            var result = tags.First().Name;
+            for (int i = 1; i < tags.Count; i++)
+            {
+                result = result + " | " + tags[i].Name;
+            }
+            return result;
         }
 
         public string Dump(BankDepositCalculatingRules rules)

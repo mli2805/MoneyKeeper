@@ -53,7 +53,7 @@ namespace Keeper.ViewModels.Transactions
             Rows.Last().IsSelected = true;
             SelectedTranCocoon = Rows.Last();
 
-            ActionsHandler = new TranActions(Rows, SelectedTranCocoon);
+            ActionsHandler = new TranActions();
         }
 
         private ObservableCollection<TranCocoon> WrapTransactions(ObservableCollection<TranWithTags> transactions)
@@ -78,7 +78,7 @@ namespace Keeper.ViewModels.Transactions
 
         public void ActionsMethod(int code)
         {
-            ActionsHandler.Do(code);
+            ActionsHandler.Do(code, Rows, SelectedTranCocoon);
         }
     }
 }

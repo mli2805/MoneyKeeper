@@ -7,6 +7,6 @@ namespace Keeper.DomainModel
     Перенос,
     Обмен,
     ОбменПеренос,
-    Форекс 
+    Форекс
   };
 }
