@@ -1,10 +1,12 @@
-﻿namespace Keeper.DomainModel.Transactions
+﻿using System;
+
+namespace Keeper.DomainModel.Transactions
 {
     public static class TranExtentions
     {
-        public static decimal AmountForAccount(this TranWithTags tran, Account account, CurrencyCodes? currency, Period period)
+        public static decimal AmountForAccount(this TranWithTags tran, Account account, CurrencyCodes? currency, DateTime upToDateTime)
         {
-            return period.ContainsAndTimeWasChecked(tran.Timestamp) ? AmountForAccount(tran, account, currency) : 0;
+            return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, account, currency) : 0;
         }
 
         public static decimal AmountForAccount(this TranWithTags tran, Account account, CurrencyCodes? currency)

@@ -1,13 +1,14 @@
-﻿<Window x:Class="Keeper.Views.Transactions.OneTransactionView"
+﻿<Window x:Class="Keeper.Views.Transactions.ExpenseTranView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Keeper.Views.Transactions"
         xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
-                xml:lang="ru-RU"
-mc:Ignorable="d"
-        Title="OneTransactionView" Height="300" Width="700">
+        xml:lang="ru-RU"
+        mc:Ignorable="d"
+        Title="ExpenseTranView"
+        ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <ResourceDictionary>
             <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
@@ -74,39 +75,50 @@ mc:Ignorable="d"
         </ResourceDictionary>
     </Window.Resources>
 
-    <UserControl>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="14"/>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="40,5,0,0" Orientation="Horizontal">
-                <Button Name="ExpenseFromMyWallet"     Margin="5,0,0,0" Style="{StaticResource RoundCorner}">мк</Button>
-                <Button Name="ExpenseFromJuliaWallet"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">юк</Button>
-                <Button Name="ExpenseFromBibMotznaya"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">биб</Button>
-                <Button Name="ExpenseFromBelGazSberka" Margin="5,0,0,0" Style="{StaticResource RoundCorner}">газ</Button>
-            </StackPanel>
-            <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Left" Margin="40,30,0,0" Grid.Row="1" Background="White" VerticalAlignment="Top" Width="150" Height="25"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="20,5,0,0" Orientation="Horizontal">
+            <TextBlock Margin="0,0,20,0">Откуда</TextBlock>
+            <Button Name="ExpenseFromMyWallet"     Margin="5,0,0,0" Style="{StaticResource RoundCorner}">мк</Button>
+            <Button Name="ExpenseFromJuliaWallet"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">юк</Button>
+            <Button Name="ExpenseFromBibMotznaya"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">биб</Button>
+            <Button Name="ExpenseFromBelGazSberka" Margin="5,0,0,0" Style="{StaticResource RoundCorner}">газ</Button>
+        </StackPanel>
+        <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Left" Margin="20,30,0,0" Grid.Row="1" Background="White" VerticalAlignment="Top" Width="220" Height="25"
                                 ItemsSource="{Binding ListsForComboboxes.ItemsForDebit}" SelectedItem="{Binding TranInWork.MyAccount, Mode=TwoWay}" ItemTemplate="{StaticResource TreeViewDataTemplate}"/>
-            <Label Grid.Row="1" Name="MyAccountBalance" Content="{Binding MyAccountBalance}"
-             Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="205,40,0,0"/>
-            <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,10" Grid.Row="3" 
-              VerticalAlignment="Center" Width="20" Background="White" Height="20"
-              Style="{StaticResource TriangleLButtonStyle}"/>
-            <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,8,0,8" Grid.Row="3" 
-                  VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="100"
-                  Text="{Binding TranInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="24" />
-            <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,10" Grid.Row="3" 
-              VerticalAlignment="Center" Width="20" Background="White" Height="20"
-              Style="{StaticResource TriangleRButtonStyle}"/>
-            <Label Content="Примечание" HorizontalAlignment="Left" Margin="180,8,0,8" Grid.Row="3" VerticalAlignment="Center" Height="24" Width="81"/>
-            <TextBox Name="Comment" HorizontalAlignment="Left" Margin="265,10,0,10" Grid.Row="3" VerticalAlignment="Center" Width="390" BorderBrush="#555555" 
-                 Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="20" />
+        <Label Grid.Row="1" Name="MyAccountBalance" Content="{Binding MyAccountBalance}"
+             Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,55,0,0"/>
 
-        </Grid>
-    </UserControl>
+        <Label Content="Сколько" HorizontalAlignment="Left" Margin="20,5,0,0" Grid.Row="2" VerticalAlignment="Top" Foreground="Red"/>
+        <TextBox Name="Amount" HorizontalAlignment="Left" Margin="80,10,0,0" Grid.Row="2" VerticalAlignment="Top" Height="20" Width="80" BorderBrush="#555555" 
+                                 Text="{Binding TranInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" TextAlignment="Right" Foreground="Red"/>
+        <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Grid.Row="2" Height="30" Width="176" Margin="75,30,0,0" VerticalAlignment="Top" Foreground="Red"/>
+        <ComboBox Name="Currency" HorizontalAlignment="Left" Margin="170,10,0,0" Grid.Row="2" VerticalAlignment="Top" Height="20" Width="60" Background="White"
+                                  ItemsSource="{Binding ListsForComboboxes.CurrencyList}" SelectedItem="{Binding TranInWork.Currency}" />
+
+        <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,0" Grid.Row="4" 
+              VerticalAlignment="Top" Width="20" Background="White" Height="20"
+              Style="{StaticResource TriangleLButtonStyle}"/>
+        <DatePicker Name="TransactionDatePicker" HorizontalAlignment="Left" Margin="40,8,0,0" Grid.Row="4" 
+                  VerticalAlignment="Top" FirstDayOfWeek="Monday" Width="100"
+                  Text="{Binding TranInWork.Timestamp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="24" />
+        <Button Name="IncreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="141,10,0,0" Grid.Row="4" 
+              VerticalAlignment="Top" Width="20" Background="White" Height="20"
+              Style="{StaticResource TriangleRButtonStyle}"/>
+        <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="5" VerticalAlignment="Top" Height="24" Width="81"/>
+        <TextBox Name="Comment" HorizontalAlignment="Left" Margin="20,30,0,0" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Top" Width="270" BorderBrush="#555555" 
+                 Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="40" TextWrapping="WrapWithOverflow" />
+
+        <Button Name="Save" Grid.Row="6" Height="25" Width="120" HorizontalAlignment="Left" Margin="20,0,0,0" Content="Сохранить"/>
+        <Button Name="Cancel" Grid.Row="6" Height="25" Width="120" HorizontalAlignment="Left" Margin="170,0,20,0" Content="Отменить"/>
+    </Grid>
 
 </Window>

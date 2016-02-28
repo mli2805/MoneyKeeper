@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
+using Keeper.Views.Transactions;
 
 namespace Keeper.ViewModels.Transactions
 {
@@ -28,9 +30,18 @@ namespace Keeper.ViewModels.Transactions
 
         private void Edit()
         {
-            var oneTrForm = IoC.Get<OneTransactionViewModel>();
-            oneTrForm.SetTran(_selectedItem.Tran);
-            WindowManager.ShowWindow(oneTrForm);
+            IOneTranView oneTranForm;
+            switch (_selectedItem.Tran.Operation)
+            {
+                case OperationType.Доход: oneTranForm = IoC.Get<IncomeTranViewModel>();
+                    break;
+                case OperationType.Расход: oneTranForm = IoC.Get<ExpenseTranViewModel>();
+                    break;
+                default: oneTranForm = IoC.Get<ExpenseTranViewModel>();
+                    break;
+            }
+            oneTranForm.SetTran(_selectedItem.Tran);
+            WindowManager.ShowDialog(oneTranForm);
         }
 
         private void MoveUp()
@@ -44,7 +55,7 @@ namespace Keeper.ViewModels.Transactions
         }
         private void AddAfterSelected()
         {
-            var oneTrForm = IoC.Get<OneTransactionViewModel>();
+            var oneTrForm = IoC.Get<ExpenseTranViewModel>();
             WindowManager.ShowWindow(oneTrForm);
         }
         private void Delete()
