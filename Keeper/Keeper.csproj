@@ -193,8 +193,9 @@
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="ViewModels\Transactions\BalanceDuringTransactionHinter.cs" />
+    <Compile Include="ViewModels\Transactions\IncomeTranViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
-    <Compile Include="ViewModels\Transactions\OneTransactionViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\ExpenseTranViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TranActions.cs" />
     <Compile Include="ViewModels\Transactions\TransactionChangesVisualizer.cs" />
     <Compile Include="Utils\Common\YearMonth.cs" />
@@ -390,9 +391,13 @@
     <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Transactions\OneTransactionView.xaml.cs">
-      <DependentUpon>OneTransactionView.xaml</DependentUpon>
+    <Compile Include="Views\Transactions\ExpenseTranView.xaml.cs">
+      <DependentUpon>ExpenseTranView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Transactions\IncomeTranView.xaml.cs">
+      <DependentUpon>IncomeTranView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Transactions\IOneTranView.cs" />
     <Compile Include="Views\Transactions\TrView.xaml.cs">
       <DependentUpon>TrView.xaml</DependentUpon>
     </Compile>
@@ -615,7 +620,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Transactions\OneTransactionView.xaml">
+    <Page Include="Views\Transactions\ExpenseTranView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Transactions\IncomeTranView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

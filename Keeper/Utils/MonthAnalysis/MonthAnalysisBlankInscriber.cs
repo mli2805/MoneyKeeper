@@ -115,7 +115,7 @@ namespace Keeper.Utils.MonthAnalysis
       if (s.Expense.TotalForLargeInUsd == 0) Blank.LargeExpenseList[0] = "Крупных трат в этом месяце не было\n";
       else
       {
-        Blank.LargeExpenseList.Add(String.Format("\nИтого крупных {0:#,0} usd", s.Expense.TotalForLargeInUsd));
+        Blank.LargeExpenseList.Add(string.Format("\nИтого крупных {0:#,0} usd", s.Expense.TotalForLargeInUsd));
         Blank.LargeExpenseList.Add(String.Format("\nТекущие расходы {0:#,0} usd", s.Expense.TotalInUsd - s.Expense.TotalForLargeInUsd));
       }
     }
@@ -123,9 +123,9 @@ namespace Keeper.Utils.MonthAnalysis
     private string TransactionForLargeExpenseList(ConvertedTransaction tr)
     {
       return (tr.Currency == CurrencyCodes.USD) ?
-             String.Format("               {1:#,0}  {2}  {3} {4} , {0:d MMM}",
+             string.Format("               {1:#,0}  {2}  {3} {4} , {0:d MMM}",
              tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(), tr.Article, tr.Comment) :
-             String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
+             string.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
              tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(), tr.AmountInUsd, tr.Article, tr.Comment);
     }
 

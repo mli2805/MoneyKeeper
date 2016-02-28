@@ -9,7 +9,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-        Title="TrView" Height="600" Width="1200"
+        Title="TrView" Height="600" Width="900"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>
         <ResourceDictionary>
@@ -92,11 +92,11 @@
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header=" Timestamp" Width="110" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
-                <DataGridTextColumn Header="  Account" Width="300" Binding="{Binding AccountForDatagrid}"/>
-                <DataGridTextColumn Header="  Amount" Width="120" Binding="{Binding AmountForDatagrid}"/>
-                <DataGridTextColumn Header="  Tags" Width="250" Binding="{Binding TagsForDatagrid}" />
-                <DataGridTextColumn Header="  Comment" Width="350" Binding="{Binding Tran.Comment}" />
+                <DataGridTextColumn Header=" Timestamp" Width="80*" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
+                <DataGridTextColumn Header="  Account" Width="300*" Binding="{Binding AccountForDatagrid}"/>
+                <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}"/>
+                <DataGridTextColumn Header="  Tags" Width="250*" Binding="{Binding TagsForDatagrid}" />
+                <DataGridTextColumn Header="  Comment" Width="300*" Binding="{Binding Tran.Comment}" />
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Row="1" Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0" Content="Close" Name="Close"/>

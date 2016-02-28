@@ -105,9 +105,5 @@ namespace Keeper.ByFunctional.BalanceEvaluating
                     .FirstOrDefault();
         }
 
-        public decimal GetMyAccountBalanceForCurrency(Account account, Period period, CurrencyCodes? currency)
-        {
-            return _db.TransWithTags.Sum(a => a.AmountForAccount(account, currency, period));
-        }
     }
 }
