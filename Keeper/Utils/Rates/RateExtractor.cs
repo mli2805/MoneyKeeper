@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Composition;
+using System.Globalization;
 using System.Linq;
 using Keeper.DomainModel;
 
@@ -73,9 +74,9 @@ namespace Keeper.Utils.Rates
 			if (rate.Equals(0.0)) return "не задан курс " + currency + " на эту дату";
 
 			amountInUsd = amount / (decimal)rate;
-			var res = amountInUsd.ToString("F2") + "$ по курсу " + rate;
+			var res = amountInUsd.ToString("F2", new CultureInfo("ru-Ru")) + "$ по курсу " + rate.ToString(new CultureInfo("ru-Ru"));
 			if (currency == CurrencyCodes.EUR)
-				res = amountInUsd.ToString("F2") + "$ по курсу " + (1 / rate).ToString("F3");
+				res = amountInUsd.ToString("F2", new CultureInfo("ru-Ru")) + "$ по курсу " + (1 / rate).ToString("F3", new CultureInfo("ru-Ru"));
 			return res;
 		}
 
