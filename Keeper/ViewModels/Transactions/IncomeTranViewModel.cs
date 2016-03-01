@@ -41,7 +41,8 @@ namespace Keeper.ViewModels.Transactions
 
         public void SetTran(TranWithTags tran)
         {
-            TranInWork = tran;
+            TranInWork = new TranWithTags();
+            TranInWork.CloneFrom(tran);
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
             ItemsForDebit = ListsForComboboxes.ItemsForDebit;
         }
@@ -51,7 +52,10 @@ namespace Keeper.ViewModels.Transactions
             switch (e.PropertyName)
             {
                 case "MyAccount" : NotifyOfPropertyChange(MyAccountBalance); break;
-                case "Amount": NotifyOfPropertyChange(AmountInUsd); break;
+                case "Amount":
+                    NotifyOfPropertyChange(AmountInUsd);
+                    NotifyOfPropertyChange(MyAccountBalance);
+                    break;
             }
         }
 
@@ -73,6 +77,7 @@ namespace Keeper.ViewModels.Transactions
         public void Save()
         {
             Result = "Save";
+            //вызывающая форма должна забрать результат в TranInWork
             TryClose();
         }
 
