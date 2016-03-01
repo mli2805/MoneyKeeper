@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
+using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
@@ -51,10 +52,11 @@ namespace Keeper.ViewModels.Transactions
         {
             switch (e.PropertyName)
             {
-                case "MyAccount" : NotifyOfPropertyChange(MyAccountBalance); break;
+                case "MyAccount" : NotifyOfPropertyChange(nameof(MyAccountBalance)); break;
                 case "Amount":
-                    NotifyOfPropertyChange(AmountInUsd);
-                    NotifyOfPropertyChange(MyAccountBalance);
+                case "Currency":
+                    NotifyOfPropertyChange(nameof(AmountInUsd));
+                    NotifyOfPropertyChange(nameof(MyAccountBalance));
                     break;
             }
         }
