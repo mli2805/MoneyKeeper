@@ -37,7 +37,7 @@ namespace Keeper.ByFunctional.AccountEditing
 				destination.Parent.Children.Remove(destination);
 			  destination.Parent = source.Parent;
 			}
-			Account.CopyForEdit(destination,source);
+			destination.CloneFrom(source);
 		}
 
         public void SortDepositAccounts(Account depositRoot)

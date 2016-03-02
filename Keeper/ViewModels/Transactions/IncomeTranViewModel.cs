@@ -16,7 +16,7 @@ namespace Keeper.ViewModels.Transactions
         private readonly KeeperDb _db;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
         public ListsForComboboxes ListsForComboboxes { get; set; }
-        public List<Account> ItemsForDebit { get; set; }
+        public List<Account> AccountListForIncome { get; set; }
 
         public TranWithTags TranInWork { get; set; }
         public string Result { get; set; }
@@ -45,7 +45,7 @@ namespace Keeper.ViewModels.Transactions
             TranInWork = new TranWithTags();
             TranInWork.CloneFrom(tran);
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
-            ItemsForDebit = ListsForComboboxes.ItemsForDebit;
+            AccountListForIncome = ListsForComboboxes.MyAccountsForIncome;
         }
 
         private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

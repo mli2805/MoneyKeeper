@@ -15,7 +15,7 @@ namespace Keeper.ViewModels.Transactions
         private readonly KeeperDb _db;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
         public ListsForComboboxes ListsForComboboxes { get; set; }
-        public List<Account> ItemsForDebit { get; set; }
+        public List<Account> AccountListForExpense { get; set; }
 
         public TranWithTags TranInWork { get; set; }
         public string Result { get; set; }
@@ -40,7 +40,7 @@ namespace Keeper.ViewModels.Transactions
         public void SetTran(TranWithTags tran)
         {
             TranInWork = tran;
-            ItemsForDebit = ListsForComboboxes.ItemsForDebit;
+            AccountListForExpense = ListsForComboboxes.MyAccountsForExpense;
         }
 
         public void DecreaseTimestamp()

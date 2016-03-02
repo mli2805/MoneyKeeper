@@ -26,7 +26,7 @@ namespace Keeper.DomainModel
             }
         }
         public Account Parent { get; set; }
-        public ObservableCollection<Account> Children { get; private set; }
+        public ObservableCollection<Account> Children { get; private set; } = new ObservableCollection<Account>();
 
         /* IsActive == false не только закрытые депозиты и счета(карточки) 
          * но и например контрагенты, с которыми больше не сотрудничаем 
@@ -58,22 +58,8 @@ namespace Keeper.DomainModel
         #endregion
 
         #region // конструкторы
-
-        public Account()
-        {
-            Name = "";
-            Parent = null;
-            var observableCollection = new ObservableCollection<Account>();
-            Children = observableCollection;
-            _isSelected = false;
-        }
-
-        public Account(string name)
-            : this() // т.е. вызвать конструктор без параметров, а затем исполнить свой код
-        {
-            Name = name;
-        }
-
+        public Account() { }
+        public Account(string name) { Name = name; }
         #endregion
 
         #region Override == , != , Equals and GetHashCode
@@ -132,28 +118,6 @@ namespace Keeper.DomainModel
             return Children;
         }
         #endregion
-
-        public static void CopyForEdit(Account destination, Account source)
-        {
-            destination.Id = source.Id;
-            destination.Name = source.Name;
-            destination.IsFolder = source.IsFolder;
-            destination.IsClosed = source.IsClosed;
-            destination.Parent = source.Parent;
-
-            if (source.Deposit != null)
-            {
-                destination.Deposit = (Deposit.Deposit)source.Deposit.Clone();
-                destination.Deposit.ParentAccount = destination;
-            }
-
-            foreach (var account in source.Children)
-            {
-                var child = new Account();
-                CopyForEdit(child, account);
-                destination.Children.Add(child);
-            }
-        }
 
         public override string ToString()
         {

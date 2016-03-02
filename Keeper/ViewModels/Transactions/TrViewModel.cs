@@ -71,7 +71,7 @@ namespace Keeper.ViewModels.Transactions
             DisplayName = "Transactions with tags";
         }
 
-        public void Close()
+        public void ButtonClose()
         {
             TryClose();
         }

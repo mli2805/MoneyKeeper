@@ -21,7 +21,7 @@ namespace Keeper.ByFunctional.AccountEditing
         public Account CloneAccount(Account account)
         {
             var result = CreateAccount();
-            Account.CopyForEdit(result, account);
+            result.CloneFrom(account);
             return result;
         }
 

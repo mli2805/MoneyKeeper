@@ -9,7 +9,8 @@ namespace Keeper.ViewModels.Transactions
 {
     public class ListsForComboboxes : PropertyChangedBase
     {
-        public List<Account> ItemsForDebit { get; set; }
+        public List<Account> MyAccountsForIncome { get; set; }
+        public List<Account> MyAccountsForExpense { get; set; }
 
 
         private List<Account> _myAccounts;
@@ -128,7 +129,15 @@ namespace Keeper.ViewModels.Transactions
             ArticleAccounts = IncomeArticles;
             ArticleAccounts.AddRange(ExpenseArticles);
 
-            ItemsForDebit = db.Accounts.Where(account => account.Name != "ДеньгоПолучатели").ToList();
+            MyAccountsForIncome = new List<Account>();
+            var account = new Account();
+            account.CloneFrom(db.Accounts.FirstOrDefault(a => a.Name == "Мои"));
+            MyAccountsForIncome.Add(account);
+
+            MyAccountsForExpense = new List<Account>();
+            var account2 = new Account();
+            account.CloneFrom(db.Accounts.FirstOrDefault(a => a.Name == "Мои"));
+            MyAccountsForExpense.Add(account2);
         }
 
         public bool FilterOnlyActiveAccounts;

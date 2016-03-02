@@ -146,7 +146,7 @@ namespace Keeper.ViewModels
             _backgroundWorker.RunWorkerAsync();
         }
 
-        public void Close()
+        public void ButtonClose()
         {
             _isWorking = false;
             TryClose();
