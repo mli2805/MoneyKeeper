@@ -152,6 +152,7 @@
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlCentralPartReactions.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlFunctions.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlModel.cs" />
+    <Compile Include="DomainModel\AccountExtentions.cs" />
     <Compile Include="DomainModel\CurrencyRatesAsDictionary.cs" />
     <Compile Include="DomainModel\Deposit\DepositEstimations.cs" />
     <Compile Include="DomainModel\Deposit\DepositReportBodyLine.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="DomainModel\Transactions\TranExtentions.cs" />
     <Compile Include="DomainModel\Transactions\TranWithTags.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Utils\CommonKeeper\ForestClone.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="ViewModels\Transactions\BalanceDuringTransactionHinter.cs" />

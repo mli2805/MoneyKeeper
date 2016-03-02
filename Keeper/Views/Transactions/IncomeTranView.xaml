@@ -98,7 +98,7 @@
             <Button Name="IncomeToJuliaWallet"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">юк</Button>
         </StackPanel>
         <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Left" Margin="20,30,0,0" Grid.Row="1" Background="White" VerticalAlignment="Top" Width="320" Height="25"
-                                ItemsSource="{Binding ListsForComboboxes.ItemsForDebit}" SelectedItem="{Binding TranInWork.MyAccount, Mode=TwoWay}" 
+                                ItemsSource="{Binding AccountListForIncome}" SelectedItem="{Binding TranInWork.MyAccount, Mode=TwoWay}" 
                                            ItemTemplate="{StaticResource TreeViewDataTemplate}"/>
         <Label Grid.Row="1" Name="MyAccountBalance" Content="{Binding MyAccountBalance}"
              Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,55,0,0"/>
@@ -118,7 +118,7 @@
             <Button Name="IncomeFromRelatives"  Margin="5,0,0,0" Style="{StaticResource RoundCorner}">род</Button>
         </StackPanel>
         <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Left" Margin="20,0,0,10" Grid.Row="3" Background="White" VerticalAlignment="Bottom" Width="320" Height="25"
-                                ItemsSource="{Binding ListsForComboboxes.ItemsForDebit}" SelectedItem="{Binding Tag, Mode=TwoWay}" 
+                                ItemsSource="{Binding AccountListForIncome}" SelectedItem="{Binding Tag, Mode=TwoWay}" 
                                            ItemTemplate="{StaticResource TreeViewDataTemplate}"/>
 
         <Button Name="DecreaseTimestamp" BorderBrush="White" HorizontalAlignment="Left" Margin="19,10,0,0" Grid.Row="4" 
