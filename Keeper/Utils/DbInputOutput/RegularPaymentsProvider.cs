@@ -34,7 +34,6 @@ namespace Keeper.DomainModel
             var stream = new FileStream(_filename, FileMode.Create);
             var jsonSerializer = new DataContractJsonSerializer(typeof(RegularPayments));
             jsonSerializer.WriteObject(stream, RegularPayments);
-
         }
     }
 }
