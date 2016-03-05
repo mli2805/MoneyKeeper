@@ -7,6 +7,38 @@ using Keeper.DomainModel;
 
 namespace Keeper.ViewModels.Transactions
 {
+    public class AccNames
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public AccNames Parent { get; set; }
+        public List<AccNames> Children { get; private set; } = new List<AccNames>();
+        public AccNames Clone()
+        {
+            var result = new AccNames();
+            result.Id = Id;
+            result.Name = Name;
+
+            foreach (var child in Children)
+            {
+                var resultChild = child.Clone();
+                resultChild.Parent = result;
+                result.Children.Add(resultChild);
+            }
+            return result;
+        }
+    }
+
+    public class ListsForComboTrees
+    {
+        public List<AccNames> MyAccountsForIncome { get; set; }
+
+        public void InitializeLists(KeeperDb db)
+        {
+            
+        }
+    }
+
     public class ListsForComboboxes : PropertyChangedBase
     {
         public List<Account> MyAccountsForIncome { get; set; }
@@ -130,14 +162,10 @@ namespace Keeper.ViewModels.Transactions
             ArticleAccounts.AddRange(ExpenseArticles);
 
             MyAccountsForIncome = new List<Account>();
-            var account = new Account();
-            account.CloneFrom(db.Accounts.FirstOrDefault(a => a.Name == "Мои"));
-            MyAccountsForIncome.Add(account);
+            MyAccountsForIncome.Add(AccountExtentions.CloneAccount(db.Accounts.FirstOrDefault(a => a.Name == "Мои")));
 
             MyAccountsForExpense = new List<Account>();
-            var account2 = new Account();
-            account.CloneFrom(db.Accounts.FirstOrDefault(a => a.Name == "Мои"));
-            MyAccountsForExpense.Add(account2);
+            MyAccountsForExpense.Add(AccountExtentions.CloneAccount(db.Accounts.FirstOrDefault(a => a.Name == "Мои")));
         }
 
         public bool FilterOnlyActiveAccounts;

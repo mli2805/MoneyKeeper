@@ -191,7 +191,6 @@
     <Compile Include="DomainModel\Transactions\TranExtentions.cs" />
     <Compile Include="DomainModel\Transactions\TranWithTags.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Utils\CommonKeeper\ForestClone.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="ViewModels\Transactions\BalanceDuringTransactionHinter.cs" />
