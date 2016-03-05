@@ -14,9 +14,25 @@ namespace Keeper.ViewModels.Transactions
     class IncomeTranViewModel : Screen, IOneTranView
     {
         private readonly KeeperDb _db;
+        private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
-        public ListsForComboboxes ListsForComboboxes { get; set; }
-        public List<Account> AccountListForIncome { get; set; }
+
+        public List<AccName> AccNamesListForIncome { get; }
+        public List<AccName> AccNamesListForIncomeTag { get; set; }
+        public List<CurrencyCodes> Currencies { get; set; }
+
+        private AccName _myAccName;
+        public AccName MyAccName
+        {
+            get { return _myAccName; }
+            set
+            {
+                if (Equals(value, _myAccName)) return;
+                _myAccName = value;
+                NotifyOfPropertyChange();
+                TranInWork.MyAccount = _accountTreeStraightener.Seek(_myAccName.Name, _db.Accounts);
+            }
+        }
 
         public TranWithTags TranInWork { get; set; }
         public string Result { get; set; }
@@ -30,9 +46,12 @@ namespace Keeper.ViewModels.Transactions
         public IncomeTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
             _db = db;
+            _accountTreeStraightener = accountTreeStraightener;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
-            ListsForComboboxes = new ListsForComboboxes { FilterOnlyActiveAccounts = true };
-            ListsForComboboxes.InitializeListsForCombobox(_db, accountTreeStraightener);
+            ListsForComboTrees.InitializeLists(_db);
+            AccNamesListForIncome = ListsForComboTrees.MyAccNamesForIncome;
+            AccNamesListForIncomeTag = ListsForComboTrees.AccNamesForIncomeTags;
+            Currencies = ListForCurrencyCombo.CurrencyList;
         }
 
         protected override void OnViewLoaded(object view)
@@ -45,14 +64,16 @@ namespace Keeper.ViewModels.Transactions
             TranInWork = new TranWithTags();
             TranInWork.CloneFrom(tran);
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
-            AccountListForIncome = ListsForComboboxes.MyAccountsForIncome;
+            MyAccName = ListsForComboTrees.FindThroughTheForest(AccNamesListForIncome, TranInWork.MyAccount.Name)
+                          ?? AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name,"Мой кошелек"));
+
         }
 
         private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case "MyAccount" : NotifyOfPropertyChange(nameof(MyAccountBalance)); break;
+                case "MyAccount": NotifyOfPropertyChange(nameof(MyAccountBalance)); break;
                 case "Amount":
                 case "Currency":
                     NotifyOfPropertyChange(nameof(AmountInUsd));
@@ -66,15 +87,15 @@ namespace Keeper.ViewModels.Transactions
             TranInWork.Timestamp = TranInWork.Timestamp.AddDays(-1);
         }
         #region горячие кнопки выбора из списков
-        public void IncomeToMyWallet() { TranInWork.MyAccount = ListsForComboboxes.MyAccounts.FirstOrDefault(a => a.Name == "Мой кошелек"); }
-        public void IncomeToBibZplGold() { TranInWork.MyAccount = ListsForComboboxes.MyAccounts.FirstOrDefault(a => a.Name == "Зарплатная Gold"); }
-        public void IncomeToWardrobe() { TranInWork.MyAccount = ListsForComboboxes.MyAccounts.FirstOrDefault(a => a.Name == "Шкаф"); }
-        public void IncomeToJuliaWallet() { TranInWork.MyAccount = ListsForComboboxes.MyAccounts.FirstOrDefault(a => a.Name == "Юлин кошелек"); }
+        public void IncomeToMyWallet()    { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Мой кошелек")); }
+        public void IncomeToBibZplGold()  { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Зарплатная Gold")); }
+        public void IncomeToWardrobe()    { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Шкаф")); }
+        public void IncomeToJuliaWallet() { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Юлин кошелек")); } 
 
-        public void IncomeFromIit() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "ИИТ"); }
-        public void IncomeFromBib() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "БИБ"); }
-        public void IncomeFromBgpb() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "БГПБ"); }
-        public void IncomeFromRelatives() { Tag = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "Родственники"); }
+//        public void IncomeFromIit() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "ИИТ"); }
+//        public void IncomeFromBib() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "БИБ"); }
+//        public void IncomeFromBgpb() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "БГПБ"); }
+//        public void IncomeFromRelatives() { Tag = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "Родственники"); }
         #endregion
         public void Save()
         {
