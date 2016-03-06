@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
-using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
-using Keeper.Views.Transactions;
+using Keeper.ViewModels.Transactions;
 
-namespace Keeper.ViewModels.Transactions
+namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
     class IncomeTranViewModel : Screen, IOneTranView
@@ -19,7 +19,7 @@ namespace Keeper.ViewModels.Transactions
 
         public List<AccName> AccNamesListForIncome { get; }
         public List<AccName> AccNamesListForIncomeTag { get; set; }
-        public List<CurrencyCodes> Currencies { get; set; }
+        public List<CurrencyCodes> Currencies { get; set; } = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
 
         private AccName _myAccName;
         public AccName MyAccName
@@ -51,7 +51,6 @@ namespace Keeper.ViewModels.Transactions
             ListsForComboTrees.InitializeLists(_db);
             AccNamesListForIncome = ListsForComboTrees.MyAccNamesForIncome;
             AccNamesListForIncomeTag = ListsForComboTrees.AccNamesForIncomeTags;
-            Currencies = ListForCurrencyCombo.CurrencyList;
         }
 
         protected override void OnViewLoaded(object view)

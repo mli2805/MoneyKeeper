@@ -8,10 +8,10 @@ using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils;
 
-namespace Keeper.ViewModels.Transactions
+namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
-    class TrViewModel : Screen
+    class TransViewModel : Screen
     {
         private readonly KeeperDb _db;
         private ObservableCollection<TranCocoon> _rows;
@@ -42,7 +42,7 @@ namespace Keeper.ViewModels.Transactions
         public TranActions ActionsHandler { get; set; }
 
         [ImportingConstructor]
-        public TrViewModel(KeeperDb db)
+        public TransViewModel(KeeperDb db)
         {
             _db = db;
             new TransactionsConvertor(_db).Convert();

@@ -5,7 +5,7 @@ using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils.Rates;
 
-namespace Keeper.Utils.CommonKeeper
+namespace Keeper.ViewModels.Transactions
 {
     [Export]
     public class TransactionChangesVisualizer

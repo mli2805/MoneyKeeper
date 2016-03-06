@@ -1,6 +1,6 @@
 ﻿using Keeper.DomainModel.Transactions;
 
-namespace Keeper.Views.Transactions
+namespace Keeper.ViewModels.TransWithTags
 {
     interface IOneTranView
     {

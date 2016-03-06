@@ -1,113 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Documents;
 using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
-using Keeper.Controls.ComboboxTreeview;
 using Keeper.DomainModel;
 
 namespace Keeper.ViewModels.Transactions
 {
-    public class AccName : PropertyChangedBase, ITreeViewItemModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public AccName Parent { get; set; }
-        public List<AccName> Children { get; private set; } = new List<AccName>();
-
-        public AccName PopulateFromAccount(Account account)
-        {
-            var result = new AccName();
-            result.Id = account.Id;
-            result.Name = account.Name;
-
-            foreach (var child in account.Children)
-            {
-                var resultChild = PopulateFromAccount(child);
-                resultChild.Parent = result;
-                result.Children.Add(resultChild);
-            }
-            return result;
-        }
-
-        public AccName FindThroughTree(string name)
-        {
-            if (name == Name) return this;
-            foreach (var child in Children)
-            {
-                var result = child.FindThroughTree(name);
-                if (result != null) return result;
-            }
-            return null;
-        }
-
-        public string SelectedValuePath => Name;
-        public string DisplayValuePath => Name;
-        public bool IsExpanded { get; set; }
-        public bool IsSelected { get; set; }
-        private IEnumerable<AccName> GetAscendingHierarchy()
-        {
-            var accName = this;
-
-            yield return accName;
-            while (accName.Parent != null)
-            {
-                yield return accName.Parent;
-                accName = accName.Parent;
-            }
-        }
-        public IEnumerable<ITreeViewItemModel> GetHierarchy()
-        {
-            return GetAscendingHierarchy().Reverse();
-        }
-        public IEnumerable<ITreeViewItemModel> GetChildren()
-        {
-            return Children;
-        }
-    }
-
-    public static class ListsForComboTrees
-    {
-        public static readonly AccountTreeStraightener AccountTreeStraightener = new AccountTreeStraightener();
-        public static List<AccName> MyAccNamesForIncome { get; set; } = new List<AccName>();
-        public static List<AccName> AccNamesForIncomeTags { get; set; } = new List<AccName>();
-
-        public static void InitializeLists(KeeperDb db)
-        {
-            var myAccNames = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts));
-            MyAccNamesForIncome.Add(myAccNames);
-
-            var list = new List<string>() { "ДеньгоДатели", "Банки", "Государство", "Все доходы" };
-            foreach (var element in list)
-            {
-                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts));
-                AccNamesForIncomeTags.Add(root);
-            }
-        }
-
-        public static AccName FindThroughTheForest(List<AccName> roots, string name)
-        {
-            foreach (var root in roots)
-            {
-                var result = root.FindThroughTree(name);
-                if (result != null) return result;
-            }
-            return null;
-        }
-    }
-
-    public static class ListForCurrencyCombo
-    {
-        public static List<CurrencyCodes> CurrencyList { get; set; } = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-    }
-
     public class ListsForComboboxes : PropertyChangedBase
     {
         public List<Account> MyAccountsForIncome { get; set; }
         public List<Account> MyAccountsForExpense { get; set; }
-
 
         private List<Account> _myAccounts;
         private List<CurrencyCodes> _currencyList;

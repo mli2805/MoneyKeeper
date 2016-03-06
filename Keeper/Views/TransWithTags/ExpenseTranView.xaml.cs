@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Keeper.Views.Transactions
+namespace Keeper.Views.TransWithTags
 {
     /// <summary>
     /// Interaction logic for ExpenseTranView.xaml
