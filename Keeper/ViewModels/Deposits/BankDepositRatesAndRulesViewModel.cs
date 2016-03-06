@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
-using System.Windows;
 using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Deposits
 {
     [Export]
     class BankDepositRatesAndRulesViewModel : Screen

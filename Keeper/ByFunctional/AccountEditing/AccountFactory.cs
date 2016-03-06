@@ -2,6 +2,8 @@ using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel;
 using Keeper.ViewModels;
+using Keeper.ViewModels.Deposits;
+using Keeper.ViewModels.SingleViews;
 
 namespace Keeper.ByFunctional.AccountEditing
 {

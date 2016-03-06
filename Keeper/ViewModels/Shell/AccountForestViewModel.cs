@@ -7,6 +7,7 @@ using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.Models.Shell;
+using Keeper.ViewModels.Deposits;
 
 namespace Keeper.ViewModels.Shell
 {

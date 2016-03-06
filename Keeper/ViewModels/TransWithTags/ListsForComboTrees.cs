@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 
-namespace Keeper.ViewModels.Transactions
+namespace Keeper.ViewModels.TransWithTags
 {
     public static class ListsForComboTrees
     {

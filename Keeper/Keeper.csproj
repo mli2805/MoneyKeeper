@@ -327,25 +327,25 @@
     <Compile Include="ViewModels\Diagram\DiagramOxyplotViewModel.cs" />
     <Compile Include="ViewModels\Diagram\DiagramViewModel.cs" />
     <Compile Include="ViewModels\Diagram\RatesOxyplotViewModel.cs" />
-    <Compile Include="ViewModels\LogonViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\LogonViewModel.cs" />
     <Compile Include="Models\Shell\AccountForestModel.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthAnalysisBlankInscriber.cs" />
     <Compile Include="Models\MonthAnalysisBlank.cs" />
     <Compile Include="ViewModels\Deposits\OpenOrEditDepositViewModel.cs" />
-    <Compile Include="ViewModels\NbRatesViewModel.cs" />
-    <Compile Include="ViewModels\RegularPaymentsViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\NbRatesViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\RegularPaymentsViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\SettingsViewModel.cs" />
     <Compile Include="ViewModels\Shell\AccountForestViewModel.cs" />
     <Compile Include="Models\Shell\BalanceListModel.cs" />
     <Compile Include="ViewModels\Shell\BalanceListViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainMenuViewModel.cs" />
-    <Compile Include="ViewModels\RenewDepositViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\RenewDepositViewModel.cs" />
     <Compile Include="Models\Shell\ShellModel.cs" />
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TransViewModel.cs" />
-    <Compile Include="ViewModels\TransactionViewFilters\FiltersForTransactions.cs" />
+    <Compile Include="Utils\FiltersOnDomainClasses\FiltersForTransactions.cs" />
     <Compile Include="Views\Deposits\BankDepositOffersView.xaml.cs">
       <DependentUpon>BankDepositOffersView.xaml</DependentUpon>
     </Compile>
@@ -361,19 +361,19 @@
     <Compile Include="Views\Diagram\RatesOxyplotView.xaml.cs">
       <DependentUpon>RatesOxyplotView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LogonView.xaml.cs">
+    <Compile Include="Views\SingleViews\LogonView.xaml.cs">
       <DependentUpon>LogonView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Deposits\OpenOrEditDepositView.xaml.cs">
       <DependentUpon>OpenOrEditDepositView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NbRatesView.xaml.cs">
+    <Compile Include="Views\SingleViews\NbRatesView.xaml.cs">
       <DependentUpon>NbRatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RegularPaymentsView.xaml.cs">
+    <Compile Include="Views\SingleViews\RegularPaymentsView.xaml.cs">
       <DependentUpon>RegularPaymentsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsView.xaml.cs">
+    <Compile Include="Views\SingleViews\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\AccountForestView.xaml.cs">
@@ -385,7 +385,7 @@
     <Compile Include="Views\Shell\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RenewDepositView.xaml.cs">
+    <Compile Include="Views\SingleViews\RenewDepositView.xaml.cs">
       <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\StatusBarView.xaml.cs">
@@ -416,25 +416,25 @@
     <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnLoadDatagridBehavior.cs" />
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToDisappearedDueDateChangeBehavior.cs" />
     <Compile Include="Behaviors\SetFocusOnLoadBehavior.cs" />
-    <Compile Include="ViewModels\AddAndEditAccountViewModel.cs" />
-    <Compile Include="ViewModels\ArticlesAssociationsViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\AddAndEditAccountViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\ArticlesAssociationsViewModel.cs" />
     <Compile Include="ViewModels\Deposits\DepositsViewModel.cs" />
     <Compile Include="ViewModels\Deposits\DepositViewModel.cs" />
     <Compile Include="Utils\CommonKeeper\AssociationFinder.cs" />
-    <Compile Include="ViewModels\FiltersOnDomainClasses\CurrencyCodesFilter.cs" />
-    <Compile Include="ViewModels\MonthAnalysisViewModel.cs" />
-    <Compile Include="ViewModels\ReceiptViewModel.cs" />
-    <Compile Include="ViewModels\ToDoViewModel.cs" />
-    <Compile Include="ViewModels\FiltersOnDomainClasses\AccountFilter.cs" />
-    <Compile Include="ViewModels\TransactionViewFilters\OperationTypesFilterListForCombo.cs" />
-    <Compile Include="ViewModels\FiltersOnDomainClasses\OperationTypesFilter.cs" />
-    <Compile Include="ViewModels\RatesViewModel.cs" />
+    <Compile Include="Utils\FiltersOnDomainClasses\CurrencyCodesFilter.cs" />
+    <Compile Include="ViewModels\SingleViews\MonthAnalysisViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\ReceiptViewModel.cs" />
+    <Compile Include="ViewModels\SingleViews\ToDoViewModel.cs" />
+    <Compile Include="Utils\FiltersOnDomainClasses\AccountFilter.cs" />
+    <Compile Include="ViewModels\Transactions\OperationTypesFilterListForCombo.cs" />
+    <Compile Include="Utils\FiltersOnDomainClasses\OperationTypesFilter.cs" />
+    <Compile Include="ViewModels\SingleViews\RatesViewModel.cs" />
     <Compile Include="ViewModels\Shell\ShellViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
-    <Compile Include="Views\AddAndEditAccountView.xaml.cs">
+    <Compile Include="Views\SingleViews\AddAndEditAccountView.xaml.cs">
       <DependentUpon>AddAndEditAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ArticlesAssociationsView.xaml.cs">
+    <Compile Include="Views\SingleViews\ArticlesAssociationsView.xaml.cs">
       <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Deposits\DepositsView.xaml.cs">
@@ -443,19 +443,19 @@
     <Compile Include="Views\Deposits\DepositView.xaml.cs">
       <DependentUpon>DepositView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MonthAnalysisView.xaml.cs">
+    <Compile Include="Views\SingleViews\MonthAnalysisView.xaml.cs">
       <DependentUpon>MonthAnalysisView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReceiptView.xaml.cs">
+    <Compile Include="Views\SingleViews\ReceiptView.xaml.cs">
       <DependentUpon>ReceiptView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RatesView.xaml.cs">
+    <Compile Include="Views\SingleViews\RatesView.xaml.cs">
       <DependentUpon>RatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ToDoView.xaml.cs">
+    <Compile Include="Views\SingleViews\ToDoView.xaml.cs">
       <DependentUpon>ToDoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Transactions\TransactionView.xaml.cs">
@@ -523,11 +523,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AddAndEditAccountView.xaml">
+    <Page Include="Views\SingleViews\AddAndEditAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ArticlesAssociationsView.xaml">
+    <Page Include="Views\SingleViews\ArticlesAssociationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -559,7 +559,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LogonView.xaml">
+    <Page Include="Views\SingleViews\LogonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -567,15 +567,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NbRatesView.xaml">
+    <Page Include="Views\SingleViews\NbRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RegularPaymentsView.xaml">
+    <Page Include="Views\SingleViews\RegularPaymentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsView.xaml">
+    <Page Include="Views\SingleViews\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -591,15 +591,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MonthAnalysisView.xaml">
+    <Page Include="Views\SingleViews\MonthAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReceiptView.xaml">
+    <Page Include="Views\SingleViews\ReceiptView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RenewDepositView.xaml">
+    <Page Include="Views\SingleViews\RenewDepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -607,7 +607,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RatesView.xaml">
+    <Page Include="Views\SingleViews\RatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -619,7 +619,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ToDoView.xaml">
+    <Page Include="Views\SingleViews\ToDoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
