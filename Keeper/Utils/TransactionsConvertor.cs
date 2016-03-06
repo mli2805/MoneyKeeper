@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 
 namespace Keeper.Utils

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Composition;
-using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Enumes;
+using Keeper.Utils.BalanceEvaluating;
 
 namespace Keeper.Utils.Rates
 {

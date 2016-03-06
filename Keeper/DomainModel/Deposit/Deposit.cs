@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Extentions;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;
 
 namespace Keeper.DomainModel.Deposit

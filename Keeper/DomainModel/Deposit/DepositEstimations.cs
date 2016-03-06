@@ -1,3 +1,5 @@
+using Keeper.DomainModel.WorkTypes;
+
 namespace Keeper.DomainModel.Deposit
 {
     public class DepositEstimations

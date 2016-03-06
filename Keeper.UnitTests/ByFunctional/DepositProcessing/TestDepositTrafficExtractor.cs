@@ -2,8 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
-using Keeper.ByFunctional.AccountEditing;
-using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -11,6 +9,8 @@ using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.Rates;
 using NUnit.Framework;
 using FluentAssertions;
+using Keeper.Utils.AccountEditing;
+using Keeper.Utils.DepositProcessing;
 
 namespace Keeper.UnitTests.ByFunctional.DepositProcessing
 {

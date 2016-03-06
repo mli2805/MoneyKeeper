@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
-using Keeper.ByFunctional.AccountEditing;
-using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Extentions;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.AccountEditing;
 using Keeper.Utils.Common;
 using Keeper.Utils.DbInputOutput;
+using Keeper.Utils.DepositProcessing;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis

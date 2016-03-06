@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.AccountEditing;
 using Keeper.Utils.Common;
 using Keeper.Utils.Rates;
 

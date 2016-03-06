@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 
 namespace Keeper.Models.Shell
 {

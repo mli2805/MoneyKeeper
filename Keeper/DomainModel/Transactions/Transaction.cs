@@ -1,7 +1,9 @@
 using System;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.ByFunctional.BalanceEvaluating;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
+using Keeper.Utils.BalanceEvaluating;
 
 namespace Keeper.DomainModel.Transactions
 {

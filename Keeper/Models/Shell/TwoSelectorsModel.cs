@@ -2,6 +2,8 @@ using System;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Extentions;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;
 
 namespace Keeper.Models.Shell

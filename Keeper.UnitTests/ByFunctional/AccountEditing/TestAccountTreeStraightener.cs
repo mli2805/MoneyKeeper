@@ -1,7 +1,8 @@
 using System.Collections.ObjectModel;
 using FluentAssertions;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.Utils.AccountEditing;
 using Keeper.Utils.Common;
 using NUnit.Framework;
 

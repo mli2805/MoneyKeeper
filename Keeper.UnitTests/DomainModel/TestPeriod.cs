@@ -4,6 +4,7 @@ using Keeper.DomainModel;
 using NUnit.Framework;
 
 using FluentAssertions;
+using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.UnitTests.DomainModel
 {

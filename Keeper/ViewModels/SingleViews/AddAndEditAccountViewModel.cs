@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 
 namespace Keeper.ViewModels.SingleViews

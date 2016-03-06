@@ -6,6 +6,7 @@ using Keeper.Utils.DbInputOutput.CompositeTasks;
 using NUnit.Framework;
 
 using FluentAssertions;
+using Keeper.DomainModel.DbTypes;
 
 namespace Keeper.UnitTests.Utils.DbInputOutput.CompositeTasks
 {

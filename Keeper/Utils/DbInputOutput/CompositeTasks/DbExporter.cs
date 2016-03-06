@@ -1,6 +1,7 @@
 ﻿using System.Composition;
 
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 
 namespace Keeper.Utils.DbInputOutput.CompositeTasks
 {

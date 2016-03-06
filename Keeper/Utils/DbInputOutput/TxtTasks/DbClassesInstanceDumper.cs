@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Globalization;
 using System.Linq;
-using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils.Common;
@@ -16,7 +16,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public string Dump(HierarchyItem<Account> account)
         {
             var shiftedName = new string(' ', account.Level * 2) + account.Item.Name;
-            var parentForDump = account.Item.Parent == null ? 0 : account.Item.Parent.Id;
+            var parentForDump = account.Item.Parent?.Id ?? 0;
             return account.Item.Id + " ; " + shiftedName + " ; " + parentForDump + " ; " +
               account.Item.IsFolder + " ; " + account.Item.IsClosed + " ; " + account.Item.IsExpanded;
         }
@@ -28,24 +28,24 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
         public string Dump(CurrencyRate rate)
         {
-            return Convert.ToString(rate.BankDay) + " ; " +
-                   rate.Currency + " ; " + rate.Rate;
+            return Convert.ToString(rate.BankDay, new CultureInfo("ru-RU")) + " ; " +
+                   rate.Currency + " ; " + rate.Rate.ToString(new CultureInfo("en-US"));
         }
         public string Dump(NbRate rate)
         {
-            return Convert.ToString(rate.Date) + " ; " +
-                   rate.UsdRate + " ; " + rate.EurRate + " ; " + rate.RurRate;
+            return Convert.ToString(rate.Date, new CultureInfo("ru-RU")) + " ; " +
+                   rate.UsdRate.ToString(new CultureInfo("en-US")) + " ; " + rate.EurRate.ToString(new CultureInfo("en-US")) + " ; " + rate.RurRate.ToString(new CultureInfo("en-US"));
         }
         public string Dump(Transaction transaction)
         {
-            return Convert.ToString(transaction.Timestamp) + " ; " + transaction.Operation + " ; " +
-                   transaction.Debet + " ; " + transaction.Credit + " ; " + transaction.Amount + " ; " + transaction.Currency + " ; " +
-                   transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
+            return Convert.ToString(transaction.Timestamp, new CultureInfo("ru-RU")) + " ; " + transaction.Operation + " ; " +
+                   transaction.Debet + " ; " + transaction.Credit + " ; " + transaction.Amount.ToString(new CultureInfo("en-US")) + " ; "
+                   + transaction.Currency + " ; " + transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
         }
 
         public string Dump(TranWithTags tranWithTags)
         {
-            return Convert.ToString(tranWithTags.Timestamp) + " ; " + tranWithTags.Operation + " ; " +
+            return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " +
                    tranWithTags.MyAccount + " ; " + tranWithTags.MySecondAccount + " ; " + 
                    tranWithTags.Amount + " ; " + tranWithTags.Currency + " ; " +
                    tranWithTags.AmountInReturn + " ; " + tranWithTags.CurrencyInReturn + " ; " + 
@@ -84,9 +84,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
         public string Dump(Deposit deposit)
         {
-            var startDate = string.Format("{0:dd/MM/yyyy}", deposit.StartDate.Date);
-            var finishDate = string.Format("{0:dd/MM/yyyy}", deposit.FinishDate.Date);
-            var comment = deposit.Comment == null ? "" : deposit.Comment.Replace("\r\n", "|");
+            var startDate = $"{deposit.StartDate.Date:dd/MM/yyyy}";
+            var finishDate = $"{deposit.FinishDate.Date:dd/MM/yyyy}";
+            var comment = deposit.Comment?.Replace("\r\n", "|") ?? "";
 
             return deposit.ParentAccount.Id + " ; " + deposit.DepositOffer.Id + " ; " + deposit.AgreementNumber +
                 " ; " + startDate + " ; " + finishDate + " ; " + deposit.ShortName + " ; " + comment;
@@ -94,8 +94,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
         public string Dump(BankDepositRateLine bankDepositRateLine, int accountId)
         {
-            var dateFrom = string.Format("{0:dd/MM/yyyy}", bankDepositRateLine.DateFrom);
-            return accountId + " ; " + dateFrom + " ; " + bankDepositRateLine.AmountFrom + " ; " + bankDepositRateLine.AmountTo + " ; " + bankDepositRateLine.Rate;
+            var dateFrom = $"{bankDepositRateLine.DateFrom:dd/MM/yyyy}";
+            return accountId + " ; " + dateFrom + " ; " + bankDepositRateLine.AmountFrom.ToString(new CultureInfo("en-US")) + " ; "
+                 + bankDepositRateLine.AmountTo.ToString(new CultureInfo("en-US")) + " ; " + bankDepositRateLine.Rate.ToString(new CultureInfo("en-US"));
         }
 
         public string Dump(BankDepositOffer offer)

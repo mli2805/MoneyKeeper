@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Keeper.ByFunctional.BalanceEvaluating;
+using Keeper.Utils.BalanceEvaluating;
 
 namespace Keeper.Utils.Rates
 {

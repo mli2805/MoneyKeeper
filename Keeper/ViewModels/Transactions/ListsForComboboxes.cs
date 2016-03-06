@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
+using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.Transactions
 {

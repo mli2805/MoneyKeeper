@@ -1,4 +1,5 @@
 using System;
+using Keeper.DomainModel.Enumes;
 
 namespace Keeper.DomainModel.Deposit
 {

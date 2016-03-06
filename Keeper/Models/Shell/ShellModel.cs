@@ -3,8 +3,9 @@ using System.ComponentModel;
 using System.Composition;
 using System.Security.AccessControl;
 using System.Windows;
-using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.BalanceEvaluating;
 using Keeper.ViewModels.Shell;
 
 namespace Keeper.Models.Shell

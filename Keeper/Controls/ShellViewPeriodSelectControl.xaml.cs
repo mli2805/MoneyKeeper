@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Extentions;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;
 
 namespace Keeper.Controls

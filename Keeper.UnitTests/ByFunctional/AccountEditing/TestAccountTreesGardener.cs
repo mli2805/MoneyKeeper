@@ -1,9 +1,10 @@
 using System.Collections.ObjectModel;
 using FakeItEasy;
 using FluentAssertions;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
+using Keeper.Utils.AccountEditing;
 using NUnit.Framework;
 
 namespace Keeper.UnitTests.ByFunctional.AccountEditing

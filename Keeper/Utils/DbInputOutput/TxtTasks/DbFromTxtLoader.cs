@@ -6,9 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Caliburn.Micro;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
+using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.ViewModels;
 

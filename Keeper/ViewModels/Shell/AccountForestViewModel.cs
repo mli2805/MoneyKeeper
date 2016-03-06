@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.ByFunctional.AccountEditing;
-using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.Models.Shell;
+using Keeper.Utils.AccountEditing;
+using Keeper.Utils.DepositProcessing;
 using Keeper.ViewModels.Deposits;
 
 namespace Keeper.ViewModels.Shell

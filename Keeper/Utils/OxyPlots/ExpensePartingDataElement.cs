@@ -1,5 +1,7 @@
 using System;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;
 
 namespace Keeper.Utils.OxyPlots

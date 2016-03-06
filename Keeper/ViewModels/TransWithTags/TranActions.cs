@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 using Keeper.Views.Transactions;
 

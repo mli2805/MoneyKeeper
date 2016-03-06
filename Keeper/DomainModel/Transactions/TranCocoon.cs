@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 using Caliburn.Micro;
+using Keeper.DomainModel.Enumes;
 
 namespace Keeper.DomainModel.Transactions
 {
