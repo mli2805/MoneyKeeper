@@ -8,7 +8,7 @@ using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Deposits
 {
     [Export]
     class BankDepositOffersViewModel : Screen

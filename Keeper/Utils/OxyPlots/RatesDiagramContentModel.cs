@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Keeper.Annotations;
+using Keeper.Properties;
 
 namespace Keeper.Utils.OxyPlots
 {

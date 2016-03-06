@@ -10,8 +10,9 @@ using Keeper.ByFunctional.AccountEditing;
 using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
+using Keeper.Utils;
 using Keeper.Utils.CommonKeeper;
-using Keeper.ViewModels.TransactionViewFilters;
+using Keeper.ViewModels.SingleViews;
 
 namespace Keeper.ViewModels.Transactions
 {

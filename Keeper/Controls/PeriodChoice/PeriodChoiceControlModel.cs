@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using Keeper.Annotations;
+using Keeper.Properties;
 
 namespace Keeper.Controls.PeriodChoice
 {

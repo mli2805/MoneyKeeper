@@ -1,9 +1,10 @@
 using System.Composition;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using Keeper.DomainModel;
 using Keeper.Utils.Common;
 
-namespace Keeper.DomainModel
+namespace Keeper.Utils.DbInputOutput
 {
     [Export]
     [Shared]

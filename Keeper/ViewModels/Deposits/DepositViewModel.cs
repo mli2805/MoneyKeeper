@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Composition;
-using System.Windows;
 using Caliburn.Micro;
 using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
+using Keeper.ViewModels.SingleViews;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Deposits
 {
     [Export]
     public class DepositViewModel : Screen

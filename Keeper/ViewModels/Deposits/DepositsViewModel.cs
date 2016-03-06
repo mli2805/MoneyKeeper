@@ -10,11 +10,10 @@ using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Transactions;
-using Keeper.Utils;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.Rates;
 
-namespace Keeper.ViewModels
+namespace Keeper.ViewModels.Deposits
 {
     [Export]
     public class DepositsViewModel : Screen

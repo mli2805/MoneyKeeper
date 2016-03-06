@@ -1,4 +1,4 @@
-﻿<Window x:Class="Keeper.Views.OpenOrEditDepositView"
+﻿<Window x:Class="Keeper.Views.Deposits.OpenOrEditDepositView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="OpenDepositView" Height="479" Width="348" WindowStartupLocation="CenterScreen">

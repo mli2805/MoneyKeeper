@@ -1,7 +1,7 @@
 using System.Windows.Media;
 using Caliburn.Micro;
 
-namespace Keeper.ViewModels
+namespace Keeper.Utils.Diagram
 {
   public class DiagramLegendItem : PropertyChangedBase
   {

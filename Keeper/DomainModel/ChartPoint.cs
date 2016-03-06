@@ -1,4 +1,4 @@
-﻿namespace Keeper.ViewModels
+﻿namespace Keeper.DomainModel
 {
 	public class ChartPoint
 	{
