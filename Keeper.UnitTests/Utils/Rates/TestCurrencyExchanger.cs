@@ -1,9 +1,10 @@
 using System;
 using FakeItEasy;
 using FluentAssertions;
-using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Enumes;
 using Keeper.Utils;
+using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.Rates;
 using NUnit.Framework;
 

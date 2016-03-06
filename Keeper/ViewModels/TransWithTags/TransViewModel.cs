@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils;
 

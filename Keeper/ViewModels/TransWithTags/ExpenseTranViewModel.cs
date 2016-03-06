@@ -2,9 +2,10 @@
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
+using Keeper.Utils.AccountEditing;
 using Keeper.ViewModels.Transactions;
 using Keeper.Views.Transactions;
 

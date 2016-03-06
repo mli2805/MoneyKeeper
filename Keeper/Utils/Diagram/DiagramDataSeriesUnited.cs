@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-
+using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.Common;
 using Keeper.Utils.DiagramDomainModel;
 

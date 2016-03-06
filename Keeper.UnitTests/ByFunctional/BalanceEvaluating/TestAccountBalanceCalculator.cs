@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using Keeper.ByFunctional.AccountEditing;
-using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 using NUnit.Framework;
 using FluentAssertions;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.AccountEditing;
+using Keeper.Utils.BalanceEvaluating;
 
 namespace Keeper.UnitTests.ByFunctional.BalanceEvaluating
 {

@@ -5,8 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.AccountEditing;
 using Keeper.Utils.Common;
 using Keeper.Utils.DiagramDomainModel;
 

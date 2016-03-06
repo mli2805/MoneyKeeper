@@ -6,11 +6,13 @@ using System.ComponentModel;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.ByFunctional.AccountEditing;
-using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils;
+using Keeper.Utils.AccountEditing;
+using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.CommonKeeper;
 using Keeper.ViewModels.SingleViews;
 

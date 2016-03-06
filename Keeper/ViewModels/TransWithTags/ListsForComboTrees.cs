@@ -1,6 +1,8 @@
 using System.Collections.Generic;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.TransWithTags
 {

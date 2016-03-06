@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 namespace Keeper.Utils.DbInputOutput

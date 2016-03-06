@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Keeper.ByFunctional.AccountEditing;
-using Keeper.ByFunctional.BalanceEvaluating;
-using Keeper.ByFunctional.BalanceEvaluating.Ilya;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.AccountEditing;
+using Keeper.Utils.BalanceEvaluating;
+using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 
 namespace Perf

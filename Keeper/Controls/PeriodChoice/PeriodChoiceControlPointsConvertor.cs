@@ -1,4 +1,5 @@
 ﻿using System;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.DiagramDomainModel;

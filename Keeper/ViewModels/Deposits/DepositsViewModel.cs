@@ -5,11 +5,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper.ByFunctional.AccountEditing;
-using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.AccountEditing;
+using Keeper.Utils.DepositProcessing;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.Rates;
 

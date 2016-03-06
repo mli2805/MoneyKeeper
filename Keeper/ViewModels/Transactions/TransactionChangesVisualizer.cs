@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Composition;
-using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.Rates;
 
 namespace Keeper.ViewModels.Transactions

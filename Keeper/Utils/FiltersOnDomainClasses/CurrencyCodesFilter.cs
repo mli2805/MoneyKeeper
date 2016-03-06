@@ -1,4 +1,5 @@
 using Keeper.DomainModel;
+using Keeper.DomainModel.Enumes;
 
 namespace Keeper.Utils
 {

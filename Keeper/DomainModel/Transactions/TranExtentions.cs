@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 
 namespace Keeper.DomainModel.Transactions
 {

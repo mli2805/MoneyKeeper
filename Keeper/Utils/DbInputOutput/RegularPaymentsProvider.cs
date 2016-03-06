@@ -2,6 +2,7 @@ using System.Composition;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using Keeper.DomainModel;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;
 
 namespace Keeper.Utils.DbInputOutput

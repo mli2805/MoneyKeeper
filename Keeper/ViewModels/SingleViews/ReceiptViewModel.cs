@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 
 namespace Keeper.ViewModels.SingleViews
 {

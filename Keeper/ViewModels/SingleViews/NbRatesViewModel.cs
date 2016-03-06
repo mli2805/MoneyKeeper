@@ -7,8 +7,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
-using Keeper.ByFunctional;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
+using Keeper.Utils;
 
 namespace Keeper.ViewModels.SingleViews
 {

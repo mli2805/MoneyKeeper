@@ -7,6 +7,8 @@ using Keeper.Utils.Rates;
 using NUnit.Framework;
 
 using FluentAssertions;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 
 namespace Keeper.UnitTests.Utils.Rates
 {

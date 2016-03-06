@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.Utils.AccountEditing;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {

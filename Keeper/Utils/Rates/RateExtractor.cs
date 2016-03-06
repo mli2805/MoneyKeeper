@@ -3,6 +3,8 @@ using System.Composition;
 using System.Globalization;
 using System.Linq;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 
 namespace Keeper.Utils.Rates
 {

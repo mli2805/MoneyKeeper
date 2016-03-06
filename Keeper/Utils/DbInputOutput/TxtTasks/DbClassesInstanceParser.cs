@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
-using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
@@ -17,25 +17,25 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public BankDepositOffer BankDepositOfferFromString(string s, IEnumerable<Account> accountsPlaneList)
         {
             var substrings = s.Split(';');
-            var offer = new BankDepositOffer(Convert.ToInt32(substrings[0]));
-            offer.BankAccount = accountsPlaneList.First(account => account.Name == substrings[1].Trim());
-            offer.DepositTitle = substrings[2].Trim();
-            offer.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[3]);
-            offer.CalculatingRules = DepositOfferRulesFromString(substrings[4] + " ; " + substrings[5]);
-            offer.Comment = substrings[6].Trim();
-
-            return offer;
+            return new BankDepositOffer(Convert.ToInt32(substrings[0]))
+            {
+                BankAccount = accountsPlaneList.First(account => account.Name == substrings[1].Trim()),
+                DepositTitle = substrings[2].Trim(),
+                Currency = (CurrencyCodes) Enum.Parse(typeof (CurrencyCodes), substrings[3]),
+                CalculatingRules = DepositOfferRulesFromString(substrings[4] + " ; " + substrings[5]),
+                Comment = substrings[6].Trim()
+            };
         }
 
         public Transaction TransactionFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
         {
             var transaction = new Transaction();
             var substrings = s.Split(';');
-            transaction.Timestamp = Convert.ToDateTime(substrings[0]);
+            transaction.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
             transaction.Debet = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
             transaction.Credit = accountsPlaneList.First(account => account.Name == substrings[3].Trim());
-            transaction.Amount = Convert.ToDecimal(substrings[4]);
+            transaction.Amount = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
             transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
             transaction.Article = substrings[6].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[6].Trim()) : null;
             transaction.Comment = substrings[7].Trim();
@@ -46,11 +46,11 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public CurrencyRate CurrencyRateFromString(string s, IEnumerable<Account> accountsPlaneList)
         {
             var rate = new CurrencyRate();
-            int next = s.IndexOf(';');
-            rate.BankDay = Convert.ToDateTime(s.Substring(0, next));
+            var next = s.IndexOf(';');
+            rate.BankDay = Convert.ToDateTime(s.Substring(0, next), new CultureInfo("ru-RU"));
             rate.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), s.Substring(next + 2, 3));
             next += 6;
-            rate.Rate = Convert.ToDouble(s.Substring(next + 2));
+            rate.Rate = Convert.ToDouble(s.Substring(next + 2), new CultureInfo("en-US"));
             return rate;
         }
 
@@ -58,10 +58,10 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         {
             var rate = new NbRate();
             var substrings = s.Split(';');
-            rate.Date = Convert.ToDateTime(substrings[0]);
-            rate.UsdRate = Convert.ToDouble(substrings[1]);
-            rate.EurRate = Convert.ToDouble(substrings[2]);
-            rate.RurRate = Convert.ToDouble(substrings[3]);
+            rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+            rate.UsdRate = Convert.ToDouble(substrings[1], new CultureInfo("en-US"));
+            rate.EurRate = Convert.ToDouble(substrings[2], new CultureInfo("en-US"));
+            rate.RurRate = Convert.ToDouble(substrings[3], new CultureInfo("en-US"));
             return rate;
         }
         public ArticleAssociation ArticleAssociationFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
@@ -124,13 +124,11 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var depositOffer = depositOffers.First(offer => offer.Id == Convert.ToInt32(substrings[0]));
             if (depositOffer.RateLines == null) depositOffer.RateLines = new ObservableCollection<BankDepositRateLine>();
             depositRateLine.DateFrom = Convert.ToDateTime(substrings[1], new CultureInfo("ru-RU"));
-            depositRateLine.AmountFrom = Convert.ToDecimal(substrings[2]);
-            depositRateLine.AmountTo = Convert.ToDecimal(substrings[3]);
-            depositRateLine.Rate = Convert.ToDecimal(substrings[4]);
+            depositRateLine.AmountFrom = Convert.ToDecimal(substrings[2], new CultureInfo("en-US"));
+            depositRateLine.AmountTo = Convert.ToDecimal(substrings[3], new CultureInfo("en-US"));
+            depositRateLine.Rate = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
 
             depositOffer.RateLines.Add(depositRateLine);
         }
-
-
     }
 }

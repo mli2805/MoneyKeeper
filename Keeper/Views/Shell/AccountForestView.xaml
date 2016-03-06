@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:domainModel="clr-namespace:Keeper.DomainModel" xmlns:cal="http://www.caliburnproject.org"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" mc:Ignorable="d" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:dbTypes="clr-namespace:Keeper.DomainModel.DbTypes"
+             mc:Ignorable="d" 
              >
   <UserControl.Resources>
-    <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="domainModel:Account" ItemsSource="{Binding Children}">
+    <HierarchicalDataTemplate x:Key="AccountTemplate" DataType="dbTypes:Account" ItemsSource="{Binding Children}">
       <TextBlock Text="{Binding Name}" Margin="0,0,20,0"/>
     </HierarchicalDataTemplate>
   </UserControl.Resources>

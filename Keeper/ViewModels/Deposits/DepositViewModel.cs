@@ -2,9 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Composition;
 using Caliburn.Micro;
-using Keeper.ByFunctional.DepositProcessing;
 using Keeper.DomainModel;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
+using Keeper.Utils.DepositProcessing;
 using Keeper.ViewModels.SingleViews;
 
 namespace Keeper.ViewModels.Deposits
