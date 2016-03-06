@@ -5,9 +5,10 @@ using Caliburn.Micro;
 using Keeper.ByFunctional.AccountEditing;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
+using Keeper.ViewModels.Transactions;
 using Keeper.Views.Transactions;
 
-namespace Keeper.ViewModels.Transactions
+namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
     class ExpenseTranViewModel : Screen, IOneTranView

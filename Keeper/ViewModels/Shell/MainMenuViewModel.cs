@@ -19,6 +19,7 @@ using Keeper.Utils.Dialogs;
 using Keeper.Utils.OxyPlots;
 using Keeper.ViewModels.Diagram;
 using Keeper.ViewModels.Transactions;
+using Keeper.ViewModels.TransWithTags;
 
 namespace Keeper.ViewModels.Shell
 {
@@ -313,7 +314,7 @@ namespace Keeper.ViewModels.Shell
             //      ShowExpensePartingOxyPlotDiagram();
             //      SetIsFolders();
 
-            var trForm = new TrViewModel(_db);
+            var trForm = new TransViewModel(_db);
             _launchedForms.Add(trForm);
             WindowManager.ShowWindow(trForm);
 

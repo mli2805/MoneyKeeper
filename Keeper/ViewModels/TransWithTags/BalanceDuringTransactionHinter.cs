@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
-using Keeper.ByFunctional.BalanceEvaluating;
 using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils.Rates;
 
-namespace Keeper.ViewModels.Transactions
+namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
     class BalanceDuringTransactionHinter
@@ -30,14 +29,14 @@ namespace Keeper.ViewModels.Transactions
                 : String.Format(TemplateForCurrencies, before, after, currency.ToString().ToLower());
         }
 
-        public string GetAmountInUsd(TranWithTags tranInWork)
+        public string GetAmountInUsd(DomainModel.Transactions.TranWithTags tranInWork)
         {
             return tranInWork.Currency != null ? 
                 tranInWork.Currency == CurrencyCodes.USD ? "" :
                 _rateExtractor.GetUsdEquivalentString(tranInWork.Amount, (CurrencyCodes)tranInWork.Currency, tranInWork.Timestamp) : "не задана валюта";
         }
 
-        public string GetMyAccountBalance(TranWithTags transactionInWork)
+        public string GetMyAccountBalance(DomainModel.Transactions.TranWithTags transactionInWork)
         {
             if (transactionInWork == null || transactionInWork.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
 

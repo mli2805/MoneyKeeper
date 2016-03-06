@@ -4,7 +4,7 @@ using Keeper.DomainModel;
 using Keeper.DomainModel.Transactions;
 using Keeper.Views.Transactions;
 
-namespace Keeper.ViewModels.Transactions
+namespace Keeper.ViewModels.TransWithTags
 {
     public class TranActions
     {
