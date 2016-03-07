@@ -25,7 +25,7 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
-        public static AccName FindThroughTheForest(List<AccName> roots, string name)
+        public static AccName FindThroughTheForest(this List<AccName> roots, string name)
         {
             foreach (var root in roots)
             {
@@ -34,5 +34,6 @@ namespace Keeper.ViewModels.TransWithTags
             }
             return null;
         }
+
     }
 }

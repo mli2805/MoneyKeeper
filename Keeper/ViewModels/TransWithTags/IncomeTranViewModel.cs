@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
-using Keeper.ViewModels.Transactions;
 
 namespace Keeper.ViewModels.TransWithTags
 {
@@ -63,12 +61,10 @@ namespace Keeper.ViewModels.TransWithTags
 
         public void SetTran(TranWithTags tran)
         {
-            TranInWork = new TranWithTags();
-            TranInWork.CloneFrom(tran);
+            TranInWork = tran.Clone();
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
-            MyAccName = ListsForComboTrees.FindThroughTheForest(AccNamesListForIncome, TranInWork.MyAccount.Name)
+            MyAccName = AccNamesListForIncome.FindThroughTheForest(TranInWork.MyAccount.Name)
                           ?? AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name,"Мой кошелек"));
-
         }
 
         private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -89,10 +85,10 @@ namespace Keeper.ViewModels.TransWithTags
             TranInWork.Timestamp = TranInWork.Timestamp.AddDays(-1);
         }
         #region горячие кнопки выбора из списков
-        public void IncomeToMyWallet()    { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Мой кошелек")); }
-        public void IncomeToBibZplGold()  { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Зарплатная Gold")); }
-        public void IncomeToWardrobe()    { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Шкаф")); }
-        public void IncomeToJuliaWallet() { MyAccName = AccNamesListForIncome.FirstOrDefault(an => Equals(an.Name, "Юлин кошелек")); } 
+        public void IncomeToMyWallet()    { MyAccName = AccNamesListForIncome.FindThroughTheForest("Мой кошелек"); }
+        public void IncomeToBibZplGold() { MyAccName = AccNamesListForIncome.FindThroughTheForest("БИБ Зарплатная GOLD"); }
+        public void IncomeToWardrobe()    { MyAccName = AccNamesListForIncome.FindThroughTheForest("Шкаф"); }
+        public void IncomeToJuliaWallet() { MyAccName = AccNamesListForIncome.FindThroughTheForest("Юлин кошелек"); } 
 
 //        public void IncomeFromIit() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "ИИТ"); }
 //        public void IncomeFromBib() { Tag = ListsForComboboxes.AccountsWhoGivesMeMoney.FirstOrDefault(a => a.Name == "БИБ"); }

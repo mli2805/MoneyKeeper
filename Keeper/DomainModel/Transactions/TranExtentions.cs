@@ -8,25 +8,29 @@ namespace Keeper.DomainModel.Transactions
 {
     public static class TranExtentions
     {
-        public static void CloneFrom(this TranWithTags tran, TranWithTags donor)
+        public static TranWithTags Clone(this TranWithTags tran)
         {
-            tran.Timestamp = donor.Timestamp;
-            tran.Operation = donor.Operation;
-            tran.MyAccount = donor.MyAccount;
-            tran.MySecondAccount = donor.MySecondAccount;
-            tran.Amount = donor.Amount;
-            tran.Currency = donor.Currency;
-            tran.AmountInReturn = donor.AmountInReturn;
-            tran.CurrencyInReturn = donor.CurrencyInReturn;
-            if (donor.Tags != null)
+            var result = new TranWithTags
             {
-                tran.Tags = new List<Account>();
-                foreach (var tag in donor.Tags)
+                Timestamp = tran.Timestamp,
+                Operation = tran.Operation,
+                MyAccount = tran.MyAccount,
+                MySecondAccount = tran.MySecondAccount,
+                Amount = tran.Amount,
+                Currency = tran.Currency,
+                AmountInReturn = tran.AmountInReturn,
+                CurrencyInReturn = tran.CurrencyInReturn
+            };
+            if (tran.Tags != null)
+            {
+                result.Tags = new List<Account>();
+                foreach (var tag in tran.Tags)
                 {
-                    tran.Tags.Add(tag);
+                    result.Tags.Add(tag);
                 }
             }
-            tran.Comment = donor.Comment;
+            result.Comment = tran.Comment;
+            return result;
         }
         public static decimal AmountForAccount(this TranWithTags tran, Account account, CurrencyCodes? currency, DateTime upToDateTime)
         {
