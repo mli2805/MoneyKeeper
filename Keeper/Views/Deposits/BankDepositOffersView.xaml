@@ -8,7 +8,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:deposits="clr-namespace:Keeper.ViewModels.Deposits"
         mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance ViewModels:BankDepositOffersViewModel}"
+        d:DataContext="{d:DesignInstance deposits:BankDepositOffersViewModel}"
         Title="BankDepositOffersView" Height="300" Width="910">
     <Window.Resources>
         <ResourceDictionary>

@@ -139,6 +139,10 @@
     <Compile Include="Controls\ComboboxTreeviewWithButtons.xaml.cs">
       <DependentUpon>ComboboxTreeviewWithButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TestControl.xaml.cs">
+      <DependentUpon>TestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TestControlVm.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
@@ -523,6 +527,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ShellViewPeriodSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TestControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

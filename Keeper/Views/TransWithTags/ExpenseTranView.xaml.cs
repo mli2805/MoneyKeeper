@@ -11,5 +11,6 @@ namespace Keeper.Views.TransWithTags
         {
             InitializeComponent();
         }
+
     }
 }
