@@ -136,6 +136,9 @@
     </Compile>
     <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="Controls\ComboboxTreeviewWithButtons.xaml.cs">
+      <DependentUpon>ComboboxTreeviewWithButtons.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
@@ -500,6 +503,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\BarDiagramControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ComboboxTreeviewWithButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

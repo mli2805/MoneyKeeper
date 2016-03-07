@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
-using Keeper.Utils.AccountEditing;
-using Keeper.ViewModels.Transactions;
-using Keeper.Views.Transactions;
+using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.ViewModels.TransWithTags
 {
@@ -16,22 +15,27 @@ namespace Keeper.ViewModels.TransWithTags
     {
         private readonly KeeperDb _db;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
-        public ListsForComboboxes ListsForComboboxes { get; set; }
-        public List<Account> AccountListForExpense { get; set; }
 
+        public List<CurrencyCodes> Currencies { get; set; } = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
         public TranWithTags TranInWork { get; set; }
         public string Result { get; set; }
 
+        public AccName MyAccName { get; set; }
+        public List<AccName> AccNamesForExpense { get; set; }
+        public Dictionary<string,AccName> ButtonsDictionary { get; set; } = new Dictionary<string, AccName>();
+
+        #region строковые хинты около полей ввода
         public string MyAccountBalance { get { return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
-        public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
+        public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } } 
+        #endregion
 
         [ImportingConstructor]
-        public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
+        public ExpenseTranViewModel(KeeperDb db, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
             _db = db;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
-            ListsForComboboxes = new ListsForComboboxes { FilterOnlyActiveAccounts = true };
-            ListsForComboboxes.InitializeListsForCombobox(_db, accountTreeStraightener);
+            ListsForComboTrees.InitializeLists(_db);
+            AccNamesForExpense = ListsForComboTrees.MyAccNamesForIncome;
         }
 
         protected override void OnViewLoaded(object view)
@@ -41,22 +45,28 @@ namespace Keeper.ViewModels.TransWithTags
 
         public void SetTran(TranWithTags tran)
         {
-            TranInWork = tran;
-            AccountListForExpense = ListsForComboboxes.MyAccountsForExpense;
+            TranInWork = tran.Clone();
+            TranInWork.PropertyChanged += TranInWork_PropertyChanged;
+            MyAccName = ListsForComboTrees.FindThroughTheForest(AccNamesForExpense, TranInWork.MyAccount.Name)
+                          ?? AccNamesForExpense.FirstOrDefault(an => Equals(an.Name, "Мой кошелек"));
         }
 
+        private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "MyAccount": NotifyOfPropertyChange(nameof(MyAccountBalance)); break;
+                case "Amount":
+                case "Currency":
+                    NotifyOfPropertyChange(nameof(AmountInUsd));
+                    NotifyOfPropertyChange(nameof(MyAccountBalance));
+                    break;
+            }
+        }
         public void DecreaseTimestamp()
         {
             TranInWork.Timestamp = TranInWork.Timestamp.AddDays(-1);
         }
-
-        #region горячие кнопки выбора из списков
-        public void ExpenseFromMyWallet() { TranInWork.MyAccount = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "Мой кошелек"); }
-        public void ExpenseFromJuliaWallet() { TranInWork.MyAccount = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "Юлин кошелек"); }
-        public void ExpenseFromBibMotznaya() { TranInWork.MyAccount = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "БИБ Сберка Моцная"); }
-        public void ExpenseFromBelGazSberka() { TranInWork.MyAccount = ListsForComboboxes.MyAccountsForShopping.FirstOrDefault(a => a.Name == "БГПБ Сберегательная"); }
-        #endregion
-
 
         public void Save()
         {
