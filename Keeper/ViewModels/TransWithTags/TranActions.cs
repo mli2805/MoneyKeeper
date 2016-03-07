@@ -38,7 +38,7 @@ namespace Keeper.ViewModels.TransWithTags
                     break;
                 case OperationType.Расход: oneTranForm = IoC.Get<ExpenseTranViewModel>();
                     break;
-                default: oneTranForm = IoC.Get<ExpenseTranViewModel>();
+                default: oneTranForm = IoC.Get<IncomeTranViewModel>();
                     break;
             }
             oneTranForm.SetTran(_selectedItem.Tran);
