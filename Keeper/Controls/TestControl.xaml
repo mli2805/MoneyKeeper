@@ -6,9 +6,10 @@
                   xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
+             cal:Bind.ModelWithoutContext="{Binding .}"
              >
-    <Grid cal:Bind.Model="{Binding TestControlVm}">
-        <TextBox Text="{Binding TextProperty}" VerticalAlignment="Top" />
-        <Button Height="25" Margin="5,50,0,0" Content="press" Name="PressButton"/>
+    <Grid >
+        <TextBox Text="{Binding TextProperty}" VerticalAlignment="Top"  />
+        <Button Height="25" Margin="5,50,0,0" Content="press" Name="PressButton" Click="PressButton_OnClick"/>
     </Grid>
 </UserControl>
