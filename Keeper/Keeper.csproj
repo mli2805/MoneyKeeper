@@ -139,10 +139,10 @@
     <Compile Include="Controls\ComboboxTreeviewWithButtons.xaml.cs">
       <DependentUpon>ComboboxTreeviewWithButtons.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TestControl.xaml.cs">
-      <DependentUpon>TestControl.xaml</DependentUpon>
+    <Compile Include="Controls\AccNameSelectionControl\AccNameSelector.xaml.cs">
+      <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TestControlVm.cs" />
+    <Compile Include="Controls\AccNameSelectionControl\AccNameSelectorVm.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
@@ -202,7 +202,7 @@
     <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="DomainModel\WorkTypes\AccName.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
-    <Compile Include="Controls\ButtonViewModel.cs" />
+    <Compile Include="Controls\AccNameSelectionControl\AccNameButtonVm.cs" />
     <Compile Include="ViewModels\TransWithTags\IncomeTranViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
     <Compile Include="ViewModels\TransWithTags\ExpenseTranViewModel.cs" />
@@ -535,7 +535,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TestControl.xaml">
+    <Page Include="Controls\AccNameSelectionControl\AccNameSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

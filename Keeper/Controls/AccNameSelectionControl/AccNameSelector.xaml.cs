@@ -1,21 +1,20 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Keeper.ViewModels.TransWithTags;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.AccNameSelectionControl
 {
     /// <summary>
-    /// Interaction logic for TestControl.xaml
+    /// Interaction logic for AccNameSelector.xaml
     /// </summary>
-    public partial class TestControl : UserControl
+    public partial class AccNameSelector : UserControl
     {
-        public TestControl()
+        public AccNameSelector()
         {
             InitializeComponent();
         }
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            var buttonViewModel = (ButtonViewModel)((Button)sender).DataContext;
+            var buttonViewModel = (AccNameButtonVm)((Button)sender).DataContext;
             buttonViewModel.Click();
         }
     }

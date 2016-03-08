@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Keeper.Controls"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.AccNameSelectionControl"
         xml:lang="ru-RU"
         Title="ExpenseTranView" Width="300" Height="300"
         mc:Ignorable="d"
@@ -74,7 +75,7 @@
 
     <Grid>
 
-        <controls:TestControl Height="200" VerticalAlignment="Top" DataContext="{Binding ModelForControl}"/>
+        <accNameSelectionControl:AccNameSelector Height="200" VerticalAlignment="Top" DataContext="{Binding ModelForControl}"/>
         <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
     </Grid>
 
