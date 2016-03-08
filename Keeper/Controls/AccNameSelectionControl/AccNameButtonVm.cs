@@ -1,11 +1,11 @@
-namespace Keeper.Controls
+namespace Keeper.Controls.AccNameSelectionControl
 {
-    public class ButtonViewModel
+    public class AccNameButtonVm
     {
         private readonly System.Action _action;
         public string Name { get; }
 
-        public ButtonViewModel(string name, System.Action action)
+        public AccNameButtonVm(string name, System.Action action)
         {
             _action = action;
             Name = name;

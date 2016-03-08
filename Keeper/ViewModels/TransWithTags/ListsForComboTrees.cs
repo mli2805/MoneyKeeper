@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
@@ -15,16 +14,18 @@ namespace Keeper.ViewModels.TransWithTags
 
         public static void InitializeLists(KeeperDb db)
         {
-            MyAccNamesForIncome.Add(new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts)));
+            MyAccNamesForIncome.Add(new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts), 
+                new List<string> {"Закрытые", "Закрытые депозиты", "Мне должны"}));
 
             var list = new List<string>() { "ДеньгоДатели", "Банки", "Государство", "Все доходы" };
             foreach (var element in list)
             {
-                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts));
+                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts),null);
                 AccNamesForIncomeTags.Add(root);
             }
 
-            MyAccNamesForExpense.Add(new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts)));
+            MyAccNamesForExpense.Add(new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts), 
+                new List<string> { "Закрытые", "Закрытые депозиты", "Мне должны", "Депозиты"}));
         }
 
         public static AccName FindThroughTheForest(this List<AccName> roots, string name)

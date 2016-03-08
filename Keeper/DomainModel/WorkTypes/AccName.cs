@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Caliburn.Micro;
 using Keeper.Controls.ComboboxTreeview;
 using Keeper.DomainModel.DbTypes;
@@ -13,7 +14,7 @@ namespace Keeper.DomainModel.WorkTypes
         public AccName Parent { get; set; }
         public List<AccName> Children { get; private set; } = new List<AccName>();
 
-        public AccName PopulateFromAccount(Account account)
+        public AccName PopulateFromAccount(Account account, List<string> cutBranches)
         {
             var result = new AccName();
             result.Id = account.Id;
@@ -21,7 +22,8 @@ namespace Keeper.DomainModel.WorkTypes
 
             foreach (var child in account.Children)
             {
-                var resultChild = PopulateFromAccount(child);
+                if (cutBranches?.FirstOrDefault(st => st == child.Name) != null) continue;
+                var resultChild =  PopulateFromAccount(child, cutBranches);
                 resultChild.Parent = result;
                 result.Children.Add(resultChild);
             }
@@ -39,6 +41,7 @@ namespace Keeper.DomainModel.WorkTypes
             return null;
         }
 
+        #region ITreeViewItemModel members
         public string SelectedValuePath => Name;
         public string DisplayValuePath => Name;
         public bool IsExpanded { get; set; }
@@ -62,5 +65,6 @@ namespace Keeper.DomainModel.WorkTypes
         {
             return Children;
         }
+        #endregion
     }
 }

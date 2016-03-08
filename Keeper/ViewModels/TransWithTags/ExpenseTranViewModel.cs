@@ -6,6 +6,7 @@ using Keeper.DomainModel.Transactions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Keeper.Controls.AccNameSelectionControl;
 using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.ViewModels.TransWithTags
@@ -13,14 +14,14 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class ExpenseTranViewModel : Screen, IOneTranView
     {
-        public TestControlVm ModelForControl { get; set; }
+        public AccNameSelectorVm ModelForControl { get; set; }
         public TranWithTags TranInWork { get; set; }
         public AccName MyAccName { get; set; }
 
         [ImportingConstructor]
         public ExpenseTranViewModel(KeeperDb db, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
-            ModelForControl = new TestControlVm();
+            ModelForControl = new AccNameSelectorVm();
             ListsForComboTrees.InitializeLists(db);
         }
 
@@ -42,12 +43,12 @@ namespace Keeper.ViewModels.TransWithTags
         private void InitializeOutWalletControl()
         {
             ModelForControl.ControlTitle = "Откуда";
-            ModelForControl.Buttons = new List<ButtonViewModel>
+            ModelForControl.Buttons = new List<AccNameButtonVm>
             {
-                new ButtonViewModel("мк", () => MessageBox.Show("blah")),
-                new ButtonViewModel("биб", () => MessageBox.Show("blah")),
-                new ButtonViewModel("газ", () => MessageBox.Show("blah")),
-                new ButtonViewModel("юк", () => MessageBox.Show("bluh"))
+                new AccNameButtonVm("мк", () => MessageBox.Show("blah")),
+                new AccNameButtonVm("биб", () => MessageBox.Show("blah")),
+                new AccNameButtonVm("газ", () => MessageBox.Show("blah")),
+                new AccNameButtonVm("юк", () => MessageBox.Show("bluh"))
             };
             ModelForControl.AccNamesListForExpense = ListsForComboTrees.MyAccNamesForExpense;
             ModelForControl.MyAccName = MyAccName;

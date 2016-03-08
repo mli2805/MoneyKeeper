@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Caliburn.Micro;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.ViewModels.TransWithTags;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.AccNameSelectionControl
 {
-    class TestControlVm : PropertyChangedBase
+    class AccNameSelectorVm : PropertyChangedBase
     {
-        public List<ButtonViewModel> Buttons { get; set; }
+        public List<AccNameButtonVm> Buttons { get; set; }
 
         private AccName _myAccName;
         private List<AccName> _accNamesListForExpense;
