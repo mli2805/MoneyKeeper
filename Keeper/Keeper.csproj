@@ -202,6 +202,7 @@
     <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="DomainModel\WorkTypes\AccName.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
+    <Compile Include="Controls\ButtonViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\IncomeTranViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
     <Compile Include="ViewModels\TransWithTags\ExpenseTranViewModel.cs" />

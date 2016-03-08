@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Keeper.ViewModels.TransWithTags;
 
 namespace Keeper.Controls
 {
@@ -11,6 +12,11 @@ namespace Keeper.Controls
         public TestControl()
         {
             InitializeComponent();
+        }
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var buttonViewModel = (ButtonViewModel)((Button)sender).DataContext;
+            buttonViewModel.Click();
         }
     }
 }
