@@ -10,6 +10,6 @@
              >
     <Grid >
         <TextBox Text="{Binding TextProperty}" VerticalAlignment="Top"  />
-        <Button Height="25" Margin="5,50,0,0" Content="press" Name="PressButton" Click="PressButton_OnClick"/>
+        <Button Height="25" Margin="5,50,0,0" Content="press" Name="PressButton"/>
     </Grid>
 </UserControl>

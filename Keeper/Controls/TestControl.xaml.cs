@@ -12,10 +12,5 @@ namespace Keeper.Controls
         {
             InitializeComponent();
         }
-
-        private void PressButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            
-        }
     }
 }
