@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.ViewModels.TransWithTags;
 
 namespace Keeper.Controls
@@ -12,23 +13,32 @@ namespace Keeper.Controls
     {
         public List<ButtonViewModel> Buttons { get; set; }
 
-        private string _textProperty = "start";
+        private AccName _myAccName;
+        private List<AccName> _accNamesListForExpense;
 
-        public string TextProperty
+        public AccName MyAccName
         {
-            get { return _textProperty; }
+            get { return _myAccName; }
             set
             {
-                if (value == _textProperty) return;
-                _textProperty = value;
+                if (Equals(value, _myAccName)) return;
+                _myAccName = value;
                 NotifyOfPropertyChange();
             }
         }
 
-        public void PressButton()
+        public List<AccName> AccNamesListForExpense
         {
-            TextProperty = TextProperty + "ButtonPressed";
+            get { return _accNamesListForExpense; }
+            set
+            {
+                if (Equals(value, _accNamesListForExpense)) return;
+                _accNamesListForExpense = value;
+                NotifyOfPropertyChange();
+            }
         }
+
+        public string ControlTitle { get; set; }
 
     }
 }
