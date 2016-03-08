@@ -25,7 +25,7 @@ namespace Keeper.ViewModels.TransWithTags
                 case 2: MoveDown(); break;
                 case 3: AddAfterSelected(); break;
                 case 4: Delete(); break;
-                                default : break; 
+                default: break;
             }
         }
 
@@ -34,11 +34,16 @@ namespace Keeper.ViewModels.TransWithTags
             IOneTranView oneTranForm;
             switch (_selectedItem.Tran.Operation)
             {
-                case OperationType.Доход: oneTranForm = IoC.Get<IncomeTranViewModel>();
+                case OperationType.Доход:
+                    oneTranForm = IoC.Get<IncomeTranViewModel>();
                     break;
-                case OperationType.Расход: oneTranForm = IoC.Get<ExpenseTranViewModel>();
+                case OperationType.Расход:
+                    oneTranForm = IoC.Get<ExpenseTranViewModel>();
                     break;
-                default: oneTranForm = IoC.Get<IncomeTranViewModel>();
+                case OperationType.Перенос: oneTranForm = IoC.Get<TransferTranViewModel>();
+                    break;
+                default:
+                    oneTranForm = IoC.Get<IncomeTranViewModel>();
                     break;
             }
             oneTranForm.SetTran(_selectedItem.Tran);
@@ -47,12 +52,12 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void MoveUp()
         {
-            
+
         }
 
         private void MoveDown()
         {
-            
+
         }
         private void AddAfterSelected()
         {

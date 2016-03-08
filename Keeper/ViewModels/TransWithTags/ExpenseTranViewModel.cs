@@ -9,21 +9,21 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class ExpenseTranViewModel : Screen, IOneTranView
     {
-        public TestControlVm TestControlVm { get; set; }
+        public TestControlVm ModelForControl { get; set; }
 
         [ImportingConstructor]
         public ExpenseTranViewModel(KeeperDb db, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
-            TestControlVm = new TestControlVm();
+            ModelForControl = new TestControlVm();
         }
 
 
         public void SetTran(TranWithTags tran)
         {
-            TestControlVm.TextProperty = "Expense";
+            ModelForControl.TextProperty = "Expense";
         }
 
-        public void Close()
+        public void ButtonClose()
         {
             TryClose();
         }

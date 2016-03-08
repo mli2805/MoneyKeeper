@@ -351,6 +351,7 @@
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
+    <Compile Include="ViewModels\TransWithTags\TransferTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TransViewModel.cs" />
     <Compile Include="Utils\FiltersOnDomainClasses\FiltersForTransactions.cs" />
     <Compile Include="Views\Deposits\BankDepositOffersView.xaml.cs">
@@ -408,6 +409,9 @@
       <DependentUpon>IncomeTranView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\TransWithTags\IOneTranView.cs" />
+    <Compile Include="Views\TransWithTags\TransfrerTranView.xaml.cs">
+      <DependentUpon>TransfrerTranView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TransWithTags\TransView.xaml.cs">
       <DependentUpon>TransView.xaml</DependentUpon>
     </Compile>
@@ -647,6 +651,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Transactions\TransactionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TransWithTags\TransfrerTranView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
