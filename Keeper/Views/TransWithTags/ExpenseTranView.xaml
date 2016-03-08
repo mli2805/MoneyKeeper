@@ -73,20 +73,6 @@
     </Window.Resources>
 
     <Grid>
-        <ItemsControl ItemsSource="{Binding Buttons}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding Name}"
-                            Margin="2" Padding="15,2"
-                            Click="ButtonBase_OnClick"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
 
         <controls:TestControl Height="200" VerticalAlignment="Top" DataContext="{Binding ModelForControl}"/>
         <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>

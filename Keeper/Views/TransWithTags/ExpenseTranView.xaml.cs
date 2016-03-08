@@ -13,11 +13,6 @@ namespace Keeper.Views.TransWithTags
         {
             InitializeComponent();
         }
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            var buttonViewModel = (ButtonViewModel)((Button)sender).DataContext;
-            buttonViewModel.Click();
-        }
 
 
     }

@@ -9,7 +9,20 @@
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
     <Grid >
-        <TextBox Text="{Binding TextProperty}" VerticalAlignment="Top"  />
+        <ItemsControl ItemsSource="{Binding Buttons}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Name}"
+                            Margin="2" Padding="15,2" Style="{StaticResource RoundCorner}"
+                            Click="ButtonBase_OnClick"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Button Height="25" Margin="5,50,0,0" Content="press" Name="PressButton"/>
     </Grid>
 </UserControl>
