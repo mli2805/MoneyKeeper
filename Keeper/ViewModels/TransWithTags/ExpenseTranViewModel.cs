@@ -1,17 +1,12 @@
-﻿using System;
-using System.Composition;
+﻿using System.Composition;
+using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.Controls;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+using Keeper.Controls;
 using Keeper.Controls.AccNameSelectionControl;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
-using Microsoft.Vbe.Interop;
 
 namespace Keeper.ViewModels.TransWithTags
 {
@@ -20,20 +15,25 @@ namespace Keeper.ViewModels.TransWithTags
     {
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
+        private readonly MyAccNameSelectionControlInitializer _myAccNameSelectionControlInitializer;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
         public TranWithTags TranInWork { get; set; }
         public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
-        public List<CurrencyCodes> Currencies { get; set; } = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+        public AmountInputcControlVm MyAmountInputcControlVm { get; set; }
 
         public string MyAccountBalance { get {return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
+        public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
 
         [ImportingConstructor]
-        public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
+        public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, 
+            MyAccNameSelectionControlInitializer myAccNameSelectionControlInitializer, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
+            _myAccNameSelectionControlInitializer = myAccNameSelectionControlInitializer;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             MyAccNameSelectorVm = new AccNameSelectorVm();
+            MyAmountInputcControlVm = new AmountInputcControlVm();
             ListsForComboTrees.InitializeLists(db);
         }
 
@@ -47,8 +47,18 @@ namespace Keeper.ViewModels.TransWithTags
             TranInWork = tran.Clone();
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
 
-            InitializeMyAccNameSelectionControl();
+            MyAccNameSelectorVm = _myAccNameSelectionControlInitializer.ForExpense(TranInWork.MyAccount.Name);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
+
+            MyAmountInputcControlVm = new AmountInputcControlVm
+                { LabelContent = "Сколько", AmountColor = Brushes.Red, Amount = TranInWork.Amount, Currency = TranInWork.Currency };
+            MyAmountInputcControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
+        }
+
+        private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputcControlVm.Amount;
+            if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputcControlVm.Currency;
         }
 
         private void MyAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -57,24 +67,11 @@ namespace Keeper.ViewModels.TransWithTags
                 TranInWork.MyAccount = _accountTreeStraightener.Seek(MyAccNameSelectorVm.MyAccName.Name, _db.Accounts);
         }
 
-        private void InitializeMyAccNameSelectionControl()
-        {
-            MyAccNameSelectorVm.ControlTitle = "Откуда";
-            MyAccNameSelectorVm.Buttons = new List<AccNameButtonVm>
-            {
-                new AccNameButtonVm("мк",  ListsForComboTrees.MyAccNamesForExpense.FindThroughTheForest("Мой кошелек")),
-                new AccNameButtonVm("биб", ListsForComboTrees.MyAccNamesForExpense.FindThroughTheForest("БИБ Сберка Моцная")),
-                new AccNameButtonVm("газ", ListsForComboTrees.MyAccNamesForExpense.FindThroughTheForest("БГПБ Сберегательная")),
-                new AccNameButtonVm("юк",  ListsForComboTrees.MyAccNamesForExpense.FindThroughTheForest("Юлин кошелек"))
-            };
-            MyAccNameSelectorVm.AccNamesListForExpense = ListsForComboTrees.MyAccNamesForExpense;
-            MyAccNameSelectorVm.MyAccName = ListsForComboTrees.MyAccNamesForExpense.FindThroughTheForest(TranInWork.MyAccount.Name)
-                                            ?? ListsForComboTrees.MyAccNamesForExpense.FindThroughTheForest("Мой кошелек");
-        }
 
         private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             NotifyOfPropertyChange(nameof(MyAccountBalance));
+            NotifyOfPropertyChange(nameof(AmountInUsd));
         }
 
         public void ButtonClose()
