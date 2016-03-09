@@ -136,6 +136,10 @@
     </Compile>
     <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="Controls\AmountInputcControlVm.cs" />
+    <Compile Include="Controls\AmountInputControl.xaml.cs">
+      <DependentUpon>AmountInputControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ComboboxTreeviewWithButtons.xaml.cs">
       <DependentUpon>ComboboxTreeviewWithButtons.xaml</DependentUpon>
     </Compile>
@@ -207,6 +211,7 @@
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
     <Compile Include="ViewModels\TransWithTags\ExpenseTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />
+    <Compile Include="ViewModels\TransWithTags\MyAccNameSelectionControlInitializer.cs" />
     <Compile Include="ViewModels\TransWithTags\TranActions.cs" />
     <Compile Include="ViewModels\Transactions\TransactionChangesVisualizer.cs" />
     <Compile Include="DomainModel\WorkTypes\YearMonth.cs" />
@@ -511,6 +516,10 @@
     <Resource Include="Resources\keeper.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\AmountInputControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BarDiagramControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
