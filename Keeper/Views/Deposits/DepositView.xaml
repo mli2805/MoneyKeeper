@@ -5,9 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Icon="/Keeper;component/Resources/safe.ico" 
-        xmlns:ViewModels="clr-namespace:Keeper.ViewModels" 
+        xmlns:deposits="clr-namespace:Keeper.ViewModels.Deposits"
         mc:Ignorable="d" Title="DepositView" Height="750" Width="700" Left="200" Top="150"
-        d:DataContext="{d:DesignInstance ViewModels:DepositViewModel}" WindowStartupLocation="Manual">
+        d:DataContext="{d:DesignInstance deposits:DepositViewModel}" WindowStartupLocation="Manual">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="80"/>

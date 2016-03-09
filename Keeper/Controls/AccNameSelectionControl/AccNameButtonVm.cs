@@ -1,19 +1,20 @@
+using Keeper.DomainModel.WorkTypes;
+
 namespace Keeper.Controls.AccNameSelectionControl
 {
     public class AccNameButtonVm
     {
-        private readonly System.Action _action;
         public string Name { get; }
+        public AccName AccName { get; }
 
-        public AccNameButtonVm(string name, System.Action action)
+        public AccNameButtonVm(string name, AccName accName)
         {
-            _action = action;
             Name = name;
+            AccName = accName;
         }
 
         public void Click()
         {
-            _action();
         }
     }
 }
