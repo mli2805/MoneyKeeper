@@ -14,8 +14,9 @@ namespace Keeper.Controls.AccNameSelectionControl
         }
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
+            var accNameSelectorVm = (AccNameSelectorVm)DataContext;
             var buttonViewModel = (AccNameButtonVm)((Button)sender).DataContext;
-            buttonViewModel.Click();
+            accNameSelectorVm.MyAccName = buttonViewModel.AccName;
         }
     }
 }

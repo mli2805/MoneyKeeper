@@ -7,9 +7,9 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.AccNameSelectionControl"
         xml:lang="ru-RU"
-        Title="ExpenseTranView" Width="300" Height="300"
+        Title="ExpenseTranView" Width="300" 
         mc:Ignorable="d"
-        d:DataContext="{d:DesignData ExpenseTranViewModel}">
+        d:DataContext="{d:DesignData ExpenseTranViewModel}" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
     <Window.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
@@ -74,9 +74,19 @@
     </Window.Resources>
 
     <Grid>
-
-        <accNameSelectionControl:AccNameSelector Height="200" VerticalAlignment="Top" DataContext="{Binding ModelForControl}"/>
-        <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
+        <StackPanel>
+            <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
+            <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" Width="200" HorizontalAlignment="Left" Margin="85,0,0,0"/>
+            <StackPanel Orientation ="Horizontal">
+                <Label Content="Сколько" Margin="5,5,0,0" Foreground="Blue" Height="26" Width="56"/>
+                <TextBox Name="Amount" Margin="5,10,0,0" Height="20" Width="100" BorderBrush="#555555" TextAlignment="Right" Foreground="Blue"
+                                 Text="{Binding TranInWork.Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" />
+                <ComboBox Name="Currency" HorizontalAlignment="Left" Margin="5,10,0,0" Height="20" Width="60" Background="White"
+                                  ItemsSource="{Binding Currencies}" SelectedItem="{Binding TranInWork.Currency}" />
+            </StackPanel>
+            <Label Name="AmountInUsd" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" VerticalAlignment="Top" Foreground="Blue"/>
+            <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
+        </StackPanel>
     </Grid>
 
 </Window>
