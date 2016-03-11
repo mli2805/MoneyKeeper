@@ -136,7 +136,7 @@
     </Compile>
     <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
-    <Compile Include="Controls\AmountInputcControlVm.cs" />
+    <Compile Include="Controls\AmountInputControlVm.cs" />
     <Compile Include="Controls\AmountInputControl.xaml.cs">
       <DependentUpon>AmountInputControl.xaml</DependentUpon>
     </Compile>
@@ -147,6 +147,11 @@
       <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Controls\TagPickingControl\AlreadyChosenTagVm.cs" />
+    <Compile Include="Controls\TagPickingControl\TagPicker.xaml.cs">
+      <DependentUpon>TagPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TagPickingControl\TagPickerVm.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
@@ -545,6 +550,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\AccNameSelectionControl\AccNameSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TagPickingControl\TagPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
