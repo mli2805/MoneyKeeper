@@ -78,10 +78,10 @@
         <StackPanel>
             <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
             <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" Width="200" HorizontalAlignment="Left" Margin="85,0,0,0"/>
-            <controls:AmountInputControl DataContext="{Binding MyAmountInputcControlVm}"/>
+            <controls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}"/>
             <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" Foreground="Red"/>
 
-            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickingVm}"/>
+            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}"/>
 
             <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
         </StackPanel>

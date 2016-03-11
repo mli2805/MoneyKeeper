@@ -11,9 +11,11 @@ namespace Keeper.ViewModels.TransWithTags
         public static List<AccName> MyAccNamesForIncome { get; set; } = new List<AccName>();
         public static List<AccName> MyAccNamesForExpense { get; set; } = new List<AccName>();
         public static List<AccName> AccNamesForIncomeTags { get; set; } = new List<AccName>();
+        public static List<AccName> AccNamesForExpenseTags { get; set; } = new List<AccName>();
 
         public static void InitializeLists(KeeperDb db)
         {
+            // Income
             MyAccNamesForIncome.Add(new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts), 
                 new List<string> {"Закрытые", "Закрытые депозиты", "Мне должны"}));
 
@@ -24,8 +26,17 @@ namespace Keeper.ViewModels.TransWithTags
                 AccNamesForIncomeTags.Add(root);
             }
 
+            // Expense
             MyAccNamesForExpense.Add(new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts), 
                 new List<string> { "Закрытые", "Закрытые депозиты", "Мне должны", "Депозиты"}));
+
+            list = new List<string>() { "ДеньгоПолучатели", "Банки", "Государство", "Все расходы" };
+            foreach (var element in list)
+            {
+                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts), null);
+                AccNamesForExpenseTags.Add(root);
+            }
+
         }
 
         public static AccName FindThroughTheForest(this List<AccName> roots, string name)
