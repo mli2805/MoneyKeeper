@@ -6,6 +6,7 @@
         xmlns:controls="clr-namespace:Keeper.Controls"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.AccNameSelectionControl"
+        xmlns:tagPickingControl="clr-namespace:Keeper.Controls.TagPickingControl"
         xml:lang="ru-RU"
         Title="ExpenseTranView" Width="300" 
         mc:Ignorable="d"
@@ -79,6 +80,9 @@
             <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" Width="200" HorizontalAlignment="Left" Margin="85,0,0,0"/>
             <controls:AmountInputControl DataContext="{Binding MyAmountInputcControlVm}"/>
             <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" Foreground="Red"/>
+
+            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickingVm}"/>
+
             <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
         </StackPanel>
     </Grid>

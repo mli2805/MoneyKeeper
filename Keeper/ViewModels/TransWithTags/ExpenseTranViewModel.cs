@@ -5,6 +5,7 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
 using Keeper.Controls;
 using Keeper.Controls.AccNameSelectionControl;
+using Keeper.Controls.TagPickingControl;
 using Keeper.DomainModel.Enumes;
 using Keeper.Utils.AccountEditing;
 
@@ -19,7 +20,8 @@ namespace Keeper.ViewModels.TransWithTags
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
         public TranWithTags TranInWork { get; set; }
         public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
-        public AmountInputcControlVm MyAmountInputcControlVm { get; set; }
+        public AmountInputControlVm MyAmountInputControlVm { get; set; }
+        public TagPickerVm MyTagPickerVm { get; set; }
 
         public string MyAccountBalance { get {return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
         public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
@@ -33,7 +35,7 @@ namespace Keeper.ViewModels.TransWithTags
             _myAccNameSelectionControlInitializer = myAccNameSelectionControlInitializer;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             MyAccNameSelectorVm = new AccNameSelectorVm();
-            MyAmountInputcControlVm = new AmountInputcControlVm();
+            MyAmountInputControlVm = new AmountInputControlVm();
             ListsForComboTrees.InitializeLists(db);
         }
 
@@ -50,15 +52,15 @@ namespace Keeper.ViewModels.TransWithTags
             MyAccNameSelectorVm = _myAccNameSelectionControlInitializer.ForExpense(TranInWork.MyAccount.Name);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
 
-            MyAmountInputcControlVm = new AmountInputcControlVm
+            MyAmountInputControlVm = new AmountInputControlVm
                 { LabelContent = "Сколько", AmountColor = Brushes.Red, Amount = TranInWork.Amount, Currency = TranInWork.Currency };
-            MyAmountInputcControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
+            MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputcControlVm.Amount;
-            if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputcControlVm.Currency;
+            if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputControlVm.Amount;
+            if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputControlVm.Currency;
         }
 
         private void MyAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
