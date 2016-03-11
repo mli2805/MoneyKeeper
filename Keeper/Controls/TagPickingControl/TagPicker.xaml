@@ -10,12 +10,14 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel>
-            <ItemsControl ItemsSource="{Binding AlreadyChosenTags}" Margin="0,5,0,0">
+            <ItemsControl ItemsSource="{Binding ListOfChosenTagsVm}" Margin="0,5,0,0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding Name}"
-                            Margin="2" Padding="15,2" Style="{StaticResource RoundCorner}"
-                            Click="ButtonBase_OnClick"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="blah-blah"/>
+                            <Button Content="x" Margin="2" Padding="15,2" Click="DeleteTagOnClick"/>
+
+                        </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

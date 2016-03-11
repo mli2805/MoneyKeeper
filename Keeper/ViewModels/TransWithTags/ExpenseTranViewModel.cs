@@ -55,6 +55,11 @@ namespace Keeper.ViewModels.TransWithTags
             MyAmountInputControlVm = new AmountInputControlVm
                 { LabelContent = "Сколько", AmountColor = Brushes.Red, Amount = TranInWork.Amount, Currency = TranInWork.Currency };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
+
+            MyTagPickerVm = new TagPickerVm();
+            var alreadyChosenTagVm = new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Простор") };
+            MyTagPickerVm.ListOfChosenTagsVm.Add(alreadyChosenTagVm);
+            MyTagPickerVm.ListOfChosenTagsVm.Add(new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Мебель") });
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
