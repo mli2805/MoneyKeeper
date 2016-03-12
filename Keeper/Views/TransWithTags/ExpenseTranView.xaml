@@ -8,9 +8,9 @@
         xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.AccNameSelectionControl"
         xmlns:tagPickingControl="clr-namespace:Keeper.Controls.TagPickingControl"
         xml:lang="ru-RU"
-        Title="ExpenseTranView" Width="300" 
+        Title="ExpenseTranView" Width="300" ResizeMode="NoResize" SizeToContent="Height"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignData ExpenseTranViewModel}" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+        d:DataContext="{d:DesignData ExpenseTranViewModel}" >
     <Window.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
@@ -76,12 +76,12 @@
 
     <Grid>
         <StackPanel>
-            <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
-            <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" Width="200" HorizontalAlignment="Left" Margin="85,0,0,0"/>
-            <controls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}"/>
+            <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="10,0,10,0"/>
+            <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+            <controls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="10,0,0,0"/>
             <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" Foreground="Red"/>
 
-            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}"/>
+            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="10,0,0,0"/>
 
             <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
         </StackPanel>

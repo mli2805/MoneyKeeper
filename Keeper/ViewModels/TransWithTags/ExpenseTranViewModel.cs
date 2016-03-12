@@ -57,9 +57,11 @@ namespace Keeper.ViewModels.TransWithTags
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
 
             MyTagPickerVm = new TagPickerVm();
-            var alreadyChosenTagVm = new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Простор") };
-            MyTagPickerVm.ListOfChosenTagsVm.Add(alreadyChosenTagVm);
-            MyTagPickerVm.ListOfChosenTagsVm.Add(new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Мебель") });
+                var alreadyChosenTagVm = new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Простор") };
+                MyTagPickerVm.ListOfChosenTagsVm.Add(alreadyChosenTagVm);
+                MyTagPickerVm.ListOfChosenTagsVm.Add(new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Мебель") });
+
+                MyTagPickerVm.TagSelectorVm = _myAccNameSelectionControlInitializer.ForExpenseTags("Лекарства");
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
