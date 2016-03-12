@@ -147,6 +147,9 @@
       <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Controls\TagPickingControl\AlreadyChosenTag.xaml.cs">
+      <DependentUpon>AlreadyChosenTag.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TagPickingControl\AlreadyChosenTagVm.cs" />
     <Compile Include="Controls\TagPickingControl\TagPicker.xaml.cs">
       <DependentUpon>TagPicker.xaml</DependentUpon>
@@ -550,6 +553,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\AccNameSelectionControl\AccNameSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TagPickingControl\AlreadyChosenTag.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

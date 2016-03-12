@@ -13,9 +13,5 @@ namespace Keeper.Controls.TagPickingControl
             InitializeComponent();
         }
 
-        private void DeleteTagOnClick(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

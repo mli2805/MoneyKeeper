@@ -9,7 +9,7 @@ namespace Keeper.Controls.AccNameSelectionControl
         public List<AccNameButtonVm> Buttons { get; set; }
 
         private AccName _myAccName;
-        private List<AccName> _accNamesListForExpense;
+        private List<AccName> _availableAccNames;
 
         public AccName MyAccName
         {
@@ -22,13 +22,13 @@ namespace Keeper.Controls.AccNameSelectionControl
             }
         }
 
-        public List<AccName> AccNamesListForExpense
+        public List<AccName> AvailableAccNames
         {
-            get { return _accNamesListForExpense; }
+            get { return _availableAccNames; }
             set
             {
-                if (Equals(value, _accNamesListForExpense)) return;
-                _accNamesListForExpense = value;
+                if (Equals(value, _availableAccNames)) return;
+                _availableAccNames = value;
                 NotifyOfPropertyChange();
             }
         }
