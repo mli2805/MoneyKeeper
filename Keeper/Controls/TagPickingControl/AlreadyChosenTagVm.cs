@@ -9,6 +9,7 @@ namespace Keeper.Controls.TagPickingControl
 {
     class AlreadyChosenTagVm
     {
+        public string Name => Tag.Name;
         public AccName Tag { get; set; }
     }
 }
