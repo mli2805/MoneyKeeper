@@ -41,6 +41,11 @@ namespace Keeper.DomainModel.WorkTypes
             return null;
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         #region ITreeViewItemModel members
         public string SelectedValuePath => Name;
         public string DisplayValuePath => Name;

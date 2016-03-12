@@ -6,7 +6,6 @@ using Keeper.DomainModel.Transactions;
 using Keeper.Controls;
 using Keeper.Controls.AccNameSelectionControl;
 using Keeper.Controls.TagPickingControl;
-using Keeper.DomainModel.Enumes;
 using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.TransWithTags
@@ -23,11 +22,11 @@ namespace Keeper.ViewModels.TransWithTags
         public AmountInputControlVm MyAmountInputControlVm { get; set; }
         public TagPickerVm MyTagPickerVm { get; set; }
 
-        public string MyAccountBalance { get {return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
+        public string MyAccountBalance { get { return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
         public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
 
         [ImportingConstructor]
-        public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, 
+        public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
             MyAccNameSelectionControlInitializer myAccNameSelectionControlInitializer, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
             _db = db;
@@ -53,15 +52,19 @@ namespace Keeper.ViewModels.TransWithTags
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
 
             MyAmountInputControlVm = new AmountInputControlVm
-                { LabelContent = "Сколько", AmountColor = Brushes.Red, Amount = TranInWork.Amount, Currency = TranInWork.Currency };
+            { LabelContent = "Сколько", AmountColor = Brushes.Red, Amount = TranInWork.Amount, Currency = TranInWork.Currency };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
 
-            MyTagPickerVm = new TagPickerVm();
-                var alreadyChosenTagVm = new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Простор") };
-                MyTagPickerVm.ListOfChosenTagsVm.Add(alreadyChosenTagVm);
-                MyTagPickerVm.ListOfChosenTagsVm.Add(new AlreadyChosenTagVm() {Tag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest("Мебель") });
 
-                MyTagPickerVm.TagSelectorVm = _myAccNameSelectionControlInitializer.ForExpenseTags("Лекарства");
+            MyTagPickerVm = new TagPickerVm();
+            foreach (var tag in tran.Tags)
+            {
+                var alreadyChosenTag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest(tag.Name);
+                if (alreadyChosenTag != null)
+                    MyTagPickerVm.ListOfChosenTagsVm.Add(new AlreadyChosenTagVm() { Tag = alreadyChosenTag });
+            }
+
+            MyTagPickerVm.TagSelectorVm = _myAccNameSelectionControlInitializer.ForExpenseTags("");
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

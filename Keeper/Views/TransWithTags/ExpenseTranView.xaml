@@ -8,7 +8,7 @@
         xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.AccNameSelectionControl"
         xmlns:tagPickingControl="clr-namespace:Keeper.Controls.TagPickingControl"
         xml:lang="ru-RU"
-        Title="ExpenseTranView" Width="300" ResizeMode="NoResize" SizeToContent="Height"
+        Title="ExpenseTranView" Width="330" ResizeMode="NoResize" SizeToContent="Height"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData ExpenseTranViewModel}" >
     <Window.Resources>
@@ -77,11 +77,11 @@
     <Grid>
         <StackPanel>
             <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="10,0,10,0"/>
-            <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+            <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
             <controls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="10,0,0,0"/>
             <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" Foreground="Red"/>
 
-            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="10,0,0,0"/>
+            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="10,0,10,0"/>
 
             <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
         </StackPanel>

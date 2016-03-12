@@ -6,7 +6,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
              mc:Ignorable="d" 
-             Height="55"
+             Height="50"
              d:DesignWidth="300"
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
@@ -38,6 +38,6 @@
         </StackPanel>
         <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Stretch" Margin="5,25,5,0" Background="White" 
                       VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource TreeViewDataTemplate}" 
-                      ItemsSource="{Binding AccNamesListForExpense}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
+                      ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
     </Grid>
 </UserControl>
