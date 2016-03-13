@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="Keeper.Controls.DatePickerWithTriangles"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             cal:Bind.ModelWithoutContext="{Binding .}"
+             mc:Ignorable="d" 
+             d:DesignHeight="24" d:DesignWidth="143">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
+            <SolidColorBrush x:Key="TriangleFocusedBrush" Color="Gray" />
+            <SolidColorBrush x:Key="TrianglePressedBrush" Color="#646464" />
+
+            <Style x:Key="TriangleLButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Polygon Points="18,2 8,10 18,18" Stroke="Gray" Name="Triangle" Fill="{StaticResource TriangleNeutralBrush}">
+                                </Polygon>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TriangleRButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Polygon Points="1,2 12,10 1,18" Stroke="#464646" Name="Triangle">
+                                    <Polygon.Fill>
+                                        <SolidColorBrush Color="White" />
+                                    </Polygon.Fill>
+                                </Polygon>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Button BorderBrush="White" HorizontalAlignment="Left" Margin="1,2,0,0" VerticalAlignment="Top" Width="20" Background="White" Height="20"
+              Style="{StaticResource TriangleLButtonStyle}" Click="ButtonDecreaseOnClick"/>
+        <DatePicker HorizontalAlignment="Left" Margin="21,0,0,0" VerticalAlignment="Top" FirstDayOfWeek="Monday" Width="100"
+                  Text="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="24" />
+        <Button BorderBrush="White" HorizontalAlignment="Left" Margin="122,2,0,0" VerticalAlignment="Top" Width="20" Background="White" Height="20"
+              Style="{StaticResource TriangleRButtonStyle}" Click="ButtonIncreaseOnClick"/>
+    </Grid>
+</UserControl>

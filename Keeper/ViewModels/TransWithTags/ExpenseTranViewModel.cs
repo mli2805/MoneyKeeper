@@ -21,9 +21,12 @@ namespace Keeper.ViewModels.TransWithTags
         public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
         public AmountInputControlVm MyAmountInputControlVm { get; set; }
         public TagPickerVm MyTagPickerVm { get; set; }
+        public DatePickerWithTrianglesVm MyDatePickerVm { get; set; }
 
         public string MyAccountBalance { get { return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
         public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
+
+        public bool ModalResult { get; set; }
 
         [ImportingConstructor]
         public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
@@ -65,6 +68,8 @@ namespace Keeper.ViewModels.TransWithTags
             }
 
             MyTagPickerVm.TagSelectorVm = _myAccNameSelectionControlInitializer.ForExpenseTags("");
+
+            MyDatePickerVm = new DatePickerWithTrianglesVm() {SelectedDate = TranInWork.Timestamp };
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -86,8 +91,16 @@ namespace Keeper.ViewModels.TransWithTags
             NotifyOfPropertyChange(nameof(AmountInUsd));
         }
 
-        public void ButtonClose()
+        public void Save()
         {
+            ModalResult = true;
+            //вызывающая форма должна забрать результат в TranInWork
+            TryClose();
+        }
+
+        public void Cancel()
+        {
+            ModalResult = false;
             TryClose();
         }
     }

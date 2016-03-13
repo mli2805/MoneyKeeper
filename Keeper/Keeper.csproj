@@ -147,6 +147,10 @@
       <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Controls\DatePickerWithTriangles.xaml.cs">
+      <DependentUpon>DatePickerWithTriangles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DatePickerWithTrianglesVm.cs" />
     <Compile Include="Controls\TagPickingControl\AlreadyChosenTag.xaml.cs">
       <DependentUpon>AlreadyChosenTag.xaml</DependentUpon>
     </Compile>
@@ -533,6 +537,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ComboboxTreeviewWithButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DatePickerWithTriangles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

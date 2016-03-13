@@ -11,69 +11,6 @@
         Title="ExpenseTranView" Width="330" ResizeMode="NoResize" SizeToContent="Height"
         mc:Ignorable="d"
         d:DataContext="{d:DesignData ExpenseTranViewModel}" >
-    <Window.Resources>
-        <ResourceDictionary>
-            <SolidColorBrush x:Key="TriangleNeutralBrush" Color="White" />
-            <SolidColorBrush x:Key="TriangleFocusedBrush" Color="Gray" />
-            <SolidColorBrush x:Key="TrianglePressedBrush" Color="#646464" />
-
-            <Style x:Key="TriangleLButtonStyle" TargetType="{x:Type Button}">
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Polygon Points="18,2 8,10 18,18" Stroke="Gray" Name="Triangle" Fill="{StaticResource TriangleNeutralBrush}">
-                                </Polygon>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="false">
-                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="TriangleRButtonStyle" TargetType="{x:Type Button}">
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Polygon Points="1,2 12,10 1,18" Stroke="#464646" Name="Triangle">
-                                    <Polygon.Fill>
-                                        <SolidColorBrush Color="White" />
-                                    </Polygon.Fill>
-                                </Polygon>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TriangleFocusedBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="Triangle" Property="Fill" Value="{StaticResource TrianglePressedBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="false">
-                                    <Setter TargetName="Triangle" Property="Stroke" Value="LightGray"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-        </ResourceDictionary>
-    </Window.Resources>
-
     <Grid>
         <StackPanel>
             <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="10,0,10,0"/>
@@ -83,8 +20,16 @@
 
             <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="10,0,10,0"/>
 
-            <Button Name="ButtonClose" Height="25" VerticalAlignment="Bottom" Content="Close"/>
+            <controls:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="10,40,0,0"/>
+            
+            <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,10,0,0" Height="24"/>
+            <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,20,0" BorderBrush="#555555" 
+                 Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="40" TextWrapping="WrapWithOverflow"/>
+
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,30,10">
+                <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent"/>
+                <Button Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
-
 </Window>
