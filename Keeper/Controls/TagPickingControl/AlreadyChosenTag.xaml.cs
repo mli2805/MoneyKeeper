@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Keeper.Controls.TagPickingControl
 {
@@ -14,7 +15,10 @@ namespace Keeper.Controls.TagPickingControl
         }
         private void DeleteTagOnClick(object sender, RoutedEventArgs e)
         {
+            DependencyObject parentObject = VisualTreeHelper.GetParent(this);
 
+            var dc = Parent;
+//            var dd = (AlreadyChosenTagVm)dc.DataContext;
         }
 
     }
