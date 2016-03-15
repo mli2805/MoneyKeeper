@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Keeper.Controls.AccNameSelectionControl;
 using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.Controls.TagPickingControl
@@ -24,5 +23,10 @@ namespace Keeper.Controls.TagPickingControl
 
         }
 
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var tagPickerVm = (TagPickerVm)DataContext;
+            tagPickerVm.Tags.Add(tagPickerVm.TagSelectorVm.MyAccName);
+        }
     }
 }

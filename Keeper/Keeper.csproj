@@ -140,9 +140,6 @@
     <Compile Include="Controls\AmountInputControl.xaml.cs">
       <DependentUpon>AmountInputControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ComboboxTreeviewWithButtons.xaml.cs">
-      <DependentUpon>ComboboxTreeviewWithButtons.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\AccNameSelectionControl\AccNameSelector.xaml.cs">
       <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
@@ -529,10 +526,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BarDiagramControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ComboboxTreeviewWithButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

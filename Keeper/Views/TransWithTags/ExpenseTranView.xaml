@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Keeper.Controls"
-        xmlns:cal="http://www.caliburnproject.org"
         xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.AccNameSelectionControl"
         xmlns:tagPickingControl="clr-namespace:Keeper.Controls.TagPickingControl"
         xml:lang="ru-RU"
@@ -17,13 +16,11 @@
             <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
             <controls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="10,0,0,0"/>
             <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" Foreground="Red"/>
-
             <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="10,10,10,0"/>
 
             <controls:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="10,40,0,0"/>
-            
             <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,10,0,0" Height="24"/>
-            <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,20,0" BorderBrush="#555555" 
+            <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,20,0" 
                  Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="40" TextWrapping="WrapWithOverflow"/>
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,30,10">
