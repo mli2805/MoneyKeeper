@@ -18,7 +18,7 @@
             <controls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="10,0,0,0"/>
             <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" Foreground="Red"/>
 
-            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="10,0,10,0"/>
+            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="10,10,10,0"/>
 
             <controls:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="10,40,0,0"/>
             

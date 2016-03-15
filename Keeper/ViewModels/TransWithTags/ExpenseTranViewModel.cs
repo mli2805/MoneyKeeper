@@ -64,7 +64,7 @@ namespace Keeper.ViewModels.TransWithTags
             {
                 var alreadyChosenTag = ListsForComboTrees.AccNamesForExpenseTags.FindThroughTheForest(tag.Name);
                 if (alreadyChosenTag != null)
-                    MyTagPickerVm.ListOfChosenTagsVm.Add(new AlreadyChosenTagVm() { Tag = alreadyChosenTag });
+                    MyTagPickerVm.Tags.Add(alreadyChosenTag); 
             }
 
             MyTagPickerVm.TagSelectorVm = _myAccNameSelectionControlInitializer.ForExpenseTags("");
