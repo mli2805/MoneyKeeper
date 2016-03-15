@@ -11,15 +11,15 @@
     <Grid>
         <StackPanel>
             <DockPanel>
-                <Button DockPanel.Dock="Right" Width="25" Height="25" Content="+" Background="Transparent" VerticalAlignment="Bottom"/>
+                <Button DockPanel.Dock="Right" Width="25" Height="25" Content="+" Background="Transparent" VerticalAlignment="Bottom" Click="ButtonBase_OnClick"/>
                 <accNameSelectionControl:AccNameSelector DataContext="{Binding TagSelectorVm}"/>
             </DockPanel>
             <ItemsControl ItemsSource="{Binding Tags}" Margin="5,5,10,0" d:DataContext="{d:DesignData TagPickerVm}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <DockPanel>
-                            <Button Content="x" Width="20" Height="20" DockPanel.Dock="Left"  VerticalAlignment="Top" Tag ="{Binding .}" 
-                                        Background="Transparent" BorderBrush="Transparent" Click="DeleteTagOnClick"/>
+                            <Button Content="x" Width="15" Height="15" Padding="0,-5,0,0" DockPanel.Dock="Left"  VerticalAlignment="Center" Tag ="{Binding .}" 
+                                        Background="Transparent" Click="DeleteTagOnClick"/>
                             <Label Content="{Binding Name}" Margin="0,-2,0,0" DockPanel.Dock="Right" />
                         </DockPanel>
                     </DataTemplate>
