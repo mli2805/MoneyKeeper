@@ -28,6 +28,7 @@ namespace Keeper.ViewModels.TransWithTags
         public AccNameSelectorVm ForExpenseTags(string activeAccountName)
         {
             return Build("Кому, за что", ButtonsForExpenseTags, ListsForComboTrees.AccNamesForExpenseTags, activeAccountName, "Прочие расходы");
+//            return Build("Теги", ButtonsForExpenseTags, ListsForComboTrees.AccNamesForExpenseTags, activeAccountName, "Прочие расходы");
         }
 
         public AccNameSelectorVm ForIncome(string activeAccountName)
