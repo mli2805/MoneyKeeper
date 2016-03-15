@@ -17,6 +17,11 @@ namespace Keeper.ViewModels.TransWithTags
         {
         }
 
+        public TranWithTags GetTran()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetTran(TranWithTags tran)
         {
             

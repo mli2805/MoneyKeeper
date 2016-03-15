@@ -1,4 +1,6 @@
-﻿using System.Composition;
+﻿using System.Collections.Generic;
+using System.Composition;
+using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
@@ -26,8 +28,6 @@ namespace Keeper.ViewModels.TransWithTags
         public string MyAccountBalance { get { return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
         public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
 
-        public bool ModalResult { get; set; }
-
         [ImportingConstructor]
         public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
             MyAccNameSelectionControlInitializer myAccNameSelectionControlInitializer, BalanceDuringTransactionHinter balanceDuringTransactionHinter)
@@ -44,6 +44,11 @@ namespace Keeper.ViewModels.TransWithTags
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Расход";
+        }
+
+        public TranWithTags GetTran()
+        {
+            return TranInWork;
         }
 
         public void SetTran(TranWithTags tran)
@@ -66,10 +71,26 @@ namespace Keeper.ViewModels.TransWithTags
                 if (alreadyChosenTag != null)
                     MyTagPickerVm.Tags.Add(alreadyChosenTag); 
             }
-
             MyTagPickerVm.TagSelectorVm = _myAccNameSelectionControlInitializer.ForExpenseTags("");
+            MyTagPickerVm.Tags.CollectionChanged += Tags_CollectionChanged;
 
             MyDatePickerVm = new DatePickerWithTrianglesVm() {SelectedDate = TranInWork.Timestamp };
+            MyDatePickerVm.PropertyChanged += MyDatePickerVm_PropertyChanged;
+        }
+
+        private void Tags_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            TranInWork.Tags = new List<Account>();
+            foreach (var accName in MyTagPickerVm.Tags)
+            {
+                TranInWork.Tags.Add(_accountTreeStraightener.Seek(accName.Name, _db.Accounts));
+            }
+
+        }
+
+        private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            TranInWork.Timestamp = MyDatePickerVm.SelectedDate;
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -93,15 +114,12 @@ namespace Keeper.ViewModels.TransWithTags
 
         public void Save()
         {
-            ModalResult = true;
-            //вызывающая форма должна забрать результат в TranInWork
-            TryClose();
+            TryClose(true);
         }
 
         public void Cancel()
         {
-            ModalResult = false;
-            TryClose();
+            TryClose(false);
         }
     }
 }
