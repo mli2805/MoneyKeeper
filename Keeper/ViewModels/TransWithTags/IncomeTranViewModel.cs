@@ -36,7 +36,6 @@ namespace Keeper.ViewModels.TransWithTags
         }
 
         public TranWithTags TranInWork { get; set; }
-        public string Result { get; set; }
 
         public string MyAccountBalance { get { return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
         public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
@@ -57,6 +56,11 @@ namespace Keeper.ViewModels.TransWithTags
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Income transaction with tags";
+        }
+
+        public TranWithTags GetTran()
+        {
+            return TranInWork;
         }
 
         public void SetTran(TranWithTags tran)
@@ -97,15 +101,12 @@ namespace Keeper.ViewModels.TransWithTags
         #endregion
         public void Save()
         {
-            Result = "Save";
-            //вызывающая форма должна забрать результат в TranInWork
-            TryClose();
+            TryClose(true);
         }
 
         public void Cancel()
         {
-            Result = "Cancel";
-            TryClose();
+            TryClose(false);
         }
     }
 }

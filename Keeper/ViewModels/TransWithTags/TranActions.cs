@@ -47,7 +47,8 @@ namespace Keeper.ViewModels.TransWithTags
                     break;
             }
             oneTranForm.SetTran(_selectedItem.Tran);
-            WindowManager.ShowDialog(oneTranForm);
+            bool? result = WindowManager.ShowDialog(oneTranForm);
+            if (result.HasValue && result.Value) _selectedItem.Tran = oneTranForm.GetTran().Clone();
         }
 
         private void MoveUp()
