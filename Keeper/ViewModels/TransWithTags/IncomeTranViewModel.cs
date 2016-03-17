@@ -9,9 +9,9 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class IncomeTranViewModel : Screen, IOneTranView
     {
-
         public TranWithTags TranInWork { get; set; }
         public IncomeControlVm MyIncomeControlVm { get; set; }
+        public OperationTypeChoiseControlVm MyOperationTypeChoiseControlVm { get; set; } = new OperationTypeChoiseControlVm();
 
         [ImportingConstructor]
         public IncomeTranViewModel()
@@ -32,7 +32,15 @@ namespace Keeper.ViewModels.TransWithTags
         {
             TranInWork = tran.Clone();
             MyIncomeControlVm.SetTran(TranInWork);
+            MyOperationTypeChoiseControlVm.PressedButton = TranInWork.Operation;
+            MyOperationTypeChoiseControlVm.PropertyChanged += MyOperationTypeChoiseControlVm_PropertyChanged;
         }
+
+        private void MyOperationTypeChoiseControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            
+        }
+
         public void Save()
         {
             TryClose(true);

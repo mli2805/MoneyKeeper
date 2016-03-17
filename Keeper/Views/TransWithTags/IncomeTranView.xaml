@@ -6,8 +6,7 @@
         xmlns:controls="clr-namespace:Keeper.Controls"
         mc:Ignorable="d"
         xml:lang="ru-RU"
-        Title="IncomeTranView" 
-        ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
+        Width="340" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <ResourceDictionary>
             <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
@@ -74,14 +73,9 @@
         </ResourceDictionary>
     </Window.Resources>
     <StackPanel>
-        <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
-            <Button Name="b1" Height="10" Width="77" Background="Red"/>
-            <Button Name="b2" Height="10" Width="77" Background="Gray"/>
-            <Button Name="b3" Height="10" Width="77" Background="Green"/>
-            <Button Name="b4" Height="10" Width="77" Background="DarkOliveGreen"/>
-        </StackPanel>
-
-        <controls:IncomeControl DataContext="{Binding MyIncomeControlVm}"/>
+        <controls:OperationTypeChoiseControl Margin="20,10,20,0" DataContext="{Binding MyOperationTypeChoiseControlVm}"/>
+        
+        <controls:IncomeControl Margin="20,0,20,0" DataContext="{Binding MyIncomeControlVm}"/>
         
         <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,10,0,0" Height="24"/>
         <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,20,0" 
@@ -89,7 +83,7 @@
 
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,30,10">
             <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent"/>
-            <Button Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent"/>
+            <Button Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent" IsCancel="True"/>
         </StackPanel>
     </StackPanel>
 </Window>

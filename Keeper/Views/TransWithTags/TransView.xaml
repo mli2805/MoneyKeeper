@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         xml:lang="ru-RU"
         Title="TransView" Height="600" Width="900"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>
         <ResourceDictionary>

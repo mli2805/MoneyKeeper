@@ -70,11 +70,11 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Button BorderBrush="White" HorizontalAlignment="Left" Margin="1,2,0,0" VerticalAlignment="Top" Width="20" Background="White" Height="20"
+        <Button BorderBrush="White" HorizontalAlignment="Left" Margin="-4,2,0,0" VerticalAlignment="Top" Width="20" Background="White" Height="20"
               Style="{StaticResource TriangleLButtonStyle}" Click="ButtonDecreaseOnClick"/>
-        <DatePicker HorizontalAlignment="Left" Margin="21,0,0,0" VerticalAlignment="Top" FirstDayOfWeek="Monday" Width="100"
+        <DatePicker HorizontalAlignment="Left" Margin="16,0,0,0" VerticalAlignment="Top" FirstDayOfWeek="Monday" Width="100"
                   Text="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="24" />
-        <Button BorderBrush="White" HorizontalAlignment="Left" Margin="122,2,0,0" VerticalAlignment="Top" Width="20" Background="White" Height="20"
+        <Button BorderBrush="White" HorizontalAlignment="Left" Margin="117,2,0,0" VerticalAlignment="Top" Width="20" Background="White" Height="20"
               Style="{StaticResource TriangleRButtonStyle}" Click="ButtonIncreaseOnClick"/>
     </Grid>
 </UserControl>
