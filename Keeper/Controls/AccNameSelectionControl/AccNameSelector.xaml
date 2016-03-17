@@ -19,7 +19,7 @@
     </UserControl.Resources>
 
     <Grid >
-        <StackPanel Orientation="Horizontal" Height="25" VerticalAlignment="Top" Margin="5,0,0,0">
+        <StackPanel Orientation="Horizontal" Height="25" VerticalAlignment="Top" Margin="0,0,0,0">
             <Label Content="{Binding ControlTitle}" Margin="0,0,20,0" VerticalAlignment="Top"/>
             <ItemsControl ItemsSource="{Binding Buttons}" Margin="0,5,0,0">
                 <ItemsControl.ItemsPanel>
@@ -36,7 +36,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-        <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Stretch" Margin="5,25,5,0" Background="White" 
+        <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Stretch" Margin="0,25,0,0" Background="White" 
                       VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource TreeViewDataTemplate}" 
                       ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
     </Grid>

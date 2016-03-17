@@ -12,7 +12,7 @@
         <StackPanel>
             <DockPanel>
                 <Button DockPanel.Dock="Right" Width="25" Height="25" Content="+" Background="Transparent" VerticalAlignment="Bottom" Click="ButtonBase_OnClick"/>
-                <accNameSelectionControl:AccNameSelector DataContext="{Binding TagSelectorVm}"/>
+                <accNameSelectionControl:AccNameSelector Margin="0,0,10,0" DataContext="{Binding TagSelectorVm}"/>
             </DockPanel>
             <ItemsControl ItemsSource="{Binding Tags}" Margin="5,5,10,0" d:DataContext="{d:DesignData TagPickerVm}">
                 <ItemsControl.ItemTemplate>

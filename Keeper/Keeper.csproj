@@ -152,6 +152,10 @@
       <DependentUpon>IncomeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\IncomeControlVm.cs" />
+    <Compile Include="Controls\OperationTypeChoiseControl.xaml.cs">
+      <DependentUpon>OperationTypeChoiseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OperationTypeChoiseControlVm.cs" />
     <Compile Include="Controls\TagPickingControl\TagPicker.xaml.cs">
       <DependentUpon>TagPicker.xaml</DependentUpon>
     </Compile>
@@ -538,6 +542,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\IncomeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationTypeChoiseControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
