@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:Keeper.Controls"
              xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.AccNameSelectionControl"
              xmlns:tagPickingControl="clr-namespace:Keeper.Controls.TagPickingControl"
+             xmlns:cal="http://www.caliburnproject.org"
+             cal:Bind.ModelWithoutContext="{Binding .}"
              mc:Ignorable="d" 
              d:DesignWidth="300">
     <Grid>
@@ -15,8 +17,10 @@
             <local:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="10,0,0,0"/>
             <Label Name="AmountInUsd" Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="95,0,0,0" Foreground="Red"/>
 
-            <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="10,0,10,0"/>
+            <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="10,10,10,0"/>
             <Label Name="MyAccountBalance" Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
+            
+            <local:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="10,30,0,0"/>
         </StackPanel>
     </Grid>
 </UserControl>
