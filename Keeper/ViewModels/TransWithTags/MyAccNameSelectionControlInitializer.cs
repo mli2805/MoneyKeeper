@@ -19,7 +19,7 @@ namespace Keeper.ViewModels.TransWithTags
             new Dictionary<string, string> { ["зпл"] = "БИБ Зарплатная GOLD", ["шкф"] = "Шкаф", ["юк"] = "Юлин кошелек", };
 
         private static readonly Dictionary<string, string> ButtonsForIncomeTags =
-            new Dictionary<string, string> { ["иит"] = "ИИТ", ["биб"] = "БИБ", ["газ"] = "БГПБ", ["%%"] = "Проценты по депозиту", };
+            new Dictionary<string, string> { ["иит"] = "ИИТ", ["биб"] = "БИБ", ["газ"] = "БГПБ", ["%%"] = "Проценты по депозитам", };
         public AccNameSelectorVm ForExpense(string activeAccountName)
         {
             return Build("Откуда", ButtonsForExpense, ListsForComboTrees.MyAccNamesForExpense, activeAccountName, "Мой кошелек");
@@ -28,7 +28,6 @@ namespace Keeper.ViewModels.TransWithTags
         public AccNameSelectorVm ForExpenseTags(string activeAccountName)
         {
             return Build("Кому, за что", ButtonsForExpenseTags, ListsForComboTrees.AccNamesForExpenseTags, activeAccountName, "Прочие расходы");
-//            return Build("Теги", ButtonsForExpenseTags, ListsForComboTrees.AccNamesForExpenseTags, activeAccountName, "Прочие расходы");
         }
 
         public AccNameSelectorVm ForIncome(string activeAccountName)

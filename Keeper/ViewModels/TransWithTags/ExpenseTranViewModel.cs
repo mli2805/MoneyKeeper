@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
-using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
@@ -25,8 +24,8 @@ namespace Keeper.ViewModels.TransWithTags
         public TagPickerVm MyTagPickerVm { get; set; }
         public DatePickerWithTrianglesVm MyDatePickerVm { get; set; }
 
-        public string MyAccountBalance { get { return _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork); } }
-        public string AmountInUsd { get { return _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork); } }
+        public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
+        public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
 
         [ImportingConstructor]
         public ExpenseTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener,
@@ -38,7 +37,7 @@ namespace Keeper.ViewModels.TransWithTags
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             MyAccNameSelectorVm = new AccNameSelectorVm();
             MyAmountInputControlVm = new AmountInputControlVm();
-            ListsForComboTrees.InitializeLists(db);
+            ListsForComboTrees.InitializeListsForExpense(db);
         }
 
         protected override void OnViewLoaded(object view)
@@ -85,7 +84,6 @@ namespace Keeper.ViewModels.TransWithTags
             {
                 TranInWork.Tags.Add(_accountTreeStraightener.Seek(accName.Name, _db.Accounts));
             }
-
         }
 
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
