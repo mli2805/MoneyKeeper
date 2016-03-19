@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
+using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Controls.AccNameSelectionControl;
@@ -14,6 +15,18 @@ namespace Keeper.Controls
     [Export]
     class IncomeControlVm : PropertyChangedBase
     {
+        private Visibility _visibility;
+        public Visibility Visibility
+        {
+            get { return _visibility; }
+            set
+            {
+                if (value == _visibility) return;
+                _visibility = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly MyAccNameSelectionControlInitializer _myAccNameSelectionControlInitializer;

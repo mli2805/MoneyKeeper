@@ -148,6 +148,10 @@
       <DependentUpon>DatePickerWithTriangles.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DatePickerWithTrianglesVm.cs" />
+    <Compile Include="Controls\ExpenseControl.xaml.cs">
+      <DependentUpon>ExpenseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExpenseControlVm.cs" />
     <Compile Include="Controls\IncomeControl.xaml.cs">
       <DependentUpon>IncomeControl.xaml</DependentUpon>
     </Compile>
@@ -220,11 +224,10 @@
     <Compile Include="DomainModel\WorkTypes\AccName.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
     <Compile Include="Controls\AccNameSelectionControl\AccNameButtonVm.cs" />
-    <Compile Include="ViewModels\TransWithTags\IncomeTranViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
-    <Compile Include="ViewModels\TransWithTags\ExpenseTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />
     <Compile Include="ViewModels\TransWithTags\MyAccNameSelectionControlInitializer.cs" />
+    <Compile Include="ViewModels\TransWithTags\OneTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TranActions.cs" />
     <Compile Include="ViewModels\Transactions\TransactionChangesVisualizer.cs" />
     <Compile Include="DomainModel\WorkTypes\YearMonth.cs" />
@@ -370,7 +373,6 @@
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
-    <Compile Include="ViewModels\TransWithTags\TransferTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TransViewModel.cs" />
     <Compile Include="Utils\FiltersOnDomainClasses\FiltersForTransactions.cs" />
     <Compile Include="Views\Deposits\BankDepositOffersView.xaml.cs">
@@ -421,15 +423,8 @@
     <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TransWithTags\ExpenseTranView.xaml.cs">
-      <DependentUpon>ExpenseTranView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TransWithTags\IncomeTranView.xaml.cs">
-      <DependentUpon>IncomeTranView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\TransWithTags\IOneTranView.cs" />
-    <Compile Include="Views\TransWithTags\TransfrerTranView.xaml.cs">
-      <DependentUpon>TransfrerTranView.xaml</DependentUpon>
+    <Compile Include="Views\TransWithTags\OneTranView.xaml.cs">
+      <DependentUpon>OneTranView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TransWithTags\TransView.xaml.cs">
       <DependentUpon>TransView.xaml</DependentUpon>
@@ -538,6 +533,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DatePickerWithTriangles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ExpenseControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -677,19 +676,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TransWithTags\ExpenseTranView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TransWithTags\IncomeTranView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Transactions\TransactionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TransWithTags\TransfrerTranView.xaml">
+    <Page Include="Views\TransWithTags\OneTranView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
