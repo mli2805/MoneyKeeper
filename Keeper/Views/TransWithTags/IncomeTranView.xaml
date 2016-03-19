@@ -72,18 +72,24 @@
 
         </ResourceDictionary>
     </Window.Resources>
-    <StackPanel>
-        <controls:OperationTypeChoiseControl Margin="20,10,20,0" DataContext="{Binding MyOperationTypeChoiseControlVm}"/>
-        
-        <controls:IncomeControl Margin="20,0,20,0" DataContext="{Binding MyIncomeControlVm}"/>
-        
-        <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,10,0,0" Height="24"/>
-        <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,20,0" 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <controls:IncomeControl Margin="20,0,20,0" DataContext="{Binding MyIncomeControlVm}"/>
+
+            <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,10,0,0" Height="24"/>
+            <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,20,0" 
                  Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="40" TextWrapping="WrapWithOverflow"/>
 
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,30,10">
-            <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent"/>
-            <Button Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent" IsCancel="True"/>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,30,10">
+                <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent"/>
+                <Button Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent" IsCancel="True"/>
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+        <controls:OpTypeChoiceControl Grid.Column="1" Margin="0,20,0,50" DataContext="{Binding MyOpTypeChoiceControlVm}"/>
+
+    </Grid>
 </Window>

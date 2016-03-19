@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Keeper.DomainModel.Enumes;
-using Keeper.Utils.Common;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.DiagramDomainModel;
-using Keeper.ViewModels;
 using Brush = System.Windows.Media.Brush;
 using Point = System.Windows.Point;
 

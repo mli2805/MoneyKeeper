@@ -10,7 +10,7 @@ namespace Keeper.ViewModels.TransWithTags
     {
         public TranWithTags TranInWork { get; set; }
         public IncomeControlVm MyIncomeControlVm { get; set; }
-        public OperationTypeChoiseControlVm MyOperationTypeChoiseControlVm { get; set; } = new OperationTypeChoiseControlVm();
+        public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
         [ImportingConstructor]
         public IncomeTranViewModel()
@@ -20,7 +20,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Income transaction with tags";
+            DisplayName = "";
         }
 
         public TranWithTags GetTran()
@@ -31,13 +31,13 @@ namespace Keeper.ViewModels.TransWithTags
         {
             TranInWork = tran.Clone();
             MyIncomeControlVm.SetTran(TranInWork);
-            MyOperationTypeChoiseControlVm.PressedButton = TranInWork.Operation;
-            MyOperationTypeChoiseControlVm.PropertyChanged += MyOperationTypeChoiseControlVm_PropertyChanged;
+            MyOpTypeChoiceControlVm.PressedButton = TranInWork.Operation;
+            MyOpTypeChoiceControlVm.PropertyChanged += MyOpTypeChoiceControlVm_PropertyChanged;
         }
 
-        private void MyOperationTypeChoiseControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MyOpTypeChoiceControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            
+            DisplayName = "Расход";
         }
 
         public void Save()
