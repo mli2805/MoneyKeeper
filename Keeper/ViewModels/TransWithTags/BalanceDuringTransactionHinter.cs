@@ -30,14 +30,14 @@ namespace Keeper.ViewModels.TransWithTags
                 : String.Format(TemplateForCurrencies, before, after, currency.ToString().ToLower());
         }
 
-        public string GetAmountInUsd(DomainModel.Transactions.TranWithTags tranInWork)
+        public string GetAmountInUsd(TranWithTags tranInWork)
         {
             return tranInWork.Currency != null ? 
                 tranInWork.Currency == CurrencyCodes.USD ? "" :
                 _rateExtractor.GetUsdEquivalentString(tranInWork.Amount, (CurrencyCodes)tranInWork.Currency, tranInWork.Timestamp) : "не задана валюта";
         }
 
-        public string GetMyAccountBalance(DomainModel.Transactions.TranWithTags transactionInWork)
+        public string GetMyAccountBalance(TranWithTags transactionInWork)
         {
             if (transactionInWork == null || transactionInWork.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
 

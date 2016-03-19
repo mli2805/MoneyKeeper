@@ -1,21 +1,25 @@
 ﻿using System.Composition;
+using System.Windows;
 using Caliburn.Micro;
 using Keeper.Controls;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 
 namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
-    class IncomeTranViewModel : Screen, IOneTranView
+    class OneTranViewModel : Screen
     {
         public TranWithTags TranInWork { get; set; }
         public IncomeControlVm MyIncomeControlVm { get; set; }
+        public ExpenseControlVm MyExpenseControlVm { get; set; }
         public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
         [ImportingConstructor]
-        public IncomeTranViewModel()
+        public OneTranViewModel()
         {
             MyIncomeControlVm = IoC.Get<IncomeControlVm>();
+            MyExpenseControlVm = IoC.Get<ExpenseControlVm>();
         }
 
         protected override void OnViewLoaded(object view)
@@ -30,7 +34,18 @@ namespace Keeper.ViewModels.TransWithTags
         public void SetTran(TranWithTags tran)
         {
             TranInWork = tran.Clone();
-            MyIncomeControlVm.SetTran(TranInWork);
+                MyIncomeControlVm.SetTran(TranInWork);
+                MyExpenseControlVm.SetTran(TranInWork);
+            if (TranInWork.Operation == OperationType.Доход)
+            {
+                MyIncomeControlVm.Visibility = Visibility.Visible;
+                MyExpenseControlVm.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                MyExpenseControlVm.Visibility = Visibility.Visible;
+                MyIncomeControlVm.Visibility = Visibility.Collapsed;
+            }
             MyOpTypeChoiceControlVm.PressedButton = TranInWork.Operation;
             MyOpTypeChoiceControlVm.PropertyChanged += MyOpTypeChoiceControlVm_PropertyChanged;
         }
@@ -49,5 +64,6 @@ namespace Keeper.ViewModels.TransWithTags
         {
             TryClose(false);
         }
+
     }
 }

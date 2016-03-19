@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Keeper.Views.TransWithTags
+namespace Keeper.Controls
 {
     /// <summary>
-    /// Interaction logic for TransfrerTranView.xaml
+    /// Interaction logic for ExpenseControl.xaml
     /// </summary>
-    public partial class TransfrerTranView : Window
+    public partial class ExpenseControl : UserControl
     {
-        public TransfrerTranView()
+        public ExpenseControl()
         {
             InitializeComponent();
         }

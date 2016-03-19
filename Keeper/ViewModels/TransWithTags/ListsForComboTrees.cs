@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
