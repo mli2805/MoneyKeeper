@@ -36,7 +36,7 @@ namespace Keeper.Controls
             _accountTreeStraightener = accountTreeStraightener;
             _myAccNameSelectionControlInitializer = myAccNameSelectionControlInitializer;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
-            ListsForComboTrees.InitializeLists(_db);
+            ListsForComboTrees.InitializeListsForIncome(_db);
         }
 
         public void SetTran(TranWithTags tran)

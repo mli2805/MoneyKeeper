@@ -1,7 +1,6 @@
 ﻿using System.Composition;
 using Caliburn.Micro;
 using Keeper.Controls;
-using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
 
 namespace Keeper.ViewModels.TransWithTags
