@@ -12,9 +12,5 @@ namespace Keeper.Controls.AccNameSelectionControl
             Name = name;
             AccName = accName;
         }
-
-        public void Click()
-        {
-        }
     }
 }
