@@ -14,10 +14,11 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Name="B0" Click="TypeButtonOnClick" Margin="0,5" Tag="0" Background="LightSkyBlue"/>
+        <Button Grid.Row="0" Name="B0" Click="TypeButtonOnClick" Margin="0,5" Tag="0" Background="LightSkyBlue" />
         <Button Grid.Row="1" Name="B1" Click="TypeButtonOnClick" Margin="0,5" Tag="1" Background="Pink"/>
         <Button Grid.Row="2" Name="B2" Click="TypeButtonOnClick" Margin="0,5" Tag="2" Background="LightGray"/>
         <Button Grid.Row="3" Name="B3" Click="TypeButtonOnClick" Margin="0,5" Tag="3" Background="GreenYellow"/>
         <Button Grid.Row="4" Name="B4" Click="TypeButtonOnClick" Margin="0,5" Tag="4" Background="DarkSeaGreen"/>
     </Grid>
 </UserControl>
+
