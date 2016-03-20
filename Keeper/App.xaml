@@ -40,6 +40,33 @@
                         </GradientBrush.GradientStops>
                     </LinearGradientBrush>
 
+                    <Style x:Key="OpTypeTabStyle" TargetType="{x:Type Button}" >
+                        <Setter Property="SnapsToDevicePixels" Value="true"/>
+                        <Setter Property="OverridesDefaultStyle" Value="true"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="BorderOfMyButton" BorderThickness="1" Background="LightSkyBlue" BorderBrush="Gray">
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <!--              мышь над кнопкой-->
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter TargetName="BorderOfMyButton" Property="BorderThickness" Value="0"  />
+                                        </Trigger>
+                                        <!--              удерживается нажатой левая кнопка мыши-->
+                                        <Trigger Property="IsPressed" Value="true">
+                                            <Setter TargetName="BorderOfMyButton" Property="BorderThickness" Value="0" />
+                                        </Trigger>
+                                        <!--              кнопка задизэйблена-->
+                                        <Trigger Property="IsEnabled" Value="false">
+                                            <Setter Property="Background" Value="White"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
                     <Style x:Key="MyButtonStyle" TargetType="{x:Type Button}" >
                         <Setter Property="SnapsToDevicePixels" Value="true"/>
                         <Setter Property="OverridesDefaultStyle" Value="true"/>
