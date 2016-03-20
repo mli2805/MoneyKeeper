@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.OneTranViewControls.SubControls
 {
     /// <summary>
     /// Interaction logic for OpTypeChoiceControl.xaml

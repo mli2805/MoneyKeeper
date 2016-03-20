@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 
@@ -63,6 +64,16 @@ namespace Keeper.DomainModel.Transactions
                 default:
                     return 0;
             }
+        }
+
+        public static Brush TranFontColor(this TranWithTags tran)
+        {
+            if (tran.Operation == OperationType.Доход) return Brushes.Blue;
+            if (tran.Operation == OperationType.Расход) return Brushes.Red;
+            if (tran.Operation == OperationType.Перенос) return Brushes.Black;
+            if (tran.Operation == OperationType.Обмен || tran.Operation == OperationType.ОбменПеренос) return Brushes.DarkGreen;
+            if (tran.Operation == OperationType.Форекс) return Brushes.DarkViolet;
+            return Brushes.Gray;
         }
     }
 }

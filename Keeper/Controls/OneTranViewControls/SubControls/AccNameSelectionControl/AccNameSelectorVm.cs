@@ -2,7 +2,7 @@
 using Caliburn.Micro;
 using Keeper.DomainModel.WorkTypes;
 
-namespace Keeper.Controls.AccNameSelectionControl
+namespace Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl
 {
     class AccNameSelectorVm : PropertyChangedBase
     {

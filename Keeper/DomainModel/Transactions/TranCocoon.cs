@@ -62,18 +62,8 @@ namespace Keeper.DomainModel.Transactions
                 return Brushes.Azure;
             }
         }
-        public Brush TransactionFontColor
-        {
-            get
-            {
-                if (Tran.Operation == OperationType.Доход) return Brushes.Blue;
-                if (Tran.Operation == OperationType.Расход) return Brushes.Red;
-                if (Tran.Operation == OperationType.Перенос) return Brushes.Black;
-                if (Tran.Operation == OperationType.Обмен || Tran.Operation == OperationType.ОбменПеренос) return Brushes.DarkGreen;
-                if (Tran.Operation == OperationType.Форекс) return Brushes.DarkViolet;
-                return Brushes.Gray;
-            }
-        }
+
+        public Brush TransactionFontColor => Tran.TranFontColor();
         #endregion
 
         #region ' _isSelected '

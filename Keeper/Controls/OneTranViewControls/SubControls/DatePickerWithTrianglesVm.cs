@@ -1,7 +1,7 @@
 ﻿using System;
 using Caliburn.Micro;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.OneTranViewControls.SubControls
 {
     class DatePickerWithTrianglesVm : PropertyChangedBase
     {

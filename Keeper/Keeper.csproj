@@ -136,34 +136,34 @@
     </Compile>
     <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
-    <Compile Include="Controls\AmountInputControlVm.cs" />
-    <Compile Include="Controls\AmountInputControl.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControlVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl.xaml.cs">
       <DependentUpon>AmountInputControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AccNameSelectionControl\AccNameSelector.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameSelector.xaml.cs">
       <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AccNameSelectionControl\AccNameSelectorVm.cs" />
-    <Compile Include="Controls\DatePickerWithTriangles.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\DatePickerWithTriangles.xaml.cs">
       <DependentUpon>DatePickerWithTriangles.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DatePickerWithTrianglesVm.cs" />
-    <Compile Include="Controls\ExpenseControl.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\SubControls\DatePickerWithTrianglesVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\ExpenseControl.xaml.cs">
       <DependentUpon>ExpenseControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ExpenseControlVm.cs" />
-    <Compile Include="Controls\IncomeControl.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\ExpenseControlVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\IncomeControl.xaml.cs">
       <DependentUpon>IncomeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\IncomeControlVm.cs" />
-    <Compile Include="Controls\OpTypeChoiceControl.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\IncomeControlVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\OpTypeChoiceControl.xaml.cs">
       <DependentUpon>OpTypeChoiceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\OpTypeChoiceControlVm.cs" />
-    <Compile Include="Controls\TagPickingControl\TagPicker.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\SubControls\OpTypeChoiceControlVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\TagPickingControl\TagPicker.xaml.cs">
       <DependentUpon>TagPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TagPickingControl\TagPickerVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\TagPickingControl\TagPickerVm.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
@@ -223,10 +223,10 @@
     <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="DomainModel\WorkTypes\AccName.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
-    <Compile Include="Controls\AccNameSelectionControl\AccNameButtonVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
     <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />
-    <Compile Include="ViewModels\TransWithTags\MyAccNameSelectionControlInitializer.cs" />
+    <Compile Include="ViewModels\TransWithTags\AccNameSelectionControlInitializer.cs" />
     <Compile Include="ViewModels\TransWithTags\OneTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TranActions.cs" />
     <Compile Include="ViewModels\Transactions\TransactionChangesVisualizer.cs" />
@@ -524,7 +524,7 @@
     <Resource Include="Resources\keeper.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\AmountInputControl.xaml">
+    <Page Include="Controls\OneTranViewControls\SubControls\AmountInputControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -532,19 +532,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DatePickerWithTriangles.xaml">
+    <Page Include="Controls\OneTranViewControls\SubControls\DatePickerWithTriangles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ExpenseControl.xaml">
+    <Page Include="Controls\OneTranViewControls\ExpenseControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\IncomeControl.xaml">
+    <Page Include="Controls\OneTranViewControls\IncomeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\OpTypeChoiceControl.xaml">
+    <Page Include="Controls\OneTranViewControls\SubControls\OpTypeChoiceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -564,11 +564,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AccNameSelectionControl\AccNameSelector.xaml">
+    <Page Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TagPickingControl\TagPicker.xaml">
+    <Page Include="Controls\OneTranViewControls\SubControls\TagPickingControl\TagPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
