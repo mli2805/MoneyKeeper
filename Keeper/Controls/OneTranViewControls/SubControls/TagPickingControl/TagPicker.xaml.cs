@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Keeper.DomainModel.WorkTypes;
 
-namespace Keeper.Controls.TagPickingControl
+namespace Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl
 {
     /// <summary>
     /// Interaction logic for TagPicker.xaml

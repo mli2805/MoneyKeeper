@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using Keeper.Controls.AccNameSelectionControl;
+using Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl;
 using Keeper.DomainModel.WorkTypes;
 
-namespace Keeper.Controls.TagPickingControl
+namespace Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl
 {
     class TagPickerVm
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.OneTranViewControls
 {
     /// <summary>
     /// Interaction logic for IncomeControl.xaml

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using Keeper.Controls.AccNameSelectionControl;
+using Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl;
+using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Transactions;
 using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
-    class MyAccNameSelectionControlInitializer
+    class AccNameSelectionControlInitializer
     {
         private static readonly Dictionary<string, string> ButtonsForExpense =
             new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Сберегательная", ["юк"] = "Юлин кошелек", };
@@ -20,24 +22,27 @@ namespace Keeper.ViewModels.TransWithTags
 
         private static readonly Dictionary<string, string> ButtonsForIncomeTags =
             new Dictionary<string, string> { ["иит"] = "ИИТ", ["биб"] = "БИБ", ["газ"] = "БГПБ", ["%%"] = "Проценты по депозитам", };
-        public AccNameSelectorVm ForExpense(string activeAccountName)
+
+        public AccNameSelectorVm ForMyAccount(TranWithTags tran)
         {
-            return Build("Откуда", ButtonsForExpense, ListsForComboTrees.MyAccNamesForExpense, activeAccountName, "Мой кошелек");
+            switch (tran.Operation)
+            {
+                case OperationType.Доход: return Build("Куда", ButtonsForIncome, ListsForComboTrees.MyAccNamesForIncome, tran.MyAccount.Name, "Шкаф");
+                case OperationType.Расход: return Build("Откуда", ButtonsForExpense, ListsForComboTrees.MyAccNamesForExpense, tran.MyAccount.Name, "Мой кошелек");
+                default: return Build("Откуда", ButtonsForExpense, ListsForComboTrees.MyAccNamesForExpense, tran.MyAccount.Name, "Мой кошелек");
+            }
         }
 
-        public AccNameSelectorVm ForExpenseTags(string activeAccountName)
+        public AccNameSelectorVm ForTags(TranWithTags tran)
         {
-            return Build("Кому, за что", ButtonsForExpenseTags, ListsForComboTrees.AccNamesForExpenseTags, activeAccountName, "Прочие расходы");
+            switch (tran.Operation)
+            {
+                case OperationType.Доход: return Build("Кто, за что", ButtonsForIncomeTags, ListsForComboTrees.AccNamesForIncomeTags, tran.MyAccount.Name, "ИИТ");
+                case OperationType.Расход: return Build("Кому, за что", ButtonsForExpenseTags, ListsForComboTrees.AccNamesForExpenseTags, tran.MyAccount.Name, "Прочие расходы");
+                default: return Build("Кому, за что", ButtonsForExpenseTags, ListsForComboTrees.AccNamesForExpenseTags, tran.MyAccount.Name, "Прочие расходы");
+            }
         }
 
-        public AccNameSelectorVm ForIncome(string activeAccountName)
-        {
-            return Build("Куда", ButtonsForIncome, ListsForComboTrees.MyAccNamesForIncome, activeAccountName, "Шкаф");
-        }
-        public AccNameSelectorVm ForIncomeTags(string activeAccountName)
-        {
-            return Build("Кто, за что", ButtonsForIncomeTags, ListsForComboTrees.AccNamesForIncomeTags, activeAccountName, "ИИТ");
-        }
         private AccNameSelectorVm Build(string controlTitle, Dictionary<string, string> frequentAccountButtonNames,
                                             List<AccName> availableAccNames, string activeAccountName, string defaultAccountName)
         {

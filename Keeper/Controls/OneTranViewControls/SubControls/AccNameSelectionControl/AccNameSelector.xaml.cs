@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Keeper.Controls.AccNameSelectionControl
+namespace Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl
 {
     /// <summary>
     /// Interaction logic for AccNameSelector.xaml

@@ -1,6 +1,6 @@
 using Keeper.DomainModel.WorkTypes;
 
-namespace Keeper.Controls.AccNameSelectionControl
+namespace Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl
 {
     public class AccNameButtonVm
     {

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.OneTranViewControls.SubControls
 {
     /// <summary>
     /// Interaction logic for DatePickerWithTriangles.xaml

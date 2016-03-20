@@ -3,17 +3,18 @@ using System.Composition;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.Controls.AccNameSelectionControl;
-using Keeper.Controls.TagPickingControl;
+using Keeper.Controls.OneTranViewControls.SubControls;
+using Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl;
+using Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils.AccountEditing;
 using Keeper.ViewModels.TransWithTags;
 
-namespace Keeper.Controls
+namespace Keeper.Controls.OneTranViewControls
 {
     [Export]
-    class IncomeControlVm : PropertyChangedBase
+    class ExpenseControlVm : PropertyChangedBase
     {
         private Visibility _visibility;
         public Visibility Visibility
@@ -26,10 +27,9 @@ namespace Keeper.Controls
                 NotifyOfPropertyChange();
             }
         }
-
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
-        private readonly MyAccNameSelectionControlInitializer _myAccNameSelectionControlInitializer;
+        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         public TranWithTags TranInWork { get; set; }
@@ -42,14 +42,14 @@ namespace Keeper.Controls
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
 
         [ImportingConstructor]
-        public IncomeControlVm(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter, 
-                 MyAccNameSelectionControlInitializer myAccNameSelectionControlInitializer)
+        public ExpenseControlVm(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
+                 AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
-            _myAccNameSelectionControlInitializer = myAccNameSelectionControlInitializer;
+            _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
-            ListsForComboTrees.InitializeListsForIncome(_db);
+            ListsForComboTrees.InitializeListsForExpense(_db);
         }
 
         public void SetTran(TranWithTags tran)
@@ -57,22 +57,21 @@ namespace Keeper.Controls
             TranInWork = tran;
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
 
-            MyAccNameSelectorVm = _myAccNameSelectionControlInitializer.ForIncome(TranInWork.MyAccount.Name);
+            MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
 
             MyAmountInputControlVm = new AmountInputControlVm
-            { LabelContent = "Сколько", AmountColor = Brushes.Blue, Amount = TranInWork.Amount, Currency = TranInWork.Currency };
+            { LabelContent = "Сколько", AmountColor = TranInWork.TranFontColor(), Amount = TranInWork.Amount, Currency = TranInWork.Currency };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
 
 
-            MyTagPickerVm = new TagPickerVm();
+            MyTagPickerVm = new TagPickerVm {TagSelectorVm = _accNameSelectionControlInitializer.ForTags(TranInWork)};
             foreach (var tag in tran.Tags)
             {
-                var alreadyChosenTag = ListsForComboTrees.AccNamesForIncomeTags.FindThroughTheForest(tag.Name);
+                var alreadyChosenTag = MyTagPickerVm.TagSelectorVm.AvailableAccNames.FindThroughTheForest(tag.Name);
                 if (alreadyChosenTag != null)
                     MyTagPickerVm.Tags.Add(alreadyChosenTag);
             }
-            MyTagPickerVm.TagSelectorVm = _myAccNameSelectionControlInitializer.ForIncomeTags("");
             MyTagPickerVm.Tags.CollectionChanged += Tags_CollectionChanged;
 
             MyDatePickerVm = new DatePickerWithTrianglesVm() { SelectedDate = TranInWork.Timestamp };
@@ -118,6 +117,5 @@ namespace Keeper.Controls
                     break;
             }
         }
-
     }
 }
