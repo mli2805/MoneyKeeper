@@ -23,16 +23,29 @@ namespace Keeper.ViewModels.TransWithTags
         private static readonly Dictionary<string, string> ButtonsForIncomeTags =
             new Dictionary<string, string> { ["иит"] = "ИИТ", ["биб"] = "БИБ", ["газ"] = "БГПБ", ["%%"] = "Проценты по депозитам", };
 
+        private static readonly Dictionary<string, string> ButtonsForTransfer =
+            new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["юк"] = "Юлин кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Сберегательная", ["шкф"] = "Шкаф", };
+
+
         public AccNameSelectorVm ForMyAccount(TranWithTags tran)
         {
             switch (tran.Operation)
             {
                 case OperationType.Доход: return Build("Куда", ButtonsForIncome, ListsForComboTrees.MyAccNamesForIncome, tran.MyAccount.Name, "Шкаф");
                 case OperationType.Расход: return Build("Откуда", ButtonsForExpense, ListsForComboTrees.MyAccNamesForExpense, tran.MyAccount.Name, "Мой кошелек");
+                case OperationType.Перенос: return Build("Откуда", ButtonsForTransfer, ListsForComboTrees.MyAccNamesForTransfer, tran.MyAccount.Name, "Мой кошелек");
                 default: return Build("Откуда", ButtonsForExpense, ListsForComboTrees.MyAccNamesForExpense, tran.MyAccount.Name, "Мой кошелек");
             }
         }
 
+        public AccNameSelectorVm ForMySecondAccount(TranWithTags tran)
+        {
+            switch (tran.Operation)
+            {
+                case OperationType.Перенос: return Build("Куда", ButtonsForTransfer, ListsForComboTrees.MyAccNamesForTransfer, tran.MySecondAccount.Name, "Юлин кошелек");
+                default: return Build("Куда", ButtonsForTransfer, ListsForComboTrees.MyAccNamesForTransfer, tran.MyAccount.Name, "Юлин кошелек");
+            }
+        }
         public AccNameSelectorVm ForTags(TranWithTags tran)
         {
             switch (tran.Operation)
