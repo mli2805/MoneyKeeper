@@ -136,6 +136,7 @@
     </Compile>
     <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="Controls\OneTranViewControls\UniversalControlVm.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControlVm.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl.xaml.cs">
       <DependentUpon>AmountInputControl.xaml</DependentUpon>
@@ -151,11 +152,9 @@
     <Compile Include="Controls\OneTranViewControls\ExpenseControl.xaml.cs">
       <DependentUpon>ExpenseControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\OneTranViewControls\ExpenseControlVm.cs" />
     <Compile Include="Controls\OneTranViewControls\IncomeControl.xaml.cs">
       <DependentUpon>IncomeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\OneTranViewControls\IncomeControlVm.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\OpTypeChoiceControl.xaml.cs">
       <DependentUpon>OpTypeChoiceControl.xaml</DependentUpon>
     </Compile>
@@ -164,6 +163,9 @@
       <DependentUpon>TagPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\OneTranViewControls\SubControls\TagPickingControl\TagPickerVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\TransferControl.xaml.cs">
+      <DependentUpon>TransferControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
@@ -545,6 +547,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\OneTranViewControls\SubControls\OpTypeChoiceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OneTranViewControls\TransferControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

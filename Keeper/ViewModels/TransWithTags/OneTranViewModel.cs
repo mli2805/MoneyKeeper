@@ -13,15 +13,17 @@ namespace Keeper.ViewModels.TransWithTags
     class OneTranViewModel : Screen
     {
         public TranWithTags TranInWork { get; set; }
-        public IncomeControlVm MyIncomeControlVm { get; set; }
-        public ExpenseControlVm MyExpenseControlVm { get; set; }
+        public UniversalControlVm MyIncomeControlVm { get; set; }
+        public UniversalControlVm MyExpenseControlVm { get; set; }
+        public UniversalControlVm MyTransferControlVm { get; set; }
         public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
         [ImportingConstructor]
         public OneTranViewModel()
         {
-            MyIncomeControlVm = IoC.Get<IncomeControlVm>();
-            MyExpenseControlVm = IoC.Get<ExpenseControlVm>();
+            MyIncomeControlVm = IoC.Get<UniversalControlVm>();
+            MyExpenseControlVm = IoC.Get<UniversalControlVm>();
+            MyTransferControlVm = IoC.Get<UniversalControlVm>();
         }
 
         protected override void OnViewLoaded(object view)
@@ -33,21 +35,25 @@ namespace Keeper.ViewModels.TransWithTags
         {
             return TranInWork;
         }
+
+        private void SetVisibility(OperationType opType)
+        {
+            MyIncomeControlVm.Visibility = Visibility.Collapsed;
+            MyExpenseControlVm.Visibility = Visibility.Collapsed;
+            MyTransferControlVm.Visibility = Visibility.Collapsed;
+            if (opType == OperationType.Доход) MyIncomeControlVm.Visibility = Visibility.Visible;
+            if (opType == OperationType.Расход) MyExpenseControlVm.Visibility = Visibility.Visible;
+            if (opType == OperationType.Перенос) MyTransferControlVm.Visibility = Visibility.Visible;
+        }
         public void SetTran(TranWithTags tran)
         {
             TranInWork = tran.Clone();
-                MyIncomeControlVm.SetTran(TranInWork);
-                MyExpenseControlVm.SetTran(TranInWork);
-            if (TranInWork.Operation == OperationType.Доход)
-            {
-                MyIncomeControlVm.Visibility = Visibility.Visible;
-                MyExpenseControlVm.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                MyExpenseControlVm.Visibility = Visibility.Visible;
-                MyIncomeControlVm.Visibility = Visibility.Collapsed;
-            }
+            MyTransferControlVm.SetTran(TranInWork);
+            MyIncomeControlVm.SetTran(TranInWork);
+            MyExpenseControlVm.SetTran(TranInWork);
+
+            SetVisibility(tran.Operation);
+
             MyOpTypeChoiceControlVm.PressedButton = TranInWork.Operation;
             MyOpTypeChoiceControlVm.PropertyChanged += MyOpTypeChoiceControlVm_PropertyChanged;
         }

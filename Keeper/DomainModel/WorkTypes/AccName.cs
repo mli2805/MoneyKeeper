@@ -14,6 +14,12 @@ namespace Keeper.DomainModel.WorkTypes
         public AccName Parent { get; set; }
         public List<AccName> Children { get; private set; } = new List<AccName>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account">корневой account, с которого начать</param>
+        /// <param name="cutBranches">список ветвей, которые обрубить</param>
+        /// <returns></returns>
         public AccName PopulateFromAccount(Account account, List<string> cutBranches)
         {
             var result = new AccName();

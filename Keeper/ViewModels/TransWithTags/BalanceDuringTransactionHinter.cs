@@ -46,5 +46,15 @@ namespace Keeper.ViewModels.TransWithTags
 
             return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MyAccount,transactionInWork.Currency), transactionInWork.Currency);
         }
+
+        public string GetMySecondAccountBalance(TranWithTags transactionInWork)
+        {
+            if (transactionInWork == null || transactionInWork.MySecondAccount == null || !transactionInWork.MySecondAccount.Is("Мои")) return "было ххх - стало ххх";
+
+            var balanceBefore =
+                _db.TransWithTags.Sum(a => a.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+
+            return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency), transactionInWork.Currency);
+        }
     }
 }
