@@ -36,12 +36,14 @@ namespace Keeper.Controls.OneTranViewControls
         public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
         public AccNameSelectorVm MySecondAccNameSelectorVm { get; set; }
         public AmountInputControlVm MyAmountInputControlVm { get; set; }
+        public AmountInputControlVm MyAmountInReturnInputControlVm { get; set; }
         public TagPickerVm MyTagPickerVm { get; set; }
         public DatePickerWithTrianglesVm MyDatePickerVm { get; set; }
 
         public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
         public string MySecondAccountBalance => _balanceDuringTransactionHinter.GetMySecondAccountBalance(TranInWork);
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
+        public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
 
         [ImportingConstructor]
         public UniversalControlVm(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
@@ -66,8 +68,13 @@ namespace Keeper.Controls.OneTranViewControls
             MySecondAccNameSelectorVm.PropertyChanged += MySecondAccNameSelectorVm_PropertyChanged;
 
             MyAmountInputControlVm = new AmountInputControlVm
-            { LabelContent = "Сколько", AmountColor = TranInWork.TranFontColor(), Amount = TranInWork.Amount, Currency = TranInWork.Currency };
+                { LabelContent = TranInWork.CurrencyInReturn == null ? "Сколько" : "Сдал", AmountColor = TranInWork.TranFontColor(),
+                  Amount = TranInWork.Amount, Currency = TranInWork.Currency };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
+
+            MyAmountInReturnInputControlVm = new AmountInputControlVm
+                { LabelContent = "Получил", AmountColor = TranInWork.TranFontColor(), Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
+            MyAmountInReturnInputControlVm.PropertyChanged += MyAmountInReturnInputControlVm_PropertyChanged;
 
 
             MyTagPickerVm = new TagPickerVm { TagSelectorVm = _accNameSelectionControlInitializer.ForTags(TranInWork) };
@@ -82,6 +89,7 @@ namespace Keeper.Controls.OneTranViewControls
             MyDatePickerVm = new DatePickerWithTrianglesVm() { SelectedDate = TranInWork.Timestamp };
             MyDatePickerVm.PropertyChanged += MyDatePickerVm_PropertyChanged;
         }
+
 
         private void Tags_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -101,6 +109,12 @@ namespace Keeper.Controls.OneTranViewControls
         {
             if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputControlVm.Amount;
             if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputControlVm.Currency;
+        }
+
+        private void MyAmountInReturnInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "AmountInReturn") TranInWork.AmountInReturn = MyAmountInReturnInputControlVm.Amount;
+            if (e.PropertyName == "CurrencyInReturn") TranInWork.CurrencyInReturn = MyAmountInReturnInputControlVm.Currency;
         }
 
         private void MyAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -125,8 +139,11 @@ namespace Keeper.Controls.OneTranViewControls
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     break;
                 case "Amount":
+                case "AmountInReturn":
                 case "Currency":
+                case "CurrencyInReturn":
                     NotifyOfPropertyChange(nameof(AmountInUsd));
+                    NotifyOfPropertyChange(nameof(AmountInReturnInUsd));
                     NotifyOfPropertyChange(nameof(MyAccountBalance));
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     break;

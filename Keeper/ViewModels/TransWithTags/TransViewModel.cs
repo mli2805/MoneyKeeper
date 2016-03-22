@@ -45,7 +45,7 @@ namespace Keeper.ViewModels.TransWithTags
         public TransViewModel(KeeperDb db)
         {
             _db = db;
-            new TransactionsConvertor(_db).Convert();
+            IoC.Get<TransactionsConvertor>().Convert();
             Rows = WrapTransactions(_db.TransWithTags);
             var sortedRows = CollectionViewSource.GetDefaultView(Rows);
             sortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
