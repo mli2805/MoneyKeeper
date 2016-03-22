@@ -11,7 +11,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel Orientation ="Horizontal">
-            <Label Content="{Binding LabelContent}" Margin="5,5,0,0" Height="26" Width="56" Foreground="{Binding AmountColor}"/>
+            <Label Content="{Binding LabelContent}" Margin="5,5,0,0" Height="26" Width="60" Foreground="{Binding AmountColor}"/>
             <TextBox Margin="5,10,0,0" Height="20" Width="100" BorderBrush="#555555" TextAlignment="Right" Foreground="{Binding AmountColor}"
                                  Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,0.00}'}" />
             <ComboBox HorizontalAlignment="Left" Margin="5,10,0,0" Height="20" Width="60" Background="White"

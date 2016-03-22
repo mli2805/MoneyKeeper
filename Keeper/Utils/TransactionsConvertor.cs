@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using Keeper.DomainModel;
+using System.Composition;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
+using Keeper.Utils.AccountEditing;
 
 namespace Keeper.Utils
 {
@@ -13,11 +12,14 @@ namespace Keeper.Utils
     public class TransactionsConvertor
     {
         private readonly KeeperDb _db;
+        private readonly AccountTreeStraightener _accountTreeStraightener;
+
 
         [ImportingConstructor]
-        public TransactionsConvertor(KeeperDb db)
+        public TransactionsConvertor(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
         {
             _db = db;
+            _accountTreeStraightener = accountTreeStraightener;
         }
 
         public void Convert()
@@ -40,7 +42,7 @@ namespace Keeper.Utils
 
         private TranWithTags ConvertExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
         {
-            if (firstPartOfExchange.Comment.Contains("cycle")) return ConvertToForexTransaction(firstPartOfExchange, transaction);
+//            if (firstPartOfExchange.Comment.Contains("cycle")) return ConvertToForexTransaction(firstPartOfExchange, transaction);
             return firstPartOfExchange.Debet != transaction.Credit
                 ? ConvertToExchangeWithTransferTransaction(firstPartOfExchange, transaction)
                 : ConvertToExchangeTransaction(firstPartOfExchange, transaction);
@@ -61,6 +63,8 @@ namespace Keeper.Utils
                 Comment = firstPartOfExchange.Comment
             };
             result.Tags.Add(firstPartOfExchange.Credit);
+            if (firstPartOfExchange.Comment.Contains("cycle"))
+                result.Tags.Add(_accountTreeStraightener.Seek("Форекс",_db.Accounts));
             return result;  
         }
 
@@ -82,6 +86,8 @@ namespace Keeper.Utils
                 Comment = firstPartOfExchange.Comment
             };
             result.Tags.Add(firstPartOfExchange.Credit);
+            if (firstPartOfExchange.Comment.Contains("cycle"))
+                result.Tags.Add(_accountTreeStraightener.Seek("Форекс", _db.Accounts));
             return result;
         }
 
@@ -130,6 +136,8 @@ namespace Keeper.Utils
                 Tags = new List<Account>(),
                 Comment = transaction.Comment
             };
+            if (transaction.Comment.Contains("cycle"))
+                result.Tags.Add(_accountTreeStraightener.Seek("Форекс", _db.Accounts));
             return result;
         }
 

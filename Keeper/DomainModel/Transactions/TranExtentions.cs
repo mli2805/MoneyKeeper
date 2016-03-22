@@ -71,7 +71,7 @@ namespace Keeper.DomainModel.Transactions
             if (tran.Operation == OperationType.Доход) return Brushes.Blue;
             if (tran.Operation == OperationType.Расход) return Brushes.Red;
             if (tran.Operation == OperationType.Перенос) return Brushes.Black;
-            if (tran.Operation == OperationType.Обмен || tran.Operation == OperationType.ОбменПеренос) return Brushes.DarkGreen;
+            if (tran.Operation == OperationType.Обмен || tran.Operation == OperationType.ОбменПеренос) return Brushes.Green;
             if (tran.Operation == OperationType.Форекс) return Brushes.DarkViolet;
             return Brushes.Gray;
         }

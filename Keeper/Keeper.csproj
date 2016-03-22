@@ -136,6 +136,12 @@
     </Compile>
     <Compile Include="Behaviors\DataGridBehaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Behaviors\ListViewBehaviors\ScrollToBottomOnResizeBehavior.cs" />
+    <Compile Include="Controls\OneTranViewControls\ExchangeControl.xaml.cs">
+      <DependentUpon>ExchangeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OneTranViewControls\ExchangeTransferControl.xaml.cs">
+      <DependentUpon>ExchangeTransferControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\OneTranViewControls\UniversalControlVm.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControlVm.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl.xaml.cs">
@@ -526,6 +532,14 @@
     <Resource Include="Resources\keeper.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\OneTranViewControls\ExchangeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OneTranViewControls\ExchangeTransferControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\OneTranViewControls\SubControls\AmountInputControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

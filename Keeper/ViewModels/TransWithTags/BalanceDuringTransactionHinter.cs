@@ -37,6 +37,13 @@ namespace Keeper.ViewModels.TransWithTags
                 _rateExtractor.GetUsdEquivalentString(tranInWork.Amount, (CurrencyCodes)tranInWork.Currency, tranInWork.Timestamp) : "не задана валюта";
         }
 
+        public string GetAmountInReturnInUsd(TranWithTags tranInWork)
+        {
+            return tranInWork.CurrencyInReturn != null ? 
+                tranInWork.CurrencyInReturn == CurrencyCodes.USD ? "" :
+                _rateExtractor.GetUsdEquivalentString(tranInWork.AmountInReturn, (CurrencyCodes)tranInWork.CurrencyInReturn, tranInWork.Timestamp) : "не задана валюта";
+        }
+
         public string GetMyAccountBalance(TranWithTags transactionInWork)
         {
             if (transactionInWork == null || transactionInWork.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
