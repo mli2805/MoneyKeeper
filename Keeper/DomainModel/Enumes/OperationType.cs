@@ -6,7 +6,5 @@ namespace Keeper.DomainModel.Enumes
     Расход,
     Перенос,
     Обмен,
-    ОбменПеренос,
-    Форекс
   };
 }

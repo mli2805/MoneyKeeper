@@ -33,19 +33,11 @@ namespace Keeper.Utils
                     if (transaction.Operation == OperationType.Расход)
                         firstPartOfExchange = transaction;
                     else
-                        result.Add(ConvertExchangeTransaction(firstPartOfExchange, transaction));
+                        result.Add(ConvertToExchangeTransaction(firstPartOfExchange, transaction));
                 }
                 else result.Add(ConvertOneTransaction(transaction));
             }
             _db.TransWithTags = result;
-        }
-
-        private TranWithTags ConvertExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
-        {
-//            if (firstPartOfExchange.Comment.Contains("cycle")) return ConvertToForexTransaction(firstPartOfExchange, transaction);
-            return firstPartOfExchange.Debet != transaction.Credit
-                ? ConvertToExchangeWithTransferTransaction(firstPartOfExchange, transaction)
-                : ConvertToExchangeTransaction(firstPartOfExchange, transaction);
         }
 
         private TranWithTags ConvertToExchangeTransaction(Transaction firstPartOfExchange, Transaction transaction)
@@ -57,6 +49,7 @@ namespace Keeper.Utils
                 MyAccount = firstPartOfExchange.Debet,
                 Amount = firstPartOfExchange.Amount,
                 Currency = firstPartOfExchange.Currency,
+                MySecondAccount = transaction.Credit,
                 AmountInReturn = transaction.Amount,
                 CurrencyInReturn = transaction.Currency,
                 Tags = new List<Account>(),
@@ -68,49 +61,49 @@ namespace Keeper.Utils
             return result;  
         }
 
-        private TranWithTags ConvertToExchangeWithTransferTransaction(Transaction firstPartOfExchange, Transaction transaction)
-        {
-            var result = new TranWithTags
-            {
-                Timestamp = firstPartOfExchange.Timestamp,
-                Operation = OperationType.ОбменПеренос,
-                MyAccount = firstPartOfExchange.Debet,
-                Amount = firstPartOfExchange.Amount,
-                Currency = firstPartOfExchange.Currency,
-
-                MySecondAccount = transaction.Credit,
-
-                AmountInReturn = transaction.Amount,
-                CurrencyInReturn = transaction.Currency,
-                Tags = new List<Account>(),
-                Comment = firstPartOfExchange.Comment
-            };
-            result.Tags.Add(firstPartOfExchange.Credit);
-            if (firstPartOfExchange.Comment.Contains("cycle"))
-                result.Tags.Add(_accountTreeStraightener.Seek("Форекс", _db.Accounts));
-            return result;
-        }
-
-        private TranWithTags ConvertToForexTransaction(Transaction firstPartOfExchange, Transaction transaction)
-        {
-            var result = new TranWithTags()
-            {
-                Timestamp = firstPartOfExchange.Timestamp,
-                Operation = OperationType.Форекс,
-                MyAccount = firstPartOfExchange.Debet,
-                Amount = firstPartOfExchange.Amount,
-                Currency = firstPartOfExchange.Currency,
-
-                MySecondAccount = transaction.Credit,
-
-                AmountInReturn = transaction.Amount,
-                CurrencyInReturn = transaction.Currency,
-                Tags = new List<Account>(),
-                Comment = firstPartOfExchange.Comment
-            };
-            result.Tags.Add(firstPartOfExchange.Credit);
-            return result;
-        }
+//        private TranWithTags ConvertToExchangeWithTransferTransaction(Transaction firstPartOfExchange, Transaction transaction)
+//        {
+//            var result = new TranWithTags
+//            {
+//                Timestamp = firstPartOfExchange.Timestamp,
+//                Operation = OperationType.ОбменПеренос,
+//                MyAccount = firstPartOfExchange.Debet,
+//                Amount = firstPartOfExchange.Amount,
+//                Currency = firstPartOfExchange.Currency,
+//
+//                MySecondAccount = transaction.Credit,
+//
+//                AmountInReturn = transaction.Amount,
+//                CurrencyInReturn = transaction.Currency,
+//                Tags = new List<Account>(),
+//                Comment = firstPartOfExchange.Comment
+//            };
+//            result.Tags.Add(firstPartOfExchange.Credit);
+//            if (firstPartOfExchange.Comment.Contains("cycle"))
+//                result.Tags.Add(_accountTreeStraightener.Seek("Форекс", _db.Accounts));
+//            return result;
+//        }
+//
+//        private TranWithTags ConvertToForexTransaction(Transaction firstPartOfExchange, Transaction transaction)
+//        {
+//            var result = new TranWithTags()
+//            {
+//                Timestamp = firstPartOfExchange.Timestamp,
+//                Operation = OperationType.Форекс,
+//                MyAccount = firstPartOfExchange.Debet,
+//                Amount = firstPartOfExchange.Amount,
+//                Currency = firstPartOfExchange.Currency,
+//
+//                MySecondAccount = transaction.Credit,
+//
+//                AmountInReturn = transaction.Amount,
+//                CurrencyInReturn = transaction.Currency,
+//                Tags = new List<Account>(),
+//                Comment = firstPartOfExchange.Comment
+//            };
+//            result.Tags.Add(firstPartOfExchange.Credit);
+//            return result;
+//        }
 
         private TranWithTags ConvertOneTransaction(Transaction transaction)
         {

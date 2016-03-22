@@ -41,7 +41,7 @@ namespace Keeper.DomainModel.Transactions
         {
             return Tran.Operation == OperationType.Доход || 
                     Tran.Operation == OperationType.Расход ||
-                     Tran.Operation == OperationType.Обмен;
+                     (Tran.Operation == OperationType.Обмен && Tran.MyAccount == Tran.MySecondAccount);
         }
         private bool IsOneAmountTransaction()
         {

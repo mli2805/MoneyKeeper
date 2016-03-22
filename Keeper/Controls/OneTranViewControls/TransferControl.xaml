@@ -6,6 +6,7 @@
              xmlns:subControls="clr-namespace:Keeper.Controls.OneTranViewControls.SubControls"
              xmlns:accNameSelectionControl="clr-namespace:Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:tagPickingControl="clr-namespace:Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl"
              cal:Bind.ModelWithoutContext="{Binding .}"
              mc:Ignorable="d" 
              d:DesignWidth="300">
@@ -20,6 +21,8 @@
             <accNameSelectionControl:AccNameSelector DataContext="{Binding MySecondAccNameSelectorVm}" Margin="0,10,0,0"/>
             <Label Content="{Binding MySecondAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
 
+            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}"/>
+           
             <subControls:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="0,30,0,0"/>
         </StackPanel>
 

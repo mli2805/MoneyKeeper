@@ -13,21 +13,19 @@ namespace Keeper.ViewModels.TransWithTags
     class OneTranViewModel : Screen
     {
         public TranWithTags TranInWork { get; set; }
-        public UniversalControlVm MyIncomeControlVm { get; set; }
-        public UniversalControlVm MyExpenseControlVm { get; set; }
-        public UniversalControlVm MyTransferControlVm { get; set; }
-        public UniversalControlVm MyExchangeControlVm { get; set; }
-        public UniversalControlVm MyExchangeTransferControlVm { get; set; }
+        public UniversalControlVm MyIncomeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
+        public UniversalControlVm MyExpenseControlVm { get; set; } = IoC.Get<UniversalControlVm>();
+        public UniversalControlVm MyTransferControlVm { get; set; } = IoC.Get<UniversalControlVm>();
+        public UniversalControlVm MyExchangeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
         public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
         [ImportingConstructor]
         public OneTranViewModel()
         {
-            MyIncomeControlVm = IoC.Get<UniversalControlVm>();
-            MyExpenseControlVm = IoC.Get<UniversalControlVm>();
-            MyTransferControlVm = IoC.Get<UniversalControlVm>();
-            MyExchangeControlVm = IoC.Get<UniversalControlVm>();
-            MyExchangeTransferControlVm = IoC.Get<UniversalControlVm>();
+            //            MyIncomeControlVm = IoC.Get<UniversalControlVm>();
+            //            MyExpenseControlVm = IoC.Get<UniversalControlVm>();
+            //            MyTransferControlVm = IoC.Get<UniversalControlVm>();
+            //            MyExchangeControlVm = IoC.Get<UniversalControlVm>();
         }
 
         protected override void OnViewLoaded(object view)
@@ -46,12 +44,10 @@ namespace Keeper.ViewModels.TransWithTags
             MyExpenseControlVm.Visibility = Visibility.Collapsed;
             MyTransferControlVm.Visibility = Visibility.Collapsed;
             MyExchangeControlVm.Visibility = Visibility.Collapsed;
-            MyExchangeTransferControlVm.Visibility = Visibility.Collapsed;
             if (opType == OperationType.Доход) MyIncomeControlVm.Visibility = Visibility.Visible;
             if (opType == OperationType.Расход) MyExpenseControlVm.Visibility = Visibility.Visible;
             if (opType == OperationType.Перенос) MyTransferControlVm.Visibility = Visibility.Visible;
             if (opType == OperationType.Обмен) MyExchangeControlVm.Visibility = Visibility.Visible;
-            if (opType == OperationType.ОбменПеренос) MyExchangeTransferControlVm.Visibility = Visibility.Visible;
         }
         public void SetTran(TranWithTags tran)
         {
@@ -60,7 +56,6 @@ namespace Keeper.ViewModels.TransWithTags
             MyIncomeControlVm.SetTran(TranInWork);
             MyExpenseControlVm.SetTran(TranInWork);
             MyExchangeControlVm.SetTran(TranInWork);
-            MyExchangeTransferControlVm.SetTran(TranInWork);
 
             SetVisibility(tran.Operation);
 
@@ -70,7 +65,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void MyOpTypeChoiceControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            DisplayName = "Расход";
+            SetVisibility(((OpTypeChoiceControlVm)sender).PressedButton);
         }
 
         public void Save()
