@@ -31,7 +31,8 @@ namespace Keeper.ViewModels.TransWithTags
             OneTranViewModel oneTranForm = IoC.Get<OneTranViewModel>();
             oneTranForm.SetTran(_selectedItem.Tran);
             bool? result = WindowManager.ShowDialog(oneTranForm);
-            if (result.HasValue && result.Value) _selectedItem.Tran = oneTranForm.GetTran().Clone();
+            if (result.HasValue && result.Value)
+                _selectedItem.Tran = oneTranForm.GetTran().Clone();
         }
 
         private void MoveUp()
@@ -45,8 +46,11 @@ namespace Keeper.ViewModels.TransWithTags
         }
         private void AddAfterSelected()
         {
-            var oneTrForm = IoC.Get<OneTranViewModel>();
-            WindowManager.ShowWindow(oneTrForm);
+            var oneTranForm = IoC.Get<OneTranViewModel>();
+            oneTranForm.SetTran(_selectedItem.Tran);
+            bool? result = WindowManager.ShowDialog(oneTranForm);
+            if (result.HasValue && result.Value)
+                _rows.Add(new TranCocoon() {Tran = oneTranForm.GetTran().Clone()});
         }
         private void Delete()
         {

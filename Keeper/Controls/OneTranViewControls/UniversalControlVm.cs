@@ -45,6 +45,8 @@ namespace Keeper.Controls.OneTranViewControls
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
         public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
 
+        public string ExchangeRate => _balanceDuringTransactionHinter.GetExchangeRate(TranInWork);
+
         [ImportingConstructor]
         public UniversalControlVm(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
                  AccNameSelectionControlInitializer accNameSelectionControlInitializer)

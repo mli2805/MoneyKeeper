@@ -32,14 +32,14 @@ namespace Keeper.ViewModels.TransWithTags
 
         public string GetAmountInUsd(TranWithTags tranInWork)
         {
-            return tranInWork.Currency != null ? 
+            return tranInWork.Currency != null ?
                 tranInWork.Currency == CurrencyCodes.USD ? "" :
                 _rateExtractor.GetUsdEquivalentString(tranInWork.Amount, (CurrencyCodes)tranInWork.Currency, tranInWork.Timestamp) : "не задана валюта";
         }
 
         public string GetAmountInReturnInUsd(TranWithTags tranInWork)
         {
-            return tranInWork.CurrencyInReturn != null ? 
+            return tranInWork.CurrencyInReturn != null ?
                 tranInWork.CurrencyInReturn == CurrencyCodes.USD ? "" :
                 _rateExtractor.GetUsdEquivalentString(tranInWork.AmountInReturn, (CurrencyCodes)tranInWork.CurrencyInReturn, tranInWork.Timestamp) : "не задана валюта";
         }
@@ -51,17 +51,33 @@ namespace Keeper.ViewModels.TransWithTags
             var balanceBefore =
                 _db.TransWithTags.Sum(a => a.AmountForAccount(transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
-            return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MyAccount,transactionInWork.Currency), transactionInWork.Currency);
+            return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MyAccount, transactionInWork.Currency), transactionInWork.Currency);
         }
 
         public string GetMySecondAccountBalance(TranWithTags transactionInWork)
         {
             if (transactionInWork == null || transactionInWork.MySecondAccount == null || !transactionInWork.MySecondAccount.Is("Мои")) return "было ххх - стало ххх";
 
-            var balanceBefore =
-                _db.TransWithTags.Sum(a => a.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+            if (transactionInWork.Operation == OperationType.Перенос)
+            {
+                var balanceBefore =
+                    _db.TransWithTags.Sum(a => a.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
-            return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency), transactionInWork.Currency);
+                return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency), transactionInWork.Currency);
+            }
+            else // OperationType.Обмен
+            {
+                var balanceBefore =
+                    _db.TransWithTags.Sum(a => a.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
+
+                return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn), transactionInWork.CurrencyInReturn);
+
+            }
+        }
+
+        public string GetExchangeRate(TranWithTags transactionInWork)
+        {
+            return "Курс обмена";
         }
     }
 }

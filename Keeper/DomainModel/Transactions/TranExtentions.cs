@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
@@ -50,14 +49,6 @@ namespace Keeper.DomainModel.Transactions
                     if (tran.MyAccount.Is(account) && tran.Currency == currency) return -tran.Amount;
                     return tran.MySecondAccount.Is(account) && tran.Currency == currency ? tran.Amount : 0;
                 case OperationType.Обмен:
-                    if (tran.MyAccount.Is(account))
-                    {
-                        if (tran.Currency == currency) return -tran.Amount;
-                        if (tran.CurrencyInReturn == currency) return tran.AmountInReturn;
-                    }
-                    return 0;
-                case OperationType.ОбменПеренос:
-                case OperationType.Форекс:
                     if (tran.MyAccount.Is(account) && tran.Currency == currency) return -tran.Amount;
                     if (tran.MySecondAccount.Is(account) && tran.CurrencyInReturn == currency) return tran.AmountInReturn;
                     return 0;
@@ -71,8 +62,7 @@ namespace Keeper.DomainModel.Transactions
             if (tran.Operation == OperationType.Доход) return Brushes.Blue;
             if (tran.Operation == OperationType.Расход) return Brushes.Red;
             if (tran.Operation == OperationType.Перенос) return Brushes.Black;
-            if (tran.Operation == OperationType.Обмен || tran.Operation == OperationType.ОбменПеренос) return Brushes.Green;
-            if (tran.Operation == OperationType.Форекс) return Brushes.DarkViolet;
+            if (tran.Operation == OperationType.Обмен) return Brushes.Green;
             return Brushes.Gray;
         }
     }
