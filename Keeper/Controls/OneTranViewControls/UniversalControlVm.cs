@@ -32,19 +32,80 @@ namespace Keeper.Controls.OneTranViewControls
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
+        private AmountInputControlVm _myAmountInputControlVm;
+        private AccNameSelectorVm _mySecondAccNameSelectorVm;
+        private AccNameSelectorVm _myAccNameSelectorVm;
+        private AmountInputControlVm _myAmountInReturnInputControlVm;
+        private TagPickerVm _myTagPickerVm;
+        private DatePickerWithTrianglesVm _myDatePickerVm;
+
         public TranWithTags TranInWork { get; set; }
-        public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
-        public AccNameSelectorVm MySecondAccNameSelectorVm { get; set; }
-        public AmountInputControlVm MyAmountInputControlVm { get; set; }
-        public AmountInputControlVm MyAmountInReturnInputControlVm { get; set; }
-        public TagPickerVm MyTagPickerVm { get; set; }
-        public DatePickerWithTrianglesVm MyDatePickerVm { get; set; }
+
+        public AccNameSelectorVm MyAccNameSelectorVm
+        {
+            get { return _myAccNameSelectorVm; }
+            set
+            {
+                if (Equals(value, _myAccNameSelectorVm)) return;
+                _myAccNameSelectorVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public AccNameSelectorVm MySecondAccNameSelectorVm
+        {
+            get { return _mySecondAccNameSelectorVm; }
+            set
+            {
+                if (Equals(value, _mySecondAccNameSelectorVm)) return;
+                _mySecondAccNameSelectorVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public AmountInputControlVm MyAmountInputControlVm
+        {
+            get { return _myAmountInputControlVm; }
+            set
+            {
+                if (Equals(value, _myAmountInputControlVm)) return;
+                _myAmountInputControlVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public AmountInputControlVm MyAmountInReturnInputControlVm
+        {
+            get { return _myAmountInReturnInputControlVm; }
+            set
+            {
+                if (Equals(value, _myAmountInReturnInputControlVm)) return;
+                _myAmountInReturnInputControlVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public TagPickerVm MyTagPickerVm
+        {
+            get { return _myTagPickerVm; }
+            set
+            {
+                if (Equals(value, _myTagPickerVm)) return;
+                _myTagPickerVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public DatePickerWithTrianglesVm MyDatePickerVm
+        {
+            get { return _myDatePickerVm; }
+            set
+            {
+                if (Equals(value, _myDatePickerVm)) return;
+                _myDatePickerVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
         public string MySecondAccountBalance => _balanceDuringTransactionHinter.GetMySecondAccountBalance(TranInWork);
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
         public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
-
         public string ExchangeRate => _balanceDuringTransactionHinter.GetExchangeRate(TranInWork);
 
         [ImportingConstructor]
@@ -148,6 +209,7 @@ namespace Keeper.Controls.OneTranViewControls
                     NotifyOfPropertyChange(nameof(AmountInReturnInUsd));
                     NotifyOfPropertyChange(nameof(MyAccountBalance));
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
+                    NotifyOfPropertyChange(nameof(ExchangeRate));
                     break;
             }
         }

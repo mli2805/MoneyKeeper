@@ -4,8 +4,10 @@ using Caliburn.Micro;
 using Keeper.Controls;
 using Keeper.Controls.OneTranViewControls;
 using Keeper.Controls.OneTranViewControls.SubControls;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
+using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.TransWithTags
 {
@@ -17,15 +19,21 @@ namespace Keeper.ViewModels.TransWithTags
         public UniversalControlVm MyExpenseControlVm { get; set; } = IoC.Get<UniversalControlVm>();
         public UniversalControlVm MyTransferControlVm { get; set; } = IoC.Get<UniversalControlVm>();
         public UniversalControlVm MyExchangeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
+//        public UniversalControlVm MyIncomeControlVm { get; set; }
+//        public UniversalControlVm MyExpenseControlVm { get; set; }
+//        public UniversalControlVm MyTransferControlVm { get; set; }
+//        public UniversalControlVm MyExchangeControlVm { get; set; }
         public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
         [ImportingConstructor]
         public OneTranViewModel()
+//        public OneTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
+//                 AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
-            //            MyIncomeControlVm = IoC.Get<UniversalControlVm>();
-            //            MyExpenseControlVm = IoC.Get<UniversalControlVm>();
-            //            MyTransferControlVm = IoC.Get<UniversalControlVm>();
-            //            MyExchangeControlVm = IoC.Get<UniversalControlVm>();
+//            MyIncomeControlVm = new UniversalControlVm(db, accountTreeStraightener, balanceDuringTransactionHinter, accNameSelectionControlInitializer);
+//            MyExpenseControlVm = new UniversalControlVm(db, accountTreeStraightener, balanceDuringTransactionHinter, accNameSelectionControlInitializer);
+//            MyTransferControlVm = new UniversalControlVm(db, accountTreeStraightener, balanceDuringTransactionHinter, accNameSelectionControlInitializer);
+//            MyExchangeControlVm = new UniversalControlVm(db, accountTreeStraightener, balanceDuringTransactionHinter, accNameSelectionControlInitializer);
         }
 
         protected override void OnViewLoaded(object view)
@@ -52,10 +60,10 @@ namespace Keeper.ViewModels.TransWithTags
         public void SetTran(TranWithTags tran)
         {
             TranInWork = tran.Clone();
-            MyTransferControlVm.SetTran(TranInWork);
             MyIncomeControlVm.SetTran(TranInWork);
             MyExpenseControlVm.SetTran(TranInWork);
             MyExchangeControlVm.SetTran(TranInWork);
+            MyTransferControlVm.SetTran(TranInWork);
 
             SetVisibility(tran.Operation);
 
@@ -65,6 +73,11 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void MyOpTypeChoiceControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            TranInWork.Operation = ((OpTypeChoiceControlVm)sender).PressedButton;
+            MyIncomeControlVm.SetTran(TranInWork);
+            MyExpenseControlVm.SetTran(TranInWork);
+            MyExchangeControlVm.SetTran(TranInWork);
+            MyTransferControlVm.SetTran(TranInWork);
             SetVisibility(((OpTypeChoiceControlVm)sender).PressedButton);
         }
 

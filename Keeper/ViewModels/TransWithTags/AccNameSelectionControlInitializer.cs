@@ -56,9 +56,9 @@ namespace Keeper.ViewModels.TransWithTags
         {
             switch (tran.Operation)
             {
-                case OperationType.Перенос: return Build("Куда", ButtonsForTransfer, ListsForComboTrees.MyAccNamesForTransfer, tran.MySecondAccount.Name, "Юлин кошелек");
-                case OperationType.Обмен: 
-                default: return Build("Куда", ButtonsForExchange, ListsForComboTrees.MyAccNamesForExchange, tran.MySecondAccount.Name, "Мой кошелек");
+                case OperationType.Перенос: return Build("Куда", ButtonsForTransfer, ListsForComboTrees.MyAccNamesForTransfer, tran.MySecondAccount?.Name, "Юлин кошелек");
+                case OperationType.Обмен: return Build("Куда", ButtonsForExchange, ListsForComboTrees.MyAccNamesForExchange, tran.MySecondAccount?.Name, "Мой кошелек");
+                default: return Build("Куда", ButtonsForExchange, ListsForComboTrees.MyAccNamesForExchange, "Мой кошелек", "Мой кошелек");
             }
         }
         public AccNameSelectorVm ForTags(TranWithTags tran)
