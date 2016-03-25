@@ -77,7 +77,10 @@ namespace Keeper.ViewModels.TransWithTags
 
         public string GetExchangeRate(TranWithTags transactionInWork)
         {
-            return "Курс обмена";
+            if (transactionInWork.Amount.Equals(0) || transactionInWork.AmountInReturn.Equals(0)) return "";
+            return transactionInWork.Amount > transactionInWork.AmountInReturn 
+                ? $"Курс обмена {transactionInWork.Amount / transactionInWork.AmountInReturn : 0,0.#####}" 
+                : $"Курс обмена {transactionInWork.AmountInReturn / transactionInWork.Amount : 0,0.#####}";
         }
     }
 }

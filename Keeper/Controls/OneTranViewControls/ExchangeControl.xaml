@@ -15,16 +15,16 @@
             <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
             <Label Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
 
-            <subControls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="0,10,0,0"/>
+            <subControls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="5,10,0,0"/>
             <Label Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="85,0,0,0" Foreground="Green"/>
 
             <accNameSelectionControl:AccNameSelector DataContext="{Binding MySecondAccNameSelectorVm}" Margin="0,10,0,0"/>
             <Label Content="{Binding MySecondAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
             
-            <subControls:AmountInputControl DataContext="{Binding MyAmountInReturnInputControlVm}" Margin="0,10,0,0"/>
+            <subControls:AmountInputControl DataContext="{Binding MyAmountInReturnInputControlVm}" Margin="5,10,0,0"/>
             <Label Content="{Binding AmountInReturnInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="85,0,0,0" Foreground="Green"/>
 
-            <Label Content="{Binding ExchangeRate}"/>
+            <Label Content="{Binding ExchangeRate}" Margin="5,0,0,0" Foreground="Green"/>
             
             <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}"/>
             
