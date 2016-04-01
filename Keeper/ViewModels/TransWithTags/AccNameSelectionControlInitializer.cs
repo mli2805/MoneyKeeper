@@ -11,6 +11,8 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class AccNameSelectionControlInitializer
     {
+
+#region Buttons Collections
         private static readonly Dictionary<string, string> ButtonsForExpense =
             new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Сберегательная", ["юк"] = "Юлин кошелек", };
 
@@ -37,7 +39,7 @@ namespace Keeper.ViewModels.TransWithTags
                                                         ["биб$"] = "БИБ Вал шкат USD", ["газ$"] = "БГПБ Сберка USD", };
 
         private static readonly Dictionary<string, string> ButtonsForExchangeTags = new Dictionary<string, string>();
-
+#endregion
 
         public AccNameSelectorVm ForMyAccount(TranWithTags tran)
         {

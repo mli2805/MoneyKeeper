@@ -14,10 +14,8 @@ namespace Keeper.ViewModels.TransWithTags
     class TransViewModel : Screen
     {
         private readonly KeeperDb _db;
-        private ObservableCollection<TranCocoon> _rows;
-        private TranCocoon _selectedTranCocoon;
-
-        public ObservableCollection<TranCocoon> Rows
+        private ObservableCollection<TranWrappedForDatagrid> _rows;
+        public ObservableCollection<TranWrappedForDatagrid> Rows
         {
             get { return _rows; }
             set
@@ -28,13 +26,14 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
-        public TranCocoon SelectedTranCocoon
+        private TranWrappedForDatagrid _selectedTranWrappedForDatagrid;
+        public TranWrappedForDatagrid SelectedTranWrappedForDatagrid
         {
-            get { return _selectedTranCocoon; }
+            get { return _selectedTranWrappedForDatagrid; }
             set
             {
-                if (Equals(value, _selectedTranCocoon)) return;
-                _selectedTranCocoon = value;
+                if (Equals(value, _selectedTranWrappedForDatagrid)) return;
+                _selectedTranWrappedForDatagrid = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -51,17 +50,17 @@ namespace Keeper.ViewModels.TransWithTags
             sortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
 
             Rows.Last().IsSelected = true;
-            SelectedTranCocoon = Rows.Last();
+            SelectedTranWrappedForDatagrid = Rows.Last();
 
             ActionsHandler = new TranActions();
         }
 
-        private ObservableCollection<TranCocoon> WrapTransactions(ObservableCollection<TranWithTags> transactions)
+        private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(ObservableCollection<TranWithTags> transactions)
         {
-            var result = new ObservableCollection<TranCocoon>();
+            var result = new ObservableCollection<TranWrappedForDatagrid>();
             foreach (var tran in transactions)
             {
-                result.Add(new TranCocoon() { Tran = tran });
+                result.Add(new TranWrappedForDatagrid() { Tran = tran });
             }
             return result;
         }
@@ -78,7 +77,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         public void ActionsMethod(int code)
         {
-            ActionsHandler.Do(code, Rows, SelectedTranCocoon);
+            ActionsHandler.Do(code, Rows, SelectedTranWrappedForDatagrid);
         }
     }
 }

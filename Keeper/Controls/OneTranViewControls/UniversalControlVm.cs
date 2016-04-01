@@ -39,7 +39,7 @@ namespace Keeper.Controls.OneTranViewControls
         private TagPickerVm _myTagPickerVm;
         private DatePickerWithTrianglesVm _myDatePickerVm;
 
-        public TranWithTags TranInWork { get; set; }
+        public TranWithTags TranInWork { get; set; } = new TranWithTags();
 
         public AccNameSelectorVm MyAccNameSelectorVm
         {
@@ -176,8 +176,8 @@ namespace Keeper.Controls.OneTranViewControls
 
         private void MyAmountInReturnInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "AmountInReturn") TranInWork.AmountInReturn = MyAmountInReturnInputControlVm.Amount;
-            if (e.PropertyName == "CurrencyInReturn") TranInWork.CurrencyInReturn = MyAmountInReturnInputControlVm.Currency;
+            if (e.PropertyName == "Amount") TranInWork.AmountInReturn = MyAmountInReturnInputControlVm.Amount;
+            if (e.PropertyName == "Currency") TranInWork.CurrencyInReturn = MyAmountInReturnInputControlVm.Currency;
         }
 
         private void MyAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

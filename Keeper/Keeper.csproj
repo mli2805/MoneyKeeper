@@ -220,7 +220,7 @@
     <Compile Include="Utils\AccountEditing\IAccountLowLevelOperator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositOfferIdGenerator.cs" />
     <Compile Include="Utils\BalanceEvaluating\ArticleBalanceCalculator.cs" />
-    <Compile Include="DomainModel\Transactions\TranCocoon.cs" />
+    <Compile Include="DomainModel\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="DomainModel\Transactions\TranExtentions.cs" />
     <Compile Include="DomainModel\Transactions\TranWithTags.cs" />
     <Compile Include="Properties\Annotations.cs" />
