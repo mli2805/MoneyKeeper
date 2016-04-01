@@ -8,10 +8,10 @@ namespace Keeper.ViewModels.TransWithTags
     {
         public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
-        private ObservableCollection<TranCocoon> _rows;
-        private TranCocoon _selectedItem;
+        private ObservableCollection<TranWrappedForDatagrid> _rows;
+        private TranWrappedForDatagrid _selectedItem;
 
-        public void Do(int code, ObservableCollection<TranCocoon> rows, TranCocoon selectedItem)
+        public void Do(int code, ObservableCollection<TranWrappedForDatagrid> rows, TranWrappedForDatagrid selectedItem)
         {
             _rows = rows;
             _selectedItem = selectedItem;
@@ -50,7 +50,7 @@ namespace Keeper.ViewModels.TransWithTags
             oneTranForm.SetTran(_selectedItem.Tran);
             bool? result = WindowManager.ShowDialog(oneTranForm);
             if (result.HasValue && result.Value)
-                _rows.Add(new TranCocoon() {Tran = oneTranForm.GetTran().Clone()});
+                _rows.Add(new TranWrappedForDatagrid() {Tran = oneTranForm.GetTran().Clone()});
         }
         private void Delete()
         {

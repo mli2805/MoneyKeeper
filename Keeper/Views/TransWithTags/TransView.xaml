@@ -55,7 +55,8 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <DataGrid Grid.Row="0"  AutoGenerateColumns="False" IsReadOnly="True"
-                  ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTranCocoon, Mode=TwoWay}">
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(0)]"
+                  ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTranWrappedForDatagrid, Mode=TwoWay}">
             <i:Interaction.Behaviors>
                 <dataGridBehaviors:ScrollToBottomOnLoadDatagridBehavior/>
                 <dataGridBehaviors:ScrollToBottomOnAddBehavior/>

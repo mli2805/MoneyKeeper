@@ -23,7 +23,7 @@ namespace Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl
 
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void AddTagOnClick(object sender, RoutedEventArgs e)
         {
             var tagPickerVm = (TagPickerVm)DataContext;
             tagPickerVm.Tags.Add(tagPickerVm.TagSelectorVm.MyAccName);

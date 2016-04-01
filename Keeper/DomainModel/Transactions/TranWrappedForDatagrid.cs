@@ -5,9 +5,24 @@ using Keeper.DomainModel.Enumes;
 
 namespace Keeper.DomainModel.Transactions
 {
-    public class TranCocoon : PropertyChangedBase
+    public class TranWrappedForDatagrid : PropertyChangedBase
     {
-        public TranWithTags Tran { get; set; }
+        private TranWithTags _tran;
+        public TranWithTags Tran
+        {
+            get { return _tran; }
+            set
+            {
+                if (Equals(value, _tran)) return;
+                _tran = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(DayBackgroundColor));
+                NotifyOfPropertyChange(nameof(TransactionFontColor));
+                NotifyOfPropertyChange(nameof(AccountForDatagrid));
+                NotifyOfPropertyChange(nameof(AmountForDatagrid));
+                NotifyOfPropertyChange(nameof(TagsForDatagrid));
+            }
+        }
 
         public string AccountForDatagrid => GetAccountForDatagrid();
         public string AmountForDatagrid => GetAmountForDatagrid();
