@@ -77,7 +77,9 @@ namespace Keeper.ViewModels.TransWithTags
 
         public void ActionsMethod(int code)
         {
-            ActionsHandler.Do(code, Rows, SelectedTranWrappedForDatagrid);
+            var selectedItem = SelectedTranWrappedForDatagrid;
+            ActionsHandler.Do(code, Rows, ref selectedItem);
+            SelectedTranWrappedForDatagrid = selectedItem;
         }
     }
 }
