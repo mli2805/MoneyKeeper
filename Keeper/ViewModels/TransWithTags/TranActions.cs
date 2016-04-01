@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel.Transactions;
 
@@ -11,7 +12,7 @@ namespace Keeper.ViewModels.TransWithTags
         private ObservableCollection<TranWrappedForDatagrid> _rows;
         private TranWrappedForDatagrid _selectedItem;
 
-        public void Do(int code, ObservableCollection<TranWrappedForDatagrid> rows, TranWrappedForDatagrid selectedItem)
+        public void Do(int code, ObservableCollection<TranWrappedForDatagrid> rows, ref TranWrappedForDatagrid selectedItem)
         {
             _rows = rows;
             _selectedItem = selectedItem;
@@ -24,6 +25,7 @@ namespace Keeper.ViewModels.TransWithTags
                 case 4: Delete(); break;
                 default: break;
             }
+            selectedItem = _selectedItem;
         }
 
         private void Edit()
@@ -54,7 +56,12 @@ namespace Keeper.ViewModels.TransWithTags
         }
         private void Delete()
         {
+            int n = _rows.IndexOf(_selectedItem);
+            int count = _rows.Count;
 
+            _rows.Remove(_selectedItem);
+
+            _selectedItem = _rows.ElementAt(n);
         }
 
     }
