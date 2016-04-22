@@ -1,11 +1,8 @@
-﻿using System;
-using System.Composition;
+﻿using System.Composition;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper.Controls;
 using Keeper.Controls.OneTranViewControls;
 using Keeper.Controls.OneTranViewControls.SubControls;
-using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils.AccountEditing;

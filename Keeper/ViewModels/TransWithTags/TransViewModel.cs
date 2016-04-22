@@ -49,8 +49,8 @@ namespace Keeper.ViewModels.TransWithTags
             var sortedRows = CollectionViewSource.GetDefaultView(Rows);
             sortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
 
-            Rows.Last().IsSelected = true;
-            SelectedTranWrappedForDatagrid = Rows.Last();
+            SelectedTranWrappedForDatagrid = Rows.OrderBy(t => t.Tran.Timestamp).Last();
+            SelectedTranWrappedForDatagrid.IsSelected = true;
 
             ActionsHandler = new TranActions();
         }
@@ -78,7 +78,7 @@ namespace Keeper.ViewModels.TransWithTags
         public void ActionsMethod(int code)
         {
             var selectedItem = SelectedTranWrappedForDatagrid;
-            ActionsHandler.Do(code, Rows, ref selectedItem);
+            ActionsHandler.Do(_db.TransWithTags, code, Rows, ref selectedItem);
             SelectedTranWrappedForDatagrid = selectedItem;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
@@ -10,6 +11,9 @@ namespace Keeper.Behaviors.DataGridBehaviors
         {
             INotifyCollectionChanged itemCollection = AssociatedObject.Items;
             itemCollection.CollectionChanged += ItemCollectionOnCollectionChanged;
+
+            Console.WriteLine("ScrollToBottomOnAddBehavior attached");
+
         }
 
         private void ItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
@@ -25,6 +29,7 @@ namespace Keeper.Behaviors.DataGridBehaviors
                 if (itemNumber > AssociatedObject.Items.Count - 1) itemNumber = AssociatedObject.Items.Count - 1;
                 AssociatedObject.ScrollIntoView(AssociatedObject.Items[itemNumber]);
             }
+            Console.WriteLine("ScrollToBottomOnAddBehavior works");
         }
     }
 }
