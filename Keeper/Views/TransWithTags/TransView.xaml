@@ -56,7 +56,7 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Row="0"  AutoGenerateColumns="False" IsReadOnly="True"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(0)]"
-                  ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTranWrappedForDatagrid, Mode=TwoWay}">
+                  ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTranWrappedForDatagrid, Mode=TwoWay}" SelectionMode="Single">
             <i:Interaction.Behaviors>
                 <dataGridBehaviors:ScrollToBottomOnLoadDatagridBehavior/>
                 <dataGridBehaviors:ScrollToBottomOnAddBehavior/>
@@ -86,7 +86,7 @@
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
                     <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#B6E6FF"/>
