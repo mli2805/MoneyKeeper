@@ -13,44 +13,21 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class TransViewModel : Screen
     {
-        private readonly KeeperDb _db;
-        private ObservableCollection<TranWrappedForDatagrid> _rows;
-        public ObservableCollection<TranWrappedForDatagrid> Rows
-        {
-            get { return _rows; }
-            set
-            {
-                if (Equals(value, _rows)) return;
-                _rows = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
-        private TranWrappedForDatagrid _selectedTranWrappedForDatagrid;
-        public TranWrappedForDatagrid SelectedTranWrappedForDatagrid
-        {
-            get { return _selectedTranWrappedForDatagrid; }
-            set
-            {
-                if (Equals(value, _selectedTranWrappedForDatagrid)) return;
-                _selectedTranWrappedForDatagrid = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
+        public TransModel Model { get; set; } = new TransModel();
         public TranActions ActionsHandler { get; set; } = new TranActions();
 
         [ImportingConstructor]
         public TransViewModel(KeeperDb db)
         {
-            _db = db;
+            Model.Db = db;
             IoC.Get<TransactionsConvertor>().Convert();
-            Rows = WrapTransactions(_db.TransWithTags);
-            var sortedRows = CollectionViewSource.GetDefaultView(Rows);
-            sortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
+            Model.Rows = WrapTransactions(Model.Db.TransWithTags);
+            Model.SortedRows = CollectionViewSource.GetDefaultView(Model.Rows);
+            Model.SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
 
-            SelectedTranWrappedForDatagrid = Rows.OrderBy(t => t.Tran.Timestamp).Last();
-            SelectedTranWrappedForDatagrid.IsSelected = true;
+            Model.SelectedTranWrappedForDatagrid = Model.Rows.OrderBy(t => t.Tran.Timestamp).Last();
+            Model.SelectedTranWrappedForDatagrid.IsSelected = true;
         }
         private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(ObservableCollection<TranWithTags> transactions)
         {
@@ -71,9 +48,7 @@ namespace Keeper.ViewModels.TransWithTags
         }
         public void ActionsMethod(int code)
         {
-            var selectedItem = SelectedTranWrappedForDatagrid;
-            ActionsHandler.Do(_db.TransWithTags, code, Rows, ref selectedItem);
-            SelectedTranWrappedForDatagrid = selectedItem;
+            ActionsHandler.Do(code, Model);
         }
     }
 }
