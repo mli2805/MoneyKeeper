@@ -38,7 +38,7 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
-        public TranActions ActionsHandler { get; set; }
+        public TranActions ActionsHandler { get; set; } = new TranActions();
 
         [ImportingConstructor]
         public TransViewModel(KeeperDb db)
@@ -51,10 +51,7 @@ namespace Keeper.ViewModels.TransWithTags
 
             SelectedTranWrappedForDatagrid = Rows.OrderBy(t => t.Tran.Timestamp).Last();
             SelectedTranWrappedForDatagrid.IsSelected = true;
-
-            ActionsHandler = new TranActions();
         }
-
         private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(ObservableCollection<TranWithTags> transactions)
         {
             var result = new ObservableCollection<TranWrappedForDatagrid>();
@@ -64,17 +61,14 @@ namespace Keeper.ViewModels.TransWithTags
             }
             return result;
         }
-
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Transactions with tags";
         }
-
         public void ButtonClose()
         {
             TryClose();
         }
-
         public void ActionsMethod(int code)
         {
             var selectedItem = SelectedTranWrappedForDatagrid;
