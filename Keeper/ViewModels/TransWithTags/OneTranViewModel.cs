@@ -1,5 +1,6 @@
 ﻿using System.Composition;
 using System.Windows;
+using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Controls.OneTranViewControls;
 using Keeper.Controls.OneTranViewControls.SubControls;
@@ -77,10 +78,10 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void SetAndShowCorrespondingControl()
         {
-            if (TranInWork.Operation == OperationType.Доход) MyIncomeControlVm.SetTran(TranInWork);
-            if (TranInWork.Operation == OperationType.Расход) MyExpenseControlVm.SetTran(TranInWork);
-            if (TranInWork.Operation == OperationType.Обмен) MyExchangeControlVm.SetTran(TranInWork);
+            if (TranInWork.Operation == OperationType.Доход)   MyIncomeControlVm.SetTran(TranInWork); 
+            if (TranInWork.Operation == OperationType.Расход)  MyExpenseControlVm.SetTran(TranInWork); 
             if (TranInWork.Operation == OperationType.Перенос) MyTransferControlVm.SetTran(TranInWork);
+            if (TranInWork.Operation == OperationType.Обмен)   MyExchangeControlVm.SetTran(TranInWork);
             SetVisibility(TranInWork.Operation);
         }
         private void SetVisibility(OperationType opType)

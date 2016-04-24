@@ -11,14 +11,14 @@
              mc:Ignorable="d" 
              d:DesignWidth="300">
     <Grid>
-        <StackPanel>
-            <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
+        <StackPanel Background="#FFF6FFF6">
+            <accNameSelectionControl:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="2,0,2,0"/>
             <Label Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
 
             <subControls:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="5,10,0,0"/>
             <Label Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="85,0,0,0" Foreground="Green"/>
 
-            <accNameSelectionControl:AccNameSelector DataContext="{Binding MySecondAccNameSelectorVm}" Margin="0,10,0,0"/>
+            <accNameSelectionControl:AccNameSelector DataContext="{Binding MySecondAccNameSelectorVm}" Margin="2,10,2,0"/>
             <Label Content="{Binding MySecondAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
             
             <subControls:AmountInputControl DataContext="{Binding MyAmountInReturnInputControlVm}" Margin="5,10,0,0"/>
@@ -26,9 +26,9 @@
 
             <Label Content="{Binding ExchangeRate}" Margin="5,0,0,0" Foreground="Green"/>
             
-            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}"/>
+            <tagPickingControl:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="2,0,2,0"/>
             
-            <subControls:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="0,30,0,0"/>
+            <subControls:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="0,30,0,2"/>
         </StackPanel>
 
 
