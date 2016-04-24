@@ -2,7 +2,6 @@
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel.Transactions;
-using Microsoft.Vbe.Interop;
 
 namespace Keeper.ViewModels.TransWithTags
 {
@@ -52,8 +51,7 @@ namespace Keeper.ViewModels.TransWithTags
         private void AddAfterSelected()
         {
             var oneTranForm = IoC.Get<OneTranViewModel>();
-            var tranForAdding = _selectedItem.Tran.Clone();
-            tranForAdding.Timestamp = tranForAdding.Timestamp.AddMinutes(1);
+            var tranForAdding = PrepareTranForAdding();
             oneTranForm.SetTran(tranForAdding);
             bool? result = WindowManager.ShowDialog(oneTranForm);
             if (result.HasValue && result.Value)
@@ -63,6 +61,15 @@ namespace Keeper.ViewModels.TransWithTags
                 _transWithTags.Add(tran);
             }
         }
+
+        private TranWithTags PrepareTranForAdding()
+        {
+            var tranForAdding = _selectedItem.Tran.Clone();
+            tranForAdding.Timestamp = tranForAdding.Timestamp.AddMinutes(1);
+            tranForAdding.Comment = "";
+            return tranForAdding;
+        }
+
         private void Delete()
         {
             int n = _rows.IndexOf(_selectedItem);

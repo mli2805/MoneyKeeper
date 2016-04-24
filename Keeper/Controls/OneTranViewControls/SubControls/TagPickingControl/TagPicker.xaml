@@ -11,7 +11,7 @@
     <Grid>
         <StackPanel>
             <DockPanel>
-                <Button DockPanel.Dock="Right" Width="25" Height="25" Content="+" Background="Transparent" VerticalAlignment="Bottom" Click="AddTagOnClick"/>
+                <Button DockPanel.Dock="Right" Width="25" Height="25" Content="+" Background="White" VerticalAlignment="Bottom" Click="AddTagOnClick"/>
                 <accNameSelectionControl:AccNameSelector Margin="0,0,10,0" DataContext="{Binding TagSelectorVm}"/>
             </DockPanel>
             <ItemsControl ItemsSource="{Binding Tags}" Margin="5,5,10,0" d:DataContext="{d:DesignData TagPickerVm}">
@@ -19,7 +19,7 @@
                     <DataTemplate>
                         <DockPanel>
                             <Button Content="x" Width="15" Height="15" Padding="0,-5,0,0" DockPanel.Dock="Left"  VerticalAlignment="Center" Tag ="{Binding .}" 
-                                        Background="Transparent" Click="DeleteTagOnClick"/>
+                                        Background="White" Click="DeleteTagOnClick"/>
                             <Label Content="{Binding Name}" Margin="0,-2,0,0" DockPanel.Dock="Right" />
                         </DockPanel>
                     </DataTemplate>
