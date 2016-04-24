@@ -1,9 +1,9 @@
 ﻿using System.Composition;
 using System.Windows;
-using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.Controls.OneTranViewControls;
 using Keeper.Controls.OneTranViewControls.SubControls;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 using Keeper.Utils.AccountEditing;
@@ -13,8 +13,21 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class OneTranViewModel : Screen
     {
+        private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
-        public TranWithTags TranInWork { get; set; }
+        private TranWithTags _tranInWork;
+
+        public TranWithTags TranInWork
+        {
+            get { return _tranInWork; }
+            set
+            {
+                if (Equals(value, _tranInWork)) return;
+                _tranInWork = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public UniversalControlVm MyIncomeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
         public UniversalControlVm MyExpenseControlVm { get; set; } = IoC.Get<UniversalControlVm>();
         public UniversalControlVm MyTransferControlVm { get; set; } = IoC.Get<UniversalControlVm>();
@@ -22,8 +35,9 @@ namespace Keeper.ViewModels.TransWithTags
         public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
         [ImportingConstructor]
-        public OneTranViewModel(AccountTreeStraightener accountTreeStraightener)
+        public OneTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
         {
+            _db = db;
             _accountTreeStraightener = accountTreeStraightener;
         }
 
@@ -41,7 +55,8 @@ namespace Keeper.ViewModels.TransWithTags
         {
             TranInWork = tran.Clone();
 
-            SetAndShowCorrespondingControl();
+            SetVisibility(TranInWork.Operation);
+            InitCorrespondingControl();
 
             MyOpTypeChoiceControlVm.PressedButton = TranInWork.Operation;
             MyOpTypeChoiceControlVm.PropertyChanged += MyOpTypeChoiceControlVm_PropertyChanged;
@@ -51,18 +66,22 @@ namespace Keeper.ViewModels.TransWithTags
         {
             TranInWork.Operation = ((OpTypeChoiceControlVm)sender).PressedButton;
             ValidateTranInWorkFieldsWithNewOperationType();
-            SetAndShowCorrespondingControl();
+            SetVisibility(TranInWork.Operation);
+            InitCorrespondingControl();
         }
 
         private void ValidateTranInWorkFieldsWithNewOperationType()
         {
-
             if (TranInWork.MySecondAccount == null)
             {
                 if (TranInWork.Operation == OperationType.Перенос)
                 {
-//                   _accountTreeStraightener.Seek("Юлин кошелек", ListsForComboTrees.MyAccNamesForTransfer) 
+                   TranInWork.MySecondAccount = _accountTreeStraightener.Seek("Юлин кошелек", _db.Accounts);
                 }
+            }
+            if (TranInWork.CurrencyInReturn == null)
+            {
+                TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCodes.BYR) ? CurrencyCodes.USD : CurrencyCodes.BYR; 
             }
         }
 
@@ -76,13 +95,16 @@ namespace Keeper.ViewModels.TransWithTags
             TryClose(false);
         }
 
-        private void SetAndShowCorrespondingControl()
+        private void InitCorrespondingControl()
         {
-            if (TranInWork.Operation == OperationType.Доход)   MyIncomeControlVm.SetTran(TranInWork); 
-            if (TranInWork.Operation == OperationType.Расход)  MyExpenseControlVm.SetTran(TranInWork); 
-            if (TranInWork.Operation == OperationType.Перенос) MyTransferControlVm.SetTran(TranInWork);
-            if (TranInWork.Operation == OperationType.Обмен)   MyExchangeControlVm.SetTran(TranInWork);
-            SetVisibility(TranInWork.Operation);
+//            if (TranInWork.Operation == OperationType.Доход)   MyIncomeControlVm.SetTran(TranInWork); 
+//            if (TranInWork.Operation == OperationType.Расход)  MyExpenseControlVm.SetTran(TranInWork); 
+//            if (TranInWork.Operation == OperationType.Перенос) MyTransferControlVm.SetTran(TranInWork);
+//           if (TranInWork.Operation == OperationType.Обмен)   MyExchangeControlVm.SetTran(TranInWork);
+             MyIncomeControlVm.SetTran(TranInWork);
+             MyExpenseControlVm.SetTran(TranInWork);
+             MyTransferControlVm.SetTran(TranInWork);
+             MyExchangeControlVm.SetTran(TranInWork);
         }
         private void SetVisibility(OperationType opType)
         {

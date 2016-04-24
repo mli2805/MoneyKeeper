@@ -201,6 +201,7 @@ namespace Keeper.Controls.OneTranViewControls
                 case "MySecondAccount": 
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     break;
+                case "Operation":
                 case "Amount":
                 case "AmountInReturn":
                 case "Currency":
