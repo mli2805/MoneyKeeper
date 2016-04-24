@@ -230,6 +230,7 @@
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
     <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
+    <Compile Include="ViewModels\TransWithTags\TransModel.cs" />
     <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />
     <Compile Include="ViewModels\TransWithTags\AccNameSelectionControlInitializer.cs" />
     <Compile Include="ViewModels\TransWithTags\OneTranViewModel.cs" />

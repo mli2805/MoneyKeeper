@@ -9,42 +9,49 @@ namespace Keeper.ViewModels.TransWithTags
     {
         public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
-        private ObservableCollection<TranWithTags> _transWithTags;
-        private ObservableCollection<TranWrappedForDatagrid> _rows;
-        private TranWrappedForDatagrid _selectedItem;
-
-        public void Do(ObservableCollection<TranWithTags> transWithTags, int code, ObservableCollection<TranWrappedForDatagrid> rows, ref TranWrappedForDatagrid selectedItem)
+        private TransModel _data;
+        public void Do(int code, TransModel data)
         {
-            _transWithTags = transWithTags;
-            _rows = rows;
-            _selectedItem = selectedItem;
+            _data = data;
             switch (code)
             {
                 case 0: Edit(); break;
-                case 1: MoveUp(); break;
-                case 2: MoveDown(); break;
+                case 1: MoveUp(_data.SelectedTranIndex); break;
+                case 2: MoveDown(_data.SelectedTranIndex); break;
                 case 3: AddAfterSelected(); break;
                 case 4: Delete(); break;
                 default: break;
             }
-            selectedItem = _selectedItem;
         }
 
         private void Edit()
         {
             OneTranViewModel oneTranForm = IoC.Get<OneTranViewModel>();
-            oneTranForm.SetTran(_selectedItem.Tran);
+            oneTranForm.SetTran(_data.SelectedTranWrappedForDatagrid.Tran);
             bool? result = WindowManager.ShowDialog(oneTranForm);
             if (result.HasValue && result.Value)
-                _selectedItem.Tran = oneTranForm.GetTran().Clone();
+                _data.SelectedTranWrappedForDatagrid.Tran = oneTranForm.GetTran().Clone();
         }
 
-        private void MoveUp()
+        private void MoveUp(int selectedTranIndex)
         {
-
+            var previousTran = _data.Rows[selectedTranIndex-1];
+            if (previousTran.Tran.Timestamp.Date == _data.SelectedTranWrappedForDatagrid.Tran.Timestamp.Date)
+            {// exchange timestamps
+                var temp = previousTran.Tran.Timestamp;
+                previousTran.Tran.Timestamp = _data.SelectedTranWrappedForDatagrid.Tran.Timestamp;
+                _data.SelectedTranWrappedForDatagrid.Tran.Timestamp = temp;
+            }
+            else
+            {// insert in previous day
+                var temp = previousTran.Tran.Timestamp;
+                previousTran.Tran.Timestamp = previousTran.Tran.Timestamp.AddMinutes(1);
+                _data.SelectedTranWrappedForDatagrid.Tran.Timestamp = temp;
+            }
+            _data.SortedRows.Refresh();
         }
 
-        private void MoveDown()
+        private void MoveDown(int selectedTranIndex)
         {
 
         }
@@ -57,14 +64,14 @@ namespace Keeper.ViewModels.TransWithTags
             if (result.HasValue && result.Value)
             {
                 var tran = oneTranForm.GetTran().Clone();
-                _rows.Add(new TranWrappedForDatagrid() {Tran = tran });
-                _transWithTags.Add(tran);
+                _data.Rows.Add(new TranWrappedForDatagrid() {Tran = tran });
+                _data.Db.TransWithTags.Add(tran);
             }
         }
 
         private TranWithTags PrepareTranForAdding()
         {
-            var tranForAdding = _selectedItem.Tran.Clone();
+            var tranForAdding = _data.SelectedTranWrappedForDatagrid.Tran.Clone();
             tranForAdding.Timestamp = tranForAdding.Timestamp.AddMinutes(1);
             tranForAdding.Comment = "";
             return tranForAdding;
@@ -72,12 +79,9 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void Delete()
         {
-            int n = _rows.IndexOf(_selectedItem);
-            int count = _rows.Count;
-
-            _rows.Remove(_selectedItem);
-
-            _selectedItem = _rows.ElementAt(n);
+            int n = _data.Rows.IndexOf(_data.SelectedTranWrappedForDatagrid);
+            _data.Rows.Remove(_data.SelectedTranWrappedForDatagrid);
+            _data.SelectedTranWrappedForDatagrid = _data.Rows.ElementAt(n);
         }
 
     }

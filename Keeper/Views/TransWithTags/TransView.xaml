@@ -56,7 +56,8 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Row="0"  AutoGenerateColumns="False" IsReadOnly="True"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(0)]"
-                  ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedTranWrappedForDatagrid, Mode=TwoWay}" SelectionMode="Single">
+                  ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}" 
+                  SelectedIndex="{Binding Model.SelectedTranIndex, Mode=OneWayToSource}" SelectionMode="Single">
             <i:Interaction.Behaviors>
                 <dataGridBehaviors:ScrollToBottomOnLoadDatagridBehavior/>
                 <dataGridBehaviors:ScrollToBottomOnAddBehavior/>
