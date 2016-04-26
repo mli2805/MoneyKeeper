@@ -61,7 +61,6 @@
             <i:Interaction.Behaviors>
                 <dataGridBehaviors:ScrollToBottomOnLoadDatagridBehavior/>
                 <dataGridBehaviors:ScrollToBottomOnAddBehavior/>
-                <behaviors:SetFocusOnLoadBehavior />
             </i:Interaction.Behaviors>
             <DataGrid.ContextMenu>
                 <ContextMenu>
