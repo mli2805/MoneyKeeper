@@ -9,15 +9,15 @@ namespace Keeper.ViewModels.TransWithTags
     {
         public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
-        private TransModel _data;
-        public void Do(int code, TransModel data)
+        private TransModel _model;
+        public void Do(int code, TransModel model)
         {
-            _data = data;
+            _model = model;
             switch (code)
             {
                 case 0: Edit(); break;
-                case 1: MoveUp(_data.SelectedTranIndex); break;
-                case 2: MoveDown(_data.SelectedTranIndex); break;
+                case 1: MoveUp(_model.SelectedTranIndex); break;
+                case 2: MoveDown(_model.SelectedTranIndex); break;
                 case 3: AddAfterSelected(); break;
                 case 4: Delete(); break;
                 default: break;
@@ -27,34 +27,42 @@ namespace Keeper.ViewModels.TransWithTags
         private void Edit()
         {
             OneTranViewModel oneTranForm = IoC.Get<OneTranViewModel>();
-            oneTranForm.SetTran(_data.SelectedTranWrappedForDatagrid.Tran);
+            oneTranForm.SetTran(_model.SelectedTranWrappedForDatagrid.Tran);
             bool? result = WindowManager.ShowDialog(oneTranForm);
             if (result.HasValue && result.Value)
-                _data.SelectedTranWrappedForDatagrid.Tran = oneTranForm.GetTran().Clone();
+                _model.SelectedTranWrappedForDatagrid.Tran = oneTranForm.GetTran().Clone();
         }
 
         private void MoveUp(int selectedTranIndex)
         {
-            var previousTran = _data.Rows[selectedTranIndex-1];
-            if (previousTran.Tran.Timestamp.Date == _data.SelectedTranWrappedForDatagrid.Tran.Timestamp.Date)
-            {// exchange timestamps
-                var temp = previousTran.Tran.Timestamp;
-                previousTran.Tran.Timestamp = _data.SelectedTranWrappedForDatagrid.Tran.Timestamp;
-                _data.SelectedTranWrappedForDatagrid.Tran.Timestamp = temp;
-            }
-            else
-            {// insert in previous day
-                var temp = previousTran.Tran.Timestamp;
-                previousTran.Tran.Timestamp = previousTran.Tran.Timestamp.AddMinutes(1);
-                _data.SelectedTranWrappedForDatagrid.Tran.Timestamp = temp;
-            }
-            _data.SortedRows.Refresh();
+            if (selectedTranIndex < 1) return;
+            MoveTran(selectedTranIndex, -1);
         }
 
         private void MoveDown(int selectedTranIndex)
         {
-
+            if (selectedTranIndex >= _model.Rows.Count - 1) return;
+            MoveTran(selectedTranIndex, 1);
         }
+
+        // destination  -1 - up  ;  1 - down
+        private void MoveTran(int selectedTranIndex, int destination)
+        {
+            var nearbyTran = _model.Rows[selectedTranIndex + destination];
+            if (nearbyTran.Tran.Timestamp.Date == _model.SelectedTranWrappedForDatagrid.Tran.Timestamp.Date)
+            {// exchange timestamps
+                var temp = nearbyTran.Tran.Timestamp;
+                nearbyTran.Tran.Timestamp = _model.SelectedTranWrappedForDatagrid.Tran.Timestamp;
+                _model.SelectedTranWrappedForDatagrid.Tran.Timestamp = temp;
+            }
+            else
+            {// insert into another day
+                _model.SelectedTranWrappedForDatagrid.Tran.Timestamp = nearbyTran.Tran.Timestamp;
+                nearbyTran.Tran.Timestamp = nearbyTran.Tran.Timestamp.AddMinutes(-destination);
+            }
+            _model.SortedRows.Refresh();
+        }
+
         private void AddAfterSelected()
         {
             var oneTranForm = IoC.Get<OneTranViewModel>();
@@ -64,14 +72,14 @@ namespace Keeper.ViewModels.TransWithTags
             if (result.HasValue && result.Value)
             {
                 var tran = oneTranForm.GetTran().Clone();
-                _data.Rows.Add(new TranWrappedForDatagrid() {Tran = tran });
-                _data.Db.TransWithTags.Add(tran);
+                _model.Rows.Add(new TranWrappedForDatagrid() { Tran = tran });
+                _model.Db.TransWithTags.Add(tran);
             }
         }
 
         private TranWithTags PrepareTranForAdding()
         {
-            var tranForAdding = _data.SelectedTranWrappedForDatagrid.Tran.Clone();
+            var tranForAdding = _model.SelectedTranWrappedForDatagrid.Tran.Clone();
             tranForAdding.Timestamp = tranForAdding.Timestamp.AddMinutes(1);
             tranForAdding.Comment = "";
             return tranForAdding;
@@ -79,9 +87,9 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void Delete()
         {
-            int n = _data.Rows.IndexOf(_data.SelectedTranWrappedForDatagrid);
-            _data.Rows.Remove(_data.SelectedTranWrappedForDatagrid);
-            _data.SelectedTranWrappedForDatagrid = _data.Rows.ElementAt(n);
+            int n = _model.Rows.IndexOf(_model.SelectedTranWrappedForDatagrid);
+            _model.Rows.Remove(_model.SelectedTranWrappedForDatagrid);
+            _model.SelectedTranWrappedForDatagrid = _model.Rows.ElementAt(n);
         }
 
     }
