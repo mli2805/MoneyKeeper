@@ -131,18 +131,18 @@ namespace Keeper.ViewModels.SingleViews
             LastByrRate = lastCurrencyRate.Rate;
 
             lastCurrencyRate = (from cr in Rows
-                                where cr.Currency == CurrencyCodes.EUR
-                                orderby cr.BankDay
-                                select cr).Last();
-            if (NewDate <= lastCurrencyRate.BankDay.Date) NewDate = lastCurrencyRate.BankDay.Date.AddDays(1);
-            LastEurRate = Math.Round(1 / lastCurrencyRate.Rate, 3);
-
-            lastCurrencyRate = (from cr in Rows
                                 where cr.Currency == CurrencyCodes.RUB
                                 orderby cr.BankDay
                                 select cr).Last();
             if (NewDate <= lastCurrencyRate.BankDay.Date) NewDate = lastCurrencyRate.BankDay.Date.AddDays(1);
             LastRurRate = lastCurrencyRate.Rate;
+
+            lastCurrencyRate = (from cr in Rows
+                                where cr.Currency == CurrencyCodes.EUR
+                                orderby cr.BankDay
+                                select cr).Last();
+            if (NewDate <= lastCurrencyRate.BankDay.Date) NewDate = lastCurrencyRate.BankDay.Date.AddDays(1);
+            LastEurRate = Math.Round(1 / lastCurrencyRate.Rate, 3);
         }
 
         public string ExpanderHeader

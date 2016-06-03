@@ -26,7 +26,7 @@ namespace Keeper.Utils
 
         public Dictionary<CurrencyCodes, double> GetRatesForDate(DateTime date)
         {
-            var webData = _wc.DownloadString("http://www.nbrb.by/statistics/rates/ratesDaily.asp?fromdate="+date.ToString("yyyy-MM-dd"));
+            var webData = _wc.DownloadString("http://www.nbrb.by/statistics/rates/ratesDaily.asp?date="+date.ToString("yyyy-MM-dd"));
             var pos = webData.IndexOf("maxDate:", StringComparison.Ordinal);
             var maxDateString = webData.Substring(pos+10, 10);
             var maxDate = DateTime.Parse(maxDateString, CultureInfo.CreateSpecificCulture("ru-Ru"));

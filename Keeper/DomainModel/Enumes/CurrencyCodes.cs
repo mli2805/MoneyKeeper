@@ -6,7 +6,8 @@ namespace Keeper.DomainModel.Enumes
     USD = 1,
     BYR = 2,
     EUR = 3,
-    RUB = 4
+    RUB = 4,
+    BYN = 5
   };
   
 }
