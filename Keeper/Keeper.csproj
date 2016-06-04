@@ -173,6 +173,7 @@
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
+    <Compile Include="Utils\DoubleToStringConverter.cs" />
     <Compile Include="Utils\NbRbRatesExtractor.cs" />
     <Compile Include="Controls\ComboboxTreeview\ComboBoxTreeView.cs" />
     <Compile Include="Controls\ComboboxTreeview\ExtendedTreeView.cs" />
