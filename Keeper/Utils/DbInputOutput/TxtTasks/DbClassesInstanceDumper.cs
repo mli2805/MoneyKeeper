@@ -47,8 +47,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         {
             return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " +
                    tranWithTags.MyAccount + " ; " + tranWithTags.MySecondAccount + " ; " + 
-                   tranWithTags.Amount + " ; " + tranWithTags.Currency + " ; " +
-                   tranWithTags.AmountInReturn + " ; " + tranWithTags.CurrencyInReturn + " ; " + 
+                   tranWithTags.Amount.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.Currency + " ; " +
+                   tranWithTags.AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.CurrencyInReturn + " ; " + 
                    Dump(tranWithTags.Tags) + " ; " + tranWithTags.Comment;
         }
 
