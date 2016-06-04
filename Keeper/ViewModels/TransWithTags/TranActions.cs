@@ -81,6 +81,7 @@ namespace Keeper.ViewModels.TransWithTags
         {
             var tranForAdding = _model.SelectedTranWrappedForDatagrid.Tran.Clone();
             tranForAdding.Timestamp = tranForAdding.Timestamp.AddMinutes(1);
+            tranForAdding.Amount = 0;
             tranForAdding.Comment = "";
             return tranForAdding;
         }
@@ -89,6 +90,7 @@ namespace Keeper.ViewModels.TransWithTags
         {
             int n = _model.Rows.IndexOf(_model.SelectedTranWrappedForDatagrid);
             _model.Rows.Remove(_model.SelectedTranWrappedForDatagrid);
+            if (n == _model.Rows.Count) n--;
             _model.SelectedTranWrappedForDatagrid = _model.Rows.ElementAt(n);
         }
 
