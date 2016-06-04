@@ -19,7 +19,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     [Export(typeof(ILoader))]
     public class DbFromTxtLoader : IDbFromTxtLoader, ILoader
     {
-        public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
+        public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
         private readonly DbClassesInstanceParser _dbClassesInstanceParser;
         private readonly AccountTreeStraightener _accountTreeStraightener;
@@ -53,6 +53,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             db.Transactions = LoadFrom(path, "Transactions.txt",
                            _dbClassesInstanceParser.TransactionFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;
+//            db.TransWithTags = LoadFrom(path, "TransWithTags.txt",
+//                           _dbClassesInstanceParser.TranWithTagsFromString , accountsPlaneList);
+//            if (Result != null) return Result;
             db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt",
                            _dbClassesInstanceParser.ArticleAssociationFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;

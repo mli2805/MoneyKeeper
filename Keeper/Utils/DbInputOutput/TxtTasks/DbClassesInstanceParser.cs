@@ -43,6 +43,38 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
             return transaction;
         }
+
+        public TranWithTags TranWithTagsFromString(string s, IEnumerable<Account> accountsPlaneList)
+        {
+            var tran = new TranWithTags();
+            var substrings = s.Split(';');
+            tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+            tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
+            tran.MyAccount = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
+            tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[3].Trim()) : null;
+            tran.Amount = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
+            tran.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
+            tran.AmountInReturn = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
+            tran.CurrencyInReturn = substrings[7].Trim() != "" ? (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]) : CurrencyCodes.USD;
+            tran.Tags = TagsFromString(substrings[8].Trim(), accountsPlaneList); 
+            tran.Comment = substrings[9].Trim();
+
+            return tran;
+        }
+
+        private List<Account> TagsFromString(string str, IEnumerable<Account> accountsPlaneList)
+        {
+            var tags = new List<Account>();
+            if (str == "") return tags;
+
+            var substrings = str.Split('|');
+            foreach (var substring in substrings)
+            {
+                tags.Add(accountsPlaneList.First(account => account.Name == substring.Trim()));
+            }
+
+            return tags;
+        }
         public CurrencyRate CurrencyRateFromString(string s, IEnumerable<Account> accountsPlaneList)
         {
             var rate = new CurrencyRate();
