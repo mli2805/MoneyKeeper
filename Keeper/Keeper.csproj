@@ -171,6 +171,7 @@
     </Compile>
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
+    <Compile Include="Utils\Denominator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
     <Compile Include="Utils\DoubleToStringConverter.cs" />
