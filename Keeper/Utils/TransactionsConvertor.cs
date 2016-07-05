@@ -56,7 +56,7 @@ namespace Keeper.Utils
                 Comment = firstPartOfExchange.Comment
             };
             result.Tags.Add(firstPartOfExchange.Credit);
-            if (firstPartOfExchange.Comment.Contains("cycle"))
+            if (firstPartOfExchange.Comment != null && firstPartOfExchange.Comment.Contains("cycle"))
                 result.Tags.Add(_accountTreeStraightener.Seek("Форекс",_db.Accounts));
             return result;  
         }
