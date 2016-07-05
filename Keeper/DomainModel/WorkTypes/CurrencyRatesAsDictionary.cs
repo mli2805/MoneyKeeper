@@ -14,6 +14,7 @@ namespace Keeper.DomainModel.WorkTypes
         {
             Rates = new Dictionary<CurrencyCodes, Dictionary<DateTime, double>>
             {
+                {CurrencyCodes.BYN, ConvertOneCurrency(collection, CurrencyCodes.BYN)},
                 {CurrencyCodes.BYR, ConvertOneCurrency(collection, CurrencyCodes.BYR)},
                 {CurrencyCodes.EUR, ConvertOneCurrency(collection, CurrencyCodes.EUR)},
                 {CurrencyCodes.RUB, ConvertOneCurrency(collection, CurrencyCodes.RUB)}
