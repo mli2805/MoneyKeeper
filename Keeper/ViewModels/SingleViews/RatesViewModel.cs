@@ -124,7 +124,7 @@ namespace Keeper.ViewModels.SingleViews
         public void FillInFields()
         {
             var lastCurrencyRate = (from cr in Rows
-                                    where cr.Currency == CurrencyCodes.BYR
+                                    where cr.Currency == CurrencyCodes.BYN
                                     orderby cr.BankDay
                                     select cr).Last();
             NewDate = lastCurrencyRate.BankDay.Date.AddDays(1);
@@ -213,7 +213,7 @@ namespace Keeper.ViewModels.SingleViews
 
         public void SaveNewRates()
         {
-            var newByrCurrencyRate = new CurrencyRate { BankDay = NewDate, Currency = CurrencyCodes.BYR, Rate = LastByrRate };
+            var newByrCurrencyRate = new CurrencyRate { BankDay = NewDate, Currency = CurrencyCodes.BYN, Rate = LastByrRate };
             Rows.Add(newByrCurrencyRate);
 
             var newEurCurrencyRate = new CurrencyRate { BankDay = NewDate, Currency = CurrencyCodes.EUR, Rate = Math.Round(1 / LastEurRate, 4) };
