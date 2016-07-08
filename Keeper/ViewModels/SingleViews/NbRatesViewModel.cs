@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Composition;
@@ -81,7 +82,7 @@ namespace Keeper.ViewModels.SingleViews
 
         private void DispatcherTimerTick(object sender, EventArgs e)
         {
-            ClockContent = String.Format("{0:HH:mm:ss}", DateTime.Now);
+            ClockContent = $"{DateTime.Now:HH:mm:ss}";
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -97,7 +98,7 @@ namespace Keeper.ViewModels.SingleViews
             var dateRates = _nbRbRatesExtractor.GetRatesForDate(date);
             if (dateRates == null)
             {
-                MessageBox.Show(String.Format("Курсы за {0} недоступны", date));
+                MessageBox.Show($"Курсы за {date} недоступны");
                 return;
             }
             Line = new NbRate() { Date = date };
@@ -106,20 +107,27 @@ namespace Keeper.ViewModels.SingleViews
                 switch (rate.Key)
                 {
                     case CurrencyCodes.USD:
-                        Line.UsdRate = date < new DateTime(2000,1,1) ? rate.Value / 1000 : rate.Value;
+                        Line.UsdRate = ConsiderDenominations(date, rate);
                         break;
                     case CurrencyCodes.EUR:
-                        Line.EurRate = date < new DateTime(2000, 1, 1) ? rate.Value / 1000 : rate.Value;
+                        Line.EurRate = ConsiderDenominations(date, rate);
                         break;
                     case CurrencyCodes.RUB:
-                        Line.RurRate = date < new DateTime(2000, 1, 1) ? rate.Value / 1000 : rate.Value;
+                        Line.RurRate = ConsiderDenominations(date, rate);
                         break;
                     default:
-                        MessageBox.Show(string.Format("Неизвестная валюта {0}", rate.Key));
+                        MessageBox.Show($"Неизвестная валюта {rate.Key}");
                         break;
                 }
             }
             Execute.OnUIThread(UiThreadWork);
+        }
+
+        private static double ConsiderDenominations(DateTime date, KeyValuePair<CurrencyCodes, double> rate)
+        {
+            return date < new DateTime(2000,1,1) ? rate.Value / 1000 :
+                date < new DateTime(2016, 7, 1) ? rate.Value :
+                rate.Key == CurrencyCodes.RUB ? rate.Value * 100 : rate.Value * 10000;
         }
 
         private void UiThreadWork()
