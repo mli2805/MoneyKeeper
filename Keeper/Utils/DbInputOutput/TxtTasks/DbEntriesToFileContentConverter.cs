@@ -69,6 +69,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
         public IEnumerable<string> ConvertTranWithTagsToFileContent()
         {
+            if (_db.TransWithTags == null) yield break; // после перехода на новые транзакции можно убрать
+
             var orderedTrans = from tran in _db.TransWithTags
                                orderby tran.Timestamp
                                select tran;

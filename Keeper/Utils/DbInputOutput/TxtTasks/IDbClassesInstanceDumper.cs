@@ -13,6 +13,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     string Dump(CurrencyRate rate);
     string Dump(NbRate rate);
     string Dump(Transaction transaction);
+    string Dump(TranWithTags tran);
     string Dump(Deposit deposit);
     string Dump(BankDepositRateLine bankDepositRateLine, int accountId);
   }

@@ -73,6 +73,8 @@ namespace Keeper.ViewModels.Shell
                                  IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider, RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
         {
             _loadResult = loadResult; // в конструкторе DbLoadResult происходит загрузка БД
+            if (_loadResult.Db.TransWithTags == null) IoC.Get<TransactionsConvertor>().Convert();
+
             _messageBoxer = messageBoxer;
             _expensePartingDataProvider = expensePartingDataProvider;
             _ratesOxyplotDataProvider = ratesOxyplotDataProvider;
@@ -369,7 +371,7 @@ namespace Keeper.ViewModels.Shell
             CloseAllLaunchedForms();
             var pp = _mySettings.GetCombinedSetting("DbFileFullPath");
 
-            _db.TransWithTags = null;
+//            _db.TransWithTags = null;
 
             await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, pp));
             if (IsDbChanged) await Task.Run(() => _backuper.MakeDbTxtCopy());

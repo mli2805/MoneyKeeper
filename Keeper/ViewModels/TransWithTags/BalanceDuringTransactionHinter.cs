@@ -46,7 +46,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         public string GetMyAccountBalance(TranWithTags transactionInWork)
         {
-            if (transactionInWork == null || transactionInWork.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
+            if (transactionInWork?.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
 
             var balanceBefore =
                 _db.TransWithTags.Sum(a => a.AmountForAccount(transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));

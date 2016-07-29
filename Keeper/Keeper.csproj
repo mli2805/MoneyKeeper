@@ -171,6 +171,8 @@
     </Compile>
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
+    <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
+    <Compile Include="Utils\BalancesFromTransWithTags\TransWithTagsExtensions.cs" />
     <Compile Include="Utils\Denominator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
