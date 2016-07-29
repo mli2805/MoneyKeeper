@@ -29,8 +29,10 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.TxtTasks
       // Arrangement
       var accountsToList = new List<string>();
       A.CallTo(() => _dbEntriesToStringListsConverter.ConvertAccountsToFileContent()).Returns(accountsToList);
-      var transactionsToList = new List<string>();
-      A.CallTo(() => _dbEntriesToStringListsConverter.ConvertTransactionsToFileContent()).Returns(transactionsToList);
+//      var transactionsToList = new List<string>();
+//      A.CallTo(() => _dbEntriesToStringListsConverter.ConvertTransactionsToFileContent()).Returns(transactionsToList);
+      var transToList = new List<string>();
+      A.CallTo(() => _dbEntriesToStringListsConverter.ConvertTranWithTagsToFileContent()).Returns(transToList);
       var associationsToList = new List<string>();
       A.CallTo(() => _dbEntriesToStringListsConverter.ConvertArticlesAssociationsToFileContent()).Returns(associationsToList);
       var ratesToList = new List<string>();
@@ -39,7 +41,8 @@ namespace Keeper.UnitTests.Utils.DbInputOutput.TxtTasks
       mUnderTest.SaveDbInTxt();
       // Assert
       A.CallTo(() => _dbTxtFileWriter.WriteDbFile("Accounts.txt", accountsToList)).MustHaveHappened();
-      A.CallTo(() => _dbTxtFileWriter.WriteDbFile("Transactions.txt", transactionsToList)).MustHaveHappened();
+//      A.CallTo(() => _dbTxtFileWriter.WriteDbFile("Transactions.txt", transactionsToList)).MustHaveHappened();
+      A.CallTo(() => _dbTxtFileWriter.WriteDbFile("Transactions.txt", transToList)).MustHaveHappened();
       A.CallTo(() => _dbTxtFileWriter.WriteDbFile("ArticlesAssociations.txt", associationsToList)).MustHaveHappened();
       A.CallTo(() => _dbTxtFileWriter.WriteDbFile("CurrencyRates.txt", ratesToList)).MustHaveHappened();
     }

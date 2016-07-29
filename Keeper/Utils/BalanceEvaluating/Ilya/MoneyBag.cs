@@ -26,8 +26,14 @@ namespace Keeper.Utils.BalanceEvaluating.Ilya
       }
     }
 
-    public bool IsZero { get { return Count == 0; } }
-    public static MoneyBag operator -(MoneyBag x)
+    public bool IsEmpty { get { return Count == 0; } }
+
+      public bool IsZero() // записи есть, но все с нулем
+      {
+          return Items.All(item => item.Amount == 0);
+      }
+
+      public static MoneyBag operator -(MoneyBag x)
     {
       return new MoneyBag(x.Select(m => new Money(m.Currency, -m.Amount)));
     }
@@ -37,7 +43,9 @@ namespace Keeper.Utils.BalanceEvaluating.Ilya
     }
     public static MoneyBag operator +(MoneyBag x, MoneyBag y)
     {
-      return new MoneyBag(x
+      return y == null ?
+                x :
+                new MoneyBag(x
                             .Concat(y)
                             .GroupBy(m => m.Currency)
                             .Select(Sum)
@@ -57,6 +65,11 @@ namespace Keeper.Utils.BalanceEvaluating.Ilya
     {
       return x + new MoneyBag(y);
     }
+
+      public static MoneyBag operator -(MoneyBag x, Money y)
+      {
+          return x - new MoneyBag(y);
+      }
 
     public override string ToString()
     {

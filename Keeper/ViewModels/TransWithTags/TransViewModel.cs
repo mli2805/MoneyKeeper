@@ -21,7 +21,9 @@ namespace Keeper.ViewModels.TransWithTags
         public TransViewModel(KeeperDb db)
         {
             Model.Db = db;
-            IoC.Get<TransactionsConvertor>().Convert();
+
+//            if (Model.Db.TransWithTags == null) IoC.Get<TransactionsConvertor>().Convert(); // убрать после перехода
+
             Model.Rows = WrapTransactions(Model.Db.TransWithTags);
             Model.SortedRows = CollectionViewSource.GetDefaultView(Model.Rows);
             Model.SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));

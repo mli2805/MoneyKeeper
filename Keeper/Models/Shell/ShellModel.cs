@@ -6,6 +6,7 @@ using System.Windows;
 using Keeper.DomainModel;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.BalanceEvaluating;
+using Keeper.Utils.BalancesFromTransWithTags;
 using Keeper.ViewModels.Shell;
 
 namespace Keeper.Models.Shell
@@ -15,6 +16,7 @@ namespace Keeper.Models.Shell
     public class ShellModel
     {
         private readonly BalancesForShellCalculator _balancesForShellCalculator;
+        private readonly BalancesForMainViewCalculator _balancesForMainViewCalculator;
 
         public MainMenuModel MyMainMenuModel { get; set; }
         public AccountForestModel MyForestModel { get; set; }
@@ -23,9 +25,10 @@ namespace Keeper.Models.Shell
         public StatusBarModel MyStatusBarModel { get; set; }
 
         [ImportingConstructor]
-        public ShellModel(BalancesForShellCalculator balancesForShellCalculator)
+        public ShellModel(BalancesForShellCalculator balancesForShellCalculator, BalancesForMainViewCalculator balancesForMainViewCalculator)
         {
             _balancesForShellCalculator = balancesForShellCalculator;
+            _balancesForMainViewCalculator = balancesForMainViewCalculator;
 
             MyMainMenuModel = new MainMenuModel();
             MyMainMenuModel.PropertyChanged += MyMainMenuModelPropertyChanged;
@@ -99,13 +102,19 @@ namespace Keeper.Models.Shell
 
         private void RefreshBalanceListAccordinglyDatesInSelector()
         {
+            //            if (MyTwoSelectorsModel.IsPeriodMode)
+            //                MyBalanceListModel.AccountBalanceInUsd =
+            //                    $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList):#,0.##} usd";
+            //            else
+            //                MyBalanceListModel.AccountBalanceInUsd =
+            //                    $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList):#,0.##} usd";
+
             if (MyTwoSelectorsModel.IsPeriodMode)
-                MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,0.##} usd", _balancesForShellCalculator.FillListForShellView(
-                  MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList));
+                MyBalanceListModel.AccountBalanceInUsd =
+                    $"{_balancesForMainViewCalculator.FillListForShellView(MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList):#,0.##} usd";
             else
-                MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,0.##} usd", _balancesForShellCalculator.FillListForShellView(
-                  MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate),
-                  MyBalanceListModel.BalanceList));
+                MyBalanceListModel.AccountBalanceInUsd =
+                    $"{_balancesForMainViewCalculator.FillListForShellView(MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList):#,0.##} usd";
         }
 
         void MyTwoSelectorsModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -121,16 +130,18 @@ namespace Keeper.Models.Shell
             if (e.PropertyName == "SelectedAccount")
             {
                 MyBalanceListModel.Caption = MyForestModel.SelectedAccount.Name;
-                if (MyTwoSelectorsModel.IsPeriodMode)
-                {
-                    MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,0.##} usd", _balancesForShellCalculator.FillListForShellView(
-                      MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList));
-                }
-                else
-                {
-                    MyBalanceListModel.AccountBalanceInUsd = String.Format("{0:#,0.##} usd", _balancesForShellCalculator.FillListForShellView(
-                      MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList));
-                }
+//                if (MyTwoSelectorsModel.IsPeriodMode)
+//                {
+//                    MyBalanceListModel.AccountBalanceInUsd =
+//                        $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList):#,0.##} usd";
+//                }
+//                else
+//                {
+//                    MyBalanceListModel.AccountBalanceInUsd =
+//                        $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList):#,0.##} usd";
+//                }
+
+                RefreshBalanceListAccordinglyDatesInSelector();
             }
 
             if (e.PropertyName == "OpenedAccountPage")

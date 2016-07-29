@@ -53,10 +53,10 @@ namespace Keeper.UnitTests.ByFunctional.AccountEditing
             _parentAccount.Children.Add(_emptyChildAccount);
             _parentAccount.Children.Add(_childAccountWithOperation);
 
-            _db = new KeeperDb { Accounts = new ObservableCollection<Account>(), Transactions = new ObservableCollection<Transaction>() };
+            _db = new KeeperDb { Accounts = new ObservableCollection<Account>(), TransWithTags = new ObservableCollection<TranWithTags>() };
             _db.Accounts.Add(_rootAccount);
             _db.Accounts.Add(_rootAccountWithoutChildren);
-            _db.Transactions.Add(new Transaction() { Debet = _childAccountWithOperation });
+            _db.TransWithTags.Add(new TranWithTags() { MyAccount = _childAccountWithOperation });
         }
 
         [Test]
