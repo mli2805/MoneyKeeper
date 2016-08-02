@@ -225,7 +225,6 @@
     <Compile Include="Utils\AccountEditing\IAccountCantBeDeletedChecker.cs" />
     <Compile Include="Utils\AccountEditing\IAccountLowLevelOperator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositOfferIdGenerator.cs" />
-    <Compile Include="Utils\BalanceEvaluating\ArticleBalanceCalculator.cs" />
     <Compile Include="DomainModel\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="DomainModel\Transactions\TranExtentions.cs" />
     <Compile Include="DomainModel\Transactions\TranWithTags.cs" />
@@ -278,7 +277,6 @@
     <Compile Include="Utils\DbInputOutput\FileTasks\IDbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\IDbUnzipper.cs" />
     <Compile Include="Utils\BalanceEvaluating\MoneyPair.cs" />
-    <Compile Include="Utils\BalanceEvaluating\BalancesForShellCalculator.cs" />
     <Compile Include="Utils\BalanceEvaluating\BalancesForTransactionsCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\IFileExistenceChecker.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\ILoader.cs" />
