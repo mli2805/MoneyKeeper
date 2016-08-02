@@ -8,7 +8,7 @@ namespace Keeper.DomainModel.Transactions
 {
     static class TranCalcExtentions
     {
-        #region Decimal functions
+        #region Decimal functions for Account
         public static decimal AmountForAccount(this TranWithTags tran, Account account, CurrencyCodes? currency, Period period)
         {
             return period.ContainsButTimeNotChecking(tran.Timestamp) ? AmountForAccount(tran, account, currency) : 0;
@@ -38,7 +38,7 @@ namespace Keeper.DomainModel.Transactions
         }
 
         #endregion
-        #region Decimal functions
+        #region Decimal functions for Tag
         public static decimal AmountForTag(this TranWithTags tran, Account tag, CurrencyCodes? currency, Period period)
         {
             return period.ContainsButTimeNotChecking(tran.Timestamp) ? AmountForAccount(tran, tag, currency) : 0;
@@ -77,7 +77,6 @@ namespace Keeper.DomainModel.Transactions
         }
         public static MoneyBag MoneyBagForTag(this TranWithTags tran, Account tag)
         {
-//            if (!tran.Tags.Contains(tag)) return null;
             if (!tran.CollectionContainsTag(tag)) return null;
             var result = new MoneyBag();
             switch (tran.Operation)

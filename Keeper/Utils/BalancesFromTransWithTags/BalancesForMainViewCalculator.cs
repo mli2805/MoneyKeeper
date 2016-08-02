@@ -131,109 +131,81 @@ namespace Keeper.Utils.BalancesFromTransWithTags
 
         private List<string> GetTrafficListForTag(Account tag, Period period)
         {
-            var transWithRates = from t in _db.TransWithTags
-                where period.ContainsAndTimeWasChecked(t.Timestamp) && t.Tags.Contains(tag)
+            return (from t in _db.TransWithTags
+                    where period.ContainsAndTimeWasChecked(t.Timestamp) && t.Tags.Contains(tag)
+                    join
+                        r in _db.CurrencyRates
+                        on new { t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault() } equals
+                        new { r.BankDay.Date, r.Currency } into g
+                    from rate in g.DefaultIfEmpty()
+                    select new TrafficOnMainPage()
+                    {
+                        Timestamp = t.Timestamp,
+                        Amount = t.AmountForTag(tag, t.Currency),
+                        Currency = t.Currency.GetValueOrDefault(),
+                        AmountInUsd =
+                                              rate != null
+                                                  ? t.AmountForTag(tag, t.Currency) / (decimal)rate.Rate
+                                                  : t.AmountForTag(tag, t.Currency),
+                        Comment = t.Comment
+                    }).OrderBy(t => t.Timestamp).Select(t => t.ToString()).ToList();
+        }
+
+        private List<TrafficOnMainPage> GetTrafficWhereMyAccountIsFirst(Account account, Period period)
+        {
+            return (from
+                t in _db.TransWithTags
+                    where period.ContainsAndTimeWasChecked(t.Timestamp) && t.MyAccount.Is(account.Name)
+                    join
+                        r in _db.CurrencyRates
+                        on new { t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault() } equals
+                        new { r.BankDay.Date, r.Currency } into g
+                    from rate in g.DefaultIfEmpty()
+                    select new TrafficOnMainPage()
+                    {
+                        Timestamp = t.Timestamp,
+                        Amount = t.AmountForAccount(account, t.Currency),
+                        Currency = t.Currency.GetValueOrDefault(),
+                        AmountInUsd =
+                            rate != null
+                                ? t.AmountForAccount(account, t.Currency) / (decimal)rate.Rate
+                                : t.AmountForAccount(account, t.Currency),
+                        Comment = t.Comment
+                    }).ToList();
+        }
+
+        private IEnumerable<TrafficOnMainPage> GetTrafficWhereMyAccountIsSecond(Account account, Period period)
+        {
+            return from
+                t in _db.TransWithTags
+                where period.ContainsAndTimeWasChecked(t.Timestamp) &&
+                      t.MySecondAccount != null && t.MySecondAccount.Is(account.Name)
                 join
                     r in _db.CurrencyRates
-                    on new {t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault()} equals
-                    new {r.BankDay.Date, r.Currency} into g
+                    on new { t.Timestamp.Date, Currency = t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault() } equals
+                    new { r.BankDay.Date, r.Currency } into g
                 from rate in g.DefaultIfEmpty()
-                select new
+                select new TrafficOnMainPage()
                 {
-                    t.Timestamp,
-                    Amount = t.AmountForTag(tag, t.Currency),
-                    Currency = t.Currency.GetValueOrDefault(),
+                    Timestamp = t.Timestamp,
+                    Amount = t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
+                    Currency = t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault(),
                     AmountInUsd =
-                                          rate != null
-                                              ? t.AmountForTag(tag, t.Currency) / (decimal)rate.Rate
-                                              : t.AmountForTag(tag, t.Currency),
-                    t.Comment
+                        rate != null
+                            ? t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()) / (decimal)rate.Rate
+                            : t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
+                    Comment = t.Comment
                 };
-
-            var list = new List<string>();
-            foreach (var t in transWithRates.OrderBy(q => q.Timestamp))
-            {
-                switch (t.Currency)
-                {
-                    case CurrencyCodes.USD:
-                        list.Add($"{t.Timestamp:d} {t.Amount} {t.Currency.ToString().ToLower()} {t.Comment}");
-                        break;
-                    case CurrencyCodes.BYR:
-                        list.Add($"{t.Timestamp:d} {t.Amount:#,0} {t.Currency.ToString().ToLower()} ({t.AmountInUsd:#,0.00}$) {t.Comment}");
-                        break;
-                    default:
-                        list.Add($"{t.Timestamp:d} {t.Amount:#,0.00} {t.Currency.ToString().ToLower()} ({t.AmountInUsd:#,0.00}$) {t.Comment}");
-                        break;
-                }
-
-            }
-            return list;
-
         }
+
         private List<string> GetTrafficListForAccount(Account account, Period period)
         {
-            var transWithRates1 = (from
-                                    t in _db.TransWithTags
-                                  where period.ContainsAndTimeWasChecked(t.Timestamp) && t.MyAccount.Is(account.Name)
-                                  join
-                             r in _db.CurrencyRates
-                             on new { t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault() } equals
-                                      new { r.BankDay.Date, r.Currency } into g
-                                  from rate in g.DefaultIfEmpty()
-                                  select new
-                                  {
-                                      t.Timestamp,
-                                      Amount =  t.AmountForAccount(account, t.Currency),
-                                      Currency = t.Currency.GetValueOrDefault(),
-                                      AmountInUsd =
-                                          rate != null
-                                              ? t.AmountForAccount(account, t.Currency) / (decimal)rate.Rate
-                                              : t.AmountForAccount(account, t.Currency),
-                                      t.Comment
-                                  }).ToList();
-
-            var transWithRates2 = (from
-                                    t in _db.TransWithTags
-                                  where period.ContainsAndTimeWasChecked(t.Timestamp) &&
-                                           t.MySecondAccount != null && t.MySecondAccount.Is(account.Name)
-                                  join
-                             r in _db.CurrencyRates
-                             on new { t.Timestamp.Date, Currency = t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()} equals
-                                      new { r.BankDay.Date, r.Currency } into g
-                                  from rate in g.DefaultIfEmpty()
-                                  select new
-                                  {
-                                      t.Timestamp,
-                                      Amount = t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
-                                      Currency = t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault(),
-                                      AmountInUsd =
-                                          rate != null
-                                              ? t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()) / (decimal)rate.Rate
-                                              : t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
-                                      t.Comment
-                                  });
-
+            var transWithRates1 = GetTrafficWhereMyAccountIsFirst(account, period);
+            var transWithRates2 = GetTrafficWhereMyAccountIsSecond(account, period);
             transWithRates1.AddRange(transWithRates2);
-
-            var list = new List<string>();
-            foreach (var t in transWithRates1.OrderBy(q => q.Timestamp))
-            {
-                switch (t.Currency)
-                {
-                    case CurrencyCodes.USD:
-                        list.Add($"{t.Timestamp:d} {t.Amount} {t.Currency.ToString().ToLower()} {t.Comment}");
-                        break;
-                    case CurrencyCodes.BYR:
-                        list.Add($"{t.Timestamp:d} {t.Amount:#,0} {t.Currency.ToString().ToLower()} ({t.AmountInUsd:#,0.00}$) {t.Comment}");
-                        break;
-                    default:
-                        list.Add($"{t.Timestamp:d} {t.Amount:#,0.00} {t.Currency.ToString().ToLower()} ({t.AmountInUsd:#,0.00}$) {t.Comment}");
-                        break;
-                }
-
-            }
-            return list;
+            return transWithRates1.OrderBy(t => t.Timestamp).Select(t => t.ToString()).ToList();
         }
-
     }
 }
+
+
