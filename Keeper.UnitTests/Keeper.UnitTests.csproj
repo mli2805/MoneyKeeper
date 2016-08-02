@@ -85,7 +85,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByFunctional\BalanceEvaluating\TestArticleBalanceCalculator.cs" />
     <Compile Include="ByFunctional\DepositProcessing\TestDepositTrafficExtractor.cs" />
     <Compile Include="IntegrationTest_BalanceCalculator_Performance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

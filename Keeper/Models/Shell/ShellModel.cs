@@ -1,13 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Composition;
-using System.Security.AccessControl;
 using System.Windows;
-using Keeper.DomainModel;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.BalancesFromTransWithTags;
-using Keeper.ViewModels.Shell;
 
 namespace Keeper.Models.Shell
 {
@@ -15,7 +11,6 @@ namespace Keeper.Models.Shell
     [Shared]
     public class ShellModel
     {
-        private readonly BalancesForShellCalculator _balancesForShellCalculator;
         private readonly BalancesForMainViewCalculator _balancesForMainViewCalculator;
 
         public MainMenuModel MyMainMenuModel { get; set; }
@@ -25,9 +20,8 @@ namespace Keeper.Models.Shell
         public StatusBarModel MyStatusBarModel { get; set; }
 
         [ImportingConstructor]
-        public ShellModel(BalancesForShellCalculator balancesForShellCalculator, BalancesForMainViewCalculator balancesForMainViewCalculator)
+        public ShellModel(BalancesForMainViewCalculator balancesForMainViewCalculator)
         {
-            _balancesForShellCalculator = balancesForShellCalculator;
             _balancesForMainViewCalculator = balancesForMainViewCalculator;
 
             MyMainMenuModel = new MainMenuModel();
