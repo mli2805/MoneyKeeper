@@ -4,8 +4,6 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Windows;
-using Caliburn.Micro;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Composition;
-using Keeper.DomainModel;
 using Keeper.DomainModel.Enumes;
 using Keeper.Utils.BalanceEvaluating;
 

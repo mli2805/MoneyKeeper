@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Keeper.DomainModel;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;
 

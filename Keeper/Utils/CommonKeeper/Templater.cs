@@ -1,5 +1,4 @@
-﻿using Keeper.DomainModel;
-using Keeper.DomainModel.Enumes;
+﻿using Keeper.DomainModel.Enumes;
 
 namespace Keeper.Utils.CommonKeeper
 {

@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Transactions;

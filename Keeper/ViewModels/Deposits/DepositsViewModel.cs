@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;

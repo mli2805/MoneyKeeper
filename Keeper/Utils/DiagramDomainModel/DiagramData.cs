@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Keeper.DomainModel.Enumes;
-using Keeper.Utils.Common;
 
 namespace Keeper.Utils.DiagramDomainModel
 {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.Utils.AccountEditing;
 
