@@ -3,7 +3,6 @@ using System.Composition;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.DomainModel;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Models;
 using Keeper.Utils.MonthAnalysis;

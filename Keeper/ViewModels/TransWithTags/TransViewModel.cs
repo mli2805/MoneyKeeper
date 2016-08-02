@@ -6,7 +6,6 @@ using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Transactions;
-using Keeper.Utils;
 
 namespace Keeper.ViewModels.TransWithTags
 {

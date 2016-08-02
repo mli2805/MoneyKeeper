@@ -1,5 +1,4 @@
-﻿using Keeper.DomainModel;
-using Keeper.DomainModel.DbTypes;
+﻿using Keeper.DomainModel.DbTypes;
 
 namespace Keeper.Utils.DbInputOutput
 {

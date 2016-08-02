@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Keeper.DomainModel.Enumes;
-using Keeper.Utils.Common;
 
 namespace Keeper.Utils.Diagram
 {

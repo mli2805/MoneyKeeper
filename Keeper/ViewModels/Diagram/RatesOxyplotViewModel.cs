@@ -4,8 +4,6 @@ using Caliburn.Micro;
 using Keeper.Utils.DiagramDomainModel;
 using Keeper.Utils.OxyPlots;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace Keeper.ViewModels.Diagram
 {

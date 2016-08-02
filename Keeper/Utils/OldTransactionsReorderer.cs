@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Composition;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.Utils.AccountEditing;
