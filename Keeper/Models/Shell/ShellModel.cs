@@ -102,13 +102,6 @@ namespace Keeper.Models.Shell
 
         private void RefreshBalanceListAccordinglyDatesInSelector()
         {
-            //            if (MyTwoSelectorsModel.IsPeriodMode)
-            //                MyBalanceListModel.AccountBalanceInUsd =
-            //                    $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList):#,0.##} usd";
-            //            else
-            //                MyBalanceListModel.AccountBalanceInUsd =
-            //                    $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList):#,0.##} usd";
-
             if (MyTwoSelectorsModel.IsPeriodMode)
                 MyBalanceListModel.AccountBalanceInUsd =
                     $"{_balancesForMainViewCalculator.FillListForShellView(MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList):#,0.##} usd";
@@ -130,17 +123,6 @@ namespace Keeper.Models.Shell
             if (e.PropertyName == "SelectedAccount")
             {
                 MyBalanceListModel.Caption = MyForestModel.SelectedAccount.Name;
-//                if (MyTwoSelectorsModel.IsPeriodMode)
-//                {
-//                    MyBalanceListModel.AccountBalanceInUsd =
-//                        $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, MyTwoSelectorsModel.TranslatedPeriod, MyBalanceListModel.BalanceList):#,0.##} usd";
-//                }
-//                else
-//                {
-//                    MyBalanceListModel.AccountBalanceInUsd =
-//                        $"{_balancesForShellCalculator.FillListForShellView(MyForestModel.SelectedAccount, new Period(new DateTime(0), MyTwoSelectorsModel.TranslatedDate), MyBalanceListModel.BalanceList):#,0.##} usd";
-//                }
-
                 RefreshBalanceListAccordinglyDatesInSelector();
             }
 

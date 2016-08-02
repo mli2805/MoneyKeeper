@@ -43,13 +43,20 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                 FillListForAccountWithChildren(selectedAccount, period, balanceList);
         }
 
+
+        private MoneyBag GetMoneyBag(Account item, Period period)
+        {
+            return item.Is("Мои") ?
+                _db.TransWithTags.Sum(t => t.MoneyBagForAccount(item, period)) :
+                _db.TransWithTags.Sum(t => t.MoneyBagForTag(item, period));
+        }
         private decimal FillListForAccountWithChildren(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
         {
             MoneyBag total = new MoneyBag();
             var list = new List<string>();
             foreach (var child in selectedAccount.Children)
             {
-                MoneyBag childBag = _db.TransWithTags.Sum(a => a.MoneyBagForAccount(child, period));
+                var childBag = GetMoneyBag(child, period);
                 if (!childBag.IsZero())
                 {
                     list.Add("      " + child.Name);
@@ -95,7 +102,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
 
         private decimal FillListForAccountWithTraffic(Account selectedAccount, Period period, ObservableCollection<string> balanceList)
         {
-            MoneyBag moneyBag = _db.TransWithTags.Sum(a => a.MoneyBagForAccount(selectedAccount, period));
+            MoneyBag moneyBag = GetMoneyBag(selectedAccount, period);
             var mainList = MoneyBagToListOfStrings(moneyBag);
 
             foreach (var str in mainList)
@@ -103,13 +110,67 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                 balanceList.Add(str);
             }
 
-            foreach (var str in GetTrafficList(selectedAccount, period))
+            if (selectedAccount.Is("Мои"))
             {
-                balanceList.Add("  " + str);
+                foreach (var str in GetTrafficListForAccount(selectedAccount, period))
+                {
+                    balanceList.Add("  " + str);
+                }
             }
+            else
+            {
+                foreach (var str in GetTrafficListForTag(selectedAccount, period))
+                {
+                    balanceList.Add("  " + str);
+                }
+
+            }
+
             return MoneyBagToUsd(moneyBag, period.Finish);
         }
-        private List<string> GetTrafficList(Account account, Period period)
+
+        private List<string> GetTrafficListForTag(Account tag, Period period)
+        {
+            var transWithRates = from t in _db.TransWithTags
+                where period.ContainsAndTimeWasChecked(t.Timestamp) && t.Tags.Contains(tag)
+                join
+                    r in _db.CurrencyRates
+                    on new {t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault()} equals
+                    new {r.BankDay.Date, r.Currency} into g
+                from rate in g.DefaultIfEmpty()
+                select new
+                {
+                    t.Timestamp,
+                    Amount = t.AmountForTag(tag, t.Currency),
+                    Currency = t.Currency.GetValueOrDefault(),
+                    AmountInUsd =
+                                          rate != null
+                                              ? t.AmountForTag(tag, t.Currency) / (decimal)rate.Rate
+                                              : t.AmountForTag(tag, t.Currency),
+                    t.Comment
+                };
+
+            var list = new List<string>();
+            foreach (var t in transWithRates.OrderBy(q => q.Timestamp))
+            {
+                switch (t.Currency)
+                {
+                    case CurrencyCodes.USD:
+                        list.Add($"{t.Timestamp:d} {t.Amount} {t.Currency.ToString().ToLower()} {t.Comment}");
+                        break;
+                    case CurrencyCodes.BYR:
+                        list.Add($"{t.Timestamp:d} {t.Amount:#,0} {t.Currency.ToString().ToLower()} ({t.AmountInUsd:#,0.00}$) {t.Comment}");
+                        break;
+                    default:
+                        list.Add($"{t.Timestamp:d} {t.Amount:#,0.00} {t.Currency.ToString().ToLower()} ({t.AmountInUsd:#,0.00}$) {t.Comment}");
+                        break;
+                }
+
+            }
+            return list;
+
+        }
+        private List<string> GetTrafficListForAccount(Account account, Period period)
         {
             var transWithRates1 = (from
                                     t in _db.TransWithTags
@@ -123,7 +184,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                                   {
                                       t.Timestamp,
                                       Amount =  t.AmountForAccount(account, t.Currency),
-                                      t.Currency,
+                                      Currency = t.Currency.GetValueOrDefault(),
                                       AmountInUsd =
                                           rate != null
                                               ? t.AmountForAccount(account, t.Currency) / (decimal)rate.Rate
@@ -144,7 +205,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                                   {
                                       t.Timestamp,
                                       Amount = t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
-                                      t.Currency,
+                                      Currency = t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault(),
                                       AmountInUsd =
                                           rate != null
                                               ? t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()) / (decimal)rate.Rate
