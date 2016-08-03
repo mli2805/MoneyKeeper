@@ -17,6 +17,7 @@ namespace Keeper.Behaviors.DataGridBehaviors
         {
             if (AssociatedObject.Items.Count > 0)
                 AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
+
             Console.WriteLine("ScrollToBottomOnLoadDatagridBehavior works");
         }
     }

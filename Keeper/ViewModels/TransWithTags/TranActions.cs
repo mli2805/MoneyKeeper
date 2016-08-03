@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel.Transactions;
 
@@ -9,39 +10,46 @@ namespace Keeper.ViewModels.TransWithTags
         public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
         private TransModel _model;
-        public void Do(int code, TransModel model)
+        public bool Do(int code, TransModel model)
         {
             _model = model;
             switch (code)
             {
-                case 0: Edit(); break;
-                case 1: MoveUp(_model.SelectedTranIndex); break;
-                case 2: MoveDown(_model.SelectedTranIndex); break;
-                case 3: AddAfterSelected(); break;
-                case 4: Delete(); break;
-                default: break;
+                case 0: return Edit();
+                case 1: return MoveUp(_model.SelectedTranIndex);
+                case 2: return MoveDown(_model.SelectedTranIndex);
+                case 3: return AddAfterSelected();
+                case 4: Delete(); return true;
+                default:
+                    return false;
             }
         }
 
-        private void Edit()
+        private bool Edit()
         {
             OneTranViewModel oneTranForm = IoC.Get<OneTranViewModel>();
             oneTranForm.SetTran(_model.SelectedTranWrappedForDatagrid.Tran);
             bool? result = WindowManager.ShowDialog(oneTranForm);
-            if (result.HasValue && result.Value)
-                _model.SelectedTranWrappedForDatagrid.Tran = oneTranForm.GetTran().Clone();
+
+            if (!result.HasValue || !result.Value) return false;
+
+            oneTranForm.GetTran().CopyInto(_model.SelectedTranWrappedForDatagrid.Tran);
+            _model.SortedRows.Refresh();
+            return true;
         }
 
-        private void MoveUp(int selectedTranIndex)
+        private bool MoveUp(int selectedTranIndex)
         {
-            if (selectedTranIndex < 1) return;
+            if (selectedTranIndex < 1) return false;
             MoveTran(selectedTranIndex, -1);
+            return true;
         }
 
-        private void MoveDown(int selectedTranIndex)
+        private bool MoveDown(int selectedTranIndex)
         {
-            if (selectedTranIndex >= _model.Rows.Count - 1) return;
+            if (selectedTranIndex >= _model.Rows.Count - 1) return false;
             MoveTran(selectedTranIndex, 1);
+            return true;
         }
 
         // destination  -1 - up  ;  1 - down
@@ -62,18 +70,19 @@ namespace Keeper.ViewModels.TransWithTags
             _model.SortedRows.Refresh();
         }
 
-        private void AddAfterSelected()
+        private bool AddAfterSelected()
         {
             var oneTranForm = IoC.Get<OneTranViewModel>();
             var tranForAdding = PrepareTranForAdding();
             oneTranForm.SetTran(tranForAdding);
             bool? result = WindowManager.ShowDialog(oneTranForm);
-            if (result.HasValue && result.Value)
-            {
-                var tran = oneTranForm.GetTran().Clone();
-                _model.Rows.Add(new TranWrappedForDatagrid() { Tran = tran });
-                _model.Db.TransWithTags.Add(tran);
-            }
+
+            if (!result.HasValue || !result.Value) return false;
+
+            var tran = oneTranForm.GetTran().Clone();
+            _model.Rows.Add(new TranWrappedForDatagrid() { Tran = tran });
+            _model.Db.TransWithTags.Add(tran);
+            return true;
         }
 
         private TranWithTags PrepareTranForAdding()
@@ -87,10 +96,13 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void Delete()
         {
+            _model.Db.TransWithTags.Remove(_model.SelectedTranWrappedForDatagrid.Tran);
+
             int n = _model.Rows.IndexOf(_model.SelectedTranWrappedForDatagrid);
             _model.Rows.Remove(_model.SelectedTranWrappedForDatagrid);
             if (n == _model.Rows.Count) n--;
             _model.SelectedTranWrappedForDatagrid = _model.Rows.ElementAt(n);
+
         }
 
     }

@@ -32,6 +32,29 @@ namespace Keeper.DomainModel.Transactions
             return result;
         }
 
+        public static void CopyInto(this TranWithTags tran, TranWithTags destinationTran)
+        {
+            destinationTran.Timestamp = tran.Timestamp;
+            destinationTran.Operation = tran.Operation;
+            destinationTran.MyAccount = tran.MyAccount;
+            destinationTran.MySecondAccount = tran.MySecondAccount;
+            destinationTran.Amount = tran.Amount;
+            destinationTran.Currency = tran.Currency;
+            destinationTran.AmountInReturn = tran.AmountInReturn;
+            destinationTran.CurrencyInReturn = tran.CurrencyInReturn;
+
+            destinationTran.Tags?.Clear();
+            if (tran.Tags != null)
+            {
+                if (destinationTran.Tags == null) destinationTran.Tags = new List<Account>();
+                foreach (var tag in tran.Tags)
+                {
+                    destinationTran.Tags.Add(tag);
+                }
+            }
+            destinationTran.Comment = tran.Comment;
+        }
+
         public static Brush TranFontColor(this TranWithTags tran)
         {
             if (tran.Operation == OperationType.Доход) return Brushes.Blue;
