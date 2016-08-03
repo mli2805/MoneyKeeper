@@ -378,7 +378,6 @@
     <Compile Include="Models\Shell\BalanceListModel.cs" />
     <Compile Include="ViewModels\Shell\BalanceListViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainMenuViewModel.cs" />
-    <Compile Include="ViewModels\SingleViews\RenewDepositViewModel.cs" />
     <Compile Include="Models\Shell\ShellModel.cs" />
     <Compile Include="Models\Shell\TwoSelectorsModel.cs" />
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
@@ -423,9 +422,6 @@
     </Compile>
     <Compile Include="Views\Shell\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SingleViews\RenewDepositView.xaml.cs">
-      <DependentUpon>RenewDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -667,10 +663,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SingleViews\ReceiptView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SingleViews\RenewDepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

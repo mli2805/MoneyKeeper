@@ -51,7 +51,7 @@ namespace Keeper.ViewModels.Deposits
             DepositList = new List<Deposit>();
             foreach (var account in new AccountTreeStraightener().Flatten(_db.Accounts))
             {
-                if (!account.Is("Депозиты") || account.Children.Count != 0) continue;
+                if (!account.Is("Депозиты") || account.Children.Count != 0 || !account.IsDeposit()) continue;
                 _depositCalculatorAggregator.FillinFieldsForOneDepositReport(account.Deposit);
                 DepositList.Add(account.Deposit);
             }
