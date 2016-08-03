@@ -62,13 +62,11 @@
       </ListBox.ItemTemplate>
     </ListBox>
     <ListBox Name="Footer" Grid.Row="2" ItemsSource="{Binding ReportFooter}"/>
-    <Button Grid.Row="3" Height="22" Width="100" Margin="10,0" HorizontalAlignment="Left" 
-            Name="Renew" Content="Переоформить" Style="{StaticResource MyButtonStyle}" />
       
-        <Button Grid.Row="3" Height="22" Width="180" Margin="130,0,0,0" HorizontalAlignment="Left" 
+        <Button Grid.Row="3" Height="22" Width="180" Margin="10,0,0,0" HorizontalAlignment="Left" 
             Name="ExtractEvaluationsToExcel" Content="Ежедневный расчет в excel" Style="{StaticResource MyButtonStyle}" />
       
-        <Button Grid.Row="3" Height="22" Width="140" Margin="330,0,0,0" HorizontalAlignment="Left" 
+        <Button Grid.Row="3" Height="22" Width="140" Margin="210,0,0,0" HorizontalAlignment="Left" 
             Name="ExtractTrafficToExcel" Content="Движение в excel" Style="{StaticResource MyButtonStyle}" />
       
         <Button Grid.Row="3" Height="22" Width="100" Margin="0,0,20,0" HorizontalAlignment="Right" 

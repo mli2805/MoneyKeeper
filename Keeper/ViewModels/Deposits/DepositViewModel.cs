@@ -68,19 +68,6 @@ namespace Keeper.ViewModels.Deposits
         }
 
 
-        public void Renew()
-        {
-            var renewDepositViewModel = IoC.Get<RenewDepositViewModel>();
-            renewDepositViewModel.SetOldDeposit(Deposit);
-            WindowManager.ShowDialog(renewDepositViewModel);
-            if (renewDepositViewModel.NewDeposit != null)
-            {
-                NewAccountForDeposit = renewDepositViewModel.NewDeposit;
-                CanRenew = Deposit.CalculationData.State != DepositStates.Закрыт;
-                OnRenewPressed(new RenewPressedEventArgs(NewAccountForDeposit));
-            }
-        }
-
         public void Exit()
         {
             TryClose();
