@@ -321,9 +321,15 @@ namespace Keeper.ViewModels.Shell
 
                         var trForm = new TransViewModel(_db);
                         _launchedForms.Add(trForm);
-                        WindowManager.ShowWindow(trForm);
+                        WindowManager.ShowDialog(trForm);
+            if (trForm.IsCollectionChanged)
+            {
+                SaveDatabase();
+                IsDbChanged = true;
+                MyMainMenuModel.Action = Actions.RefreshBalanceList;
+            }
 
-//            new Denominator(_db).Denominate();
+            //            new Denominator(_db).Denominate();
         }
 
         public void ShowToDoForm()

@@ -15,21 +15,30 @@ namespace Keeper.ViewModels.TransWithTags
 
         public TransModel Model { get; set; } = new TransModel();
         public TranActions ActionsHandler { get; set; } = new TranActions();
+        public bool IsCollectionChanged { get; set; }
 
         [ImportingConstructor]
         public TransViewModel(KeeperDb db)
         {
             Model.Db = db;
 
-//            if (Model.Db.TransWithTags == null) IoC.Get<TransactionsConvertor>().Convert(); // убрать после перехода
-
             Model.Rows = WrapTransactions(Model.Db.TransWithTags);
+            Model.Rows.CollectionChanged += Rows_CollectionChanged;
+
             Model.SortedRows = CollectionViewSource.GetDefaultView(Model.Rows);
             Model.SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
 
             Model.SelectedTranWrappedForDatagrid = Model.Rows.OrderBy(t => t.Tran.Timestamp).Last();
             Model.SelectedTranWrappedForDatagrid.IsSelected = true;
+
+            IsCollectionChanged = false;
         }
+
+        private void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsCollectionChanged = true;
+        }
+
         private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(ObservableCollection<TranWithTags> transactions)
         {
             var result = new ObservableCollection<TranWrappedForDatagrid>();
@@ -49,7 +58,7 @@ namespace Keeper.ViewModels.TransWithTags
         }
         public void ActionsMethod(int code)
         {
-            ActionsHandler.Do(code, Model);
+            if (ActionsHandler.Do(code, Model)) IsCollectionChanged = true;
         }
     }
 }
