@@ -26,12 +26,18 @@ namespace Keeper.Utils.AccountEditing
 				return AccountCantBeDeletedReasons.HasChildren;
 			}
 
-			var hasRelatedTransactions = 
-				(from transaction in _keeperDb.Transactions
-				 where transaction.Debet == account 
-				       || transaction.Credit == account
-				       || transaction.Article == account
-				 select transaction).Any();	
+		    var hasRelatedTransactions = (from tran in _keeperDb.TransWithTags
+		        where tran.MyAccount.Is(account) 
+                      || (tran.MySecondAccount != null && tran.MySecondAccount.Is(account))
+		              || (tran.Tags != null && tran.Tags.Contains(account))
+		        select tran).Any();
+
+//			var hasRelatedTransactions = 
+//				(from transaction in _keeperDb.Transactions
+//				 where transaction.Debet == account 
+//				       || transaction.Credit == account
+//				       || transaction.Article == account
+//				 select transaction).Any();	
 
 			return hasRelatedTransactions ?
 				       AccountCantBeDeletedReasons.HasRelatedTransactions 

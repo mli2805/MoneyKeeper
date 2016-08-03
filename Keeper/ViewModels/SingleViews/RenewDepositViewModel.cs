@@ -10,6 +10,7 @@ using Keeper.DomainModel.Transactions;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.BalanceEvaluating;
+using Keeper.Utils.BalanceEvaluating.Ilya;
 
 namespace Keeper.ViewModels.SingleViews
 {
@@ -119,15 +120,24 @@ namespace Keeper.ViewModels.SingleViews
 
         private void MakeTransactionTransfer()
         {
+            var period = new Period(new DateTime(0), GetTimestampForTransactions());
+            MoneyBag moneyBag = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(_oldDeposit.ParentAccount, period));
+            var amount = moneyBag[_oldDeposit.DepositOffer.Currency];
+
             var transactionProcents = new Transaction
             {
                 Timestamp = GetTimestampForTransactions(),
                 Operation = OperationType.Перенос,
                 Debet = _oldDeposit.ParentAccount,
                 Credit = NewDeposit,
-                Amount = _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(_oldDeposit.ParentAccount,
-                                    new Period(new DateTime(0), GetTimestampForTransactions()),
-                                    _oldDeposit.DepositOffer.Currency),
+
+                Amount = amount,
+
+//                Amount = _accountBalanceCalculator.GetAccountBalanceOnlyForCurrency(_oldDeposit.ParentAccount,
+//                                    new Period(new DateTime(0), GetTimestampForTransactions()),
+//                                    _oldDeposit.DepositOffer.Currency),
+
+
                 Currency = _oldDeposit.DepositOffer.Currency,
                 Comment = "переоформление вклада"
             };

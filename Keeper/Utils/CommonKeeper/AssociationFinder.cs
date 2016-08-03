@@ -18,13 +18,14 @@ namespace Keeper.Utils.CommonKeeper
             var association = (from a in _db.ArticlesAssociations
                                where a.ExternalAccount == account
                                select a).FirstOrDefault();
-            return association == null ? null : association.AssociatedArticle;
+            return association?.AssociatedArticle;
         }
 
         public CurrencyCodes GetAccountLastCurrency(Account account)
         {
-            var transaction = _db.Transactions.LastOrDefault(t => t.Debet == account);
-            return transaction == null ? CurrencyCodes.BYR : transaction.Currency;
+//            var transaction = _db.Transactions.LastOrDefault(t => t.Debet == account);
+            var transaction = _db.TransWithTags.LastOrDefault(t => t.MyAccount.Is(account));
+            return transaction?.Currency.GetValueOrDefault() ?? CurrencyCodes.BYN;
         }
 
         public Account GetBank(Account account)
