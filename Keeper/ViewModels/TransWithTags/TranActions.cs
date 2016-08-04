@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
 {

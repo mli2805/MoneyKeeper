@@ -5,7 +5,7 @@ using Keeper.Controls.OneTranViewControls;
 using Keeper.Controls.OneTranViewControls.SubControls;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.TransWithTags

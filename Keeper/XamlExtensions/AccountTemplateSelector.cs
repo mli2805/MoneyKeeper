@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 
 namespace Keeper.XamlExtensions
 {

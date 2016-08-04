@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.Utils.Common;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks

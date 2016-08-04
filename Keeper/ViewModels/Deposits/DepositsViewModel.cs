@@ -8,7 +8,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DepositProcessing;

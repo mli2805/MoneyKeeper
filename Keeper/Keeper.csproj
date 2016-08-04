@@ -169,13 +169,12 @@
     <Compile Include="Controls\OneTranViewControls\TransferControl.xaml.cs">
       <DependentUpon>TransferControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DomainModel\Transactions\TrafficOnMainPage.cs" />
-    <Compile Include="DomainModel\Transactions\TranCalcExtentions.cs" />
+    <Compile Include="DomainModel\Trans\TrafficOnMainPage.cs" />
+    <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\TransWithTagsExtensions.cs" />
-    <Compile Include="Utils\Denominator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
     <Compile Include="Utils\DoubleToStringConverter.cs" />
@@ -225,9 +224,9 @@
     <Compile Include="Utils\AccountEditing\IAccountCantBeDeletedChecker.cs" />
     <Compile Include="Utils\AccountEditing\IAccountLowLevelOperator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositOfferIdGenerator.cs" />
-    <Compile Include="DomainModel\Transactions\TranWrappedForDatagrid.cs" />
-    <Compile Include="DomainModel\Transactions\TranExtentions.cs" />
-    <Compile Include="DomainModel\Transactions\TranWithTags.cs" />
+    <Compile Include="DomainModel\Trans\TranWrappedForDatagrid.cs" />
+    <Compile Include="DomainModel\Trans\TranExtentions.cs" />
+    <Compile Include="DomainModel\Trans\TranWithTags.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="Utils\TransactionsConvertor.cs" />
@@ -299,7 +298,6 @@
     <Compile Include="Utils\FileSystem\ZipFileAdapter.cs" />
     <Compile Include="Utils\BalanceEvaluating\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
-    <Compile Include="Utils\OldTransactionsReorderer.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataElement.cs" />
     <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
@@ -318,7 +316,7 @@
     <Compile Include="DomainModel\Enumes\CurrencyCodes.cs" />
     <Compile Include="DomainModel\Enumes\OperationType.cs" />
     <Compile Include="DomainModel\WorkTypes\Saldo.cs" />
-    <Compile Include="DomainModel\Transactions\Transaction.cs" />
+    <Compile Include="DomainModel\DbTypes\Transaction.cs" />
     <Compile Include="Utils\AccountEditing\AccountTreesGardener.cs" />
     <Compile Include="Utils\BalanceEvaluating\AccountBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />

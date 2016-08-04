@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.Utils.BalanceEvaluating.Ilya

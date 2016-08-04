@@ -3,7 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.Utils.Rates;
 
 namespace Keeper.ViewModels.TransWithTags
