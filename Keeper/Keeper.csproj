@@ -173,6 +173,7 @@
     <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
+    <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyBagConvertor.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\TransWithTagsExtensions.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />

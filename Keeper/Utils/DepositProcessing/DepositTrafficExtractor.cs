@@ -24,7 +24,6 @@ namespace Keeper.Utils.DepositProcessing
         {
             _deposit = account.Deposit;
             _deposit.CalculationData = new DepositCalculationData();
-            //            ExtractViaSqlRequest();
             var temp = Extract();
             temp.AddRange(ExtractSecondPart());
             _deposit.CalculationData.Traffic = temp.OrderBy(t => t.Timestamp).ToList();
@@ -36,7 +35,6 @@ namespace Keeper.Utils.DepositProcessing
             return (from t in _db.TransWithTags
                     where 
                         t.MyAccount == _deposit.ParentAccount 
-//                        || (t.MySecondAccount != null && t.MySecondAccount == _deposit.ParentAccount)
                     orderby t.Timestamp
                     join r in _db.CurrencyRates on new { t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault() } equals new { r.BankDay.Date, r.Currency } into g
                     from rate in g.DefaultIfEmpty()
@@ -56,7 +54,6 @@ namespace Keeper.Utils.DepositProcessing
         {
             return from t in _db.TransWithTags
                    where
-//                       t.MyAccount == _deposit.ParentAccount &&
                        (t.MySecondAccount != null && t.MySecondAccount == _deposit.ParentAccount)
                    orderby t.Timestamp
                    join r in _db.CurrencyRates on new { t.Timestamp.Date, Currency = t.CurrencyInReturn.GetValueOrDefault() } equals
@@ -68,32 +65,11 @@ namespace Keeper.Utils.DepositProcessing
                        Timestamp = t.Timestamp,
                        Currency = t.CurrencyInReturn.GetValueOrDefault(),
                        Counteragent = GetDepositCounteragent(t),
-//                       Comment = "смена валюты депозита",
                        Comment = t.Operation == OperationType.Обмен ? "обмен с пополнением депозита" : "пополнение депозита",
                        AmountInUsd = rate != null ? t.AmountInReturn / (decimal)rate.Rate : t.AmountInReturn,
                        TransactionType = DepositTransactionTypes.Явнес,
                    };
         }
-
-        //        private void ExtractViaSqlRequest()
-        //        {
-        //            _deposit.CalculationData.Traffic =
-        //                (from t in _db.Transactions
-        //                 where t.Debet == _deposit.ParentAccount || t.Credit == _deposit.ParentAccount
-        //                 orderby t.Timestamp
-        //                 join r in _db.CurrencyRates on new { t.Timestamp.Date, t.Currency } equals new { r.BankDay.Date, r.Currency } into g
-        //                 from rate in g.DefaultIfEmpty()
-        //                 select new DepositTransaction
-        //                 {
-        //                     Amount = t.Amount,
-        //                     Timestamp = t.Timestamp,
-        //                     Currency = t.Currency,
-        //                     Counteragent = GetDepositCounteragent(t),
-        //                     Comment = GetDepositOperationComment(t),
-        //                     AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-        //                     TransactionType = GetDepositOperationType(t, _deposit.ParentAccount)
-        //                 }).ToList();
-        //        }
 
         private DepositTransactionTypes GetDepositOperationType(TranWithTags t, Account depositAccount)
         {

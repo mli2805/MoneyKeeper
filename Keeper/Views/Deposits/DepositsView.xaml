@@ -183,7 +183,7 @@
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
                                   ItemsSource="{Binding SeriesUsd}" Title="USD" />
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
-                                  ItemsSource="{Binding SeriesByr}" Title="BYR" />
+                                  ItemsSource="{Binding SeriesBelo}" Title="Belo" />
         <chartingToolkit:AreaSeries DependentValuePath="Procent" IndependentValuePath="Date" 
                                   ItemsSource="{Binding SeriesEuro}" Title="EUR" />
       </chartingToolkit:Chart>
