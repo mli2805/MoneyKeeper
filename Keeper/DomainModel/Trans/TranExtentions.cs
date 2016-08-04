@@ -3,7 +3,7 @@ using System.Windows.Media;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.DomainModel.Transactions
+namespace Keeper.DomainModel.Trans
 {
     public static class TranExtentions
     {

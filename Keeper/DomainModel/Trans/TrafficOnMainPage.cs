@@ -1,7 +1,7 @@
 ﻿using System;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.DomainModel.Transactions
+namespace Keeper.DomainModel.Trans
 {
     public class TrafficOnMainPage
     {

@@ -4,7 +4,7 @@ using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.BalanceEvaluating.Ilya;
 
-namespace Keeper.DomainModel.Transactions
+namespace Keeper.DomainModel.Trans
 {
     static class TranCalcExtentions
     {
