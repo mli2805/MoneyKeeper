@@ -4,7 +4,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.DomainModel.Transactions
+namespace Keeper.DomainModel.Trans
 {
     [Serializable]
     public class TranWithTags : PropertyChangedBase

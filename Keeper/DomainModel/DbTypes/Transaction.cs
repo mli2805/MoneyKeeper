@@ -1,11 +1,10 @@
 using System;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.Utils.BalanceEvaluating;
 
-namespace Keeper.DomainModel.Transactions
+namespace Keeper.DomainModel.DbTypes
 {
     [Serializable]
     public class Transaction : PropertyChangedBase
