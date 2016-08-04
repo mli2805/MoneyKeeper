@@ -8,6 +8,7 @@ using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
+using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.Diagram
@@ -55,50 +56,31 @@ namespace Keeper.Utils.Diagram
             }
             return sum;
         }
-        public decimal ConvertAllCurrenciesToUsd(Dictionary<CurrencyCodes, decimal> amounts, DateTime date)
-        {
-            decimal inUsd = 0;
-            foreach (var amount in amounts)
-            {
-                inUsd += _rateExtractor.GetUsdEquivalent(amount.Value, amount.Key, date);
-            }
-            return inUsd;
-        }
 
-        public Dictionary<DateTime, Dictionary<CurrencyCodes, decimal>>
-          AccountBalancesForPeriodInCurrencies(Account balancedAccount, Period period, bool includeDaysWithoutChanges)
+        public Dictionary<DateTime, MoneyBag> DepositBalancesForPeriodInCurrencies(Period period)
         {
-            var result = new Dictionary<DateTime, Dictionary<CurrencyCodes, decimal>>();
-            var balanceInCurrencies = new Dictionary<CurrencyCodes, decimal>();
+            var result = new Dictionary<DateTime, MoneyBag>();
+            var currentMoneyBag = new MoneyBag();
             var currentDate = period.Start;
 
-            foreach (var transaction in _db.Transactions)
+            foreach (var tran in _db.TransWithTags)
             {
-                if (currentDate != transaction.Timestamp.Date)
+                if (currentDate != tran.Timestamp.Date)
                 {
-                    result.Add(currentDate, new Dictionary<CurrencyCodes, decimal>(balanceInCurrencies));
-                    currentDate = currentDate.AddDays(1);
-                    while (currentDate < transaction.Timestamp.Date)
-                    {
-                        if (includeDaysWithoutChanges) result.Add(currentDate, balanceInCurrencies);
-                        currentDate = currentDate.AddDays(1);
-                    }
+                    result.Add(currentDate, currentMoneyBag);
+                    currentDate = tran.Timestamp.Date;
                 }
 
-                if (transaction.Debet.Is(balancedAccount))
-                {
-                    if (!balanceInCurrencies.ContainsKey(transaction.Currency))
-                        balanceInCurrencies.Add(transaction.Currency, -transaction.Amount);
-                    else balanceInCurrencies[transaction.Currency] -= transaction.Amount;
-                }
-
-                if (transaction.Credit.Is(balancedAccount))
-                {
-                    if (!balanceInCurrencies.ContainsKey(transaction.Currency)) balanceInCurrencies.Add(transaction.Currency, transaction.Amount);
-                    else balanceInCurrencies[transaction.Currency] += transaction.Amount;
-                }
-
+                currentMoneyBag = currentMoneyBag + ProcessOneTran(tran);
             }
+            return result;
+        }
+
+        private MoneyBag ProcessOneTran(TranWithTags tran)
+        {
+            var result = new MoneyBag();
+            if (tran.MyAccount.IsDeposit()) result = tran.MoneyBagForAccount(tran.MyAccount);
+            if (tran.MySecondAccount != null && tran.MySecondAccount.IsDeposit()) result = result + tran.MoneyBagForAccount(tran.MySecondAccount);
             return result;
         }
 

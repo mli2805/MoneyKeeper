@@ -11,6 +11,7 @@ using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
+using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.DepositProcessing;
 using Keeper.Utils.Diagram;
 using Keeper.Utils.Rates;
@@ -26,6 +27,7 @@ namespace Keeper.ViewModels.Deposits
         readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly RateExtractor _rateExtractor;
         private readonly DepositCalculationAggregator _depositCalculatorAggregator;
+        private readonly MoneyBagConvertor _moneyBagConvertor;
 
         public List<Deposit> DepositList { get; set; }
         public Deposit SelectedDeposit { get; set; }
@@ -35,7 +37,7 @@ namespace Keeper.ViewModels.Deposits
 
         [ImportingConstructor]
         public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
-                                 DepositCalculationAggregator depositCalculatorAggregator)
+                                 DepositCalculationAggregator depositCalculatorAggregator, MoneyBagConvertor moneyBagConvertor)
         {
             var sw = new Stopwatch();
             Console.WriteLine("DepositViewModel ctor starts {0}", sw.Elapsed);
@@ -45,6 +47,7 @@ namespace Keeper.ViewModels.Deposits
             _accountTreeStraightener = accountTreeStraightener;
             _rateExtractor = rateExtractor;
             _depositCalculatorAggregator = depositCalculatorAggregator;
+            _moneyBagConvertor = moneyBagConvertor;
 
             MyTitleStyle = new Style();
 
@@ -62,7 +65,7 @@ namespace Keeper.ViewModels.Deposits
             LeftColumn = new GridLength(1, GridUnitType.Star);
             RightColumn = new GridLength(1, GridUnitType.Star);
 
-            //      DepoCurrenciesProportionChartCtor();
+                  DepoCurrenciesProportionChartCtor();
             Console.WriteLine("DepositViewModel ctor 1 {0}", sw.Elapsed);
             YearsProfitCtor();
             Console.WriteLine("DepositViewModel ctor 2 {0}", sw.Elapsed);
@@ -109,38 +112,39 @@ namespace Keeper.ViewModels.Deposits
 
         // распределение вкладов по валютам в течении периода наблюдений
         public List<DateProcentPoint> SeriesUsd { get; set; }
-        public List<DateProcentPoint> SeriesByr { get; set; }
+        public List<DateProcentPoint> SeriesBelo { get; set; }
         public List<DateProcentPoint> SeriesEuro { get; set; }
         public void DepoCurrenciesProportionChartCtor()
         {
             var calculator = new DiagramDataExtractorFromDb(_db, _accountTreeStraightener);
 
             SeriesUsd = new List<DateProcentPoint>();
-            SeriesByr = new List<DateProcentPoint>();
+            SeriesBelo = new List<DateProcentPoint>(); // Byr, Byn
             SeriesEuro = new List<DateProcentPoint>();
-            var rootDepo = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
-            var inMoney = calculator.AccountBalancesForPeriodInCurrencies(rootDepo,
-                                                                       new Period(new DateTime(2001, 12, 31), DateTime.Now), false);
+
+            var inMoney = calculator.DepositBalancesForPeriodInCurrencies(new Period(new DateTime(2001, 12, 31), DateTime.Now));
             foreach (var pair in inMoney)
             {
                 var date = pair.Key;
                 var balancesInCurrencies = pair.Value;
 
-                var dateTotalInUsd = calculator.ConvertAllCurrenciesToUsd(balancesInCurrencies, date);
-                decimal cumulativePercent = 0;
-                if (balancesInCurrencies.ContainsKey(CurrencyCodes.EUR))
+                var dateTotalInUsd = _moneyBagConvertor.MoneyBagToUsd(balancesInCurrencies, date);
+                decimal cumulativePercent;
                 {
                     var inUsd = _rateExtractor.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.EUR], CurrencyCodes.EUR, date);
                     cumulativePercent = Math.Round(inUsd / dateTotalInUsd * 10000) / 100;
                     SeriesEuro.Add(new DateProcentPoint(date, cumulativePercent));
                 }
-                if (balancesInCurrencies.ContainsKey(CurrencyCodes.BYR))
+
                 {
-                    var inUsd = _rateExtractor.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.BYR], CurrencyCodes.BYR, date);
+                    var inUsd = date < new DateTime(2016, 7, 1)
+                        ? _rateExtractor.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.BYR], CurrencyCodes.BYR, date)
+                        : _rateExtractor.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.BYN], CurrencyCodes.BYN, date);
                     cumulativePercent += Math.Round(inUsd / dateTotalInUsd * 10000) / 100;
-                    SeriesByr.Add(new DateProcentPoint(date, cumulativePercent));
+                    SeriesBelo.Add(new DateProcentPoint(date, cumulativePercent));
                 }
-                if (balancesInCurrencies.ContainsKey(CurrencyCodes.USD)) SeriesUsd.Add(new DateProcentPoint(date, 100));
+
+                SeriesUsd.Add(new DateProcentPoint(date, 100));
             }
         }
 

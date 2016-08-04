@@ -16,13 +16,13 @@ namespace Keeper.Utils.BalancesFromTransWithTags
     public class BalancesForMainViewCalculator
     {
         private readonly KeeperDb _db;
-        private readonly RateExtractor _rateExtractor;
+        private readonly MoneyBagConvertor _moneyBagConvertor;
 
         [ImportingConstructor]
-        public BalancesForMainViewCalculator(KeeperDb db, RateExtractor rateExtractor)
+        public BalancesForMainViewCalculator(KeeperDb db, MoneyBagConvertor moneyBagConvertor)
         {
             _db = db;
-            _rateExtractor = rateExtractor;
+            _moneyBagConvertor = moneyBagConvertor;
         }
 
         /// <summary>
@@ -71,18 +71,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
             {
                 balanceList.Add(str);
             }
-            return MoneyBagToUsd(total, period.Finish);
-        }
-
-        private decimal MoneyBagToUsd(MoneyBag moneyBag, DateTime date)
-        {
-            var currencies = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-            decimal totalInUsd = 0;
-            foreach (var currency in currencies)
-            {
-                totalInUsd += _rateExtractor.GetUsdEquivalent(moneyBag[currency], currency, date);
-            }
-            return totalInUsd;
+            return _moneyBagConvertor.MoneyBagToUsd(total, period.Finish);
         }
 
         private static List<string> MoneyBagToListOfStrings(MoneyBag result, string gap = "")
@@ -126,7 +115,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
 
             }
 
-            return MoneyBagToUsd(moneyBag, period.Finish);
+            return _moneyBagConvertor.MoneyBagToUsd(moneyBag, period.Finish);
         }
 
         private List<string> GetTrafficListForTag(Account tag, Period period)
