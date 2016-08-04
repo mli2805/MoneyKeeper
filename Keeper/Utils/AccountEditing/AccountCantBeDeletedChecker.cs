@@ -32,13 +32,6 @@ namespace Keeper.Utils.AccountEditing
 		              || (tran.Tags != null && tran.Tags.Contains(account))
 		        select tran).Any();
 
-//			var hasRelatedTransactions = 
-//				(from transaction in _keeperDb.Transactions
-//				 where transaction.Debet == account 
-//				       || transaction.Credit == account
-//				       || transaction.Article == account
-//				 select transaction).Any();	
-
 			return hasRelatedTransactions ?
 				       AccountCantBeDeletedReasons.HasRelatedTransactions 
 				       : AccountCantBeDeletedReasons.CanDelete;
