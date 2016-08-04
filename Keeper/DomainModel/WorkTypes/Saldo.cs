@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.Utils.BalanceEvaluating;
 
 namespace Keeper.DomainModel.WorkTypes
@@ -54,7 +54,17 @@ namespace Keeper.DomainModel.WorkTypes
     public string Comment { get; set; }
  }
 
-  public class ExtendedTrafficWithCategories
+    public class ClassifiedExpense
+    {
+        public DateTime Timestamp { get; set; }
+        public decimal Amount { get; set; }
+        public CurrencyCodes Currency { get; set; }
+        public decimal AmountInUsd { get; set; }
+        public Account Category { get; set; }
+        public string Comment { get; set; }
+
+    }
+    public class ExtendedTrafficWithCategories
   {
     public List<ConvertedTransaction> LargeTransactions { get; set; }
     public List<BalanceTrio> Categories { get; set; }

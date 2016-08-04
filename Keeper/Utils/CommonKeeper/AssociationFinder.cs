@@ -23,7 +23,6 @@ namespace Keeper.Utils.CommonKeeper
 
         public CurrencyCodes GetAccountLastCurrency(Account account)
         {
-//            var transaction = _db.Transactions.LastOrDefault(t => t.Debet == account);
             var transaction = _db.TransWithTags.LastOrDefault(t => t.MyAccount.Is(account));
             return transaction?.Currency.GetValueOrDefault() ?? CurrencyCodes.BYN;
         }
