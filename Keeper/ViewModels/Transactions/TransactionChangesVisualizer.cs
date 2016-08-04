@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Composition;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.Rates;

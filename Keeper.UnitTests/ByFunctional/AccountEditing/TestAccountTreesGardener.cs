@@ -3,7 +3,7 @@ using FakeItEasy;
 using FluentAssertions;
 using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.Utils.AccountEditing;
 using NUnit.Framework;
 

@@ -3,7 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.ViewModels.TransWithTags

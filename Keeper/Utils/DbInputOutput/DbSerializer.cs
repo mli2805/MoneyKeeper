@@ -70,7 +70,8 @@ namespace Keeper.Utils.DbInputOutput
             return db;
         }
 
-        public string FileExtension { get { return ".dbx"; } }
+        public string FileExtension => ".dbx";
+
         public DbLoadResult Load(string filename)
         {
             var db = DecryptAndDeserialize(filename);

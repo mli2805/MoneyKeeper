@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.ViewModels.Transactions;
 
 namespace Keeper.Utils

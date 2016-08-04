@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 
 namespace Keeper.Utils.DepositProcessing
 {

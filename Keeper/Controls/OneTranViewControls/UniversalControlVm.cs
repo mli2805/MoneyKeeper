@@ -6,7 +6,7 @@ using Keeper.Controls.OneTranViewControls.SubControls;
 using Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl;
 using Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl;
 using Keeper.DomainModel.DbTypes;
-using Keeper.DomainModel.Transactions;
+using Keeper.DomainModel.Trans;
 using Keeper.Utils.AccountEditing;
 using Keeper.ViewModels.TransWithTags;
 
