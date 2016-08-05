@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.Utils.BalanceEvaluating.Ilya;
 
 namespace Keeper.DomainModel.Trans
 {
@@ -119,6 +120,11 @@ namespace Keeper.DomainModel.Trans
                 _comment = value;
                 NotifyOfPropertyChange(() => Comment);
             }
+        }
+
+        internal MoneyBag AmountForAccount()
+        {
+            throw new NotImplementedException();
         }
     }
 }

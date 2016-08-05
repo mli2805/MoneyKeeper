@@ -61,7 +61,7 @@ namespace Keeper.ViewModels.Diagram
         }
         public DiagramIntervalMode IntervalMode { get; set; }
 
-        private readonly List<ExpensePartingDataElement> _diagramData;
+        private readonly List<DataClassifiedByCategoriesElement> _diagramData;
         private PlotModel _myPlotModel;
         private double _fromPoint;
         private double _toPoint;
@@ -89,7 +89,7 @@ namespace Keeper.ViewModels.Diagram
 
         private readonly PeriodChoiceControlPointsConvertor _periodChoiceControlPointsConvertor;
         private ObservableCollection<string> _legendBindingSource;
-        public DiagramOxyplotViewModel(List<ExpensePartingDataElement> diagramData)
+        public DiagramOxyplotViewModel(List<DataClassifiedByCategoriesElement> diagramData)
         {
             _diagramData = diagramData;
 
@@ -118,33 +118,33 @@ namespace Keeper.ViewModels.Diagram
             LegendBindingSource = InitializeLegend(pieData);
         }
 
-        private Series InitializePieSeries(IEnumerable<ExpensePartingDataElement> pieData)
+        private Series InitializePieSeries(IEnumerable<DataClassifiedByCategoriesElement> pieData)
         {
             var series = new PieSeries();
             foreach (var element in pieData)
             {
-                series.Slices.Add(new PieSlice(element.Kategory.Name, (double)element.Amount));
+                series.Slices.Add(new PieSlice(element.Category.Name, (double)element.Amount));
             }
             return series;
         }
 
-        private ObservableCollection<string> InitializeLegend(List<ExpensePartingDataElement> pieData)
+        private ObservableCollection<string> InitializeLegend(List<DataClassifiedByCategoriesElement> pieData)
         {
             var result = new ObservableCollection<string>();
             var sum = pieData.Sum(a => a.Amount);
             foreach (var element in pieData)
             {
-                result.Add(string.Format("{0} - {1}%  (${2:0,0})", element.Kategory, Math.Round(element.Amount/sum*100,0), Math.Round(element.Amount,0)));
+                result.Add(string.Format("{0} - {1}%  (${2:0,0})", element.Category, Math.Round(element.Amount/sum*100,0), Math.Round(element.Amount,0)));
             }
             result.Add(string.Format("Всего  ${0:0,0}", Math.Round(sum)));
             return result;
         }
 
-        private IEnumerable<ExpensePartingDataElement> Extract(Tuple<YearMonth, YearMonth> period)
+        private IEnumerable<DataClassifiedByCategoriesElement> Extract(Tuple<YearMonth, YearMonth> period)
         {
             var r = _diagramData.Where(a => a.YearMonth.InInterval(period))
-                   .GroupBy(e => e.Kategory)
-                   .Select(g => new ExpensePartingDataElement(g.First().Kategory,g.Sum(p=>p.Amount),g.First().YearMonth)).Where(k => k.Amount > 0).OrderByDescending(o => o.Amount);
+                   .GroupBy(e => e.Category)
+                   .Select(g => new DataClassifiedByCategoriesElement(g.First().Category,g.Sum(p=>p.Amount),g.First().YearMonth)).Where(k => k.Amount > 0).OrderByDescending(o => o.Amount);
             return r;
         }
 

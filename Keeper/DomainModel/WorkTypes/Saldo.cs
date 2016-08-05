@@ -54,7 +54,7 @@ namespace Keeper.DomainModel.WorkTypes
     public string Comment { get; set; }
  }
 
-    public class ClassifiedExpense
+    public class ClassifiedTran
     {
         public DateTime Timestamp { get; set; }
         public decimal Amount { get; set; }

@@ -45,6 +45,12 @@ namespace Keeper.DomainModel.WorkTypes
             return new YearMonth(Year + yy, Month);
         }
 
+        public DateTime LastDay()
+        {
+            var temp = this.AddMonth(1);
+            return new DateTime(temp.Year, temp.Month, 1).AddDays(-1);
+        }
+
         public static YearMonth operator -(YearMonth instance1, YearMonth instance2)
         {
             return instance2.Month >= instance1.Month ? 
