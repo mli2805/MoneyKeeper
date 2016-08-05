@@ -7,7 +7,7 @@ using Keeper.DomainModel.Enumes;
 using Keeper.Utils.DiagramDomainModel;
 using OxyPlot;
 
-namespace Keeper.Utils.OxyPlots
+namespace Keeper.Utils.DiagramOxyPlots
 {
     [Export]
     public class RatesOxyplotDataProvider

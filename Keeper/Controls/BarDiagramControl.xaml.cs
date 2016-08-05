@@ -5,8 +5,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Keeper.DomainModel.Enumes;
-using Keeper.Utils.Diagram;
 using Keeper.Utils.DiagramDomainModel;
+using Keeper.Utils.DiagramMy;
 using Brush = System.Windows.Media.Brush;
 using Point = System.Windows.Point;
 

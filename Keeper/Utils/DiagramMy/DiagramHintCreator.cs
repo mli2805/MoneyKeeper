@@ -6,7 +6,7 @@ using System.Windows.Media;
 using Keeper.DomainModel.Enumes;
 using Keeper.Utils.DiagramDomainModel;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramMy
 {
   class DiagramHintCreator
   {

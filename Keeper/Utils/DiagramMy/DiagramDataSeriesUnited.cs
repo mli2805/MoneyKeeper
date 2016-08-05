@@ -6,7 +6,7 @@ using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Extentions;
 using Keeper.Utils.DiagramDomainModel;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramMy
 {
 	public class DiagramDataSeriesUnited
   {

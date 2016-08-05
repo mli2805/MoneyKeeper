@@ -6,7 +6,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
-namespace Keeper.Utils.OxyPlots
+namespace Keeper.Utils.DiagramOxyPlots
 {
     [Export]
     class RatesOxyplotBuilder

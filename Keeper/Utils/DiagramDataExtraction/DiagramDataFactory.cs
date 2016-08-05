@@ -8,9 +8,8 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DiagramDomainModel;
-using Keeper.Utils.OxyPlots;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramDataExtraction
 {
     [Export]
     public class DiagramDataFactory
@@ -28,17 +27,6 @@ namespace Keeper.Utils.Diagram
             _dataClassifiedByCategoriesProvider = dataClassifiedByCategoriesProvider;
             _diagramDataExtractorFromDb = diagramDataExtractorFromDb;
             mAccountTreeStraightener = accountTreeStraightener;
-        }
-
-        public DiagramSeries AccountDailyBalancesToSeries(string name, Brush positiveBrush)
-        {
-            return new DiagramSeries
-            {
-                Points = _diagramDataExtractorFromDb.GetBalances(Every.Day),
-                Index = 0,
-                Name = name,
-                PositiveBrushColor = positiveBrush
-            };
         }
 
         public DiagramData DailyBalancesCtor()
@@ -59,6 +47,98 @@ namespace Keeper.Utils.Diagram
                 Mode = DiagramMode.Lines,
                 TimeInterval = Every.Day
             };
+        }
+
+        public DiagramData MonthlyResultsDiagramCtor()
+        {
+            var dataForDiagram = new List<DiagramSeries>
+            {
+                new DiagramSeries
+                {
+                    Name = "Сальдо",
+                    PositiveBrushColor = Brushes.Blue,
+                    NegativeBrushColor = Brushes.Red,
+                    Index = 0,
+                    Points = _diagramDataExtractorFromDb.MonthlyResults(),
+                }
+            };
+
+            return new DiagramData
+            {
+                Caption = "Сальдо",
+                Series = dataForDiagram,
+                Mode = DiagramMode.BarVertical,
+                TimeInterval = Every.Month
+            };
+        }
+
+        public DiagramData MonthlyIncomesDiagramCtor()
+        {
+            var categoriesList = new List<Account>
+            {
+                mAccountTreeStraightener.Seek("Зарплата", _db.Accounts),
+                mAccountTreeStraightener.Seek("Иррациональные", _db.Accounts),
+                mAccountTreeStraightener.Seek("Рента", _db.Accounts),
+                mAccountTreeStraightener.Seek("Подарки", _db.Accounts),
+            };
+
+            var colors = new List<Brush> { Brushes.Green, Brushes.DarkGray, Brushes.Blue, Brushes.DarkOrange };
+            var colorsEnumerator = colors.GetEnumerator();
+
+            var data = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(true);
+
+            var dataForDiagram = GroupByCategories(categoriesList, colorsEnumerator, data, 1);
+
+            return new DiagramData
+            {
+                Caption = "Ежемесячные доходы (только основные категории)",
+                Series = dataForDiagram,
+                Mode = DiagramMode.BarVertical,
+                TimeInterval = Every.Month
+            };
+        }
+
+        public DiagramData MonthlyExpenseDiagramCtor()
+        {
+            var root = mAccountTreeStraightener.Seek("Все расходы", _db.Accounts);
+
+            var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta,
+                Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
+            var colorsEnumerator = outcomeColors.GetEnumerator();
+
+            var data = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(false);
+
+            var dataForDiagram = GroupByCategories(root.Children, colorsEnumerator, data, -1);
+
+            return new DiagramData
+            {
+                Caption = "Ежемесячные расходы в разрезе категорий",
+                Series = dataForDiagram,
+                Mode = DiagramMode.BarVertical,
+                TimeInterval = Every.Month
+            };
+        }
+
+        private List<DiagramSeries> GroupByCategories(IEnumerable<Account> categoriesList, List<Brush>.Enumerator colorsEnumerator, List<DataClassifiedByCategoriesElement> data, double sign)
+        {
+            var result = new List<DiagramSeries>();
+            foreach (var category in categoriesList)
+            {
+                colorsEnumerator.MoveNext();
+                var categoryDate = data.Where(t => t.Category == category);
+
+                result.Add(new DiagramSeries
+                {
+                    Name = category.Name,
+                    PositiveBrushColor = colorsEnumerator.Current,
+                    NegativeBrushColor = colorsEnumerator.Current,
+                    Index = 0,
+                    Points =
+                        (from line in categoryDate
+                            select new DiagramPoint(line.YearMonth.LastDay(), (double)line.Amount * sign)).ToList(),
+                });
+            }
+            return result;
         }
 
         private Dictionary<DateTime, decimal> ExtractRates(CurrencyCodes currency)
@@ -154,32 +234,6 @@ namespace Keeper.Utils.Diagram
             };
         }
 
-        public DiagramData MonthlyIncomesDiagramCtor()
-        {
-            var categoriesList = new List<Account>
-            {
-                mAccountTreeStraightener.Seek("Зарплата", _db.Accounts),
-                mAccountTreeStraightener.Seek("Иррациональные", _db.Accounts),
-                mAccountTreeStraightener.Seek("Рента", _db.Accounts),
-                mAccountTreeStraightener.Seek("Подарки", _db.Accounts),
-            };
-
-            var colors = new List<Brush> { Brushes.Green, Brushes.DarkGray, Brushes.Blue, Brushes.DarkOrange };
-            var colorsEnumerator = colors.GetEnumerator();
-
-            var data = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(true);
-
-            var dataForDiagram = CategoryDiagramCtor(categoriesList, colorsEnumerator, data, 1);
-
-            return new DiagramData
-            {
-                Caption = "Ежемесячные доходы (только основные категории)",
-                Series = dataForDiagram,
-                Mode = DiagramMode.BarVertical,
-                TimeInterval = Every.Month
-            };
-        }
-
         public DiagramData AverageOfMainCategoriesDiagramCtor()
         {
             var categoriesList = new List<Account>
@@ -194,7 +248,7 @@ namespace Keeper.Utils.Diagram
             var expenseData = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(false);
             var incomeData = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(true);
 
-            var dataForDiagram = CategoryDiagramCtor(categoriesList, colorsEnumerator, incomeData, 1);
+            var dataForDiagram = GroupByCategories(categoriesList, colorsEnumerator, incomeData, 1);
             dataForDiagram.Add(SumAllIncomes(incomeData));
             dataForDiagram.Add(SumAllExpense(expenseData));
 
@@ -267,72 +321,6 @@ namespace Keeper.Utils.Diagram
             }
             return result;
 
-        }
-
-        public DiagramData MonthlyExpenseDiagramCtor()
-        {
-            var root = mAccountTreeStraightener.Seek("Все расходы", _db.Accounts);
-
-            var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta,
-                                           Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
-            var colorsEnumerator = outcomeColors.GetEnumerator();
-
-            var data = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(false);
-
-            var dataForDiagram = CategoryDiagramCtor(root.Children, colorsEnumerator, data, -1);
-
-            return new DiagramData
-            {
-                Caption = "Ежемесячные расходы в разрезе категорий",
-                Series = dataForDiagram,
-                Mode = DiagramMode.BarVertical,
-                TimeInterval = Every.Month
-            };
-        }
-
-        private List<DiagramSeries> CategoryDiagramCtor(IEnumerable<Account> categoriesList, List<Brush>.Enumerator colorsEnumerator, List<DataClassifiedByCategoriesElement> data, double sign)
-        {
-            var result = new List<DiagramSeries>();
-            foreach (var category in categoriesList)
-            {
-                colorsEnumerator.MoveNext();
-                var categoryDate = data.Where(t => t.Category == category);
-
-                result.Add(new DiagramSeries
-                {
-                    Name = category.Name,
-                    PositiveBrushColor = colorsEnumerator.Current,
-                    NegativeBrushColor = colorsEnumerator.Current,
-                    Index = 0,
-                    Points =
-                        (from line in categoryDate
-                         select new DiagramPoint(line.YearMonth.LastDay(), (double)line.Amount * sign)).ToList(),
-                });
-            }
-            return result;
-        }
-
-        public DiagramData MonthlyResultsDiagramCtor()
-        {
-            var dataForDiagram = new List<DiagramSeries>
-                             {
-                               new DiagramSeries
-                                 {
-                                   Name = "Сальдо",
-                                   PositiveBrushColor = Brushes.Blue,
-                                   NegativeBrushColor = Brushes.Red,
-                                   Index = 0,
-                                   Points = _diagramDataExtractorFromDb.MonthlyResults(),
-                                 }
-                             };
-
-            return new DiagramData
-            {
-                Caption = "Сальдо",
-                Series = dataForDiagram,
-                Mode = DiagramMode.BarVertical,
-                TimeInterval = Every.Month
-            };
         }
     }
 }

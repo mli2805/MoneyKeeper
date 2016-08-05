@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramMy
 {
   class DiagramDataPanAndZoomer
   {
