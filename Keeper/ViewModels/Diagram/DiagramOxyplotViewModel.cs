@@ -6,8 +6,8 @@ using System.Linq;
 using Caliburn.Micro;
 using Keeper.Controls.PeriodChoice;
 using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.DiagramDataExtraction;
 using Keeper.Utils.DiagramDomainModel;
-using Keeper.Utils.OxyPlots;
 using OxyPlot;
 using OxyPlot.Series;
 

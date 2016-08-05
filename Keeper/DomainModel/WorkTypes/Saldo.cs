@@ -57,11 +57,8 @@ namespace Keeper.DomainModel.WorkTypes
     public class ClassifiedTran
     {
         public DateTime Timestamp { get; set; }
-        public decimal Amount { get; set; }
-        public CurrencyCodes Currency { get; set; }
         public decimal AmountInUsd { get; set; }
         public Account Category { get; set; }
-        public string Comment { get; set; }
 
     }
     public class ExtendedTrafficWithCategories

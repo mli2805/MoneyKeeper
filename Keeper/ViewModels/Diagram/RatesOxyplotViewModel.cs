@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Caliburn.Micro;
 using Keeper.Utils.DiagramDomainModel;
-using Keeper.Utils.OxyPlots;
+using Keeper.Utils.DiagramOxyPlots;
 using OxyPlot;
 
 namespace Keeper.ViewModels.Diagram

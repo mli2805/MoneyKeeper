@@ -11,7 +11,7 @@ using Keeper.Utils.AccountEditing;
 using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.DiagramDomainModel;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramDataExtraction
 {
     [Export]
     public class DiagramDataExtractorFromDb

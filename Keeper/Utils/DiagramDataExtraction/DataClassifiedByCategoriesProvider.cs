@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Windows;
@@ -7,9 +6,8 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.CommonKeeper;
 
-namespace Keeper.Utils.OxyPlots
+namespace Keeper.Utils.DiagramDataExtraction
 {
     [Export]
     public class DataClassifiedByCategoriesProvider
@@ -63,11 +61,8 @@ namespace Keeper.Utils.OxyPlots
                    select new ClassifiedTran
                    {
                        Timestamp = t.Timestamp,
-//                       Amount = t.Amount,
-//                       Currency = t.Currency.GetValueOrDefault(),
                        Category = GetTranCategory(t, flag),
                        AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-//                       Comment = t.Comment
                    };
         }
 
@@ -85,6 +80,5 @@ namespace Keeper.Utils.OxyPlots
             return null;
 
         }
-
     }
 }

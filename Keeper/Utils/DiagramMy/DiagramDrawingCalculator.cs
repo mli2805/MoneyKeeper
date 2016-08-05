@@ -4,7 +4,7 @@ using System.Windows;
 using Keeper.Controls;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramMy
 {
   public class DiagramDrawingCalculator
   {

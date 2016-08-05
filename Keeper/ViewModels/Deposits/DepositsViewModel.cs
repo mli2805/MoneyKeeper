@@ -13,7 +13,7 @@ using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.DepositProcessing;
-using Keeper.Utils.Diagram;
+using Keeper.Utils.DiagramDataExtraction;
 using Keeper.Utils.Rates;
 
 namespace Keeper.ViewModels.Deposits

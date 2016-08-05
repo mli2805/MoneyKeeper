@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramMy
 {
   class DiagramPointAnalyzer
   {

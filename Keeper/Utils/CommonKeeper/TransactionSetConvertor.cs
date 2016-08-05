@@ -56,11 +56,8 @@ namespace Keeper.Utils.CommonKeeper
                    select new ClassifiedTran
                    {
                        Timestamp = t.Timestamp,
-                       Amount = t.Amount,
-                       Currency = rate.Currency,
                        Category = GetExpenseTranCategory(t),
                        AmountInUsd = rate != null ? t.Amount / (decimal)rate.Rate : t.Amount,
-                       Comment = t.Comment
                    };
         }
 

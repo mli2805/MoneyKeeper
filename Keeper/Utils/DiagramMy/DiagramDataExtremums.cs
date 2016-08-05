@@ -1,6 +1,6 @@
 using System;
 
-namespace Keeper.Utils.Diagram
+namespace Keeper.Utils.DiagramMy
 {
 	public class DiagramDataExtremums
 	{

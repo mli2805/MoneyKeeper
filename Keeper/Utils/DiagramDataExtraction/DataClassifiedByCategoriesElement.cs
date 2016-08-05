@@ -2,7 +2,7 @@ using System;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.WorkTypes;
 
-namespace Keeper.Utils.OxyPlots
+namespace Keeper.Utils.DiagramDataExtraction
 {
     public class DataClassifiedByCategoriesElement : IComparable<DataClassifiedByCategoriesElement>
     {

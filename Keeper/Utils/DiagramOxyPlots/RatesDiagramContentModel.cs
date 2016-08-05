@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Keeper.Properties;
 
-namespace Keeper.Utils.OxyPlots
+namespace Keeper.Utils.DiagramOxyPlots
 {
     public class RatesDiagramContentModel : INotifyPropertyChanged
     {
