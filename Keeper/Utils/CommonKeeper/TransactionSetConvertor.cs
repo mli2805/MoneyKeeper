@@ -46,14 +46,14 @@ namespace Keeper.Utils.CommonKeeper
                    };
         }
 
-        public IEnumerable<ClassifiedExpense> GetClassifiedExpenses()
+        public IEnumerable<ClassifiedTran> GetClassifiedExpenses()
         {
             return from t in _db.TransWithTags
                    where t.Operation == OperationType.Расход
                    join r in _db.CurrencyRates
                      on new { t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault() } equals new { r.BankDay.Date, r.Currency } into g
                    from rate in g.DefaultIfEmpty()
-                   select new ClassifiedExpense
+                   select new ClassifiedTran
                    {
                        Timestamp = t.Timestamp,
                        Amount = t.Amount,

@@ -41,7 +41,7 @@ namespace Keeper.ViewModels.Shell
         private readonly DbCleaner _dbCleaner;
         private readonly DiagramDataFactory _diagramDataFactory;
         private readonly IMessageBoxer _messageBoxer;
-        private readonly ExpensePartingDataProvider _expensePartingDataProvider;
+        private readonly DataClassifiedByCategoriesProvider _dataClassifiedByCategoriesProvider;
         private readonly RatesOxyplotDataProvider _ratesOxyplotDataProvider;
         private readonly MySettings _mySettings;
 
@@ -64,13 +64,13 @@ namespace Keeper.ViewModels.Shell
         [ImportingConstructor]
         public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
                                  IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory,
-                                 IMessageBoxer messageBoxer, ExpensePartingDataProvider expensePartingDataProvider, RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
+                                 IMessageBoxer messageBoxer, DataClassifiedByCategoriesProvider dataClassifiedByCategoriesProvider, RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
         {
             _loadResult = loadResult; // в конструкторе DbLoadResult происходит загрузка БД
             if (_loadResult.Db.TransWithTags == null) IoC.Get<TransactionsConvertor>().Convert();
 
             _messageBoxer = messageBoxer;
-            _expensePartingDataProvider = expensePartingDataProvider;
+            _dataClassifiedByCategoriesProvider = dataClassifiedByCategoriesProvider;
             _ratesOxyplotDataProvider = ratesOxyplotDataProvider;
             _mySettings = mySettings;
 
@@ -259,11 +259,11 @@ namespace Keeper.ViewModels.Shell
         }
         public void ShowMonthlyOutcomeDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.MonthlyOutcomesDiagramCtor());
+            OpenDiagramForm(_diagramDataFactory.MonthlyExpenseDiagramCtor());
         }
         public void ShowExpensePartingOxyPlotDiagram()
         {
-            var diagramData = _expensePartingDataProvider.Get();
+            var diagramData = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(false);
             var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
             WindowManager.ShowDialog(diagramOxyplotViewModel);
         }
@@ -275,7 +275,7 @@ namespace Keeper.ViewModels.Shell
         }
         public void ShowAverageSignificancesDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.AverageSignificancesDiagramCtor());
+            OpenDiagramForm(_diagramDataFactory.AverageOfMainCategoriesDiagramCtor());
         }
         private void OpenDiagramForm(DiagramData diagramData)
         {

@@ -175,7 +175,6 @@
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyBagConvertor.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
-    <Compile Include="Utils\BalancesFromTransWithTags\TransWithTagsExtensions.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
     <Compile Include="Utils\DoubleToStringConverter.cs" />
@@ -300,8 +299,8 @@
     <Compile Include="Utils\BalanceEvaluating\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
-    <Compile Include="Utils\OxyPlots\ExpensePartingDataElement.cs" />
-    <Compile Include="Utils\OxyPlots\ExpensePartingDataProvider.cs" />
+    <Compile Include="Utils\OxyPlots\DataClassifiedByCategoriesElement.cs" />
+    <Compile Include="Utils\OxyPlots\DataClassifiedByCategoriesProvider.cs" />
     <Compile Include="Utils\OxyPlots\RatesDiagramContentModel.cs" />
     <Compile Include="Utils\OxyPlots\RatesOxyplotBuilder.cs" />
     <Compile Include="Utils\OxyPlots\RatesOxyplotDataProvider.cs" />

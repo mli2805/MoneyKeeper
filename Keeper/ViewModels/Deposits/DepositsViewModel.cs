@@ -28,6 +28,7 @@ namespace Keeper.ViewModels.Deposits
         private readonly RateExtractor _rateExtractor;
         private readonly DepositCalculationAggregator _depositCalculatorAggregator;
         private readonly MoneyBagConvertor _moneyBagConvertor;
+        private readonly DiagramDataExtractorFromDb _diagramDataExtractorFromDb;
 
         public List<Deposit> DepositList { get; set; }
         public Deposit SelectedDeposit { get; set; }
@@ -37,7 +38,8 @@ namespace Keeper.ViewModels.Deposits
 
         [ImportingConstructor]
         public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
-                                 DepositCalculationAggregator depositCalculatorAggregator, MoneyBagConvertor moneyBagConvertor)
+                                 DepositCalculationAggregator depositCalculatorAggregator, MoneyBagConvertor moneyBagConvertor,
+                                 DiagramDataExtractorFromDb diagramDataExtractorFromDb)
         {
             var sw = new Stopwatch();
             Console.WriteLine("DepositViewModel ctor starts {0}", sw.Elapsed);
@@ -48,6 +50,7 @@ namespace Keeper.ViewModels.Deposits
             _rateExtractor = rateExtractor;
             _depositCalculatorAggregator = depositCalculatorAggregator;
             _moneyBagConvertor = moneyBagConvertor;
+            _diagramDataExtractorFromDb = diagramDataExtractorFromDb;
 
             MyTitleStyle = new Style();
 
@@ -116,13 +119,12 @@ namespace Keeper.ViewModels.Deposits
         public List<DateProcentPoint> SeriesEuro { get; set; }
         public void DepoCurrenciesProportionChartCtor()
         {
-            var calculator = new DiagramDataExtractorFromDb(_db, _accountTreeStraightener);
 
             SeriesUsd = new List<DateProcentPoint>();
             SeriesBelo = new List<DateProcentPoint>(); // Byr, Byn
             SeriesEuro = new List<DateProcentPoint>();
 
-            var inMoney = calculator.DepositBalancesForPeriodInCurrencies(new Period(new DateTime(2001, 12, 31), DateTime.Now));
+            var inMoney = _diagramDataExtractorFromDb.DepositBalancesForPeriodInCurrencies(new Period(new DateTime(2001, 12, 31), DateTime.Now));
             foreach (var pair in inMoney)
             {
                 var date = pair.Key;

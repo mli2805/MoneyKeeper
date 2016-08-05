@@ -124,7 +124,7 @@ namespace Keeper.DomainModel.DbTypes
                 if (value.Equals(_isSelected)) return;
                 _isSelected = value;
                 NotifyOfPropertyChange(() => IsSelected);
-                //        if (_isSelected) IoC.Get<TransactionViewModel>().SelectedTransaction = this;
+                //        if (_isSelected) IoC.GetGrouppedByMonth<TransactionViewModel>().SelectedTransaction = this;
             }
         }
 

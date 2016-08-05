@@ -7,6 +7,10 @@ namespace Keeper.Utils.DiagramDomainModel
         public DateTime CoorXdate;
         public double CoorYdouble;
 
+        public DiagramPoint()
+        {
+        }
+
         public DiagramPoint(DateTime coorXdate, double coorYdouble)
         {
             CoorXdate = coorXdate;

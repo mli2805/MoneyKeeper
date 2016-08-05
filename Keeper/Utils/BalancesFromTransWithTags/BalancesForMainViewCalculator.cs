@@ -8,7 +8,6 @@ using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.BalanceEvaluating.Ilya;
-using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.BalancesFromTransWithTags
 {
