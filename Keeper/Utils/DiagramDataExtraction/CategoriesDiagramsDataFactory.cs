@@ -14,14 +14,14 @@ namespace Keeper.Utils.DiagramDataExtraction
     {
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
-        private readonly CategoriesDiagramsDataExtractor _categoriesDiagramsDataExtractor;
+        private readonly CategoriesDataExtractor _categoriesDataExtractor;
 
         [ImportingConstructor]
-        public CategoriesDiagramsDataFactory(KeeperDb db, AccountTreeStraightener accountTreeStraightener, CategoriesDiagramsDataExtractor categoriesDiagramsDataExtractor)
+        public CategoriesDiagramsDataFactory(KeeperDb db, AccountTreeStraightener accountTreeStraightener, CategoriesDataExtractor categoriesDataExtractor)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
-            _categoriesDiagramsDataExtractor = categoriesDiagramsDataExtractor;
+            _categoriesDataExtractor = categoriesDataExtractor;
         }
 
 
@@ -38,7 +38,7 @@ namespace Keeper.Utils.DiagramDataExtraction
             var colors = new List<Brush> { Brushes.Green, Brushes.DarkGray, Brushes.Blue, Brushes.DarkOrange };
             var colorsEnumerator = colors.GetEnumerator();
 
-            var data = _categoriesDiagramsDataExtractor.GetGrouppedByMonth(true);
+            var data = _categoriesDataExtractor.GetGrouppedByMonth(true);
 
             var dataForDiagram = GroupByCategories(categoriesList, colorsEnumerator, data, 1);
 
@@ -59,7 +59,7 @@ namespace Keeper.Utils.DiagramDataExtraction
                 Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
             var colorsEnumerator = outcomeColors.GetEnumerator();
 
-            var data = _categoriesDiagramsDataExtractor.GetGrouppedByMonth(false);
+            var data = _categoriesDataExtractor.GetGrouppedByMonth(false);
 
             var dataForDiagram = GroupByCategories(root.Children, colorsEnumerator, data, -1);
 
@@ -72,7 +72,7 @@ namespace Keeper.Utils.DiagramDataExtraction
             };
         }
 
-        private List<DiagramSeries> GroupByCategories(IEnumerable<Account> categoriesList, List<Brush>.Enumerator colorsEnumerator, List<CategoriesDiagramsDataElement> data, double sign)
+        private List<DiagramSeries> GroupByCategories(IEnumerable<Account> categoriesList, List<Brush>.Enumerator colorsEnumerator, List<CategoriesDataElement> data, double sign)
         {
             var result = new List<DiagramSeries>();
             foreach (var category in categoriesList)
@@ -105,8 +105,8 @@ namespace Keeper.Utils.DiagramDataExtraction
             var colors = new List<Brush> { Brushes.LimeGreen, Brushes.Black, Brushes.Blue };
             var colorsEnumerator = colors.GetEnumerator();
 
-            var expenseData = _categoriesDiagramsDataExtractor.GetGrouppedByMonth(false);
-            var incomeData = _categoriesDiagramsDataExtractor.GetGrouppedByMonth(true);
+            var expenseData = _categoriesDataExtractor.GetGrouppedByMonth(false);
+            var incomeData = _categoriesDataExtractor.GetGrouppedByMonth(true);
 
             var dataForDiagram = GroupByCategories(categoriesList, colorsEnumerator, incomeData, 1);
             dataForDiagram.Add(SumAllIncomes(incomeData));
@@ -133,7 +133,7 @@ namespace Keeper.Utils.DiagramDataExtraction
             }
         }
 
-        private DiagramSeries SumAllIncomes(List<CategoriesDiagramsDataElement> dataByCategories)
+        private DiagramSeries SumAllIncomes(List<CategoriesDataElement> dataByCategories)
         {
             return new DiagramSeries
             {
@@ -145,7 +145,7 @@ namespace Keeper.Utils.DiagramDataExtraction
             };
         }
 
-        private DiagramSeries SumAllExpense(List<CategoriesDiagramsDataElement> dataByCategories)
+        private DiagramSeries SumAllExpense(List<CategoriesDataElement> dataByCategories)
         {
             return new DiagramSeries
             {
@@ -174,7 +174,7 @@ namespace Keeper.Utils.DiagramDataExtraction
             return result;
 
         }
-        private List<DiagramPoint> SumCategories(List<CategoriesDiagramsDataElement> dataByCategories)
+        private List<DiagramPoint> SumCategories(List<CategoriesDataElement> dataByCategories)
         {
             return
                 (from element in dataByCategories

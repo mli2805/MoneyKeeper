@@ -4,126 +4,125 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.Utils.BalanceEvaluating;
+using Keeper.Utils.DiagramDataExtraction;
 
 namespace Keeper.DomainModel.WorkTypes
 {
-  public class ExtendedBalance
-  {
-    public List<MoneyPair> InCurrencies { get; set; }
-    public decimal TotalInUsd { get; set; }
-  }
-
-  public class ExtendedBalanceForAnalysis
-  {
-    public ExtendedBalance Common { get; set; }
-    public ExtendedBalance OnHands { get; set; }
-    public ExtendedBalance OnDeposits { get; set; }
-  }
-
-  public class ExtendedTraffic
-  {
-    public List<Transaction> Transactions { get; set; }
-    public decimal TotalInUsd { get; set; }
-
-    public ExtendedTraffic()
+    public class ExtendedBalance
     {
-      Transactions = new List<Transaction>();
+        public List<MoneyPair> InCurrencies { get; set; }
+        public decimal TotalInUsd { get; set; }
     }
-  }
 
-  public class ExtendedIncomes
-  {
-    public ExtendedTraffic OnDeposits { get; set; }
-    public ExtendedTraffic OnHands { get; set; }
-    public decimal TotalInUsd { get { return OnDeposits.TotalInUsd + OnHands.TotalInUsd; } }
-
-    public ExtendedIncomes()
+    public class ExtendedBalanceForAnalysis
     {
-      OnHands = new ExtendedTraffic();
-      OnDeposits = new ExtendedTraffic(); 
+        public ExtendedBalance Common { get; set; }
+        public ExtendedBalance OnHands { get; set; }
+        public ExtendedBalance OnDeposits { get; set; }
     }
-  }
 
-  public class ConvertedTransaction
-  {
-    public DateTime Timestamp { get; set; }
-    public decimal Amount { get; set; }
-    public CurrencyCodes Currency { get; set; }
-    public decimal AmountInUsd { get; set; }
-    public Account Article { get; set; }
-    public string Comment { get; set; }
- }
+    public class ExtendedTraffic
+    {
+        public List<TranForAnalysis> Trans { get; set; }
+        public decimal TotalInUsd { get; set; }
 
-    public class ClassifiedTran
+        public ExtendedTraffic()
+        {
+            Trans = new List<TranForAnalysis>();
+        }
+    }
+
+    public class ExtendedIncomes
+    {
+        public ExtendedTraffic OnDeposits { get; set; }
+        public ExtendedTraffic OnHands { get; set; }
+        public decimal TotalInUsd { get { return OnDeposits.TotalInUsd + OnHands.TotalInUsd; } }
+
+        public ExtendedIncomes()
+        {
+            OnHands = new ExtendedTraffic();
+            OnDeposits = new ExtendedTraffic();
+        }
+    }
+
+    public class TranForAnalysis
     {
         public DateTime Timestamp { get; set; }
+        public decimal Amount { get; set; }
+        public CurrencyCodes Currency { get; set; }
         public decimal AmountInUsd { get; set; }
         public Account Category { get; set; }
-
+        public string Comment { get; set; }
+        public bool IsDepositTran { get; set; }
+        public string DepoName { get; set; }
     }
+
     public class ExtendedTrafficWithCategories
-  {
-    public List<ConvertedTransaction> LargeTransactions { get; set; }
-    public List<BalanceTrio> Categories { get; set; }
-    public decimal TotalForLargeInUsd { get; set; }
-    public decimal TotalInUsd { get; set; }
-
-    public ExtendedTrafficWithCategories()
     {
-      LargeTransactions = new List<ConvertedTransaction>();
-      Categories = new List<BalanceTrio>();
+        public List<TranForAnalysis> LargeTransactions { get; set; }
+        public List<CategoriesDataElement> Categories { get; set; }
+        public decimal TotalForLargeInUsd { get; set; }
+        public decimal TotalInUsd { get; set; }
+
+        public ExtendedTrafficWithCategories()
+        {
+            LargeTransactions = new List<TranForAnalysis>();
+            Categories = new List<CategoriesDataElement>();
+        }
     }
-  }
 
-  public class EstimatedMoney
-  {
-    public decimal Amount { get; set; }
-    public CurrencyCodes Currency { get; set; }
-    public string ArticleName { get; set; }
-  }
-
-  public class EstimatedPayments
-  {
-    public List<EstimatedMoney> Payments { get; set; }
-    public decimal EstimatedSum { get; set; }
-    public decimal TotalInUsd { get; set; }
-
-    public EstimatedPayments()
+    public class EstimatedMoney
     {
-      Payments = new List<EstimatedMoney>();
+        public decimal Amount { get; set; }
+        public CurrencyCodes Currency { get; set; }
+        public string ArticleName { get; set; }
     }
-  }
 
-  public class Saldo
-  {
-    public DateTime StartDate { get; set; }
-    public ExtendedBalanceForAnalysis BeginBalance { get; set; }
-    public List<CurrencyRate> BeginRates { get; set; }
-    public ExtendedIncomes Incomes { get; set; }
-    public ExtendedTrafficWithCategories Expense { get; set; }
-
-    public decimal ExchangeDifference { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd - Incomes.TotalInUsd + Expense.TotalInUsd; } }
-    public decimal ExchangeDepositDifference { get
-      { return EndBalance.OnDeposits.TotalInUsd - BeginBalance.OnDeposits.TotalInUsd - Incomes.OnDeposits.TotalInUsd - TransferToDeposit + TransferFromDeposit; } }
-
-    public ExtendedBalanceForAnalysis EndBalance { get; set; }
-    public List<CurrencyRate> EndRates { get; set; }
-
-    public decimal TransferToDeposit { get; set; }
-    public decimal TransferFromDeposit { get; set; }
-
-    public EstimatedPayments ForecastRegularIncome { get; set; }
-    public EstimatedPayments ForecastRegularExpense { get; set; }
-    public decimal ForecastExpense { get; set; }
-    public decimal ForecastFinResult { get { return ForecastRegularIncome.TotalInUsd - ForecastExpense; } }
-    public decimal ForecastEndBalance { get { return BeginBalance.Common.TotalInUsd + ForecastFinResult; } }
-
-    public Saldo()
+    public class EstimatedPayments
     {
-      Incomes = new ExtendedIncomes();
-      Expense = new ExtendedTrafficWithCategories();
-      ForecastRegularExpense = new EstimatedPayments();
+        public List<EstimatedMoney> Payments { get; set; }
+        public decimal EstimatedSum { get; set; }
+        public decimal TotalInUsd { get; set; }
+
+        public EstimatedPayments()
+        {
+            Payments = new List<EstimatedMoney>();
+        }
     }
-  }
- 
+
+    public class Saldo
+    {
+        public DateTime StartDate { get; set; }
+        public ExtendedBalanceForAnalysis BeginBalance { get; set; }
+        public List<CurrencyRate> BeginRates { get; set; }
+        public ExtendedIncomes Incomes { get; set; }
+        public ExtendedTrafficWithCategories Expense { get; set; }
+
+        public decimal ExchangeDifference { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd - Incomes.TotalInUsd + Expense.TotalInUsd; } }
+        public decimal ExchangeDepositDifference
+        {
+            get
+            { return EndBalance.OnDeposits.TotalInUsd - BeginBalance.OnDeposits.TotalInUsd - Incomes.OnDeposits.TotalInUsd - TransferToDeposit + TransferFromDeposit; }
+        }
+
+        public ExtendedBalanceForAnalysis EndBalance { get; set; }
+        public List<CurrencyRate> EndRates { get; set; }
+
+        public decimal TransferToDeposit { get; set; }
+        public decimal TransferFromDeposit { get; set; }
+
+        public EstimatedPayments ForecastRegularIncome { get; set; }
+        public EstimatedPayments ForecastRegularExpense { get; set; }
+        public decimal ForecastExpense { get; set; }
+        public decimal ForecastFinResult { get { return ForecastRegularIncome.TotalInUsd - ForecastExpense; } }
+        public decimal ForecastEndBalance { get { return BeginBalance.Common.TotalInUsd + ForecastFinResult; } }
+
+        public Saldo()
+        {
+            Incomes = new ExtendedIncomes();
+            Expense = new ExtendedTrafficWithCategories();
+            ForecastRegularExpense = new EstimatedPayments();
+        }
+    }
+
 }

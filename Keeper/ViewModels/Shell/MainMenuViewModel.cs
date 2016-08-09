@@ -41,7 +41,7 @@ namespace Keeper.ViewModels.Shell
         private readonly DbCleaner _dbCleaner;
         private readonly OldRatesDiagramDataFactory _oldRatesDiagramDataFactory;
         private readonly IMessageBoxer _messageBoxer;
-        private readonly CategoriesDiagramsDataExtractor _categoriesDiagramsDataExtractor;
+        private readonly CategoriesDataExtractor _categoriesDataExtractor;
         private readonly CategoriesDiagramsDataFactory _categoriesDiagramsDataFactory;
         private readonly BalancesDiagramsDataFactory _balancesDiagramsDataFactory;
         private readonly RatesOxyplotDataProvider _ratesOxyplotDataProvider;
@@ -66,7 +66,7 @@ namespace Keeper.ViewModels.Shell
         [ImportingConstructor]
         public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
                                  IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, OldRatesDiagramDataFactory oldRatesDiagramDataFactory,
-                                 IMessageBoxer messageBoxer, CategoriesDiagramsDataExtractor categoriesDiagramsDataExtractor,
+                                 IMessageBoxer messageBoxer, CategoriesDataExtractor categoriesDataExtractor,
                                  CategoriesDiagramsDataFactory categoriesDiagramsDataFactory, BalancesDiagramsDataFactory balancesDiagramsDataFactory,
                                  RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
         {
@@ -74,7 +74,7 @@ namespace Keeper.ViewModels.Shell
             if (_loadResult.Db.TransWithTags == null) IoC.Get<TransactionsConvertor>().Convert();
 
             _messageBoxer = messageBoxer;
-            _categoriesDiagramsDataExtractor = categoriesDiagramsDataExtractor;
+            _categoriesDataExtractor = categoriesDataExtractor;
             _categoriesDiagramsDataFactory = categoriesDiagramsDataFactory;
             _balancesDiagramsDataFactory = balancesDiagramsDataFactory;
             _ratesOxyplotDataProvider = ratesOxyplotDataProvider;
@@ -269,7 +269,7 @@ namespace Keeper.ViewModels.Shell
         }
         public void ShowExpensePartingOxyPlotDiagram()
         {
-            var diagramData = _categoriesDiagramsDataExtractor.GetGrouppedByMonth(false);
+            var diagramData = _categoriesDataExtractor.GetGrouppedByMonth(false);
             var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
             WindowManager.ShowDialog(diagramOxyplotViewModel);
         }

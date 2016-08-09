@@ -4,13 +4,13 @@ using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.Utils.DiagramDataExtraction
 {
-    public class CategoriesDiagramsDataElement : IComparable<CategoriesDiagramsDataElement>
+    public class CategoriesDataElement : IComparable<CategoriesDataElement>
     {
         public Account Category { get; set; }
         public decimal Amount { get; set; }
         public YearMonth YearMonth { get; set; }
 
-        public CategoriesDiagramsDataElement(Account category, decimal amount, YearMonth yearMonth)
+        public CategoriesDataElement(Account category, decimal amount, YearMonth yearMonth)
         {
             Category = category;
             Amount = amount;
@@ -22,10 +22,19 @@ namespace Keeper.Utils.DiagramDataExtraction
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public int CompareTo(CategoriesDiagramsDataElement other)
+        public int CompareTo(CategoriesDataElement other)
         {
             return YearMonth.CompareTo(other.YearMonth);
         }
 
     }
+
+    public class ClassifiedTran
+    {
+        public DateTime Timestamp { get; set; }
+        public decimal AmountInUsd { get; set; }
+        public Account Category { get; set; }
+
+    }
+
 }

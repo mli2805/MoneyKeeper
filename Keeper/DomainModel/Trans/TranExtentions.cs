@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
@@ -63,5 +65,33 @@ namespace Keeper.DomainModel.Trans
             if (tran.Operation == OperationType.Обмен) return Brushes.Green;
             return Brushes.Gray;
         }
+
+        private static Account UpToCategory(Account tag, string root)
+        {
+            return tag.Parent.Name == root ? tag : UpToCategory(tag.Parent, root);
+        }
+
+        // возвращает базовую категорию
+        public static Account GetTranCategory(this TranWithTags tran, bool flag)
+        {
+            var rootName = flag ? "Все доходы" : "Все расходы";
+            var result = tran.Tags.FirstOrDefault(t => t.Is(rootName));
+            if (result != null) return UpToCategory(result, rootName);
+            MessageBox.Show($"не задана категория {tran.Timestamp} {tran.Amount} {tran.Currency}", "");
+            return null;
+        }
+
+
+        // возвращает подробную категорию
+        public static Account GetTranArticle(this TranWithTags tran, bool flag)
+        {
+            var rootName = flag ? "Все доходы" : "Все расходы";
+            var result = tran.Tags.FirstOrDefault(t => t.Is(rootName));
+            if (result != null) return result;
+            MessageBox.Show($"нет категории {tran.Timestamp} {tran.Amount} {tran.Currency}", "");
+            return null;
+
+        }
+
     }
 }

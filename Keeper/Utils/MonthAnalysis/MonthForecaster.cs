@@ -64,17 +64,18 @@ namespace Keeper.Utils.MonthAnalysis
 
         private bool CheckIncomePayment(Saldo s, RegularPayment payment)
         {
-            return (from income in s.Incomes.OnHands.Transactions
-                    where income.Article.Name == payment.Article
+            return (from income in s.Incomes.OnHands.Trans
+                    where income.Category.Name == payment.Article
                     select income).FirstOrDefault() != null;
         }
 
         private bool CheckExpensePayment(Saldo s, RegularPayment payment)
         {
-            return (from tr in _db.Transactions
+            var paymentArticle = _accountTreeStraightener.Seek(payment.Article, _db.Accounts);
+            return (from tr in _db.TransWithTags
                     where tr.Timestamp.IsMonthTheSame(s.StartDate)
-                          && tr.Article != null
-                          && tr.Article.Name == payment.Article
+                          && tr.Tags != null
+                          && tr.Tags.Contains(paymentArticle)
                     select tr).FirstOrDefault() != null;
         }
 
