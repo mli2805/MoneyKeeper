@@ -5,12 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.AccountEditing;
 using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.Common;
-using Keeper.Utils.CommonKeeper;
+using Keeper.Utils.DiagramDataExtraction;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis
@@ -21,99 +21,90 @@ namespace Keeper.Utils.MonthAnalysis
         public Saldo Result { get; set; }
 
         private readonly KeeperDb _db;
-        private readonly RateExtractor _rateExtractor;
-        private readonly TransactionSetConvertor _transactionSetConvertor;
-        private readonly MonthForecaster _monthForecaster;
         private readonly MySettings _mySettings;
+        private readonly RateExtractor _rateExtractor;
+        private readonly MonthForecaster _monthForecaster;
         private readonly BalanceForMonthAnalysisCalculator _balanceCalculator;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
 
         [ImportingConstructor]
-        public MonthAnalyzer(KeeperDb db, BalanceForMonthAnalysisCalculator balanceCalculator, MySettings mySettings,
-                             AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
-                             TransactionSetConvertor transactionSetConvertor, MonthForecaster monthForecaster)
+        public MonthAnalyzer(KeeperDb db, MySettings mySettings,
+            BalanceForMonthAnalysisCalculator balanceCalculator,
+                             RateExtractor rateExtractor,
+                             MonthForecaster monthForecaster
+                             )
         {
             _db = db;
-            _balanceCalculator = balanceCalculator;
-            _accountTreeStraightener = accountTreeStraightener;
-            _rateExtractor = rateExtractor;
-            _transactionSetConvertor = transactionSetConvertor;
-            _monthForecaster = monthForecaster;
             _mySettings = mySettings;
+            _balanceCalculator = balanceCalculator;
+            _rateExtractor = rateExtractor;
+            _monthForecaster = monthForecaster;
 
             Result = new Saldo();
         }
 
-        private IEnumerable<Transaction> GetMonthTransactionsForAnalysis(OperationType operationType,
-                                              DateTime someDate, IEnumerable<Transaction> transactions)
+        private IEnumerable<TranForAnalysis> GetTransForAnalysis(bool isIncome, DateTime someDate)
         {
-            return (from transaction in transactions
-                    where transaction.Guid == Guid.Empty && transaction.Operation == operationType &&
-                    transaction.Timestamp.Month == someDate.Month && transaction.Timestamp.Year == someDate.Year
-                    select transaction);
+            return from t in _db.TransWithTags
+                   where t.Timestamp.IsMonthTheSame(someDate) && t.Operation == (isIncome ? OperationType.Доход : OperationType.Расход)
+                   join r in _db.CurrencyRates on new { t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault() } equals
+                       new { r.BankDay.Date, r.Currency } into g
+                   from rate in g.DefaultIfEmpty()
+                   select new TranForAnalysis()
+                   {
+                       Timestamp = t.Timestamp,
+                       Amount = t.Amount,
+                       Currency = t.Currency.GetValueOrDefault(),
+                       AmountInUsd = t.Currency == CurrencyCodes.USD ? t.Amount : t.Amount / (rate == null ? 1 : (decimal)rate.Rate),
+                       Category = isIncome ? t.GetTranArticle(isIncome) : t.GetTranCategory(isIncome),
+                       Comment = t.Comment,
+                       IsDepositTran = t.MyAccount.IsDeposit(),
+                       DepoName = t.MyAccount.IsDeposit() ? t.MyAccount.Deposit.ShortName : "",
+                   };
+        }
+        private void RegisterAllIncome(DateTime someDate)
+        {
+            var trans = GetTransForAnalysis(true, someDate);
+
+            Result.Incomes.OnDeposits.Trans.AddRange(trans.Where(t => t.IsDepositTran));
+            Result.Incomes.OnDeposits.TotalInUsd = trans.Where(t => t.IsDepositTran).Sum(t => t.AmountInUsd);
+            Result.Incomes.OnHands.Trans.AddRange(trans.Where(t => !t.IsDepositTran));
+            Result.Incomes.OnHands.TotalInUsd = trans.Where(t => !t.IsDepositTran).Sum(t => t.AmountInUsd);
         }
 
-        private IEnumerable<Transaction> GetMonthTransactionsForAnalysis(
-                                              DateTime someDate, IEnumerable<Transaction> transactions)
+        private void RegisterAllExpense(DateTime someDate)
         {
-            return (from transaction in transactions
-                    where transaction.Timestamp.Month == someDate.Month && transaction.Timestamp.Year == someDate.Year
-                    select transaction);
+            var trans = GetTransForAnalysis(false, someDate);
+
+            Result.Expense.LargeTransactions.AddRange(trans.Where(t=> Math.Abs(t.AmountInUsd) > (decimal)_mySettings.GetSetting("LargeExpenseUsd")));
+            Result.Expense.TotalForLargeInUsd = Result.Expense.LargeTransactions.Sum(l => l.AmountInUsd);
+
+            var categories = from t in trans
+                group t by t.Category
+                into g
+                select new CategoriesDataElement(g.Key, g.Sum(a => a.AmountInUsd), new YearMonth(g.First().Timestamp.Year, g.First().Timestamp.Month));
+
+            Result.Expense.Categories.AddRange(categories);
+            Result.Expense.TotalInUsd = Result.Expense.Categories.Sum(l => l.Amount);
         }
 
-        private void RegisterIncome(Transaction transaction)
+        private void RegisterDepoTraffic(DateTime someDate)
         {
-            var amountInUsd = _rateExtractor.GetUsdEquivalent(transaction.Amount, transaction.Currency, transaction.Timestamp);
-            if (transaction.Credit.Deposit != null || transaction.Credit.Is("Депозиты"))
-            {
-                Result.Incomes.OnDeposits.Transactions.Add(transaction);
-                Result.Incomes.OnDeposits.TotalInUsd += amountInUsd;
-            }
-            else
-            {
-                Result.Incomes.OnHands.Transactions.Add(transaction);
-                Result.Incomes.OnHands.TotalInUsd += amountInUsd;
-            }
-        }
+            var allTrans = from t in _db.TransWithTags where t.Timestamp.IsMonthTheSame(someDate) select t;
 
-        private void RegisterExpense(IEnumerable<Transaction> expenseTransactions)
-        {
-            var expenseTransactionsInUsd = _transactionSetConvertor.ConvertTransactionsQuery(expenseTransactions);
-            GroupExpenseByCategories(expenseTransactionsInUsd);
-            Result.Expense.TotalInUsd = expenseTransactionsInUsd.Sum(t => t.AmountInUsd);
+            Result.TransferFromDeposit =                          // расход (не может быть) или перенос со вклада
+                allTrans.Where(t => (t.Operation == OperationType.Расход && t.MyAccount.IsDeposit()) || (t.Operation == OperationType.Перенос && t.MyAccount.IsDeposit()))
+                    .Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency.GetValueOrDefault(), t.Timestamp)) +
+                // перенос со вклада с обменом
+                allTrans.Where(t => (t.Operation == OperationType.Обмен && t.MyAccount.IsDeposit()))
+                    .Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency.GetValueOrDefault(), t.Timestamp));
 
-            var largeTransactions = expenseTransactionsInUsd.Where(transaction => Math.Abs(transaction.AmountInUsd) > (decimal)_mySettings.GetSetting("LargeExpenseUsd"));
-            foreach (var transaction in largeTransactions)
-            {
-                Result.Expense.LargeTransactions.Add(transaction);
-            }
-            Result.Expense.TotalForLargeInUsd = largeTransactions.Sum(t => t.AmountInUsd);
-        }
+            Result.TransferToDeposit =                           // доход (%%) или перенос во вклад
+                allTrans.Where(t => (t.Operation == OperationType.Доход && t.MyAccount.IsDeposit()) || (t.Operation == OperationType.Перенос && t.MySecondAccount.IsDeposit()))
+                    .Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency.GetValueOrDefault(), t.Timestamp)) +
+                // перенос во вклад с обменом
+                allTrans.Where(t => (t.Operation == OperationType.Обмен && t.MySecondAccount.IsDeposit()))
+                    .Sum(t => _rateExtractor.GetUsdEquivalent(t.AmountInReturn, t.CurrencyInReturn.GetValueOrDefault(), t.Timestamp)) - Result.Incomes.OnDeposits.TotalInUsd;
 
-        private void GroupExpenseByCategories(IEnumerable<ConvertedTransaction> expenseTransactionsInUsd)
-        {
-            var expenseRoot = _accountTreeStraightener.Seek("Все расходы", _db.Accounts);
-            foreach (var expense in expenseRoot.Children)
-            {
-                var amountInUsd = (from e in expenseTransactionsInUsd
-                                   where e.Article.Is(expense.Name)
-                                   select e).Sum(a => a.AmountInUsd);
-
-                if (amountInUsd != 0)
-                    Result.Expense.Categories.Add(new BalanceTrio { Amount = amountInUsd, Currency = CurrencyCodes.USD, MyAccount = expense });
-            }
-        }
-
-
-        private void RegisterDepositsTraffic(List<Transaction> allMonthTransactions)
-        {
-            Result.TransferFromDeposit = allMonthTransactions.
-              Where(t => t.Debet.IsDeposit() && !t.Credit.IsDeposit()).
-              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp));
-
-            Result.TransferToDeposit = allMonthTransactions.
-              Where(t => !t.Debet.IsDeposit() && t.Credit.IsDeposit()).
-              Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency, t.Timestamp)) - Result.Incomes.OnDeposits.TotalInUsd;
         }
 
         private List<CurrencyRate> InitializeRates(DateTime date)
@@ -137,12 +128,9 @@ namespace Keeper.Utils.MonthAnalysis
             Result.BeginBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate);
             Result.BeginRates = InitializeRates(Result.StartDate.AddDays(-1));
 
-            var incomeTransactions = GetMonthTransactionsForAnalysis(OperationType.Доход, Result.StartDate, _db.Transactions);
-            foreach (var transaction in incomeTransactions) RegisterIncome(transaction);
-
-            RegisterExpense(GetMonthTransactionsForAnalysis(OperationType.Расход, Result.StartDate, _db.Transactions));
-
-            RegisterDepositsTraffic(GetMonthTransactionsForAnalysis(Result.StartDate, _db.Transactions).ToList());
+            RegisterAllIncome(initialDay);
+            RegisterAllExpense(initialDay);
+            RegisterDepoTraffic(initialDay);
 
             Result.EndBalance = _balanceCalculator.GetExtendedBalanceBeforeDate(Result.StartDate.AddMonths(1));
 

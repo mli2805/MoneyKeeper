@@ -257,7 +257,6 @@
     <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyBag.cs" />
     <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyExtensions.cs" />
     <Compile Include="Utils\BalanceEvaluating\Ilya\TransactionExtensions.cs" />
-    <Compile Include="Utils\CommonKeeper\TransactionSetConvertor.cs" />
     <Compile Include="DomainModel\Enumes\Every.cs" />
     <Compile Include="Utils\Common\IMySettings.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
@@ -302,8 +301,8 @@
     <Compile Include="Utils\BalanceEvaluating\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
-    <Compile Include="Utils\DiagramDataExtraction\CategoriesDiagramsDataElement.cs" />
-    <Compile Include="Utils\DiagramDataExtraction\CategoriesDiagramsDataExtractor.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\CategoriesDataElement.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\CategoriesDataExtractor.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesDiagramContentModel.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesOxyplotBuilder.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesOxyplotDataProvider.cs" />

@@ -72,40 +72,39 @@ namespace Keeper.Utils.MonthAnalysis
         private void FillInIncomesList(Saldo s)
         {
             Blank.IncomesToHandsList = new ObservableCollection<string> { String.Format("Доходы на руки  {0:#,0} usd\n", s.Incomes.OnHands.TotalInUsd) };
-            foreach (var transaction in s.Incomes.OnHands.Transactions)
+            foreach (var tran in s.Incomes.OnHands.Trans)
             {
-                Blank.IncomesToHandsList.Add(TransactionForIncomesList(transaction));
+                Blank.IncomesToHandsList.Add(TransactionForIncomesList(tran));
             }
 
             Blank.IncomesToDepositsList = new ObservableCollection<string> { String.Format("Проценты по депозитам   {0:#,0} usd\n", s.Incomes.OnDeposits.TotalInUsd) };
-            foreach (var transaction in s.Incomes.OnDeposits.Transactions)
+            foreach (var tran in s.Incomes.OnDeposits.Trans)
             {
-                Blank.IncomesToDepositsList.Add(TransactionForIncomesList(transaction));
+                Blank.IncomesToDepositsList.Add(TransactionForIncomesList(tran));
             }
 
             Blank.IncomesTotal = new ObservableCollection<string>
        { string.Format("                                                                          Всего доходы  {0:#,0} usd", s.Incomes.TotalInUsd) };
         }
 
-        private string TransactionForIncomesList(Transaction tr)
+        private string TransactionForIncomesList(TranForAnalysis tr)
         {
-            var shortDepositName = tr.Credit.Deposit == null ? "" : tr.Credit.Deposit.ShortName;
             return (tr.Currency == CurrencyCodes.USD) ?
                    String.Format("{1:#,0}  {2}  {3} {4} {5}, {0:d MMM}",
                    tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(),
-                   (tr.Article.Name == "Проценты по депозитам") ? "" : tr.Article.Name, shortDepositName, tr.Comment) :
+                   (tr.Category.Name == "Проценты по депозитам") ? "" : tr.Category.Name, tr.DepoName, tr.Comment) :
                    String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} {6}, {0:d MMM}",
                    tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(),
                    _rateExtractor.GetUsdEquivalent(tr.Amount, tr.Currency, tr.Timestamp),
-                   (tr.Article.Name == "Проценты по депозитам") ? "" : tr.Article.Name, shortDepositName, tr.Comment);
+                   (tr.Category.Name == "Проценты по депозитам") ? "" : tr.Category.Name, tr.DepoName, tr.Comment);
         }
 
         private void FillInExpenseList(Saldo s)
         {
             Blank.ExpenseList = new ObservableCollection<string> { "Расходы за месяц\n" };
-            foreach (var category in s.Expense.Categories)
+            foreach (var dataElement in s.Expense.Categories)
             {
-                Blank.ExpenseList.Add(String.Format("{0:#,0} $ - {1}", category.Amount, category.MyAccount.Name));
+                Blank.ExpenseList.Add(String.Format("{0:#,0} $ - {1}", dataElement.Amount, dataElement.Category));
             }
             Blank.ExpenseList.Add(String.Format("\nИтого {0:#,0} usd", s.Expense.TotalInUsd));
 
@@ -122,13 +121,13 @@ namespace Keeper.Utils.MonthAnalysis
             }
         }
 
-        private string TransactionForLargeExpenseList(ConvertedTransaction tr)
+        private string TransactionForLargeExpenseList(TranForAnalysis tr)
         {
             return (tr.Currency == CurrencyCodes.USD) ?
                    string.Format("               {1:#,0}  {2}  {3} {4} , {0:d MMM}",
-                   tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(), tr.Article, tr.Comment) :
+                   tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(), tr.Category, tr.Comment) :
                    string.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} , {0:d MMM}",
-                   tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(), tr.AmountInUsd, tr.Article, tr.Comment);
+                   tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(), tr.AmountInUsd, tr.Category, tr.Comment);
         }
 
         private void FillInEndList(Saldo s)
