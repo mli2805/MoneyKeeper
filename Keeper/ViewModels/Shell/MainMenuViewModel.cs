@@ -39,9 +39,11 @@ namespace Keeper.ViewModels.Shell
         private readonly DbBackuper _backuper;
         private readonly IDbFromTxtLoader _dbFromTxtLoader;
         private readonly DbCleaner _dbCleaner;
-        private readonly DiagramDataFactory _diagramDataFactory;
+        private readonly OldRatesDiagramDataFactory _oldRatesDiagramDataFactory;
         private readonly IMessageBoxer _messageBoxer;
-        private readonly DataClassifiedByCategoriesProvider _dataClassifiedByCategoriesProvider;
+        private readonly CategoriesDiagramsDataExtractor _categoriesDiagramsDataExtractor;
+        private readonly CategoriesDiagramsDataFactory _categoriesDiagramsDataFactory;
+        private readonly BalancesDiagramsDataFactory _balancesDiagramsDataFactory;
         private readonly RatesOxyplotDataProvider _ratesOxyplotDataProvider;
         private readonly MySettings _mySettings;
 
@@ -63,14 +65,18 @@ namespace Keeper.ViewModels.Shell
 
         [ImportingConstructor]
         public MainMenuViewModel(DbLoadResult loadResult, KeeperDb db, ShellModel shellModel, IDbToTxtSaver txtSaver, DbBackuper backuper,
-                                 IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, DiagramDataFactory diagramDataFactory,
-                                 IMessageBoxer messageBoxer, DataClassifiedByCategoriesProvider dataClassifiedByCategoriesProvider, RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
+                                 IDbFromTxtLoader dbFromTxtLoader, DbCleaner dbCleaner, OldRatesDiagramDataFactory oldRatesDiagramDataFactory,
+                                 IMessageBoxer messageBoxer, CategoriesDiagramsDataExtractor categoriesDiagramsDataExtractor,
+                                 CategoriesDiagramsDataFactory categoriesDiagramsDataFactory, BalancesDiagramsDataFactory balancesDiagramsDataFactory,
+                                 RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
         {
             _loadResult = loadResult; // в конструкторе DbLoadResult происходит загрузка БД
             if (_loadResult.Db.TransWithTags == null) IoC.Get<TransactionsConvertor>().Convert();
 
             _messageBoxer = messageBoxer;
-            _dataClassifiedByCategoriesProvider = dataClassifiedByCategoriesProvider;
+            _categoriesDiagramsDataExtractor = categoriesDiagramsDataExtractor;
+            _categoriesDiagramsDataFactory = categoriesDiagramsDataFactory;
+            _balancesDiagramsDataFactory = balancesDiagramsDataFactory;
             _ratesOxyplotDataProvider = ratesOxyplotDataProvider;
             _mySettings = mySettings;
 
@@ -88,7 +94,7 @@ namespace Keeper.ViewModels.Shell
             _backuper = backuper;
             _dbFromTxtLoader = dbFromTxtLoader;
             _dbCleaner = dbCleaner;
-            _diagramDataFactory = diagramDataFactory;
+            _oldRatesDiagramDataFactory = oldRatesDiagramDataFactory;
             IsDbChanged = false;
             WindowManager = new WindowManager();
             _messageBoxer.DropEmptyBox();
@@ -243,27 +249,27 @@ namespace Keeper.ViewModels.Shell
 
         public void ShowDailyBalancesDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.DailyBalancesCtor());
+            OpenDiagramForm(_balancesDiagramsDataFactory.DailyBalancesCtor());
         }
         public void ShowRatesDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.RatesCtor());
+            OpenDiagramForm(_oldRatesDiagramDataFactory.RatesCtor());
         }
         public void ShowMonthlyResultDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.MonthlyResultsDiagramCtor());
+            OpenDiagramForm(_balancesDiagramsDataFactory.MonthlyResultsDiagramCtor());
         }
         public void ShowMonthlyIncomeDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.MonthlyIncomesDiagramCtor());
+            OpenDiagramForm(_categoriesDiagramsDataFactory.MonthlyIncomesDiagramCtor());
         }
         public void ShowMonthlyOutcomeDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.MonthlyExpenseDiagramCtor());
+            OpenDiagramForm(_categoriesDiagramsDataFactory.MonthlyExpenseDiagramCtor());
         }
         public void ShowExpensePartingOxyPlotDiagram()
         {
-            var diagramData = _dataClassifiedByCategoriesProvider.GetGrouppedByMonth(false);
+            var diagramData = _categoriesDiagramsDataExtractor.GetGrouppedByMonth(false);
             var diagramOxyplotViewModel = new DiagramOxyplotViewModel(diagramData);
             WindowManager.ShowDialog(diagramOxyplotViewModel);
         }
@@ -275,7 +281,7 @@ namespace Keeper.ViewModels.Shell
         }
         public void ShowAverageSignificancesDiagram()
         {
-            OpenDiagramForm(_diagramDataFactory.AverageOfMainCategoriesDiagramCtor());
+            OpenDiagramForm(_categoriesDiagramsDataFactory.AverageOfMainCategoriesDiagramCtor());
         }
         private void OpenDiagramForm(DiagramData diagramData)
         {
