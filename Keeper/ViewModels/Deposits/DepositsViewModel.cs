@@ -28,7 +28,7 @@ namespace Keeper.ViewModels.Deposits
         private readonly RateExtractor _rateExtractor;
         private readonly DepositCalculationAggregator _depositCalculatorAggregator;
         private readonly MoneyBagConvertor _moneyBagConvertor;
-        private readonly DiagramDataExtractorFromDb _diagramDataExtractorFromDb;
+        private readonly OldRatesDiagramDataExtractor _oldRatesDiagramDataExtractor;
 
         public List<Deposit> DepositList { get; set; }
         public Deposit SelectedDeposit { get; set; }
@@ -39,7 +39,7 @@ namespace Keeper.ViewModels.Deposits
         [ImportingConstructor]
         public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
                                  DepositCalculationAggregator depositCalculatorAggregator, MoneyBagConvertor moneyBagConvertor,
-                                 DiagramDataExtractorFromDb diagramDataExtractorFromDb)
+                                 OldRatesDiagramDataExtractor oldRatesDiagramDataExtractor)
         {
             var sw = new Stopwatch();
             Console.WriteLine("DepositViewModel ctor starts {0}", sw.Elapsed);
@@ -50,7 +50,7 @@ namespace Keeper.ViewModels.Deposits
             _rateExtractor = rateExtractor;
             _depositCalculatorAggregator = depositCalculatorAggregator;
             _moneyBagConvertor = moneyBagConvertor;
-            _diagramDataExtractorFromDb = diagramDataExtractorFromDb;
+            _oldRatesDiagramDataExtractor = oldRatesDiagramDataExtractor;
 
             MyTitleStyle = new Style();
 
@@ -124,7 +124,7 @@ namespace Keeper.ViewModels.Deposits
             SeriesBelo = new List<DateProcentPoint>(); // Byr, Byn
             SeriesEuro = new List<DateProcentPoint>();
 
-            var inMoney = _diagramDataExtractorFromDb.DepositBalancesForPeriodInCurrencies(new Period(new DateTime(2001, 12, 31), DateTime.Now));
+            var inMoney = _oldRatesDiagramDataExtractor.DepositBalancesForPeriodInCurrencies(new Period(new DateTime(2001, 12, 31), DateTime.Now));
             foreach (var pair in inMoney)
             {
                 var date = pair.Key;

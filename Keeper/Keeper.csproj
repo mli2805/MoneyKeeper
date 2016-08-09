@@ -177,6 +177,9 @@
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\BalancesDiagramsDataFactory.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\BalancesDiagramsDataExtractor.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\CategoriesDiagramsDataFactory.cs" />
     <Compile Include="Utils\DoubleToStringConverter.cs" />
     <Compile Include="Utils\NbRbRatesExtractor.cs" />
     <Compile Include="Controls\ComboboxTreeview\ComboBoxTreeView.cs" />
@@ -299,8 +302,8 @@
     <Compile Include="Utils\BalanceEvaluating\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
-    <Compile Include="Utils\DiagramDataExtraction\DataClassifiedByCategoriesElement.cs" />
-    <Compile Include="Utils\DiagramDataExtraction\DataClassifiedByCategoriesProvider.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\CategoriesDiagramsDataElement.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\CategoriesDiagramsDataExtractor.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesDiagramContentModel.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesOxyplotBuilder.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesOxyplotDataProvider.cs" />
@@ -332,9 +335,9 @@
     <Compile Include="Utils\DiagramDomainModel\DiagramData.cs" />
     <Compile Include="Utils\DiagramMy\DiagramDataPanAndZoomer.cs" />
     <Compile Include="Utils\DiagramMy\DiagramDrawer.cs" />
-    <Compile Include="Utils\DiagramDataExtraction\DiagramDataExtractorFromDb.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\OldRatesDiagramDataExtractor.cs" />
     <Compile Include="Utils\DiagramMy\DiagramDataSeriesUnited.cs" />
-    <Compile Include="Utils\DiagramDataExtraction\DiagramDataFactory.cs" />
+    <Compile Include="Utils\DiagramDataExtraction\OldRatesDiagramDataFactory.cs" />
     <Compile Include="Utils\DiagramMy\DiagramDrawingCalculator.cs" />
     <Compile Include="Utils\DiagramMy\DiagramHintCreator.cs" />
     <Compile Include="Utils\DiagramMy\DiagramPointAnalyzer.cs" />

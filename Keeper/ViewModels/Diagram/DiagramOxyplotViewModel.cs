@@ -61,7 +61,7 @@ namespace Keeper.ViewModels.Diagram
         }
         public DiagramIntervalMode IntervalMode { get; set; }
 
-        private readonly List<DataClassifiedByCategoriesElement> _diagramData;
+        private readonly List<CategoriesDiagramsDataElement> _diagramData;
         private PlotModel _myPlotModel;
         private double _fromPoint;
         private double _toPoint;
@@ -89,7 +89,7 @@ namespace Keeper.ViewModels.Diagram
 
         private readonly PeriodChoiceControlPointsConvertor _periodChoiceControlPointsConvertor;
         private ObservableCollection<string> _legendBindingSource;
-        public DiagramOxyplotViewModel(List<DataClassifiedByCategoriesElement> diagramData)
+        public DiagramOxyplotViewModel(List<CategoriesDiagramsDataElement> diagramData)
         {
             _diagramData = diagramData;
 
@@ -118,7 +118,7 @@ namespace Keeper.ViewModels.Diagram
             LegendBindingSource = InitializeLegend(pieData);
         }
 
-        private Series InitializePieSeries(IEnumerable<DataClassifiedByCategoriesElement> pieData)
+        private Series InitializePieSeries(IEnumerable<CategoriesDiagramsDataElement> pieData)
         {
             var series = new PieSeries();
             foreach (var element in pieData)
@@ -128,7 +128,7 @@ namespace Keeper.ViewModels.Diagram
             return series;
         }
 
-        private ObservableCollection<string> InitializeLegend(List<DataClassifiedByCategoriesElement> pieData)
+        private ObservableCollection<string> InitializeLegend(List<CategoriesDiagramsDataElement> pieData)
         {
             var result = new ObservableCollection<string>();
             var sum = pieData.Sum(a => a.Amount);
@@ -140,11 +140,11 @@ namespace Keeper.ViewModels.Diagram
             return result;
         }
 
-        private IEnumerable<DataClassifiedByCategoriesElement> Extract(Tuple<YearMonth, YearMonth> period)
+        private IEnumerable<CategoriesDiagramsDataElement> Extract(Tuple<YearMonth, YearMonth> period)
         {
             var r = _diagramData.Where(a => a.YearMonth.InInterval(period))
                    .GroupBy(e => e.Category)
-                   .Select(g => new DataClassifiedByCategoriesElement(g.First().Category,g.Sum(p=>p.Amount),g.First().YearMonth)).Where(k => k.Amount > 0).OrderByDescending(o => o.Amount);
+                   .Select(g => new CategoriesDiagramsDataElement(g.First().Category,g.Sum(p=>p.Amount),g.First().YearMonth)).Where(k => k.Amount > 0).OrderByDescending(o => o.Amount);
             return r;
         }
 

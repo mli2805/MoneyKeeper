@@ -10,12 +10,12 @@ using Keeper.DomainModel.WorkTypes;
 namespace Keeper.Utils.DiagramDataExtraction
 {
     [Export]
-    public class DataClassifiedByCategoriesProvider
+    public class CategoriesDiagramsDataExtractor
     {
         private readonly KeeperDb _db;
 
         [ImportingConstructor]
-        public DataClassifiedByCategoriesProvider(KeeperDb db)
+        public CategoriesDiagramsDataExtractor(KeeperDb db)
         {
             _db = db;
         }
@@ -25,9 +25,9 @@ namespace Keeper.Utils.DiagramDataExtraction
         /// </summary>
         /// <param name="flag"></param>
         /// <returns></returns>
-        public List<DataClassifiedByCategoriesElement> GetGrouppedByMonth(bool flag)
+        public List<CategoriesDiagramsDataElement> GetGrouppedByMonth(bool flag)
         {
-            var result = new List<DataClassifiedByCategoriesElement>();
+            var result = new List<CategoriesDiagramsDataElement>();
 
             var rootName = flag ? "Все доходы" : "Все расходы";
             var categories = _db.Accounts.First(a => a.Name == rootName).Children.ToList();
@@ -39,7 +39,7 @@ namespace Keeper.Utils.DiagramDataExtraction
                 var trs = from t in classifiedTrans where t.Category == k select t;
                 var r = from t in trs
                         group t by new { t.Timestamp.Month, t.Timestamp.Year } into g
-                        select new DataClassifiedByCategoriesElement(k, g.Sum(a => a.AmountInUsd), new YearMonth(g.Key.Year, g.Key.Month));
+                        select new CategoriesDiagramsDataElement(k, g.Sum(a => a.AmountInUsd), new YearMonth(g.Key.Year, g.Key.Month));
                 result.AddRange(r);
             }
             return result;
