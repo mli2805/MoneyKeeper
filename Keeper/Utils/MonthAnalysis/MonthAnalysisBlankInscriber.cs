@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
@@ -7,6 +8,7 @@ using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Models;
+using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis
@@ -45,29 +47,43 @@ namespace Keeper.Utils.MonthAnalysis
             Blank.BeforeListOnDeposits = FillListWithDateBalanceInCurrencies(s.BeginBalance.OnDeposits, s.StartDate, "Депозиты");
         }
 
-        private ObservableCollection<string> FillListWithDateBalanceInCurrencies(ExtendedBalance balance, DateTime date, string caption)
+        private ObservableCollection<string> FillListWithDateBalanceInCurrencies(MoneyBagWithTotal balance, DateTime date, string caption)
         {
-            var content = new ObservableCollection<string>();
+            var content = new List<string>();
             content.Add(caption);
             content.Add("");
-            foreach (var balancePair in balance.InCurrencies)
+            content.AddRange(MoneyBagToListOfStrings(balance.MoneyBag, date));
+            content.Add("");
+            content.Add($"Итого {balance.TotalInUsd:#,0} usd");
+
+            return new ObservableCollection<string>(content); 
+        }
+        private List<string> MoneyBagToListOfStrings(MoneyBag moneyBag, DateTime date)
+        {
+            var balanceList = new List<string>();
+            var currencies = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
+
+            foreach (var currency in currencies)
             {
-                if (balancePair.Amount == 0) continue;
-                if (balancePair.Currency == CurrencyCodes.USD)
+                if (moneyBag[currency] != 0)
                 {
-                    content.Add(balancePair.ToString());
-                }
-                else
-                {
-                    decimal amountInUsd = _rateExtractor.GetUsdEquivalent(balancePair.Amount, balancePair.Currency, date.AddDays(-1));
-                    content.Add(String.Format("{0}  (= {1:#,0} $)", balancePair.ToString(), amountInUsd));
+                    balanceList.Add(MoneyToString(new Money(currency, moneyBag[currency]), date));
                 }
             }
-            content.Add("");
-            content.Add(String.Format("Итого {0:#,0} usd", balance.TotalInUsd));
-
-            return content;
+            return balanceList;
         }
+
+        private string MoneyToString(Money money, DateTime date)
+        {
+            decimal amountInUsd = money.Currency == CurrencyCodes.USD ? 1 : _rateExtractor.GetUsdEquivalent(money.Amount, money.Currency, date.AddDays(-1));
+            switch (money.Currency)
+            {
+                    case CurrencyCodes.USD: return $"{money.Amount} usd";
+                    case CurrencyCodes.BYR: return $"{money.Amount:#,#} byr (= {amountInUsd:#,0} $)";
+                default: return $"{money.Amount:#,0.##} {money.Currency.ToString().ToLower()} (= {amountInUsd:#,0} $)";
+            }
+        }
+
 
         private void FillInIncomesList(Saldo s)
         {
@@ -154,8 +170,8 @@ namespace Keeper.Utils.MonthAnalysis
         private void FillInDepositResultList(Saldo s)
         {
             Blank.DepositResultList = new ObservableCollection<string> {
-                                  String.Format("Открытие или доп.взносы {0:#,0} usd", s.TransferToDeposit)};
-            Blank.DepositResultList.Add(String.Format("Закрытие или расходные {0:#,0} usd", s.TransferFromDeposit));
+                                  String.Format("Открытие или доп.взносы {0:#,0} usd", s.DepoTraffic.ToDepo)};
+            Blank.DepositResultList.Add(String.Format("Закрытие или расходные {0:#,0} usd", s.DepoTraffic.FromDepo));
             Blank.DepositResultList.Add(String.Format("\nПроценты по депозитам (*)  {0:#,0} usd", s.Incomes.OnDeposits.TotalInUsd));
             Blank.DepositResultList.Add(String.Format("Курсовые разницы  {0:#,0} usd", s.ExchangeDepositDifference));
             Blank.DepositResultList.Add(String.Format("\nПрибыль с учетом курсовых разниц {0:#,0} usd",

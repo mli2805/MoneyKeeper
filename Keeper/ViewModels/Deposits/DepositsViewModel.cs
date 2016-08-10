@@ -24,10 +24,8 @@ namespace Keeper.ViewModels.Deposits
         public static IWindowManager WindowManager { get { return IoC.Get<IWindowManager>(); } }
 
         private readonly KeeperDb _db;
-        readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly RateExtractor _rateExtractor;
         private readonly DepositCalculationAggregator _depositCalculatorAggregator;
-        private readonly MoneyBagConvertor _moneyBagConvertor;
         private readonly OldRatesDiagramDataExtractor _oldRatesDiagramDataExtractor;
 
         public List<Deposit> DepositList { get; set; }
@@ -38,7 +36,7 @@ namespace Keeper.ViewModels.Deposits
 
         [ImportingConstructor]
         public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
-                                 DepositCalculationAggregator depositCalculatorAggregator, MoneyBagConvertor moneyBagConvertor,
+                                 DepositCalculationAggregator depositCalculatorAggregator, 
                                  OldRatesDiagramDataExtractor oldRatesDiagramDataExtractor)
         {
             var sw = new Stopwatch();
@@ -46,10 +44,8 @@ namespace Keeper.ViewModels.Deposits
             sw.Start();
 
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
             _rateExtractor = rateExtractor;
             _depositCalculatorAggregator = depositCalculatorAggregator;
-            _moneyBagConvertor = moneyBagConvertor;
             _oldRatesDiagramDataExtractor = oldRatesDiagramDataExtractor;
 
             MyTitleStyle = new Style();
@@ -74,7 +70,7 @@ namespace Keeper.ViewModels.Deposits
             Console.WriteLine("DepositViewModel ctor 2 {0}", sw.Elapsed);
             TotalBalancesCtor();
             Console.WriteLine("DepositViewModel ctor 3 {0}", sw.Elapsed);
-            CashDepoProportionChartCtor();
+//            CashDepoProportionChartCtor();
 
             sw.Stop();
             Console.WriteLine("DepositViewModel ctor takes {0}", sw.Elapsed);
@@ -130,7 +126,7 @@ namespace Keeper.ViewModels.Deposits
                 var date = pair.Key;
                 var balancesInCurrencies = pair.Value;
 
-                var dateTotalInUsd = _moneyBagConvertor.MoneyBagToUsd(balancesInCurrencies, date);
+                var dateTotalInUsd = _rateExtractor.GetUsdEquivalent(balancesInCurrencies, date);
                 decimal cumulativePercent;
                 {
                     var inUsd = _rateExtractor.GetUsdEquivalent(balancesInCurrencies[CurrencyCodes.EUR], CurrencyCodes.EUR, date);
@@ -210,52 +206,44 @@ namespace Keeper.ViewModels.Deposits
         public List<DateProcentPoint> MonthlyCashSeries { get; set; }
         public void CashDepoProportionChartCtor()
         {
-            var dailyCashSeries = new List<DateProcentPoint>();
-
-            decimal cashInUsd = 0, depoInUsd = 0;
-            var dt = new DateTime(2001, 12, 31);
-            var transactionsArray = _db.Transactions.OrderBy(t => t.Timestamp).ToArray();
-            int index = 0;
-            Transaction tr = transactionsArray[0];
-
-            while (index < transactionsArray.Count())
-            {
-                while (tr.Timestamp.Date == dt.Date)
-                {
-//                    if (tr.Debet.Is("На руках"))
-//                    {
-//                        cashInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
-//                        if (tr.Operation == OperationType.Обмен)
-//                            cashInUsd += tr.Currency2 == CurrencyCodes.USD
-//                                           ? tr.Amount2
-//                                           : tr.Amount2 / (decimal)_rateExtractor.GetRate((CurrencyCodes)tr.Currency2, tr.Timestamp);
-//                    }
-                    if (tr.Credit.Is("На руках"))
-                        cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
-                    if (tr.Debet.Is("Депозиты"))
-                        depoInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
-                    if (tr.Credit.Is("Депозиты"))
-                        depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
-
-                    index++;
-                    if (index == transactionsArray.Count()) break;
-                    tr = transactionsArray[index];
-                }
-
-                dailyCashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
-                if (index >= transactionsArray.Count()) break;
-                dt = dt.AddDays(1);
-            }
-
-            // средняя по месяцам
-            MonthlyCashSeries = (from p in dailyCashSeries
-                                 group p by new { year = p.Date.Year, month = p.Date.Month }
-                                     into g
-                                     select new DateProcentPoint
-                                     {
-                                         Date = new DateTime(g.Key.year, g.Key.month, 15),
-                                         Procent = Math.Round(g.Average(a => a.Procent))
-                                     }).ToList();
+//            var dailyCashSeries = new List<DateProcentPoint>();
+//
+//            decimal cashInUsd = 0, depoInUsd = 0;
+//            var dt = new DateTime(2001, 12, 31);
+//            var transactionsArray = _db.Transactions.OrderBy(t => t.Timestamp).ToArray();
+//            int index = 0;
+//            Transaction tr = transactionsArray[0];
+//
+//            while (index < transactionsArray.Count())
+//            {
+//                while (tr.Timestamp.Date == dt.Date)
+//                {
+//                    if (tr.Credit.Is("На руках"))
+//                        cashInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
+//                    if (tr.Debet.Is("Депозиты"))
+//                        depoInUsd -= tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
+//                    if (tr.Credit.Is("Депозиты"))
+//                        depoInUsd += tr.Currency == CurrencyCodes.USD ? tr.Amount : tr.Amount / (decimal)_rateExtractor.GetRate(tr.Currency, tr.Timestamp);
+//
+//                    index++;
+//                    if (index == transactionsArray.Count()) break;
+//                    tr = transactionsArray[index];
+//                }
+//
+//                dailyCashSeries.Add(new DateProcentPoint(dt, Math.Round(cashInUsd / (cashInUsd + depoInUsd) * 100)));
+//                if (index >= transactionsArray.Count()) break;
+//                dt = dt.AddDays(1);
+//            }
+//
+//            // средняя по месяцам
+//            MonthlyCashSeries = (from p in dailyCashSeries
+//                                 group p by new { year = p.Date.Year, month = p.Date.Month }
+//                                     into g
+//                                     select new DateProcentPoint
+//                                     {
+//                                         Date = new DateTime(g.Key.year, g.Key.month, 15),
+//                                         Procent = Math.Round(g.Average(a => a.Procent))
+//                                     }).ToList();
         }
 
         #endregion

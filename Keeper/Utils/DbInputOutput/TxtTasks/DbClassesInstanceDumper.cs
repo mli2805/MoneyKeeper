@@ -36,13 +36,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             return Convert.ToString(rate.Date, new CultureInfo("ru-RU")) + " ; " +
                    rate.UsdRate.ToString(new CultureInfo("en-US")) + " ; " + rate.EurRate.ToString(new CultureInfo("en-US")) + " ; " + rate.RurRate.ToString(new CultureInfo("en-US"));
         }
-        public string Dump(Transaction transaction)
-        {
-            return Convert.ToString(transaction.Timestamp, new CultureInfo("ru-RU")) + " ; " + transaction.Operation + " ; " +
-                   transaction.Debet + " ; " + transaction.Credit + " ; " + transaction.Amount.ToString(new CultureInfo("en-US")) + " ; "
-                   + transaction.Currency + " ; " + transaction.Article + " ; " + transaction.Comment + " ; " + transaction.Guid;
-        }
-
         public string Dump(TranWithTags tranWithTags)
         {
             return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " +
