@@ -140,8 +140,8 @@
       <DependentUpon>ExchangeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\OneTranViewControls\UniversalControlVm.cs" />
-    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControlVm.cs" />
-    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl.xaml.cs">
+    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl\AmountInputControlVm.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl\AmountInputControl.xaml.cs">
       <DependentUpon>AmountInputControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameSelector.xaml.cs">
@@ -180,6 +180,7 @@
     <Compile Include="DomainModel\MonthAnalysis\TranForAnalysis.cs" />
     <Compile Include="DomainModel\Trans\TrafficOnMainPage.cs" />
     <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
+    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl\DoubleToStringConverter.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
@@ -188,7 +189,6 @@
     <Compile Include="Utils\DiagramDataExtraction\BalancesDiagramsDataFactory.cs" />
     <Compile Include="Utils\DiagramDataExtraction\BalancesDiagramsDataExtractor.cs" />
     <Compile Include="Utils\DiagramDataExtraction\CategoriesDiagramsDataFactory.cs" />
-    <Compile Include="Utils\DoubleToStringConverter.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthBalancesAnalyzer.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthTrafficAnalyzer.cs" />
     <Compile Include="Utils\NbRbRatesExtractor.cs" />
@@ -525,7 +525,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\OneTranViewControls\SubControls\AmountInputControl.xaml">
+    <Page Include="Controls\OneTranViewControls\SubControls\AmountInputControl\AmountInputControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

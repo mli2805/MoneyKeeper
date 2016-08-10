@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Extentions;
+using Keeper.DomainModel.MonthAnalysis;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DbInputOutput;

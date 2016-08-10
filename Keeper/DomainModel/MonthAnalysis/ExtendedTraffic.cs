@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Keeper.DomainModel.WorkTypes
+namespace Keeper.DomainModel.MonthAnalysis
 {
     public class ExtendedTraffic
     {

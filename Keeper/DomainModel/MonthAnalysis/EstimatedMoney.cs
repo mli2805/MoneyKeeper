@@ -1,6 +1,6 @@
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.DomainModel.WorkTypes
+namespace Keeper.DomainModel.MonthAnalysis
 {
     public class EstimatedMoney
     {
