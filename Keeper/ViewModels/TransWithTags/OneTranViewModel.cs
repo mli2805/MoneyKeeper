@@ -85,8 +85,18 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
+        private bool IsValid()
+        {
+            if (TranInWork.HasntGotCategoryTagThoughItShould()) return false;
+            /* more checks
+             * ...
+            */
+            return true;
+        }
+
         public void Save()
         {
+            if (!IsValid()) return;
             TryClose(true);
         }
 
