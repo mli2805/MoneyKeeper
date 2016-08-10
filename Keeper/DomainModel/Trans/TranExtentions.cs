@@ -83,13 +83,23 @@ namespace Keeper.DomainModel.Trans
 
 
         // возвращает подробную категорию
-        public static Account GetTranArticle(this TranWithTags tran, bool flag)
+        public static Account GetTranArticle(this TranWithTags tran, bool isIncome, bool batchProcessing = true)
         {
-            var rootName = flag ? "Все доходы" : "Все расходы";
+            var rootName = isIncome ? "Все доходы" : "Все расходы";
             var result = tran.Tags.FirstOrDefault(t => t.Is(rootName));
             if (result != null) return result;
-            MessageBox.Show($"нет категории {tran.Timestamp} {tran.Amount} {tran.Currency}", "");
+            MessageBox.Show(
+                batchProcessing
+                    ? $"Нет категории для проводки \n {tran.Timestamp} {tran.Amount} {tran.Currency.ToString().ToLower()}"
+                    : "Не задана категория!", "Ошибка!");
             return null;
+
+        }
+
+        public static bool HasntGotCategoryTagThoughItShould(this TranWithTags tran)
+        {
+            return ((tran.Operation == OperationType.Доход || tran.Operation == OperationType.Расход) &&
+                    tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null);
 
         }
 
