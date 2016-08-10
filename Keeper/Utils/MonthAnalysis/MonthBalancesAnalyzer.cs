@@ -1,6 +1,5 @@
 using System;
 using System.Composition;
-using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;

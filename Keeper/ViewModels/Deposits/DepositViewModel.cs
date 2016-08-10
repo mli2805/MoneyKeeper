@@ -5,7 +5,6 @@ using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.Utils.DepositProcessing;
-using Keeper.ViewModels.SingleViews;
 
 namespace Keeper.ViewModels.Deposits
 {

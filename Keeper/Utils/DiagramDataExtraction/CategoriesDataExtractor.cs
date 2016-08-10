@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using System.Windows;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Extentions;

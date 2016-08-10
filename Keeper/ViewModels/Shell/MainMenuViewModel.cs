@@ -6,7 +6,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.Models.Shell;
-using Keeper.Utils;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.Common;
 using Keeper.Utils.CommonKeeper;
