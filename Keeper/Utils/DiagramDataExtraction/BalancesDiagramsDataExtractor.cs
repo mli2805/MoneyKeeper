@@ -10,6 +10,7 @@ using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.DiagramDomainModel;
+using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.DiagramDataExtraction
 {
@@ -18,15 +19,15 @@ namespace Keeper.Utils.DiagramDataExtraction
     {
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
-        private readonly MoneyBagConvertor _moneyBagConvertor;
+        private readonly RateExtractor _rateExtractor;
         private readonly CurrencyRatesAsDictionary _ratesAsDictionary;
 
         [ImportingConstructor]
-        public BalancesDiagramsDataExtractor(KeeperDb db, AccountTreeStraightener accountTreeStraightener, MoneyBagConvertor moneyBagConvertor)
+        public BalancesDiagramsDataExtractor(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
-            _moneyBagConvertor = moneyBagConvertor;
+            _rateExtractor = rateExtractor;
             _ratesAsDictionary = new CurrencyRatesAsDictionary(_db.CurrencyRates.ToList());
         }
         /// <summary>
@@ -48,7 +49,7 @@ namespace Keeper.Utils.DiagramDataExtraction
                 {
                     if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency))
                     {
-                        var sum = _moneyBagConvertor.MoneyBagToUsd(currentMoneyBag, tran.Timestamp.Date);
+                        var sum = _rateExtractor.GetUsdEquivalent(currentMoneyBag, tran.Timestamp.Date);
                         if (sum != 0) // если вернулся 0 - это гэпы без курсов в начале времен
                             result.Add(new DiagramPoint(currentDate, (double)sum));
                         else
@@ -62,7 +63,7 @@ namespace Keeper.Utils.DiagramDataExtraction
                 }
                 currentMoneyBag = currentMoneyBag + tran.MoneyBagForAccount(root);
             }
-            result.Add(new DiagramPoint(currentDate, (double)_moneyBagConvertor.MoneyBagToUsd(currentMoneyBag, currentDate)));
+            result.Add(new DiagramPoint(currentDate, (double)_rateExtractor.GetUsdEquivalent(currentMoneyBag, currentDate)));
             return result;
         }
 

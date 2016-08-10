@@ -13,7 +13,7 @@ namespace Keeper.Utils.CommonKeeper
     {
       db.CurrencyRates.Clear();
       db.ArticlesAssociations.Clear();
-      db.Transactions.Clear();
+      db.TransWithTags.Clear();
 
       ClearAccounts(db);
     }

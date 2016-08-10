@@ -8,6 +8,7 @@ using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.BalanceEvaluating.Ilya;
+using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.BalancesFromTransWithTags
 {
@@ -15,13 +16,13 @@ namespace Keeper.Utils.BalancesFromTransWithTags
     public class BalancesForMainViewCalculator
     {
         private readonly KeeperDb _db;
-        private readonly MoneyBagConvertor _moneyBagConvertor;
+        private readonly RateExtractor _rateExtractor;
 
         [ImportingConstructor]
-        public BalancesForMainViewCalculator(KeeperDb db, MoneyBagConvertor moneyBagConvertor)
+        public BalancesForMainViewCalculator(KeeperDb db, RateExtractor rateExtractor)
         {
             _db = db;
-            _moneyBagConvertor = moneyBagConvertor;
+            _rateExtractor = rateExtractor;
         }
 
         /// <summary>
@@ -70,16 +71,16 @@ namespace Keeper.Utils.BalancesFromTransWithTags
             {
                 balanceList.Add(str);
             }
-            return _moneyBagConvertor.MoneyBagToUsd(total, period.Finish);
+            return _rateExtractor.GetUsdEquivalent(total, period.Finish);
         }
 
-        private static List<string> MoneyBagToListOfStrings(MoneyBag result, string gap = "")
+        private static List<string> MoneyBagToListOfStrings(MoneyBag moneyBag, string gap = "")
         {
             var balanceList = new List<string>();
             var currencies = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
             foreach (var currency in currencies)
             {
-                var oneCurrencyBalance = result[currency];
+                var oneCurrencyBalance = moneyBag[currency];
                 if (oneCurrencyBalance != 0)
                     balanceList.Add(currency == CurrencyCodes.BYR
                         ? gap + $"{oneCurrencyBalance:#,#} {currency}"
@@ -114,7 +115,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
 
             }
 
-            return _moneyBagConvertor.MoneyBagToUsd(moneyBag, period.Finish);
+            return _rateExtractor.GetUsdEquivalent(moneyBag, period.Finish);
         }
 
         private List<string> GetTrafficListForTag(Account tag, Period period)

@@ -4,23 +4,30 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.Utils.BalanceEvaluating;
+using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.DiagramDataExtraction;
 
 namespace Keeper.DomainModel.WorkTypes
 {
-    public class ExtendedBalance
+    public class MoneyBagWithTotal
     {
-        public List<MoneyPair> InCurrencies { get; set; }
+        public MoneyBag MoneyBag { get; set; }
         public decimal TotalInUsd { get; set; }
     }
 
-    public class ExtendedBalanceForAnalysis
+    public class ExtendedBalance
     {
-        public ExtendedBalance Common { get; set; }
-        public ExtendedBalance OnHands { get; set; }
-        public ExtendedBalance OnDeposits { get; set; }
-    }
+        public MoneyBagWithTotal Common { get; set; }
+        public MoneyBagWithTotal OnHands { get; set; }
+        public MoneyBagWithTotal OnDeposits { get; set; }
 
+        public ExtendedBalance()
+        {
+            Common = new MoneyBagWithTotal();
+            OnHands = new MoneyBagWithTotal();
+            OnDeposits = new MoneyBagWithTotal();
+        }
+    }
     public class ExtendedTraffic
     {
         public List<TranForAnalysis> Trans { get; set; }
@@ -57,14 +64,14 @@ namespace Keeper.DomainModel.WorkTypes
         public string DepoName { get; set; }
     }
 
-    public class ExtendedTrafficWithCategories
+    public class ExtendedExpense
     {
         public List<TranForAnalysis> LargeTransactions { get; set; }
         public List<CategoriesDataElement> Categories { get; set; }
         public decimal TotalForLargeInUsd { get; set; }
         public decimal TotalInUsd { get; set; }
 
-        public ExtendedTrafficWithCategories()
+        public ExtendedExpense()
         {
             LargeTransactions = new List<TranForAnalysis>();
             Categories = new List<CategoriesDataElement>();
@@ -90,27 +97,31 @@ namespace Keeper.DomainModel.WorkTypes
         }
     }
 
+    public class DepoTraffic
+    {
+        public decimal ToDepo { get; set; }
+        public decimal FromDepo { get; set; }
+    }
+
     public class Saldo
     {
         public DateTime StartDate { get; set; }
-        public ExtendedBalanceForAnalysis BeginBalance { get; set; }
+        public ExtendedBalance BeginBalance { get; set; }
         public List<CurrencyRate> BeginRates { get; set; }
         public ExtendedIncomes Incomes { get; set; }
-        public ExtendedTrafficWithCategories Expense { get; set; }
+        public ExtendedExpense Expense { get; set; }
 
         public decimal ExchangeDifference { get { return EndBalance.Common.TotalInUsd - BeginBalance.Common.TotalInUsd - Incomes.TotalInUsd + Expense.TotalInUsd; } }
         public decimal ExchangeDepositDifference
         {
             get
-            { return EndBalance.OnDeposits.TotalInUsd - BeginBalance.OnDeposits.TotalInUsd - Incomes.OnDeposits.TotalInUsd - TransferToDeposit + TransferFromDeposit; }
+            { return EndBalance.OnDeposits.TotalInUsd - BeginBalance.OnDeposits.TotalInUsd - Incomes.OnDeposits.TotalInUsd - DepoTraffic.ToDepo + DepoTraffic.FromDepo; }
         }
 
-        public ExtendedBalanceForAnalysis EndBalance { get; set; }
+        public ExtendedBalance EndBalance { get; set; }
         public List<CurrencyRate> EndRates { get; set; }
 
-        public decimal TransferToDeposit { get; set; }
-        public decimal TransferFromDeposit { get; set; }
-
+        public DepoTraffic DepoTraffic { get; set; }
         public EstimatedPayments ForecastRegularIncome { get; set; }
         public EstimatedPayments ForecastRegularExpense { get; set; }
         public decimal ForecastExpense { get; set; }
@@ -120,7 +131,7 @@ namespace Keeper.DomainModel.WorkTypes
         public Saldo()
         {
             Incomes = new ExtendedIncomes();
-            Expense = new ExtendedTrafficWithCategories();
+            Expense = new ExtendedExpense();
             ForecastRegularExpense = new EstimatedPayments();
         }
     }

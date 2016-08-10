@@ -9,7 +9,7 @@ namespace Keeper.Utils.DbInputOutput.FileTasks
 			  { "Accounts.txt", 215 },
 			  { "ArticlesAssociations.txt", 225 },
 			  { "CurrencyRates.txt", 235 },
-			  { "Transactions.txt", 245 },
+			  { "TransWithTags.txt", 245 },
 		  };
 
 		public static Dictionary<string, int> Dict

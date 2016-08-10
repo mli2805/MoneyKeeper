@@ -27,23 +27,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             };
         }
 
-        public Transaction TransactionFromStringWithNames(string s, IEnumerable<Account> accountsPlaneList)
-        {
-            var transaction = new Transaction();
-            var substrings = s.Split(';');
-            transaction.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
-            transaction.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-            transaction.Debet = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
-            transaction.Credit = accountsPlaneList.First(account => account.Name == substrings[3].Trim());
-            transaction.Amount = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
-            transaction.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
-            transaction.Article = substrings[6].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[6].Trim()) : null;
-            transaction.Comment = substrings[7].Trim();
-            transaction.Guid = new Guid(substrings[8].Trim());
-
-            return transaction;
-        }
-
         public TranWithTags TranWithTagsFromString(string s, IEnumerable<Account> accountsPlaneList)
         {
             var tran = new TranWithTags();

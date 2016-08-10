@@ -48,12 +48,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             LoadDepositOffersRates(path, db.BankDepositOffers.ToList());
             LoadDeposits(path, accountsPlaneList, db.BankDepositOffers.ToList());
             if (Result != null) return Result;
-            db.Transactions = LoadFrom(path, "Transactions.txt",
-                           _dbClassesInstanceParser.TransactionFromStringWithNames, accountsPlaneList);
+            db.TransWithTags = LoadFrom(path, "TransWithTags.txt",
+                           _dbClassesInstanceParser.TranWithTagsFromString , accountsPlaneList);
             if (Result != null) return Result;
-//            db.TransWithTags = LoadFrom(path, "TransWithTags.txt",
-//                           _dbClassesInstanceParser.TranWithTagsFromString , accountsPlaneList);
-//            if (Result != null) return Result;
             db.ArticlesAssociations = LoadFrom(path, "ArticlesAssociations.txt",
                            _dbClassesInstanceParser.ArticleAssociationFromStringWithNames, accountsPlaneList);
             if (Result != null) return Result;

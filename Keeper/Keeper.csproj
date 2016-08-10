@@ -173,7 +173,6 @@
     <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
-    <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyBagConvertor.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
     <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
@@ -181,6 +180,8 @@
     <Compile Include="Utils\DiagramDataExtraction\BalancesDiagramsDataExtractor.cs" />
     <Compile Include="Utils\DiagramDataExtraction\CategoriesDiagramsDataFactory.cs" />
     <Compile Include="Utils\DoubleToStringConverter.cs" />
+    <Compile Include="Utils\MonthAnalysis\MonthBalancesAnalyzer.cs" />
+    <Compile Include="Utils\MonthAnalysis\MonthTrafficAnalyzer.cs" />
     <Compile Include="Utils\NbRbRatesExtractor.cs" />
     <Compile Include="Controls\ComboboxTreeview\ComboBoxTreeView.cs" />
     <Compile Include="Controls\ComboboxTreeview\ExtendedTreeView.cs" />
@@ -232,17 +233,14 @@
     <Compile Include="DomainModel\Trans\TranWithTags.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
-    <Compile Include="Utils\TransactionsConvertor.cs" />
     <Compile Include="DomainModel\WorkTypes\AccName.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
-    <Compile Include="ViewModels\Transactions\ListsForComboboxes.cs" />
     <Compile Include="ViewModels\TransWithTags\TransModel.cs" />
     <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />
     <Compile Include="ViewModels\TransWithTags\AccNameSelectionControlInitializer.cs" />
     <Compile Include="ViewModels\TransWithTags\OneTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TranActions.cs" />
-    <Compile Include="ViewModels\Transactions\TransactionChangesVisualizer.cs" />
     <Compile Include="DomainModel\WorkTypes\YearMonth.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\WorkTypes\RegularPayment.cs" />
@@ -252,11 +250,9 @@
     <Compile Include="Utils\AccountEditing\UserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\AccountFactory.cs" />
     <Compile Include="Utils\AccountEditing\UserInformator.cs" />
-    <Compile Include="Utils\BalanceEvaluating\BalanceTrio.cs" />
     <Compile Include="Utils\BalanceEvaluating\Ilya\Money.cs" />
     <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyBag.cs" />
     <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyExtensions.cs" />
-    <Compile Include="Utils\BalanceEvaluating\Ilya\TransactionExtensions.cs" />
     <Compile Include="DomainModel\Enumes\Every.cs" />
     <Compile Include="Utils\Common\IMySettings.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
@@ -278,7 +274,6 @@
     <Compile Include="Utils\DbInputOutput\FileTasks\IDbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\IDbUnzipper.cs" />
     <Compile Include="Utils\BalanceEvaluating\MoneyPair.cs" />
-    <Compile Include="Utils\BalanceEvaluating\BalancesForTransactionsCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\IFileExistenceChecker.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\ILoader.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
@@ -298,7 +293,6 @@
     <Compile Include="Utils\FileSystem\IZipFile.cs" />
     <Compile Include="Utils\FileSystem\ZipEntryAdapter.cs" />
     <Compile Include="Utils\FileSystem\ZipFileAdapter.cs" />
-    <Compile Include="Utils\BalanceEvaluating\BalanceForMonthAnalysisCalculator.cs" />
     <Compile Include="Utils\MonthAnalysis\MonthForecaster.cs" />
     <Compile Include="Controls\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
     <Compile Include="Utils\DiagramDataExtraction\CategoriesDataElement.cs" />
@@ -318,9 +312,7 @@
     <Compile Include="DomainModel\Enumes\CurrencyCodes.cs" />
     <Compile Include="DomainModel\Enumes\OperationType.cs" />
     <Compile Include="DomainModel\WorkTypes\Saldo.cs" />
-    <Compile Include="DomainModel\DbTypes\Transaction.cs" />
     <Compile Include="Utils\AccountEditing\AccountTreesGardener.cs" />
-    <Compile Include="Utils\BalanceEvaluating\AccountBalanceCalculator.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\DbBackupOrganizer.cs" />
@@ -383,7 +375,6 @@
     <Compile Include="ViewModels\Shell\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\Shell\TwoSelectorsViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TransViewModel.cs" />
-    <Compile Include="Utils\FiltersOnDomainClasses\FiltersForTransactions.cs" />
     <Compile Include="Views\Deposits\BankDepositOffersView.xaml.cs">
       <DependentUpon>BankDepositOffersView.xaml</DependentUpon>
     </Compile>
@@ -457,11 +448,9 @@
     <Compile Include="ViewModels\SingleViews\ReceiptViewModel.cs" />
     <Compile Include="ViewModels\SingleViews\ToDoViewModel.cs" />
     <Compile Include="Utils\FiltersOnDomainClasses\AccountFilter.cs" />
-    <Compile Include="ViewModels\Transactions\OperationTypesFilterListForCombo.cs" />
     <Compile Include="Utils\FiltersOnDomainClasses\OperationTypesFilter.cs" />
     <Compile Include="ViewModels\SingleViews\RatesViewModel.cs" />
     <Compile Include="ViewModels\Shell\ShellViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
     <Compile Include="Views\SingleViews\AddAndEditAccountView.xaml.cs">
       <DependentUpon>AddAndEditAccountView.xaml</DependentUpon>
     </Compile>
@@ -488,9 +477,6 @@
     </Compile>
     <Compile Include="Views\SingleViews\ToDoView.xaml.cs">
       <DependentUpon>ToDoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Transactions\TransactionView.xaml.cs">
-      <DependentUpon>TransactionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlExtensions\WhatToShow.cs" />
   </ItemGroup>
@@ -683,10 +669,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SingleViews\ToDoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Transactions\TransactionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

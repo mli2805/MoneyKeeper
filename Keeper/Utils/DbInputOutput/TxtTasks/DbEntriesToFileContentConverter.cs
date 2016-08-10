@@ -50,22 +50,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             return _db.BankDepositOffers.Select(bankDepositOffer => _dbClassesInstanceDumper.Dump(bankDepositOffer));
         }
 
-        public IEnumerable<string> ConvertTransactionsToFileContent()
-        {
-            var orderedTransactions = from transaction in _db.Transactions
-                                      orderby transaction.Timestamp
-                                      select transaction;
-
-            var prevTimestamp = new DateTime(2001, 1, 1);
-            foreach (var transaction in orderedTransactions)
-            {
-                if (transaction.Timestamp <= prevTimestamp)
-                    transaction.Timestamp = prevTimestamp.AddMinutes(1);
-                yield return _dbClassesInstanceDumper.Dump(transaction);
-                prevTimestamp = transaction.Timestamp;
-            }
-        }
-
         public IEnumerable<string> ConvertTranWithTagsToFileContent()
         {
             if (_db.TransWithTags == null) yield break; // после перехода на новые транзакции можно убрать

@@ -21,7 +21,6 @@ using Keeper.Utils.Dialogs;
 using Keeper.ViewModels.Deposits;
 using Keeper.ViewModels.Diagram;
 using Keeper.ViewModels.SingleViews;
-using Keeper.ViewModels.Transactions;
 using Keeper.ViewModels.TransWithTags;
 
 namespace Keeper.ViewModels.Shell
@@ -71,7 +70,6 @@ namespace Keeper.ViewModels.Shell
                                  RatesOxyplotDataProvider ratesOxyplotDataProvider, MySettings mySettings)
         {
             _loadResult = loadResult; // в конструкторе DbLoadResult происходит загрузка БД
-            if (_loadResult.Db.TransWithTags == null) IoC.Get<TransactionsConvertor>().Convert();
 
             _messageBoxer = messageBoxer;
             _categoriesDataExtractor = categoriesDataExtractor;
@@ -171,14 +169,17 @@ namespace Keeper.ViewModels.Shell
         public void ShowTransactionsForm()
         {
             MyMainMenuModel.Action = Actions.InputTransactions;
-            var tvm = IoC.Get<TransactionViewModel>();
-            WindowManager.ShowDialog(tvm);
-            if (tvm.IsCollectionChanged)
+
+            var trForm = new TransViewModel(_db);
+            _launchedForms.Add(trForm);
+            WindowManager.ShowDialog(trForm);
+            if (trForm.IsCollectionChanged)
             {
                 SaveDatabase();
                 IsDbChanged = true;
                 MyMainMenuModel.Action = Actions.RefreshBalanceList;
             }
+
         }
 
         public void ShowCurrencyRatesForm()
@@ -325,15 +326,6 @@ namespace Keeper.ViewModels.Shell
             //      ShowExpensePartingOxyPlotDiagram();
             //      SetIsFolders();
 
-                        var trForm = new TransViewModel(_db);
-                        _launchedForms.Add(trForm);
-                        WindowManager.ShowDialog(trForm);
-            if (trForm.IsCollectionChanged)
-            {
-                SaveDatabase();
-                IsDbChanged = true;
-                MyMainMenuModel.Action = Actions.RefreshBalanceList;
-            }
 
             //            new Denominator(_db).Denominate();
         }
@@ -376,8 +368,6 @@ namespace Keeper.ViewModels.Shell
             MyMainMenuModel.Action = Actions.PrepareExit;
             CloseAllLaunchedForms();
             var pp = _mySettings.GetCombinedSetting("DbFileFullPath");
-
-//            _db.TransWithTags = null;
 
             await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, pp));
             if (IsDbChanged) await Task.Run(() => _backuper.MakeDbTxtCopy());

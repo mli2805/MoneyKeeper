@@ -80,16 +80,6 @@ namespace Keeper.Utils.DepositProcessing
                          : DepositTransactionTypes.Явнес;
         }
 
-        private DepositTransactionTypes GetDepositOperationType(Transaction t, Account depositAccount)
-        {
-            return (t.Operation == OperationType.Доход && !t.IsExchange())
-                     ? DepositTransactionTypes.Проценты
-                     : t.Debet == depositAccount
-                         ? DepositTransactionTypes.Расход
-                         : DepositTransactionTypes.Явнес;
-        }
-
-
         private string GetDepositCounteragent(TranWithTags t)
         {
             return t.Operation == OperationType.Доход ?
@@ -98,20 +88,5 @@ namespace Keeper.Utils.DepositProcessing
                          t.MySecondAccount == null ? "" : t.MySecondAccount.Name
                          : t.MyAccount.Name;
         }
-        private string GetDepositCounteragent(Transaction t)
-        {
-            return t.Debet == _deposit.ParentAccount ? t.Credit.Name : t.Debet.Name;
-        }
-
-
-        private string GetDepositOperationComment(Transaction t)
-        {
-            if (t.Comment != "") return t.Comment;
-            if (t.Article != null) return t.Article.Name.ToLower();
-            if (t.Credit.Is("Мой кошелек")) return "снял наличными";
-            if (t.Debet.Is("БИБ Зарплатная GOLD")) return "перекинул с зарплатной";
-            return "";
-        }
-
     }
 }
