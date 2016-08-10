@@ -169,6 +169,15 @@
     <Compile Include="Controls\OneTranViewControls\TransferControl.xaml.cs">
       <DependentUpon>TransferControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DomainModel\MonthAnalysis\DepoTraffic.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\EstimatedMoney.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\EstimatedPayments.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\ExtendedBalance.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\ExtendedExpense.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\ExtendedIncomes.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\ExtendedTraffic.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\MoneyBagWithTotal.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\TranForAnalysis.cs" />
     <Compile Include="DomainModel\Trans\TrafficOnMainPage.cs" />
     <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
@@ -250,9 +259,9 @@
     <Compile Include="Utils\AccountEditing\UserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\AccountFactory.cs" />
     <Compile Include="Utils\AccountEditing\UserInformator.cs" />
-    <Compile Include="Utils\BalanceEvaluating\Ilya\Money.cs" />
-    <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyBag.cs" />
-    <Compile Include="Utils\BalanceEvaluating\Ilya\MoneyExtensions.cs" />
+    <Compile Include="DomainModel\WorkTypes\Money.cs" />
+    <Compile Include="DomainModel\WorkTypes\MoneyBag.cs" />
+    <Compile Include="DomainModel\Extentions\MoneyBagExtensions.cs" />
     <Compile Include="DomainModel\Enumes\Every.cs" />
     <Compile Include="Utils\Common\IMySettings.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbExporter.cs" />
@@ -273,7 +282,6 @@
     <Compile Include="Utils\DbInputOutput\CompositeTasks\IDbGeneralLoader.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\IDbLocator.cs" />
     <Compile Include="Utils\DbInputOutput\ZipTasks\IDbUnzipper.cs" />
-    <Compile Include="Utils\BalanceEvaluating\MoneyPair.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\IFileExistenceChecker.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\ILoader.cs" />
     <Compile Include="Utils\DbInputOutput\FileTasks\TxtFilesForDb.cs" />
@@ -300,7 +308,6 @@
     <Compile Include="Utils\DiagramOxyPlots\RatesDiagramContentModel.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesOxyplotBuilder.cs" />
     <Compile Include="Utils\DiagramOxyPlots\RatesOxyplotDataProvider.cs" />
-    <Compile Include="Utils\Rates\CurrencyConverter.cs" />
     <Compile Include="DomainModel\Extentions\DateTimeExtantions.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbGeneralLoader.cs" />
     <Compile Include="DomainModel\DbTypes\Account.cs" />
@@ -311,7 +318,7 @@
     <Compile Include="DomainModel\DbTypes\KeeperDb.cs" />
     <Compile Include="DomainModel\Enumes\CurrencyCodes.cs" />
     <Compile Include="DomainModel\Enumes\OperationType.cs" />
-    <Compile Include="DomainModel\WorkTypes\Saldo.cs" />
+    <Compile Include="DomainModel\MonthAnalysis\Saldo.cs" />
     <Compile Include="Utils\AccountEditing\AccountTreesGardener.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\DbLoadResult.cs" />
     <Compile Include="Utils\DbInputOutput\DbSerializer.cs" />
@@ -339,7 +346,6 @@
     <Compile Include="Utils\FileSystem\IFile.cs" />
     <Compile Include="Utils\FileSystem\IFileSystem.cs" />
     <Compile Include="DomainModel\Extentions\FunctionsWithEvery.cs" />
-    <Compile Include="Utils\Rates\ICurrencyConverter.cs" />
     <Compile Include="Utils\MEF\ContainerBuilder.cs" />
     <Compile Include="Utils\MEF\ContainerConfigurationExtensions.cs" />
     <Compile Include="Utils\MEF\InstanceDescriptorProvider.cs" />
@@ -352,7 +358,6 @@
     <Compile Include="DomainModel\WorkTypes\DateProcentPoint.cs" />
     <Compile Include="Utils\DiagramMy\DiagramLegendItem.cs" />
     <Compile Include="Utils\DepositProcessing\EvaluationsToExcelExporter.cs" />
-    <Compile Include="Utils\Rates\RateDefiner.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositOffersViewModel.cs" />
     <Compile Include="ViewModels\Deposits\BankDepositRatesAndRulesViewModel.cs" />
     <Compile Include="ViewModels\Diagram\DiagramOxyplotViewModel.cs" />

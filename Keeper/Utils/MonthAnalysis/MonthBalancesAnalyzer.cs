@@ -1,10 +1,10 @@
 using System;
 using System.Composition;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
-using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis

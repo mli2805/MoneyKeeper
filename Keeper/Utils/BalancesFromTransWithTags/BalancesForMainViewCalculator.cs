@@ -5,9 +5,9 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.BalancesFromTransWithTags

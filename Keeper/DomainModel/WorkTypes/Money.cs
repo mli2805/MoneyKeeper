@@ -1,6 +1,6 @@
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.Utils.BalanceEvaluating.Ilya
+namespace Keeper.DomainModel.WorkTypes
 {
     public sealed class Money
     {
