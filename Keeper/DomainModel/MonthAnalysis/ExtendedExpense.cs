@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Keeper.Utils.DiagramDataExtraction;
 
-namespace Keeper.DomainModel.WorkTypes
+namespace Keeper.DomainModel.MonthAnalysis
 {
     public class ExtendedExpense
     {

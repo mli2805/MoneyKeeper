@@ -1,4 +1,6 @@
-namespace Keeper.DomainModel.WorkTypes
+using Keeper.DomainModel.WorkTypes;
+
+namespace Keeper.DomainModel.MonthAnalysis
 {
     public class MoneyBagWithTotal
     {

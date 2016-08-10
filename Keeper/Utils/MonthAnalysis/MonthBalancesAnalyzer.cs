@@ -2,6 +2,7 @@ using System;
 using System.Composition;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Extentions;
+using Keeper.DomainModel.MonthAnalysis;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;

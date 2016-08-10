@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.MonthAnalysis;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Models;
 using Keeper.Utils.Rates;

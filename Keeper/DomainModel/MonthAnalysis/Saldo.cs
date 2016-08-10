@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Keeper.DomainModel.DbTypes;
 
-namespace Keeper.DomainModel.WorkTypes
+namespace Keeper.DomainModel.MonthAnalysis
 {
     public class Saldo
     {

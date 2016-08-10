@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Keeper.Controls.OneTranViewControls.SubControls
+namespace Keeper.Controls.OneTranViewControls.SubControls.AmountInputControl
 {
     /// <summary>
     /// Interaction logic for AmountInputControl.xaml

@@ -5,6 +5,7 @@ using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Extentions;
+using Keeper.DomainModel.MonthAnalysis;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;

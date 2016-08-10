@@ -5,7 +5,7 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.Controls.OneTranViewControls.SubControls
+namespace Keeper.Controls.OneTranViewControls.SubControls.AmountInputControl
 {
     class AmountInputControlVm : PropertyChangedBase
     {

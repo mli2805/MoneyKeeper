@@ -2,7 +2,7 @@ using System;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 
-namespace Keeper.DomainModel.WorkTypes
+namespace Keeper.DomainModel.MonthAnalysis
 {
     public class TranForAnalysis
     {
