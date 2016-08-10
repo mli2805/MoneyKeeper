@@ -4,7 +4,6 @@ using System.Composition;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.BalanceEvaluating.Ilya;
 
 namespace Keeper.Utils.DiagramDataExtraction
 {

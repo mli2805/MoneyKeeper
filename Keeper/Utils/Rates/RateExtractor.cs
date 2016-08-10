@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.Utils.BalanceEvaluating.Ilya;
+using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.Utils.Rates
 {

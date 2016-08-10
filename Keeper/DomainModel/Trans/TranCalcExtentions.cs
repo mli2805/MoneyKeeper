@@ -2,7 +2,6 @@
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.BalanceEvaluating.Ilya;
 
 namespace Keeper.DomainModel.Trans
 {
