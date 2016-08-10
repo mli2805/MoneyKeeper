@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.DomainModel.Trans;
-using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.BalanceEvaluating.Ilya;
 using Keeper.Utils.DiagramDataExtraction;
 

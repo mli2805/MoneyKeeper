@@ -6,7 +6,6 @@ using System.Linq;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.BalanceEvaluating;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.MonthAnalysis
