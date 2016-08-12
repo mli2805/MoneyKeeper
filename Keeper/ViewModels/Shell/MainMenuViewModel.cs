@@ -176,9 +176,8 @@ namespace Keeper.ViewModels.Shell
             {
                 SaveDatabase();
                 IsDbChanged = true;
-                MyMainMenuModel.Action = Actions.RefreshBalanceList;
             }
-
+            MyMainMenuModel.Action = Actions.Idle;
         }
 
         public void ShowCurrencyRatesForm()
@@ -191,7 +190,7 @@ namespace Keeper.ViewModels.Shell
                 SaveDatabase();
                 IsDbChanged = true;
             }
-            MyMainMenuModel.Action = Actions.RefreshBalanceList;
+            MyMainMenuModel.Action = Actions.Idle;
         }
 
         public void ShowOfficialRatesForm()
@@ -204,7 +203,7 @@ namespace Keeper.ViewModels.Shell
                 SaveDatabase();
                 IsDbChanged = true;
             }
-            MyMainMenuModel.Action = Actions.RefreshBalanceList;
+            MyMainMenuModel.Action = Actions.Idle;
         }
 
         public void ShowArticlesAssociationsForm()
