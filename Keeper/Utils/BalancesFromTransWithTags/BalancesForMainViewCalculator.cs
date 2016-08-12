@@ -140,7 +140,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                     }).OrderBy(t => t.Timestamp).Select(t => t.ToString()).ToList();
         }
 
-        private List<TrafficOnMainPage> GetTrafficWhereMyAccountIsFirst(Account account, Period period)
+        private List<TrafficOnMainPage> GetTrafficWhereMyAccountIsFirstOrOnly(Account account, Period period)
         {
             return (from
                 t in _db.TransWithTags
@@ -171,25 +171,25 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                       t.MySecondAccount != null && t.MySecondAccount.Is(account.Name)
                 join
                     r in _db.CurrencyRates
-                    on new { t.Timestamp.Date, Currency = t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault() } equals
+                    on new { t.Timestamp.Date, Currency = t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault() } equals
                     new { r.BankDay.Date, r.Currency } into g
                 from rate in g.DefaultIfEmpty()
                 select new TrafficOnMainPage()
                 {
                     Timestamp = t.Timestamp,
-                    Amount = t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
-                    Currency = t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault(),
+                    Amount = t.AmountForAccount(account, t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
+                    Currency = t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault(),
                     AmountInUsd =
                         rate != null
-                            ? t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()) / (decimal)rate.Rate
-                            : t.AmountForAccount(account, t.CurrencyInReturn == null ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
+                            ? t.AmountForAccount(account, t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()) / (decimal)rate.Rate
+                            : t.AmountForAccount(account, t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
                     Comment = t.Comment
                 };
         }
 
         private List<string> GetTrafficListForAccount(Account account, Period period)
         {
-            var transWithRates1 = GetTrafficWhereMyAccountIsFirst(account, period);
+            var transWithRates1 = GetTrafficWhereMyAccountIsFirstOrOnly(account, period);
             var transWithRates2 = GetTrafficWhereMyAccountIsSecond(account, period);
             transWithRates1.AddRange(transWithRates2);
             return transWithRates1.OrderBy(t => t.Timestamp).Select(t => t.ToString()).ToList();
