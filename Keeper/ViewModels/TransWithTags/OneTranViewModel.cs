@@ -72,6 +72,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void ValidateTranInWorkFieldsWithNewOperationType()
         {
+            TranInWork.Tags.Clear();
             if (TranInWork.MySecondAccount == null)
             {
                 if (TranInWork.Operation == OperationType.Перенос)
