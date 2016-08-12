@@ -79,8 +79,8 @@ namespace Keeper.ViewModels.TransWithTags
         {
             if (transactionInWork.Amount.Equals(0) || transactionInWork.AmountInReturn.Equals(0)) return "";
             return transactionInWork.Amount > transactionInWork.AmountInReturn 
-                ? $"Курс обмена {transactionInWork.Amount / transactionInWork.AmountInReturn : 0,0.#####}" 
-                : $"Курс обмена {transactionInWork.AmountInReturn / transactionInWork.Amount : 0,0.#####}";
+                ? $"Курс обмена {transactionInWork.Amount / transactionInWork.AmountInReturn : #,0.00###} {transactionInWork.Currency.ToString().ToLower()}/{transactionInWork.CurrencyInReturn.ToString().ToLower()}" 
+                : $"Курс обмена {transactionInWork.AmountInReturn / transactionInWork.Amount : #,0.00###} {transactionInWork.CurrencyInReturn.ToString().ToLower()}/{transactionInWork.Currency.ToString().ToLower()}";
         }
     }
 }
