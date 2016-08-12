@@ -105,20 +105,20 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                 {
                     balanceList.Add("  " + str);
                 }
+               return _rateExtractor.GetUsdEquivalent(moneyBag, period.Finish);
             }
             else
             {
-                foreach (var str in GetTrafficListForTag(selectedAccount, period))
+                var traffic = GetTrafficListForTag(selectedAccount, period);
+                foreach (var tr in traffic)
                 {
-                    balanceList.Add("  " + str);
+                    balanceList.Add("  " + tr);
                 }
-
+                return traffic.Sum(t => t.AmountInUsd);
             }
-
-            return _rateExtractor.GetUsdEquivalent(moneyBag, period.Finish);
         }
 
-        private List<string> GetTrafficListForTag(Account tag, Period period)
+        private List<TrafficOnMainPage> GetTrafficListForTag(Account tag, Period period)
         {
             return (from t in _db.TransWithTags
                     where period.ContainsAndTimeWasChecked(t.Timestamp) && t.Tags.Contains(tag)
@@ -137,7 +137,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                                                   ? t.AmountForTag(tag, t.Currency) / (decimal)rate.Rate
                                                   : t.AmountForTag(tag, t.Currency),
                         Comment = t.Comment
-                    }).OrderBy(t => t.Timestamp).Select(t => t.ToString()).ToList();
+                    }).OrderBy(t => t.Timestamp).ToList();
         }
 
         private List<TrafficOnMainPage> GetTrafficWhereMyAccountIsFirstOrOnly(Account account, Period period)
