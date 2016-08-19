@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Keeper.DomainModel.MonthAnalysis;
-using Keeper.DomainModel.WorkTypes;
 using Keeper.Models;
 using Keeper.Utils.MonthAnalysis;
 

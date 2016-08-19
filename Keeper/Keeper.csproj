@@ -181,6 +181,7 @@
     <Compile Include="DomainModel\Trans\TrafficOnMainPage.cs" />
     <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl\DoubleToStringConverter.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
@@ -243,6 +244,13 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\CommonKeeper\Templater.cs" />
     <Compile Include="DomainModel\WorkTypes\AccName.cs" />
+    <Compile Include="ViewModels\Shell\MainMenuActions\MainMenuAction.cs" />
+    <Compile Include="ViewModels\Shell\MainMenuActions\MainMenuExecutor.cs" />
+    <Compile Include="ViewModels\Shell\MainMenuActions\MenuAboutExecutor.cs" />
+    <Compile Include="ViewModels\Shell\MainMenuActions\MenuDiagramExecutor.cs" />
+    <Compile Include="ViewModels\Shell\MainMenuActions\MenuFileExecutor.cs" />
+    <Compile Include="ViewModels\Shell\MainMenuActions\MenuFormsExecutor.cs" />
+    <Compile Include="ViewModels\Shell\MainMenuActions\MenuToolsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
     <Compile Include="ViewModels\TransWithTags\TransModel.cs" />
@@ -253,7 +261,6 @@
     <Compile Include="DomainModel\WorkTypes\YearMonth.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\WorkTypes\RegularPayment.cs" />
-    <Compile Include="Models\Shell\MainMenuModel.cs" />
     <Compile Include="Models\Shell\StatusBarModel.cs" />
     <Compile Include="Utils\AccountEditing\AccountTreeStraightener.cs" />
     <Compile Include="Utils\AccountEditing\UserEquirer.cs" />
