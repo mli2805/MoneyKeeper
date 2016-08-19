@@ -26,7 +26,7 @@
                  Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="40" TextWrapping="WrapWithOverflow"/>
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,20,10">
-                <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent"/>
+                <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent" IsDefault="True"/>
                 <Button Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent" IsCancel="True"/>
             </StackPanel>
         </StackPanel>

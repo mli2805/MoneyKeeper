@@ -79,8 +79,10 @@ namespace Keeper.ViewModels.TransWithTags
             if (!result.HasValue || !result.Value) return false;
 
             var tran = oneTranForm.GetTran().Clone();
-            _model.Rows.Add(new TranWrappedForDatagrid() { Tran = tran });
+            var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
+            _model.Rows.Add(tranWrappedForDatagrid);
             _model.Db.TransWithTags.Add(tran);
+            _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
             return true;
         }
 
