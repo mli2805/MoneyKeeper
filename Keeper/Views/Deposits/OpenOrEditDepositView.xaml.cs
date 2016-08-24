@@ -18,9 +18,5 @@ namespace Keeper.Views.Deposits
       throw new NotImplementedException();
     }
 
-    private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
-    {
-
-    }
   }
 }

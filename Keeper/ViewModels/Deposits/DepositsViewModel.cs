@@ -33,7 +33,7 @@ namespace Keeper.ViewModels.Deposits
         public Style MyTitleStyle { get; set; }
 
         [ImportingConstructor]
-        public DepositsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor,
+        public DepositsViewModel(KeeperDb db, RateExtractor rateExtractor,
                                  DepositCalculationAggregator depositCalculatorAggregator, 
                                  OldRatesDiagramDataExtractor oldRatesDiagramDataExtractor)
         {
@@ -160,7 +160,7 @@ namespace Keeper.ViewModels.Deposits
                 if (yearTotal != 0)
                     YearsList.Add(
                       new ChartPoint(
-                        String.Format("{0}\n {1:#,0}$/мес", i, yearTotal / 12),
+                          $"{i}\n {yearTotal/12:#,0}$/мес",
                         (int)yearTotal));
             }
         }
@@ -187,14 +187,14 @@ namespace Keeper.ViewModels.Deposits
                 if (currency == CurrencyCodes.USD)
                     TotalsList.Add(
                       new ChartPoint(
-                        String.Format("{0:#,0} {1}", totalBalances[currency], currency),
+                          $"{totalBalances[currency]:#,0} {currency}",
                         (int)totalBalances[currency]));
                 else
                 {
                     var inUsd = totalBalances[currency] / (decimal)_rateExtractor.GetLastRate(currency);
                     TotalsList.Add(
                       new ChartPoint(
-                        String.Format("{0:#,0} {1}", totalBalances[currency], currency),
+                          $"{totalBalances[currency]:#,0} {currency}",
                         (int)Math.Round(inUsd)));
                 }
             }

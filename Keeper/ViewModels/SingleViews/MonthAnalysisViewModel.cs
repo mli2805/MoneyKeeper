@@ -27,11 +27,12 @@ namespace Keeper.ViewModels.SingleViews
                 _isMonthEnded = DateTime.Today.Year > _startDate.Date.Year ||
                    (DateTime.Today.Year == _startDate.Date.Year && DateTime.Today.Month > _startDate.Date.Month);
                 ForecastListVisibility = !_isMonthEnded ? Visibility.Visible : Visibility.Collapsed;
-                MonthAnalisysViewCaption = String.Format("Идет анализ месяца [{0}]...", String.Format("{0:MMMM yyyy}", StartDate));
+                MonthAnalisysViewCaption =
+                    $"Идет анализ месяца [{String.Format($"{StartDate:MMMM yyyy}", StartDate)}]...";
                 if (DateTime.Today.Year == _startDate.Date.Year && DateTime.Today.Month == _startDate.Date.Month) MonthAnalisysViewCaption += " - текущий период!";
                 NotifyOfPropertyChange(() => MonthAnalisysViewCaption);
                 MonthSaldo = _monthAnalyzer.AnalizeMonth(StartDate);
-                MonthAnalisysViewCaption = String.Format("[{0}]", String.Format("{0:MMMM yyyy}", StartDate));
+                MonthAnalisysViewCaption = $"[{String.Format($"{StartDate:MMMM yyyy}", StartDate)}]";
                 NotifyOfPropertyChange(() => MonthAnalisysViewCaption);
             }
         }

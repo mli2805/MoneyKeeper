@@ -15,28 +15,6 @@ namespace Keeper.DomainModel.Extentions
             return false;
         }
 
-        public static DateTime GetLastDayOfTheSamePeriod(DateTime date, Every period)
-        {
-            if (period == Every.Day) return date;
-            if (period == Every.Week)
-            {
-                while (date.DayOfWeek != DayOfWeek.Sunday) date = date.AddDays(1);
-                return date;
-            }
-            if (period == Every.Month)
-            {
-                date = date.AddMonths(1);
-                return new DateTime(date.Year, date.Month, 1).AddDays(-1);
-            }
-            if (period == Every.Quarter)
-            {
-                date = date.AddMonths(3 - (date.Month - 1) % 3);
-                return new DateTime(date.Year, date.Month, 1).AddDays(-1);
-            }
-            if (period == Every.Year) return new DateTime(date.Year + 1, 12, 31);
-            throw new Exception("Такого периода не бывает!");
-        }
-
         private static int WeekNumber(DateTime date)
         {
             int weekNumber = date.DayOfYear / 7;

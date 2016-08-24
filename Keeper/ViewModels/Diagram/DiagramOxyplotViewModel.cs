@@ -134,9 +134,10 @@ namespace Keeper.ViewModels.Diagram
             var sum = pieData.Sum(a => a.Amount);
             foreach (var element in pieData)
             {
-                result.Add(string.Format("{0} - {1}%  (${2:0,0})", element.Category, Math.Round(element.Amount/sum*100,0), Math.Round(element.Amount,0)));
+                result.Add(
+                    $"{element.Category} - {Math.Round(element.Amount/sum*100, 0)}%  (${Math.Round(element.Amount, 0):0,0})");
             }
-            result.Add(string.Format("Всего  ${0:0,0}", Math.Round(sum)));
+            result.Add($"Всего  ${Math.Round(sum):0,0}");
             return result;
         }
 

@@ -27,7 +27,7 @@ namespace Keeper.DomainModel.WorkTypes
 
         public string ToStringOnlyDates()
         {
-            return string.Format("{0:d} - {1:d}", Start.Date, Finish.Date);
+            return $"{Start.Date:d} - {Finish.Date:d}";
         }
 
         #region Override == , != , Equals and GetHashCode

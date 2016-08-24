@@ -35,8 +35,8 @@ namespace Keeper.Utils.DepositProcessing
                                                       deposit.CalculationData.CurrentBalance /
                                                       (decimal)_rateExtractor.GetLastRate(deposit.DepositOffer.Currency),
                                                       deposit.DepositOffer.Currency.ToString().ToLower())
-                                      : String.Format("{0:#,0.00} usd", deposit.CalculationData.CurrentBalance);
-                reportHeader.Add(String.Format("Остаток на {0:dd/MM/yyyy} составляет {1} \n", DateTime.Today, balanceString));
+                                      : $"{deposit.CalculationData.CurrentBalance:#,0.00} usd";
+                reportHeader.Add($"Остаток на {DateTime.Today:dd/MM/yyyy} составляет {balanceString} \n");
             }
 
             reportHeader.Add("    Дата             До операции               Приход                Расход                 После     Примечание");
@@ -93,12 +93,11 @@ namespace Keeper.Utils.DepositProcessing
             var reportFooter = new ObservableCollection<string>();
 
             if (deposit.DepositOffer.Currency != CurrencyCodes.USD)
-                reportFooter.Add(String.Format("Внесено  {0:#,0.00}$  причислено проц  {1:#,0.00}$     девальвация тела  {2:#,0.00}$     профит с учетом девальв. {3:#,0.00}$",
-                    deposit.CalculationData.TotalMyInsInUsd, deposit.CalculationData.TotalPercentInUsd, 
-                    deposit.CalculationData.CurrentDevaluationInUsd, deposit.CalculationData.CurrentProfitInUsd));
+                reportFooter.Add(
+                    $"Внесено  {deposit.CalculationData.TotalMyInsInUsd:#,0.00}$  причислено проц  {deposit.CalculationData.TotalPercentInUsd:#,0.00}$     девальвация тела  {deposit.CalculationData.CurrentDevaluationInUsd:#,0.00}$     профит с учетом девальв. {deposit.CalculationData.CurrentProfitInUsd:#,0.00}$");
             else
-                reportFooter.Add(String.Format("Внесено  {0:#,0.00} usd    причислено процентов {1:#,0.00} usd",
-                    deposit.CalculationData.TotalMyInsInUsd, deposit.CalculationData.TotalPercentInUsd));
+                reportFooter.Add(
+                    $"Внесено  {deposit.CalculationData.TotalMyInsInUsd:#,0.00} usd    причислено процентов {deposit.CalculationData.TotalPercentInUsd:#,0.00} usd");
 
 //            if (deposit.CalculationData.CurrentBalance != 0) ReportEstimations(deposit, reportFooter);
             if (deposit.CalculationData.State != DepositStates.Закрыт 
@@ -109,38 +108,28 @@ namespace Keeper.Utils.DepositProcessing
 
         private void ReportEstimations(Deposit deposit, ObservableCollection<string> reportFooter)
         {
-            reportFooter.Add(String.Format("\nВ этом месяце ожидаются проценты {0}", ProcentPredictionRepresentation(
-                deposit.CalculationData.Estimations.ProcentsInThisMonth, 
-                deposit.DepositOffer.Currency, 
-                deposit.CalculationData.DailyTable.First
-                 (l => l.Date.Date == deposit.CalculationData.Estimations.PeriodForThisMonthPayment.Finish.Date).CurrencyRate,
-                deposit.CalculationData.Estimations.PeriodForThisMonthPayment)));
-            reportFooter.Add(String.Format("Всего ожидается процентов {0}", ProcentPredictionRepresentation(
-                deposit.CalculationData.Estimations.ProcentsUpToFinish,
-                deposit.DepositOffer.Currency,
-                deposit.CalculationData.DailyTable.Last().CurrencyRate,
-                deposit.CalculationData.Estimations.PeriodForUpToEndPayment)));
+            reportFooter.Add(
+                $"\nВ этом месяце ожидаются проценты {ProcentPredictionRepresentation(deposit.CalculationData.Estimations.ProcentsInThisMonth, deposit.DepositOffer.Currency, deposit.CalculationData.DailyTable.First(l => l.Date.Date == deposit.CalculationData.Estimations.PeriodForThisMonthPayment.Finish.Date).CurrencyRate, deposit.CalculationData.Estimations.PeriodForThisMonthPayment)}");
+            reportFooter.Add(
+                $"Всего ожидается процентов {ProcentPredictionRepresentation(deposit.CalculationData.Estimations.ProcentsUpToFinish, deposit.DepositOffer.Currency, deposit.CalculationData.DailyTable.Last().CurrencyRate, deposit.CalculationData.Estimations.PeriodForUpToEndPayment)}");
 
             if (deposit.DepositOffer.Currency == CurrencyCodes.USD)
-                reportFooter.Add(String.Format("\nИтого прогноз по депозиту {0:#,0.00} usd",
-                    deposit.CalculationData.Estimations.ProfitInUsd));
+                reportFooter.Add(
+                    $"\nИтого прогноз по депозиту {deposit.CalculationData.Estimations.ProfitInUsd:#,0.00} usd");
             else
             {
                 reportFooter.Add(String.Format("\nИтоговый прогноз: "));
-                reportFooter.Add(String.Format("    Всего процентов {0:#,0.00}$     девальвация тела  {1:#,0.00}$     профит с учетом девальвации {2:#,0.00}$", 
-                    deposit.CalculationData.TotalPercentInUsd + deposit.CalculationData.Estimations.ProcentsUpToFinish / deposit.CalculationData.DailyTable.Last().CurrencyRate,
-                    deposit.CalculationData.CurrentDevaluationInUsd + deposit.CalculationData.Estimations.DevaluationInUsd,
-                    deposit.CalculationData.Estimations.ProfitInUsd
-                    ));
+                reportFooter.Add(
+                    $"    Всего процентов {deposit.CalculationData.TotalPercentInUsd + deposit.CalculationData.Estimations.ProcentsUpToFinish/deposit.CalculationData.DailyTable.Last().CurrencyRate:#,0.00}$     девальвация тела  {deposit.CalculationData.CurrentDevaluationInUsd + deposit.CalculationData.Estimations.DevaluationInUsd:#,0.00}$     профит с учетом девальвации {deposit.CalculationData.Estimations.ProfitInUsd:#,0.00}$");
             }
         }
 
         private static string ProcentPredictionRepresentation(decimal amount, CurrencyCodes currency, decimal rate, Period period)
         {
             if (amount == 0)
-                return currency == CurrencyCodes.USD ? "0 usd" : String.Format("0 {0}    ($0)", currency.ToString().ToLower());
+                return currency == CurrencyCodes.USD ? "0 usd" : $"0 {currency.ToString().ToLower()}    ($0)";
 
-            if (currency == CurrencyCodes.USD) return String.Format("(за период {0})  {1:#,0.00} usd", period.ToStringOnlyDates(), amount);
+            if (currency == CurrencyCodes.USD) return $"(за период {period.ToStringOnlyDates()})  {amount:#,0.00} usd";
             return String.Format("(за период {4})  {0:#,0} {1}   (по курсу {2} = ${3:#,0})", 
                  amount, currency.ToString().ToLower(), (int)rate, amount / rate, period.ToStringOnlyDates());
         }

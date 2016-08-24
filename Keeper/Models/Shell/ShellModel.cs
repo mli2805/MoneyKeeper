@@ -64,6 +64,8 @@ namespace Keeper.Models.Shell
         public TwoSelectorsModel MyTwoSelectorsModel { get; set; }
         public StatusBarModel MyStatusBarModel { get; set; }
 
+        public readonly MainMenu MainMenuDictionary;
+
         [ImportingConstructor]
         public ShellModel(BalancesForMainViewCalculator balancesForMainViewCalculator)
         {
@@ -75,60 +77,17 @@ namespace Keeper.Models.Shell
             MyTwoSelectorsModel = new TwoSelectorsModel();
             MyTwoSelectorsModel.PropertyChanged += MyTwoSelectorsModelPropertyChanged;
             MyStatusBarModel = new StatusBarModel();
+
+            MainMenuDictionary = new MainMenu();
+            MainMenuDictionary.Init();
         }
 
         public void CurrentActionOnChanged(MainMenuAction action)
         {
-            switch (action)
-            {
-                case MainMenuAction.DoNothing:
-                    MyStatusBarModel.Item0 = "Готово";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
-                    break;
-
-                // 100
-                case MainMenuAction.SaveDatabase:
-                    MyStatusBarModel.Item0 = "Сохранение данных на диск...";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
-                    break;
-                case MainMenuAction.LoadDatabase:
-                    MyStatusBarModel.Item0 = "Загрузка данных с диска...";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
-                    break;
-                case MainMenuAction.ClearDatabase:
-                    MyStatusBarModel.Item0 = "Очистка БД...";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
-                    break;
-                case MainMenuAction.RemoveExtraBackups:
-                    MyStatusBarModel.Item0 = "Удаление идентичных резервных копий...";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
-                    break;
-
-                // 200
-                case MainMenuAction.ShowTransactionsForm:
-                    MyStatusBarModel.Item0 = "Ввод транзакций";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
-                    break;
-                case MainMenuAction.ShowCurrencyRatesForm:
-                    MyStatusBarModel.Item0 = "Ввод курсов валют";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
-                    break;
-                case MainMenuAction.ShowArticlesAssociationsForm:
-                    MyStatusBarModel.Item0 = "Ввод ассоциаций";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
-                    break;
-                case MainMenuAction.ShowMonthAnalysisForm:
-                    MyStatusBarModel.Item0 = "Анализ месяца";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Collapsed;
-                    break;
-
-                // 500
-                case MainMenuAction.QuitApplication:
-                    MyStatusBarModel.Item0 = "Идет завершение программы...";
-                    MyStatusBarModel.ProgressBarVisibility = Visibility.Visible;
-                    break;
-                default: break;
-            }
+            MyStatusBarModel.Item0 = MainMenuDictionary.Actions[action].StatusBarMessage;
+            MyStatusBarModel.ProgressBarVisibility = MainMenuDictionary.Actions[action].IsAsync
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         public void CloseAllLaunchedForms()

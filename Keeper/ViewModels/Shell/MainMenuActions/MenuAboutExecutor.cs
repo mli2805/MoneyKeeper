@@ -1,5 +1,4 @@
 ﻿using System.Composition;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.Models.Shell;
@@ -38,22 +37,20 @@ namespace Keeper.ViewModels.Shell.MainMenuActions
         {
 
         }
-        private void QuitApplication()
+        private  void QuitApplication()
         {
-            MadeExitPreparationsAsynchronously();
+            //            _shellModel.CloseAllLaunchedForms();
+            SaveData();
+            _shellModel.IsExitPreparationDone = true;
         }
 
-        public async void MadeExitPreparationsAsynchronously()
+        private void SaveData()
         {
-//            _shellModel.CloseAllLaunchedForms();
             var pp = _mySettings.GetCombinedSetting("DbFileFullPath");
+            new DbSerializer().EncryptAndSerialize(_db, pp);
 
-            await Task.Run(() => new DbSerializer().EncryptAndSerialize(_db, pp));
             if (_shellModel.IsDbChanged)
-                await Task.Run(() => IoC.Get<DbBackuper>().MakeDbTxtCopy());
-            Task.WaitAll();
-            _shellModel.CurrentAction = MainMenuAction.DoNothing;
-            _shellModel.IsExitPreparationDone = true;
+                IoC.Get<DbBackuper>().MakeDbTxtCopy();
         }
 
 

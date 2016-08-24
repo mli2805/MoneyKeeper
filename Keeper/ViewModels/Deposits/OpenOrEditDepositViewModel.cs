@@ -134,11 +134,8 @@ namespace Keeper.ViewModels.Deposits
             var rate = DepositInWork.DepositOffer.RateLines == null || DepositInWork.DepositOffer.RateLines.LastOrDefault() == null
                          ? 0
                          : DepositInWork.DepositOffer.RateLines.Last().Rate;
-            Junction = string.Format("{0} {1} {2} - {3} {4:0.#}%",
-               DepositInWork.DepositOffer.BankAccount.Name, DepositInWork.DepositOffer.DepositTitle,
-               DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture),
-               DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture),
-               rate);
+            Junction =
+                $"{DepositInWork.DepositOffer.BankAccount.Name} {DepositInWork.DepositOffer.DepositTitle} {DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture)} - {DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture)} {rate:0.#}%";
         }
 
         public void FillDepositRatesTable()

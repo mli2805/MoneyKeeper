@@ -3,6 +3,7 @@ using System.Composition;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Windows;
 using Keeper.DomainModel.DbTypes;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
@@ -19,7 +20,6 @@ namespace Keeper.Utils.DbInputOutput
 
             var ss = filename.Split('.');
             var backupFilename = ss[0] + ".bac";
-            //            if (File.Exists(backupFilename)) File.Delete(backupFilename);
             File.Copy(filename, backupFilename, true);
         }
 
@@ -47,7 +47,6 @@ namespace Keeper.Utils.DbInputOutput
                     binaryFormatter.Serialize(cryptoStream, db);
                 }
             }
-
         }
 
         public KeeperDb DecryptAndDeserialize(string filename)

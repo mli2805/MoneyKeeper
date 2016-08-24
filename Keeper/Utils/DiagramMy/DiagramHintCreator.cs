@@ -51,7 +51,7 @@ namespace Keeper.Utils.DiagramMy
       foreach (var series in _allDiagramData.Series)
       {
         if (!thisBar.Value[i].Equals(0))
-          content += string.Format("\n  {0} = {1:0} usd  ", series.Name, thisBar.Value[i]);
+          content += $"\n  {series.Name} = {thisBar.Value[i]:0} usd  ";
         i++;
       }
 

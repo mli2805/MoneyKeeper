@@ -66,7 +66,7 @@ namespace Keeper.ViewModels.Shell.MainMenuActions
 
         public bool ShowMonthAnalysisForm()
         {
-            WindowManager.ShowDialog(IoC.Get<MonthAnalysisViewModel>());
+            WindowManager.ShowWindow(IoC.Get<MonthAnalysisViewModel>());
             return false;
         }
 

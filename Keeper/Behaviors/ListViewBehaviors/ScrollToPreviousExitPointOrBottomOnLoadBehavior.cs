@@ -19,11 +19,6 @@ namespace Keeper.Behaviors.ListViewBehaviors
 //            AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
         }
 
-        void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ScrollIntoViewSelectedItem();
-        }
-
         /// <summary>
         ///  действия, которые я хочу чтобы выполнились
         /// </summary>

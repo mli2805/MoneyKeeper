@@ -46,6 +46,7 @@ namespace Keeper.ViewModels.Shell.MainMenuActions
                 default:
                     break;
             }
+
         }
 
     }

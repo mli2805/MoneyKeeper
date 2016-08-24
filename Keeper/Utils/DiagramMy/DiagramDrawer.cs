@@ -196,7 +196,7 @@ namespace Keeper.Utils.DiagramMy
       for (var i = 0; i <= cd.Divisions; i++)
       {
         var markX = flag == Dock.Left ? cd.LeftMargin - 40 : cd.ImageWidth - cd.RightMargin + 15;
-        var mark = String.Format("{0} ", (i + cd.FromDivision) * cd.AccurateValuesPerDivision);
+        var mark = $"{(i + cd.FromDivision)*cd.AccurateValuesPerDivision} ";
         var formattedText = new FormattedText(mark, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                               new Typeface("Times New Roman"), 12, Brushes.Black);
         var geometry =
