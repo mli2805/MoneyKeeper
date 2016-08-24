@@ -32,10 +32,10 @@ namespace Keeper.Utils
             var maxDate = DateTime.Parse(maxDateString, CultureInfo.CreateSpecificCulture("ru-Ru"));
             if (maxDate < date) return null;
                 
-            return ParsePage(webData, date);
+            return ParsePage(webData);
         }
 
-        private static Dictionary<CurrencyCodes, double> ParsePage(string webData, DateTime date)
+        private static Dictionary<CurrencyCodes, double> ParsePage(string webData)
         {
             var result = new Dictionary<CurrencyCodes, double>();
 

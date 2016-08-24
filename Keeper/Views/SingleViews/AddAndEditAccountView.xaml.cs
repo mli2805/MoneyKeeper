@@ -18,9 +18,5 @@ namespace Keeper.Views.SingleViews
       throw new NotImplementedException();
     }
 
-    private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
-    {
-
-    }
   }
 }

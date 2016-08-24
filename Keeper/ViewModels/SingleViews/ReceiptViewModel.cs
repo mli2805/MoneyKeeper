@@ -124,14 +124,13 @@ namespace Keeper.ViewModels.SingleViews
 
     private void BuildReceiptFigure()
     {
-      ReceiptFigure = String.Format("                {0:dd-MM-yyyy}  {1}\n", ReceiptDate, Acceptor);
+      ReceiptFigure = $"                {ReceiptDate:dd-MM-yyyy}  {Acceptor}\n";
       foreach (var tuple in Expense)
       {
-        ReceiptFigure += String.Format("\n {0}   {1:#,#} {2}  {3}",
-                           tuple.Item2.Name, tuple.Item1, Currency.ToString().ToLower(), tuple.Item3);
+        ReceiptFigure += $"\n {tuple.Item2.Name}   {tuple.Item1:#,#} {Currency.ToString().ToLower()}  {tuple.Item3}";
       }
-      if (PartialTotal != 0) ReceiptFigure += String.Format("\n\n               Итого {0:#,0} {1}", 
-                                                            PartialTotal, Currency.ToString().ToLower());
+      if (PartialTotal != 0) ReceiptFigure +=
+          $"\n\n               Итого {PartialTotal:#,0} {Currency.ToString().ToLower()}";
     }
 
     private void ChangeAllProperties()

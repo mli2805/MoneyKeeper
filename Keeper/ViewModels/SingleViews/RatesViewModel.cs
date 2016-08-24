@@ -170,7 +170,6 @@ namespace Keeper.ViewModels.SingleViews
             view.Filter += OnFilter;
             view.SortDescriptions.Add(new SortDescription("BankDay", ListSortDirection.Ascending));
 
-            IsInInputMode = false;
         }
 
         protected override void OnViewLoaded(object view)
@@ -179,6 +178,7 @@ namespace Keeper.ViewModels.SingleViews
             //		  SelectedFilter = FilterList.First(f => f.Currency == CurrencyCodes.BYR); just for test
 
             Rows.CollectionChanged += Rows_CollectionChanged;
+            IsInInputMode = false;
         }
 
         void Rows_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

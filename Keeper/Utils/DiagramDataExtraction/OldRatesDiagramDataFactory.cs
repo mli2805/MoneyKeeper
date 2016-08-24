@@ -30,7 +30,7 @@ namespace Keeper.Utils.DiagramDataExtraction
                     var di = new Dictionary<DateTime, decimal>();
                     foreach (var currencyRate in ddd)
                     {
-                        if (di.ContainsKey(currencyRate.BankDay.Date)) MessageBox.Show(string.Format("{0}", currencyRate.BankDay.Date));
+                        if (di.ContainsKey(currencyRate.BankDay.Date)) MessageBox.Show($"{currencyRate.BankDay.Date}");
                         else di.Add(currencyRate.BankDay.Date, (decimal)(1 / currencyRate.Rate));
 
                     }

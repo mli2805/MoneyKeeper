@@ -192,7 +192,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowMonthAnalisysForm" />
+                                <cal:Parameter Value="ShowMonthAnalysisForm" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>

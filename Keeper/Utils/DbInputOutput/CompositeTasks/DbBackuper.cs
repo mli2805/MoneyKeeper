@@ -42,7 +42,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
 
         public void ZipTxtDb()
         {
-            var archiveName = String.Format("DB{0:yyyy-MM-dd-HH-mm-ss}.zip", DateTime.Now);
+            var archiveName = $"DB{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.zip";
             var zipFileToCreate = Path.Combine(_mySettings.GetCombinedSetting("BackupPath"), archiveName);
             var directoryToZip = (string)_mySettings.GetSetting("TemporaryTxtDbPath");
             try
@@ -54,7 +54,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
                     var filenames = Directory.GetFiles(directoryToZip, "*.txt"); // note: this does not recurse directories! 
                     foreach (var filename in filenames)
                         zip.AddFile(filename, String.Empty);
-                    zip.Comment = String.Format("This zip archive was created  on machine '{0}'", Dns.GetHostName());
+                    zip.Comment = $"This zip archive was created  on machine '{Dns.GetHostName()}'";
                     zip.Save(zipFileToCreate);
                 }
             }

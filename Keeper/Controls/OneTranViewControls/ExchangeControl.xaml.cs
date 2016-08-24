@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace Keeper.Controls.OneTranViewControls
+﻿namespace Keeper.Controls.OneTranViewControls
 {
     /// <summary>
     /// Interaction logic for ExchangeControl.xaml
     /// </summary>
-    public partial class ExchangeControl : UserControl
+    public partial class ExchangeControl
     {
         public ExchangeControl()
         {

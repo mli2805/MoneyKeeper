@@ -1,4 +1,6 @@
-﻿using System.Composition;
+﻿using System;
+using System.Composition;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.Models.Shell;
@@ -38,15 +40,21 @@ namespace Keeper.ViewModels.Shell
             messageBoxer.DropEmptyBox();
         }
 
-        public void ActionMethod(MainMenuAction action)
+        public async void ActionMethod(MainMenuAction action)
         {
             if (_shellModel.CurrentAction == MainMenuAction.QuitApplication) return;
             _shellModel.CurrentAction = action;
-            _mainMenuExecutor.Execute(action);
+
+            if (_shellModel.MainMenuDictionary.Actions[action].IsAsync)
+                await Task.Run(() => _mainMenuExecutor.Execute(action));
+            else
+                _mainMenuExecutor.Execute(action);
+
             if (_mainMenuExecutor.IsDbChanged)
             {
                 _shellModel.IsDbChanged = true;
             }
+            Console.WriteLine($"Done {DateTime.Now}");
             _shellModel.CurrentAction = MainMenuAction.DoNothing;
         }
 

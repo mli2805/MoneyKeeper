@@ -48,6 +48,8 @@ namespace Keeper.ViewModels.SingleViews
             }
         }
 
+        public bool IsCollectionChanged { get; set; }
+
         [ImportingConstructor]
         public NbRatesViewModel(KeeperDb db, NbRbRatesExtractor nbRbRatesExtractor)
         {
@@ -68,10 +70,8 @@ namespace Keeper.ViewModels.SingleViews
             }
 
             Rows = db.OfficialRates;
-            ButtonDownloadIsEnabled = true;
 
             _nbRbRatesExtractor = nbRbRatesExtractor;
-            _isWorking = false;
         }
 
         private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
@@ -85,10 +85,11 @@ namespace Keeper.ViewModels.SingleViews
             CommandManager.InvalidateRequerySuggested();
         }
 
-        public bool IsCollectionChanged { get; set; }
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Курсы НБ РБ";
+            ButtonDownloadIsEnabled = true;
+            _isWorking = false;
         }
 
 

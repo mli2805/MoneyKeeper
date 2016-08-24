@@ -99,7 +99,7 @@ namespace Keeper.Utils.MonthAnalysis
                 {
                     Amount = account.Deposit.CalculationData.Estimations.ProcentsInThisMonth,
                     ArticleName =
-                        string.Format("%%  {0}", account.Deposit.ShortName),
+                        $"%%  {account.Deposit.ShortName}",
                     Currency = account.Deposit.DepositOffer.Currency
                 });
 

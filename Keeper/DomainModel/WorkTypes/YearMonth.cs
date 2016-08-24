@@ -92,7 +92,7 @@ namespace Keeper.DomainModel.WorkTypes
 
         public static string IntervalToString(Tuple<YearMonth, YearMonth> tuple)
         {
-            return string.Format("{0} - {1}", tuple.Item1, tuple.Item2);
+            return $"{tuple.Item1} - {tuple.Item2}";
         }
 
         public bool InInterval(Tuple<YearMonth, YearMonth> interval) { return !(this < interval.Item1 || this > interval.Item2);}

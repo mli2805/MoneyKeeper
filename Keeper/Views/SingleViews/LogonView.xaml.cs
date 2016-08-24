@@ -19,7 +19,7 @@ namespace Keeper.Views.SingleViews
 
     void LogonViewLoaded(object sender, RoutedEventArgs e)
     {
-      NowStamp.Text = string.Format("{0:dd/MM/yyyy HH:mm}", DateTime.Now);
+      NowStamp.Text = $"{DateTime.Now:dd/MM/yyyy HH:mm}";
     }
 
     public void Connect(int connectionId, object target)
