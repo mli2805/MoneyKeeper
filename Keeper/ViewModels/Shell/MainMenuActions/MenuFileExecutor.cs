@@ -57,6 +57,10 @@ namespace Keeper.ViewModels.Shell.MainMenuActions
                 case MainMenuAction.RemoveExtraBackups:
                     new DbBackupOrganizer().RemoveIdenticalBackups();
                     break;
+                case MainMenuAction.RemoveAllNonFirstInMonth:
+                    new DbBackupOrganizer().RemoveAllNonFirstInMonth();
+                    break;
+
             }
         }
 

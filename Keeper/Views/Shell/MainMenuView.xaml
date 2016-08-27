@@ -177,6 +177,25 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
+                <MenuItem Header="УДАЛИТЬ НЕ ПЕРВЫЕ В МЕСЯЦЕ АРХИВЫ" ToolTipService.ShowDuration="50000">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Выбрать папку года и оставить только"/>
+                                <TextBlock Text="первые в каждом месяце архивы"/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text="(предположительно с завершенным прошлым месяцем)"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="RemoveAllNonFirstInMonth" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="ФОРМЫ">
                 <MenuItem Header="ОПЕРАЦИИ">

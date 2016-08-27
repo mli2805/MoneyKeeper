@@ -13,6 +13,7 @@ namespace Keeper.ViewModels.Shell.MainMenuActions
         ExportDatabaseToTxt,
         ImportDatabaseFromTxt,
         RemoveExtraBackups,
+        RemoveAllNonFirstInMonth,
 
         ShowTransactionsForm = 200,
         ShowMonthAnalysisForm,
@@ -63,6 +64,7 @@ namespace Keeper.ViewModels.Shell.MainMenuActions
                 {MainMenuAction.ExportDatabaseToTxt,   new MainMenuActionProperties {IsAsync = true, StatusBarMessage = "..."}},
                 {MainMenuAction.ImportDatabaseFromTxt, new MainMenuActionProperties {IsAsync = true, StatusBarMessage = "..."}},
                 {MainMenuAction.RemoveExtraBackups,    new MainMenuActionProperties {IsAsync = true, StatusBarMessage = "Удаление идентичных резервных копий..."}},
+                {MainMenuAction.RemoveAllNonFirstInMonth, new MainMenuActionProperties {IsAsync = true, StatusBarMessage = "Удаление всех не первых в месяце архивов..."}},
 
                 {MainMenuAction.ShowTransactionsForm,         new MainMenuActionProperties {IsAsync = false, StatusBarMessage = "Ввод транзакций"}},
                 {MainMenuAction.ShowMonthAnalysisForm,        new MainMenuActionProperties {IsAsync = false, StatusBarMessage = "Анализ месяца"}},
