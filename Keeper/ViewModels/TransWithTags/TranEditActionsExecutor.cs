@@ -83,6 +83,9 @@ namespace Keeper.ViewModels.TransWithTags
             _model.Rows.Add(tranWrappedForDatagrid);
             _model.Db.TransWithTags.Add(tran);
             _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
+
+            if (oneTranForm.IsOneMore) AddAfterSelected();
+
             return true;
         }
 
