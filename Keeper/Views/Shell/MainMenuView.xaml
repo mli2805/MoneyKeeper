@@ -1,0 +1,384 @@
+﻿<UserControl x:Class="Keeper.Views.Shell.MainMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" mc:Ignorable="d" 
+             d:Height="35" d:Width="300">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="O">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowTransactionsForm"></cal:Parameter>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="C">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowCurrencyRatesForm"></cal:Parameter>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="A">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowMonthAnalysisForm"></cal:Parameter>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="D">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowDepositsForm"></cal:Parameter>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="G">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowMonthlyIncomeDiagram"></cal:Parameter>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="T">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="TempItem"></cal:Parameter>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="R">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowOfficialRatesForm"></cal:Parameter>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
+    <Grid >
+        <Menu  Margin="10,3,10,6" Height="20"  Grid.ColumnSpan="3">
+            <MenuItem Header="ФАЙЛЫ">
+                <MenuItem Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД" 
+                   ToolTipService.ShowDuration="50000" Margin="-1,0,1,0">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Сохраняет текущее состояние БД"/>
+                                <TextBlock Text="в штатный dbx файл (лежит в dropbox\keeper)"/>
+                                <TextBlock Text="Данная операция происходит автоматически"/>
+                                <TextBlock Text="при выходе из ввода операций и из программы"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="SaveDatabase" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="ЗАГРУЗИТЬ ПРЕДЫДУЩЕЕ СОСТОЯНИЕ" ToolTipService.ShowDuration="50000">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Отменит изменения данных, произведенные с момента"/>
+                                <TextBlock Text=" входа в программу или после ввода операций,"/>
+                                <TextBlock Text="например редактирование счетов, ассоциаций, курсов"/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text="При необходимости восстановления на определенную дату"/>
+                                <TextBlock Text=" надо использовать 'ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ'"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="LoadDatabase" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="ОЧИСТИТЬ БД" ToolTip="(ну вот на фига!)">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ClearDatabase" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <Separator Style="{DynamicResource SeparatorStyle}"/>
+                <MenuItem Header="СОЗДАТЬ РЕЗЕРВНУЮ КОПИЮ" ToolTipService.ShowDuration="20000">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Создается копия БД на данный момент" />
+                                <TextBlock Text="в виде набора из 6 txt файлов"/>
+                                <TextBlock Text="запакованных в шифрованный zip "/>
+                                <TextBlock Text="(лежит в dropbox\keeper)" />
+                            </StackPanel>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="MakeDatabaseBackup" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="ВЫГРУЗИТЬ В ТЕКСТОВЫЕ ФАЙЛЫ" ToolTipService.ShowDuration="50000">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Выгружает копию БД на данный момент"/>
+                                <TextBlock Text="в виде набора из 6 txt файлов"/>
+                                <TextBlock Text="Лежит в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+                                <TextBlock Text="При выходе из программы каталог будет очищен."/>
+                            </StackPanel>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ExportDatabaseToTxt" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="ЗАГРУЗИТЬ ИЗ ТЕКСТОВЫХ ФАЙЛОВ" ToolTipService.ShowDuration="50000">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Загружает БД из набора из 6 txt файлов,"/>
+                                <TextBlock Text="лежащих в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
+                                <TextBlock Text="Файлы вручную достать из шифрованного zip"/>
+                                <TextBlock Text="(лежат в dropbox\keeper)"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ImportDatabaseFromTxt" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <Separator Style="{DynamicResource SeparatorStyle}"/>
+                <MenuItem Header="УДАЛИТЬ СОВПАДАЮЩИЕ РЕЗЕРВНЫЕ КОПИИ" ToolTipService.ShowDuration="50000">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Удалит лишние резервные копии ( шифрованные zip'ы )"/>
+                                <TextBlock Text="для которых есть более поздние такого же размера"/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text="возникающие при каждом выходе из программы"/>
+                                <TextBlock Text="при работе с кодом без изменения данных"/>
+                                <TextBlock Text="(лежат в dropbox\keeper)"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="RemoveExtraBackups" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="ФОРМЫ">
+                <MenuItem Header="ОПЕРАЦИИ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowTransactionsForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="АНАЛИТИЧЕСКИЕ ПОКАЗАТЕЛИ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowMonthAnalysisForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="ДЕПОЗИТЫ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowDepositsForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="КУРСЫ ВАЛЮТ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowCurrencyRatesForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="ОФИЦИАЛЬНЫЕ КУРСЫ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowOfficialRatesForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="АССОЦИАЦИИ КАТЕГОРИЙ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowArticlesAssociationsForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="БАНКОВСКИЕ ДЕПОЗИТЫ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowBankDepositOffersForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="ДИАГРАММЫ">
+                <MenuItem Header="Ежедневные остатки">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowDailyBalancesDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="Ежемесячное сальдо">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowMonthlyResultDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="Ежемесячное доходы">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowMonthlyIncomeDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="Ежемесячное расходы">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowMonthlyOutcomeDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="Распределение расходов (OxyPlot)">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowExpensePartingOxyPlotDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="Средние основные">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowAverageSignificancesDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <Separator Style="{DynamicResource SeparatorStyle}"/>
+                <MenuItem Header="Курсы валют">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowRatesDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="Курсы валют (Oxyplot)">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowOxyplotRatesDiagram" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="TOOLS">
+                <MenuItem Header="Settings" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowSettings" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <Separator Style="{DynamicResource SeparatorStyle}"/>
+                <MenuItem Header="Регулярные платежи" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowRegularPaymentsForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="Временный пункт (жми T)">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="TempItem" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <Separator Style="{DynamicResource SeparatorStyle}"/>
+                <MenuItem Header="Надо сделать">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowToDoForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="СПРАВКА">
+                <MenuItem Header="О ПРОГРАММЕ">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowAboutForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <Separator Style="{DynamicResource SeparatorStyle}"/>
+                <MenuItem Header="ВЫЙТИ ИЗ ПРОГРАММЫ"  ToolTip="Bye-bye">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="QuitApplication" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</UserControl>
