@@ -4,26 +4,42 @@ using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
 {
-    public class TranActions
+    public enum TranAction
+    {
+        Edit = 0,
+        MoveUp,
+        MoveDown,
+        AddAfterSelected,
+        Delete,
+
+        GoToDate = 11,
+    }
+    public class TranActionsExecutor
     {
         public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
         private TransModel _model;
-        public bool Do(int code, TransModel model)
+        public bool Do(TranAction action, TransModel model)
         {
             _model = model;
-            switch (code)
+            switch (action)
             {
-                case 0: return Edit();
-                case 1: return MoveUp(_model.SelectedTranIndex);
-                case 2: return MoveDown(_model.SelectedTranIndex);
-                case 3: return AddAfterSelected();
-                case 4: Delete(); return true;
+                case TranAction.Edit: return Edit();
+                case TranAction.MoveUp: return MoveUp(_model.SelectedTranIndex);
+                case TranAction.MoveDown: return MoveDown(_model.SelectedTranIndex);
+                case TranAction.AddAfterSelected: return AddAfterSelected();
+                case TranAction.Delete: Delete(); return true;
+                case TranAction.GoToDate: GoToDate(); return false;
                 default:
                     return false;
             }
         }
 
+        private void GoToDate()
+        {
+            var askedTran = _model.Rows.FirstOrDefault(t => t.Tran.Timestamp >= _model.AskedDate);
+            if (askedTran != null) _model.SelectedTranWrappedForDatagrid = askedTran;
+        }
         private bool Edit()
         {
             OneTranViewModel oneTranForm = IoC.Get<OneTranViewModel>();

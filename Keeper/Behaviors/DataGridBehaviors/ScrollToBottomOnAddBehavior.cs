@@ -13,7 +13,6 @@ namespace Keeper.Behaviors.DataGridBehaviors
             itemCollection.CollectionChanged += ItemCollectionOnCollectionChanged;
 
             Console.WriteLine("ScrollToBottomOnAddBehavior attached");
-
         }
 
         private void ItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
