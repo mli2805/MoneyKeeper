@@ -1,10 +1,12 @@
 using System.Linq;
+using Caliburn.Micro;
 
 namespace Keeper.ViewModels.TransWithTags
 {
     public class TranLocateActionsExecutor
     {
         private TransModel _model;
+        public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
         public void Do(TranAction action, TransModel model)
         {

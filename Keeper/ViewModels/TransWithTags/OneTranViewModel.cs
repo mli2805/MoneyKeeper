@@ -29,6 +29,8 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
+        public bool IsOneMore { get; set; } = false;
+
         public UniversalControlVm MyIncomeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
         public UniversalControlVm MyExpenseControlVm { get; set; } = IoC.Get<UniversalControlVm>();
         public UniversalControlVm MyTransferControlVm { get; set; } = IoC.Get<UniversalControlVm>();
@@ -107,6 +109,12 @@ namespace Keeper.ViewModels.TransWithTags
             TryClose(true);
         }
 
+        public void OneMore()
+        {
+            IsOneMore = true;
+            Save();
+        }
+
         public void Cancel()
         {
             TryClose(false);
@@ -114,10 +122,6 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void InitCorrespondingControl()
         {
-//            if (TranInWork.Operation == OperationType.Доход)   MyIncomeControlVm.SetTran(TranInWork); 
-//            if (TranInWork.Operation == OperationType.Расход)  MyExpenseControlVm.SetTran(TranInWork); 
-//            if (TranInWork.Operation == OperationType.Перенос) MyTransferControlVm.SetTran(TranInWork);
-//           if (TranInWork.Operation == OperationType.Обмен)   MyExchangeControlVm.SetTran(TranInWork);
              MyIncomeControlVm.SetTran(TranInWork);
              MyExpenseControlVm.SetTran(TranInWork);
              MyTransferControlVm.SetTran(TranInWork);
