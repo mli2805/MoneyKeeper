@@ -14,7 +14,7 @@ namespace Keeper.ViewModels.TransWithTags
     {
 
         public TransModel Model { get; set; } = new TransModel();
-        public TranActions ActionsHandler { get; set; } = new TranActions();
+        public TranActionsExecutor ActionsExecutorHandler { get; set; } = new TranActionsExecutor();
         public bool IsCollectionChanged { get; set; }
 
         [ImportingConstructor]
@@ -56,9 +56,9 @@ namespace Keeper.ViewModels.TransWithTags
         {
             TryClose();
         }
-        public void ActionsMethod(int code)
+        public void ActionsMethod(TranAction action)
         {
-            if (ActionsHandler.Do(code, Model)) IsCollectionChanged = true;
+            if (ActionsExecutorHandler.Do(action, Model)) IsCollectionChanged = true;
         }
     }
 }

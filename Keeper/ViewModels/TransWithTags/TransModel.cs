@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
@@ -37,6 +38,6 @@ namespace Keeper.ViewModels.TransWithTags
         }
         public int SelectedTranIndex { get; set; }
 
-
+        public DateTime AskedDate { get; set; } = DateTime.Now;
     }
 }
