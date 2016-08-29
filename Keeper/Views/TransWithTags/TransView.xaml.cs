@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Keeper.ViewModels.TransWithTags;
 
 namespace Keeper.Views.TransWithTags
 {
@@ -11,13 +10,19 @@ namespace Keeper.Views.TransWithTags
         public TransView()
         {
             InitializeComponent();
-
         }
 
         private void MyDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            int firstLine = MyDataGrid.SelectedIndex > 10 ? MyDataGrid.SelectedIndex - 10 : 0;
+            int firstLine;
+            if (MyDataGrid.SelectedIndex <= 10)
+                firstLine = 0;
+            else if (MyDataGrid.Items.Count - MyDataGrid.SelectedIndex > 30)
+                firstLine = MyDataGrid.SelectedIndex - 10;
+            else firstLine = MyDataGrid.SelectedIndex;
+
             MyDataGrid.ScrollIntoView(MyDataGrid.Items[firstLine]);
         }
+
     }
 }

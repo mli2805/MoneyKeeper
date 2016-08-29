@@ -26,27 +26,27 @@
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Space">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="TranAction.Edit"/>
+                <cal:Parameter Value="Edit"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="NumPad8" Modifiers="Control">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="1"/>
+                <cal:Parameter Value="MoveUp"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="NumPad2" Modifiers="Control">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="2"/>
+                <cal:Parameter Value="MoveDown"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="Insert">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="3"/>
+                <cal:Parameter Value="AddAfterSelected"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="4"/>
+                <cal:Parameter Value="Delete"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
@@ -65,11 +65,11 @@
             </i:Interaction.Behaviors>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Изменить (Space)" cal:Message.Attach="[Event Click] = [Action ActionsMethod('TranAction.Edit')]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Сдвинуть вверх (Ctrl+NumPad8)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Сдвинуть вниз (Ctrl+NumPad2)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Вставить после (Insert)" cal:Message.Attach="[Event Click] = [Action ActionsMethod('TranAction.AddAfterSelected')]" BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Удалить (Ctrl+Del)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Изменить (Space)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вверх (Ctrl+NumPad8)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вниз (Ctrl+NumPad2)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(3)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Вставить после (Insert)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]" BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Удалить (Ctrl+Del)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(5)]" BorderBrush="{x:Null}" Background="White" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.CellStyle>
@@ -103,8 +103,9 @@
                 <DataGridTextColumn Header="  Comment" Width="300*" Binding="{Binding Tran.Comment}" />
             </DataGrid.Columns>
         </DataGrid>
-        <DatePicker Grid.Row="1" Height="25" Width="150" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding Model.AskedDate}" />
-        <Button Grid.Row="1" Height="25" Width="50" HorizontalAlignment="Left" Margin="170,0,0,0" Content="Go" cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]"/>
+        <DatePicker Grid.Row="1" Height="25" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding Model.AskedDate}" />
+        <Button Grid.Row="1" Height="20" Width="30" HorizontalAlignment="Left" Margin="115,0,0,0" Content="Go" cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]"/>
+        <Button Grid.Row="1" Height="20" Width="60" HorizontalAlignment="Left" Margin="150,0,0,0" Content="GoToEnd" cal:Message.Attach="[Event Click] = [Action ActionsMethod(12)]" />
         <Button Grid.Row="1" Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0" Content="Close" Name="ButtonClose"/>
     </Grid>
 </Window>

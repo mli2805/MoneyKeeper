@@ -253,11 +253,13 @@
     <Compile Include="ViewModels\Shell\MainMenuActions\MenuToolsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
+    <Compile Include="ViewModels\TransWithTags\TranAction.cs" />
+    <Compile Include="ViewModels\TransWithTags\TranLocateActionsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\TransModel.cs" />
     <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />
     <Compile Include="ViewModels\TransWithTags\AccNameSelectionControlInitializer.cs" />
     <Compile Include="ViewModels\TransWithTags\OneTranViewModel.cs" />
-    <Compile Include="ViewModels\TransWithTags\TranActionsExecutor.cs" />
+    <Compile Include="ViewModels\TransWithTags\TranEditActionsExecutor.cs" />
     <Compile Include="DomainModel\WorkTypes\YearMonth.cs" />
     <Compile Include="Utils\DbInputOutput\RegularPaymentsProvider.cs" />
     <Compile Include="DomainModel\WorkTypes\RegularPayment.cs" />
