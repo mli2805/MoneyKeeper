@@ -15,6 +15,7 @@ namespace Keeper.ViewModels.TransWithTags
     {
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
+        private string _caption;
         private TranWithTags _tranInWork;
 
         public TranWithTags TranInWork
@@ -43,7 +44,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "";
+            DisplayName = _caption;
         }
 
         public TranWithTags GetTran()
@@ -51,7 +52,12 @@ namespace Keeper.ViewModels.TransWithTags
             return TranInWork;
         }
 
-        public void SetTran(TranWithTags tran)
+        public void Init(TranWithTags tran, string caption)
+        {
+            _caption = caption;
+            SetTran(tran);
+        }
+        private void SetTran(TranWithTags tran)
         {
             TranInWork = tran.Clone();
 

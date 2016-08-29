@@ -27,7 +27,7 @@ namespace Keeper.ViewModels.TransWithTags
         private bool Edit()
         {
             OneTranViewModel oneTranForm = IoC.Get<OneTranViewModel>();
-            oneTranForm.SetTran(_model.SelectedTranWrappedForDatagrid.Tran);
+            oneTranForm.Init(_model.SelectedTranWrappedForDatagrid.Tran, "Изменить");
             bool? result = WindowManager.ShowDialog(oneTranForm);
 
             if (!result.HasValue || !result.Value) return false;
@@ -73,7 +73,7 @@ namespace Keeper.ViewModels.TransWithTags
         {
             var oneTranForm = IoC.Get<OneTranViewModel>();
             var tranForAdding = PrepareTranForAdding();
-            oneTranForm.SetTran(tranForAdding);
+            oneTranForm.Init(tranForAdding, "Добавить");
             bool? result = WindowManager.ShowDialog(oneTranForm);
 
             if (!result.HasValue || !result.Value) return false;
