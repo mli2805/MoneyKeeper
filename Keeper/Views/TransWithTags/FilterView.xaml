@@ -1,0 +1,60 @@
+﻿<Window x:Class="Keeper.Views.TransWithTags.FilterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
+        mc:Ignorable="d"
+        Title="FilterView" Height="300" Width="340">
+    <Window.Resources>
+        <ResourceDictionary>
+            <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
+                <TextBlock Text="{Binding Name}" />
+            </HierarchicalDataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,3" Content=" - " Name="CleanOperationType" Style="{StaticResource MyButtonStyle}"/>
+                <ComboBox Width="200" ItemsSource="{Binding OperationTypes}" SelectedItem="{Binding MyOperationType, Mode=TwoWay}"/>
+                <TextBlock Padding="5">Тип операции</TextBlock>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                    <Button Width="20" Margin="0,3,5,3" Content=" - " Name="CleanAccount" Style="{StaticResource MyButtonStyle}"/>
+                    <comboboxTreeview:ComboBoxTreeView  Background="White" 
+                      VerticalAlignment="Top" Height="25" Width="200" ItemTemplate="{StaticResource TreeViewDataTemplate}" 
+                      ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
+                    <TextBlock Padding="5">Мой счет</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="30,0,0,10">
+                    <RadioButton GroupName="AccNamePosition" Content="1" IsChecked="{Binding IsAccNamePosition1}" Margin="15,0,0,0"/>
+                    <RadioButton GroupName="AccNamePosition" Content="2" IsChecked="{Binding IsAccNamePosition2}" Margin="15,0,0,0"/>
+                    <RadioButton GroupName="AccNamePosition" Content="1||2" IsChecked="{Binding IsAccNamePosition12}"  Margin="15,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,3" Content=" - " Name="CleanAmount" Style="{StaticResource MyButtonStyle}"/>
+                <TextBox Width="200"></TextBox>
+                <TextBlock Padding="5">Сумма</TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,3" Content=" - " Name="CleanCurrency" Style="{StaticResource MyButtonStyle}"/>
+                <ComboBox Width="200" ItemsSource="{Binding Currencies}" SelectedItem="{Binding MyCurrency, Mode=TwoWay}"/>
+                <TextBlock Padding="5">Валюта</TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,3" Content=" - " Name="CleanComment" Style="{StaticResource MyButtonStyle}"/>
+                <TextBox Width="200" Text="{Binding MyComment}"/>
+                <TextBlock Padding="5">Комментарий</TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <Button Grid.Row="1" HorizontalAlignment="Left" Width="80" Height="25" Margin="5" Content="Clean all" Name="CleanAll" Style="{StaticResource MyButtonStyle}"/>
+    </Grid>
+</Window>
