@@ -18,6 +18,7 @@ namespace Keeper.ViewModels.TransWithTags
         public TranLocateActionsExecutor LocateActionsExecutorHandler { get; set; } = new TranLocateActionsExecutor();
         public bool IsCollectionChanged { get; set; }
 
+        private FilterViewModel _filterViewModel;
         [ImportingConstructor]
         public TransViewModel(KeeperDb db)
         {
@@ -55,7 +56,27 @@ namespace Keeper.ViewModels.TransWithTags
         }
         public void ButtonClose()
         {
+            if (_filterViewModel.IsActive)
+                    _filterViewModel.TryClose();
             TryClose();
+        }
+
+        public void ButtonFilter()
+        {
+            _filterViewModel = IoC.Get<FilterViewModel>();
+            var wm = new WindowManager();
+            _filterViewModel.PropertyChanged += FilterViewModel_PropertyChanged;
+            wm.ShowWindow(_filterViewModel);
+        }
+
+        private void FilterViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            
         }
         public void ActionsMethod(TranAction action)
         {

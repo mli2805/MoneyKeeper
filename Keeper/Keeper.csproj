@@ -253,6 +253,7 @@
     <Compile Include="ViewModels\Shell\MainMenuActions\MenuToolsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
+    <Compile Include="ViewModels\TransWithTags\FilterViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TranAction.cs" />
     <Compile Include="ViewModels\TransWithTags\TranLocateActionsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\TransModel.cs" />
@@ -433,6 +434,9 @@
     </Compile>
     <Compile Include="Views\Shell\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransWithTags\FilterView.xaml.cs">
+      <DependentUpon>FilterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TransWithTags\OneTranView.xaml.cs">
       <DependentUpon>OneTranView.xaml</DependentUpon>
@@ -683,6 +687,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SingleViews\ToDoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TransWithTags\FilterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
