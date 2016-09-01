@@ -37,7 +37,7 @@
             </ItemsControl>
         </StackPanel>
         <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Stretch" Margin="0,25,0,0" Background="White" 
-                      VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource TreeViewDataTemplate}" 
+                      VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource TreeViewDataTemplate}" IsBranchSelectionEnabled="False"
                       ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
     </Grid>
 </UserControl>

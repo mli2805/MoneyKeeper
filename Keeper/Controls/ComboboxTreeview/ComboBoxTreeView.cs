@@ -19,10 +19,10 @@ namespace Keeper.Controls.ComboboxTreeview
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ComboBoxTreeView), new FrameworkPropertyMetadata(typeof(ComboBoxTreeView)));
         }
 
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            //don't call the method of the base class
-        }
+//        protected override void OnMouseWheel(MouseWheelEventArgs e)
+//        {
+//            don't call the method of the base class
+//        }
 
         public override void OnApplyTemplate()
         {
@@ -41,7 +41,7 @@ namespace Keeper.Controls.ComboboxTreeview
             var item = (ITreeViewItemModel)_treeView.SelectedItem;
             if (item == null) return;
 
-            if (item.GetChildren().Any()) return; //if branch (not a leaf) is chosen - changes are not accepted
+            if  (!IsBranchSelectionEnabled  &&  item.GetChildren().Any()) return; //if branch (not a leaf) is chosen - changes are not accepted
 
             this.SelectedItem = _treeView.SelectedItem;
             this.SetSelectedItemToHeader();
@@ -59,7 +59,7 @@ namespace Keeper.Controls.ComboboxTreeview
         private void OnTreeViewHierarchyMouseUp(object sender, MouseEventArgs e)
         {
             var item = (ITreeViewItemModel) _treeView.SelectedItem;
-            if (!item.GetChildren().Any()) // if branch (not a leaf) is chosen don't close combobox
+            if (IsBranchSelectionEnabled || !item.GetChildren().Any()) // if branch (not a leaf) is chosen don't close combobox
                 this.IsDropDownOpen = false;
         }
 
@@ -79,6 +79,16 @@ namespace Keeper.Controls.ComboboxTreeview
         {
             ((ComboBoxTreeView)sender).UpdateSelectedItem();
         }
+
+
+        public bool IsBranchSelectionEnabled
+        {
+            get { return (bool) GetValue(IsBranchSelectionEnabledProperty); }
+            set { SetValue(IsBranchSelectionEnabledProperty,value); }
+        }
+
+        public static readonly DependencyProperty IsBranchSelectionEnabledProperty =
+            DependencyProperty.Register("IsBranchSelectionEnabled", typeof (bool), typeof (ComboBoxTreeView));
 
         /// <summary>
         /// Selected hierarchy of the treeview
