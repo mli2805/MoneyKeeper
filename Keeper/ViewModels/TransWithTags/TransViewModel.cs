@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Composition;
 using System.Linq;
@@ -12,13 +13,26 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class TransViewModel : Screen
     {
+        public int Left
+        {
+            get { return _left; }
+            set
+            {
+                _left = value;
+                _filterViewModel?.PlaceIt(Left, Top, FilterViewWidth);
+            }
+        }
 
+        public int Top { get; set; }
+        public int FilterViewWidth = 230;
         public TransModel Model { get; set; } = new TransModel();
         public TranEditActionsExecutor EditActionsExecutorHandler { get; set; } = new TranEditActionsExecutor();
         public TranLocateActionsExecutor LocateActionsExecutorHandler { get; set; } = new TranLocateActionsExecutor();
         public bool IsCollectionChanged { get; set; }
 
         private FilterViewModel _filterViewModel;
+        private int _left;
+
         [ImportingConstructor]
         public TransViewModel(KeeperDb db)
         {
@@ -34,6 +48,8 @@ namespace Keeper.ViewModels.TransWithTags
             Model.SelectedTranWrappedForDatagrid.IsSelected = true;
 
             IsCollectionChanged = false;
+            Top = 200;
+            Left = 400;
         }
 
         private void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -53,17 +69,19 @@ namespace Keeper.ViewModels.TransWithTags
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Transactions with tags";
+            Top = 200;
+            Left = 400;
         }
-        public void ButtonClose()
+        public override void CanClose(Action<bool> callback)
         {
-            if (_filterViewModel.IsActive)
-                    _filterViewModel.TryClose();
-            TryClose();
+            if (_filterViewModel != null && _filterViewModel.IsActive)
+                _filterViewModel.TryClose();
+            base.CanClose(callback);
         }
-
         public void ButtonFilter()
         {
             _filterViewModel = IoC.Get<FilterViewModel>();
+            _filterViewModel.PlaceIt(Left, Top, FilterViewWidth);
             var wm = new WindowManager();
             _filterViewModel.PropertyChanged += FilterViewModel_PropertyChanged;
             wm.ShowWindow(_filterViewModel);
