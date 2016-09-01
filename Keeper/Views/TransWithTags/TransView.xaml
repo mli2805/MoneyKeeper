@@ -4,14 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Keeper.Behaviors"
         xmlns:dataGridBehaviors="clr-namespace:Keeper.Behaviors.DataGridBehaviors"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-        xmlns:transWithTags="clr-namespace:Keeper.ViewModels.TransWithTags"
         mc:Ignorable="d"
         xml:lang="ru-RU"
-        Title="TransView" Height="645" Width="900"
+        Title="TransView" Height="645" Width="900" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>
@@ -56,7 +54,7 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <DataGrid Name="MyDataGrid" Grid.Row="0"  AutoGenerateColumns="False" IsReadOnly="True"
-                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(TranAction.Edit)]"
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                   ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}" 
                   SelectedIndex="{Binding Model.SelectedTranIndex, Mode=OneWayToSource}" SelectionMode="Single" SelectionChanged="MyDataGrid_SelectionChanged">
             <i:Interaction.Behaviors>
@@ -111,6 +109,6 @@
         <Button Grid.Row="1" Height="25" Width="60" HorizontalAlignment="Left" Margin="300,0,0,0" Style="{StaticResource MyButtonStyle}"
                 Content="Filter" Name="ButtonFilter" />
         <Button Grid.Row="1" Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0" Style="{StaticResource MyButtonStyle}"
-                Content="Close" Name="ButtonClose"/>
+                Content="Close" IsCancel="True"/>
     </Grid>
 </Window>

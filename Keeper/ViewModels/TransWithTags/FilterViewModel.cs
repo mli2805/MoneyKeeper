@@ -14,6 +14,42 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     class FilterViewModel : Screen
     {
+        private int _left;
+        public int Left
+        {
+            get { return _left; }
+            set
+            {
+                if (value == _left) return;
+                _left = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private int _top;
+        public int Top
+        {
+            get { return _top; }
+            set
+            {
+                if (value == _top) return;
+                _top = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public int Width
+        {
+            get { return _width; }
+            set
+            {
+                if (value == _width) return;
+                _width = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        #region Properties
         public List<OperationTypesFilter> OperationTypes { get; set; } = InitOperationTypesFilter();
         private OperationTypesFilter _myOperationType;
         public OperationTypesFilter MyOperationType
@@ -65,10 +101,23 @@ namespace Keeper.ViewModels.TransWithTags
         public bool IsAccNamePosition2 { get; set; }
         public bool IsAccNamePosition12 { get; set; }
 
+        public string Amount
+        {
+            get { return _amount; }
+            set
+            {
+                if (value == _amount) return;
+                _amount = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public List<CurrencyCodesFilter> Currencies { get; set; } = InitCurrencyCodesFilter();
 
         private CurrencyCodesFilter _myCurrency;
         private string _myComment;
+        private string _amount;
+        private int _width;
 
         public CurrencyCodesFilter MyCurrency
         {
@@ -103,6 +152,8 @@ namespace Keeper.ViewModels.TransWithTags
                 NotifyOfPropertyChange();
             }
         }
+        #endregion
+
 
         [ImportingConstructor]
         public FilterViewModel(AccountTreeStraightener accountTreeStraightener, KeeperDb db)
@@ -115,32 +166,38 @@ namespace Keeper.ViewModels.TransWithTags
             IsAccNamePosition12 = true;
         }
 
-        public void CleanOperationType()
+        public void PlaceIt(int left, int top, int width)
         {
-            MyOperationType = OperationTypes.FirstOrDefault();
+            Left = left - width - 1;
+            Top = top + 100;
+            Width = width;
+            
         }
 
-        public void CleanAccount()
+        protected override void OnViewLoaded(object view)
         {
-            MyAccName = AvailableAccNames.FirstOrDefault();
-        }
-
-        public void CleanCurrency()
-        {
-            MyCurrency = Currencies.FirstOrDefault();
-        }
-
-        public void CleanComment()
-        {
-            MyComment = "";
+            DisplayName = "Фильтр";
         }
 
         public void CleanAll()
         {
-            CleanOperationType();
-            CleanAccount();
-            CleanCurrency();
-            CleanComment();
+            MyOperationType = OperationTypes.FirstOrDefault();
+            MyAccName = AvailableAccNames.FirstOrDefault();
+            Amount = null;
+            MyCurrency = Currencies.FirstOrDefault();
+            MyComment = "";
+        }
+        public void CleanProperty(int propertyNumber)
+        {
+            switch (propertyNumber)
+            {
+                case 1: MyOperationType = OperationTypes.FirstOrDefault(); return;
+                case 2: MyAccName = AvailableAccNames.FirstOrDefault(); return;
+                case 3: Amount = null; return;
+                case 4: MyCurrency = Currencies.FirstOrDefault(); return;
+                case 5: MyComment = ""; return;
+                case 99: CleanAll(); return;
+            }
         }
     }
 }
