@@ -36,7 +36,7 @@
                     <TextBlock Padding="5">Мой счет</TextBlock>
                 </StackPanel>
                 <comboboxTreeview:ComboBoxTreeView Height="25" Width="200" HorizontalAlignment="Left" Margin="5,0,0,0"  Background="White" 
-                      VerticalAlignment="Top" ItemTemplate="{StaticResource TreeViewDataTemplate}" 
+                      VerticalAlignment="Top" ItemTemplate="{StaticResource TreeViewDataTemplate}" IsBranchSelectionEnabled="True"
                       ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
                 <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
                     <RadioButton GroupName="AccNamePosition" Content="1" IsChecked="{Binding IsAccNamePosition1}" Margin="15,0,0,0"/>
