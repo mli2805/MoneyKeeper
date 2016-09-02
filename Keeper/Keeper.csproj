@@ -253,8 +253,10 @@
     <Compile Include="ViewModels\Shell\MainMenuActions\MenuToolsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\BalanceDuringTransactionHinter.cs" />
     <Compile Include="Controls\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
+    <Compile Include="ViewModels\TransWithTags\FilterModel.cs" />
     <Compile Include="ViewModels\TransWithTags\FilterViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TranAction.cs" />
+    <Compile Include="ViewModels\TransWithTags\TranFilter.cs" />
     <Compile Include="ViewModels\TransWithTags\TranLocateActionsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\TransModel.cs" />
     <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />

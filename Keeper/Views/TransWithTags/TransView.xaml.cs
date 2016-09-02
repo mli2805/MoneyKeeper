@@ -14,6 +14,8 @@ namespace Keeper.Views.TransWithTags
 
         private void MyDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            if (MyDataGrid.Items.Count == 0) return;
+
             int firstLine;
             if (MyDataGrid.SelectedIndex <= 10)
                 firstLine = 0;
