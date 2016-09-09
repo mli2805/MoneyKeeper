@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
+using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.Controls.OneTranViewControls.SubControls;
@@ -7,6 +8,7 @@ using Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl;
 using Keeper.Controls.OneTranViewControls.SubControls.AmountInputControl;
 using Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.Utils.AccountEditing;
 using Keeper.ViewModels.TransWithTags;
@@ -132,12 +134,16 @@ namespace Keeper.Controls.OneTranViewControls
             MySecondAccNameSelectorVm.PropertyChanged += MySecondAccNameSelectorVm_PropertyChanged;
 
             MyAmountInputControlVm = new AmountInputControlVm
-                { LabelContent = TranInWork.CurrencyInReturn == null ? "Сколько" : "Сдал", AmountColor = TranInWork.TranFontColor(),
-                  Amount = TranInWork.Amount, Currency = TranInWork.Currency };
+            {
+                LabelContent = GetAmountActionLabel(TranInWork), 
+                AmountColor = TranInWork.TranFontColor(),
+                Amount = TranInWork.Amount,
+                Currency = TranInWork.Currency
+            };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
-                { LabelContent = "Получил", AmountColor = TranInWork.TranFontColor(), Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
+            { LabelContent = "Получил", AmountColor = TranInWork.TranFontColor(), Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
             MyAmountInReturnInputControlVm.PropertyChanged += MyAmountInReturnInputControlVm_PropertyChanged;
 
 
@@ -154,7 +160,17 @@ namespace Keeper.Controls.OneTranViewControls
             MyDatePickerVm.PropertyChanged += MyDatePickerVm_PropertyChanged;
         }
 
-
+        private string GetAmountActionLabel(TranWithTags tran)
+        {
+            switch (tran.Operation)
+            {
+                case OperationType.Доход: return "Получил";
+                case OperationType.Расход: return "Заплатил";
+                case OperationType.Перенос: return "Перенес";
+                case OperationType.Обмен:
+                default: return "Сдал";
+            }
+        }
         private void Tags_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             TranInWork.Tags = new List<Account>();
@@ -184,12 +200,20 @@ namespace Keeper.Controls.OneTranViewControls
         private void MyAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "MyAccName")
+            {
                 TranInWork.MyAccount = _accountTreeStraightener.Seek(MyAccNameSelectorVm.MyAccName.Name, _db.Accounts);
+                MyAmountInputControlVm.Currency =
+                    _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount)?.Currency;
+            }
         }
         private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "MyAccName")
+            {
                 TranInWork.MySecondAccount = _accountTreeStraightener.Seek(MySecondAccNameSelectorVm.MyAccName.Name, _db.Accounts);
+                MyAmountInReturnInputControlVm.Currency =
+                    _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount)?.Currency;
+            }
         }
 
         private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -199,7 +223,7 @@ namespace Keeper.Controls.OneTranViewControls
                 case "MyAccount":
                     NotifyOfPropertyChange(nameof(MyAccountBalance));
                     break;
-                case "MySecondAccount": 
+                case "MySecondAccount":
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     break;
                 case "Operation":

@@ -94,6 +94,7 @@ namespace Keeper.ViewModels.TransWithTags
             var tranForAdding = _model.SelectedTranWrappedForDatagrid.Tran.Clone();
             tranForAdding.Timestamp = tranForAdding.Timestamp.AddMinutes(1);
             tranForAdding.Amount = 0;
+            tranForAdding.AmountInReturn = 0;
             tranForAdding.Comment = "";
             return tranForAdding;
         }

@@ -11,6 +11,7 @@ namespace Keeper.ViewModels.TransWithTags
 {
     public class TransModel : PropertyChangedBase
     {
+        public KeeperDb Db { get; set; }
         private ObservableCollection<TranWrappedForDatagrid> _rows;
         public ObservableCollection<TranWrappedForDatagrid> Rows
         {
@@ -53,6 +54,7 @@ namespace Keeper.ViewModels.TransWithTags
         private readonly TranFilter _tranFilter;
         public TransModel(KeeperDb db)
         {
+            Db = db;
             _tranFilter = new TranFilter();
 
             Rows = WrapTransactions(db.TransWithTags);

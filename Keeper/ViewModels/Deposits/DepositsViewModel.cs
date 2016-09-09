@@ -208,7 +208,7 @@ namespace Keeper.ViewModels.Deposits
 //
 //            decimal cashInUsd = 0, depoInUsd = 0;
 //            var dt = new DateTime(2001, 12, 31);
-//            var transactionsArray = _db.Transactions.OrderBy(t => t.Timestamp).ToArray();
+//            var transactionsArray = Db.Transactions.OrderBy(t => t.Timestamp).ToArray();
 //            int index = 0;
 //            Transaction tr = transactionsArray[0];
 //
