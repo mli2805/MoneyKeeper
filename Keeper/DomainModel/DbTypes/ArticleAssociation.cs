@@ -10,6 +10,7 @@ namespace Keeper.DomainModel.DbTypes
         public Account ExternalAccount { get; set; }
         public OperationType OperationType { get; set; }
         public Account AssociatedArticle { get; set; }
+        public bool IsTwoWay { get; set; }
 
         public int CompareTo(object obj)
         {

@@ -23,8 +23,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public string Dump(ArticleAssociation association)
         {
             return association.ExternalAccount + " ; " +
+                   association.AssociatedArticle + " ; " +
                    association.OperationType + " ; " +
-                   association.AssociatedArticle;
+                   association.IsTwoWay;
         }
         public string Dump(CurrencyRate rate)
         {
