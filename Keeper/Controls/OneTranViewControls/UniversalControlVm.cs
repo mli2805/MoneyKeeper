@@ -10,7 +10,9 @@ using Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
+using Keeper.Utils.CommonKeeper;
 using Keeper.ViewModels.TransWithTags;
 
 namespace Keeper.Controls.OneTranViewControls
@@ -33,6 +35,7 @@ namespace Keeper.Controls.OneTranViewControls
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
+        private readonly AssociationFinder _associationFinder;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         private AmountInputControlVm _myAmountInputControlVm;
@@ -113,11 +116,12 @@ namespace Keeper.Controls.OneTranViewControls
 
         [ImportingConstructor]
         public UniversalControlVm(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
-                 AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+                 AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder)
         {
             _db = db;
             _accountTreeStraightener = accountTreeStraightener;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
+            _associationFinder = associationFinder;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             ListsForComboTrees.InitializeLists(_db);
         }
@@ -173,10 +177,21 @@ namespace Keeper.Controls.OneTranViewControls
         }
         private void Tags_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            TranInWork.Tags = new List<Account>();
-            foreach (var accName in MyTagPickerVm.Tags)
+//            TranInWork.Tags = new List<Account>();
+//            foreach (var accName in MyTagPickerVm.Tags)
+//            {
+//                TranInWork.Tags.Add(_accountTreeStraightener.Seek(accName.Name, _db.Accounts));
+//            }
+
+            var tagName = MyTagPickerVm.LastAddedTag;
+            var tag = _accountTreeStraightener.Seek(tagName.Name, _db.Accounts);
+            var associatedTag = _associationFinder.GetAssociation(TranInWork, tag);
+
+            TranInWork.Tags.Add(tag);
+            if (associatedTag != null)
             {
-                TranInWork.Tags.Add(_accountTreeStraightener.Seek(accName.Name, _db.Accounts));
+                TranInWork.Tags.Add(associatedTag);
+                MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag,null);
             }
         }
 
@@ -203,7 +218,7 @@ namespace Keeper.Controls.OneTranViewControls
             {
                 TranInWork.MyAccount = _accountTreeStraightener.Seek(MyAccNameSelectorVm.MyAccName.Name, _db.Accounts);
                 MyAmountInputControlVm.Currency =
-                    _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount)?.Currency;
+                    _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount)?.Currency ?? CurrencyCodes.BYN;
             }
         }
         private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -212,7 +227,7 @@ namespace Keeper.Controls.OneTranViewControls
             {
                 TranInWork.MySecondAccount = _accountTreeStraightener.Seek(MySecondAccNameSelectorVm.MyAccName.Name, _db.Accounts);
                 MyAmountInReturnInputControlVm.Currency =
-                    _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount)?.Currency;
+                    _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount)?.Currency ?? CurrencyCodes.BYN;
             }
         }
 
