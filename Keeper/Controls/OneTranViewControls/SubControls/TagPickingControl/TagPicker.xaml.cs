@@ -20,13 +20,17 @@ namespace Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl
             var accName = (AccName)((Button)sender).Tag;
 
             tagPickerVm.Tags.Remove(accName);
-
         }
 
         private void AddTagOnClick(object sender, RoutedEventArgs e)
         {
             var tagPickerVm = (TagPickerVm)DataContext;
+            tagPickerVm.LastAddedTag = tagPickerVm.TagSelectorVm.MyAccName;
             tagPickerVm.Tags.Add(tagPickerVm.TagSelectorVm.MyAccName);
+
+            if (tagPickerVm.AssociatedTag != null) tagPickerVm.Tags.Add(tagPickerVm.AssociatedTag);
         }
+
+
     }
 }
