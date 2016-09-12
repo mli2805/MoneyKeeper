@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Composition;
 using System.Linq;
 using System.Windows;
@@ -139,7 +140,7 @@ namespace Keeper.Controls.OneTranViewControls
 
             MyAmountInputControlVm = new AmountInputControlVm
             {
-                LabelContent = GetAmountActionLabel(TranInWork), 
+                LabelContent = GetAmountActionLabel(TranInWork),
                 AmountColor = TranInWork.TranFontColor(),
                 Amount = TranInWork.Amount,
                 Currency = TranInWork.Currency
@@ -175,24 +176,51 @@ namespace Keeper.Controls.OneTranViewControls
                 default: return "Сдал";
             }
         }
-        private void Tags_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-//            TranInWork.Tags = new List<Account>();
-//            foreach (var accName in MyTagPickerVm.Tags)
-//            {
-//                TranInWork.Tags.Add(_accountTreeStraightener.Seek(accName.Name, _db.Accounts));
-//            }
+            //            TranInWork.Tags = new List<Account>();
+            //            foreach (var accName in MyTagPickerVm.Tags)
+            //            {
+            //                TranInWork.Tags.Add(_accountTreeStraightener.Seek(accName.Name, _db.Accounts));
+            //            }
 
-            var tagName = MyTagPickerVm.LastAddedTag;
-            var tag = _accountTreeStraightener.Seek(tagName.Name, _db.Accounts);
-            var associatedTag = _associationFinder.GetAssociation(TranInWork, tag);
+            if (e.Action == NotifyCollectionChangedAction.Remove) ReactOnRemove();
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                if (MyTagPickerVm.TagInWork != null)
+                    ReactOnUsersAdd();
+                else ReactOnAssociationAdd();
+            }
+        }
 
+        private void ReactOnUsersAdd()
+        {
+            var tag = _accountTreeStraightener.Seek(MyTagPickerVm.TagInWork.Name, _db.Accounts);
             TranInWork.Tags.Add(tag);
+
+            var associatedTag = _associationFinder.GetAssociation(TranInWork, tag);
             if (associatedTag != null)
             {
                 TranInWork.Tags.Add(associatedTag);
-                MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag,null);
+                MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag, null);
             }
+
+            MyTagPickerVm.TagInWork = null;
+        }
+
+        private void ReactOnAssociationAdd()
+        {
+            var tag = _accountTreeStraightener.Seek(MyTagPickerVm.AssociatedTag.Name, _db.Accounts);
+            TranInWork.Tags.Add(tag);
+
+            MyTagPickerVm.AssociatedTag = null;
+        }
+
+        private void ReactOnRemove()
+        {
+            var tag = _accountTreeStraightener.Seek(MyTagPickerVm.TagInWork.Name, _db.Accounts);
+            TranInWork.Tags.Remove(tag);
+            MyTagPickerVm.TagInWork = null;
         }
 
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

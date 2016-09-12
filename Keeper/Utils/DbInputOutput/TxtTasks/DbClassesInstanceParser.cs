@@ -84,8 +84,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var association = new ArticleAssociation();
             var substrings = s.Split(';');
             association.ExternalAccount = accountsPlaneList.First(account => account.Name == substrings[0].Trim());
-            association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-            association.AssociatedArticle = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
+            association.AssociatedArticle = accountsPlaneList.First(account => account.Name == substrings[1].Trim());
+            association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[2]);
+            association.IsTwoWay = bool.Parse(substrings[3]);
             return association;
         }
         public Account AccountFromString(string s, out int parentId)
