@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
 {
@@ -60,12 +61,20 @@ namespace Keeper.ViewModels.TransWithTags
         private void FilterModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Model.FilterModel = _filterViewModel.FilterModel;
+
+            Model.SortedRows.MoveCurrentToLast();
+            Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
         }
 
         private void FilterViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsActive" && _filterViewModel.IsActive == false)
+            {
                 Model.FilterModel = null;
+
+                Model.SortedRows.MoveCurrentToLast();
+                Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
+            }
         }
 
         public void ActionsMethod(TranAction action)

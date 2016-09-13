@@ -64,7 +64,8 @@ namespace Keeper.ViewModels.TransWithTags
             SortedRows.Filter += Filter;
             SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
 
-            SelectedTranWrappedForDatagrid = Rows.OrderBy(t => t.Tran.Timestamp).Last();
+            SortedRows.MoveCurrentToLast();
+            SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)SortedRows.CurrentItem;
             SelectedTranWrappedForDatagrid.IsSelected = true;
 
             IsCollectionChanged = false;
