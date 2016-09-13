@@ -121,10 +121,5 @@ namespace Keeper.DomainModel.Trans
                 NotifyOfPropertyChange(() => Comment);
             }
         }
-
-        internal MoneyBag AmountForAccount()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
