@@ -78,7 +78,7 @@ namespace Keeper.DomainModel.Trans
             }
         }
 
-        public Brush TransactionFontColor => Tran.TranFontColor();
+        public Brush TransactionFontColor => Tran.Operation.FontColor();
         #endregion
 
         #region ' _isSelected '

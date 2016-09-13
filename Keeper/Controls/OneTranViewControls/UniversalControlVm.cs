@@ -141,14 +141,14 @@ namespace Keeper.Controls.OneTranViewControls
             MyAmountInputControlVm = new AmountInputControlVm
             {
                 LabelContent = GetAmountActionLabel(TranInWork),
-                AmountColor = TranInWork.TranFontColor(),
+                AmountColor = TranInWork.Operation.FontColor(),
                 Amount = TranInWork.Amount,
                 Currency = TranInWork.Currency
             };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
-            { LabelContent = "Получил", AmountColor = TranInWork.TranFontColor(), Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
+            { LabelContent = "Получил", AmountColor = TranInWork.Operation.FontColor(), Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
             MyAmountInReturnInputControlVm.PropertyChanged += MyAmountInReturnInputControlVm_PropertyChanged;
 
 

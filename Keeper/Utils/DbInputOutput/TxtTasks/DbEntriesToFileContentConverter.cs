@@ -64,8 +64,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
         public IEnumerable<string> ConvertArticlesAssociationsToFileContent()
         {
-            //			return _db.ArticlesAssociations.Select(_mDbClassesInstanceDumper.Dump);
-            return _db.ArticlesAssociations.Select(articlesAssociation => _dbClassesInstanceDumper.Dump(articlesAssociation));
+            return _db.ArticlesAssociations.OrderBy(a=>a.OperationType).ThenBy(a=>a.ExternalAccount).
+                          Select(articlesAssociation => _dbClassesInstanceDumper.Dump(articlesAssociation));
         }
 
         public IEnumerable<string> ConvertCurrencyRatesToFileContent()

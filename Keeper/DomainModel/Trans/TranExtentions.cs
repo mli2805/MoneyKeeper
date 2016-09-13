@@ -56,21 +56,10 @@ namespace Keeper.DomainModel.Trans
             }
             destinationTran.Comment = tran.Comment;
         }
-
-        public static Brush TranFontColor(this TranWithTags tran)
-        {
-            if (tran.Operation == OperationType.Доход) return Brushes.Blue;
-            if (tran.Operation == OperationType.Расход) return Brushes.Red;
-            if (tran.Operation == OperationType.Перенос) return Brushes.Black;
-            if (tran.Operation == OperationType.Обмен) return Brushes.Green;
-            return Brushes.Gray;
-        }
-
         private static Account UpToCategory(Account tag, string root)
         {
             return tag.Parent.Name == root ? tag : UpToCategory(tag.Parent, root);
         }
-
         // возвращает базовую категорию
         public static Account GetTranCategory(this TranWithTags tran, bool flag)
         {
@@ -80,8 +69,6 @@ namespace Keeper.DomainModel.Trans
             MessageBox.Show($"не задана категория {tran.Timestamp} {tran.Amount} {tran.Currency}", "");
             return null;
         }
-
-
         // возвращает подробную категорию
         public static Account GetTranArticle(this TranWithTags tran, bool isIncome, bool batchProcessing = true)
         {
@@ -95,13 +82,10 @@ namespace Keeper.DomainModel.Trans
             return null;
 
         }
-
         public static bool HasntGotCategoryTagThoughItShould(this TranWithTags tran)
         {
             return ((tran.Operation == OperationType.Доход || tran.Operation == OperationType.Расход) &&
                     tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null);
-
         }
-
     }
 }
