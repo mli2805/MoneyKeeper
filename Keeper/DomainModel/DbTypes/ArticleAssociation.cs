@@ -17,7 +17,6 @@ namespace Keeper.DomainModel.DbTypes
         {
             return String.Compare(ExternalAccount.Name, ((Account)obj).Name, StringComparison.Ordinal);
         }
-
         public Brush FontColor => OperationType.FontColor();
     }
 

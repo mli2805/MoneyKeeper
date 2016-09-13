@@ -36,11 +36,11 @@ namespace Keeper.Utils.CommonKeeper
                                select a).FirstOrDefault();
             if (association != null) return association.AssociatedArticle;
 
-            association = (from a in _db.ArticlesAssociations
-                           where a.AssociatedArticle == tag
-                           select a).FirstOrDefault();
+            var reverseAssociation = (from a in _db.ArticlesAssociations
+                           where a.IsTwoWay && a.AssociatedArticle == tag && a.OperationType == tran.Operation
+                                      select a).FirstOrDefault();
 
-            return association?.ExternalAccount;
+            return reverseAssociation?.ExternalAccount;
         }
 
     }
