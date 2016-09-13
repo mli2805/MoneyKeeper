@@ -178,12 +178,6 @@ namespace Keeper.Controls.OneTranViewControls
         }
         private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //            TranInWork.Tags = new List<Account>();
-            //            foreach (var accName in MyTagPickerVm.Tags)
-            //            {
-            //                TranInWork.Tags.Add(_accountTreeStraightener.Seek(accName.Name, _db.Accounts));
-            //            }
-
             if (e.Action == NotifyCollectionChangedAction.Remove) ReactOnRemove();
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
@@ -201,7 +195,6 @@ namespace Keeper.Controls.OneTranViewControls
             var associatedTag = _associationFinder.GetAssociation(TranInWork, tag);
             if (associatedTag != null)
             {
-                TranInWork.Tags.Add(associatedTag);
                 MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag, null);
             }
 
