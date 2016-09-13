@@ -1,5 +1,6 @@
 using System.Linq;
 using Caliburn.Micro;
+using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
 {
@@ -29,7 +30,9 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void GoToEnd()
         {
-            _model.SelectedTranWrappedForDatagrid = _model.Rows.Last();
+//            _model.SelectedTranWrappedForDatagrid = _model.Rows.Last();
+            _model.SortedRows.MoveCurrentToLast();
+            _model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)_model.SortedRows.CurrentItem;
         }
     }
 }
