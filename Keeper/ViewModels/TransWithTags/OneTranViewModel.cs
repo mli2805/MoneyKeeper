@@ -7,16 +7,34 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Trans;
 using Keeper.Utils.AccountEditing;
+using Keeper.ViewModels.SingleViews;
 
 namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
     class OneTranViewModel : Screen
     {
+        public int Top { get; set; }
+        public int Left
+        {
+            get { return _left; }
+            set
+            {
+                if (value == _left) return;
+                _left = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
+
         private readonly KeeperDb _db;
         private readonly AccountTreeStraightener _accountTreeStraightener;
         private string _caption;
         private TranWithTags _tranInWork;
+        private int _left;
 
         public TranWithTags TranInWork
         {
@@ -85,12 +103,12 @@ namespace Keeper.ViewModels.TransWithTags
             {
                 if (TranInWork.Operation == OperationType.Перенос)
                 {
-                   TranInWork.MySecondAccount = _accountTreeStraightener.Seek("Юлин кошелек", _db.Accounts);
+                    TranInWork.MySecondAccount = _accountTreeStraightener.Seek("Юлин кошелек", _db.Accounts);
                 }
             }
             if (TranInWork.CurrencyInReturn == null)
             {
-                TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCodes.BYR) ? CurrencyCodes.USD : CurrencyCodes.BYR; 
+                TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCodes.BYR) ? CurrencyCodes.USD : CurrencyCodes.BYR;
             }
         }
 
@@ -131,10 +149,10 @@ namespace Keeper.ViewModels.TransWithTags
 
         private void InitCorrespondingControl()
         {
-             MyIncomeControlVm.SetTran(TranInWork);
-             MyExpenseControlVm.SetTran(TranInWork);
-             MyTransferControlVm.SetTran(TranInWork);
-             MyExchangeControlVm.SetTran(TranInWork);
+            MyIncomeControlVm.SetTran(TranInWork);
+            MyExpenseControlVm.SetTran(TranInWork);
+            MyTransferControlVm.SetTran(TranInWork);
+            MyExchangeControlVm.SetTran(TranInWork);
         }
         private void SetVisibility(OperationType opType)
         {
@@ -142,6 +160,17 @@ namespace Keeper.ViewModels.TransWithTags
             MyExpenseControlVm.Visibility = opType == OperationType.Расход ? Visibility.Visible : Visibility.Collapsed;
             MyTransferControlVm.Visibility = opType == OperationType.Перенос ? Visibility.Visible : Visibility.Collapsed;
             MyExchangeControlVm.Visibility = opType == OperationType.Обмен ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void Receipt()
+        {
+            Left = Left - 180;
+            var receiptVm = new ReceiptViewModel(TranInWork.Amount, TranInWork.Currency.GetValueOrDefault(), null, null);
+            receiptVm.PlaceIt(Top, Left + Width, Height);
+            if (WindowManager.ShowDialog(receiptVm) == true)
+            {
+
+            };
         }
     }
 }
