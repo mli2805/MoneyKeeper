@@ -8,7 +8,8 @@ namespace Keeper.DomainModel.Trans
         public DateTime Timestamp;
         public decimal Amount;
         public CurrencyCodes Currency;
-        public decimal AmountInUsd;
+        public double Rate;
+        public decimal AmountInUsd => Currency == CurrencyCodes.USD ? Amount : Amount/(decimal) Rate;
         public string Comment;
 
         public override string ToString()

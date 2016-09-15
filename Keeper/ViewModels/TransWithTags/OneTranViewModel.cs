@@ -97,6 +97,15 @@ namespace Keeper.ViewModels.TransWithTags
         private bool IsValid()
         {
             if (TranInWork.HasntGotCategoryTagThoughItShould()) return false;
+            if (TranInWork.Operation == OperationType.Доход || TranInWork.Operation == OperationType.Расход)
+            {
+                TranInWork.MySecondAccount = null;
+            }
+            if (TranInWork.Operation != OperationType.Обмен)
+            {
+                TranInWork.AmountInReturn = 0;
+                TranInWork.CurrencyInReturn = null;
+            }
             /* more checks
              * ...
             */

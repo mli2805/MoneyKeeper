@@ -105,7 +105,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                 {
                     balanceList.Add("  " + str);
                 }
-               return _rateExtractor.GetUsdEquivalent(moneyBag, period.Finish);
+                return _rateExtractor.GetUsdEquivalent(moneyBag, period.Finish);
             }
             else
             {
@@ -132,10 +132,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                         Timestamp = t.Timestamp,
                         Amount = t.AmountForTag(tag, t.Currency),
                         Currency = t.Currency.GetValueOrDefault(),
-                        AmountInUsd =
-                                              rate != null
-                                                  ? t.AmountForTag(tag, t.Currency) / (decimal)rate.Rate
-                                                  : t.AmountForTag(tag, t.Currency),
+                        Rate = rate?.Rate ?? 0,
                         Comment = t.Comment
                     }).OrderBy(t => t.Timestamp).ToList();
         }
@@ -155,10 +152,7 @@ namespace Keeper.Utils.BalancesFromTransWithTags
                         Timestamp = t.Timestamp,
                         Amount = t.AmountForAccount(account, t.Currency),
                         Currency = t.Currency.GetValueOrDefault(),
-                        AmountInUsd =
-                            rate != null
-                                ? t.AmountForAccount(account, t.Currency) / (decimal)rate.Rate
-                                : t.AmountForAccount(account, t.Currency),
+                        Rate = rate?.Rate ?? 0,
                         Comment = t.Comment
                     }).ToList();
         }
@@ -167,24 +161,21 @@ namespace Keeper.Utils.BalancesFromTransWithTags
         {
             return from
                 t in _db.TransWithTags
-                where period.ContainsAndTimeWasChecked(t.Timestamp) &&
-                      t.MySecondAccount != null && t.MySecondAccount.Is(account.Name)
-                join
-                    r in _db.CurrencyRates
-                    on new { t.Timestamp.Date, Currency = t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault() } equals
-                    new { r.BankDay.Date, r.Currency } into g
-                from rate in g.DefaultIfEmpty()
-                select new TrafficOnMainPage()
-                {
-                    Timestamp = t.Timestamp,
-                    Amount = t.AmountForAccount(account, t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
-                    Currency = t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault(),
-                    AmountInUsd =
-                        rate != null
-                            ? t.AmountForAccount(account, t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()) / (decimal)rate.Rate
-                            : t.AmountForAccount(account, t.Operation == OperationType.Перенос ? t.Currency.GetValueOrDefault() : t.CurrencyInReturn.GetValueOrDefault()),
-                    Comment = t.Comment
-                };
+                   where period.ContainsAndTimeWasChecked(t.Timestamp) &&
+                         t.MySecondAccount != null && t.MySecondAccount.Is(account.Name)
+                   join
+                       r in _db.CurrencyRates
+                       on new { t.Timestamp.Date, Currency = t.CurrencyOfSecondAccount() } equals
+                       new { r.BankDay.Date, r.Currency } into g
+                   from rate in g.DefaultIfEmpty()
+                   select new TrafficOnMainPage()
+                   {
+                       Timestamp = t.Timestamp,
+                       Amount = t.AmountForAccount(account, t.CurrencyOfSecondAccount()),
+                       Currency = t.CurrencyOfSecondAccount(),
+                       Rate = rate?.Rate ?? 0,
+                       Comment = t.Comment
+                   };
         }
 
         private List<string> GetTrafficListForAccount(Account account, Period period)
