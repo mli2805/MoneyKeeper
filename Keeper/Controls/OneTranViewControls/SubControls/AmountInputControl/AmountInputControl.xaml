@@ -4,16 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:utils="clr-namespace:Keeper.Utils"
-             xmlns:amountInputControl="clr-namespace:Keeper.Controls.OneTranViewControls.SubControls.AmountInputControl"
+             xmlns:common="clr-namespace:Keeper.Utils.Common"
              mc:Ignorable="d" 
              Height="25"
              cal:Bind.ModelWithoutContext="{Binding .}"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
-            <amountInputControl:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
-            </ResourceDictionary>
+            <common:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <StackPanel Orientation ="Horizontal">

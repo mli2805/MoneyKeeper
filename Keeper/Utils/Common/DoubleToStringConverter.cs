@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Keeper.Controls.OneTranViewControls.SubControls.AmountInputControl
+namespace Keeper.Utils.Common
 {
     public class DoubleToStringConverter : IValueConverter
     {

@@ -180,7 +180,7 @@
     <Compile Include="DomainModel\MonthAnalysis\TranForAnalysis.cs" />
     <Compile Include="DomainModel\Trans\TrafficOnMainPage.cs" />
     <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
-    <Compile Include="Controls\OneTranViewControls\SubControls\AmountInputControl\DoubleToStringConverter.cs" />
+    <Compile Include="Utils\Common\DoubleToStringConverter.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />

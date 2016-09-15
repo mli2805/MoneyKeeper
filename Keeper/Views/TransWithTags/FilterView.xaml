@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
-        xmlns:amountInputControl="clr-namespace:Keeper.Controls.OneTranViewControls.SubControls.AmountInputControl"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:common="clr-namespace:Keeper.Utils.Common"
         mc:Ignorable="d"
         Title="FilterView" Height="480" Width="{Binding Width, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
     <Window.Resources>
@@ -13,7 +13,7 @@
             <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
                 <TextBlock Text="{Binding Name}" />
             </HierarchicalDataTemplate>
-            <amountInputControl:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
+            <common:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
