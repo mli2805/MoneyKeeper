@@ -40,7 +40,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public string Dump(TranWithTags tranWithTags)
         {
             return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " +
-                   tranWithTags.MyAccount + " ; " + tranWithTags.MySecondAccount + " ; " + 
+                   tranWithTags.MyAccount + " ; " + tranWithTags.DumpOfSecondAccount() + " ; " + 
                    tranWithTags.Amount.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.Currency + " ; " +
                    tranWithTags.AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.CurrencyInReturn + " ; " + 
                    Dump(tranWithTags.Tags) + " ; " + tranWithTags.Comment;

@@ -103,7 +103,7 @@
                         <ToolTip>
                             <StackPanel>
                                 <TextBlock Text="Создается копия БД на данный момент" />
-                                <TextBlock Text="в виде набора из 6 txt файлов"/>
+                                <TextBlock Text="в виде набора из 6 txtran файлов"/>
                                 <TextBlock Text="запакованных в шифрованный zip "/>
                                 <TextBlock Text="(лежит в dropbox\keeper)" />
                             </StackPanel>
@@ -122,7 +122,7 @@
                         <ToolTip>
                             <StackPanel>
                                 <TextBlock Text="Выгружает копию БД на данный момент"/>
-                                <TextBlock Text="в виде набора из 6 txt файлов"/>
+                                <TextBlock Text="в виде набора из 6 txtran файлов"/>
                                 <TextBlock Text="Лежит в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
                                 <TextBlock Text="При выходе из программы каталог будет очищен."/>
                             </StackPanel>
@@ -131,7 +131,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ExportDatabaseToTxt" />
+                                <cal:Parameter Value="ExportDatranabaseToTxtran" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -140,7 +140,7 @@
                     <MenuItem.ToolTip>
                         <ToolTip>
                             <StackPanel>
-                                <TextBlock Text="Загружает БД из набора из 6 txt файлов,"/>
+                                <TextBlock Text="Загружает БД из набора из 6 txtran файлов,"/>
                                 <TextBlock Text="лежащих в c:\temp\dr5g6-egr6e-wegffs-w34ger"/>
                                 <TextBlock Text="Файлы вручную достать из шифрованного zip"/>
                                 <TextBlock Text="(лежат в dropbox\keeper)"/>
@@ -150,7 +150,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ImportDatabaseFromTxt" />
+                                <cal:Parameter Value="ImportDatranabaseFromTxtran" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -191,7 +191,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="RemoveAllNonFirstInMonth" />
+                                <cal:Parameter Value="RemoveAllNonFirstInMontranh" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -247,7 +247,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowArticlesAssociationsForm" />
+                                <cal:Parameter Value="ShowArticlesAssociatranionsForm" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -276,7 +276,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowMonthlyResultDiagram" />
+                                <cal:Parameter Value="ShowMonthlyResultranDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -294,7 +294,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowMonthlyOutcomeDiagram" />
+                                <cal:Parameter Value="ShowMonthlyOutrancomeDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -303,7 +303,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowExpensePartingOxyPlotDiagram" />
+                                <cal:Parameter Value="ShowExpensePartingOxyPlotranDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -331,18 +331,18 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowOxyplotRatesDiagram" />
+                                <cal:Parameter Value="ShowOxyplotRatranesDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="TOOLS">
-                <MenuItem Header="Settings" >
+                <MenuItem Header="Settranings" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowSettings" />
+                                <cal:Parameter Value="ShowSettranings" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -392,7 +392,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="QuitApplication" />
+                                <cal:Parameter Value="QuitApplicatranion" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>

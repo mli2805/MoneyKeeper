@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 
@@ -86,6 +85,20 @@ namespace Keeper.DomainModel.Trans
         {
             return ((tran.Operation == OperationType.Доход || tran.Operation == OperationType.Расход) &&
                     tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null);
+        }
+
+        public static CurrencyCodes CurrencyOfSecondAccount(this TranWithTags tran)
+        {
+            return tran.Operation == OperationType.Перенос
+                ? tran.Currency.GetValueOrDefault()
+                : tran.CurrencyInReturn.GetValueOrDefault();
+        }
+
+        public static string DumpOfSecondAccount(this TranWithTags tran)
+        {
+            return tran.Operation == OperationType.Перенос || tran.Operation == OperationType.Обмен
+                ? tran.MySecondAccount.Name
+                : "";
         }
     }
 }
