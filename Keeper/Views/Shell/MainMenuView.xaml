@@ -247,7 +247,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowArticlesAssociatranionsForm" />
+                                <cal:Parameter Value="ShowArticlesAssociationsForm" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
