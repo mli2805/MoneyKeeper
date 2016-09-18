@@ -276,7 +276,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowMonthlyResultranDiagram" />
+                                <cal:Parameter Value="ShowMonthlyResultDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
