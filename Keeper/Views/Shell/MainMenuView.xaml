@@ -294,7 +294,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowMonthlyOutrancomeDiagram" />
+                                <cal:Parameter Value="ShowMonthlyOutcomeDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -303,7 +303,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowExpensePartingOxyPlotranDiagram" />
+                                <cal:Parameter Value="ShowExpensePartingOxyPlotDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -331,18 +331,18 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowOxyplotRatranesDiagram" />
+                                <cal:Parameter Value="ShowOxyplotRatesDiagram" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="TOOLS">
-                <MenuItem Header="Settranings" >
+                <MenuItem Header="Settings" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowSettranings" />
+                                <cal:Parameter Value="ShowSettings" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -392,7 +392,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="QuitApplicatranion" />
+                                <cal:Parameter Value="QuitApplication" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
