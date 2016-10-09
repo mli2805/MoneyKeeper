@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Caliburn.Micro;
+using Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.WorkTypes;
@@ -14,6 +16,7 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     public class FilterModel : PropertyChangedBase
     {
+        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         public List<OperationTypesFilter> OperationTypes { get; set; } = InitOperationTypesFilter();
         private OperationTypesFilter _myOperationType;
         public OperationTypesFilter MyOperationType
@@ -206,7 +209,37 @@ namespace Keeper.ViewModels.TransWithTags
             return result;
         }
 
+        private bool _isTagsJoinedByAnd;
+        public bool IsTagsJoinedByAnd
+        {
+            get { return _isTagsJoinedByAnd; }
+            set
+            {
+                if (value == _isTagsJoinedByAnd) return;
+                _isTagsJoinedByAnd = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public ObservableCollection<AccName> MyTags { get; set; } = new ObservableCollection<AccName>();
+
+        public TagPickerVm MyTagPickerVm { get; set; } 
+        
+
+        private bool _isTagsJoinedByOr;
+        public bool IsTagsJoinedByOr
+        {
+            get { return _isTagsJoinedByOr; }
+            set
+            {
+                if (value == _isTagsJoinedByOr) return;
+                _isTagsJoinedByOr = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private string _myComment;
+
         public string MyComment
         {
             get { return _myComment; }
@@ -219,23 +252,34 @@ namespace Keeper.ViewModels.TransWithTags
         }
 
         [ImportingConstructor]
-        public FilterModel(AccountTreeStraightener accountTreeStraightener, KeeperDb db)
+        public FilterModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
+            _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             AvailableAccNames = new List<AccName>
             {
                 new AccName().PopulateFromAccount(accountTreeStraightener.Seek("Мои", db.Accounts), new List<string>())
             };
-            CleanAll();
             IsAccNamePosition12 = true;
             AmountEqualTo = true;
             IsCurrencyPosition12 = true;
+            MyTagPickerVm = new TagPickerVm { TagSelectorVm = _accNameSelectionControlInitializer.ForFilter(), Tags = MyTags};
+            IsTagsJoinedByAnd = true;
+            CleanAll();
+            MyTags.CollectionChanged += MyTags_CollectionChanged;
         }
+
+        private void MyTags_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            NotifyOfPropertyChange(nameof(MyTags));
+        }
+
         public void CleanAll()
         {
             MyOperationType = OperationTypes.FirstOrDefault();
             MyAccName = AvailableAccNames.FirstOrDefault();
             Amount = null;
             MyCurrency = Currencies.FirstOrDefault();
+            MyTagPickerVm.Tags.Clear();
             MyComment = "";
         }
         public void CleanProperty(int propertyNumber)
@@ -246,7 +290,8 @@ namespace Keeper.ViewModels.TransWithTags
                 case 2: MyAccName = AvailableAccNames.FirstOrDefault(); return;
                 case 3: Amount = null; return;
                 case 4: MyCurrency = Currencies.FirstOrDefault(); return;
-                case 5: MyComment = ""; return;
+                case 5: MyTagPickerVm.Tags.Clear(); return;
+                case 6: MyComment = ""; return;
                 case 99: CleanAll(); return;
             }
         }

@@ -20,12 +20,27 @@ namespace Keeper.ViewModels.TransWithTags
         public static List<AccName> MyAccNamesForExchange { get; set; }
         public static List<AccName> AccNamesForExchangeTags { get; set; }
 
+        public static List<AccName> AccNamesForFilterTags { get; set; }
+
         public static void InitializeLists(KeeperDb db)
         {
             InitializeListsForIncome(db);
             InitializeListsForExpense(db);
             InitializeListsForTransfer(db);
             InitializeListsForExchange(db);
+            InitializeListForFilterTags(db);
+        }
+
+        public static void InitializeListForFilterTags(KeeperDb db)
+        {
+            // All Tags
+            AccNamesForFilterTags = new List<AccName>();
+            var list = new List<string>() { "Внешние", "Все доходы", "Все расходы" };
+            foreach (var element in list)
+            {
+                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts), null);
+                AccNamesForFilterTags.Add(root);
+            }
         }
         private static void InitializeListsForIncome(KeeperDb db)
         {

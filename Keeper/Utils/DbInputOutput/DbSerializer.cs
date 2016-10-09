@@ -3,7 +3,6 @@ using System.Composition;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
-using System.Threading;
 using System.Windows;
 using Keeper.DomainModel.DbTypes;
 using Keeper.Utils.DbInputOutput.CompositeTasks;

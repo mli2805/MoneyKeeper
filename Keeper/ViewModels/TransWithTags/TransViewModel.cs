@@ -33,8 +33,9 @@ namespace Keeper.ViewModels.TransWithTags
         public TransViewModel(KeeperDb db)
         {
             Model = new TransModel(db);
-            Top = 200;
+            Top = 100;
             Left = 700;
+
         }
         protected override void OnViewLoaded(object view)
         {

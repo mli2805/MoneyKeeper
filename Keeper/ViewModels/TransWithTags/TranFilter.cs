@@ -1,3 +1,4 @@
+using System.Linq;
 using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
@@ -11,7 +12,7 @@ namespace Keeper.ViewModels.TransWithTags
             _wrappedTran = wrappedTran;
             if (filterModel == null) return true;
             _filterModel = filterModel;
-            return FilterOperationType() && FilterAccount() && FilterAmount() && FilterCurrency() && FilterComment();
+            return FilterOperationType() && FilterAccount() && FilterAmount() && FilterCurrency() && FilterTags() && FilterComment();
         }
 
         private bool FilterOperationType()
@@ -46,6 +47,14 @@ namespace Keeper.ViewModels.TransWithTags
             // if (_filterModel.IsCurrencyPosition12)
             return _wrappedTran.Tran.Currency == _filterModel.MyCurrency.Currency ||
                    _wrappedTran.Tran.CurrencyInReturn != null && _wrappedTran.Tran.CurrencyInReturn == _filterModel.MyCurrency.Currency;
+        }
+
+        private bool FilterTags()
+        {
+            if (_filterModel.MyTagPickerVm.Tags == null || _filterModel.MyTagPickerVm.Tags.Count == 0) return true;
+            return _filterModel.IsTagsJoinedByOr 
+                ? _filterModel.MyTagPickerVm.Tags.Select(t=>t.Id).Any(_wrappedTran.Tran.Tags.Select(t=>t.Id).Contains) 
+                : _filterModel.MyTagPickerVm.Tags.Select(t=>t.Id).All(_wrappedTran.Tran.Tags.Select(t=>t.Id).Contains); // if (_filterModel.IsTagsJoinedByAnd)
         }
 
         private bool FilterComment()
