@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Composition;
 using System.Linq;
 using System.Windows;
@@ -136,7 +135,6 @@ namespace Keeper.Controls.OneTranViewControls
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             _associationFinder = associationFinder;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
-            ListsForComboTrees.InitializeLists(_db);
         }
 
         public void SetTran(TranWithTags tran)

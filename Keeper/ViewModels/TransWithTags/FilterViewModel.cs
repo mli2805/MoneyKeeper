@@ -4,7 +4,7 @@ using Caliburn.Micro;
 namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
-    public class FilterViewModel : Screen
+    class FilterViewModel : Screen
     {
         private int _left;
         public int Left
@@ -31,7 +31,6 @@ namespace Keeper.ViewModels.TransWithTags
         }
 
         private int _width;
-
         public int Width
         {
             get { return _width; }
@@ -55,6 +54,7 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
+        [ImportingConstructor]
         public FilterViewModel()
         {
             FilterModel = IoC.Get<FilterModel>();
@@ -63,7 +63,7 @@ namespace Keeper.ViewModels.TransWithTags
         public void PlaceIt(int left, int top, int width)
         {
             Left = left - width - 1;
-            Top = top + 100;
+            Top = top + 40;
             Width = width;
         }
 

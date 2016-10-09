@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
@@ -55,6 +54,7 @@ namespace Keeper.ViewModels.TransWithTags
         public TransModel(KeeperDb db)
         {
             Db = db;
+            ListsForComboTrees.InitializeLists(Db);
             _tranFilter = new TranFilter();
 
             Rows = WrapTransactions(db.TransWithTags);

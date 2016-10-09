@@ -9,7 +9,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
         xml:lang="ru-RU"
-        Title="TransView" Height="645" Width="900" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
+        Title="TransView" Height="745" Width="900" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>

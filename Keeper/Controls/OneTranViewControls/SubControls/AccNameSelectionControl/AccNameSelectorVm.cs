@@ -4,7 +4,7 @@ using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.Controls.OneTranViewControls.SubControls.AccNameSelectionControl
 {
-    class AccNameSelectorVm : PropertyChangedBase
+    public class AccNameSelectorVm : PropertyChangedBase
     {
         public List<AccNameButtonVm> Buttons { get; set; }
 

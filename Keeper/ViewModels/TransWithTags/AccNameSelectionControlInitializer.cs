@@ -9,7 +9,7 @@ using Keeper.DomainModel.WorkTypes;
 namespace Keeper.ViewModels.TransWithTags
 {
     [Export]
-    class AccNameSelectionControlInitializer
+    public class AccNameSelectionControlInitializer
     {
 
 #region Buttons Collections
@@ -74,6 +74,12 @@ namespace Keeper.ViewModels.TransWithTags
                 default:
                     return Build("Теги", ButtonsForExchangeTags, ListsForComboTrees.AccNamesForExchangeTags, tran.MyAccount.Name, "БИБ");
             }
+        }
+
+        public AccNameSelectorVm ForFilter()
+        {
+
+            return Build("", new Dictionary<string, string>(), ListsForComboTrees.AccNamesForFilterTags, "Прочие расходы", "");
         }
 
         private AccNameSelectorVm Build(string controlTitle, Dictionary<string, string> frequentAccountButtonNames,

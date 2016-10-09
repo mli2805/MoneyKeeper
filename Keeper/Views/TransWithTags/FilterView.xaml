@@ -6,8 +6,9 @@
         xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:common="clr-namespace:Keeper.Utils.Common"
+        xmlns:tagPickingControl="clr-namespace:Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl"
         mc:Ignorable="d"
-        Title="FilterView" Height="480" Width="{Binding Width, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
+        Title="FilterView" SizeToContent="Height" Width="{Binding Width, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
     <Window.Resources>
         <ResourceDictionary>
             <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
@@ -68,9 +69,19 @@
                 <RadioButton GroupName="CurrencyPosition" Content="2" IsChecked="{Binding FilterModel.IsCurrencyPosition2}" Margin="15,0,0,0"/>
                 <RadioButton GroupName="CurrencyPosition" Content="1 or 2" IsChecked="{Binding FilterModel.IsCurrencyPosition12}"  Margin="15,0,0,0"/>
             </StackPanel>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                    <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}" 
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(5)]"/>
+                    <TextBlock Padding="5">Тэги</TextBlock>
+                    <RadioButton GroupName="Tags" Content="И" IsChecked="{Binding FilterModel.IsTagsJoinedByAnd}" Margin="15,6,0,0"/>
+                    <RadioButton GroupName="Tags" Content="ИЛИ" IsChecked="{Binding FilterModel.IsTagsJoinedByOr}" Margin="15,6,0,0"/>
+                </StackPanel>
+                <tagPickingControl:TagPicker Width="200" HorizontalAlignment="Left" Margin="5,-25,0,5" DataContext="{Binding FilterModel.MyTagPickerVm}" />
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Height="25" Margin="5">
                 <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}" 
-                        cal:Message.Attach="[Event Click] = [Action CleanProperty(5)]"/>
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(6)]"/>
                 <TextBlock Padding="5">Комментарий</TextBlock>
             </StackPanel>
             <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" VerticalContentAlignment="Center" Text="{Binding FilterModel.MyComment}" />
