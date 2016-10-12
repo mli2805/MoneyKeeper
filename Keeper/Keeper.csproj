@@ -180,6 +180,7 @@
     <Compile Include="DomainModel\MonthAnalysis\TranForAnalysis.cs" />
     <Compile Include="DomainModel\Trans\TrafficOnMainPage.cs" />
     <Compile Include="DomainModel\Trans\TranCalcExtentions.cs" />
+    <Compile Include="Utils\CommonKeeper\ComboboxCaterer.cs" />
     <Compile Include="Utils\Common\DoubleToStringConverter.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
@@ -242,7 +243,7 @@
     <Compile Include="DomainModel\Trans\TranExtentions.cs" />
     <Compile Include="DomainModel\Trans\TranWithTags.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Utils\CommonKeeper\Templater.cs" />
+    <Compile Include="Utils\DepositProcessing\DepositAmountTemplater.cs" />
     <Compile Include="DomainModel\WorkTypes\AccName.cs" />
     <Compile Include="ViewModels\Shell\MainMenuActions\MainMenuAction.cs" />
     <Compile Include="ViewModels\Shell\MainMenuActions\MainMenuExecutor.cs" />

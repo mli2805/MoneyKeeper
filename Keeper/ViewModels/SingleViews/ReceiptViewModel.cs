@@ -5,12 +5,14 @@ using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.Utils.CommonKeeper;
 
 namespace Keeper.ViewModels.SingleViews
 {
     [Export]
     class ReceiptViewModel : Screen
     {
+        private readonly ComboboxCaterer _comboboxCaterer;
         public int Top { get; set; }
         public int Left
         {
@@ -120,13 +122,19 @@ namespace Keeper.ViewModels.SingleViews
         public List<Account> ExpenseArticles { get; set; }
         public List<CurrencyCodes> CurrencyList { get; private set; }
 
-        public ReceiptViewModel(decimal totalAmount, CurrencyCodes currency, Account initialArticle, List<Account> expenseArticles)
+        [ImportingConstructor]
+        public ReceiptViewModel(ComboboxCaterer comboboxCaterer)
         {
+            _comboboxCaterer = comboboxCaterer;
             CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-            ExpenseArticles = expenseArticles;
-            Expense = new List<Tuple<decimal, Account, string>>();
-            Currency = currency;
+            ExpenseArticles = _comboboxCaterer.GetExpenseArticles();
 
+            Expense = new List<Tuple<decimal, Account, string>>();
+        }
+
+        public void Initialize(decimal totalAmount, CurrencyCodes currency, Account initialArticle)
+        {
+            Currency = currency;
             TotalAmount = totalAmount;
             PartialAmount = totalAmount;
             PartialArticle = initialArticle;

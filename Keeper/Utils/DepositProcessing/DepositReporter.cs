@@ -28,7 +28,7 @@ namespace Keeper.Utils.DepositProcessing
             else
             {
                 reportHeader.Add(deposit.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!" : "Действующий депозит.");
-                var templater = new Templater(deposit.DepositOffer.Currency);
+                var templater = new DepositAmountTemplater(deposit.DepositOffer.Currency);
                 var balanceString = deposit.DepositOffer.Currency != CurrencyCodes.USD
                                       ? String.Format(templater.ForAmount()+" {2}  ($ {1:#,0.00} )",
                                                       deposit.CalculationData.CurrentBalance,
@@ -51,7 +51,7 @@ namespace Keeper.Utils.DepositProcessing
             decimal beforeOperation = 0;
             foreach (var operation in deposit.CalculationData.Traffic)
             {
-                var templater = new Templater(operation.Currency);
+                var templater = new DepositAmountTemplater(operation.Currency);
                 var line = new DepositReportBodyLine { Day = operation.Timestamp.Date, BeforeOperation = String.Format(templater.ForAmount(),beforeOperation) };
                 if (operation.TransactionType == DepositTransactionTypes.Расход)
                 {

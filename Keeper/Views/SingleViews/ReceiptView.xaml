@@ -24,9 +24,9 @@
 
     <!--    сумма чека-->
     <TextBlock Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="160,0,0,0">Сумма по чеку</TextBlock>
-    <TextBox Grid.Row="1" Margin="250,0,0,0" Width="70" HorizontalAlignment="Left" BorderBrush="#555555" 
+    <TextBox Grid.Row="1" Margin="250,0,0,0" Width="70" Height="22" HorizontalAlignment="Left" BorderBrush="#555555" 
              VerticalAlignment="Top" TextAlignment="Right"
-             Text="{Binding TotalAmount, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,#}'}" />
+             Text="{Binding TotalAmount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" />
     <ComboBox Grid.Row="1" Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="325,0,10,0" 
               Background="White" VerticalAlignment="top" Width="50"
               ItemsSource="{Binding CurrencyList}"
