@@ -1,4 +1,7 @@
-﻿using System.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.Composition;
+using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.Controls.OneTranViewControls;
@@ -45,7 +48,9 @@ namespace Keeper.ViewModels.TransWithTags
                 NotifyOfPropertyChange();
             }
         }
+        public List<Tuple<decimal, Account, string>> ReceiptList { get; set; }
 
+        public bool IsAddOrEdit { get; set; }
         public bool IsOneMore { get; set; } = false;
 
         public UniversalControlVm MyIncomeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
@@ -58,7 +63,6 @@ namespace Keeper.ViewModels.TransWithTags
         public OneTranViewModel(KeeperDb db)
         {
             _db = db;
-            
         }
 
         protected override void OnViewLoaded(object view)
@@ -71,13 +75,10 @@ namespace Keeper.ViewModels.TransWithTags
             return TranInWork;
         }
 
-        public void Init(TranWithTags tran, string caption)
+        public void Init(TranWithTags tran, bool AddOrEdit)
         {
-            _caption = caption;
-            SetTran(tran);
-        }
-        private void SetTran(TranWithTags tran)
-        {
+            IsAddOrEdit = AddOrEdit;
+            _caption = AddOrEdit ? "Добавить" : "Изменить";
             TranInWork = tran.Clone();
 
             SetVisibility(TranInWork.Operation);
@@ -86,7 +87,6 @@ namespace Keeper.ViewModels.TransWithTags
             MyOpTypeChoiceControlVm.PressedButton = TranInWork.Operation;
             MyOpTypeChoiceControlVm.PropertyChanged += MyOpTypeChoiceControlVm_PropertyChanged;
         }
-
         private void MyOpTypeChoiceControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             TranInWork.Operation = ((OpTypeChoiceControlVm)sender).PressedButton;
@@ -106,7 +106,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         private bool IsValid()
         {
-            if (TranInWork.HasntGotCategoryTagThoughItShould()) return false;
+            if (ReceiptList == null && TranInWork.HasntGotCategoryTagThoughItShould()) return false;
             if (TranInWork.Operation == OperationType.Доход || TranInWork.Operation == OperationType.Расход)
             {
                 TranInWork.MySecondAccount = null;
@@ -154,16 +154,32 @@ namespace Keeper.ViewModels.TransWithTags
             MyExchangeControlVm.Visibility = opType == OperationType.Обмен ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        private bool LeaveOneExternalAccountInTags()
+        {
+            var externalAccount = TranInWork.Tags.FirstOrDefault(a => a.Is("Внешние"));
+            if (externalAccount == null)
+            {
+                MessageBox.Show("Должен быть хотя бы один продавец/услугодатель");
+                return false;
+            }
+            TranInWork.Tags = new List<Account>() {externalAccount};
+            InitCorrespondingControl();
+            return true;
+        }
+
         public void Receipt()
         {
+            if ( ! LeaveOneExternalAccountInTags()) return;
+
             Left = Left - 180;
             var receiptVm = IoC.Get<ReceiptViewModel>();
-            receiptVm.Initialize(TranInWork.Amount, TranInWork.Currency.GetValueOrDefault(), null);
+            receiptVm.Initialize(TranInWork.Amount, TranInWork.Currency.GetValueOrDefault(), _db.SeekAccount("Прочие расходы"));
             receiptVm.PlaceIt(Top, Left + Width, Height);
-            if (WindowManager.ShowDialog(receiptVm) == true)
-            {
 
-            }
+            if (WindowManager.ShowDialog(receiptVm) != true) return;
+
+            ReceiptList = receiptVm.ResultList;
+            Save();
         }
     }
 }
