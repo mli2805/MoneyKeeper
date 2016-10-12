@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.AccountEditing;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
@@ -10,20 +11,18 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
     public class DbEntriesToFileContentConverter : IDbEntriesToStringListsConverter
     {
         private readonly KeeperDb _db;
-        readonly AccountTreeStraightener _accountTreeStraightener;
         readonly DbClassesInstanceDumper _dbClassesInstanceDumper;
 
         [ImportingConstructor]
-        public DbEntriesToFileContentConverter(KeeperDb db, AccountTreeStraightener accountTreeStraightener, DbClassesInstanceDumper dbClassesInstanceDumper)
+        public DbEntriesToFileContentConverter(KeeperDb db, DbClassesInstanceDumper dbClassesInstanceDumper)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
             _dbClassesInstanceDumper = dbClassesInstanceDumper;
         }
 
         public IEnumerable<string> ConvertAccountsToFileContent()
         {
-            foreach (var account in _accountTreeStraightener.FlattenWithLevels(_db.Accounts))
+            foreach (var account in _db.FlattenAccountsWithLevels())
             {
                 yield return _dbClassesInstanceDumper.Dump(account);
                 if (account.Level == 0) yield return "";
@@ -32,7 +31,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
 
         public IEnumerable<string> ConvertDepositsToFileContent()
         {
-            foreach (var account in _accountTreeStraightener.FlattenWithLevels(_db.Accounts))
+            foreach (var account in _db.FlattenAccountsWithLevels())
             {
                 if (account.Item.Deposit == null) continue;
                 yield return _dbClassesInstanceDumper.Dump(account.Item.Deposit);

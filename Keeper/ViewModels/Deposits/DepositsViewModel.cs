@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DepositProcessing;
@@ -49,7 +50,7 @@ namespace Keeper.ViewModels.Deposits
             MyTitleStyle = new Style();
 
             DepositList = new List<Deposit>();
-            foreach (var account in new AccountTreeStraightener().Flatten(_db.Accounts))
+            foreach (var account in _db.FlattenAccounts())
             {
                 if (!account.Is("Депозиты") || account.Children.Count != 0 || !account.IsDeposit()) continue;
                 _depositCalculatorAggregator.FillinFieldsForOneDepositReport(account.Deposit);

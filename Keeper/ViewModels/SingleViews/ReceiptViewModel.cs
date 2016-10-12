@@ -12,7 +12,6 @@ namespace Keeper.ViewModels.SingleViews
     [Export]
     class ReceiptViewModel : Screen
     {
-        private readonly ComboboxCaterer _comboboxCaterer;
         public int Top { get; set; }
         public int Left
         {
@@ -52,8 +51,7 @@ namespace Keeper.ViewModels.SingleViews
             }
         }
 
-
-        public List<Tuple<decimal, Account, string>> Expense { get; set; }
+        public List<Tuple<decimal, Account, string>> Expense { get; set; } = new List<Tuple<decimal, Account, string>>();
 
         private decimal _partialAmount;
         public decimal PartialAmount
@@ -125,11 +123,8 @@ namespace Keeper.ViewModels.SingleViews
         [ImportingConstructor]
         public ReceiptViewModel(ComboboxCaterer comboboxCaterer)
         {
-            _comboboxCaterer = comboboxCaterer;
             CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-            ExpenseArticles = _comboboxCaterer.GetExpenseArticles();
-
-            Expense = new List<Tuple<decimal, Account, string>>();
+            ExpenseArticles = comboboxCaterer.GetExpenseArticles();
         }
 
         public void Initialize(decimal totalAmount, CurrencyCodes currency, Account initialArticle)

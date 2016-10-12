@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using FakeItEasy;
 using FluentAssertions;
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Trans;
 using Keeper.Utils.AccountEditing;

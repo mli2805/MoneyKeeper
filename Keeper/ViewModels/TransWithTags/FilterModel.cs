@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils;
 using Keeper.Utils.AccountEditing;
@@ -16,7 +17,6 @@ namespace Keeper.ViewModels.TransWithTags
     [Export]
     public class FilterModel : PropertyChangedBase
     {
-        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         public List<OperationTypesFilter> OperationTypes { get; set; } = InitOperationTypesFilter();
         private OperationTypesFilter _myOperationType;
         public OperationTypesFilter MyOperationType
@@ -252,17 +252,16 @@ namespace Keeper.ViewModels.TransWithTags
         }
 
         [ImportingConstructor]
-        public FilterModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+        public FilterModel(KeeperDb db, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
-            _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             AvailableAccNames = new List<AccName>
             {
-                new AccName().PopulateFromAccount(accountTreeStraightener.Seek("Мои", db.Accounts), new List<string>())
+                new AccName().PopulateFromAccount(db.SeekAccount("Мои"), new List<string>())
             };
             IsAccNamePosition12 = true;
             AmountEqualTo = true;
             IsCurrencyPosition12 = true;
-            MyTagPickerVm = new TagPickerVm { TagSelectorVm = _accNameSelectionControlInitializer.ForFilter(), Tags = MyTags};
+            MyTagPickerVm = new TagPickerVm { TagSelectorVm = accNameSelectionControlInitializer.ForFilter(), Tags = MyTags};
             IsTagsJoinedByAnd = true;
             CleanAll();
             MyTags.CollectionChanged += MyTags_CollectionChanged;

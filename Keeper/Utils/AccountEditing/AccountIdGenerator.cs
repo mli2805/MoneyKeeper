@@ -1,6 +1,7 @@
 ﻿using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Extentions;
 
 namespace Keeper.Utils.AccountEditing
 {
@@ -8,18 +9,16 @@ namespace Keeper.Utils.AccountEditing
 	public sealed class AccountIdGenerator
 	{
 		readonly KeeperDb _db;
-		readonly AccountTreeStraightener _accountTreeStraightener;
 
 		[ImportingConstructor]
-		public AccountIdGenerator(KeeperDb keeperDb, AccountTreeStraightener accountTreeStraightener)
+		public AccountIdGenerator(KeeperDb keeperDb)
 		{
 			_db = keeperDb;
-			_accountTreeStraightener = accountTreeStraightener;
 		}
 
 		public int GenerateAccountId()
 		{
-			return (from account in _accountTreeStraightener.Flatten(_db.Accounts) 
+			return (from account in _db.FlattenAccounts() 
 			        select account.Id).Max() + 1;
 		}
 

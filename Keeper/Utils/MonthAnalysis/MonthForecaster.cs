@@ -18,17 +18,17 @@ namespace Keeper.Utils.MonthAnalysis
         private readonly KeeperDb _db;
         private readonly RegularPaymentsProvider _regularPaymentsProvider;
         private readonly RateExtractor _rateExtractor;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
         private readonly DepositCalculationAggregator _depositCalculationAggregator;
 
         [ImportingConstructor]
         public MonthForecaster(KeeperDb db, RegularPaymentsProvider regularPaymentsProvider, RateExtractor rateExtractor,
-           AccountTreeStraightener accountTreeStraightener, DepositCalculationAggregator depositCalculationAggregator)
+           DepositCalculationAggregator depositCalculationAggregator)
         {
             _db = db;
             _regularPaymentsProvider = regularPaymentsProvider;
             _rateExtractor = rateExtractor;
-            _accountTreeStraightener = accountTreeStraightener;
+            
             _depositCalculationAggregator = depositCalculationAggregator;
         }
 
@@ -72,7 +72,7 @@ namespace Keeper.Utils.MonthAnalysis
 
         private bool CheckExpensePayment(Saldo s, RegularPayment payment)
         {
-            var paymentArticle = _accountTreeStraightener.Seek(payment.Article, _db.Accounts);
+            var paymentArticle = _db.SeekAccount(payment.Article);
             return (from tr in _db.TransWithTags
                     where tr.Timestamp.IsMonthTheSame(s.StartDate)
                           && tr.Tags != null
@@ -88,7 +88,7 @@ namespace Keeper.Utils.MonthAnalysis
 
         private void CheckDepositFolder(Saldo s, string folder)
         {
-            foreach (var account in _accountTreeStraightener.Seek(folder, _db.Accounts).Children)
+            foreach (var account in _db.SeekAccount(folder).Children)
             {
                 if (account.Children.Count != 0 || !account.IsDeposit()) continue;
                 _depositCalculationAggregator.FillinFieldsForMonthAnalysis(account.Deposit, s.StartDate);

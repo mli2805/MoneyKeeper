@@ -32,7 +32,7 @@ namespace Keeper.ViewModels.Deposits
         public ObservableCollection<BankDepositRateLine> Rows { get; set; }
 
         [ImportingConstructor]
-        public BankDepositRatesAndRulesViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+        public BankDepositRatesAndRulesViewModel(KeeperDb db)
         {
             _db = db;
             NewDate = DateTime.Today;

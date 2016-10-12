@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DiagramDomainModel;
 
@@ -13,14 +14,14 @@ namespace Keeper.Utils.DiagramDataExtraction
     public class CategoriesDiagramsDataFactory
     {
         private readonly KeeperDb _db;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
         private readonly CategoriesDataExtractor _categoriesDataExtractor;
 
         [ImportingConstructor]
-        public CategoriesDiagramsDataFactory(KeeperDb db, AccountTreeStraightener accountTreeStraightener, CategoriesDataExtractor categoriesDataExtractor)
+        public CategoriesDiagramsDataFactory(KeeperDb db, CategoriesDataExtractor categoriesDataExtractor)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
+            
             _categoriesDataExtractor = categoriesDataExtractor;
         }
 
@@ -29,10 +30,10 @@ namespace Keeper.Utils.DiagramDataExtraction
         {
             var categoriesList = new List<Account>
             {
-                _accountTreeStraightener.Seek("Зарплата", _db.Accounts),
-                _accountTreeStraightener.Seek("Иррациональные", _db.Accounts),
-                _accountTreeStraightener.Seek("Рента", _db.Accounts),
-                _accountTreeStraightener.Seek("Подарки", _db.Accounts),
+                _db.SeekAccount("Зарплата"),
+                _db.SeekAccount("Иррациональные"),
+                _db.SeekAccount("Рента"),
+                _db.SeekAccount("Подарки"),
             };
 
             var colors = new List<Brush> { Brushes.Green, Brushes.DarkGray, Brushes.Blue, Brushes.DarkOrange };
@@ -53,7 +54,7 @@ namespace Keeper.Utils.DiagramDataExtraction
 
         public DiagramData MonthlyExpenseDiagramCtor()
         {
-            var root = _accountTreeStraightener.Seek("Все расходы", _db.Accounts);
+            var root = _db.SeekAccount("Все расходы");
 
             var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta,
                 Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
@@ -98,9 +99,9 @@ namespace Keeper.Utils.DiagramDataExtraction
         {
             var categoriesList = new List<Account>
             {
-                _accountTreeStraightener.Seek("Зарплата", _db.Accounts),
-                _accountTreeStraightener.Seek("Иррациональные", _db.Accounts),
-                _accountTreeStraightener.Seek("Рента", _db.Accounts),
+                _db.SeekAccount("Зарплата"),
+                _db.SeekAccount("Иррациональные"),
+                _db.SeekAccount("Рента"),
             };
             var colors = new List<Brush> { Brushes.LimeGreen, Brushes.Black, Brushes.Blue };
             var colorsEnumerator = colors.GetEnumerator();

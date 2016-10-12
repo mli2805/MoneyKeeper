@@ -8,6 +8,7 @@ using System.Text;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 
@@ -20,7 +21,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
         private readonly DbClassesInstanceParser _dbClassesInstanceParser;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
         private readonly Encoding _encoding1251 = Encoding.GetEncoding(1251);
         public DbLoadResult Result;
 
@@ -32,16 +33,17 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
 
         [ImportingConstructor]
-        public DbFromTxtLoader(DbClassesInstanceParser dbClassesInstanceParser, AccountTreeStraightener accountTreeStraightener)
+        public DbFromTxtLoader(DbClassesInstanceParser dbClassesInstanceParser)
         {
             _dbClassesInstanceParser = dbClassesInstanceParser;
-            _accountTreeStraightener = accountTreeStraightener;
+            
         }
 
         public DbLoadResult LoadDbFromTxt(string path)
         {
             var db = new KeeperDb { Accounts = LoadAccounts(path) };
-            var accountsPlaneList = _accountTreeStraightener.Flatten(db.Accounts).ToList();
+//            var accountsPlaneList = _accountTreeStraightener.Flatten(db.Accounts).ToList();
+            var accountsPlaneList = db.FlattenAccounts().ToList();
             db.BankDepositOffers = LoadFrom(path, "BankDepositOffers.txt",
                            _dbClassesInstanceParser.BankDepositOfferFromString, accountsPlaneList);
             if (Result != null) return Result;

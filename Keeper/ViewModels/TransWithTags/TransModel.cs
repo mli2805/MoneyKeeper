@@ -54,7 +54,7 @@ namespace Keeper.ViewModels.TransWithTags
         public TransModel(KeeperDb db)
         {
             Db = db;
-            ListsForComboTrees.InitializeLists(Db);
+            ListsForComboTrees.InitializeLists();
             _tranFilter = new TranFilter();
 
             Rows = WrapTransactions(db.TransWithTags);

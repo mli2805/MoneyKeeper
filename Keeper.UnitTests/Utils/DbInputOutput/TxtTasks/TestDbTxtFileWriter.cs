@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
 using FakeItEasy;
-using Keeper.Utils;
 using Keeper.Utils.Common;
 using Keeper.Utils.DbInputOutput.TxtTasks;
 using Keeper.Utils.FileSystem;

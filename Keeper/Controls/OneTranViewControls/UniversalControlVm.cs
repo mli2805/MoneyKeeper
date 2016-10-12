@@ -9,6 +9,7 @@ using Keeper.Controls.OneTranViewControls.SubControls.AmountInputControl;
 using Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
@@ -33,7 +34,6 @@ namespace Keeper.Controls.OneTranViewControls
         }
 
         private readonly KeeperDb _db;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         private readonly AssociationFinder _associationFinder;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
@@ -127,11 +127,10 @@ namespace Keeper.Controls.OneTranViewControls
         }
 
         [ImportingConstructor]
-        public UniversalControlVm(KeeperDb db, AccountTreeStraightener accountTreeStraightener, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
+        public UniversalControlVm(KeeperDb db,BalanceDuringTransactionHinter balanceDuringTransactionHinter,
                  AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             _associationFinder = associationFinder;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
@@ -199,7 +198,7 @@ namespace Keeper.Controls.OneTranViewControls
 
         private void ReactOnUsersAdd()
         {
-            var tag = _accountTreeStraightener.Seek(MyTagPickerVm.TagInWork.Name, _db.Accounts);
+            var tag = _db.SeekAccount(MyTagPickerVm.TagInWork.Name);
             TranInWork.Tags.Add(tag);
 
             var associatedTag = _associationFinder.GetAssociation(TranInWork, tag);
@@ -213,7 +212,7 @@ namespace Keeper.Controls.OneTranViewControls
 
         private void ReactOnAssociationAdd()
         {
-            var tag = _accountTreeStraightener.Seek(MyTagPickerVm.AssociatedTag.Name, _db.Accounts);
+            var tag = _db.SeekAccount(MyTagPickerVm.AssociatedTag.Name);
             TranInWork.Tags.Add(tag);
 
             MyTagPickerVm.AssociatedTag = null;
@@ -221,7 +220,7 @@ namespace Keeper.Controls.OneTranViewControls
 
         private void ReactOnRemove()
         {
-            var tag = _accountTreeStraightener.Seek(MyTagPickerVm.TagInWork.Name, _db.Accounts);
+            var tag = _db.SeekAccount(MyTagPickerVm.TagInWork.Name);
             TranInWork.Tags.Remove(tag);
             MyTagPickerVm.TagInWork = null;
         }
@@ -247,7 +246,7 @@ namespace Keeper.Controls.OneTranViewControls
         {
             if (e.PropertyName == "MyAccName")
             {
-                TranInWork.MyAccount = _accountTreeStraightener.Seek(MyAccNameSelectorVm.MyAccName.Name, _db.Accounts);
+                TranInWork.MyAccount = _db.SeekAccount(MyAccNameSelectorVm.MyAccName.Name);
                 MyAmountInputControlVm.Currency =
                     _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount)?.Currency ?? CurrencyCodes.BYN;
             }
@@ -256,7 +255,7 @@ namespace Keeper.Controls.OneTranViewControls
         {
             if (e.PropertyName == "MyAccName")
             {
-                TranInWork.MySecondAccount = _accountTreeStraightener.Seek(MySecondAccNameSelectorVm.MyAccName.Name, _db.Accounts);
+                TranInWork.MySecondAccount = _db.SeekAccount(MySecondAccNameSelectorVm.MyAccName.Name);
                 MyAmountInReturnInputControlVm.Currency =
                     _db.TransWithTags.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount)?.Currency ?? CurrencyCodes.BYN;
             }
