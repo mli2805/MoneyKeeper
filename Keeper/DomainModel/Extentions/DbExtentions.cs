@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.Common;
 
 namespace Keeper.DomainModel.Extentions
@@ -29,6 +30,15 @@ namespace Keeper.DomainModel.Extentions
                 yield return hierarchyItem;
         }
 
+        public static AccName FindThroughTheForest(this List<AccName> roots, string name)
+        {
+            foreach (var root in roots)
+            {
+                var result = root.FindThroughTree(name);
+                if (result != null) return result;
+            }
+            return null;
+        }
 
     }
 }

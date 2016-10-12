@@ -1,31 +1,34 @@
 using System.Collections.Generic;
-using Caliburn.Micro;
+using System.Composition;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.TransWithTags
 {
-    public static class ListsForComboTrees
+    [Export]
+    public class ComboTreesCaterer
     {
-        public static readonly KeeperDb _db = IoC.Get<KeeperDb>();
-        public static List<AccName> MyAccNamesForIncome { get; set; }
-        public static List<AccName> AccNamesForIncomeTags { get; set; }
+        private readonly KeeperDb _db;
 
-        public static List<AccName> MyAccNamesForExpense { get; set; }
-        public static List<AccName> AccNamesForExpenseTags { get; set; }
+        public List<AccName> MyAccNamesForIncome { get; set; }
+        public List<AccName> AccNamesForIncomeTags { get; set; }
 
-        public static List<AccName> MyAccNamesForTransfer { get; set; }
-        public static List<AccName>  AccNamesForTransferTags { get; set; }
+        public List<AccName> MyAccNamesForExpense { get; set; }
+        public List<AccName> AccNamesForExpenseTags { get; set; }
 
-        public static List<AccName> MyAccNamesForExchange { get; set; }
-        public static List<AccName> AccNamesForExchangeTags { get; set; }
+        public List<AccName> MyAccNamesForTransfer { get; set; }
+        public List<AccName> AccNamesForTransferTags { get; set; }
 
-        public static List<AccName> AccNamesForFilterTags { get; set; }
+        public List<AccName> MyAccNamesForExchange { get; set; }
+        public List<AccName> AccNamesForExchangeTags { get; set; }
 
-        public static void InitializeLists()
+        public List<AccName> AccNamesForFilterTags { get; set; }
+
+        [ImportingConstructor]
+        public ComboTreesCaterer(KeeperDb db)
         {
+            _db = db;
             InitializeListsForIncome();
             InitializeListsForExpense();
             InitializeListsForTransfer();
@@ -33,7 +36,7 @@ namespace Keeper.ViewModels.TransWithTags
             InitializeListForFilterTags();
         }
 
-        public static void InitializeListForFilterTags()
+        private void InitializeListForFilterTags()
         {
             // All Tags
             AccNamesForFilterTags = new List<AccName>();
@@ -44,7 +47,7 @@ namespace Keeper.ViewModels.TransWithTags
                 AccNamesForFilterTags.Add(root);
             }
         }
-        private static void InitializeListsForIncome()
+        private void InitializeListsForIncome()
         {
             // Income
             MyAccNamesForIncome = new List<AccName>
@@ -63,7 +66,7 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
-        private static void InitializeListsForExpense()
+        private void InitializeListsForExpense()
         {
             // Expense
             MyAccNamesForExpense = new List<AccName>
@@ -82,7 +85,7 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
-        private static void InitializeListsForTransfer()
+        private void InitializeListsForTransfer()
         {
             // Transfer
             MyAccNamesForTransfer = new List<AccName>
@@ -101,7 +104,7 @@ namespace Keeper.ViewModels.TransWithTags
             }
         }
 
-        private static void InitializeListsForExchange()
+        private void InitializeListsForExchange()
         {
             // Exchange
             MyAccNamesForExchange = new List<AccName>
@@ -118,16 +121,6 @@ namespace Keeper.ViewModels.TransWithTags
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
                 AccNamesForExchangeTags.Add(root);
             }
-        }
-
-        public static AccName FindThroughTheForest(this List<AccName> roots, string name)
-        {
-            foreach (var root in roots)
-            {
-                var result = root.FindThroughTree(name);
-                if (result != null) return result;
-            }
-            return null;
         }
 
     }

@@ -5,7 +5,6 @@ using System.Linq;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.WorkTypes;
-using Keeper.Utils.CommonKeeper;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.DepositProcessing

@@ -5,7 +5,6 @@ using System.Windows.Media;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Extentions;
-using Keeper.Utils.AccountEditing;
 using Keeper.Utils.DiagramDomainModel;
 
 namespace Keeper.Utils.DiagramDataExtraction

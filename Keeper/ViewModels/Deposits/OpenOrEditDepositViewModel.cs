@@ -8,7 +8,6 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Extentions;
-using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.Deposits
 {

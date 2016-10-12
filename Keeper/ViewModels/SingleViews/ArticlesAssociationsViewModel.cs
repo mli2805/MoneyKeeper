@@ -8,7 +8,6 @@ using System.Windows.Data;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
-using Keeper.Utils.AccountEditing;
 using Keeper.Utils.CommonKeeper;
 
 namespace Keeper.ViewModels.SingleViews
