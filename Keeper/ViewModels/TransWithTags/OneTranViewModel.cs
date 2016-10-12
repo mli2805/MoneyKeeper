@@ -165,7 +165,8 @@ namespace Keeper.ViewModels.TransWithTags
         public void Receipt()
         {
             Left = Left - 180;
-            var receiptVm = new ReceiptViewModel(TranInWork.Amount, TranInWork.Currency.GetValueOrDefault(), null, null);
+            var receiptVm = IoC.Get<ReceiptViewModel>();
+            receiptVm.Initialize(TranInWork.Amount, TranInWork.Currency.GetValueOrDefault(), null);
             receiptVm.PlaceIt(Top, Left + Width, Height);
             if (WindowManager.ShowDialog(receiptVm) == true)
             {

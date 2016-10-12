@@ -9,26 +9,28 @@ using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
 using Keeper.Utils.AccountEditing;
+using Keeper.Utils.CommonKeeper;
 
 namespace Keeper.ViewModels.SingleViews
 {
     [Export]
     class ArticlesAssociationsViewModel : Screen
     {
-        private readonly KeeperDb _db;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        private static KeeperDb _db;
+        private readonly ComboboxCaterer _comboboxCaterer;
 
         public ObservableCollection<ArticleAssociation> Rows { get; set; }
         public static List<Account> ExternalAccounts { get; private set; }
+
         public static List<Account> AssociatedArticles { get; private set; }
 
         public static List<OperationType> OperationTypes { get; private set; }
 
         [ImportingConstructor]
-        public ArticlesAssociationsViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+        public ArticlesAssociationsViewModel(KeeperDb db, ComboboxCaterer comboboxCaterer)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
+            _comboboxCaterer = comboboxCaterer;
 
             InitializeListsForCombobox();
 
@@ -41,14 +43,8 @@ namespace Keeper.ViewModels.SingleViews
 
         private void InitializeListsForCombobox()
         {
-            ExternalAccounts =
-              (_accountTreeStraightener.Flatten(_db.Accounts).Where(
-                account => account.Is("Внешние") && account.Children.Count == 0)).ToList();
-            ExternalAccounts.Add(_accountTreeStraightener.Seek("Банки",_db.Accounts));
-
-            AssociatedArticles = (_accountTreeStraightener.Flatten(_db.Accounts).
-               Where(account => (account.Is("Все доходы") || account.Is("Все расходы")) && account.Children.Count == 0)).ToList();
-
+            ExternalAccounts = _comboboxCaterer.GetExternalAccounts();
+            AssociatedArticles =_comboboxCaterer.GetIncomeAndExpenseArticles();
             OperationTypes = Enum.GetValues(typeof (OperationType)).Cast<OperationType>().ToList();
         }
 

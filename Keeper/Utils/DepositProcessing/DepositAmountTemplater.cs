@@ -1,17 +1,16 @@
 ﻿using Keeper.DomainModel.Enumes;
 
-namespace Keeper.Utils.CommonKeeper
+namespace Keeper.Utils.DepositProcessing
 {
-    public class Templater
+    public class DepositAmountTemplater
     {
         private readonly CurrencyCodes _currency;
-        public Templater(CurrencyCodes currency)
+        public DepositAmountTemplater(CurrencyCodes currency)
         {
             _currency = currency;
         }
 
 
         public string ForAmount() { return _currency == CurrencyCodes.BYR ? "{0:#,0}" : "{0:#,0.00}"; }
-        public string ForAmount(int position) { return _currency == CurrencyCodes.BYR ? "{"+position+":#,0}" : "{"+position+"0:#,0.00}"; }
     }
 }
