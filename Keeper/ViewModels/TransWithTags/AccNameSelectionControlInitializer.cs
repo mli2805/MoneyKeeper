@@ -6,6 +6,7 @@ using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Trans;
 using Keeper.DomainModel.WorkTypes;
+using Keeper.Utils.CommonKeeper;
 
 namespace Keeper.ViewModels.TransWithTags
 {

@@ -13,6 +13,7 @@ namespace Keeper.ViewModels.SingleViews
     class ReceiptViewModel : Screen
     {
         public int Top { get; set; }
+        private int _left;
         public int Left
         {
             get { return _left; }
@@ -51,7 +52,7 @@ namespace Keeper.ViewModels.SingleViews
             }
         }
 
-        public List<Tuple<decimal, Account, string>> Expense { get; set; } = new List<Tuple<decimal, Account, string>>();
+        public List<Tuple<decimal, Account, string>> ResultList { get; set; } = new List<Tuple<decimal, Account, string>>();
 
         private decimal _partialAmount;
         public decimal PartialAmount
@@ -64,7 +65,7 @@ namespace Keeper.ViewModels.SingleViews
                 NotifyOfPropertyChange(() => PartialAmount);
             }
         }
-        public decimal PartialTotal => (from a in Expense select a.Item1).Sum();
+        public decimal PartialTotal => (from a in ResultList select a.Item1).Sum();
 
         private Account _partialArticle;
         public Account PartialArticle
@@ -104,7 +105,6 @@ namespace Keeper.ViewModels.SingleViews
 
 
         private bool _canAcceptReceipt;
-        private int _left;
 
         public bool CanAcceptReceipt
         {
@@ -152,12 +152,12 @@ namespace Keeper.ViewModels.SingleViews
         private void BuildReceiptFigure()
         {
             ReceiptFigure = "";
-            foreach (var tuple in Expense)
+            foreach (var tuple in ResultList)
             {
-                ReceiptFigure += $"\n {tuple.Item2.Name}   {tuple.Item1:#,#} {Currency.ToString().ToLower()}  {tuple.Item3}";
+                ReceiptFigure += $"\n {tuple.Item2.Name}   {tuple.Item1:#,0.00} {Currency.ToString().ToLower()}  {tuple.Item3}";
             }
             if (PartialTotal != 0) ReceiptFigure +=
-                $"\n\n               Итого {PartialTotal:#,0} {Currency.ToString().ToLower()}";
+                $"\n\n               Итого {PartialTotal:#,0.00} {Currency.ToString().ToLower()}";
         }
 
         private void ChangeAllProperties()
@@ -170,15 +170,15 @@ namespace Keeper.ViewModels.SingleViews
 
         public void OnceMore()
         {
-            Expense.Add(new Tuple<decimal, Account, string>(PartialAmount, PartialArticle, PartialComment));
+            ResultList.Add(new Tuple<decimal, Account, string>(PartialAmount, PartialArticle, PartialComment));
             ChangeAllProperties();
         }
 
         public void DeleteOne()
         {
-            if (Expense.Count == 0) return;
+            if (ResultList.Count == 0) return;
 
-            Expense.RemoveAt(Expense.Count - 1);
+            ResultList.RemoveAt(ResultList.Count - 1);
             ChangeAllProperties();
         }
 

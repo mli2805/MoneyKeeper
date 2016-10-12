@@ -4,7 +4,7 @@ using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.WorkTypes;
 
-namespace Keeper.ViewModels.TransWithTags
+namespace Keeper.Utils.CommonKeeper
 {
     [Export]
     public class ComboTreesCaterer

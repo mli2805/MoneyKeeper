@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
+using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
@@ -27,7 +30,7 @@ namespace Keeper.ViewModels.TransWithTags
         private bool Edit()
         {
             OneTranViewModel oneTranForm = IoC.Get<OneTranViewModel>();
-            oneTranForm.Init(_model.SelectedTranWrappedForDatagrid.Tran, "Изменить");
+            oneTranForm.Init(_model.SelectedTranWrappedForDatagrid.Tran, false);
             bool? result = WindowManager.ShowDialog(oneTranForm);
 
             if (!result.HasValue || !result.Value) return false;
@@ -73,22 +76,40 @@ namespace Keeper.ViewModels.TransWithTags
         {
             var oneTranForm = IoC.Get<OneTranViewModel>();
             var tranForAdding = PrepareTranForAdding();
-            oneTranForm.Init(tranForAdding, "Добавить");
+            oneTranForm.Init(tranForAdding, true);
             bool? result = WindowManager.ShowDialog(oneTranForm);
 
             if (!result.HasValue || !result.Value) return false;
 
-            var tran = oneTranForm.GetTran().Clone();
-            var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
-            _model.Rows.Add(tranWrappedForDatagrid);
-            _model.Db.TransWithTags.Add(tran);
-            _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
+            if (oneTranForm.ReceiptList != null)
+                AddOneTranAndReceipt(oneTranForm);
+            else
+                AddOneTran(oneTranForm.GetTran().Clone());
 
             if (oneTranForm.IsOneMore) AddAfterSelected();
 
             return true;
         }
 
+        private void AddOneTran(TranWithTags tran)
+        {
+            var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
+            _model.Rows.Add(tranWrappedForDatagrid);
+            _model.Db.TransWithTags.Add(tran);
+            _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
+        }
+
+        private void AddOneTranAndReceipt(OneTranViewModel oneTranForm)
+        {
+            foreach (var tuple in oneTranForm.ReceiptList)
+            {
+                var tran = oneTranForm.GetTran().Clone();
+                tran.Amount = tuple.Item1;
+                tran.Tags.Add(tuple.Item2);
+                tran.Comment = tuple.Item3;
+                AddOneTran(tran);
+            }
+        }
         private TranWithTags PrepareTranForAdding()
         {
             var tranForAdding = _model.SelectedTranWrappedForDatagrid.Tran.Clone();
