@@ -1,6 +1,4 @@
 ﻿using System;
-
-using Keeper.DomainModel;
 using NUnit.Framework;
 
 using FluentAssertions;

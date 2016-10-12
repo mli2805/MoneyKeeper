@@ -5,6 +5,7 @@ using Keeper.Controls.OneTranViewControls;
 using Keeper.Controls.OneTranViewControls.SubControls;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.Trans;
 using Keeper.Utils.AccountEditing;
 using Keeper.ViewModels.SingleViews;
@@ -15,6 +16,7 @@ namespace Keeper.ViewModels.TransWithTags
     class OneTranViewModel : Screen
     {
         public int Top { get; set; }
+        private int _left;
         public int Left
         {
             get { return _left; }
@@ -31,11 +33,9 @@ namespace Keeper.ViewModels.TransWithTags
         public static IWindowManager WindowManager => IoC.Get<IWindowManager>();
 
         private readonly KeeperDb _db;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
         private string _caption;
         private TranWithTags _tranInWork;
-        private int _left;
-
         public TranWithTags TranInWork
         {
             get { return _tranInWork; }
@@ -56,10 +56,10 @@ namespace Keeper.ViewModels.TransWithTags
         public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
         [ImportingConstructor]
-        public OneTranViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener)
+        public OneTranViewModel(KeeperDb db)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
+            
         }
 
         protected override void OnViewLoaded(object view)
@@ -99,17 +99,10 @@ namespace Keeper.ViewModels.TransWithTags
         private void ValidateTranInWorkFieldsWithNewOperationType()
         {
             TranInWork.Tags.Clear();
-            if (TranInWork.MySecondAccount == null)
-            {
-                if (TranInWork.Operation == OperationType.Перенос)
-                {
-                    TranInWork.MySecondAccount = _accountTreeStraightener.Seek("Юлин кошелек", _db.Accounts);
-                }
-            }
+            if (TranInWork.MySecondAccount == null && TranInWork.Operation == OperationType.Перенос)
+                TranInWork.MySecondAccount = _db.SeekAccount("Юлин кошелек");
             if (TranInWork.CurrencyInReturn == null)
-            {
-                TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCodes.BYR) ? CurrencyCodes.USD : CurrencyCodes.BYR;
-            }
+                TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCodes.BYN) ? CurrencyCodes.USD : CurrencyCodes.BYN;
         }
 
         private bool IsValid()
@@ -171,7 +164,7 @@ namespace Keeper.ViewModels.TransWithTags
             if (WindowManager.ShowDialog(receiptVm) == true)
             {
 
-            };
+            }
         }
     }
 }

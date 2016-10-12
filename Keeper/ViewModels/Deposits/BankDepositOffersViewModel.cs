@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.Deposits
@@ -15,7 +16,7 @@ namespace Keeper.ViewModels.Deposits
     class BankDepositOffersViewModel : Screen
     {
         private readonly KeeperDb _db;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
         private readonly IWindowManager _windowManager;
         public ObservableCollection<BankDepositOffer> Rows { get; set; }
         public BankDepositOffer SelectedOffer { get; set; }
@@ -24,10 +25,10 @@ namespace Keeper.ViewModels.Deposits
         public static List<CurrencyCodes> CurrencyList { get; private set; }
 
         [ImportingConstructor]
-        public BankDepositOffersViewModel(KeeperDb db, AccountTreeStraightener accountTreeStraightener, IWindowManager windowManager)
+        public BankDepositOffersViewModel(KeeperDb db, IWindowManager windowManager)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
+            
             _windowManager = windowManager;
             if (db.BankDepositOffers == null) db.BankDepositOffers = new ObservableCollection<BankDepositOffer>();
             Rows = db.BankDepositOffers;
@@ -42,7 +43,7 @@ namespace Keeper.ViewModels.Deposits
         {
             CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
             BankAccounts =
-              (_accountTreeStraightener.Flatten(_db.Accounts).Where(
+              (_db.FlattenAccounts().Where(
                 account => account.Is("Банки") && account.Children.Count == 0)).ToList();
         }
 

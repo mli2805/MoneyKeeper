@@ -14,14 +14,14 @@ namespace Keeper.Utils.MonthAnalysis
     public class MonthBalancesAnalyzer
     {
         private readonly KeeperDb _db;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
         private readonly RateExtractor _rateExtractor;
 
         [ImportingConstructor]
-        public MonthBalancesAnalyzer(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor)
+        public MonthBalancesAnalyzer(KeeperDb db, RateExtractor rateExtractor)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
+            
             _rateExtractor = rateExtractor;
         }
 
@@ -29,11 +29,11 @@ namespace Keeper.Utils.MonthAnalysis
         {
             var period = new Period(new DateTime(1,1,1), someDate);
 
-            var allMine = _accountTreeStraightener.Seek("Мои", _db.Accounts);
+            var allMine = _db.SeekAccount("Мои");
             var allMineBalance = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(allMine, period));
-            var cards = _accountTreeStraightener.Seek("Карточки", _db.Accounts);
+            var cards = _db.SeekAccount("Карточки");
             var cardsBalance = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(cards, period));
-            var deposits = _accountTreeStraightener.Seek("Депозиты", _db.Accounts);
+            var deposits = _db.SeekAccount("Депозиты");
             var depositsBalance = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(deposits, period));
 
 

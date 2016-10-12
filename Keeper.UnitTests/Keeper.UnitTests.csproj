@@ -88,7 +88,6 @@
     <Compile Include="ByFunctional\DepositProcessing\TestDepositTrafficExtractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ByFunctional\AccountEditing\TestAccountTreesGardener.cs" />
-    <Compile Include="ByFunctional\AccountEditing\TestAccountTreeStraightener.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\TestDbExporter.cs" />
     <Compile Include="Utils\DbInputOutput\CompositeTasks\TestDbGeneralLoader.cs" />
     <Compile Include="TestMef.cs" />

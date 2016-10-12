@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.Deposits
@@ -18,7 +19,7 @@ namespace Keeper.ViewModels.Deposits
         private string _windowTitle;
         private readonly KeeperDb _db;
         private readonly IWindowManager _windowManager;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
 
         public string Junction
         {
@@ -84,19 +85,19 @@ namespace Keeper.ViewModels.Deposits
         private void InitializeListsForCombobox()
         {
             CurrencyList = Enum.GetValues(typeof(CurrencyCodes)).OfType<CurrencyCodes>().ToList();
-            BankAccounts = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
-            MyFolders = _accountTreeStraightener.Flatten(_db.Accounts).Where(a => a.Is("Мои") && a.IsFolder).ToList();
+            BankAccounts = _db.FlattenAccounts().Where(a => a.Is("Банки") && a.Children.Count == 0).ToList();
+            MyFolders = _db.FlattenAccounts().Where(a => a.Is("Мои") && a.IsFolder).ToList();
             DepositOffers = _db.BankDepositOffers.ToList();
         }
 
         #endregion
 
         [ImportingConstructor]
-        public OpenOrEditDepositViewModel(KeeperDb db, IWindowManager windowManager, AccountTreeStraightener accountTreeStraightener)
+        public OpenOrEditDepositViewModel(KeeperDb db, IWindowManager windowManager)
         {
             _db = db;
             _windowManager = windowManager;
-            _accountTreeStraightener = accountTreeStraightener;
+            
             InitializeListsForCombobox();
         }
 

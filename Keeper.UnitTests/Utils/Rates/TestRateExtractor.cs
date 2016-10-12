@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-
-using Keeper.DomainModel;
 using Keeper.Utils.Rates;
 
 using NUnit.Framework;

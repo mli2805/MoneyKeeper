@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Windows;
-using Keeper.DomainModel;
-using Keeper.DomainModel.Deposit;
 using Keeper.Utils.DbInputOutput.CompositeTasks;
 using Keeper.Utils.DbInputOutput.TxtTasks;
-using Keeper.Utils.Rates;
 using NUnit.Framework;
 using FluentAssertions;
-using Keeper.Utils.AccountEditing;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.DepositProcessing;
 
 namespace Keeper.UnitTests.ByFunctional.DepositProcessing
@@ -23,7 +19,7 @@ namespace Keeper.UnitTests.ByFunctional.DepositProcessing
         [SetUp]
         public void SetUp()
         {
-            _loadResult = new DbFromTxtLoader(new DbClassesInstanceParser(), new AccountTreeStraightener()).
+            _loadResult = new DbFromTxtLoader(new DbClassesInstanceParser()).
                                                LoadDbFromTxt(Path.GetFullPath(@"TestDb\forDepositCalculationTest"));
 
             if (_loadResult.Code != 0) MessageBox.Show("Database wasn't loaded properly!");
@@ -34,8 +30,7 @@ namespace Keeper.UnitTests.ByFunctional.DepositProcessing
         [Test]
         public void EvaluateTraffic_Should_Evaluate()
         {
-            var ats = new AccountTreeStraightener();
-            var accounts = ats.Flatten(_loadResult.Db.Accounts);
+            var accounts = (_loadResult.Db.FlattenAccounts());
 
             var account = accounts.First(a => a.Name == "ВТБ Скарбонка2 8/08/2014 - 7/09/2015 33-31%");
 

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.WorkTypes;
 using Keeper.Utils.AccountEditing;
 
@@ -7,7 +9,7 @@ namespace Keeper.ViewModels.TransWithTags
 {
     public static class ListsForComboTrees
     {
-        public static readonly AccountTreeStraightener AccountTreeStraightener = new AccountTreeStraightener();
+        public static readonly KeeperDb _db = IoC.Get<KeeperDb>();
         public static List<AccName> MyAccNamesForIncome { get; set; }
         public static List<AccName> AccNamesForIncomeTags { get; set; }
 
@@ -22,32 +24,32 @@ namespace Keeper.ViewModels.TransWithTags
 
         public static List<AccName> AccNamesForFilterTags { get; set; }
 
-        public static void InitializeLists(KeeperDb db)
+        public static void InitializeLists()
         {
-            InitializeListsForIncome(db);
-            InitializeListsForExpense(db);
-            InitializeListsForTransfer(db);
-            InitializeListsForExchange(db);
-            InitializeListForFilterTags(db);
+            InitializeListsForIncome();
+            InitializeListsForExpense();
+            InitializeListsForTransfer();
+            InitializeListsForExchange();
+            InitializeListForFilterTags();
         }
 
-        public static void InitializeListForFilterTags(KeeperDb db)
+        public static void InitializeListForFilterTags()
         {
             // All Tags
             AccNamesForFilterTags = new List<AccName>();
             var list = new List<string>() { "Внешние", "Все доходы", "Все расходы" };
             foreach (var element in list)
             {
-                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts), null);
+                var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
                 AccNamesForFilterTags.Add(root);
             }
         }
-        private static void InitializeListsForIncome(KeeperDb db)
+        private static void InitializeListsForIncome()
         {
             // Income
             MyAccNamesForIncome = new List<AccName>
             {
-                new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts),
+                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
                     new List<string> {"Закрытые", "Закрытые депозиты", "Мне должны"})
             };
 
@@ -56,17 +58,17 @@ namespace Keeper.ViewModels.TransWithTags
             var list = new List<string>() { "ДеньгоДатели", "Банки", "Государство", "Все доходы" };
             foreach (var element in list)
             {
-                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts), null);
+                var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
                 AccNamesForIncomeTags.Add(root);
             }
         }
 
-        private static void InitializeListsForExpense(KeeperDb db)
+        private static void InitializeListsForExpense()
         {
             // Expense
             MyAccNamesForExpense = new List<AccName>
             {
-                new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts),
+                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
                     new List<string> {"Закрытые", "Закрытые депозиты", "Мне должны", "Депозиты"})
             };
 
@@ -75,17 +77,17 @@ namespace Keeper.ViewModels.TransWithTags
             var list = new List<string>() { "ДеньгоПолучатели", "Банки", "Государство", "Все расходы" };
             foreach (var element in list)
             {
-                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts), null);
+                var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
                 AccNamesForExpenseTags.Add(root);
             }
         }
 
-        private static void InitializeListsForTransfer(KeeperDb db)
+        private static void InitializeListsForTransfer()
         {
             // Transfer
             MyAccNamesForTransfer = new List<AccName>
             {
-                new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts),
+                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
                                                        new List<string> {"Закрытые", "Закрытые депозиты"})
             };
 
@@ -94,17 +96,17 @@ namespace Keeper.ViewModels.TransWithTags
             var list = new List<string>() { "Форекс" };
             foreach (var element in list)
             {
-                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts), null);
+                var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
                 AccNamesForTransferTags.Add(root);
             }
         }
 
-        private static void InitializeListsForExchange(KeeperDb db)
+        private static void InitializeListsForExchange()
         {
             // Exchange
             MyAccNamesForExchange = new List<AccName>
             {
-                new AccName().PopulateFromAccount(AccountTreeStraightener.Seek("Мои", db.Accounts),
+                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
                                                        new List<string> {"Закрытые", "Закрытые депозиты"})
             };
 
@@ -113,7 +115,7 @@ namespace Keeper.ViewModels.TransWithTags
             var list = new List<string>() { "Банки", "Форекс" };
             foreach (var element in list)
             {
-                var root = new AccName().PopulateFromAccount(AccountTreeStraightener.Seek(element, db.Accounts), null);
+                var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
                 AccNamesForExchangeTags.Add(root);
             }
         }

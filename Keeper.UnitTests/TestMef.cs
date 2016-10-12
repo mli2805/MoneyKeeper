@@ -2,8 +2,6 @@
 using System.Composition.Hosting;
 
 using FluentAssertions;
-
-using Keeper.DomainModel;
 using Keeper.DomainModel.DbTypes;
 using Keeper.Utils.MEF;
 

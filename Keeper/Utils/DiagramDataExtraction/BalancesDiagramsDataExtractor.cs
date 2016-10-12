@@ -17,17 +17,15 @@ namespace Keeper.Utils.DiagramDataExtraction
     public class BalancesDiagramsDataExtractor
     {
         private readonly KeeperDb _db;
-        private readonly AccountTreeStraightener _accountTreeStraightener;
+        
         private readonly RateExtractor _rateExtractor;
-        private readonly CurrencyRatesAsDictionary _ratesAsDictionary;
 
         [ImportingConstructor]
-        public BalancesDiagramsDataExtractor(KeeperDb db, AccountTreeStraightener accountTreeStraightener, RateExtractor rateExtractor)
+        public BalancesDiagramsDataExtractor(KeeperDb db, RateExtractor rateExtractor)
         {
             _db = db;
-            _accountTreeStraightener = accountTreeStraightener;
+            
             _rateExtractor = rateExtractor;
-            _ratesAsDictionary = new CurrencyRatesAsDictionary(_db.CurrencyRates.ToList());
         }
         /// <summary>
         /// довольно медленно
@@ -37,7 +35,7 @@ namespace Keeper.Utils.DiagramDataExtraction
         /// <returns></returns>
         public List<DiagramPoint> GetBalances(Every frequency)
         {
-            var root = _accountTreeStraightener.Seek("ћои", _db.Accounts);
+            var root = _db.SeekAccount("ћои");
             var result = new List<DiagramPoint>();
             var currentDate = new DateTime(2001, 12, 31); // считать надо всегда с самого начала, иначе остаток неправильный будет
             var currentMoneyBag = new MoneyBag();
