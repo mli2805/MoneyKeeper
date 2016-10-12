@@ -6,7 +6,6 @@ using System.Linq;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
-using Keeper.Utils.AccountEditing;
 
 namespace Keeper.ViewModels.Deposits
 {

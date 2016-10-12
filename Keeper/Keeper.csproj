@@ -261,7 +261,7 @@
     <Compile Include="ViewModels\TransWithTags\TranFilter.cs" />
     <Compile Include="ViewModels\TransWithTags\TranLocateActionsExecutor.cs" />
     <Compile Include="ViewModels\TransWithTags\TransModel.cs" />
-    <Compile Include="ViewModels\TransWithTags\ListsForComboTrees.cs" />
+    <Compile Include="ViewModels\TransWithTags\ComboTreesCaterer.cs" />
     <Compile Include="ViewModels\TransWithTags\AccNameSelectionControlInitializer.cs" />
     <Compile Include="ViewModels\TransWithTags\OneTranViewModel.cs" />
     <Compile Include="ViewModels\TransWithTags\TranEditActionsExecutor.cs" />
