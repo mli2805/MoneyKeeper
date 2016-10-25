@@ -27,14 +27,15 @@ namespace Keeper.Utils.DepositProcessing
             else
             {
                 reportHeader.Add(deposit.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!" : "Действующий депозит.");
-                var templater = new DepositAmountTemplater(deposit.DepositOffer.Currency);
-                var balanceString = deposit.DepositOffer.Currency != CurrencyCodes.USD
-                                      ? String.Format(templater.ForAmount()+" {2}  ($ {1:#,0.00} )",
-                                                      deposit.CalculationData.CurrentBalance,
+                var balanceString = deposit.CalculationData.CurrentBalanceToString();
+/*                var balanceString = deposit.DepositOffer.Currency != CurrencyCodes.USD
+                                      ? string.Format("{0} {2}  ($ {1:#,0.00} )",
+                                                      deposit.CalculationData.CurrentBalance.,
                                                       deposit.CalculationData.CurrentBalance /
                                                       (decimal)_rateExtractor.GetLastRate(deposit.DepositOffer.Currency),
                                                       deposit.DepositOffer.Currency.ToString().ToLower())
                                       : $"{deposit.CalculationData.CurrentBalance:#,0.00} usd";
+*/
                 reportHeader.Add($"Остаток на {DateTime.Today:dd/MM/yyyy} составляет {balanceString} \n");
             }
 
@@ -42,6 +43,10 @@ namespace Keeper.Utils.DepositProcessing
             return reportHeader;
         }
 
+        private string DecimalCurrencyToString(decimal amount, CurrencyCodes currency)
+        {
+            return currency == CurrencyCodes.BYR ? $"{amount:#,0.00}" : $"{amount:#,0}";
+        }
         public ObservableCollection<DepositReportBodyLine> BuildReportBody(Deposit deposit)
         {
             var reportBody = new ObservableCollection<DepositReportBodyLine>();
@@ -50,34 +55,33 @@ namespace Keeper.Utils.DepositProcessing
             decimal beforeOperation = 0;
             foreach (var operation in deposit.CalculationData.Traffic)
             {
-                var templater = new DepositAmountTemplater(operation.Currency);
-                var line = new DepositReportBodyLine { Day = operation.Timestamp.Date, BeforeOperation = String.Format(templater.ForAmount(),beforeOperation) };
+                var line = new DepositReportBodyLine { Day = operation.Timestamp.Date, BeforeOperation =  DecimalCurrencyToString(beforeOperation, deposit.DepositOffer.Currency) };
                 if (operation.TransactionType == DepositTransactionTypes.Расход)
                 {
-                    line.ExpenseColumn = String.Format(templater.ForAmount(), operation.Amount);
+                    line.ExpenseColumn = operation.AmountToString();
                     line.Comment = (deposit.CalculationData.CurrentBalance == 0 && operation == deposit.CalculationData.Traffic.Last())
                                      ? "закрытие депозита"
                                      : "частичное снятие";
                 }
                 else if (operation.TransactionType == DepositTransactionTypes.ОбменРасход)
                 {
-                    line.ExpenseColumn = String.Format(templater.ForAmount(), operation.Amount);
+                    line.ExpenseColumn = operation.AmountToString();
                     line.Comment = "обмен (сдал)";
                 }
                 else if (operation.TransactionType == DepositTransactionTypes.ОбменДоход)
                 {
-                    line.IncomeColumn = String.Format(templater.ForAmount(), operation.Amount);
+                    line.IncomeColumn = operation.AmountToString();
                     line.Comment = "обмен (получил)";
                 }
                 else
                 {
-                    line.IncomeColumn = String.Format(templater.ForAmount(), operation.Amount);
+                    line.IncomeColumn = operation.AmountToString();
                     if (operation.TransactionType == DepositTransactionTypes.Явнес) line.Comment = isFirst ? "открытие депозита" : "доп взнос";
                     if (operation.TransactionType == DepositTransactionTypes.Проценты) line.Comment = "начисление процентов";
                 }
                 beforeOperation += (operation.TransactionType == DepositTransactionTypes.Расход ||
                                  operation.TransactionType == DepositTransactionTypes.ОбменРасход) ? -operation.Amount : operation.Amount;
-                line.AfterOperation = String.Format(templater.ForAmount(), beforeOperation); 
+                line.AfterOperation = DecimalCurrencyToString(beforeOperation, deposit.DepositOffer.Currency); 
                 //        line.Comment += operation.Comment;
                 if (operation.Comment != "") line.Comment = operation.Comment;
                 reportBody.Add(line);
