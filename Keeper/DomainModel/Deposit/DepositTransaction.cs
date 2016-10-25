@@ -22,5 +22,10 @@ namespace Keeper.DomainModel.Deposit
         {
             return IsIncome() ? 1 : -1;
         }
+
+        public string AmountToString()
+        {
+            return Currency == CurrencyCodes.BYR ? $"{Amount:#,0.00}" : $"{Amount:#,0}";
+        }
     }
 }

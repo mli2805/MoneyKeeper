@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
+using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
@@ -23,10 +24,13 @@ namespace Keeper.Utils.DepositProcessing
         public Deposit ExtractTraffic(Account account) // используется при месячном анализе и выгрузке в excel
         {
             _deposit = account.Deposit;
-            _deposit.CalculationData = new DepositCalculationData();
+            _deposit.CalculationData = IoC.Get<DepositCalculationData>();
             var temp = Extract();
             temp.AddRange(ExtractSecondPart());
             _deposit.CalculationData.Traffic = temp.OrderBy(t => t.Timestamp).ToList();
+            _deposit.CalculationData.CurrentCurrency = _deposit.CalculationData.Traffic.Any() 
+                ? _deposit.CalculationData.Traffic.Last().Currency
+                : _deposit.DepositOffer.Currency;
             return _deposit;
         }
 
