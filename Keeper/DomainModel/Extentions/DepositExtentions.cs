@@ -1,11 +1,10 @@
 ﻿using System;
-using Keeper.DomainModel.Deposit;
 
-namespace Keeper.Utils.DepositProcessing
+namespace Keeper.DomainModel.Extentions
 {
-    public static class DepositExtantions
+    public static class DepositExtentions
     {
-        public static bool IsItDayToPayProcents(this Deposit deposit, DateTime date)
+        public static bool IsItDayToPayProcents(this Deposit.Deposit deposit, DateTime date)
         {
             if (date == deposit.StartDate) return false;
             if (deposit.DepositOffer.CalculatingRules.EveryFirstDayOfMonth && date.Day == 1) return true;
