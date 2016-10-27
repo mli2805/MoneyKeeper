@@ -12,13 +12,6 @@ namespace Keeper.Utils.DepositProcessing
     [Export]
     public class DepositReporter
     {
-        private readonly RateExtractor _rateExtractor;
-        [ImportingConstructor]
-        public DepositReporter(RateExtractor rateExtractor)
-        {
-            _rateExtractor = rateExtractor;
-        }
-
         public ObservableCollection<string> BuildReportHeader(Deposit deposit)
         {
             var reportHeader = new ObservableCollection<string>();
@@ -28,14 +21,6 @@ namespace Keeper.Utils.DepositProcessing
             {
                 reportHeader.Add(deposit.FinishDate < DateTime.Today ? "!!! Срок депозита истек !!!" : "Действующий депозит.");
                 var balanceString = deposit.CalculationData.CurrentBalanceToString();
-/*                var balanceString = deposit.DepositOffer.Currency != CurrencyCodes.USD
-                                      ? string.Format("{0} {2}  ($ {1:#,0.00} )",
-                                                      deposit.CalculationData.CurrentBalance.,
-                                                      deposit.CalculationData.CurrentBalance /
-                                                      (decimal)_rateExtractor.GetLastRate(deposit.DepositOffer.Currency),
-                                                      deposit.DepositOffer.Currency.ToString().ToLower())
-                                      : $"{deposit.CalculationData.CurrentBalance:#,0.00} usd";
-*/
                 reportHeader.Add($"Остаток на {DateTime.Today:dd/MM/yyyy} составляет {balanceString} \n");
             }
 

@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Enumes;
+using Keeper.DomainModel.Extentions;
 using Keeper.Utils.Rates;
 
 namespace Keeper.Utils.DepositProcessing

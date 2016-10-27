@@ -1,6 +1,7 @@
 using System.Composition;
 using System.Drawing;
 using Keeper.DomainModel.Deposit;
+using Keeper.DomainModel.Extentions;
 using Microsoft.Office.Interop.Excel;
 
 namespace Keeper.Utils.DepositProcessing
