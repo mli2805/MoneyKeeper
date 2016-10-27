@@ -187,7 +187,7 @@
     <Compile Include="Utils\AccountEditing\IUserEquirer.cs" />
     <Compile Include="Utils\AccountEditing\IUserInformator.cs" />
     <Compile Include="Utils\BalancesFromTransWithTags\BalancesForMainViewCalculator.cs" />
-    <Compile Include="Utils\DepositProcessing\DepositExtantions.cs" />
+    <Compile Include="DomainModel\Extentions\DepositExtentions.cs" />
     <Compile Include="Utils\DepositProcessing\TrafficToExcelExporter.cs" />
     <Compile Include="Utils\DiagramDataExtraction\BalancesDiagramsDataFactory.cs" />
     <Compile Include="Utils\DiagramDataExtraction\BalancesDiagramsDataExtractor.cs" />
