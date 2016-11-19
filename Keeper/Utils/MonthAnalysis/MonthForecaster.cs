@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
+using Keeper.DomainModel.Enumes;
 using Keeper.DomainModel.Extentions;
 using Keeper.DomainModel.MonthAnalysis;
 using Keeper.DomainModel.WorkTypes;
@@ -90,6 +91,8 @@ namespace Keeper.Utils.MonthAnalysis
             foreach (var account in _db.SeekAccount(folder).Children)
             {
                 if (account.Children.Count != 0 || !account.IsDeposit()) continue;
+//                if (account.Deposit.DepositOffer.Currency == CurrencyCodes.BYR)
+//                    account.Deposit.DepositOffer.Currency = CurrencyCodes.BYN;
                 _depositCalculationAggregator.FillinFieldsForMonthAnalysis(account.Deposit, s.StartDate);
 
                 if (_rateExtractor.GetUsdEquivalent(account.Deposit.CalculationData.Estimations.ProcentsInThisMonth,account.Deposit.DepositOffer.Currency,DateTime.Today) < 1) continue;
