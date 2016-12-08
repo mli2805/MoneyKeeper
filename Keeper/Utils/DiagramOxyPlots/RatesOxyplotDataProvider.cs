@@ -20,7 +20,9 @@ namespace Keeper.Utils.DiagramOxyPlots
             diagramData.Series.Add(GetNbUsdRate());
             diagramData.Series.Add(GetNbEurRate());
             diagramData.Series.Add(GetNbRurRate());
-            diagramData.Series.Add(GetNbBasket());
+            diagramData.Series.Add(GetNbBasket1());
+            diagramData.Series.Add(GetNbBasket2());
+            diagramData.Series.Add(GetNbBasket3());
             diagramData.Series.Add(GetNbEurUsdRate());
             diagramData.Series.Add(GetMyUsdRate());
             diagramData.Series.Add(GetRurUsdRate());
@@ -63,12 +65,32 @@ namespace Keeper.Utils.DiagramOxyPlots
             return diagramSeries;
         }
 
-        private DiagramSeries GetNbBasket()
+        private DiagramSeries GetNbBasket1()
         {
-            var diagramSeries = new DiagramSeries() { Index = 3, Name = "Корзина НБ РБ", OxyColor = OxyColors.Orange, Points = new List<DiagramPoint>() };
-            foreach (var rate in _db.OfficialRates.Where(rate => rate.Date >= new DateTime(2015,1,1)))
+            var diagramSeries = new DiagramSeries() { Index = 31, Name = "Корзина НБ РБ 33-33-33", OxyColor = OxyColors.Orange, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.OfficialRates.Where(rate => rate.Date >= new DateTime(2009,1,1)))
             {
-                diagramSeries.Points.Add(new DiagramPoint(rate.Date, Math.Pow(rate.UsdRate,0.3)*Math.Pow(rate.EurRate,0.3)*Math.Pow(rate.RurRate,0.4)));
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date, rate.Busket1));
+            }
+            return diagramSeries;
+        }
+
+        private DiagramSeries GetNbBasket2()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 32, Name = "Корзина НБ РБ 30-30-40", OxyColor = OxyColors.DarkOrange, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.OfficialRates.Where(rate => rate.Date >= new DateTime(2009,1,1)))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date, rate.Busket2));
+            }
+            return diagramSeries;
+        }
+
+        private DiagramSeries GetNbBasket3()
+        {
+            var diagramSeries = new DiagramSeries() { Index = 33, Name = "Корзина НБ РБ 30-20-50", OxyColor = OxyColors.OrangeRed, Points = new List<DiagramPoint>() };
+            foreach (var rate in _db.OfficialRates.Where(rate => rate.Date >= new DateTime(2009,1,1)))
+            {
+                diagramSeries.Points.Add(new DiagramPoint(rate.Date, rate.Busket3));
             }
             return diagramSeries;
         }

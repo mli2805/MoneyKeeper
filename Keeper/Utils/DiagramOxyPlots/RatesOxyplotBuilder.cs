@@ -52,7 +52,9 @@ namespace Keeper.Utils.DiagramOxyPlots
             if (model.IsCheckedUsdNbRb) DefineLineSeries(0, "UsdNbRb", ref plotModel);
             if (model.IsCheckedEurNbRb) plotModel.Series.Add(_allSeries.First(s => (int)s.Tag == 1));
             if (model.IsCheckedRurNbRb) DefineLineSeries(2, "RurNbRb", ref plotModel);
-            if (model.IsCheckedBusketNbRb) DefineLineSeries(3, "BusketNbRb", 0, 7000, ref plotModel);
+            if (model.IsCheckedBusketNbRb) DefineLineSeries(31, "BusketNbRb1", 0, 7000, ref plotModel);
+            if (model.IsCheckedBusketNbRb) DefineLineSeries(32, "BusketNbRb2", 0, 7000, ref plotModel);
+            if (model.IsCheckedBusketNbRb) DefineLineSeries(33, "BusketNbRb3", 0, 7000, ref plotModel);
             if (model.IsCheckedMyUsd) plotModel.Series.Add(_allSeries.First(s => (int)s.Tag == 4));
             if (model.IsCheckedEurUsdNbRb) DefineLineSeries(5, "EurUsdNbRb", ref plotModel);
             if (model.IsCheckedRurUsd) DefineLineSeries(6, "RurUsdNbRb", 0, 150, ref plotModel);
