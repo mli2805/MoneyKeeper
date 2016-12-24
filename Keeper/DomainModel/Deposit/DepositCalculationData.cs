@@ -40,10 +40,11 @@ namespace Keeper.DomainModel.Deposit
         {
             if (CurrentCurrency == CurrencyCodes.USD) return $"{CurrentBalance:#,0.00} usd";
 
-            decimal inUsd = CurrentBalance /(decimal)_rateExtractor.GetLastRate(CurrentCurrency);
+            var rate = (decimal)_rateExtractor.GetLastRate(CurrentCurrency);
+            string inUsdString = rate == 0 ? "не задан курс" : $"{CurrentBalance /rate:#,0.00} usd";
 
-            if (CurrentCurrency == CurrencyCodes.BYR) return $"{CurrentBalance:#,0} byr  ({inUsd:#,0.00} usd)";
-            return $"{CurrentBalance:#,0.00} {CurrentCurrency.ToString().ToLower()}  ({inUsd:#,0.00} usd)";
+            if (CurrentCurrency == CurrencyCodes.BYR) return $"{CurrentBalance:#,0} byr  ({inUsdString})";
+            return $"{CurrentBalance:#,0.00} {CurrentCurrency.ToString().ToLower()}  ({inUsdString})";
         }
     }
 }

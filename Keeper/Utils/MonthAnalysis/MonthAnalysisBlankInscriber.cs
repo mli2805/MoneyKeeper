@@ -186,9 +186,9 @@ namespace Keeper.Utils.MonthAnalysis
 
         private string HowCurrencyChanged(double a, double b)
         {
-            if (a < b) return string.Format("упал");
-            if (a > b) return string.Format("вырос");
-            return string.Format("без изменений");
+            if (a < b) return "упал";
+            if (a > b) return "вырос";
+            return "без изменений";
         }
 
         private string HowBelarussianCurrencyChanged(Saldo s)
