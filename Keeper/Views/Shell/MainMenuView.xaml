@@ -45,7 +45,7 @@
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid >
-        <Menu  Margin="10,3,10,6" Height="20"  Grid.ColumnSpan="3">
+        <Menu  Margin="10,3,10,6" Height="20" Background="Transparent" Grid.ColumnSpan="3">
             <MenuItem Header="ФАЙЛЫ">
                 <MenuItem Header="СОХРАНИТЬ ИЗМЕНЕНИЯ В БД" 
                    ToolTipService.ShowDuration="50000" Margin="-1,0,1,0">
