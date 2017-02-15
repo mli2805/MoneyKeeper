@@ -60,12 +60,19 @@ namespace Keeper.Utils.DepositProcessing
             {
                 var todayLine = deposit.CalculationData.DailyTable.First(l => l.Date.Date == DateTime.Today.Date);
                 var finishLine = deposit.CalculationData.DailyTable.Last();
-                deposit.CalculationData.Estimations.DevaluationInUsd = finishLine.Balance/finishLine.CurrencyRate -
-                                                                       todayLine.Balance/todayLine.CurrencyRate;
+                if (finishLine.CurrencyRate*todayLine.CurrencyRate == 0)
+                    deposit.CalculationData.Estimations.DevaluationInUsd = 0;
+                else
+                    deposit.CalculationData.Estimations.DevaluationInUsd = 
+                        finishLine.Balance/finishLine.CurrencyRate - todayLine.Balance/todayLine.CurrencyRate;
+
+                var procentsUpToFinishInUsd = deposit.CalculationData.DailyTable.Last().CurrencyRate == 0 
+                    ? 0 
+                    : deposit.CalculationData.Estimations.ProcentsUpToFinish / deposit.CalculationData.DailyTable.Last().CurrencyRate;
 
                 deposit.CalculationData.Estimations.ProfitInUsd =
                     deposit.CalculationData.TotalPercentInUsd
-                    + deposit.CalculationData.Estimations.ProcentsUpToFinish / deposit.CalculationData.DailyTable.Last().CurrencyRate
+                    + procentsUpToFinishInUsd
                     + deposit.CalculationData.CurrentDevaluationInUsd
                     + deposit.CalculationData.Estimations.DevaluationInUsd;
             }

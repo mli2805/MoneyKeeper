@@ -106,9 +106,15 @@ namespace Keeper.Utils.DepositProcessing
                     $"\nИтого прогноз по депозиту {deposit.CalculationData.Estimations.ProfitInUsd:#,0.00} usd");
             else
             {
-                reportFooter.Add(String.Format("\nИтоговый прогноз: "));
+                var totalProcentInUsdString = deposit.CalculationData.DailyTable.Last().CurrencyRate == 0
+                    ? "не задан курс"
+                    : $"{deposit.CalculationData.TotalPercentInUsd + deposit.CalculationData.Estimations.ProcentsUpToFinish / deposit.CalculationData.DailyTable.Last().CurrencyRate:#,0.00}$";
+
+                reportFooter.Add("\nИтоговый прогноз: ");
                 reportFooter.Add(
-                    $"    Всего процентов {deposit.CalculationData.TotalPercentInUsd + deposit.CalculationData.Estimations.ProcentsUpToFinish/deposit.CalculationData.DailyTable.Last().CurrencyRate:#,0.00}$     девальвация тела  {deposit.CalculationData.CurrentDevaluationInUsd + deposit.CalculationData.Estimations.DevaluationInUsd:#,0.00}$     профит с учетом девальвации {deposit.CalculationData.Estimations.ProfitInUsd:#,0.00}$");
+                    $"    Всего процентов {totalProcentInUsdString}" +
+                    $"     девальвация тела  {deposit.CalculationData.CurrentDevaluationInUsd + deposit.CalculationData.Estimations.DevaluationInUsd:#,0.00}$" +
+                    $"     профит с учетом девальвации {deposit.CalculationData.Estimations.ProfitInUsd:#,0.00}$");
             }
         }
 
@@ -118,7 +124,8 @@ namespace Keeper.Utils.DepositProcessing
                 return currency == CurrencyCodes.USD ? "0 usd" : $"0 {currency.ToString().ToLower()}    ($0)";
 
             if (currency == CurrencyCodes.USD) return $"(за период {period.ToStringOnlyDates()})  {amount:#,0.00} usd";
-            return String.Format("(за период {4})  {0:#,0} {1}   (по курсу {2} = ${3:#,0})", 
+            return rate == 0 ? "не задан курс" :
+                String.Format("(за период {4})  {0:#,0} {1}   (по курсу {2} = ${3:#,0})", 
                  amount, currency.ToString().ToLower(), (int)rate, amount / rate, period.ToStringOnlyDates());
         }
 
