@@ -169,6 +169,7 @@
     <Compile Include="Controls\OneTranViewControls\TransferControl.xaml.cs">
       <DependentUpon>TransferControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DomainModel\DbTypes\Class1.cs" />
     <Compile Include="DomainModel\Extentions\DbExtentions.cs" />
     <Compile Include="DomainModel\MonthAnalysis\DepoTraffic.cs" />
     <Compile Include="DomainModel\MonthAnalysis\EstimatedMoney.cs" />
@@ -719,9 +720,6 @@
     <Resource Include="Resources\currency_rates.ico" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Resources\money bag.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\month_analisys.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -763,7 +761,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SplashScreen Include="Resources\money bag.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
