@@ -1,11 +1,11 @@
-namespace Keeper.DomainModel.Deposit
+п»їnamespace Keeper.DomainModel.Deposit
 {
     public enum DepositTransactionTypes
     {
-        Явнес,
-        Проценты,
-        Расход,
-        ОбменРасход,
-        ОбменДоход
+        РЇРІРЅРµСЃ,
+        РџСЂРѕС†РµРЅС‚С‹,
+        Р Р°СЃС…РѕРґ,
+        РћР±РјРµРЅР Р°СЃС…РѕРґ,
+        РћР±РјРµРЅР”РѕС…РѕРґ
     }
 }
