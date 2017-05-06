@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
@@ -37,32 +37,32 @@ namespace Keeper.Utils.DepositProcessing
 
         private void SummarizeTraffic()
         {
-            _deposit.CalculationData.TotalMyIns = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.Amount);
-            _deposit.CalculationData.TotalMyInsInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd);
+            _deposit.CalculationData.TotalMyIns = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.РЇРІРЅРµСЃ).Sum(t => t.Amount);
+            _deposit.CalculationData.TotalMyInsInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.РЇРІРЅРµСЃ).Sum(t => t.AmountInUsd);
 
-            _deposit.CalculationData.TotalMyOuts = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.Amount);
-            _deposit.CalculationData.TotalMyOutsInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
+            _deposit.CalculationData.TotalMyOuts =  _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Р Р°СЃС…РѕРґ).Sum(t => t.Amount);
+            _deposit.CalculationData.TotalMyOutsInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Р Р°СЃС…РѕРґ).Sum(t => t.AmountInUsd);
 
-            _deposit.CalculationData.TotalPercent = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.Amount);
-            _deposit.CalculationData.TotalPercentInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Проценты).Sum(t => t.AmountInUsd);
+            _deposit.CalculationData.TotalPercent = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.РџСЂРѕС†РµРЅС‚С‹).Sum(t => t.Amount);
+            _deposit.CalculationData.TotalPercentInUsd = _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.РџСЂРѕС†РµРЅС‚С‹).Sum(t => t.AmountInUsd);
 
             _deposit.CalculationData.CurrentProfitInUsd =
                 _rateExtractor.GetUsdEquivalent(_deposit.CalculationData.CurrentBalance, _deposit.DepositOffer.Currency, DateTime.Today)
-                - _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Явнес).Sum(t => t.AmountInUsd)
-                + _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Расход).Sum(t => t.AmountInUsd);
+                - _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.РЇРІРЅРµСЃ).Sum(t => t.AmountInUsd)
+                + _deposit.CalculationData.Traffic.Where(t => t.TransactionType == DepositTransactionTypes.Р Р°СЃС…РѕРґ).Sum(t => t.AmountInUsd);
         }
 
         private void DefineCurrentState()
         {
             if (_deposit.CalculationData.Traffic.Count > 0 && _deposit.CalculationData.CurrentBalance == 0)
-                _deposit.CalculationData.State = DepositStates.Закрыт;
+                _deposit.CalculationData.State = DepositStates.Р—Р°РєСЂС‹С‚;
             else
-                _deposit.CalculationData.State = _deposit.FinishDate < DateTime.Today ? DepositStates.Просрочен : DepositStates.Открыт;
+                _deposit.CalculationData.State = _deposit.FinishDate < DateTime.Today ? DepositStates.РџСЂРѕСЃСЂРѕС‡РµРЅ : DepositStates.РћС‚РєСЂС‹С‚;
         }
 
         private void FillinDailyBalances()
         {
-            var period = (_deposit.CalculationData.State != DepositStates.Закрыт) ? 
+            var period = (_deposit.CalculationData.State != DepositStates.Р—Р°РєСЂС‹С‚) ? 
                 new Period(_deposit.StartDate, _deposit.FinishDate) :
                 new Period(_deposit.StartDate, _deposit.CalculationData.Traffic.Last().Timestamp);
             _deposit.CalculationData.DailyTable = new List<DepositDailyLine>();
@@ -82,17 +82,17 @@ namespace Keeper.Utils.DepositProcessing
         /// </summary>
         private void DefineDailyCurrencyRatesByLeftOuterJoin()
         {
-            /* вынесение курсов нужной валюты в промежуточный список 
-             * и затем left outer join по дате
-             * оказалось самым быстрым вариантом - в 3 раза быстрее,
-             * чем получать курсы для каждого дня в foreach
-             * и в 2 раза быстее left outer join с двумя where по дате и валюте
-             * или where двойным условием (закоменчено ниже)
+            /* РІС‹РЅРµСЃРµРЅРёРµ РєСѓСЂСЃРѕРІ РЅСѓР¶РЅРѕР№ РІР°Р»СЋС‚С‹ РІ РїСЂРѕРјРµР¶СѓС‚РѕС‡РЅС‹Р№ СЃРїРёСЃРѕРє 
+             * Рё Р·Р°С‚РµРј left outer join РїРѕ РґР°С‚Рµ
+             * РѕРєР°Р·Р°Р»РѕСЃСЊ СЃР°РјС‹Рј Р±С‹СЃС‚СЂС‹Рј РІР°СЂРёР°РЅС‚РѕРј - РІ 3 СЂР°Р·Р° Р±С‹СЃС‚СЂРµРµ,
+             * С‡РµРј РїРѕР»СѓС‡Р°С‚СЊ РєСѓСЂСЃС‹ РґР»СЏ РєР°Р¶РґРѕРіРѕ РґРЅСЏ РІ foreach
+             * Рё РІ 2 СЂР°Р·Р° Р±С‹СЃС‚РµРµ left outer join СЃ РґРІСѓРјСЏ where РїРѕ РґР°С‚Рµ Рё РІР°Р»СЋС‚Рµ
+             * РёР»Рё where РґРІРѕР№РЅС‹Рј СѓСЃР»РѕРІРёРµРј (Р·Р°РєРѕРјРµРЅС‡РµРЅРѕ РЅРёР¶Рµ)
              * 
-             * при этом foreach позволяет гибко установить курс предыдущего дня,
-             * если в базе нет курса для определенного дня, в то время как
-             * left outer join позволяет только подставить какое-либо значение по умолчанию
-             *  это должно учитываться далее!
+             * РїСЂРё СЌС‚РѕРј foreach РїРѕР·РІРѕР»СЏРµС‚ РіРёР±РєРѕ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РєСѓСЂСЃ РїСЂРµРґС‹РґСѓС‰РµРіРѕ РґРЅСЏ,
+             * РµСЃР»Рё РІ Р±Р°Р·Рµ РЅРµС‚ РєСѓСЂСЃР° РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРЅРѕРіРѕ РґРЅСЏ, РІ С‚Рѕ РІСЂРµРјСЏ РєР°Рє
+             * left outer join РїРѕР·РІРѕР»СЏРµС‚ С‚РѕР»СЊРєРѕ РїРѕРґСЃС‚Р°РІРёС‚СЊ РєР°РєРѕРµ-Р»РёР±Рѕ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+             *  СЌС‚Рѕ РґРѕР»Р¶РЅРѕ СѓС‡РёС‚С‹РІР°С‚СЊСЃСЏ РґР°Р»РµРµ!
 
              * var temp = (from line in _deposit.CalculationData.DailyTable
              *       from rate in _db.CurrencyRates.Where(r => r.Currency == _deposit.DepositOffer.Currency)
