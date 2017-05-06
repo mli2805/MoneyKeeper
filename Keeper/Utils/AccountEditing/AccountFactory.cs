@@ -1,4 +1,4 @@
-using System.Composition;
+﻿using System.Composition;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Extentions;

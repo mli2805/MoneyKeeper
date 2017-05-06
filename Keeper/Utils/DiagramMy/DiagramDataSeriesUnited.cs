@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -74,7 +74,7 @@ namespace Keeper.Utils.DiagramMy
       switch (diagramMode)
       {
         case DiagramMode.SeparateLines:
-          // экстремумы определяются по одной, активной сейчас линии
+          // СЌРєСЃС‚СЂРµРјСѓРјС‹ РѕРїСЂРµРґРµР»СЏСЋС‚СЃСЏ РїРѕ РѕРґРЅРѕР№, Р°РєС‚РёРІРЅРѕР№ СЃРµР№С‡Р°СЃ Р»РёРЅРёРё
           dataExtremums.MinValue = double.PositiveInfinity;
           dataExtremums.MaxValue = Double.NegativeInfinity;
           foreach (var day in DiagramData)
@@ -86,13 +86,13 @@ namespace Keeper.Utils.DiagramMy
 
         case DiagramMode.Lines:
         case DiagramMode.BarHorizontal:
-          // это вариант , когда столбцы разных серий стоят рядом
+          // СЌС‚Рѕ РІР°СЂРёР°РЅС‚ , РєРѕРіРґР° СЃС‚РѕР»Р±С†С‹ СЂР°Р·РЅС‹С… СЃРµСЂРёР№ СЃС‚РѕСЏС‚ СЂСЏРґРѕРј
           dataExtremums.MinValue = DiagramData.Values.Min(l => l.Min());
           dataExtremums.MaxValue = DiagramData.Values.Max(l => l.Max());
           break;
 
         case DiagramMode.BarVertical:
-          // ряд серий отрицательные, либо даже просто значение отрицательное в положительной серии
+          // СЂСЏРґ СЃРµСЂРёР№ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рµ, Р»РёР±Рѕ РґР°Р¶Рµ РїСЂРѕСЃС‚Рѕ Р·РЅР°С‡РµРЅРёРµ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ РІ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕР№ СЃРµСЂРёРё
           dataExtremums.MinValue = dataExtremums.MaxValue = 0;
           foreach (var day in DiagramData)
           {

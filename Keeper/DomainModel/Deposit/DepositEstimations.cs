@@ -1,4 +1,4 @@
-using Keeper.DomainModel.WorkTypes;
+﻿using Keeper.DomainModel.WorkTypes;
 
 namespace Keeper.DomainModel.Deposit
 {

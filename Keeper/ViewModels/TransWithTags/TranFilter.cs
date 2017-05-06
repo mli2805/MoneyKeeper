@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags

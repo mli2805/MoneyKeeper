@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Keeper.Utils.DiagramDataExtraction;
 
 namespace Keeper.DomainModel.MonthAnalysis

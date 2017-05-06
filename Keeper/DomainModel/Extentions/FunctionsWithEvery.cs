@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using Keeper.DomainModel.Enumes;
 
 namespace Keeper.DomainModel.Extentions
@@ -35,7 +35,7 @@ namespace Keeper.DomainModel.Extentions
             if (period == Every.Quarter) return date1.Year == date2.Year && QuarterNumber(date1) == QuarterNumber(date2);
             if (period == Every.Year) return date1.Year == date2.Year;
 
-            throw new Exception("Такого периода не бывает!");
+            throw new Exception("РўР°РєРѕРіРѕ РїРµСЂРёРѕРґР° РЅРµ Р±С‹РІР°РµС‚!");
         }
     }
 }

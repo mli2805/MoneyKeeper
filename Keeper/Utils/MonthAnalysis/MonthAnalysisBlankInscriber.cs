@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
@@ -40,9 +40,9 @@ namespace Keeper.Utils.MonthAnalysis
 
         private void FillInBeginList(Saldo s)
         {
-            Blank.BeforeList = FillListWithDateBalanceInCurrencies(s.BeginBalance.Common, s.StartDate, "Входящий остаток на начало месяца");
-            Blank.BeforeListOnHands = FillListWithDateBalanceInCurrencies(s.BeginBalance.OnHands, s.StartDate, "На руках                       ");
-            Blank.BeforeListOnDeposits = FillListWithDateBalanceInCurrencies(s.BeginBalance.OnDeposits, s.StartDate, "Депозиты");
+            Blank.BeforeList = FillListWithDateBalanceInCurrencies(s.BeginBalance.Common, s.StartDate, "Р’С…РѕРґСЏС‰РёР№ РѕСЃС‚Р°С‚РѕРє РЅР° РЅР°С‡Р°Р»Рѕ РјРµСЃСЏС†Р°");
+            Blank.BeforeListOnHands = FillListWithDateBalanceInCurrencies(s.BeginBalance.OnHands, s.StartDate, "РќР° СЂСѓРєР°С…                       ");
+            Blank.BeforeListOnDeposits = FillListWithDateBalanceInCurrencies(s.BeginBalance.OnDeposits, s.StartDate, "Р”РµРїРѕР·РёС‚С‹");
         }
 
         private ObservableCollection<string> FillListWithDateBalanceInCurrencies(MoneyBagWithTotal balance, DateTime date, string caption)
@@ -52,7 +52,7 @@ namespace Keeper.Utils.MonthAnalysis
             content.Add("");
             content.AddRange(MoneyBagToListOfStrings(balance.MoneyBag, date));
             content.Add("");
-            content.Add($"Итого {balance.TotalInUsd:#,0} usd");
+            content.Add($"РС‚РѕРіРѕ {balance.TotalInUsd:#,0} usd");
 
             return new ObservableCollection<string>(content); 
         }
@@ -86,7 +86,7 @@ namespace Keeper.Utils.MonthAnalysis
         private void FillInIncomesList(Saldo s)
         {
             Blank.IncomesToHandsList = new ObservableCollection<string> {
-                $"Доходы на руки  {s.Incomes.OnHands.TotalInUsd:#,0} usd\n"
+                $"Р”РѕС…РѕРґС‹ РЅР° СЂСѓРєРё  {s.Incomes.OnHands.TotalInUsd:#,0} usd\n"
             };
             foreach (var tran in s.Incomes.OnHands.Trans)
             {
@@ -94,7 +94,7 @@ namespace Keeper.Utils.MonthAnalysis
             }
 
             Blank.IncomesToDepositsList = new ObservableCollection<string> {
-                $"Проценты по депозитам   {s.Incomes.OnDeposits.TotalInUsd:#,0} usd\n"
+                $"РџСЂРѕС†РµРЅС‚С‹ РїРѕ РґРµРїРѕР·РёС‚Р°Рј   {s.Incomes.OnDeposits.TotalInUsd:#,0} usd\n"
             };
             foreach (var tran in s.Incomes.OnDeposits.Trans)
             {
@@ -103,7 +103,7 @@ namespace Keeper.Utils.MonthAnalysis
 
             Blank.IncomesTotal = new ObservableCollection<string>
        {
-           $"                                                                          Всего доходы  {s.Incomes.TotalInUsd:#,0} usd"
+           $"                                                                          Р’СЃРµРіРѕ РґРѕС…РѕРґС‹  {s.Incomes.TotalInUsd:#,0} usd"
        };
         }
 
@@ -112,33 +112,33 @@ namespace Keeper.Utils.MonthAnalysis
             return (tr.Currency == CurrencyCodes.USD) ?
                    String.Format("{1:#,0}  {2}  {3} {4} {5}, {0:d MMM}",
                    tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(),
-                   (tr.Category.Name == "Проценты по депозитам") ? "" : tr.Category.Name, tr.DepoName, tr.Comment) :
+                   (tr.Category.Name == "РџСЂРѕС†РµРЅС‚С‹ РїРѕ РґРµРїРѕР·РёС‚Р°Рј") ? "" : tr.Category.Name, tr.DepoName, tr.Comment) :
                    String.Format("{1:#,0}  {2}  (= {3:#,0} $)  {4} {5} {6}, {0:d MMM}",
                    tr.Timestamp, tr.Amount, tr.Currency.ToString().ToLower(),
                    _rateExtractor.GetUsdEquivalent(tr.Amount, tr.Currency, tr.Timestamp),
-                   (tr.Category.Name == "Проценты по депозитам") ? "" : tr.Category.Name, tr.DepoName, tr.Comment);
+                   (tr.Category.Name == "РџСЂРѕС†РµРЅС‚С‹ РїРѕ РґРµРїРѕР·РёС‚Р°Рј") ? "" : tr.Category.Name, tr.DepoName, tr.Comment);
         }
 
         private void FillInExpenseList(Saldo s)
         {
-            Blank.ExpenseList = new ObservableCollection<string> { "Расходы за месяц\n" };
+            Blank.ExpenseList = new ObservableCollection<string> { "Р Р°СЃС…РѕРґС‹ Р·Р° РјРµСЃСЏС†\n" };
             foreach (var dataElement in s.Expense.Categories)
             {
                 Blank.ExpenseList.Add($"{dataElement.Amount:#,0} $ - {dataElement.Category}");
             }
-            Blank.ExpenseList.Add($"\nИтого {s.Expense.TotalInUsd:#,0} usd");
+            Blank.ExpenseList.Add($"\nРС‚РѕРіРѕ {s.Expense.TotalInUsd:#,0} usd");
 
-            Blank.LargeExpenseList = new ObservableCollection<string> { "В том числе крупные траты этого месяца\n" };
+            Blank.LargeExpenseList = new ObservableCollection<string> { "Р’ С‚РѕРј С‡РёСЃР»Рµ РєСЂСѓРїРЅС‹Рµ С‚СЂР°С‚С‹ СЌС‚РѕРіРѕ РјРµСЃСЏС†Р°\n" };
             foreach (var largeTransaction in s.Expense.LargeTransactions)
             {
                 Blank.LargeExpenseList.Add(TransactionForLargeExpenseList(largeTransaction));
             }
-            if (s.Expense.TotalForLargeInUsd == 0) Blank.LargeExpenseList[0] = "Крупных трат в этом месяце не было\n";
+            if (s.Expense.TotalForLargeInUsd == 0) Blank.LargeExpenseList[0] = "РљСЂСѓРїРЅС‹С… С‚СЂР°С‚ РІ СЌС‚РѕРј РјРµСЃСЏС†Рµ РЅРµ Р±С‹Р»Рѕ\n";
             else
             {
-                Blank.LargeExpenseList.Add($"\nИтого крупных {s.Expense.TotalForLargeInUsd:#,0} usd");
+                Blank.LargeExpenseList.Add($"\nРС‚РѕРіРѕ РєСЂСѓРїРЅС‹С… {s.Expense.TotalForLargeInUsd:#,0} usd");
                 Blank.LargeExpenseList.Add(
-                    $"\nТекущие расходы {s.Expense.TotalInUsd - s.Expense.TotalForLargeInUsd:#,0} usd");
+                    $"\nРўРµРєСѓС‰РёРµ СЂР°СЃС…РѕРґС‹ {s.Expense.TotalInUsd - s.Expense.TotalForLargeInUsd:#,0} usd");
             }
         }
 
@@ -153,42 +153,42 @@ namespace Keeper.Utils.MonthAnalysis
 
         private void FillInEndList(Saldo s)
         {
-            Blank.AfterList = FillListWithDateBalanceInCurrencies(s.EndBalance.Common, s.StartDate.AddMonths(1), "Исходящий остаток на конец месяца");
-            Blank.AfterListOnHands = FillListWithDateBalanceInCurrencies(s.EndBalance.OnHands, s.StartDate.AddMonths(1), "На руках                         ");
-            Blank.AfterListOnDeposits = FillListWithDateBalanceInCurrencies(s.EndBalance.OnDeposits, s.StartDate.AddMonths(1), "Депозиты");
-            // если не добавить день - получишь остаток на утро последнего дня
+            Blank.AfterList = FillListWithDateBalanceInCurrencies(s.EndBalance.Common, s.StartDate.AddMonths(1), "РСЃС…РѕРґСЏС‰РёР№ РѕСЃС‚Р°С‚РѕРє РЅР° РєРѕРЅРµС† РјРµСЃСЏС†Р°");
+            Blank.AfterListOnHands = FillListWithDateBalanceInCurrencies(s.EndBalance.OnHands, s.StartDate.AddMonths(1), "РќР° СЂСѓРєР°С…                         ");
+            Blank.AfterListOnDeposits = FillListWithDateBalanceInCurrencies(s.EndBalance.OnDeposits, s.StartDate.AddMonths(1), "Р”РµРїРѕР·РёС‚С‹");
+            // РµСЃР»Рё РЅРµ РґРѕР±Р°РІРёС‚СЊ РґРµРЅСЊ - РїРѕР»СѓС‡РёС€СЊ РѕСЃС‚Р°С‚РѕРє РЅР° СѓС‚СЂРѕ РїРѕСЃР»РµРґРЅРµРіРѕ РґРЅСЏ
         }
 
         private void FillInResultList(Saldo s)
         {
             Blank.ResultList = new ObservableCollection<string> {
-                $"Финансовый результат месяца {s.Incomes.TotalInUsd:#,0} - {s.Expense.TotalInUsd:#,0} = {s.Incomes.TotalInUsd - s.Expense.TotalInUsd:#,0} usd\n"
+                $"Р¤РёРЅР°РЅСЃРѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚ РјРµСЃСЏС†Р° {s.Incomes.TotalInUsd:#,0} - {s.Expense.TotalInUsd:#,0} = {s.Incomes.TotalInUsd - s.Expense.TotalInUsd:#,0} usd\n"
             };
 
-            Blank.ResultList.Add(String.Format("Курсовые разницы {4:#,0} - ({0:#,0} + {1:#,0} - {2:#,0}) = {3:#,0} usd",
+            Blank.ResultList.Add(String.Format("РљСѓСЂСЃРѕРІС‹Рµ СЂР°Р·РЅРёС†С‹ {4:#,0} - ({0:#,0} + {1:#,0} - {2:#,0}) = {3:#,0} usd",
                                                s.BeginBalance.Common.TotalInUsd, s.Incomes.TotalInUsd, s.Expense.TotalInUsd, s.ExchangeDifference, s.EndBalance.Common.TotalInUsd));
 
             Blank.ResultList.Add(
-                $"\n\n\nС учетом курсовых разниц {s.Incomes.TotalInUsd:#,0} - {s.Expense.TotalInUsd:#,0} + {s.ExchangeDifference:#,0} = {s.EndBalance.Common.TotalInUsd - s.BeginBalance.Common.TotalInUsd:#,0} usd");
+                $"\n\n\nРЎ СѓС‡РµС‚РѕРј РєСѓСЂСЃРѕРІС‹С… СЂР°Р·РЅРёС† {s.Incomes.TotalInUsd:#,0} - {s.Expense.TotalInUsd:#,0} + {s.ExchangeDifference:#,0} = {s.EndBalance.Common.TotalInUsd - s.BeginBalance.Common.TotalInUsd:#,0} usd");
         }
 
         private void FillInDepositResultList(Saldo s)
         {
             Blank.DepositResultList = new ObservableCollection<string> {
-                $"Открытие или доп.взносы {s.DepoTraffic.ToDepo:#,0} usd"
+                $"РћС‚РєСЂС‹С‚РёРµ РёР»Рё РґРѕРї.РІР·РЅРѕСЃС‹ {s.DepoTraffic.ToDepo:#,0} usd"
             };
-            Blank.DepositResultList.Add($"Закрытие или расходные {s.DepoTraffic.FromDepo:#,0} usd");
-            Blank.DepositResultList.Add($"\nПроценты по депозитам (*)  {s.Incomes.OnDeposits.TotalInUsd:#,0} usd");
-            Blank.DepositResultList.Add($"Курсовые разницы  {s.ExchangeDepositDifference:#,0} usd");
+            Blank.DepositResultList.Add($"Р—Р°РєСЂС‹С‚РёРµ РёР»Рё СЂР°СЃС…РѕРґРЅС‹Рµ {s.DepoTraffic.FromDepo:#,0} usd");
+            Blank.DepositResultList.Add($"\nРџСЂРѕС†РµРЅС‚С‹ РїРѕ РґРµРїРѕР·РёС‚Р°Рј (*)  {s.Incomes.OnDeposits.TotalInUsd:#,0} usd");
+            Blank.DepositResultList.Add($"РљСѓСЂСЃРѕРІС‹Рµ СЂР°Р·РЅРёС†С‹  {s.ExchangeDepositDifference:#,0} usd");
             Blank.DepositResultList.Add(
-                $"\nПрибыль с учетом курсовых разниц {s.Incomes.OnDeposits.TotalInUsd + s.ExchangeDepositDifference:#,0} usd");
+                $"\nРџСЂРёР±С‹Р»СЊ СЃ СѓС‡РµС‚РѕРј РєСѓСЂСЃРѕРІС‹С… СЂР°Р·РЅРёС† {s.Incomes.OnDeposits.TotalInUsd + s.ExchangeDepositDifference:#,0} usd");
         }
 
         private string HowCurrencyChanged(double a, double b)
         {
-            if (a < b) return "упал";
-            if (a > b) return "вырос";
-            return "без изменений";
+            if (a < b) return "СѓРїР°Р»";
+            if (a > b) return "РІС‹СЂРѕСЃ";
+            return "Р±РµР· РёР·РјРµРЅРµРЅРёР№";
         }
 
         private string HowBelarussianCurrencyChanged(Saldo s)
@@ -215,7 +215,7 @@ namespace Keeper.Utils.MonthAnalysis
 
             Blank.RatesList = new ObservableCollection<string>
             {
-             $"Изменение курсов\n\n  {HowBelarussianCurrencyChanged(s)}\n" +
+             $"РР·РјРµРЅРµРЅРёРµ РєСѓСЂСЃРѕРІ\n\n  {HowBelarussianCurrencyChanged(s)}\n" +
              $"  Euro {HowCurrencyChanged(euroEnd, euroBegin)}:  {euroBegin:0.###} - {euroEnd:0.###} \n" +
              $"  Rur {HowCurrencyChanged(rurBegin, rurEnd)}:  {rurBegin:0.###} - {rurEnd:0.###} \n"
             };
@@ -223,37 +223,37 @@ namespace Keeper.Utils.MonthAnalysis
 
         private void CalculateForecast(Saldo s)
         {
-            Blank.ForecastListIncomes = new ObservableCollection<string> { "Прогноз доходов           \n" };
+            Blank.ForecastListIncomes = new ObservableCollection<string> { "РџСЂРѕРіРЅРѕР· РґРѕС…РѕРґРѕРІ           \n" };
             foreach (var income in s.ForecastRegularIncome.Payments)
             {
                 Blank.ForecastListIncomes.Add(
                     $"{income.Amount:#,0} {income.Currency.ToString().ToLower()} {income.ArticleName}");
             }
             if (s.ForecastRegularIncome.EstimatedSum > 0)
-                Blank.ForecastListIncomes.Add($"\nЕще ожидается  {s.ForecastRegularIncome.EstimatedSum:#,0} usd");
-            Blank.ForecastListIncomes.Add($"\nИтого  {s.ForecastRegularIncome.TotalInUsd:#,0} usd");
+                Blank.ForecastListIncomes.Add($"\nР•С‰Рµ РѕР¶РёРґР°РµС‚СЃСЏ  {s.ForecastRegularIncome.EstimatedSum:#,0} usd");
+            Blank.ForecastListIncomes.Add($"\nРС‚РѕРіРѕ  {s.ForecastRegularIncome.TotalInUsd:#,0} usd");
 
             var daysInMonth = s.StartDate.AddMonths(1).AddDays(-1).Day;
             var passedDays = DateTime.Today.Year == s.StartDate.Year && DateTime.Today.Month == s.StartDate.Month
                                ? DateTime.Today.Day
                                : daysInMonth;
-            Blank.ForecastListExpense = new ObservableCollection<string> { "Прогноз расходов\n" };
+            Blank.ForecastListExpense = new ObservableCollection<string> { "РџСЂРѕРіРЅРѕР· СЂР°СЃС…РѕРґРѕРІ\n" };
             var averageExpenseInUsd = (s.Expense.TotalInUsd - s.Expense.TotalForLargeInUsd) / passedDays;
             Blank.ForecastListExpense.Add(
-                $"Среднедневные расходы {averageExpenseInUsd:#,0} usd ( {averageExpenseInUsd*(decimal) s.EndRates.First(c => c.Currency == CurrencyCodes.BYR).Rate:#,0} byr)");
+                $"РЎСЂРµРґРЅРµРґРЅРµРІРЅС‹Рµ СЂР°СЃС…РѕРґС‹ {averageExpenseInUsd:#,0} usd ( {averageExpenseInUsd*(decimal) s.EndRates.First(c => c.Currency == CurrencyCodes.BYR).Rate:#,0} byr)");
             Blank.ForecastListExpense.Add(
-                $"За {daysInMonth} дней составит: {averageExpenseInUsd*daysInMonth:#,0} usd ( {averageExpenseInUsd*(decimal) s.EndRates.First(c => c.Currency == CurrencyCodes.BYR).Rate*daysInMonth:#,0} byr)");
-            Blank.ForecastListExpense.Add($" + крупные расходы:  {s.Expense.TotalForLargeInUsd:#,0} usd");
+                $"Р—Р° {daysInMonth} РґРЅРµР№ СЃРѕСЃС‚Р°РІРёС‚: {averageExpenseInUsd*daysInMonth:#,0} usd ( {averageExpenseInUsd*(decimal) s.EndRates.First(c => c.Currency == CurrencyCodes.BYR).Rate*daysInMonth:#,0} byr)");
+            Blank.ForecastListExpense.Add($" + РєСЂСѓРїРЅС‹Рµ СЂР°СЃС…РѕРґС‹:  {s.Expense.TotalForLargeInUsd:#,0} usd");
             s.ForecastExpense = averageExpenseInUsd * daysInMonth + s.Expense.TotalForLargeInUsd;
-            Blank.ForecastListExpense.Add($"\nИтого расходов {s.ForecastExpense:#,0} usd ");
+            Blank.ForecastListExpense.Add($"\nРС‚РѕРіРѕ СЂР°СЃС…РѕРґРѕРІ {s.ForecastExpense:#,0} usd ");
 
             Blank.ForecastListBalance = new ObservableCollection<string>
                                     {
-                                      "Прогноз результата\n\n",
-                                        $"Финансовый результат  {s.ForecastFinResult:#,0} usd",
-                                        $" (с учетом курсовых разниц  {s.ForecastFinResult + s.ExchangeDifference:#,0} usd)\n",
-                                        $"Исходящий остаток  {s.ForecastEndBalance:#,0} usd",
-                                        $" (с учетом курсовых разниц  {s.ForecastEndBalance + s.ExchangeDifference:#,0} usd)"
+                                      "РџСЂРѕРіРЅРѕР· СЂРµР·СѓР»СЊС‚Р°С‚Р°\n\n",
+                                        $"Р¤РёРЅР°РЅСЃРѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚  {s.ForecastFinResult:#,0} usd",
+                                        $" (СЃ СѓС‡РµС‚РѕРј РєСѓСЂСЃРѕРІС‹С… СЂР°Р·РЅРёС†  {s.ForecastFinResult + s.ExchangeDifference:#,0} usd)\n",
+                                        $"РСЃС…РѕРґСЏС‰РёР№ РѕСЃС‚Р°С‚РѕРє  {s.ForecastEndBalance:#,0} usd",
+                                        $" (СЃ СѓС‡РµС‚РѕРј РєСѓСЂСЃРѕРІС‹С… СЂР°Р·РЅРёС†  {s.ForecastEndBalance + s.ExchangeDifference:#,0} usd)"
                                     };
         }
     }

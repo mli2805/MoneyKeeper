@@ -1,4 +1,4 @@
-namespace Keeper.Utils.DbInputOutput.TxtTasks
+﻿namespace Keeper.Utils.DbInputOutput.TxtTasks
 {
   public interface IDbToTxtSaver
   {
