@@ -1,4 +1,4 @@
-using Keeper.DomainModel.DbTypes;
+﻿using Keeper.DomainModel.DbTypes;
 using Keeper.ViewModels.Deposits;
 using Keeper.ViewModels.SingleViews;
 

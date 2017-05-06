@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.WorkTypes;
 
@@ -18,7 +18,7 @@ namespace Keeper.Utils.DiagramDataExtraction
         }
 
         /// <summary>
-        /// любое сравнение инстансов в том числе поиск мин/мах запросами будет использовать это сравнение
+        /// Р»СЋР±РѕРµ СЃСЂР°РІРЅРµРЅРёРµ РёРЅСЃС‚Р°РЅСЃРѕРІ РІ С‚РѕРј С‡РёСЃР»Рµ РїРѕРёСЃРє РјРёРЅ/РјР°С… Р·Р°РїСЂРѕСЃР°РјРё Р±СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЌС‚Рѕ СЃСЂР°РІРЅРµРЅРёРµ
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>

@@ -1,4 +1,4 @@
-namespace Keeper.DomainModel.Enumes
+﻿namespace Keeper.DomainModel.Enumes
 {
  
   public enum CurrencyCodes

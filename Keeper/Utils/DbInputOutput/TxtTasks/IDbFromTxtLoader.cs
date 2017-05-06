@@ -1,4 +1,4 @@
-using Keeper.Utils.DbInputOutput.CompositeTasks;
+﻿using Keeper.Utils.DbInputOutput.CompositeTasks;
 
 namespace Keeper.Utils.DbInputOutput.TxtTasks
 {

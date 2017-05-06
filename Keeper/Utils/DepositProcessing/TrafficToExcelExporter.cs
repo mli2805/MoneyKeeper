@@ -1,4 +1,4 @@
-using System.Composition;
+п»їusing System.Composition;
 using Keeper.DomainModel.Deposit;
 using Microsoft.Office.Interop.Excel;
 
@@ -28,7 +28,7 @@ namespace Keeper.Utils.DepositProcessing
         private void SetFormatForHeader(Worksheet ws)
         {
             ws.Range["A1"].EntireRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            ws.Range["A1"].EntireRow.WrapText = true; // высота строки не должна была быть выставлена явно
+            ws.Range["A1"].EntireRow.WrapText = true; // РІС‹СЃРѕС‚Р° СЃС‚СЂРѕРєРё РЅРµ РґРѕР»Р¶РЅР° Р±С‹Р»Р° Р±С‹С‚СЊ РІС‹СЃС‚Р°РІР»РµРЅР° СЏРІРЅРѕ
             ws.Range["A1"].EntireRow.VerticalAlignment = XlVAlign.xlVAlignCenter;
             ws.Activate();
             ws.Application.ActiveWindow.SplitRow = 2;
@@ -37,13 +37,13 @@ namespace Keeper.Utils.DepositProcessing
 
         private void ExportEvaluationHeader(Worksheet ws)
         {
-            ws.Cells[1, 2] = "Дата";
-            ws.Cells[1, 3] = "Остаток до операции";
-            ws.Cells[1, 4] = "Приход";
-            ws.Cells[1, 5] = "Расход";
-            ws.Cells[1, 6] = "Остаток после операции";
-            ws.Cells[1, 7] = "Контрагент";
-            ws.Cells[1, 8] = "Примечание";
+            ws.Cells[1, 2] = "Р”Р°С‚Р°";
+            ws.Cells[1, 3] = "РћСЃС‚Р°С‚РѕРє РґРѕ РѕРїРµСЂР°С†РёРё";
+            ws.Cells[1, 4] = "РџСЂРёС…РѕРґ";
+            ws.Cells[1, 5] = "Р Р°СЃС…РѕРґ";
+            ws.Cells[1, 6] = "РћСЃС‚Р°С‚РѕРє РїРѕСЃР»Рµ РѕРїРµСЂР°С†РёРё";
+            ws.Cells[1, 7] = "РљРѕРЅС‚СЂР°РіРµРЅС‚";
+            ws.Cells[1, 8] = "РџСЂРёРјРµС‡Р°РЅРёРµ";
         }
 
         private static void SetFormatForData(Worksheet ws)

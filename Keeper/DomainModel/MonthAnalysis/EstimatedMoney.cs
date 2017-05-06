@@ -1,4 +1,4 @@
-using Keeper.DomainModel.Enumes;
+﻿using Keeper.DomainModel.Enumes;
 
 namespace Keeper.DomainModel.MonthAnalysis
 {
