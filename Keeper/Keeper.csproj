@@ -169,7 +169,6 @@
     <Compile Include="Controls\OneTranViewControls\TransferControl.xaml.cs">
       <DependentUpon>TransferControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DomainModel\DbTypes\Class1.cs" />
     <Compile Include="DomainModel\Extentions\DbExtentions.cs" />
     <Compile Include="DomainModel\MonthAnalysis\DepoTraffic.cs" />
     <Compile Include="DomainModel\MonthAnalysis\EstimatedMoney.cs" />
