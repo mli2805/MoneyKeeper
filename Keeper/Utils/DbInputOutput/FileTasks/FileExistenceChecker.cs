@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
 using Keeper.Properties;
 using Keeper.Utils.DbInputOutput.CompositeTasks;

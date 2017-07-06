@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Composition;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Extentions;
@@ -28,11 +28,11 @@ namespace Keeper.Utils.MonthAnalysis
         {
             var period = new Period(new DateTime(1,1,1), someDate.AddMinutes(-1));
 
-            var allMine = _db.SeekAccount("Ìîè");
+            var allMine = _db.SeekAccount("ÐœÐ¾Ð¸");
             var allMineBalance = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(allMine, period));
-            var cards = _db.SeekAccount("Êàðòî÷êè");
+            var cards = _db.SeekAccount("ÐšÐ°Ñ€Ñ‚Ð¾Ñ‡ÐºÐ¸");
             var cardsBalance = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(cards, period));
-            var deposits = _db.SeekAccount("Äåïîçèòû");
+            var deposits = _db.SeekAccount("Ð”ÐµÐ¿Ð¾Ð·Ð¸Ñ‚Ñ‹");
             var depositsBalance = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(deposits, period));
 
 

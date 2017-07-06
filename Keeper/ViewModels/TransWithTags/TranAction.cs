@@ -1,4 +1,4 @@
-namespace Keeper.ViewModels.TransWithTags
+﻿namespace Keeper.ViewModels.TransWithTags
 {
     public enum TranAction
     {

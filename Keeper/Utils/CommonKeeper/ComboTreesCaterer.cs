@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Composition;
 using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Extentions;
@@ -40,7 +40,7 @@ namespace Keeper.Utils.CommonKeeper
         {
             // All Tags
             AccNamesForFilterTags = new List<AccName>();
-            var list = new List<string>() { "Внешние", "Все доходы", "Все расходы" };
+            var list = new List<string>() { "Р’РЅРµС€РЅРёРµ", "Р’СЃРµ РґРѕС…РѕРґС‹", "Р’СЃРµ СЂР°СЃС…РѕРґС‹" };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
@@ -52,13 +52,13 @@ namespace Keeper.Utils.CommonKeeper
             // Income
             MyAccNamesForIncome = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
-                    new List<string> {"Закрытые", "Закрытые депозиты", "Мне должны"})
+                new AccName().PopulateFromAccount(_db.SeekAccount("РњРѕРё"),
+                    new List<string> {"Р—Р°РєСЂС‹С‚С‹Рµ", "Р—Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹", "РњРЅРµ РґРѕР»Р¶РЅС‹"})
             };
 
             // Income Tags
             AccNamesForIncomeTags = new List<AccName>();
-            var list = new List<string>() { "ДеньгоДатели", "Банки", "Государство", "Все доходы" };
+            var list = new List<string>() { "Р”РµРЅСЊРіРѕР”Р°С‚РµР»Рё", "Р‘Р°РЅРєРё", "Р“РѕСЃСѓРґР°СЂСЃС‚РІРѕ", "Р’СЃРµ РґРѕС…РѕРґС‹" };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
@@ -71,13 +71,13 @@ namespace Keeper.Utils.CommonKeeper
             // Expense
             MyAccNamesForExpense = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
-                    new List<string> {"Закрытые", "Закрытые депозиты", "Мне должны", "Депозиты"})
+                new AccName().PopulateFromAccount(_db.SeekAccount("РњРѕРё"),
+                    new List<string> {"Р—Р°РєСЂС‹С‚С‹Рµ", "Р—Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹", "РњРЅРµ РґРѕР»Р¶РЅС‹", "Р”РµРїРѕР·РёС‚С‹"})
             };
 
             // Expense Tags
             AccNamesForExpenseTags = new List<AccName>();
-            var list = new List<string>() { "ДеньгоПолучатели", "Банки", "Государство", "Все расходы" };
+            var list = new List<string>() { "Р”РµРЅСЊРіРѕРџРѕР»СѓС‡Р°С‚РµР»Рё", "Р‘Р°РЅРєРё", "Р“РѕСЃСѓРґР°СЂСЃС‚РІРѕ", "Р’СЃРµ СЂР°СЃС…РѕРґС‹" };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
@@ -90,13 +90,13 @@ namespace Keeper.Utils.CommonKeeper
             // Transfer
             MyAccNamesForTransfer = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
-                                                       new List<string> {"Закрытые", "Закрытые депозиты"})
+                new AccName().PopulateFromAccount(_db.SeekAccount("РњРѕРё"),
+                                                       new List<string> {"Р—Р°РєСЂС‹С‚С‹Рµ", "Р—Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹"})
             };
 
             // Transfer Tags
             AccNamesForTransferTags = new List<AccName>();
-            var list = new List<string>() { "Форекс" };
+            var list = new List<string>() { "Р¤РѕСЂРµРєСЃ" };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
@@ -109,13 +109,13 @@ namespace Keeper.Utils.CommonKeeper
             // Exchange
             MyAccNamesForExchange = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.SeekAccount("Мои"),
-                                                       new List<string> {"Закрытые", "Закрытые депозиты"})
+                new AccName().PopulateFromAccount(_db.SeekAccount("РњРѕРё"),
+                                                       new List<string> {"Р—Р°РєСЂС‹С‚С‹Рµ", "Р—Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹"})
             };
 
             // Exchange Tags
             AccNamesForExchangeTags = new List<AccName>();
-            var list = new List<string>() { "Банки", "Форекс" };
+            var list = new List<string>() { "Р‘Р°РЅРєРё", "Р¤РѕСЂРµРєСЃ" };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);

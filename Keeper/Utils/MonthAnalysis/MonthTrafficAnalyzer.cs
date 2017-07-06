@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace Keeper.Utils.MonthAnalysis
         private IEnumerable<TranForAnalysis> GetTransForAnalysis(bool isIncome, DateTime someDate)
         {
             return from t in _db.TransWithTags
-                where t.Timestamp.IsMonthTheSame(someDate) && t.Operation == (isIncome ? OperationType.Äîõîä : OperationType.Ðàñõîä)
+                where t.Timestamp.IsMonthTheSame(someDate) && t.Operation == (isIncome ? OperationType.Ð”Ð¾Ñ…Ð¾Ð´ : OperationType.Ð Ð°ÑÑ…Ð¾Ð´)
                 join r in _db.CurrencyRates on new { t.Timestamp.Date, Currency = t.Currency.GetValueOrDefault() } equals
                     new { r.BankDay.Date, r.Currency } into g
                 from rate in g.DefaultIfEmpty()
@@ -83,19 +83,19 @@ namespace Keeper.Utils.MonthAnalysis
             var result = new DepoTraffic();
             var allTrans = from t in _db.TransWithTags where t.Timestamp.IsMonthTheSame(someDate) select t;
 
-            result.FromDepo =                          // ðàñõîä (íå ìîæåò áûòü) èëè ïåðåíîñ ñî âêëàäà
-                allTrans.Where(t => (t.Operation == OperationType.Ðàñõîä && t.MyAccount.IsDeposit()) || (t.Operation == OperationType.Ïåðåíîñ && t.MyAccount.IsDeposit()))
+            result.FromDepo =                          // Ñ€Ð°ÑÑ…Ð¾Ð´ (Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ) Ð¸Ð»Ð¸ Ð¿ÐµÑ€ÐµÐ½Ð¾Ñ ÑÐ¾ Ð²ÐºÐ»Ð°Ð´Ð°
+                allTrans.Where(t => (t.Operation == OperationType.Ð Ð°ÑÑ…Ð¾Ð´ && t.MyAccount.IsDeposit()) || (t.Operation == OperationType.ÐŸÐµÑ€ÐµÐ½Ð¾Ñ && t.MyAccount.IsDeposit()))
                     .Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency.GetValueOrDefault(), t.Timestamp)) +
-                // ïåðåíîñ ñî âêëàäà ñ îáìåíîì
-                allTrans.Where(t => (t.Operation == OperationType.Îáìåí && t.MyAccount.IsDeposit()))
+                // Ð¿ÐµÑ€ÐµÐ½Ð¾Ñ ÑÐ¾ Ð²ÐºÐ»Ð°Ð´Ð° Ñ Ð¾Ð±Ð¼ÐµÐ½Ð¾Ð¼
+                allTrans.Where(t => (t.Operation == OperationType.ÐžÐ±Ð¼ÐµÐ½ && t.MyAccount.IsDeposit()))
                     .Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency.GetValueOrDefault(), t.Timestamp));
 
-            result.ToDepo = // äîõîä (%%) èëè ïåðåíîñ âî âêëàä
-                allTrans.Where(t => (t.Operation == OperationType.Äîõîä && t.MyAccount.IsDeposit()) ||
-                                    (t.Operation == OperationType.Ïåðåíîñ && t.MySecondAccount.IsDeposit()))
+            result.ToDepo = // Ð´Ð¾Ñ…Ð¾Ð´ (%%) Ð¸Ð»Ð¸ Ð¿ÐµÑ€ÐµÐ½Ð¾Ñ Ð²Ð¾ Ð²ÐºÐ»Ð°Ð´
+                allTrans.Where(t => (t.Operation == OperationType.Ð”Ð¾Ñ…Ð¾Ð´ && t.MyAccount.IsDeposit()) ||
+                                    (t.Operation == OperationType.ÐŸÐµÑ€ÐµÐ½Ð¾Ñ && t.MySecondAccount.IsDeposit()))
                     .Sum(t => _rateExtractor.GetUsdEquivalent(t.Amount, t.Currency.GetValueOrDefault(), t.Timestamp)) +
-                // ïåðåíîñ âî âêëàä ñ îáìåíîì
-                allTrans.Where(t => (t.Operation == OperationType.Îáìåí && t.MySecondAccount.IsDeposit()))
+                // Ð¿ÐµÑ€ÐµÐ½Ð¾Ñ Ð²Ð¾ Ð²ÐºÐ»Ð°Ð´ Ñ Ð¾Ð±Ð¼ÐµÐ½Ð¾Ð¼
+                allTrans.Where(t => (t.Operation == OperationType.ÐžÐ±Ð¼ÐµÐ½ && t.MySecondAccount.IsDeposit()))
                     .Sum(t => _rateExtractor.GetUsdEquivalent(t.AmountInReturn, t.CurrencyInReturn.GetValueOrDefault(), 
                         t.Timestamp)) - incomesOnDeposit;
 

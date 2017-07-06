@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 
 namespace Keeper.DomainModel.Deposit
 {
@@ -7,12 +7,12 @@ namespace Keeper.DomainModel.Deposit
     {
         public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
 
-        public bool EveryStartDay { get; set; } // каждое число открытия
-        // и/или
-        public bool EveryFirstDayOfMonth { get; set; } // каждое первое число месяца
-        // и/или
-        public bool EveryLastDayOfMonth { get; set; } // каждый последний день месяца
-        // и эти проценты
+        public bool EveryStartDay { get; set; } // РєР°Р¶РґРѕРµ С‡РёСЃР»Рѕ РѕС‚РєСЂС‹С‚РёСЏ
+        // Рё/РёР»Рё
+        public bool EveryFirstDayOfMonth { get; set; } // РєР°Р¶РґРѕРµ РїРµСЂРІРѕРµ С‡РёСЃР»Рѕ РјРµСЃСЏС†Р°
+        // Рё/РёР»Рё
+        public bool EveryLastDayOfMonth { get; set; } // РєР°Р¶РґС‹Р№ РїРѕСЃР»РµРґРЅРёР№ РґРµРЅСЊ РјРµСЃСЏС†Р°
+        // Рё СЌС‚Рё РїСЂРѕС†РµРЅС‚С‹
         public bool IsCapitalized { get; set; }
 
         public bool IsRateFixed { get; set; }

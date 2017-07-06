@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using Keeper.Controls.ComboboxTreeview;
@@ -16,8 +16,8 @@ namespace Keeper.DomainModel.WorkTypes
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="account">корневой account, с которого начать</param>
-        /// <param name="cutBranches">список ветвей, которые обрубить</param>
+        /// <param name="account">РєРѕСЂРЅРµРІРѕР№ account, СЃ РєРѕС‚РѕСЂРѕРіРѕ РЅР°С‡Р°С‚СЊ</param>
+        /// <param name="cutBranches">СЃРїРёСЃРѕРє РІРµС‚РІРµР№, РєРѕС‚РѕСЂС‹Рµ РѕР±СЂСѓР±РёС‚СЊ</param>
         /// <returns></returns>
         public AccName PopulateFromAccount(Account account, List<string> cutBranches)
         {

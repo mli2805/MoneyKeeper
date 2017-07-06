@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using FakeItEasy;
 using FluentAssertions;
 using Keeper.DomainModel.DbTypes;

@@ -1,4 +1,4 @@
-using System.Composition;
+﻿using System.Composition;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using Keeper.DomainModel.WorkTypes;

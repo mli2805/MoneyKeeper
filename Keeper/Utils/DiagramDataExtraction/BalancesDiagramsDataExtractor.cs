@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
@@ -27,16 +27,16 @@ namespace Keeper.Utils.DiagramDataExtraction
             _rateExtractor = rateExtractor;
         }
         /// <summary>
-        /// довольно медленно
-        /// может _ratesAsDictionary позволит ускорить?
+        /// РґРѕРІРѕР»СЊРЅРѕ РјРµРґР»РµРЅРЅРѕ
+        /// РјРѕР¶РµС‚ _ratesAsDictionary РїРѕР·РІРѕР»РёС‚ СѓСЃРєРѕСЂРёС‚СЊ?
         /// </summary>
         /// <param name="frequency"></param>
         /// <returns></returns>
         public List<DiagramPoint> GetBalances(Every frequency)
         {
-            var root = _db.SeekAccount("Мои");
+            var root = _db.SeekAccount("РњРѕРё");
             var result = new List<DiagramPoint>();
-            var currentDate = new DateTime(2001, 12, 31); // считать надо всегда с самого начала, иначе остаток неправильный будет
+            var currentDate = new DateTime(2001, 12, 31); // СЃС‡РёС‚Р°С‚СЊ РЅР°РґРѕ РІСЃРµРіРґР° СЃ СЃР°РјРѕРіРѕ РЅР°С‡Р°Р»Р°, РёРЅР°С‡Рµ РѕСЃС‚Р°С‚РѕРє РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№ Р±СѓРґРµС‚
             var currentMoneyBag = new MoneyBag();
 
             foreach (var tran in _db.TransWithTags)
@@ -46,7 +46,7 @@ namespace Keeper.Utils.DiagramDataExtraction
                     if (FunctionsWithEvery.IsLastDayOf(currentDate, frequency))
                     {
                         var sum = _rateExtractor.GetUsdEquivalent(currentMoneyBag, tran.Timestamp.Date);
-                        if (sum != 0) // если вернулся 0 - это гэпы без курсов в начале времен
+                        if (sum != 0) // РµСЃР»Рё РІРµСЂРЅСѓР»СЃСЏ 0 - СЌС‚Рѕ РіСЌРїС‹ Р±РµР· РєСѓСЂСЃРѕРІ РІ РЅР°С‡Р°Р»Рµ РІСЂРµРјРµРЅ
                             result.Add(new DiagramPoint(currentDate, (double)sum));
                         else
                         {

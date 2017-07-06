@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Windows.Media;
@@ -29,10 +29,10 @@ namespace Keeper.Utils.DiagramDataExtraction
         {
             var categoriesList = new List<Account>
             {
-                _db.SeekAccount("Зарплата"),
-                _db.SeekAccount("Иррациональные"),
-                _db.SeekAccount("Рента"),
-                _db.SeekAccount("Подарки"),
+                _db.SeekAccount("Р—Р°СЂРїР»Р°С‚Р°"),
+                _db.SeekAccount("РСЂСЂР°С†РёРѕРЅР°Р»СЊРЅС‹Рµ"),
+                _db.SeekAccount("Р РµРЅС‚Р°"),
+                _db.SeekAccount("РџРѕРґР°СЂРєРё"),
             };
 
             var colors = new List<Brush> { Brushes.Green, Brushes.DarkGray, Brushes.Blue, Brushes.DarkOrange };
@@ -44,7 +44,7 @@ namespace Keeper.Utils.DiagramDataExtraction
 
             return new DiagramData
             {
-                Caption = "Ежемесячные доходы (только основные категории)",
+                Caption = "Р•Р¶РµРјРµСЃСЏС‡РЅС‹Рµ РґРѕС…РѕРґС‹ (С‚РѕР»СЊРєРѕ РѕСЃРЅРѕРІРЅС‹Рµ РєР°С‚РµРіРѕСЂРёРё)",
                 Series = dataForDiagram,
                 Mode = DiagramMode.BarVertical,
                 TimeInterval = Every.Month
@@ -53,7 +53,7 @@ namespace Keeper.Utils.DiagramDataExtraction
 
         public DiagramData MonthlyExpenseDiagramCtor()
         {
-            var root = _db.SeekAccount("Все расходы");
+            var root = _db.SeekAccount("Р’СЃРµ СЂР°СЃС…РѕРґС‹");
 
             var outcomeColors = new List<Brush> {Brushes.LimeGreen, Brushes.DarkGray, Brushes.OrangeRed, Brushes.Magenta,
                 Brushes.Yellow, Brushes.Aquamarine, Brushes.DarkOrange, Brushes.DodgerBlue};
@@ -65,7 +65,7 @@ namespace Keeper.Utils.DiagramDataExtraction
 
             return new DiagramData
             {
-                Caption = "Ежемесячные расходы в разрезе категорий",
+                Caption = "Р•Р¶РµРјРµСЃСЏС‡РЅС‹Рµ СЂР°СЃС…РѕРґС‹ РІ СЂР°Р·СЂРµР·Рµ РєР°С‚РµРіРѕСЂРёР№",
                 Series = dataForDiagram,
                 Mode = DiagramMode.BarVertical,
                 TimeInterval = Every.Month
@@ -98,9 +98,9 @@ namespace Keeper.Utils.DiagramDataExtraction
         {
             var categoriesList = new List<Account>
             {
-                _db.SeekAccount("Зарплата"),
-                _db.SeekAccount("Иррациональные"),
-                _db.SeekAccount("Рента"),
+                _db.SeekAccount("Р—Р°СЂРїР»Р°С‚Р°"),
+                _db.SeekAccount("РСЂСЂР°С†РёРѕРЅР°Р»СЊРЅС‹Рµ"),
+                _db.SeekAccount("Р РµРЅС‚Р°"),
             };
             var colors = new List<Brush> { Brushes.LimeGreen, Brushes.Black, Brushes.Blue };
             var colorsEnumerator = colors.GetEnumerator();
@@ -116,7 +116,7 @@ namespace Keeper.Utils.DiagramDataExtraction
 
             return new DiagramData
             {
-                Caption = "Средние за 12 месяцев по основным индикативным показателям",
+                Caption = "РЎСЂРµРґРЅРёРµ Р·Р° 12 РјРµСЃСЏС†РµРІ РїРѕ РѕСЃРЅРѕРІРЅС‹Рј РёРЅРґРёРєР°С‚РёРІРЅС‹Рј РїРѕРєР°Р·Р°С‚РµР»СЏРј",
                 Series = dataForDiagram,
                 Mode = DiagramMode.Lines,
                 TimeInterval = Every.Day
@@ -137,7 +137,7 @@ namespace Keeper.Utils.DiagramDataExtraction
         {
             return new DiagramSeries
             {
-                Name = "Все доходы",
+                Name = "Р’СЃРµ РґРѕС…РѕРґС‹",
                 PositiveBrushColor = Brushes.DarkGreen,
                 NegativeBrushColor = Brushes.DarkGreen,
                 Index = 0,
@@ -149,7 +149,7 @@ namespace Keeper.Utils.DiagramDataExtraction
         {
             return new DiagramSeries
             {
-                Name = "Все расходы",
+                Name = "Р’СЃРµ СЂР°СЃС…РѕРґС‹",
                 PositiveBrushColor = Brushes.Red,
                 NegativeBrushColor = Brushes.Red,
                 Index = 0,

@@ -1,4 +1,4 @@
-using System.Composition;
+п»їusing System.Composition;
 using System.Drawing;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Extentions;
@@ -30,7 +30,7 @@ namespace Keeper.Utils.DepositProcessing
         private void SetFormatForHeader(Worksheet ws)
         {
             ws.Range["A1"].EntireRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            ws.Range["A1"].EntireRow.WrapText = true; // высота строки не должна была быть выставлена явно
+            ws.Range["A1"].EntireRow.WrapText = true; // РІС‹СЃРѕС‚Р° СЃС‚СЂРѕРєРё РЅРµ РґРѕР»Р¶РЅР° Р±С‹Р»Р° Р±С‹С‚СЊ РІС‹СЃС‚Р°РІР»РµРЅР° СЏРІРЅРѕ
             ws.Range["D1", "E1"].Merge();
             ws.Range["A1"].EntireRow.VerticalAlignment = XlVAlign.xlVAlignCenter;
             ws.Activate();
@@ -40,15 +40,15 @@ namespace Keeper.Utils.DepositProcessing
 
         private void ExportEvaluationHeader(Worksheet ws)
         {
-            ws.Cells[1, 2] = "Дата";
-            ws.Cells[1, 3] = "Остаток на конец дня";
-            ws.Cells[1, 4] = "Ставка";
-            ws.Cells[1, 6] = "Проценты за прошедшую ночь";
-            ws.Cells[1, 7] = "Не выплаченные проценты";
-            ws.Cells[1, 8] = "Проценты нарастающим итогом";
-            ws.Cells[1, 9] = "Курс";
-            ws.Cells[1, 10] = "Девальвация за день";
-            ws.Cells[1, 11] = "Девальвация нарастающим итогом";
+            ws.Cells[1, 2] = "Р”Р°С‚Р°";
+            ws.Cells[1, 3] = "РћСЃС‚Р°С‚РѕРє РЅР° РєРѕРЅРµС† РґРЅСЏ";
+            ws.Cells[1, 4] = "РЎС‚Р°РІРєР°";
+            ws.Cells[1, 6] = "РџСЂРѕС†РµРЅС‚С‹ Р·Р° РїСЂРѕС€РµРґС€СѓСЋ РЅРѕС‡СЊ";
+            ws.Cells[1, 7] = "РќРµ РІС‹РїР»Р°С‡РµРЅРЅС‹Рµ РїСЂРѕС†РµРЅС‚С‹";
+            ws.Cells[1, 8] = "РџСЂРѕС†РµРЅС‚С‹ РЅР°СЂР°СЃС‚Р°СЋС‰РёРј РёС‚РѕРіРѕРј";
+            ws.Cells[1, 9] = "РљСѓСЂСЃ";
+            ws.Cells[1, 10] = "Р”РµРІР°Р»СЊРІР°С†РёСЏ Р·Р° РґРµРЅСЊ";
+            ws.Cells[1, 11] = "Р”РµРІР°Р»СЊРІР°С†РёСЏ РЅР°СЂР°СЃС‚Р°СЋС‰РёРј РёС‚РѕРіРѕРј";
         }
 
         private static void SetFormatForData(Worksheet ws)

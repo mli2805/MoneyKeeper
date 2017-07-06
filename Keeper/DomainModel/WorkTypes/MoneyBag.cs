@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace Keeper.DomainModel.WorkTypes
 
         public bool IsEmpty { get { return Count == 0; } }
 
-        public bool IsZero() // çàïèñè åñòü, íî âñå ñ íóëåì
+        public bool IsZero() // Ð·Ð°Ð¿Ð¸ÑÐ¸ ÐµÑÑ‚ÑŒ, Ð½Ð¾ Ð²ÑÐµ Ñ Ð½ÑƒÐ»ÐµÐ¼
         {
             return Items.All(item => item.Amount == 0);
         }

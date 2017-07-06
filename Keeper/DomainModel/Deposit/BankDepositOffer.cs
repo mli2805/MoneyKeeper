@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Keeper.DomainModel.DbTypes;
@@ -40,7 +40,7 @@ namespace Keeper.DomainModel.Deposit
         }
         public override string ToString()
         {
-            if (IsInvalid()) return "ввод не окончен";
+            if (IsInvalid()) return "РІРІРѕРґ РЅРµ РѕРєРѕРЅС‡РµРЅ";
             return BankAccount.Name + " " + DepositTitle + " " + Currency;
         }
     }

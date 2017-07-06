@@ -1,4 +1,4 @@
-using Keeper.DomainModel.Enumes;
+п»їusing Keeper.DomainModel.Enumes;
 
 namespace Keeper.Utils
 {
@@ -8,13 +8,13 @@ namespace Keeper.Utils
     public CurrencyCodes Currency { get; set; }
 
     /// <summary>
-    /// таким конструктором создается ВЫключенный фильтр
-    /// ему не нужна валюта, он пропускает все валюты
+    /// С‚Р°РєРёРј РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРј СЃРѕР·РґР°РµС‚СЃСЏ Р’Р«РєР»СЋС‡РµРЅРЅС‹Р№ С„РёР»СЊС‚СЂ
+    /// РµРјСѓ РЅРµ РЅСѓР¶РЅР° РІР°Р»СЋС‚Р°, РѕРЅ РїСЂРѕРїСѓСЃРєР°РµС‚ РІСЃРµ РІР°Р»СЋС‚С‹
     /// </summary>
     public CurrencyCodesFilter() { IsOn = false; }
 
     /// <summary>
-    /// а такой фильтр пропускает только "свою" валюту
+    /// Р° С‚Р°РєРѕР№ С„РёР»СЊС‚СЂ РїСЂРѕРїСѓСЃРєР°РµС‚ С‚РѕР»СЊРєРѕ "СЃРІРѕСЋ" РІР°Р»СЋС‚Сѓ
     /// </summary>
     /// <param name="currency"></param>
     public CurrencyCodesFilter(CurrencyCodes currency)
