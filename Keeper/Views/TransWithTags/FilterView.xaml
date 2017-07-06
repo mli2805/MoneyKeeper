@@ -1,0 +1,92 @@
+﻿<Window x:Class="Keeper.Views.TransWithTags.FilterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:common="clr-namespace:Keeper.Utils.Common"
+        xmlns:tagPickingControl="clr-namespace:Keeper.Controls.OneTranViewControls.SubControls.TagPickingControl"
+        mc:Ignorable="d"
+        Title="FilterView" SizeToContent="Height" Width="{Binding Width, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <HierarchicalDataTemplate x:Key="TreeViewDataTemplate" ItemsSource="{Binding Children}">
+                <TextBlock Text="{Binding Name}" />
+            </HierarchicalDataTemplate>
+            <common:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,0" Content="x"  VerticalContentAlignment="Top" Style="{StaticResource MyButtonStyle}"
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(1)]"/>
+                <TextBlock Padding="5">Тип операции</TextBlock>
+            </StackPanel>
+            <ComboBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" ItemsSource="{Binding FilterModel.OperationTypes}" 
+                      SelectedItem="{Binding FilterModel.MyOperationType, Mode=TwoWay}"/>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                    <Button Width="20"  Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}"
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(2)]"/>
+                    <TextBlock Padding="5">Мой счет</TextBlock>
+                </StackPanel>
+                <comboboxTreeview:ComboBoxTreeView Height="25" Width="200" HorizontalAlignment="Left" Margin="5,0,0,0"  Background="White" 
+                      VerticalAlignment="Top" ItemTemplate="{StaticResource TreeViewDataTemplate}" IsBranchSelectionEnabled="True"
+                      ItemsSource="{Binding FilterModel.AvailableAccNames}" SelectedItem="{Binding FilterModel.MyAccName, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
+                    <RadioButton GroupName="AccNamePosition" Content="1" IsChecked="{Binding FilterModel.IsAccNamePosition1}" Margin="15,0,0,0"/>
+                    <RadioButton GroupName="AccNamePosition" Content="2" IsChecked="{Binding FilterModel.IsAccNamePosition2}" Margin="15,0,0,0"/>
+                    <RadioButton GroupName="AccNamePosition" Content="1 or 2" IsChecked="{Binding FilterModel.IsAccNamePosition12}"  Margin="15,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}"
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(3)]"/>
+                <TextBlock Padding="5">Сумма</TextBlock>
+            </StackPanel>
+            <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" TextAlignment="Right" VerticalContentAlignment="Center" 
+                         Text="{Binding FilterModel.Amount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" />
+            <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
+                <RadioButton GroupName="AmountComparison" Content="&lt;" IsChecked="{Binding FilterModel.AmountLessThan}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="AmountComparison" Content="&gt;" IsChecked="{Binding FilterModel.AmountGreaterThan}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="AmountComparison" Content="=" IsChecked="{Binding FilterModel.AmountEqualTo}"  Margin="15,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}"
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(4)]"/>
+                <TextBlock Padding="5">Валюта</TextBlock>
+            </StackPanel>
+            <ComboBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" ItemsSource="{Binding FilterModel.Currencies}" SelectedItem="{Binding FilterModel.MyCurrency, Mode=TwoWay}"/>
+            <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
+                <RadioButton GroupName="CurrencyPosition" Content="1" IsChecked="{Binding FilterModel.IsCurrencyPosition1}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="CurrencyPosition" Content="2" IsChecked="{Binding FilterModel.IsCurrencyPosition2}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="CurrencyPosition" Content="1 or 2" IsChecked="{Binding FilterModel.IsCurrencyPosition12}"  Margin="15,0,0,0"/>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                    <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}" 
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(5)]"/>
+                    <TextBlock Padding="5">Тэги</TextBlock>
+                    <RadioButton GroupName="Tags" Content="И" IsChecked="{Binding FilterModel.IsTagsJoinedByAnd}" Margin="15,6,0,0"/>
+                    <RadioButton GroupName="Tags" Content="ИЛИ" IsChecked="{Binding FilterModel.IsTagsJoinedByOr}" Margin="15,6,0,0"/>
+                </StackPanel>
+                <tagPickingControl:TagPicker Width="200" HorizontalAlignment="Left" Margin="5,-25,0,5" DataContext="{Binding FilterModel.MyTagPickerVm}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}" 
+                        cal:Message.Attach="[Event Click] = [Action CleanProperty(6)]"/>
+                <TextBlock Padding="5">Комментарий</TextBlock>
+            </StackPanel>
+            <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" VerticalContentAlignment="Center" Text="{Binding FilterModel.MyComment}" />
+        </StackPanel>
+        <Button Grid.Row="1" HorizontalAlignment="Left" Width="80" Height="25" Margin="5" Content="Clean all" Style="{StaticResource MyButtonStyle}"
+                cal:Message.Attach="[Event Click] = [Action CleanProperty(99)]"/>
+    </Grid>
+</Window>
