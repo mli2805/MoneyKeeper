@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -66,7 +66,7 @@ namespace Keeper.Models.ShellModels
       set
       {
         _selectedAccount = value;
-        IsDeposit = value != null && value.IsDescendantOf("Äåïîçèòû") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        IsDeposit = value != null && value.IsDescendantOf("Ð”ÐµÐ¿Ð¾Ð·Ð¸Ñ‚Ñ‹") && value.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         NotifyOfPropertyChange(()=>SelectedAccount);
       }
     }

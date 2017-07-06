@@ -1,4 +1,4 @@
-namespace Keeper.Utils.DbInputOutput.CompositeTasks
+﻿namespace Keeper.Utils.DbInputOutput.CompositeTasks
 {
 	public interface IDbBackuper
 	{

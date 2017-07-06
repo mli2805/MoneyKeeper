@@ -1,4 +1,4 @@
-using System.Composition;
+﻿using System.Composition;
 using Ionic.Zip;
 using Keeper.Properties;
 using Keeper.Utils.DbInputOutput.CompositeTasks;

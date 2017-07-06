@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Composition;
 using System.Windows.Media;
 using Keeper.DomainModel.Enumes;
@@ -27,7 +27,7 @@ namespace Keeper.DomainModel.Deposit
         public DepositEstimations Estimations { get; set; }
 
 
-        public Brush FontColor { get { return State == DepositStates.Закрыт ? Brushes.Gray : State == DepositStates.Просрочен ? Brushes.Red : Brushes.Blue; } }
+        public Brush FontColor { get { return State == DepositStates.Р—Р°РєСЂС‹С‚ ? Brushes.Gray : State == DepositStates.РџСЂРѕСЃСЂРѕС‡РµРЅ ? Brushes.Red : Brushes.Blue; } }
 
         [ImportingConstructor]
         public DepositCalculationData(RateExtractor rateExtractor)
@@ -41,7 +41,7 @@ namespace Keeper.DomainModel.Deposit
             if (CurrentCurrency == CurrencyCodes.USD) return $"{CurrentBalance:#,0.00} usd";
 
             var rate = (decimal)_rateExtractor.GetLastRate(CurrentCurrency);
-            string inUsdString = rate == 0 ? "не задан курс" : $"{CurrentBalance /rate:#,0.00} usd";
+            string inUsdString = rate == 0 ? "РЅРµ Р·Р°РґР°РЅ РєСѓСЂСЃ" : $"{CurrentBalance /rate:#,0.00} usd";
 
             if (CurrentCurrency == CurrencyCodes.BYR) return $"{CurrentBalance:#,0} byr  ({inUsdString})";
             return $"{CurrentBalance:#,0.00} {CurrentCurrency.ToString().ToLower()}  ({inUsdString})";

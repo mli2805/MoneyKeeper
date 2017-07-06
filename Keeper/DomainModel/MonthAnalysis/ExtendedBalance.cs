@@ -1,4 +1,4 @@
-namespace Keeper.DomainModel.MonthAnalysis
+﻿namespace Keeper.DomainModel.MonthAnalysis
 {
     public class ExtendedBalance
     {

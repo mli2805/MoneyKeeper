@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using Caliburn.Micro;
 using Keeper.DomainModel;

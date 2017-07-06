@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using Keeper.DomainModel.Enumes;
 
 namespace Keeper.DomainModel.Deposit
@@ -16,7 +16,7 @@ namespace Keeper.DomainModel.Deposit
 
         public bool IsIncome()
         {
-            return !(TransactionType == DepositTransactionTypes.–‡ÒıÓ‰ || TransactionType == DepositTransactionTypes.Œ·ÏÂÌ–‡ÒıÓ‰);
+            return !(TransactionType == DepositTransactionTypes.–†–∞—Å—Ö–æ–¥ || TransactionType == DepositTransactionTypes.–û–±–º–µ–Ω–†–∞—Å—Ö–æ–¥);
         }
         public int Destination()
         {

@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
@@ -255,7 +255,7 @@ namespace Keeper.ViewModels.TransWithTags
         {
             AvailableAccNames = new List<AccName>
             {
-                new AccName().PopulateFromAccount(db.SeekAccount("ÃÓË"), new List<string>())
+                new AccName().PopulateFromAccount(db.SeekAccount("–ú–æ–∏"), new List<string>())
             };
             IsAccNamePosition12 = true;
             AmountEqualTo = true;

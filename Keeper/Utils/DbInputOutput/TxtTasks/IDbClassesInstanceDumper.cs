@@ -1,4 +1,4 @@
-using Keeper.DomainModel.DbTypes;
+﻿using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Deposit;
 using Keeper.DomainModel.Trans;
 using Keeper.Utils.Common;

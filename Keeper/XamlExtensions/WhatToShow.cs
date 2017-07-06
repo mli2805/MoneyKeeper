@@ -1,4 +1,4 @@
-namespace Keeper.XamlExtensions
+﻿namespace Keeper.XamlExtensions
 {
 	public enum WhatToShow
 	{

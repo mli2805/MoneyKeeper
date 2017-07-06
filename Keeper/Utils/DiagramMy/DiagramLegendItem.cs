@@ -1,4 +1,4 @@
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using Caliburn.Micro;
 
 namespace Keeper.Utils.DiagramMy

@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Keeper.DomainModel.DbTypes
     [Serializable]
     public class Account : PropertyChangedBase, IComparable, ITreeViewItemModel
     {
-        #region // свойства (properties) класса
+        #region // СЃРІРѕР№СЃС‚РІР° (properties) РєР»Р°СЃСЃР°
 
         public int Id { get; set; }
         private string _name;
@@ -28,10 +28,10 @@ namespace Keeper.DomainModel.DbTypes
         public Account Parent { get; set; }
         public ObservableCollection<Account> Children { get; private set; } = new ObservableCollection<Account>();
 
-        /* IsActive == false не только закрытые депозиты и счета(карточки) 
-         * но и например контрагенты, с которыми больше не сотрудничаем 
-         * (например, предыдущие работадатели)
-         * статьи более не используемые (типа иррациональные)
+        /* IsActive == false РЅРµ С‚РѕР»СЊРєРѕ Р·Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹ Рё СЃС‡РµС‚Р°(РєР°СЂС‚РѕС‡РєРё) 
+         * РЅРѕ Рё РЅР°РїСЂРёРјРµСЂ РєРѕРЅС‚СЂР°РіРµРЅС‚С‹, СЃ РєРѕС‚РѕСЂС‹РјРё Р±РѕР»СЊС€Рµ РЅРµ СЃРѕС‚СЂСѓРґРЅРёС‡Р°РµРј 
+         * (РЅР°РїСЂРёРјРµСЂ, РїСЂРµРґС‹РґСѓС‰РёРµ СЂР°Р±РѕС‚Р°РґР°С‚РµР»Рё)
+         * СЃС‚Р°С‚СЊРё Р±РѕР»РµРµ РЅРµ РёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ (С‚РёРїР° РёСЂСЂР°С†РёРѕРЅР°Р»СЊРЅС‹Рµ)
          */
         public bool IsClosed { get; set; }
 
@@ -57,7 +57,7 @@ namespace Keeper.DomainModel.DbTypes
         public bool IsExpanded { get; set; }
         #endregion
 
-        #region // конструкторы
+        #region // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
         public Account() { }
         public Account(string name) { Name = name; }
         #endregion
@@ -125,11 +125,11 @@ namespace Keeper.DomainModel.DbTypes
         }
 
         /// <summary>
-        /// true если инстанс или потомок счета-параметра или сам ЭТОТ счет
+        /// true РµСЃР»Рё РёРЅСЃС‚Р°РЅСЃ РёР»Рё РїРѕС‚РѕРјРѕРє СЃС‡РµС‚Р°-РїР°СЂР°РјРµС‚СЂР° РёР»Рё СЃР°Рј Р­РўРћРў СЃС‡РµС‚
         /// </summary>
         /// <param name="ancestor"></param>
         /// <returns></returns>
-        public bool Is(string ancestor)  // Descendant - потомок ; Ancestor - предок
+        public bool Is(string ancestor)  // Descendant - РїРѕС‚РѕРјРѕРє ; Ancestor - РїСЂРµРґРѕРє
         {
             if (Name == ancestor) return true;
             return Parent != null && Parent.Is(ancestor);
@@ -153,7 +153,7 @@ namespace Keeper.DomainModel.DbTypes
 
         public bool IsMyNonDeposit()
         {
-            return Is("Мои") && Deposit == null;
+            return Is("РњРѕРё") && Deposit == null;
         }
 
         public int CompareTo(object obj)
@@ -162,8 +162,8 @@ namespace Keeper.DomainModel.DbTypes
         }
 
         /// <summary>
-        /// только для депозитов! 
-        /// для обычных счетов не применять!
+        /// С‚РѕР»СЊРєРѕ РґР»СЏ РґРµРїРѕР·РёС‚РѕРІ! 
+        /// РґР»СЏ РѕР±С‹С‡РЅС‹С… СЃС‡РµС‚РѕРІ РЅРµ РїСЂРёРјРµРЅСЏС‚СЊ!
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -175,8 +175,8 @@ namespace Keeper.DomainModel.DbTypes
 
             if (a.IsFolder && b.IsFolder)
             {
-                if (a.Name == "Закрытые депозиты") return 1;
-                if (b.Name == "Закрытые депозиты") return -1;
+                if (a.Name == "Р—Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹") return 1;
+                if (b.Name == "Р—Р°РєСЂС‹С‚С‹Рµ РґРµРїРѕР·РёС‚С‹") return -1;
                 return 0;
             }
 

@@ -1,4 +1,4 @@
-using System.Composition;
+﻿using System.Composition;
 using System.Linq;
 using Keeper.DomainModel.DbTypes;
 

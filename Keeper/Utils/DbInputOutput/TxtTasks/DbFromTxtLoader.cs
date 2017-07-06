@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
@@ -91,7 +91,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             if (wrongContent.Count != 0)
             {
                 File.WriteAllLines(Path.ChangeExtension(Path.Combine(path, filename), "err"), wrongContent, _encoding1251);
-                Result = new DbLoadResult(326, "Ошибки загрузки смотри в файле " + Path.ChangeExtension(filename, "err"));
+                Result = new DbLoadResult(326, "РћС€РёР±РєРё Р·Р°РіСЂСѓР·РєРё СЃРјРѕС‚СЂРё РІ С„Р°Р№Р»Рµ " + Path.ChangeExtension(filename, "err"));
             }
             return result;
         }

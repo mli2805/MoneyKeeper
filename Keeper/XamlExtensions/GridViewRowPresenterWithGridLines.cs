@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 namespace Keeper.XamlExtensions
 {
   // http://blog.bulatgafurov.name/   ListView Horizontal and Vertical Gridlines
-  // используется в TransactionsView
+  // РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ TransactionsView
 
   public class GridViewRowPresenterWithGridLines : GridViewRowPresenter
   {
