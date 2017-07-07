@@ -26,7 +26,7 @@ namespace Keeper.Utils.MonthAnalysis
 
         public ExtendedBalance GetExtendedBalanceBeforeDate(DateTime someDate)
         {
-            var period = new Period(new DateTime(1,1,1), someDate);
+            var period = new Period(new DateTime(1,1,1), someDate.AddMinutes(-1));
 
             var allMine = _db.SeekAccount("Мои");
             var allMineBalance = _db.TransWithTags.Sum(t => t.MoneyBagForAccount(allMine, period));
