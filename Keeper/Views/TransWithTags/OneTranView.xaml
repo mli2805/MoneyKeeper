@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         xml:lang="ru-RU"
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" 
-        Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}" Width="{Binding Width, Mode=OneWayToSource}" Height="{Binding Height, Mode=OneWayToSource}">
+        Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}" Width="{Binding Width, Mode=OneWayToSource}" 
+        Height="{Binding Height, Mode=OneWayToSource}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
