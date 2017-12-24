@@ -15,14 +15,14 @@ namespace Keeper.ViewModels.TransWithTags
     {
         #region Buttons Collections
         private static readonly Dictionary<string, string> ButtonsForExpense =
-            new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Сберегательная", ["юк"] = "Юлин кошелек", };
+            new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Расчетная BYN", ["юк"] = "Юлин кошелек", };
 
         private static readonly Dictionary<string, string> ButtonsForExpenseTags =
-            new Dictionary<string, string> { ["pro"] = "Простор", ["евр"] = "Евроопт", ["рад"] = "Радзивиловский", ["еда"] = "Продукты в целом", ["др"] = "Прочие расходы", };
+            new Dictionary<string, string> { ["pro"] = "Простор", ["евр"] = "Евроопт", ["рад"] = "Радзивиловский", ["бмр"] = "Белмаркет", ["еда"] = "Продукты в целом", ["др"] = "Прочие расходы", };
 
 
         private static readonly Dictionary<string, string> ButtonsForIncome =
-            new Dictionary<string, string> { ["зпл"] = "БИБ Зарплатная GOLD", ["шкф"] = "Шкаф", ["юк"] = "Юлин кошелек", };
+            new Dictionary<string, string> { ["зпл"] = "БИБ Зарплатная 0117-0122", ["шкф"] = "Шкаф", ["юк"] = "Юлин кошелек", };
 
         private static readonly Dictionary<string, string> ButtonsForIncomeTags =
             new Dictionary<string, string> { ["иит"] = "ИИТ", ["биб"] = "БИБ", ["газ"] = "БГПБ", ["%%"] = "Проценты по депозитам", };
@@ -30,13 +30,13 @@ namespace Keeper.ViewModels.TransWithTags
 
         private static readonly Dictionary<string, string> ButtonsForTransfer =
             new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["юк"] = "Юлин кошелек", ["биб"] = "БИБ Сберка Моцная",
-                                                        ["газ"] = "БГПБ Сберегательная", ["шкф"] = "Шкаф", };
+                                                        ["газ"] = "БГПБ Расчетная BYN", ["шкф"] = "Шкаф", };
 
         private static readonly Dictionary<string, string> ButtonsForTransferTags = new Dictionary<string, string>();
 
 
         private static readonly Dictionary<string, string> ButtonsForExchange =
-            new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Сберегательная",
+            new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Расчетная BYN",
                                                         ["биб$"] = "БИБ Вал шкат USD", ["газ$"] = "БГПБ Сберка USD", };
 
         private static readonly Dictionary<string, string> ButtonsForExchangeTags = new Dictionary<string, string>();
