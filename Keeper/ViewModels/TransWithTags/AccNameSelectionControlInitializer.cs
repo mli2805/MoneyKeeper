@@ -18,7 +18,8 @@ namespace Keeper.ViewModels.TransWithTags
             new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Сберка Моцная", ["газ"] = "БГПБ Расчетная BYN", ["юк"] = "Юлин кошелек", };
 
         private static readonly Dictionary<string, string> ButtonsForExpenseTags =
-            new Dictionary<string, string> { ["pro"] = "Простор", ["евр"] = "Евроопт", ["рад"] = "Радзивиловский", ["бмр"] = "Белмаркет", ["еда"] = "Продукты в целом", ["др"] = "Прочие расходы", };
+            new Dictionary<string, string> { ["pro"] = "Простор", ["евр"] = "Евроопт", ["рад"] = "Радзивиловский", ["бмр"] = "Белмаркет",
+                ["ома"] = "Ома", ["маг"] = "Прочие магазины", ["еда"] = "Продукты в целом", ["стр"] = "Строительство дома", ["др"] = "Прочие расходы", };
 
 
         private static readonly Dictionary<string, string> ButtonsForIncome =

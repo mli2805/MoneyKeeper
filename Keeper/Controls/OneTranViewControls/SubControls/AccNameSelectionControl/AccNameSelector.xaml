@@ -6,8 +6,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:comboboxTreeview="clr-namespace:Keeper.Controls.ComboboxTreeview"
              mc:Ignorable="d" 
-             Height="50"
-             d:DesignWidth="300"
+             d:DesignWidth="300" 
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
     <UserControl.Resources>
@@ -18,10 +17,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid >
+    <DockPanel Margin="0,0,0,10">
+        <comboboxTreeview:ComboBoxTreeView DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Background="White" 
+                      VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource TreeViewDataTemplate}" IsBranchSelectionEnabled="False"
+                      ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
+
         <StackPanel Orientation="Horizontal" Height="25" VerticalAlignment="Top" Margin="0,0,0,0">
             <Label Content="{Binding ControlTitle}" Margin="0,0,20,0" VerticalAlignment="Top"/>
-            <ItemsControl ItemsSource="{Binding Buttons}" Margin="0,5,0,0">
+            <ItemsControl ItemsSource="{Binding Buttons}" Margin="0,5,0,0" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
@@ -36,8 +39,5 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-        <comboboxTreeview:ComboBoxTreeView HorizontalAlignment="Stretch" Margin="0,25,0,0" Background="White" 
-                      VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource TreeViewDataTemplate}" IsBranchSelectionEnabled="False"
-                      ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
-    </Grid>
+    </DockPanel>
 </UserControl>
