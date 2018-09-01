@@ -3,3 +3,10 @@
 ################################################################################
 
 /Keeper/bin/Debug
+/Keeper/obj/Debug
+/Keeper.UnitTests/bin/Debug
+/Keeper.UnitTests/obj/Debug
+/packages
+/.vs/Keeper/v15
+/Keeper.v3.ncrunchsolution.user
+/.vs
