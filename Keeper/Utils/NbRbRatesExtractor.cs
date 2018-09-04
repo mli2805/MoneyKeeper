@@ -50,10 +50,10 @@ namespace Keeper.Utils
         {
             var pos = webData.IndexOf(key, StringComparison.Ordinal); // currency code 
             if (pos == -1) return -1;
-            pos = webData.IndexOf("<td", pos + 1, StringComparison.Ordinal); // за сколько единиц
-            pos = webData.IndexOf("<td", pos + 1, StringComparison.Ordinal); // русское название
-            var startRatePos = webData.IndexOf("<td", pos + 1, StringComparison.Ordinal) + 4; // currency rate
-            var endRatePos = webData.IndexOf("</td>", startRatePos, StringComparison.Ordinal);
+         //   pos = webData.IndexOf("<td", pos + 1, StringComparison.Ordinal); // за сколько единиц
+         //   pos = webData.IndexOf("<td", pos + 1, StringComparison.Ordinal); // русское название
+            var startRatePos = webData.IndexOf("<div>", pos + 1, StringComparison.Ordinal) + 5; // currency rate
+            var endRatePos = webData.IndexOf("</div>", startRatePos, StringComparison.Ordinal);
             var rateString = webData.Substring(startRatePos, endRatePos - startRatePos).Trim();
             var rateClearString = new StringBuilder();
             foreach (var symbol in rateString)
