@@ -10,3 +10,7 @@
 /.vs/Keeper/v15
 /Keeper.v3.ncrunchsolution.user
 /.vs
+/Keeper/obj/Release
+/Keeper.UnitTests/obj/Release
+/Keeper2018/bin/Debug
+/Keeper2018/obj
