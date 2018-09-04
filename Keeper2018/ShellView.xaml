@@ -1,12 +1,11 @@
 <Window x:Class="Keeper2018.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        >
 
-    <Grid Background="White">
-        <TextBlock Text="Hello Caliburn Micro!"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontSize="20" />
+    <Grid Background="Pink">
+        <keeper2018:AccoutTreeView DataContext="{Binding AccountTreeViewModel}"/>
     </Grid>
 
 </Window>
