@@ -67,9 +67,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Account.cs" />
+    <Compile Include="AccountFactory.cs" />
     <Compile Include="AccountTreeViewModel.cs" />
-    <Compile Include="AccoutTreeView.xaml.cs">
-      <DependentUpon>AccoutTreeView.xaml</DependentUpon>
+    <Compile Include="AccountTreeView.xaml.cs">
+      <DependentUpon>AccountTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="IShell.cs" />
@@ -78,7 +80,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="AccoutTreeView.xaml">
+    <Page Include="AccountTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,8 +4,8 @@
         xmlns:keeper2018="clr-namespace:Keeper2018"
         >
 
-    <Grid Background="Pink">
-        <keeper2018:AccoutTreeView DataContext="{Binding AccountTreeViewModel}"/>
+    <Grid Background="White">
+        <keeper2018:AccountTreeView DataContext="{Binding AccountTreeViewModel}"/>
     </Grid>
 
 </Window>

@@ -6,12 +6,12 @@ using System.Windows.Media;
 namespace Keeper2018
 {
     /// <summary>
-    /// Interaction logic for AccoutTreeView.xaml
+    /// Interaction logic for AccountTreeView.xaml
     /// </summary>
-    public partial class AccoutTreeView
+    public partial class AccountTreeView
     {
         TreeViewItem _draggedItem, _target;
-        public AccoutTreeView()
+        public AccountTreeView()
         {
             InitializeComponent();
         }
