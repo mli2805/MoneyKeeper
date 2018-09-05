@@ -73,7 +73,7 @@ namespace Keeper2018
             AddChild(sourceItem, targetItem);
 
             //finding Parent TreeViewItem of dragged TreeViewItem 
-            TreeViewItem parentItem = FindVisualParent<TreeViewItem>(sourceItem);
+            TreeViewItem parentItem = FindVisualParent(sourceItem);
             // if parent is null then remove from TreeView else remove from Parent TreeViewItem
             if (parentItem == null)
                 AccountTree.Items.Remove(sourceItem);
@@ -92,7 +92,23 @@ namespace Keeper2018
                 AddChild(item, item1);
             }
         }
-        static TObject FindVisualParent<TObject>(UIElement child) where TObject : UIElement
+
+//        static TObject FindVisualParent<TObject>(UIElement child) where TObject : UIElement
+//        {
+//            if (child == null)
+//                return null;
+//
+//            UIElement parent = VisualTreeHelper.GetParent(child) as UIElement;
+//            while (parent != null)
+//            {
+//                if (parent is TObject found)
+//                    return found;
+//                parent = VisualTreeHelper.GetParent(parent) as UIElement;
+//            }
+//            return null;
+//        }
+
+        static TreeViewItem FindVisualParent(UIElement child)
         {
             if (child == null)
                 return null;
@@ -100,7 +116,7 @@ namespace Keeper2018
             UIElement parent = VisualTreeHelper.GetParent(child) as UIElement;
             while (parent != null)
             {
-                if (parent is TObject found)
+                if (parent is TreeViewItem found)
                     return found;
                 parent = VisualTreeHelper.GetParent(parent) as UIElement;
             }

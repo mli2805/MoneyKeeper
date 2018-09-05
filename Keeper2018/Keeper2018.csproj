@@ -74,6 +74,10 @@
       <DependentUpon>AccountTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="AskDragAccountActionView.xaml.cs">
+      <DependentUpon>AskDragAccountActionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AskDragAccountActionViewModel.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
@@ -81,6 +85,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="AccountTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AskDragAccountActionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

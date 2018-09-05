@@ -1,93 +1,70 @@
-﻿using System.Collections.ObjectModel;
-
-namespace Keeper2018
+﻿namespace Keeper2018
 {
     public static class AccountFactory
     {
+       
         public static Account CreateExample()
         {
-            var result = new Account()
-            {
-                Title = "Мои",
-                Children = new ObservableCollection<Account>(),
-            };
 
-            var a1 = new Account()
-            {
-                Title = "На руках",
-                Parent = result,
-                Children = new ObservableCollection<Account>(),
-            };
-            result.Children.Add(a1);
+
+            var result = new Account("Мои");
+
+            var a1 = new Account("На руках");
+            result.Items.Add(a1);
 
             var a2 = new Account()
             {
-                Title = "Мне должны",
-                Parent = result,
-                Children = new ObservableCollection<Account>(),
+                Header = "Мне должны",
             };
-            result.Children.Add(a2);
+            result.Items.Add(a2);
 
             var a3 = new Account()
             {
-                Title = "Депозиты",
-                Parent = result,
-                Children = new ObservableCollection<Account>(),
+                Header = "Депозиты",
             };
-            result.Children.Add(a3);
+            result.Items.Add(a3);
 
             var a11 = new Account()
             {
-                Title = "Наличные",
-                Parent = a1,
-                Children = new ObservableCollection<Account>(),
+                Header = "Наличные",
             };
-            a1.Children.Add(a11);
+            a1.Items.Add(a11);
 
             var a12 = new Account()
             {
-                Title = "Карточки",
-                Parent = a1,
-                Children = new ObservableCollection<Account>(),
+                Header = "Карточки",
             };
-            a1.Children.Add(a12);
+            a1.Items.Add(a12);
 
             var a13 = new Account()
             {
-                Title = "Детские",
-                Parent = a1,
-                Children = new ObservableCollection<Account>(),
+                Header = "Детские",
             };
-            a1.Children.Add(a13);
+            a1.Items.Add(a13);
 
             var a14 = new Account()
             {
-                Title = "Закрытые",
-                Parent = a1,
-                Children = new ObservableCollection<Account>(),
+                Header = "Закрытые",
             };
-            a1.Children.Add(a14);
+            a1.Items.Add(a14);
 
             var a111 = new Account()
             {
-                Title = "Мой кошелек",
-                Parent = a11,
+                Header = "Мой кошелек",
             };
-            a11.Children.Add(a111);
+            a11.Items.Add(a111);
 
             var a112 = new Account()
             {
-                Title = "Юлин кошелек",
-                Parent = a11,
+                Header = "Юлин кошелек",
             };
-            a11.Children.Add(a112);
+            a11.Items.Add(a112);
 
             var a113 = new Account()
             {
-                Title = "Шкаф",
-                Parent = a11,
+                Header = "Шкаф",
             };
-            a11.Children.Add(a113);
+            a11.Items.Add(a113);
 
             return result;
         }
