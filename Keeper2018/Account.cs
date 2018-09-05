@@ -19,6 +19,7 @@ namespace Keeper2018
         {
             Header = headerText;
             IsExpanded = true;
+            
         }
     }
 }

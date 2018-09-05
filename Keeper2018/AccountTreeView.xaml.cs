@@ -37,6 +37,10 @@ namespace Keeper2018
             }
         }
 
+        private void DoAction(TreeViewItem source, TreeViewItem destination)
+        {
+        }
+
         private void treeView_DragOver(object sender, DragEventArgs e)
         {
             // Verify that this is a valid drop and then store the drop target
