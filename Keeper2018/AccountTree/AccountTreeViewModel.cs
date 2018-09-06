@@ -16,5 +16,10 @@ namespace Keeper2018
             WindowManager = windowManager;
             AskDragAccountActionViewModel = askDragAccountActionViewModel;
         }
+
+        public void Save()
+        {
+            Accounts2018Txt.SaveInTxt(Accounts);
+        }
     }
 }
