@@ -9,6 +9,9 @@ namespace Keeper2018
         {
             builder.RegisterType<ShellViewModel>().As<IShell>();
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
+
+            builder.RegisterType<AccountTreeViewModel>().SingleInstance();
+            builder.RegisterType<AskDragAccountActionViewModel>().SingleInstance();
         }
     }
 }

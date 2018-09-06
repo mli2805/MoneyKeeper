@@ -30,6 +30,7 @@ namespace Keeper2018
                 // A Move drop was accepted
                 if (!_draggedItem.Header.ToString().Equals(_target.Header.ToString()))
                 {
+                    DoAction(_draggedItem, _target);
                     CopyItem(_draggedItem, _target);
                     _target = null;
                     _draggedItem = null;
@@ -39,6 +40,18 @@ namespace Keeper2018
 
         private void DoAction(TreeViewItem source, TreeViewItem destination)
         {
+            var vm = ((AccountTreeViewModel)DataContext).AskDragAccountActionViewModel;
+            vm.Init(source.Header.ToString(), destination.Header.ToString());
+            ((AccountTreeViewModel)DataContext).WindowManager.ShowDialog(vm);
+
+            switch (vm.Answer)
+            {
+                case DragAndDropAction.Before: return;
+                case DragAndDropAction.Inside: return;
+                case DragAndDropAction.After: return;
+                case DragAndDropAction.Cancel: return;
+                default: return;
+            }
         }
 
         private void treeView_DragOver(object sender, DragEventArgs e)
@@ -97,20 +110,20 @@ namespace Keeper2018
             }
         }
 
-//        static TObject FindVisualParent<TObject>(UIElement child) where TObject : UIElement
-//        {
-//            if (child == null)
-//                return null;
-//
-//            UIElement parent = VisualTreeHelper.GetParent(child) as UIElement;
-//            while (parent != null)
-//            {
-//                if (parent is TObject found)
-//                    return found;
-//                parent = VisualTreeHelper.GetParent(parent) as UIElement;
-//            }
-//            return null;
-//        }
+        //        static TObject FindVisualParent<TObject>(UIElement child) where TObject : UIElement
+        //        {
+        //            if (child == null)
+        //                return null;
+        //
+        //            UIElement parent = VisualTreeHelper.GetParent(child) as UIElement;
+        //            while (parent != null)
+        //            {
+        //                if (parent is TObject found)
+        //                    return found;
+        //                parent = VisualTreeHelper.GetParent(parent) as UIElement;
+        //            }
+        //            return null;
+        //        }
 
         static TreeViewItem FindVisualParent(UIElement child)
         {

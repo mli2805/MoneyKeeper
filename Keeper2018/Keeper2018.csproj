@@ -70,8 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Account.cs" />
-    <Compile Include="AccountFactory.cs" />
+    <Compile Include="Domain\Account.cs" />
     <Compile Include="AccountTreeViewModel.cs" />
     <Compile Include="AccountTreeView.xaml.cs">
       <DependentUpon>AccountTreeView.xaml</DependentUpon>
@@ -81,6 +80,7 @@
       <DependentUpon>AskDragAccountActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AskDragAccountActionViewModel.cs" />
+    <Compile Include="AutofacKeeper.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
