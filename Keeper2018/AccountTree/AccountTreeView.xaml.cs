@@ -19,9 +19,9 @@ namespace Keeper2018
         private void treeView_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed) return;
-            _draggedItem = (TreeViewItem)AccountTree.SelectedItem;
+            _draggedItem = (TreeViewItem)MyTreeView.SelectedItem;
             if (_draggedItem == null) return;
-            DragDropEffects finalDropEffect = DragDrop.DoDragDrop(AccountTree, AccountTree.SelectedValue,
+            DragDropEffects finalDropEffect = DragDrop.DoDragDrop(MyTreeView, MyTreeView.SelectedValue,
                 DragDropEffects.Move);
 
             //Checking target is not null and item is dragging(moving)
@@ -31,28 +31,13 @@ namespace Keeper2018
                 if (!_draggedItem.Header.ToString().Equals(_target.Header.ToString()))
                 {
                     DoAction(_draggedItem, _target);
-                    CopyItem(_draggedItem, _target);
+                    // CopyItem(_draggedItem, _target);
                     _target = null;
                     _draggedItem = null;
                 }
             }
         }
 
-        private void DoAction(TreeViewItem source, TreeViewItem destination)
-        {
-            var vm = ((AccountTreeViewModel)DataContext).AskDragAccountActionViewModel;
-            vm.Init(source.Header.ToString(), destination.Header.ToString());
-            ((AccountTreeViewModel)DataContext).WindowManager.ShowDialog(vm);
-
-            switch (vm.Answer)
-            {
-                case DragAndDropAction.Before: return;
-                case DragAndDropAction.Inside: return;
-                case DragAndDropAction.After: return;
-                case DragAndDropAction.Cancel: return;
-                default: return;
-            }
-        }
 
         private void treeView_DragOver(object sender, DragEventArgs e)
         {
@@ -77,10 +62,32 @@ namespace Keeper2018
         private bool CheckDropTarget(TreeViewItem sourceItem, TreeViewItem targetItem)
         {
             //Check whether the target item is meeting your condition
-            bool isEqual = !sourceItem.Header.ToString().Equals(targetItem.Header.ToString());
-            return isEqual;
+            return !sourceItem.Header.ToString().Equals(targetItem.Header.ToString());
+        }
+
+        private void DoAction(TreeViewItem source, TreeViewItem destination)
+        {
+            var vm = ((AccountTreeViewModel)DataContext).AskDragAccountActionViewModel;
+            vm.Init(source.Header.ToString(), destination.Header.ToString());
+            ((AccountTreeViewModel)DataContext).WindowManager.ShowDialog(vm);
+
+            switch (vm.Answer)
+            {
+                case DragAndDropAction.Before: return;
+                case DragAndDropAction.Inside:
+                    MoveIntoFolder(source, destination);
+                    return;
+                case DragAndDropAction.After: return;
+                case DragAndDropAction.Cancel: return;
+                default: return;
+            }
+        }
+
+        private void MoveIntoFolder(TreeViewItem source, TreeViewItem destination)
+        {
 
         }
+
         private void CopyItem(TreeViewItem sourceItem, TreeViewItem targetItem)
         {
             //Asking user whether he want to drop the dragged TreeViewItem here or not
@@ -93,7 +100,7 @@ namespace Keeper2018
             TreeViewItem parentItem = FindVisualParent(sourceItem);
             // if parent is null then remove from TreeView else remove from Parent TreeViewItem
             if (parentItem == null)
-                AccountTree.Items.Remove(sourceItem);
+                MyTreeView.Items.Remove(sourceItem);
             else
                 parentItem.Items.Remove(sourceItem);
         }
@@ -110,21 +117,6 @@ namespace Keeper2018
             }
         }
 
-        //        static TObject FindVisualParent<TObject>(UIElement child) where TObject : UIElement
-        //        {
-        //            if (child == null)
-        //                return null;
-        //
-        //            UIElement parent = VisualTreeHelper.GetParent(child) as UIElement;
-        //            while (parent != null)
-        //            {
-        //                if (parent is TObject found)
-        //                    return found;
-        //                parent = VisualTreeHelper.GetParent(parent) as UIElement;
-        //            }
-        //            return null;
-        //        }
-
         static TreeViewItem FindVisualParent(UIElement child)
         {
             if (child == null)
@@ -139,6 +131,7 @@ namespace Keeper2018
             }
             return null;
         }
+
         private TreeViewItem GetNearestContainer(UIElement element)
         {
             // Walk up the element tree to the nearest tree view item.
