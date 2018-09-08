@@ -94,6 +94,10 @@
     <Compile Include="Domain\Currency\NbRbRatesOldTxt.cs" />
     <Compile Include="Domain\DbUtils.cs" />
     <Compile Include="IShell.cs" />
+    <Compile Include="OfficialRates\OfficialRatesView.xaml.cs">
+      <DependentUpon>OfficialRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OfficialRates\OfficialRatesViewModel.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -104,6 +108,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AccountTree\AskDragAccountActionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OfficialRates\OfficialRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
