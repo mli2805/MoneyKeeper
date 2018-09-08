@@ -115,25 +115,25 @@
 505                 ; БГПБ Сберка EUR ; 681 ; expanded
 511                 ; БГПБ расчетная РУР ; 681 ; collapsed
 664                 ; БГПБ Голдовая EUR ; 681 ; expanded
-682             ; БИБs ; 161 ; collapsed
+682             ; БИБs ; 161 ; expanded
 381                 ; БИБ Сберка Моцная ; 682 ; expanded
 628                 ; БИБ к Активному EUR ; 682 ; collapsed
 651                 ; БИБ Зарплатная 0117-0122 ; 682 ; collapsed
 689                 ; БИБ MasterCard RUB 04/21 ; 682 ; collapsed
 690                 ; БИБ Visa USD 04/21 ; 682 ; collapsed
-421             ; АСБ Сберегательная ; 161 ; collapsed
-377             ; Счет для мат помощи на детей ; 161 ; collapsed
-586             ; ММБ белки ; 161 ; expanded
-587             ; ММБ USD ; 161 ; collapsed
-588             ; ММБ EUR ; 161 ; collapsed
-673             ; R-Bank Platinum USD ; 161 ; collapsed
-674             ; R-Bank Platinum Byn ; 161 ; collapsed
 694             ; Альфа ; 161 ; expanded
 695                 ; Зарплатная ; 694 ; collapsed
 697                 ; Visa Usd ; 694 ; collapsed
 698                 ; MasterCard Euro ; 694 ; collapsed
 699                 ; Карта покупок ; 694 ; collapsed
+421             ; АСБ Сберегательная ; 161 ; collapsed
+377             ; Счет для мат помощи на детей ; 161 ; collapsed
 633             ; Альфа-Банк счет в RUB Юля ; 161 ; collapsed
+674             ; R-Bank Platinum Byn ; 161 ; collapsed
+673             ; R-Bank Platinum USD ; 161 ; collapsed
+586             ; ММБ белки ; 161 ; expanded
+587             ; ММБ USD ; 161 ; collapsed
+588             ; ММБ EUR ; 161 ; collapsed
 385         ; Детские ; 159 ; collapsed
 386             ; Яна ; 385 ; collapsed
 387             ; Глеб ; 385 ; expanded

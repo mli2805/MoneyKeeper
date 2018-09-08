@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -62,7 +61,7 @@ namespace Keeper2018
 
         private bool CheckDropTarget(TreeViewItem sourceItem, TreeViewItem targetItem)
         {
-            if (((Account) sourceItem).Owner == null)
+            if (((Account)sourceItem).Owner == null)
                 return false; // Root could not be moved!
 
             //Check whether the target item is meeting your condition
@@ -77,56 +76,55 @@ namespace Keeper2018
 
             switch (vm.Answer)
             {
-                case DragAndDropAction.Before: 
-                    PlaceBeforeAccount(source, destination);
+                case DragAndDropAction.Before:
+                    MoveAccount(source, destination, Place.Before);
                     return;
                 case DragAndDropAction.Inside:
                     MoveIntoFolder(source, destination);
                     return;
-                case DragAndDropAction.After: return;
+                case DragAndDropAction.After:
+                    MoveAccount(source, destination, Place.After);
+                    return;
                 case DragAndDropAction.Cancel: return;
                 default: return;
             }
         }
 
-        private void PlaceBeforeAccount(TreeViewItem source, TreeViewItem destination)
+        private void MoveAccount(TreeViewItem source, TreeViewItem destination, Place place)
         {
-            var sourceParent = ((Account) source).Owner;
-            var destinationParent = ((Account) destination).Owner;
-            if (sourceParent.Id == destinationParent.Id)
-                PlaceInSameFolder(source, destination);
-            else F1();
+            var sourceParent = ((Account)source).Owner;
+            var destinationParent = ((Account)destination).Owner;
 
+            sourceParent.Items.Remove(source);
+            ((Account)source).Owner = destinationParent;
+            PlaceIntoDestinationFolder(source, destination, place);
         }
 
-        private void F1(){}
-
-        private void PlaceInSameFolder(TreeViewItem source, TreeViewItem destination)
+        private void PlaceIntoDestinationFolder(TreeViewItem source, TreeViewItem destination, Place place)
         {
-            var sourceParent = ((Account) source).Owner;
+            var destinationParent = ((Account)destination).Owner;
 
-            var tempAccount = new Account(sourceParent.Header.ToString());
-
-            var sourceAccount = ((Account) source);
-            sourceParent.Items.Remove(sourceAccount);
-
-            for (int i = sourceParent.Items.Count-1; i >= 0; i--)
+            var tempAccount = new Account("temporary");
+            for (int i = destinationParent.Items.Count - 1; i >= 0; i--)
             {
-                
+                var item = destinationParent.Items[i];
+                destinationParent.Items.RemoveAt(i);
+
+                if (((Account)item).Id == ((Account)destination).Id && place == Place.After)
+                    tempAccount.Items.Add(source);
+
+                tempAccount.Items.Add(item);
+
+                if (((Account)item).Id == ((Account)destination).Id && place == Place.Before)
+                    tempAccount.Items.Add(source);
             }
 
-            foreach (var child in sourceParent.Children)
-            {
-                if (child.Id == ((Account) destination).Id)
-                {
-                    tempAccount.Items.Add(sourceAccount);
-                }
+            Comeback(tempAccount, destinationParent);
+        }
 
-                sourceParent.Items.Remove(child);
-                tempAccount.Items.Add(child);
-            }
-
-            for (int i = tempAccount.Items.Count-1; i >= 0; i--)
+        private static void Comeback(Account tempAccount, Account sourceParent)
+        {
+            for (int i = tempAccount.Items.Count - 1; i >= 0; i--)
             {
                 var item = tempAccount.Items[i];
                 tempAccount.Items.RemoveAt(i);
@@ -136,9 +134,9 @@ namespace Keeper2018
 
         private void MoveIntoFolder(TreeViewItem source, TreeViewItem destination)
         {
-            ((Account) source).Owner.Items.Remove(source);
+            ((Account)source).Owner.Items.Remove(source);
             destination.Items.Add(source);
-            ((Account) source).Owner = (Account)destination;
+            ((Account)source).Owner = (Account)destination;
         }
 
         public void AddChild(TreeViewItem sourceItem, TreeViewItem targetItem)

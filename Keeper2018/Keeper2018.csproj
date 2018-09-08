@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AccountTree\Place.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="AccountTree\AccountTreeViewModel.cs" />
     <Compile Include="AccountTree\AccountTreeView.xaml.cs">
