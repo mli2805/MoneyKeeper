@@ -19,6 +19,10 @@ namespace Keeper2018
             DisplayName = "Keeper 2018";
         }
 
+        public void NbRates()
+        {
+            var r = NbRbRatesOldTxt.LoadFromOldTxt();
+        }
         public override void CanClose(Action<bool> callback)
         {
             Accounts2018Txt.SaveInTxt(AccountTreeViewModel.Accounts);

@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Keeper2018.Properties;
 
 namespace Keeper2018
 {
@@ -13,7 +12,7 @@ namespace Keeper2018
         {
             var roots = new ObservableCollection<Account>();
 
-            var content = File.ReadAllLines(GetAccountsFilename(), Encoding.GetEncoding("Windows-1251")).
+            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("Accounts.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
             foreach (var line in content)
             {
@@ -30,14 +29,7 @@ namespace Keeper2018
             return roots;
         }
 
-        private static string GetAccountsFilename()
-        {
-            var path = AppDomain.CurrentDomain.BaseDirectory;
-            var dataFolder = (string) Settings.Default["DataFolder"];
-            var dataPath = Path.Combine(path, dataFolder);
-            return Path.Combine(dataPath, "Accounts.txt");
-        }
-
+      
         private static Account AccountFromString(string s, out int ownerId)
         {
             var substrings = s.Split(';');

@@ -3,23 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using Keeper2018.Properties;
 
 namespace Keeper2018
 {
     public static class Accounts2018Txt
     {
-        private static string GetAccountsFilename()
-        {
-            var path = AppDomain.CurrentDomain.BaseDirectory;
-            var dataFolder = (string) Settings.Default["DataFolder"];
-            var dataPath = Path.Combine(path, dataFolder);
-            return Path.Combine(dataPath, "Accounts2018.txt");
-        }
-
         public static ObservableCollection<Account> LoadFromTxt()
         {
-            var content = File.ReadAllLines(GetAccountsFilename()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("Accounts2018.txt")).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
             var roots = new ObservableCollection<Account>();
             foreach (var line in content)
             {
@@ -52,7 +43,7 @@ namespace Keeper2018
             var content = new List<string>();
             foreach (var root in accounts)
                 content.AddRange(DumpAccountWithChildren(root));
-            File.WriteAllLines(GetAccountsFilename(), content);
+            File.WriteAllLines(DbUtils.GetTxtFullPath("Accounts2018.txt"), content);
         }
 
         private static List<string> DumpAccountWithChildren(Account account, int offset = 0)

@@ -71,7 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AccountTree\Place.cs" />
-    <Compile Include="Domain\Account.cs" />
+    <Compile Include="Domain\Account\Account.cs" />
     <Compile Include="AccountTree\AccountTreeViewModel.cs" />
     <Compile Include="AccountTree\AccountTreeView.xaml.cs">
       <DependentUpon>AccountTreeView.xaml</DependentUpon>
@@ -82,8 +82,16 @@
     </Compile>
     <Compile Include="AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
-    <Compile Include="Domain\Accounts2018Txt.cs" />
-    <Compile Include="Domain\AccountsOldTxt.cs" />
+    <Compile Include="Domain\Account\Accounts2018Txt.cs" />
+    <Compile Include="Domain\Account\AccountsOldTxt.cs" />
+    <Compile Include="Domain\Currency\BelBaskets.cs" />
+    <Compile Include="Domain\Currency\BelCurrencies.cs" />
+    <Compile Include="Domain\Currency\BelCurrency.cs" />
+    <Compile Include="Domain\Currency\CurrenciesValues.cs" />
+    <Compile Include="Domain\Currency\CurrenciesWeights.cs" />
+    <Compile Include="Domain\Currency\NbRbRate.cs" />
+    <Compile Include="Domain\Currency\NbRbRateOnScreen.cs" />
+    <Compile Include="Domain\Currency\NbRbRatesOldTxt.cs" />
     <Compile Include="Domain\DbUtils.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="ShellViewModel.cs" />
@@ -131,5 +139,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,8 +4,9 @@
         xmlns:keeper2018="clr-namespace:Keeper2018"
         >
 
-    <Grid Background="White">
+    <DockPanel>
+        <Button DockPanel.Dock="Top" Content="Nb Rates" Width="100" Margin="5" Name="NbRates"/>
         <keeper2018:AccountTreeView DataContext="{Binding AccountTreeViewModel}"/>
-    </Grid>
+    </DockPanel>
 
 </Window>
