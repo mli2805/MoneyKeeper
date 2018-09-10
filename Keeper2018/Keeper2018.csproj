@@ -87,17 +87,20 @@
     <Compile Include="Domain\Currency\BelBaskets.cs" />
     <Compile Include="Domain\Currency\BelCurrencies.cs" />
     <Compile Include="Domain\Currency\BelCurrency.cs" />
-    <Compile Include="Domain\Currency\CurrenciesValues.cs" />
     <Compile Include="Domain\Currency\CurrenciesWeights.cs" />
+    <Compile Include="Domain\Currency\MainCurrenciesRates.cs" />
     <Compile Include="Domain\Currency\NbRbRate.cs" />
     <Compile Include="Domain\Currency\NbRbRateOnScreen.cs" />
     <Compile Include="Domain\Currency\NbRbRatesOldTxt.cs" />
+    <Compile Include="Domain\Currency\Rate.cs" />
     <Compile Include="Domain\DbUtils.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="OfficialRates\OfficialRatesView.xaml.cs">
       <DependentUpon>OfficialRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="OfficialRates\OfficialRatesViewModel.cs" />
+    <Compile Include="OfficialRates\ScrollToBottomOnAddBehavior.cs" />
+    <Compile Include="OfficialRates\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

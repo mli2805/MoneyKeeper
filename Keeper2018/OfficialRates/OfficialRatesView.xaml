@@ -3,15 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        >
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d" 
+        d:DataContext="{d:DesignInstance keeper2018:OfficialRatesViewModel}"
+        SizeToContent="Width" WindowStartupLocation="CenterScreen">
+ 
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
-            <Button Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
-            <Button Margin="5" Width="100" Content="Download" DockPanel.Dock="Right"/>
+            <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
+            <Button Name="Download" Margin="5" Width="100" Content="Download" DockPanel.Dock="Right"/>
             <TextBlock Margin="5" DockPanel.Dock="Left" Text="{Binding Clock}"/>
             <TextBlock/>
         </DockPanel>
-        <ListView></ListView>
+        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" AutoGenerateColumns="False">
+            <DataGrid.Resources>
+                <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <DockPanel >
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding BasketStr}" Width="110" Foreground="{Binding BasketBrush}"/>
+                        <TextBlock/>
+                    </DockPanel>
+                </DataTemplate>
+                <Style TargetType="DataGridCell">
+                    <Style.Setters>
+                        <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                        <Setter Property="Padding" Value="5,0"/>
+                    </Style.Setters>
+                </Style>
+            </DataGrid.Resources>
+            <i:Interaction.Behaviors>
+                <keeper2018:ScrollToBottomOnAddBehavior />
+                <keeper2018:ScrollToBottomOnLoadBehavior />
+            </i:Interaction.Behaviors>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="80"/>
+                <DataGridTextColumn Header="USD" Binding="{Binding TodayValues.Usd.Value}" Width="70"/>
+                <DataGridTextColumn Header="Euro" Binding="{Binding TodayValues.Euro.Value}" Width="70"/>
+                <DataGridTextColumn Header="Rur" Binding="{Binding TodayValues.Rur.Value}" Width="70"/>
+                <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketTemplate}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Window>

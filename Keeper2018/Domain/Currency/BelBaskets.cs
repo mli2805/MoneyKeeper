@@ -13,11 +13,11 @@ namespace Keeper2018
             new CurrenciesWeights() {Usd = 0.3, Euro = 0.2, Rur = 0.5},
         };
 
-        public static double Calculate(CurrenciesValues currenciesValues)
+        public static double Calculate(MainCurrenciesRates currenciesValues)
         {
-            return Math.Pow(currenciesValues.Usd, Baskets.Last().Usd) *
-                   Math.Pow(currenciesValues.Euro, Baskets.Last().Euro) *
-                   Math.Pow(currenciesValues.Rur, Baskets.Last().Rur);
+            return Math.Pow(currenciesValues.Usd.Value/currenciesValues.Usd.Unit, Baskets.Last().Usd) *
+                   Math.Pow(currenciesValues.Euro.Value/currenciesValues.Euro.Unit, Baskets.Last().Euro) *
+                   Math.Pow(currenciesValues.Rur.Value/currenciesValues.Rur.Unit, Baskets.Last().Rur);
         }
     }
 }

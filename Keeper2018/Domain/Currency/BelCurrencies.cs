@@ -12,5 +12,14 @@ namespace Keeper2018
             new BelCurrency(){ Iso = "BYR", Denomination =  1000, From = new DateTime(2000, 1,  1), To = new DateTime(2016,  6, 30), },
             new BelCurrency(){ Iso = "BYN", Denomination = 10000, From = new DateTime(2016, 7,  1), To = DateTime.MaxValue, },
         };
+
+        public static int GetDenominatorForOldTxt(DateTime date)
+        {
+            if (date < new DateTime(2016, 7, 1))
+                return 1;
+
+                return Bys[3].Denomination;
+
+        }
     }
 }
