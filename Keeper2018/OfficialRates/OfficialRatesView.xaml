@@ -23,6 +23,12 @@
                         <TextBlock DockPanel.Dock="Right" Text="{Binding BasketStr}" Width="110" Foreground="{Binding BasketBrush}"/>
                         <TextBlock/>
                     </DockPanel>
+                </DataTemplate>  
+                <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <DockPanel >
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding BasketChangeAfterBreak}" Width="70" Foreground="{Binding BasketBreakBrush}"/>
+                        <TextBlock/>
+                    </DockPanel>
                 </DataTemplate>
                 <Style TargetType="DataGridCell">
                     <Style.Setters>
@@ -41,6 +47,7 @@
                 <DataGridTextColumn Header="Euro" Binding="{Binding TodayValues.Euro.Value}" Width="70"/>
                 <DataGridTextColumn Header="Rur" Binding="{Binding TodayValues.Rur.Value}" Width="70"/>
                 <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketTemplate}" />
+                <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketAfterBreakTemplate}" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

@@ -24,12 +24,12 @@ namespace Keeper2018
         {
             if (Rows != null) return;
             Rows = new ObservableCollection<NbRbRateOnScreen>();
-            NbRbRate previous = null;
+            NbRbRateOnScreen previous = null;
             foreach (var record in NbRbRatesOldTxt.LoadFromOldTxt())
             {
-                var p = previous;
-                Application.Current.Dispatcher.Invoke(() => Rows.Add(new NbRbRateOnScreen(record, p)));
-                previous = record;
+                var s = new NbRbRateOnScreen(record, previous);
+                Application.Current.Dispatcher.Invoke(() => Rows.Add(s));
+                previous = s;
             }
         }
 
