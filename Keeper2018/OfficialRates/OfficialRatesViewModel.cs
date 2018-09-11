@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,6 +38,11 @@ namespace Keeper2018
                 if (current.Date.DayOfYear == 1)
                     annual = current;
             }
+        }
+
+        public async void Download()
+        {
+            var res = await OfficialRatesDownloader.GetRatesForDate(new DateTime(2018, 9, 11));
         }
 
         public void Close()
