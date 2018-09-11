@@ -19,16 +19,22 @@
         <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" AutoGenerateColumns="False">
             <DataGrid.Resources>
                 <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:NbRbRateOnScreen">
-                    <DockPanel >
-                        <TextBlock DockPanel.Dock="Right" Text="{Binding BasketStr}" Width="110" Foreground="{Binding BasketBrush}"/>
-                        <TextBlock/>
-                    </DockPanel>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding BasketStr}" Width="110" Foreground="{Binding BasketBrush}"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
                 </DataTemplate>  
                 <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:NbRbRateOnScreen">
-                    <DockPanel >
-                        <TextBlock DockPanel.Dock="Right" Text="{Binding BasketChangeAfterBreak}" Width="70" Foreground="{Binding BasketBreakBrush}"/>
-                        <TextBlock/>
-                    </DockPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding BasketChangeAfterBreak}" Width="70" Foreground="{Binding BasketBreakBrush}"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding BasketAnnual}" Width="70" Foreground="{Binding BasketAnnualBrush}"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
                 </DataTemplate>
                 <Style TargetType="DataGridCell">
                     <Style.Setters>
@@ -47,7 +53,8 @@
                 <DataGridTextColumn Header="Euro" Binding="{Binding TodayValues.Euro.Value}" Width="70"/>
                 <DataGridTextColumn Header="Rur" Binding="{Binding TodayValues.Rur.Value}" Width="70"/>
                 <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketTemplate}" />
-                <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketAfterBreakTemplate}" />
+                <DataGridTemplateColumn Header="After break" CellTemplate="{StaticResource BasketAfterBreakTemplate}"/>
+                <DataGridTemplateColumn Header="Jan, 1st" CellTemplate="{StaticResource BasketAnnualTemplate}"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

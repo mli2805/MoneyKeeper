@@ -11,16 +11,18 @@ namespace Keeper2018
 
         private readonly double _basket;
         private readonly double _yesterdayBasket;
-        private double _delta;
+        public double Delta { get; set; }
+        private double _proc, _procFromBreak, _procAnnual;
 
         public string BasketStr { get; set; }
         public Brush BasketBrush { get; set; }
 
-        private double _deltaAfterBreak;
         public string BasketChangeAfterBreak { get; set; }
         public Brush BasketBreakBrush { get; set; }
+        public string BasketAnnual { get; set; }
+        public Brush BasketAnnualBrush { get; set; }
 
-        public NbRbRateOnScreen(NbRbRate record, NbRbRateOnScreen previous)
+        public NbRbRateOnScreen(NbRbRate record, NbRbRateOnScreen previous, NbRbRateOnScreen annual)
         {
             Date = record.Date;
             TodayValues = record.Values;
@@ -33,36 +35,46 @@ namespace Keeper2018
 
             SetBasketStr(previous);
             SetBasketBreakStr(previous);
+            SetBasketAnnualStr(annual);
         }
 
         private void SetBasketStr(NbRbRateOnScreen previous)
         {
-            _delta = _basket - _yesterdayBasket;
-            var proc = _delta / _yesterdayBasket * 100;
+            Delta = _basket - _yesterdayBasket;
+            _proc = _yesterdayBasket.Equals(0.0) ? 0 : Delta / _yesterdayBasket * 100;
 
-            BasketStr = $"{_basket:0.0000} ({proc:+0.##;-0.##;0}%)";
+            BasketStr = $"{_basket:0.0000} ({_proc:+0.##;-0.##;0}%)";
 
-            if (_delta.Equals(0.0))
-                BasketBrush = previous.BasketBrush;
-            else
-            {
-                BasketBrush = _delta > 0 ? Brushes.LimeGreen : Brushes.Red;
-            }
+            BasketBrush = Delta.Equals(0.0)
+                ? Brushes.Gray
+                : Delta < 0
+                    ? Brushes.LimeGreen : Brushes.Red;
         }
 
         private void SetBasketBreakStr(NbRbRateOnScreen previous)
         {
-            if (_delta * previous._deltaAfterBreak >= 0) // no break
+            if (previous == null) return;
+            if (Delta * previous.Delta >= 0) // no break
             {
-                _deltaAfterBreak = _deltaAfterBreak + _delta;
-                BasketChangeAfterBreak = $"{_deltaAfterBreak:+0.##;-0.##;0}%";
-                BasketBreakBrush = _delta > 0 ? Brushes.LimeGreen : Brushes.Red;
+                _procFromBreak = previous._procFromBreak + _proc;
+                BasketChangeAfterBreak = $"{_procFromBreak:+0.##;-0.##;0}%";
+                BasketBreakBrush = _procFromBreak < 0 ? Brushes.LimeGreen : Brushes.Red;
             }
             else
             {
-                _deltaAfterBreak = _delta;
+                _procFromBreak = _proc;
                 BasketChangeAfterBreak = "";
             }
+        }
+
+        private void SetBasketAnnualStr(NbRbRateOnScreen annual)
+        {
+            if (annual == null) return;
+
+            var delta = _basket - annual._basket;
+            _procAnnual = delta / annual._basket * 100;
+            BasketAnnual = $"{_procAnnual:+0.##;-0.##;0}%";
+            BasketAnnualBrush = _procAnnual < 0 ? Brushes.LimeGreen : Brushes.Red;
         }
     }
 }

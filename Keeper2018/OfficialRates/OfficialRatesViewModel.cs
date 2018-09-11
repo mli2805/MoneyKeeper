@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
@@ -18,18 +19,23 @@ namespace Keeper2018
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "NB RB. Official rates.";
+            SelectedRow = Rows.LastOrDefault();
         }
 
-        public void Init()
+        private void Init()
         {
             if (Rows != null) return;
             Rows = new ObservableCollection<NbRbRateOnScreen>();
+            NbRbRateOnScreen annual = null;
             NbRbRateOnScreen previous = null;
             foreach (var record in NbRbRatesOldTxt.LoadFromOldTxt())
             {
-                var s = new NbRbRateOnScreen(record, previous);
-                Application.Current.Dispatcher.Invoke(() => Rows.Add(s));
-                previous = s;
+                var current = new NbRbRateOnScreen(record, previous, annual);
+                Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
+                if (!current.Delta.Equals(0))
+                    previous = current;
+                if (current.Date.DayOfYear == 1)
+                    annual = current;
             }
         }
 
