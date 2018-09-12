@@ -7,32 +7,31 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance keeper2018:OfficialRatesViewModel}"
-        SizeToContent="Width" WindowStartupLocation="CenterScreen">
+        SizeToContent="Width" WindowStartupLocation="CenterScreen" FontSize="13.5">
  
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
             <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
             <Button Name="Download" Margin="5" Width="100" Content="Download" DockPanel.Dock="Right"/>
-            <TextBlock Margin="5" DockPanel.Dock="Left" Text="{Binding Clock}"/>
             <TextBlock/>
         </DockPanel>
         <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" AutoGenerateColumns="False">
             <DataGrid.Resources>
                 <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:NbRbRateOnScreen">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding BasketStr}" Width="110" Foreground="{Binding BasketBrush}"/>
+                        <TextBlock Text="{Binding BasketStr}" Width="120" HorizontalAlignment="Center" Foreground="{Binding BasketBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>  
                 <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:NbRbRateOnScreen">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding BasketChangeAfterBreak}" Width="70" Foreground="{Binding BasketBreakBrush}"/>
+                        <TextBlock Text="{Binding BasketChangeAfterBreak}" Width="75" Foreground="{Binding BasketBreakBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:NbRbRateOnScreen">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding BasketAnnual}" Width="70" Foreground="{Binding BasketAnnualBrush}"/>
+                        <TextBlock Text="{Binding BasketAnnual}" Width="75" Foreground="{Binding BasketAnnualBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>

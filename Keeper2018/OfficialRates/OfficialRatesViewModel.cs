@@ -9,7 +9,6 @@ namespace Keeper2018
 {
     public class OfficialRatesViewModel : Screen
     {
-        public string Clock { get; set; } = "clock";
         public ObservableCollection<NbRbRateOnScreen> Rows { get; set; }
         public NbRbRateOnScreen SelectedRow { get; set; }
         public OfficialRatesViewModel()
@@ -42,9 +41,20 @@ namespace Keeper2018
 
         public async void Download()
         {
-            var res = await OfficialRatesDownloader.GetRatesForDate(new DateTime(2018, 9, 11));
+            var date = Rows.Last().Date.AddDays(1);
+            var annual = Rows.Last(r => r.Date.DayOfYear == 1);
+            while (date <= DateTime.Today.Date)
+            {
+                var ratesFromSite = await OfficialRatesDownloader.GetRatesForDate(date);
+                var nbRbRate = new NbRbRate(){Date = date, Values = ratesFromSite};
+                var line = new NbRbRateOnScreen(nbRbRate, Rows.Last(), annual);
+                Rows.Add(line);
+
+                date = date.AddDays(1);
+            }
         }
 
+        
         public void Close()
         {
             TryClose();

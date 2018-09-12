@@ -33,12 +33,12 @@ namespace Keeper2018
 
             if (Date < new DateTime(2016, 7, 1)) return;
 
-            SetBasketStr(previous);
+            SetBasketStr();
             SetBasketBreakStr(previous);
             SetBasketAnnualStr(annual);
         }
 
-        private void SetBasketStr(NbRbRateOnScreen previous)
+        private void SetBasketStr()
         {
             Delta = _basket - _yesterdayBasket;
             _proc = _yesterdayBasket.Equals(0.0) ? 0 : Delta / _yesterdayBasket * 100;
