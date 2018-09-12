@@ -5,8 +5,7 @@
         Width="500">
 
     <DockPanel>
-        <keeper2018:MainMenuView DockPanel.Dock="Top"/>
-        <Button DockPanel.Dock="Top" Content="Nb Rates" Width="100" Margin="5" Name="NbRates"/>
+        <keeper2018:MainMenuView DockPanel.Dock="Top" DataContext="{Binding MainMenuViewModel}"/>
         <keeper2018:AccountTreeView DataContext="{Binding AccountTreeViewModel}"/>
     </DockPanel>
 

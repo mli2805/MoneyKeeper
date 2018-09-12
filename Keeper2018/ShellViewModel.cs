@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Autofac;
 using Caliburn.Micro;
 
@@ -31,11 +30,6 @@ namespace Keeper2018
             var vm = _globalScope.Resolve<OfficialRatesViewModel>();
         }
 
-        public void NbRates()
-        {
-            var vm = _globalScope.Resolve<OfficialRatesViewModel>();
-            _windowManager.ShowDialog(vm);
-        }
         public override void CanClose(Action<bool> callback)
         {
             Accounts2018Txt.SaveInTxt(AccountTreeViewModel.Accounts);
