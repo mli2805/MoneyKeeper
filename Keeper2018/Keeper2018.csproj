@@ -98,6 +98,10 @@
     <Compile Include="Domain\Currency\Rate.cs" />
     <Compile Include="Domain\DbUtils.cs" />
     <Compile Include="IShell.cs" />
+    <Compile Include="MainMenu\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu\MainMenuViewModel.cs" />
     <Compile Include="OfficialRates\OfficialRatesDownloader.cs" />
     <Compile Include="OfficialRates\OfficialRatesView.xaml.cs">
       <DependentUpon>OfficialRatesView.xaml</DependentUpon>
@@ -115,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AccountTree\AskDragAccountActionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainMenu\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

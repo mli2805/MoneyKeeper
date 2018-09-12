@@ -32,9 +32,9 @@ namespace Keeper2018
             {
                 var current = new NbRbRateOnScreen(record, previous, annual);
                 Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
-                if (!current.Delta.Equals(0))
+                if (!current.BasketDelta.Equals(0))
                     previous = current;
-                if (current.Date.DayOfYear == 1)
+                if (current.Date.Day == 31 && current.Date.Month == 12)
                     annual = current;
             }
         }
@@ -42,14 +42,16 @@ namespace Keeper2018
         public async void Download()
         {
             var date = Rows.Last().Date.AddDays(1);
-            var annual = Rows.Last(r => r.Date.DayOfYear == 1);
-            while (date <= DateTime.Today.Date)
+            var annual = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
+            while (date <= DateTime.Today.Date.AddDays(1))
             {
                 var ratesFromSite = await OfficialRatesDownloader.GetRatesForDate(date);
                 var nbRbRate = new NbRbRate(){Date = date, Values = ratesFromSite};
                 var line = new NbRbRateOnScreen(nbRbRate, Rows.Last(), annual);
                 Rows.Add(line);
 
+                if (date.Date.Day == 31 && date.Date.Month == 12)
+                    annual = line;
                 date = date.AddDays(1);
             }
         }

@@ -13,11 +13,12 @@ namespace Keeper2018
             new CurrenciesWeights() {Usd = 0.3, Euro = 0.2, Rur = 0.5},
         };
 
-        public static double Calculate(MainCurrenciesRates currenciesValues)
+        public static double Calculate(NbRbRate nbRbRate)
         {
-            return Math.Pow(currenciesValues.Usd.Value/currenciesValues.Usd.Unit, Baskets.Last().Usd) *
-                   Math.Pow(currenciesValues.Euro.Value/currenciesValues.Euro.Unit, Baskets.Last().Euro) *
-                   Math.Pow(currenciesValues.Rur.Value/currenciesValues.Rur.Unit, Baskets.Last().Rur);
+            var basket = Math.Pow(nbRbRate.Values.Usd.Value/nbRbRate.Values.Usd.Unit, Baskets.Last().Usd) *
+                            Math.Pow(nbRbRate.Values.Euro.Value/nbRbRate.Values.Euro.Unit, Baskets.Last().Euro) *
+                            Math.Pow(nbRbRate.Values.Rur.Value/nbRbRate.Values.Rur.Unit, Baskets.Last().Rur);
+            return nbRbRate.Date < new DateTime(2016,7,1) ? Math.Round(basket, 1) : Math.Round(basket, 4);
         }
     }
 }

@@ -9,14 +9,16 @@ namespace Keeper2018
     {
         private ILifetimeScope _globalScope;
         private IWindowManager _windowManager;
+        public MainMenuViewModel MainMenuViewModel { get; set; }
         public AccountTreeViewModel AccountTreeViewModel { get; set; }
 
         public ShellViewModel(ILifetimeScope globalScope, IWindowManager windowManager,
-              AccountTreeViewModel accountTreeViewModel)
+              MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel)
         {
             _globalScope = globalScope;
             _windowManager = windowManager;
 
+            MainMenuViewModel = mainMenuViewModel;
             AccountTreeViewModel = accountTreeViewModel;
             AccountTreeViewModel.Status = "Status set from ShellViewModel";
            // AccountTreeViewModel.Accounts = AccountsOldTxt.LoadFromOldTxt();

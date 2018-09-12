@@ -2,9 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:keeper2018="clr-namespace:Keeper2018"
-        >
+        Width="500">
 
     <DockPanel>
+        <keeper2018:MainMenuView DockPanel.Dock="Top"/>
         <Button DockPanel.Dock="Top" Content="Nb Rates" Width="100" Margin="5" Name="NbRates"/>
         <keeper2018:AccountTreeView DataContext="{Binding AccountTreeViewModel}"/>
     </DockPanel>
