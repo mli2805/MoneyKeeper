@@ -165,5 +165,8 @@
   <ItemGroup>
     <Resource Include="Resources\nbrb.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\Transaction\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
