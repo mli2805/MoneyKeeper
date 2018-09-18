@@ -65,7 +65,7 @@ namespace Keeper2018
                 {
                     var ratesFromSite = await NbRbRatesDownloader.GetRatesForDate(date);
                     if (ratesFromSite == null) break;
-                    var nbRbRate = new NbRbRate(){Date = date, Values = ratesFromSite};
+                    var nbRbRate = new NbRbRate() { Date = date, Values = ratesFromSite };
                     var line = new NbRbRateOnScreen(nbRbRate, Rows.Last(), annual);
 
                     var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
@@ -75,6 +75,22 @@ namespace Keeper2018
                     if (date.Date.Day == 31 && date.Date.Month == 12)
                         annual = line;
                     date = date.AddDays(1);
+                }
+            }
+            IsDownloadEnabled = true;
+        }
+        public async void CbrDownload()
+        {
+            IsDownloadEnabled = false;
+            using (new WaitCursor())
+            {
+                foreach (var nbRbRateOnScreen in Rows)
+                {
+                    if (string.IsNullOrEmpty(nbRbRateOnScreen.RurUsdStr))
+                    {
+                        var usd2Rur = await CbrRatesDownloader.GetRateForDate(nbRbRateOnScreen.Date);
+                        nbRbRateOnScreen.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
+                    }
                 }
             }
             IsDownloadEnabled = true;
