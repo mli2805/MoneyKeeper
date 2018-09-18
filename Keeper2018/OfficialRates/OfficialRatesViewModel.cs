@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -45,9 +46,13 @@ namespace Keeper2018
             var annual = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
             while (date <= DateTime.Today.Date.AddDays(1))
             {
-                var ratesFromSite = await OfficialRatesDownloader.GetRatesForDate(date);
+                var ratesFromSite = await NbRbRatesDownloader.GetRatesForDate(date);
+                if (ratesFromSite == null) break;
                 var nbRbRate = new NbRbRate(){Date = date, Values = ratesFromSite};
                 var line = new NbRbRateOnScreen(nbRbRate, Rows.Last(), annual);
+
+                var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
+                line.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
                 Rows.Add(line);
 
                 if (date.Date.Day == 31 && date.Date.Month == 12)
@@ -56,7 +61,6 @@ namespace Keeper2018
             }
         }
 
-        
         public void Close()
         {
             TryClose();

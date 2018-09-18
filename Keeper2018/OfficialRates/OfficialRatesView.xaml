@@ -22,18 +22,6 @@
                         <TextBlock Text="{Binding UsdStr}" Width="65" HorizontalAlignment="Center" Foreground="{Binding UsdBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
-                </DataTemplate>  
-                <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:NbRbRateOnScreen">
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding BasketStr}" Width="120" HorizontalAlignment="Center" Foreground="{Binding BasketBrush}"/>
-                        <TextBlock Text="   "/>
-                    </StackPanel>
-                </DataTemplate>  
-                <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:NbRbRateOnScreen">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding BasketAfterBreakStr}" Width="75" Foreground="{Binding BasketBreakBrush}" FontSize="12"/>
-                        <TextBlock Text="   "/>
-                    </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="UsdAnnualTemplate" DataType="keeper2018:NbRbRateOnScreen">
                     <StackPanel Orientation="Horizontal" >
@@ -41,12 +29,42 @@
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate> 
-                <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                <DataTemplate x:Key="EuroTemplate" DataType="keeper2018:NbRbRateOnScreen">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding BasketAnnualStr}" Width="75" Foreground="{Binding BasketAnnualBrush}" FontSize="12"/>
+                        <TextBlock Text="{Binding EuroStr}" Width="65"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
+                <DataTemplate x:Key="RurTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding RurStr}" Width="65"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="RurUsdTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding RurUsdStr}" Width="65" FontSize="12"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding BasketAfterBreakStr}" Width="75" Foreground="{Binding BasketBreakBrush}" FontSize="12"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding BasketStr}" Width="120" HorizontalAlignment="Center" Foreground="{Binding BasketBrush}"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:NbRbRateOnScreen">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding BasketAnnualStr}" Width="55" Foreground="{Binding BasketAnnualBrush}" FontSize="12"/>
+                        <TextBlock Text="  "/>
+                    </StackPanel>
+                </DataTemplate> 
                 <Style TargetType="DataGridCell">
                     <Style.Setters>
                         <Setter Property="TextBlock.TextAlignment" Value="Right" />
@@ -61,12 +79,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="80"/>
                 <DataGridTemplateColumn Header="USD" CellTemplate="{StaticResource UsdTemplate}"/>
-                <DataGridTemplateColumn Header="USD, year" CellTemplate="{StaticResource UsdAnnualTemplate}"/>
-                <DataGridTextColumn Header="Euro" Binding="{Binding EuroStr}" Width="70"/>
-                <DataGridTextColumn Header="Rur" Binding="{Binding RurStr}" Width="70"/>
+                <DataGridTemplateColumn Header="USD, к 31 дек" CellTemplate="{StaticResource UsdAnnualTemplate}"/>
+                <DataGridTemplateColumn Header="Euro" CellTemplate="{StaticResource EuroTemplate}"/>
+                <DataGridTemplateColumn Header="Rub" CellTemplate="{StaticResource RurTemplate}"/>
+                <DataGridTemplateColumn Header="Rub, ЦБРФ" CellTemplate="{StaticResource RurUsdTemplate}"/>
                 <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketTemplate}" />
                 <DataGridTemplateColumn Header="After break" CellTemplate="{StaticResource BasketAfterBreakTemplate}"/>
-                <DataGridTemplateColumn Header="Jan, 1st" CellTemplate="{StaticResource BasketAnnualTemplate}"/>
+                <DataGridTemplateColumn Header="к 31 дек" CellTemplate="{StaticResource BasketAnnualTemplate}"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

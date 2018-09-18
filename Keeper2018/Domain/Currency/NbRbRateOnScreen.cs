@@ -19,6 +19,7 @@ namespace Keeper2018
         public Brush UsdBrush { get; set; }
         public string EuroStr { get; set; }
         public string RurStr { get; set; }
+        public string RurUsdStr { get; set; }
 
         public string BasketStr { get; set; }
         public Brush BasketBrush { get; set; }
@@ -40,6 +41,7 @@ namespace Keeper2018
             UsdStr = TodayValues.Usd.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
             EuroStr = TodayValues.Euro.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
             RurStr = TodayValues.Rur.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            
             UsdBrush = YesterdayValues == null || YesterdayValues.Usd.Value.Equals(TodayValues.Usd.Value)
                 ? Brushes.Black 
                 : YesterdayValues.Usd.Value > TodayValues.Usd.Value 

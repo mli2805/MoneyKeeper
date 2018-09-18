@@ -102,7 +102,7 @@
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\MainMenuViewModel.cs" />
-    <Compile Include="OfficialRates\OfficialRatesDownloader.cs" />
+    <Compile Include="OfficialRates\NbRbRatesDownloader.cs" />
     <Compile Include="OfficialRates\OfficialRatesView.xaml.cs">
       <DependentUpon>OfficialRatesView.xaml</DependentUpon>
     </Compile>
