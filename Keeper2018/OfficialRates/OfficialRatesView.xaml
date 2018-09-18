@@ -12,7 +12,7 @@
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
             <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
-            <Button Name="Download" Margin="5" Width="100" Content="Download" DockPanel.Dock="Right"/>
+            <Button Name="Download" Margin="5" Width="100" Content="Download" DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"/>
             <TextBlock/>
         </DockPanel>
         <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" AutoGenerateColumns="False">
