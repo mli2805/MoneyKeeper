@@ -8,68 +8,62 @@
         xmlns:deposits="clr-namespace:Keeper.ViewModels.Deposits"
         mc:Ignorable="d" Title="DepositView" Height="750" Width="700" Left="200" Top="150"
         d:DataContext="{d:DesignInstance deposits:DepositViewModel}" WindowStartupLocation="Manual">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="80"/>
-      <RowDefinition Height="1*"/>
-      <RowDefinition Height="140"/>
-      <RowDefinition Height="40"/>
-    </Grid.RowDefinitions>
-    <ListBox Name="Header" Grid.Row="0" ItemsSource="{Binding ReportHeader}"/>
-    <ListBox Name="Body" Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ReportBody}">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <Grid Margin="0,2">
-              
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="70" />
-              <ColumnDefinition Width="90" />
-              <ColumnDefinition Width="90" />
-              <ColumnDefinition Width="90" />
-              <ColumnDefinition Width="90" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-              
-
-            <TextBlock Margin="5,0,0,0">
-              <TextBlock.Text>
-                <Binding Path="Day" StringFormat="dd/MM/yyyy" />
-              </TextBlock.Text>
-            </TextBlock>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Right">
-              <TextBlock.Text>
-                <Binding Path="BeforeOperation" StringFormat="{}{0:#,#;; }"/>
-              </TextBlock.Text>
-            </TextBlock>
-            <TextBlock Grid.Column="2" HorizontalAlignment="Right">
-              <TextBlock.Text>
-                <Binding Path="IncomeColumn" StringFormat="{}{0:#,#.00;; }"/>
-              </TextBlock.Text>
-            </TextBlock>
-            <TextBlock Grid.Column="3" HorizontalAlignment="Right">
-              <TextBlock.Text>
-                <Binding Path="ExpenseColumn" StringFormat="{}{0:#,#;; }"/>
-              </TextBlock.Text>
-            </TextBlock>
-            <TextBlock Grid.Column="4" HorizontalAlignment="Right">
-              <TextBlock.Text>
-                <Binding Path="AfterOperation" StringFormat="{}{0:#,#;; }"/>
-              </TextBlock.Text>
-            </TextBlock>
-            <TextBlock Grid.Column="5" Margin="10,0,0,0" Text="{Binding Comment}" />
-          </Grid>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
-    <ListBox Name="Footer" Grid.Row="2" ItemsSource="{Binding ReportFooter}"/>
-      
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <ListBox Name="Header" Grid.Row="0" ItemsSource="{Binding ReportHeader}"/>
+        <ListBox Name="Body" Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ReportBody}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Margin="5,0,0,0">
+                            <TextBlock.Text>
+                                <Binding Path="Day" StringFormat="dd/MM/yyyy" />
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Column="1" HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="BeforeOperation" StringFormat="{}{0:#,#;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="IncomeColumn" StringFormat="{}{0:#,#.00;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Column="3" HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="ExpenseColumn" StringFormat="{}{0:#,#;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Column="4" HorizontalAlignment="Right">
+                            <TextBlock.Text>
+                                <Binding Path="AfterOperation" StringFormat="{}{0:#,#;; }"/>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Column="5" Margin="10,0,0,0" Text="{Binding Comment}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Name="Footer" Grid.Row="2" ItemsSource="{Binding ReportFooter}"/>
         <Button Grid.Row="3" Height="22" Width="180" Margin="10,0,0,0" HorizontalAlignment="Left" 
             Name="ExtractEvaluationsToExcel" Content="Ежедневный расчет в excel" Style="{StaticResource MyButtonStyle}" />
-      
         <Button Grid.Row="3" Height="22" Width="140" Margin="210,0,0,0" HorizontalAlignment="Left" 
             Name="ExtractTrafficToExcel" Content="Движение в excel" Style="{StaticResource MyButtonStyle}" />
-      
         <Button Grid.Row="3" Height="22" Width="100" Margin="0,0,20,0" HorizontalAlignment="Right" 
             Name="Exit" Content="Закрыть" IsCancel="True" IsDefault="True" Style="{StaticResource MyButtonStyle}" />
-  </Grid>
+    </Grid>
 </Window>

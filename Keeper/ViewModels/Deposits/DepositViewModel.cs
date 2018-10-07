@@ -35,7 +35,8 @@ namespace Keeper.ViewModels.Deposits
         }
 
         [ImportingConstructor]
-        public DepositViewModel(DepositReporter depositReporter, EvaluationsToExcelExporter evaluationsToExcelExporter, TrafficToExcelExporter trafficToExcelExporter)
+        public DepositViewModel(DepositReporter depositReporter, EvaluationsToExcelExporter evaluationsToExcelExporter, 
+            TrafficToExcelExporter trafficToExcelExporter)
         {
             _depositReporter = depositReporter;
             _evaluationsToExcelExporter = evaluationsToExcelExporter;
