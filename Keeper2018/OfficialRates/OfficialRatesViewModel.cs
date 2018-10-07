@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,9 +12,23 @@ namespace Keeper2018
     {
         public ObservableCollection<NbRbRateOnScreen> Rows { get; set; }
         public NbRbRateOnScreen SelectedRow { get; set; }
+
+        private bool _isDownloadEnabled;
+        public bool IsDownloadEnabled
+        {
+            get { return _isDownloadEnabled; }
+            set
+            {
+                if (value == _isDownloadEnabled) return;
+                _isDownloadEnabled = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public OfficialRatesViewModel()
         {
             Task.Factory.StartNew(Init);
+            IsDownloadEnabled = true;
         }
 
         protected override void OnViewLoaded(object view)
@@ -41,22 +56,46 @@ namespace Keeper2018
 
         public async void Download()
         {
-            var date = Rows.Last().Date.AddDays(1);
-            var annual = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
-            while (date <= DateTime.Today.Date.AddDays(1))
+            IsDownloadEnabled = false;
+            using (new WaitCursor())
             {
-                var ratesFromSite = await OfficialRatesDownloader.GetRatesForDate(date);
-                var nbRbRate = new NbRbRate(){Date = date, Values = ratesFromSite};
-                var line = new NbRbRateOnScreen(nbRbRate, Rows.Last(), annual);
-                Rows.Add(line);
+                var date = Rows.Last().Date.AddDays(1);
+                var annual = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
+                while (date <= DateTime.Today.Date.AddDays(1))
+                {
+                    var ratesFromSite = await NbRbRatesDownloader.GetRatesForDate(date);
+                    if (ratesFromSite == null) break;
+                    var nbRbRate = new NbRbRate() { Date = date, Values = ratesFromSite };
+                    var line = new NbRbRateOnScreen(nbRbRate, Rows.Last(), annual);
 
-                if (date.Date.Day == 31 && date.Date.Month == 12)
-                    annual = line;
-                date = date.AddDays(1);
+                    var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
+                    line.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
+                    Rows.Add(line);
+
+                    if (date.Date.Day == 31 && date.Date.Month == 12)
+                        annual = line;
+                    date = date.AddDays(1);
+                }
             }
+            IsDownloadEnabled = true;
+        }
+        public async void CbrDownload()
+        {
+            IsDownloadEnabled = false;
+            using (new WaitCursor())
+            {
+                foreach (var nbRbRateOnScreen in Rows)
+                {
+                    if (string.IsNullOrEmpty(nbRbRateOnScreen.RurUsdStr))
+                    {
+                        var usd2Rur = await CbrRatesDownloader.GetRateForDate(nbRbRateOnScreen.Date);
+                        nbRbRateOnScreen.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
+                    }
+                }
+            }
+            IsDownloadEnabled = true;
         }
 
-        
         public void Close()
         {
             TryClose();
