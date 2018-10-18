@@ -11,6 +11,7 @@ namespace Keeper2018
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
 
             builder.RegisterType<OfficialRatesViewModel>().SingleInstance();
+            builder.RegisterType<RatesDiagramViewModel>().SingleInstance();
 
             builder.RegisterType<MainMenuViewModel>().SingleInstance();
             builder.RegisterType<AccountTreeViewModel>().SingleInstance();

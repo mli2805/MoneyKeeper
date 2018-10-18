@@ -11,6 +11,7 @@
  
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
+            <Button Name="Oxyplot" Margin="5" Width="100" Content="Oxyplot" DockPanel.Dock="Left"/>
             <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
             <Button Name="Download" Margin="5" Width="100" Content="Download" DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"/>
             <Button Name="CbrDownload" Margin="5" Width="100" Content="ЦБРФ врем" DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"/>

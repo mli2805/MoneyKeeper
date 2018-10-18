@@ -10,6 +10,8 @@ namespace Keeper2018
 {
     public class OfficialRatesViewModel : Screen
     {
+        private readonly IWindowManager _windowManager;
+        private readonly RatesDiagramViewModel _ratesDiagramViewModel;
         public ObservableCollection<NbRbRateOnScreen> Rows { get; set; }
         public NbRbRateOnScreen SelectedRow { get; set; }
 
@@ -25,8 +27,10 @@ namespace Keeper2018
             }
         }
 
-        public OfficialRatesViewModel()
+        public OfficialRatesViewModel(IWindowManager windowManager, RatesDiagramViewModel ratesDiagramViewModel)
         {
+            _windowManager = windowManager;
+            _ratesDiagramViewModel = ratesDiagramViewModel;
             Task.Factory.StartNew(Init);
             IsDownloadEnabled = true;
         }
@@ -52,6 +56,11 @@ namespace Keeper2018
                 if (current.Date.Day == 31 && current.Date.Month == 12)
                     annual = current;
             }
+        }
+
+        public void Oxyplot()
+        {
+            _windowManager.ShowDialog(_ratesDiagramViewModel);
         }
 
         public async void Download()
