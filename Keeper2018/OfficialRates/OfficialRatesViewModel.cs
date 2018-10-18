@@ -60,6 +60,7 @@ namespace Keeper2018
 
         public void Oxyplot()
         {
+            _ratesDiagramViewModel.Initalize(Rows.ToList());
             _windowManager.ShowDialog(_ratesDiagramViewModel);
         }
 
