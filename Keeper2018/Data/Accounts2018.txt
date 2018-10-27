@@ -121,7 +121,7 @@
 651                 ; БИБ Зарплатная 0117-0122 ; 682 ; collapsed
 689                 ; БИБ MasterCard RUB 04/21 ; 682 ; collapsed
 690                 ; БИБ Visa USD 04/21 ; 682 ; collapsed
-694             ; Альфа ; 161 ; expanded
+694             ; Альфа ; 161 ; collapsed
 695                 ; Зарплатная ; 694 ; collapsed
 697                 ; Visa Usd ; 694 ; collapsed
 698                 ; MasterCard Euro ; 694 ; collapsed

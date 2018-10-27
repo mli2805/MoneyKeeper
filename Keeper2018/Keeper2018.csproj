@@ -111,15 +111,19 @@
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\MainMenuViewModel.cs" />
+    <Compile Include="OfficialRates\BasketDiagramView.xaml.cs">
+      <DependentUpon>BasketDiagramView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OfficialRates\BasketDiagramViewModel.cs" />
     <Compile Include="OfficialRates\NbRbRatesDownloader.cs" />
     <Compile Include="OfficialRates\OfficialRatesView.xaml.cs">
       <DependentUpon>OfficialRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="OfficialRates\OfficialRatesViewModel.cs" />
-    <Compile Include="OfficialRates\RatesDiagramView.xaml.cs">
-      <DependentUpon>RatesDiagramView.xaml</DependentUpon>
+    <Compile Include="OfficialRates\UsdAnnualDiagramView.xaml.cs">
+      <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OfficialRates\RatesDiagramViewModel.cs" />
+    <Compile Include="OfficialRates\UsdAnnualDiagramViewModel.cs" />
     <Compile Include="OfficialRates\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="OfficialRates\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="ShellViewModel.cs" />
@@ -140,11 +144,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="OfficialRates\BasketDiagramView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="OfficialRates\OfficialRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OfficialRates\RatesDiagramView.xaml">
+    <Page Include="OfficialRates\UsdAnnualDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
