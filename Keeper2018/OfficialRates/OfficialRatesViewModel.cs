@@ -118,7 +118,7 @@ namespace Keeper2018
                 {
                     if (string.IsNullOrEmpty(model.RurUsdStr))
                     {
-                        double usd2Rur = 0;
+                        double usd2Rur;
                         try
                         {
                             usd2Rur = await CbrRatesDownloader.GetRateForDate(model.Date);
