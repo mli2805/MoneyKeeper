@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Keeper2018
+namespace Keeper2018.Basket
 {
     public static class BelBaskets
     {

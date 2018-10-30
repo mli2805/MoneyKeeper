@@ -1,4 +1,4 @@
-﻿namespace Keeper2018
+﻿namespace Keeper2018.Basket
 {
     public class BasketWeights
     {
