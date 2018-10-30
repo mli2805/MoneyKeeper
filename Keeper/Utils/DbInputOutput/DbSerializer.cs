@@ -94,3 +94,4 @@ namespace Keeper.Utils.DbInputOutput
 // сломалась на дереве счетов - Account содержит Account
 
 // DataContractJsonSerializer тоже сломался на счетах (цикл)
+// Newtonsoft.Json  тоже сломался на счетах (цикл)

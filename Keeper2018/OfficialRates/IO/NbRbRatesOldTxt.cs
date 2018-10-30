@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,11 @@ namespace Keeper2018
     {
         public static async Task<List<OfficialRates>> LoadFromOldTxtAsync()
         {
-            var result = LoadFromOldTxt().ToList();
+            var result = new List<OfficialRates>();
+            foreach (var rate in LoadFromOldTxt())
+            {
+                result.Add(rate);
+            }
             await Task.Delay(1);
             return result;
         }

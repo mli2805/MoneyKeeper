@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace Keeper2018
 {
     public static class RatesSerializer
     {
-        public static async Task<bool> SerializeRates(List<OfficialRates> rates)
+        public static async Task<bool> SerializeRates(ObservableCollection<OfficialRates> rates)
         {
             var path = DbUtils.GetTxtFullPath("OfficialRates.bin");
             try

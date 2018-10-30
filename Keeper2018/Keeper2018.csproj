@@ -104,6 +104,7 @@
     <Compile Include="DB\Rates\CbrRate.cs" />
     <Compile Include="DB\Rates\NbRbRates.cs" />
     <Compile Include="DB\Rates\OfficialRates.cs" />
+    <Compile Include="DB\DbSerializer.cs" />
     <Compile Include="OfficialRates\OfficialRatesModel.cs" />
     <Compile Include="OfficialRates\IO\NbRbRatesOldTxt.cs" />
     <Compile Include="DB\Rates\OneRate.cs" />

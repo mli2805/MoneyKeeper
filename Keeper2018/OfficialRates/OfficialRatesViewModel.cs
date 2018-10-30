@@ -141,14 +141,14 @@ namespace Keeper2018
         {
             if (_isChanged)
             {
-                await SaveRates();
+             //   await SaveRates();
             }
             TryClose();
         }
 
-        private async Task<bool> SaveRates()
-        {
-            return await RatesSerializer.SerializeRates(_rates);
-        }
+//        private async Task<bool> SaveRates()
+//        {
+//            return await RatesSerializer.SerializeRates(_rates);
+//        }
     }
 }
