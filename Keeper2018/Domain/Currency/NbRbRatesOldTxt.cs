@@ -26,10 +26,10 @@ namespace Keeper2018
             var substrings = str.Split(';');
             rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
 
-            rate.Values.Usd.Value = Convert.ToDouble(substrings[1], new CultureInfo("en-US")) / GetDenominator(rate.Date);
-            rate.Values.Euro.Value = Convert.ToDouble(substrings[2], new CultureInfo("en-US")) / GetDenominator(rate.Date);
-            rate.Values.Rur.Unit = rate.Date < new DateTime(2016, 7, 1) ? 1 : 100;
-            rate.Values.Rur.Value = Convert.ToDouble(substrings[3], new CultureInfo("en-US")) / GetDenominator(rate.Date) * rate.Values.Rur.Unit;
+            rate.Usd.Value = Convert.ToDouble(substrings[1], new CultureInfo("en-US")) / GetDenominator(rate.Date);
+            rate.Euro.Value = Convert.ToDouble(substrings[2], new CultureInfo("en-US")) / GetDenominator(rate.Date);
+            rate.Rur.Unit = rate.Date < new DateTime(2016, 7, 1) ? 1 : 100;
+            rate.Rur.Value = Convert.ToDouble(substrings[3], new CultureInfo("en-US")) / GetDenominator(rate.Date) * rate.Rur.Unit;
 
             return rate;
         }

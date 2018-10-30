@@ -68,8 +68,8 @@ namespace Keeper2018
             foreach (var nbRbRateOnScreen in _rates.Where(r => r.Date.Year == year))
             {
                 var rate = nbRbRateOnScreen.Date < new DateTime(2016, 7, 1)
-                    ? nbRbRateOnScreen.TodayValues.Usd.Value / 10000
-                    : nbRbRateOnScreen.TodayValues.Usd.Value;
+                    ? nbRbRateOnScreen.TodayRates.Usd.Value / 10000
+                    : nbRbRateOnScreen.TodayRates.Usd.Value;
                 result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nbRbRateOnScreen.Date), rate));
             }
             return result;

@@ -7,8 +7,8 @@ namespace Keeper2018
     public class NbRbRateOnScreen
     {
         public DateTime Date { get; set; }
-        public MainCurrenciesRates TodayValues { get; set; }
-        private MainCurrenciesRates YesterdayValues { get; set; }
+        public NbRbRate TodayRates { get; set; }
+        private NbRbRate YesterdayRates { get; set; }
 
         public readonly double Basket;
         private readonly double _yesterdayBasket;
@@ -36,16 +36,16 @@ namespace Keeper2018
         public NbRbRateOnScreen(NbRbRate record, NbRbRateOnScreen previous, NbRbRateOnScreen annual)
         {
             Date = record.Date;
-            TodayValues = record.Values;
-            YesterdayValues = previous?.TodayValues;
+            TodayRates = record;
+            YesterdayRates = previous?.TodayRates;
 
-            UsdStr = TodayValues.Usd.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
-            EuroStr = TodayValues.Euro.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
-            RurStr = TodayValues.Rur.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            UsdStr = TodayRates.Usd.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            EuroStr = TodayRates.Euro.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            RurStr = TodayRates.Rur.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
             
-            UsdBrush = YesterdayValues == null || YesterdayValues.Usd.Value.Equals(TodayValues.Usd.Value)
+            UsdBrush = YesterdayRates == null || YesterdayRates.Usd.Value.Equals(TodayRates.Usd.Value)
                 ? Brushes.Black 
-                : YesterdayValues.Usd.Value > TodayValues.Usd.Value 
+                : YesterdayRates.Usd.Value > TodayRates.Usd.Value 
                     ? Brushes.LimeGreen : Brushes.Red;
 
             Basket = BelBaskets.Calculate(record);
@@ -98,12 +98,12 @@ namespace Keeper2018
             if (annual == null) return;
 
             var lastYear = Date.Year == 2000 
-                ? annual.TodayValues.Usd.Value / 1000 
+                ? annual.TodayRates.Usd.Value / 1000 
                 : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1) 
-                    ? annual.TodayValues.Usd.Value / 10000 
-                    : annual.TodayValues.Usd.Value;
+                    ? annual.TodayRates.Usd.Value / 10000 
+                    : annual.TodayRates.Usd.Value;
 
-            var delta = TodayValues.Usd.Value - lastYear;
+            var delta = TodayRates.Usd.Value - lastYear;
             var proc = delta / lastYear * 100;
             UsdAnnualStr = $"{delta.ToString("#,0.####", new CultureInfo("ru-RU"))} ({proc:+0.##;-0.##;0}%)";
             UsdAnnualBrush = proc < 0 ? Brushes.LimeGreen : Brushes.Red;

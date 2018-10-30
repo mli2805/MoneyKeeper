@@ -12,13 +12,13 @@ namespace Keeper2018
 {
     public static class NbRbRatesDownloader
     {
-        public static async Task<MainCurrenciesRates> GetRatesForDate(DateTime date)
+        public static async Task<NbRbRate> GetRatesForDate(DateTime date)
         {
             string uri = "http://www.nbrb.by/API/ExRates/Rates?onDate=" + $"{date:yyyy-M-d}" + "&Periodicity=0";
             var response = await MyRequest.GetAsync(uri);
             var nbList = (List<NbRbSiteRate>)JsonConvert.DeserializeObject(response, typeof(List<NbRbSiteRate>));
             if (nbList.Count == 0) return null; 
-            var result = new MainCurrenciesRates();
+            var result = new NbRbRate(){Date = date};
             var usdRate = nbList.First(c => c.Cur_Abbreviation == "USD");
             result.Usd.Value = usdRate.Cur_OfficialRate;
             result.Usd.Unit = usdRate.Cur_Scale;

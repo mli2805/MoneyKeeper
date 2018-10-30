@@ -15,9 +15,9 @@ namespace Keeper2018
 
         public static double Calculate(NbRbRate nbRbRate)
         {
-            var basket = Math.Pow(nbRbRate.Values.Usd.Value/nbRbRate.Values.Usd.Unit, Baskets.Last().Usd) *
-                            Math.Pow(nbRbRate.Values.Euro.Value/nbRbRate.Values.Euro.Unit, Baskets.Last().Euro) *
-                            Math.Pow(nbRbRate.Values.Rur.Value/nbRbRate.Values.Rur.Unit, Baskets.Last().Rur);
+            var basket = Math.Pow(nbRbRate.Usd.Value/nbRbRate.Usd.Unit, Baskets.Last().Usd) *
+                            Math.Pow(nbRbRate.Euro.Value/nbRbRate.Euro.Unit, Baskets.Last().Euro) *
+                            Math.Pow(nbRbRate.Rur.Value/nbRbRate.Rur.Unit, Baskets.Last().Rur);
             return nbRbRate.Date < new DateTime(2016,7,1) ? Math.Round(basket, 1) : Math.Round(basket, 4);
         }
     }

@@ -100,7 +100,6 @@
     <Compile Include="Domain\Currency\BelCurrencies.cs" />
     <Compile Include="Domain\Currency\BelCurrency.cs" />
     <Compile Include="Domain\Currency\CurrenciesWeights.cs" />
-    <Compile Include="Domain\DB\MainCurrenciesRates.cs" />
     <Compile Include="Domain\DB\NbRbRate.cs" />
     <Compile Include="Domain\Currency\NbRbRateOnScreen.cs" />
     <Compile Include="Domain\Currency\NbRbRatesOldTxt.cs" />
