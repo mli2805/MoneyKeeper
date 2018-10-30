@@ -4,12 +4,19 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Keeper2018
 {
     public static class NbRbRatesOldTxt
     {
-        public static IEnumerable<NbRbRate> LoadFromOldTxt()
+        public static async Task<List<OfficialRates>> LoadFromOldTxtAsync()
+        {
+            var result = LoadFromOldTxt().ToList();
+            await Task.Delay(1);
+            return result;
+        }
+        public static IEnumerable<OfficialRates> LoadFromOldTxt()
         {
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
@@ -20,16 +27,16 @@ namespace Keeper2018
             }
         }
 
-        private static NbRbRate NbRbRateFromString(string str)
+        private static OfficialRates NbRbRateFromString(string str)
         {
-            var rate = new NbRbRate();
+            var rate = new OfficialRates();
             var substrings = str.Split(';');
             rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
 
-            rate.Values.Usd.Value = Convert.ToDouble(substrings[1], new CultureInfo("en-US")) / GetDenominator(rate.Date);
-            rate.Values.Euro.Value = Convert.ToDouble(substrings[2], new CultureInfo("en-US")) / GetDenominator(rate.Date);
-            rate.Values.Rur.Unit = rate.Date < new DateTime(2016, 7, 1) ? 1 : 100;
-            rate.Values.Rur.Value = Convert.ToDouble(substrings[3], new CultureInfo("en-US")) / GetDenominator(rate.Date) * rate.Values.Rur.Unit;
+            rate.NbRates.Usd.Value = Convert.ToDouble(substrings[1], new CultureInfo("en-US")) / GetDenominator(rate.Date);
+            rate.NbRates.Euro.Value = Convert.ToDouble(substrings[2], new CultureInfo("en-US")) / GetDenominator(rate.Date);
+            rate.NbRates.Rur.Unit = rate.Date < new DateTime(2016, 7, 1) ? 1 : 100;
+            rate.NbRates.Rur.Value = Convert.ToDouble(substrings[3], new CultureInfo("en-US")) / GetDenominator(rate.Date) * rate.NbRates.Rur.Unit;
 
             return rate;
         }

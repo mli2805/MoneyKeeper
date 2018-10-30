@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -13,8 +14,10 @@ namespace Keeper2018
         private readonly IWindowManager _windowManager;
         private readonly UsdAnnualDiagramViewModel _usdAnnualDiagramViewModel;
         private readonly BasketDiagramViewModel _basketDiagramViewModel;
-        public ObservableCollection<NbRbRateOnScreen> Rows { get; set; }
-        public NbRbRateOnScreen SelectedRow { get; set; }
+
+        private List<OfficialRates> _rates;
+        public ObservableCollection<OfficialRatesModel> Rows { get; set; }
+        public OfficialRatesModel SelectedRow { get; set; }
 
         private bool _isDownloadEnabled;
         public bool IsDownloadEnabled
@@ -28,6 +31,8 @@ namespace Keeper2018
             }
         }
 
+        private bool _isChanged;
+
         public OfficialRatesViewModel(IWindowManager windowManager, UsdAnnualDiagramViewModel usdAnnualDiagramViewModel,
             BasketDiagramViewModel basketDiagramViewModel)
         {
@@ -40,19 +45,22 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "NB RB. Official rates.";
-            SelectedRow = Rows.LastOrDefault();
+            DisplayName = "Official rates.";
+            SelectedRow = Rows?.LastOrDefault();
         }
 
-        private void Init()
+        private async void Init()
         {
-            if (Rows != null) return;
-            Rows = new ObservableCollection<NbRbRateOnScreen>();
-            NbRbRateOnScreen annual = null;
-            NbRbRateOnScreen previous = null;
-            foreach (var record in NbRbRatesOldTxt.LoadFromOldTxt())
+            if (_rates != null) return;
+
+            _rates = await RatesSerializer.DeserializeRates() ?? await NbRbRatesOldTxt.LoadFromOldTxtAsync();
+
+            Rows = new ObservableCollection<OfficialRatesModel>();
+            OfficialRatesModel annual = null;
+            OfficialRatesModel previous = null;
+            foreach (var record in _rates)
             {
-                var current = new NbRbRateOnScreen(record, previous, annual);
+                var current = new OfficialRatesModel(record, previous, annual);
                 Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
                 if (!current.BasketDelta.Equals(0))
                     previous = current;
@@ -75,6 +83,7 @@ namespace Keeper2018
 
         public async void Download()
         {
+            _isChanged = true;
             IsDownloadEnabled = false;
             using (new WaitCursor())
             {
@@ -82,13 +91,14 @@ namespace Keeper2018
                 var annual = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
                 while (date <= DateTime.Today.Date.AddDays(1))
                 {
-                    var ratesFromSite = await NbRbRatesDownloader.GetRatesForDate(date);
-                    if (ratesFromSite == null) break;
-                    var nbRbRate = new NbRbRate() { Date = date, Values = ratesFromSite };
-                    var line = new NbRbRateOnScreen(nbRbRate, Rows.Last(), annual);
-
+                    var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
+                    if (nbRbRates == null) break;
+                    var officialRates = new OfficialRates() { Date = date, NbRates = nbRbRates };
                     var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
-                    line.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
+                    officialRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
+
+                    _rates.Add(officialRates);
+                    var line = new OfficialRatesModel(officialRates, Rows.Last(), annual);
                     Rows.Add(line);
 
                     if (date.Date.Day == 31 && date.Date.Month == 12)
@@ -100,24 +110,45 @@ namespace Keeper2018
         }
         public async void CbrDownload()
         {
+            _isChanged = true;
             IsDownloadEnabled = false;
             using (new WaitCursor())
             {
-                foreach (var nbRbRateOnScreen in Rows)
+                foreach (var model in Rows)
                 {
-                    if (string.IsNullOrEmpty(nbRbRateOnScreen.RurUsdStr))
+                    if (string.IsNullOrEmpty(model.RurUsdStr))
                     {
-                        var usd2Rur = await CbrRatesDownloader.GetRateForDate(nbRbRateOnScreen.Date);
-                        nbRbRateOnScreen.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
+                        double usd2Rur = 0;
+                        try
+                        {
+                            usd2Rur = await CbrRatesDownloader.GetRateForDate(model.Date);
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show("Error: " + e.Message);
+                            break;
+                        }
+                        var rate = _rates.First(r => r.Date == model.Date);
+                        rate.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
+                        model.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
                     }
                 }
             }
             IsDownloadEnabled = true;
         }
 
-        public void Close()
+        public async void Close()
         {
+            if (_isChanged)
+            {
+                await SaveRates();
+            }
             TryClose();
+        }
+
+        private async Task<bool> SaveRates()
+        {
+            return await RatesSerializer.SerializeRates(_rates);
         }
     }
 }

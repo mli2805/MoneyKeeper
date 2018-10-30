@@ -1,6 +1,10 @@
-﻿namespace Keeper2018
+﻿using System;
+
+namespace Keeper2018
 {
-    public class Rate
+   
+    [Serializable]
+    public class OneRate
     {
         public double Value { get; set; }
         public int Unit { get; set; } = 1;

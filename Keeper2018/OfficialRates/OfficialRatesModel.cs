@@ -4,11 +4,11 @@ using System.Windows.Media;
 
 namespace Keeper2018
 {
-    public class NbRbRateOnScreen
+    public class OfficialRatesModel
     {
         public DateTime Date { get; set; }
-        public MainCurrenciesRates TodayValues { get; set; }
-        private MainCurrenciesRates YesterdayValues { get; set; }
+        public OfficialRates TodayRates { get; set; }
+        private NbRbRates YesterdayNbRbRates { get; set; }
 
         public readonly double Basket;
         private readonly double _yesterdayBasket;
@@ -33,19 +33,19 @@ namespace Keeper2018
         public string UsdAnnualStr { get; set; }
         public Brush UsdAnnualBrush { get; set; }
 
-        public NbRbRateOnScreen(NbRbRate record, NbRbRateOnScreen previous, NbRbRateOnScreen annual)
+        public OfficialRatesModel(OfficialRates record, OfficialRatesModel previous, OfficialRatesModel annual)
         {
             Date = record.Date;
-            TodayValues = record.Values;
-            YesterdayValues = previous?.TodayValues;
+            TodayRates = record;
+            YesterdayNbRbRates = previous?.TodayRates.NbRates;
 
-            UsdStr = TodayValues.Usd.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
-            EuroStr = TodayValues.Euro.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
-            RurStr = TodayValues.Rur.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            UsdStr = TodayRates.NbRates.Usd.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            EuroStr = TodayRates.NbRates.Euro.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            RurStr = TodayRates.NbRates.Rur.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
             
-            UsdBrush = YesterdayValues == null || YesterdayValues.Usd.Value.Equals(TodayValues.Usd.Value)
+            UsdBrush = YesterdayNbRbRates == null || YesterdayNbRbRates.Usd.Value.Equals(TodayRates.NbRates.Usd.Value)
                 ? Brushes.Black 
-                : YesterdayValues.Usd.Value > TodayValues.Usd.Value 
+                : YesterdayNbRbRates.Usd.Value > TodayRates.NbRates.Usd.Value 
                     ? Brushes.LimeGreen : Brushes.Red;
 
             Basket = BelBaskets.Calculate(record);
@@ -60,6 +60,8 @@ namespace Keeper2018
             SetBasketBreakStr(previous);
             SetUsdAnnualStr(annual);
             SetBasketAnnualStr(annual);
+            RurUsdStr = TodayRates.CbrRate.Usd.Value.Equals(0) ? "" : TodayRates.CbrRate.Usd.Value.ToString("#,#.##", new CultureInfo("ru-RU"));
+
         }
 
         private void SetBasketStr()
@@ -77,7 +79,7 @@ namespace Keeper2018
                     ? Brushes.LimeGreen : Brushes.Red;
         }
 
-        private void SetBasketBreakStr(NbRbRateOnScreen previous)
+        private void SetBasketBreakStr(OfficialRatesModel previous)
         {
             if (previous == null) return;
             if (BasketDelta * previous.BasketDelta >= 0) // no break
@@ -93,23 +95,23 @@ namespace Keeper2018
             }
         }
 
-        private void SetUsdAnnualStr(NbRbRateOnScreen annual)
+        private void SetUsdAnnualStr(OfficialRatesModel annual)
         {
             if (annual == null) return;
 
             var lastYear = Date.Year == 2000 
-                ? annual.TodayValues.Usd.Value / 1000 
+                ? annual.TodayRates.NbRates.Usd.Value / 1000 
                 : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1) 
-                    ? annual.TodayValues.Usd.Value / 10000 
-                    : annual.TodayValues.Usd.Value;
+                    ? annual.TodayRates.NbRates.Usd.Value / 10000 
+                    : annual.TodayRates.NbRates.Usd.Value;
 
-            var delta = TodayValues.Usd.Value - lastYear;
+            var delta = TodayRates.NbRates.Usd.Value - lastYear;
             var proc = delta / lastYear * 100;
             UsdAnnualStr = $"{delta.ToString("#,0.####", new CultureInfo("ru-RU"))} ({proc:+0.##;-0.##;0}%)";
             UsdAnnualBrush = proc < 0 ? Brushes.LimeGreen : Brushes.Red;
         }  
         
-        private void SetBasketAnnualStr(NbRbRateOnScreen annual)
+        private void SetBasketAnnualStr(OfficialRatesModel annual)
         {
             if (annual == null || annual.Basket.Equals(0)) return;
 

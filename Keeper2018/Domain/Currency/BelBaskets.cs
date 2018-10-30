@@ -6,19 +6,19 @@ namespace Keeper2018
 {
     public static class BelBaskets
     {
-        private static readonly List<CurrenciesWeights> Baskets = new List<CurrenciesWeights>()
+        private static readonly List<BasketWeights> Baskets = new List<BasketWeights>()
         {
-            new CurrenciesWeights() {Usd = 1.0 / 3, Euro = 1.0 / 3, Rur = 1.0 / 3},
-            new CurrenciesWeights() {Usd = 0.3, Euro = 0.3, Rur = 0.4},
-            new CurrenciesWeights() {Usd = 0.3, Euro = 0.2, Rur = 0.5},
+            new BasketWeights() {Usd = 1.0 / 3, Euro = 1.0 / 3, Rur = 1.0 / 3},
+            new BasketWeights() {Usd = 0.3, Euro = 0.3, Rur = 0.4},
+            new BasketWeights() {Usd = 0.3, Euro = 0.2, Rur = 0.5},
         };
 
-        public static double Calculate(NbRbRate nbRbRate)
+        public static double Calculate(OfficialRates officialRates)
         {
-            var basket = Math.Pow(nbRbRate.Values.Usd.Value/nbRbRate.Values.Usd.Unit, Baskets.Last().Usd) *
-                            Math.Pow(nbRbRate.Values.Euro.Value/nbRbRate.Values.Euro.Unit, Baskets.Last().Euro) *
-                            Math.Pow(nbRbRate.Values.Rur.Value/nbRbRate.Values.Rur.Unit, Baskets.Last().Rur);
-            return nbRbRate.Date < new DateTime(2016,7,1) ? Math.Round(basket, 1) : Math.Round(basket, 4);
+            var basket = Math.Pow(officialRates.NbRates.Usd.Value/officialRates.NbRates.Usd.Unit, Baskets.Last().Usd) *
+                            Math.Pow(officialRates.NbRates.Euro.Value/officialRates.NbRates.Euro.Unit, Baskets.Last().Euro) *
+                            Math.Pow(officialRates.NbRates.Rur.Value/officialRates.NbRates.Rur.Unit, Baskets.Last().Rur);
+            return officialRates.Date < new DateTime(2016,7,1) ? Math.Round(basket, 1) : Math.Round(basket, 4);
         }
     }
 }

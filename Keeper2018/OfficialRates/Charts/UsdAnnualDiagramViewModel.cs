@@ -10,7 +10,7 @@ namespace Keeper2018
 {
     public class UsdAnnualDiagramViewModel : Screen
     {
-        private List<NbRbRateOnScreen> _rates;
+        private List<OfficialRatesModel> _rates;
 
         public PlotModel MyPlotModel2015 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2016 { get; set; } = new PlotModel();
@@ -18,7 +18,7 @@ namespace Keeper2018
         public PlotModel MyPlotModel2018 { get; set; } = new PlotModel();
 
 
-        public void Initalize(List<NbRbRateOnScreen> rates)
+        public void Initalize(List<OfficialRatesModel> rates)
         {
             _rates = rates;
             MyPlotModel2015.Series.Add(OneYearOfUsd(2015));
@@ -68,8 +68,8 @@ namespace Keeper2018
             foreach (var nbRbRateOnScreen in _rates.Where(r => r.Date.Year == year))
             {
                 var rate = nbRbRateOnScreen.Date < new DateTime(2016, 7, 1)
-                    ? nbRbRateOnScreen.TodayValues.Usd.Value / 10000
-                    : nbRbRateOnScreen.TodayValues.Usd.Value;
+                    ? nbRbRateOnScreen.TodayRates.NbRates.Usd.Value / 10000
+                    : nbRbRateOnScreen.TodayRates.NbRates.Usd.Value;
                 result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nbRbRateOnScreen.Date), rate));
             }
             return result;

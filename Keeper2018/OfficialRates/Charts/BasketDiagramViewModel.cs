@@ -11,12 +11,12 @@ namespace Keeper2018
     public class BasketDiagramViewModel : Screen
     {
         private DateTime _startDate = new DateTime(2018,1,1);
-        private List<NbRbRateOnScreen> _rates;
+        private List<OfficialRatesModel> _rates;
 
         public PlotModel BasketPlotModel { get; set; }
         public PlotModel BasketDeltaPlotModel { get; set; }
 
-        public void Initalize(List<NbRbRateOnScreen> rates)
+        public void Initalize(List<OfficialRatesModel> rates)
         {
             BasketPlotModel = new PlotModel();
             BasketDeltaPlotModel = new PlotModel();

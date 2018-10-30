@@ -99,31 +99,37 @@
     <Compile Include="Domain\Currency\BelBaskets.cs" />
     <Compile Include="Domain\Currency\BelCurrencies.cs" />
     <Compile Include="Domain\Currency\BelCurrency.cs" />
-    <Compile Include="Domain\Currency\CurrenciesWeights.cs" />
-    <Compile Include="Domain\DB\MainCurrenciesRates.cs" />
-    <Compile Include="Domain\DB\NbRbRate.cs" />
-    <Compile Include="Domain\Currency\NbRbRateOnScreen.cs" />
-    <Compile Include="Domain\Currency\NbRbRatesOldTxt.cs" />
-    <Compile Include="Domain\DB\Rate.cs" />
+    <Compile Include="Domain\Currency\BasketWeights.cs" />
+    <Compile Include="Domain\KeeperDb.cs" />
+    <Compile Include="Domain\DB\CbrRate.cs" />
+    <Compile Include="Domain\DB\NbRbRates.cs" />
+    <Compile Include="Domain\DB\OfficialRates.cs" />
+    <Compile Include="OfficialRates\OfficialRatesModel.cs" />
+    <Compile Include="OfficialRates\IO\NbRbRatesOldTxt.cs" />
+    <Compile Include="Domain\DB\OneRate.cs" />
     <Compile Include="Domain\DbUtils.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\MainMenuViewModel.cs" />
-    <Compile Include="OfficialRates\BasketDiagramView.xaml.cs">
+    <Compile Include="OfficialRates\Charts\BasketDiagramView.xaml.cs">
       <DependentUpon>BasketDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OfficialRates\BasketDiagramViewModel.cs" />
-    <Compile Include="OfficialRates\NbRbRatesDownloader.cs" />
+    <Compile Include="OfficialRates\Charts\BasketDiagramViewModel.cs" />
+    <Compile Include="OfficialRates\Download\CbrRatesDownloader.cs" />
+    <Compile Include="OfficialRates\Download\MyRequest.cs" />
+    <Compile Include="OfficialRates\Download\NbRbRatesDownloader.cs" />
+    <Compile Include="OfficialRates\Download\NbRbSiteRate.cs" />
     <Compile Include="OfficialRates\OfficialRatesView.xaml.cs">
       <DependentUpon>OfficialRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="OfficialRates\OfficialRatesViewModel.cs" />
-    <Compile Include="OfficialRates\UsdAnnualDiagramView.xaml.cs">
+    <Compile Include="OfficialRates\Charts\UsdAnnualDiagramView.xaml.cs">
       <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OfficialRates\UsdAnnualDiagramViewModel.cs" />
+    <Compile Include="OfficialRates\Charts\UsdAnnualDiagramViewModel.cs" />
+    <Compile Include="OfficialRates\IO\RatesSerializer.cs" />
     <Compile Include="OfficialRates\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="OfficialRates\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="ShellViewModel.cs" />
@@ -144,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OfficialRates\BasketDiagramView.xaml">
+    <Page Include="OfficialRates\Charts\BasketDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,7 +158,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OfficialRates\UsdAnnualDiagramView.xaml">
+    <Page Include="OfficialRates\Charts\UsdAnnualDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

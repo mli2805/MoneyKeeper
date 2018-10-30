@@ -117,7 +117,7 @@
 505 ;         БГПБ Сберка EUR ; 681 ; False ; False ; True
 511 ;         БГПБ расчетная РУР ; 681 ; False ; False ; False
 664 ;         БГПБ Голдовая EUR ; 681 ; False ; False ; True
-682 ;       БИБs ; 161 ; True ; False ; False
+682 ;       БИБs ; 161 ; True ; False ; True
 628 ;         БИБ к Активному EUR ; 682 ; False ; False ; False
 651 ;         БИБ Зарплатная 0117-0122 ; 682 ; False ; False ; False
 689 ;         БИБ MasterCard RUB 04/21 ; 682 ; False ; False ; False
