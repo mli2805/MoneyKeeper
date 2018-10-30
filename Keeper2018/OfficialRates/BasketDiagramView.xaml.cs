@@ -1,11 +1,11 @@
 ﻿namespace Keeper2018
 {
     /// <summary>
-    /// Interaction logic for RatesDiagramView.xaml
+    /// Interaction logic for BasketDiagramView.xaml
     /// </summary>
-    public partial class RatesDiagramView
+    public partial class BasketDiagramView
     {
-        public RatesDiagramView()
+        public BasketDiagramView()
         {
             InitializeComponent();
         }

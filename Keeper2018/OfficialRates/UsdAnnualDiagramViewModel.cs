@@ -8,7 +8,7 @@ using OxyPlot.Series;
 
 namespace Keeper2018
 {
-    public class RatesDiagramViewModel : Screen
+    public class UsdAnnualDiagramViewModel : Screen
     {
         private List<NbRbRateOnScreen> _rates;
 
@@ -21,7 +21,7 @@ namespace Keeper2018
         public void Initalize(List<NbRbRateOnScreen> rates)
         {
             _rates = rates;
-            MyPlotModel2015.Series.Add(OneYear(2015));
+            MyPlotModel2015.Series.Add(OneYearOfUsd(2015));
             MyPlotModel2015.Axes.Add(new DateTimeAxis()
             {
                 Minimum = DateTimeAxis.ToDouble(new DateTime(2015,1,1)),
@@ -31,7 +31,7 @@ namespace Keeper2018
                 Maximum = DateTimeAxis.ToDouble(new DateTime(2015,12,31)),
             });
 
-            MyPlotModel2016.Series.Add(OneYear(2016));
+            MyPlotModel2016.Series.Add(OneYearOfUsd(2016));
             MyPlotModel2016.Axes.Add(new DateTimeAxis()
             {
                 Minimum = DateTimeAxis.ToDouble(new DateTime(2016,1,1)),
@@ -41,7 +41,7 @@ namespace Keeper2018
                 Maximum = DateTimeAxis.ToDouble(new DateTime(2016,12,31)),
             });
 
-            MyPlotModel2017.Series.Add(OneYear(2017));
+            MyPlotModel2017.Series.Add(OneYearOfUsd(2017));
             MyPlotModel2017.Axes.Add(new DateTimeAxis()
             {
                 Minimum = DateTimeAxis.ToDouble(new DateTime(2017,1,1)),
@@ -51,7 +51,7 @@ namespace Keeper2018
                 Maximum = DateTimeAxis.ToDouble(new DateTime(2017,12,31)),
             });
 
-            MyPlotModel2018.Series.Add(OneYear(2018));
+            MyPlotModel2018.Series.Add(OneYearOfUsd(2018));
             MyPlotModel2018.Axes.Add(new DateTimeAxis()
             {
                 Minimum = DateTimeAxis.ToDouble(new DateTime(2018,1,1)),
@@ -62,7 +62,7 @@ namespace Keeper2018
             });
         }
 
-        private LineSeries OneYear(int year)
+        private LineSeries OneYearOfUsd(int year)
         {
             var result = new LineSeries() { Title = year.ToString() };
             foreach (var nbRbRateOnScreen in _rates.Where(r => r.Date.Year == year))
@@ -70,7 +70,6 @@ namespace Keeper2018
                 var rate = nbRbRateOnScreen.Date < new DateTime(2016, 7, 1)
                     ? nbRbRateOnScreen.TodayValues.Usd.Value / 10000
                     : nbRbRateOnScreen.TodayValues.Usd.Value;
-//                result.Points.Add(new DataPoint(nbRbRateOnScreen.Date.DayOfYear, rate));
                 result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nbRbRateOnScreen.Date), rate));
             }
             return result;
@@ -78,7 +77,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Rates diagram";
+            DisplayName = "Usd annual diagram";
         }
     }
 }

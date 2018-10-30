@@ -11,7 +11,8 @@ namespace Keeper2018
     public class OfficialRatesViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
-        private readonly RatesDiagramViewModel _ratesDiagramViewModel;
+        private readonly UsdAnnualDiagramViewModel _usdAnnualDiagramViewModel;
+        private readonly BasketDiagramViewModel _basketDiagramViewModel;
         public ObservableCollection<NbRbRateOnScreen> Rows { get; set; }
         public NbRbRateOnScreen SelectedRow { get; set; }
 
@@ -27,10 +28,12 @@ namespace Keeper2018
             }
         }
 
-        public OfficialRatesViewModel(IWindowManager windowManager, RatesDiagramViewModel ratesDiagramViewModel)
+        public OfficialRatesViewModel(IWindowManager windowManager, UsdAnnualDiagramViewModel usdAnnualDiagramViewModel,
+            BasketDiagramViewModel basketDiagramViewModel)
         {
             _windowManager = windowManager;
-            _ratesDiagramViewModel = ratesDiagramViewModel;
+            _usdAnnualDiagramViewModel = usdAnnualDiagramViewModel;
+            _basketDiagramViewModel = basketDiagramViewModel;
             Task.Factory.StartNew(Init);
             IsDownloadEnabled = true;
         }
@@ -58,10 +61,16 @@ namespace Keeper2018
             }
         }
 
-        public void Oxyplot()
+        public void UsdChart()
         {
-            _ratesDiagramViewModel.Initalize(Rows.ToList());
-            _windowManager.ShowDialog(_ratesDiagramViewModel);
+            _usdAnnualDiagramViewModel.Initalize(Rows.ToList());
+            _windowManager.ShowDialog(_usdAnnualDiagramViewModel);
+        }
+
+        public void BasketChart()
+        {
+            _basketDiagramViewModel.Initalize(Rows.ToList());
+            _windowManager.ShowDialog(_basketDiagramViewModel);
         }
 
         public async void Download()

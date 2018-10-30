@@ -10,10 +10,11 @@ namespace Keeper2018
         public MainCurrenciesRates TodayValues { get; set; }
         private MainCurrenciesRates YesterdayValues { get; set; }
 
-        private readonly double _basket;
+        public readonly double Basket;
         private readonly double _yesterdayBasket;
         public double BasketDelta { get; set; }
-        private double _procBasket, _procBasketBreak, _procBasketAnnual;
+        public double ProcBasketDelta;
+        private double _procBasketBreak, _procBasketAnnual;
 
         public string UsdStr { get; set; }
         public Brush UsdBrush { get; set; }
@@ -47,13 +48,13 @@ namespace Keeper2018
                 : YesterdayValues.Usd.Value > TodayValues.Usd.Value 
                     ? Brushes.LimeGreen : Brushes.Red;
 
-            _basket = BelBaskets.Calculate(record);
+            Basket = BelBaskets.Calculate(record);
 
             _yesterdayBasket = previous == null 
                 ? 0 
                 : previous.Date.Year == 1999 && record.Date.Year == 2000 
-                    ? previous._basket / 1000
-                    : previous._basket;
+                    ? previous.Basket / 1000
+                    : previous.Basket;
 
             SetBasketStr();
             SetBasketBreakStr(previous);
@@ -63,12 +64,12 @@ namespace Keeper2018
 
         private void SetBasketStr()
         {
-            BasketDelta = _basket - _yesterdayBasket;
-            _procBasket = _yesterdayBasket.Equals(0.0) ? 0 : BasketDelta / _yesterdayBasket * 100;
+            BasketDelta = Basket - _yesterdayBasket;
+            ProcBasketDelta = _yesterdayBasket.Equals(0.0) ? 0 : BasketDelta / _yesterdayBasket * 100;
 
             BasketStr = Date < new DateTime(1999, 01, 11) // Euro appeared
                 ? ""
-                : $"{_basket.ToString("#,0.####", new CultureInfo("ru-RU"))} ({_procBasket:+0.##;-0.##;0}%)";
+                : $"{Basket.ToString("#,0.####", new CultureInfo("ru-RU"))} ({ProcBasketDelta:+0.##;-0.##;0}%)";
 
             BasketBrush = BasketDelta.Equals(0.0)
                 ? Brushes.Gray
@@ -81,13 +82,13 @@ namespace Keeper2018
             if (previous == null) return;
             if (BasketDelta * previous.BasketDelta >= 0) // no break
             {
-                _procBasketBreak = previous._procBasketBreak + _procBasket;
+                _procBasketBreak = previous._procBasketBreak + ProcBasketDelta;
                 BasketAfterBreakStr = $"{_procBasketBreak:+0.##;-0.##;0}%";
                 BasketBreakBrush = _procBasketBreak < 0 ? Brushes.LimeGreen : Brushes.Red;
             }
             else
             {
-                _procBasketBreak = _procBasket;
+                _procBasketBreak = ProcBasketDelta;
                 BasketAfterBreakStr = "";
             }
         }
@@ -110,15 +111,15 @@ namespace Keeper2018
         
         private void SetBasketAnnualStr(NbRbRateOnScreen annual)
         {
-            if (annual == null || annual._basket.Equals(0)) return;
+            if (annual == null || annual.Basket.Equals(0)) return;
 
             var lastYear = Date.Year == 2000 
-                ? annual._basket / 1000 
+                ? annual.Basket / 1000 
                 : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1) 
-                    ? annual._basket / 10000 
-                    : annual._basket;
+                    ? annual.Basket / 10000 
+                    : annual.Basket;
 
-            var delta = _basket - lastYear;
+            var delta = Basket - lastYear;
             _procBasketAnnual = delta / lastYear * 100;
             BasketAnnualStr = $"{_procBasketAnnual:+0.##;-0.##;0}%";
             BasketAnnualBrush = _procBasketAnnual < 0 ? Brushes.LimeGreen : Brushes.Red;
