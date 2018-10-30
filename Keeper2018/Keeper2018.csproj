@@ -83,7 +83,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AccountTree\Place.cs" />
-    <Compile Include="Domain\Account\Account.cs" />
+    <Compile Include="DB\Account\Account.cs" />
     <Compile Include="AccountTree\AccountTreeViewModel.cs" />
     <Compile Include="AccountTree\AccountTreeView.xaml.cs">
       <DependentUpon>AccountTreeView.xaml</DependentUpon>
@@ -94,20 +94,20 @@
     </Compile>
     <Compile Include="AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
-    <Compile Include="Domain\Account\Accounts2018Txt.cs" />
-    <Compile Include="Domain\Account\AccountsOldTxt.cs" />
-    <Compile Include="Domain\DB\Rates\Basket\BelBaskets.cs" />
-    <Compile Include="Domain\DB\Rates\Basket\BelCurrencies.cs" />
-    <Compile Include="Domain\DB\Rates\Basket\BelCurrency.cs" />
-    <Compile Include="Domain\DB\Rates\Basket\BasketWeights.cs" />
-    <Compile Include="Domain\KeeperDb.cs" />
-    <Compile Include="Domain\DB\Rates\CbrRate.cs" />
-    <Compile Include="Domain\DB\Rates\NbRbRates.cs" />
-    <Compile Include="Domain\DB\Rates\OfficialRates.cs" />
+    <Compile Include="AccountTree\IO\Accounts2018Txt.cs" />
+    <Compile Include="AccountTree\IO\AccountsOldTxt.cs" />
+    <Compile Include="DB\Rates\Basket\BelBaskets.cs" />
+    <Compile Include="DB\Rates\Basket\BelCurrencies.cs" />
+    <Compile Include="DB\Rates\Basket\BelCurrency.cs" />
+    <Compile Include="DB\Rates\Basket\BasketWeights.cs" />
+    <Compile Include="DB\KeeperDb.cs" />
+    <Compile Include="DB\Rates\CbrRate.cs" />
+    <Compile Include="DB\Rates\NbRbRates.cs" />
+    <Compile Include="DB\Rates\OfficialRates.cs" />
     <Compile Include="OfficialRates\OfficialRatesModel.cs" />
     <Compile Include="OfficialRates\IO\NbRbRatesOldTxt.cs" />
-    <Compile Include="Domain\DB\Rates\OneRate.cs" />
-    <Compile Include="Domain\DbUtils.cs" />
+    <Compile Include="DB\Rates\OneRate.cs" />
+    <Compile Include="DB\DbUtils.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
@@ -198,7 +198,7 @@
     <Resource Include="Resources\nbrb.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Domain\Transaction\" />
+    <Folder Include="DB\Transaction\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
