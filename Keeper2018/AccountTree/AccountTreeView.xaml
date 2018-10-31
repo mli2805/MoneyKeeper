@@ -9,8 +9,6 @@
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
     <DockPanel>
-        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Status}" Margin="5"/>
-        <Button Name="Save" Margin="5" DockPanel.Dock="Bottom" Content="Save" Width="100"/>
         <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding Accounts}" FontSize="14">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">

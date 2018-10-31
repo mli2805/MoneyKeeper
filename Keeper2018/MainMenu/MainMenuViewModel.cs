@@ -1,23 +1,22 @@
-﻿using Autofac;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 
 namespace Keeper2018
 {
     public class MainMenuViewModel : PropertyChangedBase
     {
-        private readonly ILifetimeScope _globalScope;
         private readonly IWindowManager _windowManager;
+        private readonly OfficialRatesViewModel _officialRatesViewModel;
 
-        public MainMenuViewModel(ILifetimeScope globalScope, IWindowManager windowManager)
+        public MainMenuViewModel(IWindowManager windowManager,
+            OfficialRatesViewModel officialRatesViewModel)
         {
-            _globalScope = globalScope;
             _windowManager = windowManager;
+            _officialRatesViewModel = officialRatesViewModel;
         }
 
         public void ShowOfficialRates()
         {
-            var vm = _globalScope.Resolve<OfficialRatesViewModel>();
-            _windowManager.ShowDialog(vm);
+            _windowManager.ShowDialog(_officialRatesViewModel);
         }
     }
 }

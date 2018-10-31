@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace Keeper2018
         private readonly UsdAnnualDiagramViewModel _usdAnnualDiagramViewModel;
         private readonly BasketDiagramViewModel _basketDiagramViewModel;
 
-        private List<OfficialRates> _rates;
+        private ObservableCollection<OfficialRates> _rates;
         public ObservableCollection<OfficialRatesModel> Rows { get; set; }
         public OfficialRatesModel SelectedRow { get; set; }
 
@@ -31,12 +30,12 @@ namespace Keeper2018
             }
         }
 
-        private bool _isChanged;
-
-        public OfficialRatesViewModel(IWindowManager windowManager, UsdAnnualDiagramViewModel usdAnnualDiagramViewModel,
+        public OfficialRatesViewModel(IWindowManager windowManager, KeeperDb keeperDb,
+            UsdAnnualDiagramViewModel usdAnnualDiagramViewModel,
             BasketDiagramViewModel basketDiagramViewModel)
         {
             _windowManager = windowManager;
+            _rates = keeperDb.OfficialRates;
             _usdAnnualDiagramViewModel = usdAnnualDiagramViewModel;
             _basketDiagramViewModel = basketDiagramViewModel;
             Task.Factory.StartNew(Init);
@@ -49,12 +48,8 @@ namespace Keeper2018
             SelectedRow = Rows?.LastOrDefault();
         }
 
-        private async void Init()
+        private void Init()
         {
-            if (_rates != null) return;
-
-            _rates = await RatesSerializer.DeserializeRates() ?? await NbRbRatesOldTxt.LoadFromOldTxtAsync();
-
             Rows = new ObservableCollection<OfficialRatesModel>();
             OfficialRatesModel annual = null;
             OfficialRatesModel previous = null;
@@ -83,7 +78,6 @@ namespace Keeper2018
 
         public async void Download()
         {
-            _isChanged = true;
             IsDownloadEnabled = false;
             using (new WaitCursor())
             {
@@ -108,9 +102,9 @@ namespace Keeper2018
             }
             IsDownloadEnabled = true;
         }
+
         public async void CbrDownload()
         {
-            _isChanged = true;
             IsDownloadEnabled = false;
             using (new WaitCursor())
             {
@@ -137,18 +131,11 @@ namespace Keeper2018
             IsDownloadEnabled = true;
         }
 
-        public async void Close()
+        public void Close()
         {
-            if (_isChanged)
-            {
-             //   await SaveRates();
-            }
+           
             TryClose();
         }
 
-//        private async Task<bool> SaveRates()
-//        {
-//            return await RatesSerializer.SerializeRates(_rates);
-//        }
     }
 }

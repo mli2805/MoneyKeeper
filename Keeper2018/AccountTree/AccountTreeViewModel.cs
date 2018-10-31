@@ -7,19 +7,17 @@ namespace Keeper2018
     {
         public IWindowManager WindowManager { get; }
         public AskDragAccountActionViewModel AskDragAccountActionViewModel { get; }
+
         public ObservableCollection<Account> Accounts { get; set; }
 
-        public string Status { get; set; } = "Under construction";
-
-        public AccountTreeViewModel(IWindowManager windowManager, AskDragAccountActionViewModel askDragAccountActionViewModel)
+        public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager,
+            AskDragAccountActionViewModel askDragAccountActionViewModel)
         {
             WindowManager = windowManager;
             AskDragAccountActionViewModel = askDragAccountActionViewModel;
+
+            Accounts = keeperDb.Accounts;
         }
 
-        public void Save()
-        {
-            Accounts2018Txt.SaveInTxt(Accounts);
-        }
     }
 }

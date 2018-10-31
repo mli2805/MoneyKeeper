@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Keeper2018.Basket
+namespace Keeper2018
 {
     public static class BelCurrencies
     {

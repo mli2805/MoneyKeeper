@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Media;
-using Keeper2018.Basket;
 
 namespace Keeper2018
 {

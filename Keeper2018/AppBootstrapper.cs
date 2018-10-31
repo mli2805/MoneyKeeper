@@ -43,10 +43,15 @@ namespace Keeper2018
             _container.InjectProperties(instance);
         }
 
-        protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
+        protected async override void OnStartup(object sender, System.Windows.StartupEventArgs e)
         {
             var builder = new ContainerBuilder();
             builder.RegisterModule<AutofacKeeper>();
+
+            KeeperDb keeperDb = await DbSerializer.Deserialize();
+            builder.RegisterInstance(keeperDb);
+
+
             _container = builder.Build();
 
             DisplayRootViewFor<IShell>();
