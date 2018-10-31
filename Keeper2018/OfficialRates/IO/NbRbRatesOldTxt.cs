@@ -20,6 +20,7 @@ namespace Keeper2018
             await Task.Delay(1);
             return result;
         }
+
         public static IEnumerable<OfficialRates> LoadFromOldTxt()
         {
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).

@@ -14,6 +14,7 @@ namespace Keeper2018
         {
             Account1 = account1;
             Account2 = account2;
+            Answer = DragAndDropAction.Cancel;
         }
 
         protected override void OnViewLoaded(object view)

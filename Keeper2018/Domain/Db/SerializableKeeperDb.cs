@@ -12,7 +12,7 @@ namespace Keeper2018
 
         public SerializableKeeperDb(KeeperDb keeperDb)
         {
-            SerializableAccounts = AccountMapper.Map(keeperDb.Accounts);
+            SerializableAccounts = AccountMapper.Flatten(keeperDb.Accounts);
             OfficialRates = keeperDb.OfficialRates;
         }
 
@@ -20,7 +20,7 @@ namespace Keeper2018
         {
             var result = new KeeperDb()
             {
-                Accounts = AccountMapper.Map(SerializableAccounts),
+                Accounts = AccountMapper.ToTree(SerializableAccounts),
                 OfficialRates = OfficialRates,
             };
             return result;

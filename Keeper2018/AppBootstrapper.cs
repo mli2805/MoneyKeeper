@@ -48,7 +48,7 @@ namespace Keeper2018
             var builder = new ContainerBuilder();
             builder.RegisterModule<AutofacKeeper>();
 
-            KeeperDb keeperDb = await DbSerializer.Deserialize();
+            KeeperDb keeperDb = await DbLoader.Load();
             builder.RegisterInstance(keeperDb);
 
 

@@ -13,7 +13,7 @@ namespace Keeper2018
                 keeperDb = new KeeperDb();
                 // AccountTreeViewModel.Accounts = AccountsOldTxt.LoadFromOldTxt();
                 keeperDb.Accounts = Accounts2018Txt.LoadFromTxt();
-                var rates = await RatesSerializer.DeserializeRates() ?? await NbRbRatesOldTxt.LoadFromOldTxtAsync();
+                var rates = await NbRbRatesOldTxt.LoadFromOldTxtAsync();
                  
                 keeperDb.OfficialRates = new ObservableCollection<OfficialRates>();
                 foreach (var rate in rates)

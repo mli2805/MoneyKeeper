@@ -134,7 +134,6 @@
       <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="OfficialRates\Charts\UsdAnnualDiagramViewModel.cs" />
-    <Compile Include="OfficialRates\IO\RatesSerializer.cs" />
     <Compile Include="OfficialRates\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="OfficialRates\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="ShellViewModel.cs" />
