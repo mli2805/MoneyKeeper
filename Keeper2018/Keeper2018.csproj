@@ -109,6 +109,9 @@
     <Compile Include="Domain\Rates\OfficialRates.cs" />
     <Compile Include="Domain\Db\DbSerializer.cs" />
     <Compile Include="Domain\Db\SerializableKeeperDb.cs" />
+    <Compile Include="Domain\Transaction\CurrencyCode.cs" />
+    <Compile Include="Domain\Transaction\OperationType.cs" />
+    <Compile Include="Domain\Transaction\Transaction.cs" />
     <Compile Include="OfficialRates\OfficialRatesModel.cs" />
     <Compile Include="OfficialRates\IO\NbRbRatesOldTxt.cs" />
     <Compile Include="Domain\Rates\OneRate.cs" />
@@ -201,8 +204,6 @@
   <ItemGroup>
     <Resource Include="Resources\nbrb.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domain\Transaction\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

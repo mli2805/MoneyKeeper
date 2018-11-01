@@ -6,5 +6,6 @@ namespace Keeper2018
     {
         public ObservableCollection<Account> Accounts { get; set; } = new ObservableCollection<Account>();
         public ObservableCollection<OfficialRates> OfficialRates { get; set; } = new ObservableCollection<OfficialRates>();
+        public ObservableCollection<Transaction> Transactions { get;set; } = new ObservableCollection<Transaction>();
     }
 }
