@@ -4,16 +4,60 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
              cal:Bind.Model="{Binding .}"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignData MainMenuViewModel}">
-   <DockPanel>
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="O">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowTransactionsForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="N">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowOfficialRatesForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="C">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowCurrencyRatesForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="A">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowMonthAnalysisForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="D">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowDepositsForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="G">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowMonthlyIncomeDiagram"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="T">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="TempItem"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="R">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowOfficialRatesForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
+    <DockPanel>
        <Menu Background="Transparent" Margin="5" DockPanel.Dock="Top">
            <MenuItem Header="FILE"/>
        </Menu>
        <ToolBarTray>
            <ToolBar Name="ToolBar1" >
-               <Button Name="ShowOfficialRates">
+               <Button Name="ShowOfficialRatesForm">
                    <Image Source="../../Resources/nbrb.png" Width="24" Height="24" />
                </Button>
            </ToolBar>

@@ -19,6 +19,8 @@ namespace Keeper2018
             builder.RegisterType<MainMenuViewModel>().SingleInstance();
             builder.RegisterType<AccountTreeViewModel>().SingleInstance();
             builder.RegisterType<AskDragAccountActionViewModel>().SingleInstance();
+
+            builder.RegisterType<TransactionsViewModel>().SingleInstance();
         }
     }
 }
