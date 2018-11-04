@@ -3,12 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="TransactionsView" Height="450" Width="800">
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:TransactionsViewModel}">
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom">
-            <Button Name="ParseOld" Height="25" Width="120" Content="Parse old txt" Margin="5"/>
+        <StackPanel DockPanel.Dock="Bottom" Margin="5">
         </StackPanel>
-        <ListView></ListView>
+        <DataGrid ItemsSource="{Binding Rows}" IsReadOnly="True"></DataGrid>
     </DockPanel>
 </Window>

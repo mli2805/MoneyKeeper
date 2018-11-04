@@ -60,7 +60,10 @@
                <Button Name="ShowOfficialRatesForm">
                    <Image Source="../../Resources/nbrb.png" Width="24" Height="24" />
                </Button>
-           </ToolBar>
+               <Button Name="ShowTransactionsForm" Margin="5,0,0,0">
+                   <Image Source="../../Resources/transactions.png" Width="24" Height="24" />
+               </Button>
+           </ToolBar>  
        </ToolBarTray>
    </DockPanel>
    
