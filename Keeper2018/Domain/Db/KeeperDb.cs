@@ -1,11 +1,13 @@
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 
 namespace Keeper2018
 {
+    [Serializable]
     public class KeeperDb
     {
-        public ObservableCollection<Account> Accounts { get; set; } = new ObservableCollection<Account>();
-        public ObservableCollection<OfficialRates> OfficialRates { get; set; } = new ObservableCollection<OfficialRates>();
-        public ObservableCollection<Transaction> Transactions { get;set; } = new ObservableCollection<Transaction>();
+        public List<Account> AccountPlaneList { get; set; } = new List<Account>();
+        public List<OfficialRates> OfficialRates { get; set; } = new List<OfficialRates>();
+        public List<Transaction> Transactions { get;set; } = new List<Transaction>();
     }
 }

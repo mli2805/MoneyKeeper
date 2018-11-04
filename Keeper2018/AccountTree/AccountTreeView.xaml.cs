@@ -58,98 +58,6 @@ namespace Keeper2018
             e.Effects = DragDropEffects.Move;
         }
 
-        private bool CheckDropTarget(TreeViewItem sourceItem, TreeViewItem targetItem)
-        {
-            if (((Account)sourceItem).Owner == null)
-                return false; // Root could not be moved!
-
-            //Check whether the target item is meeting your condition
-            return !sourceItem.Header.ToString().Equals(targetItem.Header.ToString());
-        }
-
-        private void DoAction(TreeViewItem source, TreeViewItem destination)
-        {
-            var vm = ((AccountTreeViewModel)DataContext).AskDragAccountActionViewModel;
-            vm.Init(source.Header.ToString(), destination.Header.ToString());
-            ((AccountTreeViewModel)DataContext).WindowManager.ShowDialog(vm);
-
-            switch (vm.Answer)
-            {
-                case DragAndDropAction.Before:
-                    MoveAccount(source, destination, Place.Before);
-                    return;
-                case DragAndDropAction.Inside:
-                    MoveIntoFolder(source, destination);
-                    return;
-                case DragAndDropAction.After:
-                    MoveAccount(source, destination, Place.After);
-                    return;
-                case DragAndDropAction.Cancel: return;
-                default: return;
-            }
-        }
-
-        private void MoveAccount(TreeViewItem source, TreeViewItem destination, Place place)
-        {
-            var sourceParent = ((Account)source).Owner;
-            var destinationParent = ((Account)destination).Owner;
-
-            sourceParent.Items.Remove(source);
-            ((Account)source).Owner = destinationParent;
-            PlaceIntoDestinationFolder(source, destination, place);
-        }
-
-        private void PlaceIntoDestinationFolder(TreeViewItem source, TreeViewItem destination, Place place)
-        {
-            var destinationParent = ((Account)destination).Owner;
-
-            var tempAccount = new Account("temporary");
-            for (int i = destinationParent.Items.Count - 1; i >= 0; i--)
-            {
-                var item = destinationParent.Items[i];
-                destinationParent.Items.RemoveAt(i);
-
-                if (((Account)item).Id == ((Account)destination).Id && place == Place.After)
-                    tempAccount.Items.Add(source);
-
-                tempAccount.Items.Add(item);
-
-                if (((Account)item).Id == ((Account)destination).Id && place == Place.Before)
-                    tempAccount.Items.Add(source);
-            }
-
-            Comeback(tempAccount, destinationParent);
-        }
-
-        private static void Comeback(Account tempAccount, Account sourceParent)
-        {
-            for (int i = tempAccount.Items.Count - 1; i >= 0; i--)
-            {
-                var item = tempAccount.Items[i];
-                tempAccount.Items.RemoveAt(i);
-                sourceParent.Items.Add(item);
-            }
-        }
-
-        private void MoveIntoFolder(TreeViewItem source, TreeViewItem destination)
-        {
-            ((Account)source).Owner.Items.Remove(source);
-            destination.Items.Add(source);
-            ((Account)source).Owner = (Account)destination;
-        }
-
-        public void AddChild(TreeViewItem sourceItem, TreeViewItem targetItem)
-        {
-            // add item in target TreeViewItem 
-            TreeViewItem item1 = new TreeViewItem();
-            item1.Header = sourceItem.Header;
-            targetItem.Items.Add(item1);
-            foreach (TreeViewItem item in sourceItem.Items)
-            {
-                AddChild(item, item1);
-            }
-        }
-
         private TreeViewItem GetNearestContainer(UIElement element)
         {
             // Walk up the element tree to the nearest tree view item.
@@ -161,5 +69,90 @@ namespace Keeper2018
             }
             return container;
         }
+
+        private bool CheckDropTarget(TreeViewItem sourceItem, TreeViewItem targetItem)
+        {
+            if (((AccountModel)sourceItem).Owner == null)
+                return false; // Root could not be moved!
+
+            //Check whether the target item is meeting your condition
+            return !sourceItem.Header.ToString().Equals(targetItem.Header.ToString());
+        }
+
+        //------------------------------------------------------------------------------
+
+        private void DoAction(TreeViewItem source, TreeViewItem destination)
+        {
+            var vm = ((AccountTreeViewModel)DataContext).AskDragAccountActionViewModel;
+            vm.Init(source.Header.ToString(), destination.Header.ToString());
+            ((AccountTreeViewModel)DataContext).WindowManager.ShowDialog(vm);
+
+            switch (vm.Answer)
+            {
+                case DragAndDropAction.Before:
+                    MoveAccount(source, destination, Place.Before);
+                    break;
+                case DragAndDropAction.Inside:
+                    MoveIntoFolder(source, destination);
+                    break;
+                case DragAndDropAction.After:
+                    MoveAccount(source, destination, Place.After);
+                    break;
+                case DragAndDropAction.Cancel: return;
+                default: return;
+            }
+
+            ((AccountTreeViewModel)DataContext).RefreshPlaneList();
+        }
+
+        private void MoveAccount(TreeViewItem source, TreeViewItem destination, Place place)
+        {
+            var sourceParent = ((AccountModel)source).Owner;
+            var destinationParent = ((AccountModel)destination).Owner;
+
+            sourceParent.Items.Remove(source);
+            ((AccountModel)source).Owner = destinationParent;
+            PlaceIntoDestinationFolder(source, destination, place);
+        }
+
+        private void PlaceIntoDestinationFolder(TreeViewItem source, TreeViewItem destination, Place place)
+        {
+            var destinationParent = ((AccountModel)destination).Owner;
+
+            var tempAccount = new AccountModel("temporary");
+            for (int i = destinationParent.Items.Count - 1; i >= 0; i--)
+            {
+                var item = destinationParent.Items[i];
+                destinationParent.Items.RemoveAt(i);
+
+                if (((AccountModel)item).Id == ((AccountModel)destination).Id && place == Place.After)
+                    tempAccount.Items.Add(source);
+
+                tempAccount.Items.Add(item);
+
+                if (((AccountModel)item).Id == ((AccountModel)destination).Id && place == Place.Before)
+                    tempAccount.Items.Add(source);
+            }
+
+            Comeback(tempAccount, destinationParent);
+        }
+
+        private static void Comeback(AccountModel tempAccountModel, AccountModel sourceParent)
+        {
+            for (int i = tempAccountModel.Items.Count - 1; i >= 0; i--)
+            {
+                var item = tempAccountModel.Items[i];
+                tempAccountModel.Items.RemoveAt(i);
+                sourceParent.Items.Add(item);
+            }
+        }
+
+        private void MoveIntoFolder(TreeViewItem source, TreeViewItem destination)
+        {
+            ((AccountModel)source).Owner.Items.Remove(source);
+            destination.Items.Add(source);
+            ((AccountModel)source).Owner = (AccountModel)destination;
+        }
+
     }
 }

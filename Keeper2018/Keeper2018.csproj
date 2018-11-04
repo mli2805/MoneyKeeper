@@ -84,7 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AccountTree\Place.cs" />
-    <Compile Include="Domain\Account\Account.cs" />
+    <Compile Include="Domain\Account\AccountModel.cs" />
     <Compile Include="AccountTree\AccountTreeViewModel.cs" />
     <Compile Include="AccountTree\AccountTreeView.xaml.cs">
       <DependentUpon>AccountTreeView.xaml</DependentUpon>
@@ -97,8 +97,7 @@
     <Compile Include="AutofacKeeper.cs" />
     <Compile Include="AccountTree\IO\Accounts2018Txt.cs" />
     <Compile Include="AccountTree\IO\AccountsOldTxt.cs" />
-    <Compile Include="Domain\Account\AccountMapper.cs" />
-    <Compile Include="Domain\Account\SerializableAccount.cs" />
+    <Compile Include="Domain\Account\Account.cs" />
     <Compile Include="Domain\Db\DbLoader.cs" />
     <Compile Include="Domain\Rates\Basket\BelBaskets.cs" />
     <Compile Include="Domain\Rates\Basket\BelCurrencies.cs" />
@@ -109,7 +108,6 @@
     <Compile Include="Domain\Rates\NbRbRates.cs" />
     <Compile Include="Domain\Rates\OfficialRates.cs" />
     <Compile Include="Domain\Db\DbSerializer.cs" />
-    <Compile Include="Domain\Db\SerializableKeeperDb.cs" />
     <Compile Include="Domain\Transaction\CurrencyCode.cs" />
     <Compile Include="Domain\Transaction\OperationType.cs" />
     <Compile Include="Domain\Transaction\Transaction.cs" />
@@ -146,10 +144,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TransactionsView.xaml.cs">
+    <Compile Include="Transactions\TransactionsOldTxt.cs" />
+    <Compile Include="Transactions\TransactionsView.xaml.cs">
       <DependentUpon>TransactionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TransactionsViewModel.cs" />
+    <Compile Include="Transactions\TransactionsViewModel.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
     <Page Include="AccountTree\AccountTreeView.xaml">
       <SubType>Designer</SubType>
@@ -179,7 +178,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TransactionsView.xaml">
+    <Page Include="Transactions\TransactionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

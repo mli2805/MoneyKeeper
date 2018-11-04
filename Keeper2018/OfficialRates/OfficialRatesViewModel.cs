@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Keeper2018
         private readonly UsdAnnualDiagramViewModel _usdAnnualDiagramViewModel;
         private readonly BasketDiagramViewModel _basketDiagramViewModel;
 
-        private ObservableCollection<OfficialRates> _rates;
+        private List<OfficialRates> _rates;
         public ObservableCollection<OfficialRatesModel> Rows { get; set; }
         public OfficialRatesModel SelectedRow { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 namespace Keeper2018
@@ -11,15 +11,11 @@ namespace Keeper2018
             if (keeperDb == null)
             {
                 keeperDb = new KeeperDb();
-                // AccountTreeViewModel.Accounts = AccountsOldTxt.LoadFromOldTxt();
-                keeperDb.Accounts = Accounts2018Txt.LoadFromTxt();
-                var rates = await NbRbRatesOldTxt.LoadFromOldTxtAsync();
-                 
-                keeperDb.OfficialRates = new ObservableCollection<OfficialRates>();
-                foreach (var rate in rates)
-                {
-                    keeperDb.OfficialRates.Add(rate);
-                }
+
+//                keeperDb.Accounts = Accounts2018Txt.LoadFromTxt();
+                keeperDb.AccountPlaneList = AccountsOldTxt.LoadFromOldTxt().ToList();
+                keeperDb.OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync();
+                keeperDb.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync(keeperDb.AccountPlaneList);
             }
             return keeperDb;
         }

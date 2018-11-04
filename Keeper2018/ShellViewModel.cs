@@ -31,6 +31,7 @@ namespace Keeper2018
 
         public async override void CanClose(Action<bool> callback)
         {
+            AccountTreeViewModel.RefreshPlaneList();
             await DbSerializer.Serialize(_keeperDb);
             base.CanClose(callback);
         }

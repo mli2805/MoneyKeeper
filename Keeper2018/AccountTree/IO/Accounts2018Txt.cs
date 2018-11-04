@@ -8,37 +8,29 @@ namespace Keeper2018
 {
     public static class Accounts2018Txt
     {
-        public static ObservableCollection<Account> LoadFromTxt()
+        public static IEnumerable<Account> LoadFromTxt()
         {
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("Accounts2018.txt")).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
-            var roots = new ObservableCollection<Account>();
             foreach (var line in content)
             {
-                var account = ParseAccount(line, out int ownerId);
-                if (ownerId == 0)
-                    roots.Add(account);
-                else
-                {
-                    account.Owner = DbUtils.GetById(ownerId, roots);
-                    account.Owner.Items.Add(account);
-                }
-
+                yield return ParseAccount(line);
             }
-            return roots;
         }
 
-        private static Account ParseAccount(string s, out int ownerId)
+        private static Account ParseAccount(string s)
         {
             var substrings = s.Split(';');
-            var account = new Account(substrings[1].Trim())
+            var account = new Account()
             {
                 Id = Convert.ToInt32(substrings[0]),
+                OwnerId = Convert.ToInt32(substrings[2]),
+                Header = substrings[1].Trim(),
                 IsExpanded = substrings[3].Trim() == "expanded",
             };
-            ownerId = Convert.ToInt32(substrings[2]);
             return account;
         }
-        public static void SaveInTxt(ObservableCollection<Account> accounts)
+
+        public static void SaveInTxt(ObservableCollection<AccountModel> accounts)
         {
             var content = new List<string>();
             foreach (var root in accounts)
@@ -46,19 +38,19 @@ namespace Keeper2018
             File.WriteAllLines(DbUtils.GetTxtFullPath("Accounts2018.txt"), content);
         }
 
-        private static List<string> DumpAccountWithChildren(Account account, int offset = 0)
+        private static List<string> DumpAccountWithChildren(AccountModel accountModel, int offset = 0)
         {
-            var result = new List<string> {DumpAccount(account, offset)};
-            foreach (var child in account.Children)
+            var result = new List<string> { DumpAccount(accountModel, offset) };
+            foreach (var child in accountModel.Children)
                 result.AddRange(DumpAccountWithChildren(child, offset + 2));
             return result;
         }
 
-        private static string DumpAccount(Account account, int offset)
+        private static string DumpAccount(AccountModel accountModel, int offset)
         {
-            var ownerId = account.Owner?.Id ?? 0;
-            var expanded = account.IsExpanded ? "expanded" : "collapsed";
-            return account.Id + new string(' ', offset * 2) + " ; " + account.Header + " ; " + ownerId + " ; " + expanded;
+            var ownerId = accountModel.Owner?.Id ?? 0;
+            var expanded = accountModel.IsExpanded ? "expanded" : "collapsed";
+            return accountModel.Id + new string(' ', offset * 2) + " ; " + accountModel.Header + " ; " + ownerId + " ; " + expanded;
         }
     }
 }

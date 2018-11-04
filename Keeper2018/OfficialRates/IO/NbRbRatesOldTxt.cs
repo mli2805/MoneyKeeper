@@ -12,16 +12,11 @@ namespace Keeper2018
     {
         public static async Task<List<OfficialRates>> LoadFromOldTxtAsync()
         {
-            var result = new List<OfficialRates>();
-            foreach (var rate in LoadFromOldTxt())
-            {
-                result.Add(rate);
-            }
             await Task.Delay(1);
-            return result;
+            return LoadFromOldTxt().ToList();
         }
 
-        public static IEnumerable<OfficialRates> LoadFromOldTxt()
+        private static IEnumerable<OfficialRates> LoadFromOldTxt()
         {
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
