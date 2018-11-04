@@ -144,6 +144,52 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transactions\AccNameSelectionControlInitializer.cs" />
+    <Compile Include="Transactions\AccNameSelectorVm.cs" />
+    <Compile Include="Transactions\ComboboxCaterer.cs" />
+    <Compile Include="Transactions\ComboboxTreeview\ComboBoxTreeView.cs" />
+    <Compile Include="Transactions\ComboboxTreeview\ExtendedTreeView.cs" />
+    <Compile Include="Transactions\ComboboxTreeview\ITreeViewItemModel.cs" />
+    <Compile Include="Transactions\CurrencyCodesFilter.cs" />
+    <Compile Include="Transactions\FilterModel.cs" />
+    <Compile Include="Transactions\OneTranViewControls\ExchangeControl.xaml.cs">
+      <DependentUpon>ExchangeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\ExpenseControl.xaml.cs">
+      <DependentUpon>ExpenseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\IncomeControl.xaml.cs">
+      <DependentUpon>IncomeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameButtonVm.cs" />
+    <Compile Include="Transactions\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameSelector.xaml.cs">
+      <DependentUpon>AccNameSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Transactions\OneTranViewControls\SubControls\AmountInputControl\AmountInputControl.xaml.cs">
+      <DependentUpon>AmountInputControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\SubControls\AmountInputControl\AmountInputControlVm.cs" />
+    <Compile Include="Transactions\OneTranViewControls\SubControls\DatePickerWithTriangles.xaml.cs">
+      <DependentUpon>DatePickerWithTriangles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\SubControls\DatePickerWithTrianglesVm.cs" />
+    <Compile Include="Transactions\OneTranViewControls\SubControls\OpTypeChoiceControl.xaml.cs">
+      <DependentUpon>OpTypeChoiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\SubControls\OpTypeChoiceControlVm.cs" />
+    <Compile Include="Transactions\OneTranViewControls\SubControls\TagPickingControl\TagPicker.xaml.cs">
+      <DependentUpon>TagPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\SubControls\TagPickingControl\TagPickerVm.cs" />
+    <Compile Include="Transactions\OneTranViewControls\TransferControl.xaml.cs">
+      <DependentUpon>TransferControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\OneTranViewControls\UniversalControlVm.cs" />
+    <Compile Include="Transactions\OperationTypesFilter.cs" />
+    <Compile Include="Transactions\TranFilter.cs" />
+    <Compile Include="Transactions\TransModel.cs" />
+    <Compile Include="Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="Transactions\TransactionsOldTxt.cs" />
     <Compile Include="Transactions\TransactionsView.xaml.cs">
       <DependentUpon>TransactionsView.xaml</DependentUpon>
@@ -175,6 +221,42 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\ExchangeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\ExpenseControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\IncomeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\SubControls\AccNameSelectionControl\AccNameSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\SubControls\AmountInputControl\AmountInputControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\SubControls\DatePickerWithTriangles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\SubControls\OpTypeChoiceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\SubControls\TagPickingControl\TagPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transactions\OneTranViewControls\TransferControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
