@@ -9,5 +9,6 @@ namespace Keeper2018
         public int OwnerId;
         public string Header;
         public bool IsExpanded;
+        public string Name => Header;
     }
 }

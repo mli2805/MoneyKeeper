@@ -98,6 +98,13 @@
     <Compile Include="AccountTree\IO\Accounts2018Txt.cs" />
     <Compile Include="AccountTree\IO\AccountsOldTxt.cs" />
     <Compile Include="Domain\Account\Account.cs" />
+    <Compile Include="Domain\BankDeposit\DepositCalculationRules.cs" />
+    <Compile Include="Domain\BankDeposit\DepositEssential.cs" />
+    <Compile Include="Domain\BankDeposit\DepositOffer.cs" />
+    <Compile Include="Domain\Db\KeeperDbExt.cs" />
+    <Compile Include="Domain\BankDeposit\DepositRateLine.cs" />
+    <Compile Include="Domain\TagAssociation\AssociationType.cs" />
+    <Compile Include="Domain\TagAssociation\TagAssociation.cs" />
     <Compile Include="Domain\Db\DbLoader.cs" />
     <Compile Include="Domain\Rates\Basket\BelBaskets.cs" />
     <Compile Include="Domain\Rates\Basket\BelCurrencies.cs" />
