@@ -13,6 +13,8 @@ namespace Keeper2018
                                            // Items are in TreeViewItem
         public List<AccountModel> Children => Items.Cast<AccountModel>().ToList();
 
+        public new string Name => (string) Header;
+
         public AccountModel(string headerText)
         {
             Header = headerText;

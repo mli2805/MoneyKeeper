@@ -108,6 +108,9 @@
     <Compile Include="Domain\Rates\NbRbRates.cs" />
     <Compile Include="Domain\Rates\OfficialRates.cs" />
     <Compile Include="Domain\Db\DbSerializer.cs" />
+    <Compile Include="Domain\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
+    <Compile Include="Domain\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
+    <Compile Include="Domain\Transaction\ComboboxTreeview\ITreeViewItemModel.cs" />
     <Compile Include="Domain\Transaction\CurrencyCode.cs" />
     <Compile Include="Domain\Transaction\OperationType.cs" />
     <Compile Include="Domain\Transaction\Transaction.cs" />
@@ -144,6 +147,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transactions\AccName.cs" />
     <Compile Include="Transactions\TransactionsOldTxt.cs" />
     <Compile Include="Transactions\TransactionsView.xaml.cs">
       <DependentUpon>TransactionsView.xaml</DependentUpon>
