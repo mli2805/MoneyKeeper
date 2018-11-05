@@ -13,16 +13,50 @@ namespace Keeper2018
         public static async Task<List<OfficialRates>> LoadFromOldTxtAsync()
         {
             await Task.Delay(1);
-            return LoadFromOldTxt().ToList();
+            return LoadFromOldTxt(GetMyUsdRates()).ToList();
         }
 
-        private static IEnumerable<OfficialRates> LoadFromOldTxt()
+        private static Dictionary<DateTime, double> GetMyUsdRates()
+        {
+            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("CurrencyRates.txt"), Encoding.GetEncoding("Windows-1251")).
+                Where(s => !String.IsNullOrWhiteSpace(s) && s.Contains("; BY")).ToList();
+
+            var result = new Dictionary<DateTime, double>();
+            foreach (var line in content)
+            {
+                var ss = line.Split(';');
+                var date = DateTime.Parse(ss[0].Trim());
+                if (date < new DateTime(2016, 7, 1))
+                {
+                    if (ss[1].Trim() == "BYN") continue;
+                }
+                else
+                {
+                    if (ss[1].Trim() == "BYR") continue;
+                }
+
+                var value = double.Parse(ss[2]);
+                result.Add(date, value);
+            }
+            return result;
+        }
+
+        private static IEnumerable<OfficialRates> LoadFromOldTxt(Dictionary<DateTime, double> myUsdRates)
         {
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
+
+            var currentRate = 11.55;
+
             foreach (var line in content)
             {
                 var oneDay = NbRbRateFromString(line);
+                if (myUsdRates.ContainsKey(oneDay.Date))
+                    currentRate = myUsdRates[oneDay.Date];
+
+                oneDay.MyUsdRate.Unit = 1;
+                oneDay.MyUsdRate.Value = currentRate;
+
                 yield return (oneDay);
             }
         }
@@ -51,6 +85,6 @@ namespace Keeper2018
 
             return 10000;
         }
-        
+
     }
 }
