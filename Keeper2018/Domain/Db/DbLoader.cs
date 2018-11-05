@@ -17,6 +17,7 @@ namespace Keeper2018
                 keeperDb.OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync();
                 keeperDb.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync(keeperDb.AccountPlaneList);
             }
+            keeperDb.FillInTheTree();
             return keeperDb;
         }
     }

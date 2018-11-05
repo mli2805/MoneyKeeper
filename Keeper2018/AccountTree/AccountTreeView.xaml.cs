@@ -102,7 +102,7 @@ namespace Keeper2018
                 default: return;
             }
 
-            ((AccountTreeViewModel)DataContext).RefreshPlaneList();
+            ((AccountTreeViewModel)DataContext).KeeperDb.Flatten();
         }
 
         private void MoveAccount(TreeViewItem source, TreeViewItem destination, Place place)
