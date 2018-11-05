@@ -17,6 +17,7 @@ namespace Keeper2018
         private double _procBasketBreak, _procBasketAnnual;
 
         public string UsdStr { get; set; }
+        public string MyUsdStr { get; set; }
         public Brush UsdBrush { get; set; }
         public string EuroStr { get; set; }
         public string RurStr { get; set; }
@@ -39,9 +40,12 @@ namespace Keeper2018
             TodayRates = record;
             YesterdayNbRbRates = previous?.TodayRates.NbRates;
 
-            UsdStr = TodayRates.NbRates.Usd.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
-            EuroStr = TodayRates.NbRates.Euro.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
-            RurStr = TodayRates.NbRates.Rur.Value.ToString("#,#.####", new CultureInfo("ru-RU"));
+            var template = Date >= new DateTime(2016, 7, 1) ? "#,#.0000" : "#,#.####";
+
+            UsdStr =   TodayRates.NbRates.Usd.Value.ToString(template, new CultureInfo("ru-RU"));
+            MyUsdStr =   TodayRates.MyUsdRate.Value.ToString(template, new CultureInfo("ru-RU"));
+            EuroStr = TodayRates.NbRates.Euro.Value.ToString(template, new CultureInfo("ru-RU"));
+            RurStr =   TodayRates.NbRates.Rur.Value.ToString(template, new CultureInfo("ru-RU"));
             
             UsdBrush = YesterdayNbRbRates == null || YesterdayNbRbRates.Usd.Value.Equals(TodayRates.NbRates.Usd.Value)
                 ? Brushes.Black 

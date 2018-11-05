@@ -25,6 +25,12 @@
                         <TextBlock Text="{Binding UsdStr}" Width="65" HorizontalAlignment="Center" Foreground="{Binding UsdBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
+                </DataTemplate> 
+                <DataTemplate x:Key="MyUsdTemplate" DataType="keeper2018:OfficialRatesModel">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding MyUsdStr}" Width="65" HorizontalAlignment="Center" Foreground="Gray"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="UsdAnnualTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
@@ -82,6 +88,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="80"/>
                 <DataGridTemplateColumn Header="USD" CellTemplate="{StaticResource UsdTemplate}"/>
+                <DataGridTemplateColumn Header="мой USD" CellTemplate="{StaticResource MyUsdTemplate}"/>
                 <DataGridTemplateColumn Header="USD, к 31 дек" CellTemplate="{StaticResource UsdAnnualTemplate}"/>
                 <DataGridTemplateColumn Header="Euro" CellTemplate="{StaticResource EuroTemplate}"/>
                 <DataGridTemplateColumn Header="Rub" CellTemplate="{StaticResource RurTemplate}"/>

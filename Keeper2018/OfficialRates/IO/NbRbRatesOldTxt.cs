@@ -35,7 +35,9 @@ namespace Keeper2018
                     if (ss[1].Trim() == "BYR") continue;
                 }
 
-                var value = double.Parse(ss[2]);
+                var value = double.Parse(ss[2], new CultureInfo("en-US"));
+                if (date < new DateTime(2000, 1, 1))
+                    value = value * 1000;
                 result.Add(date, value);
             }
             return result;
@@ -46,7 +48,7 @@ namespace Keeper2018
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
 
-            var currentRate = 11.55;
+            var currentRate = 11550.0;
 
             foreach (var line in content)
             {
