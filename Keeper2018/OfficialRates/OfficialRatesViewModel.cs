@@ -19,6 +19,8 @@ namespace Keeper2018
         public ObservableCollection<OfficialRatesModel> Rows { get; set; }
         public OfficialRatesModel SelectedRow { get; set; }
 
+        public OfficialRatesModel LastDayOfYear { get; set; }
+
         private bool _isDownloadEnabled;
         public bool IsDownloadEnabled
         {
@@ -40,7 +42,7 @@ namespace Keeper2018
             _usdAnnualDiagramViewModel = usdAnnualDiagramViewModel;
             _basketDiagramViewModel = basketDiagramViewModel;
             Task.Factory.StartNew(Init);
-            IsDownloadEnabled = true;
+           IsDownloadEnabled = true;
         }
 
         protected override void OnViewLoaded(object view)
@@ -58,11 +60,13 @@ namespace Keeper2018
             {
                 var current = new OfficialRatesModel(record, previous, annual);
                 Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
+              
                 if (!current.BasketDelta.Equals(0))
                     previous = current;
                 if (current.Date.Day == 31 && current.Date.Month == 12)
                     annual = current;
             }
+            Application.Current.Dispatcher.Invoke(() => LastDayOfYear = annual);
         }
 
         public void UsdChart()
