@@ -47,7 +47,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Official rates.";
+            DisplayName = "Official rates";
             SelectedRow = Rows?.LastOrDefault();
         }
 

@@ -15,14 +15,14 @@
                 <cal:Parameter Value="ShowTransactionsForm"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
-        <ei:KeyTrigger Key="N">
+        <ei:KeyTrigger Key="C">
             <cal:ActionMessage MethodName="ActionMethod">
                 <cal:Parameter Value="ShowOfficialRatesForm"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
-        <ei:KeyTrigger Key="C">
+        <ei:KeyTrigger Key="B">
             <cal:ActionMessage MethodName="ActionMethod">
-                <cal:Parameter Value="ShowCurrencyRatesForm"/>
+                <cal:Parameter Value="ShowDepositOffersForm"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="A">
@@ -52,19 +52,66 @@
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <DockPanel>
-       <Menu Background="Transparent" Margin="5" DockPanel.Dock="Top">
-           <MenuItem Header="FILE"/>
-       </Menu>
-       <ToolBarTray>
-           <ToolBar Name="ToolBar1" >
-               <Button Name="ShowOfficialRatesForm">
-                   <Image Source="../../Resources/nbrb.png" Width="24" Height="24" />
-               </Button>
-               <Button Name="ShowTransactionsForm" Margin="5,0,0,0">
-                   <Image Source="../../Resources/transactions.png" Width="24" Height="24" />
-               </Button>
-           </ToolBar>  
-       </ToolBarTray>
-   </DockPanel>
-   
+        <Menu Background="Transparent" Margin="5" DockPanel.Dock="Top">
+            <MenuItem Header="FILE"/>
+            <MenuItem Header="FORMS">
+                <MenuItem Header="O   Transactions">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowTransactionsForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="C   Currency rates">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowOfficialRatesForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="A   Month analysis">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowMonthAnalysisForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="B   Deposit offers">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowDepositOffersForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="     Tag associations">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ActionMethod">
+                                <cal:Parameter Value="ShowTagAssociationsForm" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ToolBarTray>
+            <ToolBar Name="ToolBar1" >
+                <Button Name="ShowOfficialRatesForm">
+                    <Image Source="../../Resources/nbrb.png" Width="24" Height="24" />
+                </Button>
+                <Button Name="ShowTransactionsForm" Margin="5,0,0,0">
+                    <Image Source="../../Resources/transactions.png" Width="24" Height="24" />
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+    </DockPanel>
+
 </UserControl>

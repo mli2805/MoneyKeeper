@@ -19,7 +19,7 @@ namespace Keeper2018
 
         public List<OfficialRates> OfficialRates { get; set; }
         public List<Transaction> Transactions { get; set; }
-        public ObservableCollection<TagAssociation> ArticlesAssociations { get; set; }
+        public List<TagAssociation> TagAssociations { get; set; }
         public List<DepositOffer> DepositOffers { get;set; }
     }
 }
