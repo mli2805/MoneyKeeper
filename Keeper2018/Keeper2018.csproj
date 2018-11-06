@@ -83,20 +83,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AccountTree\Place.cs" />
+    <Compile Include="Forms\AccountTree\Place.cs" />
     <Compile Include="Domain\Account\AccountModel.cs" />
-    <Compile Include="AccountTree\AccountTreeViewModel.cs" />
-    <Compile Include="AccountTree\AccountTreeView.xaml.cs">
+    <Compile Include="Forms\AccountTree\AccountTreeViewModel.cs" />
+    <Compile Include="Forms\AccountTree\AccountTreeView.xaml.cs">
       <DependentUpon>AccountTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="AccountTree\AskDragAccountActionView.xaml.cs">
+    <Compile Include="Forms\AccountTree\AskDragAccountActionView.xaml.cs">
       <DependentUpon>AskDragAccountActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AccountTree\AskDragAccountActionViewModel.cs" />
+    <Compile Include="Forms\AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
-    <Compile Include="AccountTree\IO\Accounts2018Txt.cs" />
-    <Compile Include="AccountTree\IO\AccountsOldTxt.cs" />
+    <Compile Include="Forms\AccountTree\IO\Accounts2018Txt.cs" />
+    <Compile Include="Forms\AccountTree\IO\AccountsOldTxt.cs" />
     <Compile Include="Domain\Account\Account.cs" />
     <Compile Include="Domain\BankDeposit\DepositCalculationRules.cs" />
     <Compile Include="Domain\BankDeposit\DepositEssential.cs" />
@@ -121,51 +121,55 @@
     <Compile Include="Domain\Transaction\CurrencyCode.cs" />
     <Compile Include="Domain\Transaction\OperationType.cs" />
     <Compile Include="Domain\Transaction\Transaction.cs" />
+    <Compile Include="Forms\TagAssociations\TagAssociationsViewModel.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
-    <Compile Include="OfficialRates\OfficialRatesModel.cs" />
-    <Compile Include="OfficialRates\IO\NbRbRatesOldTxt.cs" />
+    <Compile Include="Forms\OfficialRates\OfficialRatesModel.cs" />
+    <Compile Include="Forms\OfficialRates\IO\NbRbRatesOldTxt.cs" />
     <Compile Include="Domain\Rates\OneRate.cs" />
     <Compile Include="Domain\Db\DbUtils.cs" />
-    <Compile Include="IShell.cs" />
+    <Compile Include="Forms\IShell.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\MainMenuViewModel.cs" />
-    <Compile Include="OfficialRates\Charts\BasketDiagramView.xaml.cs">
+    <Compile Include="Forms\OfficialRates\Charts\BasketDiagramView.xaml.cs">
       <DependentUpon>BasketDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OfficialRates\Charts\BasketDiagramViewModel.cs" />
-    <Compile Include="OfficialRates\Download\CbrRatesDownloader.cs" />
-    <Compile Include="OfficialRates\Download\MyRequest.cs" />
-    <Compile Include="OfficialRates\Download\NbRbRatesDownloader.cs" />
-    <Compile Include="OfficialRates\Download\NbRbSiteRate.cs" />
-    <Compile Include="OfficialRates\OfficialRatesView.xaml.cs">
+    <Compile Include="Forms\OfficialRates\Charts\BasketDiagramViewModel.cs" />
+    <Compile Include="Forms\OfficialRates\Download\CbrRatesDownloader.cs" />
+    <Compile Include="Forms\OfficialRates\Download\MyRequest.cs" />
+    <Compile Include="Forms\OfficialRates\Download\NbRbRatesDownloader.cs" />
+    <Compile Include="Forms\OfficialRates\Download\NbRbSiteRate.cs" />
+    <Compile Include="Forms\OfficialRates\OfficialRatesView.xaml.cs">
       <DependentUpon>OfficialRatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OfficialRates\OfficialRatesViewModel.cs" />
-    <Compile Include="OfficialRates\Charts\UsdAnnualDiagramView.xaml.cs">
+    <Compile Include="Forms\OfficialRates\OfficialRatesViewModel.cs" />
+    <Compile Include="Forms\OfficialRates\Charts\UsdAnnualDiagramView.xaml.cs">
       <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OfficialRates\Charts\UsdAnnualDiagramViewModel.cs" />
-    <Compile Include="OfficialRates\ScrollToBottomOnAddBehavior.cs" />
-    <Compile Include="OfficialRates\ScrollToBottomOnLoadBehavior.cs" />
-    <Compile Include="ShellViewModel.cs" />
+    <Compile Include="Forms\OfficialRates\Charts\UsdAnnualDiagramViewModel.cs" />
+    <Compile Include="Forms\OfficialRates\ScrollToBottomOnAddBehavior.cs" />
+    <Compile Include="Forms\OfficialRates\ScrollToBottomOnLoadBehavior.cs" />
+    <Compile Include="Forms\ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Transactions\AccName.cs" />
-    <Compile Include="Transactions\TransactionsOldTxt.cs" />
-    <Compile Include="Transactions\TransactionsView.xaml.cs">
+    <Compile Include="Forms\TagAssociations\TagAssociationsView.xaml.cs">
+      <DependentUpon>TagAssociationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\AccName.cs" />
+    <Compile Include="Forms\Transactions\TransactionsOldTxt.cs" />
+    <Compile Include="Forms\Transactions\TransactionsView.xaml.cs">
       <DependentUpon>TransactionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Transactions\TransactionsViewModel.cs" />
+    <Compile Include="Forms\Transactions\TransactionsViewModel.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
-    <Page Include="AccountTree\AccountTreeView.xaml">
+    <Page Include="Forms\AccountTree\AccountTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AccountTree\AskDragAccountActionView.xaml">
+    <Page Include="Forms\AccountTree\AskDragAccountActionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,23 +177,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OfficialRates\Charts\BasketDiagramView.xaml">
+    <Page Include="Forms\OfficialRates\Charts\BasketDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OfficialRates\OfficialRatesView.xaml">
+    <Page Include="Forms\OfficialRates\OfficialRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OfficialRates\Charts\UsdAnnualDiagramView.xaml">
+    <Page Include="Forms\OfficialRates\Charts\UsdAnnualDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ShellView.xaml">
+    <Page Include="Forms\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Transactions\TransactionsView.xaml">
+    <Page Include="Forms\TagAssociations\TagAssociationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Transactions\TransactionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -227,5 +235,6 @@
   <ItemGroup>
     <Resource Include="Resources\transactions.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

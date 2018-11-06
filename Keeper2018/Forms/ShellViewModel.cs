@@ -1,35 +1,29 @@
 using System;
-using Autofac;
 using Caliburn.Micro;
 
 namespace Keeper2018
 {
     public class ShellViewModel : Screen, IShell
     {
-        private ILifetimeScope _globalScope;
-        private IWindowManager _windowManager;
         public MainMenuViewModel MainMenuViewModel { get; set; }
         public AccountTreeViewModel AccountTreeViewModel { get; set; }
 
-        private KeeperDb _keeperDb;
+        private readonly KeeperDb _keeperDb;
 
-        public ShellViewModel(ILifetimeScope globalScope, IWindowManager windowManager, KeeperDb keeperDb,
+        public ShellViewModel(KeeperDb keeperDb,
               MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel)
         {
-            _globalScope = globalScope;
-            _windowManager = windowManager;
-
             MainMenuViewModel = mainMenuViewModel;
             AccountTreeViewModel = accountTreeViewModel;
 
             _keeperDb = keeperDb;
         }
-        protected async override void OnViewLoaded(object view)
+        protected override void OnViewLoaded(object view)
         {
             DisplayName = "Keeper 2018";
         }
 
-        public async override void CanClose(Action<bool> callback)
+        public override async void CanClose(Action<bool> callback)
         {
             _keeperDb.Flatten();
             await DbSerializer.Serialize(_keeperDb);
