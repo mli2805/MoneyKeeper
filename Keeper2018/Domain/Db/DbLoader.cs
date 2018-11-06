@@ -15,10 +15,10 @@ namespace Keeper2018
 //                keeperDb.Accounts = Accounts2018Txt.LoadFromTxt();
                 keeperDb.AccountPlaneList = AccountsOldTxt.LoadFromOldTxt().ToList();
 
-                keeperDb.OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync();
-                keeperDb.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync(keeperDb.AccountPlaneList);
-                keeperDb.DepositOffers = await DepositOffersOldTxt.LoadFromOldTxtAsync(keeperDb.AccountPlaneList);
                 keeperDb.TagAssociations = await TagAssociationsOldTxt.LoadFromOldTxtAsync(keeperDb.AccountPlaneList);
+                keeperDb.OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync();
+                keeperDb.DepositOffers = await DepositOffersOldTxt.LoadFromOldTxtAsync(keeperDb.AccountPlaneList);
+             //   keeperDb.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync(keeperDb.AccountPlaneList);
             }
             keeperDb.FillInTheTree();
             return keeperDb;

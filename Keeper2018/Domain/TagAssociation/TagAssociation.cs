@@ -6,7 +6,6 @@ namespace Keeper2018
     [Serializable]
     public class TagAssociation : IComparable
     {
-        public int Id { get; set; }
         public Account ExternalAccount { get; set; }
         public OperationType OperationType { get; set; }
         public Account Tag { get; set; }
