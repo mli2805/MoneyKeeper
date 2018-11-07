@@ -4,63 +4,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
-        mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:TagAssociationsViewModel}">
-     <Window.Resources>
-        <ResourceDictionary>
-            <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
-                <Setter Property="Margin" Value="5,0,0,0"/>
-            </Style>
-            <Style x:Key="HeaderTextStyle" TargetType="DataGridColumnHeader">
-                <Setter Property="FontWeight" Value="Bold"/>
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="1"/>
-        </Grid.RowDefinitions>
-        <DataGrid x:Name="IncomesGrid" Margin="5" Padding="1" 
-                  ItemsSource="{Binding KeeperDb.TagAssociations}"  AutoGenerateColumns="False" 
-              ColumnHeaderStyle="{StaticResource HeaderTextStyle}">
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="{Binding FontColor}" />
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Foreground" Value="{Binding FontColor}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#B6E6FF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.ItemContainerStyle>
+        mc:Ignorable="d" 
+        d:DataContext="{d:DesignInstance keeper2018:TagAssociationsViewModel}"
+        SizeToContent="Width" WindowStartupLocation="CenterScreen" FontSize="13.5"
+        >
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button DockPanel.Dock="Right" Name="Close" Height="22" Width="100" Margin="5,5,25,5" 
+                    Content="Close"/>
+            <ComboBox Margin="5" Width="180" ItemsSource="{Binding ExampleList2}" SelectedItem="{Binding SelectedExample2}"/>
+            <ComboBox Margin="5" Width="180" ItemsSource="{Binding Destinations}" SelectedItem="{Binding SelectedDestination}"/>
+        </DockPanel>
+        <DataGrid ItemsSource="{Binding KeeperDb.TagAssociations}" AutoGenerateColumns="False" SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridComboBoxColumn Header="Тип операции" Width="100" 
-                                SelectedItemBinding ="{Binding OperationType}"
-                                ItemsSource="{Binding OperationTypes}"/>
-                <DataGridComboBoxColumn Header="Контрагент" Width="170"
-                                SelectedItemBinding ="{Binding ExternalAccount}"
-                                ItemsSource="{Binding ExternalAccounts}"/>
-                <DataGridComboBoxColumn Header="Ассоциированная категория" Width="190" 
-                                SelectedItemBinding ="{Binding Tag}"
-                                ItemsSource="{Binding AssociatedArticles}"/>
-                 <DataGridComboBoxColumn Header="Направление" Width="190" 
-                                SelectedItemBinding ="{Binding Destination}"
-                                ItemsSource="{Binding Destinations}"/>
+                <DataGridComboBoxColumn Header="Account" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, 
+                                Path=DataContext.ExternalAccounts}" SelectedItemBinding="{Binding ExternalAccount}" Width="180"/>
+                <DataGridComboBoxColumn Header="Tag" ItemsSource="{Binding AssociatedTags}" 
+                                    SelectedItemBinding="{Binding Tag}" Width="180"/>
+                <DataGridTemplateColumn Header="Account">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, 
+                                Path=DataContext.ExampleList2}" SelectedItem="{Binding SelectedRow.ExternalAccount, Mode=TwoWay}" Width="180"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Destination">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, 
+                                Path=DataContext.Destinations}" SelectedItem="{Binding Destination}" Width="180"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Row="1" Name="CloseView" IsCancel="True"/>
-
-    </Grid>
+    </DockPanel>
 </Window>

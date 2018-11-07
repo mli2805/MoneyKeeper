@@ -15,10 +15,19 @@ namespace Keeper2018
 
         public new string Name => (string) Header;
 
+        public override string ToString() => (string)Header;
+
         public AccountModel(string headerText)
         {
             Header = headerText;
             IsExpanded = true;
+        }
+
+
+        public bool Is(AccountModel ancestor)
+        {
+            if (Equals(this, ancestor)) return true;
+            return Owner != null && Owner.Is(ancestor);
         }
     }
 }

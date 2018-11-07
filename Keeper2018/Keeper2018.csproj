@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\Db\AccountComboboxProvider.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />
     <Compile Include="Domain\Account\AccountModel.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeViewModel.cs" />
