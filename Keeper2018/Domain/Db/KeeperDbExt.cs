@@ -40,6 +40,17 @@ namespace Keeper2018
             return null;
         }
 
+        public static AccountModel GetByName(string name, ICollection<AccountModel> roots)
+        {
+            foreach (var account in roots)
+            {
+                if (account.Name == name) return account;
+                var acc = GetByName(name, account.Children);
+                if (acc != null) return acc;
+            }
+            return null;
+        }
+
 
         public static void Flatten(this KeeperDb db)
         {

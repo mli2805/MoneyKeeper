@@ -9,16 +9,20 @@ namespace Keeper2018
         private readonly TransactionsViewModel _transactionsViewModel;
         private readonly TagAssociationsViewModel _tagAssociationsViewModel;
         private readonly DepositOffersViewModel _depositOffersViewModel;
+        private readonly ArticlesAssociationsViewModel _articlesAssociationsViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager,
             OfficialRatesViewModel officialRatesViewModel, TransactionsViewModel transactionsViewModel,
-            TagAssociationsViewModel tagAssociationsViewModel, DepositOffersViewModel depositOffersViewModel)
+            TagAssociationsViewModel tagAssociationsViewModel, DepositOffersViewModel depositOffersViewModel,
+            ArticlesAssociationsViewModel articlesAssociationsViewModel
+            )
         {
             _windowManager = windowManager;
             _officialRatesViewModel = officialRatesViewModel;
             _transactionsViewModel = transactionsViewModel;
             _tagAssociationsViewModel = tagAssociationsViewModel;
             _depositOffersViewModel = depositOffersViewModel;
+            _articlesAssociationsViewModel = articlesAssociationsViewModel;
         }
 
         public void ActionMethod(MainMenuAction action)
@@ -37,7 +41,8 @@ namespace Keeper2018
                     _windowManager.ShowDialog(_depositOffersViewModel);
                     break;
                 case MainMenuAction.ShowTagAssociationsForm:
-                    _windowManager.ShowDialog(_tagAssociationsViewModel);
+                   // _windowManager.ShowDialog(_tagAssociationsViewModel);
+                    _windowManager.ShowDialog(_articlesAssociationsViewModel);
                     break;
             }
 

@@ -6,7 +6,6 @@ namespace Keeper2018
 {
     public static class DbUtils
     {
-       
         public static string GetTxtFullPath(string filename)
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;

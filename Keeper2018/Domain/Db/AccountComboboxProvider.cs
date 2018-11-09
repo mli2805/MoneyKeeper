@@ -10,12 +10,7 @@ namespace Keeper2018
             var start = db.AccountsTree.First(r => (string)r.Header == accountHeader);
             return GetLeaves(start);
         }
-        public static List<AccountModel> GetExternalAccounts(this KeeperDb db)
-        {
-            var start = db.AccountsTree.First(r => (string)r.Header == "Внешние");
-            return GetLeaves(start);
-        }
-
+       
         private static List<AccountModel> GetLeaves(AccountModel start)
         {
             var result = new List<AccountModel>();
@@ -28,5 +23,25 @@ namespace Keeper2018
             }
             return result;
         }
+
+
+        public static List<Account> GetAccountsOf(this KeeperDb db, string name)
+        {
+            var start = KeeperDbExt.GetByName(name, db.AccountsTree);
+            return db.GetEndAccountsOf(start);
+        }
+        private static List<Account> GetEndAccountsOf(this KeeperDb db, AccountModel start)
+        {
+            var result = new List<Account>();
+            foreach (var child in start.Children)
+            {
+                if (child.Children.Count == 0)
+                    result.Add(db.AccountPlaneList.First(a=>a.Id == child.Id));
+                else
+                    result.AddRange(db.GetEndAccountsOf(child));
+            }
+            return result;
+        }
+
     }
 }

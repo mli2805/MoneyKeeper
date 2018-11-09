@@ -22,4 +22,6 @@ namespace Keeper2018
         public List<TagAssociation> TagAssociations { get; set; }
         public List<DepositOffer> DepositOffers { get;set; }
     }
+
+
 }

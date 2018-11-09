@@ -9,6 +9,13 @@ namespace Keeper2018
         public int OwnerId;
         public string Header;
         public bool IsExpanded;
-        public string Name => Header;
+
+        public string Name
+        {
+            get { return Header; }
+            set { Header = value; }
+        }
+
+        public override string ToString() => Name;
     }
 }

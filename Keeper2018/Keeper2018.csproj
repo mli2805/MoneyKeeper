@@ -127,6 +127,10 @@
       <DependentUpon>DepositOffersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\DepositOffersViewModel.cs" />
+    <Compile Include="Forms\TagAssociations\ArticlesAssociationsView.xaml.cs">
+      <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TagAssociations\ArticlesAssociationsViewModel.cs" />
     <Compile Include="Forms\TagAssociations\TagAssociationsOldTxt.cs" />
     <Compile Include="Forms\TagAssociations\TagAssociationsViewModel.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
@@ -183,6 +187,10 @@
     <Page Include="Forms\DepositOffers\DepositOffersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\TagAssociations\ArticlesAssociationsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainMenu\MainMenuView.xaml">
       <SubType>Designer</SubType>

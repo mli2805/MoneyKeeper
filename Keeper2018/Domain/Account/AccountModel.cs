@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
 
 namespace Keeper2018
 {
-    public class AccountModel : TreeViewItem
+    public class AccountModel : TreeViewItem, IComparable
     {
         public int Id { get; set; }
 
@@ -16,6 +18,10 @@ namespace Keeper2018
         public new string Name => (string) Header;
 
         public override string ToString() => (string)Header;
+        public int CompareTo(object obj)
+        {
+            return string.Compare(Name, ((AccountModel) obj).Name, StringComparison.Ordinal);
+        }
 
         public AccountModel(string headerText)
         {

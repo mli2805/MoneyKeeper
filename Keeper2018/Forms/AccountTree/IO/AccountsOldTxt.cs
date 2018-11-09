@@ -15,7 +15,6 @@ namespace Keeper2018
             foreach (var line in content)
             {
                 yield return AccountFromString(line);
-            
             }
         }
 
