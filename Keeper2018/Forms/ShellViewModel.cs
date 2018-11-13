@@ -26,7 +26,7 @@ namespace Keeper2018
         public override async void CanClose(Action<bool> callback)
         {
             _keeperDb.Flatten();
-            await DbSerializer.Serialize(_keeperDb);
+            await DbSerializer.Serialize(_keeperDb.Bin);
             base.CanClose(callback);
         }
     }

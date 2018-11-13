@@ -22,7 +22,6 @@ namespace Keeper2018
 
             builder.RegisterType<DepositOffersViewModel>().SingleInstance();
             builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();
-            builder.RegisterType<TagAssociationsViewModel>().SingleInstance();
             builder.RegisterType<TransactionsViewModel>().SingleInstance();
         }
     }

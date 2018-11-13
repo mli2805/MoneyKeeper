@@ -34,8 +34,8 @@ namespace Keeper2018
             var substrings = line.Split(';');
             tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-            tran.MyAccount = accountsPlaneList.First(account => account.Header == substrings[2].Trim());
-            tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Header == substrings[3].Trim()) : null;
+            tran.MyAccount = accountsPlaneList.First(account => account.Header == substrings[2].Trim()).Id;
+            tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Header == substrings[3].Trim()).Id : -1;
             tran.Amount = Convert.ToDouble(substrings[4], new CultureInfo("en-US"));
             tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]);
             tran.AmountInReturn = Convert.ToDouble(substrings[6], new CultureInfo("en-US"));
@@ -46,12 +46,12 @@ namespace Keeper2018
             return tran;
         }
 
-        private static List<Account> TagsFromString(string str, List<Account> accountsPlaneList)
+        private static List<int> TagsFromString(string str, List<Account> accountsPlaneList)
         {
-            if (str == "") return new List<Account>();
+            if (str == "") return new List<int>();
 
             var substrings = str.Split('|');
-            return substrings.Select(substring => accountsPlaneList.First(account => account.Header == substring.Trim())).ToList();
+            return substrings.Select(substring => accountsPlaneList.First(account => account.Header == substring.Trim()).Id).ToList();
         }
     }
 }

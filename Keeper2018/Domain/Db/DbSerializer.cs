@@ -17,7 +17,7 @@ namespace Keeper2018
             File.Copy(filename, backupFilename, true);
         }
 
-        public static async Task<bool> Serialize(KeeperDb db)
+        public static async Task<bool> Serialize(KeeperBin bin)
         {
             var path = DbUtils.GetTxtFullPath("KeeperDb.bin");
             MadeDbxBackup(path);
@@ -26,7 +26,7 @@ namespace Keeper2018
                 using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write))
                 {
                     var binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(fStream, db);
+                    binaryFormatter.Serialize(fStream, bin);
                 }
                 await Task.Delay(1);
                 return true;
@@ -38,7 +38,7 @@ namespace Keeper2018
             }
         }
 
-        public static async Task<KeeperDb> Deserialize()
+        public static async Task<KeeperBin> Deserialize()
         {
             var path = DbUtils.GetTxtFullPath("KeeperDb.bin");
             await Task.Delay(1);
@@ -47,7 +47,7 @@ namespace Keeper2018
                 using (Stream fStream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
                     var binaryFormatter = new BinaryFormatter();
-                    return (KeeperDb)binaryFormatter.Deserialize(fStream);
+                    return (KeeperBin)binaryFormatter.Deserialize(fStream);
                 }
             }
             catch (Exception e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,12 +8,17 @@ using System.Threading.Tasks;
 
 namespace Keeper2018
 {
-    public class TagAssociationsOldTxt
+    public static class TagAssociationsOldTxt
     {
-        public static async Task<List<TagAssociation>> LoadFromOldTxtAsync(List<Account> accountsPlaneList)
+        public static async Task<ObservableCollection<TagAssociation>> LoadFromOldTxtAsync(List<Account> accountsPlaneList)
         {
             await Task.Delay(1);
-            return LoadFromOldTxt(accountsPlaneList).ToList();
+            var result = new ObservableCollection<TagAssociation>();
+            foreach (var tagAssociation in LoadFromOldTxt(accountsPlaneList))
+            {
+                result.Add(tagAssociation);
+            }
+            return result;
         }
 
         private static IEnumerable<TagAssociation> LoadFromOldTxt(List<Account> accountsPlaneList)
@@ -23,8 +29,6 @@ namespace Keeper2018
             foreach (var line in content)
             {
                 var oneAssociation = TagAssociationFromString(line, accountsPlaneList);
-               
-
                 yield return (oneAssociation);
             }
         }
@@ -33,11 +37,13 @@ namespace Keeper2018
         {
             var association = new TagAssociation();
             var substrings = s.Split(';');
-            association.ExternalAccount = accountsPlaneList.First(account => account.Name == substrings[0].Trim());
-            association.Tag = accountsPlaneList.First(account => account.Name == substrings[1].Trim());
+            association.ExternalAccount = accountsPlaneList.First(account => account.Name == substrings[0].Trim()).Id;
+            association.Tag = accountsPlaneList.First(account => account.Name == substrings[1].Trim()).Id;
             association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[2]);
             association.Destination = bool.Parse(substrings[3]) ? AssociationType.TwoWay : AssociationType.LeftToRight;
             return association;
         }
     }
+
+   
 }

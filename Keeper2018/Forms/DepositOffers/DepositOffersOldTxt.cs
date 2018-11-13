@@ -36,7 +36,7 @@ namespace Keeper2018
             return new DepositOffer()
             {
                 Id = Convert.ToInt32(substrings[0]),
-                Bank = accountsPlaneList.First(account => account.Name == substrings[1].Trim()),
+                Bank = accountsPlaneList.First(account => account.Name == substrings[1].Trim()).Id,
                 Title = substrings[2].Trim(),
                 Essentials = new Dictionary<DateTime, DepositEssential>(),
                 Comment = substrings[6].Trim()

@@ -5,14 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance keeper2018:ArticlesAssociationsViewModel}"
         Height="600" SizeToContent="Width">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
                 <Setter Property="Margin" Value="5,0,0,0"/>
             </Style>
-            <Style x:Key="headerTextStyle" TargetType="DataGridColumnHeader">
+            <Style x:Key="HeaderTextStyle" TargetType="DataGridColumnHeader">
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
         </ResourceDictionary>
@@ -25,13 +24,13 @@
         </Grid.RowDefinitions>
         <DataGrid x:Name="IncomesGrid" Margin="5" Padding="1" 
                   ItemsSource="{Binding Rows}"  AutoGenerateColumns="False" 
-              ColumnHeaderStyle="{StaticResource headerTextStyle}">
+              ColumnHeaderStyle="{StaticResource HeaderTextStyle}">
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="{Binding FontColor}" />
+                            <Setter Property="Foreground" Value="{Binding (keeper2018:TagAssociationModel.FontColor)}" />
                             <Setter Property="BorderThickness" Value="0"/>
                         </Trigger>
                     </Style.Triggers>
@@ -39,7 +38,7 @@
             </DataGrid.CellStyle>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Foreground" Value="{Binding FontColor}"/>
+                    <Setter Property="Foreground" Value="{Binding (keeper2018:TagAssociationModel.FontColor)}"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#B6E6FF"/>
@@ -50,17 +49,20 @@
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Тип операции" Width="100" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding OperationType}"
+                                SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.OperationType)}"
                                 ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.OperationTypes}"/>
                 <DataGridComboBoxColumn Header="Контрагент" Width="170"
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding ExternalAccount}"
+                                SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.ExternalAccount)}"
                                 ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.ExternalAccounts}"/>
                 <DataGridComboBoxColumn Header="Ассоциированная категория" Width="190" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding Tag}"
+                                SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.Tag)}"
                                 ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.AssociatedArticles}"/>
-                <DataGridCheckBoxColumn Header="Двунаправленная" Width="120" Binding="{Binding IsTwoWay}" />
+                <DataGridComboBoxColumn Header="Направление" Width="100" 
+                                        ElementStyle="{StaticResource ComboBoxCellTextStyle}"
+                                        SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.Destination)}"
+                                        ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.AssociationTypes}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Row="1" Name="CloseView" IsCancel="True"/>

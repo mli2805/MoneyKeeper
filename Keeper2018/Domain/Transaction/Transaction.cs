@@ -8,13 +8,27 @@ namespace Keeper2018
     {
         public DateTime Timestamp;
         public OperationType Operation;
-        public Account MyAccount;
-        public Account MySecondAccount;
+        public int MyAccount;
+        public int MySecondAccount;
         public double Amount;
         public double AmountInReturn;
         public CurrencyCode? Currency;
         public CurrencyCode? CurrencyInReturn;
-        public List<Account> Tags;
+        public List<int> Tags;
+        public string Comment;
+    }
+
+    public class TransactionModel
+    {
+        public DateTime Timestamp;
+        public OperationType Operation;
+        public AccountModel MyAccount;
+        public AccountModel MySecondAccount;
+        public double Amount;
+        public double AmountInReturn;
+        public CurrencyCode? Currency;
+        public CurrencyCode? CurrencyInReturn;
+        public List<AccountModel> Tags;
         public string Comment;
     }
 }

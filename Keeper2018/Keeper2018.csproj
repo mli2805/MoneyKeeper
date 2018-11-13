@@ -111,7 +111,7 @@
     <Compile Include="Domain\Rates\Basket\BelCurrencies.cs" />
     <Compile Include="Domain\Rates\Basket\BelCurrency.cs" />
     <Compile Include="Domain\Rates\Basket\BasketWeights.cs" />
-    <Compile Include="Domain\Db\KeeperDb.cs" />
+    <Compile Include="Domain\Db\KeeperBin.cs" />
     <Compile Include="Domain\Rates\CbrRate.cs" />
     <Compile Include="Domain\Rates\NbRbRates.cs" />
     <Compile Include="Domain\Rates\OfficialRates.cs" />
@@ -132,7 +132,6 @@
     </Compile>
     <Compile Include="Forms\TagAssociations\ArticlesAssociationsViewModel.cs" />
     <Compile Include="Forms\TagAssociations\TagAssociationsOldTxt.cs" />
-    <Compile Include="Forms\TagAssociations\TagAssociationsViewModel.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
     <Compile Include="Forms\OfficialRates\OfficialRatesModel.cs" />
     <Compile Include="Forms\OfficialRates\IO\NbRbRatesOldTxt.cs" />
@@ -165,9 +164,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Forms\TagAssociations\TagAssociationsView.xaml.cs">
-      <DependentUpon>TagAssociationsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\AccName.cs" />
     <Compile Include="Forms\Transactions\TransactionsOldTxt.cs" />
@@ -211,10 +207,6 @@
     <Page Include="Forms\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\TagAssociations\TagAssociationsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Transactions\TransactionsView.xaml">
       <SubType>Designer</SubType>

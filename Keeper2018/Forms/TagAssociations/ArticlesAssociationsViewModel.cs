@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Data;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -12,12 +10,13 @@ namespace Keeper2018
     {
         private static KeeperDb _db;
 
-        public ObservableCollection<TagAssociation> Rows { get; set; } = new ObservableCollection<TagAssociation>();
-        public static List<Account> ExternalAccounts { get; private set; }
+        public ObservableCollection<TagAssociationModel> Rows { get; set; }
+        public static List<AccountModel> ExternalAccounts { get; private set; }
 
-        public static List<Account> AssociatedArticles { get; private set; }
+        public static List<AccountModel> AssociatedArticles { get; private set; }
 
         public static List<OperationType> OperationTypes { get; private set; }
+        public static List<AssociationType> AssociationTypes { get; private set; }
 
         public ArticlesAssociationsViewModel(KeeperDb db)
         {
@@ -25,7 +24,6 @@ namespace Keeper2018
 
             InitializeListsForCombobox();
 
-            _db.TagAssociations.ForEach(t=>Rows.Add(t));
 
 //            var view = CollectionViewSource.GetDefaultView(Rows);
 //            view.SortDescriptions.Add(new SortDescription("OperationType", ListSortDirection.Ascending));
@@ -34,16 +32,18 @@ namespace Keeper2018
 
         private void InitializeListsForCombobox()
         {
-            ExternalAccounts = _db.GetAccountsOf("Внешние");
-            AssociatedArticles = _db.GetAccountsOf("Все доходы");;
-            AssociatedArticles.AddRange(_db.GetAccountsOf("Все расходы"));
+            ExternalAccounts = _db.GetLeavesOf("Внешние");
+            AssociatedArticles = _db.GetLeavesOf("Все доходы");
+            AssociatedArticles.AddRange(_db.GetLeavesOf("Все расходы"));
             OperationTypes = Enum.GetValues(typeof (OperationType)).Cast<OperationType>().ToList();
+            AssociationTypes = Enum.GetValues(typeof (AssociationType)).Cast<AssociationType>().ToList();
         }
 
         protected override void OnViewLoaded(object view)
         {
-            InitializeListsForCombobox();
             DisplayName = "Ассоциации категорий";
+
+            Rows = _db.AssociationModels;
         }
 
         public void CloseView()
