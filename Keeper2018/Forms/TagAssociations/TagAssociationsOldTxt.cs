@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,15 +9,10 @@ namespace Keeper2018
 {
     public static class TagAssociationsOldTxt
     {
-        public static async Task<ObservableCollection<TagAssociation>> LoadFromOldTxtAsync(List<Account> accountsPlaneList)
+        public static async Task<List<TagAssociation>> LoadFromOldTxtAsync(List<Account> accountsPlaneList)
         {
             await Task.Delay(1);
-            var result = new ObservableCollection<TagAssociation>();
-            foreach (var tagAssociation in LoadFromOldTxt(accountsPlaneList))
-            {
-                result.Add(tagAssociation);
-            }
-            return result;
+            return LoadFromOldTxt(accountsPlaneList).ToList();
         }
 
         private static IEnumerable<TagAssociation> LoadFromOldTxt(List<Account> accountsPlaneList)

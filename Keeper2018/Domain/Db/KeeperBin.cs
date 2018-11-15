@@ -10,7 +10,7 @@ namespace Keeper2018
         public List<OfficialRates> OfficialRates { get; set; }
         public List<Account> AccountPlaneList { get; set; }
         public List<Transaction> Transactions { get; set; }
-        public ObservableCollection<TagAssociation> TagAssociations { get; set; }
+        public List<TagAssociation> TagAssociations { get; set; }
         public List<DepositOffer> DepositOffers { get; set; }
 
 
@@ -26,7 +26,7 @@ namespace Keeper2018
 
 
         public ObservableCollection<TransactionModel> TransactionModels { get; set; }
-        public ObservableCollection<TagAssociationModel> AssociationModels { get; set; }
+        public ObservableCollection<LineModel> AssociationModels { get; set; }
         public ObservableCollection<DepositOfferModel> OfferModels { get; set; }
 
     }

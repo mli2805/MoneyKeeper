@@ -37,7 +37,7 @@ namespace Keeper2018
                     _windowManager.ShowDialog(_depositOffersViewModel);
                     break;
                 case MainMenuAction.ShowTagAssociationsForm:
-                    // _windowManager.ShowDialog(_tagAssociationsViewModel);
+                    _articlesAssociationsViewModel.Init();
                     _windowManager.ShowDialog(_articlesAssociationsViewModel);
                     break;
             }

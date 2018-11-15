@@ -8,20 +8,20 @@ namespace Keeper2018
     {
         public static void AssociationsToModels(this KeeperDb db)
         {
-            db.AssociationModels = new ObservableCollection<TagAssociationModel>();
+            db.AssociationModels = new ObservableCollection<LineModel>();
             foreach (var tagAssociation in db.Bin.TagAssociations)
             {
                 db.AssociationModels.Add(CreateAssociationModel(db, tagAssociation));
             }
         }
 
-        private static TagAssociationModel CreateAssociationModel(this KeeperDb db, TagAssociation tagAssociation)
+        private static LineModel CreateAssociationModel(this KeeperDb db, TagAssociation tagAssociation)
         {
-            return new TagAssociationModel
+            return new LineModel
             {
                 OperationType = tagAssociation.OperationType,
-                ExternalAccount = db.AcMoDict[tagAssociation.ExternalAccount],
-                Tag = db.AcMoDict[tagAssociation.Tag],
+                ExternalAccount = db.AcMoDict[tagAssociation.ExternalAccount].Name,
+                Tag = db.AcMoDict[tagAssociation.Tag].Name,
                 Destination = tagAssociation.Destination,
             };
         }
