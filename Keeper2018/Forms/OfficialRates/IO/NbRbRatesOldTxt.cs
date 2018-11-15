@@ -13,7 +13,24 @@ namespace Keeper2018
         public static async Task<List<OfficialRates>> LoadFromOldTxtAsync()
         {
             await Task.Delay(1);
-            return LoadFromOldTxt(GetMyUsdRates()).ToList();
+            return LoadFromOldTxt(GetMyUsdRates(), GetCbrRates()).ToList();
+        }
+
+        private static Dictionary<DateTime, double> GetCbrRates()
+        {
+            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("cbrf.csv"), Encoding.GetEncoding("Windows-1251")).ToList();
+
+            var result = new Dictionary<DateTime, double>();
+            var delimiters = new[] { ' ', '"' };
+            foreach (var line in content)
+            {
+                var ss = line.Split(',');
+                var date = DateTime.Parse(ss[0].Trim());
+                var str = ss.Length == 3 ? ss[1].Trim(delimiters) + ss[2].Trim(delimiters) : ss[1].Trim(delimiters);
+                var value = double.Parse(str, NumberStyles.Any, new CultureInfo("en-US"));
+                result.Add(date, value);
+            }
+            return result;
         }
 
         private static Dictionary<DateTime, double> GetMyUsdRates()
@@ -43,21 +60,30 @@ namespace Keeper2018
             return result;
         }
 
-        private static IEnumerable<OfficialRates> LoadFromOldTxt(Dictionary<DateTime, double> myUsdRates)
+        private static IEnumerable<OfficialRates> LoadFromOldTxt(Dictionary<DateTime, double> myUsdRates, Dictionary<DateTime, double> cbrRates)
         {
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
 
+            // 1-April-1995
             var currentRate = 11550.0;
+            var currentCbrRate = 4897.0;
 
             foreach (var line in content)
             {
                 var oneDay = NbRbRateFromString(line);
+
                 if (myUsdRates.ContainsKey(oneDay.Date))
                     currentRate = myUsdRates[oneDay.Date];
 
+                if (cbrRates.ContainsKey(oneDay.Date))
+                    currentCbrRate = cbrRates[oneDay.Date];
+
                 oneDay.MyUsdRate.Unit = 1;
                 oneDay.MyUsdRate.Value = currentRate;
+
+                oneDay.CbrRate.Usd.Unit = 1;
+                oneDay.CbrRate.Usd.Value = currentCbrRate;
 
                 yield return (oneDay);
             }
