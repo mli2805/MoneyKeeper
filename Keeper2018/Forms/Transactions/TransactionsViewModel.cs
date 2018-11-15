@@ -7,11 +7,32 @@ namespace Keeper2018
     {
         private readonly KeeperDb _keeperDb;
 
-        public ObservableCollection<Transaction> Rows { get; set; }
+        public ObservableCollection<TranWrappedForDatagrid> Rows { get; set; }
+
+        private TranWrappedForDatagrid _selectedRow;
+        public TranWrappedForDatagrid SelectedRow
+        {
+            get { return _selectedRow; }
+            set
+            {
+                if (Equals(value, _selectedRow)) return;
+                _selectedRow = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public TransactionsViewModel(KeeperDb keeperDb)
         {
             _keeperDb = keeperDb;
+        }
+
+        public void Init()
+        {
+            Rows = new ObservableCollection<TranWrappedForDatagrid>();
+            foreach (var tran in _keeperDb.TransactionModels)
+            {
+                Rows.Add(new TranWrappedForDatagrid() { Tran = tran });
+            }
         }
 
     }

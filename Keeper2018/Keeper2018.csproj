@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="Forms\TagAssociations\ArticlesAssociationsViewModel.cs" />
     <Compile Include="Forms\TagAssociations\TagAssociationsOldTxt.cs" />
+    <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
     <Compile Include="Forms\OfficialRates\OfficialRatesModel.cs" />
     <Compile Include="Forms\OfficialRates\IO\NbRbRatesOldTxt.cs" />
@@ -158,8 +159,8 @@
       <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\OfficialRates\Charts\UsdAnnualDiagramViewModel.cs" />
-    <Compile Include="Forms\OfficialRates\ScrollToBottomOnAddBehavior.cs" />
-    <Compile Include="Forms\OfficialRates\ScrollToBottomOnLoadBehavior.cs" />
+    <Compile Include="Forms\Behaviors\ScrollToBottomOnAddBehavior.cs" />
+    <Compile Include="Forms\Behaviors\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="Forms\ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

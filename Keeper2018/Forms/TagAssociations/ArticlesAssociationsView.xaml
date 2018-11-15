@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d" 
-        Height="1000" SizeToContent="Width" WindowStartupLocation="CenterScreen">
+        Height="700" SizeToContent="Width" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
@@ -20,19 +20,17 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="1"/>
         </Grid.RowDefinitions>
-        <DataGrid x:Name="IncomesGrid" Margin="5" Padding="1" SelectionMode="Single"
+        <DataGrid Margin="5" Padding="1" SelectionMode="Single"
                   ItemsSource="{Binding Rows}"  AutoGenerateColumns="False" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
-              ColumnHeaderStyle="{StaticResource HeaderTextStyle}" d:DataContext="{d:DesignInstance keeper2018:ArticlesAssociationsViewModel}">
+              ColumnHeaderStyle="{StaticResource HeaderTextStyle}">
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="{Binding (keeper2018:LineModel.FontColor)}" />
+                            <Setter Property="Foreground" Value="{Binding FontColor}" />
                             <Setter Property="BorderThickness" Value="0"/>
                         </Trigger>
                     </Style.Triggers>
@@ -40,7 +38,7 @@
             </DataGrid.CellStyle>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Foreground" Value="{Binding (keeper2018:LineModel.FontColor)}"/>
+                    <Setter Property="Foreground" Value="{Binding FontColor}"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#B6E6FF"/>
@@ -67,50 +65,8 @@
                                         ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.AssociationTypes}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid Margin="5" Padding="1" SelectionMode="Single" Grid.Row="1"
-                  ItemsSource="{Binding Rows}"  AutoGenerateColumns="False" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
-              ColumnHeaderStyle="{StaticResource HeaderTextStyle}">
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="{Binding (keeper2018:LineModel.FontColor)}" />
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Foreground" Value="{Binding (keeper2018:LineModel.FontColor)}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#B6E6FF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.ItemContainerStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Тип операции" Width="100" Binding="{Binding OperationType}" />
-                <DataGridTextColumn Header="External account" Width="210" Binding="{Binding ExternalAccount}" />
-                <DataGridTextColumn Header="Association" Width="220" Binding="{Binding Tag}" />
-                <DataGridTextColumn Header="Destination" Width="100" Binding="{Binding Destination}" />
-                </DataGrid.Columns>
-        </DataGrid>
-        <ListView Grid.Row="2" ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" SelectionMode="Single">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Operation type" DisplayMemberBinding="{Binding OperationType}" Width="100"/>
-                    <GridViewColumn Header="External account" DisplayMemberBinding="{Binding ExternalAccount}" Width="210"/>
-                    <GridViewColumn Header="Association" DisplayMemberBinding="{Binding Tag}" Width="210"/>
-                    <GridViewColumn Header="Destination" DisplayMemberBinding="{Binding Destination}" Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <DockPanel Grid.Row="3">
+       <DockPanel Grid.Row="1">
             <Button DockPanel.Dock="Right" Margin="5" Width="100" Height="22" Content="Close" Name="CloseView" IsCancel="True"/>
-            <TextBlock Text="{Binding SelectedAssociationText}" Margin="5"/>
         </DockPanel>
 
     </Grid>

@@ -51,6 +51,7 @@ namespace Keeper2018
 
         public void ShowTransactionsForm()
         {
+            _transactionsViewModel.Init();
             _windowManager.ShowDialog(_transactionsViewModel);
         }
     }

@@ -4,10 +4,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
-        mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:TransactionsViewModel}">
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="5">
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Rows}" IsReadOnly="True"></DataGrid>
+        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+            <i:Interaction.Behaviors>
+                <keeper2018:ScrollToBottomOnAddBehavior />
+                <keeper2018:ScrollToBottomOnLoadBehavior />
+            </i:Interaction.Behaviors>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle> 
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
+                    <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#B6E6FF"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header=" Timestamp" Width="80*" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
+                <DataGridTextColumn Header="  Account" Width="300*" Binding="{Binding AccountForDatagrid}"/>
+                <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}"/>
+                <DataGridTextColumn Header="  Tags" Width="250*" Binding="{Binding TagsForDatagrid}" />
+                <DataGridTextColumn Header="  Comment" Width="300*" Binding="{Binding Tran.Comment}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Window>
