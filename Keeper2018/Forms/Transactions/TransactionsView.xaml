@@ -39,7 +39,8 @@
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header=" Timestamp" Width="80*" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy hh:mm'}"/>
+                <DataGridTextColumn Header=" Timestamp" Width="70" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy'}"/>
+                <DataGridTextColumn Header=" N" Width="10" Binding="{Binding Tran.OrdinalInDate}"/>
                 <DataGridTextColumn Header="  Account" Width="300*" Binding="{Binding AccountForDatagrid}"/>
                 <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}"/>
                 <DataGridTextColumn Header="  Tags" Width="250*" Binding="{Binding TagsForDatagrid}" />

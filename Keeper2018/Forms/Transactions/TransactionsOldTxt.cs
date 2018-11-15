@@ -21,9 +21,18 @@ namespace Keeper2018
             var content = File.ReadAllLines(DbUtils.GetTxtFullPath("TransWithTags.txt"),
                 Encoding.GetEncoding("Windows-1251"));
 
+            var ordinal = 1;
+            var date = new DateTime();
             foreach (var line in content)
             {
                 var tran = Parse(line, accountsPlaneList);
+
+                if (date.Date != tran.Timestamp.Date)
+                    ordinal = 1;
+                else ordinal++;
+                date = tran.Timestamp;
+                tran.OrdinalInDate = ordinal;
+
                 yield return tran;
             }
         }

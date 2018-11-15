@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace Keeper2018
             return new TransactionModel()
             {
                 Timestamp = transaction.Timestamp,
+                OrdinalInDate = transaction.OrdinalInDate,
                 Operation = transaction.Operation,
                 MyAccount = db.AcMoDict[transaction.MyAccount],
                 MySecondAccount = transaction.MySecondAccount == -1 ? null : db.AcMoDict[transaction.MySecondAccount],

@@ -7,6 +7,7 @@ namespace Keeper2018
     public class Transaction
     {
         public DateTime Timestamp;
+        public int OrdinalInDate;
         public OperationType Operation;
         public int MyAccount;
         public int MySecondAccount;
@@ -21,6 +22,7 @@ namespace Keeper2018
     public class TransactionModel
     {
         public DateTime Timestamp { get; set; }
+        public int OrdinalInDate { get; set; }
         public OperationType Operation { get; set; }
         public AccountModel MyAccount { get; set; }
         public AccountModel MySecondAccount { get; set; }
