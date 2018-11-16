@@ -28,11 +28,8 @@ namespace Keeper2018
             IsExpanded = true;
         }
 
-
-        public bool Is(AccountModel ancestor)
-        {
-            if (Equals(this, ancestor)) return true;
-            return Owner != null && Owner.Is(ancestor);
-        }
+        public bool IsFolder { get; set; }
+        public bool IsDeposit { get; set; }
+      
     }
 }

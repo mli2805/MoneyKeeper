@@ -84,6 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Domain\Db\AccountComboboxProvider.cs" />
+    <Compile Include="Domain\Db\AccountTreeGardener.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />
     <Compile Include="Domain\Account\AccountModel.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeViewModel.cs" />
@@ -127,6 +128,11 @@
       <DependentUpon>DepositOffersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\DepositOffersViewModel.cs" />
+    <Compile Include="Forms\MyMessageBox\MessageType.cs" />
+    <Compile Include="Forms\MyMessageBox\MessageTypeExt.cs" />
+    <Compile Include="Forms\MyMessageBox\MyMessageBoxLineModel.cs" />
+    <Compile Include="Forms\MyMessageBox\MyMessageBoxView.xaml.cs" />
+    <Compile Include="Forms\MyMessageBox\MyMessageBoxViewModel.cs" />
     <Compile Include="Forms\TagAssociations\ArticlesAssociationsView.xaml.cs">
       <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
     </Compile>
@@ -184,6 +190,10 @@
     <Page Include="Forms\DepositOffers\DepositOffersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\MyMessageBox\MyMessageBoxView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Forms\TagAssociations\ArticlesAssociationsView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -247,6 +257,10 @@
   <ItemGroup>
     <Resource Include="Resources\transactions.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\edit16.ico" />
+    <Resource Include="Resources\minus16.ico" />
+    <Resource Include="Resources\plus16.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -17,6 +17,34 @@
                     <EventSetter Event="MouseMove" Handler="treeView_MouseMove"/>
                 </Style>
             </TreeView.ItemContainerStyle>
-        </TreeView>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding IsSelectedAccountFolder}">
+                        <MenuItem.Icon>
+                            <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Добавить депозит" cal:Message.Attach="AddAccountDeposit" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding IsSelectedAccountFolder}">
+                        <MenuItem.Icon>
+                            <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                        <MenuItem.Icon>
+                            <Image Source="/Keeper2018;component/Resources/minus16.ico" Width="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Изменить" cal:Message.Attach="ChangeAccount" BorderBrush="{x:Null}" Background="White">
+                        <MenuItem.Icon>
+                            <Image Source="/Keeper2018;component/Resources/edit16.ico" Width="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding IsSelectedAccountDeposit}">
+                    </MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu> </TreeView>
     </DockPanel>
 </UserControl>

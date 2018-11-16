@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -87,17 +86,6 @@ namespace Keeper2018
             {
                 if (account.Id == id) return account;
                 var acc = GetById(id, account.Children);
-                if (acc != null) return acc;
-            }
-            return null;
-        }
-
-        public static AccountModel GetByName(string name, ICollection<AccountModel> roots)
-        {
-            foreach (var account in roots)
-            {
-                if (account.Name == name) return account;
-                var acc = GetByName(name, account.Children);
                 if (acc != null) return acc;
             }
             return null;

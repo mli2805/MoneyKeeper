@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace Keeper2018
 {
+   
     public static class AccountComboboxProvider
     {
         public static List<AccountModel> GetLeavesOf(this KeeperDb db, string accountHeader)
