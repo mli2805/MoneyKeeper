@@ -19,6 +19,6 @@ namespace Keeper2018
         public bool IsRateFixed { get; set; }
 
         public bool HasAdditionalProcent { get; set; }
-        public decimal AdditionalProcent { get; set; }
+        public double AdditionalProcent { get; set; }
     }
 }

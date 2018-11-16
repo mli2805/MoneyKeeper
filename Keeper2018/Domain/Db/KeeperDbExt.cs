@@ -64,6 +64,7 @@ namespace Keeper2018
                 {
                     Id = account.Id,
                     IsExpanded = account.IsExpanded,
+                    IsFolder = account.IsFolder,
                 };
                 db.AcMoDict.Add(accountModel.Id, accountModel);
 

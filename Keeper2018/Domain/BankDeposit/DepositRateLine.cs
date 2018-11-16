@@ -5,12 +5,10 @@ namespace Keeper2018
     [Serializable]
     public class DepositRateLine
     {
+        public int DepositOfferId;
         public DateTime DateFrom { get; set; }
-        public decimal AmountFrom { get; set; }
-        public decimal AmountTo { get; set; }
-        public decimal Rate { get; set; }
-
-        //   [NonSerialized] public int AccountId;
-
+        public double AmountFrom { get; set; }
+        public double AmountTo { get; set; }
+        public double Rate { get; set; }
     }
 }

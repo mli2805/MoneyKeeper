@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Keeper2018
 {
@@ -12,22 +11,5 @@ namespace Keeper2018
         public List<Transaction> Transactions { get; set; }
         public List<TagAssociation> TagAssociations { get; set; }
         public List<DepositOffer> DepositOffers { get; set; }
-
-
-    }
-
-    public class KeeperDb
-    {
-        public KeeperBin Bin;
-        public Dictionary<int, AccountModel> AcMoDict;
-
-        public List<OfficialRates> OfficialRates { get; set; }
-        public ObservableCollection<AccountModel> AccountsTree { get; set; }
-
-
-        public ObservableCollection<TransactionModel> TransactionModels { get; set; }
-        public ObservableCollection<LineModel> AssociationModels { get; set; }
-        public ObservableCollection<DepositOfferModel> OfferModels { get; set; }
-
     }
 }

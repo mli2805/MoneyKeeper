@@ -83,8 +83,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Db\AccountComboboxProvider.cs" />
     <Compile Include="Domain\Db\AccountTreeGardener.cs" />
+    <Compile Include="Domain\Db\KeeperDb.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />
     <Compile Include="Domain\Account\AccountModel.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeViewModel.cs" />
@@ -107,7 +109,7 @@
     <Compile Include="Domain\BankDeposit\DepositRateLine.cs" />
     <Compile Include="Domain\TagAssociation\AssociationType.cs" />
     <Compile Include="Domain\TagAssociation\TagAssociation.cs" />
-    <Compile Include="Domain\Db\DbLoader.cs" />
+    <Compile Include="Domain\Db\IO\DbLoader.cs" />
     <Compile Include="Domain\Rates\Basket\BelBaskets.cs" />
     <Compile Include="Domain\Rates\Basket\BelCurrencies.cs" />
     <Compile Include="Domain\Rates\Basket\BelCurrency.cs" />
@@ -116,7 +118,7 @@
     <Compile Include="Domain\Rates\CbrRate.cs" />
     <Compile Include="Domain\Rates\NbRbRates.cs" />
     <Compile Include="Domain\Rates\OfficialRates.cs" />
-    <Compile Include="Domain\Db\DbSerializer.cs" />
+    <Compile Include="Domain\Db\IO\DbSerializer.cs" />
     <Compile Include="Domain\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
     <Compile Include="Domain\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
     <Compile Include="Domain\Transaction\ComboboxTreeview\ITreeViewItemModel.cs" />
@@ -143,7 +145,7 @@
     <Compile Include="Forms\OfficialRates\OfficialRatesModel.cs" />
     <Compile Include="Forms\OfficialRates\IO\NbRbRatesOldTxt.cs" />
     <Compile Include="Domain\Rates\OneRate.cs" />
-    <Compile Include="Domain\Db\DbUtils.cs" />
+    <Compile Include="Domain\Db\IO\DbUtils.cs" />
     <Compile Include="Forms\IShell.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>

@@ -29,7 +29,7 @@ namespace Keeper2018
                 Header = substrings[1].Trim(),
                 IsExpanded = Convert.ToBoolean(substrings[5])
             };
-            //account.IsFolder = Convert.ToBoolean(substrings[3]);
+            account.IsFolder = Convert.ToBoolean(substrings[3]);
             //account.IsClosed = Convert.ToBoolean(substrings[4]);
             return account;
         }
