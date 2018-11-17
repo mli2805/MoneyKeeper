@@ -10,6 +10,7 @@ namespace Keeper2018
             builder.RegisterType<ShellViewModel>().As<IShell>();
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
 
+            builder.RegisterType<DbLoadingViewModel>().SingleInstance();
             builder.RegisterType<KeeperDb>().SingleInstance();
 
             builder.RegisterType<OfficialRatesViewModel>().SingleInstance();

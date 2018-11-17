@@ -12,6 +12,7 @@ namespace Keeper2018
     public class OfficialRatesViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
+        private readonly KeeperDb _keeperDb;
         private readonly UsdAnnualDiagramViewModel _usdAnnualDiagramViewModel;
         private readonly BasketDiagramViewModel _basketDiagramViewModel;
 
@@ -38,17 +39,22 @@ namespace Keeper2018
             BasketDiagramViewModel basketDiagramViewModel)
         {
             _windowManager = windowManager;
-            _rates = keeperDb.OfficialRates;
+            _keeperDb = keeperDb;
             _usdAnnualDiagramViewModel = usdAnnualDiagramViewModel;
             _basketDiagramViewModel = basketDiagramViewModel;
-            Task.Factory.StartNew(Init);
-           IsDownloadEnabled = true;
         }
 
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Official rates";
             SelectedRow = Rows?.LastOrDefault();
+        }
+
+        public void Initialize()
+        {
+            _rates = _keeperDb.OfficialRates;
+            Task.Factory.StartNew(Init);
+            IsDownloadEnabled = true;
         }
 
         private void Init()

@@ -51,9 +51,8 @@ namespace Keeper2018
                     return (KeeperBin)binaryFormatter.Deserialize(fStream);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.Message);
                 return null;
             }
         }

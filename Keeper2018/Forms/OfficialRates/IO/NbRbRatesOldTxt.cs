@@ -78,6 +78,8 @@ namespace Keeper2018
 
                 if (cbrRates.ContainsKey(oneDay.Date))
                     currentCbrRate = cbrRates[oneDay.Date];
+                if (oneDay.Date > cbrRates.Keys.Max())
+                    currentCbrRate = -1.0;
 
                 oneDay.MyUsdRate.Unit = 1;
                 oneDay.MyUsdRate.Value = currentRate;

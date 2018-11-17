@@ -5,18 +5,7 @@ namespace Keeper2018
 {
     public static class DbLoader
     {
-        public static async Task<KeeperDb> Load()
-        {
-            var keeperDb = new KeeperDb
-            {
-                Bin = await DbSerializer.Deserialize() ?? await LoadFromOldTxt()
-            };
-            await ExpandBinToDb(keeperDb);
-          
-            return keeperDb;
-        }
-
-        private static async Task<KeeperBin> LoadFromOldTxt()
+        public static async Task<KeeperBin> LoadAllFromOldTxt()
         {
             var keeperBin = new KeeperBin
             {
@@ -39,7 +28,7 @@ namespace Keeper2018
 //            return keeperBin;
 //        }
 
-        private static async Task<int> ExpandBinToDb(KeeperDb keeperDb)
+        public static async Task<int> ExpandBinToDb(KeeperDb keeperDb)
         {
             await Task.Delay(1);
             keeperDb.FillInTheTree(); // must be first

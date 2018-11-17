@@ -1,0 +1,17 @@
+﻿<Window x:Class="Keeper2018.DbLoadingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Height="250" Width="500" WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Загрузка данных из текстовых файлов." Margin="5,20,5,5" TextAlignment="Center"/>
+        <TextBlock DockPanel.Dock="Top" Text="Пожалуйста, подождите..." Margin="5,5,5,5" TextAlignment="Center"/>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button DockPanel.Dock="Right" Margin="5,5,5,20" Width="100" Content="Cancel" Name="Cancel" Height="22"/>
+        </DockPanel>
+        <ProgressBar DockPanel.Dock="Bottom" Height="25" Margin="10,0,10,30" IsIndeterminate="True" Background="White" BorderBrush="Black" ></ProgressBar>
+        <TextBlock></TextBlock>
+    </DockPanel>
+</Window>
