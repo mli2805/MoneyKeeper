@@ -10,7 +10,9 @@ namespace Keeper2018
         public string Header;
         public bool IsExpanded;
         public bool IsFolder;
+        public Deposit Deposit;
 
+        public bool IsDeposit => Deposit != null;
         public string Name
         {
             get => Header;

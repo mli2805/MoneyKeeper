@@ -65,6 +65,7 @@ namespace Keeper2018
                     Id = account.Id,
                     IsExpanded = account.IsExpanded,
                     IsFolder = account.IsFolder,
+                    Deposit = account.Deposit,
                 };
                 db.AcMoDict.Add(accountModel.Id, accountModel);
 
@@ -119,7 +120,9 @@ namespace Keeper2018
                 Id = model.Id,
                 OwnerId = model.Owner?.Id ?? 0,
                 Header = (string)model.Header,
+                IsFolder = model.IsFolder,
                 IsExpanded = model.IsExpanded,
+                Deposit = model.Deposit,
             };
         }
     }

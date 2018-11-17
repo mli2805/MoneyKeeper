@@ -102,7 +102,7 @@ namespace Keeper2018
                 default: return;
             }
 
-     //       ((AccountTreeViewModel)DataContext).KeeperDb.Flatten();
+            //       ((AccountTreeViewModel)DataContext).KeeperDb.Flatten();
         }
 
         private void MoveAccount(TreeViewItem source, TreeViewItem destination, Place place)
@@ -145,6 +145,12 @@ namespace Keeper2018
                 tempAccountModel.Items.RemoveAt(i);
                 sourceParent.Items.Add(item);
             }
+        }
+
+        private void DockPanel_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ((AccountTreeViewModel)DataContext).SelectedAccount =
+                ((AccountTreeViewModel)DataContext).KeeperDb.GetSelectedAccountModel();
         }
 
         private void MoveIntoFolder(TreeViewItem source, TreeViewItem destination)

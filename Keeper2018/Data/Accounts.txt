@@ -117,7 +117,7 @@
 505 ;         БГПБ Сберка EUR ; 681 ; False ; False ; True
 511 ;         БГПБ расчетная РУР ; 681 ; False ; False ; False
 664 ;         БГПБ Голдовая EUR ; 681 ; False ; False ; True
-682 ;       БИБs ; 161 ; True ; False ; True
+682 ;       БИБs ; 161 ; True ; False ; False
 628 ;         БИБ к Активному EUR ; 682 ; False ; False ; False
 651 ;         БИБ Зарплатная 0117-0122 ; 682 ; False ; False ; False
 689 ;         БИБ MasterCard RUB 04/21 ; 682 ; False ; False ; False
@@ -130,11 +130,12 @@
 633 ;       Альфа-Банк счет в RUB Юля ; 161 ; False ; False ; False
 673 ;       R-Bank Platinum USD ; 161 ; False ; False ; False
 674 ;       R-Bank Platinum Byn ; 161 ; False ; False ; False
-694 ;       Альфа ; 161 ; True ; False ; True
+694 ;       Альфа ; 161 ; True ; False ; False
 695 ;         Зарплатная ; 694 ; False ; False ; False
 697 ;         Visa Usd ; 694 ; False ; False ; False
 698 ;         MasterCard Euro ; 694 ; False ; False ; False
 699 ;         Карта покупок ; 694 ; False ; False ; False
+705 ;       ММБ ; 161 ; True ; False ; False
 385 ;     Детские ; 159 ; True ; False ; False
 386 ;       Яна ; 385 ; False ; False ; False
 387 ;       Глеб ; 385 ; False ; False ; True
@@ -165,14 +166,14 @@
 407 ;     Закладки ; 166 ; True ; False ; True
 536 ;       ММБ Стабильный 17/12/2015 - 17/12/2018 5% ; 407 ; False ; False ; True
 693 ;       Золотые монеты ; 407 ; False ; False ; False
-557 ;       БГПБ Разные ; 407 ; True ; False ; True
+557 ;       БГПБ Разные ; 407 ; True ; False ; False
 577 ;         БГПБ На 5 лет 21/03/2016 - 21/03/2021 byn ; 557 ; False ; False ; True
 447 ;         БГПБ На 10 лет 29/08/2014 - 29/08/2024 ; 557 ; False ; False ; False
 533 ;         БГПБ Деньги на вырост  EUR 9/10/2015 - 9/10/2025 ; 557 ; False ; False ; False
 534 ;         БГПБ Деньги на вырост USD 9/10/2015 - 9/10/2025 ; 557 ; False ; False ; False
 574 ;         БГПБ На 20 лет usd 21/03/2016 - 21/03/2036 ; 557 ; False ; False ; True
 575 ;         БГПБ На 20 лет eur 21/03/2016 - 21/03/2036 ; 557 ; False ; False ; True
-548 ;       БИБ online ; 407 ; True ; False ; True
+548 ;       БИБ online ; 407 ; True ; False ; False
 679 ;         БИБ Активный 30/11/2017 - 25/11/2018 7% BYN ; 548 ; False ; False ; False
 680 ;         БИБ Активный 16/12/2017 - 11/12/2018 7% BYN ; 548 ; False ; False ; True
 550 ;         БИБ Отзывной 6-36 мес 5/02/2016 6% RUB ; 548 ; False ; False ; False
@@ -240,7 +241,7 @@
 622 ;         ММБ Капитальный 36 мес 22/11/2016 - 22/11/2019 4% ; 620 ; False ; False ; False
 645 ;         ММБ Капитальный 36 мес 29/12/2016 - 29/12/2019 4% ; 620 ; False ; False ; False
 660 ;         ММБ Капитальный 36 мес 9/02/2017 - 9/02/2020 3% ; 620 ; False ; False ; False
-670 ;       Банк Решение ; 407 ; True ; False ; True
+670 ;       Банк Решение ; 407 ; True ; False ; False
 671 ;         Решение ФормУспеха 19/10/2017 - 19/10/2019 3.6% ; 670 ; False ; False ; False
 235 ;     Закрытые депозиты ; 166 ; True ; False ; False
 316 ;       АПБ 370 дн 8/09/2004 - 13/09/2005 7,5% usd ; 235 ; False ; False ; True

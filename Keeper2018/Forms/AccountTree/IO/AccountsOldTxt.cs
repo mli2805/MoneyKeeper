@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,30 +11,47 @@ namespace Keeper2018
     {
         public static IEnumerable<Account> LoadFromOldTxt()
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("Accounts.txt"), Encoding.GetEncoding("Windows-1251")).
-                Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
-            foreach (var line in content)
-            {
-                yield return AccountFromString(line);
-            }
+            var deposits = LoadDepositsFromOldTxt().ToList();
+            return File.ReadAllLines(DbUtils.GetTxtFullPath("Accounts.txt"), Encoding.GetEncoding("Windows-1251")).
+                Where(s => !string.IsNullOrWhiteSpace(s)).Select(l => AccountFromString(l, deposits));
         }
 
-
-        private static Account AccountFromString(string s)
+        private static Account AccountFromString(string s, List<Deposit> deposits)
         {
             var substrings = s.Split(';');
-            var account = new Account()
+            var account = new Account
             {
                 Id = Convert.ToInt32(substrings[0]),
-                OwnerId = Convert.ToInt32(substrings[2]),
                 Header = substrings[1].Trim(),
-                IsExpanded = Convert.ToBoolean(substrings[5])
+                OwnerId = Convert.ToInt32(substrings[2]),
+                IsFolder = Convert.ToBoolean(substrings[3]),
+                //IsClosed = Convert.ToBoolean(substrings[4]),
+                IsExpanded = Convert.ToBoolean(substrings[5]),
             };
-            account.IsFolder = Convert.ToBoolean(substrings[3]);
-            //account.IsClosed = Convert.ToBoolean(substrings[4]);
+            account.Deposit = deposits.FirstOrDefault(d => d.MyAccount == account.Id);
             return account;
         }
 
+        private static IEnumerable<Deposit> LoadDepositsFromOldTxt()
+        {
+            return File.ReadAllLines(DbUtils.GetTxtFullPath("Deposits.txt"), Encoding.GetEncoding("Windows-1251"))
+                .Where(s => !string.IsNullOrWhiteSpace(s)).Select(DepositFromString);
+        }
 
+        private static Deposit DepositFromString(string s)
+        {
+            var substrings = s.Split(';');
+            Deposit deposit = new Deposit()
+            {
+                MyAccount = Convert.ToInt32(substrings[0]),
+                DepositOffer = Convert.ToInt32(substrings[1]),
+                Serial = substrings[2].Trim(),
+                StartDate = Convert.ToDateTime(substrings[3], new CultureInfo("ru-RU")),
+                FinishDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU")),
+                ShortName = substrings[5].Trim(),
+                Comment = substrings[6].Replace("|", "\r\n"),
+            };
+            return deposit;
+        }
     }
 }
