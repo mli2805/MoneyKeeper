@@ -28,7 +28,7 @@ namespace Keeper2018
             if ((finalDropEffect == DragDropEffects.Move) && (_target != null))
             {
                 // A Move drop was accepted
-                if (!_draggedItem.Header.ToString().Equals(_target.Header.ToString()))
+                if (!_draggedItem.Header.ToString().Equals(_target.Header.ToString()) && Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
                     DoAction(_draggedItem, _target);
                     // CopyItem(_draggedItem, _target);

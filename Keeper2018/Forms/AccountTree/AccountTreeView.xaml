@@ -20,13 +20,13 @@
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding IsSelectedAccountFolder}">
+                              Background="White" IsEnabled="{Binding SelectedAccount.IsFolder}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Добавить депозит" cal:Message.Attach="AddAccountDeposit" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding IsSelectedAccountFolder}">
+                              Background="White" IsEnabled="{Binding SelectedAccount.IsFolder}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
@@ -42,7 +42,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding IsSelectedAccountDeposit}">
+                              Background="White" IsEnabled="{Binding SelectedAccount.IsDeposit}">
                     </MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu> </TreeView>

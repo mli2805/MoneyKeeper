@@ -18,13 +18,8 @@ namespace Keeper2018
                 if (Equals(value, _selectedAccount)) return;
                 _selectedAccount = value;
                 NotifyOfPropertyChange();
-                NotifyOfPropertyChange(nameof(IsSelectedAccountFolder));
-                NotifyOfPropertyChange(nameof(IsSelectedAccountDeposit));
             }
         }
-
-        public bool IsSelectedAccountFolder => SelectedAccount.IsFolder;
-        public bool IsSelectedAccountDeposit => SelectedAccount.IsDeposit;
 
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager,
             AskDragAccountActionViewModel askDragAccountActionViewModel)
