@@ -13,13 +13,16 @@ namespace Keeper2018
             builder.RegisterType<DbLoadingViewModel>().SingleInstance();
             builder.RegisterType<KeeperDb>().SingleInstance();
 
+            builder.RegisterType<MainMenuViewModel>().SingleInstance();
+
+            builder.RegisterType<AccountTreeViewModel>().SingleInstance();
+            builder.RegisterType<AskDragAccountActionViewModel>().SingleInstance();
+            builder.RegisterType<OneAccountViewModel>().SingleInstance();
+            builder.RegisterType<OneDepositViewModel>().SingleInstance();
+
             builder.RegisterType<OfficialRatesViewModel>().SingleInstance();
             builder.RegisterType<UsdAnnualDiagramViewModel>().SingleInstance();
             builder.RegisterType<BasketDiagramViewModel>().SingleInstance();
-
-            builder.RegisterType<MainMenuViewModel>().SingleInstance();
-            builder.RegisterType<AccountTreeViewModel>().SingleInstance();
-            builder.RegisterType<AskDragAccountActionViewModel>().SingleInstance();
 
             builder.RegisterType<DepositOffersViewModel>().SingleInstance();
             builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();

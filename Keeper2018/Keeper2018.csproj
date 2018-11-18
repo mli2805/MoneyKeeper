@@ -83,6 +83,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Forms\AccountTree\OneAccountView.xaml.cs">
+      <DependentUpon>OneAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\OneAccountViewModel.cs" />
+    <Compile Include="Forms\AccountTree\OneDepositView.xaml.cs">
+      <DependentUpon>OneDepositView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
@@ -186,6 +194,14 @@
     </Compile>
     <Compile Include="Forms\Transactions\TransactionsViewModel.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
+    <Page Include="Forms\AccountTree\OneAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\OneDepositView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\Shell\DbLoadingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

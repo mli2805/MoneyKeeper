@@ -4,6 +4,8 @@ namespace Keeper2018
 {
     public class AccountTreeViewModel : PropertyChangedBase
     {
+        private readonly OneAccountViewModel _oneAccountViewModel;
+        private readonly OneDepositViewModel _oneDepositViewModel;
         private AccountModel _selectedAccount;
         public IWindowManager WindowManager { get; }
         public AskDragAccountActionViewModel AskDragAccountActionViewModel { get; }
@@ -22,8 +24,11 @@ namespace Keeper2018
         }
 
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager,
-            AskDragAccountActionViewModel askDragAccountActionViewModel)
+            AskDragAccountActionViewModel askDragAccountActionViewModel, 
+            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel)
         {
+            _oneAccountViewModel = oneAccountViewModel;
+            _oneDepositViewModel = oneDepositViewModel;
             WindowManager = windowManager;
             AskDragAccountActionViewModel = askDragAccountActionViewModel;
 
@@ -32,17 +37,20 @@ namespace Keeper2018
 
         public void AddAccount()
         {
-
+            WindowManager.ShowDialog(_oneAccountViewModel);
         }
 
         public void AddAccountDeposit()
         {
-
+            WindowManager.ShowDialog(_oneDepositViewModel);
         }
 
         public void ChangeAccount()
         {
-
+            if (SelectedAccount.IsDeposit)
+                WindowManager.ShowDialog(_oneDepositViewModel);
+            else
+                WindowManager.ShowDialog(_oneAccountViewModel);
         }
         public void RemoveSelectedAccount()
         {
