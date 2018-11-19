@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Keeper2018
@@ -28,15 +29,22 @@ namespace Keeper2018
 //            return keeperBin;
 //        }
 
-        public static async Task<int> ExpandBinToDb(KeeperDb keeperDb)
+        public static void ExpandBinToDb(KeeperDb keeperDb)
         {
-            await Task.Delay(1);
-            keeperDb.FillInTheTree(); // must be first
+            keeperDb.FillInAccountTree(); // must be first
 
             keeperDb.OfficialRates = keeperDb.Bin.OfficialRates; // real expansion will be made in ViewModel c-tor
-            keeperDb.AssociationsToModels();
-            keeperDb.TransToModels();
-            return 1;
+            keeperDb.AssociationModels = new ObservableCollection<LineModel>
+                (keeperDb.Bin.TagAssociations.Select(a=>a.Map(keeperDb.AcMoDict)));
+//            keeperDb.DepositOfferModels = new ObservableCollection<DepositOfferModel>
+//                (keeperDb.Bin.DepositOffers.Select(x=>x.Map(keeperDb.Bin.AccountPlaneList)));
+            keeperDb.TransactionModels = new ObservableCollection<TransactionModel>
+                (keeperDb.Bin.Transactions.Select(t=>t.Map(keeperDb.AcMoDict)));
+        }
+
+        public static void DbToBin(this KeeperDb db)
+        {
+            db.FlattenAccountTree();
         }
     }
 }

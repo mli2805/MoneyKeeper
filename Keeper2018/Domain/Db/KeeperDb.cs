@@ -26,7 +26,5 @@ namespace Keeper2018
 
         public ObservableCollection<TransactionModel> TransactionModels { get; set; }
         public ObservableCollection<LineModel> AssociationModels { get; set; }
-        public ObservableCollection<DepositOfferModel> OfferModels { get; set; }
-
     }
 }

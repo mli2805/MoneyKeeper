@@ -34,6 +34,7 @@ namespace Keeper2018
                 case MainMenuAction.ShowMonthAnalysisForm:
                     break;
                 case MainMenuAction.ShowDepositOffersForm:
+                    _depositOffersViewModel.Initialize();
                     _windowManager.ShowDialog(_depositOffersViewModel);
                     break;
                 case MainMenuAction.ShowTagAssociationsForm:

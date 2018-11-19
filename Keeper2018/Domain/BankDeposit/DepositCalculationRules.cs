@@ -20,5 +20,10 @@ namespace Keeper2018
 
         public bool HasAdditionalProcent { get; set; }
         public double AdditionalProcent { get; set; }
+
+        public DepositCalculationRules ShallowCopy()
+        {
+            return (DepositCalculationRules)MemberwiseClone();
+        }
     }
 }

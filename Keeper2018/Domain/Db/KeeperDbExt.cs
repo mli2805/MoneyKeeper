@@ -1,100 +1,23 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Keeper2018
 {
     public static class KeeperDbExt
     {
-        public static void AssociationsToModels(this KeeperDb db)
-        {
-            db.AssociationModels = new ObservableCollection<LineModel>();
-            foreach (var tagAssociation in db.Bin.TagAssociations)
-            {
-                db.AssociationModels.Add(CreateAssociationModel(db, tagAssociation));
-            }
-        }
-
-        private static LineModel CreateAssociationModel(this KeeperDb db, TagAssociation tagAssociation)
-        {
-            return new LineModel
-            {
-                OperationType = tagAssociation.OperationType,
-                ExternalAccount = db.AcMoDict[tagAssociation.ExternalAccount].Name,
-                Tag = db.AcMoDict[tagAssociation.Tag].Name,
-                Destination = tagAssociation.Destination,
-            };
-        }
-
-        public static void TransToModels(this KeeperDb db)
-        {
-            db.TransactionModels = new ObservableCollection<TransactionModel>();
-            foreach (var transaction in db.Bin.Transactions)
-            {
-                db.TransactionModels.Add(CreateTransModel(db, transaction));
-            }
-        }
-
-        private static TransactionModel CreateTransModel(this KeeperDb db, Transaction transaction)
-        {
-            return new TransactionModel()
-            {
-                Timestamp = transaction.Timestamp,
-                OrdinalInDate = transaction.OrdinalInDate,
-                Operation = transaction.Operation,
-                MyAccount = db.AcMoDict[transaction.MyAccount],
-                MySecondAccount = transaction.MySecondAccount == -1 ? null : db.AcMoDict[transaction.MySecondAccount],
-                Amount = transaction.Amount,
-                AmountInReturn = transaction.AmountInReturn,
-                Currency = transaction.Currency,
-                CurrencyInReturn = transaction.CurrencyInReturn,
-                Tags = transaction.Tags.Select(t => db.AcMoDict[t]).ToList(),
-                Comment = transaction.Comment,
-            };
-        }
-
-
-        public static void FillInTheTree(this KeeperDb db)
+        public static void FillInAccountTree(this KeeperDb db)
         {
             db.AccountsTree = new ObservableCollection<AccountModel>();
             db.AcMoDict = new Dictionary<int, AccountModel>();
             foreach (var account in db.Bin.AccountPlaneList)
             {
-                var accountModel = new AccountModel(account.Header)
-                {
-                    Id = account.Id,
-                    IsExpanded = account.IsExpanded,
-                    IsFolder = account.IsFolder,
-                    Deposit = account.Deposit,
-                };
-                db.AcMoDict.Add(accountModel.Id, accountModel);
-
+                var accountModel = account.Map(db.AcMoDict);
                 if (account.OwnerId == 0)
-                {
                     db.AccountsTree.Add(accountModel);
-                }
-                else
-                {
-                    var ownerModel = GetById(account.OwnerId, db.AccountsTree);
-                    ownerModel.Items.Add(accountModel);
-                    accountModel.Owner = ownerModel;
-                }
             }
         }
-
-        private static AccountModel GetById(int id, ICollection<AccountModel> roots)
-        {
-            foreach (var account in roots)
-            {
-                if (account.Id == id) return account;
-                var acc = GetById(id, account.Children);
-                if (acc != null) return acc;
-            }
-            return null;
-        }
-
-
-        public static void Flatten(this KeeperDb db)
+      
+        public static void FlattenAccountTree(this KeeperDb db)
         {
             db.Bin.AccountPlaneList = new List<Account>();
             foreach (var root in db.AccountsTree)
@@ -105,7 +28,7 @@ namespace Keeper2018
 
         private static IEnumerable<Account> FlattenOne(AccountModel accountModel)
         {
-            var result = new List<Account> { Map(accountModel) };
+            var result = new List<Account> { accountModel.Map() };
             foreach (var child in accountModel.Children)
             {
                 result.AddRange(FlattenOne(child));
@@ -113,7 +36,7 @@ namespace Keeper2018
             return result;
         }
 
-        private static Account Map(AccountModel model)
+        private static Account Map(this AccountModel model)
         {
             return new Account()
             {
@@ -123,6 +46,18 @@ namespace Keeper2018
                 IsFolder = model.IsFolder,
                 IsExpanded = model.IsExpanded,
                 Deposit = model.Deposit,
+            };
+        }
+
+        public static DepositOffer Map(this DepositOfferModel depositOfferModel)
+        {
+            return new DepositOffer()
+            {
+                Id = depositOfferModel.Id,
+                Bank = depositOfferModel.Bank.Id,
+                Title = depositOfferModel.Title,
+                Essentials = depositOfferModel.Essentials,
+                Comment = depositOfferModel.Comment,
             };
         }
     }

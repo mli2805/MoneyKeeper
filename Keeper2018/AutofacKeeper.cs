@@ -25,6 +25,8 @@ namespace Keeper2018
             builder.RegisterType<BasketDiagramViewModel>().SingleInstance();
 
             builder.RegisterType<DepositOffersViewModel>().SingleInstance();
+            builder.RegisterType<OneDepositOfferViewModel>().SingleInstance();
+
             builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();
             builder.RegisterType<TransactionsViewModel>().SingleInstance();
         }

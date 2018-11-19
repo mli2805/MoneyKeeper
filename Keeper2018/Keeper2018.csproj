@@ -83,6 +83,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
+    <Compile Include="Domain\Db\MapToModels.cs" />
     <Compile Include="Forms\AccountTree\OneAccountView.xaml.cs">
       <DependentUpon>OneAccountView.xaml</DependentUpon>
     </Compile>
@@ -91,11 +93,16 @@
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
+    <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
+    <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
+    <Compile Include="Forms\DepositOffers\OneDepositOfferView.xaml.cs">
+      <DependentUpon>OneDepositOfferView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DepositOffers\OneDepositOfferViewModel.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shell\DbLoadingViewModel.cs" />
-    <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Db\AccountComboboxProvider.cs" />
     <Compile Include="Domain\Db\AccountTreeGardener.cs" />
     <Compile Include="Domain\Deposit\Deposit.cs" />
@@ -199,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\AccountTree\OneDepositView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\DepositOffers\OneDepositOfferView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

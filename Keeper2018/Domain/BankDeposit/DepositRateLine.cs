@@ -10,5 +10,10 @@ namespace Keeper2018
         public double AmountFrom { get; set; }
         public double AmountTo { get; set; }
         public double Rate { get; set; }
+
+        public DepositRateLine ShallowCopy()
+        {
+            return (DepositRateLine) MemberwiseClone();
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace Keeper2018
                     TryClose();
             }
             _dbLoaded = true;
-            await DbLoader.ExpandBinToDb(_keeperDb);
+            DbLoader.ExpandBinToDb(_keeperDb);
 
             _officialRatesViewModel.Initialize();
         }
@@ -48,7 +48,7 @@ namespace Keeper2018
         {
             if (_dbLoaded)
             {
-                _keeperDb.Flatten();
+                _keeperDb.DbToBin();
                 await DbSerializer.Serialize(_keeperDb.Bin);
             }
             base.CanClose(callback);

@@ -3,9 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="DepositOffersView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        SizeToContent="Width" Height="700" d:DataContext="{d:DesignInstance keeper2018:DepositOffersViewModel}">
+    <ListView ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedDepositOffer, Mode= TwoWay}" SelectionMode="Single">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="30" />
+                <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Name}" Width="120" />
+                <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}" Width="200" />
+                <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="300" />
+            </GridView>
+        </ListView.View>
+        <i:Interaction.Behaviors>
+            <keeper2018:ScrollListViewToBottomOnAddBehavior />
+            <keeper2018:ScrollListViewToBottomOnLoadBehavior />
+        </i:Interaction.Behaviors>
+        <ListView.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Добавить" cal:Message.Attach="AddOffer"/>
+                <MenuItem Header="Изменить" cal:Message.Attach="EditSelectedOffer"/>
+                <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedOffer"/>
+            </ContextMenu>
+        </ListView.ContextMenu>
+    </ListView>
 </Window>
