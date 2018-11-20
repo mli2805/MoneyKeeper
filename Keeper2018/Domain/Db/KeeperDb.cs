@@ -9,8 +9,6 @@ namespace Keeper2018
         public KeeperBin Bin;
         public Dictionary<int, AccountModel> AcMoDict;
 
-        public List<OfficialRates> OfficialRates { get; set; }
-
         private ObservableCollection<AccountModel> _accountsTree;
         public ObservableCollection<AccountModel> AccountsTree
         {

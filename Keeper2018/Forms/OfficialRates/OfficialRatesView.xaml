@@ -5,38 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance keeper2018:OfficialRatesViewModel}"
         SizeToContent="Width" WindowStartupLocation="CenterScreen" FontSize="13.5">
- 
+
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
             <Button Name="UsdChart" Margin="5" Width="50" Content="Usd" DockPanel.Dock="Left"/>
             <Button Name="BasketChart" Margin="5" Width="60" Content="Basket" DockPanel.Dock="Left"/>
             <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
             <Button Name="Download" Margin="5" Width="100" Content="Download" DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"/>
-            <Button Name="CbrDownload" Margin="5" Width="100" Content="ЦБРФ разовый" DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"/>
             <TextBlock/>
         </DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
-            <TextBlock Text="{Binding LastDayOfYear.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="10,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.UsdStr}" Margin="30,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.EuroStr}" Margin="225,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.UsdStr}" Margin="31,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.EuroBynStr}" Margin="225,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.EuroUsdStr}" Margin="25,0,0,0" />
             <TextBlock Text="{Binding LastDayOfYear.RurStr}" Margin="40,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.RurUsdStr}" Margin="40,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.BasketStr}" Margin="82,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.RurUsdStr}" Margin="32,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.BasketStr}" Margin="65,0,0,0" />
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" AutoGenerateColumns="False" IsReadOnly="True"
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action InputMyUsd]" SelectionMode="Single">
             <DataGrid.Resources>
                 <DataTemplate x:Key="UsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding UsdStr}" Width="65" HorizontalAlignment="Center" Foreground="{Binding UsdBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
-                </DataTemplate> 
+                </DataTemplate>
                 <DataTemplate x:Key="MyUsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding MyUsdStr}" Width="50" HorizontalAlignment="Center" Foreground="Gray"  FontSize="12"/>
+                        <TextBlock Text="{Binding MyUsdStr}" Width="50" HorizontalAlignment="Center" Foreground="Black"  FontSize="11"/>
                         <TextBlock Text=" "/>
                     </StackPanel>
                 </DataTemplate>
@@ -45,10 +47,16 @@
                         <TextBlock Text="{Binding UsdAnnualStr}" Width="110" Foreground="{Binding UsdAnnualBrush}" FontSize="12"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
-                </DataTemplate> 
+                </DataTemplate>
                 <DataTemplate x:Key="EuroTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding EuroStr}" Width="65"/>
+                        <TextBlock Text="{Binding EuroBynStr}" Width="65"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+                 <DataTemplate x:Key="EuroUsdTemplate" DataType="keeper2018:OfficialRatesModel">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding EuroUsdStr}" Width="50" FontSize="11" Foreground="Black" />
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
@@ -81,24 +89,37 @@
                         <TextBlock Text="{Binding BasketAnnualStr}" Width="55" Foreground="{Binding BasketAnnualBrush}" FontSize="12"/>
                         <TextBlock Text="  "/>
                     </StackPanel>
-                </DataTemplate> 
+                </DataTemplate>
                 <Style TargetType="DataGridCell">
                     <Style.Setters>
                         <Setter Property="TextBlock.TextAlignment" Value="Right" />
                         <Setter Property="Padding" Value="5,0"/>
                     </Style.Setters>
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="#CCDAFF" />
+                            <Setter Property="BorderBrush" Value="#CCDAFF" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.Resources>
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />
             </i:Interaction.Behaviors>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Ввести мой курс доллара" cal:Message.Attach="InputMyUsd"/>
+                    <MenuItem Header="Удалить курсы за день" cal:Message.Attach="RemoveLine"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="80"/>
                 <DataGridTemplateColumn Header="USD" CellTemplate="{StaticResource UsdTemplate}"/>
                 <DataGridTemplateColumn Header="мой usd" CellTemplate="{StaticResource MyUsdTemplate}"/>
                 <DataGridTemplateColumn Header="USD, к 31 дек" CellTemplate="{StaticResource UsdAnnualTemplate}"/>
-                <DataGridTemplateColumn Header="Euro" CellTemplate="{StaticResource EuroTemplate}"/>
+                <DataGridTemplateColumn Header="Byn/Eur" CellTemplate="{StaticResource EuroTemplate}"/>
+                <DataGridTemplateColumn Header="Eur/Usd" CellTemplate="{StaticResource EuroUsdTemplate}"/>
                 <DataGridTemplateColumn Header="Rub" CellTemplate="{StaticResource RurTemplate}"/>
                 <DataGridTemplateColumn Header="ЦБРФ" CellTemplate="{StaticResource RurUsdTemplate}"/>
                 <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketTemplate}" />

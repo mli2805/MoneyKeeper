@@ -103,6 +103,10 @@
       <DependentUpon>RulesAndRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\RulesAndRatesViewModel.cs" />
+    <Compile Include="Forms\OfficialRates\InputMyUsdView.xaml.cs">
+      <DependentUpon>InputMyUsdView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OfficialRates\InputMyUsdViewModel.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
@@ -218,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\DepositOffers\RulesAndRatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\OfficialRates\InputMyUsdView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

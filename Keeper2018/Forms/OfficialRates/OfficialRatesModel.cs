@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Media;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class OfficialRatesModel
+    public class OfficialRatesModel : PropertyChangedBase
     {
         public DateTime Date { get; set; }
         public OfficialRates TodayRates { get; set; }
@@ -17,9 +18,22 @@ namespace Keeper2018
         private double _procBasketBreak, _procBasketAnnual;
 
         public string UsdStr { get; set; }
-        public string MyUsdStr { get; set; }
+
+        private string _myUsdStr;
+        public string MyUsdStr
+        {
+            get => _myUsdStr;
+            set
+            {
+                if (value == _myUsdStr) return;
+                _myUsdStr = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public Brush UsdBrush { get; set; }
-        public string EuroStr { get; set; }
+        public string EuroBynStr { get; set; }
+        public string EuroUsdStr { get; set; }
         public string RurStr { get; set; }
         public string RurUsdStr { get; set; }
 
@@ -34,18 +48,21 @@ namespace Keeper2018
         public string UsdAnnualStr { get; set; }
         public Brush UsdAnnualBrush { get; set; }
 
+        private string Template => Date >= new DateTime(2016, 7, 1) ? "#,#.0000" : "#,#.####";
+
         public OfficialRatesModel(OfficialRates record, OfficialRatesModel previous, OfficialRatesModel annual)
         {
             Date = record.Date;
             TodayRates = record;
             YesterdayNbRbRates = previous?.TodayRates.NbRates;
 
-            var template = Date >= new DateTime(2016, 7, 1) ? "#,#.0000" : "#,#.####";
 
-            UsdStr =   TodayRates.NbRates.Usd.Value.ToString(template, new CultureInfo("ru-RU"));
-            MyUsdStr =   TodayRates.MyUsdRate.Value.ToString(template, new CultureInfo("ru-RU"));
-            EuroStr = TodayRates.NbRates.Euro.Value.ToString(template, new CultureInfo("ru-RU"));
-            RurStr =   TodayRates.NbRates.Rur.Value.ToString(template, new CultureInfo("ru-RU"));
+            UsdStr =   TodayRates.NbRates.Usd.Value.ToString(Template, new CultureInfo("ru-RU"));
+            MyUsdStr =   TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
+            EuroBynStr = TodayRates.NbRates.Euro.Value.ToString(Template, new CultureInfo("ru-RU"));
+            EuroUsdStr = (TodayRates.NbRates.Euro.Value/TodayRates.NbRates.Usd.Value)
+                                                .ToString(Template, new CultureInfo("ru-RU"));
+            RurStr =   TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
             
             UsdBrush = YesterdayNbRbRates == null || YesterdayNbRbRates.Usd.Value.Equals(TodayRates.NbRates.Usd.Value)
                 ? Brushes.Black 
@@ -65,7 +82,11 @@ namespace Keeper2018
             SetUsdAnnualStr(annual);
             SetBasketAnnualStr(annual);
             RurUsdStr = TodayRates.CbrRate.Usd.Value.Equals(0) ? "" : TodayRates.CbrRate.Usd.Value.ToString("#,#.##", new CultureInfo("ru-RU"));
+        }
 
+        public void InputMyUsd(double rate)
+        {
+            MyUsdStr = rate.ToString(Template, new CultureInfo("ru-RU"));
         }
 
         private void SetBasketStr()
@@ -130,5 +151,19 @@ namespace Keeper2018
             BasketAnnualStr = $"{_procBasketAnnual:+0.##;-0.##;0}%";
             BasketAnnualBrush = _procBasketAnnual < 0 ? Brushes.LimeGreen : Brushes.Red;
         }
+
+        #region ' _isSelected '
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (value.Equals(_isSelected)) return;
+                _isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
+            }
+        }
+        #endregion
     }
 }

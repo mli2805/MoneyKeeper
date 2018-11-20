@@ -13,6 +13,7 @@ namespace Keeper2018
     {
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _keeperDb;
+        private readonly InputMyUsdViewModel _inputMyUsdViewModel;
         private readonly UsdAnnualDiagramViewModel _usdAnnualDiagramViewModel;
         private readonly BasketDiagramViewModel _basketDiagramViewModel;
 
@@ -35,11 +36,13 @@ namespace Keeper2018
         }
 
         public OfficialRatesViewModel(IWindowManager windowManager, KeeperDb keeperDb,
+            InputMyUsdViewModel inputMyUsdViewModel,
             UsdAnnualDiagramViewModel usdAnnualDiagramViewModel,
             BasketDiagramViewModel basketDiagramViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
+            _inputMyUsdViewModel = inputMyUsdViewModel;
             _usdAnnualDiagramViewModel = usdAnnualDiagramViewModel;
             _basketDiagramViewModel = basketDiagramViewModel;
         }
@@ -52,7 +55,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            _rates = _keeperDb.OfficialRates;
+            _rates = _keeperDb.Bin.OfficialRates;
             Task.Factory.StartNew(Init);
             IsDownloadEnabled = true;
         }
@@ -66,7 +69,7 @@ namespace Keeper2018
             {
                 var current = new OfficialRatesModel(record, previous, annual);
                 Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
-              
+
                 if (!current.BasketDelta.Equals(0))
                     previous = current;
                 if (current.Date.Day == 31 && current.Date.Month == 12)
@@ -114,6 +117,28 @@ namespace Keeper2018
             IsDownloadEnabled = true;
         }
 
+        public void InputMyUsd()
+        {
+            _inputMyUsdViewModel.OfficialRatesModel = SelectedRow;
+            var previousLine = _rates.FirstOrDefault(r => r.Date.Equals(SelectedRow.Date.AddDays(-1)));
+            if (previousLine != null)
+                _inputMyUsdViewModel.MyUsdRate = previousLine.MyUsdRate.Value;
+            _windowManager.ShowDialog(_inputMyUsdViewModel);
+            if (_inputMyUsdViewModel.IsSavePressed)
+            {
+                var rateLine = _rates.First(r => r.Date.Equals(SelectedRow.Date));
+                rateLine.MyUsdRate.Value = _inputMyUsdViewModel.MyUsdRate;
+                SelectedRow.InputMyUsd(_inputMyUsdViewModel.MyUsdRate);
+            }
+        }
+
+        public void RemoveLine()
+        {
+            var rateLine = _rates.First(r => r.Date.Equals(SelectedRow.Date));
+            _rates.Remove(rateLine);
+            Rows.Remove(SelectedRow);
+        }
+
         public async void CbrDownload()
         {
             IsDownloadEnabled = false;
@@ -144,7 +169,7 @@ namespace Keeper2018
 
         public void Close()
         {
-           
+
             TryClose();
         }
 

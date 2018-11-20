@@ -33,7 +33,6 @@ namespace Keeper2018
         {
             keeperDb.FillInAccountTree(); // must be first
 
-            keeperDb.OfficialRates = keeperDb.Bin.OfficialRates; // real expansion will be made in ViewModel c-tor
             keeperDb.AssociationModels = new ObservableCollection<LineModel>
                 (keeperDb.Bin.TagAssociations.Select(a=>a.Map(keeperDb.AcMoDict)));
 //            keeperDb.DepositOfferModels = new ObservableCollection<DepositOfferModel>
