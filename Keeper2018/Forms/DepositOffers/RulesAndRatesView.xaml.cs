@@ -1,11 +1,11 @@
 ﻿namespace Keeper2018
 {
     /// <summary>
-    /// Interaction logic for DepositOffersView.xaml
+    /// Interaction logic for RulesAndRatesView.xaml
     /// </summary>
-    public partial class DepositOffersView
+    public partial class RulesAndRatesView
     {
-        public DepositOffersView()
+        public RulesAndRatesView()
         {
             InitializeComponent();
         }

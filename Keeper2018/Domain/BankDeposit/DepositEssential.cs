@@ -7,8 +7,8 @@ namespace Keeper2018
     [Serializable]
     public class DepositEssential
     {
-        public DepositCalculationRules CalculationRules { get; set; }
-        public List<DepositRateLine> RateLines { get; set; }
+        public DepositCalculationRules CalculationRules { get; set; } = new DepositCalculationRules();
+        public List<DepositRateLine> RateLines { get; set; } = new List<DepositRateLine>();
 
         public DepositEssential DeepCopy()
         {

@@ -24,8 +24,9 @@ namespace Keeper2018
             builder.RegisterType<UsdAnnualDiagramViewModel>().SingleInstance();
             builder.RegisterType<BasketDiagramViewModel>().SingleInstance();
 
-            builder.RegisterType<DepositOffersViewModel>().SingleInstance();
-            builder.RegisterType<OneDepositOfferViewModel>().SingleInstance();
+            builder.RegisterType<BankOffersViewModel>().SingleInstance();
+            builder.RegisterType<OneBankOfferViewModel>().SingleInstance();
+            builder.RegisterType<RulesAndRatesViewModel>().SingleInstance();
 
             builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();
             builder.RegisterType<TransactionsViewModel>().SingleInstance();

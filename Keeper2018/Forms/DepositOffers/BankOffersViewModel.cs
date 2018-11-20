@@ -6,11 +6,11 @@ using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class DepositOffersViewModel : Screen
+    public class BankOffersViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
-        private readonly OneDepositOfferViewModel _oneDepositOfferViewModel;
+        private readonly OneBankOfferViewModel _oneBankOfferViewModel;
         public ObservableCollection<DepositOfferModel> Rows { get;set; }
 
         private DepositOfferModel _selectedDepositOffer;
@@ -25,12 +25,12 @@ namespace Keeper2018
             }
         }
 
-        public DepositOffersViewModel(IWindowManager windowManager, KeeperDb db, 
-            OneDepositOfferViewModel oneDepositOfferViewModel)
+        public BankOffersViewModel(IWindowManager windowManager, KeeperDb db, 
+            OneBankOfferViewModel oneBankOfferViewModel)
         {
             _windowManager = windowManager;
             _db = db;
-            _oneDepositOfferViewModel = oneDepositOfferViewModel;
+            _oneBankOfferViewModel = oneBankOfferViewModel;
         }
 
         public void Initialize()
@@ -47,14 +47,14 @@ namespace Keeper2018
 
         public void AddOffer()
         {
-            _oneDepositOfferViewModel.Initialize(null);
-            _windowManager.ShowDialog(_oneDepositOfferViewModel);
+            _oneBankOfferViewModel.Initialize(null);
+            _windowManager.ShowDialog(_oneBankOfferViewModel);
         }
 
         public void EditSelectedOffer()
         {
-            _oneDepositOfferViewModel.Initialize(SelectedDepositOffer);
-            _windowManager.ShowDialog(_oneDepositOfferViewModel);
+            _oneBankOfferViewModel.Initialize(SelectedDepositOffer);
+            _windowManager.ShowDialog(_oneBankOfferViewModel);
         }
 
         public void RemoveSelectedOffer()

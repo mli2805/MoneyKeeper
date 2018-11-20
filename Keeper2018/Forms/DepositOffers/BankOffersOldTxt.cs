@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Keeper2018
 {
-    public class DepositOffersOldTxt
+    public class BankOffersOldTxt
     {
         public static async Task<List<DepositOffer>> LoadFromOldTxtAsync(List<Account> accountsPlaneList)
         {

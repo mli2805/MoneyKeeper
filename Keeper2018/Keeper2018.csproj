@@ -95,10 +95,14 @@
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
-    <Compile Include="Forms\DepositOffers\OneDepositOfferView.xaml.cs">
-      <DependentUpon>OneDepositOfferView.xaml</DependentUpon>
+    <Compile Include="Forms\DepositOffers\OneBankOfferView.xaml.cs">
+      <DependentUpon>OneBankOfferView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DepositOffers\OneDepositOfferViewModel.cs" />
+    <Compile Include="Forms\DepositOffers\OneBankOfferViewModel.cs" />
+    <Compile Include="Forms\DepositOffers\RulesAndRatesView.xaml.cs">
+      <DependentUpon>RulesAndRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DepositOffers\RulesAndRatesViewModel.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
@@ -145,11 +149,11 @@
     <Compile Include="Domain\Transaction\CurrencyCode.cs" />
     <Compile Include="Domain\Transaction\OperationType.cs" />
     <Compile Include="Domain\Transaction\Transaction.cs" />
-    <Compile Include="Forms\DepositOffers\DepositOffersOldTxt.cs" />
-    <Compile Include="Forms\DepositOffers\DepositOffersView.xaml.cs">
-      <DependentUpon>DepositOffersView.xaml</DependentUpon>
+    <Compile Include="Forms\DepositOffers\BankOffersOldTxt.cs" />
+    <Compile Include="Forms\DepositOffers\BankOffersView.xaml.cs">
+      <DependentUpon>BankOffersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DepositOffers\DepositOffersViewModel.cs" />
+    <Compile Include="Forms\DepositOffers\BankOffersViewModel.cs" />
     <Compile Include="Forms\MyMessageBox\MessageType.cs" />
     <Compile Include="Forms\MyMessageBox\MessageTypeExt.cs" />
     <Compile Include="Forms\MyMessageBox\MyMessageBoxLineModel.cs" />
@@ -209,7 +213,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\DepositOffers\OneDepositOfferView.xaml">
+    <Page Include="Forms\DepositOffers\OneBankOfferView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\DepositOffers\RulesAndRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,7 +233,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\DepositOffers\DepositOffersView.xaml">
+    <Page Include="Forms\DepositOffers\BankOffersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

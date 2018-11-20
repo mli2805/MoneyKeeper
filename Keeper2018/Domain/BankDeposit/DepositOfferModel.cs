@@ -11,7 +11,8 @@ namespace Keeper2018
 
         // Conditions of offer could be changed (especially rates, initial sum) while Title remains the same
         // Conditions are applied from some date - key in dictionary
-        public Dictionary<DateTime, DepositEssential> Essentials {get; set; }
+        public Dictionary<DateTime, DepositEssential> Essentials {get; set; } =
+            new Dictionary<DateTime, DepositEssential>(){{DateTime.Today, new DepositEssential()}};
         public string Comment { get; set; }
 
         public DepositOfferModel DeepCopy()

@@ -3,9 +3,9 @@
     /// <summary>
     /// Interaction logic for OneDepositOfferView.xaml
     /// </summary>
-    public partial class OneDepositOfferView
+    public partial class OneBankOfferView
     {
-        public OneDepositOfferView()
+        public OneBankOfferView()
         {
             InitializeComponent();
         }
