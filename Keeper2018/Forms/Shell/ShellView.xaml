@@ -1,12 +1,21 @@
 <Window x:Class="Keeper2018.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:keeper2018="clr-namespace:Keeper2018"
-        Width="600" Height="700" WindowStartupLocation="CenterScreen">
-
+        xmlns:keeper2018="clr-namespace:Keeper2018" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        Width="700" Height="700" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance keeper2018:ShellViewModel}">
     <DockPanel>
         <keeper2018:MainMenuView DockPanel.Dock="Top" DataContext="{Binding MainMenuViewModel}"/>
-        <keeper2018:AccountTreeView DataContext="{Binding AccountTreeViewModel}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <keeper2018:AccountTreeView Grid.Column="0" DataContext="{Binding AccountTreeViewModel}" DockPanel.Dock="Left"/>
+            <StackPanel Grid.Column="1">
+                <keeper2018:BalanceOrTrafficView DataContext="{Binding BalanceOrTrafficViewModel}"/>
+            </StackPanel>
+        </Grid>
     </DockPanel>
 
 </Window>

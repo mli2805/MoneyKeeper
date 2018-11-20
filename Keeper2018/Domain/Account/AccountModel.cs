@@ -31,6 +31,21 @@ namespace Keeper2018
         }
 
         public bool IsFolder { get; set; }
+
+        public bool Is(AccountModel accountModel)
+        {
+            if (Equals(accountModel)) return true;
+            return Owner != null && Owner.Is(accountModel);
+        }
+
+        // возвращает первого потомка accountModel'a , если да.
+        public AccountModel IsC(AccountModel accountModel)
+        {
+            if (Equals(accountModel)) return this;
+            if (Owner == null) return null;
+            if (Owner.Equals(accountModel)) return this;
+            return Owner.IsC(accountModel);
+        }
       
     }
 }

@@ -7,18 +7,22 @@ namespace Keeper2018
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ShellViewModel>().As<IShell>();
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
 
-            builder.RegisterType<DbLoadingViewModel>().SingleInstance();
             builder.RegisterType<KeeperDb>().SingleInstance();
+            builder.RegisterType<DbLoadingViewModel>().SingleInstance();
+
+            builder.RegisterType<ShellPartsBinder>().SingleInstance();
+            builder.RegisterType<ShellViewModel>().As<IShell>();
 
             builder.RegisterType<MainMenuViewModel>().SingleInstance();
+            builder.RegisterType<BalanceOrTrafficViewModel>().SingleInstance();
 
             builder.RegisterType<AccountTreeViewModel>().SingleInstance();
             builder.RegisterType<AskDragAccountActionViewModel>().SingleInstance();
             builder.RegisterType<OneAccountViewModel>().SingleInstance();
             builder.RegisterType<OneDepositViewModel>().SingleInstance();
+            builder.RegisterType<DepositReportViewModel>().SingleInstance();
 
             builder.RegisterType<OfficialRatesViewModel>().SingleInstance();
             builder.RegisterType<InputMyUsdViewModel>().SingleInstance();

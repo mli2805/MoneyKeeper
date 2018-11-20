@@ -6,30 +6,23 @@ namespace Keeper2018
     {
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
-        private AccountModel _selectedAccount;
+        private readonly DepositReportViewModel _depositReportViewModel;
         public IWindowManager WindowManager { get; }
+        public ShellPartsBinder ShellPartsBinder { get; }
         public AskDragAccountActionViewModel AskDragAccountActionViewModel { get; }
 
         public KeeperDb KeeperDb { get; set; }
 
-        public AccountModel SelectedAccount
-        {
-            get => _selectedAccount;
-            set
-            {
-                if (Equals(value, _selectedAccount)) return;
-                _selectedAccount = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager,
+        public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel, 
-            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel)
+            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, 
+            DepositReportViewModel depositReportViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
+            _depositReportViewModel = depositReportViewModel;
             WindowManager = windowManager;
+            ShellPartsBinder = shellPartsBinder;
             AskDragAccountActionViewModel = askDragAccountActionViewModel;
 
             KeeperDb = keeperDb;
@@ -47,7 +40,7 @@ namespace Keeper2018
 
         public void ChangeAccount()
         {
-            if (SelectedAccount.IsDeposit)
+            if (ShellPartsBinder.SelectedAccountModel.IsDeposit)
                 WindowManager.ShowDialog(_oneDepositViewModel);
             else
                 WindowManager.ShowDialog(_oneAccountViewModel);
@@ -59,7 +52,8 @@ namespace Keeper2018
 
         public void ShowDepositReport()
         {
-
+            _depositReportViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+            WindowManager.ShowDialog(_depositReportViewModel);
         }
 
     }

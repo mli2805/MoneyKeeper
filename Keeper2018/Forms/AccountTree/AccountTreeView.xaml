@@ -8,8 +8,8 @@
              d:DataContext="{d:DesignData AccountTreeViewModel}"
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
-    <DockPanel PreviewMouseRightButtonUp="DockPanel_PreviewMouseRightButtonUp">
-        <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding KeeperDb.AccountsTree}" FontSize="14">
+    <DockPanel PreviewMouseUp="DockPanel_PreviewMouseUp">
+        <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding KeeperDb.AccountsTree}" FontSize="13">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <EventSetter Event="DragOver" Handler="treeView_DragOver"/>
@@ -20,13 +20,13 @@
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding SelectedAccount.IsFolder}">
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Добавить депозит" cal:Message.Attach="AddAccountDeposit" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding SelectedAccount.IsFolder}">
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
@@ -42,7 +42,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding SelectedAccount.IsDeposit}">
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsDeposit}">
                     </MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu> </TreeView>
