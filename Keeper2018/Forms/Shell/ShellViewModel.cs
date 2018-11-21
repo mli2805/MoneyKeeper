@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -33,6 +34,7 @@ namespace Keeper2018
         public BalanceOrTraffic BalanceOrTraffic { get; set; }
         public Period SelectedPeriod { get; set; } = new Period(){FinishMoment = DateTime.Today.Date.AddDays(1).AddSeconds(-1)};
     }
+
     public class ShellViewModel : Screen, IShell
     {
         public MainMenuViewModel MainMenuViewModel { get; set; }
@@ -40,12 +42,13 @@ namespace Keeper2018
         public BalanceOrTrafficViewModel BalanceOrTrafficViewModel { get; }
 
         private readonly KeeperDb _keeperDb;
+        private readonly ShellPartsBinder _shellPartsBinder;
         private readonly IWindowManager _windowManager;
         private readonly DbLoadingViewModel _dbLoadingViewModel;
         private readonly OfficialRatesViewModel _officialRatesViewModel;
         private bool _dbLoaded;
 
-        public ShellViewModel(IWindowManager windowManager, KeeperDb keeperDb,
+        public ShellViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
             DbLoadingViewModel dbLoadingViewModel, MainMenuViewModel mainMenuViewModel,
             AccountTreeViewModel accountTreeViewModel, BalanceOrTrafficViewModel balanceOrTrafficViewModel, 
             OfficialRatesViewModel officialRatesViewModel)
@@ -59,6 +62,7 @@ namespace Keeper2018
             BalanceOrTrafficViewModel = balanceOrTrafficViewModel;
 
             _keeperDb = keeperDb;
+            _shellPartsBinder = shellPartsBinder;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -73,7 +77,7 @@ namespace Keeper2018
             }
             _dbLoaded = true;
             DbLoader.ExpandBinToDb(_keeperDb);
-
+            _shellPartsBinder.SelectedAccountModel = _keeperDb.AccountsTree.First(r => r.Name == "Мои");
             _officialRatesViewModel.Initialize();
         }
 

@@ -45,9 +45,9 @@ namespace Keeper2018
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
             tran.MyAccount = accountsPlaneList.First(account => account.Header == substrings[2].Trim()).Id;
             tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Header == substrings[3].Trim()).Id : -1;
-            tran.Amount = Convert.ToDouble(substrings[4], new CultureInfo("en-US"));
+            tran.Amount = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
             tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]);
-            tran.AmountInReturn = Convert.ToDouble(substrings[6], new CultureInfo("en-US"));
+            tran.AmountInReturn = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
             tran.CurrencyInReturn = substrings[7].Trim() != "" ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]) : CurrencyCode.USD;
             tran.Tags = TagsFromString(substrings[8].Trim(), accountsPlaneList);
             tran.Comment = substrings[9].Trim();

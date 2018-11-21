@@ -11,7 +11,7 @@
 593 ;     Воложинский УКС ; 183 ; False ; False ; False
 594 ;     Воложинский РЭС ; 183 ; False ; False ; False
 663 ;     ОГиМ ; 183 ; False ; False ; False
-170 ;   ДеньгоДатели ; 157 ; True ; False ; True
+170 ;   ДеньгоДатели ; 157 ; True ; False ; False
 171 ;     Наниматели ; 170 ; True ; False ; True
 172 ;       ОптикСофт ; 171 ; False ; False ; False
 173 ;       ЮКОЛА ; 171 ; False ; False ; False
@@ -104,13 +104,13 @@
 158 ; Мои ; 0 ; True ; False ; True
 
 159 ;   На руках ; 158 ; True ; False ; True
-160 ;     Наличные ; 159 ; True ; False ; True
+160 ;     Наличные ; 159 ; True ; False ; False
 162 ;       Мой кошелек ; 160 ; False ; False ; False
 163 ;       Юлин кошелек ; 160 ; False ; False ; True
 167 ;       Шкаф ; 160 ; False ; False ; True
 168 ;       Шкаф единички ; 160 ; False ; False ; True
 169 ;       Тумбочка ; 160 ; False ; False ; True
-161 ;     Карточки ; 159 ; True ; False ; True
+161 ;     Карточки ; 159 ; True ; False ; False
 681 ;       БГПБs ; 161 ; True ; False ; False
 675 ;         БГПБ Расчетная BYN ; 681 ; False ; False ; False
 504 ;         БГПБ Сберка USD ; 681 ; False ; False ; False
@@ -163,7 +163,7 @@
 283 ;   Мне должны ; 158 ; False ; False ; False
 166 ;   Депозиты ; 158 ; True ; False ; True
 703 ;     ВТБ Верный курс 24/08/2018 - 23/10/2019 12.5% ; 166 ; False ; False ; True
-407 ;     Закладки ; 166 ; True ; False ; True
+407 ;     Закладки ; 166 ; True ; False ; False
 536 ;       ММБ Стабильный 17/12/2015 - 17/12/2018 5% ; 407 ; False ; False ; True
 693 ;       Золотые монеты ; 407 ; False ; False ; False
 557 ;       БГПБ Разные ; 407 ; True ; False ; False

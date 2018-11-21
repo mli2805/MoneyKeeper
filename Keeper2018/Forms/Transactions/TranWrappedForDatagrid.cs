@@ -37,7 +37,7 @@ namespace Keeper2018
                 ? ShowAmount(Tran.Amount, Tran.Currency) 
                 : ShowAmount(Tran.Amount, Tran.Currency) + " ->\n    " + ShowAmount(Tran.AmountInReturn, Tran.CurrencyInReturn);
         }
-        private string ShowAmount(double amount, CurrencyCode? currency)
+        private string ShowAmount(decimal amount, CurrencyCode? currency)
         {
             return currency == CurrencyCode.BYR
                 ? $" {amount:#,0} {currency.ToString().ToLower()}"
