@@ -14,6 +14,11 @@ namespace Keeper2018
     {
         public DateTime StartDate { get; set; } = new DateTime(2002,1,1);
         public DateTime FinishMoment { get; set; }
+
+        public bool IsIn(DateTime timestamp)
+        {
+            return timestamp > StartDate && timestamp < FinishMoment;
+        }
     }
 
     public class ShellPartsBinder : PropertyChangedBase
@@ -31,7 +36,18 @@ namespace Keeper2018
             }
         }
 
-        public BalanceOrTraffic BalanceOrTraffic { get; set; }
+        private BalanceOrTraffic _balanceOrTraffic;
+        public BalanceOrTraffic BalanceOrTraffic    
+        {
+            get => _balanceOrTraffic;
+            set
+            {
+                if (value == _balanceOrTraffic) return;
+                _balanceOrTraffic = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public Period SelectedPeriod { get; set; } = new Period(){FinishMoment = DateTime.Today.Date.AddDays(1).AddSeconds(-1)};
     }
 
@@ -40,6 +56,7 @@ namespace Keeper2018
         public MainMenuViewModel MainMenuViewModel { get; set; }
         public AccountTreeViewModel AccountTreeViewModel { get;  }
         public BalanceOrTrafficViewModel BalanceOrTrafficViewModel { get; }
+        public DateOrPeriodViewModel DateOrPeriodViewModel { get; }
 
         private readonly KeeperDb _keeperDb;
         private readonly ShellPartsBinder _shellPartsBinder;
@@ -48,9 +65,10 @@ namespace Keeper2018
         private readonly OfficialRatesViewModel _officialRatesViewModel;
         private bool _dbLoaded;
 
-        public ShellViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
-            DbLoadingViewModel dbLoadingViewModel, MainMenuViewModel mainMenuViewModel,
+        public ShellViewModel(IWindowManager windowManager, KeeperDb keeperDb, DbLoadingViewModel dbLoadingViewModel,
+            MainMenuViewModel mainMenuViewModel, ShellPartsBinder shellPartsBinder,
             AccountTreeViewModel accountTreeViewModel, BalanceOrTrafficViewModel balanceOrTrafficViewModel, 
+            DateOrPeriodViewModel dateOrPeriodViewModel,
             OfficialRatesViewModel officialRatesViewModel)
         {
             _windowManager = windowManager;
@@ -60,6 +78,7 @@ namespace Keeper2018
             MainMenuViewModel = mainMenuViewModel;
             AccountTreeViewModel = accountTreeViewModel;
             BalanceOrTrafficViewModel = balanceOrTrafficViewModel;
+            DateOrPeriodViewModel = dateOrPeriodViewModel;
 
             _keeperDb = keeperDb;
             _shellPartsBinder = shellPartsBinder;

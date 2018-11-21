@@ -9,13 +9,20 @@
              d:DesignHeight="450" d:DesignWidth="400" 
              cal:Bind.ModelWithoutContext="{Binding .}"
              d:DataContext="{d:DesignInstance keeper2018:BalanceOrTrafficViewModel}">
-    <Grid>
-        <ListView Margin="5" ItemsSource="{Binding Lines}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="{Binding AccountName}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>    
-    </Grid>
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Bottom" Text="Итого" Margin="5"/>
+            <DataGrid Width="Auto" ItemsSource="{Binding Lines}" Background="White"
+                      HorizontalGridLinesBrush="LavenderBlush" VerticalGridLinesBrush="LavenderBlush"
+                      AutoGenerateColumns="False" CanUserSortColumns="False" BorderThickness="0,0,0,1" Margin="5,5,5,5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*" Binding="{Binding .}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{Binding DataContext.AccountName, RelativeSource={RelativeSource AncestorType={x:Type keeper2018:BalanceOrTrafficView}}}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Border>
 </UserControl>

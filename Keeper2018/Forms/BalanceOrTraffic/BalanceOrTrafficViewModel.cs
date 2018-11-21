@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
@@ -71,7 +70,7 @@ namespace Keeper2018
         private IEnumerable<string> GetChildBalanceLines()
         {
             var childrenBalances = new GroupOfBalances();
-            foreach (var tran in _db.TransactionModels)
+            foreach (var tran in _db.TransactionModels.Where(t=>ShellPartsBinder.SelectedPeriod.IsIn(t.Timestamp)))
             {
                 switch (tran.Operation)
                 {
