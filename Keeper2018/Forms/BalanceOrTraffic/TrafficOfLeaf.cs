@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -81,13 +82,7 @@ namespace Keeper2018
             var shortLine = $"{tran.Timestamp.Date.ToShortDateString()}  {sign}{amount} {currency.ToString().ToLower()}";
             if (currency != CurrencyCode.USD)
             {
-                var rateLine = _db.Bin.OfficialRates.First(r => r.Date.Date == tran.Timestamp.Date);
-                var amountInUsd = currency == CurrencyCode.BYR || currency == CurrencyCode.BYN
-                    ? (double)amount / rateLine.MyUsdRate.Value
-                    : currency == CurrencyCode.EUR
-                        ? (double)amount * rateLine.NbRates.Euro.Value / rateLine.NbRates.Usd.Value
-                        : (double)amount * rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / rateLine.NbRates.Usd.Value;
-
+                var amountInUsd = _db.AmountInUsd(tran.Timestamp, currency, amount);
                 shortLine = shortLine + $" ({sign}{amountInUsd:#.00}$)";
             }
             return $"  {shortLine} {tran.Comment}";
