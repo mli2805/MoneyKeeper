@@ -12,7 +12,7 @@
     <Border BorderBrush="Gray" BorderThickness="1">
         <DockPanel>
             <TextBlock DockPanel.Dock="Bottom" Text="Итого" Margin="5"/>
-            <DataGrid Width="Auto" ItemsSource="{Binding Lines}" Background="White"
+            <DataGrid Width="Auto" ItemsSource="{Binding Lines}" Background="White" IsReadOnly="True"
                       HorizontalGridLinesBrush="LavenderBlush" VerticalGridLinesBrush="LavenderBlush"
                       AutoGenerateColumns="False" CanUserSortColumns="False" BorderThickness="0,0,0,1" Margin="5,5,5,5">
                 <DataGrid.Columns>

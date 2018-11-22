@@ -97,10 +97,18 @@
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Balance.cs" />
     <Compile Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml.cs">
       <DependentUpon>BalanceOrTrafficView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\BalanceOrTraffic\BalanceOrTrafficViewModel.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\GroupOfBalances.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\ITraffic.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficDictionaries.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficLines.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficOfFolder.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficOfLeaf.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficPair.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
     <Compile Include="Forms\DateOrPeriod\DateOrPeriodView.xaml.cs">
@@ -119,6 +127,7 @@
       <DependentUpon>InputMyUsdView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\OfficialRates\InputMyUsdViewModel.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\BalanceOrTraffic.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
@@ -175,6 +184,8 @@
     <Compile Include="Forms\MyMessageBox\MyMessageBoxLineModel.cs" />
     <Compile Include="Forms\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\MyMessageBox\MyMessageBoxViewModel.cs" />
+    <Compile Include="Utils\Period.cs" />
+    <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\TagAssociations\ArticlesAssociationsView.xaml.cs">
       <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
     </Compile>
