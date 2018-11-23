@@ -17,7 +17,7 @@ namespace Keeper2018
 
             builder.RegisterType<MainMenuViewModel>().SingleInstance();
             builder.RegisterType<BalanceOrTrafficViewModel>().SingleInstance();
-            builder.RegisterType<DateOrPeriodViewModel>().SingleInstance();
+            builder.RegisterType<TwoSelectorsViewModel>().SingleInstance();
 
             builder.RegisterType<AccountTreeViewModel>().SingleInstance();
             builder.RegisterType<AskDragAccountActionViewModel>().SingleInstance();

@@ -113,10 +113,17 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficPair.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
-    <Compile Include="Forms\DateOrPeriod\DateOrPeriodView.xaml.cs">
-      <DependentUpon>DateOrPeriodView.xaml</DependentUpon>
+    <Compile Include="Forms\DateOrPeriod\DateSelectControl.xaml.cs">
+      <DependentUpon>DateSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DateOrPeriod\DateOrPeriodViewModel.cs" />
+    <Compile Include="Forms\DateOrPeriod\PeriodSelectControl.xaml.cs">
+      <DependentUpon>PeriodSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DateOrPeriod\TwoSelectorsModel.cs" />
+    <Compile Include="Forms\DateOrPeriod\TwoSelectorsView.xaml.cs">
+      <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DateOrPeriod\TwoSelectorsViewModel.cs" />
     <Compile Include="Forms\DepositOffers\OneBankOfferView.xaml.cs">
       <DependentUpon>OneBankOfferView.xaml</DependentUpon>
     </Compile>
@@ -186,6 +193,7 @@
     <Compile Include="Forms\MyMessageBox\MyMessageBoxLineModel.cs" />
     <Compile Include="Forms\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\MyMessageBox\MyMessageBoxViewModel.cs" />
+    <Compile Include="Utils\DateTimeExtantions.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\TagAssociations\ArticlesAssociationsView.xaml.cs">
@@ -250,9 +258,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\DateOrPeriod\DateOrPeriodView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Forms\DateOrPeriod\DateSelectControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\DateOrPeriod\PeriodSelectControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\DateOrPeriod\TwoSelectorsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Forms\DepositOffers\OneBankOfferView.xaml">
       <SubType>Designer</SubType>

@@ -9,7 +9,7 @@ namespace Keeper2018
         public MainMenuViewModel MainMenuViewModel { get; set; }
         public AccountTreeViewModel AccountTreeViewModel { get;  }
         public BalanceOrTrafficViewModel BalanceOrTrafficViewModel { get; }
-        public DateOrPeriodViewModel DateOrPeriodViewModel { get; }
+        public TwoSelectorsViewModel TwoSelectorsViewModel { get; }
 
         private readonly KeeperDb _keeperDb;
         private readonly ShellPartsBinder _shellPartsBinder;
@@ -21,7 +21,7 @@ namespace Keeper2018
         public ShellViewModel(IWindowManager windowManager, KeeperDb keeperDb, DbLoadingViewModel dbLoadingViewModel,
             MainMenuViewModel mainMenuViewModel, ShellPartsBinder shellPartsBinder,
             AccountTreeViewModel accountTreeViewModel, BalanceOrTrafficViewModel balanceOrTrafficViewModel, 
-            DateOrPeriodViewModel dateOrPeriodViewModel,
+            TwoSelectorsViewModel twoSelectorsViewModel,
             OfficialRatesViewModel officialRatesViewModel)
         {
             _windowManager = windowManager;
@@ -31,7 +31,7 @@ namespace Keeper2018
             MainMenuViewModel = mainMenuViewModel;
             AccountTreeViewModel = accountTreeViewModel;
             BalanceOrTrafficViewModel = balanceOrTrafficViewModel;
-            DateOrPeriodViewModel = dateOrPeriodViewModel;
+            TwoSelectorsViewModel = twoSelectorsViewModel;
 
             _keeperDb = keeperDb;
             _shellPartsBinder = shellPartsBinder;

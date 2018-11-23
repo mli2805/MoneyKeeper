@@ -3,23 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:keeper2018="clr-namespace:Keeper2018" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        Width="700" Height="700" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance keeper2018:ShellViewModel}">
+        Width="737" Height="777" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance keeper2018:ShellViewModel}">
     <DockPanel>
         <keeper2018:MainMenuView DockPanel.Dock="Top" DataContext="{Binding MainMenuViewModel}"/>
         <Border DockPanel.Dock="Bottom" Height="30"/>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="1.1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <keeper2018:AccountTreeView Grid.Column="0" Margin="3,3,0,3" DataContext="{Binding AccountTreeViewModel}" DockPanel.Dock="Left"/>
+            <keeper2018:AccountTreeView Grid.Column="0" Margin="3,3,0,0" DataContext="{Binding AccountTreeViewModel}" DockPanel.Dock="Left"/>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <keeper2018:BalanceOrTrafficView Margin="3,3,3,3" DataContext="{Binding BalanceOrTrafficViewModel}"/>
-                <keeper2018:DateOrPeriodView Grid.Row="1" Margin="3,0,3,3" DataContext="{Binding DateOrPeriodViewModel}"/>
+                <keeper2018:TwoSelectorsView Grid.Row="1" Margin="3,0,3,0" DataContext="{Binding TwoSelectorsViewModel}"/>
             </Grid>
         </Grid>
     </DockPanel>
