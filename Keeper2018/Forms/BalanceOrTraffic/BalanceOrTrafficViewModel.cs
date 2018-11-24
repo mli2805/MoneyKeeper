@@ -57,11 +57,12 @@ namespace Keeper2018
         private void ShellPartsBinder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (ShellPartsBinder.SelectedAccountModel == null) return;
-            AccountName = ShellPartsBinder.SelectedAccountModel.Name;
             Lines.Clear();
+            AccountName = ShellPartsBinder.SelectedAccountModel.Name;
+            var isTag = ShellPartsBinder.SelectedAccountModel.Is(_db.AccountsTree.First(a => a.Name == "Мои"));
 
             if (ShellPartsBinder.BalanceOrTraffic == BalanceOrTraffic.Balance)
-                ShowBalance();
+                { if (isTag) ShowTagBalance(); else ShowBalance();}
             else
                 ShowTraffic();
         }
@@ -88,6 +89,11 @@ namespace Keeper2018
                 balance.RegisterTran(tran);
             foreach (var str in balance.Report(ShellPartsBinder.SelectedPeriod.FinishMoment)) Lines.Add(str);
             Total = balance.Total;
+        }
+
+        private void ShowTagBalance()
+        {
+
         }
     }
 }
