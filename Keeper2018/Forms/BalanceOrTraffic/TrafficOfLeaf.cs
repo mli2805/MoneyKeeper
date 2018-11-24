@@ -8,6 +8,7 @@ namespace Keeper2018
         private readonly KeeperDb _db;
         private readonly TrafficLines _traffic = new TrafficLines();
         private readonly List<string> _shortTrans = new List<string>();
+        public string Total { get; set; }
 
         public TrafficOfLeaf(AccountModel accountModel, KeeperDb db)
         {

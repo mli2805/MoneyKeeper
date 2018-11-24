@@ -22,8 +22,8 @@ namespace Keeper2018
 
         public IEnumerable<string> Report()
         {
-            var total = Summarize();
-            foreach (var str in total.Report())
+            var sum = Summarize();
+            foreach (var str in sum.Report())
             {
                 yield return str;
             }
@@ -40,16 +40,16 @@ namespace Keeper2018
 
         private TrafficLines Summarize()
         {
-            var total = new TrafficLines();
+            var sum = new TrafficLines();
             foreach (var pair in _traffics)
             {
                 foreach (var trafficLine in pair.Value.Traffic)
                 {
-                    total.Add(trafficLine.Key, trafficLine.Value.Plus);
-                    total.Sub(trafficLine.Key, trafficLine.Value.Minus);
+                    sum.Add(trafficLine.Key, trafficLine.Value.Plus);
+                    sum.Sub(trafficLine.Key, trafficLine.Value.Minus);
                 }
             }
-            return total;
+            return sum;
         }
     }
 }

@@ -6,5 +6,7 @@ namespace Keeper2018
     {
         void RegisterTran(TransactionModel tran);
         IEnumerable<string> Report();
+        string Total { get; set; }
+
     }
 }

@@ -6,6 +6,7 @@ namespace Keeper2018
     {
         private readonly AccountModel _accountModel;
         private readonly TrafficDictionaries _traffics = new TrafficDictionaries();
+        public string Total { get; set; }
 
         public TrafficOfFolder(AccountModel accountModel)
         {

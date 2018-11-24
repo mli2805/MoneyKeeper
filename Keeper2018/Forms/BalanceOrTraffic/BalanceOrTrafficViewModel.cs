@@ -71,14 +71,14 @@ namespace Keeper2018
             var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
 
             var traffic = isLeaf
-                ? (ITraffic) new TrafficOfLeaf(ShellPartsBinder.SelectedAccountModel, _db)
+                ? (ITraffic)new TrafficOfLeaf(ShellPartsBinder.SelectedAccountModel, _db)
                 : new TrafficOfFolder(ShellPartsBinder.SelectedAccountModel);
 
             foreach (var tran in _db.TransactionModels.Where(t => ShellPartsBinder.SelectedPeriod.Includes(t.Timestamp)))
                 traffic.RegisterTran(tran);
 
             foreach (var str in traffic.Report()) Lines.Add(str);
-            //      Total = traffic.Total;
+            Total = traffic.Total;
         }
 
         private void ShowBalance()
