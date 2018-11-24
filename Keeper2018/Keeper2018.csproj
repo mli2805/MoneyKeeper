@@ -113,17 +113,16 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficPair.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
-    <Compile Include="Forms\DateOrPeriod\DateSelectControl.xaml.cs">
+    <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">
       <DependentUpon>DateSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DateOrPeriod\PeriodSelectControl.xaml.cs">
+    <Compile Include="Forms\DoubleSelector\PeriodSelectControl.xaml.cs">
       <DependentUpon>PeriodSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DateOrPeriod\TwoSelectorsModel.cs" />
-    <Compile Include="Forms\DateOrPeriod\TwoSelectorsView.xaml.cs">
+    <Compile Include="Forms\DoubleSelector\TwoSelectorsView.xaml.cs">
       <DependentUpon>TwoSelectorsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DateOrPeriod\TwoSelectorsViewModel.cs" />
+    <Compile Include="Forms\DoubleSelector\TwoSelectorsViewModel.cs" />
     <Compile Include="Forms\DepositOffers\OneBankOfferView.xaml.cs">
       <DependentUpon>OneBankOfferView.xaml</DependentUpon>
     </Compile>
@@ -258,15 +257,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\DateOrPeriod\DateSelectControl.xaml">
+    <Page Include="Forms\DoubleSelector\DateSelectControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\DateOrPeriod\PeriodSelectControl.xaml">
+    <Page Include="Forms\DoubleSelector\PeriodSelectControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\DateOrPeriod\TwoSelectorsView.xaml">
+    <Page Include="Forms\DoubleSelector\TwoSelectorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

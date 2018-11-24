@@ -9,7 +9,7 @@ namespace Keeper2018
 
         public Period()
         {
-            StartDate = new DateTime(2001,12,31);
+            
         }
 
         public Period(DateTime startDate, DateTime finishMoment)

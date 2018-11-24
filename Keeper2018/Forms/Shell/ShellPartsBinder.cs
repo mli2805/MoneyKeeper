@@ -30,6 +30,32 @@ namespace Keeper2018
             }
         }
 
-        public Period SelectedPeriod { get; set; } = new Period(){FinishMoment = DateTime.Today.Date.AddDays(1).AddSeconds(-1)};
+        public Period SelectedPeriod => _balanceOrTraffic == BalanceOrTraffic.Balance
+                    ? new Period(new DateTime(2001, 12, 31), TranslatedDate)
+                    : new Period(TranslatedPeriod.StartDate, TranslatedPeriod.FinishMoment);
+
+        private Period _translatedPeriod;
+        public Period TranslatedPeriod
+        {
+            get => _translatedPeriod;
+            set
+            {
+                _translatedPeriod = value;
+                NotifyOfPropertyChange(() => TranslatedPeriod);
+                NotifyOfPropertyChange(() => SelectedPeriod);
+            }
+        }
+
+        private DateTime _translatedDate;
+        public DateTime TranslatedDate
+        {
+            get => _translatedDate.GetEndOfDate();
+            set
+            {
+                _translatedDate = value;
+                NotifyOfPropertyChange(() => TranslatedDate);
+                NotifyOfPropertyChange(() => SelectedPeriod);
+            }
+        }
     }
 }

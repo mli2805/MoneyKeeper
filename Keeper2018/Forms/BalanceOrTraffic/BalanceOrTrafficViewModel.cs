@@ -56,6 +56,7 @@ namespace Keeper2018
 
         private void ShellPartsBinder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (ShellPartsBinder.SelectedAccountModel == null) return;
             AccountName = ShellPartsBinder.SelectedAccountModel.Name;
             Lines.Clear();
 
