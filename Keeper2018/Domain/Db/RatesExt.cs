@@ -5,15 +5,26 @@ namespace Keeper2018
 {
     public static class RatesExt
     {
-        public static double AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
+        public static decimal AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
             var rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
             return currency == CurrencyCode.BYR || currency == CurrencyCode.BYN
-                ? (double)amount / rateLine.MyUsdRate.Value
+                ? amount / (decimal)rateLine.MyUsdRate.Value
                 : currency == CurrencyCode.EUR
-                    ? (double)amount * rateLine.NbRates.Euro.Value / rateLine.NbRates.Usd.Value
-                    : (double)amount * rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / rateLine.NbRates.Usd.Value;
+                    ? amount * (decimal)rateLine.NbRates.Euro.Value / (decimal)rateLine.NbRates.Usd.Value
+                    : amount * (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value;
 
+        }
+
+        public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
+        {
+            var shortLine = $"{amount} {currency.ToString().ToLower()}";
+            if (currency != CurrencyCode.USD)
+            {
+                var amountInUsd = db.AmountInUsd(date, currency, amount);
+                shortLine = shortLine + $" ({amountInUsd:#.00}$)";
+            }
+            return shortLine;
         }
     }
 }

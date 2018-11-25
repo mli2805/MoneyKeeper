@@ -1,21 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Keeper2018
 {
     public class BalanceOfAccount
     {
-        private readonly BalanceDictionary _balance = new BalanceDictionary();
-        private readonly AccountModel _accountModel;
+        public readonly BalanceDictionary Balance = new BalanceDictionary();
         private readonly KeeperDb _db;
+        private readonly AccountModel _accountModel;
+        private readonly Period _period;
+        public List<string> Report;
+        public decimal AmountInUsd;
+        public string Total;
 
-        public BalanceOfAccount(AccountModel accountModel, KeeperDb db)
+        public BalanceOfAccount(KeeperDb db, AccountModel accountModel, Period period)
         {
             _accountModel = accountModel;
+            _period = period;
             _db = db;
         }
 
-        public void RegisterTran(TransactionModel tran)
+        public void Evaluate()
+        {
+            foreach (var tran in _db.TransactionModels.Where(t => _period.Includes(t.Timestamp)))
+                RegisterTran(tran);
+            CreateReportAndTotal();
+        }
+
+        private void RegisterTran(TransactionModel tran)
         {
             switch (tran.Operation)
             {
@@ -23,59 +35,58 @@ namespace Keeper2018
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _balance.Add(myAcc, tran.Currency, tran.Amount);
+                            Balance.Add(myAcc, tran.Currency, tran.Amount);
                         break;
                     }
                 case OperationType.Расход:
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _balance.Sub(myAcc, tran.Currency, tran.Amount);
+                            Balance.Sub(myAcc, tran.Currency, tran.Amount);
                         break;
                     }
                 case OperationType.Перенос:
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _balance.Sub(myAcc, tran.Currency, tran.Amount);
+                            Balance.Sub(myAcc, tran.Currency, tran.Amount);
                         var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
                         if (myAcc2 != null)
-                            _balance.Add(myAcc2, tran.Currency, tran.Amount);
+                            Balance.Add(myAcc2, tran.Currency, tran.Amount);
                         break;
                     }
                 case OperationType.Обмен:
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _balance.Sub(myAcc, tran.Currency, tran.Amount);
+                            Balance.Sub(myAcc, tran.Currency, tran.Amount);
                         var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
                         if (myAcc2 != null && tran.CurrencyInReturn != null)
-                            _balance.Add(myAcc2, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
+                            Balance.Add(myAcc2, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
                         break;
                     }
             }
         }
 
-        public IEnumerable<string> Report(DateTime date)
+        private void CreateReportAndTotal()
         {
-            var total = 0.0;
-            foreach (var currency in _balance.Summarize().Currencies)
+            Report = new List<string>();
+            AmountInUsd = 0;
+            foreach (var currency in Balance.Summarize().Currencies)
                 if (currency.Value > 0)
                 {
-                    var amountInUsd = currency.Key == CurrencyCode.USD 
-                                         ? (double)currency.Value 
-                                         : _db.AmountInUsd(date, currency.Key, currency.Value);
-                    total = total + amountInUsd;
-                    yield return $"{currency.Key} {currency.Value:#,0.##}";
+                    var amountInUsd = currency.Key == CurrencyCode.USD
+                                         ? currency.Value
+                                         : _db.AmountInUsd(_period.FinishMoment, currency.Key, currency.Value);
+                    AmountInUsd = AmountInUsd + amountInUsd;
+                    Report.Add($"{currency.Key} {currency.Value:#,0.##}");
                 }
 
             if (_accountModel.IsFolder)
-                foreach (var str in _balance.Report())
-                    yield return str;
+                foreach (var str in Balance.Report())
+                    Report.Add(str);
 
-            Total = $"{total:#,0.00}";
+            Total = $"{AmountInUsd:#,0.00}";
         }
-
-        public string Total;
     }
 }

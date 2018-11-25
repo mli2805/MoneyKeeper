@@ -86,10 +86,11 @@
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Db\MapToModels.cs" />
     <Compile Include="Domain\Db\RatesExt.cs" />
-    <Compile Include="Forms\AccountTree\DepositReportView.xaml.cs">
+    <Compile Include="Forms\AccountTree\DepositReport\DepositReportModel.cs" />
+    <Compile Include="Forms\AccountTree\DepositReport\DepositReportView.xaml.cs">
       <DependentUpon>DepositReportView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\DepositReportViewModel.cs" />
+    <Compile Include="Forms\AccountTree\DepositReport\DepositReportViewModel.cs" />
     <Compile Include="Forms\AccountTree\OneAccountView.xaml.cs">
       <DependentUpon>OneAccountView.xaml</DependentUpon>
     </Compile>
@@ -241,7 +242,7 @@
     </Compile>
     <Compile Include="Forms\Transactions\TransactionsViewModel.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
-    <Page Include="Forms\AccountTree\DepositReportView.xaml">
+    <Page Include="Forms\AccountTree\DepositReport\DepositReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

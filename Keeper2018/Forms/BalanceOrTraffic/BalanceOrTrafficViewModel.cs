@@ -59,10 +59,10 @@ namespace Keeper2018
             if (ShellPartsBinder.SelectedAccountModel == null) return;
             Lines.Clear();
             AccountName = ShellPartsBinder.SelectedAccountModel.Name;
-            var isTag = ShellPartsBinder.SelectedAccountModel.Is(_db.AccountsTree.First(a => a.Name == "Мои"));
+            var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_db.AccountsTree.First(a => a.Name == "Мои"));
 
             if (ShellPartsBinder.BalanceOrTraffic == BalanceOrTraffic.Balance)
-                { if (isTag) ShowTagBalance(); else ShowBalance();}
+            { if (isTag) ShowTagBalance(); else ShowBalance(); }
             else
                 ShowTraffic();
         }
@@ -84,10 +84,9 @@ namespace Keeper2018
 
         private void ShowBalance()
         {
-            var balance = new BalanceOfAccount(ShellPartsBinder.SelectedAccountModel, _db);
-            foreach (var tran in _db.TransactionModels.Where(t => ShellPartsBinder.SelectedPeriod.Includes(t.Timestamp)))
-                balance.RegisterTran(tran);
-            foreach (var str in balance.Report(ShellPartsBinder.SelectedPeriod.FinishMoment)) Lines.Add(str);
+            var balance = new BalanceOfAccount(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
+            balance.Evaluate();
+            foreach (var str in balance.Report) Lines.Add(str);
             Total = balance.Total;
         }
 
