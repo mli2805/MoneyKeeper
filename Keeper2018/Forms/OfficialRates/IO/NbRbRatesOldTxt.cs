@@ -18,17 +18,26 @@ namespace Keeper2018
 
         private static Dictionary<DateTime, double> GetCbrRates()
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("cbrf.csv"), Encoding.GetEncoding("Windows-1251")).ToList();
-
             var result = new Dictionary<DateTime, double>();
-            var delimiters = new[] { ' ', '"' };
-            foreach (var line in content)
+            try
             {
-                var ss = line.Split(',');
-                var date = DateTime.Parse(ss[0].Trim());
-                var str = ss.Length == 3 ? ss[1].Trim(delimiters) + ss[2].Trim(delimiters) : ss[1].Trim(delimiters);
-                var value = double.Parse(str, NumberStyles.Any, new CultureInfo("en-US"));
-                result.Add(date, value);
+                var content = File.ReadAllLines(DbUtils.GetTxtFullPath("cbrf.csv"), Encoding.GetEncoding("Windows-1251")).ToList();
+
+                var delimiters = new[] { ' ', '"' };
+                foreach (var line in content)
+                {
+                    if (line == "") continue;
+                    var ss = line.Split(',');
+                    var date = DateTime.Parse(ss[0].Trim());
+                    var str = ss.Length == 3 ? ss[1].Trim(delimiters) + ss[2].Trim(delimiters) : ss[1].Trim(delimiters);
+                    var value = double.Parse(str, NumberStyles.Any, new CultureInfo("en-US"));
+                    result.Add(date, value);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
             return result;
         }
