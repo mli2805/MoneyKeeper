@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Width="500" d:DataContext="{d:DesignInstance keeper2018:DepositReportViewModel}">
+        Width="777" d:DataContext="{d:DesignInstance keeper2018:DepositReportViewModel}">
     <DockPanel>
         <StackPanel Name="Header" DockPanel.Dock="Top">
             <TextBlock Text="{Binding Model.DepositState}" Margin="5"/>
@@ -21,6 +21,17 @@
             <TextBlock Text="Итоговый прогноз:" Margin="5"/>
             <TextBlock Text="{Binding Model.Forecast}" Margin="5"/>
         </StackPanel>
-        <ListView ItemsSource="{Binding Model.Traffic}"></ListView>
+        <ListView ItemsSource="{Binding Model.Traffic}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="80" />
+                    <GridViewColumn Header="До операции" DisplayMemberBinding="{Binding Before}" Width="120" />
+                    <GridViewColumn Header="Ушло" DisplayMemberBinding="{Binding Outcome}" Width="120" />
+                    <GridViewColumn Header="Пришло" DisplayMemberBinding="{Binding Income}" Width="120" />
+                    <GridViewColumn Header="После" DisplayMemberBinding="{Binding After}" Width="120" />
+                    <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="200" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </DockPanel>
 </Window>

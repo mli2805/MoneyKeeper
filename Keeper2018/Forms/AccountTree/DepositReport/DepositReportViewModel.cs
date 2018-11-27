@@ -39,7 +39,9 @@ namespace Keeper2018
 
             foreach (var tran in _db.TransactionModels)
             {
-                model.Traffic.Add(RegisterTran(tran));
+                var line = RegisterTran(tran);
+                if (line != null)
+                    model.Traffic.Add(line);
             }
 
             return model;
@@ -83,9 +85,10 @@ namespace Keeper2018
                     break;
                 default: return null;
             }
+            if (comment == "") return null;
 
             var result = new DepositReportTrafficLine();
-
+            result.Date = tran.Timestamp;
             result.Comment = string.IsNullOrEmpty(tran.Comment) ? comment : tran.Comment;
             return result;
         }

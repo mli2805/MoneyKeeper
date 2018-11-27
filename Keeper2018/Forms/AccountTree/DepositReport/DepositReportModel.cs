@@ -7,6 +7,11 @@ namespace Keeper2018
     {
         public decimal Amount { get; set; }
         public CurrencyCode Currency { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Amount} {Currency.ToString().ToLower()}";
+        }
     }
     public class DepositReportTrafficLine
     {
