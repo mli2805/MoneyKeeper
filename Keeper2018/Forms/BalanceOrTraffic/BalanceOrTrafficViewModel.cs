@@ -61,33 +61,22 @@ namespace Keeper2018
             AccountName = ShellPartsBinder.SelectedAccountModel.Name;
             var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_db.AccountsTree.First(a => a.Name == "Мои"));
 
-            if (ShellPartsBinder.BalanceOrTraffic == BalanceOrTraffic.Balance)
-            { if (isTag) ShowTagBalance(); else ShowBalance(); }
-            else
-                ShowTraffic();
+            if (isTag) ShowTagBalance();
+            else ShowTraffic(ShellPartsBinder.BalanceOrTraffic);
         }
 
-        private void ShowTraffic()
+        private void ShowTraffic(BalanceOrTraffic mode)
         {
             var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
 
             var traffic = isLeaf
-                ? (ITraffic)new TrafficOfLeaf(ShellPartsBinder.SelectedAccountModel, _db)
-                : new TrafficOfFolder(ShellPartsBinder.SelectedAccountModel);
+                ? (ITraffic)new TrafficOfAccountCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod)
+                : new TrafficOfBranchCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
 
-            foreach (var tran in _db.TransactionModels.Where(t => ShellPartsBinder.SelectedPeriod.Includes(t.Timestamp)))
-                traffic.RegisterTran(tran);
+            traffic.Evaluate();
 
-            foreach (var str in traffic.Report()) Lines.Add(str);
+            foreach (var str in traffic.Report(mode)) Lines.Add(str);
             Total = traffic.Total;
-        }
-
-        private void ShowBalance()
-        {
-            var balance = new BalanceOfAccount(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
-            balance.Evaluate();
-            foreach (var str in balance.Report) Lines.Add(str);
-            Total = balance.Total;
         }
 
         private void ShowTagBalance()

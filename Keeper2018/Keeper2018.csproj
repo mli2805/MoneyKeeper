@@ -99,19 +99,20 @@
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Balance\Balance.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Balance\BalanceOfAccount.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceOfAccount.cs" />
     <Compile Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml.cs">
       <DependentUpon>BalanceOrTrafficView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\BalanceOrTraffic\BalanceOrTrafficViewModel.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Balance\BalanceDictionary.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Traffic\ITraffic.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Traffic\TrafficDictionaries.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Traffic\TrafficLines.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Traffic\TrafficOfFolder.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Traffic\TrafficOfLeaf.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Traffic\TrafficPair.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\ReportLine.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\ReportLineFactory.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\ITraffic.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\ShortLineFactory.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\TrafficOfBranch.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\TrafficOfAccount.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficOfBranchCalculator.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficOfAccountCalculator.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\TrafficPair.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">
@@ -136,7 +137,7 @@
       <DependentUpon>InputMyUsdView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\OfficialRates\InputMyUsdViewModel.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Balance\BalanceOrTraffic.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceOrTraffic.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
@@ -370,8 +371,6 @@
     <Resource Include="Resources\minus16.ico" />
     <Resource Include="Resources\plus16.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\BalanceOrTraffic\Tag\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

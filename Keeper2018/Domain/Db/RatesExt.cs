@@ -26,5 +26,18 @@ namespace Keeper2018
             }
             return shortLine;
         }
+
+        public static decimal BalanceInUsd(this KeeperDb db, DateTime date, BalanceOfAccount balance)
+        {
+            decimal amountInUsd = 0;
+            foreach (var pair in balance.Currencies)
+            {
+                amountInUsd = amountInUsd + 
+                              (pair.Key == CurrencyCode.USD 
+                                  ? pair.Value 
+                                  : db.AmountInUsd(date, pair.Key, pair.Value));
+            }
+            return amountInUsd;
+        }
     }
 }

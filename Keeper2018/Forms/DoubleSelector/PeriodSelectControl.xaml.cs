@@ -101,9 +101,9 @@ namespace Keeper2018
             SelectedPeriod = new Period(DateTime.Today, DateTime.Today.AddDays(1).AddSeconds(-1));
         }
 
-        private void FromVeryBeginClick(object sender, RoutedEventArgs e)
+        private void FromVeryBeginingClick(object sender, RoutedEventArgs e)
         {
-            SelectedPeriod = new Period(new DateTime(2002, 1, 1), DateTime.Today.AddDays(1).AddSeconds(-1));
+            SelectedPeriod = new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1).AddSeconds(-1));
         }
 
         private void ThisMonthClick(object sender, RoutedEventArgs e)

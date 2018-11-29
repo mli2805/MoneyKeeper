@@ -34,7 +34,7 @@
             <Button Margin="5" Height="30" Width="85" Content="Этот год"  Click="ThisYearPaymentsClick" />
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Margin="5" Height="30" Width="85"  Click="FromVeryBeginClick">
+            <Button Margin="5" Height="30" Width="85"  Click="FromVeryBeginingClick">
                 <ContentControl >
                     <Grid>
                         <Grid.RowDefinitions>

@@ -33,9 +33,9 @@ namespace Keeper2018
             var model = new DepositReportModel();
             model.DepositName = accountModel.Name;
 
-            var balanceOfAccount = new BalanceOfAccount(_db, accountModel, new Period(new DateTime(2001, 12, 31), DateTime.Today.GetEndOfDate()));
-            balanceOfAccount.Evaluate();
-            model.DepositState = balanceOfAccount.AmountInUsd == 0 ? "Депозит закрыт" : "Действующий депозит";
+            var traffic = new TrafficOfAccountCalculator(_db, accountModel, new Period(new DateTime(2001, 12, 31), DateTime.Today.GetEndOfDate()));
+            traffic.Evaluate();
+            model.DepositState = traffic.AmountInUsd == 0 ? "Депозит закрыт" : "Действующий депозит";
 
             foreach (var tran in _db.TransactionModels)
             {
@@ -47,7 +47,7 @@ namespace Keeper2018
             return model;
         }
 
-        private DepositReportTrafficLine RegisterTran(TransactionModel tran)
+        private DepositReportLine RegisterTran(TransactionModel tran)
         {
             var comment = "";
             switch (tran.Operation)
@@ -87,7 +87,7 @@ namespace Keeper2018
             }
             if (comment == "") return null;
 
-            var result = new DepositReportTrafficLine();
+            var result = new DepositReportLine();
             result.Date = tran.Timestamp;
             result.Comment = string.IsNullOrEmpty(tran.Comment) ? comment : tran.Comment;
             return result;

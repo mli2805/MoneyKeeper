@@ -13,7 +13,7 @@ namespace Keeper2018
             return $"{Amount} {Currency.ToString().ToLower()}";
         }
     }
-    public class DepositReportTrafficLine
+    public class DepositReportLine
     {
         public DateTime Date { get; set; }
         public Money Before { get; set; }
@@ -28,7 +28,7 @@ namespace Keeper2018
         public string DepositName { get; set; }
         public string DepositState { get; set; }
 
-        public List<DepositReportTrafficLine> Traffic { get; set; } = new List<DepositReportTrafficLine>();
+        public List<DepositReportLine> Traffic { get; set; } = new List<DepositReportLine>();
 
         public string Balance { get; set; }
         public string Facts { get; set; }
