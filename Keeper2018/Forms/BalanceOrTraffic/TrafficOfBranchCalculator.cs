@@ -8,8 +8,8 @@ namespace Keeper2018
         private readonly KeeperDb _db;
         private readonly AccountModel _accountModel;
         private readonly Period _period;
-        private readonly TrafficOfBranch _traffics = new TrafficOfBranch();
-        public string Total => _db.BalanceInUsd(_period.FinishMoment, _traffics.Balance()).ToString("0.## usd");
+        private readonly BalanceWithTurnoverOfBranch _balanceWithTurnovers = new BalanceWithTurnoverOfBranch();
+        public string Total => _db.BalanceInUsd(_period.FinishMoment, _balanceWithTurnovers.Balance()).ToString("0.## usd");
 
         public TrafficOfBranchCalculator(KeeperDb db, AccountModel accountModel, Period period)
         {
@@ -33,40 +33,40 @@ namespace Keeper2018
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _traffics.Add(myAcc, tran.Currency, tran.Amount);
+                            _balanceWithTurnovers.Add(myAcc, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Расход:
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _traffics.Sub(myAcc, tran.Currency, tran.Amount);
+                            _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Перенос:
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _traffics.Sub(myAcc, tran.Currency, tran.Amount);
+                            _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
                         var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
                         if (myAcc2 != null)
-                            _traffics.Add(myAcc2, tran.Currency, tran.Amount);
+                            _balanceWithTurnovers.Add(myAcc2, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Обмен:
                     {
                         var myAcc = tran.MyAccount.IsC(_accountModel);
                         if (myAcc != null)
-                            _traffics.Sub(myAcc, tran.Currency, tran.Amount);
+                            _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
                         var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
                         if (myAcc2 != null)
                             // ReSharper disable once PossibleInvalidOperationException
-                            _traffics.Add(myAcc2, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
+                            _balanceWithTurnovers.Add(myAcc2, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
                     }
                     break;
             }
         }
 
-        public IEnumerable<string> Report(BalanceOrTraffic mode) { return _traffics.Report(mode); }
+        public IEnumerable<string> Report(BalanceOrTraffic mode) { return _balanceWithTurnovers.Report(mode); }
     }
 }

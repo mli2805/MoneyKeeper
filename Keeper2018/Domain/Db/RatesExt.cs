@@ -7,6 +7,7 @@ namespace Keeper2018
     {
         public static decimal AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
+            if (currency == CurrencyCode.USD) return amount;
             var rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
             return currency == CurrencyCode.BYR || currency == CurrencyCode.BYN
                 ? amount / (decimal)rateLine.MyUsdRate.Value
@@ -27,17 +28,32 @@ namespace Keeper2018
             return shortLine;
         }
 
-        public static decimal BalanceInUsd(this KeeperDb db, DateTime date, BalanceOfAccount balance)
+        public static decimal BalanceInUsd(this KeeperDb db, DateTime date, Balance balance)
         {
             decimal amountInUsd = 0;
             foreach (var pair in balance.Currencies)
             {
-                amountInUsd = amountInUsd + 
-                              (pair.Key == CurrencyCode.USD 
-                                  ? pair.Value 
+                amountInUsd = amountInUsd +
+                              (pair.Key == CurrencyCode.USD
+                                  ? pair.Value
                                   : db.AmountInUsd(date, pair.Key, pair.Value));
             }
             return amountInUsd;
+        }
+
+        public static string BalanceInUsdString(this KeeperDb db, DateTime date, Balance balance)
+        {
+            if (balance.Currencies.All(c => c.Value == 0)) return "0";
+            if (balance.Currencies.Count(c => c.Value != 0) > 1) return "more than 1 currency";
+
+            var currency = balance.Currencies.First(c => c.Value != 0).Key;
+            var value = balance.Currencies.First(c => c.Value != 0).Value;
+            var valueStr = currency == CurrencyCode.BYR ? value.ToString("0,0") : value.ToString("0.00");
+
+            var result = $"{valueStr} {currency.ToString().ToLower()}";
+            if (currency != CurrencyCode.USD)
+                result = result + $"  ( {db.AmountInUsd(date, currency, value):0.00} usd )";
+            return result;
         }
     }
 }

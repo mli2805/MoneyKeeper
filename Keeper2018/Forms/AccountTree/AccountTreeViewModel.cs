@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
@@ -7,7 +8,6 @@ namespace Keeper2018
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
-        private readonly DepositReportFactory _depositReportFactory;
         public IWindowManager WindowManager { get; }
         public ShellPartsBinder ShellPartsBinder { get; }
         public AskDragAccountActionViewModel AskDragAccountActionViewModel { get; }
@@ -17,12 +17,11 @@ namespace Keeper2018
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel, 
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, 
-            DepositReportViewModel depositReportViewModel, DepositReportFactory depositReportFactory)
+            DepositReportViewModel depositReportViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
             _depositReportViewModel = depositReportViewModel;
-            _depositReportFactory = depositReportFactory;
             WindowManager = windowManager;
             ShellPartsBinder = shellPartsBinder;
             AskDragAccountActionViewModel = askDragAccountActionViewModel;
@@ -54,8 +53,8 @@ namespace Keeper2018
 
         public void ShowDepositReport()
         {
-            _depositReportViewModel.Model = _depositReportFactory.Create(ShellPartsBinder.SelectedAccountModel);
-            WindowManager.ShowDialog(_depositReportViewModel);
+            _depositReportViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+             WindowManager.ShowDialog(_depositReportViewModel);
         }
 
     }

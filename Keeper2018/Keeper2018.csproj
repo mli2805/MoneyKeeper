@@ -99,7 +99,7 @@
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceOfAccount.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\Balance.cs" />
     <Compile Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml.cs">
       <DependentUpon>BalanceOrTrafficView.xaml</DependentUpon>
     </Compile>
@@ -108,8 +108,8 @@
     <Compile Include="Forms\BalanceOrTraffic\ReportLineFactory.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\ITraffic.cs" />
     <Compile Include="Forms\BalanceOrTraffic\ShortLineFactory.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Data\TrafficOfBranch.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Data\TrafficOfAccount.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithTurnoverOfBranch.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithTurnover.cs" />
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfBranchCalculator.cs" />
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfAccountCalculator.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\TrafficPair.cs" />
@@ -137,7 +137,7 @@
       <DependentUpon>InputMyUsdView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\OfficialRates\InputMyUsdViewModel.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceOrTraffic.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Enum\BalanceOrTraffic.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>

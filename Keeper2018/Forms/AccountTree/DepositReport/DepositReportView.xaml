@@ -5,31 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Width="777" d:DataContext="{d:DesignInstance keeper2018:DepositReportViewModel}">
+        Width="888" d:DataContext="{d:DesignInstance keeper2018:DepositReportViewModel}">
     <DockPanel>
-        <StackPanel Name="Header" DockPanel.Dock="Top">
+        <StackPanel Name="Header" DockPanel.Dock="Top" Margin="5,5,5,15">
             <TextBlock Text="{Binding Model.DepositState}" Margin="5"/>
-            <TextBlock Text="{Binding Model.Balance}" Margin="5"/>
+            <TextBlock Text="{Binding Model.BalanceInHeader}" Margin="5,0"/>
         </StackPanel>
-        <StackPanel Name="Buttons" DockPanel.Dock="Bottom">
-            <Button Name="Close" Content="Close" Width="100" Margin="15,5" HorizontalAlignment="Right"/>
-        </StackPanel>
-        <StackPanel Name="Footer" DockPanel.Dock="Bottom">
-            <TextBlock Text="{Binding Model.Facts}" Margin="5"/>
-            <TextBlock Text="{Binding Model.MonthInterest}" Margin="5"/>
-            <TextBlock Text="{Binding Model.AllInterests}" Margin="5"/>
-            <TextBlock Text="Итоговый прогноз:" Margin="5"/>
-            <TextBlock Text="{Binding Model.Forecast}" Margin="5"/>
-        </StackPanel>
+   
+        <DockPanel Name="Footer" DockPanel.Dock="Bottom">
+            <StackPanel DockPanel.Dock="Left" Width="250">
+                <TextBlock Text="{Binding Model.ContributionStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.RevenueStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.СonsumptionStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.BalanceStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.DevaluationStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.FinResultStr}" Margin="5,5,5,0" HorizontalAlignment="Right" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Name="Buttons" DockPanel.Dock="Bottom">
+                <Button Name="Close" Content="Close" Width="100" Margin="15,15" HorizontalAlignment="Right"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="{Binding Model.MonthInterest}" Margin="5"/>
+                <TextBlock Text="{Binding Model.AllInterests}" Margin="5"/>
+                <TextBlock Text="Итоговый прогноз:" Margin="5"/>
+                <TextBlock Text="{Binding Model.Forecast}" Margin="5"/>
+            </StackPanel>
+        </DockPanel>
         <ListView ItemsSource="{Binding Model.Traffic}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.Resources>
+            <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="80" />
-                    <GridViewColumn Header="До операции" DisplayMemberBinding="{Binding Before}" Width="120" />
-                    <GridViewColumn Header="Ушло" DisplayMemberBinding="{Binding Outcome}" Width="120" />
-                    <GridViewColumn Header="Пришло" DisplayMemberBinding="{Binding Income}" Width="120" />
-                    <GridViewColumn Header="После" DisplayMemberBinding="{Binding After}" Width="120" />
-                    <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="200" />
+                    <GridViewColumn Header="До операции" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Before}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Ушло" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Outcome}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Пришло" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Income}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="После" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding After}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="300" />
                 </GridView>
             </ListView.View>
         </ListView>
