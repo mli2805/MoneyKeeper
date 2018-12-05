@@ -13,7 +13,7 @@
         </StackPanel>
    
         <DockPanel Name="Footer" DockPanel.Dock="Bottom">
-            <StackPanel DockPanel.Dock="Left" Width="250">
+            <StackPanel DockPanel.Dock="Left" Width="250" Margin="0,0,0,15">
                 <TextBlock Text="{Binding Model.ContributionStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.RevenueStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.СonsumptionStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
@@ -21,15 +21,16 @@
                 <TextBlock Text="{Binding Model.DevaluationStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.FinResultStr}" Margin="5,5,5,0" HorizontalAlignment="Right" FontWeight="Bold"/>
             </StackPanel>
+           <StackPanel DockPanel.Dock="Left" Width="250" Margin="15,0,0,15">
+                <TextBlock Text="{Binding Model.RateStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.AllRevenueStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="Итоговый прогноз:" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.Forecast}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+            </StackPanel>
             <StackPanel Name="Buttons" DockPanel.Dock="Bottom">
                 <Button Name="Close" Content="Close" Width="100" Margin="15,15" HorizontalAlignment="Right"/>
             </StackPanel>
-            <StackPanel>
-                <TextBlock Text="{Binding Model.MonthInterest}" Margin="5"/>
-                <TextBlock Text="{Binding Model.AllInterests}" Margin="5"/>
-                <TextBlock Text="Итоговый прогноз:" Margin="5"/>
-                <TextBlock Text="{Binding Model.Forecast}" Margin="5"/>
-            </StackPanel>
+            <StackPanel></StackPanel>
         </DockPanel>
         <ListView ItemsSource="{Binding Model.Traffic}">
             <ListView.Resources>

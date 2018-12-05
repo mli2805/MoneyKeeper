@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -51,9 +50,10 @@ namespace Keeper2018
 
             if (_isDeposit)
             {
-                DepositReportModel.DepositName = _accountModel.Name;
-                DepositReportModel.DepositState = AmountInUsd == 0 ? "Депозит закрыт." : "Действующий депозит.";
+                DepositReportModel.Deposit = _accountModel.Deposit;
                 DepositReportModel.Balance = _balanceWithTurnover.Balance();
+                DepositReportModel.AmountInUsd = AmountInUsd;
+                DepositReportModel.DepositName = _accountModel.Name;
             }
         }
 

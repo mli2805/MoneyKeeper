@@ -5,6 +5,21 @@ namespace Keeper2018
 {
     public static class RatesExt
     {
+        public static OneRate GetRate(this KeeperDb db, DateTime dt, CurrencyCode currency)
+        {
+            var officialRates = db.Bin.OfficialRates.FirstOrDefault(r => r.Date == dt);
+            if (officialRates == null) return null;
+            switch (currency)
+            {
+                    case CurrencyCode.BYN : return officialRates.NbRates.Usd;
+                    case CurrencyCode.BYR : return officialRates.NbRates.Usd;
+                    case CurrencyCode.EUR : return officialRates.NbRates.Euro;
+                    case CurrencyCode.RUB : return officialRates.NbRates.Rur;
+            }
+
+            return null;
+        }
+
         public static decimal AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
             if (currency == CurrencyCode.USD) return amount;

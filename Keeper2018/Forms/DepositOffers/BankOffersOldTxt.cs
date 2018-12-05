@@ -48,6 +48,7 @@ namespace Keeper2018
                 Id = Convert.ToInt32(substrings[0]),
                 Bank = accountsPlaneList.First(account => account.Name == substrings[1].Trim()).Id,
                 Title = substrings[2].Trim(),
+                MainCurrency = (CurrencyCode) Enum.Parse(typeof (CurrencyCode), substrings[3].Trim()),
                 Comment = substrings[6].Trim()
             };
             offer.Essentials = DepositOfferRulesFromString(s, offer.Id, rateLines);

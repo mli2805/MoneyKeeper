@@ -20,6 +20,7 @@ namespace Keeper2018
                     new Period(new DateTime(2001, 12, 31), DateTime.Today.GetEndOfDate()));
             accountCalculator.Evaluate();
             Model = accountCalculator.DepositReportModel;
+            Model.Foresee(_db);
         }
 
         protected override void OnViewLoaded(object view)

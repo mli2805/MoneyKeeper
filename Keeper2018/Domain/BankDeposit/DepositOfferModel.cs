@@ -8,6 +8,7 @@ namespace Keeper2018
         public int Id { get; set; }
         public Account Bank { get; set; }
         public string Title { get; set; }
+        public CurrencyCode MainCurrency { get; set; }
 
         // Conditions of offer could be changed (especially rates, initial sum) while Title remains the same
         // Conditions are applied from some date - key in dictionary

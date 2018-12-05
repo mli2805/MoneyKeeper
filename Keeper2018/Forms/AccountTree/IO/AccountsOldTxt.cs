@@ -28,7 +28,7 @@ namespace Keeper2018
                 //IsClosed = Convert.ToBoolean(substrings[4]),
                 IsExpanded = Convert.ToBoolean(substrings[5]),
             };
-            account.Deposit = deposits.FirstOrDefault(d => d.MyAccount == account.Id);
+            account.Deposit = deposits.FirstOrDefault(d => d.MyAccountId == account.Id);
             return account;
         }
 
@@ -43,8 +43,8 @@ namespace Keeper2018
             var substrings = s.Split(';');
             Deposit deposit = new Deposit()
             {
-                MyAccount = Convert.ToInt32(substrings[0]),
-                DepositOffer = Convert.ToInt32(substrings[1]),
+                MyAccountId = Convert.ToInt32(substrings[0]),
+                DepositOfferId = Convert.ToInt32(substrings[1]),
                 Serial = substrings[2].Trim(),
                 StartDate = Convert.ToDateTime(substrings[3], new CultureInfo("ru-RU")),
                 FinishDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU")),

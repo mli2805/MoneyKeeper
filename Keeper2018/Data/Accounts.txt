@@ -117,7 +117,7 @@
 505 ;         БГПБ Сберка EUR ; 681 ; False ; False ; True
 511 ;         БГПБ расчетная РУР ; 681 ; False ; False ; False
 664 ;         БГПБ Голдовая EUR ; 681 ; False ; False ; True
-682 ;       БИБs ; 161 ; True ; False ; True
+682 ;       БИБs ; 161 ; True ; False ; False
 628 ;         БИБ к Активному EUR ; 682 ; False ; False ; False
 651 ;         БИБ Зарплатная 0117-0122 ; 682 ; False ; False ; False
 689 ;         БИБ MasterCard RUB 04/21 ; 682 ; False ; False ; False
@@ -130,7 +130,7 @@
 633 ;       Альфа-Банк счет в RUB Юля ; 161 ; False ; False ; False
 673 ;       R-Bank Platinum USD ; 161 ; False ; False ; False
 674 ;       R-Bank Platinum Byn ; 161 ; False ; False ; False
-694 ;       Альфа ; 161 ; True ; False ; True
+694 ;       Альфа ; 161 ; True ; False ; False
 695 ;         Зарплатная ; 694 ; False ; False ; False
 697 ;         Visa Usd ; 694 ; False ; False ; False
 698 ;         MasterCard Euro ; 694 ; False ; False ; False
@@ -160,20 +160,21 @@
 540 ;       ВТБ EUR ; 393 ; False ; True ; False
 381 ;       БИБ Сберка Моцная ; 393 ; False ; True ; False
 541 ;       БГПБ Online ; 393 ; True ; True ; False
+617 ;       ММБ Капитальный 24 мес 22/11/2016 - 22/11/2018 20% ; 393 ; False ; True ; False
 283 ;   Мне должны ; 158 ; False ; False ; False
 166 ;   Депозиты ; 158 ; True ; False ; True
-703 ;     ВТБ Верный курс 24/08/2018 - 23/10/2019 12.5% ; 166 ; False ; False ; True
-407 ;     Закладки ; 166 ; True ; False ; True
+703 ;     ВТБ Верный курс 24/08/2018 - 23/09/2019 12.5% ; 166 ; False ; False ; True
+407 ;     Закладки ; 166 ; True ; False ; False
 536 ;       ММБ Стабильный 17/12/2015 - 17/12/2018 5% ; 407 ; False ; False ; True
 693 ;       Золотые монеты ; 407 ; False ; False ; False
-557 ;       БГПБ Разные ; 407 ; True ; False ; True
+557 ;       БГПБ Разные ; 407 ; True ; False ; False
 577 ;         БГПБ На 5 лет 21/03/2016 - 21/03/2021 byn ; 557 ; False ; False ; True
 447 ;         БГПБ На 10 лет 29/08/2014 - 29/08/2024 ; 557 ; False ; False ; False
 533 ;         БГПБ Деньги на вырост  EUR 9/10/2015 - 9/10/2025 ; 557 ; False ; False ; False
 534 ;         БГПБ Деньги на вырост USD 9/10/2015 - 9/10/2025 ; 557 ; False ; False ; False
 574 ;         БГПБ На 20 лет usd 21/03/2016 - 21/03/2036 ; 557 ; False ; False ; True
 575 ;         БГПБ На 20 лет eur 21/03/2016 - 21/03/2036 ; 557 ; False ; False ; True
-548 ;       БИБ online ; 407 ; True ; False ; True
+548 ;       БИБ online ; 407 ; True ; False ; False
 680 ;         БИБ Активный 16/12/2017 - 11/12/2018 7% BYN ; 548 ; False ; False ; True
 550 ;         БИБ Отзывной 6-36 мес 5/02/2016 6% RUB ; 548 ; False ; False ; False
 556 ;         БИБ Отзывной 3-36 мес 11/02/2016 5% RUB ; 548 ; False ; False ; True
@@ -229,12 +230,10 @@
 460 ;         АПБ ЛР2 371-740 дней 21/11/2014 - 22/09/2016 671дн ; 408 ; False ; False ; False
 461 ;         АПБ ЛР2 371-740 дней 21/11/2014 - 24/10/2016 703дн ; 408 ; False ; False ; False
 462 ;         АПБ ЛР2 741-2000 дней 21/11/2014 - 1/12/2016 741дн ; 408 ; False ; False ; False
-614 ;       ММБ Online BYN ; 407 ; True ; False ; False
-617 ;         ММБ Капитальный 24 мес 22/11/2016 - 22/11/2018 20% ; 614 ; False ; False ; False
+614 ;       ММБ Online BYN ; 407 ; True ; False ; True
 642 ;         ММБ Капитальный 24 мес 29/12/2016 - 29/12/2018 20% ; 614 ; False ; False ; True
 656 ;         ММБ Капитальный 24 мес 9/02/2017 - 9/02/2019 СР+0,5% ; 614 ; False ; False ; False
-620 ;       ММБ Online USD ; 407 ; True ; False ; False
-621 ;         ММБ Капитальный 24 мес 22/11/2016 - 22/11/2018 4% ; 620 ; False ; False ; False
+620 ;       ММБ Online USD ; 407 ; True ; False ; True
 644 ;         ММБ Капитальный 24 мес 29/12/2016 - 29/12/2018 4% ; 620 ; False ; False ; False
 659 ;         ММБ Капитальный 24 мес 9/02/2017 - 9/02/2019 3% ; 620 ; False ; False ; False
 622 ;         ММБ Капитальный 36 мес 22/11/2016 - 22/11/2019 4% ; 620 ; False ; False ; False
@@ -444,9 +443,10 @@
 678 ;       БГПБ Online2.2 7 мес 28/11/2017 - 28/06/2018 1,2% ; 235 ; False ; True ; False
 641 ;       ММБ Капитальный 18 мес 29/12/2016 - 29/06/2018 20% ; 235 ; False ; True ; False
 648 ;       ММБ Оптимальный 18 мес 29/12/2016 - 29/06/2018 4% ; 235 ; False ; True ; False
-655 ;       ММБ Капитальный 18 мес 9/02/2017 - 9/08/2018 СР+0,5% ; 235 ; False ; True ; False
 658 ;       ММБ Оптимальный 18 мес 9/02/2017 - 9/08/2018 3% ; 235 ; False ; True ; False
+655 ;       ММБ Капитальный 18 мес 9/02/2017 - 9/08/2018 СР+0,5% ; 235 ; False ; True ; False
 672 ;       Решение ФормУспеха 19/10/2017 - 19/10/2018 11.4% ; 235 ; False ; True ; False
+621 ;       ММБ Капитальный 24 мес 22/11/2016 - 22/11/2018 4% ; 235 ; False ; True ; False
 679 ;       БИБ Активный 30/11/2017 - 25/11/2018 7% BYN ; 235 ; False ; True ; False
 549 ;       БИБ Отзывной 3-36 мес 5/02/2016 - 5/02/2019 5% ; 235 ; False ; True ; False
 185 ; Все доходы ; 0 ; True ; False ; True

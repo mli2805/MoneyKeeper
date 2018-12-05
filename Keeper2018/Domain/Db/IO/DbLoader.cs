@@ -10,11 +10,11 @@ namespace Keeper2018
         {
             var keeperBin = new KeeperBin
             {
+                OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync(),
                 AccountPlaneList = AccountsOldTxt.LoadFromOldTxt().ToList()
             };
             keeperBin.TagAssociations = await TagAssociationsOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
             keeperBin.DepositOffers = await BankOffersOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
-            keeperBin.OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync();
             keeperBin.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
             return keeperBin;
         }
