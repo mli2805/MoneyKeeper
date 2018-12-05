@@ -37,11 +37,9 @@ namespace Keeper2018
         public decimal ConsumptionUsd { get; set; }
 
 
-        private decimal DevaluationUsd =>
-            _db.BalanceInUsd(DateTime.Today.GetEndOfDate(), Balance) - ContributionUsd - RevenueUsd + ConsumptionUsd;
-
-        private decimal FinResultUsd => RevenueUsd + DevaluationUsd;
-
+        public decimal DevaluationUsd { get; set; }
+        public decimal FinResultUsd { get; set; }
+  
 
         public string ContributionStr => $"Внесено {Contribution} ( {ContributionUsd:0.00} usd )";
         public string RevenueStr => $"+ Проценты {Revenue} ( {RevenueUsd:0.00} usd )";
@@ -51,27 +49,68 @@ namespace Keeper2018
         public string FinResultStr => $"Текущий профит {FinResultUsd:0.00} usd";
 
 
-
         public OneRate RateStart;
         public OneRate RateNow;
         public OneRate RateForecast;
         private Deposit _deposit;
         public string RateStr { get; set; }
+        public decimal MoreRevenue { get; set; }  // forecast
+        public decimal MoreRevenueUsd { get; set; }  // forecast
+        public decimal BalanceAtEndUsd { get; set; }
+        public string MoreRevenueStr => $"Ожидается процентов {MoreRevenue:0.00} ( по курсу {((RateNow.Value + RateForecast.Value) / 2):0.0000} = {MoreRevenueUsd:0.00} usd )";
+        public string BalanceAtEnd => $"Остаток на конец {Balance} ( по курсу {RateForecast.Value:0.0000} = {BalanceAtEndUsd:0.00})";
 
-        public Balance AllRevenue { get; set; } = new Balance();
-        public string AllRevenueStr => $"Ожидается процентов {_db.BalanceInUsdString(DateTime.Today.GetEndOfDate(), AllRevenue)}";
+
+        //public 
         public string Forecast { get; set; }
 
     }
 
     public static class DepositReportModelExt
     {
+        public static void SummarizeFacts(this DepositReportModel model, KeeperDb db)
+        {
+            foreach (var reportLine in model.Traffic.Where(t => t.Type == DepositOperationType.Contribution))
+            {
+                model.Contribution.AddBalance(reportLine.Income);
+                model.ContributionUsd += db.BalanceInUsd(reportLine.Date, reportLine.Income);
+            }
+
+            foreach (var reportLine in model.Traffic.Where(t => t.Type == DepositOperationType.Revenue))
+            {
+                model.Revenue.AddBalance(reportLine.Income);
+                model.RevenueUsd += db.BalanceInUsd(reportLine.Date, reportLine.Income);
+            }
+
+            foreach (var reportLine in model.Traffic.Where(t => t.Type == DepositOperationType.Consumption))
+            {
+                model.Сonsumption.AddBalance(reportLine.Outcome);
+                model.ConsumptionUsd += db.BalanceInUsd(reportLine.Date, reportLine.Outcome);
+            }
+
+            model.DevaluationUsd = db.BalanceInUsd(DateTime.Today.GetEndOfDate(), model.Balance) 
+                                   - model.ContributionUsd - model.RevenueUsd + model.ConsumptionUsd;
+            model.FinResultUsd = model.RevenueUsd + model.DevaluationUsd;
+        }
+
         public static void Foresee(this DepositReportModel model, KeeperDb db)
         {
             ForeseeRate(model, db);
+            ForeseeRevenue(model);
 
+            model.BalanceAtEndUsd =
+                model.Balance.Currencies[model.DepositOffer.MainCurrency] / (decimal)model.RateForecast.Value;
+        }
 
+        private static void ForeseeRevenue(DepositReportModel model)
+        {
+            var lastRevenue = model.Traffic.LastOrDefault(t => t.Type == DepositOperationType.Revenue);
+            var lastRevenueDate = lastRevenue?.Date ?? model.Deposit.StartDate.AddDays(-1);
 
+            model.MoreRevenue = model.DepositOffer.GetRevenue(model.Deposit, lastRevenueDate,
+                model.Balance.Currencies[model.DepositOffer.MainCurrency]);
+            if (model.DepositOffer.MainCurrency != CurrencyCode.USD)
+                model.MoreRevenueUsd = model.MoreRevenue / (decimal) ((model.RateNow.Value + model.RateForecast.Value) / 2);
         }
 
         private static void ForeseeRate(DepositReportModel model, KeeperDb db)

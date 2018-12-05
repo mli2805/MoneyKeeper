@@ -2,12 +2,13 @@
 {
     public static class ReportLineFactory
     {
-        public static ReportLine ReportLine(this KeeperDb db, Balance before, TransactionModel tran, bool isInReturn, int sign)
+        public static ReportLine ReportLine(this KeeperDb db, Balance before, TransactionModel tran, bool isInReturn, int sign, DepositOperationType type)
         {
             var line = new ReportLine();
             line.Date = tran.Timestamp.Date;
             line.Before = before;
             line.After = new Balance(line.Before);
+            line.Type = type;
 
             var amount = isInReturn ? tran.AmountInReturn : tran.Amount;
             // ReSharper disable once PossibleInvalidOperationException
@@ -33,6 +34,7 @@
             line.Date = tran.Timestamp.Date;
             line.Before = before;
             line.After = new Balance(line.Before);
+            line.Type = DepositOperationType.Exchange;
 
             // ReSharper disable once PossibleInvalidOperationException
             line.Income = new Balance((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);

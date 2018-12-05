@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Db\MapToModels.cs" />
     <Compile Include="Domain\Db\RatesExt.cs" />
@@ -162,10 +163,8 @@
     <Compile Include="Forms\AccountTree\IO\AccountsOldTxt.cs" />
     <Compile Include="Domain\Account\Account.cs" />
     <Compile Include="Domain\BankDeposit\DepositCalculationRules.cs" />
-    <Compile Include="Domain\BankDeposit\DepositEssential.cs" />
     <Compile Include="Domain\BankDeposit\DepositOffer.cs" />
     <Compile Include="Domain\Db\KeeperDbExt.cs" />
-    <Compile Include="Domain\BankDeposit\DepositRateLine.cs" />
     <Compile Include="Domain\TagAssociation\AssociationType.cs" />
     <Compile Include="Domain\TagAssociation\TagAssociation.cs" />
     <Compile Include="Domain\Db\IO\DbLoader.cs" />

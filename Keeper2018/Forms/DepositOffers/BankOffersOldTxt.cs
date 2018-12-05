@@ -84,9 +84,9 @@ namespace Keeper2018
             {
                 DepositOfferId = Convert.ToInt32(substrings[0], new CultureInfo("en-US")),
                 DateFrom = Convert.ToDateTime(substrings[1], new CultureInfo("ru-RU")),
-                AmountFrom = Convert.ToDouble(substrings[2], new CultureInfo("en-US")),
-                AmountTo = Convert.ToDouble(substrings[3], new CultureInfo("en-US")),
-                Rate = Convert.ToDouble(substrings[4], new CultureInfo("en-US"))
+                AmountFrom = Convert.ToDecimal(substrings[2], new CultureInfo("en-US")),
+                AmountTo = Convert.ToDecimal(substrings[3], new CultureInfo("en-US")),
+                Rate = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"))
             };
         }
     }

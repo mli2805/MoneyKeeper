@@ -64,9 +64,9 @@ namespace Keeper2018
             _shortTrans.Add(_db.ShortLine(tran, false, 1));
             if (_isDeposit)
             {
-                DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, 1));
-                DepositReportModel.Revenue.Add(tran.Currency, tran.Amount);
-                DepositReportModel.RevenueUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, 1, DepositOperationType.Revenue));
+//                DepositReportModel.Revenue.Add(tran.Currency, tran.Amount);
+//                DepositReportModel.RevenueUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
             }
             _balanceWithTurnover.Add(tran.Currency, tran.Amount);
         }
@@ -78,9 +78,9 @@ namespace Keeper2018
             _shortTrans.Add(_db.ShortLine(tran, false, -1));
             if (_isDeposit)
             {
-                DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1));
-                DepositReportModel.Сonsumption.Add(tran.Currency, tran.Amount); // payment from deposit directly (by card which is deposit)
-                DepositReportModel.ConsumptionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1, DepositOperationType.Consumption));
+//                DepositReportModel.Сonsumption.Add(tran.Currency, tran.Amount); // payment from deposit directly (by card which is deposit)
+//                DepositReportModel.ConsumptionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
             }
             _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
         }
@@ -92,9 +92,9 @@ namespace Keeper2018
                 _shortTrans.Add(_db.ShortLine(tran, false, -1));
                 if (_isDeposit)
                 {
-                    DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1));
-                    DepositReportModel.Сonsumption.Add(tran.Currency, tran.Amount);
-                    DepositReportModel.ConsumptionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                    DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1, DepositOperationType.Consumption));
+//                    DepositReportModel.Сonsumption.Add(tran.Currency, tran.Amount);
+//                    DepositReportModel.ConsumptionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                 }
 
                 _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
@@ -105,9 +105,9 @@ namespace Keeper2018
                 _shortTrans.Add(_db.ShortLine(tran, false, 1));
                 if (_isDeposit)
                 {
-                    DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, 1));
-                    DepositReportModel.Contribution.Add(tran.Currency, tran.Amount);
-                    DepositReportModel.ContributionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                    DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, 1, DepositOperationType.Contribution));
+//                    DepositReportModel.Contribution.Add(tran.Currency, tran.Amount);
+//                    DepositReportModel.ContributionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                 }
 
                 _balanceWithTurnover.Add(tran.Currency, tran.Amount);
@@ -136,9 +136,9 @@ namespace Keeper2018
                     _shortTrans.Add(_db.ShortLine(tran, false, -1));
                     if (_isDeposit)
                     {
-                        DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1));
-                        DepositReportModel.Сonsumption.Add(tran.Currency, tran.Amount);
-                        DepositReportModel.ConsumptionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                        DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1, DepositOperationType.Consumption));
+//                        DepositReportModel.Сonsumption.Add(tran.Currency, tran.Amount);
+//                        DepositReportModel.ConsumptionUsd += _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                     }
                     _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                 }
@@ -148,7 +148,7 @@ namespace Keeper2018
                     _shortTrans.Add(_db.ShortLine(tran, true, 1));
                     if (_isDeposit)
                     {
-                        DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, true, 1));
+                        DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, true, 1, DepositOperationType.Contribution));
                         // ReSharper disable once PossibleInvalidOperationException
                         DepositReportModel.Contribution.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
                         DepositReportModel.ContributionUsd += _db.AmountInUsd(tran.Timestamp, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);

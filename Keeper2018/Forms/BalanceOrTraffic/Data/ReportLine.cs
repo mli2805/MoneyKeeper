@@ -11,5 +11,14 @@ namespace Keeper2018
         public Balance After { get; set; }
         public string Comment { get; set; }
 
+        public DepositOperationType Type { get; set; }
+    }
+
+    public enum DepositOperationType
+    {
+        Contribution,
+        Revenue,
+        Consumption,
+        Exchange,
     }
 }

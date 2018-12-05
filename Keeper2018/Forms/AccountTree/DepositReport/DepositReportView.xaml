@@ -21,9 +21,10 @@
                 <TextBlock Text="{Binding Model.DevaluationStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.FinResultStr}" Margin="5,5,5,0" HorizontalAlignment="Right" FontWeight="Bold"/>
             </StackPanel>
-           <StackPanel DockPanel.Dock="Left" Width="250" Margin="15,0,0,15">
+           <StackPanel DockPanel.Dock="Left" Width="350" Margin="15,0,0,15">
                 <TextBlock Text="{Binding Model.RateStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
-                <TextBlock Text="{Binding Model.AllRevenueStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.MoreRevenueStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.BalanceAtEnd}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="Итоговый прогноз:" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.Forecast}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
             </StackPanel>
