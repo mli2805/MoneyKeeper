@@ -134,6 +134,10 @@
       <DependentUpon>RulesAndRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\RulesAndRatesViewModel.cs" />
+    <Compile Include="Forms\MonthAnalysis\MonthAnalysisView.xaml.cs">
+      <DependentUpon>MonthAnalysisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MonthAnalysis\MonthAnalysisViewModel.cs" />
     <Compile Include="Forms\OfficialRates\InputMyUsdView.xaml.cs">
       <DependentUpon>InputMyUsdView.xaml</DependentUpon>
     </Compile>
@@ -278,6 +282,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\MonthAnalysis\MonthAnalysisView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\OfficialRates\InputMyUsdView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -370,6 +378,21 @@
     <Resource Include="Resources\minus16.ico" />
     <Resource Include="Resources\plus16.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\bank_offer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\association.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\exchange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\month_analysis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\save.png" />
+    <Resource Include="Resources\settings.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

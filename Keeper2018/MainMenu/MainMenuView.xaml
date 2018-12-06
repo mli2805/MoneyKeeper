@@ -30,84 +30,35 @@
                 <cal:Parameter Value="ShowMonthAnalysisForm"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
-        <ei:KeyTrigger Key="D">
-            <cal:ActionMessage MethodName="ActionMethod">
-                <cal:Parameter Value="ShowDepositsForm"/>
-            </cal:ActionMessage>
-        </ei:KeyTrigger>
-        <ei:KeyTrigger Key="G">
-            <cal:ActionMessage MethodName="ActionMethod">
-                <cal:Parameter Value="ShowMonthlyIncomeDiagram"/>
-            </cal:ActionMessage>
-        </ei:KeyTrigger>
         <ei:KeyTrigger Key="T">
             <cal:ActionMessage MethodName="ActionMethod">
-                <cal:Parameter Value="TempItem"/>
-            </cal:ActionMessage>
-        </ei:KeyTrigger>
-        <ei:KeyTrigger Key="R">
-            <cal:ActionMessage MethodName="ActionMethod">
-                <cal:Parameter Value="ShowOfficialRatesForm"/>
+                <cal:Parameter Value="ShowTagAssociationsForm"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <DockPanel Height="30">
-        <Menu Background="Transparent" Margin="5" DockPanel.Dock="Left" FontSize="14">
-            <MenuItem Header="FILE" />
-            <MenuItem Header="FORMS" >
-                <MenuItem Header="O   Transactions">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowTransactionsForm" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem>
-                <MenuItem Header="C   Currency rates">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowOfficialRatesForm" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem>
-                <MenuItem Header="A   Month analysis">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowMonthAnalysisForm" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem>
-                <MenuItem Header="B   Deposit offers">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowDepositOffersForm" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem>
-                <MenuItem Header="     Tag associations">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ActionMethod">
-                                <cal:Parameter Value="ShowTagAssociationsForm" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
-        <Button Name="ShowOfficialRatesForm" Margin="20,0,0,0" Background="White" BorderBrush="White">
-            <Image Source="../../Resources/nbrb.png" Width="24" Height="24" />
-        </Button>
-        <Button Name="ShowTransactionsForm" Margin="5,0,0,0" Background="White" BorderBrush="White">
+        <Button Name="ShowTransactionsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions">
             <Image Source="../../Resources/transactions.png" Width="24" Height="24" />
         </Button>
+        <Button Name="ShowOfficialRatesForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates">
+            <Image Source="../../Resources/exchange.png" Width="24" Height="24" />
+        </Button>
+        <Button Name="ShowMonthAnalysisForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Month analysis">
+            <Image Source="../../Resources/month_analysis.png" Width="24" Height="24" />
+        </Button>
+        <Button Name="ShowDepositOffersForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Bank offers">
+            <Image Source="../../Resources/bank_offer.png" Width="24" Height="24" />
+        </Button>
+        <Button Name="ShowTagAssociationsForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Tag associations">
+            <Image Source="../../Resources/association.png" Width="24" Height="24" />
+        </Button>
+        <Button  Margin="25,0,0,0" Background="White" BorderBrush="White" ToolTip="Save">
+            <Image Source="../../Resources/save.png" Width="24" Height="24" />
+        </Button>
+        <Button  Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Settings">
+            <Image Source="../../Resources/settings.png" Width="24" Height="24" />
+        </Button>
+
         <TextBlock></TextBlock>
     </DockPanel>
 
