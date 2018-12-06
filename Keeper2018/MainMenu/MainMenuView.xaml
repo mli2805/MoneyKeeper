@@ -51,10 +51,10 @@
             </cal:ActionMessage>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
-    <DockPanel>
-        <Menu Background="Transparent" Margin="5" DockPanel.Dock="Top">
-            <MenuItem Header="FILE"/>
-            <MenuItem Header="FORMS">
+    <DockPanel Height="30">
+        <Menu Background="Transparent" Margin="5" DockPanel.Dock="Left" FontSize="14">
+            <MenuItem Header="FILE" />
+            <MenuItem Header="FORMS" >
                 <MenuItem Header="O   Transactions">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
@@ -102,16 +102,13 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <ToolBarTray>
-            <ToolBar Name="ToolBar1" >
-                <Button Name="ShowOfficialRatesForm">
-                    <Image Source="../../Resources/nbrb.png" Width="24" Height="24" />
-                </Button>
-                <Button Name="ShowTransactionsForm" Margin="5,0,0,0">
-                    <Image Source="../../Resources/transactions.png" Width="24" Height="24" />
-                </Button>
-            </ToolBar>
-        </ToolBarTray>
+        <Button Name="ShowOfficialRatesForm" Margin="20,0,0,0" Background="White" BorderBrush="White">
+            <Image Source="../../Resources/nbrb.png" Width="24" Height="24" />
+        </Button>
+        <Button Name="ShowTransactionsForm" Margin="5,0,0,0" Background="White" BorderBrush="White">
+            <Image Source="../../Resources/transactions.png" Width="24" Height="24" />
+        </Button>
+        <TextBlock></TextBlock>
     </DockPanel>
 
 </UserControl>

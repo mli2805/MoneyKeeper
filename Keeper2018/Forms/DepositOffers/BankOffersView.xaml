@@ -7,12 +7,13 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        SizeToContent="Width" Height="700" d:DataContext="{d:DesignInstance keeper2018:BankOffersViewModel}">
+        Width="700" Height="700" WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance keeper2018:BankOffersViewModel}">
     <ListView ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedDepositOffer, Mode= TwoWay}" SelectionMode="Single">
         <ListView.View>
             <GridView>
                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="30" />
-                <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Name}" Width="120" />
+                <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Name}" Width="128" />
                 <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}" Width="200" />
                 <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="300" />
             </GridView>
