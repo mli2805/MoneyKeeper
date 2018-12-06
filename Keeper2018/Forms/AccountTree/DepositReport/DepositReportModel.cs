@@ -9,6 +9,7 @@ namespace Keeper2018
         private readonly KeeperDb _db;
         public DepositReportModel(KeeperDb db) { _db = db; }
 
+        public bool IsInUsd;
         public Deposit Deposit
         {
             get => _deposit;
@@ -16,6 +17,7 @@ namespace Keeper2018
             {
                 _deposit = value;
                 DepositOffer = _db.Bin.DepositOffers.First(o => o.Id == _deposit.DepositOfferId);
+                IsInUsd = DepositOffer.MainCurrency == CurrencyCode.USD;
             }
         }
 
@@ -39,31 +41,34 @@ namespace Keeper2018
 
         public decimal DevaluationUsd { get; set; }
         public decimal FinResultUsd { get; set; }
-  
 
-        public string ContributionStr => $"Внесено {Contribution} ( {ContributionUsd:0.00} usd )";
-        public string RevenueStr => $"+ Проценты {Revenue} ( {RevenueUsd:0.00} usd )";
-        public string СonsumptionStr => $"- Снято {Сonsumption} ( {ConsumptionUsd:0.00} usd )";
+
+        public string ContributionStr => $"Внесено {Contribution}" + (IsInUsd ? "" : $" ( ${ContributionUsd:0.00} )");
+        public string RevenueStr => $"+ Проценты {Revenue}" + (IsInUsd ? "" : $" ( ${RevenueUsd:0.00} )");
+        public string СonsumptionStr => $"- Снято {Сonsumption}" + (IsInUsd ? "" : $" ( ${ConsumptionUsd:0.00} )");
         public string BalanceStr => $"- Остаток {_db.BalanceInUsdString(DateTime.Today.GetEndOfDate(), Balance)}";
-        public string DevaluationStr => $"= Курсовые разницы {DevaluationUsd:0.00} usd";
-        public string FinResultStr => $"Текущий профит {FinResultUsd:0.00} usd";
+        public string DevaluationStr => IsInUsd ? "" : $"= Курсовые разницы ${DevaluationUsd:0.00}";
+        public string FinResultStr => $"Текущий профит ${FinResultUsd:0.00}";
 
 
         public OneRate RateStart;
         public OneRate RateNow;
         public OneRate RateForecast;
         private Deposit _deposit;
-        public string RateStr { get; set; }
+        public string RateStr1 { get; set; }
+        public string RateStr2 { get; set; }
         public decimal MoreRevenue { get; set; }  // forecast
         public decimal MoreRevenueUsd { get; set; }  // forecast
         public decimal BalanceAtEndUsd { get; set; }
-        public string MoreRevenueStr => $"Ожидается процентов {MoreRevenue:0.00} ( по курсу {((RateNow.Value + RateForecast.Value) / 2):0.0000} = {MoreRevenueUsd:0.00} usd )";
-        public string BalanceAtEnd => $"Остаток на конец {Balance} ( по курсу {RateForecast.Value:0.0000} = {BalanceAtEndUsd:0.00})";
+        public string MoreRevenueStr1 => $"Ожидается процентов {MoreRevenue:0.00} {DepositOffer.MainCurrency.ToString().ToLower()}";
+        public string MoreRevenueStr2 => IsInUsd ? "" : $"( по среднему курсу {((RateNow.Value + RateForecast.Value) / 2):0.0000} = ${MoreRevenueUsd:0.00} )";
+        public string BalanceAtEnd1 => $"Остаток на конец {Balance}";
+        public string BalanceAtEnd2 => IsInUsd ? "" : $"( по курсу {RateForecast.Value:0.0000} = ${BalanceAtEndUsd:0.00} )";
 
 
-        //public 
-        public string Forecast { get; set; }
-
+        public decimal ForecastUsd { get; set; }
+        public string Forecast => $"Итоговый результат ${ForecastUsd:0.00}";
+        public string Forecast2 { get; set; }
     }
 
     public static class DepositReportModelExt
@@ -88,7 +93,7 @@ namespace Keeper2018
                 model.ConsumptionUsd += db.BalanceInUsd(reportLine.Date, reportLine.Outcome);
             }
 
-            model.DevaluationUsd = db.BalanceInUsd(DateTime.Today.GetEndOfDate(), model.Balance) 
+            model.DevaluationUsd = db.BalanceInUsd(DateTime.Today.GetEndOfDate(), model.Balance)
                                    - model.ContributionUsd - model.RevenueUsd + model.ConsumptionUsd;
             model.FinResultUsd = model.RevenueUsd + model.DevaluationUsd;
         }
@@ -98,8 +103,14 @@ namespace Keeper2018
             ForeseeRate(model, db);
             ForeseeRevenue(model);
 
-            model.BalanceAtEndUsd =
-                model.Balance.Currencies[model.DepositOffer.MainCurrency] / (decimal)model.RateForecast.Value;
+            model.BalanceAtEndUsd = model.IsInUsd
+                ? model.Balance.Currencies[CurrencyCode.USD]
+                : model.Balance.Currencies[model.DepositOffer.MainCurrency] / (decimal)model.RateForecast.Value;
+            model.ForecastUsd = model.BalanceAtEndUsd + model.MoreRevenueUsd - model.ContributionUsd + model.ConsumptionUsd;
+
+            var procent = model.ForecastUsd / model.ContributionUsd * 100;
+            var yearProcent = procent / (model.Deposit.FinishDate - model.Deposit.StartDate).Days * 365;
+            model.Forecast2 = $"( {procent:0.00}%  ({yearProcent:0.00}% годовых )";
         }
 
         private static void ForeseeRevenue(DepositReportModel model)
@@ -109,13 +120,14 @@ namespace Keeper2018
 
             model.MoreRevenue = model.DepositOffer.GetRevenue(model.Deposit, lastRevenueDate,
                 model.Balance.Currencies[model.DepositOffer.MainCurrency]);
-            if (model.DepositOffer.MainCurrency != CurrencyCode.USD)
-                model.MoreRevenueUsd = model.MoreRevenue / (decimal) ((model.RateNow.Value + model.RateForecast.Value) / 2);
+            model.MoreRevenueUsd = model.IsInUsd
+                ? model.MoreRevenue
+                : model.MoreRevenue / (decimal)((model.RateNow.Value + model.RateForecast.Value) / 2);
         }
 
         private static void ForeseeRate(DepositReportModel model, KeeperDb db)
         {
-            if (model.DepositOffer.MainCurrency != CurrencyCode.USD)
+            if (!model.IsInUsd)
             {
                 model.RateStart = db.GetRate(model.Deposit.StartDate, model.DepositOffer.MainCurrency);
                 model.RateNow = db.GetRate(DateTime.Today, model.DepositOffer.MainCurrency);
@@ -125,8 +137,17 @@ namespace Keeper2018
                 var k = (model.RateNow.Value - model.RateStart.Value) / (DateTime.Today - model.Deposit.StartDate).Days;
                 model.RateForecast.Value = model.RateStart.Value + k * (model.Deposit.FinishDate - model.Deposit.StartDate).Days;
 
-                model.RateStr =
+                model.RateStr1 =
                     $"Курс по НБ:  {model.RateStart.Value:0.0000} => {model.RateNow.Value:0.0000} => {model.RateForecast.Value:0.0000}";
+
+                var nowDeltaRate = model.RateNow.Value - model.RateStart.Value;
+                var nowProcent = nowDeltaRate / model.RateStart.Value * 100;
+
+                var deltaRate = model.RateForecast.Value - model.RateStart.Value;
+                var procent = deltaRate / model.RateStart.Value * 100;
+
+                var yearProcent = procent / (model.Deposit.FinishDate - model.Deposit.StartDate).Days * 365;
+                model.RateStr2 = $"( уже {nowProcent:0.00}%;  к концу {procent:0.00}%  ( {yearProcent:0.00}% годовых )";
             }
         }
     }

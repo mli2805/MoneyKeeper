@@ -67,7 +67,7 @@ namespace Keeper2018
 
             var result = $"{valueStr} {currency.ToString().ToLower()}";
             if (currency != CurrencyCode.USD)
-                result = result + $"  ( {db.AmountInUsd(date, currency, value):0.00} usd )";
+                result = result + $"  ( ${db.AmountInUsd(date, currency, value):0.00} )";
             return result;
         }
     }
