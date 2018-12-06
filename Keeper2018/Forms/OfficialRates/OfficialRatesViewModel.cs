@@ -18,15 +18,27 @@ namespace Keeper2018
         private readonly BasketDiagramViewModel _basketDiagramViewModel;
 
         private List<OfficialRates> _rates;
-        public ObservableCollection<OfficialRatesModel> Rows { get; set; }
-        public OfficialRatesModel SelectedRow { get; set; }
+        public ObservableCollection<OfficialRatesModel> Rows { get; set; } = new ObservableCollection<OfficialRatesModel>();
+
+        public OfficialRatesModel SelectedRow
+        {
+            get => _selectedRow;
+            set
+            {
+                if (Equals(value, _selectedRow)) return;
+                _selectedRow = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public OfficialRatesModel LastDayOfYear { get; set; }
 
         private bool _isDownloadEnabled;
+        private OfficialRatesModel _selectedRow;
+
         public bool IsDownloadEnabled
         {
-            get { return _isDownloadEnabled; }
+            get => _isDownloadEnabled;
             set
             {
                 if (value == _isDownloadEnabled) return;
@@ -62,7 +74,6 @@ namespace Keeper2018
 
         private void Init()
         {
-            Rows = new ObservableCollection<OfficialRatesModel>();
             OfficialRatesModel annual = null;
             OfficialRatesModel previous = null;
             foreach (var record in _rates)

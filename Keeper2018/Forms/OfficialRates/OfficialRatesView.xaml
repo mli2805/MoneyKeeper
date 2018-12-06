@@ -8,14 +8,16 @@
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance keeper2018:OfficialRatesViewModel}"
-        SizeToContent="Width" WindowStartupLocation="CenterScreen" FontSize="13.5">
+        Width="968" WindowStartupLocation="CenterScreen" FontSize="13.5">
 
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
             <Button Name="UsdChart" Margin="5" Width="50" Content="Usd" DockPanel.Dock="Left"/>
             <Button Name="BasketChart" Margin="5" Width="60" Content="Basket" DockPanel.Dock="Left"/>
             <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
-            <Button Name="Download" Margin="5" Width="100" Content="Download" DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"/>
+            <Button Name="Download" Margin="5" Width="100" Content="Download"
+                    DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"
+                    ToolTip="Загрузить НБРБ и ЦБРФ курсы"/>
             <TextBlock/>
         </DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
@@ -27,8 +29,12 @@
             <TextBlock Text="{Binding LastDayOfYear.RurUsdStr}" Margin="32,0,0,0" />
             <TextBlock Text="{Binding LastDayOfYear.BasketStr}" Margin="65,0,0,0" />
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" AutoGenerateColumns="False" IsReadOnly="True"
+        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action InputMyUsd]" SelectionMode="Single">
+            <i:Interaction.Behaviors>
+                <keeper2018:ScrollToBottomOnAddBehavior />
+                <keeper2018:ScrollToBottomOnLoadBehavior />
+            </i:Interaction.Behaviors>
             <DataGrid.Resources>
                 <DataTemplate x:Key="UsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
@@ -54,7 +60,7 @@
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                 <DataTemplate x:Key="EuroUsdTemplate" DataType="keeper2018:OfficialRatesModel">
+                <DataTemplate x:Key="EuroUsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding EuroUsdStr}" Width="50" FontSize="11" Foreground="Black" />
                         <TextBlock Text="   "/>
@@ -103,10 +109,6 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.Resources>
-            <i:Interaction.Behaviors>
-                <keeper2018:ScrollToBottomOnAddBehavior />
-                <keeper2018:ScrollToBottomOnLoadBehavior />
-            </i:Interaction.Behaviors>
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Ввести мой курс доллара" cal:Message.Attach="InputMyUsd"/>
