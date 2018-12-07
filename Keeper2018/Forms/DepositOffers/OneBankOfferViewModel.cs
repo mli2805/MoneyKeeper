@@ -29,13 +29,27 @@ namespace Keeper2018
             var bankFolder = _keeperDb.Bin.AccountPlaneList.First(a => a.Name == "Банки");
             Banks = new List<Account>(_keeperDb.Bin.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
 
-            ModelInWork = model == null ? new DepositOfferModel() {Bank = Banks.First(),} : model.DeepCopy();
-            EssentialDates = ModelInWork.Essentials.Keys.Select(d=>d.ToString("dd-MM-yyyy")).ToList();
+            ModelInWork = model;
+            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString("dd-MM-yyyy")).ToList();
         }
 
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Банковский депозит";
+        }
+
+        public void AddEssentials()
+        {
+            var depositEssential = new DepositEssential();
+            _rulesAndRatesViewModel.Initialize(depositEssential);
+            _windowManager.ShowDialog(_rulesAndRatesViewModel);
+            ModelInWork.Essentials.Add(DateTime.Today, depositEssential);
+        }
+
+        public void EditEssentials()
+        {
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Essentials[SelectedDate]);
+            _windowManager.ShowDialog(_rulesAndRatesViewModel);
         }
 
         public void Save()

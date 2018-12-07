@@ -46,6 +46,8 @@ namespace Keeper2018
 
         public void AddAccountDeposit()
         {
+            var deposit = new Deposit();
+            _oneDepositViewModel.InitializeForm(deposit, true);
             WindowManager.ShowDialog(_oneDepositViewModel);
         }
 

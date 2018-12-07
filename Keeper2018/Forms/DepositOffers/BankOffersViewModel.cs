@@ -11,7 +11,7 @@ namespace Keeper2018
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
         private readonly OneBankOfferViewModel _oneBankOfferViewModel;
-        public ObservableCollection<DepositOfferModel> Rows { get;set; }
+        public ObservableCollection<DepositOfferModel> Rows { get; set; }
 
         private DepositOfferModel _selectedDepositOffer;
         public DepositOfferModel SelectedDepositOffer
@@ -25,7 +25,7 @@ namespace Keeper2018
             }
         }
 
-        public BankOffersViewModel(IWindowManager windowManager, KeeperDb db, 
+        public BankOffersViewModel(IWindowManager windowManager, KeeperDb db,
             OneBankOfferViewModel oneBankOfferViewModel)
         {
             _windowManager = windowManager;
@@ -36,7 +36,7 @@ namespace Keeper2018
         public void Initialize()
         {
             Rows = new ObservableCollection<DepositOfferModel>
-                (_db.Bin.DepositOffers.Select(x=>x.Map(_db.Bin.AccountPlaneList)));
+                (_db.Bin.DepositOffers.Select(x => x.Map(_db.Bin.AccountPlaneList)));
             SelectedDepositOffer = Rows.Last();
         }
 
@@ -47,14 +47,29 @@ namespace Keeper2018
 
         public void AddOffer()
         {
-            _oneBankOfferViewModel.Initialize(null);
+            var offer = new DepositOfferModel { Id = Rows.Max(l => l.Id) + 1 };
+
+            _oneBankOfferViewModel.Initialize(offer);
             _windowManager.ShowDialog(_oneBankOfferViewModel);
+            if (_oneBankOfferViewModel.IsCancelled) return;
+
+            Rows.Add(_oneBankOfferViewModel.ModelInWork);
+            SelectedDepositOffer = Rows.Last();
         }
 
         public void EditSelectedOffer()
         {
-            _oneBankOfferViewModel.Initialize(SelectedDepositOffer);
+            var model = SelectedDepositOffer.DeepCopy();
+            _oneBankOfferViewModel.Initialize(model);
             _windowManager.ShowDialog(_oneBankOfferViewModel);
+
+            if (!_oneBankOfferViewModel.IsCancelled)
+            {
+                var index = Rows.IndexOf(SelectedDepositOffer);
+                Rows.Remove(SelectedDepositOffer);
+                SelectedDepositOffer = model.DeepCopy();
+                Rows.Insert(index, SelectedDepositOffer);
+            }
         }
 
         public void RemoveSelectedOffer()
@@ -64,7 +79,7 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
-            _db.Bin.DepositOffers = new List<DepositOffer>(Rows.Select(d=>d.Map()));
+            _db.Bin.DepositOffers = new List<DepositOffer>(Rows.Select(d => d.Map()));
             base.CanClose(callback);
         }
     }

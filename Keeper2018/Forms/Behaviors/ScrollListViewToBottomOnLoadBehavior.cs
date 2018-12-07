@@ -17,4 +17,6 @@ namespace Keeper2018
                 AssociatedObject.ScrollIntoView(AssociatedObject.Items[AssociatedObject.Items.Count - 1]);
         }
     }
+    
+   
 }
