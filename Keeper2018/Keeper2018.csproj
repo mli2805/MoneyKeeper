@@ -88,6 +88,7 @@
     </ApplicationDefinition>
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
+    <Compile Include="Domain\Db\IO\DbLoader.cs" />
     <Compile Include="Domain\Db\MapToModels.cs" />
     <Compile Include="Domain\Db\RatesExt.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModel.cs" />
@@ -174,7 +175,7 @@
     <Compile Include="Domain\Db\KeeperDbExt.cs" />
     <Compile Include="Domain\TagAssociation\AssociationType.cs" />
     <Compile Include="Domain\TagAssociation\TagAssociation.cs" />
-    <Compile Include="Domain\Db\IO\DbLoader.cs" />
+    <Compile Include="Domain\Db\IO\DbTexter.cs" />
     <Compile Include="Domain\Rates\Basket\BelBaskets.cs" />
     <Compile Include="Domain\Rates\Basket\BelCurrencies.cs" />
     <Compile Include="Domain\Rates\Basket\BelCurrency.cs" />

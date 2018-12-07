@@ -1,49 +1,50 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public static class DbLoader
+    public class DbLoader
     {
-        public static async Task<KeeperBin> LoadAllFromOldTxt()
+        private readonly KeeperDb _keeperDb;
+        private readonly IWindowManager _windowManager;
+        private readonly DbLoadingViewModel _dbLoadingViewModel;
+        private readonly OfficialRatesViewModel _officialRatesViewModel;
+
+        public DbLoader(KeeperDb keeperDb, IWindowManager windowManager, 
+            DbLoadingViewModel dbLoadingViewModel, OfficialRatesViewModel officialRatesViewModel)
         {
-            var keeperBin = new KeeperBin
-            {
-                OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync(),
-                AccountPlaneList = AccountsOldTxt.LoadFromOldTxt().ToList()
-            };
-            keeperBin.TagAssociations = await TagAssociationsOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
-            keeperBin.DepositOffers = await BankOffersOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
-            keeperBin.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
-            return keeperBin;
+            _keeperDb = keeperDb;
+            _windowManager = windowManager;
+            _dbLoadingViewModel = dbLoadingViewModel;
+            _officialRatesViewModel = officialRatesViewModel;
         }
 
-//        private static async Task<KeeperBin> LoadFromTxt()
-//        {
-//            await Task.Delay(1);
-//            var keeperBin = new KeeperBin
-//            {
-//                AccountPlaneList = Accounts2018Txt.LoadFromTxt().ToList()
-//            };
-//            return keeperBin;
-//        }
-
-        public static void ExpandBinToDb(KeeperDb keeperDb)
+        public async Task<bool> Load()
         {
+            _keeperDb.Bin = await DbSerializer.Deserialize();
+            if (_keeperDb.Bin == null)
+            {
+                _windowManager.ShowDialog(_dbLoadingViewModel);
+                if (!_dbLoadingViewModel.DbLoaded)
+                    return false;
+            }
+            ExpandBinToDb(_keeperDb);
+            return true;
+        }
+
+        private void ExpandBinToDb(KeeperDb keeperDb)
+        {
+            _officialRatesViewModel.Initialize();
             keeperDb.FillInAccountTree(); // must be first
 
             keeperDb.AssociationModels = new ObservableCollection<LineModel>
-                (keeperDb.Bin.TagAssociations.Select(a=>a.Map(keeperDb.AcMoDict)));
+                (keeperDb.Bin.TagAssociations.Select(a=>MapToModels.Map((TagAssociation) a, keeperDb.AcMoDict)));
 //            keeperDb.DepositOfferModels = new ObservableCollection<DepositOfferModel>
 //                (keeperDb.Bin.DepositOffers.Select(x=>x.Map(keeperDb.Bin.AccountPlaneList)));
             keeperDb.TransactionModels = new ObservableCollection<TransactionModel>
                 (keeperDb.Bin.Transactions.Select(t=>t.Map(keeperDb.AcMoDict)));
-        }
-
-        public static void DbToBin(this KeeperDb db)
-        {
-            db.FlattenAccountTree();
         }
     }
 }

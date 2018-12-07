@@ -25,7 +25,7 @@ namespace Keeper2018
 
         private async void Load()
         {
-            _keeperDb.Bin = await DbLoader.LoadAllFromOldTxt();
+            _keeperDb.Bin = await DbTexter.LoadAllFromOldTxt();
             DbLoaded = true;
             TryClose();
         }

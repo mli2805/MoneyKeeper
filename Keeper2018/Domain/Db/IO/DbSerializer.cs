@@ -8,7 +8,6 @@ namespace Keeper2018
 {
     public static class DbSerializer
     {
-        
         private static void MadeDbxBackup(string filename)
         {
             if (!File.Exists(filename)) return;
