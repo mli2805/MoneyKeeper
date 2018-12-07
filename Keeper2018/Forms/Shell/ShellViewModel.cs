@@ -16,12 +16,10 @@ namespace Keeper2018
         private readonly ShellPartsBinder _shellPartsBinder;
         private bool _dbLoaded;
 
-        public ShellViewModel(KeeperDb keeperDb, DbLoader dbLoader,
-            MainMenuViewModel mainMenuViewModel, ShellPartsBinder shellPartsBinder,
-            AccountTreeViewModel accountTreeViewModel, BalanceOrTrafficViewModel balanceOrTrafficViewModel,
-            TwoSelectorsViewModel twoSelectorsViewModel)
+        public ShellViewModel(KeeperDb keeperDb, DbLoader dbLoader, ShellPartsBinder shellPartsBinder,
+            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, 
+            BalanceOrTrafficViewModel balanceOrTrafficViewModel, TwoSelectorsViewModel twoSelectorsViewModel)
         {
-
             MainMenuViewModel = mainMenuViewModel;
             AccountTreeViewModel = accountTreeViewModel;
             BalanceOrTrafficViewModel = balanceOrTrafficViewModel;

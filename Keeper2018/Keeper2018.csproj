@@ -152,7 +152,7 @@
     </Compile>
     <Compile Include="Forms\Shell\DbLoadingViewModel.cs" />
     <Compile Include="Domain\Db\AccountComboboxProvider.cs" />
-    <Compile Include="Domain\Db\AccountTreeGardener.cs" />
+    <Compile Include="Forms\AccountTree\AccountTreeGardener.cs" />
     <Compile Include="Domain\Deposit\Deposit.cs" />
     <Compile Include="Domain\Db\KeeperDb.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />

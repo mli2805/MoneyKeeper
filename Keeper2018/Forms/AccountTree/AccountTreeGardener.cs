@@ -81,9 +81,10 @@ namespace Keeper2018
 
         private static void RemoveAccountLowLevel(this KeeperDb db, AccountModel accountModel)
         {
-
+            var owner = accountModel.Owner;
+            accountModel.Owner = null;
+            owner.Items.Remove(accountModel);
+            db.Bin.AccountPlaneList.RemoveAll(a => a.Id == accountModel.Id);
         }
     }
-
-
 }

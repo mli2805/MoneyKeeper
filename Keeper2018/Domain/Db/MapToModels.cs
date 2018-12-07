@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,15 @@ namespace Keeper2018
                 IsFolder = account.IsFolder,
                 Deposit = account.Deposit,
             };
-            acMoDict.Add(accountModel.Id, accountModel);
+
+            try
+            {
+                acMoDict.Add(accountModel.Id, accountModel);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             if (account.OwnerId != 0)
             {

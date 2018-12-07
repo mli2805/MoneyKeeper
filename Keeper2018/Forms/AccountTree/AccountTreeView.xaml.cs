@@ -158,6 +158,7 @@ namespace Keeper2018
             ((AccountModel)source).Owner.Items.Remove(source);
             destination.Items.Add(source);
             ((AccountModel)source).Owner = (AccountModel)destination;
+            ((AccountModel) destination).IsFolder = true;
         }
 
     }

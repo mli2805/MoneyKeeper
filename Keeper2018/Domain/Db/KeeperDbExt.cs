@@ -36,7 +36,7 @@ namespace Keeper2018
             return result;
         }
 
-        private static Account Map(this AccountModel model)
+        public static Account Map(this AccountModel model)
         {
             return new Account()
             {

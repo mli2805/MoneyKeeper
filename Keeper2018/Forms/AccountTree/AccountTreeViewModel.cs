@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Linq;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
@@ -14,8 +15,8 @@ namespace Keeper2018
         public KeeperDb KeeperDb { get; set; }
 
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
-            AskDragAccountActionViewModel askDragAccountActionViewModel, 
-            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, 
+            AskDragAccountActionViewModel askDragAccountActionViewModel,
+            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
             DepositReportViewModel depositReportViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
@@ -30,7 +31,17 @@ namespace Keeper2018
 
         public void AddAccount()
         {
+            var accountModel = new AccountModel("")
+            {
+                Id = KeeperDb.Bin.AccountPlaneList.Max(a => a.Id) + 1,
+                Owner = ShellPartsBinder.SelectedAccountModel
+            };
+            _oneAccountViewModel.Initialize(accountModel, true);
             WindowManager.ShowDialog(_oneAccountViewModel);
+            if (!_oneAccountViewModel.IsSavePressed) return;
+
+            ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
+            KeeperDb.Bin.AccountPlaneList.Add(accountModel.Map());
         }
 
         public void AddAccountDeposit()
@@ -43,7 +54,14 @@ namespace Keeper2018
             if (ShellPartsBinder.SelectedAccountModel.IsDeposit)
                 WindowManager.ShowDialog(_oneDepositViewModel);
             else
+            {
+                var accountModel = ShellPartsBinder.SelectedAccountModel;
+                _oneAccountViewModel.Initialize(accountModel, false);
                 WindowManager.ShowDialog(_oneAccountViewModel);
+
+                if (_oneAccountViewModel.IsSavePressed) 
+                    KeeperDb.FlattenAccountTree();
+            }
         }
         public void RemoveSelectedAccount()
         {
@@ -53,7 +71,7 @@ namespace Keeper2018
         public void ShowDepositReport()
         {
             _depositReportViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
-             WindowManager.ShowDialog(_depositReportViewModel);
+            WindowManager.ShowDialog(_depositReportViewModel);
         }
 
     }
