@@ -18,7 +18,7 @@ namespace Keeper2018
 
         private static IEnumerable<DepositOffer> LoadFromOldTxt(List<Account> accountsPlaneList)
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("BankDepositOffers.txt"), Encoding.GetEncoding("Windows-1251")).
+            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("BankDepositOffers.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
 
             var rateLines = LoadRatesFromOldTxt().ToList();
@@ -31,7 +31,7 @@ namespace Keeper2018
 
         private static IEnumerable<DepositRateLine> LoadRatesFromOldTxt()
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("BankDepositOffersRates.txt"),
+            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("BankDepositOffersRates.txt"),
                 Encoding.GetEncoding("Windows-1251")).ToList();
             foreach (var line in content)
             {

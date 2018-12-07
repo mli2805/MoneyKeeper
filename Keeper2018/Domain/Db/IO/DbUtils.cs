@@ -6,12 +6,26 @@ namespace Keeper2018
 {
     public static class DbUtils
     {
-        public static string GetTxtFullPath(string filename)
+        // export from old Keeper
+        public static string GetOldTxtFullPath(string filename)
+        {
+            var keeperInDropboxFullPath = GetKeeperInDropboxFullPath();
+            var dbPath = keeperInDropboxFullPath + @"\OldKeeperTxt";
+            return Path.Combine(dbPath, filename);
+        }
+
+        public static string GetDbFullPath()
+        {
+            var keeperInDropboxFullPath = GetKeeperInDropboxFullPath();
+            var dbPath = keeperInDropboxFullPath + @"\Db";
+            return Path.Combine(dbPath, "KeeperDb.bin");
+        }
+
+        private static string GetKeeperInDropboxFullPath()
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
-            var dataFolder = (string)Settings.Default["DataFolder"];
-            var dataPath = Path.Combine(path, dataFolder);
-            return Path.Combine(dataPath, filename);
+            var dataFolder = (string) Settings.Default["KeeperInDropbox"];
+            return Path.Combine(path, dataFolder);
         }
     }
 }

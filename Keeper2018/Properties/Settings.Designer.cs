@@ -12,7 +12,7 @@ namespace Keeper2018.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,13 +25,13 @@ namespace Keeper2018.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\Data\\")]
-        public string DataFolder {
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\mli2805\\Dropbox\\Keeper2018\\")]
+        public string KeeperInDropbox {
             get {
-                return ((string)(this["DataFolder"]));
+                return ((string)(this["KeeperInDropbox"]));
             }
             set {
-                this["DataFolder"] = value;
+                this["KeeperInDropbox"] = value;
             }
         }
     }

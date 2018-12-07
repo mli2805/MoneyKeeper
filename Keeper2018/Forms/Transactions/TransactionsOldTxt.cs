@@ -18,7 +18,7 @@ namespace Keeper2018
 
         private static IEnumerable<Transaction> LoadFromOldTxt(List<Account> accountsPlaneList)
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("TransWithTags.txt"),
+            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("TransWithTags.txt"),
                 Encoding.GetEncoding("Windows-1251"));
 
             var ordinal = 1;

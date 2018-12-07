@@ -10,7 +10,7 @@ namespace Keeper2018
     {
         public static IEnumerable<Account> LoadFromTxt()
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("Accounts2018.txt")).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("Accounts2018.txt")).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
             foreach (var line in content)
             {
                 yield return ParseAccount(line);
@@ -35,7 +35,7 @@ namespace Keeper2018
             var content = new List<string>();
             foreach (var root in accounts)
                 content.AddRange(DumpAccountWithChildren(root));
-            File.WriteAllLines(DbUtils.GetTxtFullPath("Accounts2018.txt"), content);
+            File.WriteAllLines(DbUtils.GetOldTxtFullPath("Accounts2018.txt"), content);
         }
 
         private static List<string> DumpAccountWithChildren(AccountModel accountModel, int offset = 0)

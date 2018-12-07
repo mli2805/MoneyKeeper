@@ -17,7 +17,7 @@ namespace Keeper2018
 
         private static IEnumerable<TagAssociation> LoadFromOldTxt(List<Account> accountsPlaneList)
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("ArticlesAssociations.txt"), Encoding.GetEncoding("Windows-1251")).
+            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("ArticlesAssociations.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
 
             foreach (var line in content)

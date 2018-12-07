@@ -21,7 +21,7 @@ namespace Keeper2018
             var result = new Dictionary<DateTime, double>();
             try
             {
-                var content = File.ReadAllLines(DbUtils.GetTxtFullPath("cbrf.csv"), Encoding.GetEncoding("Windows-1251")).ToList();
+                var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("cbrf.csv"), Encoding.GetEncoding("Windows-1251")).ToList();
 
                 var delimiters = new[] { ' ', '"' };
                 foreach (var line in content)
@@ -44,7 +44,7 @@ namespace Keeper2018
 
         private static Dictionary<DateTime, double> GetMyUsdRates()
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("CurrencyRates.txt"), Encoding.GetEncoding("Windows-1251")).
+            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("CurrencyRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s) && s.Contains("; BY")).ToList();
 
             var result = new Dictionary<DateTime, double>();
@@ -71,7 +71,7 @@ namespace Keeper2018
 
         private static IEnumerable<OfficialRates> LoadFromOldTxt(Dictionary<DateTime, double> myUsdRates, Dictionary<DateTime, double> cbrRates)
         {
-            var content = File.ReadAllLines(DbUtils.GetTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
+            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
 
             // 1-April-1995
