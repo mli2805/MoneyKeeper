@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9831E8
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper.UnitTests", "Keeper.UnitTests\Keeper.UnitTests.csproj", "{9FABEAFB-B26F-4133-82D8-187EE078686D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65DF484C-F041-48C2-9B45-C225655D1242}"
 	ProjectSection(SolutionItems) = preProject
 		account moving problem.txt = account moving problem.txt
@@ -32,10 +30,6 @@ Global
 		{4F7AD566-C071-42F3-9BE9-139C827641DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F7AD566-C071-42F3-9BE9-139C827641DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F7AD566-C071-42F3-9BE9-139C827641DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9FABEAFB-B26F-4133-82D8-187EE078686D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6A562A7-C323-4E40-918D-466FDDA29909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6A562A7-C323-4E40-918D-466FDDA29909}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6A562A7-C323-4E40-918D-466FDDA29909}.Release|Any CPU.ActiveCfg = Release|Any CPU

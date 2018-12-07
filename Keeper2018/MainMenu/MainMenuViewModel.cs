@@ -24,6 +24,7 @@ namespace Keeper2018
             _articlesAssociationsViewModel = articlesAssociationsViewModel;
         }
 
+        // for short-cuts
         public void ActionMethod(MainMenuAction action)
         {
             switch (action)
@@ -44,7 +45,6 @@ namespace Keeper2018
                     ShowTagAssociationsForm();
                     break;
             }
-
         }
 
         public void ShowTransactionsForm()
@@ -72,7 +72,5 @@ namespace Keeper2018
             _articlesAssociationsViewModel.Init();
             _windowManager.ShowDialog(_articlesAssociationsViewModel);
         }
-
-
     }
 }
