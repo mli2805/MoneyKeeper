@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Height="720" SizeToContent="Width" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance keeper2018:RulesAndRatesViewModel}">
+        Height="720" SizeToContent="Width" WindowStartupLocation="CenterScreen" 
+        d:DataContext="{d:DesignInstance keeper2018:RulesAndRatesViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="HeaderTextStyle" TargetType="DataGridColumnHeader">
@@ -17,16 +18,39 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="230"/>
-            <RowDefinition Height="40"/>
-        </Grid.RowDefinitions>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
+            <TextBlock Text="Ставки и правила для депозитов открытых с даты: " Margin="5,8,5,5"/>
+            <DatePicker Margin="5" HorizontalAlignment="Right" SelectedDate="{Binding SelectedDate}" Width="96" />
+        </StackPanel>
+        <Button Name="Close" DockPanel.Dock="Bottom" Margin="5,10" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
+        <StackPanel DockPanel.Dock="Bottom" Margin="5">
+            <CheckBox Name="IsFactDays" Content="исходя из фактического количества дней в году" Margin="5"
+              IsChecked="{Binding Essential.CalculationRules.IsFactDays, Mode=TwoWay}"/>
+            <CheckBox Name="IsRateFixed" Content="процентная ставка фиксированная" Margin="5"
+              IsChecked="{Binding Essential.CalculationRules.IsRateFixed, Mode=TwoWay}"/>
+            <CheckBox Name="EveryFirstDayOfMonth" Content="каждое первое число месяца" Margin="5"
+              IsChecked="{Binding Essential.CalculationRules.EveryFirstDayOfMonth, Mode=TwoWay}"/>
+            <CheckBox Name="EveryLastDayOfMonth" Content="каждый последний день месяца" Margin="5"
+              IsChecked="{Binding Essential.CalculationRules.EveryLastDayOfMonth, Mode=TwoWay}"/>
+            <CheckBox Name="EveryStartDay" Content="каждое число открытия" Margin="5"
+              IsChecked="{Binding Essential.CalculationRules.EveryStartDay, Mode=TwoWay}"/>
+            <CheckBox Name="IsCapitalized" Content="проценты капитализируются" Margin="5"
+              IsChecked="{Binding Essential.CalculationRules.IsCapitalized, Mode=TwoWay}"/>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Name="HasAdditionalProcent" Content="доп процент в конце срока" Margin="5"
+                         IsChecked="{Binding Essential.CalculationRules.HasAdditionalProcent, Mode=TwoWay}"/>
+                <TextBox Name="AdditionalProcent" Margin="5" Width="100"
+                        Text="{Binding Essential.CalculationRules.AdditionalProcent, Mode=TwoWay}"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" Margin="5">
+            <Button Name="AddLine" Margin="5" Width="150" HorizontalAlignment="Left" Content="Добавить строку" />
+            <StackPanel Orientation="Horizontal">
+                <Button Name="RepeatDay" Margin="5" Width="263" HorizontalAlignment="Left" Content="Скопировать последний день на дату" />
+                <DatePicker Margin="5" HorizontalAlignment="Right" SelectedDate="{Binding NewDate}" Width="96" />
+            </StackPanel>
+        </StackPanel>
         <DataGrid x:Name="RatesGrid" Margin="5,5,5,0" Padding="5" 
               ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource HeaderTextStyle}"
@@ -46,33 +70,7 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Name="AddLine" Grid.Row="1" Margin="7" Width="150" HorizontalAlignment="Left" Content="Добавить строку" />
-        <Button Name="RepeatDay" Grid.Row="2" Margin="7,7,0,7" Width="263" HorizontalAlignment="Left" Content="Скопировать последний день на дату" />
-        <DatePicker Grid.Row="2" Margin="0,7,7,7" HorizontalAlignment="Right" SelectedDate="{Binding NewDate}" Width="96" />
-        <Button Name="RepeatFromDeposit" Grid.Row="3" Margin="7,7,0,7" Width="193" HorizontalAlignment="Left" Content="Взять таблицу на последн день" />
-        <TextBlock Grid.Row="3" Margin="222,15,151,9" Text="или" VerticalAlignment="Center"/>
-        <Button Name="ImportFrom" Grid.Row="3" Margin="0,7,7,7" Width="129" HorizontalAlignment="Right" Content="Импортировать все" />
 
-        <ComboBox Grid.Row="4" Margin="0,7,7,7" Width="362" HorizontalAlignment="Right" 
-                  ItemsSource="{Binding DepositOffersForCombobox}" SelectedItem="{Binding DepositOfferDonor}"/>
 
-        <CheckBox Name="IsFactDays" Grid.Row="5" Content="исходя из фактического количества дней в году" Margin="10,10,0,0"
-              IsChecked="{Binding Essential.CalculationRules.IsFactDays, Mode=TwoWay}"/>
-        <CheckBox Name="IsRateFixed" Grid.Row="5" Content="процентная ставка фиксированная" Margin="10,40,0,0"
-              IsChecked="{Binding Essential.CalculationRules.IsRateFixed, Mode=TwoWay}"/>
-        <CheckBox Name="EveryFirstDayOfMonth" Grid.Row="5" Content="каждое первое число месяца" Margin="10,70,0,0"
-              IsChecked="{Binding Essential.CalculationRules.EveryFirstDayOfMonth, Mode=TwoWay}"/>
-        <CheckBox Name="EveryLastDayOfMonth" Grid.Row="5" Content="каждый последний день месяца" Margin="10,100,0,0"
-              IsChecked="{Binding Essential.CalculationRules.EveryLastDayOfMonth, Mode=TwoWay}"/>
-        <CheckBox Name="EveryStartDay" Grid.Row="5" Content="каждое число открытия" Margin="10,130,0,0"
-              IsChecked="{Binding Essential.CalculationRules.EveryStartDay, Mode=TwoWay}"/>
-        <CheckBox Name="IsCapitalized" Grid.Row="5" Content="проценты капитализируются" Margin="10,160,0,0"
-              IsChecked="{Binding Essential.CalculationRules.IsCapitalized, Mode=TwoWay}"/>
-        <CheckBox Name="HasAdditionalProcent" Grid.Row="5" Content="доп процент в конце срока" Margin="10,190,0,0"
-              IsChecked="{Binding Essential.CalculationRules.HasAdditionalProcent, Mode=TwoWay}"/>
-        <TextBox Name="AdditionalProcent" Grid.Row="5"  Margin="210,190,50,20"
-              Text="{Binding Essential.CalculationRules.AdditionalProcent, Mode=TwoWay}"/>
-
-        <Button Name="Close" Grid.Row="6" Margin="7" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
-    </Grid>
+    </DockPanel>
 </Window>

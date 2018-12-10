@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         SizeToContent="Height" Width="390" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance keeper2018:OneBankOfferViewModel}">
     <StackPanel>
@@ -20,18 +21,26 @@
             <TextBox Margin="5" Text="{Binding ModelInWork.Comment}" 
                      Height="80" TextWrapping="Wrap"/>
         </StackPanel>
-        <GroupBox Header="Условия и ставки для депозитов открытых в период">
+        <GroupBox Header="Условия и ставки для депозитов открытых в период" Margin="5">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Right" Margin="0,5">
                     <Button Name="AddEssentials" Height="25" Width="100" Content="Добавить" Margin="5"/>
                     <Button Name="EditEssentials" Height="25" Width="100" Content="Изменить" Margin="5"/>
                 </StackPanel>
-                    <ListBox  ItemsSource="{Binding EssentialDates}" Margin="5"></ListBox>
+                <ListView  ItemsSource="{Binding EssentialDates}" SelectedItem="{Binding SelectedDate, Mode=TwoWay}" Margin="5">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Добавить" cal:Message.Attach="AddEssentials"/>
+                            <MenuItem Header="Изменить" cal:Message.Attach="EditEssentials"/>
+                            <MenuItem Header="Удалить" cal:Message.Attach="RemoveEssentials"/>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                </ListView>
             </DockPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
             <Button Content="Принять" Height="25" Width="100" Name="Save" Margin="5"/>
-            <Button Content="Отклонить" Height="25" Width="100" Name="Cancel" Margin="5"/>
+            <Button Content="Отклонить" Height="25" Width="100" IsCancel="True" Name="Cancel" Margin="5"/>
         </StackPanel>
     </StackPanel>
 </Window>

@@ -22,6 +22,9 @@ namespace Keeper2018
     [Serializable]
     public class DepositEssential
     {
+        // ID is necessary because Deposit can have more than one Essential 
+        // and txt file should have ID to separate RateLines from different Essentials
+        public int Id { get; set; } 
         public DepositCalculationRules CalculationRules { get; set; } = new DepositCalculationRules();
         public List<DepositRateLine> RateLines { get; set; } = new List<DepositRateLine>();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -7,13 +8,17 @@ namespace Keeper2018
 {
     public class OneBankOfferViewModel : Screen
     {
+        private readonly string _dateTemplate = "dd-MMM-yyyy";
         private readonly KeeperDb _keeperDb;
         private readonly IWindowManager _windowManager;
         private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
         public List<Account> Banks { get; set; }
         public DepositOfferModel ModelInWork { get; set; }
+
         public List<string> EssentialDates { get; set; }
-        public DateTime SelectedDate { get; set; }
+
+
+        public string SelectedDate { get; set; }
 
         public bool IsCancelled { get; set; }
 
@@ -30,7 +35,10 @@ namespace Keeper2018
             Banks = new List<Account>(_keeperDb.Bin.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
 
             ModelInWork = model;
-            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString("dd-MM-yyyy")).ToList();
+            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            // EssentialDates = ModelInWork.Essentials.Keys.ToList();
+            if (EssentialDates.Count > 0) SelectedDate = EssentialDates.Last();
+            //  if (EssentialDates.Count > 0) SelectedDate = ModelInWork.Essentials.Keys.First();
         }
 
         protected override void OnViewLoaded(object view)
@@ -40,16 +48,43 @@ namespace Keeper2018
 
         public void AddEssentials()
         {
-            var depositEssential = new DepositEssential();
-            _rulesAndRatesViewModel.Initialize(depositEssential);
+            var date = DateTime.Today;
+            while (ModelInWork.Essentials.ContainsKey(date)) date = date.AddDays(1);
+
+            var maxId = ModelInWork.Essentials.Values.Max(e => e.Id);
+            var depositEssential = new DepositEssential() { Id = maxId + 1 };
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, date, depositEssential);
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
-            ModelInWork.Essentials.Add(DateTime.Today, depositEssential);
+            ModelInWork.Essentials.Add(_rulesAndRatesViewModel.SelectedDate, depositEssential);
+            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            NotifyOfPropertyChange(nameof(EssentialDates));
         }
 
         public void EditEssentials()
         {
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Essentials[SelectedDate]);
+            if (SelectedDate == null) return;
+            var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, date, ModelInWork.Essentials[date]);
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
+            if (date == _rulesAndRatesViewModel.SelectedDate) return;
+
+            var essentials = ModelInWork.Essentials[date];
+            ModelInWork.Essentials.Remove(date);
+            ModelInWork.Essentials.Add(_rulesAndRatesViewModel.SelectedDate, essentials);
+
+            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            NotifyOfPropertyChange(nameof(EssentialDates));
+        }
+
+        public void RemoveEssentials()
+        {
+            if (SelectedDate == null) return;
+            var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
+
+            ModelInWork.Essentials.Remove(date);
+
+            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            NotifyOfPropertyChange(nameof(EssentialDates));
         }
 
         public void Save()
