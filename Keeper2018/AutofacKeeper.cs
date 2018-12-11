@@ -32,6 +32,7 @@ namespace Keeper2018
             builder.RegisterType<BasketDiagramViewModel>().SingleInstance();
 
             builder.RegisterType<MonthAnalysisViewModel>().SingleInstance();
+            builder.RegisterType<MonthAnalyser>().SingleInstance();
 
             builder.RegisterType<BankOffersViewModel>().SingleInstance();
             builder.RegisterType<OneBankOfferViewModel>().SingleInstance();

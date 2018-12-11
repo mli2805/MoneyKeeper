@@ -60,6 +60,7 @@ namespace Keeper2018
 
         public void ShowMonthAnalysisForm()
         {
+            _monthAnalysisViewModel.Initialize();
             _windowManager.ShowDialog(_monthAnalysisViewModel);
         }
         public void ShowDepositOffersForm()

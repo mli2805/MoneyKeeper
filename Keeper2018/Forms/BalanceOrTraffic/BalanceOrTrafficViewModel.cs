@@ -69,14 +69,14 @@ namespace Keeper2018
         {
             var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
 
-            var traffic = isLeaf
+            var trafficCalculator = isLeaf
                 ? (ITraffic)new TrafficOfAccountCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod)
                 : new TrafficOfBranchCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
 
-            traffic.Evaluate();
+            trafficCalculator.Evaluate();
 
-            foreach (var str in traffic.Report(mode)) Lines.Add(str);
-            Total = traffic.Total;
+            foreach (var str in trafficCalculator.Report(mode)) Lines.Add(str);
+            Total = trafficCalculator.Total;
         }
 
         private void ShowTagBalance()

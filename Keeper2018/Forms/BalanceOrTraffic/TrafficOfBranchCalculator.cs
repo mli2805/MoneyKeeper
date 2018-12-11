@@ -68,5 +68,23 @@ namespace Keeper2018
         }
 
         public IEnumerable<string> Report(BalanceOrTraffic mode) { return _balanceWithTurnovers.Report(mode); }
+
+        public List<string> ReportForMonthAnalysis()
+        {
+            var result = new List<string>();
+
+            var root = _balanceWithTurnovers.Summarize().Balance();
+            result.AddRange(_db.BalanceReport(_period.FinishMoment, root));
+
+            foreach (var pair in _balanceWithTurnovers.ChildAccounts)
+            {
+                result.Add("");
+                result.Add($"   {pair.Key.Name}");
+                var child = pair.Value.Balance();
+                result.AddRange(_db.BalanceReport(_period.FinishMoment, child).Select(line => $"   {line}"));
+            }
+
+            return result;
+        }
     }
 }

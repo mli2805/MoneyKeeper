@@ -138,6 +138,8 @@
       <DependentUpon>RulesAndRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\RulesAndRatesViewModel.cs" />
+    <Compile Include="Forms\MonthAnalysis\MonthAnalyser.cs" />
+    <Compile Include="Forms\MonthAnalysis\MonthAnalysisModel.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisView.xaml.cs">
       <DependentUpon>MonthAnalysisView.xaml</DependentUpon>
     </Compile>

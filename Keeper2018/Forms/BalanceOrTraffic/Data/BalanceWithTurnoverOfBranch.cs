@@ -5,20 +5,20 @@ namespace Keeper2018
 {
     public class BalanceWithTurnoverOfBranch
     {
-        private readonly Dictionary<AccountModel, BalanceWithTurnover> _childAccounts = new Dictionary<AccountModel, BalanceWithTurnover>();
+        public readonly Dictionary<AccountModel, BalanceWithTurnover> ChildAccounts = new Dictionary<AccountModel, BalanceWithTurnover>();
 
         public void Add(AccountModel accountModel, CurrencyCode currency, decimal amount)
         {
-            if (!_childAccounts.ContainsKey(accountModel))
-                _childAccounts.Add(accountModel, new BalanceWithTurnover());
-            _childAccounts[accountModel].Add(currency, amount);
+            if (!ChildAccounts.ContainsKey(accountModel))
+                ChildAccounts.Add(accountModel, new BalanceWithTurnover());
+            ChildAccounts[accountModel].Add(currency, amount);
         }
 
         public void Sub(AccountModel accountModel, CurrencyCode currency, decimal amount)
         {
-            if (!_childAccounts.ContainsKey(accountModel))
-                _childAccounts.Add(accountModel, new BalanceWithTurnover());
-            _childAccounts[accountModel].Sub(currency, amount);
+            if (!ChildAccounts.ContainsKey(accountModel))
+                ChildAccounts.Add(accountModel, new BalanceWithTurnover());
+            ChildAccounts[accountModel].Sub(currency, amount);
         }
 
         public List<string> Report(BalanceOrTraffic mode)
@@ -26,7 +26,7 @@ namespace Keeper2018
             var sum = Summarize();
             var result = new List<string>(sum.Report(mode));
 
-            foreach (var child in _childAccounts)
+            foreach (var child in ChildAccounts)
             {
                 var subReport = child.Value.Report(mode).Select(x=>"   " + x).ToList();
                 if (subReport.Any())
@@ -39,10 +39,10 @@ namespace Keeper2018
             return result;
         }
 
-        private BalanceWithTurnover Summarize()
+        public BalanceWithTurnover Summarize()
         {
             var sum = new BalanceWithTurnover();
-            foreach (var pair in _childAccounts)
+            foreach (var pair in ChildAccounts)
             {
                 foreach (var trafficLine in pair.Value.Currencies)
                 {
@@ -56,7 +56,7 @@ namespace Keeper2018
         public Balance Balance()
         {
             var balance = new Balance();
-            foreach (var pair in _childAccounts)
+            foreach (var pair in ChildAccounts)
             {
                 balance.AddBalance(pair.Value.Balance());
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -22,8 +23,8 @@ namespace Keeper2018
         public static decimal AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
             if (currency == CurrencyCode.USD) return amount;
-            var rateLine =  currency == CurrencyCode.BYN 
-                ? db.Bin.OfficialRates.Last(r => r.Date.Date <= date && Math.Abs(r.MyUsdRate.Value) > 0.1) 
+            var rateLine = currency == CurrencyCode.BYN
+                ? db.Bin.OfficialRates.Last(r => r.Date.Date <= date && Math.Abs(r.MyUsdRate.Value) > 0.1)
                 : db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
             return currency == CurrencyCode.BYR || currency == CurrencyCode.BYN
                 ? amount / (decimal)rateLine.MyUsdRate.Value
@@ -38,7 +39,16 @@ namespace Keeper2018
             if (currency == CurrencyCode.USD) return shortLine;
 
             var amountInUsd = db.AmountInUsd(date, currency, amount);
-            return shortLine + $" ({amountInUsd:#.00}$)";
+            return shortLine + $" ({amountInUsd:0.00}$)";
+        }
+        public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount, out decimal amountInUsd)
+        {
+            amountInUsd = amount;
+            var shortLine = $"{amount} {currency.ToString().ToLower()}";
+            if (currency == CurrencyCode.USD) return shortLine;
+
+            amountInUsd = db.AmountInUsd(date, currency, amount);
+            return shortLine + $" ( {amountInUsd:0.00} usd )";
         }
 
         public static decimal BalanceInUsd(this KeeperDb db, DateTime date, Balance balance)
@@ -66,6 +76,26 @@ namespace Keeper2018
             if (currency != CurrencyCode.USD)
                 result = result + $"  ( ${db.AmountInUsd(date, currency, value):0.00} )";
             return result;
+        }
+
+        public static IEnumerable<string> BalanceReport(this KeeperDb db, DateTime date, Balance balance)
+        {
+            decimal amountInUsd = 0;
+            foreach (var pair in balance.Currencies)
+            {
+                if (pair.Key == CurrencyCode.USD)
+                {
+                    amountInUsd = amountInUsd + pair.Value;
+                    yield return $"{pair.Value:0.00} usd";
+                }
+                else
+                {
+                    var inUsd = db.AmountInUsd(date, pair.Key, pair.Value);
+                    amountInUsd = amountInUsd + inUsd;
+                    yield return $"{pair.Value:0.00} {pair.Key.ToString().ToLower()} (= {inUsd:0.00} usd)";
+                }
+            }
+            yield return $"Итого {amountInUsd:0.00} usd";
         }
     }
 }
