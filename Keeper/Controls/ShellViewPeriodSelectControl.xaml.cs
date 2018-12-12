@@ -55,7 +55,8 @@ namespace Keeper.Controls
 
         private void ChangeControlType(object sender, RoutedEventArgs e) { ChangeControlTypeEvent = !ChangeControlTypeEvent; }
 
-        private void OneDayBeforeClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddDays(-1), SelectedPeriod.Finish.AddDays(-1)); }
+        private void OneDayBeforeClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(SelectedPeriod.Start.AddDays(-1), SelectedPeriod.Finish.AddDays(-1)); }
         private void OneMonthBeforeClick(object sender, RoutedEventArgs e)
         {
 
@@ -64,8 +65,10 @@ namespace Keeper.Controls
             SelectedPeriod = new Period(SelectedPeriod.Start.AddMonths(-1), finish);
         }
 
-        private void OneYearBeforeClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddYears(-1), SelectedPeriod.Finish.AddYears(-1)); }
-        private void OneDayAfterClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddDays(1), SelectedPeriod.Finish.AddDays(1)); }
+        private void OneYearBeforeClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(SelectedPeriod.Start.AddYears(-1), SelectedPeriod.Finish.AddYears(-1)); }
+        private void OneDayAfterClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(SelectedPeriod.Start.AddDays(1), SelectedPeriod.Finish.AddDays(1)); }
         private void OneMonthAfterClick(object sender, RoutedEventArgs e)
         {
             DateTime finish;
@@ -78,16 +81,21 @@ namespace Keeper.Controls
 
             SelectedPeriod = new Period(SelectedPeriod.Start.AddMonths(1), finish);
         }
-        private void OneYearAfterClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(SelectedPeriod.Start.AddYears(1), SelectedPeriod.Finish.AddYears(1)); }
-        private void TodayClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today, DateTime.Today.AddDays(1).AddSeconds(-1)); }
-        private void FromVeryBeginClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(new DateTime(2002, 1, 1), DateTime.Today.AddDays(1).AddSeconds(-1)); }
-        private void ThisMonthClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.Day + 1), DateTime.Today.AddDays(1).AddSeconds(-1)); }
+        private void OneYearAfterClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(SelectedPeriod.Start.AddYears(1), SelectedPeriod.Finish.AddYears(1)); }
+        private void TodayClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(DateTime.Today, DateTime.Today.AddDays(1).AddSeconds(-1)); }
+        private void FromVeryBeginClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1).AddSeconds(-1)); }
+        private void ThisMonthClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.Day + 1), DateTime.Today.AddDays(1).AddSeconds(-1)); }
         private void LastMonthClick(object sender, RoutedEventArgs e)
         {
             var finish = DateTime.Today.AddDays(-DateTime.Today.Day + 1).AddSeconds(-1);
             SelectedPeriod = new Period(finish.AddDays(-finish.Day + 1), finish);
         }
-        private void ThisYearPaymentsClick(object sender, RoutedEventArgs e) { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.DayOfYear + 1), DateTime.Today); }
+        private void ThisYearPaymentsClick(object sender, RoutedEventArgs e) 
+            { SelectedPeriod = new Period(DateTime.Today.AddDays(-DateTime.Today.DayOfYear + 1), DateTime.Today); }
         private void LastYearPaymentsClick(object sender, RoutedEventArgs e)
         {
             SelectedPeriod = new Period(new DateTime(DateTime.Today.Year - 1, 1, 1), new DateTime(DateTime.Today.Year, 1, 1).AddSeconds(-1));
