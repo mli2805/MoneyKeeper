@@ -22,17 +22,5 @@ namespace Keeper2018.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\mli2805\\Dropbox\\Keeper2018\\")]
-        public string KeeperInDropbox {
-            get {
-                return ((string)(this["KeeperInDropbox"]));
-            }
-            set {
-                this["KeeperInDropbox"] = value;
-            }
-        }
     }
 }
