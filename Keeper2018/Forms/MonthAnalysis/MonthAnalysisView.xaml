@@ -34,37 +34,18 @@
     </i:Interaction.Triggers>
     <Grid>
         <DockPanel>
-            <ListView ItemsSource="{Binding Model.BeforeList}" Margin="2,2,0,5"/>
-            <ListView ItemsSource="{Binding Model.IncomeList}" Foreground="Blue" Margin="2,2,0,5"/>
-            <ListView ItemsSource="{Binding Model.ExpenseList}" Margin="2,2,0,5" Foreground="Red"/>
-            <ListView ItemsSource="{Binding Model.AfterList}" Margin="2,2,0,5"/>
-            <DockPanel LastChildFill="True">
-                <ListView ItemsSource="{Binding Model.ResultList}" Margin="2,2,2,0" Padding="2,2,7,4" 
+            <Border DockPanel.Dock="Bottom" Margin="2,0,2,5" BorderThickness="1" BorderBrush="Silver">
+                <TextBlock Text="{Binding Model.RatesChanges}" Margin="2"/>
+            </Border>
+            <ListView ItemsSource="{Binding Model.BeforeList}" Margin="2,2,0,2"/>
+            <ListView ItemsSource="{Binding Model.IncomeList}" Foreground="Blue" Margin="2,2,0,2"/>
+            <ListView ItemsSource="{Binding Model.ExpenseList}" Margin="2,2,0,2" Foreground="Red"/>
+            <ListView ItemsSource="{Binding Model.AfterList}" Margin="2,2,0,2"/>
+            <ListView ItemsSource="{Binding Model.ResultList}" Margin="2,2,0,2" 
                           Foreground="{Binding Model.ResultForeground}"/>
-                <ListView ItemsSource="{Binding Model.DepositResultList}" Margin="0,2,2,0" Padding="2,2,7,4" 
-                  Foreground="{Binding Model.DepositResultForeground}" ToolTipService.ShowDuration="50000">
-                    <ListView.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock Text="Расходные, включая снятие причисленных процентов"/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text="Проценты, возможно включая начисленные за прошедшие периоды"/>
-                                <TextBlock Text="но возможно без начисленных за этот, что будут выплачены в следующих"/>
-                            </StackPanel>
-                        </ToolTip>
-                    </ListView.ToolTip>
-                </ListView>
-                <ListView ItemsSource="{Binding Model.RatesList}" Margin="0,2,2,0" Padding="2,2,7,4"/>
-            </DockPanel>
-            <DockPanel LastChildFill="True">
-                <ListView ItemsSource="{Binding Model.ForecastListIncomes}" Margin="2,2,0,2" Padding="2,2,7,4" 
+            <ListView ItemsSource="{Binding Model.ForecastList}" Margin="2,2,0,2" 
                           Visibility="{Binding Model.ForecastListVisibility}"/>
-                <ListView ItemsSource="{Binding Model.ForecastListExpense}" Margin="2,2,0,2" Padding="2,2,7,4" 
-                          Visibility="{Binding Model.ForecastListVisibility}"/>
-                <ListView ItemsSource="{Binding Model.ForecastListBalance}" Margin="2" Padding="2,2,7,4" 
-                          Visibility="{Binding Model.ForecastListVisibility}"/>
-            </DockPanel>
-            <Button Name="CloseView" IsCancel="True" Height="1" />
+            <Button Name="CloseView" IsCancel="True" Height="1" Width="1"/>
         </DockPanel>
         <StackPanel Margin="0,0,10,0">
             <TextBlock Text="стрелки - месяц" Opacity="0.03" HorizontalAlignment="Right" FontSize="24"/>

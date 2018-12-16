@@ -41,6 +41,7 @@ namespace Keeper2018
             FillIncomeList(startDate, finishMoment);
             FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
+            _monthAnalysisModel.RatesChanges = _db.GetRatesMonthDifference(startDate, finishMoment);
 
             return _monthAnalysisModel;
         }
@@ -83,7 +84,7 @@ namespace Keeper2018
             if (depoList.Count > 0)
             {
                 _monthAnalysisModel.IncomeList.Add("");
-                _monthAnalysisModel.IncomeList.Add("   Депозиты");
+                _monthAnalysisModel.IncomeList.Add("   Депозиты:");
                 _monthAnalysisModel.IncomeList.Add("");
                 foreach (var line in depoList)
                 {
