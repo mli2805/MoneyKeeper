@@ -10,6 +10,7 @@ namespace Keeper2018
         private MonthAnalysisModel _monthAnalysisModel;
         private AccountModel _myAccountsRoot;
         private AccountModel _incomesRoot;
+        private AccountModel _expensesRoot;
 
 
         public MonthAnalyser(KeeperDb db)
@@ -21,6 +22,7 @@ namespace Keeper2018
         {
             _myAccountsRoot = _db.AccountsTree.First(a => a.Name == "Мои");
             _incomesRoot = _db.AccountsTree.First(a => a.Name == "Все доходы");
+            _expensesRoot = _db.AccountsTree.First(a => a.Name == "Все расходы");
         }
 
         public MonthAnalysisModel Produce(DateTime startDate)
@@ -37,6 +39,7 @@ namespace Keeper2018
             FillBeforeList(startDate);
             var finishMoment = isCurrentPeriod ? DateTime.Today.GetEndOfDate() : startDate.AddMonths(1).AddSeconds(-1);
             FillIncomeList(startDate, finishMoment);
+            FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
 
             return _monthAnalysisModel;
@@ -48,8 +51,7 @@ namespace Keeper2018
                                         new Period(new DateTime(2001, 12, 31), startDate.AddSeconds(-1)));
             trafficCalculator.Evaluate();
             _monthAnalysisModel.BeforeList.Add("Входящий остаток на начало месяца");
-            foreach (var line in trafficCalculator.ReportForMonthAnalysis())
-                _monthAnalysisModel.BeforeList.Add(line);
+            _monthAnalysisModel.BeforeList.AddRange(trafficCalculator.ReportForMonthAnalysis());
         }
 
         private void FillIncomeList(DateTime startDate, DateTime finishMoment)
@@ -71,24 +73,84 @@ namespace Keeper2018
                 }
                 else
                 {
-                    var comment = string.IsNullOrEmpty(tran.Comment) ? tran.Tags.First(t=>t.Is(_incomesRoot)).Name : tran.Comment;
-                    _monthAnalysisModel.IncomeList.Add($"{amStr}  {comment} {tran.Timestamp:dd MMM}");
+                    var comment = string.IsNullOrEmpty(tran.Comment) ? tran.Tags.First(t => t.Is(_incomesRoot)).Name : tran.Comment;
+                    _monthAnalysisModel.IncomeList.Add($"{amStr}  {tran.Timestamp:dd MMM} {comment}");
                 }
 
                 total = total + amountInUsd;
             }
 
-            _monthAnalysisModel.IncomeList.Add("");
-            _monthAnalysisModel.IncomeList.Add("   Депозиты");
-            foreach (var line in depoList)
+            if (depoList.Count > 0)
             {
-                _monthAnalysisModel.IncomeList.Add($"   {line}");
+                _monthAnalysisModel.IncomeList.Add("");
+                _monthAnalysisModel.IncomeList.Add("   Депозиты");
+                _monthAnalysisModel.IncomeList.Add("");
+                foreach (var line in depoList)
+                {
+                    _monthAnalysisModel.IncomeList.Add($"   {line}");
+                }
+                _monthAnalysisModel.IncomeList.Add("");
+                _monthAnalysisModel.IncomeList.Add($"   Итого депозиты {depoTotal:#,0.00} usd");
             }
-            _monthAnalysisModel.IncomeList.Add($"   Итого депозиты {depoTotal:0.00} usd");
-
 
             _monthAnalysisModel.IncomeList.Add("");
-            _monthAnalysisModel.IncomeList.Add($"Итого {total:0.00} usd");
+            _monthAnalysisModel.IncomeList.Add($"Итого {total:#,0.00} usd");
+        }
+
+        private void FillExpenseList(DateTime startDate, DateTime finishMoment)
+        {
+            _monthAnalysisModel.ExpenseList.Add("Расходы");
+            _monthAnalysisModel.ExpenseList.Add("");
+
+            var articles = new BalanceWithTurnoverOfBranch();
+            var largeExpenses = new List<string>();
+            decimal total = 0;
+            decimal largeTotal = 0;
+            foreach (var tran in _db.TransactionModels.Where(t => t.Operation == OperationType.Расход
+                                               && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
+            {
+                foreach (var accountModel in tran.Tags)
+                {
+                    var expenseArticle = accountModel.IsC(_expensesRoot);
+                    if (expenseArticle == null) continue;
+                    var amountInUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                    articles.Add(expenseArticle, CurrencyCode.USD, amountInUsd);
+                    total += amountInUsd;
+
+                    if (Math.Abs(amountInUsd) <= 70) continue;
+
+                    var line = $"   {tran.Amount:#,0.00} {tran.Currency.ToString().ToLower()} ( {amountInUsd:#,0.00} usd )  {tran.Timestamp:dd MMM}";
+                    if (tran.Comment.Length > 30)
+                    {
+                        largeExpenses.Add(line);
+                        var comment = tran.Comment.Length > 70 ? tran.Comment.Substring(0, 70) : tran.Comment;
+                        largeExpenses.Add($"        {comment}");
+                    }
+                    else
+                        largeExpenses.Add($"{line}  {tran.Comment}");
+
+                    largeTotal += amountInUsd;
+                }
+            }
+
+            foreach (var pair in articles.ChildAccounts)
+            {
+                _monthAnalysisModel.ExpenseList.Add($"{pair.Value.Currencies[CurrencyCode.USD].Plus:#,0.00} usd - {pair.Key.Name}");
+            }
+
+            if (largeExpenses.Count > 0)
+            {
+                _monthAnalysisModel.ExpenseList.Add("");
+                _monthAnalysisModel.ExpenseList.Add("   В том числе крупные:");
+                _monthAnalysisModel.ExpenseList.Add("");
+                _monthAnalysisModel.ExpenseList.AddRange(largeExpenses);
+                _monthAnalysisModel.ExpenseList.Add("");
+                _monthAnalysisModel.ExpenseList.Add($"   Итого крупные {largeTotal:#,0.00} usd");
+            }
+
+            _monthAnalysisModel.ExpenseList.Add("");
+            _monthAnalysisModel.ExpenseList.Add($"Итого {total:#,0.00} usd");
+
         }
 
         private void FillAfterList(DateTime finishMoment)

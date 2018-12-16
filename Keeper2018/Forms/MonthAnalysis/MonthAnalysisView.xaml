@@ -34,13 +34,9 @@
     </i:Interaction.Triggers>
     <Grid>
         <DockPanel>
-            <ListView DockPanel.Dock="Left" ItemsSource="{Binding Model.BeforeList}" Margin="2,2,0,5"/>
+            <ListView ItemsSource="{Binding Model.BeforeList}" Margin="2,2,0,5"/>
             <ListView ItemsSource="{Binding Model.IncomeList}" Foreground="Blue" Margin="2,2,0,5"/>
-            <DockPanel LastChildFill="True">
-                <ListView ItemsSource="{Binding Model.ExpenseList}" Margin="2,2,0,5" Foreground="Red"/>
-                <ListView ItemsSource="{Binding Model.LargeExpenseList}" Margin="2,2,2,0" Padding="5,2,7,4" Foreground="Red">
-                </ListView>
-            </DockPanel>
+            <ListView ItemsSource="{Binding Model.ExpenseList}" Margin="2,2,0,5" Foreground="Red"/>
             <ListView ItemsSource="{Binding Model.AfterList}" Margin="2,2,0,5"/>
             <DockPanel LastChildFill="True">
                 <ListView ItemsSource="{Binding Model.ResultList}" Margin="2,2,2,0" Padding="2,2,7,4" 

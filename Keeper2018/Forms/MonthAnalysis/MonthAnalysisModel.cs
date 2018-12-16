@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
@@ -11,11 +12,10 @@ namespace Keeper2018
         public DateTime StartDate { get; set; }
         public Visibility ForecastListVisibility { get; set; }
 
-        public ObservableCollection<string> BeforeList { get; set; } = new ObservableCollection<string>();
+        public List<string> BeforeList { get; set; } = new List<string>();
         public ObservableCollection<string> IncomeList{ get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> ExpenseList{ get; set; }
-        public ObservableCollection<string> LargeExpenseList{ get; set; }
-        public ObservableCollection<string> AfterList{ get; set; } = new ObservableCollection<string>();
+        public List<string> ExpenseList{ get; set; } = new List<string>();
+        public List<string> AfterList{ get; set; } = new List<string>();
         public ObservableCollection<string> ResultList{ get; set; }
         public ObservableCollection<string> DepositResultList { get; set; }
         public ObservableCollection<string> RatesList { get; set; }
