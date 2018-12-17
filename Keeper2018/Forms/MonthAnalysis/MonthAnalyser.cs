@@ -38,7 +38,7 @@ namespace Keeper2018
                 ForecastListVisibility = isCurrentPeriod ? Visibility.Visible : Visibility.Collapsed,
             };
 
-            FillBeforeList(startDate);
+            FillBeforeViewModel(startDate);
             var finishMoment = isCurrentPeriod ? DateTime.Today.GetEndOfDate() : startDate.AddMonths(1).AddSeconds(-1);
             FillIncomeList(startDate, finishMoment);
             FillExpenseList(startDate, finishMoment);
@@ -51,13 +51,13 @@ namespace Keeper2018
             return _monthAnalysisModel;
         }
 
-        private void FillBeforeList(DateTime startDate)
+        private void FillBeforeViewModel(DateTime startDate)
         {
             var trafficCalculator = new TrafficOfBranchCalculator(_db, _myAccountsRoot,
                                         new Period(new DateTime(2001, 12, 31), startDate.AddSeconds(-1)));
             trafficCalculator.Evaluate();
-            _monthAnalysisModel.BeforeList.Add("Входящий остаток на начало месяца");
-            _monthAnalysisModel.BeforeList.AddRange(trafficCalculator.ReportForMonthAnalysis());
+            _monthAnalysisModel.BeforeViewModel.List.Add("Входящий остаток на начало месяца", FontWeights.Bold);
+            _monthAnalysisModel.BeforeViewModel.List.AddList(trafficCalculator.ReportForMonthAnalysis());
             _monthAnalysisModel.Before = trafficCalculator.TotalAmount;
         }
 
@@ -167,12 +167,11 @@ namespace Keeper2018
             var trafficCalculator = new TrafficOfBranchCalculator(_db, _myAccountsRoot,
                                         new Period(new DateTime(2001, 12, 31), finishMoment));
             trafficCalculator.Evaluate();
-            _monthAnalysisModel.AfterList.Add("Исходящий остаток на конец месяца");
-            foreach (var line in trafficCalculator.ReportForMonthAnalysis())
-                _monthAnalysisModel.AfterList.Add(line);
+            _monthAnalysisModel.AfterViewModel.List.Add("Исходящий остаток на конец месяца", FontWeights.Bold);
+            _monthAnalysisModel.AfterViewModel.List.AddList(trafficCalculator.ReportForMonthAnalysis());
             _monthAnalysisModel.After = trafficCalculator.TotalAmount;
         }
 
-      
+
     }
 }

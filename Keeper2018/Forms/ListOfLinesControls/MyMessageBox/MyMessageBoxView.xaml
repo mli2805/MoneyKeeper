@@ -10,8 +10,9 @@
     <StackPanel>
         <ItemsControl ItemsSource="{Binding Lines}" Margin="100,25,100,50">
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="keeper2018:MyMessageBoxLineModel">
-                    <TextBlock Text="{Binding Line}" TextAlignment="Center" TextWrapping="Wrap" FontWeight="{Binding FontWeight}" Foreground="{Binding Foreground}"/>
+                <DataTemplate DataType="keeper2018:ListLine">
+                    <TextBlock Text="{Binding Line}" TextAlignment="Center" TextWrapping="Wrap" 
+                               FontWeight="{Binding FontWeight}" FontSize="{Binding FontSize}" Foreground="{Binding Foreground}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

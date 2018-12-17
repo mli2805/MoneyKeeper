@@ -140,12 +140,21 @@
       <DependentUpon>RulesAndRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\RulesAndRatesViewModel.cs" />
+    <Compile Include="Forms\ListOfLinesControls\BorderedList\BorderedListView.xaml.cs">
+      <DependentUpon>BorderedListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ListOfLinesControls\BorderedList\BorderedListViewModel.cs" />
+    <Compile Include="Forms\ListOfLinesControls\ListOfLines.cs" />
+    <Compile Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesViewModel.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalyser.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisModel.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisView.xaml.cs">
       <DependentUpon>MonthAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisViewModel.cs" />
+    <Compile Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesView.xaml.cs">
+      <DependentUpon>ListOfLinesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\OfficialRates\InputMyUsdView.xaml.cs">
       <DependentUpon>InputMyUsdView.xaml</DependentUpon>
     </Compile>
@@ -200,11 +209,11 @@
       <DependentUpon>BankOffersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\BankOffersViewModel.cs" />
-    <Compile Include="Forms\MyMessageBox\MessageType.cs" />
-    <Compile Include="Forms\MyMessageBox\MessageTypeExt.cs" />
-    <Compile Include="Forms\MyMessageBox\MyMessageBoxLineModel.cs" />
-    <Compile Include="Forms\MyMessageBox\MyMessageBoxView.xaml.cs" />
-    <Compile Include="Forms\MyMessageBox\MyMessageBoxViewModel.cs" />
+    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MessageType.cs" />
+    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MessageTypeExt.cs" />
+    <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
+    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
+    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
     <Compile Include="Utils\DateTimeExtantions.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
@@ -290,7 +299,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\ListOfLinesControls\BorderedList\BorderedListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\MonthAnalysis\MonthAnalysisView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -314,7 +331,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\MyMessageBox\MyMessageBoxView.xaml">
+    <Page Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -408,5 +425,6 @@
   <ItemGroup>
     <Resource Include="keeper2018.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

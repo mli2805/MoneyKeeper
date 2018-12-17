@@ -7,6 +7,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:borderedList="clr-namespace:Keeper2018.BorderedList"
         mc:Ignorable="d"
         Title="{Binding Model.MonthAnalysisViewCaption}" 
         SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" 
@@ -37,10 +38,10 @@
             <Border DockPanel.Dock="Bottom" Margin="2,0,2,5" BorderThickness="1" BorderBrush="Silver">
                 <TextBlock Text="{Binding Model.RatesChanges}" Margin="2"/>
             </Border>
-            <ListView ItemsSource="{Binding Model.BeforeList}" Margin="2,2,0,2"/>
+            <borderedList:BorderedListView DataContext="{Binding Model.BeforeViewModel}"/>
             <ListView ItemsSource="{Binding Model.IncomeList}" Foreground="Blue" Margin="2,2,0,2"/>
             <ListView ItemsSource="{Binding Model.ExpenseList}" Margin="2,2,0,2" Foreground="Red"/>
-            <ListView ItemsSource="{Binding Model.AfterList}" Margin="2,2,0,2"/>
+            <borderedList:BorderedListView DataContext="{Binding Model.AfterViewModel}"/>
             <ListView ItemsSource="{Binding Model.ResultList}" Margin="2,2,0,2" 
                           Foreground="{Binding Model.ResultForeground}"/>
             <ListView ItemsSource="{Binding Model.ForecastList}" Margin="2,2,0,2" 

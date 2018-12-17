@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace Keeper2018
 {
@@ -109,24 +110,30 @@ namespace Keeper2018
             return result;
         }
 
-        public static IEnumerable<string> BalanceReport(this KeeperDb db, DateTime date, Balance balance)
+        public static ListOfLines BalanceReport(this KeeperDb db, DateTime date, Balance balance, bool isRoot)
         {
+            var result = new ListOfLines();
+
             decimal amountInUsd = 0;
+            var offset = isRoot ? "" : "   ";
+            var fontWeight = isRoot ? FontWeights.Bold : FontWeights.DemiBold;
             foreach (var pair in balance.Currencies)
             {
                 if (pair.Key == CurrencyCode.USD)
                 {
                     amountInUsd = amountInUsd + pair.Value;
-                    yield return $"{pair.Value:#,0.00} usd";
+                    result.Add($"{offset}{pair.Value:#,0.00} usd");
                 }
                 else
                 {
                     var inUsd = db.AmountInUsd(date, pair.Key, pair.Value);
                     amountInUsd = amountInUsd + inUsd;
-                    yield return $"{pair.Value:#,0.00} {pair.Key.ToString().ToLower()} (= {inUsd:#,0.00} usd)";
+                    result.Add($"{offset}{pair.Value:#,0.00} {pair.Key.ToString().ToLower()} (= {inUsd:#,0.00} usd)");
                 }
             }
-            yield return $"Итого {amountInUsd:#,0.00} usd";
+            result.Add($"{offset}Итого {amountInUsd:#,0.00} usd", fontWeight);
+
+            return result;
         }
     }
 }

@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using Keeper2018.BorderedList;
 
 namespace Keeper2018
 {
+  
     public class MonthAnalysisModel
     {
         public string MonthAnalysisViewCaption { get; set; }
         public DateTime StartDate { get; set; }
         public Visibility ForecastListVisibility { get; set; }
 
-        public List<string> BeforeList { get; set; } = new List<string>();
+        public BorderedListViewModel BeforeViewModel { get; set; } = new BorderedListViewModel();
         public decimal Before;
         public List<string> IncomeList { get; set; } = new List<string>();
         public decimal Income;
         public List<string> ExpenseList { get; set; } = new List<string>();
         public decimal Expense;
         public decimal LargeExpense;
-        public List<string> AfterList { get; set; } = new List<string>();
+        public BorderedListViewModel AfterViewModel { get; set; } = new BorderedListViewModel();
         public decimal After;
         public List<string> ResultList { get; set; } = new List<string>();
         public string RatesChanges { get; set; }

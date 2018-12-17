@@ -11,7 +11,7 @@ namespace Keeper2018
     public class MyMessageBoxViewModel : Screen
     {
         private readonly string _caption;
-        public List<MyMessageBoxLineModel> Lines { get; set; }
+        public List<ListLine> Lines { get; set; }
         public Visibility OkVisibility { get; set; }
         public Visibility CancelVisibility { get; set; }
         public bool IsAnswerPositive { get; set; }
@@ -19,9 +19,9 @@ namespace Keeper2018
 
         public MyMessageBoxViewModel(MessageType messageType, string message)
         {
-            Lines = new List<MyMessageBoxLineModel>()
+            Lines = new List<ListLine>()
             {
-                new MyMessageBoxLineModel(){Line = message, FontWeight = FontWeights.Bold}
+                new ListLine(){Line = message, FontWeight = FontWeights.Bold}
             };
 
             _caption = messageType.GetLocalizedString();
@@ -32,7 +32,7 @@ namespace Keeper2018
 
         public MyMessageBoxViewModel(MessageType messageType, List<string> strs, int focusedString = Int32.MaxValue)
         {
-            Lines = strs.Select(s => new MyMessageBoxLineModel() {Line = s}).ToList();
+            Lines = strs.Select(s => new ListLine() {Line = s}).ToList();
             if (focusedString == -1)
                 Lines.ForEach(l=>l.FontWeight = FontWeights.Bold);
             else if (focusedString < Lines.Count)
@@ -44,7 +44,7 @@ namespace Keeper2018
             IsAnswerPositive = false;
         }
 
-        public MyMessageBoxViewModel(MessageType messageType, List<MyMessageBoxLineModel> lines)
+        public MyMessageBoxViewModel(MessageType messageType, List<ListLine> lines)
         {
             Lines = lines;
 
