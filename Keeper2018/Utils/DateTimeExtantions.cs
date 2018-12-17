@@ -34,6 +34,11 @@ namespace Keeper2018
       return new DateTime(yy, mm, 1, 0, 0, 0, 0).AddMonths(1).AddSeconds(-1);
     }
 
+      public static int GetDaysInMonth(this DateTime day)
+      {
+          return new DateTime(day.Year, day.Month, 1, 0, 0, 0, 0).AddMonths(1).AddSeconds(-1).Day;
+      }
+
     public static Period GetFullMonthForDate(this DateTime day)
     {
       return new Period(GetStartOfMonthForDate(day), GetStartOfMonthForDate(day).AddMonths(1).AddSeconds(-1));

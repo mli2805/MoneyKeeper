@@ -118,6 +118,7 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfBranchCalculator.cs" />
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfAccountCalculator.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\TrafficPair.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagBranchCalculator.cs" />
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagCalculator.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />

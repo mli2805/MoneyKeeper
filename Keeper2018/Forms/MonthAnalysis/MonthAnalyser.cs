@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace Keeper2018
 {
@@ -11,7 +12,6 @@ namespace Keeper2018
         private AccountModel _myAccountsRoot;
         private AccountModel _incomesRoot;
         private AccountModel _expensesRoot;
-
 
         public MonthAnalyser(KeeperDb db)
         {
@@ -34,6 +34,8 @@ namespace Keeper2018
             {
                 StartDate = startDate,
                 MonthAnalysisViewCaption = startDate.ToString("MMMM yyyy") + (isCurrentPeriod ? " - текущий период!" : ""),
+
+                ForecastListVisibility = isCurrentPeriod ? Visibility.Visible : Visibility.Collapsed,
             };
 
             FillBeforeList(startDate);
@@ -41,6 +43,9 @@ namespace Keeper2018
             FillIncomeList(startDate, finishMoment);
             FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
+            _monthAnalysisModel.FillResultList();
+            if (isCurrentPeriod)
+                _monthAnalysisModel.FillForecast(finishMoment, (decimal)_db.GetRate(DateTime.Today, CurrencyCode.BYN).Value);
             _monthAnalysisModel.RatesChanges = _db.GetRatesMonthDifference(startDate, finishMoment);
 
             return _monthAnalysisModel;
@@ -53,6 +58,7 @@ namespace Keeper2018
             trafficCalculator.Evaluate();
             _monthAnalysisModel.BeforeList.Add("Входящий остаток на начало месяца");
             _monthAnalysisModel.BeforeList.AddRange(trafficCalculator.ReportForMonthAnalysis());
+            _monthAnalysisModel.Before = trafficCalculator.TotalAmount;
         }
 
         private void FillIncomeList(DateTime startDate, DateTime finishMoment)
@@ -96,6 +102,7 @@ namespace Keeper2018
 
             _monthAnalysisModel.IncomeList.Add("");
             _monthAnalysisModel.IncomeList.Add($"Итого {total:#,0.00} usd");
+            _monthAnalysisModel.Income = total;
         }
 
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)
@@ -151,7 +158,8 @@ namespace Keeper2018
 
             _monthAnalysisModel.ExpenseList.Add("");
             _monthAnalysisModel.ExpenseList.Add($"Итого {total:#,0.00} usd");
-
+            _monthAnalysisModel.Expense = total;
+            _monthAnalysisModel.LargeExpense = largeTotal;
         }
 
         private void FillAfterList(DateTime finishMoment)
@@ -162,6 +170,9 @@ namespace Keeper2018
             _monthAnalysisModel.AfterList.Add("Исходящий остаток на конец месяца");
             foreach (var line in trafficCalculator.ReportForMonthAnalysis())
                 _monthAnalysisModel.AfterList.Add(line);
+            _monthAnalysisModel.After = trafficCalculator.TotalAmount;
         }
+
+      
     }
 }

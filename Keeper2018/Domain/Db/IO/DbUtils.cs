@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Keeper2018
 {
@@ -25,13 +26,24 @@ namespace Keeper2018
 
         }
 
+//        private static string GetCurrentDropboxPath()
+//        {
+//            const string infoPath = @"Dropbox\info.json";
+//            var jsonPath = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? throw new InvalidOperationException(), infoPath);
+//            if (!File.Exists(jsonPath)) jsonPath = Path.Combine(Environment.GetEnvironmentVariable("AppData") ?? throw new InvalidOperationException(), infoPath);
+//            if (!File.Exists(jsonPath)) throw new Exception("Dropbox could not be found!");
+//            var dropboxPath = File.ReadAllText(jsonPath).Split('\"')[5].Replace(@"\\", @"\");
+//            return dropboxPath;
+//        }
         private static string GetCurrentDropboxPath()
         {
             const string infoPath = @"Dropbox\info.json";
             var jsonPath = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? throw new InvalidOperationException(), infoPath);
             if (!File.Exists(jsonPath)) jsonPath = Path.Combine(Environment.GetEnvironmentVariable("AppData") ?? throw new InvalidOperationException(), infoPath);
             if (!File.Exists(jsonPath)) throw new Exception("Dropbox could not be found!");
-            var dropboxPath = File.ReadAllText(jsonPath).Split('\"')[5].Replace(@"\\", @"\");
+            var strings = File.ReadAllText(jsonPath).Split('\"');
+            var index = strings.ToList().IndexOf("path");
+            var dropboxPath = strings[index+2].Replace(@"\\", @"\");
             return dropboxPath;
         }
 

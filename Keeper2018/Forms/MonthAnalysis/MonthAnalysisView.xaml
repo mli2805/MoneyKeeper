@@ -47,10 +47,10 @@
                           Visibility="{Binding Model.ForecastListVisibility}"/>
             <Button Name="CloseView" IsCancel="True" Height="1" Width="1"/>
         </DockPanel>
-        <StackPanel Margin="0,0,10,0">
-            <TextBlock Text="стрелки - месяц" Opacity="0.03" HorizontalAlignment="Right" FontSize="24"/>
-            <TextBlock Text="+Shift - квартал" Opacity="0.05" HorizontalAlignment="Right"  FontSize="24"/>
-            <TextBlock Text="+Ctrl - год" Opacity="0.05" HorizontalAlignment="Right"  FontSize="24"/>
+        <StackPanel Margin="0,0,10,30" VerticalAlignment="Bottom">
+            <TextBlock Text="стрелки - месяц" Opacity="0.1" HorizontalAlignment="Right" FontSize="24"/>
+            <TextBlock Text="+Shift - квартал" Opacity="0.1" HorizontalAlignment="Right"  FontSize="24"/>
+            <TextBlock Text="+Ctrl - год" Opacity="0.1" HorizontalAlignment="Right"  FontSize="24"/>
         </StackPanel>
     </Grid>
 </Window>
