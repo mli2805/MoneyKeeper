@@ -39,11 +39,10 @@
                 <TextBlock Text="{Binding Model.RatesChanges}" Margin="2"/>
             </Border>
             <borderedList:BorderedListView DataContext="{Binding Model.BeforeViewModel}"/>
-            <ListView ItemsSource="{Binding Model.IncomeList}" Foreground="Blue" Margin="2,2,0,2"/>
-            <ListView ItemsSource="{Binding Model.ExpenseList}" Margin="2,2,0,2" Foreground="Red"/>
+            <borderedList:BorderedListView DataContext="{Binding Model.IncomeViewModel}"/>
+            <borderedList:BorderedListView DataContext="{Binding Model.ExpenseViewModel}"/>
             <borderedList:BorderedListView DataContext="{Binding Model.AfterViewModel}"/>
-            <ListView ItemsSource="{Binding Model.ResultList}" Margin="2,2,0,2" 
-                          Foreground="{Binding Model.ResultForeground}"/>
+            <borderedList:BorderedListView DataContext="{Binding Model.FinResultViewModel}"/>
             <ListView ItemsSource="{Binding Model.ForecastList}" Margin="2,2,0,2" 
                           Visibility="{Binding Model.ForecastListVisibility}"/>
             <Button Name="CloseView" IsCancel="True" Height="1" Width="1"/>

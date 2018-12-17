@@ -6,49 +6,58 @@ using Keeper2018.BorderedList;
 
 namespace Keeper2018
 {
-  
+
     public class MonthAnalysisModel
     {
         public string MonthAnalysisViewCaption { get; set; }
         public DateTime StartDate { get; set; }
-        public Visibility ForecastListVisibility { get; set; }
+        public bool IsCurrentPeriod { get;set; }
+        public Visibility ForecastListVisibility => IsCurrentPeriod ? Visibility.Visible : Visibility.Collapsed;
 
         public BorderedListViewModel BeforeViewModel { get; set; } = new BorderedListViewModel();
         public decimal Before;
-        public List<string> IncomeList { get; set; } = new List<string>();
+        public BorderedListViewModel IncomeViewModel { get; set; } = new BorderedListViewModel();
         public decimal Income;
-        public List<string> ExpenseList { get; set; } = new List<string>();
+        public BorderedListViewModel ExpenseViewModel { get; set; } = new BorderedListViewModel();
         public decimal Expense;
         public decimal LargeExpense;
         public BorderedListViewModel AfterViewModel { get; set; } = new BorderedListViewModel();
         public decimal After;
-        public List<string> ResultList { get; set; } = new List<string>();
+        public BorderedListViewModel FinResultViewModel { get; set; } = new BorderedListViewModel();
         public string RatesChanges { get; set; }
         public List<string> ForecastList { get; set; } = new List<string>();
 
-        public Brush ResultForeground { get; set; }
         public Brush DepositResultForeground { get; set; }
 
-        public decimal ExchangeDifference => After - (Before + Income - Expense);
-        public decimal FinResultWithDifference => Income - Expense + ExchangeDifference;
 
         public void FillResultList()
         {
-            ResultList.Add("Финансовый результат");
-            ResultList.Add("");
-            ResultList.Add($"{Income:N} - {Expense:N} = {Income - Expense:N} usd");
-            ResultList.Add("");
-            ResultList.Add("Курсовые разницы");
-            ResultList.Add("");
-            ResultList.Add($"{After:N} - ({Before:N} + {Income:N} - {Expense:N})");
-            ResultList.Add($"       = {ExchangeDifference:N} usd");
-            ResultList.Add("");
-            ResultList.Add("");
-            ResultList.Add("С учетом курсовых разниц");
-            ResultList.Add("");
-            ResultList.Add($"{Income:N} - {Expense:N} + {ExchangeDifference:N} = {FinResultWithDifference:N} usd");
 
-            ResultForeground = FinResultWithDifference > 0 ? Brushes.Blue : Brushes.Red;
+            var profit = Income - Expense;
+            var profitForeground = profit > 0 ? Brushes.Blue : Brushes.Red;
+            FinResultViewModel.List.Add("Финансовый результат", profitForeground);
+            FinResultViewModel.List.Add("");
+            FinResultViewModel.List.Add($"{Income:N} - {Expense:N} = {profit:N} usd", profitForeground);
+            FinResultViewModel.List.Add("");
+
+
+            var exchangeDifference = After - (Before + Income - Expense);
+            var exchangeForeground = exchangeDifference > 0 ? Brushes.Blue : Brushes.Red;
+            FinResultViewModel.List.Add("Курсовые разницы", exchangeForeground);
+            FinResultViewModel.List.Add("");
+            FinResultViewModel.List.Add($"{After:N} - ({Before:N} + {Income:N} - {Expense:N})", exchangeForeground);
+            FinResultViewModel.List.Add($"       = {exchangeDifference:N} usd", FontWeights.Bold, exchangeForeground);
+            FinResultViewModel.List.Add("");
+            FinResultViewModel.List.Add("");
+
+
+            var finResultWithDifference = profit + exchangeDifference;
+            var resultForeground = finResultWithDifference > 0 ? Brushes.Blue : Brushes.Red;
+            FinResultViewModel.List.Add("С учетом курсовых разниц", resultForeground);
+            FinResultViewModel.List.Add("");
+            FinResultViewModel.List.Add($"{Income:N} - {Expense:N} + {exchangeDifference:N}", resultForeground);
+            FinResultViewModel.List.Add($"        = {finResultWithDifference:N} usd", FontWeights.Bold, resultForeground);
+
         }
 
         public void FillForecast(DateTime finishMoment, decimal bynRate)
