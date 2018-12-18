@@ -127,28 +127,38 @@ namespace Keeper2018
 
         private static void ForeseeRate(DepositReportModel model, KeeperDb db)
         {
-            if (!model.IsInUsd)
+            if (model.IsInUsd) return;
+
+            if (model.DepositOffer.MainCurrency == CurrencyCode.BYN ||
+                model.DepositOffer.MainCurrency == CurrencyCode.BYR)
             {
                 model.RateStart = db.GetRate(model.Deposit.StartDate, model.DepositOffer.MainCurrency);
+                if (model.Deposit.StartDate < new DateTime(2016, 7, 1))
+                    model.RateStart.Value = model.RateStart.Value / 10000;
                 model.RateNow = db.GetRate(DateTime.Today, model.DepositOffer.MainCurrency);
-
-                model.RateForecast = new OneRate();
-                model.RateForecast.Unit = model.RateNow.Unit;
-                var k = (model.RateNow.Value - model.RateStart.Value) / (DateTime.Today - model.Deposit.StartDate).Days;
-                model.RateForecast.Value = model.RateStart.Value + k * (model.Deposit.FinishDate - model.Deposit.StartDate).Days;
-
-                model.RateStr1 =
-                    $"Курс по НБ:  {model.RateStart.Value:0.0000} => {model.RateNow.Value:0.0000} => {model.RateForecast.Value:0.0000}";
-
-                var nowDeltaRate = model.RateNow.Value - model.RateStart.Value;
-                var nowProcent = nowDeltaRate / model.RateStart.Value * 100;
-
-                var deltaRate = model.RateForecast.Value - model.RateStart.Value;
-                var procent = deltaRate / model.RateStart.Value * 100;
-
-                var yearProcent = procent / (model.Deposit.FinishDate - model.Deposit.StartDate).Days * 365;
-                model.RateStr2 = $"( уже {nowProcent:0.00}%;  к концу {procent:0.00}%  ( {yearProcent:0.00}% годовых )";
             }
+            else
+            {
+                model.RateStart = db.GetRate(model.Deposit.StartDate, model.DepositOffer.MainCurrency, true);
+                model.RateNow = db.GetRate(DateTime.Today, model.DepositOffer.MainCurrency, true);
+            }
+
+            model.RateForecast = new OneRate();
+            model.RateForecast.Unit = model.RateNow.Unit;
+            var k = (model.RateNow.Value - model.RateStart.Value) / (DateTime.Today - model.Deposit.StartDate).Days;
+            model.RateForecast.Value = model.RateStart.Value + k * (model.Deposit.FinishDate - model.Deposit.StartDate).Days;
+
+            model.RateStr1 =
+                $"Курс по НБ:  {model.RateStart.Value:0.0000} => {model.RateNow.Value:0.0000} => {model.RateForecast.Value:0.0000}";
+
+            var nowDeltaRate = model.RateNow.Value - model.RateStart.Value;
+            var nowProcent = nowDeltaRate / model.RateStart.Value * 100;
+
+            var deltaRate = model.RateForecast.Value - model.RateStart.Value;
+            var procent = deltaRate / model.RateStart.Value * 100;
+
+            var yearProcent = procent / (model.Deposit.FinishDate - model.Deposit.StartDate).Days * 365;
+            model.RateStr2 = $"( уже {nowProcent:0.00}%;  к концу {procent:0.00}%  ( {yearProcent:0.00}% годовых )";
         }
     }
 }

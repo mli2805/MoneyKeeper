@@ -31,16 +31,23 @@ namespace Keeper2018
             return $" Изменение курсов     {belka}       {euro}       {rub}";
         }
 
-        public static OneRate GetRate(this KeeperDb db, DateTime dt, CurrencyCode currency)
+        public static OneRate GetRate(this KeeperDb db, DateTime dt, CurrencyCode currency, bool isForUsd = false)
         {
             var officialRates = db.Bin.OfficialRates.LastOrDefault(r => r.Date <= dt);
             if (officialRates == null) return null;
+            OneRate result;
             switch (currency)
             {
-                case CurrencyCode.BYN: return officialRates.NbRates.Usd;
-                case CurrencyCode.BYR: return officialRates.NbRates.Usd;
-                case CurrencyCode.EUR: return officialRates.NbRates.Euro;
-                case CurrencyCode.RUB: return officialRates.NbRates.Rur;
+                case CurrencyCode.BYN: return officialRates.NbRates.Usd.Clone();
+                case CurrencyCode.BYR: return officialRates.NbRates.Usd.Clone();
+                case CurrencyCode.EUR:
+                    result = officialRates.NbRates.Euro.Clone();
+                    if (isForUsd) result.Value = result.Value / officialRates.NbRates.Usd.Value;
+                    return result;
+                case CurrencyCode.RUB: 
+                    result = officialRates.NbRates.Rur;
+                    if (isForUsd) result.Value = result.Value / officialRates.NbRates.Usd.Value;
+                    return result;
             }
             return null;
         }
