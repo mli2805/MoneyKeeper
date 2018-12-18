@@ -42,11 +42,13 @@ namespace Keeper2018
                 case CurrencyCode.BYR: return officialRates.NbRates.Usd.Clone();
                 case CurrencyCode.EUR:
                     result = officialRates.NbRates.Euro.Clone();
-                    if (isForUsd) result.Value = result.Value / officialRates.NbRates.Usd.Value;
+                    if (isForUsd)
+                        result.Value = result.Value / officialRates.NbRates.Usd.Value;
                     return result;
                 case CurrencyCode.RUB: 
-                    result = officialRates.NbRates.Rur;
-                    if (isForUsd) result.Value = result.Value / officialRates.NbRates.Usd.Value;
+                    result = officialRates.NbRates.Rur.Clone();
+                    if (isForUsd)
+                        result.Value = officialRates.NbRates.Usd.Value / (result.Value / result.Unit);
                     return result;
             }
             return null;

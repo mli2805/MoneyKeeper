@@ -67,7 +67,7 @@ namespace Keeper2018
 
 
         public decimal ForecastUsd { get; set; }
-        public string Forecast => $"Итоговый результат ${ForecastUsd:0.00}";
+        public string Forecast => $"Итоговый профит ${ForecastUsd:0.00}";
         public string Forecast2 { get; set; }
     }
 
