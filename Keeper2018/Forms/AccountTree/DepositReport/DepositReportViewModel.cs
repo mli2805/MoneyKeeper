@@ -21,7 +21,8 @@ namespace Keeper2018
             accountCalculator.Evaluate();
             Model = accountCalculator.DepositReportModel;
             Model.SummarizeFacts(_db);
-            Model.Foresee(_db);
+            if (Model.AmountInUsd != 0)
+                Model.Foresee(_db);
         }
 
         protected override void OnViewLoaded(object view)
