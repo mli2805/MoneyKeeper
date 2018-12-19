@@ -28,8 +28,6 @@ namespace Keeper2018
 
             builder.RegisterType<OfficialRatesViewModel>().SingleInstance();
             builder.RegisterType<InputMyUsdViewModel>().SingleInstance();
-            builder.RegisterType<UsdAnnualDiagramViewModel>().SingleInstance();
-            builder.RegisterType<BasketDiagramViewModel>().SingleInstance();
 
             builder.RegisterType<MonthAnalysisViewModel>().SingleInstance();
             builder.RegisterType<MonthAnalyser>().SingleInstance();

@@ -11,11 +11,11 @@ namespace Keeper2018
 {
     public class OfficialRatesViewModel : Screen
     {
+        private const string OxyplotKey = "A - Reset zoom  ;  Ctrl+RightMouse - Rectangle Zoom";
+
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _keeperDb;
         private readonly InputMyUsdViewModel _inputMyUsdViewModel;
-        private readonly UsdAnnualDiagramViewModel _usdAnnualDiagramViewModel;
-        private readonly BasketDiagramViewModel _basketDiagramViewModel;
 
         private List<OfficialRates> _rates;
         public ObservableCollection<OfficialRatesModel> Rows { get; set; } = new ObservableCollection<OfficialRatesModel>();
@@ -48,15 +48,11 @@ namespace Keeper2018
         }
 
         public OfficialRatesViewModel(IWindowManager windowManager, KeeperDb keeperDb,
-            InputMyUsdViewModel inputMyUsdViewModel,
-            UsdAnnualDiagramViewModel usdAnnualDiagramViewModel,
-            BasketDiagramViewModel basketDiagramViewModel)
+            InputMyUsdViewModel inputMyUsdViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
             _inputMyUsdViewModel = inputMyUsdViewModel;
-            _usdAnnualDiagramViewModel = usdAnnualDiagramViewModel;
-            _basketDiagramViewModel = basketDiagramViewModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -91,14 +87,16 @@ namespace Keeper2018
 
         public void UsdChart()
         {
-            _usdAnnualDiagramViewModel.Initalize(Rows.ToList());
-            _windowManager.ShowDialog(_usdAnnualDiagramViewModel);
+            var usdAnnualDiagramViewModel = new UsdAnnualDiagramViewModel();
+            usdAnnualDiagramViewModel.Initalize(OxyplotKey, Rows.ToList());
+            _windowManager.ShowDialog(usdAnnualDiagramViewModel);
         }
 
         public void BasketChart()
         {
-            _basketDiagramViewModel.Initalize(Rows.ToList());
-            _windowManager.ShowDialog(_basketDiagramViewModel);
+            var basketDiagramViewModel = new BasketDiagramViewModel();
+            basketDiagramViewModel.Initalize(OxyplotKey, Rows.ToList());
+            _windowManager.ShowWindow(basketDiagramViewModel);
         }
 
         public async void Download()

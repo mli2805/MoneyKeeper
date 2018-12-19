@@ -10,6 +10,7 @@ namespace Keeper2018
 {
     public class UsdAnnualDiagramViewModel : Screen
     {
+        private string _caption;
         private List<OfficialRatesModel> _rates;
 
         public PlotModel MyPlotModel2015 { get; set; } = new PlotModel();
@@ -17,9 +18,14 @@ namespace Keeper2018
         public PlotModel MyPlotModel2017 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2018 { get; set; } = new PlotModel();
 
-
-        public void Initalize(List<OfficialRatesModel> rates)
+        protected override void OnViewLoaded(object view)
         {
+            DisplayName = _caption;
+        }
+
+        public void Initalize(string caption, List<OfficialRatesModel> rates)
+        {
+            _caption = caption;
             _rates = rates;
             MyPlotModel2015.Series.Add(OneYearOfUsd(2015));
             MyPlotModel2015.Axes.Add(new DateTimeAxis()
@@ -75,9 +81,5 @@ namespace Keeper2018
             return result;
         }
 
-        protected override void OnViewLoaded(object view)
-        {
-            DisplayName = "Usd annual diagram";
-        }
     }
 }
