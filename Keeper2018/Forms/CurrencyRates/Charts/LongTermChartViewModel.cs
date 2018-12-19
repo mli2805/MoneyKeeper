@@ -11,11 +11,13 @@ namespace Keeper2018
     {
         private string _caption;
         private List<CurrencyRatesModel> _rates;
-        private int _visibility = 3;
+        private int _visibility = 4;
 
         public PlotModel LongTermModel { get; set; }
         public LineSeries UsdNbSeries { get; set; }
         public LineSeries UsdMySeries { get; set; }
+        public LineSeries RubBelSeries { get; set; }
+        public LineSeries RubUsdSeries { get; set; }
 
         protected override void OnViewLoaded(object view)
         {
@@ -31,8 +33,18 @@ namespace Keeper2018
             LongTermModel = new PlotModel() { LegendPosition = LegendPosition.LeftTop };
             LongTermModel.Series.Add(UsdNbSeries);
             LongTermModel.Series.Add(UsdMySeries);
+            LongTermModel.Series.Add(RubBelSeries);
+            LongTermModel.Series.Add(RubUsdSeries);
 
-            LongTermModel.Axes.Add(new DateTimeAxis() { Position = AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, });
+            LongTermModel.Axes.Add(new DateTimeAxis()
+            {
+                Position = AxisPosition.Bottom,
+                IntervalLength = 75,
+                MinorIntervalType = DateTimeIntervalType.Days,
+                IntervalType = DateTimeIntervalType.Days,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dash,
+            });
             LongTermModel.Axes.Add(new LinearAxis() { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.DashDashDotDot });
         }
 
@@ -41,24 +53,35 @@ namespace Keeper2018
             var dt20160701 = new DateTime(2016, 07, 01); // 10000000;
             var dt20000101 = new DateTime(2000, 01, 01); // 1000;
 
-            UsdNbSeries = new LineSeries() { Title = "USD (по НБРБ)", Color = OxyColors.Green};
-            UsdMySeries = new LineSeries() { Title = "USD (мой)", Color = OxyColors.LimeGreen};
+            UsdNbSeries = new LineSeries() { Title = "USD (по НБРБ)", Color = OxyColors.Green, IsVisible = false };
+            UsdMySeries = new LineSeries() { Title = "USD (мой)", Color = OxyColors.LimeGreen, IsVisible = false };
+            RubBelSeries = new LineSeries() { Title = "Rub / Byn", Color = OxyColors.Orange, IsVisible = true };
+            RubUsdSeries = new LineSeries() { Title = "Rub / Usd", Color = OxyColors.Red, IsVisible = false };
+
             foreach (var currencyRatesModel in _rates)
             {
                 var usdValue = currencyRatesModel.TodayRates.NbRates.Usd.Value;
                 var usdValue2 = currencyRatesModel.TodayRates.MyUsdRate.Value;
+                var rubBel = currencyRatesModel.TodayRates.NbRates.Rur.Value;
+                var rubUsd = currencyRatesModel.TodayRates.CbrRate.Usd.Value;
                 if (currencyRatesModel.Date >= dt20160701)
                 {
                     usdValue = usdValue * 10000000;
                     usdValue2 = usdValue2 * 10000000;
+                    rubBel = rubBel * 10000000;
                 }
                 else if (currencyRatesModel.Date >= dt20000101)
                 {
                     usdValue = usdValue * 1000;
                     usdValue2 = usdValue2 * 1000;
+                    rubBel = rubBel * 1000;
                 }
-                UsdNbSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(currencyRatesModel.Date), usdValue));
-                UsdMySeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(currencyRatesModel.Date), usdValue2));
+
+                var day = DateTimeAxis.ToDouble(currencyRatesModel.Date);
+                UsdNbSeries.Points.Add(new DataPoint(day, usdValue));
+                UsdMySeries.Points.Add(new DataPoint(day, usdValue2));
+                RubBelSeries.Points.Add(new DataPoint(day, rubBel));
+                RubUsdSeries.Points.Add(new DataPoint(day, rubUsd));
             }
         }
 
@@ -77,17 +100,52 @@ namespace Keeper2018
             switch (_visibility)
             {
                 case 1:
-                    UsdMySeries.IsVisible = true;
-                    UsdNbSeries.IsVisible = false;
                     _visibility = 2;
+                    UsdNbSeries.IsVisible = false;
+                    UsdMySeries.IsVisible = true;
+
+                    RubBelSeries.IsVisible = false;
+                    RubUsdSeries.IsVisible = false;
                     break;
                 case 2:
-                    UsdNbSeries.IsVisible = true;
                     _visibility = 3;
+                    UsdNbSeries.IsVisible = true;
+                    UsdMySeries.IsVisible = true;
+
+                    RubBelSeries.IsVisible = false;
+                    RubUsdSeries.IsVisible = false;
                     break;
                 case 3:
+                    _visibility = 4;
+                    UsdNbSeries.IsVisible = false;
                     UsdMySeries.IsVisible = false;
+
+                    RubBelSeries.IsVisible = true;
+                    RubUsdSeries.IsVisible = false;
+                    break;
+                case 4:
+                    _visibility = 5;
+                    UsdNbSeries.IsVisible = false;
+                    UsdMySeries.IsVisible = false;
+
+                    RubBelSeries.IsVisible = false;
+                    RubUsdSeries.IsVisible = true;
+                    break;
+                case 5:
+                    _visibility = 6;
+                    UsdNbSeries.IsVisible = false;
+                    UsdMySeries.IsVisible = false;
+
+                    RubBelSeries.IsVisible = true;
+                    RubUsdSeries.IsVisible = true;
+                    break;
+                case 6:
                     _visibility = 1;
+                    UsdNbSeries.IsVisible = true;
+                    UsdMySeries.IsVisible = false;
+
+                    RubBelSeries.IsVisible = false;
+                    RubUsdSeries.IsVisible = false;
                     break;
             }
             LongTermModel.InvalidatePlot(true);
