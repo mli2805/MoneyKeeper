@@ -10,15 +10,15 @@ namespace Keeper2018
         private readonly KeeperDb _keeperDb;
         private readonly IWindowManager _windowManager;
         private readonly DbLoadingViewModel _dbLoadingViewModel;
-        private readonly OfficialRatesViewModel _officialRatesViewModel;
+        private readonly CurrencyRatesViewModel _currencyRatesViewModel;
 
         public DbLoader(KeeperDb keeperDb, IWindowManager windowManager, 
-            DbLoadingViewModel dbLoadingViewModel, OfficialRatesViewModel officialRatesViewModel)
+            DbLoadingViewModel dbLoadingViewModel, CurrencyRatesViewModel currencyRatesViewModel)
         {
             _keeperDb = keeperDb;
             _windowManager = windowManager;
             _dbLoadingViewModel = dbLoadingViewModel;
-            _officialRatesViewModel = officialRatesViewModel;
+            _currencyRatesViewModel = currencyRatesViewModel;
         }
 
         public async Task<bool> Load()
@@ -36,7 +36,7 @@ namespace Keeper2018
 
         private void ExpandBinToDb(KeeperDb keeperDb)
         {
-            _officialRatesViewModel.Initialize();
+            _currencyRatesViewModel.Initialize();
             keeperDb.FillInAccountTree(); // must be first
 
             keeperDb.AssociationModels = new ObservableCollection<LineModel>

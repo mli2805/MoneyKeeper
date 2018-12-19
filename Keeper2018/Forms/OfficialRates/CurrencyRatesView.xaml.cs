@@ -1,11 +1,11 @@
 ﻿namespace Keeper2018
 {
     /// <summary>
-    /// Interaction logic for OfficialRatesView.xaml
+    /// Interaction logic for CurrencyRatesView.xaml
     /// </summary>
-    public partial class OfficialRatesView
+    public partial class CurrencyRatesView
     {
-        public OfficialRatesView()
+        public CurrencyRatesView()
         {
             InitializeComponent();
         }

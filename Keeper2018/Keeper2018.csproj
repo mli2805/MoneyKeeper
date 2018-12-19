@@ -200,7 +200,7 @@
     <Compile Include="Domain\Db\KeeperBin.cs" />
     <Compile Include="Domain\Rates\CbrRate.cs" />
     <Compile Include="Domain\Rates\NbRbRates.cs" />
-    <Compile Include="Domain\Rates\OfficialRates.cs" />
+    <Compile Include="Domain\Rates\CurrencyRates.cs" />
     <Compile Include="Domain\Db\IO\DbSerializer.cs" />
     <Compile Include="Domain\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
     <Compile Include="Domain\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
@@ -228,7 +228,7 @@
     <Compile Include="Forms\TagAssociations\TagAssociationsOldTxt.cs" />
     <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
-    <Compile Include="Forms\OfficialRates\OfficialRatesModel.cs" />
+    <Compile Include="Forms\OfficialRates\CurrencyRatesModel.cs" />
     <Compile Include="Forms\OfficialRates\IO\NbRbRatesOldTxt.cs" />
     <Compile Include="Domain\Rates\OneRate.cs" />
     <Compile Include="Domain\Db\IO\DbUtils.cs" />
@@ -245,10 +245,10 @@
     <Compile Include="Forms\OfficialRates\Download\MyRequest.cs" />
     <Compile Include="Forms\OfficialRates\Download\NbRbRatesDownloader.cs" />
     <Compile Include="Forms\OfficialRates\Download\NbRbSiteRate.cs" />
-    <Compile Include="Forms\OfficialRates\OfficialRatesView.xaml.cs">
-      <DependentUpon>OfficialRatesView.xaml</DependentUpon>
+    <Compile Include="Forms\OfficialRates\CurrencyRatesView.xaml.cs">
+      <DependentUpon>CurrencyRatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\OfficialRates\OfficialRatesViewModel.cs" />
+    <Compile Include="Forms\OfficialRates\CurrencyRatesViewModel.cs" />
     <Compile Include="Forms\OfficialRates\Charts\UsdAnnualDiagramView.xaml.cs">
       <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
@@ -355,7 +355,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\OfficialRates\OfficialRatesView.xaml">
+    <Page Include="Forms\OfficialRates\CurrencyRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

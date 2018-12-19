@@ -10,7 +10,7 @@ namespace Keeper2018
 {
     public static class NbRbRatesOldTxt
     {
-        public static async Task<List<OfficialRates>> LoadFromOldTxtAsync()
+        public static async Task<List<CurrencyRates>> LoadFromOldTxtAsync()
         {
             await Task.Delay(1);
             return LoadFromOldTxt(GetMyUsdRates(), GetCbrRates()).ToList();
@@ -69,7 +69,7 @@ namespace Keeper2018
             return result;
         }
 
-        private static IEnumerable<OfficialRates> LoadFromOldTxt(Dictionary<DateTime, double> myUsdRates, Dictionary<DateTime, double> cbrRates)
+        private static IEnumerable<CurrencyRates> LoadFromOldTxt(Dictionary<DateTime, double> myUsdRates, Dictionary<DateTime, double> cbrRates)
         {
             var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("OfficialRates.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
@@ -100,9 +100,9 @@ namespace Keeper2018
             }
         }
 
-        private static OfficialRates NbRbRateFromString(string str)
+        private static CurrencyRates NbRbRateFromString(string str)
         {
-            var rate = new OfficialRates();
+            var rate = new CurrencyRates();
             var substrings = str.Split(';');
             rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
 

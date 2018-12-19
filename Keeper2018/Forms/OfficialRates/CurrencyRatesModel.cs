@@ -5,10 +5,10 @@ using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class OfficialRatesModel : PropertyChangedBase
+    public class CurrencyRatesModel : PropertyChangedBase
     {
         public DateTime Date { get; set; }
-        public OfficialRates TodayRates { get; set; }
+        public CurrencyRates TodayRates { get; set; }
         private NbRbRates YesterdayNbRbRates { get; set; }
 
         public readonly double Basket;
@@ -50,7 +50,7 @@ namespace Keeper2018
 
         private string Template => Date >= new DateTime(2016, 7, 1) ? "#,#.0000" : "#,#.####";
 
-        public OfficialRatesModel(OfficialRates record, OfficialRatesModel previous, OfficialRatesModel annual)
+        public CurrencyRatesModel(CurrencyRates record, CurrencyRatesModel previous, CurrencyRatesModel annual)
         {
             Date = record.Date;
             TodayRates = record;
@@ -104,7 +104,7 @@ namespace Keeper2018
                     ? Brushes.LimeGreen : Brushes.Red;
         }
 
-        private void SetBasketBreakStr(OfficialRatesModel previous)
+        private void SetBasketBreakStr(CurrencyRatesModel previous)
         {
             if (previous == null) return;
             if (BasketDelta * previous.BasketDelta >= 0) // no break
@@ -120,7 +120,7 @@ namespace Keeper2018
             }
         }
 
-        private void SetUsdAnnualStr(OfficialRatesModel annual)
+        private void SetUsdAnnualStr(CurrencyRatesModel annual)
         {
             if (annual == null) return;
 
@@ -136,7 +136,7 @@ namespace Keeper2018
             UsdAnnualBrush = proc < 0 ? Brushes.LimeGreen : Brushes.Red;
         }  
         
-        private void SetBasketAnnualStr(OfficialRatesModel annual)
+        private void SetBasketAnnualStr(CurrencyRatesModel annual)
         {
             if (annual == null || annual.Basket.Equals(0)) return;
 

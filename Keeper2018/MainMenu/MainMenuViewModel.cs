@@ -6,7 +6,7 @@ namespace Keeper2018
     {
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _keeperDb;
-        private readonly OfficialRatesViewModel _officialRatesViewModel;
+        private readonly CurrencyRatesViewModel _currencyRatesViewModel;
         private readonly MonthAnalysisViewModel _monthAnalysisViewModel;
         private readonly TransactionsViewModel _transactionsViewModel;
         private readonly BankOffersViewModel _bankOffersViewModel;
@@ -14,13 +14,13 @@ namespace Keeper2018
         private readonly SettingsViewModel _settingsViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb,
-            TransactionsViewModel transactionsViewModel, OfficialRatesViewModel officialRatesViewModel,
+            TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel, 
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
-            _officialRatesViewModel = officialRatesViewModel;
+            _currencyRatesViewModel = currencyRatesViewModel;
             _monthAnalysisViewModel = monthAnalysisViewModel;
             _transactionsViewModel = transactionsViewModel;
             _bankOffersViewModel = bankOffersViewModel;
@@ -65,7 +65,7 @@ namespace Keeper2018
 
         public void ShowOfficialRatesForm()
         {
-            _windowManager.ShowDialog(_officialRatesViewModel);
+            _windowManager.ShowDialog(_currencyRatesViewModel);
         }
 
         public void ShowMonthAnalysisForm()

@@ -4,7 +4,7 @@ namespace Keeper2018
 {
     public class InputMyUsdViewModel : Screen
     {
-        public OfficialRatesModel OfficialRatesModel { get;set; }
+        public CurrencyRatesModel CurrencyRatesModel { get;set; }
 
         public double MyUsdRate { get; set; }
 

@@ -57,7 +57,7 @@ namespace Keeper2018
         public static decimal AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
             if (currency == CurrencyCode.USD) return amount;
-            OfficialRates rateLine;
+            CurrencyRates rateLine;
             if (currency == CurrencyCode.BYR)
                 rateLine = date <= new DateTime(2016, 6, 30)
                     ? db.Bin.OfficialRates.Last(r => r.Date.Date <= date)

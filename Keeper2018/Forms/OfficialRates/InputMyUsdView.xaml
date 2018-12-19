@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance keeper2018:InputMyUsdViewModel}">
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-            <TextBlock Margin="5" Text="{Binding OfficialRatesModel.Date, StringFormat='{}{0:dd-MM-yyyy}'}" />
+            <TextBlock Margin="5" Text="{Binding CurrencyRatesModel.Date, StringFormat='{}{0:dd-MM-yyyy}'}" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
             <TextBlock Text="Мой курс доллара" Margin="5" />

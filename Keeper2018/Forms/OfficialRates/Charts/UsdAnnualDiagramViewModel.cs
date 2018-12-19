@@ -11,7 +11,7 @@ namespace Keeper2018
     public class UsdAnnualDiagramViewModel : Screen
     {
         private string _caption;
-        private List<OfficialRatesModel> _rates;
+        private List<CurrencyRatesModel> _rates;
 
         public PlotModel MyPlotModel2015 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2016 { get; set; } = new PlotModel();
@@ -23,7 +23,7 @@ namespace Keeper2018
             DisplayName = _caption;
         }
 
-        public void Initalize(string caption, List<OfficialRatesModel> rates)
+        public void Initalize(string caption, List<CurrencyRatesModel> rates)
         {
             _caption = caption;
             _rates = rates;

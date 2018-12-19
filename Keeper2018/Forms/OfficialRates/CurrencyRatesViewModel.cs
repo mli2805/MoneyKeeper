@@ -9,7 +9,7 @@ using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class OfficialRatesViewModel : Screen
+    public class CurrencyRatesViewModel : Screen
     {
         private const string OxyplotKey = "A - Reset zoom  ;  Ctrl+RightMouse - Rectangle Zoom";
 
@@ -17,10 +17,10 @@ namespace Keeper2018
         private readonly KeeperDb _keeperDb;
         private readonly InputMyUsdViewModel _inputMyUsdViewModel;
 
-        private List<OfficialRates> _rates;
-        public ObservableCollection<OfficialRatesModel> Rows { get; set; } = new ObservableCollection<OfficialRatesModel>();
+        private List<CurrencyRates> _rates;
+        public ObservableCollection<CurrencyRatesModel> Rows { get; set; } = new ObservableCollection<CurrencyRatesModel>();
 
-        public OfficialRatesModel SelectedRow
+        public CurrencyRatesModel SelectedRow
         {
             get => _selectedRow;
             set
@@ -31,10 +31,10 @@ namespace Keeper2018
             }
         }
 
-        public OfficialRatesModel LastDayOfYear { get; set; }
+        public CurrencyRatesModel LastDayOfYear { get; set; }
 
         private bool _isDownloadEnabled;
-        private OfficialRatesModel _selectedRow;
+        private CurrencyRatesModel _selectedRow;
 
         public bool IsDownloadEnabled
         {
@@ -47,7 +47,7 @@ namespace Keeper2018
             }
         }
 
-        public OfficialRatesViewModel(IWindowManager windowManager, KeeperDb keeperDb,
+        public CurrencyRatesViewModel(IWindowManager windowManager, KeeperDb keeperDb,
             InputMyUsdViewModel inputMyUsdViewModel)
         {
             _windowManager = windowManager;
@@ -57,7 +57,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Official rates";
+            DisplayName = "Currency rates";
             SelectedRow = Rows?.LastOrDefault();
         }
 
@@ -70,11 +70,11 @@ namespace Keeper2018
 
         private void Init()
         {
-            OfficialRatesModel annual = null;
-            OfficialRatesModel previous = null;
+            CurrencyRatesModel annual = null;
+            CurrencyRatesModel previous = null;
             foreach (var record in _rates)
             {
-                var current = new OfficialRatesModel(record, previous, annual);
+                var current = new CurrencyRatesModel(record, previous, annual);
                 Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
 
                 if (!current.BasketDelta.Equals(0))
@@ -110,12 +110,12 @@ namespace Keeper2018
                 {
                     var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
                     if (nbRbRates == null) break;
-                    var officialRates = new OfficialRates() { Date = date, NbRates = nbRbRates };
+                    var officialRates = new CurrencyRates() { Date = date, NbRates = nbRbRates };
                     var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
                     officialRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
 
                     _rates.Add(officialRates);
-                    var line = new OfficialRatesModel(officialRates, Rows.Last(), annual);
+                    var line = new CurrencyRatesModel(officialRates, Rows.Last(), annual);
                     Rows.Add(line);
 
                     if (date.Date.Day == 31 && date.Date.Month == 12)
@@ -128,7 +128,7 @@ namespace Keeper2018
 
         public void InputMyUsd()
         {
-            _inputMyUsdViewModel.OfficialRatesModel = SelectedRow;
+            _inputMyUsdViewModel.CurrencyRatesModel = SelectedRow;
             var previousLine = _rates.FirstOrDefault(r => r.Date.Equals(SelectedRow.Date.AddDays(-1)));
             if (previousLine != null)
                 _inputMyUsdViewModel.MyUsdRate = previousLine.MyUsdRate.Value;

@@ -12,7 +12,7 @@ namespace Keeper2018
     {
         private string _caption;
         private DateTime _startDate = new DateTime(2018, 1, 1);
-        private List<OfficialRatesModel> _rates;
+        private List<CurrencyRatesModel> _rates;
 
         public PlotModel BasketPlotModel { get; set; }
         public PlotModel BasketDeltaPlotModel { get; set; }
@@ -22,7 +22,7 @@ namespace Keeper2018
             DisplayName = _caption + "  ;  T - Transform";
         }
 
-        public void Initalize(string caption, List<OfficialRatesModel> rates)
+        public void Initalize(string caption, List<CurrencyRatesModel> rates)
         {
             _caption = caption;
 

@@ -3,7 +3,7 @@
 namespace Keeper2018
 {
     [Serializable]
-    public class OfficialRates
+    public class CurrencyRates
     {
         public DateTime Date { get; set; }
         public NbRbRates NbRates { get; set; } = new NbRbRates();
