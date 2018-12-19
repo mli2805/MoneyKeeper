@@ -12,8 +12,9 @@
 
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
-            <Button Name="UsdChart" Margin="5" Width="50" Content="Usd" DockPanel.Dock="Left"/>
-            <Button Name="BasketChart" Margin="5" Width="60" Content="Basket" DockPanel.Dock="Left"/>
+            <Button Name="LongTermChart" Margin="5" Width="100" Content="Long term" DockPanel.Dock="Left"/>
+            <Button Name="UsdFourYearsChart" Margin="5" Width="100" Content="Usd 4 Years" DockPanel.Dock="Left"/>
+            <Button Name="BasketChart" Margin="5" Width="100" Content="Basket" DockPanel.Dock="Left"/>
             <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
             <Button Name="Download" Margin="5" Width="100" Content="Download"
                     DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"

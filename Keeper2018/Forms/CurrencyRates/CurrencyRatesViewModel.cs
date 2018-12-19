@@ -85,11 +85,17 @@ namespace Keeper2018
             Application.Current.Dispatcher.Invoke(() => LastDayOfYear = annual);
         }
 
-        public void UsdChart()
+        public void LongTermChart()
+        {
+            var longTermChartViewModel = new LongTermChartViewModel();
+            _windowManager.ShowWindow(longTermChartViewModel);
+        }
+
+        public void UsdFourYearsChart()
         {
             var usdAnnualDiagramViewModel = new UsdAnnualDiagramViewModel();
             usdAnnualDiagramViewModel.Initalize(OxyplotKey, Rows.ToList());
-            _windowManager.ShowDialog(usdAnnualDiagramViewModel);
+            _windowManager.ShowWindow(usdAnnualDiagramViewModel);
         }
 
         public void BasketChart()

@@ -147,7 +147,7 @@ namespace Keeper2018
             }
         }
 
-        private void DockPanel_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             ((AccountTreeViewModel)DataContext).ShellPartsBinder.SelectedAccountModel =
                 ((AccountTreeViewModel)DataContext).KeeperDb.GetSelectedAccountModel();

@@ -8,7 +8,7 @@
              d:DataContext="{d:DesignData AccountTreeViewModel}"
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
-    <DockPanel PreviewMouseUp="DockPanel_PreviewMouseUp">
+    <DockPanel PreviewMouseUp="OnMouseUp" MouseUp="OnMouseUp">
         <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding KeeperDb.AccountsTree}" FontSize="13">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">

@@ -9,8 +9,8 @@
         <Border DockPanel.Dock="Bottom" Height="30"/>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.1*"/>
                 <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.2*"/>
             </Grid.ColumnDefinitions>
             <keeper2018:AccountTreeView Grid.Column="0" Margin="3,3,0,0" DataContext="{Binding AccountTreeViewModel}" DockPanel.Dock="Left"/>
             <Grid Grid.Column="1">
