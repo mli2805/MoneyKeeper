@@ -88,6 +88,7 @@ namespace Keeper2018
         public void LongTermChart()
         {
             var longTermChartViewModel = new LongTermChartViewModel();
+            longTermChartViewModel.Initalize(OxyplotKey, Rows.ToList());
             _windowManager.ShowWindow(longTermChartViewModel);
         }
 

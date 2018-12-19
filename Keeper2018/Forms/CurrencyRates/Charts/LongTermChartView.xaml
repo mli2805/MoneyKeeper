@@ -3,9 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="LongTermChartView" Height="450" Width="800">
+        WindowState="Maximized" d:DataContext="{d:DesignInstance keeper2018:LongTermChartViewModel}">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="L">
+            <cal:ActionMessage MethodName="LogarithmChart"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="V">
+            <cal:ActionMessage MethodName="ToggleVisibility"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-        
+        <oxy:PlotView Model="{Binding LongTermModel}"/>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,50,100">
+            <TextBlock Text="L - Logarithm" FontSize="20" Opacity="0.5"/>
+            <TextBlock Text="V - Visibility" FontSize="20" Opacity="0.5"/>
+        </StackPanel>
     </Grid>
 </Window>
