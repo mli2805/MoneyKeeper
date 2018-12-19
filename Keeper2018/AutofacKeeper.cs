@@ -40,6 +40,8 @@ namespace Keeper2018
 
             builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();
             builder.RegisterType<TransactionsViewModel>().SingleInstance();
+            builder.RegisterType<SettingsViewModel>().SingleInstance();
+
         }
     }
 }

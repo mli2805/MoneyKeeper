@@ -7,6 +7,7 @@
         ShowMonthAnalysisForm = 300,
         ShowDepositOffersForm = 400,
         ShowTagAssociationsForm = 500,
-
+        Save = 600,
+        ShowSettingsForm = 700,
     }
 }

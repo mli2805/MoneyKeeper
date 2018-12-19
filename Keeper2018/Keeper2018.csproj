@@ -160,6 +160,10 @@
     </Compile>
     <Compile Include="Forms\OfficialRates\InputMyUsdViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Enum\BalanceOrTraffic.cs" />
+    <Compile Include="Forms\Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings\SettingsViewModel.cs" />
     <Compile Include="Forms\Shell\DbLoadingView.xaml.cs">
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
@@ -312,6 +316,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\OfficialRates\InputMyUsdView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
