@@ -122,6 +122,8 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagCalculator.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
+    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
+    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">
       <DependentUpon>DateSelectControl.xaml</DependentUpon>
     </Compile>
@@ -155,13 +157,13 @@
     <Compile Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesView.xaml.cs">
       <DependentUpon>ListOfLinesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\LongTermChartViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\InputMyUsdView.xaml.cs">
       <DependentUpon>InputMyUsdView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates\InputMyUsdViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Enum\BalanceOrTraffic.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\LongTermChartView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartView.xaml.cs">
       <DependentUpon>LongTermChartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings\SettingsView.xaml.cs">
@@ -323,7 +325,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\LongTermChartView.xaml">
+    <Page Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

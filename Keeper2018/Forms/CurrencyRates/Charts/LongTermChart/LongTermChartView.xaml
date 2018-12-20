@@ -12,17 +12,19 @@
         WindowState="Maximized" d:DataContext="{d:DesignInstance keeper2018:LongTermChartViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="L">
-            <cal:ActionMessage MethodName="LogarithmChart"/>
-        </ei:KeyTrigger>
-        <ei:KeyTrigger Key="V">
-            <cal:ActionMessage MethodName="ToggleVisibility"/>
+            <cal:ActionMessage MethodName="ToggleLogarithm"/>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <oxy:PlotView Model="{Binding LongTermModel}"/>
+        <oxy:PlotView Model="{Binding Model.LongTermModel}"/>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,50,100">
-            <TextBlock Text="L - Logarithm" FontSize="20" Opacity="0.5"/>
-            <TextBlock Text="V - Visibility" FontSize="20" Opacity="0.5"/>
+            <CheckBox Content="USD (по НБ РБ)" IsChecked="{Binding Model.IsUsdNb}" Height="20"/>
+            <CheckBox Content="USD (мой)" IsChecked="{Binding Model.IsUsdMy}" Height="20"/>
+            <CheckBox Content="Rub / Byn" IsChecked="{Binding Model.IsRubNb}" Height="20"/>
+            <CheckBox Content="Rub / Usd" IsChecked="{Binding Model.IsRubUsd}" Height="20"/>
+            <CheckBox Content="Euro (по НБ РБ)" IsChecked="{Binding Model.IsEurNb}" Height="20"/>
+            <CheckBox Content="Eur / Usd" IsChecked="{Binding Model.IsEurUsd}" Height="20"/>
+            <Button Content="Logarithm" Name="ToggleLogarithm" Margin="0,3,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

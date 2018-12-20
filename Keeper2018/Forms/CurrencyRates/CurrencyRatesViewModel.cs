@@ -117,12 +117,13 @@ namespace Keeper2018
                 {
                     var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
                     if (nbRbRates == null) break;
-                    var officialRates = new CurrencyRates() { Date = date, NbRates = nbRbRates };
+                    var currencyRates = new CurrencyRates() { Date = date, NbRates = nbRbRates };
                     var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
-                    officialRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
+                    currencyRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
+                    currencyRates.MyUsdRate = new OneRate(){Value = nbRbRates.Usd.Value * 1.003, Unit = 1};
 
-                    _rates.Add(officialRates);
-                    var line = new CurrencyRatesModel(officialRates, Rows.Last(), annual);
+                    _rates.Add(currencyRates);
+                    var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);
                     Rows.Add(line);
 
                     if (date.Date.Day == 31 && date.Date.Month == 12)
