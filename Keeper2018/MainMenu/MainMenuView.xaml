@@ -58,13 +58,26 @@
             <Image Source="../../Resources/association.png" Width="24" Height="24" />
         </Button>
 
-        <Menu Margin="15,0,0,0">
-            <MenuItem Background="White">
+        <Menu Margin="15,0,0,0" Background="White" BorderBrush="White">
+            <MenuItem Background="White" BorderBrush="White">
                 <MenuItem.Header>
-                    <Image Source="../../Resources/chart.png" Width="24" Height="24" />
+                    <Image Source="../../Resources/chart.png"/>
                 </MenuItem.Header>
-                <MenuItem Header="Month bars"/>
-                <MenuItem Header="Expense articles"/>
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Ежедневные остатки"/>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Ежемесячное сальдо"/>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Распределение расходов"/>
+                    </MenuItem.Header>
+                </MenuItem>
             </MenuItem>
         </Menu>
 
