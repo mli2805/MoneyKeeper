@@ -57,6 +57,17 @@
         <Button Name="ShowTagAssociationsForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Tag associations">
             <Image Source="../../Resources/association.png" Width="24" Height="24" />
         </Button>
+
+        <Menu Margin="15,0,0,0">
+            <MenuItem Background="White">
+                <MenuItem.Header>
+                    <Image Source="../../Resources/chart.png" Width="24" Height="24" />
+                </MenuItem.Header>
+                <MenuItem Header="Month bars"/>
+                <MenuItem Header="Expense articles"/>
+            </MenuItem>
+        </Menu>
+
         <Button Name="Save" Margin="25,0,0,0" Background="White" BorderBrush="White" ToolTip="Save">
             <Image Source="../../Resources/save.png" Width="24" Height="24" />
         </Button>
