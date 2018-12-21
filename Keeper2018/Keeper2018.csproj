@@ -122,6 +122,10 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagCalculator.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
+    <Compile Include="Forms\Charts\DailyBalancesView.xaml.cs">
+      <DependentUpon>DailyBalancesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Charts\DailyBalancesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">
@@ -286,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Charts\DailyBalancesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

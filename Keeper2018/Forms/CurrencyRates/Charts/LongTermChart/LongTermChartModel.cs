@@ -87,8 +87,6 @@ namespace Keeper2018
         public LineSeries EurUsdSeries { get; set; }
 
         private bool _isEurUsd;
-       
-
         public bool IsEurUsd
         {
             get => _isEurUsd;

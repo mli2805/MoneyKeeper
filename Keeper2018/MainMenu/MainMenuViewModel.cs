@@ -83,6 +83,13 @@ namespace Keeper2018
             _articlesAssociationsViewModel.Init();
             _windowManager.ShowDialog(_articlesAssociationsViewModel);
         }
+
+        public void ShowDailyBalancesChart()
+        {
+            var vm = new DailyBalancesViewModel();
+            vm.Initialize(_keeperDb);
+            _windowManager.ShowWindow(vm);
+        }
         public async void Save()
         {
             _keeperDb.FlattenAccountTree();

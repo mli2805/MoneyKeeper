@@ -57,6 +57,17 @@ namespace Keeper2018
         public static decimal AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
             if (currency == CurrencyCode.USD) return amount;
+            var rateLine = GetRateLine(db, date, currency);
+
+            return currency == CurrencyCode.BYR || currency == CurrencyCode.BYN
+                ? amount / (decimal)rateLine.MyUsdRate.Value
+                : currency == CurrencyCode.EUR
+                    ? amount * (decimal)rateLine.NbRates.Euro.Value / (decimal)rateLine.NbRates.Usd.Value
+                    : amount * (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value;
+        }
+
+        private static CurrencyRates GetRateLine(KeeperDb db, DateTime date, CurrencyCode? currency)
+        {
             CurrencyRates rateLine;
             if (currency == CurrencyCode.BYR)
                 rateLine = date <= new DateTime(2016, 6, 30)
@@ -64,13 +75,9 @@ namespace Keeper2018
                     : db.Bin.OfficialRates.First(r => r.Date == new DateTime(2016, 6, 30));
             else if (currency == CurrencyCode.BYN)
                 rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date && Math.Abs(r.MyUsdRate.Value) > 0.1);
-            else rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
-
-            return currency == CurrencyCode.BYR || currency == CurrencyCode.BYN
-                ? amount / (decimal)rateLine.MyUsdRate.Value
-                : currency == CurrencyCode.EUR
-                    ? amount * (decimal)rateLine.NbRates.Euro.Value / (decimal)rateLine.NbRates.Usd.Value
-                    : amount * (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value;
+            else
+                rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
+            return rateLine;
         }
 
         public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
