@@ -17,7 +17,7 @@ namespace Keeper2018
         private readonly KeeperDb _keeperDb;
         private readonly InputMyUsdViewModel _inputMyUsdViewModel;
 
-        private List<CurrencyRates> _rates;
+        private Dictionary<DateTime, CurrencyRates> _rates;
         public ObservableCollection<CurrencyRatesModel> Rows { get; set; } = new ObservableCollection<CurrencyRatesModel>();
 
         public CurrencyRatesModel SelectedRow
@@ -63,7 +63,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            _rates = _keeperDb.Bin.OfficialRates;
+            _rates = _keeperDb.Bin.Rates;
             Task.Factory.StartNew(Init);
             IsDownloadEnabled = true;
         }
@@ -74,7 +74,7 @@ namespace Keeper2018
             CurrencyRatesModel previous = null;
             foreach (var record in _rates)
             {
-                var current = new CurrencyRatesModel(record, previous, annual);
+                var current = new CurrencyRatesModel(record.Value, previous, annual);
                 Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
 
                 if (!current.BasketDelta.Equals(0))
@@ -122,7 +122,7 @@ namespace Keeper2018
                     currencyRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
                     currencyRates.MyUsdRate = new OneRate(){Value = nbRbRates.Usd.Value * 1.003, Unit = 1};
 
-                    _rates.Add(currencyRates);
+                    _rates.Add(currencyRates.Date, currencyRates);
                     var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);
                     Rows.Add(line);
 
@@ -137,13 +137,13 @@ namespace Keeper2018
         public void InputMyUsd()
         {
             _inputMyUsdViewModel.CurrencyRatesModel = SelectedRow;
-            var previousLine = _rates.FirstOrDefault(r => r.Date.Equals(SelectedRow.Date.AddDays(-1)));
+            var previousLine = _rates[SelectedRow.Date.AddDays(-1)];
             if (previousLine != null)
                 _inputMyUsdViewModel.MyUsdRate = previousLine.MyUsdRate.Value;
             _windowManager.ShowDialog(_inputMyUsdViewModel);
             if (_inputMyUsdViewModel.IsSavePressed)
             {
-                var rateLine = _rates.First(r => r.Date.Equals(SelectedRow.Date));
+                var rateLine = _rates[SelectedRow.Date];
                 rateLine.MyUsdRate.Value = _inputMyUsdViewModel.MyUsdRate;
                 SelectedRow.InputMyUsd(_inputMyUsdViewModel.MyUsdRate);
             }
@@ -151,8 +151,7 @@ namespace Keeper2018
 
         public void RemoveLine()
         {
-            var rateLine = _rates.First(r => r.Date.Equals(SelectedRow.Date));
-            _rates.Remove(rateLine);
+            _rates.Remove(SelectedRow.Date);
             Rows.Remove(SelectedRow);
         }
 
@@ -175,7 +174,7 @@ namespace Keeper2018
                             MessageBox.Show("Error: " + e.Message);
                             break;
                         }
-                        var rate = _rates.First(r => r.Date == model.Date);
+                        var rate = _rates[model.Date];
                         rate.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
                         model.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
                     }

@@ -10,7 +10,7 @@ namespace Keeper2018
         {
             var keeperBin = new KeeperBin
             {
-                OfficialRates = await NbRbRatesOldTxt.LoadFromOldTxtAsync(),
+                Rates = await NbRbRatesOldTxt.LoadFromOldTxtAsync(),
                 AccountPlaneList = AccountsOldTxt.LoadFromOldTxt().ToList()
             };
             keeperBin.TagAssociations = await TagAssociationsOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 using Caliburn.Micro;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -17,8 +15,7 @@ namespace Keeper2018
         {
             _db = db;
             DailyBalancesModel = new PlotModel();
-           // var series = PrepareSeries();
-            var series = GetSeries(GetAmounts(GetBalances()));
+            var series = PrepareSeries();
             DailyBalancesModel.Series.Add(series);
 
             DailyBalancesModel.Axes.Add(new DateTimeAxis()
@@ -35,7 +32,7 @@ namespace Keeper2018
         private Balance _balance = new Balance();
         private LineSeries PrepareSeries()
         {
-            var result = new LineSeries();
+            var result = new LineSeries(){Title = "Дневные остатки", Color = OxyColors.BlueViolet};
             var currentDate = new DateTime(2001, 12, 31);
             foreach (var tran in _db.TransactionModels)
             {
@@ -44,47 +41,6 @@ namespace Keeper2018
                     var day = DateTimeAxis.ToDouble(currentDate);
                     result.Points.Add(new DataPoint(day, (double)_db.BalanceInUsd(currentDate, _balance)));
 
-                    currentDate = currentDate.AddDays(1);
-                }
-                RegisterTran(tran);
-            }
-            return result;
-        }
-
-        private LineSeries GetSeries(List<double> values)
-        {
-            var result = new LineSeries();
-            var currentDate = new DateTime(2001, 12, 31);
-            foreach (var value in values)
-            {
-                var day = DateTimeAxis.ToDouble(currentDate);
-                result.Points.Add(new DataPoint(day, value));
-
-                currentDate = currentDate.AddDays(1);
-            }
-            return result;
-        }
-        private List<double> GetAmounts(List<Balance> balances)
-        {
-            var result = new List<double>();
-            var currentDate = new DateTime(2001, 12, 31);
-            foreach (var balance in balances)
-            {
-                result.Add((double)_db.BalanceInUsd(currentDate, balance));
-                currentDate = currentDate.AddDays(1);
-            }
-            return result;
-        }
-
-        private List<Balance> GetBalances()
-        {
-            var result = new List<Balance>();
-            var currentDate = new DateTime(2001, 12, 31);
-            foreach (var tran in _db.TransactionModels)
-            {
-                if (!tran.Timestamp.Date.Equals(currentDate))
-                {
-                    result.Add(_balance);
                     currentDate = currentDate.AddDays(1);
                 }
                 RegisterTran(tran);
