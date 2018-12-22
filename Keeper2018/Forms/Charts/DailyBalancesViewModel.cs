@@ -131,7 +131,7 @@ namespace Keeper2018
                     {
                         if (previousDate.Year != 2001)
                         {
-                            monthLabels.Add(currentDate.AddDays(-1).ToString("MM/yyyy"));
+                            monthLabels.Add(previousDate.ToString("MM/yyyy"));
                             value = balanceInUsd - previousMonth;
                             MonthlySaldoSeries.Items.Add(new ColumnItem(value, monthIndex));
                             monthIndex++;
@@ -142,7 +142,7 @@ namespace Keeper2018
                     {
                         if (previousDate.Year != 2001)
                         {
-                            yearLabels.Add(currentDate.AddDays(-1).ToString("yyyy"));
+                            yearLabels.Add(previousDate.ToString("yyyy"));
                             value = balanceInUsd - previousYear;
                             AnnualSaldoSeries.Items.Add(new ColumnItem(value, yearIndex));
                             yearIndex++;
