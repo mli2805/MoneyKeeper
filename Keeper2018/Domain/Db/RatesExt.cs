@@ -16,27 +16,27 @@ namespace Keeper2018
             return rateLine;
         }
 
-//        private static CurrencyRates GetRateLine(KeeperDb db, DateTime date, CurrencyCode? currency)
-//        {
-//            CurrencyRates rateLine;
-//            if (currency == CurrencyCode.BYR)
-//                rateLine = date <= new DateTime(2016, 6, 30)
-//                    ? db.Bin.OfficialRates.Last(r => r.Date.Date <= date)
-//                    : db.Bin.OfficialRates.First(r => r.Date == new DateTime(2016, 6, 30));
-//            else if (currency == CurrencyCode.BYN)
-//                rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date && Math.Abs(r.MyUsdRate.Value) > 0.1);
-//            else
-//                rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
-//            return rateLine;
-//        }
+        //        private static CurrencyRates GetRateLine(KeeperDb db, DateTime date, CurrencyCode? currency)
+        //        {
+        //            CurrencyRates rateLine;
+        //            if (currency == CurrencyCode.BYR)
+        //                rateLine = date <= new DateTime(2016, 6, 30)
+        //                    ? db.Bin.OfficialRates.Last(r => r.Date.Date <= date)
+        //                    : db.Bin.OfficialRates.First(r => r.Date == new DateTime(2016, 6, 30));
+        //            else if (currency == CurrencyCode.BYN)
+        //                rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date && Math.Abs(r.MyUsdRate.Value) > 0.1);
+        //            else
+        //                rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
+        //            return rateLine;
+        //        }
 
         public static string GetRatesMonthDifference(this KeeperDb db, DateTime startDate, DateTime finishMoment)
         {
-//            var ratesLine = db.Bin.OfficialRates.Last(r => r.Date <= startDate.AddDays(-1) && Math.Abs(r.MyUsdRate.Value) > 0.01);
+            //            var ratesLine = db.Bin.OfficialRates.Last(r => r.Date <= startDate.AddDays(-1) && Math.Abs(r.MyUsdRate.Value) > 0.01);
             var ratesLine = db.GetRatesLine(startDate);
             double belkaStart = ratesLine.MyUsdRate.Value;
 
-//            var ratesLineFinish = db.Bin.OfficialRates.Last(r => r.Date <= finishMoment && Math.Abs(r.MyUsdRate.Value) > 0.01);
+            //            var ratesLineFinish = db.Bin.OfficialRates.Last(r => r.Date <= finishMoment && Math.Abs(r.MyUsdRate.Value) > 0.01);
             var ratesLineFinish = db.GetRatesLine(finishMoment);
             double belkaFinish = ratesLineFinish.MyUsdRate.Value;
 
@@ -61,8 +61,7 @@ namespace Keeper2018
 
         public static OneRate GetRate(this KeeperDb db, DateTime dt, CurrencyCode currency, bool isForUsd = false)
         {
-       //     var ratesLine = db.Bin.OfficialRates.LastOrDefault(r => r.Date <= dt);
-            var ratesLine = db.Bin.Rates[dt];
+            var ratesLine = db.GetRatesLine(dt);
             if (ratesLine == null) return null;
             OneRate result;
             switch (currency)
@@ -74,7 +73,7 @@ namespace Keeper2018
                     if (isForUsd)
                         result.Value = result.Value / ratesLine.NbRates.Usd.Value;
                     return result;
-                case CurrencyCode.RUB: 
+                case CurrencyCode.RUB:
                     result = ratesLine.NbRates.Rur.Clone();
                     if (isForUsd)
                         result.Value = ratesLine.NbRates.Usd.Value / (result.Value / result.Unit);
@@ -87,15 +86,29 @@ namespace Keeper2018
         {
             if (currency == CurrencyCode.USD) return amount;
             var rateLine = db.GetRatesLine(date);
+            decimal rate;
+            switch (currency)
+            {
+                case CurrencyCode.BYR:
+                    rate = (decimal)rateLine.MyUsdRate.Value;
+                    if (date == new DateTime(2016, 7, 1)) 
+                        rate = rate * 10000;
+                    return amount / rate;
+                case CurrencyCode.BYN:
+                    rate = (decimal)rateLine.MyUsdRate.Value;
+                    return amount / rate;
+                case CurrencyCode.EUR:
+                    rate = (decimal)rateLine.NbRates.Euro.Value / (decimal)rateLine.NbRates.Usd.Value;
+                    return amount * rate;
+                case CurrencyCode.RUB:
+                    rate = (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value;
+                    return amount * rate;
+            }
 
-            return currency == CurrencyCode.BYR || currency == CurrencyCode.BYN
-                ? amount / (decimal)rateLine.MyUsdRate.Value
-                : currency == CurrencyCode.EUR
-                    ? amount * (decimal)rateLine.NbRates.Euro.Value / (decimal)rateLine.NbRates.Usd.Value
-                    : amount * (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value;
+            return 0;
         }
 
-     
+
         public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
             var shortLine = $"{amount} {currency.ToString().ToLower()}";

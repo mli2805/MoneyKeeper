@@ -9,5 +9,6 @@
         ShowTagAssociationsForm = 500,
         Save = 600,
         ShowSettingsForm = 700,
+        Experiment = 9999,
     }
 }

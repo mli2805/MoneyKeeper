@@ -54,6 +54,9 @@ namespace Keeper2018
                 case MainMenuAction.ShowSettingsForm:
                     ShowSettingsForm();
                     break;
+             case MainMenuAction.Experiment:
+                 ShowDailyBalancesChart();
+                    break;
             }
         }
 
@@ -90,6 +93,7 @@ namespace Keeper2018
             vm.Initialize(_keeperDb);
             _windowManager.ShowWindow(vm);
         }
+
         public async void Save()
         {
             _keeperDb.FlattenAccountTree();

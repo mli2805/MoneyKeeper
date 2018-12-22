@@ -5,10 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         WindowState="Maximized" 
         d:DataContext="{d:DesignInstance keeper2018:DailyBalancesViewModel}">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="T">
+            <cal:ActionMessage MethodName="ToggleModel"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-        <oxy:PlotView Model="{Binding DailyBalancesModel}"/>
+        <oxy:PlotView Model="{Binding DailyBalancesModel}" Visibility="{Binding DailyBalancesModelVisibility}"/>
+        <oxy:PlotView Model="{Binding MonthlySaldoModel}" Visibility="{Binding MonthlySaldoModelVisibility}"/>
+        <oxy:PlotView Model="{Binding AnnualSaldoModel}" Visibility="{Binding AnnualSaldoModelVisibility}"/>
     </Grid>
 </Window>

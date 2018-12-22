@@ -40,6 +40,12 @@
                 <cal:Parameter Value="Save"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
+        <ei:KeyTrigger>
+            <ei:KeyTrigger.Key>E</ei:KeyTrigger.Key>
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="Experiment"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <DockPanel Height="30">
         <Button Name="ShowTransactionsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions">
@@ -71,7 +77,8 @@
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ShowDailyBalancesChart"/>
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>   </MenuItem>
+                    </i:Interaction.Triggers>
+                </MenuItem>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
                         <TextBlock Text="Ежемесячное сальдо"/>
