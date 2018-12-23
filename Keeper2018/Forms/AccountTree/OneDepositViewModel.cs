@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -9,13 +10,26 @@ namespace Keeper2018
     {
         private bool _isInAddMode;
         public Deposit DepositInWork { get; set; }
-        private string _windowTitle;
+        public string ParentName { get; set; }
+
+        public string Junction
+        {
+            get => _junction;
+            set
+            {
+                if (value == _junction) return;
+                _junction = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private readonly KeeperDb _db;
         private readonly IWindowManager _windowManager;
+        public bool IsSavePressed { get; set; }
 
-        private List<DepositOffer> _depositOffers;
+        private List<DepositOfferModel> _depositOffers;
 
-        public List<DepositOffer> DepositOffers
+        public List<DepositOfferModel> DepositOffers
         {
             get { return _depositOffers; }
             set
@@ -26,8 +40,10 @@ namespace Keeper2018
             }
         }
 
-        private DepositOffer _selectedDepositOffer;
-        public DepositOffer SelectedDepositOffer
+        private DepositOfferModel _selectedDepositOffer;
+        private string _junction;
+
+        public DepositOfferModel SelectedDepositOffer
         {
             get { return _selectedDepositOffer; }
             set
@@ -45,11 +61,12 @@ namespace Keeper2018
             _windowManager = windowManager;
         }
 
-        public void InitializeForm(Deposit deposit, bool isInAddMode)
+        public void InitializeForm(AccountModel accountModel, bool isInAddMode)
         {
             _isInAddMode = isInAddMode;
-            DepositOffers = _db.Bin.DepositOffers;
-            DepositInWork = deposit;
+            DepositOffers = _db.Bin.DepositOffers.Select(x => x.Map(_db.Bin.AccountPlaneList)).ToList();
+            DepositInWork = accountModel.Deposit;
+            ParentName = accountModel.Owner.Name;
 
             if (isInAddMode)
             {
@@ -61,7 +78,6 @@ namespace Keeper2018
             {
                 _selectedDepositOffer = DepositOffers.First(o => o.Id == DepositInWork.DepositOfferId);
             }
-
         }
 
         protected override void OnViewLoaded(object view)
@@ -71,23 +87,36 @@ namespace Keeper2018
 
         public void SaveDeposit()
         {
-            TryClose(true);
+            IsSavePressed = true;
+            TryClose();
+        }
+
+        public void Cancel()
+        {
+            TryClose();
         }
 
         public void CompileAccountName()
         {
-//            var rate = DepositInWork.DepositOffer.RateLines == null || DepositInWork.DepositOffer.RateLines.LastOrDefault() == null
-//                ? 0
-//                : DepositInWork.DepositOffer.RateLines.Last().Rate;
-//            Junction =
-//                $"{DepositInWork.DepositOffer.BankAccount.Name} {DepositInWork.DepositOffer.DepositTitle} {DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture)} - {DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture)} {rate:0.#}%";
+            decimal rate;
+            var essentials = SelectedDepositOffer.Essentials.LastOrDefault(p => p.Key < DepositInWork.StartDate);
+       //     if (essentials != null)
+            {
+                var line = essentials.Value.RateLines.Last();
+                rate = line.Rate;
+            }
+
+            var startDate = DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
+            var finishDate = DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
+            Junction = $"{SelectedDepositOffer.Bank.Header} {SelectedDepositOffer.Title} {startDate} - {finishDate} {rate:0.#}%";
         }
 
         public void FillDepositRatesTable()
         {
-//            var bankDepositRatesAndRulesViewModel = IoC.Get<BankDepositRatesAndRulesViewModel>();
-//            bankDepositRatesAndRulesViewModel.Initialize(DepositInWork.DepositOffer);
-//            _windowManager.ShowDialog(bankDepositRatesAndRulesViewModel);
+            var vm = new RulesAndRatesViewModel();
+            vm.Initialize("", DepositInWork.StartDate, 
+                SelectedDepositOffer.Essentials.LastOrDefault(p => p.Key < DepositInWork.StartDate).Value);
+            _windowManager.ShowDialog(vm);
         }
     }
 }

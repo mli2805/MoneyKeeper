@@ -7,11 +7,11 @@ namespace Keeper2018
     {
         public int MyAccountId;
         public int DepositOfferId;
-        public string Serial;
-        public DateTime StartDate;
-        public DateTime FinishDate;
-        public string Comment;
-        public string ShortName;
+        public string Serial { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime FinishDate { get; set; }
+        public string Comment { get; set; }
+        public string ShortName { get; set; }
     }
 
   

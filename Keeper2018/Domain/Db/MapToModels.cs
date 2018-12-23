@@ -42,6 +42,7 @@ namespace Keeper2018
                 Id = depositOffer.Id,
                 Bank = accountPlaneList.First(a=>a.Id == depositOffer.Bank),
                 Title = depositOffer.Title,
+                MainCurrency = depositOffer.MainCurrency,
                 Essentials = depositOffer.Essentials,
                 Comment = depositOffer.Comment,
             };

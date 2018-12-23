@@ -46,15 +46,28 @@ namespace Keeper2018
 
         public void AddAccountDeposit()
         {
-            var deposit = new Deposit();
-            _oneDepositViewModel.InitializeForm(deposit, true);
+            var accountModel = new AccountModel("");
+            accountModel.Deposit = new Deposit();
+            accountModel.Owner = ShellPartsBinder.SelectedAccountModel;
+
+            _oneDepositViewModel.InitializeForm(accountModel, true);
             WindowManager.ShowDialog(_oneDepositViewModel);
+            if (!_oneDepositViewModel.IsSavePressed) return;
+
+            ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
+            KeeperDb.Bin.AccountPlaneList.Add(accountModel.Map());
         }
 
         public void ChangeAccount()
         {
             if (ShellPartsBinder.SelectedAccountModel.IsDeposit)
+            {
+                var accountModel = ShellPartsBinder.SelectedAccountModel;
+                _oneDepositViewModel.InitializeForm(accountModel, false);
                 WindowManager.ShowDialog(_oneDepositViewModel);
+
+                if (_oneDepositViewModel.IsSavePressed) { }
+            }
             else
             {
                 var accountModel = ShellPartsBinder.SelectedAccountModel;

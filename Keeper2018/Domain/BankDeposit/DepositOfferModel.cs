@@ -16,6 +16,11 @@ namespace Keeper2018
             new Dictionary<DateTime, DepositEssential>(){{DateTime.Today, new DepositEssential()}};
         public string Comment { get; set; }
 
+        public override string ToString()
+        {
+            return $"{Bank.Header} {Title} {MainCurrency.ToString()}";
+        }
+
         public DepositOfferModel DeepCopy()
         {
             var result = new DepositOfferModel();
