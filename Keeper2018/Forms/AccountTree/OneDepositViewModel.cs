@@ -9,6 +9,7 @@ namespace Keeper2018
     public class OneDepositViewModel : Screen
     {
         private bool _isInAddMode;
+        private AccountModel _accountModel;
         public Deposit DepositInWork { get; set; }
         public string ParentName { get; set; }
 
@@ -64,6 +65,7 @@ namespace Keeper2018
         public void InitializeForm(AccountModel accountModel, bool isInAddMode)
         {
             _isInAddMode = isInAddMode;
+            _accountModel = accountModel;
             DepositOffers = _db.Bin.DepositOffers.Select(x => x.Map(_db.Bin.AccountPlaneList)).ToList();
             DepositInWork = accountModel.Deposit;
             ParentName = accountModel.Owner.Name;
@@ -77,6 +79,7 @@ namespace Keeper2018
             else
             {
                 _selectedDepositOffer = DepositOffers.First(o => o.Id == DepositInWork.DepositOfferId);
+                Junction = _accountModel.Name;
             }
         }
 
@@ -88,6 +91,11 @@ namespace Keeper2018
         public void SaveDeposit()
         {
             IsSavePressed = true;
+            _accountModel.Id = _db.Bin.AccountPlaneList.Max(a => a.Id);
+            if (string.IsNullOrEmpty(Junction))
+                CompileAccountName();
+            _accountModel.Header = Junction;
+            DepositInWork.DepositOfferId = SelectedDepositOffer.Id;
             TryClose();
         }
 
