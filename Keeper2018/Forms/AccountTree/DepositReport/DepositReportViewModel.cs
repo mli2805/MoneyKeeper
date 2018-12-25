@@ -22,7 +22,10 @@ namespace Keeper2018
             Model = accountCalculator.DepositReportModel;
             Model.SummarizeFacts(_db);
             if (Model.AmountInUsd != 0)
+            {
+//                Model.DepositOffer.MainCurrency = 
                 Model.Foresee(_db);
+            }
         }
 
         protected override void OnViewLoaded(object view)

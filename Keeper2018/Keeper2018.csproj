@@ -92,6 +92,7 @@
     <Compile Include="Domain\Db\MapToModels.cs" />
     <Compile Include="Domain\Db\RatesExt.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModel.cs" />
+    <Compile Include="Forms\AccountTree\DepositReport\DepositReportModelExt.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportView.xaml.cs">
       <DependentUpon>DepositReportView.xaml</DependentUpon>
     </Compile>

@@ -19,14 +19,17 @@
                 <TextBlock Text="{Binding Model.RevenueStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.СonsumptionStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.BalanceStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
-                <TextBlock Text="{Binding Model.DevaluationStr}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
-                <TextBlock Text="{Binding Model.FinResultStr}" Margin="5,5,5,0" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Model.DevaluationStr}" Margin="5,5,5,0" Foreground="{Binding Model.DevaluationBrush}" 
+                           HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Model.FinResultStr}" Margin="5,5,5,0" Foreground="{Binding Model.FinResultBrush}" 
+                           HorizontalAlignment="Right" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Left" Width="250" Margin="5,0,0,15">
                 <TextBlock Text="{Binding Model.RateStr1}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.MoreRevenueStr1}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Model.BalanceAtEnd1}" Margin="5,5,5,0" HorizontalAlignment="Right"/>
-                <TextBlock Text="{Binding Model.Forecast}" Margin="5,5,5,0" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Model.Forecast}" Margin="5,5,5,0" Foreground="{Binding Model.ForecastBrush}" 
+                           HorizontalAlignment="Right" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel Name="Buttons" DockPanel.Dock="Bottom">
                 <Button Name="Close" Content="Close" Width="100" Margin="0,0,35,15" HorizontalAlignment="Right"/>
@@ -35,7 +38,8 @@
                 <TextBlock Text="{Binding Model.RateStr2}" Margin="0,5,5,0" HorizontalAlignment="Left"/>
                 <TextBlock Text="{Binding Model.MoreRevenueStr2}" Margin="0,5,5,0" HorizontalAlignment="Left"/>
                 <TextBlock Text="{Binding Model.BalanceAtEnd2}" Margin="0,5,5,0" HorizontalAlignment="Left"/>
-                <TextBlock Text="{Binding Model.Forecast2}" Margin="0,5,5,0" HorizontalAlignment="Left" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Model.Forecast2}" Margin="0,5,5,0" Foreground="{Binding Model.ForecastBrush}" 
+                           HorizontalAlignment="Left" FontWeight="Bold"/>
             </StackPanel>
         </DockPanel>
         <ListView ItemsSource="{Binding Model.Traffic}">
