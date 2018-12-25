@@ -5,11 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d">
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Margin="5">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Space">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="Edit"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="NumPad8" Modifiers="Control">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="MoveUp"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="NumPad2" Modifiers="Control">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="MoveDown"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="Insert">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="AddAfterSelected"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="Delete" Modifiers="Control">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="Delete"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>  <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Margin="5" Height="24">
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+        <DataGrid ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />

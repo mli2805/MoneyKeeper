@@ -88,9 +88,11 @@
     </ApplicationDefinition>
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
+    <Compile Include="Domain\Db\AssociationFinder.cs" />
     <Compile Include="Domain\Db\IO\DbLoader.cs" />
     <Compile Include="Domain\Db\MapToModels.cs" />
     <Compile Include="Domain\Db\RatesExt.cs" />
+    <Compile Include="Domain\Transaction\TransactionModel.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModel.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModelExt.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportView.xaml.cs">
@@ -229,6 +231,68 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
+    <Compile Include="Forms\TagAssociations\LineModel.cs" />
+    <Compile Include="Forms\Transactions\AccName\AccNameExt.cs" />
+    <Compile Include="Forms\Transactions\AccName\AccNameSelectionControlInitializer.cs" />
+    <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameButtonVm.cs" />
+    <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelector.xaml.cs">
+      <DependentUpon>AccNameSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Forms\Transactions\AccName\ComboTreesProvider.cs" />
+    <Compile Include="Forms\Transactions\Filter\CurrencyCodesFilter.cs" />
+    <Compile Include="Forms\Transactions\Filter\DoubleToStringConverter.cs" />
+    <Compile Include="Forms\Transactions\Filter\FilterModel.cs" />
+    <Compile Include="Forms\Transactions\Filter\FilterView.xaml.cs">
+      <DependentUpon>FilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\Filter\FilterViewModel.cs" />
+    <Compile Include="Forms\Transactions\Filter\OperationTypesFilter.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\AmountInputControl\AmountInputControl.xaml.cs">
+      <DependentUpon>AmountInputControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\AmountInputControl\AmountInputControlVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\BalanceDuringTransactionHinter.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\Controls\ExchangeControl.xaml.cs">
+      <DependentUpon>ExchangeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\Controls\ExpenseControl.xaml.cs">
+      <DependentUpon>ExpenseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\Controls\IncomeControl.xaml.cs">
+      <DependentUpon>IncomeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\Controls\TransferControl.xaml.cs">
+      <DependentUpon>TransferControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\Controls\UniversalControlVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\DatePickerWithTrianglesControl\DatePickerWithTriangles.xaml.cs">
+      <DependentUpon>DatePickerWithTriangles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\DatePickerWithTrianglesControl\DatePickerWithTrianglesVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml.cs">
+      <DependentUpon>OneTranView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\OneTranViewModel.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\OpTypeChoiceControl\OpTypeChoiceControl.xaml.cs">
+      <DependentUpon>OpTypeChoiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\OpTypeChoiceControl\OpTypeChoiceControlVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\TranCalcExtentions.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\TranExtentions.cs" />
+    <Compile Include="Forms\Transactions\ReceiptForm\ReceiptView.xaml.cs">
+      <DependentUpon>ReceiptView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\ReceiptForm\ReceiptViewModel.cs" />
+    <Compile Include="Forms\Transactions\TagPickingControl\TagPicker.xaml.cs">
+      <DependentUpon>TagPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\TagPickingControl\TagPickerVm.cs" />
+    <Compile Include="Forms\Transactions\TranAction.cs" />
+    <Compile Include="Forms\Transactions\Filter\TranFilter.cs" />
+    <Compile Include="Forms\Transactions\TranEditActionsExecutor.cs" />
+    <Compile Include="Forms\Transactions\TranLocateActionsExecutor.cs" />
+    <Compile Include="Forms\Transactions\TransModel.cs" />
     <Compile Include="Utils\DateTimeExtantions.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
@@ -271,7 +335,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Forms\Transactions\AccName.cs" />
+    <Compile Include="Forms\Transactions\AccName\AccName.cs" />
     <Compile Include="Forms\Transactions\TransactionsOldTxt.cs" />
     <Compile Include="Forms\Transactions\TransactionsView.xaml.cs">
       <DependentUpon>TransactionsView.xaml</DependentUpon>
@@ -366,6 +430,54 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Forms\Transactions\AccNameSelectionControl\AccNameSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\Filter\FilterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\AmountInputControl\AmountInputControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\Controls\ExchangeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\Controls\ExpenseControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\Controls\IncomeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\Controls\TransferControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\DatePickerWithTrianglesControl\DatePickerWithTriangles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\OpTypeChoiceControl\OpTypeChoiceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\ReceiptForm\ReceiptView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\TagPickingControl\TagPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainMenu\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -455,5 +567,6 @@
   <ItemGroup>
     <Resource Include="Resources\chart.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

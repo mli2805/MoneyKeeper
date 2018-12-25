@@ -2,30 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media;
 using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class LineModel
-    {
-        public string ExternalAccount { get; set; }
-        public OperationType OperationType { get; set; }
-        public string Tag { get; set; }
-        public AssociationType Destination { get; set; }
-
-        public int CompareTo(object obj)
-        {
-            return string.Compare(ExternalAccount, ((string)obj), StringComparison.Ordinal);
-        }
-        public Brush FontColor => OperationType.FontColor();
-
-        public override string ToString()
-        {
-            return $"{OperationType.ToString()} {ExternalAccount} {Tag} {Destination.ToString()}";
-        }
-    }
-
     public class ArticlesAssociationsViewModel : Screen
     {
         private static KeeperDb _db;
@@ -73,17 +53,11 @@ namespace Keeper2018
 
         private void InitilizeGrid()
         {
-//            Rows = new ObservableCollection<TagAssociationModel>();
-//            foreach (var tagAssociationModel in _db.AssociationModels)
-//            {
-//                var extAcc = ExternalAccounts.FirstOrDefault(e => Equals(e, tagAssociationModel.ExternalAccount));
-//                var tag = AssociatedArticles.FirstOrDefault(a => Equals(a, tagAssociationModel.Tag));
-//                if (extAcc == null || tag == null)
-//                    continue;
-//                Rows.Add(tagAssociationModel);
-//            }
-
-            Rows = _db.AssociationModels;
+            Rows = new ObservableCollection<LineModel>();
+            foreach (var lineModel in _db.TagAssociationModels.Select(a => a.Map()))
+            {
+                Rows.Add(lineModel);
+            }
             SelectedRow = Rows.First();
         }
 

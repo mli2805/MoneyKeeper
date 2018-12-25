@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Keeper2018.AccNameSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:keeper2018="clr-namespace:Keeper2018"
+             mc:Ignorable="d" 
+             d:DesignWidth="300" 
+             cal:Bind.ModelWithoutContext="{Binding .}"
+             >
+    <DockPanel Margin="0,0,0,10">
+        <keeper2018:ComboBoxTreeView DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Background="White" 
+                      VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="False"
+                      ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
+
+        <StackPanel Orientation="Horizontal" Height="25" VerticalAlignment="Top" Margin="0,0,0,0">
+            <Label Content="{Binding ControlTitle}" Margin="0,0,20,0" VerticalAlignment="Top"/>
+            <ItemsControl ItemsSource="{Binding Buttons}" Margin="0,5,0,0" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="keeper2018:AccNameButtonVm">
+                        <Button Content="{Binding Name}"
+                            Margin="2" Padding="15,2" Style="{StaticResource RoundCorner}"
+                            Click="ButtonBase_OnClick"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

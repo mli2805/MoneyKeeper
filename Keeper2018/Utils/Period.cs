@@ -22,7 +22,8 @@ namespace Keeper2018
         {
             return timestamp > StartDate && timestamp < FinishMoment;
         }
+
     }
 
-    
+
 }

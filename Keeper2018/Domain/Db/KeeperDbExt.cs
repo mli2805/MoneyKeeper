@@ -1,10 +1,46 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Keeper2018
 {
     public static class KeeperDbExt
     {
+        //        public static AccountModel SeekAccount(this KeeperDb db, string header)
+        //        {
+        //            foreach (var accountModel in db.AccountsTree)
+        //            {
+        //                if (accountModel.Header.Equals(header)) return accountModel;
+        //                foreach (var child in accountModel.Children)
+        //                {
+        //                    var result = SeekInOneBranch(child, header);
+        //                    if (result != null) return result;
+        //                }
+        //            }
+        //            return null;
+        //        }
+        //
+        //        private static AccountModel SeekInOneBranch(AccountModel branch, string header)
+        //        {
+        //            foreach (var child in branch.Children)
+        //            {
+        //                if (child.Header.Equals(header)) return child;
+        //                foreach (var childChild in child.Children)
+        //                {
+        //                    var result = SeekInOneBranch(childChild, header);
+        //                    if (result != null) return result;
+        //                }
+        //            }
+        //            return null;
+        //        }
+
+        public static AccountModel SeekAccount(this KeeperDb db, string header)
+        {
+            return db.AcMoDict.FirstOrDefault(p => p.Value.Header.Equals(header)).Value;
+        }
+
+
+
         public static void FillInAccountTree(this KeeperDb db)
         {
             db.AccountsTree = new ObservableCollection<AccountModel>();
@@ -16,7 +52,7 @@ namespace Keeper2018
                     db.AccountsTree.Add(accountModel);
             }
         }
-      
+
         public static void FlattenAccountTree(this KeeperDb db)
         {
             db.Bin.AccountPlaneList = new List<Account>();

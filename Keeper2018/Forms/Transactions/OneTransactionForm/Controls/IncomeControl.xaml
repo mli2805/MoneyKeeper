@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Keeper2018.IncomeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:keeper2018="clr-namespace:Keeper2018"
+             cal:Bind.ModelWithoutContext="{Binding .}"
+             mc:Ignorable="d" 
+             d:DesignWidth="300">
+    <Grid>
+        <StackPanel Background="Azure">
+            <keeper2018:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="2,0,2,0"/>
+            
+            <keeper2018:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="5,10,0,0"/>
+            <Label Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="85,0,0,0" Foreground="Blue"/>
+
+            <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="2,10,2,0"/>
+            <Label Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
+            
+            <keeper2018:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="0,30,0,2"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -37,7 +37,21 @@ namespace Keeper2018
             builder.RegisterType<RulesAndRatesViewModel>().SingleInstance();
 
             builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();
+
+            builder.RegisterType<ComboTreesProvider>().SingleInstance();
+            builder.RegisterType<AssociationFinder>().SingleInstance();
+            builder.RegisterType<AccNameSelectionControlInitializer>().SingleInstance();
+            builder.RegisterType<BalanceDuringTransactionHinter>().SingleInstance();
+            builder.RegisterType<UniversalControlVm>().SingleInstance();
+            builder.RegisterType<OneTranViewModel>().SingleInstance();
+
+            builder.RegisterType<FilterModel>().SingleInstance();
+            builder.RegisterType<FilterViewModel>().SingleInstance();
+
+            builder.RegisterType<TranEditActionsExecutor>().SingleInstance();
+            builder.RegisterType<TransModel>().SingleInstance();
             builder.RegisterType<TransactionsViewModel>().SingleInstance();
+
             builder.RegisterType<SettingsViewModel>().SingleInstance();
 
         }

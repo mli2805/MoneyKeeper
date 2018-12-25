@@ -39,8 +39,9 @@ namespace Keeper2018
             _currencyRatesViewModel.Initialize();
             keeperDb.FillInAccountTree(); // must be first
 
-            keeperDb.AssociationModels = new ObservableCollection<LineModel>
+            keeperDb.TagAssociationModels = new ObservableCollection<TagAssociationModel>
                 (keeperDb.Bin.TagAssociations.Select(a=>a.Map(keeperDb.AcMoDict)));
+
 //            keeperDb.DepositOfferModels = new ObservableCollection<DepositOfferModel>
 //                (keeperDb.Bin.DepositOffers.Select(x=>x.Map(keeperDb.Bin.AccountPlaneList)));
             keeperDb.TransactionModels = new ObservableCollection<TransactionModel>

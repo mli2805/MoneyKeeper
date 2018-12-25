@@ -38,6 +38,12 @@ namespace Keeper2018
             return Owner != null && Owner.Is(accountModel);
         }
 
+        public bool Is(string header)
+        {
+            if (Header.Equals(header)) return true;
+            return Owner != null && Owner.Is(header);
+        }
+
         // возвращает первого потомка accountModel'a , если this не сам accountModel.
         public AccountModel IsC(AccountModel accountModel)
         {

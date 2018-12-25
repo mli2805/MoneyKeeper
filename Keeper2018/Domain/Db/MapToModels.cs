@@ -48,14 +48,25 @@ namespace Keeper2018
             };
         }
 
-        public static LineModel Map(this TagAssociation tagAssociation, Dictionary<int, AccountModel> acMoDict)
+        public static TagAssociationModel Map(this TagAssociation tagAssociation, Dictionary<int, AccountModel> acMoDict)
+        {
+            return new TagAssociationModel
+            {
+                OperationType = tagAssociation.OperationType,
+                ExternalAccount = acMoDict[tagAssociation.ExternalAccount],
+                Tag = acMoDict[tagAssociation.Tag],
+                Destination = tagAssociation.Destination,
+            };
+        }
+
+        public static LineModel Map(this TagAssociationModel tagAssociationModel)
         {
             return new LineModel
             {
-                OperationType = tagAssociation.OperationType,
-                ExternalAccount = acMoDict[tagAssociation.ExternalAccount].Name,
-                Tag = acMoDict[tagAssociation.Tag].Name,
-                Destination = tagAssociation.Destination,
+                OperationType = tagAssociationModel.OperationType,
+                ExternalAccount = tagAssociationModel.ExternalAccount.Name,
+                Tag = tagAssociationModel.Tag.Name,
+                Destination = tagAssociationModel.Destination,
             };
         }
 
