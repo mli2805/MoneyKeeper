@@ -8,6 +8,7 @@ namespace Keeper2018
     {
         public DateTime Timestamp { get; set; }
         public int OrdinalInDate { get; set; }
+        public int Receipt { get; set; }
         public OperationType Operation { get; set; }
         public AccountModel MyAccount { get; set; }
         public AccountModel MySecondAccount { get; set; }

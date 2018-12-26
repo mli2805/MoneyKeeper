@@ -8,6 +8,7 @@ namespace Keeper2018
     {
         public DateTime Timestamp;
         public int OrdinalInDate;
+        public int Receipt;
         public OperationType Operation;
         public int MyAccount;
         public int MySecondAccount;

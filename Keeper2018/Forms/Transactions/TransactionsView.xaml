@@ -101,13 +101,14 @@
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header=" Timestamp" Width="70"
-                                    Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy'}" />
-                <DataGridTextColumn Header=" N" Width="10" Binding="{Binding Tran.OrdinalInDate}" />
-                <DataGridTextColumn Header="  Account" Width="300*" Binding="{Binding AccountForDatagrid}" />
+                <DataGridTextColumn Header=" Timestamp" Width="100"
+                                    Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy HH:mm'}" />
+                <DataGridTextColumn Header="N" Width="10" Binding="{Binding Tran.OrdinalInDate}" />
+                <DataGridTextColumn Header="R" Width="10" Binding="{Binding Tran.Receipt}" />
+                <DataGridTextColumn Header="  Account" Width="250*" Binding="{Binding AccountForDatagrid}" />
                 <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}" />
-                <DataGridTextColumn Header="  Tags" Width="250*" Binding="{Binding TagsForDatagrid}" />
-                <DataGridTextColumn Header="  Comment" Width="300*" Binding="{Binding Tran.Comment}" />
+                <DataGridTextColumn Header="  Tags" Width="200*" Binding="{Binding TagsForDatagrid}" />
+                <DataGridTextColumn Header="  Comment" Width="250*" Binding="{Binding Tran.Comment}" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
