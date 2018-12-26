@@ -7,7 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
-        mc:Ignorable="d">
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:TransactionsViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Space">
             <cal:ActionMessage MethodName="ActionsMethod">
@@ -34,10 +34,21 @@
                 <cal:Parameter Value="Delete"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
-    </i:Interaction.Triggers>  <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Margin="5" Height="24">
-        </StackPanel>
+    </i:Interaction.Triggers>  
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom" Margin="5">
+            <DatePicker Height="25" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding Model.AskedDate}" />
+            <Button Height="20" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Style="{StaticResource MyButtonStyle}"
+                    Content="Go" cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]"/>
+            <Button Height="20" Width="60" HorizontalAlignment="Left" Margin="5,0,0,0" Style="{StaticResource MyButtonStyle}"
+                    Content="GoToEnd" cal:Message.Attach="[Event Click] = [Action ActionsMethod(12)]" />
+            <Button Height="25" Width="60" HorizontalAlignment="Left" Margin="100,0,0,0" Style="{StaticResource MyButtonStyle}"
+                    Content="Filter" Name="ButtonFilter" />
+            <Button Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0" Style="{StaticResource MyButtonStyle}"
+                    Content="Close" IsCancel="True"/>
+        </DockPanel>
         <DataGrid ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
@@ -62,7 +73,7 @@
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
+                            <Setter Property="Foreground" Value="{Binding (keeper2018:TranWrappedForDatagrid.TransactionFontColor)}" />
                             <Setter Property="BorderThickness" Value="0"/>
                         </Trigger>
                     </Style.Triggers>
@@ -70,9 +81,9 @@
             </DataGrid.CellStyle> 
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Background" Value="{Binding DayBackgroundColor}"/>
-                    <Setter Property="Foreground" Value="{Binding TransactionFontColor}"/>
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Setter Property="Background" Value="{Binding (keeper2018:TranWrappedForDatagrid.DayBackgroundColor)}"/>
+                    <Setter Property="Foreground" Value="{Binding (keeper2018:TranWrappedForDatagrid.TransactionFontColor)}"/>
+                    <Setter Property="IsSelected" Value="{Binding (keeper2018:TranWrappedForDatagrid.IsSelected), Mode=TwoWay}"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#B6E6FF"/>

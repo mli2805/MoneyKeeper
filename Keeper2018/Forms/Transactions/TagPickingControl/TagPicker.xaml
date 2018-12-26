@@ -21,7 +21,8 @@
                         <DockPanel>
                             <Button Content="x" Width="15" Height="15" Padding="0,-5,0,0" DockPanel.Dock="Left" 
                                     VerticalAlignment="Center" Tag ="{Binding .}" Background="White" Click="DeleteTagOnClick"/>
-                            <Label Content="{Binding Name}" Margin="0,-2,0,0" DockPanel.Dock="Right" />
+                            <Label Content="{Binding Name}" Margin="0,-2,0,0" DockPanel.Dock="Right"
+                                   d:DataContext="{d:DesignInstance keeper2018:AccName}" />
                         </DockPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

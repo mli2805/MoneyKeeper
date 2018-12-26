@@ -23,8 +23,8 @@ namespace Keeper2018
             }
         }
 
-        private CurrencyCode? _currency;
-        public CurrencyCode? Currency
+        private CurrencyCode _currency;
+        public CurrencyCode Currency
         {
             get { return _currency; }
             set

@@ -144,7 +144,7 @@ namespace Keeper2018
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
                             { LabelContent = "Получил", AmountColor = TranInWork.Operation.FontColor(), 
-                                 Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
+                                 Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn ?? CurrencyCode.BYN };
             MyAmountInReturnInputControlVm.PropertyChanged += MyAmountInReturnInputControlVm_PropertyChanged;
 
 
@@ -220,7 +220,7 @@ namespace Keeper2018
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputControlVm.Amount;
-            if (e.PropertyName == "Currency") TranInWork.Currency = (CurrencyCode)MyAmountInputControlVm.Currency;
+            if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputControlVm.Currency;
         }
 
         private void MyAmountInReturnInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
