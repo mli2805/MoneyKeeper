@@ -52,16 +52,14 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Model.Initialize();
+            _comboTreesProvider.Initialize();
             _filterModel.Initialize();
+            Model.Initialize();
         }
 
         public void ButtonFilter()
         {
-            _comboTreesProvider.Initialize();
-
             var wm = new WindowManager();
-
 
             _filterViewModel.PlaceIt(Left, Top, FilterViewWidth);
             _filterViewModel.PropertyChanged += FilterViewModel_PropertyChanged;

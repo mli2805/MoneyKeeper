@@ -43,16 +43,23 @@ namespace Keeper2018
         public bool IsAddOrEdit { get; set; }
         public bool IsOneMore { get; set; }
 
-        public UniversalControlVm MyIncomeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
-        public UniversalControlVm MyExpenseControlVm { get; set; } = IoC.Get<UniversalControlVm>();
-        public UniversalControlVm MyTransferControlVm { get; set; } = IoC.Get<UniversalControlVm>();
-        public UniversalControlVm MyExchangeControlVm { get; set; } = IoC.Get<UniversalControlVm>();
+        public UniversalControlVm MyIncomeControlVm { get; set; }
+        public UniversalControlVm MyExpenseControlVm { get; set; }
+        public UniversalControlVm MyTransferControlVm { get; set; }
+        public UniversalControlVm MyExchangeControlVm { get; set; }
         public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
-        public OneTranViewModel(IWindowManager windowManager, KeeperDb db)
+        public OneTranViewModel(IWindowManager windowManager, KeeperDb db, 
+            UniversalControlVm myIncomeControlVm, UniversalControlVm myExpenseControlVm,
+            UniversalControlVm myTransferControlVm, UniversalControlVm myExchangeControlVm)
         {
             _windowManager = windowManager;
             _db = db;
+
+            MyIncomeControlVm = myIncomeControlVm;
+            MyExpenseControlVm = myExpenseControlVm;
+            MyTransferControlVm = myTransferControlVm;
+            MyExchangeControlVm = myExchangeControlVm;
         }
 
         protected override void OnViewLoaded(object view)
@@ -71,8 +78,8 @@ namespace Keeper2018
             _caption = addOrEdit ? "Добавить" : "Изменить";
             TranInWork = tran.Clone();
 
-            SetVisibility(TranInWork.Operation);
-            InitCorrespondingControl();
+            InitControls();
+            SetControlVisibilities(TranInWork.Operation);
 
             MyOpTypeChoiceControlVm.PressedButton = TranInWork.Operation;
             MyOpTypeChoiceControlVm.PropertyChanged += MyOpTypeChoiceControlVm_PropertyChanged;
@@ -81,8 +88,8 @@ namespace Keeper2018
         {
             TranInWork.Operation = ((OpTypeChoiceControlVm)sender).PressedButton;
             ValidateTranInWorkFieldsWithNewOperationType();
-            SetVisibility(TranInWork.Operation);
-            InitCorrespondingControl();
+            SetControlVisibilities(TranInWork.Operation);
+            InitControls();
         }
 
         private void ValidateTranInWorkFieldsWithNewOperationType()
@@ -129,14 +136,14 @@ namespace Keeper2018
             TryClose(false);
         }
 
-        private void InitCorrespondingControl()
+        private void InitControls()
         {
             MyIncomeControlVm.SetTran(TranInWork);
             MyExpenseControlVm.SetTran(TranInWork);
             MyTransferControlVm.SetTran(TranInWork);
             MyExchangeControlVm.SetTran(TranInWork);
         }
-        private void SetVisibility(OperationType opType)
+        private void SetControlVisibilities(OperationType opType)
         {
             MyIncomeControlVm.Visibility = opType == OperationType.Доход ? Visibility.Visible : Visibility.Collapsed;
             MyExpenseControlVm.Visibility = opType == OperationType.Расход ? Visibility.Visible : Visibility.Collapsed;
@@ -153,7 +160,7 @@ namespace Keeper2018
                 return false;
             }
             TranInWork.Tags = new List<AccountModel>() {externalAccount};
-            InitCorrespondingControl();
+            InitControls();
             return true;
         }
 

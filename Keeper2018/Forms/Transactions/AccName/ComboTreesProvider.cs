@@ -23,7 +23,7 @@ namespace Keeper2018
         public ComboTreesProvider(KeeperDb db)
         {
             _db = db;
-      }
+        }
 
         public void Initialize()
         {

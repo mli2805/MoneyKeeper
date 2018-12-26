@@ -143,7 +143,8 @@ namespace Keeper2018
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
-            { LabelContent = "Получил", AmountColor = TranInWork.Operation.FontColor(), Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
+                            { LabelContent = "Получил", AmountColor = TranInWork.Operation.FontColor(), 
+                                 Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn };
             MyAmountInReturnInputControlVm.PropertyChanged += MyAmountInReturnInputControlVm_PropertyChanged;
 
 
