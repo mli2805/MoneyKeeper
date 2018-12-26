@@ -125,10 +125,10 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagCalculator.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
-    <Compile Include="Forms\Charts\DailyBalancesView.xaml.cs">
-      <DependentUpon>DailyBalancesView.xaml</DependentUpon>
+    <Compile Include="Forms\Charts\BalancesAndSaldosView.xaml.cs">
+      <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Charts\DailyBalancesViewModel.cs" />
+    <Compile Include="Forms\Charts\BalancesAndSaldosViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">
@@ -293,7 +293,7 @@
     <Compile Include="Forms\Transactions\TranEditActionsExecutor.cs" />
     <Compile Include="Forms\Transactions\TranLocateActionsExecutor.cs" />
     <Compile Include="Forms\Transactions\TransModel.cs" />
-    <Compile Include="Utils\DateTimeExtantions.cs" />
+    <Compile Include="Utils\DateTimeExtansions.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\TagAssociations\ArticlesAssociationsView.xaml.cs">
@@ -358,7 +358,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Charts\DailyBalancesView.xaml">
+    <Page Include="Forms\Charts\BalancesAndSaldosView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -15,7 +15,7 @@ namespace Keeper2018
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
-            MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel, 
+            MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel)
         {
             _windowManager = windowManager;
@@ -54,8 +54,8 @@ namespace Keeper2018
                 case MainMenuAction.ShowSettingsForm:
                     ShowSettingsForm();
                     break;
-             case MainMenuAction.Experiment:
-                 ShowDailyBalancesChart();
+                case MainMenuAction.Experiment:
+                    ShowBalancesAndSaldosChart();
                     break;
             }
         }
@@ -87,11 +87,16 @@ namespace Keeper2018
             _windowManager.ShowDialog(_articlesAssociationsViewModel);
         }
 
-        public void ShowDailyBalancesChart()
+        public void ShowBalancesAndSaldosChart()
         {
-            var vm = new DailyBalancesViewModel();
+            var vm = new BalancesAndSaldosViewModel();
             vm.Initialize(_keeperDb);
             _windowManager.ShowWindow(vm);
+        }
+
+        public void ShowExpensesChart()
+        {
+
         }
 
         public async void Save()

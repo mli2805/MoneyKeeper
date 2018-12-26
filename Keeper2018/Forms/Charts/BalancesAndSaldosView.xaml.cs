@@ -3,9 +3,9 @@
     /// <summary>
     /// Interaction logic for DailyBalancesView.xaml
     /// </summary>
-    public partial class DailyBalancesView
+    public partial class BalancesAndSaldosView
     {
-        public DailyBalancesView()
+        public BalancesAndSaldosView()
         {
             InitializeComponent();
         }

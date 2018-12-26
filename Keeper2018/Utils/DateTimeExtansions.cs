@@ -2,7 +2,7 @@
 
 namespace Keeper2018
 {
-  public static class DateTimeExtantions
+  public static class DateTimeExtansions
   {
     public static DateTime GetStartOfDate(this DateTime day)
     {

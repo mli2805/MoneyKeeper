@@ -16,20 +16,6 @@ namespace Keeper2018
             return rateLine;
         }
 
-        //        private static CurrencyRates GetRateLine(KeeperDb db, DateTime date, CurrencyCode? currency)
-        //        {
-        //            CurrencyRates rateLine;
-        //            if (currency == CurrencyCode.BYR)
-        //                rateLine = date <= new DateTime(2016, 6, 30)
-        //                    ? db.Bin.OfficialRates.Last(r => r.Date.Date <= date)
-        //                    : db.Bin.OfficialRates.First(r => r.Date == new DateTime(2016, 6, 30));
-        //            else if (currency == CurrencyCode.BYN)
-        //                rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date && Math.Abs(r.MyUsdRate.Value) > 0.1);
-        //            else
-        //                rateLine = db.Bin.OfficialRates.Last(r => r.Date.Date <= date);
-        //            return rateLine;
-        //        }
-
         public static string GetRatesMonthDifference(this KeeperDb db, DateTime startDate, DateTime finishMoment)
         {
             //            var ratesLine = db.Bin.OfficialRates.Last(r => r.Date <= startDate.AddDays(-1) && Math.Abs(r.MyUsdRate.Value) > 0.01);

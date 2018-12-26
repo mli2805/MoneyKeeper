@@ -9,7 +9,7 @@ using OxyPlot.Series;
 
 namespace Keeper2018
 {
-    public class DailyBalancesViewModel : Screen
+    public class BalancesAndSaldosViewModel : Screen
     {
         private KeeperDb _db;
         public PlotModel DailyBalancesModel { get; set; }
