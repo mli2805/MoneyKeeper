@@ -55,7 +55,6 @@ namespace Keeper2018
                     ShowSettingsForm();
                     break;
                 case MainMenuAction.Experiment:
-                    ShowBalancesAndSaldosChart();
                     break;
             }
         }
