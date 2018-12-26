@@ -274,10 +274,10 @@
       <DependentUpon>OneTranView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\OneTransactionForm\OneTranViewModel.cs" />
-    <Compile Include="Forms\Transactions\OneTransactionForm\OpTypeChoiceControl\OpTypeChoiceControl.xaml.cs">
-      <DependentUpon>OpTypeChoiceControl.xaml</DependentUpon>
+    <Compile Include="Forms\Transactions\OneTransactionForm\OperationTypeControl\OperationTypeView.xaml.cs">
+      <DependentUpon>OperationTypeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Transactions\OneTransactionForm\OpTypeChoiceControl\OpTypeChoiceControlVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\OperationTypeControl\OperationTypeViewModel.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\TranCalcExtentions.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\TranExtentions.cs" />
     <Compile Include="Forms\Transactions\ReceiptForm\ReceiptView.xaml.cs">
@@ -466,9 +466,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\Transactions\OneTransactionForm\OpTypeChoiceControl\OpTypeChoiceControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Forms\Transactions\OneTransactionForm\OperationTypeControl\OperationTypeView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Transactions\ReceiptForm\ReceiptView.xaml">
       <Generator>MSBuild:Compile</Generator>

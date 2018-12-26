@@ -25,7 +25,7 @@ namespace Keeper2018
 
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
-        
+
         private string _caption;
         private TransactionModel _tranInWork;
         public TransactionModel TranInWork
@@ -47,9 +47,10 @@ namespace Keeper2018
         public UniversalControlVm MyExpenseControlVm { get; set; }
         public UniversalControlVm MyTransferControlVm { get; set; }
         public UniversalControlVm MyExchangeControlVm { get; set; }
-        public OpTypeChoiceControlVm MyOpTypeChoiceControlVm { get; set; } = new OpTypeChoiceControlVm();
 
-        public OneTranViewModel(IWindowManager windowManager, KeeperDb db, 
+        public OperationTypeViewModel OperationTypeViewModel { get; } = new OperationTypeViewModel();
+
+        public OneTranViewModel(IWindowManager windowManager, KeeperDb db,
             UniversalControlVm myIncomeControlVm, UniversalControlVm myExpenseControlVm,
             UniversalControlVm myTransferControlVm, UniversalControlVm myExchangeControlVm)
         {
@@ -81,15 +82,15 @@ namespace Keeper2018
             InitControls();
             SetControlVisibilities(TranInWork.Operation);
 
-            MyOpTypeChoiceControlVm.PressedButton = TranInWork.Operation;
-            MyOpTypeChoiceControlVm.PropertyChanged += MyOpTypeChoiceControlVm_PropertyChanged;
+            OperationTypeViewModel.PropertyChanged += OperationTypeViewModel_PropertyChanged;
         }
-        private void MyOpTypeChoiceControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+
+        private void OperationTypeViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            TranInWork.Operation = ((OpTypeChoiceControlVm)sender).PressedButton;
+            TranInWork.Operation = OperationTypeViewModel.SelectedOperationType;
             ValidateTranInWorkFieldsWithNewOperationType();
-            SetControlVisibilities(TranInWork.Operation);
             InitControls();
+            SetControlVisibilities(OperationTypeViewModel.SelectedOperationType);
         }
 
         private void ValidateTranInWorkFieldsWithNewOperationType()
@@ -159,14 +160,14 @@ namespace Keeper2018
                 MessageBox.Show("Должен быть хотя бы один продавец/услугодатель");
                 return false;
             }
-            TranInWork.Tags = new List<AccountModel>() {externalAccount};
+            TranInWork.Tags = new List<AccountModel>() { externalAccount };
             InitControls();
             return true;
         }
 
         public void Receipt()
         {
-            if ( ! LeaveOneExternalAccountInTags()) return;
+            if (!LeaveOneExternalAccountInTags()) return;
 
             Left = Left - 180;
             var receiptVm = new ReceiptViewModel();
