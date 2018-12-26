@@ -33,8 +33,8 @@ namespace Keeper2018
         }
         private string GetAmountForDatagrid()
         {
-            return IsOneAmountTransaction() 
-                ? ShowAmount(Tran.Amount, Tran.Currency) 
+            return IsOneAmountTransaction()
+                ? ShowAmount(Tran.Amount, Tran.Currency)
                 : ShowAmount(Tran.Amount, Tran.Currency) + " ->\n    " + ShowAmount(Tran.AmountInReturn, Tran.CurrencyInReturn);
         }
         private string ShowAmount(decimal amount, CurrencyCode? currency)
@@ -53,7 +53,7 @@ namespace Keeper2018
         }
         private bool IsOneAccountTransaction()
         {
-            return Tran.Operation == OperationType.Доход || 
+            return Tran.Operation == OperationType.Доход ||
                    Tran.Operation == OperationType.Расход ||
                    (Tran.Operation == OperationType.Обмен && Equals(Tran.MyAccount, Tran.MySecondAccount));
         }
@@ -67,13 +67,20 @@ namespace Keeper2018
         #region // цвет шрифта и фона для отображения транзакции
         public Brush DayBackgroundColor
         {
+            //            get
+            //            {
+            //                var daysFrom = Tran.Timestamp.Date - new DateTime(1972, 5, 28);
+            //                if (daysFrom.Days % 4 == 0) return Brushes.Cornsilk;
+            //                if (daysFrom.Days % 4 == 1) return new SolidColorBrush(Color.FromRgb(240, 255, 240));
+            //                if (daysFrom.Days % 4 == 2) return Brushes.GhostWhite;
+            //                return Brushes.Azure;
+            //            }
             get
             {
                 var daysFrom = Tran.Timestamp.Date - new DateTime(1972, 5, 28);
-                if (daysFrom.Days % 4 == 0) return Brushes.Cornsilk;
-                if (daysFrom.Days % 4 == 1) return new SolidColorBrush(Color.FromRgb(240, 255, 240));
-                if (daysFrom.Days % 4 == 2) return Brushes.GhostWhite;
-                return Brushes.Azure;
+                if (daysFrom.Days % 3 == 0) return Brushes.White;
+                if (daysFrom.Days % 3 == 1) return new SolidColorBrush(Color.FromRgb(240, 240, 240));
+                return new SolidColorBrush(Color.FromRgb(255, 255, 240));
             }
         }
 

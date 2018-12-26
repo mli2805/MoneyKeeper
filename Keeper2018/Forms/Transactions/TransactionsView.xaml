@@ -7,45 +7,50 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
-        mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:TransactionsViewModel}">
+        mc:Ignorable="d">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Space">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="Edit"/>
+                <cal:Parameter Value="Edit" />
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="NumPad8" Modifiers="Control">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="MoveUp"/>
+                <cal:Parameter Value="MoveUp" />
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="NumPad2" Modifiers="Control">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="MoveDown"/>
+                <cal:Parameter Value="MoveDown" />
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="Insert">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="AddAfterSelected"/>
+                <cal:Parameter Value="AddAfterSelected" />
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="ActionsMethod">
-                <cal:Parameter Value="Delete"/>
+                <cal:Parameter Value="Delete" />
             </cal:ActionMessage>
         </ei:KeyTrigger>
-    </i:Interaction.Triggers>  
+    </i:Interaction.Triggers>
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
-            <DatePicker Height="25" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding Model.AskedDate}" />
-            <Button Height="20" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Style="{StaticResource MyButtonStyle}"
-                    Content="Go" cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]"/>
-            <Button Height="20" Width="60" HorizontalAlignment="Left" Margin="5,0,0,0" Style="{StaticResource MyButtonStyle}"
+            <DatePicker Height="25" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0"
+                        SelectedDate="{Binding Model.AskedDate}" />
+            <Button Height="20" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0"
+                    Style="{StaticResource MyButtonStyle}"
+                    Content="Go" cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]" />
+            <Button Height="20" Width="60" HorizontalAlignment="Left" Margin="5,0,0,0"
+                    Style="{StaticResource MyButtonStyle}"
                     Content="GoToEnd" cal:Message.Attach="[Event Click] = [Action ActionsMethod(12)]" />
-            <Button Height="25" Width="60" HorizontalAlignment="Left" Margin="100,0,0,0" Style="{StaticResource MyButtonStyle}"
+            <Button Height="25" Width="60" HorizontalAlignment="Left" Margin="100,0,0,0"
+                    Style="{StaticResource MyButtonStyle}"
                     Content="Filter" Name="ButtonFilter" />
-            <Button Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0" Style="{StaticResource MyButtonStyle}"
-                    Content="Close" IsCancel="True"/>
+            <Button Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0"
+                    Style="{StaticResource MyButtonStyle}"
+                    Content="Close" IsCancel="True" />
         </DockPanel>
         <DataGrid ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
@@ -56,15 +61,19 @@
             </i:Interaction.Behaviors>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Изменить (Space)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]" 
+                    <MenuItem Header="Изменить (Space)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]"
                               BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Сдвинуть вверх (Ctrl+NumPad8)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]" 
+                    <MenuItem Header="Сдвинуть вверх (Ctrl+NumPad8)"
+                              cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]"
                               BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Сдвинуть вниз (Ctrl+NumPad2)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(3)]" 
+                    <MenuItem Header="Сдвинуть вниз (Ctrl+NumPad2)"
+                              cal:Message.Attach="[Event Click] = [Action ActionsMethod(3)]"
                               BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Вставить после (Insert)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]" 
+                    <MenuItem Header="Вставить после (Insert)"
+                              cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]"
                               BorderBrush="{x:Null}" Background="White" />
-                    <MenuItem Header="Удалить (Ctrl+Del)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(5)]" 
+                    <MenuItem Header="Удалить (Ctrl+Del)"
+                              cal:Message.Attach="[Event Click] = [Action ActionsMethod(5)]"
                               BorderBrush="{x:Null}" Background="White" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
@@ -73,29 +82,30 @@
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="{Binding (keeper2018:TranWrappedForDatagrid.TransactionFontColor)}" />
-                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
+                            <Setter Property="BorderThickness" Value="0" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </DataGrid.CellStyle> 
+            </DataGrid.CellStyle>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Background" Value="{Binding (keeper2018:TranWrappedForDatagrid.DayBackgroundColor)}"/>
-                    <Setter Property="Foreground" Value="{Binding (keeper2018:TranWrappedForDatagrid.TransactionFontColor)}"/>
-                    <Setter Property="IsSelected" Value="{Binding (keeper2018:TranWrappedForDatagrid.IsSelected), Mode=TwoWay}"/>
+                    <Setter Property="Background" Value="{Binding DayBackgroundColor}" />
+                    <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#B6E6FF"/>
+                            <Setter Property="Background" Value="#B6E6FF" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header=" Timestamp" Width="70" Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy'}"/>
-                <DataGridTextColumn Header=" N" Width="10" Binding="{Binding Tran.OrdinalInDate}"/>
-                <DataGridTextColumn Header="  Account" Width="300*" Binding="{Binding AccountForDatagrid}"/>
-                <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}"/>
+                <DataGridTextColumn Header=" Timestamp" Width="70"
+                                    Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy'}" />
+                <DataGridTextColumn Header=" N" Width="10" Binding="{Binding Tran.OrdinalInDate}" />
+                <DataGridTextColumn Header="  Account" Width="300*" Binding="{Binding AccountForDatagrid}" />
+                <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}" />
                 <DataGridTextColumn Header="  Tags" Width="250*" Binding="{Binding TagsForDatagrid}" />
                 <DataGridTextColumn Header="  Comment" Width="300*" Binding="{Binding Tran.Comment}" />
             </DataGrid.Columns>
