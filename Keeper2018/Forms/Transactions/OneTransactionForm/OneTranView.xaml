@@ -35,7 +35,7 @@
         </StackPanel>
 
         <Button Grid.Column="1" Name="Receipt" VerticalAlignment="Top" Height="20" Width="100" Margin="-170,100,0,0" Background="White" 
-                    IsEnabled="{Binding IsAddOrEdit}" Visibility="{Binding MyExpenseControlVm.Visibility}">Чек</Button>
+                    IsEnabled="{Binding IsAddMode}" Visibility="{Binding MyExpenseControlVm.Visibility}">Чек</Button>
 
         <keeper2018:OperationTypeView Grid.Column="1" Margin="0,10,7,55" DataContext="{Binding OperationTypeViewModel}"/>
     </Grid>

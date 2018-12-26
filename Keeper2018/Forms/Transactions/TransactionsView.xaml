@@ -43,6 +43,20 @@
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />
             </i:Interaction.Behaviors>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Изменить (Space)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]" 
+                              BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вверх (Ctrl+NumPad8)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(2)]" 
+                              BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Сдвинуть вниз (Ctrl+NumPad2)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(3)]" 
+                              BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Вставить после (Insert)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(4)]" 
+                              BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Удалить (Ctrl+Del)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(5)]" 
+                              BorderBrush="{x:Null}" Background="White" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>

@@ -40,7 +40,7 @@ namespace Keeper2018
         }
         public List<Tuple<decimal, AccountModel, string>> ReceiptList { get; set; }
 
-        public bool IsAddOrEdit { get; set; }
+        public bool IsAddMode { get; set; }
         public bool IsOneMore { get; set; }
 
         public UniversalControlVm MyIncomeControlVm { get; set; }
@@ -73,10 +73,11 @@ namespace Keeper2018
             return TranInWork;
         }
 
-        public void Init(TransactionModel tran, bool addOrEdit)
+        public void Init(TransactionModel tran, bool isAddMode)
         {
-            IsAddOrEdit = addOrEdit;
-            _caption = addOrEdit ? "Добавить" : "Изменить";
+            IsAddMode = isAddMode;
+            _caption = isAddMode ? "Добавить" : "Изменить";
+            OperationTypeViewModel.SelectedOperationType = tran.Operation;
             TranInWork = tran.Clone();
 
             InitControls();
