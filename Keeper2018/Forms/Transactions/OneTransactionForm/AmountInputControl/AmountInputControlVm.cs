@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 
@@ -37,6 +38,12 @@ namespace Keeper2018
 
         public List<CurrencyCode> Currencies { get; set; } = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
 
-
+        public string AllInContent => "<<";
+        public int ButtonAllInPressed { get; set; }
+        public Visibility ButtonAllInVisibility { get; set; }
+        public void AllIn()
+        {
+            NotifyOfPropertyChange(nameof(ButtonAllInPressed));
+        }
     }
 }

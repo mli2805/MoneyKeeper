@@ -78,19 +78,18 @@ namespace Keeper2018
 
         private bool AddAfterSelected()
         {
-            var oneTranForm = IoC.Get<OneTranViewModel>();
             var tranForAdding = PrepareTranForAdding();
-            oneTranForm.Init(tranForAdding, true);
-            bool? result = _windowManager.ShowDialog(oneTranForm);
+            _oneTranViewModel.Init(tranForAdding, true);
+            bool? result = _windowManager.ShowDialog(_oneTranViewModel);
 
             if (!result.HasValue || !result.Value) return false;
 
-            if (oneTranForm.ReceiptList != null)
-                AddOneTranAndReceipt(oneTranForm);
+            if (_oneTranViewModel.ReceiptList != null)
+                AddOneTranAndReceipt(_oneTranViewModel);
             else
-                AddOneTran(oneTranForm.GetTran().Clone());
+                AddOneTran(_oneTranViewModel.GetTran().Clone());
 
-            if (oneTranForm.IsOneMore) AddAfterSelected();
+            if (_oneTranViewModel.IsOneMore) AddAfterSelected();
 
             return true;
         }

@@ -138,13 +138,19 @@ namespace Keeper2018
                 LabelContent = GetAmountActionLabel(TranInWork),
                 AmountColor = TranInWork.Operation.FontColor(),
                 Amount = TranInWork.Amount,
-                Currency = TranInWork.Currency
+                Currency = TranInWork.Currency,
+                ButtonAllInVisibility = tran.Operation == OperationType.Доход ? Visibility.Collapsed : Visibility.Visible,
             };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
-                            { LabelContent = "Получил", AmountColor = TranInWork.Operation.FontColor(), 
-                                 Amount = TranInWork.AmountInReturn, Currency = TranInWork.CurrencyInReturn ?? CurrencyCode.BYN };
+            {
+                LabelContent = "Получил",
+                AmountColor = TranInWork.Operation.FontColor(),
+                Amount = TranInWork.AmountInReturn,
+                Currency = TranInWork.CurrencyInReturn ?? CurrencyCode.BYN,
+                ButtonAllInVisibility = Visibility.Collapsed,
+            };
             MyAmountInReturnInputControlVm.PropertyChanged += MyAmountInReturnInputControlVm_PropertyChanged;
 
 
@@ -214,13 +220,21 @@ namespace Keeper2018
 
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            TranInWork.Timestamp = MyDatePickerVm.SelectedDate;
+            var selectedDate = MyDatePickerVm.SelectedDate;
+            var minute = _db.TransactionModels.Where(t => t.Timestamp.Date == selectedDate).Max(t => t.Timestamp.Minute)+1;
+
+            TranInWork.Timestamp = selectedDate.AddMinutes(minute);
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputControlVm.Amount;
             if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputControlVm.Currency;
+            if (e.PropertyName == "ButtonAllInPressed")
+            {
+                MyAmountInputControlVm.Amount =
+                    _db.TransactionModels.Sum(a => a.AmountForAccount(TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
+            }
         }
 
         private void MyAmountInReturnInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
