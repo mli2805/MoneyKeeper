@@ -40,21 +40,45 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         public string Dump(TranWithTags tranWithTags)
         {
             return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " +
-                   tranWithTags.MyAccount + " ; " + tranWithTags.DumpOfSecondAccount() + " ; " + 
+                   tranWithTags.MyAccount + " ; " + tranWithTags.DumpOfSecondAccount() + " ; " +
                    tranWithTags.Amount.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.Currency + " ; " +
-                   tranWithTags.AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.CurrencyInReturn + " ; " + 
-                   Dump(tranWithTags.Tags) + " ; " + tranWithTags.Comment;
+                   tranWithTags.AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.CurrencyInReturn + " ; " +
+                   Dump(tranWithTags.Tags, tranWithTags.Timestamp) + " ; " + tranWithTags.Comment;
         }
 
-        private string Dump(List<Account> tags)
+        private string Dump(List<Account> tags, DateTime timestamp)
         {
             if (tags == null || tags.Count == 0) return " ";
-            var result = tags.First().Name;
-            for (int i = 1; i < tags.Count; i++)
+            string result = "";
+            for (int i = 0; i < tags.Count; i++)
             {
-                result = result + " | " + tags[i].Name;
+                result = result + TransformTagName(tags[i].Name, timestamp) + " | ";
             }
+            result = result.Substring(0, result.Length - 3);
             return result;
+        }
+
+        private string TransformTagName(string oldName, DateTime timestamp)
+        {
+            if (oldName == "Подаркополучатели") return "Родственники";
+
+            if (oldName == "На карманные расходы" || oldName == "На мероприятия") return "Чилдрены";
+
+            if (oldName == "Авто топливо")
+                return timestamp < new DateTime(2014, 04, 19) ? "Scenic2 - авто топливо" : "Scenic3 - авто топливо";
+            if (oldName == "Ремонт авто")
+                return timestamp < new DateTime(2014, 04, 19) ? "Scenic2 - авто ремонт" : "Scenic3 - авто ремонт";
+            if (oldName == "Обслуживание авто")
+                return timestamp < new DateTime(2014, 04, 19) ? "Scenic2 - авто обслуживание" : "Scenic3 - авто обслуживание";
+            if (oldName == "Авторасходы до 05/2010")
+            {
+                if (timestamp < new DateTime(2006, 10, 7))
+                    return "Golf - авто несортированные";
+                if (timestamp < new DateTime(2009, 4, 16))
+                    return "Passat - авто несортированные";
+                return "Scenic2 - авто несортированные";
+            }
+            return oldName;
         }
 
         public string Dump(BankDepositCalculatingRules rules)

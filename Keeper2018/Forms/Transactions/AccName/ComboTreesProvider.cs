@@ -56,7 +56,7 @@ namespace Keeper2018
 
             // Income Tags
             AccNamesForIncomeTags = new List<AccName>();
-            var list = new List<string>() { "ДеньгоДатели", "Банки", "Государство", "Все доходы" };
+            var list = new List<string>() { "Юрлица", "Физлица", "Банки", "Государство", "Все доходы" };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
@@ -75,7 +75,7 @@ namespace Keeper2018
 
             // Expense Tags
             AccNamesForExpenseTags = new List<AccName>();
-            var list = new List<string>() { "ДеньгоПолучатели", "Банки", "Государство", "Все расходы" };
+            var list = new List<string>() { "Юрлица", "Физлица", "Банки", "Государство", "Все расходы" };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_db.SeekAccount(element), null);
