@@ -79,6 +79,11 @@ namespace Keeper2018
             }
         }
 
+        public AccNameSelectorVm ForReceipt(string initialAccount)
+        {
+            return Build("", ButtonsForExpenseTags, _comboTreesProvider.AccNamesForExpenseTags, initialAccount, "");
+        }
+
         public AccNameSelectorVm ForFilter()
         {
 

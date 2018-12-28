@@ -25,6 +25,7 @@ namespace Keeper2018
 
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
+        private readonly ReceiptViewModel _receiptViewModel;
 
         private string _caption;
         private TransactionModel _tranInWork;
@@ -50,12 +51,13 @@ namespace Keeper2018
 
         public OperationTypeViewModel OperationTypeViewModel { get; } = new OperationTypeViewModel();
 
-        public OneTranViewModel(IWindowManager windowManager, KeeperDb db,
+        public OneTranViewModel(IWindowManager windowManager, KeeperDb db, ReceiptViewModel receiptViewModel,
             UniversalControlVm myIncomeControlVm, UniversalControlVm myExpenseControlVm,
             UniversalControlVm myTransferControlVm, UniversalControlVm myExchangeControlVm)
         {
             _windowManager = windowManager;
             _db = db;
+            _receiptViewModel = receiptViewModel;
 
             MyIncomeControlVm = myIncomeControlVm;
             MyExpenseControlVm = myExpenseControlVm;
@@ -171,13 +173,12 @@ namespace Keeper2018
             if (!LeaveOneExternalAccountInTags()) return;
 
             Left = Left - 180;
-            var receiptVm = new ReceiptViewModel();
-            receiptVm.Initialize(TranInWork.Amount, TranInWork.Currency, _db.SeekAccount("Прочие расходы"));
-            receiptVm.PlaceIt(Top, Left + Width, Height);
+            _receiptViewModel.Initialize(TranInWork.Amount, TranInWork.Currency, _db.SeekAccount("Прочие расходы"));
+            _receiptViewModel.PlaceIt(Top, Left + Width, Height);
 
-            if (_windowManager.ShowDialog(receiptVm) != true) return;
+            if (_windowManager.ShowDialog(_receiptViewModel) != true) return;
 
-            ReceiptList = receiptVm.ResultList;
+            ReceiptList = _receiptViewModel.ResultList;
             Save();
         }
     }

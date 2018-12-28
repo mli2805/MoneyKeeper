@@ -5,8 +5,10 @@ using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    class ReceiptViewModel : Screen
+    public class ReceiptViewModel : Screen
     {
+        private readonly KeeperDb _db;
+        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         public int Top { get; set; }
         private int _left;
         public int Left
@@ -62,18 +64,6 @@ namespace Keeper2018
         }
         public decimal PartialTotal => (from a in ResultList select a.Item1).Sum();
 
-        private AccountModel _partialArticle;
-        public AccountModel PartialArticle
-        {
-            get { return _partialArticle; }
-            set
-            {
-                if (Equals(value, _partialArticle)) return;
-                _partialArticle = value;
-                NotifyOfPropertyChange(() => PartialArticle);
-            }
-        }
-
         private string _partialComment;
         public string PartialComment
         {
@@ -98,9 +88,7 @@ namespace Keeper2018
             }
         }
 
-
         private bool _canAcceptReceipt;
-
         public bool CanAcceptReceipt
         {
             get { return _canAcceptReceipt; }
@@ -112,21 +100,24 @@ namespace Keeper2018
             }
         }
 
-        public List<Account> ExpenseArticles { get; set; }
         public List<CurrencyCode> CurrencyList { get; private set; }
 
-        public ReceiptViewModel()
+        public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
+
+        public ReceiptViewModel(KeeperDb db, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
+            _db = db;
+            _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             CurrencyList = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
-        //    ExpenseArticles = comboBoxProvider.GetExpenseArticles();
         }
 
         public void Initialize(decimal totalAmount, CurrencyCode currency, AccountModel initialArticle)
         {
+            MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForReceipt(initialArticle.Name);
+
             Currency = currency;
             TotalAmount = totalAmount;
             PartialAmount = totalAmount;
-            PartialArticle = initialArticle;
 
             ChangeAllProperties();
         }
@@ -164,7 +155,8 @@ namespace Keeper2018
 
         public void OnceMore()
         {
-            ResultList.Add(new Tuple<decimal, AccountModel, string>(PartialAmount, PartialArticle, PartialComment));
+            var partialArticle = _db.SeekAccount(MyAccNameSelectorVm.MyAccName.Name);
+            ResultList.Add(new Tuple<decimal, AccountModel, string>(PartialAmount, partialArticle, PartialComment));
             ChangeAllProperties();
         }
 

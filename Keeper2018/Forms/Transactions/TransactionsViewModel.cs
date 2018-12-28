@@ -35,7 +35,7 @@ namespace Keeper2018
             _tranEditActionsExecutor = tranEditActionsExecutor;
             _comboTreesProvider = comboTreesProvider;
             Top = 100;
-            Left = 700;
+            Left = 400;
         }
 
         public void Initialize()

@@ -43,6 +43,7 @@ namespace Keeper2018
             builder.RegisterType<AccNameSelectionControlInitializer>().SingleInstance();
             builder.RegisterType<BalanceDuringTransactionHinter>().SingleInstance();
             builder.RegisterType<UniversalControlVm>();
+            builder.RegisterType<ReceiptViewModel>().SingleInstance();
             builder.RegisterType<OneTranViewModel>().SingleInstance();
 
             builder.RegisterType<FilterModel>().SingleInstance();

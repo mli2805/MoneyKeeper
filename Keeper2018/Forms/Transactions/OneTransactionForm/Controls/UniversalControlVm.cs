@@ -224,9 +224,9 @@ namespace Keeper2018
             var dayTransactions = _db.TransactionModels.Where(t => t.Timestamp.Date == selectedDate.Date).ToList();
 
             int minute = 1;
-            if (dayTransactions.Any()) 
+            if (dayTransactions.Any())
                 minute = dayTransactions.Max(t => t.Timestamp.Minute) + 1;
-            
+
 
             TranInWork.Timestamp = selectedDate.Date.AddMinutes(minute);
         }
@@ -282,6 +282,7 @@ namespace Keeper2018
                 case "AmountInReturn":
                 case "Currency":
                 case "CurrencyInReturn":
+                case "Timestamp":
                     NotifyOfPropertyChange(nameof(AmountInUsd));
                     NotifyOfPropertyChange(nameof(AmountInReturnInUsd));
                     NotifyOfPropertyChange(nameof(MyAccountBalance));
