@@ -221,9 +221,14 @@ namespace Keeper2018
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var selectedDate = MyDatePickerVm.SelectedDate;
-            var minute = _db.TransactionModels.Where(t => t.Timestamp.Date == selectedDate).Max(t => t.Timestamp.Minute)+1;
+            var dayTransactions = _db.TransactionModels.Where(t => t.Timestamp.Date == selectedDate.Date).ToList();
 
-            TranInWork.Timestamp = selectedDate.AddMinutes(minute);
+            int minute = 1;
+            if (dayTransactions.Any()) 
+                minute = dayTransactions.Max(t => t.Timestamp.Minute) + 1;
+            
+
+            TranInWork.Timestamp = selectedDate.Date.AddMinutes(minute);
         }
 
         private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -24,18 +24,6 @@ namespace Keeper2018
         public TransModel Model { get; set; }
 
 
-        private TranWrappedForDatagrid _selectedRow;
-        public TranWrappedForDatagrid SelectedRow
-        {
-            get { return _selectedRow; }
-            set
-            {
-                if (Equals(value, _selectedRow)) return;
-                _selectedRow = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         public TranLocateActionsExecutor LocateActionsExecutorHandler { get; set; } = new TranLocateActionsExecutor();
 
         public TransactionsViewModel(TransModel model, FilterModel filterModel, FilterViewModel filterViewModel,

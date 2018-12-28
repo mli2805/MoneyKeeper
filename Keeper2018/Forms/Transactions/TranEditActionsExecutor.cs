@@ -98,8 +98,9 @@ namespace Keeper2018
         {
             var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
             _model.Rows.Add(tranWrappedForDatagrid);
-            _db.TransactionModels.Add(tran);
             _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
+            _db.TransactionModels.Add(tran);
+            _db.Bin.Transactions.Add(tran.Map());
         }
 
         private void AddOneTranAndReceipt(OneTranViewModel oneTranForm)

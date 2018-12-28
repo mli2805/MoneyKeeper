@@ -7,7 +7,7 @@ namespace Keeper2018
     public class Transaction
     {
         public DateTime Timestamp;
-        public int OrdinalInDate;
+       // public int OrdinalInDate;
         public int Receipt;
         public OperationType Operation;
         public int MyAccount;

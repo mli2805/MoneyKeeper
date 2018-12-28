@@ -52,7 +52,7 @@
                     Style="{StaticResource MyButtonStyle}"
                     Content="Close" IsCancel="True" />
         </DockPanel>
-        <DataGrid ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+        <DataGrid ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <i:Interaction.Behaviors>

@@ -32,7 +32,7 @@ namespace Keeper2018
                 else ordinal++;
                 tran.Timestamp = tran.Timestamp.Date.AddMinutes(ordinal);
                 date = tran.Timestamp.Date;
-                tran.OrdinalInDate = ordinal;
+          //      tran.OrdinalInDate = ordinal;
 
                 yield return tran;
             }

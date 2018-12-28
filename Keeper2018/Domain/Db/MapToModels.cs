@@ -75,7 +75,7 @@ namespace Keeper2018
             return new TransactionModel()
             {
                 Timestamp = transaction.Timestamp,
-                OrdinalInDate = transaction.OrdinalInDate,
+        //        OrdinalInDate = transaction.OrdinalInDate,
                 Operation = transaction.Operation,
                 MyAccount = acMoDict[transaction.MyAccount],
                 MySecondAccount = transaction.MySecondAccount == -1 ? null : acMoDict[transaction.MySecondAccount],
@@ -85,6 +85,23 @@ namespace Keeper2018
                 CurrencyInReturn = transaction.CurrencyInReturn,
                 Tags = transaction.Tags.Select(t => acMoDict[t]).ToList(),
                 Comment = transaction.Comment,
+            };
+        }
+
+        public static Transaction Map(this TransactionModel transactionModel)
+        {
+            return new Transaction()
+            {
+                Timestamp = transactionModel.Timestamp,
+                Operation = transactionModel.Operation,
+                MyAccount = transactionModel.MyAccount.Id,
+                MySecondAccount = transactionModel.MySecondAccount?.Id ?? -1,
+                Amount = transactionModel.Amount,
+                AmountInReturn = transactionModel.AmountInReturn,
+                Currency = transactionModel.Currency,
+                CurrencyInReturn = transactionModel.CurrencyInReturn,
+                Tags = transactionModel.Tags.Select(t => t.Id).ToList(),
+                Comment = transactionModel.Comment,
             };
         }
     }

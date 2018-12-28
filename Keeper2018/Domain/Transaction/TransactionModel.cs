@@ -18,7 +18,7 @@ namespace Keeper2018
             }
         }
 
-        public int OrdinalInDate { get; set; }
+        public int OrdinalInDate => Timestamp.Minute;
         public int Receipt { get; set; }
         public OperationType Operation { get; set; }
 
