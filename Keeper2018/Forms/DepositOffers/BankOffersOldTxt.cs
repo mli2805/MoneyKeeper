@@ -10,13 +10,13 @@ namespace Keeper2018
 {
     public class BankOffersOldTxt
     {
-        public static async Task<List<DepositOffer>> LoadFromOldTxtAsync(List<Account> accountsPlaneList)
+        public static async Task<List<DepositOffer>> LoadFromOldTxtAsync()
         {
             await Task.Delay(1);
-            return LoadFromOldTxt(accountsPlaneList).ToList();
+            return LoadFromOldTxt().ToList();
         }
 
-        private static IEnumerable<DepositOffer> LoadFromOldTxt(List<Account> accountsPlaneList)
+        private static IEnumerable<DepositOffer> LoadFromOldTxt()
         {
             var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("BankDepositOffers.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
@@ -24,7 +24,7 @@ namespace Keeper2018
             var rateLines = LoadRatesFromOldTxt().ToList();
             foreach (var line in content)
             {
-                var oneDepositOffer = DepositOfferFromString(line, accountsPlaneList, rateLines);
+                var oneDepositOffer = DepositOfferFromString(line, rateLines);
                 yield return (oneDepositOffer);
             }
         }
@@ -40,13 +40,14 @@ namespace Keeper2018
             }
         }
 
-        private static DepositOffer DepositOfferFromString(string s, List<Account> accountsPlaneList, List<DepositRateLine> rateLines)
+        private static DepositOffer DepositOfferFromString(string s, List<DepositRateLine> rateLines)
         {
             var substrings = s.Split(';');
             var offer = new DepositOffer()
             {
                 Id = Convert.ToInt32(substrings[0]),
-                Bank = accountsPlaneList.First(account => account.Name == substrings[1].Trim()).Id,
+               // Bank = accountsPlaneList.First(account => account.Name == substrings[1].Trim()).Id,
+                Bank = int.Parse(substrings[1].Trim()),
                 Title = substrings[2].Trim(),
                 MainCurrency = (CurrencyCode) Enum.Parse(typeof (CurrencyCode), substrings[3].Trim()),
                 Comment = substrings[6].Trim()

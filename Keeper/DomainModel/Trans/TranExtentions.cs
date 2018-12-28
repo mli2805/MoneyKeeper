@@ -94,11 +94,14 @@ namespace Keeper.DomainModel.Trans
                 : tran.CurrencyInReturn.GetValueOrDefault();
         }
 
-        public static string DumpOfSecondAccount(this TranWithTags tran)
+        public static int DumpOfSecondAccount(this TranWithTags tran)
         {
-            return tran.Operation == OperationType.Перенос || tran.Operation == OperationType.Обмен
-                ? tran.MySecondAccount.Name
-                : "";
+//            return tran.Operation == OperationType.Перенос || tran.Operation == OperationType.Обмен
+//                ? tran.MySecondAccount.Name
+//                : "";
+          return tran.Operation == OperationType.Перенос || tran.Operation == OperationType.Обмен
+                ? tran.MySecondAccount.Id
+                : -1;
         }
     }
 }

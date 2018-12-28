@@ -13,9 +13,9 @@ namespace Keeper2018
                 Rates = await NbRbRatesOldTxt.LoadFromOldTxtAsync(),
                 AccountPlaneList = AccountsOldTxt.LoadFromOldTxt().ToList()
             };
-            keeperBin.TagAssociations = await TagAssociationsOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
-            keeperBin.DepositOffers = await BankOffersOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
-            keeperBin.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync(keeperBin.AccountPlaneList);
+            keeperBin.TagAssociations = await TagAssociationsOldTxt.LoadFromOldTxtAsync();
+            keeperBin.DepositOffers = await BankOffersOldTxt.LoadFromOldTxtAsync();
+            keeperBin.Transactions = await TransactionsOldTxt.LoadFromOldTxtAsync();
             return keeperBin;
         }
 

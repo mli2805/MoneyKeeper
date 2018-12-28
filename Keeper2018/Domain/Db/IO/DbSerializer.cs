@@ -41,6 +41,7 @@ namespace Keeper2018
         public static async Task<KeeperBin> Deserialize()
         {
             var path = DbUtils.GetDbFullPath();
+            if (!File.Exists(path)) return null;
             await Task.Delay(1);
             try
             {

@@ -19,7 +19,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var substrings = s.Split(';');
             return new BankDepositOffer(Convert.ToInt32(substrings[0]))
             {
-                BankAccount = accountsPlaneList.First(account => account.Name == substrings[1].Trim()),
+//                BankAccount = accountsPlaneList.First(account => account.Name == substrings[1].Trim()),
+                BankAccount = accountsPlaneList.First(account => account.Id == int.Parse(substrings[1].Trim())),
                 DepositTitle = substrings[2].Trim(),
                 Currency = (CurrencyCodes) Enum.Parse(typeof (CurrencyCodes), substrings[3]),
                 CalculatingRules = DepositOfferRulesFromString(substrings[4] + " ; " + substrings[5]),
@@ -33,8 +34,12 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var substrings = s.Split(';');
             tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-            tran.MyAccount = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
-            tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[3].Trim()) : null;
+
+//            tran.MyAccount = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
+//            tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[3].Trim()) : null;
+            tran.MyAccount = accountsPlaneList.First(account => account.Id == int.Parse(substrings[2].Trim()));
+            tran.MySecondAccount = substrings[3].Trim() != "-1" ? accountsPlaneList.First(account => account.Id == int.Parse(substrings[3].Trim())) : null;
+
             tran.Amount = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
             tran.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
             tran.AmountInReturn = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
@@ -53,7 +58,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var substrings = str.Split('|');
             foreach (var substring in substrings)
             {
-                tags.Add(accountsPlaneList.First(account => account.Name == substring.Trim()));
+//                tags.Add(accountsPlaneList.First(account => account.Name == substring.Trim()));
+                tags.Add(accountsPlaneList.First(account => account.Id == int.Parse(substring.Trim())));
             }
 
             return tags;
@@ -83,8 +89,8 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         {
             var association = new ArticleAssociation();
             var substrings = s.Split(';');
-            association.ExternalAccount = accountsPlaneList.First(account => account.Name == substrings[0].Trim());
-            association.AssociatedArticle = accountsPlaneList.First(account => account.Name == substrings[1].Trim());
+            association.ExternalAccount = accountsPlaneList.First(account => account.Id == int.Parse(substrings[0].Trim()));
+            association.AssociatedArticle = accountsPlaneList.First(account => account.Id == int.Parse(substrings[1].Trim()));
             association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[2]);
             association.IsTwoWay = bool.Parse(substrings[3]);
             return association;
