@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -10,7 +11,9 @@ namespace Keeper2018
         private readonly Period _period;
 
         private readonly BalanceWithTurnoverOfBranch _balanceWithTurnovers = new BalanceWithTurnoverOfBranch();
-        public string Total => "";
+        private readonly TrafficPair _trafficInUsd = new TrafficPair();
+        public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##;- #,0.##} usd ( знак относительно меня)";
+     //   public string Total => "";
 
         public TrafficOfTagBranchCalculator(KeeperDb db, AccountModel tag, Period period)
         {
@@ -34,13 +37,18 @@ namespace Keeper2018
 
         private void RegisterTran(TransactionModel tran, AccountModel myTag)
         {
+                decimal inUsd;
             switch (tran.Operation)
             {
                 case OperationType.Доход:
                     _balanceWithTurnovers.Add(myTag, tran.Currency, tran.Amount);
+                    inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                    _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
                     break;
                 case OperationType.Расход:
                     _balanceWithTurnovers.Sub(myTag, tran.Currency, tran.Amount);
+                    inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                    _trafficInUsd.Minus = _trafficInUsd.Minus - inUsd;
                     break;
                 case OperationType.Перенос:
                     _balanceWithTurnovers.Add(myTag, tran.Currency, tran.Amount);
@@ -50,6 +58,11 @@ namespace Keeper2018
                     _balanceWithTurnovers.Add(myTag, tran.Currency, tran.Amount);
                     // ReSharper disable once PossibleInvalidOperationException
                     _balanceWithTurnovers.Sub(myTag, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
+
+                        inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                        _trafficInUsd.Minus = _trafficInUsd.Minus - inUsd;
+                        inUsd = _db.AmountInUsd(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn);
+                        _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
                     break;
             }
         }

@@ -13,7 +13,7 @@ namespace Keeper2018
         private readonly List<string> _shortTrans = new List<string>();
 
         private readonly TrafficPair _trafficInUsd = new TrafficPair();
-        public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##} usd";
+        public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##;- #,0.##} usd ( знак относительно меня)";
 
         public TrafficOfTagCalculator(KeeperDb db, AccountModel accountModel, Period period)
         {
@@ -42,19 +42,23 @@ namespace Keeper2018
                         _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                         break;
                     case OperationType.Перенос:
-                        inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
-                        _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
-                        _trafficInUsd.Minus = _trafficInUsd.Minus + inUsd;
                         _balanceWithTurnover.Add(tran.Currency, tran.Amount);
                         _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                         break;
                     case OperationType.Обмен:
+                        _shortTrans.Add(_db.ShortLineOneAccountExchange(tran));
+                        // я меняю в банке    15000 дол     на    31000 бел
+                        //                 Amount/Currency      AmountInReturn/CurrencyInReturn
+                        // для меня 15000 дол идут в минус 31000 бел идет в плюс 
+                        // итоговый знак должен показывать прибыльность операции для меня а не для банка (tag)
                         inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                        _trafficInUsd.Minus = _trafficInUsd.Minus - inUsd;
+                        _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
+
+                        inUsd = _db.AmountInUsd(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn);
                         _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
-                        _trafficInUsd.Minus = _trafficInUsd.Minus + inUsd;
-                        _balanceWithTurnover.Add(tran.Currency, tran.Amount);
                         // ReSharper disable once PossibleInvalidOperationException
-                        _balanceWithTurnover.Sub((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
+                        _balanceWithTurnover.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
                         break;
                 }
             }
