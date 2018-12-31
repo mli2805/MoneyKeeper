@@ -53,7 +53,9 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             for (int i = 0; i < tags.Count; i++)
             {
 //                result = result + TransformTagName(tags[i].Name, timestamp) + " | ";
-                result = result + tags[i].Id + " | ";
+
+                var tagId = tags[i].Id == 286 ? 241 : tags[i].Id; // АСБ Кредит ЖСК
+                result = result + tagId + " | ";
             }
             result = result.Substring(0, result.Length - 3);
             return result;

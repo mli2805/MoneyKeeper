@@ -76,6 +76,7 @@ namespace Keeper2018
             {
                 Timestamp = transaction.Timestamp,
         //        OrdinalInDate = transaction.OrdinalInDate,
+                Receipt = transaction.Receipt,
                 Operation = transaction.Operation,
                 MyAccount = acMoDict[transaction.MyAccount],
                 MySecondAccount = transaction.MySecondAccount == -1 ? null : acMoDict[transaction.MySecondAccount],
@@ -93,6 +94,7 @@ namespace Keeper2018
             return new Transaction()
             {
                 Timestamp = transactionModel.Timestamp,
+                Receipt = transactionModel.Receipt,
                 Operation = transactionModel.Operation,
                 MyAccount = transactionModel.MyAccount.Id,
                 MySecondAccount = transactionModel.MySecondAccount?.Id ?? -1,

@@ -105,9 +105,13 @@ namespace Keeper2018
 
         private void AddOneTranAndReceipt(OneTranViewModel oneTranForm)
         {
+            var oneTran = oneTranForm.GetTran();
+            var receiptId = _db.TransactionModels.Where(t => t.Timestamp.Date == oneTran.Timestamp.Date)
+                .Max(r => r.Receipt) + 1;
             foreach (var tuple in oneTranForm.ReceiptList)
             {
-                var tran = oneTranForm.GetTran().Clone();
+                var tran = oneTran.Clone();
+                tran.Receipt = receiptId;
                 tran.Amount = tuple.Item1;
                 tran.Tags.Add(tuple.Item2);
                 tran.Comment = tuple.Item3;

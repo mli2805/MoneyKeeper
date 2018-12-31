@@ -49,7 +49,7 @@ namespace Keeper2018
             }
         }
 
-        public List<Tuple<decimal, AccountModel, string>> ResultList { get; set; } = new List<Tuple<decimal, AccountModel, string>>();
+        public List<Tuple<decimal, AccountModel, string>> ResultList { get; set; }
 
         private decimal _partialAmount;
         public decimal PartialAmount
@@ -113,6 +113,7 @@ namespace Keeper2018
 
         public void Initialize(decimal totalAmount, CurrencyCode currency, AccountModel initialArticle)
         {
+            ResultList = new List<Tuple<decimal, AccountModel, string>>();
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForReceipt(initialArticle.Name);
 
             Currency = currency;

@@ -75,7 +75,7 @@ namespace Keeper2018
                 var amStr = _db.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
                 if (tran.MyAccount.IsDeposit)
                 {
-                    depoList.Add($"{amStr}  {tran.Comment} {tran.Timestamp:dd MMM}");
+                    depoList.Add($"{amStr} {tran.MyAccount.Deposit.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
                     depoTotal = depoTotal + amountInUsd;
                 }
                 else

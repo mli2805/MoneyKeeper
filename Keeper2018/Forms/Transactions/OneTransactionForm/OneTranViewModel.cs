@@ -77,6 +77,7 @@ namespace Keeper2018
 
         public void Init(TransactionModel tran, bool isAddMode)
         {
+            ReceiptList = null;
             IsAddMode = isAddMode;
             _caption = isAddMode ? "Добавить" : "Изменить";
             OperationTypeViewModel.SelectedOperationType = tran.Operation;
