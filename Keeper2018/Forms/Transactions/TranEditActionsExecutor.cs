@@ -23,8 +23,8 @@ namespace Keeper2018
             switch (action)
             {
                 case TranAction.Edit: return Edit();
-                case TranAction.MoveUp: return MoveUp(_model.SelectedTranIndex);
-                case TranAction.MoveDown: return MoveDown(_model.SelectedTranIndex);
+                case TranAction.MoveUp: return MoveTranModelUp();
+                case TranAction.MoveDown: return MoveTranModelDown();
                 case TranAction.AddAfterSelected: return AddAfterSelected();
                 case TranAction.Delete: Delete(); return true;
                 default:
@@ -44,36 +44,41 @@ namespace Keeper2018
             return true;
         }
 
-        private bool MoveUp(int selectedTranIndex)
+        private bool MoveTranModelUp()
         {
-            if (selectedTranIndex < 1) return false;
-            MoveTran(selectedTranIndex, -1);
-            return true;
-        }
+            var selectedTransactionModel = _model.SelectedTranWrappedForDatagrid.Tran;
+            var nearbyTran = _model.Rows.LastOrDefault(t => t.Tran.Timestamp < selectedTransactionModel.Timestamp && t.Tran.Receipt == 0);
+            if (nearbyTran == null) return true;
+            var temp = nearbyTran.Tran.Timestamp;
 
-        private bool MoveDown(int selectedTranIndex)
-        {
-            if (selectedTranIndex >= _model.Rows.Count - 1) return false;
-            MoveTran(selectedTranIndex, 1);
-            return true;
-        }
+            var tran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(temp));
+            var selectedTran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(selectedTransactionModel.Timestamp));
 
-        // destination  -1 - up  ;  1 - down
-        private void MoveTran(int selectedTranIndex, int destination)
-        {
-            var nearbyTran = _model.Rows[selectedTranIndex + destination];
-            if (nearbyTran.Tran.Timestamp.Date == _model.SelectedTranWrappedForDatagrid.Tran.Timestamp.Date)
-            {// exchange timestamps
-                var temp = nearbyTran.Tran.Timestamp;
-                nearbyTran.Tran.Timestamp = _model.SelectedTranWrappedForDatagrid.Tran.Timestamp;
-                _model.SelectedTranWrappedForDatagrid.Tran.Timestamp = temp;
-            }
-            else
-            {// insert into another day
-                _model.SelectedTranWrappedForDatagrid.Tran.Timestamp = nearbyTran.Tran.Timestamp;
-                nearbyTran.Tran.Timestamp = nearbyTran.Tran.Timestamp.AddMinutes(-destination);
-            }
+            nearbyTran.Tran.Timestamp = selectedTransactionModel.Timestamp;
+            tran.Timestamp = selectedTransactionModel.Timestamp;
+
+            selectedTransactionModel.Timestamp = temp;
+            selectedTran.Timestamp = temp;
             _model.SortedRows.Refresh();
+            return true;
+        }
+        private bool MoveTranModelDown()
+        {
+            var selectedTransactionModel = _model.SelectedTranWrappedForDatagrid.Tran;
+            var nearbyTran = _model.Rows.FirstOrDefault(t => t.Tran.Timestamp > selectedTransactionModel.Timestamp && t.Tran.Receipt == 0);
+            if (nearbyTran == null) return true;
+            var temp = nearbyTran.Tran.Timestamp;
+
+            var tran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(temp));
+            var selectedTran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(selectedTransactionModel.Timestamp));
+
+            nearbyTran.Tran.Timestamp = selectedTransactionModel.Timestamp;
+            tran.Timestamp = selectedTransactionModel.Timestamp;
+
+            selectedTransactionModel.Timestamp = temp;
+            selectedTran.Timestamp = temp;
+            _model.SortedRows.Refresh();
+            return true;
         }
 
         private bool AddAfterSelected()
@@ -140,6 +145,8 @@ namespace Keeper2018
         private void Delete()
         {
             _db.TransactionModels.Remove(_model.SelectedTranWrappedForDatagrid.Tran);
+            _db.Bin.Transactions.RemoveAll(
+                t => t.Timestamp.Equals(_model.SelectedTranWrappedForDatagrid.Tran.Timestamp));
 
             int n = _model.Rows.IndexOf(_model.SelectedTranWrappedForDatagrid);
             _model.Rows.Remove(_model.SelectedTranWrappedForDatagrid);

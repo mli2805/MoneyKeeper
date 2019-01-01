@@ -32,7 +32,6 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
-        public int SelectedTranIndex { get; set; }
         public DateTime AskedDate { get; set; } = DateTime.Now;
         public bool IsCollectionChanged { get; set; }
 
@@ -63,7 +62,6 @@ namespace Keeper2018
             SelectedTranWrappedForDatagrid.IsSelected = true;
 
             IsCollectionChanged = false;
-
         }
 
         private bool Filter(object o)
