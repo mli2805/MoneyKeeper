@@ -105,7 +105,6 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header=" Timestamp" Width="100"
                                     Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy HH:mm'}" />
-                <DataGridTextColumn Header="N" Width="10" Binding="{Binding Tran.OrdinalInDate}" />
                 <DataGridTextColumn Header="R" Width="10" Binding="{Binding Tran.Receipt}" />
                 <DataGridTextColumn Header="  Account" Width="250*" Binding="{Binding AccountForDatagrid}" />
                 <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}" />

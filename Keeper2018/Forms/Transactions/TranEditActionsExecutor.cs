@@ -96,6 +96,15 @@ namespace Keeper2018
 
         private void AddOneTran(TransactionModel tran)
         {
+            var transAfter = _db.TransactionModels
+                .Where(t => t.Timestamp.Date == tran.Timestamp.Date && t.Timestamp >= tran.Timestamp).ToList();
+            foreach (var transactionModel in transAfter)
+            {
+                transactionModel.Timestamp = transactionModel.Timestamp.AddMinutes(1);
+                var wrappedTran = _model.Rows.First(t => t.Tran.Equals(transactionModel));
+                wrappedTran.Tran.Timestamp = transactionModel.Timestamp;
+            }
+
             var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
             _model.Rows.Add(tranWrappedForDatagrid);
             _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
