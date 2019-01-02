@@ -6,7 +6,9 @@ namespace Keeper2018
     public class TransactionsViewModel : Screen
     {
         private readonly FilterModel _filterModel;
-        private readonly TranEditActionsExecutor _tranEditActionsExecutor;
+        private readonly TranEditExecutor _tranEditExecutor;
+        private readonly TranMoveExecutor _tranMoveExecutor;
+        private readonly TranSelectExecutor _tranSelectExecutor;
         private readonly ComboTreesProvider _comboTreesProvider;
         private int _left;
         public int Left
@@ -24,15 +26,16 @@ namespace Keeper2018
         public TransModel Model { get; set; }
 
 
-        public TranLocateActionsExecutor LocateActionsExecutorHandler { get; set; } = new TranLocateActionsExecutor();
-
         public TransactionsViewModel(TransModel model, FilterModel filterModel, FilterViewModel filterViewModel,
-            TranEditActionsExecutor tranEditActionsExecutor, ComboTreesProvider comboTreesProvider)
+            TranEditExecutor tranEditExecutor, TranMoveExecutor tranMoveExecutor, TranSelectExecutor tranSelectExecutor,
+            ComboTreesProvider comboTreesProvider)
         {
             Model = model;
             _filterModel = filterModel;
             _filterViewModel = filterViewModel;
-            _tranEditActionsExecutor = tranEditActionsExecutor;
+            _tranEditExecutor = tranEditExecutor;
+            _tranMoveExecutor = tranMoveExecutor;
+            _tranSelectExecutor = tranSelectExecutor;
             _comboTreesProvider = comboTreesProvider;
             Top = 100;
             Left = 400;
@@ -67,7 +70,7 @@ namespace Keeper2018
         {
             if (e.PropertyName == "IsActive" && _filterViewModel.IsActive == false)
             {
-//                Model.FilterModel = null;
+                //                Model.FilterModel = null;
 
                 Model.SortedRows.MoveCurrentToLast();
                 Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
@@ -76,15 +79,19 @@ namespace Keeper2018
 
         public void ActionsMethod(TranAction action)
         {
-            if ((int)action < 11)
+            switch (action)
             {
-                if (_tranEditActionsExecutor.Do(action, Model))
-                    Model.IsCollectionChanged = true;
-            }
-            else
-            {
-                LocateActionsExecutorHandler.Do(action, Model);
+                case TranAction.Edit: _tranEditExecutor.EditSelected(); return;
+                case TranAction.MoveUp: _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Up); return;
+                case TranAction.MoveDown: _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Down); return;
+                case TranAction.AddAfterSelected: _tranEditExecutor.AddAfterSelected(); return;
+                case TranAction.Delete: _tranEditExecutor.DeleteSelected(); return;
+
+                case TranAction.GoToDate: _tranSelectExecutor.SelectFirstOfDate(); return;
+                case TranAction.GoToEnd: _tranSelectExecutor.SelectLast(); return;
+                case TranAction.Filter: return;
             }
         }
     }
+
 }

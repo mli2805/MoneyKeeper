@@ -289,10 +289,11 @@
       <DependentUpon>TagPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\TagPickingControl\TagPickerVm.cs" />
-    <Compile Include="Forms\Transactions\TranAction.cs" />
+    <Compile Include="Forms\Transactions\Actions\TranAction.cs" />
     <Compile Include="Forms\Transactions\Filter\TranFilter.cs" />
-    <Compile Include="Forms\Transactions\TranEditActionsExecutor.cs" />
-    <Compile Include="Forms\Transactions\TranLocateActionsExecutor.cs" />
+    <Compile Include="Forms\Transactions\Actions\TranEditExecutor.cs" />
+    <Compile Include="Forms\Transactions\Actions\TranMoveExecutor.cs" />
+    <Compile Include="Forms\Transactions\Actions\TranSelectExecutor.cs" />
     <Compile Include="Forms\Transactions\TransModel.cs" />
     <Compile Include="Utils\DateTimeExtansions.cs" />
     <Compile Include="Utils\Period.cs" />

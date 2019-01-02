@@ -2,30 +2,22 @@
 
 namespace Keeper2018
 {
-    public class TranLocateActionsExecutor
+    public class TranSelectExecutor
     {
-        private TransModel _model;
+        private readonly TransModel _model;
 
-        public void Do(TranAction action, TransModel model)
+        public TranSelectExecutor(TransModel model)
         {
             _model = model;
-            switch (action)
-            {
-                case TranAction.GoToDate: GoToDate(); return ;
-                case TranAction.GoToEnd: GoToEnd(); return ;
-                case TranAction.Filter:
-                    return ;
-                default:
-                    return ;
-            }
         }
-        private void GoToDate()
+
+        public void SelectFirstOfDate()
         {
             var askedTran = _model.Rows.FirstOrDefault(t => t.Tran.Timestamp >= _model.AskedDate);
             if (askedTran != null) _model.SelectedTranWrappedForDatagrid = askedTran;
         }
 
-        private void GoToEnd()
+        public void SelectLast()
         {
 //            _model.SelectedTranWrappedForDatagrid = _model.Rows.Last();
             _model.SortedRows.MoveCurrentToLast();

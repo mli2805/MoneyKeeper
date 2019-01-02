@@ -49,7 +49,9 @@ namespace Keeper2018
             builder.RegisterType<FilterModel>().SingleInstance();
             builder.RegisterType<FilterViewModel>().SingleInstance();
 
-            builder.RegisterType<TranEditActionsExecutor>().SingleInstance();
+            builder.RegisterType<TranEditExecutor>().SingleInstance();
+            builder.RegisterType<TranMoveExecutor>().SingleInstance();
+            builder.RegisterType<TranSelectExecutor>().SingleInstance();
             builder.RegisterType<TransModel>().SingleInstance();
             builder.RegisterType<TransactionsViewModel>().SingleInstance();
 

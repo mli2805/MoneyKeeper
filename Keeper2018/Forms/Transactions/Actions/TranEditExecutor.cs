@@ -3,91 +3,46 @@ using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class TranEditActionsExecutor
+    public class TranEditExecutor
     {
+        private readonly TransModel _model;
+
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
         private readonly OneTranViewModel _oneTranViewModel;
 
-        public TranEditActionsExecutor(IWindowManager windowManager, KeeperDb db, OneTranViewModel oneTranViewModel)
+        public TranEditExecutor(TransModel model, IWindowManager windowManager, KeeperDb db, OneTranViewModel oneTranViewModel)
         {
+            _model = model;
+
             _windowManager = windowManager;
             _db = db;
             _oneTranViewModel = oneTranViewModel;
         }
 
-        private TransModel _model;
-        public bool Do(TranAction action, TransModel model)
-        {
-            _model = model;
-            switch (action)
-            {
-                case TranAction.Edit: return Edit();
-                case TranAction.MoveUp: return MoveTranModelUp();
-                case TranAction.MoveDown: return MoveTranModelDown();
-                case TranAction.AddAfterSelected: return AddAfterSelected();
-                case TranAction.Delete: Delete(); return true;
-                default:
-                    return false;
-            }
-        }
-
-        private bool Edit()
+   
+        public void EditSelected()
         {
             _oneTranViewModel.Init(_model.SelectedTranWrappedForDatagrid.Tran, false);
             bool? result = _windowManager.ShowDialog(_oneTranViewModel);
 
-            if (!result.HasValue || !result.Value) return false;
+            if (!result.HasValue || !result.Value) return;
 
             _oneTranViewModel.GetTran().CopyInto(_model.SelectedTranWrappedForDatagrid.Tran);
+       //     var tranInDb = _db.Bin.Transactions.First(t=>t.)
+
             _model.SortedRows.Refresh();
-            return true;
+            _model.IsCollectionChanged = true;
         }
 
-        private bool MoveTranModelUp()
-        {
-            var selectedTransactionModel = _model.SelectedTranWrappedForDatagrid.Tran;
-            var nearbyTran = _model.Rows.LastOrDefault(t => t.Tran.Timestamp < selectedTransactionModel.Timestamp && t.Tran.Receipt == 0);
-            if (nearbyTran == null) return true;
-            var temp = nearbyTran.Tran.Timestamp;
-
-            var tran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(temp));
-            var selectedTran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(selectedTransactionModel.Timestamp));
-
-            nearbyTran.Tran.Timestamp = selectedTransactionModel.Timestamp;
-            tran.Timestamp = selectedTransactionModel.Timestamp;
-
-            selectedTransactionModel.Timestamp = temp;
-            selectedTran.Timestamp = temp;
-            _model.SortedRows.Refresh();
-            return true;
-        }
-        private bool MoveTranModelDown()
-        {
-            var selectedTransactionModel = _model.SelectedTranWrappedForDatagrid.Tran;
-            var nearbyTran = _model.Rows.FirstOrDefault(t => t.Tran.Timestamp > selectedTransactionModel.Timestamp && t.Tran.Receipt == 0);
-            if (nearbyTran == null) return true;
-            var temp = nearbyTran.Tran.Timestamp;
-
-            var tran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(temp));
-            var selectedTran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(selectedTransactionModel.Timestamp));
-
-            nearbyTran.Tran.Timestamp = selectedTransactionModel.Timestamp;
-            tran.Timestamp = selectedTransactionModel.Timestamp;
-
-            selectedTransactionModel.Timestamp = temp;
-            selectedTran.Timestamp = temp;
-            _model.SortedRows.Refresh();
-            return true;
-        }
-
-        private bool AddAfterSelected()
+     
+        public void AddAfterSelected()
         {
             var tranForAdding = PrepareTranForAdding();
             _oneTranViewModel.Init(tranForAdding, true);
             bool? result = _windowManager.ShowDialog(_oneTranViewModel);
 
-            if (!result.HasValue || !result.Value) return false;
+            if (!result.HasValue || !result.Value) return;
 
             if (_oneTranViewModel.ReceiptList != null)
                 AddOneTranAndReceipt(_oneTranViewModel);
@@ -96,7 +51,7 @@ namespace Keeper2018
 
             if (_oneTranViewModel.IsOneMore) AddAfterSelected();
 
-            return true;
+            _model.IsCollectionChanged = true;
         }
 
         private void AddOneTran(TransactionModel tran)
@@ -142,7 +97,7 @@ namespace Keeper2018
             return tranForAdding;
         }
 
-        private void Delete()
+        public void DeleteSelected()
         {
             _db.TransactionModels.Remove(_model.SelectedTranWrappedForDatagrid.Tran);
             _db.Bin.Transactions.RemoveAll(
