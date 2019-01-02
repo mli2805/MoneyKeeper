@@ -21,45 +21,53 @@ namespace Keeper2018
 
         public void Evaluate()
         {
-            foreach (var tran in _db.TransactionModels.Where(t => _period.Includes(t.Timestamp)))
+            foreach (var tran in _db.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
                 RegisterTran(tran);
             TotalAmount = _db.BalanceInUsd(_period.FinishMoment, _balanceWithTurnovers.Balance());
         }
 
-        private void RegisterTran(TransactionModel tran)
+        private void RegisterTran(Transaction tran)
         {
             switch (tran.Operation)
             {
                 case OperationType.Доход:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var tranAccModel = _db.AcMoDict[tran.MyAccount];
+                        var myAcc = tranAccModel.IsC(_accountModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Add(myAcc, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Расход:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var tranAccModel = _db.AcMoDict[tran.MyAccount];
+                        var myAcc = tranAccModel.IsC(_accountModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Перенос:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var tranAccModel = _db.AcMoDict[tran.MyAccount];
+                        var myAcc = tranAccModel.IsC(_accountModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
-                        var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
+
+                        var tranSecondAccModel = _db.AcMoDict[tran.MySecondAccount];
+                        var myAcc2 = tranSecondAccModel.IsC(_accountModel);
                         if (myAcc2 != null)
                             _balanceWithTurnovers.Add(myAcc2, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Обмен:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var tranAccModel = _db.AcMoDict[tran.MyAccount];
+                        var myAcc = tranAccModel.IsC(_accountModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
-                        var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
+
+                        var tranSecondAccModel = _db.AcMoDict[tran.MySecondAccount];
+                        var myAcc2 = tranSecondAccModel.IsC(_accountModel);
                         if (myAcc2 != null)
                             // ReSharper disable once PossibleInvalidOperationException
                             _balanceWithTurnovers.Add(myAcc2, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);

@@ -2,7 +2,7 @@
 {
     public static class ShortLineFactory
     {
-        public static string ShortLine(this KeeperDb db, TransactionModel tran, bool isInReturn, int sign)
+        public static string ShortLine(this KeeperDb db, Transaction tran, bool isInReturn, int sign)
         {
             var amount = isInReturn ? tran.AmountInReturn : tran.Amount;
             var currency = isInReturn ? tran.CurrencyInReturn : tran.Currency;
@@ -10,7 +10,7 @@
             return $"  {shortLine}   {tran.Comment}";
         }
 
-        public static string ShortLine(this KeeperDb db, TransactionModel tran, bool isInReturn, int sign, out decimal inUsd)
+        public static string ShortLine(this KeeperDb db, Transaction tran, bool isInReturn, int sign, out decimal inUsd)
         {
             var amount = isInReturn ? tran.AmountInReturn : tran.Amount;
             var currency = isInReturn ? tran.CurrencyInReturn : tran.Currency;
@@ -18,7 +18,7 @@
             return $"  {shortLine}   {tran.Comment}";
         }
 
-        public static string ShortLineOneAccountExchange(this KeeperDb db, TransactionModel tran)
+        public static string ShortLineOneAccountExchange(this KeeperDb db, Transaction tran)
         {
             var minus = $"{db.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount * -1)}";
             var plus = $"{db.AmountInUsdString(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn)}";

@@ -10,10 +10,17 @@ namespace Keeper2018
 {
     public static class TransactionsOldTxt
     {
-        public static async Task<List<Transaction>> LoadFromOldTxtAsync()
+        public static async Task<Dictionary<int, Transaction>> LoadFromOldTxtAsync()
         {
             await Task.Delay(1);
-            return LoadFromOldTxt().ToList();
+            var result = new Dictionary<int, Transaction>();
+            var ordinal = 1;
+            foreach (var transaction in LoadFromOldTxt())
+            {
+                result.Add(ordinal, transaction);
+                ordinal++;
+            }
+            return result;
         }
 
         private static IEnumerable<Transaction> LoadFromOldTxt()
@@ -21,18 +28,17 @@ namespace Keeper2018
             var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("TransWithTags.txt"),
                 Encoding.GetEncoding("Windows-1251"));
 
-            var ordinal = 1;
+            var minutes = 1;
             var date = new DateTime();
             foreach (var line in content)
             {
                 var tran = Parse(line);
 
                 if (date.Date != tran.Timestamp.Date)
-                    ordinal = 1;
-                else ordinal++;
-                tran.Timestamp = tran.Timestamp.Date.AddMinutes(ordinal);
+                    minutes = 1;
+                else minutes++;
+                tran.Timestamp = tran.Timestamp.Date.AddMinutes(minutes);
                 date = tran.Timestamp.Date;
-          //      tran.OrdinalInDate = ordinal;
 
                 yield return tran;
             }
@@ -45,8 +51,6 @@ namespace Keeper2018
             tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
 
-//            tran.MyAccount = accountsPlaneList.First(account => account.Header == substrings[2].Trim()).Id;
-//            tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Header == substrings[3].Trim()).Id : -1;
             tran.MyAccount = int.Parse(substrings[2].Trim());
             tran.MySecondAccount = int.Parse(substrings[3].Trim());
 

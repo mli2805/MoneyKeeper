@@ -67,14 +67,6 @@ namespace Keeper2018
         #region // цвет шрифта и фона для отображения транзакции
         public Brush DayBackgroundColor
         {
-            //            get
-            //            {
-            //                var daysFrom = Tran.Timestamp.Date - new DateTime(1972, 5, 28);
-            //                if (daysFrom.Days % 4 == 0) return Brushes.Cornsilk;
-            //                if (daysFrom.Days % 4 == 1) return new SolidColorBrush(Color.FromRgb(240, 255, 240));
-            //                if (daysFrom.Days % 4 == 2) return Brushes.GhostWhite;
-            //                return Brushes.Azure;
-            //            }
             get
             {
                 var daysFrom = Tran.Timestamp.Date - new DateTime(1972, 5, 28);

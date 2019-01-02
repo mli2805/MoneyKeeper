@@ -38,6 +38,12 @@ namespace Keeper2018
             return Owner != null && Owner.Is(accountModel);
         }
 
+        public bool Is(int accountId)
+        {
+            if (accountId == Id) return true;
+            return Owner != null && Owner.Is(accountId);
+        }
+
         public bool Is(string header)
         {
             if (Header.Equals(header)) return true;

@@ -22,7 +22,6 @@ namespace Keeper2018
         }
 
 
-        public ObservableCollection<TransactionModel> TransactionModels { get; set; }
         public ObservableCollection<TagAssociationModel> TagAssociationModels { get; set; }
     }
 }

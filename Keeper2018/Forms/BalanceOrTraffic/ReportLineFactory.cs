@@ -2,7 +2,7 @@
 {
     public static class ReportLineFactory
     {
-        public static ReportLine ReportLine(this KeeperDb db, Balance before, TransactionModel tran, bool isInReturn, int sign, DepositOperationType type)
+        public static ReportLine ReportLine(this KeeperDb db, Balance before, Transaction tran, bool isInReturn, int sign, DepositOperationType type)
         {
             var line = new ReportLine();
             line.Date = tran.Timestamp.Date;
@@ -28,7 +28,7 @@
             return line;
         }
 
-        public static ReportLine ReportLineOneAccountExchange(this KeeperDb db, Balance before, TransactionModel tran)
+        public static ReportLine ReportLineOneAccountExchange(this KeeperDb db, Balance before, Transaction tran)
         {
             var line = new ReportLine();
             line.Date = tran.Timestamp.Date;

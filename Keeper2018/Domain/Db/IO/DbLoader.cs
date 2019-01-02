@@ -12,7 +12,7 @@ namespace Keeper2018
         private readonly DbLoadingViewModel _dbLoadingViewModel;
         private readonly CurrencyRatesViewModel _currencyRatesViewModel;
 
-        public DbLoader(KeeperDb keeperDb, IWindowManager windowManager, 
+        public DbLoader(KeeperDb keeperDb, IWindowManager windowManager,
             DbLoadingViewModel dbLoadingViewModel, CurrencyRatesViewModel currencyRatesViewModel)
         {
             _keeperDb = keeperDb;
@@ -40,12 +40,7 @@ namespace Keeper2018
             keeperDb.FillInAccountTree(); // must be first
 
             keeperDb.TagAssociationModels = new ObservableCollection<TagAssociationModel>
-                (keeperDb.Bin.TagAssociations.Select(a=>a.Map(keeperDb.AcMoDict)));
-
-//            keeperDb.DepositOfferModels = new ObservableCollection<DepositOfferModel>
-//                (keeperDb.Bin.DepositOffers.Select(x=>x.Map(keeperDb.Bin.AccountPlaneList)));
-            keeperDb.TransactionModels = new ObservableCollection<TransactionModel>
-                (keeperDb.Bin.Transactions.Select(t=>t.Map(keeperDb.AcMoDict)));
+                (keeperDb.Bin.TagAssociations.Select(a => a.Map(keeperDb.AcMoDict)));
         }
     }
 }

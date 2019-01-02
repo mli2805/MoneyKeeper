@@ -116,7 +116,7 @@ namespace Keeper2018
             double previousYear = 0.0;
             double balanceInUsd = 0.0, value;
             var currentDate = new DateTime(2001, 12, 31);
-            foreach (var tran in _db.TransactionModels)
+            foreach (var tran in _db.Bin.Transactions.Values)
             {
                 if (!tran.Timestamp.Date.Equals(currentDate))
                 {
@@ -161,7 +161,7 @@ namespace Keeper2018
             AnnualSaldoModel.Axes.Add(new CategoryAxis(null, yearLabels.ToArray()));
         }
 
-        private void RegisterTran(TransactionModel tran)
+        private void RegisterTran(Transaction tran)
         {
             switch (tran.Operation)
             {

@@ -95,8 +95,10 @@ namespace Keeper2018
             }
         }
 
-        public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
-        public string MySecondAccountBalance => _balanceDuringTransactionHinter.GetMySecondAccountBalance(TranInWork);
+        public string MyAccountBalance => _balanceDuringTransactionHinter.
+            GetMyAccountBalance(_db.Bin.Transactions[TranInWork.TransactionKey]);
+        public string MySecondAccountBalance => _balanceDuringTransactionHinter.
+            GetMySecondAccountBalance(_db.Bin.Transactions[TranInWork.TransactionKey]);
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
         public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
         public string ExchangeRate => _balanceDuringTransactionHinter.GetExchangeRate(TranInWork);
@@ -221,7 +223,7 @@ namespace Keeper2018
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var selectedDate = MyDatePickerVm.SelectedDate;
-            var dayTransactions = _db.TransactionModels.Where(t => t.Timestamp.Date == selectedDate.Date).ToList();
+            var dayTransactions = _db.Bin.Transactions.Values.Where(t => t.Timestamp.Date == selectedDate.Date).ToList();
 
             int minute = 1;
             if (dayTransactions.Any())
@@ -238,7 +240,7 @@ namespace Keeper2018
             if (e.PropertyName == "ButtonAllInPressed")
             {
                 MyAmountInputControlVm.Amount =
-                    _db.TransactionModels.Sum(a => a.AmountForAccount(TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
+                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_db, TranInWork.MyAccount.Id, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
             }
         }
 
@@ -254,7 +256,7 @@ namespace Keeper2018
             {
                 TranInWork.MyAccount = _db.SeekAccount(MyAccNameSelectorVm.MyAccName.Name);
                 MyAmountInputControlVm.Currency =
-                    _db.TransactionModels.LastOrDefault(t => t.MyAccount.Id == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                    _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
             }
         }
         private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -263,7 +265,7 @@ namespace Keeper2018
             {
                 TranInWork.MySecondAccount = _db.SeekAccount(MySecondAccNameSelectorVm.MyAccName.Name);
                 MyAmountInReturnInputControlVm.Currency =
-                    _db.TransactionModels.LastOrDefault(t => t.MyAccount.Id == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                    _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
             }
         }
 

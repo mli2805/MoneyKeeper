@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
@@ -50,7 +51,7 @@ namespace Keeper2018
         {
             _tranFilter = new TranFilter();
 
-            Rows = WrapTransactions(_db.TransactionModels);
+            Rows = WrapTransactions(_db.Bin.Transactions);
             Rows.CollectionChanged += Rows_CollectionChanged;
 
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
@@ -73,12 +74,14 @@ namespace Keeper2018
         {
             IsCollectionChanged = true;
         }
-        private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(ObservableCollection<TransactionModel> transactions)
+        private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(Dictionary<int, Transaction> transactions)
         {
             var result = new ObservableCollection<TranWrappedForDatagrid>();
-            foreach (var tran in transactions)
+            foreach (var pair in transactions)
             {
-                result.Add(new TranWrappedForDatagrid() { Tran = tran });
+                var tranModel = pair.Value.Map(_db.AcMoDict, pair.Key);
+                var wrapped = new TranWrappedForDatagrid() { Tran = tranModel };
+                result.Add(wrapped);
             }
             return result;
         }

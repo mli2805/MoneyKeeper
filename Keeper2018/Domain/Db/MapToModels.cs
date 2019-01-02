@@ -70,12 +70,12 @@ namespace Keeper2018
             };
         }
 
-        public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict)
+        public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict, int transactionKey)
         {
             return new TransactionModel()
             {
+                TransactionKey = transactionKey,
                 Timestamp = transaction.Timestamp,
-        //        OrdinalInDate = transaction.OrdinalInDate,
                 Receipt = transaction.Receipt,
                 Operation = transaction.Operation,
                 MyAccount = acMoDict[transaction.MyAccount],

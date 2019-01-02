@@ -69,18 +69,33 @@ namespace Keeper2018
             var depoList = new List<string>();
             decimal total = 0;
             decimal depoTotal = 0;
-            foreach (var tran in _db.TransactionModels.Where(t => t.Operation == OperationType.Доход
+            foreach (var tran in _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                                                   && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
                 var amStr = _db.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
-                if (tran.MyAccount.IsDeposit)
+                var accModel = _db.AcMoDict[tran.MyAccount];
+                if (accModel.IsDeposit)
                 {
-                    depoList.Add($"{amStr} {tran.MyAccount.Deposit.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                    depoList.Add($"{amStr} {accModel.Deposit.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
                     depoTotal = depoTotal + amountInUsd;
                 }
                 else
                 {
-                    var comment = string.IsNullOrEmpty(tran.Comment) ? tran.Tags.First(t => t.Is(_incomesRoot)).Name : tran.Comment;
+                    var comment = "";
+                    if (!string.IsNullOrEmpty(tran.Comment))
+                        comment = tran.Comment;
+                    else
+                    {
+                        foreach (var tagId in tran.Tags)
+                        {
+                            var tagModel = _db.AcMoDict[tagId];
+                            if (tagModel.Is(_incomesRoot))
+                            {
+                                comment = tagModel.Name;
+                                break;
+                            }
+                        }
+                    }
                     _monthAnalysisModel.IncomeViewModel.List.Add($"{amStr}  {tran.Timestamp:dd MMM} {comment}", Brushes.Blue);
                 }
 
@@ -114,12 +129,13 @@ namespace Keeper2018
             var largeExpenses = new ListOfLines();
             decimal total = 0;
             decimal largeTotal = 0;
-            foreach (var tran in _db.TransactionModels.Where(t => t.Operation == OperationType.Расход
+            foreach (var tran in _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Расход
                                                && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
-                foreach (var accountModel in tran.Tags)
+                foreach (var tagId in tran.Tags)
                 {
-                    var expenseArticle = accountModel.IsC(_expensesRoot);
+                    var accModel = _db.AcMoDict[tagId];
+                    var expenseArticle = accModel.IsC(_expensesRoot);
                     if (expenseArticle == null) continue;
                     var amountInUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                     articles.Add(expenseArticle, CurrencyCode.USD, amountInUsd);

@@ -37,33 +37,37 @@ namespace Keeper2018
                     : "не задана валюта";
         }
 
-        public string GetMyAccountBalance(TransactionModel transactionInWork)
+        public string GetMyAccountBalance(Transaction transactionInWork)
         {
-            if (transactionInWork?.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
+            if (transactionInWork == null || transactionInWork.MyAccount == 0) return "было ххх - стало ххх";
+            var accModel = _db.AcMoDict[transactionInWork.MyAccount];
+            if (!accModel.Is("Мои")) return "было ххх - стало ххх";
 
             var balanceBefore =
-                _db.TransactionModels.Sum(a => a.AmountForAccount(transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_db, transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
-            return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MyAccount, transactionInWork.Currency), transactionInWork.Currency);
+            return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(_db, transactionInWork.MyAccount, transactionInWork.Currency), transactionInWork.Currency);
         }
 
-        public string GetMySecondAccountBalance(TransactionModel transactionInWork)
+        public string GetMySecondAccountBalance(Transaction transactionInWork)
         {
-            if (transactionInWork == null || transactionInWork.MySecondAccount == null || !transactionInWork.MySecondAccount.Is("Мои")) return "было ххх - стало ххх";
+            if (transactionInWork == null || transactionInWork.MySecondAccount == 0) return "было ххх - стало ххх";
+            var secondAccModel = _db.AcMoDict[transactionInWork.MySecondAccount];
+            if (!secondAccModel.Is("Мои")) return "было ххх - стало ххх";
 
             if (transactionInWork.Operation == OperationType.Перенос)
             {
                 var balanceBefore =
-                    _db.TransactionModels.Sum(a => a.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_db, transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
-                return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.Currency), transactionInWork.Currency);
+                return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(_db, transactionInWork.MySecondAccount, transactionInWork.Currency), transactionInWork.Currency);
             }
             else // OperationType.Обмен
             {
                 var balanceBefore =
-                    _db.TransactionModels.Sum(a => a.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_db, transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
-                return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn), transactionInWork.CurrencyInReturn);
+                return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(_db, transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn), transactionInWork.CurrencyInReturn);
 
             }
         }

@@ -6,6 +6,8 @@ namespace Keeper2018
 {
     public class TransactionModel : PropertyChangedBase
     {
+        public int TransactionKey;
+
         private DateTime _timestamp;
         public DateTime Timestamp
         {
@@ -18,7 +20,6 @@ namespace Keeper2018
             }
         }
 
-        public int OrdinalInDate => Timestamp.Minute;
         public int Receipt { get; set; }
         public OperationType Operation { get; set; }
 

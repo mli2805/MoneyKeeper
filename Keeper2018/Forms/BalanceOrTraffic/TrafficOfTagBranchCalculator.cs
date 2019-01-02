@@ -24,18 +24,19 @@ namespace Keeper2018
 
         public void Evaluate()
         {
-            foreach (var tran in _db.TransactionModels.Where(t => _period.Includes(t.Timestamp)))
+            foreach (var tran in _db.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
             {
                 foreach (var tag in tran.Tags)
                 {
-                    var myTag = tag.IsC(_tag);
+                    var tagAccModel = _db.AcMoDict[tag];
+                    var myTag = tagAccModel.IsC(_tag);
                     if (myTag != null)
                         RegisterTran(tran, myTag);
                 }
             }
         }
 
-        private void RegisterTran(TransactionModel tran, AccountModel myTag)
+        private void RegisterTran(Transaction tran, AccountModel myTag)
         {
                 decimal inUsd;
             switch (tran.Operation)

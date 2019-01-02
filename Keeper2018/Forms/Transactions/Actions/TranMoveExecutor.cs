@@ -49,7 +49,7 @@ namespace Keeper2018
                 _transToShiftTime = _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(maxOfElevate.Date) 
                                              && t.Tran.Timestamp.Date > maxOfElevate).Select(r => r.Tran).ToList();
             }
-            else _transToShiftTime = null;
+            else _transToShiftTime = new List<TransactionModel>();
 
             return true;
         }
@@ -92,25 +92,6 @@ namespace Keeper2018
                 transactionModel.Timestamp = newTimestamp;
                 newTimestamp = newTimestamp.AddMinutes(1);
             }
-        }
-
-        public void MoveSelectedDown()
-        {
-            var selectedTransactionModel = _model.SelectedTranWrappedForDatagrid.Tran;
-            var nearbyTran = _model.Rows.FirstOrDefault(t => t.Tran.Timestamp > selectedTransactionModel.Timestamp && t.Tran.Receipt == 0);
-            if (nearbyTran == null) return;
-            var temp = nearbyTran.Tran.Timestamp;
-
-            var tran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(temp));
-            var selectedTran = _db.Bin.Transactions.First(t => t.Timestamp.Equals(selectedTransactionModel.Timestamp));
-
-            nearbyTran.Tran.Timestamp = selectedTransactionModel.Timestamp;
-            tran.Timestamp = selectedTransactionModel.Timestamp;
-
-            selectedTransactionModel.Timestamp = temp;
-            selectedTran.Timestamp = temp;
-            _model.SortedRows.Refresh();
-            _model.IsCollectionChanged = true;
         }
 
     }

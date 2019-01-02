@@ -56,26 +56,27 @@ namespace Keeper2018
 
         private void AddOneTran(TransactionModel tran)
         {
-            var transAfter = _db.TransactionModels
-                .Where(t => t.Timestamp.Date == tran.Timestamp.Date && t.Timestamp >= tran.Timestamp).ToList();
-            foreach (var transactionModel in transAfter)
+            tran.TransactionKey = _db.Bin.Transactions.Keys.Max() + 1;
+
+            var wrappedTransactionsAfterInserted = 
+                _model.Rows.Where(t => t.Tran.Timestamp.Date == tran.Timestamp.Date && t.Tran.Timestamp >= tran.Timestamp).ToList();
+            foreach (var wrapped in wrappedTransactionsAfterInserted)
             {
-                transactionModel.Timestamp = transactionModel.Timestamp.AddMinutes(1);
-                var wrappedTran = _model.Rows.First(t => t.Tran.Equals(transactionModel));
-                wrappedTran.Tran.Timestamp = transactionModel.Timestamp;
+                wrapped.Tran.Timestamp = wrapped.Tran.Timestamp.AddMinutes(1);
+                _db.Bin.Transactions[wrapped.Tran.TransactionKey].Timestamp = wrapped.Tran.Timestamp;
             }
 
             var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
             _model.Rows.Add(tranWrappedForDatagrid);
             _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
-            _db.TransactionModels.Add(tran);
-            _db.Bin.Transactions.Add(tran.Map());
+
+            _db.Bin.Transactions.Add(tran.TransactionKey, tran.Map());
         }
 
         private void AddOneTranAndReceipt(OneTranViewModel oneTranForm)
         {
             var oneTran = oneTranForm.GetTran();
-            var receiptId = _db.TransactionModels.Where(t => t.Timestamp.Date == oneTran.Timestamp.Date)
+            var receiptId = _db.Bin.Transactions.Values.Where(t => t.Timestamp.Date == oneTran.Timestamp.Date)
                 .Max(r => r.Receipt) + 1;
             foreach (var tuple in oneTranForm.ReceiptList)
             {
@@ -99,9 +100,8 @@ namespace Keeper2018
 
         public void DeleteSelected()
         {
-            _db.TransactionModels.Remove(_model.SelectedTranWrappedForDatagrid.Tran);
-            _db.Bin.Transactions.RemoveAll(
-                t => t.Timestamp.Equals(_model.SelectedTranWrappedForDatagrid.Tran.Timestamp));
+            var key = _model.SelectedTranWrappedForDatagrid.Tran.TransactionKey;
+            _db.Bin.Transactions.Remove(key);
 
             int n = _model.Rows.IndexOf(_model.SelectedTranWrappedForDatagrid);
             _model.Rows.Remove(_model.SelectedTranWrappedForDatagrid);
