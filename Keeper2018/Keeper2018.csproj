@@ -112,6 +112,7 @@
       <DependentUpon>BalanceVerificationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationViewModel.cs" />
+    <Compile Include="Forms\AccountTree\VerificationForm\VerificationLine.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\Balance.cs" />
     <Compile Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml.cs">
       <DependentUpon>BalanceOrTrafficView.xaml</DependentUpon>

@@ -15,7 +15,7 @@
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
                             <Setter Property="FontSize" Value="13" />
                             <Setter Property="Background" Value="Transparent" />
                         </Trigger>
@@ -25,14 +25,15 @@
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="{Binding BackgroundBrush}"/>
+                            <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="10"/>
-                <DataGridTextColumn Binding="{Binding Amount}" Width="90"/>
+                <DataGridTextColumn Binding="{Binding AmountStr}" Width="90"/>
                 <DataGridTextColumn Binding="{Binding Date}" Width="70"/>
-                <DataGridTextColumn Binding="{Binding Counterparty}" Width="150"/>
-                <DataGridTextColumn Binding="{Binding Text}" Width="120"/>
+                <DataGridTextColumn Binding="{Binding Counterparty}" Width="180"/>
+                <DataGridTextColumn Binding="{Binding Text}" Width="320"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

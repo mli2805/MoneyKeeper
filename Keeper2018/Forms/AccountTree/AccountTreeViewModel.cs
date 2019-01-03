@@ -97,5 +97,10 @@ namespace Keeper2018
             WindowManager.ShowDialog(_balanceVerificationViewModel);
         }
 
+        public void ShowTagInDetails()
+        {
+
+        }
+
     }
 }
