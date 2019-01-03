@@ -78,7 +78,7 @@ namespace Keeper2018
 
         private void RegisterTransfer(Transaction tran)
         {
-            if (tran.MyAccount != _accountModel.Id)
+            if (tran.MyAccount == _accountModel.Id)
             {
                 _shortTrans.Add(_db.ShortLine(tran, false, -1));
                 if (_isDeposit)

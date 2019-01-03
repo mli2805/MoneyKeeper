@@ -9,12 +9,10 @@ namespace Keeper2018
         public enum Destination { Up, Down }
 
         private readonly TransModel _model;
-        private readonly KeeperDb _db;
 
-        public TranMoveExecutor(TransModel model, KeeperDb db)
+        public TranMoveExecutor(TransModel model)
         {
             _model = model;
-            _db = db;
         }
 
         private List<TransactionModel> _selectedTransactions;
@@ -63,14 +61,14 @@ namespace Keeper2018
         {
             if (!FillLists(destination)) return;
 
-            if (_selectedTransactions.First().Timestamp.Date.Equals(_nearbyTransactions.First().Timestamp.Date))
+            if (_transToElevate.First().Timestamp.Date.Equals(_transToLower.First().Timestamp.Date))
             {
-                var newTimestamp = _nearbyTransactions.Min(t => t.Timestamp);
+                var newTimestamp = _transToLower.Min(t => t.Timestamp);
                 SetNewTimes(newTimestamp);
             }
             else
             {
-                var newTimestamp = _nearbyTransactions.Min(t => t.Timestamp);
+                var newTimestamp = _transToLower.Min(t => t.Timestamp);
                SetNewTimes(newTimestamp);
             }
            

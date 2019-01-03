@@ -108,6 +108,10 @@
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
+    <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationView.xaml.cs">
+      <DependentUpon>BalanceVerificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\Balance.cs" />
     <Compile Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml.cs">
       <DependentUpon>BalanceOrTrafficView.xaml</DependentUpon>
@@ -353,6 +357,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\AccountTree\OneDepositView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\VerificationForm\BalanceVerificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

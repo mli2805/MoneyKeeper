@@ -44,6 +44,9 @@
                     <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsDeposit}">
                     </MenuItem>
+                <MenuItem Header="Сверка остатка" cal:Message.Attach="ShowVerificationForm" BorderBrush="{x:Null}" 
+                              Background="White">
+                    </MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu> </TreeView>
     </DockPanel>
