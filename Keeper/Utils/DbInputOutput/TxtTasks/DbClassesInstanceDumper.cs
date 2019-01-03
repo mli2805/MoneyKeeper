@@ -39,7 +39,7 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
         public string Dump(TranWithTags tranWithTags)
         {
-            return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " +
+            return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " + tranWithTags.ReceiptId + " ; " +
                    tranWithTags.MyAccount.Id + " ; " + tranWithTags.DumpOfSecondAccount() + " ; " +
                    tranWithTags.Amount.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.Currency + " ; " +
                    tranWithTags.AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.CurrencyInReturn + " ; " +

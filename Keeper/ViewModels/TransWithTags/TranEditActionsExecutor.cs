@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Caliburn.Micro;
-using Keeper.DomainModel.DbTypes;
 using Keeper.DomainModel.Trans;
 
 namespace Keeper.ViewModels.TransWithTags
@@ -82,7 +79,11 @@ namespace Keeper.ViewModels.TransWithTags
             if (!result.HasValue || !result.Value) return false;
 
             if (oneTranForm.ReceiptList != null)
-                AddOneTranAndReceipt(oneTranForm);
+            {
+                var receiptId =_model.Rows.Where(r => r.Tran.Timestamp.Date.Equals(tranForAdding.Timestamp.Date))
+                                   .Max(r => r.Tran.ReceiptId) + 1;
+                AddOneTranAndReceipt(oneTranForm, receiptId);
+            }
             else
                 AddOneTran(oneTranForm.GetTran().Clone());
 
@@ -99,11 +100,12 @@ namespace Keeper.ViewModels.TransWithTags
             _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
         }
 
-        private void AddOneTranAndReceipt(OneTranViewModel oneTranForm)
+        private void AddOneTranAndReceipt(OneTranViewModel oneTranForm, int receiptId)
         {
             foreach (var tuple in oneTranForm.ReceiptList)
             {
                 var tran = oneTranForm.GetTran().Clone();
+                tran.ReceiptId = receiptId;
                 tran.Amount = tuple.Item1;
                 tran.Tags.Add(tuple.Item2);
                 tran.Comment = tuple.Item3;

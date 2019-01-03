@@ -35,17 +35,17 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
 
-//            tran.MyAccount = accountsPlaneList.First(account => account.Name == substrings[2].Trim());
-//            tran.MySecondAccount = substrings[3].Trim() != "" ? accountsPlaneList.First(account => account.Name == substrings[3].Trim()) : null;
-            tran.MyAccount = accountsPlaneList.First(account => account.Id == int.Parse(substrings[2].Trim()));
-            tran.MySecondAccount = substrings[3].Trim() != "-1" ? accountsPlaneList.First(account => account.Id == int.Parse(substrings[3].Trim())) : null;
+            tran.ReceiptId = int.Parse(substrings[2].Trim());
 
-            tran.Amount = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
-            tran.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[5]);
-            tran.AmountInReturn = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
-            tran.CurrencyInReturn = substrings[7].Trim() != "" ? (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[7]) : CurrencyCodes.USD;
-            tran.Tags = TagsFromString(substrings[8].Trim(), accountsPlaneList); 
-            tran.Comment = substrings[9].Trim();
+            tran.MyAccount = accountsPlaneList.First(account => account.Id == int.Parse(substrings[3].Trim()));
+            tran.MySecondAccount = substrings[4].Trim() != "-1" ? accountsPlaneList.First(account => account.Id == int.Parse(substrings[4].Trim())) : null;
+
+            tran.Amount = Convert.ToDecimal(substrings[5], new CultureInfo("en-US"));
+            tran.Currency = (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[6]);
+            tran.AmountInReturn = Convert.ToDecimal(substrings[7], new CultureInfo("en-US"));
+            tran.CurrencyInReturn = substrings[8].Trim() != "" ? (CurrencyCodes)Enum.Parse(typeof(CurrencyCodes), substrings[8]) : CurrencyCodes.USD;
+            tran.Tags = TagsFromString(substrings[9].Trim(), accountsPlaneList); 
+            tran.Comment = substrings[10].Trim();
 
             return tran;
         }

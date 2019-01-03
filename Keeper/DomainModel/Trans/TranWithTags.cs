@@ -11,6 +11,7 @@ namespace Keeper.DomainModel.Trans
     {
         private DateTime _timestamp;
         private OperationType _operation;
+        public int ReceiptId;
         private Account _myAccount;
         private Account _mySecondAccount;
         private decimal _amount;

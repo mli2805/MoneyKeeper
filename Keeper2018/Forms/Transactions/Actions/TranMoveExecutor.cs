@@ -17,7 +17,9 @@ namespace Keeper2018
             _db = db;
         }
 
+        private List<TransactionModel> _selectedTransactions;
         private List<TransactionModel> _transToElevate;
+        private List<TransactionModel> _nearbyTransactions;
         private List<TransactionModel> _transToLower;
         private List<TransactionModel> _transToShiftTime;
 
@@ -26,22 +28,25 @@ namespace Keeper2018
             var selected = _model.SelectedTranWrappedForDatagrid.Tran;
             if (selected.Receipt != 0)
             {
-                _transToElevate = _model.Rows.Where(t =>
+                _selectedTransactions = _model.Rows.Where(t =>
                     t.Tran.Timestamp.Date.Equals(selected.Timestamp.Date) && t.Tran.Receipt == selected.Receipt).Select(r => r.Tran).ToList();
 
-                var edge = destination == Destination.Up ? _transToElevate.Min(t => t.Timestamp) : _transToElevate.Max(t => t.Timestamp);
+                var edge = destination == Destination.Up ? _selectedTransactions.Min(t => t.Timestamp) : _selectedTransactions.Max(t => t.Timestamp);
                 if (!selected.Timestamp.Equals(edge))
-                    _transToElevate = new List<TransactionModel>{selected};
+                    _selectedTransactions = new List<TransactionModel>{selected};
             }
-            else _transToElevate = new List<TransactionModel> {selected};
+            else _selectedTransactions = new List<TransactionModel> {selected};
 
             var nearbyTran = _model.Rows.LastOrDefault(t => t.Tran.Timestamp < selected.Timestamp);
             if (nearbyTran == null) return false;
 
             if (nearbyTran.Tran.Receipt != 0)
-                _transToLower = _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(nearbyTran.Tran.Timestamp.Date)
+                _nearbyTransactions = _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(nearbyTran.Tran.Timestamp.Date)
                                                        && t.Tran.Receipt == nearbyTran.Tran.Receipt).Select(r => r.Tran).ToList();
-            else _transToLower = new List<TransactionModel> {nearbyTran.Tran};
+            else _nearbyTransactions = new List<TransactionModel> {nearbyTran.Tran};
+
+            _transToElevate = destination == Destination.Up ? _selectedTransactions : _nearbyTransactions;
+            _transToLower = destination == Destination.Up ?  _nearbyTransactions : _selectedTransactions;
 
             if (destination == Destination.Down && selected.Timestamp.Date != nearbyTran.Tran.Timestamp.Date)
             {
@@ -58,14 +63,14 @@ namespace Keeper2018
         {
             if (!FillLists(destination)) return;
 
-            if (_transToElevate.First().Timestamp.Date.Equals(_transToLower.First().Timestamp.Date))
+            if (_selectedTransactions.First().Timestamp.Date.Equals(_nearbyTransactions.First().Timestamp.Date))
             {
-                var newTimestamp = _transToElevate.Min(t => t.Timestamp);
+                var newTimestamp = _nearbyTransactions.Min(t => t.Timestamp);
                 SetNewTimes(newTimestamp);
             }
             else
             {
-                var newTimestamp = _transToLower.Min(t => t.Timestamp);
+                var newTimestamp = _nearbyTransactions.Min(t => t.Timestamp);
                SetNewTimes(newTimestamp);
             }
            
@@ -75,13 +80,13 @@ namespace Keeper2018
 
         private void SetNewTimes(DateTime newTimestamp)
         {
-            foreach (var transactionModel in _transToElevate)
+            foreach (var transactionModel in _selectedTransactions)
             {
                 transactionModel.Timestamp = newTimestamp;
                 newTimestamp = newTimestamp.AddMinutes(1);
             }
 
-            foreach (var transactionModel in _transToLower)
+            foreach (var transactionModel in _nearbyTransactions)
             {
                 transactionModel.Timestamp = newTimestamp;
                 newTimestamp = newTimestamp.AddMinutes(1);

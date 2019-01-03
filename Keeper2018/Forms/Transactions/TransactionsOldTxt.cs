@@ -51,17 +51,19 @@ namespace Keeper2018
             tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
 
-            tran.MyAccount = int.Parse(substrings[2].Trim());
-            tran.MySecondAccount = int.Parse(substrings[3].Trim());
+            tran.Receipt = int.Parse(substrings[2].Trim());
 
-            tran.Amount = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
-            tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]);
-            tran.AmountInReturn = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
-            tran.CurrencyInReturn = substrings[7].Trim() != "" ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]) : CurrencyCode.USD;
+            tran.MyAccount = int.Parse(substrings[3].Trim());
+            tran.MySecondAccount = int.Parse(substrings[4].Trim());
 
-            tran.Tags = TagsFromString(substrings[8].Trim());
+            tran.Amount = Convert.ToDecimal(substrings[5], new CultureInfo("en-US"));
+            tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[6]);
+            tran.AmountInReturn = Convert.ToDecimal(substrings[7], new CultureInfo("en-US"));
+            tran.CurrencyInReturn = substrings[8].Trim() != "" ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[8]) : CurrencyCode.USD;
 
-            tran.Comment = substrings[9].Trim();
+            tran.Tags = TagsFromString(substrings[9].Trim());
+
+            tran.Comment = substrings[10].Trim();
 
             return tran;
         }
