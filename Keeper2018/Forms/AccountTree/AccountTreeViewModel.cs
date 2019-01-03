@@ -1,10 +1,18 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Caliburn.Micro;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 
 namespace Keeper2018
 {
     public class AccountTreeViewModel : PropertyChangedBase
     {
+        private readonly PdfProvider _pdfProvider;
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
@@ -16,10 +24,11 @@ namespace Keeper2018
         public KeeperDb KeeperDb { get; set; }
 
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
-            AskDragAccountActionViewModel askDragAccountActionViewModel,
+            PdfProvider pdfProvider, AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
+            _pdfProvider = pdfProvider;
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
             _depositReportViewModel = depositReportViewModel;
@@ -76,7 +85,7 @@ namespace Keeper2018
                 _oneAccountViewModel.Initialize(accountModel, false);
                 WindowManager.ShowDialog(_oneAccountViewModel);
 
-                if (_oneAccountViewModel.IsSavePressed) 
+                if (_oneAccountViewModel.IsSavePressed)
                     KeeperDb.FlattenAccountTree();
             }
         }
@@ -99,8 +108,57 @@ namespace Keeper2018
 
         public void ShowTagInDetails()
         {
-
+            var document = _pdfProvider.Create(ShellPartsBinder.SelectedAccountModel);
+            const string filename = @"c:\temp\TagInDetails.pdf";
+            document.Save(filename);
+            Process.Start(filename);
         }
 
+    }
+
+    public class PdfProvider
+    {
+        private readonly KeeperDb _db;
+
+        public PdfProvider(KeeperDb db)
+        {
+            _db = db;
+        }
+
+        public PdfDocument Create(AccountModel accountModel)
+        {
+            Document doc = new Document();
+            Section section = doc.AddSection();
+            var paragraph = section.AddParagraph();
+            paragraph.AddFormattedText($"{accountModel.Name}");
+            var table = section.AddTable();
+            var column = table.AddColumn("4cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+            column = table.AddColumn("2.5cm");
+            column.Format.Alignment = ParagraphAlignment.Right;
+            column = table.AddColumn("10cm");
+            column.Format.Alignment = ParagraphAlignment.Left;
+            var row = table.AddRow();
+            row.Cells[0].AddParagraph($"{DateTime.Today.Date}");
+            row.Cells[1].AddParagraph($"{45.042:N} byn");
+            row.Cells[2].AddParagraph("comment");
+
+
+            PdfDocumentRenderer pdfDocumentRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfDocumentRenderer.Document = doc;
+            pdfDocumentRenderer.RenderDocument();
+
+            return pdfDocumentRenderer.PdfDocument;
+        }
+
+        private List<string> GetTraffic(AccountModel accountModel)
+        {
+            var result = new List<string>();
+            foreach (var transaction in _db.Bin.Transactions.Values.Where(t => t.MyAccount == accountModel.Id || t.MySecondAccount == accountModel.Id))
+            {
+
+            }
+            return result;
+        }
     }
 }
