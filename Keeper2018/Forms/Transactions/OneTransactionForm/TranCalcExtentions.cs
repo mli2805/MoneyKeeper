@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Keeper2018
 {
     static class TranCalcExtentions
     {
-        #region Decimal functions for Account
         public static decimal AmountForAccount(this Transaction tran, KeeperDb db, int accountId, CurrencyCode? currency, DateTime upToDateTime)
         {
             return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, db, accountId, currency) : 0;
@@ -32,7 +32,37 @@ namespace Keeper2018
                     return 0;
             }
         }
-        #endregion
+
+        public static Balance BalanceForTag(this Transaction tran, KeeperDb db, int tagId)
+        {
+            if (!CollectionContainsTag(db, tran.Tags, tagId)) return null;
+            switch (tran.Operation)
+            {
+                case OperationType.Доход:
+                    return new Balance(tran.Currency, tran.Amount);
+                case OperationType.Расход:
+                    return new Balance(tran.Currency, -tran.Amount);
+                case OperationType.Перенос:
+                    return new Balance(tran.Currency, 0);
+                case OperationType.Обмен:
+                    var balance = new Balance(tran.Currency, -tran.Amount);
+                    // ReSharper disable once PossibleInvalidOperationException
+                    balance.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
+                    return balance;
+                default:
+                    return null;
+            }
+        }
+
+        private static bool CollectionContainsTag(KeeperDb db, List<int> collection, int tagId)
+        {
+            foreach (var id in collection)
+            {
+                var tag = db.AcMoDict[id];
+                if (tag.Is(tagId)) return true;
+            }
+            return false;
+        }
 
     }
 }

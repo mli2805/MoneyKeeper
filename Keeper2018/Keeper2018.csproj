@@ -124,6 +124,8 @@
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
+    <Compile Include="Forms\AccountTree\PdfReport\PdfProvider.cs" />
+    <Compile Include="Forms\AccountTree\PdfReport\PdfTrafficLine.cs" />
     <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationView.xaml.cs">
       <DependentUpon>BalanceVerificationView.xaml</DependentUpon>
     </Compile>
