@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Diagnostics;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
@@ -96,6 +97,17 @@ namespace Keeper2018
         public void ShowExpensesChart()
         {
 
+        }
+
+        public void ShowCarReport()
+        {
+            var provider = new CarReportProvider(_keeperDb);
+            var document = provider.CreateCarReport();
+
+            string filename = @"c:\temp\RenaultGrandScenicIII.pdf";
+            document.Save(filename);
+            Process.Start(filename);
+       
         }
 
         public async void Save()

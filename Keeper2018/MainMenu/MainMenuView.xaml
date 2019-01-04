@@ -88,6 +88,16 @@
                             <cal:ActionMessage MethodName="ShowExpensesChart"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
+                </MenuItem> 
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Автомобильный"/>
+                    </MenuItem.Header>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ShowCarReport"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </MenuItem>
             </MenuItem>
         </Menu>
