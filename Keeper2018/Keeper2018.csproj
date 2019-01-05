@@ -153,7 +153,11 @@
       <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Charts\BalancesAndSaldosViewModel.cs" />
+    <Compile Include="Forms\Charts\CarReport\CarReportData.cs" />
     <Compile Include="Forms\Charts\CarReport\CarReportProvider.cs" />
+    <Compile Include="Forms\Charts\CarReport\CarTagData.cs" />
+    <Compile Include="Forms\Charts\CarReport\PdfReporter.cs" />
+    <Compile Include="Forms\Charts\CarReport\PdfReportTableRow.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">

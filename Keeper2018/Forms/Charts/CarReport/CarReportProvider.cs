@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
+using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
 using PdfSharp.Pdf;
 
@@ -10,9 +10,7 @@ namespace Keeper2018
 {
     public class CarReportProvider
     {
-        private const int Scenic3Id = 716; // Scenic3
         private readonly KeeperDb _db;
-        private CarReport _carReport = new CarReport();
 
         public CarReportProvider(KeeperDb db)
         {
@@ -21,19 +19,24 @@ namespace Keeper2018
 
         public PdfDocument CreateCarReport()
         {
+            var carReportData = _db.ExtractCarData();
+
             Document doc = new Document();
-            Section section = doc.AddSection();
-            var paragraph = section.AddParagraph();
-            paragraph.AddFormattedText("Renault Grand Scenic III ");
+            Section chartSection = doc.AddSection();
+            var paragraph = chartSection.AddParagraph();
+            paragraph.AddFormattedText(
+                $"Renault Grand Scenic III 1.5dci 2010 г.в. {carReportData.StartDate:dd/MM/yyyy} - {carReportData.FinishDate:dd/MM/yyyy}");
             paragraph.Format.SpaceBefore = Unit.FromCentimeter(0.2);
             paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.4);
 
-            var carAccount = _db.AcMoDict[Scenic3Id];
-            FillSection(section, carAccount);
+            FillChart(chartSection, carReportData);
+            FillAggregateTable(chartSection, carReportData);
 
-            Section chartSection = doc.AddSection();
-            FillChart(chartSection);
-
+            Section tablesSection = doc.AddSection();
+            tablesSection.PageSetup.TopMargin = 20;
+            tablesSection.PageSetup.BottomMargin = 10;
+            FillTagTables(tablesSection, carReportData);
+           
             PdfDocumentRenderer pdfDocumentRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfDocumentRenderer.Document = doc;
             pdfDocumentRenderer.RenderDocument();
@@ -41,7 +44,7 @@ namespace Keeper2018
             return pdfDocumentRenderer.PdfDocument;
         }
 
-        private void FillChart(Section section)
+        private void FillChart(Section section, CarReportData carReportData)
         {
             var chart3 = section.AddChart(ChartType.PieExploded2D);
             Series pieSeries = chart3.SeriesCollection.AddSeries();
@@ -52,17 +55,13 @@ namespace Keeper2018
             chart3.Height = Unit.FromCentimeter(16);
             XSeries pieXSeries = chart3.XValues.AddXSeries();
 
-            foreach (var tuple in _carReport.Tags)
+            foreach (var tag in carReportData.Tags)
             {
-                pieSeries.Add(Math.Round((double)-tuple.Item2));
-                pieXSeries.Add(tuple.Item1);
+                pieSeries.Add(Math.Round((double)-tag.Table.Sum(r => r.AmountInUsd)));
+                pieXSeries.Add(tag.English);
             }
 
             chart3.BottomArea.AddLegend();
-//            chart3.DataLabel.Font.Color = Color.Parse("black");
-//            chart3.DataLabel.Type = DataLabelType.Percent;
-//            chart3.DataLabel.Position = DataLabelPosition.OutsideEnd;
-//            chart3.DataLabel.Format = "#0%";
             chart3.XAxis.MajorTickMark = TickMarkType.Outside;
             chart3.XAxis.Title.Caption = "X-Axis";
             chart3.YAxis.MajorTickMark = TickMarkType.Outside;
@@ -73,42 +72,61 @@ namespace Keeper2018
             chart3.HasDataLabel = true;
         }
 
-        private void FillSection(Section section, AccountModel carAccount)
+        private void FillAggregateTable(Section section, CarReportData carReportData)
         {
-            var tag = carAccount.Children.First(c => c.Name.Contains("покупка-продажа"));
-            var sum = AddTableFromTag(section, tag);
-            _carReport.Tags.Add(new Tuple<string, decimal>("покупка-продажа", sum));
+            var paragraph = section.AddParagraph();
+            paragraph.AddFormattedText("Расходы по категориям");
+            paragraph.Format.SpaceBefore = Unit.FromCentimeter(1);
+            paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.2);
 
-            tag = carAccount.Children.First(c => c.Name.Contains("государство"));
-            sum = AddTableFromTag(section, tag);
-            _carReport.Tags.Add(new Tuple<string, decimal>("State payments", sum));
+            var table = section.AddTable();
+            table.Style = "Table";
+            table.Borders.Width = 0.25;
 
-            tag = carAccount.Children.First(c => c.Name.Contains("авто ремонт"));
-            sum = AddTableFromTag(section, tag);
-            _carReport.Tags.Add(new Tuple<string, decimal>("авто ремонт", sum));
+            var column = table.AddColumn("10cm");
+            column.Format.Alignment = ParagraphAlignment.Left;
+            column = table.AddColumn("3.5cm");
+            column.Format.Alignment = ParagraphAlignment.Right;
+            column.RightPadding = Unit.FromCentimeter(0.5);
+            column = table.AddColumn("3cm");
+            column.Format.Alignment = ParagraphAlignment.Right;
 
-            tag = carAccount.Children.First(c => c.Name.Contains("ремонт регуляр"));
-            sum = AddTableFromTag(section, tag);
-            _carReport.Tags.Add(new Tuple<string, decimal>("ремонт регуляр", sum));
+            var total = carReportData.Tags.Sum(t => t.Table.Sum(r => r.AmountInUsd));
+            Row row;
+            foreach (var tag in carReportData.Tags)
+            {
+                row = table.AddRow();
+                row.Cells[0].AddParagraph($"{tag.Russian}");
+                var amount = tag.Table.Sum(r => r.AmountInUsd);
+                row.Cells[1].AddParagraph($"$ {-amount:#,0}");
+                row.Cells[2].AddParagraph($"{amount / total * 100:N} %");
+            }
+            row = table.AddRow();
+            row.Cells[1].AddParagraph($"$ {-total:#,0}");
+            row = table.AddRow();
+            var inAday = -total/(carReportData.FinishDate - carReportData.StartDate).Days;
+            row.Cells[1].AddParagraph($"в день $ {inAday:N}");
 
-            tag = carAccount.Children.First(c => c.Name.Contains("авто топливо"));
-            sum = AddParagraphFromTag(section, tag);
-            _carReport.Tags.Add(new Tuple<string, decimal>("авто топлив", sum));
-
-            tag = carAccount.Children.First(c => c.Name.Contains("авто прочее"));
-            sum = AddTableFromTag(section, tag);
-            _carReport.Tags.Add(new Tuple<string, decimal>("авто прочее", sum));
-
-            var paragraph = section.AddParagraph($"Всего     {_carReport.Tags.Select(p => p.Item2).Sum():#,0.##}");
-            paragraph.Format.SpaceBefore = Unit.FromCentimeter(0.5);
-            paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.5);
+//            var paragraph2 = section.AddParagraph($"   $ {inAday:N} в день");
+//            paragraph2.Format.SpaceBefore = Unit.FromCentimeter(1);
+//            paragraph2.Format.SpaceAfter = Unit.FromCentimeter(0.2);
         }
 
-        private decimal AddTableFromTag(Section section, AccountModel tag)
+        private void FillTagTables(Section section, CarReportData carReportData)
         {
-            var caption = section.AddParagraph(tag.Name);
-            caption.Format.SpaceBefore = Unit.FromCentimeter(1);
-            caption.Format.SpaceAfter = Unit.FromCentimeter(1);
+            DrawTableFromTag(section, carReportData.Tags[0]);
+            DrawTableFromTag(section, carReportData.Tags[1]);
+            section.AddPageBreak();
+            DrawTableFromTag(section, carReportData.Tags[2]);
+            section.AddPageBreak();
+            DrawTableFromTag(section, carReportData.Tags[3]);
+        }
+
+        private void DrawTableFromTag(Section section, CarTagData tag)
+        {
+            var caption = section.AddParagraph(tag.Russian);
+            caption.Format.SpaceBefore = Unit.FromCentimeter(0.1);
+            caption.Format.SpaceAfter = Unit.FromCentimeter(0.3);
 
             var table = section.AddTable();
             table.Style = "Table";
@@ -122,8 +140,7 @@ namespace Keeper2018
             column = table.AddColumn("10cm");
             column.Format.Alignment = ParagraphAlignment.Left;
 
-            var rows = _db.GetTable(tag);
-            foreach (var tableRow in rows)
+            foreach (var tableRow in tag.Table)
             {
                 var row = table.AddRow();
                 row.Cells[0].AddParagraph($"{tableRow.Date:dd/MM/yyyy}");
@@ -133,75 +150,11 @@ namespace Keeper2018
             }
             var totalRow = table.AddRow();
             totalRow.Cells[0].AddParagraph("Итого");
-            var sum = rows.Sum(r => r.AmountInUsd);
+            var sum = tag.Table.Sum(r => r.AmountInUsd);
             totalRow.Cells[1].AddParagraph($"{sum:#,0.##} usd");
 
             var offset = section.AddParagraph();
             offset.Format.SpaceAfter = Unit.FromCentimeter(1);
-            return sum;
         }
-
-        private decimal AddParagraphFromTag(Section section, AccountModel tag)
-        {
-            var caption = section.AddParagraph(tag.Name);
-            caption.Format.SpaceBefore = Unit.FromCentimeter(1);
-            caption.Format.SpaceAfter = Unit.FromCentimeter(1);
-
-            var rows = _db.GetTable(tag);
-            var sum = rows.Sum(r => r.AmountInUsd);
-            var paragraph = section.AddParagraph($"Итого    {sum:#,0.##} usd");
-            paragraph.Format.SpaceAfter = Unit.FromCentimeter(1);
-            return sum;
-        }
-
-    }
-
-    public class PdfReportTableRow
-    {
-        public DateTime Date;
-        public string AmountInCurrency;
-        public decimal AmountInUsd;
-        public string Comment;
-    }
-
-
-    public class CarReport
-    {
-        public DateTime StartDate;
-        public List<Tuple<string, decimal>> Tags = new List<Tuple<string, decimal>>();
-    }
-
-    public static class PdfReport
-
-    {
-        public static Chart GetChart()
-        {
-            Chart chart = new Chart(ChartType.Pie2D);
-            return chart;
-        }
-
-        public static List<PdfReportTableRow> GetTable(this KeeperDb db, AccountModel tag)
-        {
-            var rows = new List<PdfReportTableRow>();
-            foreach (var transaction in db.Bin.Transactions.Values)
-            {
-                var balanceForTag = transaction.BalanceForTag(db, tag.Id);
-                if (balanceForTag == null) continue;
-                var row = new PdfReportTableRow
-                {
-                    Date = transaction.Timestamp,
-                    AmountInCurrency = balanceForTag.ToString(),
-                    Comment = transaction.Comment
-                };
-                var moneyPair = balanceForTag.Currencies.First();
-                row.AmountInUsd = moneyPair.Key == CurrencyCode.USD
-                    ? moneyPair.Value
-                    : db.AmountInUsd(transaction.Timestamp, moneyPair.Key, moneyPair.Value);
-
-                rows.Add(row);
-            }
-            return rows;
-        }
-
     }
 }
