@@ -5,16 +5,40 @@ namespace Keeper2018
 {
     static class TranCalcExtentions
     {
-        public static decimal AmountForAccount(this Transaction tran, KeeperDb db, int accountId, CurrencyCode? currency, DateTime upToDateTime)
+        public static decimal AmountForAccount(this Transaction tran, KeeperDb db, AccountModel account, CurrencyCode? currency, DateTime upToDateTime)
         {
-            return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, db, accountId, currency) : 0;
+            return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, db, account, currency) : 0;
         }
 
-        public static decimal AmountForAccount(this Transaction tran, KeeperDb db, int accountId, CurrencyCode? currency)
+        private static decimal AmountForAccount(this Transaction tran, KeeperDb db, AccountModel account, CurrencyCode? currency)
         {
-            var account = db.AcMoDict[accountId];
             var isAccount = db.AcMoDict[tran.MyAccount].Is(account);
-            var isSecondAccount = tran.MySecondAccount != 0 && db.AcMoDict[tran.MySecondAccount].Is(account);
+            bool isSecondAccount;
+            switch (tran.Operation)
+            {
+                case OperationType.Доход:
+                    return isAccount && tran.Currency == currency ? tran.Amount : 0;
+                case OperationType.Расход:
+                    return isAccount && tran.Currency == currency ? -tran.Amount : 0;
+                case OperationType.Перенос:
+                    if (isAccount && tran.Currency == currency) return -tran.Amount;
+                    isSecondAccount = tran.MySecondAccount != -1 && db.AcMoDict[tran.MySecondAccount].Is(account);
+                    return isSecondAccount && tran.Currency == currency ? tran.Amount : 0;
+                case OperationType.Обмен:
+                    if (isAccount && tran.Currency == currency) return -tran.Amount;
+                    isSecondAccount = tran.MySecondAccount != -1 && db.AcMoDict[tran.MySecondAccount].Is(account);
+                    if (isSecondAccount && tran.CurrencyInReturn == currency) return tran.AmountInReturn;
+                    return 0;
+                default:
+                    return 0;
+            }
+        }
+
+
+        public static decimal AmountForAccount(this TransactionModel tran, AccountModel account, CurrencyCode? currency)
+        {
+            var isAccount = tran.MyAccount.Is(account);
+            var isSecondAccount = tran.MySecondAccount != null && tran.MySecondAccount.Is(account);
             switch (tran.Operation)
             {
                 case OperationType.Доход:

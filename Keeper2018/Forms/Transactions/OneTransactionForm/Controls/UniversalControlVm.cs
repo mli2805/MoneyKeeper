@@ -95,10 +95,8 @@ namespace Keeper2018
             }
         }
 
-        public string MyAccountBalance => _balanceDuringTransactionHinter.
-            GetMyAccountBalance(_db.Bin.Transactions[TranInWork.TransactionKey]);
-        public string MySecondAccountBalance => _balanceDuringTransactionHinter.
-            GetMySecondAccountBalance(_db.Bin.Transactions[TranInWork.TransactionKey]);
+        public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
+        public string MySecondAccountBalance => _balanceDuringTransactionHinter.GetMySecondAccountBalance(TranInWork);
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
         public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
         public string ExchangeRate => _balanceDuringTransactionHinter.GetExchangeRate(TranInWork);
@@ -240,7 +238,7 @@ namespace Keeper2018
             if (e.PropertyName == "ButtonAllInPressed")
             {
                 MyAmountInputControlVm.Amount =
-                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_db, TranInWork.MyAccount.Id, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
+                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_db, TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
             }
         }
 

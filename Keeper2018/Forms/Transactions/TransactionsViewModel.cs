@@ -41,6 +41,11 @@ namespace Keeper2018
             Left = 400;
         }
 
+        protected override void OnViewLoaded(object view)
+        {
+            DisplayName = "Проводки";
+        }
+
         public void Initialize()
         {
             _comboTreesProvider.Initialize();

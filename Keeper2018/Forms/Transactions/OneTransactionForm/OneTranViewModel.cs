@@ -100,9 +100,9 @@ namespace Keeper2018
         private void ValidateTranInWorkFieldsWithNewOperationType()
         {
             TranInWork.Tags.Clear();
-            if (TranInWork.MySecondAccount == null && TranInWork.Operation == OperationType.Перенос)
+            if (TranInWork.MySecondAccount == null && (TranInWork.Operation == OperationType.Перенос || TranInWork.Operation == OperationType.Обмен))
                 TranInWork.MySecondAccount = _db.SeekAccount("Юлин кошелек");
-            if (TranInWork.CurrencyInReturn == null)
+            if (TranInWork.CurrencyInReturn == null && TranInWork.Operation == OperationType.Обмен)
                 TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCode.BYN) ? CurrencyCode.USD : CurrencyCode.BYN;
         }
 

@@ -23,18 +23,21 @@ namespace Keeper2018
    
         public void EditSelected()
         {
-            _oneTranViewModel.Init(_model.SelectedTranWrappedForDatagrid.Tran, false);
+            var selectedTran = _model.SelectedTranWrappedForDatagrid.Tran;
+
+            _oneTranViewModel.Init(selectedTran, false);
             bool? result = _windowManager.ShowDialog(_oneTranViewModel);
 
             if (!result.HasValue || !result.Value) return;
 
-            _oneTranViewModel.GetTran().CopyInto(_model.SelectedTranWrappedForDatagrid.Tran);
-       //     var tranInDb = _db.Bin.Transactions.First(t=>t.)
+            _oneTranViewModel.GetTran().CopyInto(selectedTran);
+
+            _db.Bin.Transactions.Remove(selectedTran.TransactionKey);
+            _db.Bin.Transactions.Add(selectedTran.TransactionKey, selectedTran.Map());
 
             _model.SortedRows.Refresh();
             _model.IsCollectionChanged = true;
         }
-
      
         public void AddAfterSelected()
         {
