@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Keeper2018
@@ -17,6 +18,12 @@ namespace Keeper2018
         // Conditions are applied from some date - key in dictionary
         public Dictionary<DateTime, DepositEssential> Essentials {get; set; }
         public string Comment { get; set; }
+
+        public string Dump()
+        {
+            return Id + " ; " + Bank + " ; " + Title + " ; " + MainCurrency + " ; " + Comment;
+        }
+
     }
 
     [Serializable]
@@ -51,5 +58,13 @@ namespace Keeper2018
         {
             return (DepositRateLine) MemberwiseClone();
         }
+
+        public string Dump(DepositRateLine rateLine, int accountId)
+        {
+            var dateFrom = $"{rateLine.DateFrom:dd/MM/yyyy}";
+            return accountId + " ; " + dateFrom + " ; " + rateLine.AmountFrom.ToString(new CultureInfo("en-US")) + " ; "
+                   + rateLine.AmountTo.ToString(new CultureInfo("en-US")) + " ; " + rateLine.Rate.ToString(new CultureInfo("en-US"));
+        }
+
     }
 }

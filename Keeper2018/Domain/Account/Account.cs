@@ -20,5 +20,14 @@ namespace Keeper2018
         }
 
         public override string ToString() => Name;
+
+        
+        public string Dump(int level)
+        {
+            var shiftedName = new string(' ', level * 2) + Name;
+            return Id + " ; " + shiftedName + " ; " + OwnerId + " ; " +
+                   IsFolder + " ; " + IsExpanded;
+        }
+
     }
 }

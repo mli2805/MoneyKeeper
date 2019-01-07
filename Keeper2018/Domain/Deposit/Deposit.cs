@@ -12,7 +12,15 @@ namespace Keeper2018
         public DateTime FinishDate { get; set; }
         public string Comment { get; set; }
         public string ShortName { get; set; }
+
+        public string Dump()
+        {
+            return MyAccountId + " ; " + DepositOfferId + " ; " + Serial +" ; " + 
+                   $"{StartDate.Date:dd/MM/yyyy}" + " ; " + $"{FinishDate.Date:dd/MM/yyyy}" + " ; " + 
+                   ShortName + " ; " + (Comment?.Replace("\r\n", "|") ?? "");
+        }
+
     }
 
-  
+
 }

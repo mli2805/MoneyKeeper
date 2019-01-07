@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Windows;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -7,6 +8,7 @@ namespace Keeper2018
     {
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _keeperDb;
+        private readonly ShellPartsBinder _shellPartsBinder;
         private readonly CurrencyRatesViewModel _currencyRatesViewModel;
         private readonly MonthAnalysisViewModel _monthAnalysisViewModel;
         private readonly TransactionsViewModel _transactionsViewModel;
@@ -14,13 +16,14 @@ namespace Keeper2018
         private readonly ArticlesAssociationsViewModel _articlesAssociationsViewModel;
         private readonly SettingsViewModel _settingsViewModel;
 
-        public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb,
+        public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
+            _shellPartsBinder = shellPartsBinder;
             _currencyRatesViewModel = currencyRatesViewModel;
             _monthAnalysisViewModel = monthAnalysisViewModel;
             _transactionsViewModel = transactionsViewModel;
@@ -112,8 +115,13 @@ namespace Keeper2018
 
         public async void Save()
         {
+            _shellPartsBinder.FooterVisibility = Visibility.Visible;
             _keeperDb.FlattenAccountTree();
             await DbSerializer.Serialize(_keeperDb.Bin);
+
+            var result = await _keeperDb.SaveAllToNewTxtAsync();
+            _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
+//            _keeperDb.SaveAllToNewTxt();
         }
         public void ShowSettingsForm()
         {

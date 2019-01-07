@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Keeper2018
 {
@@ -12,6 +13,11 @@ namespace Keeper2018
         public OneRate Clone()
         {
             return (OneRate)MemberwiseClone();
+        }
+
+        public string Dump()
+        {
+            return Value.ToString(new CultureInfo("en-US")) + " / " + Unit;
         }
     }
 }

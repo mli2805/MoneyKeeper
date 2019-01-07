@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -47,6 +48,7 @@ namespace Keeper2018
         }
 
         private DateTime _translatedDate;
+
         public DateTime TranslatedDate
         {
             get => _translatedDate.GetEndOfDate();
@@ -55,6 +57,18 @@ namespace Keeper2018
                 _translatedDate = value;
                 NotifyOfPropertyChange(() => TranslatedDate);
                 NotifyOfPropertyChange(() => SelectedPeriod);
+            }
+        }
+
+        private Visibility _footerVisibility = Visibility.Collapsed;
+        public Visibility FooterVisibility
+        {
+            get => _footerVisibility;
+            set
+            {
+                if (value == _footerVisibility) return;
+                _footerVisibility = value;
+                NotifyOfPropertyChange();
             }
         }
     }

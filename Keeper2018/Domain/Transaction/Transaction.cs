@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Keeper2018
 {
@@ -17,5 +18,28 @@ namespace Keeper2018
         public CurrencyCode? CurrencyInReturn;
         public List<int> Tags;
         public string Comment;
+
+        public string Dump()
+        {
+            return Convert.ToString(Timestamp, new CultureInfo("ru-RU")) + " ; " +
+                   Operation + " ; " + Receipt + " ; " +
+                   MyAccount + " ; " + MySecondAccount + " ; " +
+                   Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
+                   AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + CurrencyInReturn + " ; " +
+                   Dump(Tags) + " ; " + Comment;
+        }
+
+        private string Dump(List<int> tags)
+        {
+            if (tags == null || tags.Count == 0) return " ";
+            string result = "";
+            foreach (var t in tags)
+            {
+                result = result + t + " | ";
+            }
+            result = result.Substring(0, result.Length - 3);
+            return result;
+        }
+
     }
 }

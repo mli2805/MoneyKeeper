@@ -19,7 +19,7 @@ namespace Keeper2018
 
         public static async Task<bool> Serialize(KeeperBin bin)
         {
-            var path = DbUtils.GetDbFullPath();
+            var path = DbIoUtils.GetDbFullPath();
             MadeDbxBackup(path);
             try
             {
@@ -40,7 +40,7 @@ namespace Keeper2018
 
         public static async Task<KeeperBin> Deserialize()
         {
-            var path = DbUtils.GetDbFullPath();
+            var path = DbIoUtils.GetDbFullPath();
             if (!File.Exists(path)) return null;
             await Task.Delay(1);
             try

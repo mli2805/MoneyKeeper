@@ -25,7 +25,7 @@ namespace Keeper2018
 
         private static IEnumerable<Transaction> LoadFromOldTxt()
         {
-            var content = File.ReadAllLines(DbUtils.GetOldTxtFullPath("TransWithTags.txt"),
+            var content = File.ReadAllLines(DbIoUtils.GetOldTxtFullPath("TransWithTags.txt"),
                 Encoding.GetEncoding("Windows-1251"));
 
             var minutes = 1;

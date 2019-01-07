@@ -25,5 +25,24 @@ namespace Keeper2018
         {
             return (DepositCalculationRules)MemberwiseClone();
         }
+
+        public string Dump()
+        {
+            var result = "";
+
+            result += IsFactDays ? "1" : "0";
+            result += EveryStartDay ? "1" : "0";
+            result += EveryFirstDayOfMonth ? "1" : "0";
+            result += EveryLastDayOfMonth ? "1" : "0";
+            result += IsCapitalized ? "1" : "0";
+            result += IsRateFixed ? "1" : "0";
+            result += HasAdditionalProcent ? "1" : "0";
+
+            result += " ; ";
+            result += AdditionalProcent;
+
+            return result;
+        }
+
     }
 }

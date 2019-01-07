@@ -12,7 +12,7 @@ namespace Keeper2018
         public static IEnumerable<Account> LoadFromOldTxt()
         {
             var deposits = LoadDepositsFromOldTxt().ToList();
-            return File.ReadAllLines(DbUtils.GetOldTxtFullPath("Accounts.txt"), Encoding.GetEncoding("Windows-1251")).
+            return File.ReadAllLines(DbIoUtils.GetOldTxtFullPath("Accounts.txt"), Encoding.GetEncoding("Windows-1251")).
                 Where(s => !string.IsNullOrWhiteSpace(s)).Select(l => AccountFromString(l, deposits));
         }
 
@@ -34,7 +34,7 @@ namespace Keeper2018
 
         private static IEnumerable<Deposit> LoadDepositsFromOldTxt()
         {
-            return File.ReadAllLines(DbUtils.GetOldTxtFullPath("Deposits.txt"), Encoding.GetEncoding("Windows-1251"))
+            return File.ReadAllLines(DbIoUtils.GetOldTxtFullPath("Deposits.txt"), Encoding.GetEncoding("Windows-1251"))
                 .Where(s => !string.IsNullOrWhiteSpace(s)).Select(DepositFromString);
         }
 

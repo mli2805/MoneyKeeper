@@ -6,7 +6,14 @@
         Width="737" Height="777" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance keeper2018:ShellViewModel}">
     <DockPanel>
         <keeper2018:MainMenuView DockPanel.Dock="Top" DataContext="{Binding MainMenuViewModel}"/>
-        <Border DockPanel.Dock="Bottom" Height="30"/>
+        <Border DockPanel.Dock="Bottom" Height="30">
+            <DockPanel Visibility="{Binding ShellPartsBinder.FooterVisibility}">
+                <TextBlock Text="Writing..." Margin="10,7,0,0"/>
+                <ProgressBar Height="20" Width="500" Margin="10,0,10,0" IsIndeterminate="True" 
+                             Background="White" Foreground="Blue" BorderBrush="White"/>
+                <TextBlock></TextBlock>
+            </DockPanel>
+        </Border>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

@@ -23,6 +23,18 @@ namespace Keeper2018
             }
         }
 
+        public static int GetAccountLevel(this KeeperDb db, Account account)
+        {
+            var accountModel = db.AcMoDict[account.Id];
+            var level = 0;
+            while (true)
+            {
+                if (accountModel.Owner == null) return level;
+                accountModel = db.AcMoDict[accountModel.Owner.Id];
+                level++;
+            }
+        }
+
         public static void FlattenAccountTree(this KeeperDb db)
         {
             db.Bin.AccountPlaneList = new List<Account>();

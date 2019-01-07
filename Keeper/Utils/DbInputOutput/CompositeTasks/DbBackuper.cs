@@ -49,7 +49,7 @@ namespace Keeper.Utils.DbInputOutput.CompositeTasks
             {
                 using (var zip = new ZipFile())
                 {
-                    zip.Password = "!opa1526";
+                    zip.Password = "";
                     zip.Encryption = EncryptionAlgorithm.WinZipAes256;
                     var filenames = Directory.GetFiles(directoryToZip, "*.txt"); // note: this does not recurse directories! 
                     foreach (var filename in filenames)

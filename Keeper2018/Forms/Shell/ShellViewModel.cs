@@ -13,7 +13,7 @@ namespace Keeper2018
 
         private readonly KeeperDb _keeperDb;
         private readonly DbLoader _dbLoader;
-        private readonly ShellPartsBinder _shellPartsBinder;
+        public ShellPartsBinder ShellPartsBinder;
         private bool _dbLoaded;
 
         public ShellViewModel(KeeperDb keeperDb, DbLoader dbLoader, ShellPartsBinder shellPartsBinder,
@@ -27,7 +27,7 @@ namespace Keeper2018
 
             _keeperDb = keeperDb;
             _dbLoader = dbLoader;
-            _shellPartsBinder = shellPartsBinder;
+            ShellPartsBinder = shellPartsBinder;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -39,7 +39,7 @@ namespace Keeper2018
 
             var account = _keeperDb.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
-            _shellPartsBinder.SelectedAccountModel = account;
+            ShellPartsBinder.SelectedAccountModel = account;
         }
 
         public override async void CanClose(Action<bool> callback)
