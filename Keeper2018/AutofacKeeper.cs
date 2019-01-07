@@ -26,7 +26,6 @@ namespace Keeper2018
             builder.RegisterType<OneDepositViewModel>().SingleInstance();
             builder.RegisterType<DepositReportViewModel>().SingleInstance();
             builder.RegisterType<BalanceVerificationViewModel>().SingleInstance();
-            builder.RegisterType<PdfProvider>().SingleInstance();
 
             builder.RegisterType<CurrencyRatesViewModel>().SingleInstance();
             builder.RegisterType<InputMyUsdViewModel>().SingleInstance();

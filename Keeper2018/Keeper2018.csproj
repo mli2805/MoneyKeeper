@@ -124,8 +124,6 @@
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
-    <Compile Include="Forms\AccountTree\PdfReport\PdfProvider.cs" />
-    <Compile Include="Forms\AccountTree\PdfReport\PdfTrafficLine.cs" />
     <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationView.xaml.cs">
       <DependentUpon>BalanceVerificationView.xaml</DependentUpon>
     </Compile>
@@ -155,9 +153,9 @@
     <Compile Include="Forms\Charts\BalancesAndSaldosViewModel.cs" />
     <Compile Include="Forms\Charts\CarReport\CarReportData.cs" />
     <Compile Include="Forms\Charts\CarReport\CarReportProvider.cs" />
-    <Compile Include="Forms\Charts\CarReport\CarTagData.cs" />
-    <Compile Include="Forms\Charts\CarReport\PdfReporter.cs" />
-    <Compile Include="Forms\Charts\CarReport\PdfReportTableRow.cs" />
+    <Compile Include="Forms\AccountTree\PdfReport\PdfReportTable.cs" />
+    <Compile Include="Forms\AccountTree\PdfReport\PdfReporter.cs" />
+    <Compile Include="Forms\AccountTree\PdfReport\PdfReportTableRow.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">

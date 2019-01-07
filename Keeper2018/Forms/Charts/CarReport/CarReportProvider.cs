@@ -10,6 +10,12 @@ namespace Keeper2018
 {
     public class CarReportProvider
     {
+        private const int Scenic3Id = 716; // Scenic3
+        private static readonly string[] TagRussians =
+            { "покупка-продажа", "государство", "авто ремонт", "ремонт регуляр", "авто топливо", "авто прочее" };
+        private static readonly string[] TagEnglish =
+            { "buy-sell", "state", "car repair", "expendables", "car fuel", "other stuff" };
+
         private readonly KeeperDb _db;
 
         public CarReportProvider(KeeperDb db)
@@ -19,7 +25,7 @@ namespace Keeper2018
 
         public PdfDocument CreateCarReport()
         {
-            var carReportData = _db.ExtractCarData();
+            var carReportData = ExtractCarData();
 
             Document doc = new Document();
             Section chartSection = doc.AddSection();
@@ -36,12 +42,39 @@ namespace Keeper2018
             tablesSection.PageSetup.TopMargin = 20;
             tablesSection.PageSetup.BottomMargin = 10;
             FillTagTables(tablesSection, carReportData);
-           
+
             PdfDocumentRenderer pdfDocumentRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfDocumentRenderer.Document = doc;
             pdfDocumentRenderer.RenderDocument();
 
             return pdfDocumentRenderer.PdfDocument;
+        }
+
+        private CarReportData ExtractCarData()
+        {
+            var result = new CarReportData();
+            var carAccount = _db.AcMoDict[Scenic3Id];
+            for (int i = 0; i < TagRussians.Length; i++)
+            {
+                var tag = carAccount.Children.First(c => c.Name.Contains(TagRussians[i]));
+                var rows = _db.GetTableForTag(tag);
+                result.Tags.Add(new PdfReportTable(TagRussians[i], TagEnglish[i], rows));
+            }
+
+            result.StartDate = result.Tags[0].Table[0].Date;
+
+            //            var sold = new PdfReportTableRow()
+            //            {
+            //                Date = new DateTime(2019, 4, 15),
+            //                AmountInUsd = 9200,
+            //                AmountInCurrency = "9200 usd",
+            //                Comment = "продажа",
+            //            };
+            //            result.Tags[0].Table.Add(sold);
+            //            result.FinishDate = sold.Date;
+
+            result.FinishDate = DateTime.Today;
+            return result;
         }
 
         private void FillChart(Section section, CarReportData carReportData)
@@ -104,57 +137,18 @@ namespace Keeper2018
             row = table.AddRow();
             row.Cells[1].AddParagraph($"$ {-total:#,0}");
             row = table.AddRow();
-            var inAday = -total/(carReportData.FinishDate - carReportData.StartDate).Days;
+            var inAday = -total / (carReportData.FinishDate - carReportData.StartDate).Days;
             row.Cells[1].AddParagraph($"в день $ {inAday:N}");
-
-//            var paragraph2 = section.AddParagraph($"   $ {inAday:N} в день");
-//            paragraph2.Format.SpaceBefore = Unit.FromCentimeter(1);
-//            paragraph2.Format.SpaceAfter = Unit.FromCentimeter(0.2);
         }
 
         private void FillTagTables(Section section, CarReportData carReportData)
         {
-            DrawTableFromTag(section, carReportData.Tags[0]);
-            DrawTableFromTag(section, carReportData.Tags[1]);
+            section.DrawTableFromTag(carReportData.Tags[0]);
+            section.DrawTableFromTag(carReportData.Tags[1]);
             section.AddPageBreak();
-            DrawTableFromTag(section, carReportData.Tags[2]);
+            section.DrawTableFromTag(carReportData.Tags[2]);
             section.AddPageBreak();
-            DrawTableFromTag(section, carReportData.Tags[3]);
-        }
-
-        private void DrawTableFromTag(Section section, CarTagData tag)
-        {
-            var caption = section.AddParagraph(tag.Russian);
-            caption.Format.SpaceBefore = Unit.FromCentimeter(0.1);
-            caption.Format.SpaceAfter = Unit.FromCentimeter(0.3);
-
-            var table = section.AddTable();
-            table.Style = "Table";
-            table.Borders.Width = 0.25;
-
-            var column = table.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = table.AddColumn("3.5cm");
-            column.Format.Alignment = ParagraphAlignment.Right;
-            column.RightPadding = Unit.FromCentimeter(0.5);
-            column = table.AddColumn("10cm");
-            column.Format.Alignment = ParagraphAlignment.Left;
-
-            foreach (var tableRow in tag.Table)
-            {
-                var row = table.AddRow();
-                row.Cells[0].AddParagraph($"{tableRow.Date:dd/MM/yyyy}");
-                var amount = tableRow.AmountInCurrency + (tableRow.AmountInCurrency.EndsWith("usd") ? "" : $"\n {tableRow.AmountInUsd:#,0.##} usd");
-                row.Cells[1].AddParagraph($"{amount}");
-                row.Cells[2].AddParagraph($"{tableRow.Comment}");
-            }
-            var totalRow = table.AddRow();
-            totalRow.Cells[0].AddParagraph("Итого");
-            var sum = tag.Table.Sum(r => r.AmountInUsd);
-            totalRow.Cells[1].AddParagraph($"{sum:#,0.##} usd");
-
-            var offset = section.AddParagraph();
-            offset.Format.SpaceAfter = Unit.FromCentimeter(1);
+            section.DrawTableFromTag(carReportData.Tags[3]);
         }
     }
 }

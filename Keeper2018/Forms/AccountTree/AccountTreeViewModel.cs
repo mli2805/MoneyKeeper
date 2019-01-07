@@ -1,12 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using Caliburn.Micro;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
+using PdfSharp.Pdf;
 
 namespace Keeper2018
 {
     public class AccountTreeViewModel : PropertyChangedBase
     {
-        private readonly PdfProvider _pdfProvider;
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
@@ -18,11 +20,10 @@ namespace Keeper2018
         public KeeperDb KeeperDb { get; set; }
 
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
-            PdfProvider pdfProvider, AskDragAccountActionViewModel askDragAccountActionViewModel,
+            AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
-            _pdfProvider = pdfProvider;
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
             _depositReportViewModel = depositReportViewModel;
@@ -102,9 +103,17 @@ namespace Keeper2018
 
         public void ShowTagInDetails()
         {
-            var document = _pdfProvider.Create(ShellPartsBinder.SelectedAccountModel);
-            string filename = $@"c:\temp\{ShellPartsBinder.SelectedAccountModel.Name}.pdf";
-            document.Save(filename);
+            var tag = ShellPartsBinder.SelectedAccountModel;
+            var doc = new Document();
+            var section = doc.AddSection();
+            var tableData = new PdfReportTable(tag.Name, "", KeeperDb.GetTableForTag(tag));
+            section.DrawTableFromTag(tableData);
+
+            PdfDocumentRenderer pdfDocumentRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfDocumentRenderer.Document = doc;
+            pdfDocumentRenderer.RenderDocument();
+            string filename = $@"c:\temp\{tag.Name}.pdf";
+            pdfDocumentRenderer.Save(filename);
             Process.Start(filename);
         }
     }
