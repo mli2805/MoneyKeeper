@@ -25,7 +25,7 @@ namespace Keeper.Utils.DbInputOutput.ZipTasks
 			using (var zipFile = mFileSystem.GetFile(zipFilename).ReadZip())
 			{
 				foreach (var innerFile in zipFile)
-					if (!innerFile.ExtractWithPassword(Settings.Default.TemporaryTxtDbPath, ExtractExistingFileAction.OverwriteSilently, "!opa1526"))
+					if (!innerFile.ExtractWithPassword(Settings.Default.TemporaryTxtDbPath, ExtractExistingFileAction.OverwriteSilently, "1"))
 						return new DbLoadResult(21, "Bad password!");
 			}
 			return mExistenceChecker.Check(TxtFilesForDb.Dict);
