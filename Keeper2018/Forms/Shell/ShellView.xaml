@@ -10,8 +10,8 @@
         <Border DockPanel.Dock="Bottom" Height="30">
             <DockPanel Visibility="{Binding ShellPartsBinder.FooterVisibility}">
                 <TextBlock Text="Writing..." Margin="10,7,0,0"/>
-                <ProgressBar Height="20" Width="500" Margin="10,0,10,0" IsIndeterminate="True" 
-                             Background="White" Foreground="Blue" BorderBrush="White"/>
+                <ProgressBar Height="16" Width="200" Margin="10,0,10,0" IsIndeterminate="True" 
+                             Background="Blue" Foreground="White" BorderBrush="White"/>
                 <TextBlock></TextBlock>
             </DockPanel>
         </Border>
