@@ -23,7 +23,6 @@ namespace Keeper2018
         {
             return Id + " ; " + Bank + " ; " + Title + " ; " + MainCurrency + " ; " + Comment;
         }
-
     }
 
     [Serializable]
@@ -43,12 +42,19 @@ namespace Keeper2018
                 RateLines = new List<DepositRateLine>(RateLines.Select(l => l.ShallowCopy()))
             };
         }
+        public string Comment { get; set; }
+
+        public string PartDump()
+        {
+            return Id + " ; " + CalculationRules.Dump() + " ; " + Comment;
+        }
     }
 
     [Serializable]
     public class DepositRateLine
     {
         public int DepositOfferId;
+        public int DepositOfferEssentialsId;
         public DateTime DateFrom { get; set; }
         public decimal AmountFrom { get; set; }
         public decimal AmountTo { get; set; }
@@ -59,12 +65,11 @@ namespace Keeper2018
             return (DepositRateLine) MemberwiseClone();
         }
 
-        public string Dump(DepositRateLine rateLine, int accountId)
+        public string PartDump()
         {
-            var dateFrom = $"{rateLine.DateFrom:dd/MM/yyyy}";
-            return accountId + " ; " + dateFrom + " ; " + rateLine.AmountFrom.ToString(new CultureInfo("en-US")) + " ; "
-                   + rateLine.AmountTo.ToString(new CultureInfo("en-US")) + " ; " + rateLine.Rate.ToString(new CultureInfo("en-US"));
+            return DepositOfferId + " ; " + DepositOfferEssentialsId  + " ; " + 
+                   $"{DateFrom:dd/MM/yyyy}" + " ; " + AmountFrom.ToString(new CultureInfo("en-US")) + " ; "
+                   + AmountTo.ToString(new CultureInfo("en-US")) + " ; " + Rate.ToString(new CultureInfo("en-US"));
         }
-
     }
 }

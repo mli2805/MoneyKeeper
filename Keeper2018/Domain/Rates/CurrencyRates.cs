@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 namespace Keeper2018
 {
@@ -14,7 +13,7 @@ namespace Keeper2018
 
         public string Dump()
         {
-            return Convert.ToString(Date.Date, new CultureInfo("ru-RU")) + " ; " +
+            return Date.ToString("dd/MM/yyyy") + " ; " +
                    NbRates.Dump() + " ; " + CbrRate.Usd.Dump() + " ; " + MyUsdRate.Dump();
         }
     }
