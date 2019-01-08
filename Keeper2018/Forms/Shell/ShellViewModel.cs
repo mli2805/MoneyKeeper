@@ -13,7 +13,7 @@ namespace Keeper2018
 
         private readonly KeeperDb _keeperDb;
         private readonly DbLoader _dbLoader;
-        public ShellPartsBinder ShellPartsBinder;
+        public ShellPartsBinder ShellPartsBinder { get; }
         private bool _dbLoaded;
 
         public ShellViewModel(KeeperDb keeperDb, DbLoader dbLoader, ShellPartsBinder shellPartsBinder,

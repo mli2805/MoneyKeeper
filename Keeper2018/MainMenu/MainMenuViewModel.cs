@@ -119,9 +119,8 @@ namespace Keeper2018
             _keeperDb.FlattenAccountTree();
             await DbSerializer.Serialize(_keeperDb.Bin);
 
-            var result = await _keeperDb.SaveAllToNewTxtAsync();
+            var unused = await _keeperDb.SaveAllToNewTxtAsync();
             _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
-//            _keeperDb.SaveAllToNewTxt();
         }
         public void ShowSettingsForm()
         {

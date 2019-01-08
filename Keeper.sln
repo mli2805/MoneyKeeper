@@ -44,4 +44,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2BF1FC9-DCC3-44D6-884B-9D600F187463}
 	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 EndGlobal
