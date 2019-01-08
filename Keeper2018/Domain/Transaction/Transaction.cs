@@ -8,8 +8,8 @@ namespace Keeper2018
     public class Transaction
     {
         public DateTime Timestamp;
-        public int Receipt;
         public OperationType Operation;
+        public int Receipt;
         public int MyAccount;
         public int MySecondAccount;
         public decimal Amount;

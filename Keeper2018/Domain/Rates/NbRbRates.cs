@@ -12,7 +12,7 @@ namespace Keeper2018
 
         public string Dump()
         {
-            return Usd.Dump() + " ; " + Euro.Dump() + " ; " + Rur.Dump();
+            return Usd.Dump() + " | " + Euro.Dump() + " | " + Rur.Dump();
         }
 
     }

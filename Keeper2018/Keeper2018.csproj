@@ -106,6 +106,8 @@
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Db\AssociationFinder.cs" />
+    <Compile Include="Domain\Db\IO\DbClassesInstanceParser.cs" />
+    <Compile Include="Domain\Db\IO\DbTxtLoader.cs" />
     <Compile Include="Domain\Db\IO\DbTxtSaver.cs" />
     <Compile Include="Domain\Db\IO\DbLoader.cs" />
     <Compile Include="Domain\Db\MapToModels.cs" />

@@ -6,8 +6,8 @@ namespace Keeper2018
     public class Account
     {
         public int Id;
-        public int OwnerId;
         public string Header;
+        public int OwnerId;
         public bool IsExpanded;
         public bool IsFolder;
         public Deposit Deposit;

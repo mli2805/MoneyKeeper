@@ -38,7 +38,7 @@ namespace Keeper2018
             result += IsRateFixed ? "1" : "0";
             result += HasAdditionalProcent ? "1" : "0";
 
-            result += " ; ";
+            result += " + ";
             result += AdditionalProcent;
 
             return result;

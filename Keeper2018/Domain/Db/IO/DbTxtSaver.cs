@@ -59,13 +59,13 @@ namespace Keeper2018
             var depoOffers = new List<string>();
             foreach (var depositOffer in db.Bin.DepositOffers)
             {
-                depoOffers.Add($"::DO:: {depositOffer.Dump()}");
+                depoOffers.Add($"::DOFF:| {depositOffer.Dump()}");
                 foreach (var pair in depositOffer.Essentials)
                 {
-                    depoOffers.Add($"::DOE::  {pair.Key:dd/MM/yyyy} {depositOffer.Id} {pair.Value.PartDump()}");
+                    depoOffers.Add($"::DOES::| {pair.Key:dd/MM/yyyy} | {depositOffer.Id} {pair.Value.PartDump()}");
                     foreach (var depositRateLine in pair.Value.RateLines)
                     {
-                        depoOffers.Add($"::DORL::   {depositRateLine.PartDump()}");
+                        depoOffers.Add($"::DORL::| {depositRateLine.PartDump()}");
                     }
                 }
             }

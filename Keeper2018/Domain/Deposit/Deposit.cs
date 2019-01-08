@@ -10,8 +10,8 @@ namespace Keeper2018
         public string Serial { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
-        public string Comment { get; set; }
         public string ShortName { get; set; }
+        public string Comment { get; set; }
 
         public string Dump()
         {
