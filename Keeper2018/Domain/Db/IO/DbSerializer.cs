@@ -38,11 +38,9 @@ namespace Keeper2018
             }
         }
 
-        public static async Task<KeeperBin> Deserialize()
+        public static async Task<KeeperBin> Deserialize(string path)
         {
-            var path = DbIoUtils.GetDbFullPath();
-            if (!File.Exists(path)) return null;
-            await Task.Delay(1);
+           await Task.Delay(1);
             try
             {
                 using (Stream fStream = new FileStream(path, FileMode.Open, FileAccess.Read))

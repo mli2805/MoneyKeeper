@@ -9,6 +9,7 @@ namespace Keeper2018
         private readonly KeeperDb _keeperDb;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
+        public int Mode { get; set; } // 1 - old. 2 - new.
         public bool DbLoaded { get; private set; }
 
         public DbLoadingViewModel(KeeperDb keeperDb)
@@ -23,9 +24,14 @@ namespace Keeper2018
             Task.Factory.StartNew(Load, _cancellationToken);
         }
 
+        public void Initialize(int mode)
+        {
+            Mode = mode;
+        }
+
         private async void Load()
         {
-            _keeperDb.Bin = await DbTexter.LoadAllFromOldTxt();
+            _keeperDb.Bin = Mode == 1 ? await DbTexter.LoadAllFromOldTxt() : await DbTxtLoader.LoadAllFromNewTxt();
             DbLoaded = true;
             TryClose();
         }

@@ -35,7 +35,12 @@ namespace Keeper2018
             DisplayName = "Keeper 2018";
             _dbLoaded = await _dbLoader.Load();
             if (!_dbLoaded)
+            {
                 TryClose();
+                return;
+            }
+
+            _dbLoader.ExpandBinToDb(_keeperDb);
 
             var account = _keeperDb.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;

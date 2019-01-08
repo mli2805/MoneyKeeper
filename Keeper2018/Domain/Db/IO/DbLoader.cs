@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
@@ -23,18 +24,27 @@ namespace Keeper2018
 
         public async Task<bool> Load()
         {
-            _keeperDb.Bin = await DbSerializer.Deserialize();
-            if (_keeperDb.Bin == null)
+            var path = DbIoUtils.GetDbFullPath();
+            string question;
+            if (File.Exists(path))
             {
-                _windowManager.ShowDialog(_dbLoadingViewModel);
-                if (!_dbLoadingViewModel.DbLoaded)
-                    return false;
+                _keeperDb.Bin = await DbSerializer.Deserialize(path);
+                if (_keeperDb.Bin != null)
+                    return true;
+                question = $"Ошибка загрузки из файла {path}";
             }
-            ExpandBinToDb(_keeperDb);
-            return true;
+            else question = $"Файл {path} не найден";
+            var vm = new DbAskLoadingViewModel(question);
+            _windowManager.ShowDialog(vm);
+            if (vm.Result == 0)
+                return false;
+
+            _dbLoadingViewModel.Initialize(vm.Result);
+            _windowManager.ShowDialog(_dbLoadingViewModel);
+            return _dbLoadingViewModel.DbLoaded;
         }
 
-        private void ExpandBinToDb(KeeperDb keeperDb)
+        public void ExpandBinToDb(KeeperDb keeperDb)
         {
             _currencyRatesViewModel.Initialize();
             keeperDb.FillInAccountTree(); // must be first

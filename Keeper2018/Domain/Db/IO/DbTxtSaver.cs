@@ -17,6 +17,7 @@ namespace Keeper2018
             var currencyRates = db.Bin.Rates.Values.Select(l => l.Dump());
             var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
             var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
+            var depoOffers = db.SaveDepoContent();
             var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump());
             var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
@@ -24,37 +25,14 @@ namespace Keeper2018
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates"), currencyRates);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("Accounts"), accounts);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("Deposits"), deposits);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers"), depoOffers);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("Transactions"), transactions);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations"), tagAssociations);
 
-            db.SaveDepoContent2();
             return 0;
         }
 
-        private static void SaveDepoContent1(this KeeperDb db)
-        {
-            var depoOffers = new List<string>();
-            var depoEssentials = new List<string>();
-            var depoRateLines = new List<string>();
-            foreach (var depositOffer in db.Bin.DepositOffers)
-            {
-                depoOffers.Add(depositOffer.Dump());
-                foreach (var pair in depositOffer.Essentials)
-                {
-                    depoEssentials.Add($"{pair.Key:dd/MM/yyyy} {depositOffer.Id} {pair.Value.PartDump()}");
-                    foreach (var depositRateLine in pair.Value.RateLines)
-                    {
-                        depoRateLines.Add(depositRateLine.PartDump());
-                    }
-                }
-            }
-
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers"), depoOffers);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositEssentials"), depoEssentials);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositRateLines"), depoRateLines);
-        } 
-        
-        private static void SaveDepoContent2(this KeeperDb db)
+        private static List<string> SaveDepoContent(this KeeperDb db)
         {
             var depoOffers = new List<string>();
             foreach (var depositOffer in db.Bin.DepositOffers)
@@ -69,8 +47,7 @@ namespace Keeper2018
                     }
                 }
             }
-
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers"), depoOffers);
+            return depoOffers;
         }
     }
 }
