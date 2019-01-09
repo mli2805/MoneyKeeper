@@ -56,7 +56,8 @@
         </DockPanel>
         <DataGrid ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
-                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" IsSynchronizedWithCurrentItem="True"
+                  SelectionChanged="OnSelectionChanged">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />

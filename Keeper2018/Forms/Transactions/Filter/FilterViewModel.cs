@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
@@ -72,6 +73,12 @@ namespace Keeper2018
         public void CleanProperty(int propertyNumber)
         {
             FilterModel.CleanProperty(propertyNumber);
+        }
+
+        public override void CanClose(Action<bool> callback)
+        {
+            FilterModel.CleanAll();
+            base.CanClose(callback);
         }
     }
 }

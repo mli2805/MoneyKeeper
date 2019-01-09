@@ -79,7 +79,8 @@
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(6)]"/>
                 <TextBlock Padding="5">Комментарий</TextBlock>
             </StackPanel>
-            <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" VerticalContentAlignment="Center" Text="{Binding FilterModel.MyComment}" />
+            <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" VerticalContentAlignment="Center" 
+                     Text="{Binding FilterModel.MyComment, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <Button Grid.Row="1" HorizontalAlignment="Left" Width="80" Height="25" Margin="5" Content="Clean all" Style="{StaticResource MyButtonStyle}"
                 cal:Message.Attach="[Event Click] = [Action CleanProperty(99)]"/>

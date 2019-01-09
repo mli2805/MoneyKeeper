@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -6,10 +7,12 @@ namespace Keeper2018
     public class TransactionsViewModel : Screen
     {
         private readonly FilterModel _filterModel;
+        private readonly FilterViewModel _filterViewModel;
         private readonly TranEditExecutor _tranEditExecutor;
         private readonly TranMoveExecutor _tranMoveExecutor;
         private readonly TranSelectExecutor _tranSelectExecutor;
         private readonly ComboTreesProvider _comboTreesProvider;
+
         private int _left;
         public int Left
         {
@@ -20,9 +23,10 @@ namespace Keeper2018
                 _filterViewModel?.PlaceIt(Left, Top, FilterViewWidth);
             }
         }
+
         public int Top { get; set; }
+
         public int FilterViewWidth = 225;
-        private FilterViewModel _filterViewModel;
         public TransModel Model { get; set; }
 
 
@@ -66,19 +70,19 @@ namespace Keeper2018
 
         private void FilterModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            Model.SelectedTranWrappedForDatagrid.IsSelected = false;
+
             Model.SortedRows.Refresh();
             Model.SortedRows.MoveCurrentToLast();
-            Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
+            Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid) Model.SortedRows.CurrentItem;
         }
 
         private void FilterViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsActive" && _filterViewModel.IsActive == false)
             {
-                //                Model.FilterModel = null;
-
                 Model.SortedRows.MoveCurrentToLast();
-                Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
+                Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid) Model.SortedRows.CurrentItem;
             }
         }
 
@@ -86,17 +90,36 @@ namespace Keeper2018
         {
             switch (action)
             {
-                case TranAction.Edit: _tranEditExecutor.EditSelected(); return;
-                case TranAction.MoveUp: _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Up); return;
-                case TranAction.MoveDown: _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Down); return;
-                case TranAction.AddAfterSelected: _tranEditExecutor.AddAfterSelected(); return;
-                case TranAction.Delete: _tranEditExecutor.DeleteSelected(); return;
+                case TranAction.Edit:
+                    _tranEditExecutor.EditSelected();
+                    return;
+                case TranAction.MoveUp:
+                    _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Up);
+                    return;
+                case TranAction.MoveDown:
+                    _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Down);
+                    return;
+                case TranAction.AddAfterSelected:
+                    _tranEditExecutor.AddAfterSelected();
+                    return;
+                case TranAction.Delete:
+                    _tranEditExecutor.DeleteSelected();
+                    return;
 
-                case TranAction.GoToDate: _tranSelectExecutor.SelectFirstOfDate(); return;
-                case TranAction.GoToEnd: _tranSelectExecutor.SelectLast(); return;
+                case TranAction.GoToDate:
+                    _tranSelectExecutor.SelectFirstOfDate();
+                    return;
+                case TranAction.GoToEnd:
+                    _tranSelectExecutor.SelectLast();
+                    return;
                 case TranAction.Filter: return;
             }
         }
-    }
 
+        public override void CanClose(Action<bool> callback)
+        {
+            _filterViewModel.TryClose();
+            base.CanClose(callback);
+        }
+    }
 }

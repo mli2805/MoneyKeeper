@@ -74,6 +74,7 @@ namespace Keeper2018
         {
             IsCollectionChanged = true;
         }
+
         private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(Dictionary<int, Transaction> transactions)
         {
             var result = new ObservableCollection<TranWrappedForDatagrid>();
