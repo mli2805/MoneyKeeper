@@ -22,13 +22,12 @@ namespace Keeper2018
         private List<TransactionModel> _nearbyTransactions;
         private List<TransactionModel> _transToLower;
         private List<TransactionModel> _transToShiftTime;
-
+        private bool _areDatesEqual;
         public void MoveSelected(Destination destination)
         {
             if (!FillLists(destination)) return;
 
-            var areDatesEqual = _transToElevate.First().Timestamp.Date.Equals(_transToLower.First().Timestamp.Date);
-            if (!areDatesEqual && destination == Destination.Down)
+            if (!_areDatesEqual && destination == Destination.Down)
             {
                 var newTimestamp = _transToElevate.Min(t => t.Timestamp);
                 SetNewTimes(newTimestamp);
@@ -45,32 +44,13 @@ namespace Keeper2018
 
         private bool FillLists(Destination destination)
         {
-            var selected = _model.SelectedTranWrappedForDatagrid.Tran;
-            if (selected.Receipt != 0)
-            {
-                _selectedTransactions = _model.Rows.Where(t =>
-                    t.Tran.Timestamp.Date.Equals(selected.Timestamp.Date) && t.Tran.Receipt == selected.Receipt).Select(r => r.Tran).ToList();
-
-                var edge = destination == Destination.Up ? _selectedTransactions.Min(t => t.Timestamp) : _selectedTransactions.Max(t => t.Timestamp);
-                if (!selected.Timestamp.Equals(edge))
-                    _selectedTransactions = new List<TransactionModel>{selected};
-            }
-            else _selectedTransactions = new List<TransactionModel> {selected};
-
-            var nearbyTran = destination == Destination.Up 
-                ? _model.Rows.OrderBy(r=>r.Tran.Timestamp).LastOrDefault(t => t.Tran.Timestamp < selected.Timestamp)
-                : _model.Rows.OrderBy(r=>r.Tran.Timestamp).FirstOrDefault(t => t.Tran.Timestamp > selected.Timestamp);
-            if (nearbyTran == null) return false;
-
-            if (nearbyTran.Tran.Receipt != 0)
-                _nearbyTransactions = _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(nearbyTran.Tran.Timestamp.Date)
-                                                             && t.Tran.Receipt == nearbyTran.Tran.Receipt).Select(r => r.Tran).ToList();
-            else _nearbyTransactions = new List<TransactionModel> {nearbyTran.Tran};
+            GetSelected(destination);
+            if (!GetNearby(destination)) return false;
 
             _transToElevate = destination == Destination.Up ? _selectedTransactions : _nearbyTransactions;
             _transToLower = destination == Destination.Up ?  _nearbyTransactions : _selectedTransactions;
 
-            if (destination == Destination.Down && selected.Timestamp.Date != nearbyTran.Tran.Timestamp.Date)
+            if (destination == Destination.Down && _areDatesEqual)
             {
                 var maxOfElevate = _transToElevate.Max(t => t.Timestamp);
                 _transToShiftTime = _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(maxOfElevate.Date) 
@@ -78,6 +58,46 @@ namespace Keeper2018
             }
             else _transToShiftTime = new List<TransactionModel>();
 
+            return true;
+        }
+
+        private void GetSelected(Destination destination)
+        {
+            var selected = _model.SelectedTranWrappedForDatagrid.Tran;
+            if (selected.Receipt != 0)
+            {
+                _selectedTransactions = _model.Rows.Where(t =>
+                        t.Tran.Timestamp.Date.Equals(selected.Timestamp.Date) && t.Tran.Receipt == selected.Receipt)
+                    .Select(r => r.Tran).ToList();
+
+                var edgeOfReceipt = destination == Destination.Up
+                    ? _selectedTransactions.Min(t => t.Timestamp)
+                    : _selectedTransactions.Max(t => t.Timestamp);
+                if (!selected.Timestamp.Equals(edgeOfReceipt))
+                    _selectedTransactions = new List<TransactionModel> {selected};
+            }
+            else _selectedTransactions = new List<TransactionModel> {selected};
+        }
+
+        private bool GetNearby(Destination destination)
+        {
+            var nearbyTran = destination == Destination.Up
+                ? _model.Rows.OrderBy(r => r.Tran.Timestamp)
+                    .LastOrDefault(t => t.Tran.Timestamp < _selectedTransactions.Last().Timestamp)
+                : _model.Rows.OrderBy(r => r.Tran.Timestamp)
+                    .FirstOrDefault(t => t.Tran.Timestamp > _selectedTransactions.First().Timestamp);
+            if (nearbyTran == null) return false;
+
+            _areDatesEqual = _selectedTransactions.First().Timestamp.Date.Equals(nearbyTran.Tran.Timestamp.Date);
+            if (nearbyTran.Tran.Receipt != 0)
+            {
+                var isReceiptEqual = _areDatesEqual && _selectedTransactions.First().Receipt == nearbyTran.Tran.Receipt;
+                _nearbyTransactions = isReceiptEqual
+                    ? new List<TransactionModel> {nearbyTran.Tran}
+                    : _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(nearbyTran.Tran.Timestamp.Date)
+                                             && t.Tran.Receipt == nearbyTran.Tran.Receipt).Select(r => r.Tran).ToList();
+            }
+            else _nearbyTransactions = new List<TransactionModel> {nearbyTran.Tran};
             return true;
         }
 

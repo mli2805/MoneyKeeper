@@ -11,7 +11,8 @@
         <DockPanel DockPanel.Dock="Bottom">
             <Button DockPanel.Dock="Right" Margin="5,5,5,20" Width="100" Content="Cancel" Name="Cancel" Height="22"/>
         </DockPanel>
-        <ProgressBar DockPanel.Dock="Bottom" Height="25" Margin="10,0,10,30" IsIndeterminate="True" Background="White" BorderBrush="Black" ></ProgressBar>
+        <ProgressBar DockPanel.Dock="Bottom" Height="5" Margin="20,-10,20,50" IsIndeterminate="True" 
+                     Background="Lime" Foreground="White" BorderThickness="0"/>
         <TextBlock></TextBlock>
     </DockPanel>
 </Window>
