@@ -23,7 +23,7 @@ namespace Keeper2018
             DisplayName = _caption;
         }
 
-        public void Initalize(string caption, List<CurrencyRatesModel> rates)
+        public void Initialize(string caption, List<CurrencyRatesModel> rates)
         {
             _caption = caption;
             _rates = rates;

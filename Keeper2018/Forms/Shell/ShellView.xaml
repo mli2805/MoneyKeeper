@@ -17,8 +17,8 @@
         </Border>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" MinWidth="350"/>
             </Grid.ColumnDefinitions>
             <keeper2018:AccountTreeView Grid.Column="0" Margin="3,3,0,0" DataContext="{Binding AccountTreeViewModel}" DockPanel.Dock="Left"/>
             <Grid Grid.Column="1">

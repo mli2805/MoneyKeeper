@@ -95,8 +95,15 @@ namespace Keeper2018
         public void UsdFourYearsChart()
         {
             var usdAnnualDiagramViewModel = new UsdAnnualDiagramViewModel();
-            usdAnnualDiagramViewModel.Initalize(OxyplotKey, Rows.ToList());
+            usdAnnualDiagramViewModel.Initialize(OxyplotKey, Rows.ToList());
             _windowManager.ShowWindow(usdAnnualDiagramViewModel);
+        }
+
+        public void UsdFiveYearsChart()
+        {
+            var vm = new UsdFiveInOneChartViewModel();
+            vm.Initialize(OxyplotKey, Rows.ToList());
+            _windowManager.ShowWindow(vm);
         }
 
         public void BasketChart()
@@ -120,7 +127,7 @@ namespace Keeper2018
                     var currencyRates = new CurrencyRates() { Date = date, NbRates = nbRbRates };
                     var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
                     currencyRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
-                    currencyRates.MyUsdRate = new OneRate(){Value = nbRbRates.Usd.Value * 1.003, Unit = 1};
+                    currencyRates.MyUsdRate = new OneRate() { Value = nbRbRates.Usd.Value * 1.003, Unit = 1 };
 
                     _rates.Add(currencyRates.Date, currencyRates);
                     var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);

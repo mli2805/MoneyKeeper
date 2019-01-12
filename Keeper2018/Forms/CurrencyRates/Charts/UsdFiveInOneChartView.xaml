@@ -1,0 +1,13 @@
+﻿<Window x:Class="Keeper2018.UsdFiveInOneChartView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        Title="UsdFiveInOneChartView" WindowState="Maximized" >
+    <Grid>
+        <oxy:PlotView Grid.Row="0" Model="{Binding MyPlotModel}"/>
+
+</Grid>
+</Window>

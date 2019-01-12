@@ -161,6 +161,10 @@
     <Compile Include="Forms\AccountTree\PdfReport\PdfReportTableRow.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
+    <Compile Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml.cs">
+      <DependentUpon>UsdFiveInOneChartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartViewModel.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">
       <DependentUpon>DateSelectControl.xaml</DependentUpon>
     </Compile>
@@ -398,6 +402,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Charts\BalancesAndSaldosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
