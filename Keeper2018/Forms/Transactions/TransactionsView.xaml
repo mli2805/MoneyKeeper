@@ -8,7 +8,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" Height="800" Width="1000" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=MainDatagrid}"
         TextOptions.TextFormattingMode="Display">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Space">
@@ -54,7 +54,7 @@
                     Style="{StaticResource MyButtonStyle}"
                     Content="Close" IsCancel="True" />
         </DockPanel>
-        <DataGrid ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}"
+        <DataGrid Name="MainDatagrid" ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" IsSynchronizedWithCurrentItem="True"
                   SelectionChanged="OnSelectionChanged">

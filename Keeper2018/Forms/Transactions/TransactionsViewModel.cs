@@ -28,6 +28,7 @@ namespace Keeper2018
 
         public int FilterViewWidth = 225;
         public TransModel Model { get; set; }
+        public bool IsFirstLaunch = true;
 
 
         public TransactionsViewModel(TransModel model, FilterModel filterModel, FilterViewModel filterViewModel,
@@ -55,6 +56,7 @@ namespace Keeper2018
             _comboTreesProvider.Initialize();
             _filterModel.Initialize();
             Model.Initialize();
+            IsFirstLaunch = false;
         }
 
         public void ButtonFilter()
@@ -70,7 +72,8 @@ namespace Keeper2018
 
         private void FilterModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Model.SelectedTranWrappedForDatagrid.IsSelected = false;
+            if (Model.SelectedTranWrappedForDatagrid != null)
+                Model.SelectedTranWrappedForDatagrid.IsSelected = false;
 
             Model.SortedRows.Refresh();
             Model.SortedRows.MoveCurrentToLast();
@@ -95,6 +98,7 @@ namespace Keeper2018
                     return;
                 case TranAction.MoveUp:
                     _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Up);
+                    Model.F();
                     return;
                 case TranAction.MoveDown:
                     _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Down);

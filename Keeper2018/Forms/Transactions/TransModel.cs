@@ -33,14 +33,19 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        public void F()
+        {
+            NotifyOfPropertyChange(nameof(SelectedTranWrappedForDatagrid));
+        }
         public DateTime AskedDate { get; set; } = DateTime.Now;
         public bool IsCollectionChanged { get; set; }
 
         private readonly KeeperDb _db;
-        private FilterModel _filterModel;
-
-
+        private readonly FilterModel _filterModel;
         private TranFilter _tranFilter;
+
+
         public TransModel(KeeperDb db, FilterModel filterModel)
         {
             _db = db;
@@ -57,12 +62,20 @@ namespace Keeper2018
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
             SortedRows.Filter += Filter;
             SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
+            SortedRows.CurrentChanged += SortedRows_CurrentChanged;
 
             SortedRows.MoveCurrentToLast();
             SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)SortedRows.CurrentItem;
             SelectedTranWrappedForDatagrid.IsSelected = true;
 
             IsCollectionChanged = false;
+        }
+
+        private void SortedRows_CurrentChanged(object sender, EventArgs e)
+        {
+            var wrapped = (TranWrappedForDatagrid)((ICollectionView) sender).CurrentItem;
+            if (wrapped != null)
+                Console.WriteLine($@"current tran is {wrapped.Tran.Timestamp}");
         }
 
         private bool Filter(object o)

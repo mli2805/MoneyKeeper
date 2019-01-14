@@ -65,7 +65,8 @@ namespace Keeper2018
 
         public void ShowTransactionsForm()
         {
-            _transactionsViewModel.Initialize();
+            if (_transactionsViewModel.IsFirstLaunch)
+                _transactionsViewModel.Initialize();
             _windowManager.ShowDialog(_transactionsViewModel);
         }
 
