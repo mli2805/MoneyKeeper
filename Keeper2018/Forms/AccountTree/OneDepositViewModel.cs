@@ -91,7 +91,6 @@ namespace Keeper2018
         public void SaveDeposit()
         {
             IsSavePressed = true;
-            _accountModel.Id = _db.Bin.AccountPlaneList.Max(a => a.Id) + 1;
             if (string.IsNullOrEmpty(Junction))
                 CompileAccountName();
             _accountModel.Header = Junction;

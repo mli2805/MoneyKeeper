@@ -48,20 +48,24 @@ namespace Keeper2018
 
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
             KeeperDb.Bin.AccountPlaneList.Add(accountModel.Map());
+            KeeperDb.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void AddAccountDeposit()
         {
-            var accountModel = new AccountModel("");
-            accountModel.Deposit = new Deposit();
-            accountModel.Owner = ShellPartsBinder.SelectedAccountModel;
-
+            var accountModel = new AccountModel("")
+            {
+                Id = KeeperDb.Bin.AccountPlaneList.Max(a => a.Id) + 1,
+                Owner = ShellPartsBinder.SelectedAccountModel,
+                Deposit = new Deposit()
+            };
             _oneDepositViewModel.InitializeForm(accountModel, true);
             WindowManager.ShowDialog(_oneDepositViewModel);
             if (!_oneDepositViewModel.IsSavePressed) return;
 
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
             KeeperDb.Bin.AccountPlaneList.Add(accountModel.Map());
+            KeeperDb.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void ChangeAccount()
@@ -72,7 +76,8 @@ namespace Keeper2018
                 _oneDepositViewModel.InitializeForm(accountModel, false);
                 WindowManager.ShowDialog(_oneDepositViewModel);
 
-                if (_oneDepositViewModel.IsSavePressed) { }
+                if (_oneDepositViewModel.IsSavePressed)  
+                    KeeperDb.FlattenAccountTree();
             }
             else
             {
