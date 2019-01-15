@@ -19,18 +19,29 @@ namespace Keeper2018
             var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
             var depoOffers = db.SaveDepoContent();
             var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump());
+//            var transactions = db.GetTrans();
             var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
 
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates"), currencyRates);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Accounts"), accounts);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Deposits"), deposits);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers"), depoOffers);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Transactions"), transactions);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations"), tagAssociations);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates.txt"), currencyRates);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Accounts.txt"), accounts);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"), deposits);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"), depoOffers);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
 
             return 0;
         }
+
+//        private static IEnumerable<string> GetTrans(this KeeperDb db)
+//        {
+//            int count = -1;
+//            foreach (var transaction in db.Bin.Transactions.Values.OrderBy(t => t.Timestamp))
+//            {
+//                count++;
+//                yield return transaction.Dump(count);
+//            }
+//        }
 
         private static List<string> SaveDepoContent(this KeeperDb db)
         {

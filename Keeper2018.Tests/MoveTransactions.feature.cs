@@ -86,10 +86,12 @@ namespace Keeper2018.Tests
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 4
- testRunner.Given("Существует набор транзакций", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Существует набор данных", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
- testRunner.When("Я двигаю не первую транзакцию чека вверх", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Открываю форму транзакций", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 6
+ testRunner.When("Я двигаю не первую транзакцию чека вверх", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 7
  testRunner.Then("Она меняется местами с вышестоявшей", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -28,7 +28,8 @@ namespace Keeper2018
             string question;
             if (File.Exists(path))
             {
-                _keeperDb.Bin = await DbSerializer.Deserialize(path);
+                await Task.Delay(1);
+                _keeperDb.Bin = DbSerializer.Deserialize(path);
                 if (_keeperDb.Bin != null)
                     return true;
                 question = $"Ошибка загрузки из файла {path}";

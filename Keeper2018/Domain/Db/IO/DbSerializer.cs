@@ -38,9 +38,8 @@ namespace Keeper2018
             }
         }
 
-        public static async Task<KeeperBin> Deserialize(string path)
+        public static KeeperBin Deserialize(string path)
         {
-           await Task.Delay(1);
             try
             {
                 using (Stream fStream = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -49,8 +48,9 @@ namespace Keeper2018
                     return (KeeperBin)binaryFormatter.Deserialize(fStream);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }

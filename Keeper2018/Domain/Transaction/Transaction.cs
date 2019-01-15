@@ -27,6 +27,7 @@ namespace Keeper2018
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + CurrencyInReturn + " ; " +
                    Dump(Tags) + " ; " + Comment;
+//                   Dump(Tags) + " ; " + count;
         }
 
         private string Dump(List<int> tags)
