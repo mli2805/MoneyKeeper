@@ -98,7 +98,6 @@ namespace Keeper2018
                     return;
                 case TranAction.MoveUp:
                     _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Up);
-                    Model.F();
                     return;
                 case TranAction.MoveDown:
                     _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Down);

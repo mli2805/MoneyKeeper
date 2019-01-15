@@ -25,7 +25,7 @@ namespace Keeper2018
         private bool _areDatesEqual;
         public void MoveSelected(Destination destination)
         {
-            if (!FillLists(destination)) return;
+             if (!FillLists(destination)) return;
 
             if (!_areDatesEqual && destination == Destination.Down)
             {
@@ -50,7 +50,7 @@ namespace Keeper2018
             _transToElevate = destination == Destination.Up ? _selectedTransactions : _nearbyTransactions;
             _transToLower = destination == Destination.Up ?  _nearbyTransactions : _selectedTransactions;
 
-            if (destination == Destination.Down && _areDatesEqual)
+            if (destination == Destination.Down && !_areDatesEqual)
             {
                 var maxOfElevate = _transToElevate.Max(t => t.Timestamp);
                 _transToShiftTime = _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(maxOfElevate.Date) 
@@ -83,9 +83,9 @@ namespace Keeper2018
         {
             var nearbyTran = destination == Destination.Up
                 ? _model.Rows.OrderBy(r => r.Tran.Timestamp)
-                    .LastOrDefault(t => t.Tran.Timestamp < _selectedTransactions.Last().Timestamp)
+                    .LastOrDefault(t => t.Tran.Timestamp < _selectedTransactions.First().Timestamp)
                 : _model.Rows.OrderBy(r => r.Tran.Timestamp)
-                    .FirstOrDefault(t => t.Tran.Timestamp > _selectedTransactions.First().Timestamp);
+                    .FirstOrDefault(t => t.Tran.Timestamp > _selectedTransactions.Last().Timestamp);
             if (nearbyTran == null) return false;
 
             _areDatesEqual = _selectedTransactions.First().Timestamp.Date.Equals(nearbyTran.Tran.Timestamp.Date);
