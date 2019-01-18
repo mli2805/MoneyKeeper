@@ -20,6 +20,11 @@ namespace Keeper2018
             var dbPath = keeperInDropboxFullPath + @"\Backup";
             return Path.Combine(dbPath, filename);
         }
+        public static string GetBackupPath()
+        {
+            var keeperInDropboxFullPath = GetKeeper2018InDropboxPath();
+            return keeperInDropboxFullPath + @"\Backup";
+        }
 
         public static string GetDbFullPath()
         {
@@ -40,7 +45,7 @@ namespace Keeper2018
             if (!File.Exists(jsonPath)) throw new Exception("Dropbox could not be found!");
             var strings = File.ReadAllText(jsonPath).Split('\"');
             var index = strings.ToList().IndexOf("path");
-            var dropboxPath = strings[index+2].Replace(@"\\", @"\");
+            var dropboxPath = strings[index + 2].Replace(@"\\", @"\");
             return dropboxPath;
         }
     }

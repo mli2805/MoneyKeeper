@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using Ionic.Zip;
 
 namespace Keeper2018
 {
@@ -19,7 +22,6 @@ namespace Keeper2018
             var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
             var depoOffers = db.SaveDepoContent();
             var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump());
-//            var transactions = db.GetTrans();
             var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
 
@@ -32,16 +34,6 @@ namespace Keeper2018
 
             return 0;
         }
-
-//        private static IEnumerable<string> GetTrans(this KeeperDb db)
-//        {
-//            int count = -1;
-//            foreach (var transaction in db.Bin.Transactions.Values.OrderBy(t => t.Timestamp))
-//            {
-//                count++;
-//                yield return transaction.Dump(count);
-//            }
-//        }
 
         private static List<string> SaveDepoContent(this KeeperDb db)
         {
@@ -59,6 +51,36 @@ namespace Keeper2018
                 }
             }
             return depoOffers;
+        }
+
+        public static async Task<int> ZipTxtDbAsync()
+        {
+            await Task.Factory.StartNew(ZipTxtDb);
+            return 0;
+        }
+
+        public static void ZipTxtDb()
+        {
+            var archiveName = $"DB{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.zip";
+            var zipFileToCreate = Path.Combine(DbIoUtils.GetBackupFilePath(archiveName));
+            var backupFolder = DbIoUtils.GetBackupPath();
+            try
+            {
+                using (var zip = new ZipFile())
+                {
+                    zip.Password = "1";
+                    zip.Encryption = EncryptionAlgorithm.WinZipAes256;
+                    var filenames =
+                        Directory.GetFiles(backupFolder, "*.txt"); // note: this does not recurse directories! 
+                    foreach (var filename in filenames)
+                        zip.AddFile(filename, string.Empty);
+                    zip.Save(zipFileToCreate);
+                }
+            }
+            catch (Exception ex1)
+            {
+                MessageBox.Show("Exception during database zipping: " + ex1);
+            }
         }
     }
 }

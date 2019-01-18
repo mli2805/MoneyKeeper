@@ -122,6 +122,7 @@ namespace Keeper2018
             var unused = await _keeperDb.SaveAllToNewTxtAsync();
             _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
         }
+
         public void ShowSettingsForm()
         {
             _windowManager.ShowDialog(_settingsViewModel);

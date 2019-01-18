@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -51,8 +52,15 @@ namespace Keeper2018
         {
             if (_dbLoaded)
             {
+                ShellPartsBinder.FooterVisibility = Visibility.Visible;
                 _keeperDb.FlattenAccountTree();
                 await DbSerializer.Serialize(_keeperDb.Bin);
+
+                //TODO check if db was changed
+                var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
+                var unused2 = await DbTxtSaver.ZipTxtDbAsync();
+                //TODO remove txt
+                ShellPartsBinder.FooterVisibility = Visibility.Collapsed;
             }
             base.CanClose(callback);
         }
