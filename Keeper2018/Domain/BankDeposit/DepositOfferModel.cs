@@ -12,9 +12,14 @@ namespace Keeper2018
 
         // Conditions of offer could be changed (especially rates, initial sum) while Title remains the same
         // Conditions are applied from some date - key in dictionary
-        public Dictionary<DateTime, DepositEssential> Essentials {get; set; } =
-            new Dictionary<DateTime, DepositEssential>(){{DateTime.Today, new DepositEssential()}};
+        public Dictionary<DateTime, DepositEssential> Essentials {get; set; }
         public string Comment { get; set; }
+
+        public DepositOfferModel(int id)
+        {
+            Id = id;
+            Essentials = new Dictionary<DateTime, DepositEssential>() { { DateTime.Today, new DepositEssential() { DepositOfferId = Id } } };
+        }
 
         public override string ToString()
         {
@@ -23,8 +28,7 @@ namespace Keeper2018
 
         public DepositOfferModel DeepCopy()
         {
-            var result = new DepositOfferModel();
-            result.Id = Id;
+            var result = new DepositOfferModel(Id);
             result.Bank = Bank;
             result.Title = Title;
             result.MainCurrency = MainCurrency;

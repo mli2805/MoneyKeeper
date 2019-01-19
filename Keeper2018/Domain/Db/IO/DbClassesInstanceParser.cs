@@ -125,9 +125,10 @@ namespace Keeper2018
             var substrings = str.Split(';');
             return new DepositEssential()
             {
-                Id = Convert.ToInt32(substrings[0]),
-                CalculationRules = substrings[1].DepositOfferRulesFromString(),
-                Comment = substrings[2].Trim(),
+                DepositOfferId = Convert.ToInt32(substrings[0]),
+                Id = Convert.ToInt32(substrings[1]),
+                CalculationRules = substrings[2].DepositOfferRulesFromString(),
+                Comment = substrings[3].Trim(),
             };
         }
 

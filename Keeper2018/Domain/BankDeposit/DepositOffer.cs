@@ -30,6 +30,7 @@ namespace Keeper2018
     {
         // ID is necessary because Deposit can have more than one Essential 
         // and txt file should have ID to separate RateLines from different Essentials
+        public int DepositOfferId { get; set; } 
         public int Id { get; set; } 
         public DepositCalculationRules CalculationRules { get; set; } = new DepositCalculationRules();
         public List<DepositRateLine> RateLines { get; set; } = new List<DepositRateLine>();
@@ -46,7 +47,7 @@ namespace Keeper2018
 
         public string PartDump()
         {
-            return Id + " ; " + CalculationRules.Dump() + " ; " + Comment;
+            return DepositOfferId + " ; " + Id + " ; " + CalculationRules.Dump() + " ; " + Comment;
         }
     }
 

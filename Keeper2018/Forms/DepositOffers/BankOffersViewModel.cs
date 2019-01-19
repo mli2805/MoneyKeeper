@@ -47,7 +47,7 @@ namespace Keeper2018
 
         public void AddOffer()
         {
-            var offer = new DepositOfferModel { Id = Rows.Max(l => l.Id) + 1 };
+            var offer = new DepositOfferModel (Rows.Max(l => l.Id) + 1);
 
             _oneBankOfferViewModel.Initialize(offer);
             _windowManager.ShowDialog(_oneBankOfferViewModel);

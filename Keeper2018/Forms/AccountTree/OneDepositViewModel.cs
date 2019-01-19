@@ -106,7 +106,7 @@ namespace Keeper2018
         public void CompileAccountName()
         {
             decimal rate;
-            var essentials = SelectedDepositOffer.Essentials.LastOrDefault(p => p.Key < DepositInWork.StartDate);
+            var essentials = SelectedDepositOffer.Essentials.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
        //     if (essentials != null)
             {
                 var line = essentials.Value.RateLines.Last();

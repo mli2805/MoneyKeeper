@@ -24,7 +24,8 @@ namespace Keeper2018
                 Rows.Add(rateLine);
             }
             if (Rows.Count == 0)
-                Rows.Add(new DepositRateLine(){DateFrom = DateTime.Today, AmountFrom = 0, AmountTo = 999999999999, Rate = 100});
+                Rows.Add(new DepositRateLine(){DepositOfferId = Essential.DepositOfferId, DepositOfferEssentialsId = Essential.Id,
+                    DateFrom = DateTime.Today, AmountFrom = 0, AmountTo = 999999999999, Rate = 10});
         }
 
         protected override void OnViewLoaded(object view)
@@ -38,6 +39,7 @@ namespace Keeper2018
             var newLine = new DepositRateLine()
             {
                 DepositOfferId = lastLine.DepositOfferId,
+                DepositOfferEssentialsId = lastLine.DepositOfferEssentialsId,
                 DateFrom = lastLine.DateFrom,
                 AmountFrom = lastLine.AmountTo + (decimal)0.01,
                 AmountTo = lastLine.AmountTo * 100 - (decimal)0.01,
@@ -53,6 +55,7 @@ namespace Keeper2018
                 .Select(line => new DepositRateLine()
                 {
                     DepositOfferId = line.DepositOfferId,
+                    DepositOfferEssentialsId = line.DepositOfferEssentialsId,
                     DateFrom = NewDate,
                     AmountFrom = line.AmountFrom,
                     AmountTo = line.AmountTo,

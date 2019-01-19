@@ -43,7 +43,7 @@ namespace Keeper2018
                 depoOffers.Add($"::DOFF:| {depositOffer.Dump()}");
                 foreach (var pair in depositOffer.Essentials)
                 {
-                    depoOffers.Add($"::DOES::| {pair.Key:dd/MM/yyyy} | {depositOffer.Id} {pair.Value.PartDump()}");
+                    depoOffers.Add($"::DOES::| {pair.Key:dd/MM/yyyy} | {pair.Value.PartDump()}");
                     foreach (var depositRateLine in pair.Value.RateLines)
                     {
                         depoOffers.Add($"::DORL::| {depositRateLine.PartDump()}");

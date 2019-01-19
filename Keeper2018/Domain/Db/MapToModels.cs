@@ -37,9 +37,8 @@ namespace Keeper2018
 
         public static DepositOfferModel Map(this DepositOffer depositOffer, List<Account> accountPlaneList)
         {
-            return new DepositOfferModel
+            return new DepositOfferModel(depositOffer.Id)
             {
-                Id = depositOffer.Id,
                 Bank = accountPlaneList.First(a=>a.Id == depositOffer.Bank),
                 Title = depositOffer.Title,
                 MainCurrency = depositOffer.MainCurrency,
