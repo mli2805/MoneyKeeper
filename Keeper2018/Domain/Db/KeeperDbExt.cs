@@ -74,6 +74,7 @@ namespace Keeper2018
                 Id = depositOfferModel.Id,
                 Bank = depositOfferModel.Bank.Id,
                 Title = depositOfferModel.Title,
+                MainCurrency = depositOfferModel.MainCurrency,
                 Essentials = depositOfferModel.Essentials,
                 Comment = depositOfferModel.Comment,
             };

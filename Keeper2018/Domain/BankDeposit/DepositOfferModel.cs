@@ -27,6 +27,7 @@ namespace Keeper2018
             result.Id = Id;
             result.Bank = Bank;
             result.Title = Title;
+            result.MainCurrency = MainCurrency;
             result.Essentials = new Dictionary<DateTime, DepositEssential>();
             foreach (var pair in Essentials)
             {

@@ -20,6 +20,7 @@
                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="35" />
                 <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Name}" Width="145" />
                 <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}" Width="200" />
+                <GridViewColumn Header="Валюта" DisplayMemberBinding="{Binding MainCurrency}" Width="50" />
                 <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="300" />
             </GridView>
         </ListView.View>

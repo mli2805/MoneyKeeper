@@ -8,11 +8,12 @@ namespace Keeper2018
 {
     public class OneBankOfferViewModel : Screen
     {
-        private readonly string _dateTemplate = "dd-MMM-yyyy";
+        private readonly string _dateTemplate = "dd-MM-yyyy";
         private readonly KeeperDb _keeperDb;
         private readonly IWindowManager _windowManager;
         private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
         public List<Account> Banks { get; set; }
+        public List<CurrencyCode> Currencies { get; set; }
         public DepositOfferModel ModelInWork { get; set; }
 
         public List<string> EssentialDates { get; set; }
@@ -33,7 +34,7 @@ namespace Keeper2018
         {
             var bankFolder = _keeperDb.Bin.AccountPlaneList.First(a => a.Name == "Банки");
             Banks = new List<Account>(_keeperDb.Bin.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
-
+            Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             ModelInWork = model;
             EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             // EssentialDates = ModelInWork.Essentials.Keys.ToList();
