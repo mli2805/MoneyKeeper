@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
@@ -14,11 +15,12 @@ namespace Keeper2018
 
         private readonly KeeperDb _keeperDb;
         private readonly DbLoader _dbLoader;
+        private readonly TransModel _transModel;
         public ShellPartsBinder ShellPartsBinder { get; }
         private bool _dbLoaded;
 
         public ShellViewModel(KeeperDb keeperDb, DbLoader dbLoader, ShellPartsBinder shellPartsBinder,
-            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, 
+            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, TransModel transModel,
             BalanceOrTrafficViewModel balanceOrTrafficViewModel, TwoSelectorsViewModel twoSelectorsViewModel)
         {
             MainMenuViewModel = mainMenuViewModel;
@@ -28,6 +30,7 @@ namespace Keeper2018
 
             _keeperDb = keeperDb;
             _dbLoader = dbLoader;
+            _transModel = transModel;
             ShellPartsBinder = shellPartsBinder;
         }
 
@@ -56,13 +59,26 @@ namespace Keeper2018
                 _keeperDb.FlattenAccountTree();
                 await DbSerializer.Serialize(_keeperDb.Bin);
 
-                //TODO check if db was changed
-                var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
-                var unused2 = await DbTxtSaver.ZipTxtDbAsync();
-                //TODO remove txt
+                if (_transModel.IsCollectionChanged)
+                {
+                    var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
+                    var unused2 = await DbTxtSaver.ZipTxtDbAsync();
+                    DeleteTxtFiles();
+                }
+            
                 ShellPartsBinder.FooterVisibility = Visibility.Collapsed;
             }
             base.CanClose(callback);
         }
+
+        private void DeleteTxtFiles()
+        {
+            var backupPath = DbIoUtils.GetBackupPath();
+            if (!Directory.Exists(backupPath)) return;
+            var filenames = Directory.GetFiles(backupPath, "*.txt"); // note: this does not recurse directories! 
+            foreach (var filename in filenames)
+                File.Delete(filename);
+        }
+
     }
 }

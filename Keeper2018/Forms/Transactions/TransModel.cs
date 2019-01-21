@@ -34,10 +34,6 @@ namespace Keeper2018
             }
         }
 
-        public void F()
-        {
-            NotifyOfPropertyChange(nameof(SelectedTranWrappedForDatagrid));
-        }
         public DateTime AskedDate { get; set; } = DateTime.Now;
         public bool IsCollectionChanged { get; set; }
 
