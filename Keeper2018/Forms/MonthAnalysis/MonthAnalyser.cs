@@ -41,6 +41,8 @@ namespace Keeper2018
             FillBeforeViewModel(startDate);
             var finishMoment = isCurrentPeriod ? DateTime.Today.GetEndOfDate() : startDate.AddMonths(1).AddSeconds(-1);
             FillIncomeList(startDate, finishMoment);
+            if (isCurrentPeriod)
+                FillIncomeForecastList(startDate, finishMoment);
             FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
             _monthAnalysisModel.FillResultList();
@@ -81,21 +83,7 @@ namespace Keeper2018
                 }
                 else
                 {
-                    var comment = "";
-                    if (!string.IsNullOrEmpty(tran.Comment))
-                        comment = tran.Comment;
-                    else
-                    {
-                        foreach (var tagId in tran.Tags)
-                        {
-                            var tagModel = _db.AcMoDict[tagId];
-                            if (tagModel.Is(_incomesRoot))
-                            {
-                                comment = tagModel.Name;
-                                break;
-                            }
-                        }
-                    }
+                    var comment = BuildCommentForIncomeTransaction(tran);
                     _monthAnalysisModel.IncomeViewModel.List.Add($"{amStr}  {tran.Timestamp:dd MMM} {comment}", Brushes.Blue);
                 }
 
@@ -103,21 +91,58 @@ namespace Keeper2018
             }
 
             if (depoList.Count > 0)
-            {
-                _monthAnalysisModel.IncomeViewModel.List.Add("");
-                _monthAnalysisModel.IncomeViewModel.List.Add("   Депозиты:", Brushes.Blue);
-                _monthAnalysisModel.IncomeViewModel.List.Add("");
-                foreach (var line in depoList)
-                {
-                    _monthAnalysisModel.IncomeViewModel.List.Add($"   {line}", Brushes.Blue);
-                }
-                _monthAnalysisModel.IncomeViewModel.List.Add("");
-                _monthAnalysisModel.IncomeViewModel.List.Add($"   Итого депозиты {depoTotal:#,0.00} usd", Brushes.Blue);
-            }
+                InsertDepoLinesIntoIncomeList(depoList, depoTotal);
 
             _monthAnalysisModel.IncomeViewModel.List.Add("");
             _monthAnalysisModel.IncomeViewModel.List.Add($"Итого {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
             _monthAnalysisModel.Income = total;
+        }
+
+        private void FillIncomeForecastList(DateTime startDate, DateTime finishMoment)
+        {
+            var realIncomes = _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
+                                                                        && t.Timestamp >= startDate && t.Timestamp <= finishMoment);
+            var salary = 204;
+            if (realIncomes.FirstOrDefault(t => t.Tags.Contains(salary)) == null)
+            {
+                _monthAnalysisModel.IncomeForecastList.Add("зарплата 1300 usd");
+                _monthAnalysisModel.IncomeForecast += 1300;
+            }
+        }
+
+        private void InsertDepoLinesIntoIncomeList(List<string> depoList, decimal depoTotal)
+        {
+            _monthAnalysisModel.IncomeViewModel.List.Add("");
+            _monthAnalysisModel.IncomeViewModel.List.Add("   Депозиты:", Brushes.Blue);
+            _monthAnalysisModel.IncomeViewModel.List.Add("");
+            foreach (var line in depoList)
+            {
+                _monthAnalysisModel.IncomeViewModel.List.Add($"   {line}", Brushes.Blue);
+            }
+
+            _monthAnalysisModel.IncomeViewModel.List.Add("");
+            _monthAnalysisModel.IncomeViewModel.List.Add($"   Итого депозиты {depoTotal:#,0.00} usd", Brushes.Blue);
+        }
+
+        private string BuildCommentForIncomeTransaction(Transaction tran)
+        {
+            var comment = "";
+            if (!string.IsNullOrEmpty(tran.Comment))
+                comment = tran.Comment;
+            else
+            {
+                foreach (var tagId in tran.Tags)
+                {
+                    var tagModel = _db.AcMoDict[tagId];
+                    if (tagModel.Is(_incomesRoot))
+                    {
+                        comment = tagModel.Name;
+                        break;
+                    }
+                }
+            }
+
+            return comment;
         }
 
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)
