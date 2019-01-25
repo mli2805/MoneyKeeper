@@ -82,5 +82,14 @@ namespace Keeper2018
                 MessageBox.Show("Exception during database zipping: " + ex1);
             }
         }
+
+        public static void DeleteTxtFiles()
+        {
+            var backupPath = DbIoUtils.GetBackupPath();
+            if (!Directory.Exists(backupPath)) return;
+            var filenames = Directory.GetFiles(backupPath, "*.txt"); // note: this does not recurse directories! 
+            foreach (var filename in filenames)
+                File.Delete(filename);
+        }
     }
 }

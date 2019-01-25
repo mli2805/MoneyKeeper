@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
@@ -63,22 +62,15 @@ namespace Keeper2018
                 {
                     var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
                     var unused2 = await DbTxtSaver.ZipTxtDbAsync();
-                    DeleteTxtFiles();
                 }
-            
+
+                DbTxtSaver.DeleteTxtFiles();
                 ShellPartsBinder.FooterVisibility = Visibility.Collapsed;
             }
             base.CanClose(callback);
         }
 
-        private void DeleteTxtFiles()
-        {
-            var backupPath = DbIoUtils.GetBackupPath();
-            if (!Directory.Exists(backupPath)) return;
-            var filenames = Directory.GetFiles(backupPath, "*.txt"); // note: this does not recurse directories! 
-            foreach (var filename in filenames)
-                File.Delete(filename);
-        }
+       
 
     }
 }

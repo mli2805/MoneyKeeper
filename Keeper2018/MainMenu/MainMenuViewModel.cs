@@ -119,7 +119,11 @@ namespace Keeper2018
             _keeperDb.FlattenAccountTree();
             await DbSerializer.Serialize(_keeperDb.Bin);
 
-            var unused = await _keeperDb.SaveAllToNewTxtAsync();
+            var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
+            var unused2 = await DbTxtSaver.ZipTxtDbAsync();
+
+            DbTxtSaver.DeleteTxtFiles();
+            _transactionsViewModel.Model.IsCollectionChanged = false;
             _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
         }
 
