@@ -51,7 +51,7 @@ namespace Keeper2018
             var lastRevenue = model.Traffic.LastOrDefault(t => t.Type == DepositOperationType.Revenue);
             var lastRevenueDate = lastRevenue?.Date ?? model.Deposit.StartDate.AddDays(-1);
 
-            model.MoreRevenue = model.DepositOffer.GetRevenue(model.Deposit, lastRevenueDate,
+            model.MoreRevenue = model.DepositOffer.GetRevenueUptoDepoFinish(model.Deposit, lastRevenueDate,
                 model.Balance.Currencies[model.DepositOffer.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : model.DepositOffer.MainCurrency]);
             model.MoreRevenueUsd = model.IsInUsd
                 ? model.MoreRevenue

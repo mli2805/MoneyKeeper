@@ -101,13 +101,30 @@ namespace Keeper2018
         private void FillIncomeForecastList(DateTime startDate, DateTime finishMoment)
         {
             var realIncomes = _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
-                                                                        && t.Timestamp >= startDate && t.Timestamp <= finishMoment);
+                                              && t.Timestamp >= startDate && t.Timestamp <= finishMoment).ToList();
             var salary = 204;
             if (realIncomes.FirstOrDefault(t => t.Tags.Contains(salary)) == null)
             {
                 _monthAnalysisModel.IncomeForecastList.Add("зарплата 1300 usd");
                 _monthAnalysisModel.IncomeForecast += 1300;
             }
+
+            var depos = _db.AcMoDict[166];
+            foreach (var depo in depos.Children.Where(c=>c.IsDeposit))
+                if (realIncomes.FirstOrDefault(t => t.MyAccount == depo.Id && t.Tags.Contains(208)) == null) 
+                    ForeseeDepoIncome(depo);
+        }
+
+        private void ForeseeDepoIncome(AccountModel depo)
+        {
+            var depositOffer = _db.Bin.DepositOffers.First(o => o.Id == depo.Deposit.DepositOfferId);
+
+            var revenue = depo.GetRevenueInThisMonth(_db);
+            _monthAnalysisModel.IncomeForecastList.
+                Add($"%%:  {depo.Deposit.ShortName}  {revenue:#,0.00} {depositOffer.MainCurrency.ToString().ToLower()}");
+            _monthAnalysisModel.IncomeForecast += depositOffer.MainCurrency == CurrencyCode.USD
+                ? revenue
+                : _db.AmountInUsd(DateTime.Today, depositOffer.MainCurrency, revenue);
         }
 
         private void InsertDepoLinesIntoIncomeList(List<string> depoList, decimal depoTotal)
