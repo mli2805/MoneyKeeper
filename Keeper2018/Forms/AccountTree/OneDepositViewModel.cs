@@ -122,7 +122,7 @@ namespace Keeper2018
         {
             var vm = new RulesAndRatesViewModel();
             vm.Initialize("", DepositInWork.StartDate, 
-                SelectedDepositOffer.Essentials.LastOrDefault(p => p.Key < DepositInWork.StartDate).Value);
+                SelectedDepositOffer.Essentials.OrderBy(k => k.Key).LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value);
             _windowManager.ShowDialog(vm);
         }
     }

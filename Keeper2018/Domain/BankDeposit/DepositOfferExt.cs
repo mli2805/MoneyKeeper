@@ -51,19 +51,40 @@ namespace Keeper2018
             var depositBalance = new Balance();
             decimal revenue = 0;
             var date = deposit.StartDate;
-            while (date < thisMonthRevenueDate)
+            while (date <= thisMonthRevenueDate)
             {
                 foreach (var transaction in db.Bin.Transactions.Values.
                     Where(t => t.Timestamp.Date == date.Date && (t.MyAccount == depo.Id || t.MySecondAccount == depo.Id)))
                 {
                     depo.ApplyTransaction(transaction, depositBalance);
                 }
+
                 if (date >= lastReceivedRevenueDate)
-                    revenue += DayRevenue(depositBalance, essentials, date);
+                {
+                    var k = GetKoeff(date, essentials.CalculationRules.IsFactDays);
+                    revenue += k * DayRevenue(depositBalance, essentials, date);
+                }
 
                 date = date.AddDays(1);
             }
             return revenue;
+        }
+
+        private static int GetKoeff(DateTime date, bool isFactDays)
+        {
+            if (isFactDays) return 1;
+            if (date.Day == 31) return 0;
+            if (DateTime.IsLeapYear(date.Year))
+            {
+                if (date.Month == 2 && date.Day == 29)
+                    return 2;
+            }
+            else
+            {
+                if (date.Month == 2 && date.Day == 28)
+                    return 3;
+            }
+            return 1;
         }
 
         private static void ApplyTransaction(this AccountModel depo, Transaction tran, Balance balanceBefore)
@@ -112,7 +133,11 @@ namespace Keeper2018
                 return new DateTime(thisYear, thisMonth, 1);
             if (essentials.CalculationRules.EveryLastDayOfMonth)
                 return DateTime.Today.GetEndOfMonthForDate();
-            return new DateTime(thisYear, thisMonth, deposit.StartDate.Day);
+            var maxDay = DateTime.DaysInMonth(thisYear, thisMonth);
+
+            return deposit.StartDate.Day <= maxDay 
+                ? new DateTime(thisYear, thisMonth, deposit.StartDate.Day)
+                : new DateTime(thisYear, thisMonth, maxDay);
         }
     }
 }
