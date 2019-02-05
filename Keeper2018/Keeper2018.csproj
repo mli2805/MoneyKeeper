@@ -153,6 +153,7 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagCalculator.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
+    <Compile Include="Forms\Charts\BalanceAndSaldoModel.cs" />
     <Compile Include="Forms\Charts\BalancesAndSaldosView.xaml.cs">
       <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>
     </Compile>
