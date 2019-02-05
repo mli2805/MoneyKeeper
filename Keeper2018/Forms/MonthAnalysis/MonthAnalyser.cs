@@ -120,8 +120,9 @@ namespace Keeper2018
             var depositOffer = _db.Bin.DepositOffers.First(o => o.Id == depo.Deposit.DepositOfferId);
 
             var revenue = depo.GetRevenueInThisMonth(_db);
+            var currency = depositOffer.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : depositOffer.MainCurrency;
             _monthAnalysisModel.IncomeForecastList.
-                Add($"%%:  {depo.Deposit.ShortName}  {revenue:#,0.00} {depositOffer.MainCurrency.ToString().ToLower()}");
+                Add($"%%:  {depo.Deposit.ShortName}  {revenue:#,0.00} {currency.ToString().ToLower()}");
             _monthAnalysisModel.IncomeForecast += depositOffer.MainCurrency == CurrencyCode.USD
                 ? revenue
                 : _db.AmountInUsd(DateTime.Today, depositOffer.MainCurrency, revenue);

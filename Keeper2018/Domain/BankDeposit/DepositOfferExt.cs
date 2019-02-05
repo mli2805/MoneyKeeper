@@ -108,7 +108,7 @@ namespace Keeper2018
 
         private static decimal DayRevenue(Balance depoBalance, DepositEssential essentials, DateTime date)
         {
-            var currentAmount = depoBalance.Currencies.First().Value;
+            var currentAmount = depoBalance.Currencies.First(c=>!c.Value.Equals(0)).Value;
             var rateLines =
                 essentials.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
                     OrderBy(o => o.DateFrom).ToArray();
