@@ -10,7 +10,7 @@
        <ItemsControl ItemsSource="{Binding List.Lines}" >
            <ItemsControl.ItemTemplate>
                <DataTemplate DataType="keeper2018:ListLine">
-                   <TextBlock Text="{Binding Line}" Height="19"
+                    <TextBlock Text="{Binding Line}" Height="{Binding TextLineHeight}"
                               FontWeight="{Binding FontWeight}" FontSize="{Binding FontSize}" Foreground="{Binding Foreground}"/>
                </DataTemplate>
            </ItemsControl.ItemTemplate>

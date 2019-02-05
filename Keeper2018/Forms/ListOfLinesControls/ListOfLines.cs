@@ -10,21 +10,21 @@ namespace Keeper2018
 
         public void Add(string str, FontWeight fontWeight, Brush foreground, int fontSize = 12)
         {
-            Lines.Add(new ListLine(str) { FontWeight = fontWeight, Foreground = foreground, FontSize = fontSize });
+            Lines.Add(new ListLine(str) { FontWeight = fontWeight, Foreground = foreground, FontSize = fontSize, TextLineHeight = fontSize + 7});
         }
         public void Add(string str, FontWeight fontWeight, int fontSize = 12)
         {
-            Lines.Add(new ListLine(str) { FontWeight = fontWeight, Foreground = Brushes.Black, FontSize = fontSize });
+            Lines.Add(new ListLine(str) { FontWeight = fontWeight, Foreground = Brushes.Black, FontSize = fontSize, TextLineHeight = fontSize + 7 });
         }
 
         public void Add(string str, Brush foreground, int fontSize = 12)
         {
-            Lines.Add(new ListLine(str) { FontWeight = FontWeights.Normal, Foreground = foreground, FontSize = fontSize });
+            Lines.Add(new ListLine(str) { FontWeight = FontWeights.Normal, Foreground = foreground, FontSize = fontSize, TextLineHeight = fontSize + 7 });
         }
 
         public void Add(string str, int fontSize = 12)
         {
-            Lines.Add(new ListLine(str) { FontWeight = FontWeights.Normal, Foreground = Brushes.Black, FontSize = fontSize });
+            Lines.Add(new ListLine(str) { FontWeight = FontWeights.Normal, Foreground = Brushes.Black, FontSize = fontSize, TextLineHeight = fontSize + 7 });
         }
 
         public void AddRange(List<string> strs) 

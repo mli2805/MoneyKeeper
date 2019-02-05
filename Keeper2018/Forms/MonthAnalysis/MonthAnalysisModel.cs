@@ -31,13 +31,14 @@ namespace Keeper2018
         public decimal ExpenseForecast;
         public List<string> IncomeForecastList = new List<string>();
 
-        public void FillResultList()
+        public void FillResultList(bool isCurrentPeriod)
         {
             var profit = Income - Expense;
             var profitForeground = profit > 0 ? Brushes.Blue : Brushes.Red;
-            FinResultViewModel.List.Add("Финансовый результат", FontWeights.Bold, profitForeground);
+            FinResultViewModel.List.Add("Финансовый результат", profitForeground);
             FinResultViewModel.List.Add("");
-            FinResultViewModel.List.Add($"{Income:N} - {Expense:N} = {profit:N} usd", profitForeground);
+            FinResultViewModel.List.Add($"{Income:N} - {Expense:N} ", profitForeground);
+            FinResultViewModel.List.Add($"        = {profit:N} usd", FontWeights.Bold, profitForeground);
             FinResultViewModel.List.Add("");
 
             ExchangeDifference = After - (Before + Income - Expense);
@@ -51,10 +52,11 @@ namespace Keeper2018
 
             var finResultWithDifference = profit + ExchangeDifference;
             var resultForeground = finResultWithDifference > 0 ? Brushes.Blue : Brushes.Red;
-            FinResultViewModel.List.Add("С учетом курсовых разниц", resultForeground);
+            FinResultViewModel.List.Add("Финансовый результат", FontWeights.Bold, profitForeground);
+            FinResultViewModel.List.Add("    c учетом курсовых разниц", FontWeights.Bold, resultForeground);
             FinResultViewModel.List.Add("");
             FinResultViewModel.List.Add($"{Income:N} - {Expense:N} + {ExchangeDifference:N}", resultForeground);
-            FinResultViewModel.List.Add($"        = {finResultWithDifference:N} usd", FontWeights.Bold, resultForeground);
+            FinResultViewModel.List.Add($"        = {finResultWithDifference:N} usd", FontWeights.Bold, resultForeground, isCurrentPeriod ? 12 : 18);
         }
 
         public void FillForecast(DateTime finishMoment, decimal bynRate)
@@ -64,7 +66,7 @@ namespace Keeper2018
             ExpenseForecast = dayExpense * daysInMonth + LargeExpense;
             var result = Income + IncomeForecast - ExpenseForecast + ExchangeDifference;
             var resultBrush = result > 0 ? Brushes.Blue : Brushes.Red;
-         
+
             ForecastViewModel.List.Add("Прогноз результата", FontWeights.Bold, resultBrush);
             ForecastViewModel.List.Add("");
 
@@ -92,8 +94,8 @@ namespace Keeper2018
 
             ForecastViewModel.List.Add("");
             ForecastViewModel.List.Add("");
-            ForecastViewModel.List.Add($"Итого {Income + IncomeForecast:#,0} - {ExpenseForecast:#,0} + {ExchangeDifference:#,0} = {result:#,0} usd",
-                FontWeights.Bold, resultBrush);
-         }
+            ForecastViewModel.List.Add($"Итого {Income + IncomeForecast:#,0} - {ExpenseForecast:#,0} + {ExchangeDifference:#,0}", resultBrush);
+            ForecastViewModel.List.Add($"        = {result:#,0} usd", FontWeights.Bold, resultBrush, 18);
+        }
     }
 }

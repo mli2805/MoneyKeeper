@@ -50,11 +50,12 @@ namespace Keeper2018
 
             var depositBalance = new Balance();
             decimal revenue = 0;
+            var depoTraffic = db.Bin.Transactions.Values.OrderBy(o => o.Timestamp)
+                .Where(t => t.MyAccount == depo.Id || t.MySecondAccount == depo.Id).ToList();
             var date = deposit.StartDate;
             while (date <= thisMonthRevenueDate)
             {
-                foreach (var transaction in db.Bin.Transactions.Values.
-                    Where(t => t.Timestamp.Date == date.Date && (t.MyAccount == depo.Id || t.MySecondAccount == depo.Id)))
+                foreach (var transaction in depoTraffic.Where(t => t.Timestamp.Date == date.Date))
                 {
                     depo.ApplyTransaction(transaction, depositBalance);
                 }
