@@ -30,22 +30,23 @@ namespace Keeper2018
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("Accounts.txt"), accounts);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"), deposits);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"), depoOffers);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
+            WriteTransactionsContent(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
 
             return 0;
         }
 
-        private static void WriteTransactionsContent(string filename, List<string> content)
+        // supposedly it should be faster than File.WriteAllLines because of increased buffer
+        private static void WriteTransactionsContent(string filename, IEnumerable<string> content)
         {
             const int bufferSize = 65536;  // 64 Kilobytes
-            using (StreamWriter sw = new StreamWriter(filename, true, Encoding.UTF8, bufferSize))
+            using (var sw = new StreamWriter(filename, true, Encoding.UTF8, bufferSize))
             {
                 foreach (var str in content)
                 {
                     sw.WriteLine(str);
                 }
-            };
+            }
         }
 
         private static List<string> ExportDepos(this KeeperDb db)
