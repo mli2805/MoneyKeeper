@@ -21,13 +21,13 @@ namespace Keeper2018
 
         public string Dump()
         {
-            return Convert.ToString(Timestamp, new CultureInfo("ru-RU")) + " ; " +
+           // return Convert.ToString(Timestamp, new CultureInfo("ru-RU")) + " ; " +
+            return Timestamp.ToString("dd/MM/yyyy") + " ; " +
                    Operation + " ; " + Receipt + " ; " +
                    MyAccount + " ; " + MySecondAccount + " ; " +
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + CurrencyInReturn + " ; " +
                    Dump(Tags) + " ; " + Comment;
-//                   Dump(Tags) + " ; " + count;
         }
 
         private string Dump(List<int> tags)

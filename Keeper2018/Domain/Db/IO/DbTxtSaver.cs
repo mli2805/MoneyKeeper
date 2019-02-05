@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Ionic.Zip;
@@ -20,7 +21,7 @@ namespace Keeper2018
             var currencyRates = db.Bin.Rates.Values.Select(l => l.Dump());
             var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
             var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
-            var depoOffers = db.SaveDepoContent();
+            var depoOffers = db.ExportDepos();
             var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump());
             var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
@@ -35,7 +36,19 @@ namespace Keeper2018
             return 0;
         }
 
-        private static List<string> SaveDepoContent(this KeeperDb db)
+        private static void WriteTransactionsContent(string filename, List<string> content)
+        {
+            const int bufferSize = 65536;  // 64 Kilobytes
+            using (StreamWriter sw = new StreamWriter(filename, true, Encoding.UTF8, bufferSize))
+            {
+                foreach (var str in content)
+                {
+                    sw.WriteLine(str);
+                }
+            };
+        }
+
+        private static List<string> ExportDepos(this KeeperDb db)
         {
             var depoOffers = new List<string>();
             foreach (var depositOffer in db.Bin.DepositOffers)

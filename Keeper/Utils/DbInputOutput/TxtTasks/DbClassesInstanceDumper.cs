@@ -29,17 +29,17 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
         }
         public string Dump(CurrencyRate rate)
         {
-            return Convert.ToString(rate.BankDay, new CultureInfo("ru-RU")) + " ; " +
+            return rate.BankDay.ToString("dd/MM/yyyy") + " ; " +
                    rate.Currency + " ; " + rate.Rate.ToString(new CultureInfo("en-US"));
         }
         public string Dump(NbRate rate)
         {
-            return Convert.ToString(rate.Date, new CultureInfo("ru-RU")) + " ; " +
+            return rate.Date.ToString("dd/MM/yyyy") + " ; " +
                    rate.UsdRate.ToString(new CultureInfo("en-US")) + " ; " + rate.EurRate.ToString(new CultureInfo("en-US")) + " ; " + rate.RurRate.ToString(new CultureInfo("en-US"));
         }
         public string Dump(TranWithTags tranWithTags)
         {
-            return Convert.ToString(tranWithTags.Timestamp, new CultureInfo("ru-RU")) + " ; " + tranWithTags.Operation + " ; " + tranWithTags.ReceiptId + " ; " +
+            return tranWithTags.Timestamp.ToString("dd/MM/yyyy") + " ; " + tranWithTags.Operation + " ; " + tranWithTags.ReceiptId + " ; " +
                    tranWithTags.MyAccount.Id + " ; " + tranWithTags.DumpOfSecondAccount() + " ; " +
                    tranWithTags.Amount.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.Currency + " ; " +
                    tranWithTags.AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + tranWithTags.CurrencyInReturn + " ; " +
