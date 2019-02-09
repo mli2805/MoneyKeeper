@@ -13,10 +13,10 @@ namespace Keeper2018
         private string _caption;
         private List<CurrencyRatesModel> _rates;
 
-        public PlotModel MyPlotModel2015 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2016 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2017 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2018 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel2019 { get; set; } = new PlotModel();
 
         protected override void OnViewLoaded(object view)
         {
@@ -27,14 +27,14 @@ namespace Keeper2018
         {
             _caption = caption;
             _rates = rates;
-            MyPlotModel2015.Series.Add(OneYearOfUsd(2015));
-            MyPlotModel2015.Axes.Add(new DateTimeAxis()
+            MyPlotModel2019.Series.Add(OneYearOfUsd(2019));
+            MyPlotModel2019.Axes.Add(new DateTimeAxis()
             {
-                Minimum = DateTimeAxis.ToDouble(new DateTime(2015,1,1)),
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2019,1,1)),
                 IntervalLength = 45, 
                 IntervalType = DateTimeIntervalType.Days, 
                 MajorGridlineStyle = LineStyle.Solid,
-                Maximum = DateTimeAxis.ToDouble(new DateTime(2015,12,31)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(2019,12,31)),
             });
 
             MyPlotModel2016.Series.Add(OneYearOfUsd(2016));

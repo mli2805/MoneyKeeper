@@ -23,13 +23,11 @@ namespace Keeper2018
         {
             _rates = rates;
             _caption = caption;
-        //    MyPlotModel.Series.Add(OneYearOfUsd(2015));
+//            MyPlotModel.Series.Add(OneYearOfUsd(2015)); слишком большая амплитуда , остальным остается мало места
             MyPlotModel.Series.Add(OneYearOfUsd(2016));
             MyPlotModel.Series.Add(OneYearOfUsd(2017));
             MyPlotModel.Series.Add(OneYearOfUsd(2018));
             MyPlotModel.Series.Add(OneYearOfUsd(2019));
-
-         
         }
 
         private LineSeries OneYearOfUsd(int year)
