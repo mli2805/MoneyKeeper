@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using Caliburn.Micro;
 
@@ -108,9 +109,16 @@ namespace Keeper2018
             var provider = new CarReportProvider(_keeperDb);
             var document = provider.CreateCarReport();
 
-            string filename = @"c:\temp\RenaultGrandScenicIII.pdf";
-            document.Save(filename);
-            Process.Start(filename);
+            try
+            {
+                string filename = @"c:\temp\RenaultGrandScenicIII.pdf";
+                document.Save(filename);
+                Process.Start(filename);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public async void Save()

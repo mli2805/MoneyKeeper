@@ -33,6 +33,7 @@ namespace Keeper2018
         {
             _keeperDb.Bin = Mode == 1 ? await DbTexter.LoadAllFromOldTxt() : await DbTxtLoader.LoadAllFromNewTxt();
             DbLoaded = true;
+                await DbSerializer.Serialize(_keeperDb.Bin);
             TryClose();
         }
 
