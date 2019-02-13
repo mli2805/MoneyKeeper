@@ -24,7 +24,8 @@ namespace Keeper2018
         public string Date { get; set; }
         public string Counterparty { get; set; }
         public string Text { get; set; }
-        public Brush ForegroundBrush => Amount > 0 ? Brushes.Blue : Brushes.Red;
+        public OperationType OperationType { get; set; }
+        public Brush ForegroundBrush => OperationType.FontColor();
         public Brush BackgroundBrush => IsChecked ? Brushes.LightGray : Brushes.White;
     }
 }

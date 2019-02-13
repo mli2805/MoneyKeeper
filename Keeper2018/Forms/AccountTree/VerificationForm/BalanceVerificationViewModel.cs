@@ -22,29 +22,34 @@ namespace Keeper2018
             DisplayName = _caption;
         }
 
+        private Transaction[] _trans;
+        private int _transIndex;
         public void Initialize(AccountModel accountModel)
         {
             Lines = new List<VerificationLine>();
             _total = 0;
-            foreach (var tr in _db.Bin.Transactions.Values.
-                Where(t => t.MyAccount == accountModel.Id || t.MySecondAccount == accountModel.Id))
+            _trans = _db.Bin.Transactions.Values.OrderBy(t => t.Timestamp)
+                .Where(t => t.MyAccount == accountModel.Id || t.MySecondAccount == accountModel.Id).ToArray();
+            _transIndex = 0;
+            while (true)
             {
-                switch (tr.Operation)
+                var t = _trans[_transIndex];
+                switch (t.Operation)
                 {
-                    case OperationType.Доход: RegisterIncome(tr); break;
-                    case OperationType.Расход: RegisterExpense(tr); break;
-                    case OperationType.Перенос: RegisterTransfer(tr, accountModel); break;
-                    case OperationType.Обмен: RegisterExcange(tr, accountModel); break;
+                    case OperationType.Доход: RegisterIncome(t); break;
+                    case OperationType.Расход: RegisterExpense(t); break;
+                    case OperationType.Перенос: RegisterTransfer(t, accountModel); break;
+                    case OperationType.Обмен: RegisterExcange(t, accountModel); break;
                 }
+
+                _transIndex++;
+                if (_transIndex == _trans.Length)
+                    break;
             }
 
-            if (_accumulatorReceiptId != 0)
-            {
-                Lines.Insert(0, _accumulator);
-                _accumulatorReceiptId = 0;
-            }
+            SelectedLine = Lines.FirstOrDefault();
+            if (SelectedLine == null) return;
 
-            SelectedLine = Lines.First();
             _caption = $"{accountModel.Name}  {_total:#,0.##}";
         }
 
@@ -55,34 +60,32 @@ namespace Keeper2018
                 Amount = tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
                 Counterparty = GetCounterparty(tr).Name,
+                OperationType = OperationType.Доход,
                 Text = tr.Comment,
             });
             _total = _total + tr.Amount;
         }
 
-        private VerificationLine _accumulator;
-        private int _accumulatorReceiptId;
         private void RegisterExpense(Transaction tr)
         {
             var line = RegisterOneExpense(tr);
             _total = _total - tr.Amount;
+
             if (tr.Receipt == 0)
             {
                 Lines.Insert(0, line);
             }
             else
             {
-                if (_accumulatorReceiptId == tr.Receipt)
+                var receiptId = tr.Receipt;
+                line.Text = "чек";
+                while (_transIndex < _trans.Length - 1 && _trans[_transIndex + 1].Receipt == receiptId)
                 {
-                    _accumulator.Amount = _accumulator.Amount + line.Amount;
+                    _transIndex++;
+                    _total = _total - _trans[_transIndex].Amount;
+                    line.Amount = line.Amount  - _trans[_transIndex].Amount;
                 }
-                else
-                {
-                    if (_accumulatorReceiptId != 0)
-                        Lines.Insert(0, _accumulator);
-                    _accumulator = line;
-                    _accumulatorReceiptId = tr.Receipt;
-                }
+                Lines.Insert(0, line);
             }
         }
 
@@ -93,6 +96,7 @@ namespace Keeper2018
                 Amount = -tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
                 Counterparty = GetCounterparty(tr).Name,
+                OperationType = OperationType.Расход,
                 Text = tr.Comment,
             };
         }
@@ -105,6 +109,7 @@ namespace Keeper2018
                 Amount = amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
                 Counterparty = _db.AcMoDict[tr.MyAccount == accountModel.Id ? tr.MySecondAccount : tr.MyAccount].Name,
+                OperationType = OperationType.Перенос,
                 Text = tr.Comment,
             });
             _total = _total + amount;
@@ -118,6 +123,7 @@ namespace Keeper2018
                 Amount = amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
                 Counterparty = _db.AcMoDict[tr.MyAccount == accountModel.Id ? tr.MySecondAccount : tr.MyAccount].Name,
+                OperationType = OperationType.Обмен,
                 Text = tr.Comment,
             });
             _total = _total + amount;

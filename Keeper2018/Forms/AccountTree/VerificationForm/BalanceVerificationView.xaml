@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         SizeToContent="Width" WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <DataGrid ItemsSource="{Binding Lines}" SelectedItem="{Binding SelectedLine, Mode=TwoWay}"
+        <TextBlock DockPanel.Dock="Bottom" Text="DoubleClick for mark line" Margin="5"/>
+        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding Lines}" SelectedItem="{Binding SelectedLine, Mode=TwoWay}"
                   AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
-                      HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush"
+                  HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action CheckLine]">
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
@@ -25,7 +26,7 @@
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="{Binding BackgroundBrush}"/>
-                            <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
+                    <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
                 </Style>
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
