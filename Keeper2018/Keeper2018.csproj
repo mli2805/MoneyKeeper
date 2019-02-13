@@ -282,6 +282,10 @@
     </Compile>
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorVm.cs" />
     <Compile Include="Forms\Transactions\AccName\ComboTreesProvider.cs" />
+    <Compile Include="Forms\Transactions\Actions\AskReceiptDeletionView.xaml.cs">
+      <DependentUpon>AskReceiptDeletionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\Actions\AskReceiptDeletionViewModel.cs" />
     <Compile Include="Forms\Transactions\Filter\CurrencyCodesFilter.cs" />
     <Compile Include="Forms\Transactions\Filter\DoubleToStringConverter.cs" />
     <Compile Include="Forms\Transactions\Filter\FilterModel.cs" />
@@ -488,6 +492,10 @@
     <Page Include="Forms\Transactions\AccNameSelectionControl\AccNameSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\Actions\AskReceiptDeletionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Transactions\Filter\FilterView.xaml">
       <Generator>MSBuild:Compile</Generator>

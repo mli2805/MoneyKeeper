@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -10,17 +11,20 @@ namespace Keeper2018
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
         private readonly OneTranViewModel _oneTranViewModel;
+        private readonly AskReceiptDeletionViewModel _askReceiptDeletionViewModel;
 
-        public TranEditExecutor(TransModel model, IWindowManager windowManager, KeeperDb db, OneTranViewModel oneTranViewModel)
+        public TranEditExecutor(TransModel model, IWindowManager windowManager,
+            KeeperDb db, OneTranViewModel oneTranViewModel, AskReceiptDeletionViewModel askReceiptDeletionViewModel)
         {
             _model = model;
 
             _windowManager = windowManager;
             _db = db;
             _oneTranViewModel = oneTranViewModel;
+            _askReceiptDeletionViewModel = askReceiptDeletionViewModel;
         }
 
-   
+
         public void EditSelected()
         {
             var selectedTran = _model.SelectedTranWrappedForDatagrid.Tran;
@@ -38,7 +42,7 @@ namespace Keeper2018
             _model.SortedRows.Refresh();
             _model.IsCollectionChanged = true;
         }
-     
+
         public void AddAfterSelected()
         {
             var tranForAdding = PrepareTranForAdding();
@@ -61,7 +65,7 @@ namespace Keeper2018
         {
             tran.TransactionKey = _db.Bin.Transactions.Keys.Max() + 1;
 
-            var wrappedTransactionsAfterInserted = 
+            var wrappedTransactionsAfterInserted =
                 _model.Rows.Where(t => t.Tran.Timestamp.Date == tran.Timestamp.Date && t.Tran.Timestamp >= tran.Timestamp).ToList();
             foreach (var wrapped in wrappedTransactionsAfterInserted)
             {
@@ -103,14 +107,51 @@ namespace Keeper2018
 
         public void DeleteSelected()
         {
-            var key = _model.SelectedTranWrappedForDatagrid.Tran.TransactionKey;
-            _db.Bin.Transactions.Remove(key);
-
-            int n = _model.Rows.IndexOf(_model.SelectedTranWrappedForDatagrid);
-            _model.Rows.Remove(_model.SelectedTranWrappedForDatagrid);
-            if (n == _model.Rows.Count) n--;
-            _model.SelectedTranWrappedForDatagrid = _model.Rows.ElementAt(n);
+            if (_model.SelectedTranWrappedForDatagrid.Tran.Receipt == 0)
+            {
+                DeleteOneTransaction();
+                return;
+            }
+            _windowManager.ShowDialog(_askReceiptDeletionViewModel);
+            switch (_askReceiptDeletionViewModel.Result)
+            {
+                case 1:
+                    DeleteOneTransaction();
+                    return;
+                case 99:
+                    DeleteWholeReceipt();
+                    return;
+                default: return;
+            }
         }
 
+        private void DeleteOneTransaction()
+        {
+            var wrappedTrans = new List<TranWrappedForDatagrid>() { _model.SelectedTranWrappedForDatagrid };
+            Delete(wrappedTrans);
+
+        }
+        private void DeleteWholeReceipt()
+        {
+            var wrappedTrans = _model.Rows.Where(t =>
+                t.Tran.Timestamp.Date == _model.SelectedTranWrappedForDatagrid.Tran.Timestamp.Date
+                && t.Tran.Receipt == _model.SelectedTranWrappedForDatagrid.Tran.Receipt).ToList();
+
+            Delete(wrappedTrans);
+        }
+
+        private void Delete(List<TranWrappedForDatagrid> wrappedTrans)
+        {
+            int n = _model.Rows.IndexOf(wrappedTrans.First());
+            foreach (var wrappedTran in wrappedTrans)
+            {
+                _db.Bin.Transactions.Remove(wrappedTran.Tran.TransactionKey);
+                _model.Rows.Remove(wrappedTran);
+            }
+
+            if (n >= _model.Rows.Count)
+                n = _model.Rows.Count - 1;
+            _model.SelectedTranWrappedForDatagrid = _model.Rows.ElementAt(n);
+        }
     }
 }
