@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
    <StackPanel Margin="5" HorizontalAlignment="Center">
        <TextBlock Text="Удалить весь чек или только одну операцию ?" Margin="5,20,5,30" FontSize="14" HorizontalAlignment="Center"/>
        <StackPanel Orientation="Horizontal" Margin="5,5,5,10">

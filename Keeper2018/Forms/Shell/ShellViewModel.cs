@@ -50,8 +50,12 @@ namespace Keeper2018
             ShellPartsBinder.SelectedAccountModel = account;
         }
 
+        private bool _isBusy;
         public override async void CanClose(Action<bool> callback)
         {
+            if (_isBusy) return;
+            _isBusy = true;
+
             if (_dbLoaded)
             {
                 ShellPartsBinder.FooterVisibility = Visibility.Visible;
@@ -70,7 +74,7 @@ namespace Keeper2018
             base.CanClose(callback);
         }
 
-       
+
 
     }
 }
