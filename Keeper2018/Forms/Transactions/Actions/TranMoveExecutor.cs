@@ -18,8 +18,8 @@ namespace Keeper2018
         }
 
         private List<TransactionModel> _selectedTransactions;
-        private List<TransactionModel> _transToElevate;
         private List<TransactionModel> _nearbyTransactions;
+        private List<TransactionModel> _transToElevate;
         private List<TransactionModel> _transToLower;
         private List<TransactionModel> _transToShiftTime;
         private bool _areDatesEqual;
@@ -50,6 +50,17 @@ namespace Keeper2018
             _transToElevate = destination == Destination.Up ? _selectedTransactions : _nearbyTransactions;
             _transToLower = destination == Destination.Up ?  _nearbyTransactions : _selectedTransactions;
 
+            if (!_areDatesEqual && _selectedTransactions.First().Receipt != 0)
+            {
+                var maxReceipt = _model.Rows
+                    .Where(t => t.Tran.Timestamp.Date.Equals(_nearbyTransactions.First().Timestamp.Date))
+                    .Max(l => l.Tran.Receipt);
+                foreach (var tran in _selectedTransactions)
+                {
+                    tran.Receipt = maxReceipt + 1;
+                }
+            }
+
             if (destination == Destination.Down && !_areDatesEqual)
             {
                 var maxOfElevate = _transToElevate.Max(t => t.Timestamp);
@@ -68,7 +79,7 @@ namespace Keeper2018
             {
                 _selectedTransactions = _model.Rows.Where(t =>
                         t.Tran.Timestamp.Date.Equals(selected.Timestamp.Date) && t.Tran.Receipt == selected.Receipt)
-                    .Select(r => r.Tran).ToList();
+                    .Select(r => r.Tran).OrderBy(f=>f.Timestamp).ToList();
 
                 var edgeOfReceipt = destination == Destination.Up
                     ? _selectedTransactions.Min(t => t.Timestamp)
@@ -95,7 +106,7 @@ namespace Keeper2018
                 _nearbyTransactions = isReceiptEqual
                     ? new List<TransactionModel> {nearbyTran.Tran}
                     : _model.Rows.Where(t => t.Tran.Timestamp.Date.Equals(nearbyTran.Tran.Timestamp.Date)
-                                             && t.Tran.Receipt == nearbyTran.Tran.Receipt).Select(r => r.Tran).ToList();
+                           && t.Tran.Receipt == nearbyTran.Tran.Receipt).Select(r => r.Tran).OrderBy(f=>f.Timestamp).ToList();
             }
             else _nearbyTransactions = new List<TransactionModel> {nearbyTran.Tran};
             return true;
