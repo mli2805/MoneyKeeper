@@ -24,7 +24,7 @@ namespace Keeper2018
         public BorderedListViewModel AfterViewModel { get; set; } = new BorderedListViewModel();
         public decimal After;
         public BorderedListViewModel FinResultViewModel { get; set; } = new BorderedListViewModel();
-        public string RatesChanges { get; set; }
+        public ListOfLines  RatesChanges { get; set; }
         public decimal ExchangeDifference;
         public BorderedListViewModel ForecastViewModel { get; set; } = new BorderedListViewModel();
         public decimal IncomeForecast;
@@ -44,6 +44,7 @@ namespace Keeper2018
             ExchangeDifference = After - (Before + Income - Expense);
             var exchangeForeground = ExchangeDifference > 0 ? Brushes.Blue : Brushes.Red;
             FinResultViewModel.List.Add("Курсовые разницы", exchangeForeground);
+            FinResultViewModel.List.AddList(RatesChanges);
             FinResultViewModel.List.Add("");
             FinResultViewModel.List.Add($"{After:N} - ({Before:N} + {Income:N} - {Expense:N})", exchangeForeground);
             FinResultViewModel.List.Add($"       = {ExchangeDifference:N} usd", FontWeights.Bold, exchangeForeground);

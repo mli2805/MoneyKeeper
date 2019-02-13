@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Keeper2018
 {
@@ -16,33 +17,38 @@ namespace Keeper2018
             return rateLine;
         }
 
-        public static string GetRatesMonthDifference(this KeeperDb db, DateTime startDate, DateTime finishMoment)
+        public static ListOfLines GetRatesMonthDifference(this KeeperDb db, DateTime startDate, DateTime finishMoment)
         {
-            //            var ratesLine = db.Bin.OfficialRates.Last(r => r.Date <= startDate.AddDays(-1) && Math.Abs(r.MyUsdRate.Value) > 0.01);
+            var result = new ListOfLines();
             var ratesLine = db.GetRatesLine(startDate);
             double belkaStart = ratesLine.MyUsdRate.Value;
 
-            //            var ratesLineFinish = db.Bin.OfficialRates.Last(r => r.Date <= finishMoment && Math.Abs(r.MyUsdRate.Value) > 0.01);
             var ratesLineFinish = db.GetRatesLine(finishMoment);
             double belkaFinish = ratesLineFinish.MyUsdRate.Value;
 
             var belkaName = finishMoment < new DateTime(2016, 7, 1) ? "Byr" : "Byn";
             var belkaWord = belkaFinish < belkaStart ? "вырос" : "упал";
+            var belkaBrush = belkaFinish < belkaStart ? Brushes.Blue : Brushes.Red;
             var template = finishMoment < new DateTime(2016, 7, 1) ? "#,0" : "#,0.0000";
 
-            var belka = $"{belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}";
+            var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}";
+            result.Add(belka, belkaBrush);
 
             var euroStart = ratesLine.NbRates.Euro.Value / belkaStart;
             var euroFinish = ratesLineFinish.NbRates.Euro.Value / belkaFinish;
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
-            var euro = $"Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}";
+            var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
+            var euro = $"      Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}";
+            result.Add(euro, euroBrush);
 
             var rubStart = ratesLine.CbrRate.Usd.Value;
             var rubFinish = ratesLineFinish.CbrRate.Usd.Value;
             var rubWord = rubFinish < rubStart ? "вырос" : "упал";
-            var rub = $"Rur {rubWord}: {rubStart:0.0} - {rubFinish:0.0}";
+            var rubBrush = rubFinish < rubStart ? Brushes.Blue : Brushes.Red;
+            var rub = $"      Rur {rubWord}: {rubStart:0.0} - {rubFinish:0.0}";
+            result.Add(rub, rubBrush);
 
-            return $" »зменение курсов     {belka}       {euro}       {rub}";
+            return result;
         }
 
         public static OneRate GetRate(this KeeperDb db, DateTime dt, CurrencyCode currency, bool isForUsd = false)

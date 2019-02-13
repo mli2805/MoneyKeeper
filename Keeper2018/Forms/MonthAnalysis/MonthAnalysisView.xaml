@@ -10,7 +10,7 @@
         xmlns:borderedList="clr-namespace:Keeper2018.BorderedList"
         mc:Ignorable="d"
         Title="{Binding Model.MonthAnalysisViewCaption}" 
-        SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" 
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize" 
         TextOptions.TextFormattingMode="Display" 
         d:DataContext="{d:DesignInstance keeper2018:MonthAnalysisViewModel}">
     <i:Interaction.Triggers>
@@ -33,25 +33,19 @@
             <cal:ActionMessage MethodName="ShowNextQuarter"/>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
-    <Grid>
-        <DockPanel>
-            <Border DockPanel.Dock="Bottom" Margin="2,0,2,5" BorderThickness="1" BorderBrush="Silver">
-                <TextBlock Text="{Binding Model.RatesChanges}" Margin="2"/>
-            </Border>
-            <borderedList:BorderedListView DataContext="{Binding Model.BeforeViewModel}"/>
-            <borderedList:BorderedListView DataContext="{Binding Model.IncomeViewModel}"/>
-            <borderedList:BorderedListView DataContext="{Binding Model.ExpenseViewModel}"/>
-            <borderedList:BorderedListView DataContext="{Binding Model.AfterViewModel}"/>
-            <borderedList:BorderedListView DataContext="{Binding Model.FinResultViewModel}"/>
-            <DockPanel Visibility="{Binding Model.ForecastListVisibility}">
-                <borderedList:BorderedListView DataContext="{Binding Model.ForecastViewModel}"/>
-            </DockPanel>
-            <Button Name="CloseView" IsCancel="True" Height="1" Width="1"/>
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom" Margin="2,0,2,5" BorderThickness="1" BorderBrush="Silver">
+            <TextBlock Text=" стрелки - месяц ;   +Shift - квартал ;   +Ctrl - год ;   Esc - выход  "
+                           Margin="2" Foreground="DarkGray" HorizontalAlignment="Right"/>
+        </Border>
+        <borderedList:BorderedListView DataContext="{Binding Model.BeforeViewModel}"/>
+        <borderedList:BorderedListView DataContext="{Binding Model.IncomeViewModel}"/>
+        <borderedList:BorderedListView DataContext="{Binding Model.ExpenseViewModel}"/>
+        <borderedList:BorderedListView DataContext="{Binding Model.AfterViewModel}"/>
+        <borderedList:BorderedListView DataContext="{Binding Model.FinResultViewModel}"/>
+        <DockPanel Visibility="{Binding Model.ForecastListVisibility}">
+            <borderedList:BorderedListView DataContext="{Binding Model.ForecastViewModel}"/>
         </DockPanel>
-        <StackPanel Margin="0,0,10,30" VerticalAlignment="Bottom">
-            <TextBlock Text="стрелки - месяц" Opacity="0.1" HorizontalAlignment="Right" FontSize="24"/>
-            <TextBlock Text="+Shift - квартал" Opacity="0.1" HorizontalAlignment="Right"  FontSize="24"/>
-            <TextBlock Text="+Ctrl - год" Opacity="0.1" HorizontalAlignment="Right"  FontSize="24"/>
-        </StackPanel>
-    </Grid>
+        <Button Name="CloseView" IsCancel="True" Height="1" Width="1"/>
+    </DockPanel>
 </Window>
