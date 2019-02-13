@@ -16,7 +16,8 @@ namespace Keeper.ViewModels.TransWithTags
         #region Buttons Collections
         private static readonly Dictionary<string, string> ButtonsForExpense =
             new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["биб"] = "БИБ Зарплатная 0117-0122",
-                ["алф"] = "Карта покупок", ["юк"] = "Юлин кошелек", };
+                ["алф"] = "Карта покупок", ["юк"] = "Юлин кошелек", 
+                ["бум"] = "Бумеранг 31/01/2023 3%", ["юбу"] = "Бумеранг Юля", };
 
         private static readonly Dictionary<string, string> ButtonsForExpenseTags =
             new Dictionary<string, string> { ["pro"] = "Простор", ["евр"] = "Евроопт", ["рад"] = "Радзивиловский", 
@@ -33,7 +34,7 @@ namespace Keeper.ViewModels.TransWithTags
 
         private static readonly Dictionary<string, string> ButtonsForTransfer =
             new Dictionary<string, string> { ["мк"] = "Мой кошелек", ["юк"] = "Юлин кошелек", ["биб"] = "БИБ Зарплатная 0117-0122",
-                                                        ["алф"] = "Карта покупок", ["шкф"] = "Шкаф", };
+                ["алф"] = "Карта покупок", ["шкф"] = "Шкаф", ["бум"] = "Бумеранг 31/01/2023 3%", ["юбу"] = "Бумеранг Юля", };
 
         private static readonly Dictionary<string, string> ButtonsForTransferTags = new Dictionary<string, string>();
 
