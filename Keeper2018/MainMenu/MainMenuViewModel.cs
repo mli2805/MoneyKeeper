@@ -69,6 +69,12 @@ namespace Keeper2018
             if (_transactionsViewModel.IsFirstLaunch)
                 _transactionsViewModel.Initialize();
             _windowManager.ShowDialog(_transactionsViewModel);
+
+            if (_transactionsViewModel.Model.IsCollectionChanged)
+            {
+                _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
+                Save();
+            }
         }
 
         public void ShowOfficialRatesForm()
@@ -123,6 +129,7 @@ namespace Keeper2018
 
         public async void Save()
         {
+            _shellPartsBinder.IsBusy = true;
             _shellPartsBinder.FooterVisibility = Visibility.Visible;
             _keeperDb.FlattenAccountTree();
             await DbSerializer.Serialize(_keeperDb.Bin);
@@ -133,6 +140,7 @@ namespace Keeper2018
             DbTxtSaver.DeleteTxtFiles();
             _transactionsViewModel.Model.IsCollectionChanged = false;
             _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
+            _shellPartsBinder.IsBusy = false;
         }
 
         public void ShowSettingsForm()

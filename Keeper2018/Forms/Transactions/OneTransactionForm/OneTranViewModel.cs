@@ -79,6 +79,7 @@ namespace Keeper2018
         {
             ReceiptList = null;
             IsAddMode = isAddMode;
+            IsOneMore = false;
             _caption = isAddMode ? "Добавить" : "Изменить";
             OperationTypeViewModel.SelectedOperationType = tran.Operation;
             TranInWork = tran.Clone();

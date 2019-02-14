@@ -61,6 +61,7 @@ namespace Keeper2018
         }
 
         private Visibility _footerVisibility = Visibility.Collapsed;
+
         public Visibility FooterVisibility
         {
             get => _footerVisibility;
@@ -71,5 +72,19 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        private DateTime _justToForceBalanceRecalculation;
+        public DateTime JustToForceBalanceRecalculation
+        {
+            get => _justToForceBalanceRecalculation;
+            set
+            {
+                if (value.Equals(_justToForceBalanceRecalculation)) return;
+                _justToForceBalanceRecalculation = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsBusy { get; set; }
     }
 }

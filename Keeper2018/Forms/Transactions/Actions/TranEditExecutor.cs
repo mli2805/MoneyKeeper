@@ -107,22 +107,19 @@ namespace Keeper2018
 
         public void DeleteSelected()
         {
-            if (_model.SelectedTranWrappedForDatagrid.Tran.Receipt == 0)
+            if (_model.SelectedTranWrappedForDatagrid.Tran.Receipt != 0)
             {
-                DeleteOneTransaction();
-                return;
-            }
-            _windowManager.ShowDialog(_askReceiptDeletionViewModel);
-            switch (_askReceiptDeletionViewModel.Result)
-            {
-                case 1:
+                _windowManager.ShowDialog(_askReceiptDeletionViewModel);
+                if (_askReceiptDeletionViewModel.Result == 0)
+                    return;
+                if (_askReceiptDeletionViewModel.Result == 1)
                     DeleteOneTransaction();
-                    return;
-                case 99:
+                else
                     DeleteWholeReceipt();
-                    return;
-                default: return;
             }
+            else
+                DeleteOneTransaction();
+            _model.IsCollectionChanged = true;
         }
 
         private void DeleteOneTransaction()

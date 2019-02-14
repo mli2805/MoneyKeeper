@@ -30,7 +30,6 @@ namespace Keeper2018
         public TransModel Model { get; set; }
         public bool IsFirstLaunch = true;
 
-
         public TransactionsViewModel(TransModel model, FilterModel filterModel, FilterViewModel filterViewModel,
             TranEditExecutor tranEditExecutor, TranMoveExecutor tranMoveExecutor, TranSelectExecutor tranSelectExecutor,
             ComboTreesProvider comboTreesProvider)
@@ -49,6 +48,7 @@ namespace Keeper2018
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Проводки";
+            Model.IsCollectionChanged = false;
         }
 
         public void Initialize()
@@ -115,7 +115,6 @@ namespace Keeper2018
                 case TranAction.GoToEnd:
                     _tranSelectExecutor.SelectLast();
                     return;
-                case TranAction.Filter: return;
             }
         }
 
