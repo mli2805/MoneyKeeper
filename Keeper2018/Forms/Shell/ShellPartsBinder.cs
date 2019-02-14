@@ -32,7 +32,7 @@ namespace Keeper2018
         }
 
         public Period SelectedPeriod => _balanceOrTraffic == BalanceOrTraffic.Balance
-                    ? new Period(new DateTime(2001, 12, 31), TranslatedDate)
+                    ? new Period(new DateTime(2001, 12, 30), TranslatedDate)
                     : new Period(TranslatedPeriod.StartDate, TranslatedPeriod.FinishMoment);
 
         private Period _translatedPeriod;

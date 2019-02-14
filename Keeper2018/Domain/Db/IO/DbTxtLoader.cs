@@ -23,7 +23,7 @@ namespace Keeper2018
 
         private static void LoadTransactions(KeeperBin keeperBin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Transactions"));
+            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Transactions.txt"));
             keeperBin.Transactions = new Dictionary<int, Transaction>();
             for (int i = 0; i < content.Length; i++)
                 keeperBin.Transactions.Add(i, content[i].TransactionFromString());
@@ -31,13 +31,13 @@ namespace Keeper2018
 
         private static void LoadTagAssociations(KeeperBin keeperBin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("TagAssociations"));
+            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"));
             keeperBin.TagAssociations = content.Select(l => l.TagAssociationFromString()).ToList();
         }
 
         private static void LoadDepositOffers(KeeperBin bin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("DepositOffers"));
+            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"));
             bin.DepositOffers = new List<DepositOffer>();
             DepositOffer depositOffer = null;
             foreach (var line in content)
@@ -63,9 +63,9 @@ namespace Keeper2018
 
         private static void LoadAccounts(KeeperBin bin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Accounts"));
+            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Accounts.txt"));
             bin.AccountPlaneList = content.Select(l => l.AccountFromString()).ToList();
-            content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Deposits"));
+            content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"));
             foreach (var line in content)
             {
                 var deposit = line.DepositFromString();
@@ -75,7 +75,7 @@ namespace Keeper2018
 
         private static void LoadCurrencyRates(KeeperBin bin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates"));
+            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates.txt"));
             bin.Rates = new Dictionary<DateTime, CurrencyRates>();
             foreach (var line in content)
             {
