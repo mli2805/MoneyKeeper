@@ -22,7 +22,7 @@ namespace Keeper2018
             var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
             var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
             var depoOffers = db.ExportDepos();
-            var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump());
+            var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
             var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
 
@@ -54,7 +54,7 @@ namespace Keeper2018
             var depoOffers = new List<string>();
             foreach (var depositOffer in db.Bin.DepositOffers)
             {
-                depoOffers.Add($"::DOFF:| {depositOffer.Dump()}");
+                depoOffers.Add($"::DOFF::| {depositOffer.Dump()}");
                 foreach (var pair in depositOffer.Essentials)
                 {
                     depoOffers.Add($"::DOES::| {pair.Key:dd/MM/yyyy} | {pair.Value.PartDump()}");

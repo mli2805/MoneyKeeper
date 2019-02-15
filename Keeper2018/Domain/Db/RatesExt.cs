@@ -10,7 +10,7 @@ namespace Keeper2018
         private static CurrencyRates GetRatesLine(this KeeperDb db, DateTime date)
         {
             CurrencyRates rateLine;
-            while (!db.Bin.Rates.TryGetValue(date.Date, out rateLine) || Math.Abs(rateLine.MyUsdRate.Value) <= 0.001)
+            while (!db.Bin.Rates.TryGetValue(date.Date, out rateLine) || (rateLine.MyUsdRate.Value) <= 0.001)
             {
                 date = date.AddDays(-1);
             }

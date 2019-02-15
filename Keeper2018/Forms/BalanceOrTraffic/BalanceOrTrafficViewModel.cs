@@ -61,11 +61,11 @@ namespace Keeper2018
             AccountName = ShellPartsBinder.SelectedAccountModel.Name;
             var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_db.AccountsTree.First(a => a.Name == "Мои"));
 
-            if (isTag) ShowTagBalance();
-            else ShowTraffic(ShellPartsBinder.BalanceOrTraffic);
+            if (isTag) ShowTag();
+            else ShowAccount(ShellPartsBinder.BalanceOrTraffic);
         }
 
-        private void ShowTraffic(BalanceOrTraffic mode)
+        private void ShowAccount(BalanceOrTraffic mode)
         {
             var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
 
@@ -79,7 +79,7 @@ namespace Keeper2018
             Total = trafficCalculator.Total;
         }
 
-        private void ShowTagBalance()
+        private void ShowTag()
         {
             var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
 
