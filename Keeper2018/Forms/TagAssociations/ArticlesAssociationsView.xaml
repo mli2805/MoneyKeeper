@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d" 
-        Height="700" SizeToContent="Width" WindowStartupLocation="CenterScreen">
+        Height="700" SizeToContent="Width" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComboBoxCellTextStyle" TargetType="{x:Type ComboBox}">
