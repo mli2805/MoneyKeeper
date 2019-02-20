@@ -15,6 +15,7 @@ namespace Keeper2018
             rate.NbRates = NbRbRatesFromString(substrings[1]);
             rate.CbrRate.Usd = OneRateFromString(substrings[2]);
             rate.MyUsdRate = OneRateFromString(substrings[3]);
+            rate.MyEurUsdRate = OneRateFromString(substrings[4]);
             return rate;
         }
 

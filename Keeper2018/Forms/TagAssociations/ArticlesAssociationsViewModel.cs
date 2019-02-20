@@ -83,12 +83,6 @@ namespace Keeper2018
             base.CanClose(callback);
         }
 
-        public void CloseView()
-        {
-
-            TryClose();
-        }
-
         private void ReSaveAll()
         {
             var tagAssociations = new List<TagAssociation>();
