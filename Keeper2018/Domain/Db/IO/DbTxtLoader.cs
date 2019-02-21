@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Keeper2018
 {
@@ -12,13 +13,21 @@ namespace Keeper2018
         public static async Task<KeeperBin> LoadAllFromNewTxt()
         {
             await Task.Delay(1);
-            var keeperBin = new KeeperBin();
-            LoadCurrencyRates(keeperBin);
-            LoadAccounts(keeperBin);
-            LoadDepositOffers(keeperBin);
-            LoadTagAssociations(keeperBin);
-            LoadTransactions(keeperBin);
-            return keeperBin;
+            try
+            {
+                var keeperBin = new KeeperBin();
+                LoadCurrencyRates(keeperBin);
+                LoadAccounts(keeperBin);
+                LoadDepositOffers(keeperBin);
+                LoadTagAssociations(keeperBin);
+                LoadTransactions(keeperBin);
+                return keeperBin;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return null;
+            }
         }
 
         private static void LoadTransactions(KeeperBin keeperBin)
@@ -59,6 +68,7 @@ namespace Keeper2018
                     depositOffer?.Essentials.Last().Value.RateLines.Add(parts[1].DepositRateLineFromString());
                 }
             }
+            bin.DepositOffers.Add(depositOffer);
         }
 
         private static void LoadAccounts(KeeperBin bin)

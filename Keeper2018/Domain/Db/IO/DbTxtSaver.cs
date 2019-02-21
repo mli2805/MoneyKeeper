@@ -39,6 +39,8 @@ namespace Keeper2018
         // supposedly it should be faster than File.WriteAllLines because of increased buffer
         private static void WriteTransactionsContent(string filename, IEnumerable<string> content)
         {
+            if (File.Exists(filename)) File.Delete(filename);
+
             const int bufferSize = 65536;  // 64 Kilobytes
             using (var sw = new StreamWriter(filename, true, Encoding.UTF8, bufferSize))
             {

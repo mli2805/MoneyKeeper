@@ -32,8 +32,14 @@ namespace Keeper2018
         private async void Load()
         {
             _keeperDb.Bin = Mode == 1 ? await DbTexter.LoadAllFromOldTxt() : await DbTxtLoader.LoadAllFromNewTxt();
+            if (_keeperDb.Bin == null)
+            {
+                DbLoaded = false;
+                return;
+            }
+            DbTxtSaver.DeleteTxtFiles();
             DbLoaded = true;
-                await DbSerializer.Serialize(_keeperDb.Bin);
+            await DbSerializer.Serialize(_keeperDb.Bin);
             TryClose();
         }
 
