@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -76,10 +77,44 @@ namespace Keeper2018
 
         }
 
-        public void CloseView()
+        public override void CanClose(Action<bool> callback)
         {
-            TryClose();
+            ReSaveAll();
+            base.CanClose(callback);
         }
 
+        private void ReSaveAll()
+        {
+            var tagAssociations = new List<TagAssociation>();
+            foreach (var lineModel in Rows)
+            {
+                try
+                {
+                    tagAssociations.Add(Map(lineModel));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show($"Ошибка в линии {lineModel}");
+                }
+            }
+
+            _db.Bin.TagAssociations = tagAssociations;
+            _db.TagAssociationModels = new ObservableCollection<TagAssociationModel>
+                (_db.Bin.TagAssociations.Select(a => a.Map(_db.AcMoDict)));
+
+        }
+
+        private TagAssociation Map(LineModel lineModel)
+        {
+            return new TagAssociation
+            {
+                OperationType = lineModel.OperationType,
+                ExternalAccount = _db.GetLeavesOf("Внешние").First(x => x.Name == lineModel.ExternalAccount).Id,
+                Tag = lineModel.OperationType == OperationType.Доход
+                    ? _db.GetLeavesOf("Все доходы").First(x => x.Name == lineModel.Tag).Id
+                    : _db.GetLeavesOf("Все расходы").First(x => x.Name == lineModel.Tag).Id,
+                Destination = lineModel.Destination
+            };
+        }
     }
 }

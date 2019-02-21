@@ -122,16 +122,22 @@ namespace Keeper2018
                 var annual = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
                 while (date <= DateTime.Today.Date.AddDays(1))
                 {
-                    var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
-                    if (nbRbRates == null) break;
-                    var currencyRates = new CurrencyRates() { Date = date, NbRates = nbRbRates };
-                    var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
-                    currencyRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
-                    currencyRates.MyUsdRate = new OneRate() { Value = nbRbRates.Usd.Value * 1.003, Unit = 1 };
+                    var currencyRates = await DownloadRates(date);
+                    if (currencyRates == null) break;
 
                     _rates.Add(currencyRates.Date, currencyRates);
                     var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);
                     Rows.Add(line);
+
+                    var previousDate = date.AddDays(-1);
+                    if (_rates[previousDate].MyEurUsdRate.Value.Equals(0))
+                    {
+                        var eurUsd = Math.Round(currencyRates.NbRates.Euro.Value / currencyRates.NbRates.Usd.Value, 3);
+                        _rates[previousDate].MyEurUsdRate.Value = eurUsd;
+                        var previousRow = Rows.First(r=>r.Date == previousDate);
+                        previousRow.TodayRates.MyEurUsdRate.Value = eurUsd;
+                        previousRow.EuroUsdStr = eurUsd.ToString("0.###", new CultureInfo("ru-RU"));
+                    }
 
                     if (date.Date.Day == 31 && date.Date.Month == 12)
                         annual = line;
@@ -141,19 +147,21 @@ namespace Keeper2018
             IsDownloadEnabled = true;
         }
 
-        public void InputMyUsd()
+        private async Task<CurrencyRates> DownloadRates(DateTime date)
         {
-            _inputMyUsdViewModel.CurrencyRatesModel = SelectedRow;
+            var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
+            if (nbRbRates == null) return null;
+            var currencyRates = new CurrencyRates() {Date = date, NbRates = nbRbRates};
+            var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
+            currencyRates.CbrRate.Usd = new OneRate() {Unit = 1, Value = usd2Rur};
+            return currencyRates;
+        }
+
+        public void Input()
+        {
             var previousLine = _rates[SelectedRow.Date.AddDays(-1)];
-            if (previousLine != null)
-                _inputMyUsdViewModel.MyUsdRate = previousLine.MyUsdRate.Value;
+            _inputMyUsdViewModel.Initialize(SelectedRow, previousLine);
             _windowManager.ShowDialog(_inputMyUsdViewModel);
-            if (_inputMyUsdViewModel.IsSavePressed)
-            {
-                var rateLine = _rates[SelectedRow.Date];
-                rateLine.MyUsdRate.Value = _inputMyUsdViewModel.MyUsdRate;
-                SelectedRow.InputMyUsd(_inputMyUsdViewModel.MyUsdRate);
-            }
         }
 
         public void RemoveLine()
@@ -162,37 +170,8 @@ namespace Keeper2018
             Rows.Remove(SelectedRow);
         }
 
-        public async void CbrDownload()
-        {
-            IsDownloadEnabled = false;
-            using (new WaitCursor())
-            {
-                foreach (var model in Rows)
-                {
-                    if (string.IsNullOrEmpty(model.RurUsdStr))
-                    {
-                        double usd2Rur;
-                        try
-                        {
-                            usd2Rur = await CbrRatesDownloader.GetRateForDate(model.Date);
-                        }
-                        catch (Exception e)
-                        {
-                            MessageBox.Show("Error: " + e.Message);
-                            break;
-                        }
-                        var rate = _rates[model.Date];
-                        rate.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
-                        model.RurUsdStr = usd2Rur.ToString("#,#.##", new CultureInfo("ru-RU"));
-                    }
-                }
-            }
-            IsDownloadEnabled = true;
-        }
-
         public void Close()
         {
-
             TryClose();
         }
 

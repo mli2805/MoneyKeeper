@@ -9,13 +9,19 @@
         d:DataContext="{d:DesignInstance keeper2018:InputMyUsdViewModel}">
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-            <TextBlock Margin="5" Text="{Binding CurrencyRatesModel.Date, StringFormat='{}{0:dd-MM-yyyy}'}" />
+            <TextBlock Margin="5" Text="{Binding CurrentLine.Date, StringFormat='{}{0:dd-MM-yyyy}'}" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
-            <TextBlock Text="Мой курс доллара" Margin="5" />
-            <TextBox Width="100" Margin="5" Text="{Binding MyUsdRate}"/>
+            <TextBlock Width="140" Text="Мой курс доллара" Margin="5" />
+            <TextBox Width="80" Margin="5" Text="{Binding MyUsdRate}"/>
+        </StackPanel>   <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
+            <TextBlock Width="140"  Text="Евро" Margin="5" />
+            <TextBox Width="80" Margin="5" Text="{Binding EurUsd}"/>
+        </StackPanel>   <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
+            <TextBlock Width="140"  Text="Российских за доллар" Margin="5" />
+            <TextBox Width="80" Margin="5" Text="{Binding RubUsd}"/>
         </StackPanel>  
-        <StackPanel DockPanel.Dock="Bottom" Margin="5" Orientation="Horizontal">
+        <StackPanel DockPanel.Dock="Bottom" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="Save" Content="OK" IsDefault="True" Height="25" Width="100" Margin="5"/>
             <Button Name="Cancel" Content="Cancel" IsCancel="True" Height="25" Width="100" Margin="5"/>
         </StackPanel>

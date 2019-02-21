@@ -6,10 +6,16 @@
         xmlns:keeper2018="clr-namespace:Keeper2018"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance keeper2018:CurrencyRatesViewModel}"
         Width="968" WindowStartupLocation="CenterScreen" FontSize="13.5">
 
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="D" Modifiers="Control">
+            <cal:ActionMessage MethodName="RemoveLine"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
             <Button Name="LongTermChart" Margin="5" Width="100" Content="Long term" DockPanel.Dock="Left"/>
@@ -32,7 +38,7 @@
             <TextBlock Text="{Binding LastDayOfYear.BasketStr}" Margin="65,0,0,0" />
         </StackPanel>
         <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True"
-                  cal:Message.Attach="[Event MouseDoubleClick] = [Action InputMyUsd]" SelectionMode="Single">
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action Input]" SelectionMode="Single">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />
@@ -113,7 +119,7 @@
             </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Ввести мой курс доллара" cal:Message.Attach="InputMyUsd"/>
+                    <MenuItem Header="Ввести мои курсы" cal:Message.Attach="Input"/>
                     <MenuItem Header="Удалить курсы за день" cal:Message.Attach="RemoveLine"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>

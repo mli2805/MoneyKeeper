@@ -45,6 +45,14 @@ namespace Keeper2018
 
             _dbLoader.ExpandBinToDb(_keeperDb);
 
+            //--------
+//            var eee = NbRbRatesOldTxt.GetMyEurUsdRates();
+//            foreach (var pair in eee)
+//            {
+//                _keeperDb.Bin.Rates[pair.Key].MyEurUsdRate.Value = pair.Value;
+//            }
+            //--------
+
             var account = _keeperDb.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountModel = account;

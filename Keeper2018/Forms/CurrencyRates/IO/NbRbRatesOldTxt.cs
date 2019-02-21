@@ -69,6 +69,22 @@ namespace Keeper2018
             return result;
         }
 
+        public static Dictionary<DateTime, double> GetMyEurUsdRates()
+        {
+            var content = File.ReadAllLines(DbIoUtils.GetOldTxtFullPath("CurrencyRates.txt"), Encoding.GetEncoding("Windows-1251")).
+                Where(s => !String.IsNullOrWhiteSpace(s) && s.Contains("; EUR")).ToList();
+
+            var result = new Dictionary<DateTime, double>();
+            foreach (var line in content)
+            {
+                var ss = line.Split(';');
+                var date = DateTime.Parse(ss[0].Trim());
+                var value = double.Parse(ss[2], new CultureInfo("en-US"));
+                result.Add(date, Math.Round(1/value,3));
+            }
+            return result;
+        }
+
         private static Dictionary<DateTime, CurrencyRates> LoadFromOldTxt(Dictionary<DateTime, double> myUsdRates, Dictionary<DateTime, double> cbrRates)
         {
             var result = new Dictionary<DateTime, CurrencyRates>();
