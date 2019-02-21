@@ -129,6 +129,7 @@ namespace Keeper2018
 
         public async void Save()
         {
+            if (_shellPartsBinder.IsBusy) return;
             _shellPartsBinder.IsBusy = true;
             _shellPartsBinder.FooterVisibility = Visibility.Visible;
             _keeperDb.FlattenAccountTree();
