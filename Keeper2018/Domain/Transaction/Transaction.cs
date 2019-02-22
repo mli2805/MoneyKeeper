@@ -22,7 +22,7 @@ namespace Keeper2018
         public string Dump()
         {
            // return Convert.ToString(Timestamp, new CultureInfo("ru-RU")) + " ; " +
-            return Timestamp.ToString("dd/MM/yyyy") + " ; " +
+            return Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
                    Operation + " ; " + Receipt + " ; " +
                    MyAccount + " ; " + MySecondAccount + " ; " +
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
