@@ -80,6 +80,8 @@ namespace Keeper2018
         public void ShowOfficialRatesForm()
         {
             _windowManager.ShowDialog(_currencyRatesViewModel);
+            _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
+            Save();
         }
 
         public void ShowMonthAnalysisForm()
