@@ -32,11 +32,12 @@ namespace Keeper2018
             var paragraph = chartSection.AddParagraph();
             paragraph.AddFormattedText(
                 $"Renault Grand Scenic III 1.5dci 2010 г.в. {carReportData.StartDate:dd/MM/yyyy} - {carReportData.FinishDate:dd/MM/yyyy}");
-            paragraph.Format.SpaceBefore = Unit.FromCentimeter(0.2);
-            paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.4);
+          //  paragraph.Format.SpaceBefore = Unit.FromCentimeter(0.2);
+            paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.3);
 
             FillChart(chartSection, carReportData);
             FillAggregateTable(chartSection, carReportData);
+            FillTotals(chartSection, carReportData);
 
             Section tablesSection = doc.AddSection();
             tablesSection.PageSetup.TopMargin = 20;
@@ -116,29 +117,72 @@ namespace Keeper2018
             table.Style = "Table";
             table.Borders.Width = 0.25;
 
-            var column = table.AddColumn("10cm");
+            var column = table.AddColumn("8cm");
             column.Format.Alignment = ParagraphAlignment.Left;
-            column = table.AddColumn("3.5cm");
+            column = table.AddColumn("5cm");
             column.Format.Alignment = ParagraphAlignment.Right;
             column.RightPadding = Unit.FromCentimeter(0.5);
             column = table.AddColumn("3cm");
             column.Format.Alignment = ParagraphAlignment.Right;
 
             var total = carReportData.Tags.Sum(t => t.Table.Sum(r => r.AmountInUsd));
-            Row row;
             foreach (var tag in carReportData.Tags)
             {
-                row = table.AddRow();
+                var row = table.AddRow();
                 row.Cells[0].AddParagraph($"{tag.Russian}");
                 var amount = tag.Table.Sum(r => r.AmountInUsd);
                 row.Cells[1].AddParagraph($"$ {-amount:#,0}");
                 row.Cells[2].AddParagraph($"{amount / total * 100:N} %");
             }
+
+            var rowTotal = table.AddRow();
+            rowTotal.Cells[1].AddParagraph($"$ {-total:#,0}");
+            rowTotal.Format.Font.Bold = true;
+
+         }
+
+        private void FillTotals(Section section, CarReportData carReportData)
+        {
+            var gap = section.AddParagraph();
+            gap.Format.SpaceBefore = Unit.FromCentimeter(0.7);
+
+            var total = carReportData.Tags.Sum(t => t.Table.Sum(r => r.AmountInUsd));
+            var table = section.AddTable();
+            table.Style = "Table";
+            table.Borders.Width = 0.25;
+
+            var column = table.AddColumn("5cm");
+            column.Format.Alignment = ParagraphAlignment.Left;
+            column = table.AddColumn("5.5cm");
+            column.Format.Alignment = ParagraphAlignment.Right;
+            column.RightPadding = Unit.FromCentimeter(0.5);
+            column = table.AddColumn("5.5cm");
+            column.Format.Alignment = ParagraphAlignment.Right;
+
+            var row = table.AddRow();
+            row.Borders.Visible = false;
+            row.Cells[2].AddParagraph("при условии продажи за 8000 usd");
+            var total2 = total + 8000;
+
             row = table.AddRow();
             row.Cells[1].AddParagraph($"$ {-total:#,0}");
+            row.Cells[2].AddParagraph($"$ {-total2:#,0}");
+            row.Format.Font.Bold = true;
+
             row = table.AddRow();
             var inAday = -total / (carReportData.FinishDate - carReportData.StartDate).Days;
-            row.Cells[1].AddParagraph($"в день $ {inAday:N}");
+            var inAday2 = -total2 / (carReportData.FinishDate - carReportData.StartDate).Days;
+            row.Cells[0].AddParagraph("в день");
+            row.Cells[1].AddParagraph($"$ {inAday:N}");
+            row.Cells[2].AddParagraph($"$ {inAday2:N}");
+
+            row = table.AddRow();
+            var inAyear = (double)-total / (carReportData.FinishDate - carReportData.StartDate).Days * 365.0;
+            var inAyear2 = (double)-total2 / (carReportData.FinishDate - carReportData.StartDate).Days * 365.0;
+            row.Cells[0].AddParagraph("в год");
+            row.Cells[1].AddParagraph($"$ {inAyear:N}");
+            row.Cells[2].AddParagraph($"$ {inAyear2:N}");
+
         }
 
         private void FillTagTables(Section section, CarReportData carReportData)
