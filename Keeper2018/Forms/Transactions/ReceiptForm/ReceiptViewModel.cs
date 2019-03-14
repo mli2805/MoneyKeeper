@@ -156,7 +156,7 @@ namespace Keeper2018
 
         public void OnceMore()
         {
-            var partialArticle = _db.SeekAccount(MyAccNameSelectorVm.MyAccName.Name);
+            var partialArticle = _db.SeekAccountById(MyAccNameSelectorVm.MyAccName.Id);
             ResultList.Add(new Tuple<decimal, AccountModel, string>(PartialAmount, partialArticle, PartialComment));
             ChangeAllProperties();
         }
@@ -173,10 +173,5 @@ namespace Keeper2018
         {
             TryClose(true);
         }
-
-        //        public void CancelReceipt()
-        //        {
-        //            TryClose(false);
-        //        }
     }
 }

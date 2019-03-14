@@ -6,9 +6,9 @@ namespace Keeper2018
 {
     public static class KeeperDbExt
     {
-        public static AccountModel SeekAccount(this KeeperDb db, string header)
+        public static AccountModel SeekAccountById(this KeeperDb db, int id)
         {
-            return db.AcMoDict.FirstOrDefault(p => p.Value.Header.Equals(header)).Value;
+            return db.AcMoDict.FirstOrDefault(p => p.Value.Id.Equals(id)).Value;
         }
 
         public static void FillInAccountTree(this KeeperDb db)

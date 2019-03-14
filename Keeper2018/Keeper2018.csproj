@@ -593,7 +593,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="_TODO\Keeper2018.gsheet" />
+    <None Include="docs\Keeper2018.gsheet" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
