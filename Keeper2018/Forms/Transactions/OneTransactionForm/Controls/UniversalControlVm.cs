@@ -157,7 +157,7 @@ namespace Keeper2018
             MyTagPickerVm = new TagPickerVm { TagSelectorVm = _accNameSelectionControlInitializer.ForTags(TranInWork) };
             foreach (var tag in tran.Tags)
             {
-                var alreadyChosenTag = MyTagPickerVm.TagSelectorVm.AvailableAccNames.FindThroughTheForest(tag.Name);
+                var alreadyChosenTag = MyTagPickerVm.TagSelectorVm.AvailableAccNames.FindThroughTheForestById(tag.Id);
                 if (alreadyChosenTag != null)
                     MyTagPickerVm.Tags.Add(alreadyChosenTag);
             }

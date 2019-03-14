@@ -114,7 +114,7 @@ namespace Keeper2018
         public void Initialize(decimal totalAmount, CurrencyCode currency, AccountModel initialArticle)
         {
             ResultList = new List<Tuple<decimal, AccountModel, string>>();
-            MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForReceipt(initialArticle.Name);
+            MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForReceipt(initialArticle.Id);
 
             Currency = currency;
             TotalAmount = totalAmount;

@@ -33,17 +33,6 @@ namespace Keeper2018
             return result;
         }
 
-        public AccName FindThroughTree(string name)
-        {
-            if (name == Name) return this;
-            foreach (var child in Children)
-            {
-                var result = child.FindThroughTree(name);
-                if (result != null) return result;
-            }
-            return null;
-        }
-
         public override string ToString()
         {
             return Name;
