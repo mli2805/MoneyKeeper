@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -9,7 +10,7 @@ namespace Keeper2018
         private readonly Period _period;
         private readonly KeeperDb _db;
         private readonly BalanceWithTurnover _balanceWithTurnover = new BalanceWithTurnover();
-        private readonly List<string> _shortTrans = new List<string>();
+        private readonly SortedDictionary<DateTime, string> _shortTrans = new SortedDictionary<DateTime, string>();
 
         private readonly bool _isDeposit;
         public DepositReportModel DepositReportModel { get; set; }
@@ -61,7 +62,7 @@ namespace Keeper2018
         {
             if (tran.MyAccount != _accountModel.Id) return;
 
-            _shortTrans.Add(_db.ShortLine(tran, false, 1));
+            _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, false, 1));
             DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, 1, DepositOperationType.Revenue));
             _balanceWithTurnover.Add(tran.Currency, tran.Amount);
         }
@@ -70,7 +71,7 @@ namespace Keeper2018
         {
             if (tran.MyAccount != _accountModel.Id) return;
 
-            _shortTrans.Add(_db.ShortLine(tran, false, -1));
+            _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, false, -1));
             if (_isDeposit)
                 DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1, DepositOperationType.Consumption));
             _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
@@ -80,7 +81,7 @@ namespace Keeper2018
         {
             if (tran.MyAccount == _accountModel.Id)
             {
-                _shortTrans.Add(_db.ShortLine(tran, false, -1));
+                _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, false, -1));
                 if (_isDeposit)
                     DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1, DepositOperationType.Consumption));
                 _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
@@ -88,7 +89,7 @@ namespace Keeper2018
 
             if (tran.MySecondAccount ==_accountModel.Id)
             {
-                _shortTrans.Add(_db.ShortLine(tran, false, 1));
+                _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, false, 1));
                 if (_isDeposit)
                     DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, 1, DepositOperationType.Contribution));
                 _balanceWithTurnover.Add(tran.Currency, tran.Amount);
@@ -100,7 +101,7 @@ namespace Keeper2018
             // явочный обмен - приходишь в банк и меняешь - была в кармане одна валюта - стала другая в том же кармане
             if (tran.MyAccount == _accountModel.Id && tran.MySecondAccount == _accountModel.Id)
             {
-                _shortTrans.Add(_db.ShortLineOneAccountExchange(tran));
+                _shortTrans.Add(tran.Timestamp, _db.ShortLineOneAccountExchange(tran));
                 if (_isDeposit)
                     DepositReportModel.Traffic.Add(_db.ReportLineOneAccountExchange(_balanceWithTurnover.Balance(), tran));
                 _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
@@ -112,7 +113,7 @@ namespace Keeper2018
             {
                 if (tran.MyAccount == _accountModel.Id)
                 {
-                    _shortTrans.Add(_db.ShortLine(tran, false, -1));
+                    _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, false, -1));
                     if (_isDeposit)
                         DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, false, -1, DepositOperationType.Consumption));
                     _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
@@ -120,7 +121,7 @@ namespace Keeper2018
 
                 if (tran.MySecondAccount == _accountModel.Id)
                 {
-                    _shortTrans.Add(_db.ShortLine(tran, true, 1));
+                    _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, true, 1));
                     if (_isDeposit)
                     {
                         DepositReportModel.Traffic.Add(_db.ReportLine(_balanceWithTurnover.Balance(), tran, true, 1, DepositOperationType.Contribution));
@@ -140,9 +141,9 @@ namespace Keeper2018
             {
                 yield return line;
             }
-            foreach (var tran in _shortTrans)
+            foreach (var pair in _shortTrans.Reverse())
             {
-                yield return tran;
+                yield return pair.Value;
             }
         }
     }

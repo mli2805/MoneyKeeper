@@ -10,7 +10,7 @@ namespace Keeper2018
         private readonly AccountModel _accountModel;
         private readonly Period _period;
         private readonly BalanceWithTurnover _balanceWithTurnover = new BalanceWithTurnover();
-        private readonly List<string> _shortTrans = new List<string>();
+        private readonly SortedDictionary<DateTime, string> _shortTrans = new SortedDictionary<DateTime, string>();
 
         private readonly TrafficPair _trafficInUsd = new TrafficPair();
         public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##;- #,0.##} usd ( знак относительно меня)";
@@ -32,12 +32,12 @@ namespace Keeper2018
                 switch (tran.Operation)
                 {
                     case OperationType.Доход:
-                        _shortTrans.Add(_db.ShortLine(tran, false, 1, out inUsd));
+                        _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, false, 1, out inUsd));
                         _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
                         _balanceWithTurnover.Add(tran.Currency, tran.Amount);
                         break;
                     case OperationType.Расход:
-                        _shortTrans.Add(_db.ShortLine(tran, false, -1, out inUsd));
+                        _shortTrans.Add(tran.Timestamp, _db.ShortLine(tran, false, -1, out inUsd));
                         _trafficInUsd.Minus = _trafficInUsd.Minus + inUsd;
                         _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                         break;
@@ -46,7 +46,7 @@ namespace Keeper2018
                         _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                         break;
                     case OperationType.Обмен:
-                        _shortTrans.Add(_db.ShortLineOneAccountExchange(tran));
+                        _shortTrans.Add(tran.Timestamp, _db.ShortLineOneAccountExchange(tran));
                         // я меняю в банке    15000 дол     на    31000 бел
                         //                 Amount/Currency      AmountInReturn/CurrencyInReturn
                         // для меня 15000 дол идут в минус 31000 бел идет в плюс 
@@ -70,9 +70,9 @@ namespace Keeper2018
             {
                 yield return line;
             }
-            foreach (var tran in _shortTrans)
+            foreach (var pair in _shortTrans.Reverse())
             {
-                yield return tran;
+                yield return pair.Value;
             }
         }
     }
