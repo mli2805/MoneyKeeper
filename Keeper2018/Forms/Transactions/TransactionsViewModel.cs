@@ -55,8 +55,14 @@ namespace Keeper2018
         {
             _comboTreesProvider.Initialize();
             _filterModel.Initialize();
-            Model.Initialize();
+           Model.Initialize();
             IsFirstLaunch = false;
+        }
+
+        public void ReInitializeOnlyAccountLists()
+        {
+            _comboTreesProvider.Initialize();
+            _filterModel.Initialize();
         }
 
         public void ButtonFilter()

@@ -39,7 +39,7 @@ namespace Keeper2018
         {
             var accountModel = new AccountModel("")
             {
-                Id = KeeperDb.Bin.AccountPlaneList.Max(a => a.Id) + 1,
+                Id = KeeperDb.AcMoDict.Keys.Max() + 1,
                 Owner = ShellPartsBinder.SelectedAccountModel
             };
             _oneAccountViewModel.Initialize(accountModel, true);

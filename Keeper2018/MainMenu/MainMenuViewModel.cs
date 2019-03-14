@@ -68,6 +68,8 @@ namespace Keeper2018
         {
             if (_transactionsViewModel.IsFirstLaunch)
                 _transactionsViewModel.Initialize();
+            else
+                _transactionsViewModel.ReInitializeOnlyAccountLists();
             _windowManager.ShowDialog(_transactionsViewModel);
 
             if (_transactionsViewModel.Model.IsCollectionChanged)
