@@ -634,5 +634,8 @@
   <ItemGroup>
     <Resource Include="Resources\exchange3.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="docs\AccountIds.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

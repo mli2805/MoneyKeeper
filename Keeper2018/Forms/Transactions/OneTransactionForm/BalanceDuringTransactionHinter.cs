@@ -40,7 +40,7 @@ namespace Keeper2018
 
         public string GetMyAccountBalance(TransactionModel transactionInWork)
         {
-            if (transactionInWork?.MyAccount == null || !transactionInWork.MyAccount.Is("Мои")) return "было ххх - стало ххх";
+            if (transactionInWork?.MyAccount == null || !transactionInWork.MyAccount.Is(158)) return "было ххх - стало ххх";
 
             var balanceBefore =
                 _db.Bin.Transactions.Values.Sum(t => t.AmountForAccount(
@@ -53,7 +53,7 @@ namespace Keeper2018
         public string GetMySecondAccountBalance(TransactionModel transactionInWork)
         {
             if (transactionInWork?.MySecondAccount == null) return "было ххх - стало ххх";
-            if (!transactionInWork.MySecondAccount.Is("Мои")) return "было ххх - стало ххх";
+            if (!transactionInWork.MySecondAccount.Is(158)) return "было ххх - стало ххх";
 
             if (transactionInWork.Operation == OperationType.Перенос)
             {

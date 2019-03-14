@@ -55,24 +55,12 @@ namespace Keeper2018
             }
             destinationTran.Comment = tran.Comment;
         }
-        private static AccountModel UpToCategory(AccountModel tag, string root)
-        {
-            return tag.Owner.Name == root ? tag : UpToCategory(tag.Owner, root);
-        }
-        // возвращает базовую категорию
-        public static AccountModel GetTranCategory(this TransactionModel tran, bool flag)
-        {
-            var rootName = flag ? "Все доходы" : "Все расходы";
-            var result = tran.Tags.FirstOrDefault(t => t.Is(rootName));
-            if (result != null) return UpToCategory(result, rootName);
-            MessageBox.Show($"не задана категория {tran.Timestamp} {tran.Amount} {tran.Currency}", "");
-            return null;
-        }
+
         // возвращает подробную категорию
-        public static AccountModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
+        private static AccountModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
         {
-            var rootName = isIncome ? "Все доходы" : "Все расходы";
-            var result = tran.Tags.FirstOrDefault(t => t.Is(rootName));
+            var rootId = isIncome ? 185 : 189;
+            var result = tran.Tags.FirstOrDefault(t => t.Is(rootId));
             if (result != null) return result;
             MessageBox.Show(
                 batchProcessing
@@ -83,22 +71,9 @@ namespace Keeper2018
         }
         public static bool HasntGotCategoryTagThoughItShould(this TransactionModel tran)
         {
-            return ((tran.Operation == OperationType.Доход || tran.Operation == OperationType.Расход) &&
-                    tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null);
+            return (tran.Operation == OperationType.Доход || tran.Operation == OperationType.Расход) &&
+                   tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null;
         }
 
-        public static CurrencyCode CurrencyOfSecondAccount(this TransactionModel tran)
-        {
-            return tran.Operation == OperationType.Перенос
-                ? tran.Currency
-                : tran.CurrencyInReturn.GetValueOrDefault();
-        }
-
-        public static string DumpOfSecondAccount(this TransactionModel tran)
-        {
-            return tran.Operation == OperationType.Перенос || tran.Operation == OperationType.Обмен
-                ? tran.MySecondAccount.Name
-                : "";
-        }
     }
 }

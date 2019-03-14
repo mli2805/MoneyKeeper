@@ -22,11 +22,12 @@ namespace Keeper2018
         private bool FilterAccount()
         {
             if (_filterModel.MyAccName == null) return true;
-            if (_filterModel.IsAccNamePosition1) return _wrappedTran.Tran.MyAccount.Is(_filterModel.MyAccName.Name);
-            if (_filterModel.IsAccNamePosition2) return _wrappedTran.Tran.MySecondAccount != null && _wrappedTran.Tran.MySecondAccount.Is(_filterModel.MyAccName.Name);
+            if (_filterModel.IsAccNamePosition1) return _wrappedTran.Tran.MyAccount.Is(_filterModel.MyAccName.Id);
+            if (_filterModel.IsAccNamePosition2) 
+                return _wrappedTran.Tran.MySecondAccount != null && _wrappedTran.Tran.MySecondAccount.Is(_filterModel.MyAccName.Id);
             // if (_filterModel.IsAccNamePosition12)
-            return _wrappedTran.Tran.MyAccount.Is(_filterModel.MyAccName.Name) ||
-                   _wrappedTran.Tran.MySecondAccount != null && _wrappedTran.Tran.MySecondAccount.Is(_filterModel.MyAccName.Name);
+            return _wrappedTran.Tran.MyAccount.Is(_filterModel.MyAccName.Id) ||
+                   _wrappedTran.Tran.MySecondAccount != null && _wrappedTran.Tran.MySecondAccount.Is(_filterModel.MyAccName.Id);
         }
 
         private bool FilterAmount()

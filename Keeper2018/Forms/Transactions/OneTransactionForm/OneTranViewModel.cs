@@ -159,7 +159,7 @@ namespace Keeper2018
 
         private bool LeaveOneExternalAccountInTags()
         {
-            var externalAccount = TranInWork.Tags.FirstOrDefault(a => a.Is("Внешние"));
+            var externalAccount = TranInWork.Tags.FirstOrDefault(a => a.Is(157));
             if (externalAccount == null)
             {
                 MessageBox.Show("Должен быть хотя бы один продавец/услугодатель");
