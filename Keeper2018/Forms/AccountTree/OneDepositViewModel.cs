@@ -64,6 +64,7 @@ namespace Keeper2018
 
         public void InitializeForm(AccountModel accountModel, bool isInAddMode)
         {
+            IsSavePressed = false;
             _isInAddMode = isInAddMode;
             _accountModel = accountModel;
             DepositOffers = _db.Bin.DepositOffers.Select(x => x.Map(_db.Bin.AccountPlaneList)).ToList();
@@ -75,6 +76,7 @@ namespace Keeper2018
                 SelectedDepositOffer = DepositOffers.First();
                 DepositInWork.StartDate = DateTime.Today;
                 DepositInWork.FinishDate = DateTime.Today.AddMonths(1);
+                Junction = "";
             }
             else
             {
@@ -100,6 +102,7 @@ namespace Keeper2018
 
         public void Cancel()
         {
+            IsSavePressed = false;
             TryClose();
         }
 

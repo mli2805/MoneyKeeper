@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -136,7 +137,8 @@ namespace Keeper2018
 
                 var day = DateTimeAxis.ToDouble(currencyRatesModel.Date);
                 UsdNbSeries.Points.Add(new DataPoint(day, normalizedRates.UsdNb));
-                UsdMySeries.Points.Add(new DataPoint(day, normalizedRates.UsdMy));
+                if (!normalizedRates.UsdMy.Equals(0))
+                    UsdMySeries.Points.Add(new DataPoint(day, normalizedRates.UsdMy));
                 RubNbSeries.Points.Add(new DataPoint(day, normalizedRates.RubNb));
                 RubUsdSeries.Points.Add(new DataPoint(day, normalizedRates.RubUsd));
                 EurNbSeries.Points.Add(new DataPoint(day, normalizedRates.EurNb));
