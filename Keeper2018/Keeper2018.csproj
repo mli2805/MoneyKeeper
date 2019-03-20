@@ -108,6 +108,7 @@
     </ApplicationDefinition>
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
+    <Compile Include="Domain\Car.cs" />
     <Compile Include="Domain\Db\AssociationFinder.cs" />
     <Compile Include="Domain\Db\IO\DbClassesInstanceParser.cs" />
     <Compile Include="Domain\Db\IO\DbTxtLoader.cs" />
@@ -153,6 +154,10 @@
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagCalculator.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
+    <Compile Include="Forms\Cars\CarsView.xaml.cs">
+      <DependentUpon>CarsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Cars\CarsViewModel.cs" />
     <Compile Include="Forms\Charts\BalanceAndSaldoModel.cs" />
     <Compile Include="Forms\Charts\BalancesAndSaldosView.xaml.cs">
       <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>
@@ -406,6 +411,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Cars\CarsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

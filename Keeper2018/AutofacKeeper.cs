@@ -58,6 +58,7 @@ namespace Keeper2018
             builder.RegisterType<TransactionsViewModel>().SingleInstance();
 
             builder.RegisterType<SettingsViewModel>().SingleInstance();
+            builder.RegisterType<CarsViewModel>().SingleInstance();
 
         }
     }
