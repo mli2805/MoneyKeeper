@@ -646,5 +646,8 @@
   <ItemGroup>
     <Resource Include="docs\AccountIds.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\car.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

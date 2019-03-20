@@ -14,8 +14,12 @@ namespace Keeper2018
         {
             _db = db;
 
-            Cars = _db.Bin.Cars ?? InitializeBase();
 
+        }
+
+        public void Initialize()
+        {
+            Cars = _db.Bin.Cars ?? InitializeBase();
         }
 
         private static List<Car> InitializeBase()

@@ -16,11 +16,13 @@ namespace Keeper2018
         private readonly BankOffersViewModel _bankOffersViewModel;
         private readonly ArticlesAssociationsViewModel _articlesAssociationsViewModel;
         private readonly SettingsViewModel _settingsViewModel;
+        private readonly CarsViewModel _carsViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
-            ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel)
+            ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
+            CarsViewModel carsViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
@@ -31,6 +33,7 @@ namespace Keeper2018
             _bankOffersViewModel = bankOffersViewModel;
             _articlesAssociationsViewModel = articlesAssociationsViewModel;
             _settingsViewModel = settingsViewModel;
+            _carsViewModel = carsViewModel;
         }
 
         // for short-cuts
@@ -114,6 +117,11 @@ namespace Keeper2018
 
         }
 
+        public void ShowCarForm()
+        {
+            _carsViewModel.Initialize();
+            _windowManager.ShowDialog(_carsViewModel);
+        }
         public void ShowCarReport()
         {
             var provider = new CarReportProvider(_keeperDb);
