@@ -16,7 +16,18 @@ namespace Keeper2018
         public int MileageStart => _car.MileageStart;
 
         public string Finish => $"{_car.Finish:d MMMM yyyy}" ;
-        public int MileageFinish => _car.MileageFinish;
+        public int MileageFinish
+        {
+            get => _car.MileageFinish;
+            set => _car.MileageFinish = value;
+        }
+
+        public int SupposedSale
+        {
+            get => _car.SupposedSale;
+            set => _car.SupposedSale = value;
+        }
+
         public string Comment => _car.Comment;
 
         public int MileageDifference => _car.MileageFinish - _car.MileageStart;

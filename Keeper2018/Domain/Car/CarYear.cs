@@ -1,5 +1,8 @@
-﻿namespace Keeper2018
+﻿using System;
+
+namespace Keeper2018
 {
+    [Serializable]
     public class CarYear
     {
         public int AccountId;

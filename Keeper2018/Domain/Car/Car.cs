@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Keeper2018
 {
+    [Serializable]
     public class Car
     {
         public int AccountId;
@@ -16,6 +17,7 @@ namespace Keeper2018
         public DateTime Finish;
         public int MileageFinish;
 
+        public int SupposedSale;
         public string Comment;
 
         public List<CarYear> MileageYears;

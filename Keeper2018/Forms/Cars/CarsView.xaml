@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:CarsViewModel}"
-        Width="724"  Height="350" WindowStartupLocation="CenterScreen">
+        Width="754"  Height="350" WindowStartupLocation="CenterScreen">
     <DockPanel Margin="5">
-        <ListView DockPanel.Dock="Top" ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" Margin="5">
+        <ListView DockPanel.Dock="Top" ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" 
+                  Margin="5" SelectionMode="Single" >
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="BorderBrush" Value="LightGray" />
@@ -17,7 +18,7 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Машина" DisplayMemberBinding="{Binding Title}" Width="160"/>
+                    <GridViewColumn Header="Машина" DisplayMemberBinding="{Binding Title}" Width="190"/>
                     <GridViewColumn Header="г.в." DisplayMemberBinding="{Binding IssueYear}" Width="40"/>
                     <GridViewColumn Header="покупка" Width="120">
                         <GridViewColumn.CellTemplate>
@@ -85,8 +86,17 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Height="35" Visibility="{Binding IsLastCarVisibility}"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="Конечный пробег" Margin="5,0,5,3" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SelectedCar.MileageFinish}" Width="70" VerticalAlignment="Center"/>
+            <TextBlock Text="км.      Предполагаемая продажа " Margin="5,0,5,3" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SelectedCar.SupposedSale}" Width="70" VerticalAlignment="Center"/>
+            <TextBlock Text="usd" Margin="5,0,5,3" VerticalAlignment="Center"/>
+        </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" Height="35" HorizontalAlignment="Right">
-            <Button Content="Автомобильный отчет" Width="200" Margin="5" Name="ShowCarReport"/>
+            <Button Content="Добавить авто" Width="120" Margin="5" Name="AddNewCar"/>
+            <Button Content="Автомобильный отчет" Width="180" Margin="5" Name="ShowCarReport"/>
             <Button Content="Закрыть" Width="100" Margin="5" Name="Close"/>
         </StackPanel>
         <StackPanel Margin="5">
@@ -97,7 +107,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Номер:" Margin="5" Width="40"/>
                 <TextBlock Text="{Binding SelectedCar.StateRegNumber}" Margin="5"/>
-            </StackPanel> 
+            </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="" Margin="5" Width="40"/>
                 <TextBlock Text="{Binding SelectedCar.Comment}" Margin="5"/>

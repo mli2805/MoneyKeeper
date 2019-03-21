@@ -10,6 +10,7 @@ namespace Keeper2018
     public class CarReportProvider
     {
         private int _accountId; // Scenic3 = 716
+        private Car _car;
         private static readonly string[] TagRussians =
             { "покупка-продажа", "государство", "авто ремонт", "ремонт регуляр", "авто топливо", "авто прочее" };
         private static readonly string[] TagEnglish =
@@ -25,16 +26,16 @@ namespace Keeper2018
         public PdfDocument CreateCarReport(int accountId)
         {
             _accountId = accountId;
-            var carReportData = ExtractCarData();
+            _car = _db.Bin.Cars.First(c => c.AccountId == _accountId);
 
             Document doc = new Document();
             Section chartSection = doc.AddSection();
+            chartSection.PageSetup.TopMargin = 40;
             var paragraph = chartSection.AddParagraph();
-            paragraph.AddFormattedText(
-                $"Renault Grand Scenic III 1.5dci 2010 г.в. {carReportData.StartDate:dd/MM/yyyy} - {carReportData.FinishDate:dd/MM/yyyy}");
-          //  paragraph.Format.SpaceBefore = Unit.FromCentimeter(0.2);
+            paragraph.AddFormattedText($"{_car.Title} {_car.IssueYear} г.в. {_car.Start:dd/MM/yyyy} - {_car.Finish:dd/MM/yyyy}");
             paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.3);
 
+            var carReportData = ExtractCarData();
             FillChart(chartSection, carReportData);
             FillAggregateTable(chartSection, carReportData);
             FillTotals(chartSection, carReportData);
@@ -63,17 +64,6 @@ namespace Keeper2018
             }
 
             result.StartDate = result.Tags[0].Table[0].Date;
-
-            //            var sold = new PdfReportTableRow()
-            //            {
-            //                Date = new DateTime(2019, 4, 15),
-            //                AmountInUsd = 9200,
-            //                AmountInCurrency = "9200 usd",
-            //                Comment = "продажа",
-            //            };
-            //            result.Tags[0].Table.Add(sold);
-            //            result.FinishDate = sold.Date;
-
             result.FinishDate = DateTime.Today;
             return result;
         }
@@ -139,7 +129,7 @@ namespace Keeper2018
             rowTotal.Cells[1].AddParagraph($"$ {-total:#,0}");
             rowTotal.Format.Font.Bold = true;
 
-         }
+        }
 
         private void FillTotals(Section section, CarReportData carReportData)
         {
@@ -147,26 +137,34 @@ namespace Keeper2018
             gap.Format.SpaceBefore = Unit.FromCentimeter(0.7);
 
             var total = carReportData.Tags.Sum(t => t.Table.Sum(r => r.AmountInUsd));
+            decimal total2 = 0;
             var table = section.AddTable();
             table.Style = "Table";
             table.Borders.Width = 0.25;
+
+            var isLastCar = _db.Bin.Cars.Last().AccountId == _accountId;
 
             var column = table.AddColumn("5cm");
             column.Format.Alignment = ParagraphAlignment.Left;
             column = table.AddColumn("5.5cm");
             column.Format.Alignment = ParagraphAlignment.Right;
             column.RightPadding = Unit.FromCentimeter(0.5);
-            column = table.AddColumn("5.5cm");
-            column.Format.Alignment = ParagraphAlignment.Right;
+
+            if (isLastCar)
+            {
+                column = table.AddColumn("5.5cm");
+                column.Format.Alignment = ParagraphAlignment.Right;
+
+                var rowSupposedly = table.AddRow();
+                rowSupposedly.Borders.Visible = false;
+                rowSupposedly.Cells[2].AddParagraph($"при условии продажи за {_car.SupposedSale} usd");
+                total2 = total + _car.SupposedSale;
+            }
 
             var row = table.AddRow();
-            row.Borders.Visible = false;
-            row.Cells[2].AddParagraph("при условии продажи за 8000 usd");
-            var total2 = total + 8000;
-
-            row = table.AddRow();
             row.Cells[1].AddParagraph($"$ {-total:#,0}");
-            row.Cells[2].AddParagraph($"$ {-total2:#,0}");
+            if (isLastCar)
+                row.Cells[2].AddParagraph($"$ {-total2:#,0}");
             row.Format.Font.Bold = true;
 
             row = table.AddRow();
@@ -174,15 +172,33 @@ namespace Keeper2018
             var inAday2 = -total2 / (carReportData.FinishDate - carReportData.StartDate).Days;
             row.Cells[0].AddParagraph("в день");
             row.Cells[1].AddParagraph($"$ {inAday:N}");
-            row.Cells[2].AddParagraph($"$ {inAday2:N}");
+            if (isLastCar)
+                row.Cells[2].AddParagraph($"$ {inAday2:N}");
 
             row = table.AddRow();
             var inAyear = (double)-total / (carReportData.FinishDate - carReportData.StartDate).Days * 365.0;
-            var inAyear2 = (double)-total2 / (carReportData.FinishDate - carReportData.StartDate).Days * 365.0;
             row.Cells[0].AddParagraph("в год");
             row.Cells[1].AddParagraph($"$ {inAyear:N}");
-            row.Cells[2].AddParagraph($"$ {inAyear2:N}");
+            if (isLastCar)
+            {
+                var inAyear2 = (double)-total2 / (carReportData.FinishDate - carReportData.StartDate).Days * 365.0;
+                row.Cells[2].AddParagraph($"$ {inAyear2:N}");
+            }
 
+            row = table.AddRow();
+            row.Borders.Visible = false;
+            row.Cells[0].MergeRight = 1;
+            row.Cells[0].AddParagraph($"{_car.MileageFinish} - {_car.MileageStart} = {_car.MileageFinish - _car.MileageStart} км");
+         
+            row = table.AddRow();
+            var forKm = (double)-total / (_car.MileageFinish - _car.MileageStart);
+            row.Cells[0].AddParagraph("за 1 км");
+            row.Cells[1].AddParagraph($"$ {forKm:N}");
+            if (isLastCar)
+            {
+                var forKm2 = (double)-total2 / (_car.MileageFinish - _car.MileageStart);
+                row.Cells[2].AddParagraph($"$ {forKm2:N}");
+            }
         }
 
         private void FillTagTables(Section section, CarReportData carReportData)

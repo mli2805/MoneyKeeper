@@ -23,22 +23,25 @@ namespace Keeper2018
                 if (Equals(value, _selectedCar)) return;
                 _selectedCar = value;
                 NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(IsLastCarVisibility));
             }
         }
+
+        public Visibility IsLastCarVisibility => SelectedCar.AccountId == Cars.Last().AccountId 
+            ? Visibility.Visible : Visibility.Collapsed;
 
         public CarsViewModel(KeeperDb db)
         {
             _db = db;
-
-
         }
 
         public void Initialize()
         {
-            //   var temp = _db.Bin.Cars ?? InitializeBase();
-            var temp = InitializeBase();
+            if (_db.Bin.Cars == null)
+                _db.Bin.Cars = InitializeBase();
+
             Cars = new List<CarVm>();
-            foreach (var car in temp)
+            foreach (var car in _db.Bin.Cars)
             {
                 Cars.Add(new CarVm(car));
             }
@@ -49,6 +52,11 @@ namespace Keeper2018
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Автомобили";
+        }
+
+        public void AddNewCar()
+        {
+
         }
 
         public void ShowCarReport()
@@ -99,7 +107,7 @@ namespace Keeper2018
                         new CarYear(){AccountId = 708, YearCount = 2, Mileage = 308600},
                     }},
 
-                new Car{AccountId = 711, Title = "Renault Scenic II 1,9 dCi", IssueYear = 2005,
+                new Car{AccountId = 711, Title = "Renault Grand Scenic II 1,9 dCi", IssueYear = 2005,
                     StateRegNumber = "9734 КА-7", Vin = "VF1JM1GE634636175",
                     Start = new DateTime(2009,4,2), MileageStart = 157900,
                     Finish = new DateTime(2014,9,3), MileageFinish = 256300,
@@ -112,7 +120,7 @@ namespace Keeper2018
                         new CarYear(){AccountId = 711, YearCount = 5, Mileage = 254200},
                     }},
 
-                new Car{AccountId = 716, Title = "Renault Scenic III 1,5 dCi", IssueYear = 2010,
+                new Car{AccountId = 716, Title = "Renault Grand Scenic III 1,5 dCi", IssueYear = 2010,
                     StateRegNumber = "8688 НК-7", Vin = "VF1JZ1GB642744065",
                     Start = new DateTime(2014,4,14), MileageStart = 134750,
                     Finish = DateTime.Today, MileageFinish = 199300, // на сегодня
