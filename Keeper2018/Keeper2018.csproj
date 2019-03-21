@@ -108,7 +108,9 @@
     </ApplicationDefinition>
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
-    <Compile Include="Domain\Car.cs" />
+    <Compile Include="Domain\Car\Car.cs" />
+    <Compile Include="Forms\Cars\CarVm.cs" />
+    <Compile Include="Domain\Car\CarYear.cs" />
     <Compile Include="Domain\Db\AssociationFinder.cs" />
     <Compile Include="Domain\Db\IO\DbClassesInstanceParser.cs" />
     <Compile Include="Domain\Db\IO\DbTxtLoader.cs" />

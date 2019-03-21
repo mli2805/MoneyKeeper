@@ -2,6 +2,8 @@ namespace Keeper2018
 {
     using System;
     using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
     using Autofac;
     using Caliburn.Micro;
 
@@ -47,6 +49,9 @@ namespace Keeper2018
         {
             var builder = new ContainerBuilder();
             builder.RegisterModule<AutofacKeeper>();
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
 
 //            KeeperDb keeperDb = await DbLoader.Load();
 //            builder.RegisterInstance(keeperDb);

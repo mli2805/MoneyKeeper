@@ -9,7 +9,7 @@ namespace Keeper2018
 {
     public class CarReportProvider
     {
-        private const int Scenic3Id = 716; // Scenic3
+        private int _accountId; // Scenic3 = 716
         private static readonly string[] TagRussians =
             { "покупка-продажа", "государство", "авто ремонт", "ремонт регуляр", "авто топливо", "авто прочее" };
         private static readonly string[] TagEnglish =
@@ -22,8 +22,9 @@ namespace Keeper2018
             _db = db;
         }
 
-        public PdfDocument CreateCarReport()
+        public PdfDocument CreateCarReport(int accountId)
         {
+            _accountId = accountId;
             var carReportData = ExtractCarData();
 
             Document doc = new Document();
@@ -53,7 +54,7 @@ namespace Keeper2018
         private CarReportData ExtractCarData()
         {
             var result = new CarReportData();
-            var carAccount = _db.AcMoDict[Scenic3Id];
+            var carAccount = _db.AcMoDict[_accountId];
             for (int i = 0; i < TagRussians.Length; i++)
             {
                 var tag = carAccount.Children.First(c => c.Name.Contains(TagRussians[i]));

@@ -4,9 +4,104 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
-        mc:Ignorable="d"
-        Title="CarsView" Height="450" Width="800" d:DataContext="{d:DesignInstance keeper2018:CarsViewModel}">
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:CarsViewModel}"
+        Width="724"  Height="350" WindowStartupLocation="CenterScreen">
     <DockPanel Margin="5">
-        <ListView ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar}" Margin="5"></ListView>
+        <ListView DockPanel.Dock="Top" ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" Margin="5">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="BorderBrush" Value="LightGray" />
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Машина" DisplayMemberBinding="{Binding Title}" Width="160"/>
+                    <GridViewColumn Header="г.в." DisplayMemberBinding="{Binding IssueYear}" Width="40"/>
+                    <GridViewColumn Header="покупка" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Start}" TextAlignment="Right"
+                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="до" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding MileageStart}" TextAlignment="Right"
+                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="продажа" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Finish}" TextAlignment="Right"
+                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="после" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding MileageFinish}" TextAlignment="Right"
+                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="пробег" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding MileageDifference}" TextAlignment="Right"
+                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="в день" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding MileageAday}" TextAlignment="Right"
+                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView ItemsSource="{Binding SelectedCar.MileageYears}" Margin="5,0" Width="124">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="BorderBrush" Value="LightGray" />
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="год" Width="40" DisplayMemberBinding="{Binding YearCount}"></GridViewColumn>
+                    <GridViewColumn Header="пробег" Width="60" DisplayMemberBinding="{Binding Mileage}"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" Height="35" HorizontalAlignment="Right">
+            <Button Content="Автомобильный отчет" Width="200" Margin="5" Name="ShowCarReport"/>
+            <Button Content="Закрыть" Width="100" Margin="5" Name="Close"/>
+        </StackPanel>
+        <StackPanel Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="VIN:" Margin="5" Width="40"/>
+                <TextBlock Text="{Binding SelectedCar.Vin}" Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Номер:" Margin="5" Width="40"/>
+                <TextBlock Text="{Binding SelectedCar.StateRegNumber}" Margin="5"/>
+            </StackPanel> 
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="" Margin="5" Width="40"/>
+                <TextBlock Text="{Binding SelectedCar.Comment}" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
     </DockPanel>
 </Window>

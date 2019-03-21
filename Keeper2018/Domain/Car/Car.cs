@@ -16,13 +16,8 @@ namespace Keeper2018
         public DateTime Finish;
         public int MileageFinish;
 
-        public List<CarYear> MileageYears;
-    }
+        public string Comment;
 
-    public class CarYear
-    {
-        public int AccountId;
-        public int YearCount;
-        public int Mileage;
+        public List<CarYear> MileageYears;
     }
 }
