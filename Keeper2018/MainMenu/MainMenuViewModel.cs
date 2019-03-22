@@ -125,19 +125,28 @@ namespace Keeper2018
       
         public async void Save()
         {
-            if (_shellPartsBinder.IsBusy) return;
-            _shellPartsBinder.IsBusy = true;
-            _shellPartsBinder.FooterVisibility = Visibility.Visible;
-            _keeperDb.FlattenAccountTree();
-            await DbSerializer.Serialize(_keeperDb.Bin);
 
-            var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
-            var unused2 = await DbTxtSaver.ZipTxtDbAsync();
+            try
+            {
+                if (_shellPartsBinder.IsBusy) return;
+                _shellPartsBinder.IsBusy = true;
+                _shellPartsBinder.FooterVisibility = Visibility.Visible;
+                _keeperDb.FlattenAccountTree();
+                await DbSerializer.Serialize(_keeperDb.Bin);
 
-            DbTxtSaver.DeleteTxtFiles();
-            _transactionsViewModel.Model.IsCollectionChanged = false;
-            _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
-            _shellPartsBinder.IsBusy = false;
+                var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
+                var unused2 = await DbTxtSaver.ZipTxtDbAsync();
+
+                DbTxtSaver.DeleteTxtFiles();
+                _transactionsViewModel.Model.IsCollectionChanged = false;
+                _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
+                _shellPartsBinder.IsBusy = false;
+            }
+            catch (Exception e)
+            {
+                var vm = new MyMessageBoxViewModel(MessageType.Error, $"{e.Message}");
+                _windowManager.ShowDialog(vm);
+            }
         }
 
         public void ShowSettingsForm()

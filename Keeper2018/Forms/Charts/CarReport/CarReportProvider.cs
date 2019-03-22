@@ -12,9 +12,9 @@ namespace Keeper2018
         private int _accountId; // Scenic3 = 716
         private Car _car;
         private static readonly string[] TagRussians =
-            { "покупка-продажа", "государство", "авто ремонт", "ремонт регуляр", "авто топливо", "авто прочее" };
+            { "покупка-продажа", "государство", "авто ремонт", "ремонт ДТП", "ремонт регуляр", "авто топливо", "авто прочее" };
         private static readonly string[] TagEnglish =
-            { "buy-sell", "state", "car repair", "expendables", "car fuel", "other stuff" };
+            { "buy-sell", "state", "car repair", "accident repair", "expendables", "car fuel", "other stuff" };
 
         private readonly KeeperDb _db;
 
@@ -207,8 +207,9 @@ namespace Keeper2018
             section.DrawTableFromTag(carReportData.Tags[1]);
             section.AddPageBreak();
             section.DrawTableFromTag(carReportData.Tags[2]);
-            section.AddPageBreak();
             section.DrawTableFromTag(carReportData.Tags[3]);
+            section.AddPageBreak();
+            section.DrawTableFromTag(carReportData.Tags[4]);
         }
     }
 }

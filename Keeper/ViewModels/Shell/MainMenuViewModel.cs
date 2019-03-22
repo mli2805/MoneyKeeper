@@ -42,7 +42,7 @@ namespace Keeper.ViewModels.Shell
 
         public async void ActionMethod(MainMenuAction action)
         {
-            if (_shellModel.CurrentAction == MainMenuAction.QuitApplication) return;
+            if (_shellModel.CurrentAction == MainMenuAction.QuitApplication) return; // отсеиваем двойное нажатие
             _shellModel.CurrentAction = action;
 
             if (_shellModel.MainMenuDictionary.Actions[action].IsAsync)

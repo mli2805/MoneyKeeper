@@ -96,7 +96,7 @@
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" Height="35" HorizontalAlignment="Right">
             <Button Content="Добавить авто" Width="120" Margin="5" Name="AddNewCar"/>
-            <Button Content="Автомобильный отчет" Width="180" Margin="5" Name="ShowCarReport"/>
+            <Button Content="Авто отчет" Width="120" Margin="5" Name="ShowCarReport"/>
             <Button Content="Закрыть" Width="100" Margin="5" Name="Close"/>
         </StackPanel>
         <StackPanel Margin="5">
