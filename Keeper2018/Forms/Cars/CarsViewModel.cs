@@ -110,7 +110,7 @@ namespace Keeper2018
                 new Car{AccountId = 711, Title = "Renault Grand Scenic II 1,9 dCi", IssueYear = 2005,
                     StateRegNumber = "9734 КА-7", Vin = "VF1JM1GE634636175",
                     Start = new DateTime(2009,4,2), MileageStart = 157900,
-                    Finish = new DateTime(2014,9,3), MileageFinish = 256300,
+                    Finish = new DateTime(2014,9,3), MileageFinish = 256150,
                     MileageYears = new List<CarYear>()
                     {
                         new CarYear(){AccountId = 711, YearCount = 1, Mileage = 178300},
