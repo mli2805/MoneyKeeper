@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 
@@ -95,13 +96,28 @@ namespace Keeper2018
             }
         }
 
-        public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
+       //  public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
+        private string _myAccountBalance;
+        public string MyAccountBalance
+        {
+            get { return _myAccountBalance; }
+            set
+            {
+                if (value == _myAccountBalance) return;
+                _myAccountBalance = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+     
+
         public string MySecondAccountBalance => _balanceDuringTransactionHinter.GetMySecondAccountBalance(TranInWork);
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
         public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
         public string ExchangeRate => _balanceDuringTransactionHinter.GetExchangeRate(TranInWork);
 
         private bool _receiptButtonPressed;
+
         public bool ReceiptButtonPressed
         {
             get { return _receiptButtonPressed; }
@@ -142,6 +158,7 @@ namespace Keeper2018
                 ButtonAllInVisibility = tran.Operation == OperationType.Доход ? Visibility.Collapsed : Visibility.Visible,
             };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
+            Task.Factory.StartNew(S);
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
             {
@@ -285,11 +302,18 @@ namespace Keeper2018
                 case "Timestamp":
                     NotifyOfPropertyChange(nameof(AmountInUsd));
                     NotifyOfPropertyChange(nameof(AmountInReturnInUsd));
-                    NotifyOfPropertyChange(nameof(MyAccountBalance));
+                //    NotifyOfPropertyChange(nameof(MyAccountBalance));
+                    Task.Factory.StartNew(S);
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     NotifyOfPropertyChange(nameof(ExchangeRate));
                     break;
             }
+        }
+
+        private void S()
+        {
+            var result = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
+            Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
         }
 
     }
