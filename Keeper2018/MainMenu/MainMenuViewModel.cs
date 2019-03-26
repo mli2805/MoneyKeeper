@@ -136,8 +136,8 @@ namespace Keeper2018
 
                 var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
                 var unused2 = await DbTxtSaver.ZipTxtDbAsync();
-
                 DbTxtSaver.DeleteTxtFiles();
+
                 _transactionsViewModel.Model.IsCollectionChanged = false;
                 _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
                 _shellPartsBinder.IsBusy = false;

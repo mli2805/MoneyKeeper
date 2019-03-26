@@ -11,12 +11,12 @@ namespace Keeper2018
 {
     public static class DbTxtSaver
     {
-        public static async Task<int> SaveAllToNewTxtAsync(this KeeperDb db)
+        public static async Task<string> SaveAllToNewTxtAsync(this KeeperDb db)
         {
             return await Task.Factory.StartNew(db.SaveAllToNewTxt);
         }
 
-        private static int SaveAllToNewTxt(this KeeperDb db)
+        private static string SaveAllToNewTxt(this KeeperDb db)
         {
             var currencyRates = db.Bin.Rates.Values.Select(l => l.Dump());
             var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
@@ -33,7 +33,7 @@ namespace Keeper2018
             WriteTransactionsContent(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
             File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
 
-            return 0;
+            return "I'm done";
         }
 
         // supposedly it should be faster than File.WriteAllLines because of increased buffer
@@ -69,13 +69,12 @@ namespace Keeper2018
             return depoOffers;
         }
 
-        public static async Task<int> ZipTxtDbAsync()
+        public static async Task<string> ZipTxtDbAsync()
         {
-            await Task.Factory.StartNew(ZipTxtDb);
-            return 0;
+            return await Task.Factory.StartNew(ZipTxtDb);
         }
 
-        public static void ZipTxtDb()
+        private static string ZipTxtDb()
         {
             var archiveName = $"DB{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.zip";
             var zipFileToCreate = Path.Combine(DbIoUtils.GetBackupFilePath(archiveName));
@@ -97,6 +96,7 @@ namespace Keeper2018
             {
                 MessageBox.Show("Exception during database zipping: " + ex1);
             }
+            return "I'm done";
         }
 
         public static void DeleteTxtFiles()

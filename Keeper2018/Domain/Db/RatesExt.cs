@@ -34,8 +34,8 @@ namespace Keeper2018
             var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}";
             result.Add(belka, belkaBrush);
 
-            var euroStart = ratesLine.NbRates.Euro.Value / belkaStart;
-            var euroFinish = ratesLineFinish.NbRates.Euro.Value / belkaFinish;
+           var euroStart = ratesLine.NbRates.Euro.Value / ratesLine.NbRates.Usd.Value;
+            var euroFinish = ratesLineFinish.NbRates.Euro.Value / ratesLineFinish.NbRates.Usd.Value;
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
             var euro = $"      Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}";
