@@ -16,12 +16,13 @@ namespace Keeper2018
         private readonly ArticlesAssociationsViewModel _articlesAssociationsViewModel;
         private readonly SettingsViewModel _settingsViewModel;
         private readonly CarsViewModel _carsViewModel;
+        private readonly ExpenseByCategoriesViewModel _expenseByCategoriesViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
-            CarsViewModel carsViewModel)
+            CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
@@ -33,6 +34,7 @@ namespace Keeper2018
             _articlesAssociationsViewModel = articlesAssociationsViewModel;
             _settingsViewModel = settingsViewModel;
             _carsViewModel = carsViewModel;
+            _expenseByCategoriesViewModel = expenseByCategoriesViewModel;
         }
 
         // for short-cuts
@@ -113,7 +115,8 @@ namespace Keeper2018
 
         public void ShowExpensesChart()
         {
-
+            _expenseByCategoriesViewModel.Initialize();
+            _windowManager.ShowDialog(_expenseByCategoriesViewModel);
         }
 
         public void ShowCarForm()
