@@ -54,6 +54,11 @@ namespace Keeper2018
       return (day.Year == otherDay.Year && day.Month == otherDay.Month);
     }
 
+      public static int MonthsBeetween(this DateTime lastDateTime, DateTime firstDateTime)
+      {
+          return lastDateTime.Year * 12 + lastDateTime.Month - (firstDateTime.Year * 12 + firstDateTime.Month) + 1;
+      }
+
   }
 
 }

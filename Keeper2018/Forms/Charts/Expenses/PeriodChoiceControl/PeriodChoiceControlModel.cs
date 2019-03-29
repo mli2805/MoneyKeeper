@@ -1,11 +1,9 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using Keeper2018.Properties;
+﻿using System.Windows;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public sealed class PeriodChoiceControlModel : INotifyPropertyChanged
+    public sealed class PeriodChoiceControlModel : PropertyChangedBase
     {
         public const int MinCenterPartWidth = 45;
 
@@ -19,10 +17,12 @@ namespace Keeper2018
 
         private Thickness _btnFromMargin;
         private Thickness _btnToMargin;
+
         private double _leftPartWidth;
         private double _centerPartWidth;
         private Thickness _centerPartMargin;
         private Thickness _rightPartMargin;
+
         public Thickness BtnFromMargin
         {
             get => _btnFromMargin;
@@ -30,7 +30,7 @@ namespace Keeper2018
             {
                 if (value.Equals(_btnFromMargin)) return;
                 _btnFromMargin = value;
-                OnPropertyChanged();
+                NotifyOfPropertyChange();
             }
         }
         public Thickness BtnToMargin
@@ -42,7 +42,7 @@ namespace Keeper2018
                 double delta = _btnToMargin.Left - value.Left;
                 _btnToMargin = value;
                 RightPartMargin = new Thickness(RightPartMargin.Left - delta, 0, 0, 0);
-                OnPropertyChanged();
+                NotifyOfPropertyChange();
             }
         }
         public double LeftPartWidth
@@ -52,7 +52,7 @@ namespace Keeper2018
             {
                 if (value.Equals(_leftPartWidth)) return;
                 _leftPartWidth = value;
-                OnPropertyChanged();
+                NotifyOfPropertyChange();
             }
         }
         public double CenterPartWidth
@@ -62,7 +62,7 @@ namespace Keeper2018
             {
                 if (value.Equals(_centerPartWidth)) return;
                 _centerPartWidth = value;
-                OnPropertyChanged();
+                NotifyOfPropertyChange();
             }
         }
         public Thickness CenterPartMargin
@@ -72,7 +72,7 @@ namespace Keeper2018
             {
                 if (value.Equals(_centerPartMargin)) return;
                 _centerPartMargin = value;
-                OnPropertyChanged();
+                NotifyOfPropertyChange();
             }
         }
         public Thickness RightPartMargin
@@ -82,17 +82,11 @@ namespace Keeper2018
             {
                 if (value.Equals(_rightPartMargin)) return;
                 _rightPartMargin = value;
-                OnPropertyChanged();
+                NotifyOfPropertyChange();
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+       
 
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

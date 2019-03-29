@@ -51,27 +51,27 @@ namespace Keeper2018
             ShellPartsBinder.SelectedAccountModel = account;
         }
 
-        private void NormalizeTimestamps()
-        {
-            var previousDate = _keeperDb.Bin.Transactions.Values.First().Timestamp.Date;
-            var count = 1;
-            foreach (var pair in _keeperDb.Bin.Transactions)
-            {
-                var tran = pair.Value;
-                if (previousDate.Date == tran.Timestamp.Date)
-                {
-                    tran.Timestamp = previousDate.AddMinutes(count);
-                    count++;
-                }
-                else
-                {
-                    tran.Timestamp = tran.Timestamp.Date.AddMinutes(1);
-                    count = 2;
-                }
-
-                previousDate = tran.Timestamp.Date;
-            }
-        }
+//        private void NormalizeTimestamps()
+//        {
+//            var previousDate = _keeperDb.Bin.Transactions.Values.First().Timestamp.Date;
+//            var count = 1;
+//            foreach (var pair in _keeperDb.Bin.Transactions)
+//            {
+//                var tran = pair.Value;
+//                if (previousDate.Date == tran.Timestamp.Date)
+//                {
+//                    tran.Timestamp = previousDate.AddMinutes(count);
+//                    count++;
+//                }
+//                else
+//                {
+//                    tran.Timestamp = tran.Timestamp.Date.AddMinutes(1);
+//                    count = 2;
+//                }
+//
+//                previousDate = tran.Timestamp.Date;
+//            }
+//        }
 
         public override async void CanClose(Action<bool> callback)
         {
