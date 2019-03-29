@@ -6,7 +6,7 @@ using Keeper2018.Properties;
 
 namespace Keeper2018
 {
-    public partial class PeriodChoiceControl : INotifyPropertyChanged
+    public sealed partial class PeriodChoiceControl : INotifyPropertyChanged
     {
         #region Control's outer properties for choice result
         public static readonly DependencyProperty FromPointProperty =
@@ -14,16 +14,16 @@ namespace Keeper2018
                 typeof(PeriodChoiceControl));
         public double FromPoint
         {
-            get{return (double)GetValue(FromPointProperty);}
-            set{SetValue(FromPointProperty, value);}
+            get => (double)GetValue(FromPointProperty);
+            set => SetValue(FromPointProperty, value);
         }
         public static readonly DependencyProperty ToPointProperty =
             DependencyProperty.Register("ToPoint", typeof(double),
                 typeof(PeriodChoiceControl));
         public double ToPoint
         {
-            get{return (double)GetValue(ToPointProperty);}
-            set { SetValue(ToPointProperty, value); }
+            get => (double)GetValue(ToPointProperty);
+            set => SetValue(ToPointProperty, value);
         }
         #endregion
 
@@ -117,10 +117,10 @@ namespace Keeper2018
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

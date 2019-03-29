@@ -5,7 +5,7 @@ using Keeper2018.Properties;
 
 namespace Keeper2018
 {
-    public class PeriodChoiceControlModel : INotifyPropertyChanged
+    public sealed class PeriodChoiceControlModel : INotifyPropertyChanged
     {
         public const int MinCenterPartWidth = 45;
 
@@ -25,7 +25,7 @@ namespace Keeper2018
         private Thickness _rightPartMargin;
         public Thickness BtnFromMargin
         {
-            get { return _btnFromMargin; }
+            get => _btnFromMargin;
             set
             {
                 if (value.Equals(_btnFromMargin)) return;
@@ -35,7 +35,7 @@ namespace Keeper2018
         }
         public Thickness BtnToMargin
         {
-            get { return _btnToMargin; }
+            get => _btnToMargin;
             set
             {
                 if (value.Equals(_btnToMargin)) return;
@@ -47,7 +47,7 @@ namespace Keeper2018
         }
         public double LeftPartWidth
         {
-            get { return _leftPartWidth; }
+            get => _leftPartWidth;
             set
             {
                 if (value.Equals(_leftPartWidth)) return;
@@ -57,7 +57,7 @@ namespace Keeper2018
         }
         public double CenterPartWidth
         {
-            get { return _centerPartWidth; }
+            get => _centerPartWidth;
             set
             {
                 if (value.Equals(_centerPartWidth)) return;
@@ -67,7 +67,7 @@ namespace Keeper2018
         }
         public Thickness CenterPartMargin
         {
-            get { return _centerPartMargin; }
+            get => _centerPartMargin;
             set
             {
                 if (value.Equals(_centerPartMargin)) return;
@@ -77,7 +77,7 @@ namespace Keeper2018
         }
         public Thickness RightPartMargin
         {
-            get { return _rightPartMargin; }
+            get => _rightPartMargin;
             set
             {
                 if (value.Equals(_rightPartMargin)) return;
@@ -89,10 +89,10 @@ namespace Keeper2018
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
