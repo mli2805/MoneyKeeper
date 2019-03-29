@@ -160,33 +160,34 @@
       <DependentUpon>CarsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Cars\CarsViewModel.cs" />
-    <Compile Include="Forms\Charts\BalanceAndSaldoModel.cs" />
-    <Compile Include="Forms\Charts\BalancesAndSaldosView.xaml.cs">
+    <Compile Include="Forms\Charts\BalanceAndSaldo\BalanceAndSaldoModel.cs" />
+    <Compile Include="Forms\Charts\BalanceAndSaldo\BalancesAndSaldosView.xaml.cs">
       <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Charts\BalancesAndSaldosViewModel.cs" />
+    <Compile Include="Forms\Charts\BalanceAndSaldo\BalancesAndSaldosViewModel.cs" />
     <Compile Include="Forms\Charts\CarReport\CarReportData.cs" />
     <Compile Include="Forms\Charts\CarReport\CarReportProvider.cs" />
     <Compile Include="Forms\AccountTree\PdfReport\PdfReportTable.cs" />
     <Compile Include="Forms\AccountTree\PdfReport\PdfReporter.cs" />
     <Compile Include="Forms\AccountTree\PdfReport\PdfReportTableRow.cs" />
-    <Compile Include="Forms\Charts\Expenses\CategoriesDataElement.cs" />
+    <Compile Include="Forms\Charts\Expenses\Domain\CategoriesDataElement.cs" />
     <Compile Include="Forms\Charts\Expenses\CategoriesDataExtractor.cs" />
-    <Compile Include="Forms\Charts\Expenses\ClassifiedTran.cs" />
+    <Compile Include="Forms\Charts\Expenses\Domain\ClassifiedTran.cs" />
     <Compile Include="Forms\Charts\Expenses\ExpenseByCategoriesView.xaml.cs">
       <DependentUpon>ExpenseByCategoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Charts\Expenses\ExpenseByCategoriesViewModel.cs" />
-    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControl.xaml.cs">
+    <Compile Include="Forms\Charts\Expenses\Domain\DiagramIntervalMode.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControl.xaml.cs">
       <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlBtnFromReactions.cs" />
-    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlBtnToReactions.cs" />
-    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlCentralPartReactions.cs" />
-    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlFunctions.cs" />
-    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlModel.cs" />
-    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
-    <Compile Include="Forms\Charts\Expenses\YearMonth.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlBtnFromReactions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlBtnToReactions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlCentralPartReactions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlFunctions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlModel.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlPointsConvertor.cs" />
+    <Compile Include="Forms\Charts\Expenses\Domain\YearMonth.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml.cs">
@@ -438,7 +439,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Charts\BalancesAndSaldosView.xaml">
+    <Page Include="Forms\Charts\BalanceAndSaldo\BalancesAndSaldosView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -446,7 +447,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControl.xaml">
+    <Page Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -677,5 +678,6 @@
   <ItemGroup>
     <Resource Include="Resources\car.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

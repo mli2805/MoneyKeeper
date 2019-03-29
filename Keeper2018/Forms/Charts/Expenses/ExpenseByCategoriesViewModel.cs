@@ -8,6 +8,10 @@ using OxyPlot.Series;
 
 namespace Keeper2018
 {
+    public class ExpenseByCategoriesModel : PropertyChangedBase
+    {
+
+    }
     public class ExpenseByCategoriesViewModel : Screen
     {
         private readonly KeeperDb _db;
@@ -149,6 +153,15 @@ namespace Keeper2018
                 .Select(g => new CategoriesDataElement(g.First().CategoryId,g.Sum(p=>p.Amount),
                     g.First().YearMonth)).Where(k => k.Amount > 0).OrderByDescending(o => o.Amount);
             return r;
+        }
+
+        public void PreviousPeriod()
+        {
+
+        } 
+        public void NextPeriod()
+        {
+
         }
     }
 }
