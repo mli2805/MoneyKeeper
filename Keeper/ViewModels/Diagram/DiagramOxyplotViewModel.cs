@@ -27,6 +27,8 @@ namespace Keeper.ViewModels.Diagram
                 InitializeDiagram();
             }
         }
+
+        private double _fromPoint;
         public double FromPoint
         {
             get { return _fromPoint; }
@@ -38,6 +40,8 @@ namespace Keeper.ViewModels.Diagram
                 NotifyOfPropertyChange();
             }
         }
+
+        private double _toPoint;
         public double ToPoint
         {
             get { return _toPoint; }
@@ -49,6 +53,7 @@ namespace Keeper.ViewModels.Diagram
                 NotifyOfPropertyChange();
             }
         }
+        private string _selectedPeriodTitle;
         public string SelectedPeriodTitle
         {
             get { return _selectedPeriodTitle; }
@@ -63,9 +68,7 @@ namespace Keeper.ViewModels.Diagram
 
         private readonly List<CategoriesDataElement> _diagramData;
         private PlotModel _myPlotModel;
-        private double _fromPoint;
-        private double _toPoint;
-        private string _selectedPeriodTitle;
+      
         public ObservableCollection<string> LegendBindingSource
         {
             get { return _legendBindingSource; }

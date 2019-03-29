@@ -12,6 +12,7 @@ namespace Keeper2018
     {
         private readonly KeeperDb _db;
         private readonly CategoriesDataExtractor _categoriesDataExtractor;
+        private PeriodChoiceControlPointsConvertor _periodChoiceControlPointsConvertor;
         private List<CategoriesDataElement> _fullData;
      
         private PlotModel _myPlotModel;
@@ -26,10 +27,48 @@ namespace Keeper2018
             }
         }
 
+        private double _fromPoint;
+        public double FromPoint
+        {
+            get => _fromPoint;
+            set
+            {
+                if (value.Equals(_fromPoint)) return;
+                _fromPoint = value;
+                SelectedInterval = _periodChoiceControlPointsConvertor.PointsToYearMonth(_fromPoint, _toPoint);
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private double _toPoint;
+        public double ToPoint
+        {
+            get => _toPoint;
+            set
+            {
+                if (value.Equals(_toPoint)) return;
+                _toPoint = value;
+                SelectedInterval = _periodChoiceControlPointsConvertor.PointsToYearMonth(_fromPoint, _toPoint);
+                NotifyOfPropertyChange();
+            }
+        }
+        
+        private Tuple<YearMonth, YearMonth> _selectedInterval;
+        public Tuple<YearMonth, YearMonth> SelectedInterval
+        {
+            get => _selectedInterval;
+            set
+            {
+                _selectedInterval = value;
+                SelectedPeriodTitle = YearMonth.IntervalToString(value);
+                InitializeDiagram();
+            }
+        }
+        
         private ObservableCollection<string> _legendBindingSource;
         public ObservableCollection<string> LegendBindingSource
         {
-            get { return _legendBindingSource; }
+            get => _legendBindingSource;
             set
             {
                 if (Equals(value, _legendBindingSource)) return;
@@ -37,23 +76,42 @@ namespace Keeper2018
                 NotifyOfPropertyChange(() => LegendBindingSource);
             }
         }
+       
+        private string _selectedPeriodTitle;
+        public string SelectedPeriodTitle
+        {
+            get => _selectedPeriodTitle;
+            set
+            {
+                if (value == _selectedPeriodTitle) return;
+                _selectedPeriodTitle = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public ExpenseByCategoriesViewModel(KeeperDb db, CategoriesDataExtractor categoriesDataExtractor)
         {
             _db = db;
             _categoriesDataExtractor = categoriesDataExtractor;
         }
+        protected override void OnViewLoaded(object view)
+        {
+            DisplayName = "Распределение расходов";
+        }
 
         public void Initialize()
         {
             _fullData = _categoriesDataExtractor.GetExpenseGrouppedByCategoryAndMonth();
+            _periodChoiceControlPointsConvertor = 
+                new PeriodChoiceControlPointsConvertor(_fullData.Min().YearMonth, _fullData.Max().YearMonth, DiagramIntervalMode.Months);
+            SelectedInterval = new Tuple<YearMonth, YearMonth>(new YearMonth(DateTime.Today.AddMonths(-12)),new YearMonth(DateTime.Today));
             InitializeDiagram();
         }
 
         private void InitializeDiagram()
         {
             var temp = new PlotModel();
-            var interval = new Tuple<YearMonth, YearMonth>(new YearMonth(2019, 3), new YearMonth(2019, 3));
-            var pieData = Extract(interval).ToList();
+            var pieData = Extract(SelectedInterval).ToList();
             temp.Series.Add(InitializePieSeries(pieData));
             MyPlotModel = temp; // this is raising the INotifyPropertyChanged event			
             LegendBindingSource = InitializeLegend(pieData);

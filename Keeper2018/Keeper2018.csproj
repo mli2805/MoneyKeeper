@@ -177,6 +177,15 @@
       <DependentUpon>ExpenseByCategoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Charts\Expenses\ExpenseByCategoriesViewModel.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControl.xaml.cs">
+      <DependentUpon>PeriodChoiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlBtnFromReactions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlBtnToReactions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlCentralPartReactions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlFunctions.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlModel.cs" />
+    <Compile Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControlPointsConvertor.cs" />
     <Compile Include="Forms\Charts\Expenses\YearMonth.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
@@ -355,6 +364,7 @@
     <Compile Include="Forms\Transactions\Actions\TranMoveExecutor.cs" />
     <Compile Include="Forms\Transactions\Actions\TranSelectExecutor.cs" />
     <Compile Include="Forms\Transactions\TransModel.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\DateTimeExtansions.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
@@ -435,6 +445,10 @@
     <Page Include="Forms\Charts\Expenses\ExpenseByCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Charts\Expenses\PeriodChoice\PeriodChoiceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml">
       <SubType>Designer</SubType>
