@@ -22,6 +22,6 @@
         <Button Name="BtnTo" Height="22" Width="9" Margin="{Binding Model.BtnToMargin}" HorizontalAlignment="Left" Cursor="SizeWE" 
                 PreviewMouseDown="BtnToPreviewMouseDown" PreviewMouseMove="BtnToPreviewMouseMove" PreviewMouseUp="BtnToPreviewMouseUp"/>
         
-        <TextBlock Text="{Binding PeriodTitle}" Margin="0,-25,5,0" HorizontalAlignment="Right"/>
+        <TextBlock Text="{Binding PeriodTitle}" Margin="0,-55,5,0" HorizontalAlignment="Right" Height="22"/>
     </Grid>
 </UserControl>

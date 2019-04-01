@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Keeper2018
 {
@@ -18,6 +19,8 @@ namespace Keeper2018
 
             model.BtnToMargin = new Thickness(model.BtnToMargin.Left + delta, 0, -4, 0);
             model.CenterPartWidth += delta;
+
+            Console.WriteLine($@"CenterPartWidth = {model.CenterPartWidth}  CentralPartMargin = {model.CenterPartMargin.Left}");
         }
 
     }

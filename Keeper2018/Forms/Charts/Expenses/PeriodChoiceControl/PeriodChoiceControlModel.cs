@@ -16,13 +16,6 @@ namespace Keeper2018
         public double CentralPartStartX;
 
         private Thickness _btnFromMargin;
-        private Thickness _btnToMargin;
-
-        private double _leftPartWidth;
-        private double _centerPartWidth;
-        private Thickness _centerPartMargin;
-        private Thickness _rightPartMargin;
-
         public Thickness BtnFromMargin
         {
             get => _btnFromMargin;
@@ -33,6 +26,8 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        private Thickness _btnToMargin;
         public Thickness BtnToMargin
         {
             get => _btnToMargin;
@@ -45,6 +40,8 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+      
+        private double _leftPartWidth;
         public double LeftPartWidth
         {
             get => _leftPartWidth;
@@ -55,6 +52,8 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+   
+        private double _centerPartWidth;
         public double CenterPartWidth
         {
             get => _centerPartWidth;
@@ -65,6 +64,8 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        private Thickness _centerPartMargin;
         public Thickness CenterPartMargin
         {
             get => _centerPartMargin;
@@ -75,6 +76,8 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+      
+        private Thickness _rightPartMargin;
         public Thickness RightPartMargin
         {
             get => _rightPartMargin;

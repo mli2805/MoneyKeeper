@@ -22,7 +22,7 @@ namespace Keeper2018
             model.CenterPartMargin = new Thickness(model.LeftPartWidth, 0, 0, 0);
             model.CenterPartWidth -= delta;
 
-            Console.WriteLine($"{model.LeftPartWidth} {model.CenterPartWidth} {model.CenterPartMargin} {model.RightPartMargin}");
+            Console.WriteLine($@"{model.LeftPartWidth} {model.CenterPartWidth} {model.CenterPartMargin} {model.RightPartMargin}");
         }
 
     }
