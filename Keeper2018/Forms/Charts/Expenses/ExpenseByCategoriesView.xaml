@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Keeper2018"
         xmlns:oxy="http://oxyplot.org/wpf"
         Width="1200" Height="800"
-        d:DataContext="{d:DesignInstance local:ExpenseByCategoriesViewModel}">
+        d:DataContext="{d:DesignInstance local:ExpenseByCategoriesViewModel}" 
+        PreviewKeyDown="ExpenseByCategoriesView_OnPreviewKeyDown">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
@@ -17,7 +18,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="85"/>
         </Grid.RowDefinitions>
-
+        
         <oxy:PlotView Grid.Column="0" Grid.ColumnSpan="2" Model="{Binding MyPlotModel}" Margin="5"/>
         <StackPanel Grid.Column="0" Grid.Row="1" >
             <TextBlock Text="Double Click - " Margin="5" Foreground="DarkGray"/>

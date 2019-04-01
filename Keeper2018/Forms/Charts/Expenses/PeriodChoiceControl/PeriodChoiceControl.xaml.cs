@@ -171,5 +171,17 @@ namespace Keeper2018
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void DoRight()
+        {
+            Model.ReactCentralPartPreviewMouseMove(Model.CentralPartStartX + 2, RightPart.ActualWidth);
+            RefreshDependencyProperties();
+        } 
+        
+        public void DoLeft()
+        {
+            Model.ReactCentralPartPreviewMouseMove(Model.CentralPartStartX - 2, RightPart.ActualWidth);
+            RefreshDependencyProperties();
+        }
     }
 }
