@@ -137,9 +137,9 @@ namespace Keeper2018
                 _keeperDb.FlattenAccountTree();
                 await DbSerializer.Serialize(_keeperDb.Bin);
 
-                var unused1 = await _keeperDb.SaveAllToNewTxtAsync();
-                var unused2 = await DbTxtSaver.ZipTxtDbAsync();
-                DbTxtSaver.DeleteTxtFiles();
+                if  (await _keeperDb.SaveAllToNewTxtAsync())
+                    if (await DbTxtSaver.ZipTxtDbAsync())
+                        DbTxtSaver.DeleteTxtFiles();
 
                 _transactionsViewModel.Model.IsCollectionChanged = false;
                 _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
@@ -147,7 +147,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                var vm = new MyMessageBoxViewModel(MessageType.Error, $"{e.Message}");
+                var vm = new MyMessageBoxViewModel(MessageType.Error, $"Exception during db saving: {e.Message}");
                 _windowManager.ShowDialog(vm);
             }
         }
