@@ -52,7 +52,7 @@ namespace Keeper2018
         {
             var width = ControlGrid.ActualWidth - PeriodChoiceControlModel.MinCenterPartWidth;
             var points = _pointsPeriodConvertor.PeriodToPoints(Interval);
-            Model.SetPositions(width * points.Item1/100 - 4, width * ((points.Item2 - points.Item1)/100) + PeriodChoiceControlModel.MinCenterPartWidth);
+            Model.SetPositions(width * points.Item1 / 100 - 4, width * ((points.Item2 - points.Item1) / 100) + PeriodChoiceControlModel.MinCenterPartWidth);
             PeriodTitle = GetPeriodTitle(Interval, IntervalMode);
             Model.ResetFlags();
         }
@@ -143,7 +143,7 @@ namespace Keeper2018
                 OnPropertyChanged();
             }
         }
-        
+
         private string GetPeriodTitle(Tuple<DateTime, DateTime> period, DiagramIntervalMode mode)
         {
             switch (mode)
@@ -153,12 +153,12 @@ namespace Keeper2018
                         ? $"{period.Item1.Year}"
                         : $"{period.Item1.Year} - {period.Item2.Year}";
                 case DiagramIntervalMode.Months:
-                    return period.Item1.IsMonthTheSame(period.Item2) 
-                        ? $"{period.Item1:MMMM yyyy}" 
+                    return period.Item1.IsMonthTheSame(period.Item2)
+                        ? $"{period.Item1:MMMM yyyy}"
                         : $"{period.Item1:MMMM yyyy} - {period.Item2:MMMM yyyy}";
-                 case DiagramIntervalMode.Days:
-                    return period.Item1.Date.Equals(period.Item2.Date) 
-                        ? $"{period.Item1:d}" 
+                case DiagramIntervalMode.Days:
+                    return period.Item1.Date.Equals(period.Item2.Date)
+                        ? $"{period.Item1:d}"
                         : $"{period.Item1:d} - {period.Item2:d}";
             }
             return "";
@@ -172,16 +172,38 @@ namespace Keeper2018
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void DoRight()
+        public void MoveCentralPartRight()
         {
             Model.ReactCentralPartPreviewMouseMove(Model.CentralPartStartX + 2, RightPart.ActualWidth);
             RefreshDependencyProperties();
-        } 
-        
-        public void DoLeft()
+        }
+
+        public void MoveCentralPartLeft()
         {
             Model.ReactCentralPartPreviewMouseMove(Model.CentralPartStartX - 2, RightPart.ActualWidth);
             RefreshDependencyProperties();
         }
+
+        public void MoveButtonFromLeft()
+        {
+            Model.ReactBtnFromPreviewMouseMove(Model.BtnFromStartX - 2);
+            RefreshDependencyProperties();
+        }
+        public void MoveButtonFromRight()
+        {
+            Model.ReactBtnFromPreviewMouseMove(Model.BtnFromStartX + 2);
+            RefreshDependencyProperties();
+        }
+        public void MoveButtonToLeft()
+        {                     
+            Model.ReactBtnToPreviewMouseMove(Model.BtnToStartX - 2, RightPart.ActualWidth);
+            RefreshDependencyProperties();
+        }                     
+        public void MoveButtonToRight()
+        {                     
+            Model.ReactBtnToPreviewMouseMove(Model.BtnToStartX + 2, RightPart.ActualWidth);
+            RefreshDependencyProperties();
+        }
+
     }
 }

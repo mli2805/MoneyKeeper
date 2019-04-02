@@ -5,23 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:keeper2018="clr-namespace:Keeper2018"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="525" Loaded="UserControl_Loaded" SizeChanged="UserControlSizeChanged"
-             d:DataContext="{d:DesignInstance keeper2018:PeriodChoiceControl}" >
-    <Grid Name="ControlGrid">
-        <Border Name="LeftPart" Width="{Binding Model.LeftPartWidth}"                   
+             d:DesignWidth="525" Loaded="UserControl_Loaded" SizeChanged="UserControlSizeChanged"
+             d:DataContext="{d:DesignInstance keeper2018:PeriodChoiceControl}">
+
+    <Grid Name="ControlGrid" Height="88">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding PeriodTitle}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+        <Grid Grid.Row="1">
+            <Border Name="LeftPart" Width="{Binding Model.LeftPartWidth}"                   
                     HorizontalAlignment="Left" BorderThickness="0,1,0,1" BorderBrush="Gray" Background="GhostWhite"/>
-        <Border Name="CentralPart" Width="{Binding Model.CenterPartWidth}" Margin="{Binding Model.CenterPartMargin}" 
+            <Border Name="CentralPart" Width="{Binding Model.CenterPartWidth}" Margin="{Binding Model.CenterPartMargin}" 
                     HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Gray" Background="White" 
                     PreviewMouseDown="CenterPartPreviewMouseDown" PreviewMouseMove="CentralPartPreviewMouseMove" 
                     PreviewMouseUp="CentralPartPreviewMouseUp"/>
-        <Border Name="RightPart" Margin="{Binding Model.RightPartMargin}" 
+            <Border Name="RightPart" Margin="{Binding Model.RightPartMargin}" 
                     HorizontalAlignment="Stretch" BorderThickness="1,1,0,1" BorderBrush="Gray" Background="GhostWhite"/>
 
-        <Button Name="BtnFrom" Height="22" Width="9" Margin="{Binding Model.BtnFromMargin}" HorizontalAlignment="Left" Cursor="SizeWE"
-                PreviewMouseDown="BtnFromPreviewMouseDown" PreviewMouseMove="BtnFromPreviewMouseMove" PreviewMouseUp="BtnFromPreviewMouseUp"/>
-        <Button Name="BtnTo" Height="22" Width="9" Margin="{Binding Model.BtnToMargin}" HorizontalAlignment="Left" Cursor="SizeWE" 
-                PreviewMouseDown="BtnToPreviewMouseDown" PreviewMouseMove="BtnToPreviewMouseMove" PreviewMouseUp="BtnToPreviewMouseUp"/>
-        
-        <TextBlock Text="{Binding PeriodTitle}" Margin="0,-55,5,0" HorizontalAlignment="Right" Height="22"/>
+            <Button Name="BtnFrom" Height="22" Width="9" Margin="{Binding Model.BtnFromMargin}" HorizontalAlignment="Left" Cursor="SizeWE"
+                    PreviewMouseDown="BtnFromPreviewMouseDown" PreviewMouseMove="BtnFromPreviewMouseMove" PreviewMouseUp="BtnFromPreviewMouseUp"/>
+            <Button Name="BtnTo" Height="22" Width="9" Margin="{Binding Model.BtnToMargin}" HorizontalAlignment="Left" Cursor="SizeWE" 
+                    PreviewMouseDown="BtnToPreviewMouseDown" PreviewMouseMove="BtnToPreviewMouseMove" PreviewMouseUp="BtnToPreviewMouseUp"/>
+        </Grid>
+       
+            <TextBlock Grid.Row="2" Text="Стрелки двигают выделенную область, стрелки с левым/правым Ctrl двигают один ползунок" 
+                       Margin="5" Foreground="DarkGray"/>
     </Grid>
 </UserControl>
