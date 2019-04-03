@@ -289,7 +289,8 @@ namespace Keeper2018
             switch (e.PropertyName)
             {
                 case "MyAccount":
-                    NotifyOfPropertyChange(nameof(MyAccountBalance));
+                    Task.Factory.StartNew(S);
+                  //  NotifyOfPropertyChange(nameof(MyAccountBalance));
                     break;
                 case "MySecondAccount":
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));

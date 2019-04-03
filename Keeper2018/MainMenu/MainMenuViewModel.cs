@@ -128,7 +128,6 @@ namespace Keeper2018
       
         public async void Save()
         {
-
             try
             {
                 if (_shellPartsBinder.IsBusy) return;
@@ -137,7 +136,7 @@ namespace Keeper2018
                 _keeperDb.FlattenAccountTree();
                 await DbSerializer.Serialize(_keeperDb.Bin);
 
-                if  (await _keeperDb.SaveAllToNewTxtAsync())
+                if (await _keeperDb.SaveAllToNewTxtAsync())
                     if (await DbTxtSaver.ZipTxtDbAsync())
                         DbTxtSaver.DeleteTxtFiles();
 
