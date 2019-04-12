@@ -81,6 +81,13 @@ namespace Keeper2018
                 var deposit = line.DepositFromString();
                 bin.AccountPlaneList.First(a => a.Id == deposit.MyAccountId).Deposit = deposit;
             }
+            content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("PayCards.txt"));
+            foreach (var line in content)
+            {
+                var card = line.CardFromString();
+                bin.AccountPlaneList.First(a => a.Id == card.MyAccountId).Card = card;
+            }
+
         }
 
         private static void LoadCurrencyRates(KeeperBin bin)

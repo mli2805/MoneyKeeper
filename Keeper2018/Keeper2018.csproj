@@ -106,6 +106,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\Account\PayCard.cs" />
+    <Compile Include="Domain\Account\PaymentSystem.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Car\Car.cs" />
@@ -160,6 +162,7 @@
       <DependentUpon>CarsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Cars\CarsViewModel.cs" />
+    <Compile Include="Forms\Cars\CarYearVm.cs" />
     <Compile Include="Forms\Charts\BalanceAndSaldo\BalanceAndSaldoModel.cs" />
     <Compile Include="Forms\Charts\BalanceAndSaldo\BalancesAndSaldosView.xaml.cs">
       <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>

@@ -44,7 +44,7 @@ namespace Keeper2018
             var account = new Account();
             var substrings = s.Split(';');
             account.Id = Convert.ToInt32(substrings[0]);
-            account.Name = substrings[1].Trim(); 
+            account.Name = substrings[1].Trim();
             account.OwnerId = Convert.ToInt32(substrings[2]);
             account.IsFolder = Convert.ToBoolean(substrings[3]);
             account.IsExpanded = Convert.ToBoolean(substrings[4]);
@@ -65,6 +65,22 @@ namespace Keeper2018
             return deposit;
         }
 
+        public static PayCard CardFromString(this string s)
+        {
+            var card = new PayCard();
+            var substrings = s.Split(';');
+            card.MyAccountId = Convert.ToInt32(substrings[0]);
+            card.LastFourDigits = Convert.ToInt32(substrings[1]);
+            card.MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[2]);
+            card.StartDate = Convert.ToDateTime(substrings[3], new CultureInfo("ru-RU"));
+            card.FinishDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
+            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[5]);
+            card.IsPayPass = Convert.ToBoolean(substrings[6]);
+            card.Name = substrings[7].Trim();
+            card.Comment = substrings[8].Replace("|", "\r\n");
+            return card;
+        }
+
         public static Transaction TransactionFromString(this string s)
         {
             var tran = new Transaction();
@@ -80,7 +96,7 @@ namespace Keeper2018
             tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[6]);
             tran.AmountInReturn = Convert.ToDecimal(substrings[7], new CultureInfo("en-US"));
             tran.CurrencyInReturn = substrings[8].Trim() != "" ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[8]) : CurrencyCode.USD;
-            tran.Tags = TagsFromString(substrings[9].Trim()); 
+            tran.Tags = TagsFromString(substrings[9].Trim());
             tran.Comment = substrings[10].Trim();
 
             return tran;
@@ -116,7 +132,7 @@ namespace Keeper2018
                 Id = Convert.ToInt32(substrings[0]),
                 Bank = Convert.ToInt32(substrings[1]),
                 Title = substrings[2].Trim(),
-                MainCurrency = (CurrencyCode) Enum.Parse(typeof (CurrencyCode), substrings[3]),
+                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[3]),
                 Comment = substrings[4].Trim()
             };
         }

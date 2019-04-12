@@ -12,6 +12,5 @@ namespace Keeper2018
         public List<TagAssociation> TagAssociations { get; set; }
         public List<DepositOffer> DepositOffers { get; set; }
         public List<Car> Cars { get; set; }
-        public List<CarYear> CarYears { get; set; }
     }
 }

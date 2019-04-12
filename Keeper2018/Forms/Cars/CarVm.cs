@@ -12,10 +12,10 @@ namespace Keeper2018
         public string Vin => _car.Vin;
         public string StateRegNumber => _car.StateRegNumber;
 
-        public string Start => $"{_car.Start:d MMMM yyyy}" ;
+        public string Start => $"{_car.Start:d MMMM yyyy}";
         public int MileageStart => _car.MileageStart;
 
-        public string Finish => $"{_car.Finish:d MMMM yyyy}" ;
+        public string Finish => $"{_car.Finish:d MMMM yyyy}";
         public int MileageFinish
         {
             get => _car.MileageFinish;
@@ -32,11 +32,22 @@ namespace Keeper2018
 
         public int MileageDifference => _car.MileageFinish - _car.MileageStart;
         public int MileageAday => MileageDifference / (_car.Finish - _car.Start).Days;
-        public List<CarYear> MileageYears => _car.MileageYears;
+        public List<CarYearVm> YearsMileage { get; set; } = new List<CarYearVm>();
 
         public CarVm(Car car)
         {
             _car = car;
+            for (int i = 0; i < car.YearMileages.Length; i++)
+            {
+                YearsMileage.Add(new CarYearVm()
+                {
+                    YearCount = i + 1,
+                    Mileage = car.YearMileages[i],
+                    YearMileage = i == 0
+                                  ? car.YearMileages[0] - car.MileageStart
+                                  : car.YearMileages[i] - car.YearMileages[i - 1],
+                });
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Keeper2018
                 var currencyRates = db.Bin.Rates.Values.Select(l => l.Dump());
                 var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
                 var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
+                var cards = db.Bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Card.Dump());
                 var depoOffers = db.ExportDepos();
                 var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
                 var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
@@ -31,6 +32,7 @@ namespace Keeper2018
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates.txt"), currencyRates);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("Accounts.txt"), accounts);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"), deposits);
+                File.WriteAllLines(DbIoUtils.GetBackupFilePath("PayCards.txt"), cards);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"), depoOffers);
                 WriteTransactionsContent(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"), tagAssociations);

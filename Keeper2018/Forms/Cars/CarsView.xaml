@@ -71,7 +71,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView ItemsSource="{Binding SelectedCar.MileageYears}" Margin="5,0" Width="124">
+        <ListView ItemsSource="{Binding SelectedCar.YearsMileage}" Margin="5,0" Width="184">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="BorderBrush" Value="LightGray" />
@@ -81,8 +81,9 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="год" Width="40" DisplayMemberBinding="{Binding YearCount}"></GridViewColumn>
-                    <GridViewColumn Header="пробег" Width="60" DisplayMemberBinding="{Binding Mileage}"></GridViewColumn>
+                    <GridViewColumn Header="год" Width="40" DisplayMemberBinding="{Binding YearCount}"/>
+                    <GridViewColumn Header="одометр" Width="60" DisplayMemberBinding="{Binding Mileage}"/>
+                    <GridViewColumn Header="пробег" Width="60" DisplayMemberBinding="{Binding YearMileage}"/>
                 </GridView>
             </ListView.View>
         </ListView>

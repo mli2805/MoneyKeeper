@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Keeper2018
 {
@@ -20,6 +19,6 @@ namespace Keeper2018
         public int SupposedSale;
         public string Comment;
 
-        public List<CarYear> MileageYears;
+        public int[] YearMileages;
     }
 }

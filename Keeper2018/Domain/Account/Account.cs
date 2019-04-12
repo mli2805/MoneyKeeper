@@ -11,8 +11,10 @@ namespace Keeper2018
         public bool IsExpanded;
         public bool IsFolder;
         public Deposit Deposit;
+        public PayCard Card;
 
         public bool IsDeposit => Deposit != null;
+        public bool IsCard => Card != null;
         public string Name
         {
             get => Header;
