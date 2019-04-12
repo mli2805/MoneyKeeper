@@ -19,7 +19,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var substrings = s.Split(';');
             return new BankDepositOffer(Convert.ToInt32(substrings[0]))
             {
-//                BankAccount = accountsPlaneList.First(account => account.Name == substrings[1].Trim()),
                 BankAccount = accountsPlaneList.First(account => account.Id == int.Parse(substrings[1].Trim())),
                 DepositTitle = substrings[2].Trim(),
                 Currency = (CurrencyCodes) Enum.Parse(typeof (CurrencyCodes), substrings[3]),
@@ -58,7 +57,6 @@ namespace Keeper.Utils.DbInputOutput.TxtTasks
             var substrings = str.Split('|');
             foreach (var substring in substrings)
             {
-//                tags.Add(accountsPlaneList.First(account => account.Name == substring.Trim()));
                 tags.Add(accountsPlaneList.First(account => account.Id == int.Parse(substring.Trim())));
             }
 

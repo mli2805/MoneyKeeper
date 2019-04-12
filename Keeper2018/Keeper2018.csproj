@@ -111,6 +111,10 @@
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Car\Car.cs" />
+    <Compile Include="Forms\AccountTree\OneCardView.xaml.cs">
+      <DependentUpon>OneCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\OneCardViewModel.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
     <Compile Include="Domain\Car\CarYear.cs" />
     <Compile Include="Domain\Db\AssociationFinder.cs" />
@@ -423,6 +427,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\AccountTree\OneAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\OneCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

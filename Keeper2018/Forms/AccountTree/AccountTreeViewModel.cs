@@ -11,6 +11,7 @@ namespace Keeper2018
     {
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
+        private readonly OneCardViewModel _oneCardViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
         private readonly BalanceVerificationViewModel _balanceVerificationViewModel;
         public IWindowManager WindowManager { get; }
@@ -21,11 +22,12 @@ namespace Keeper2018
 
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
-            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
+            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, OneCardViewModel oneCardViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
+            _oneCardViewModel = oneCardViewModel;
             _depositReportViewModel = depositReportViewModel;
             _balanceVerificationViewModel = balanceVerificationViewModel;
             WindowManager = windowManager;
@@ -68,6 +70,23 @@ namespace Keeper2018
             KeeperDb.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
+        public void AddAccountCard()
+        {
+            var accountModel = new AccountModel("")
+            {
+                Id = KeeperDb.Bin.AccountPlaneList.Max(a => a.Id) + 1,
+                Owner = ShellPartsBinder.SelectedAccountModel,
+                PayCard = new PayCard(),
+            };
+            _oneCardViewModel.InitializeForm(accountModel, true);
+            WindowManager.ShowDialog(_oneCardViewModel);
+            if (!_oneCardViewModel.IsSavePressed) return;
+
+            ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
+            KeeperDb.Bin.AccountPlaneList.Add(accountModel.Map());
+            KeeperDb.AcMoDict.Add(accountModel.Id, accountModel);
+        }
+
         public void ChangeAccount()
         {
             if (ShellPartsBinder.SelectedAccountModel.IsDeposit)
@@ -76,7 +95,7 @@ namespace Keeper2018
                 _oneDepositViewModel.InitializeForm(accountModel, false);
                 WindowManager.ShowDialog(_oneDepositViewModel);
 
-                if (_oneDepositViewModel.IsSavePressed)  
+                if (_oneDepositViewModel.IsSavePressed)
                     KeeperDb.FlattenAccountTree();
             }
             else

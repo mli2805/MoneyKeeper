@@ -14,9 +14,11 @@ namespace Keeper2018
         // Items are in TreeViewItem
         public List<AccountModel> Children => Items.Cast<AccountModel>().ToList();
         public Deposit Deposit { get; set; }
+        public PayCard PayCard { get; set; }
 
         public new string Name => (string)Header;
         public bool IsDeposit => Deposit != null;
+        public bool IsCard => PayCard != null;
 
         public override string ToString() => (string)Header;
         public int CompareTo(object obj)

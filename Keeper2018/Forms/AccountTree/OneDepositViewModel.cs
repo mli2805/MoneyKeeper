@@ -13,6 +13,7 @@ namespace Keeper2018
         public Deposit DepositInWork { get; set; }
         public string ParentName { get; set; }
 
+        private string _junction;
         public string Junction
         {
             get => _junction;
@@ -42,7 +43,6 @@ namespace Keeper2018
         }
 
         private DepositOfferModel _selectedDepositOffer;
-        private string _junction;
 
         public DepositOfferModel SelectedDepositOffer
         {
