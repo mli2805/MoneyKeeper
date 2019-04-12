@@ -48,6 +48,7 @@ namespace Keeper2018
             account.OwnerId = Convert.ToInt32(substrings[2]);
             account.IsFolder = Convert.ToBoolean(substrings[3]);
             account.IsExpanded = Convert.ToBoolean(substrings[4]);
+            account.Name = substrings[5].Trim();
             return account;
         }
 
