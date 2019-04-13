@@ -6,25 +6,17 @@ namespace Keeper2018
     public class PayCard
     {
         public int MyAccountId;
-        public int BankId;
-        
-        public string CardNumber;
-        public string ContractNumber;
-        public CurrencyCode MainCurrency;
-        public DateTime StartDate;
-        public DateTime FinishDate;
-        public PaymentSystem PaymentSystem;
-        public bool IsPayPass;
 
-        public string Name;
-        public string Comment;
+        public string CardNumber { get; set; }
+        public string CardHolder { get; set; }
+
+        public PaymentSystem PaymentSystem { get; set; }
+        public bool IsPayPass { get; set; }
 
         public string Dump()
         {
-            return  MyAccountId + " ; " + CardNumber + " ; " + ContractNumber + " ; " + MainCurrency +" ; " + 
-                    $"{StartDate.Date:dd/MM/yyyy}" + " ; " + $"{FinishDate.Date:dd/MM/yyyy}" + " ; " + 
-                    PaymentSystem + " ; " + IsPayPass +" ; " + 
-                    Name + " ; " + BankId + " ; " + (Comment?.Replace("\r\n", "|") ?? "");
+            return  MyAccountId + " ; " + CardNumber + " ; " + 
+                    PaymentSystem + " ; " + IsPayPass;
         }
 
     }

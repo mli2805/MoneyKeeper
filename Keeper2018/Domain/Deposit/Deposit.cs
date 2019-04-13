@@ -13,6 +13,8 @@ namespace Keeper2018
         public string ShortName { get; set; }
         public string Comment { get; set; }
 
+        public PayCard Card;
+
         public string Dump()
         {
             return MyAccountId + " ; " + DepositOfferId + " ; " + Serial +" ; " + 

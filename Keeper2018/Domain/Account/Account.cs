@@ -11,10 +11,9 @@ namespace Keeper2018
         public bool IsExpanded;
         public bool IsFolder;
         public Deposit Deposit;
-        public PayCard Card;
 
         public bool IsDeposit => Deposit != null;
-        public bool IsCard => Card != null;
+        public bool IsCard => Deposit.Card != null;
         public string Name
         {
             get => Header;
@@ -28,7 +27,7 @@ namespace Keeper2018
         {
             var shiftedName = new string(' ', level * 2) + Name;
             return Id + " ; " + shiftedName + " ; " + OwnerId + " ; " +
-                   IsFolder + " ; " + IsExpanded + " ; " + Comment;
+                   IsFolder + " ; " + IsExpanded + " ; " + (Comment?.Replace("\r\n", "|") ?? "");
         }
 
     }

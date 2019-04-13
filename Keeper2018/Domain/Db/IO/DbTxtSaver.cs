@@ -23,7 +23,7 @@ namespace Keeper2018
                 var currencyRates = db.Bin.Rates.Values.Select(l => l.Dump());
                 var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
                 var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
-                var cards = db.Bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Card.Dump());
+                var cards = db.Bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Deposit.Card.Dump());
                 var depoOffers = db.ExportDepos();
                 var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
                 var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).

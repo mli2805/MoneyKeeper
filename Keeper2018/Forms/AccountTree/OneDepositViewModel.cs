@@ -90,6 +90,15 @@ namespace Keeper2018
             DisplayName = _isInAddMode ? "Добавить" : "Изменить";
         }
 
+        public void PayCard()
+        {
+            var vm = new OneCardViewModel();
+            vm.InitializeForm(_accountModel, DepositInWork.Card == null);
+            _windowManager.ShowDialog(vm);
+            if (vm.IsSavePressed)
+                DepositInWork.Card = vm.CardInWork;
+        }
+
         public void SaveDeposit()
         {
             IsSavePressed = true;

@@ -1,17 +1,18 @@
+// ReSharper disable InconsistentNaming
 namespace Keeper2018
 {
     public enum PaymentSystem
     {
-        VisaElectron,
-        VisaClassic,
-        VisaGold,
-        VisaPlatinum,
-        VisaInfinite,
+        Visa_Electron,
+        Visa_Classic,
+        Visa_Gold,
+        Visa_Platinum,
+        Visa_Infinite,
         
-        MasterCardStadard, 
-        MasterCardGold, 
-        MasterCardWorld, 
-        MasterCardPlatinum, 
+        MasterCard_Stadard, 
+        MasterCard_Gold, 
+        MasterCard_World, 
+        MasterCard_Platinum, 
         
         Белкарт, 
     }

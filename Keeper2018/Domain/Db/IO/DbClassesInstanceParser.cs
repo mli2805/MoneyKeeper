@@ -72,15 +72,8 @@ namespace Keeper2018
             var substrings = s.Split(';');
             card.MyAccountId = Convert.ToInt32(substrings[0]);
             card.CardNumber = substrings[1].Trim();
-            card.ContractNumber = substrings[2].Trim();
-            card.MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[3]);
-            card.StartDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
-            card.FinishDate = Convert.ToDateTime(substrings[5], new CultureInfo("ru-RU"));
-            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[6]);
-            card.IsPayPass = Convert.ToBoolean(substrings[7]);
-            card.Name = substrings[8].Trim();
-            card.ContractNumber = substrings[9].Trim();
-            card.Comment = substrings[10].Replace("|", "\r\n");
+            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[2]);
+            card.IsPayPass = Convert.ToBoolean(substrings[3]);
             return card;
         }
 

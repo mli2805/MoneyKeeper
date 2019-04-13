@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -7,20 +9,9 @@ namespace Keeper2018
     {
         private bool _isInAddMode;
         private AccountModel _accountModel;
-        public PayCard CardInWork { get; set; }
-        public string ParentName { get; set; }
+        public PayCard CardInWork { get; set; } = new PayCard();
 
-        private string _junction;
-        public string Junction
-        {
-            get => _junction;
-            set
-            {
-                if (value == _junction) return;
-                _junction = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public List<PaymentSystem> PaymentSystems { get; set; }
         public bool IsSavePressed { get; set; }
 
         public void InitializeForm(AccountModel accountModel, bool isInAddMode)
@@ -28,9 +19,17 @@ namespace Keeper2018
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
             _accountModel = accountModel;
-            ParentName = accountModel.Owner.Name;
+            PaymentSystems = Enum.GetValues(typeof(PaymentSystem)).OfType<PaymentSystem>().ToList();
 
-            CardInWork = accountModel.PayCard;
+
+            if (!isInAddMode)
+            {
+                CardInWork.MyAccountId = _accountModel.Deposit.Card.MyAccountId;
+                CardInWork.CardNumber = _accountModel.Deposit.Card.CardNumber;
+                CardInWork.CardHolder = _accountModel.Deposit.Card.CardHolder;
+                CardInWork.PaymentSystem = _accountModel.Deposit.Card.PaymentSystem;
+                CardInWork.IsPayPass = _accountModel.Deposit.Card.IsPayPass;
+            }
         }
 
         protected override void OnViewLoaded(object view)
@@ -41,8 +40,6 @@ namespace Keeper2018
         public void SaveCard()
         {
             IsSavePressed = true;
-            if (_isInAddMode)
-                _accountModel.Header = CardInWork.Name;
             TryClose();
         }
 
@@ -50,13 +47,6 @@ namespace Keeper2018
         {
             IsSavePressed = false;
             TryClose();
-        }
-        public void CompileAccountName()
-        {
-           
-            var startDate = CardInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
-            var finishDate = CardInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
-            Junction = $"{CardInWork.MainCurrency} {startDate} - {finishDate}";
         }
 
     }
