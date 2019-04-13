@@ -92,7 +92,7 @@ namespace Keeper2018
 
         public void PayCard()
         {
-            var vm = new OneCardViewModel();
+             var vm = new OneCardViewModel();
             vm.InitializeForm(_accountModel, DepositInWork.Card == null);
             _windowManager.ShowDialog(vm);
             if (vm.IsSavePressed)

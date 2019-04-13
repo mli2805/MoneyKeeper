@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
+using Keeper2018.PayCards;
 
 namespace Keeper2018
 {
@@ -17,12 +18,14 @@ namespace Keeper2018
         private readonly SettingsViewModel _settingsViewModel;
         private readonly CarsViewModel _carsViewModel;
         private readonly ExpenseByCategoriesViewModel _expenseByCategoriesViewModel;
+        private readonly PayCardsViewModel _payCardsViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
-            CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel)
+            CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
+            PayCardsViewModel payCardsViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
@@ -35,6 +38,7 @@ namespace Keeper2018
             _settingsViewModel = settingsViewModel;
             _carsViewModel = carsViewModel;
             _expenseByCategoriesViewModel = expenseByCategoriesViewModel;
+            _payCardsViewModel = payCardsViewModel;
         }
 
         // for short-cuts
@@ -125,7 +129,13 @@ namespace Keeper2018
             _windowManager.ShowDialog(_carsViewModel);
         }
 
-      
+        public void ShowPayCardsForm()
+        {
+            _payCardsViewModel.Initialize();
+            _windowManager.ShowDialog(_payCardsViewModel);
+        }
+
+
         public async void Save()
         {
             try

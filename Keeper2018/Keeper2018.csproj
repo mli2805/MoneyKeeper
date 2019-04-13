@@ -242,6 +242,11 @@
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartView.xaml.cs">
       <DependentUpon>LongTermChartView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PayCards\PayCardsView.xaml.cs">
+      <DependentUpon>PayCardsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PayCards\PayCardsViewModel.cs" />
+    <Compile Include="Forms\PayCards\PayCardVm.cs" />
     <Compile Include="Forms\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -505,6 +510,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\PayCards\PayCardsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -688,6 +697,8 @@
   <ItemGroup>
     <Resource Include="Resources\car.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\paycard.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,7 +13,7 @@ namespace Keeper2018
         public Deposit Deposit;
 
         public bool IsDeposit => Deposit != null;
-        public bool IsCard => Deposit.Card != null;
+        public bool IsCard => Deposit?.Card != null;
         public string Name
         {
             get => Header;
