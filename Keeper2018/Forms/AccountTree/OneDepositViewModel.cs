@@ -49,7 +49,7 @@ namespace Keeper2018
             get { return _selectedDepositOffer; }
             set
             {
-                if (Equals(value, _selectedDepositOffer)) return;
+                if (Equals(value, _selectedDepositOffer) || value == null) return;
                 _selectedDepositOffer = value;
                 DepositInWork.DepositOfferId = _selectedDepositOffer.Id;
                 NotifyOfPropertyChange();

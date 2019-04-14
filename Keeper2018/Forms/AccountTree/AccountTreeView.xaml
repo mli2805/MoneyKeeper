@@ -19,6 +19,7 @@
             </TreeView.ItemContainerStyle>
             <TreeView.ContextMenu>
                 <ContextMenu>
+                  
                     <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
                         <MenuItem.Icon>
@@ -50,6 +51,8 @@
                     <MenuItem Header="Расшифровка в PDF" cal:Message.Attach="ShowTagInDetails" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsTag}">
                     </MenuItem>
+                    <MenuItem Header="Сделать депозитом" cal:Message.Attach="ConvertToDeposit" BorderBrush="{x:Null}" 
+                              Background="White" />
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>

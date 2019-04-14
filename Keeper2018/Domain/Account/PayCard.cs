@@ -15,7 +15,7 @@ namespace Keeper2018
 
         public string Dump()
         {
-            return  MyAccountId + " ; " + CardNumber + " ; " + 
+            return  MyAccountId + " ; " + CardNumber + " ; " + CardHolder + " ; " + 
                     PaymentSystem + " ; " + IsPayPass;
         }
 

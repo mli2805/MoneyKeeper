@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 
 namespace Keeper2018
 {
@@ -17,6 +18,8 @@ namespace Keeper2018
 
         public string Dump()
         {
+            if (MyAccountId == 0)
+                MessageBox.Show($"MyAccountId == 0    {StartDate}  {FinishDate}  {ShortName}  {Comment}");
             return MyAccountId + " ; " + DepositOfferId + " ; " + Serial +" ; " + 
                    $"{StartDate.Date:dd/MM/yyyy}" + " ; " + $"{FinishDate.Date:dd/MM/yyyy}" + " ; " + 
                    ShortName + " ; " + (Comment?.Replace("\r\n", "|") ?? "");

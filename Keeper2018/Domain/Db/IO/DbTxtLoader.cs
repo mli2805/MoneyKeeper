@@ -78,9 +78,16 @@ namespace Keeper2018
             var deposits = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"));
             foreach (var depo in deposits)
             {
-                var deposit = depo.DepositFromString();
-                bin.AccountPlaneList.First(a => a.Id == deposit.MyAccountId).Deposit = deposit;
-         
+                try
+                {
+                    var deposit = depo.DepositFromString();
+                    bin.AccountPlaneList.First(a => a.Id == deposit.MyAccountId).Deposit = deposit;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
             }
             var cards = File.ReadAllLines(DbIoUtils.GetBackupFilePath("PayCards.txt"));
             foreach (var line in cards)

@@ -121,5 +121,18 @@ namespace Keeper2018
             pdfDocumentRenderer.Save(filename);
             Process.Start(filename);
         }
+
+        public void ConvertToDeposit()
+        {
+            if (ShellPartsBinder.SelectedAccountModel.IsDeposit) return;
+            ShellPartsBinder.SelectedAccountModel.Deposit =
+                new Deposit
+                {
+                    MyAccountId = ShellPartsBinder.SelectedAccountModel.Id,
+
+                };
+            _oneDepositViewModel.InitializeForm(ShellPartsBinder.SelectedAccountModel, true);
+            WindowManager.ShowDialog(_oneDepositViewModel);
+        }
     }
 }

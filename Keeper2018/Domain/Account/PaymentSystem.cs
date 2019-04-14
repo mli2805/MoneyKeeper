@@ -9,7 +9,7 @@ namespace Keeper2018
         Visa_Platinum,
         Visa_Infinite,
         
-        MasterCard_Stadard, 
+        MasterCard_Standard, 
         MasterCard_Gold, 
         MasterCard_World, 
         MasterCard_Platinum, 

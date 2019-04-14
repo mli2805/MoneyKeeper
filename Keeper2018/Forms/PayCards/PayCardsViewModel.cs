@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -18,13 +19,27 @@ namespace Keeper2018.PayCards
         public void Initialize()
         {
             Rows.Clear();
-            Rows.AddRange(_db.Bin.AccountPlaneList.Where(a => a.IsCard).Select(GetVm));
+            Rows.AddRange(_db.AccountsTree.SelectMany(GetActiveCards).Select(GetVm));
         }
 
-        private PayCardVm GetVm(Account account)
+        private List<AccountModel> GetActiveCards(AccountModel root)
+        {
+            var result = new List<AccountModel>();
+            if (root.IsCard)
+                result.Add(root);
+            if (root.Id == 393 || root.Id == 235)
+                return result;
+            foreach (var child in root.Children)
+                result.AddRange(GetActiveCards(child));
+            return result;
+        }
+
+        private PayCardVm GetVm(AccountModel account)
         {
             var depositOffer = _db.Bin.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
-
+            var calc = new TrafficOfAccountCalculator(_db, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));
+            calc.Evaluate();
+            calc.DepositReportModel.Balance.Currencies.TryGetValue(depositOffer.MainCurrency, out var amount);
             return new PayCardVm()
             {
                 MyAccountId = account.Id,
@@ -43,6 +58,7 @@ namespace Keeper2018.PayCards
                 MainCurrency = depositOffer.MainCurrency,
 
                 Name = account.Name,
+                Amount = amount,
             };
         }
     }
