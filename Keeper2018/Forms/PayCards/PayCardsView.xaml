@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:payCards="clr-namespace:Keeper2018.PayCards"
         mc:Ignorable="d"
-        Title="PayCardsView" Height="450" Width="800" d:DataContext="{d:DesignInstance payCards:PayCardsViewModel}">
-   <DockPanel>
-       <DataGrid ItemsSource="{Binding Rows}"></DataGrid>
-   </DockPanel>
+        Title="PayCardsView" SizeToContent="WidthAndHeight" d:DataContext="{d:DesignInstance payCards:PayCardsViewModel}">
+    <DockPanel>
+        <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False" IsReadOnly="True" DockPanel.Dock="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Width="135" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Банк" Width="75" Binding="{Binding BankAccount.Name}"/>
+                <DataGridTextColumn Header="Валюта" Width="75" Binding="{Binding MainCurrency}"/>
+                <DataGridTextColumn Header="Старт" Width="75" Binding="{Binding StartDate, StringFormat='dd/MM/yy'}"/>
+                <DataGridTextColumn Header="Финиш" Width="75" Binding="{Binding FinishDate, StringFormat='dd/MM/yy'}"/>
+                <DataGridTextColumn Header="Платежная система" Width="135" Binding="{Binding PaymentSystem}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Close" Width="120" Height="22" Margin="5,10,22,10" HorizontalAlignment="Right" IsCancel="True" IsDefault="True"/>
+    </DockPanel>
 </Window>
