@@ -8,7 +8,7 @@
         WindowState="Maximized" d:DataContext="{d:DesignData RusBelChartViewModel}">
     <Grid>
         <oxy:PlotView Model="{Binding MyPlotModel}"/>
-        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,55,110,0">
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,54,110,0">
             <CheckBox Content="Rub / Byn" IsChecked="{Binding IsRubBynVisible}" Height="20"/>
         </StackPanel>
     </Grid>

@@ -15,7 +15,7 @@ namespace Keeper2018
 
         public LineSeries RusSeries { get; set; } = new LineSeries() { Title = "RUS", Color = OxyColors.Red};
         public LineSeries BelSeries { get; set; } = new LineSeries() { Title = "BEL", Color = OxyColors.Green};
-        public LineSeries RubBynSeries { get; set; } = new LineSeries() {Title = "RUB/BYN", Color = OxyColors.Brown};
+        public LineSeries RubBynSeries { get; set; } = new LineSeries() {Title = "RUB/BYN", Color = OxyColors.Blue};
 
         private bool _isRubBynVisible = true;
         public bool IsRubBynVisible
@@ -40,18 +40,17 @@ namespace Keeper2018
         {
             _caption = caption;
             _rates = rates;
-            DateTime startDate = new DateTime(2018,9,1);
-            CreateSeries(startDate);
+            CreateSeries(new DateTime(2016,7,1));
             MyPlotModel.Series.Add(RusSeries);
             MyPlotModel.Series.Add(BelSeries);
             MyPlotModel.Series.Add(RubBynSeries);
             MyPlotModel.Axes.Add(new DateTimeAxis()
             {
-                Minimum = DateTimeAxis.ToDouble(startDate),
-                IntervalLength = 45, 
+                Minimum = DateTimeAxis.ToDouble(new DateTime(2018,12,1)),
+                IntervalLength = 60, 
                 IntervalType = DateTimeIntervalType.Days, 
                 MajorGridlineStyle = LineStyle.Solid,
-                Maximum = DateTimeAxis.ToDouble(DateTime.Today),
+                Maximum = DateTimeAxis.ToDouble(DateTime.Today.AddDays(1)),
             });
 
         }
