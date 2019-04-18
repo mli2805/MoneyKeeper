@@ -196,6 +196,10 @@
     <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PointsPeriodConvertor.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
+    <Compile Include="Forms\CurrencyRates\Charts\RusBelChartView.xaml.cs">
+      <DependentUpon>RusBelChartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CurrencyRates\Charts\RusBelChartViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml.cs">
       <DependentUpon>UsdFiveInOneChartView.xaml</DependentUpon>
     </Compile>
@@ -465,6 +469,10 @@
     <Page Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\CurrencyRates\Charts\RusBelChartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml">
       <SubType>Designer</SubType>

@@ -21,6 +21,7 @@
             <Button Name="LongTermChart" Margin="5" Width="100" Content="Long term" DockPanel.Dock="Left"/>
             <Button Name="UsdFourYearsChart" Margin="5" Width="100" Content="Usd 4Years 1" DockPanel.Dock="Left"/>
             <Button Name="UsdFiveYearsChart" Margin="5" Width="100" Content="Usd 4Years 2" DockPanel.Dock="Left"/>
+            <Button Name="RusBelChart" Margin="5" Width="100" Content="Rus - Bel" DockPanel.Dock="Left"/>
             <Button Name="BasketChart" Margin="5" Width="100" Content="Basket" DockPanel.Dock="Left"/>
             <Button Name="Close" Margin="5" Width="100" Content="Close" DockPanel.Dock="Right"/>
             <Button Name="Download" Margin="5" Width="100" Content="Download"
