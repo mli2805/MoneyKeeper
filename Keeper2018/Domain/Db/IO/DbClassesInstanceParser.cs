@@ -48,7 +48,8 @@ namespace Keeper2018
             account.OwnerId = Convert.ToInt32(substrings[2]);
             account.IsFolder = Convert.ToBoolean(substrings[3]);
             account.IsExpanded = Convert.ToBoolean(substrings[4]);
-            account.Name = substrings[5].Trim();
+        //    account.Name = substrings[5].Trim();
+            Console.WriteLine(substrings[5].Trim());
             return account;
         }
 
@@ -72,8 +73,9 @@ namespace Keeper2018
             var substrings = s.Split(';');
             card.MyAccountId = Convert.ToInt32(substrings[0]);
             card.CardNumber = substrings[1].Trim();
-            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[2]);
-            card.IsPayPass = Convert.ToBoolean(substrings[3]);
+            card.CardHolder = substrings[2].Trim();
+            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[3]);
+            card.IsPayPass = Convert.ToBoolean(substrings[4]);
             return card;
         }
 
