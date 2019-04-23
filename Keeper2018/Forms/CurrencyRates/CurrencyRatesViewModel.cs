@@ -113,6 +113,13 @@ namespace Keeper2018
             _windowManager.ShowWindow(vm);
         }
 
+        public void ProbabilityChart()
+        {
+            var vm = new NbUsdProbabilitiesViewModel();
+            vm.Initialize(OxyplotKey, Rows.ToList());
+            _windowManager.ShowWindow(vm);
+        }
+
         public void BasketChart()
         {
             var basketDiagramViewModel = new BasketDiagramViewModel();
