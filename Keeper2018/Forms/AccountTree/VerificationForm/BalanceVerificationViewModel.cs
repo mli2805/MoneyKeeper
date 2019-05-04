@@ -78,12 +78,15 @@ namespace Keeper2018
             else
             {
                 var receiptId = tr.Receipt;
-                line.Text = "чек";
-                while (_transIndex < _trans.Length - 1 && _trans[_transIndex + 1].Receipt == receiptId)
+                line.Text = "чек:  " + line.Text;
+                while (_transIndex < _trans.Length - 1 && 
+                       _trans[_transIndex + 1].Timestamp.Date == tr.Timestamp.Date && 
+                       _trans[_transIndex + 1].Receipt == receiptId)
                 {
                     _transIndex++;
                     _total = _total - _trans[_transIndex].Amount;
                     line.Amount = line.Amount  - _trans[_transIndex].Amount;
+                    line.Text = line.Text + " ; " + _trans[_transIndex].Comment;
                 }
                 Lines.Insert(0, line);
             }

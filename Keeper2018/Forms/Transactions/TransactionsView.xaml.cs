@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace Keeper2018
@@ -16,10 +17,16 @@ namespace Keeper2018
         private void OnSelectionChanged( object sender, SelectionChangedEventArgs e )
         {
             Selector selector = sender as Selector;
-            DataGrid dataGrid = selector as DataGrid;
-            if ( dataGrid != null && selector.SelectedItem != null && dataGrid.SelectedIndex >= 0 )
+            if ( selector is DataGrid dataGrid && selector.SelectedItem != null && dataGrid.SelectedIndex >= 0 )
             {
-                dataGrid.ScrollIntoView( selector.SelectedItem );
+                try
+                {
+                    dataGrid.ScrollIntoView( selector.SelectedItem );
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
             }
         }
     }
