@@ -11,7 +11,8 @@ namespace Keeper2018
         {
             var rate = new CurrencyRates();
             var substrings = s.Split(';');
-            rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+         //   rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+            rate.Date = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy",CultureInfo.InvariantCulture);
             rate.NbRates = NbRbRatesFromString(substrings[1]);
             rate.CbrRate.Usd = OneRateFromString(substrings[2]);
             rate.MyUsdRate = OneRateFromString(substrings[3]);
@@ -60,8 +61,8 @@ namespace Keeper2018
             deposit.MyAccountId = Convert.ToInt32(substrings[0]);
             deposit.DepositOfferId = Convert.ToInt32(substrings[1]);
             deposit.Serial = substrings[2].Trim();
-            deposit.StartDate = Convert.ToDateTime(substrings[3], new CultureInfo("ru-RU"));
-            deposit.FinishDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU"));
+            deposit.StartDate = DateTime.ParseExact(substrings[3].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            deposit.FinishDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             deposit.ShortName = substrings[5].Trim();
             deposit.Comment = substrings[6].Replace("|", "\r\n");
             return deposit;
@@ -83,7 +84,8 @@ namespace Keeper2018
         {
             var tran = new Transaction();
             var substrings = s.Split(';');
-            tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+         //   tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
+            tran.Timestamp = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
             tran.Receipt = int.Parse(substrings[2].Trim());
 
@@ -171,7 +173,7 @@ namespace Keeper2018
             var substrings = s.Split(';');
             depositRateLine.DepositOfferId = int.Parse(substrings[0].Trim());
             depositRateLine.DepositOfferEssentialsId = int.Parse(substrings[1].Trim());
-            depositRateLine.DateFrom = Convert.ToDateTime(substrings[2], new CultureInfo("ru-RU"));
+            depositRateLine.DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             depositRateLine.AmountFrom = Convert.ToDecimal(substrings[3], new CultureInfo("en-US"));
             depositRateLine.AmountTo = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
             depositRateLine.Rate = Convert.ToDecimal(substrings[5], new CultureInfo("en-US"));

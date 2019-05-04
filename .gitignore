@@ -18,3 +18,5 @@
 /Keeper2018.psess
 /Keeper2018.Tests/obj/Debug
 /Keeper2018.Tests/bin/Debug
+*.psess
+*.vspx

@@ -46,8 +46,8 @@ namespace Keeper2018
                 MyAccountId = Convert.ToInt32(substrings[0]),
                 DepositOfferId = Convert.ToInt32(substrings[1]),
                 Serial = substrings[2].Trim(),
-                StartDate = Convert.ToDateTime(substrings[3], new CultureInfo("ru-RU")),
-                FinishDate = Convert.ToDateTime(substrings[4], new CultureInfo("ru-RU")),
+                StartDate = DateTime.ParseExact(substrings[3].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                FinishDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
                 ShortName = substrings[5].Trim(),
                 Comment = substrings[6].Replace("|", "\r\n"),
             };

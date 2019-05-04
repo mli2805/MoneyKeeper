@@ -60,7 +60,7 @@ namespace Keeper2018
                 }
                 else if (parts[0] == "::DOES::")
                 {
-                    depositOffer?.Essentials.Add(Convert.ToDateTime(parts[1], new CultureInfo("ru-RU")),
+                    depositOffer?.Essentials.Add( DateTime.ParseExact(parts[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
                         parts[2].DepositEssentialFromString());
                 }
                 else if (parts[0] == "::DORL::")
