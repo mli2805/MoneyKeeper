@@ -9,7 +9,7 @@ namespace Keeper2018
         public static List<PdfReportTableRow> GetTableForTag(this KeeperDb db, AccountModel tag)
         {
             var rows = new List<PdfReportTableRow>();
-            foreach (var transaction in db.Bin.Transactions.Values)
+            foreach (var transaction in db.Bin.Transactions.Values.OrderBy(t=>t.Timestamp))
             {
                 var balanceForTag = transaction.BalanceForTag(db, tag.Id);
                 if (balanceForTag == null) continue;
