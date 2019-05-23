@@ -51,6 +51,11 @@ namespace Keeper2018
             }
         }
 
+        protected override void OnViewLoaded(object view)
+        {
+            DisplayName = "T - Toggle chart";
+        }
+
         public void Initialize(KeeperDb db)
         {
             var model = new BalanceAndSaldoModel();

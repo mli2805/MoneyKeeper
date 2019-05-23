@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -37,7 +38,7 @@ namespace Keeper2018
         private DateTime _previousDate;
         public void PrepareSeries()
         {
-            foreach (var tran in _db.Bin.Transactions.Values)
+            foreach (var tran in _db.Bin.Transactions.Values.OrderBy(t=>t.Timestamp))
             {
                 if (!tran.Timestamp.Date.Equals(_currentDate))
                 {
