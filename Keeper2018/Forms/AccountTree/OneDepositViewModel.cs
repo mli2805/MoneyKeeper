@@ -69,6 +69,7 @@ namespace Keeper2018
             _accountModel = accountModel;
             DepositOffers = _db.Bin.DepositOffers.Select(x => x.Map(_db.Bin.AccountPlaneList)).ToList();
             DepositInWork = accountModel.Deposit;
+            DepositInWork.MyAccountId = accountModel.Id;
             ParentName = accountModel.Owner.Name;
 
             if (isInAddMode)
