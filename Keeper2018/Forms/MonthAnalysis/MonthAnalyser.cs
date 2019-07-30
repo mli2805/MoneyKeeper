@@ -66,32 +66,51 @@ namespace Keeper2018
         private void FillIncomeList(DateTime startDate, DateTime finishMoment)
         {
             _monthAnalysisModel.IncomeViewModel.List.Add("Доходы", FontWeights.Bold, Brushes.Blue);
-            _monthAnalysisModel.IncomeViewModel.List.Add("", Brushes.Blue);
 
+            var salaryList = new List<string>();
             var depoList = new List<string>();
+            var restList = new List<string>();
             decimal total = 0;
+            decimal salaryTotal = 0;
             decimal depoTotal = 0;
+            decimal restTotal = 0;
             foreach (var tran in _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                                                   && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
                 var amStr = _db.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
-                var accModel = _db.AcMoDict[tran.MyAccount];
-                if (accModel.IsDeposit)
-                {
-                    depoList.Add($"{amStr} {accModel.Deposit.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
-                    depoTotal = depoTotal + amountInUsd;
-                }
-                else
-                {
-                    var comment = BuildCommentForIncomeTransaction(tran);
-                    _monthAnalysisModel.IncomeViewModel.List.Add($"{amStr}  {tran.Timestamp:dd MMM} {comment}", Brushes.Blue);
-                }
 
+                foreach (var tagId in tran.Tags)
+                {
+                    var tagModel = _db.AcMoDict[tagId];
+                    if (tagModel.Is(185))
+                    {
+                        if (tagModel.Is(186))
+                        {
+                            salaryList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran)} {tran.Timestamp:dd MMM}");
+                            salaryTotal = salaryTotal + amountInUsd;
+                        }
+                        else if (tagModel.Is(188))
+                        {
+                            var accModel = _db.AcMoDict[tran.MyAccount];
+                            depoList.Add($"{amStr} {accModel.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                            depoTotal = depoTotal + amountInUsd;
+                        }
+                        else
+                        {
+                            restList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran)} {tran.Timestamp:dd MMM}");
+                            restTotal = restTotal + amountInUsd;
+                        }
+                    }
+                }
                 total = total + amountInUsd;
             }
 
+            if (salaryList.Count > 0)
+                InsertDepoLinesIntoIncomeList(salaryList, salaryTotal, "зарплата");
             if (depoList.Count > 0)
-                InsertDepoLinesIntoIncomeList(depoList, depoTotal);
+                InsertDepoLinesIntoIncomeList(depoList, depoTotal, "депозиты");
+            if (restList.Count > 0)
+                InsertDepoLinesIntoIncomeList(restList, restTotal, "прочее");
 
             _monthAnalysisModel.IncomeViewModel.List.Add("");
             _monthAnalysisModel.IncomeViewModel.List.Add($"Итого {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
@@ -110,8 +129,8 @@ namespace Keeper2018
             }
 
             var depos = _db.AcMoDict[166];
-            foreach (var depo in depos.Children.Where(c=>c.IsDeposit))
-                if (realIncomes.FirstOrDefault(t => t.MyAccount == depo.Id && t.Tags.Contains(208)) == null) 
+            foreach (var depo in depos.Children.Where(c => c.IsDeposit))
+                if (realIncomes.FirstOrDefault(t => t.MyAccount == depo.Id && t.Tags.Contains(208)) == null)
                     ForeseeDepoIncome(depo);
         }
 
@@ -128,18 +147,18 @@ namespace Keeper2018
                 : _db.AmountInUsd(DateTime.Today, depositOffer.MainCurrency, revenue);
         }
 
-        private void InsertDepoLinesIntoIncomeList(List<string> depoList, decimal depoTotal)
+        private void InsertDepoLinesIntoIncomeList(List<string> lines, decimal total, string word)
         {
             _monthAnalysisModel.IncomeViewModel.List.Add("");
-            _monthAnalysisModel.IncomeViewModel.List.Add("   Депозиты:", Brushes.Blue);
+            _monthAnalysisModel.IncomeViewModel.List.Add($"   {word}:", Brushes.Blue);
             _monthAnalysisModel.IncomeViewModel.List.Add("");
-            foreach (var line in depoList)
+            foreach (var line in lines)
             {
                 _monthAnalysisModel.IncomeViewModel.List.Add($"   {line}", Brushes.Blue);
             }
 
             _monthAnalysisModel.IncomeViewModel.List.Add("");
-            _monthAnalysisModel.IncomeViewModel.List.Add($"   Итого депозиты {depoTotal:#,0.00} usd", Brushes.Blue);
+            _monthAnalysisModel.IncomeViewModel.List.Add($"   Итого {word} {total:#,0.00} usd", Brushes.Blue);
         }
 
         private string BuildCommentForIncomeTransaction(Transaction tran)
