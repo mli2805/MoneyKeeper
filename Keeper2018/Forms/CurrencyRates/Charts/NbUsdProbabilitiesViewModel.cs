@@ -81,7 +81,7 @@ namespace Keeper2018
                     var previousModel = _rates.First(r => r.Date == currencyRatesModel.Date.AddDays(-1));
                     probability = probability + Compare(currencyRatesModel, previousModel);
                 }
-            //    result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(day.Date), probability));
+                //    result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(day.Date), probability));
                 result.Points.Add(new DataPoint(Axis.ToDouble(i), probability));
             }
             return result;

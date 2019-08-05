@@ -75,14 +75,17 @@ namespace Keeper2018
             foreach (var record in _rates)
             {
                 var current = new CurrencyRatesModel(record.Value, previous, annual);
-                Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
+                if (Application.Current.Dispatcher != null)
+                    Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
 
                 if (!current.BasketDelta.Equals(0))
                     previous = current;
                 if (current.Date.Day == 31 && current.Date.Month == 12)
                     annual = current;
             }
-            Application.Current.Dispatcher.Invoke(() => LastDayOfYear = annual);
+
+            if (Application.Current.Dispatcher != null)
+                Application.Current.Dispatcher.Invoke(() => LastDayOfYear = annual);
         }
 
         public void LongTermChart()

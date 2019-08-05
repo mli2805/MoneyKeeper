@@ -314,7 +314,8 @@ namespace Keeper2018
         private void S()
         {
             var result = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
-            Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
+            if (Application.Current.Dispatcher != null)
+                Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
         }
 
     }

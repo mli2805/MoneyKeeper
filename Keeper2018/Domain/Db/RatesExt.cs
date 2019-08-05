@@ -100,6 +100,11 @@ namespace Keeper2018
             return 0;
         }
 
+        public static decimal AmountInUsd(this KeeperDb db, Transaction tr)
+        {
+            return db.AmountInUsd(tr.Timestamp, tr.Currency, tr.Amount);
+        }
+
 
         public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
@@ -109,7 +114,8 @@ namespace Keeper2018
             var amountInUsd = db.AmountInUsd(date, currency, amount);
             return shortLine + $" ({amountInUsd:#,0.00}$)";
         }
-        public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount, out decimal amountInUsd)
+        public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, 
+            decimal amount, out decimal amountInUsd)
         {
             amountInUsd = amount;
             var shortLine = $"{amount} {currency.ToString().ToLower()}";
@@ -117,6 +123,11 @@ namespace Keeper2018
 
             amountInUsd = db.AmountInUsd(date, currency, amount);
             return shortLine + $" ( {amountInUsd:#,0.00} usd )";
+        }
+
+        public static string AmountInUsdString(this KeeperDb db, Transaction tr, out decimal amountIsUsd)
+        {
+            return db.AmountInUsdString(tr.Timestamp, tr.Currency, tr.Amount, out amountIsUsd);
         }
 
         public static decimal BalanceInUsd(this KeeperDb db, DateTime date, Balance balance)

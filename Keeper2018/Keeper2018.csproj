@@ -226,6 +226,12 @@
       <DependentUpon>RulesAndRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\RulesAndRatesViewModel.cs" />
+    <Compile Include="Forms\Gsk\GskModel.cs" />
+    <Compile Include="Forms\Gsk\GskView.xaml.cs">
+      <DependentUpon>GskView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Gsk\GskViewModel.cs" />
+    <Compile Include="Forms\Gsk\PaymentLineModel.cs" />
     <Compile Include="Forms\ListOfLinesControls\BorderedList\BorderedListView.xaml.cs">
       <DependentUpon>BorderedListView.xaml</DependentUpon>
     </Compile>
@@ -506,6 +512,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Gsk\GskView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\ListOfLinesControls\BorderedList\BorderedListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -715,6 +725,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\paycard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gsk.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
