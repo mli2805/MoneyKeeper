@@ -50,7 +50,7 @@ namespace Keeper2018
             // Income
             MyAccNamesForIncome = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.SeekAccountById(158), new List<int> {393, 235, 283})
+                new AccName().PopulateFromAccount(_db.SeekAccountById(158), new List<int> {393, 235})
             };
 
             // Income Tags
@@ -68,7 +68,7 @@ namespace Keeper2018
             // Expense
             MyAccNamesForExpense = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.SeekAccountById(158), new List<int> {393, 235, 283, 166})
+                new AccName().PopulateFromAccount(_db.SeekAccountById(158), new List<int> {393, 235, 166})
             };
 
             // Expense Tags
