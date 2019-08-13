@@ -115,10 +115,6 @@
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneCardViewModel.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\TranTooltipForm\TranTooltipView.xaml.cs">
-      <DependentUpon>TranTooltipView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\BalanceOrTraffic\TranTooltipForm\TranTooltipViewModel.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
     <Compile Include="Domain\Db\AssociationFinder.cs" />
     <Compile Include="Domain\Db\IO\DbClassesInstanceParser.cs" />
@@ -468,10 +464,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\BalanceOrTraffic\TranTooltipForm\TranTooltipView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Forms\Cars\CarsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -737,5 +729,6 @@
   <ItemGroup>
     <Resource Include="Resources\gsk.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

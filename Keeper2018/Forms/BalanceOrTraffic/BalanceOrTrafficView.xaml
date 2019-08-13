@@ -16,19 +16,6 @@
                       cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowTransaction]"
                       HorizontalGridLinesBrush="LavenderBlush" VerticalGridLinesBrush="LavenderBlush"
                       AutoGenerateColumns="False" CanUserSortColumns="False" BorderThickness="0,0,0,1" Margin="5,5,5,5">
-                <!--<DataGrid.RowStyle>
-                     <Style TargetType="DataGridRow">
-                        <Setter Property="ToolTip">
-                            <Setter.Value>
-                                ~1~
-                                <TextBlock Text="{Binding DataContext.SelectedRowTooltip,
-                                    RelativeSource={RelativeSource AncestorType={x:Type keeper2018:BalanceOrTrafficView}}}" />
-                               @1@
-                               <TextBlock Text="this is /n tool tip" />
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </DataGrid.RowStyle>-->
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Binding="{Binding .}">
                         <DataGridTextColumn.Header>
@@ -38,6 +25,13 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <Popup Name="PopupWindow" Placement="Mouse" IsOpen="{Binding IsPopupOpen}">
+                <StackPanel Orientation="Horizontal" Background="AliceBlue">
+                    <ListBox ItemsSource="{Binding PopupLabels}" Background="AliceBlue" BorderThickness="0" Margin="5"/>
+                    <ListBox ItemsSource="{Binding PopupValues}" Background="AliceBlue" BorderThickness="0" Margin="5"/>
+                </StackPanel>
+            </Popup>
         </DockPanel>
     </Border>
 </UserControl>
