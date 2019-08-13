@@ -34,7 +34,7 @@ namespace Keeper2018
             var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}";
             result.Add(belka, belkaBrush);
 
-           var euroStart = ratesLine.NbRates.Euro.Value / ratesLine.NbRates.Usd.Value;
+            var euroStart = ratesLine.NbRates.Euro.Value / ratesLine.NbRates.Usd.Value;
             var euroFinish = ratesLineFinish.NbRates.Euro.Value / ratesLineFinish.NbRates.Usd.Value;
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
@@ -76,14 +76,20 @@ namespace Keeper2018
 
         public static decimal AmountInUsd(this KeeperDb db, DateTime date, CurrencyCode? currency, decimal amount)
         {
+            return db.AmountInUsd(date, currency, amount, out decimal _);
+        }
+
+        public static decimal AmountInUsd(this KeeperDb db, DateTime date, 
+            CurrencyCode? currency, decimal amount, out decimal rate)
+        {
+            rate = 1;
             if (currency == CurrencyCode.USD) return amount;
             var rateLine = db.GetRatesLine(date);
-            decimal rate;
             switch (currency)
             {
                 case CurrencyCode.BYR:
                     rate = (decimal)rateLine.MyUsdRate.Value;
-                    if (date == new DateTime(2016, 7, 1)) 
+                    if (date == new DateTime(2016, 7, 1))
                         rate = rate * 10000;
                     return amount / rate;
                 case CurrencyCode.BYN:
@@ -114,7 +120,18 @@ namespace Keeper2018
             var amountInUsd = db.AmountInUsd(date, currency, amount);
             return shortLine + $" ({amountInUsd:#,0.00}$)";
         }
-        public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency, 
+        
+        public static string AmountInUsdWithRate(this KeeperDb db, DateTime date, 
+            CurrencyCode? currency, decimal amount, out decimal rate)
+        {
+            rate = 1;
+            var shortLine = $"{amount:#,#.00} {currency.ToString().ToLower()}";
+            if (currency == CurrencyCode.USD) return shortLine;
+
+            var amountInUsd = db.AmountInUsd(date, currency, amount, out rate);
+            return shortLine + $" ({amountInUsd:#,0.00}$)";
+        }
+        public static string AmountInUsdString(this KeeperDb db, DateTime date, CurrencyCode? currency,
             decimal amount, out decimal amountInUsd)
         {
             amountInUsd = amount;

@@ -12,13 +12,28 @@
     <Border BorderBrush="Gray" BorderThickness="1">
         <DockPanel>
             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Total}"  Margin="5"/>
-            <DataGrid Width="Auto" ItemsSource="{Binding Lines}" Background="White" IsReadOnly="True"
+            <DataGrid Width="Auto" ItemsSource="{Binding Lines}" SelectedItem="{Binding SelectedLine}" Background="White" IsReadOnly="True"
+                      cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowTransaction]"
                       HorizontalGridLinesBrush="LavenderBlush" VerticalGridLinesBrush="LavenderBlush"
                       AutoGenerateColumns="False" CanUserSortColumns="False" BorderThickness="0,0,0,1" Margin="5,5,5,5">
+                <!--<DataGrid.RowStyle>
+                     <Style TargetType="DataGridRow">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                ~1~
+                                <TextBlock Text="{Binding DataContext.SelectedRowTooltip,
+                                    RelativeSource={RelativeSource AncestorType={x:Type keeper2018:BalanceOrTrafficView}}}" />
+                               @1@
+                               <TextBlock Text="this is /n tool tip" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>-->
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Binding="{Binding .}">
                         <DataGridTextColumn.Header>
-                            <TextBlock Text="{Binding DataContext.AccountName, RelativeSource={RelativeSource AncestorType={x:Type keeper2018:BalanceOrTrafficView}}}"/>
+                            <TextBlock Text="{Binding DataContext.AccountName, 
+                                RelativeSource={RelativeSource AncestorType={x:Type keeper2018:BalanceOrTrafficView}}}"/>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
                 </DataGrid.Columns>

@@ -4,9 +4,9 @@ namespace Keeper2018
 {
     public class TranSelectExecutor
     {
-        private readonly TransModel _model;
+        private readonly TranModel _model;
 
-        public TranSelectExecutor(TransModel model)
+        public TranSelectExecutor(TranModel model)
         {
             _model = model;
         }

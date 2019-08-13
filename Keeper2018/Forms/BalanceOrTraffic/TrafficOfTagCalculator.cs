@@ -64,7 +64,7 @@ namespace Keeper2018
             }
         }
 
-        public IEnumerable<string> Report(BalanceOrTraffic mode)
+        public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)
         {
             foreach (var line in _balanceWithTurnover.Report(mode))
             {
@@ -72,7 +72,7 @@ namespace Keeper2018
             }
             foreach (var pair in _shortTrans.Reverse())
             {
-                yield return pair.Value;
+                yield return pair;
             }
         }
     }

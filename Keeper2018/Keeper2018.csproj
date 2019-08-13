@@ -115,6 +115,10 @@
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneCardViewModel.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\TranTooltipForm\TranTooltipView.xaml.cs">
+      <DependentUpon>TranTooltipView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BalanceOrTraffic\TranTooltipForm\TranTooltipViewModel.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
     <Compile Include="Domain\Db\AssociationFinder.cs" />
     <Compile Include="Domain\Db\IO\DbClassesInstanceParser.cs" />
@@ -389,7 +393,7 @@
     <Compile Include="Forms\Transactions\Actions\TranEditExecutor.cs" />
     <Compile Include="Forms\Transactions\Actions\TranMoveExecutor.cs" />
     <Compile Include="Forms\Transactions\Actions\TranSelectExecutor.cs" />
-    <Compile Include="Forms\Transactions\TransModel.cs" />
+    <Compile Include="Forms\Transactions\TranModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\DateTimeExtansions.cs" />
     <Compile Include="Utils\Period.cs" />
@@ -461,6 +465,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\BalanceOrTraffic\BalanceOrTrafficView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\BalanceOrTraffic\TranTooltipForm\TranTooltipView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

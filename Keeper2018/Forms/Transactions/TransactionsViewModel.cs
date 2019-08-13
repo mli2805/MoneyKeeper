@@ -27,10 +27,10 @@ namespace Keeper2018
         public int Top { get; set; }
 
         public int FilterViewWidth = 225;
-        public TransModel Model { get; set; }
+        public TranModel Model { get; set; }
         public bool IsFirstLaunch = true;
 
-        public TransactionsViewModel(TransModel model, FilterModel filterModel, FilterViewModel filterViewModel,
+        public TransactionsViewModel(TranModel model, FilterModel filterModel, FilterViewModel filterViewModel,
             TranEditExecutor tranEditExecutor, TranMoveExecutor tranMoveExecutor, TranSelectExecutor tranSelectExecutor,
             ComboTreesProvider comboTreesProvider)
         {

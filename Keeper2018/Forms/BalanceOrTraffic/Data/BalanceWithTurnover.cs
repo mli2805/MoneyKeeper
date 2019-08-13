@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Keeper2018
 {
@@ -17,7 +18,7 @@ namespace Keeper2018
             else Currencies.Add(currency, new TrafficPair() { Minus = amount });
         }
 
-        public IEnumerable<string> Report(BalanceOrTraffic mode)
+        public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)
         {
             foreach (var pair in Currencies)
             {
@@ -25,11 +26,11 @@ namespace Keeper2018
                 if (total == 0 && mode == BalanceOrTraffic.Balance) continue;
 
                 if (mode == BalanceOrTraffic.Balance)
-                    yield return $"{ pair.Key}: {total:#,0.##}";
+                    yield return new KeyValuePair<DateTime, string>(new DateTime(), $"{ pair.Key}: {total:#,0.##}");
                 else
                 {
                     var plusMinus = $"{Currencies[pair.Key].Plus:#,0.##} - {Currencies[pair.Key].Minus:#,0.##}";
-                    yield return $"{ pair.Key}: {plusMinus} = {total:#,0.##}";
+                    yield return new KeyValuePair<DateTime, string>(new DateTime(), $"{ pair.Key}: {plusMinus} = {total:#,0.##}");
                 }
             }
         }

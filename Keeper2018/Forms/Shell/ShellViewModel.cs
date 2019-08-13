@@ -14,12 +14,12 @@ namespace Keeper2018
 
         private readonly KeeperDb _keeperDb;
         private readonly DbLoader _dbLoader;
-        private readonly TransModel _transModel;
+        private readonly TranModel _tranModel;
         public ShellPartsBinder ShellPartsBinder { get; }
         private bool _dbLoaded;
 
         public ShellViewModel(KeeperDb keeperDb, DbLoader dbLoader, ShellPartsBinder shellPartsBinder,
-            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, TransModel transModel,
+            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, TranModel tranModel,
             BalanceOrTrafficViewModel balanceOrTrafficViewModel, TwoSelectorsViewModel twoSelectorsViewModel)
         {
             MainMenuViewModel = mainMenuViewModel;
@@ -29,7 +29,7 @@ namespace Keeper2018
 
             _keeperDb = keeperDb;
             _dbLoader = dbLoader;
-            _transModel = transModel;
+            _tranModel = tranModel;
             ShellPartsBinder = shellPartsBinder;
         }
 
@@ -84,7 +84,7 @@ namespace Keeper2018
                 _keeperDb.FlattenAccountTree();
                 await DbSerializer.Serialize(_keeperDb.Bin);
 
-                if (_transModel.IsCollectionChanged)
+                if (_tranModel.IsCollectionChanged)
                     if (await _keeperDb.SaveAllToNewTxtAsync())
                         if (await DbTxtSaver.ZipTxtDbAsync())
                             DbTxtSaver.DeleteTxtFiles();

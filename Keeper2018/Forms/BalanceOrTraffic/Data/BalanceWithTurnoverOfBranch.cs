@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -21,22 +22,26 @@ namespace Keeper2018
             ChildAccounts[accountModel].Sub(currency, amount);
         }
 
-        public List<string> Report(BalanceOrTraffic mode)
+        public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)
         {
             var sum = Summarize();
-            var result = new List<string>(sum.Report(mode));
+            foreach (var pair in sum.Report(mode))
+            {
+                yield return pair;
+            }
 
             foreach (var child in ChildAccounts)
             {
-                var subReport = child.Value.Report(mode).Select(x=>"   " + x).ToList();
+                var subReport = child.Value.Report(mode).ToList();
                 if (subReport.Any())
                 {
-                    result.Add($"     {child.Key.Name}");
-                    result.AddRange(subReport);
+                    yield return new KeyValuePair<DateTime, string>(new DateTime(), $"     {child.Key.Name}");
+                    foreach (var pair in subReport)
+                    {
+                        yield return pair;
+                    }
                 }
             }
-
-            return result;
         }
 
         public BalanceWithTurnover Summarize()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -76,7 +77,10 @@ namespace Keeper2018
             }
         }
 
-        public IEnumerable<string> Report(BalanceOrTraffic mode) { return _balanceWithTurnovers.Report(mode); }
+        public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)
+        {
+            return _balanceWithTurnovers.Report(mode);
+        }
 
         public ListOfLines ReportForMonthAnalysis()
         {

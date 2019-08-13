@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -6,7 +8,10 @@ namespace Keeper2018
 {
     public class BalanceOrTrafficViewModel : Screen
     {
+        private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
+
+        private TranTooltipViewModel _vm;
         private ShellPartsBinder ShellPartsBinder { get; }
 
         private string _accountName;
@@ -21,6 +26,7 @@ namespace Keeper2018
             }
         }
 
+        private List<KeyValuePair<DateTime, string>> _report;
         private ObservableCollection<string> _lines;
         private string _total;
 
@@ -35,6 +41,8 @@ namespace Keeper2018
             }
         }
 
+        public string SelectedLine { get; set; }
+        public string SelectedRowTooltip => SelectedLine;
         public string Total
         {
             get => _total;
@@ -46,8 +54,9 @@ namespace Keeper2018
             }
         }
 
-        public BalanceOrTrafficViewModel(ShellPartsBinder shellPartsBinder, KeeperDb db)
+        public BalanceOrTrafficViewModel(IWindowManager windowManager, ShellPartsBinder shellPartsBinder, KeeperDb db)
         {
+            _windowManager = windowManager;
             _db = db;
             ShellPartsBinder = shellPartsBinder;
             ShellPartsBinder.PropertyChanged += ShellPartsBinder_PropertyChanged;
@@ -75,7 +84,8 @@ namespace Keeper2018
 
             trafficCalculator.Evaluate();
 
-            foreach (var str in trafficCalculator.Report(mode)) Lines.Add(str);
+            _report = trafficCalculator.Report(mode).ToList();
+            foreach (var pair in _report) Lines.Add(pair.Value);
             Total = trafficCalculator.Total;
         }
 
@@ -89,8 +99,23 @@ namespace Keeper2018
 
             trafficCalculator.Evaluate();
 
-            foreach (var str in trafficCalculator.Report(BalanceOrTraffic.Traffic)) Lines.Add(str);
+            _report = trafficCalculator.Report(BalanceOrTraffic.Traffic).ToList();
+            foreach (var pair in _report) Lines.Add(pair.Value);
             Total = trafficCalculator.Total;
+        }
+
+        public void ShowTransaction()
+        {
+            var pair = _report.FirstOrDefault(p => p.Value == SelectedLine);
+            if (pair.Key == DateTime.MinValue) return;
+
+            var transaction = _db.Bin.Transactions.Values.FirstOrDefault(t=>t.Timestamp == pair.Key);
+            if (transaction == null) return;
+
+            _vm?.TryClose();
+            _vm = new TranTooltipViewModel(_db, transaction);
+            
+            _windowManager.ShowWindow(_vm);
         }
     }
 }

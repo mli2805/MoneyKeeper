@@ -6,14 +6,14 @@ namespace Keeper2018
 {
     public class TranEditExecutor
     {
-        private readonly TransModel _model;
+        private readonly TranModel _model;
 
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
         private readonly OneTranViewModel _oneTranViewModel;
         private readonly AskReceiptDeletionViewModel _askReceiptDeletionViewModel;
 
-        public TranEditExecutor(TransModel model, IWindowManager windowManager,
+        public TranEditExecutor(TranModel model, IWindowManager windowManager,
             KeeperDb db, OneTranViewModel oneTranViewModel, AskReceiptDeletionViewModel askReceiptDeletionViewModel)
         {
             _model = model;

@@ -8,10 +8,10 @@ namespace Keeper2018
     {
         public enum Destination { Up, Down }
 
-        private readonly TransModel _model;
+        private readonly TranModel _model;
         private readonly KeeperDb _db;
 
-        public TranMoveExecutor(TransModel model, KeeperDb db)
+        public TranMoveExecutor(TranModel model, KeeperDb db)
         {
             _model = model;
             _db = db;

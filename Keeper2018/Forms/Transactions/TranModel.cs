@@ -7,7 +7,7 @@ using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class TransModel : PropertyChangedBase
+    public class TranModel : PropertyChangedBase
     {
         private ObservableCollection<TranWrappedForDatagrid> _rows;
         public ObservableCollection<TranWrappedForDatagrid> Rows
@@ -42,7 +42,7 @@ namespace Keeper2018
         private TranFilter _tranFilter;
 
 
-        public TransModel(KeeperDb db, FilterModel filterModel)
+        public TranModel(KeeperDb db, FilterModel filterModel)
         {
             _db = db;
             _filterModel = filterModel;
