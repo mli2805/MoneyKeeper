@@ -34,8 +34,12 @@ namespace Keeper2018
             var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}";
             result.Add(belka, belkaBrush);
 
-            var euroStart = ratesLine.NbRates.Euro.Value / ratesLine.NbRates.Usd.Value;
-            var euroFinish = ratesLineFinish.NbRates.Euro.Value / ratesLineFinish.NbRates.Usd.Value;
+            //            var euroStart = ratesLine.NbRates.Euro.Value / ratesLine.NbRates.Usd.Value;
+            //            var euroFinish = ratesLineFinish.NbRates.Euro.Value / ratesLineFinish.NbRates.Usd.Value;
+            // my rate is more acceptable for this porpose
+            var euroStart = ratesLine.MyEurUsdRate.Value;
+            var euroFinish = ratesLineFinish.MyEurUsdRate.Value;
+
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
             var euro = $"      Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}";
@@ -79,7 +83,7 @@ namespace Keeper2018
             return db.AmountInUsd(date, currency, amount, out decimal _);
         }
 
-        public static decimal AmountInUsd(this KeeperDb db, DateTime date, 
+        public static decimal AmountInUsd(this KeeperDb db, DateTime date,
             CurrencyCode? currency, decimal amount, out decimal rate)
         {
             rate = 1;
@@ -120,8 +124,8 @@ namespace Keeper2018
             var amountInUsd = db.AmountInUsd(date, currency, amount);
             return shortLine + $" ({amountInUsd:#,0.00}$)";
         }
-        
-        public static string AmountInUsdWithRate(this KeeperDb db, DateTime date, 
+
+        public static string AmountInUsdWithRate(this KeeperDb db, DateTime date,
             CurrencyCode? currency, decimal amount, out decimal rate)
         {
             rate = 1;
