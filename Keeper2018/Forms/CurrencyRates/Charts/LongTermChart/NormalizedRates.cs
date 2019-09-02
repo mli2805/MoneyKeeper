@@ -9,5 +9,7 @@
 
         public double UsdMy;
         public double RubUsd;
+
+        public double Basket;
     }
 }

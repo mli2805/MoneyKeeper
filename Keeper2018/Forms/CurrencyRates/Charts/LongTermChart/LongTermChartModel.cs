@@ -87,6 +87,7 @@ namespace Keeper2018
         public LineSeries EurUsdSeries { get; set; }
 
         private bool _isEurUsd;
+
         public bool IsEurUsd
         {
             get => _isEurUsd;
@@ -94,6 +95,20 @@ namespace Keeper2018
             {
                 _isEurUsd = value;
                 EurUsdSeries.IsVisible = value;
+                LongTermModel.InvalidatePlot(true);
+            }
+        }
+
+        public LineSeries BasketSeries { get; set; }
+
+        private bool _isBasket;
+        public bool IsBasket
+        {
+            get => _isBasket;
+            set
+            {
+                _isBasket = value;
+                BasketSeries.IsVisible = value;
                 LongTermModel.InvalidatePlot(true);
             }
         }
@@ -108,6 +123,7 @@ namespace Keeper2018
             LongTermModel.Series.Add(RubUsdSeries);
             LongTermModel.Series.Add(EurNbSeries);
             LongTermModel.Series.Add(EurUsdSeries);
+            LongTermModel.Series.Add(BasketSeries);
 
             LongTermModel.Axes.Add(new DateTimeAxis()
             {
@@ -129,6 +145,7 @@ namespace Keeper2018
             RubUsdSeries = new LineSeries() { Title = "Rub / Usd", Color = OxyColors.Red, IsVisible = false };
             EurNbSeries = new LineSeries() { Title = "EUR (по НБ РБ)", Color = OxyColors.Blue, IsVisible = false };
             EurUsdSeries = new LineSeries() { Title = "Eur / Usd", Color = OxyColors.DeepSkyBlue, IsVisible = false };
+            BasketSeries = new LineSeries() { Title = "Basket", Color = OxyColors.Black, IsVisible = false };
 
             foreach (var currencyRatesModel in rates)
             {
@@ -140,9 +157,12 @@ namespace Keeper2018
                     UsdMySeries.Points.Add(new DataPoint(day, normalizedRates.UsdMy));
                 RubNbSeries.Points.Add(new DataPoint(day, normalizedRates.RubNb));
                 RubUsdSeries.Points.Add(new DataPoint(day, normalizedRates.RubUsd));
-                EurNbSeries.Points.Add(new DataPoint(day, normalizedRates.EurNb));
                 if (currencyRatesModel.Date >= dt19990111)
+                {
+                    EurNbSeries.Points.Add(new DataPoint(day, normalizedRates.EurNb));
                     EurUsdSeries.Points.Add(new DataPoint(day, normalizedRates.EurUsd));
+                    BasketSeries.Points.Add(new DataPoint(day, normalizedRates.Basket));
+                }
             }
         }
 
@@ -156,6 +176,7 @@ namespace Keeper2018
                 result.RubNb = currencyRates.NbRates.Rur.Value / currencyRates.NbRates.Rur.Unit * 10000000;
                 result.UsdMy = currencyRates.MyUsdRate.Value * 10000000;
                 result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
+                result.Basket = BelBaskets.Calculate(currencyRates);
             }
             else if (currencyRates.Date >= dt20000101)
             {
@@ -164,11 +185,20 @@ namespace Keeper2018
                 result.RubNb = currencyRates.NbRates.Rur.Value * 1000;
                 result.UsdMy = currencyRates.MyUsdRate.Value * 1000;
                 result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
+                result.Basket = BelBaskets.Calculate(currencyRates) / 10000;
             }
-            else if (currencyRates.Date >= dt19980101)
+            else if (currencyRates.Date >= dt19990111) // euro and basket start
             {
                 result.UsdNb = currencyRates.NbRates.Usd.Value;
                 result.EurNb = currencyRates.NbRates.Euro.Value;
+                result.RubNb = currencyRates.NbRates.Rur.Value;
+                result.UsdMy = currencyRates.MyUsdRate.Value;
+                result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
+                result.Basket = BelBaskets.Calculate(currencyRates) / 10000000;
+            }
+            else if (currencyRates.Date >= dt19980101) // russian denomination
+            {
+                result.UsdNb = currencyRates.NbRates.Usd.Value;
                 result.RubNb = currencyRates.NbRates.Rur.Value;
                 result.UsdMy = currencyRates.MyUsdRate.Value;
                 result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
@@ -176,7 +206,6 @@ namespace Keeper2018
             else
             {
                 result.UsdNb = currencyRates.NbRates.Usd.Value;
-                result.EurNb = currencyRates.NbRates.Euro.Value;
                 result.RubNb = currencyRates.NbRates.Rur.Value;
                 result.UsdMy = currencyRates.MyUsdRate.Value;
                 result.RubUsd = currencyRates.CbrRate.Usd.Value;

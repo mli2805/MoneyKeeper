@@ -24,6 +24,7 @@
             <CheckBox Content="Rub / Usd" IsChecked="{Binding Model.IsRubUsd}" Height="20"/>
             <CheckBox Content="Euro (по НБ РБ)" IsChecked="{Binding Model.IsEurNb}" Height="20"/>
             <CheckBox Content="Eur / Usd" IsChecked="{Binding Model.IsEurUsd}" Height="20"/>
+            <CheckBox Content="Basket" IsChecked="{Binding Model.IsBasket}" Height="20"/>
             <Button Content="Logarithm" Name="ToggleLogarithm" Margin="0,3,0,0"/>
         </StackPanel>
     </Grid>
