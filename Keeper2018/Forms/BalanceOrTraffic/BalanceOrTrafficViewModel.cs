@@ -9,6 +9,7 @@ namespace Keeper2018
     public class BalanceOrTrafficViewModel : Screen
     {
         private readonly KeeperDb _db;
+        private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         private ShellPartsBinder ShellPartsBinder { get; }
 
@@ -76,9 +77,11 @@ namespace Keeper2018
             }
         }
 
-        public BalanceOrTrafficViewModel(ShellPartsBinder shellPartsBinder, KeeperDb db)
+        public BalanceOrTrafficViewModel(ShellPartsBinder shellPartsBinder, KeeperDb db, 
+            BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
             _db = db;
+            _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             ShellPartsBinder = shellPartsBinder;
             ShellPartsBinder.PropertyChanged += ShellPartsBinder_PropertyChanged;
             Lines = new ObservableCollection<string>();
@@ -139,8 +142,8 @@ namespace Keeper2018
             IsPopupOpen = true;
         }
 
-        public List<string> PopupLabels { get; set; } = new List<string>();
-        public List<string> PopupValues { get; set; } = new List<string>();
+        public ObservableCollection<string> PopupLabels { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> PopupValues { get; set; } = new ObservableCollection<string>();
         private void InitializePopupContent(TransactionModel _tranModel)
         {
             PopupLabels.Clear();
@@ -156,6 +159,9 @@ namespace Keeper2018
                 PopupValues.Add(_tranModel.MyAccount.Name);
                 PopupValues.Add(_tranModel.MySecondAccount.Name);
             }
+
+            if (_tranModel.Operation == OperationType.Обмен)
+                PopupValues.Add($" ({_balanceDuringTransactionHinter.GetExchangeRate(_tranModel)})");
 
             PopupLabels.Add("Amount: ");
             var amount = _db.AmountInUsdWithRate(_tranModel.Timestamp, 
