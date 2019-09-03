@@ -92,10 +92,13 @@
             </MenuItem>
         </Menu>
 
-        <Button Name="ShowGskForm" Margin="2,0,6,0" Background="White" BorderBrush="White" ToolTip="ЖСК">
+        <Button Name="ShowSalaryForm" Margin="1,0,5,0" Background="White" BorderBrush="White" ToolTip="Salary">
+            <Image Source="../../Resources/salary1.png" Width="24" Height="24" />
+        </Button> 
+         <Button Name="ShowGskForm" Margin="2,0,0,0" Background="White" BorderBrush="White" ToolTip="ЖСК">
             <Image Source="../../Resources/gsk.png" Width="24" Height="24" />
         </Button> 
-        <Button Name="ShowCarForm" Margin="2,0,0,0" Background="White" BorderBrush="White" ToolTip="Cars">
+        <Button Name="ShowCarForm" Margin="6,0,0,0" Background="White" BorderBrush="White" ToolTip="Cars">
             <Image Source="../../Resources/car.png" Width="32" Height="32"  />
         </Button>  
         <Button Name="ShowPayCardsForm" Margin="8,-3,0,0" Background="White" BorderBrush="White" ToolTip="Cards" Opacity="0.7">

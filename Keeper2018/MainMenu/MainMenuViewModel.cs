@@ -20,13 +20,14 @@ namespace Keeper2018
         private readonly ExpenseByCategoriesViewModel _expenseByCategoriesViewModel;
         private readonly GskViewModel _gskViewModel;
         private readonly PayCardsViewModel _payCardsViewModel;
+        private readonly SalaryViewModel _salaryViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
-            GskViewModel gskViewModel, PayCardsViewModel payCardsViewModel)
+            GskViewModel gskViewModel, PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
@@ -41,6 +42,7 @@ namespace Keeper2018
             _expenseByCategoriesViewModel = expenseByCategoriesViewModel;
             _gskViewModel = gskViewModel;
             _payCardsViewModel = payCardsViewModel;
+            _salaryViewModel = salaryViewModel;
         }
 
         // for short-cuts
@@ -123,6 +125,12 @@ namespace Keeper2018
         {
             _expenseByCategoriesViewModel.Initialize();
             _windowManager.ShowDialog(_expenseByCategoriesViewModel);
+        }
+
+        public void ShowSalaryForm()
+        {
+            _salaryViewModel.Initialize();
+            _windowManager.ShowDialog(_salaryViewModel);
         }
 
         public void ShowGskForm()

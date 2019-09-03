@@ -63,6 +63,7 @@ namespace Keeper2018
             builder.RegisterType<SettingsViewModel>().SingleInstance();
             builder.RegisterType<CarsViewModel>().SingleInstance();
             builder.RegisterType<GskViewModel>().SingleInstance();
+            builder.RegisterType<SalaryViewModel>().SingleInstance();
             builder.RegisterType<CategoriesDataExtractor>().SingleInstance();
             builder.RegisterType<ExpenseByCategoriesViewModel>().SingleInstance();
 
