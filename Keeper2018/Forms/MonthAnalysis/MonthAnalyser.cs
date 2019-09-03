@@ -122,11 +122,12 @@ namespace Keeper2018
         {
             var realIncomes = _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                               && t.Timestamp >= startDate && t.Timestamp <= finishMoment).ToList();
-            var salary = 204;
-            if (realIncomes.FirstOrDefault(t => t.Tags.Contains(salary)) == null)
+            var salaryAccountId = 204;
+            if (realIncomes.FirstOrDefault(t => t.Tags.Contains(salaryAccountId)) == null)
             {
-                _monthAnalysisModel.IncomeForecastList.Add("зарплата 1300 usd");
-                _monthAnalysisModel.IncomeForecast += 1300;
+                var salaryInUsdValue = 1500;
+                _monthAnalysisModel.IncomeForecastList.Add($"зарплата {salaryInUsdValue} usd");
+                _monthAnalysisModel.IncomeForecast += salaryInUsdValue;
             }
 
             var depos = _db.AcMoDict[166];

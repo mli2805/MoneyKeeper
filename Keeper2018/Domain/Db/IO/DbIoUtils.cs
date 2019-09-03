@@ -20,6 +20,14 @@ namespace Keeper2018
             var dbPath = keeperInDropboxFullPath + @"\Backup";
             return Path.Combine(dbPath, filename);
         }
+
+        public static string GetReportFullPath(string filename)
+        {
+            var keeperInDropboxFullPath = GetKeeper2018InDropboxPath();
+            var dbPath = keeperInDropboxFullPath + @"\Reports";
+            return Path.Combine(dbPath, filename);
+        }
+
         public static string GetBackupPath()
         {
             var keeperInDropboxFullPath = GetKeeper2018InDropboxPath();

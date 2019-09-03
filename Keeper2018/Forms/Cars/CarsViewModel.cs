@@ -27,7 +27,7 @@ namespace Keeper2018
             }
         }
 
-        public Visibility IsLastCarVisibility => SelectedCar.AccountId == Cars.Last().AccountId 
+        public Visibility IsLastCarVisibility => SelectedCar.AccountId == Cars.Last().AccountId
             ? Visibility.Visible : Visibility.Collapsed;
 
         public CarsViewModel(KeeperDb db)
@@ -67,9 +67,10 @@ namespace Keeper2018
 
             try
             {
-                string filename = $@"c:\temp\{SelectedCar.Title}.pdf";
-                document.Save(filename);
-                Process.Start(filename);
+                string filename = $@"{SelectedCar.Title}.pdf";
+                var path = DbIoUtils.GetReportFullPath(filename);
+                document.Save(path);
+                Process.Start(path);
             }
             catch (Exception e)
             {
@@ -88,7 +89,7 @@ namespace Keeper2018
                     Comment = "Купил в Касселе, пригнал 146800 - 148400",
                     YearMileages = new [] { 156400, 166400,176400, 193400, 207400, 221400, 235400, 250400,},
                 },
-                
+
 
                 new Car{AccountId = 708, Title = "VW Passat B4 1,9 TDI", IssueYear = 1996, StateRegNumber = "9051 АР-7",
                     Start = new DateTime(2006,10,7), MileageStart = 277100,
