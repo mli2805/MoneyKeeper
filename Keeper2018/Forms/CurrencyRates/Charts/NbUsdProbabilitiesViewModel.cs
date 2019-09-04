@@ -46,26 +46,27 @@ namespace Keeper2018
         }
 
         public List<string> ColumnLabels = new List<string>();
-        private ColumnSeries CreateColumnSeries()
-        {
-            var result = new ColumnSeries(){FillColor = OxyColors.Blue, NegativeFillColor = OxyColors.Red, };
-            var startDate = new DateTime(2015, 1, 1);
-            for (int i = 0; i < 365; i++)
-            {
-                var day = startDate.AddDays(i);
-                var probability = 0.0;
+//        private ColumnSeries CreateColumnSeries()
+//        {
+//            var result = new ColumnSeries(){FillColor = OxyColors.Blue, NegativeFillColor = OxyColors.Red, };
+//            var startDate = new DateTime(2015, 1, 1);
+//            for (int i = 0; i < 365; i++)
+//            {
+//                var day = startDate.AddDays(i);
+//                var probability = 0.0;
+//
+//                var days = _rates.Where(r => r.Date.Month == day.Month && r.Date.Day == day.Day && r.Date.Year >= 2015).ToArray();
+//                foreach (var currencyRatesModel in days)
+//                {
+//                    var previousModel = _rates.First(r => r.Date == currencyRatesModel.Date.AddDays(-1));
+//                    probability = probability + Compare(currencyRatesModel, previousModel);
+//                }
+//                result.Items.Add(new ColumnItem((int)probability, i));
+//                ColumnLabels.Add(days.First().Date.ToString("dd/MM"));
+//            }
+//            return result;
+//        }
 
-                var days = _rates.Where(r => r.Date.Month == day.Month && r.Date.Day == day.Day && r.Date.Year >= 2015).ToArray();
-                foreach (var currencyRatesModel in days)
-                {
-                    var previousModel = _rates.First(r => r.Date == currencyRatesModel.Date.AddDays(-1));
-                    probability = probability + Compare(currencyRatesModel, previousModel);
-                }
-                result.Items.Add(new ColumnItem((int)probability, i));
-                ColumnLabels.Add(days.First().Date.ToString("dd/MM"));
-            }
-            return result;
-        }
         private StemSeries CreateStemSeries()
         {
             var result = new StemSeries(){Color = OxyColors.Blue, };

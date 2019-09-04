@@ -261,6 +261,7 @@
     </Compile>
     <Compile Include="Forms\PayCards\PayCardsViewModel.cs" />
     <Compile Include="Forms\PayCards\PayCardVm.cs" />
+    <Compile Include="Forms\Salary\SalaryLineModel.cs" />
     <Compile Include="Forms\Salary\SalaryView.xaml.cs">
       <DependentUpon>SalaryView.xaml</DependentUpon>
     </Compile>
