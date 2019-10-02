@@ -156,7 +156,7 @@ namespace Keeper2018
 
         public void OnceMore()
         {
-            var partialArticle = _db.SeekAccountById(MyAccNameSelectorVm.MyAccName.Id);
+            var partialArticle = _db.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
             ResultList.Add(new Tuple<decimal, AccountModel, string>(PartialAmount, partialArticle, PartialComment));
             ChangeAllProperties();
         }

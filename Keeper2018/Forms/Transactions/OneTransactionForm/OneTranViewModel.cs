@@ -102,7 +102,7 @@ namespace Keeper2018
         {
             TranInWork.Tags.Clear();
             if (TranInWork.MySecondAccount == null && (TranInWork.Operation == OperationType.Перенос || TranInWork.Operation == OperationType.Обмен))
-                TranInWork.MySecondAccount = _db.SeekAccountById(163);
+                TranInWork.MySecondAccount = _db.AcMoDict[163];
             if (TranInWork.CurrencyInReturn == null && TranInWork.Operation == OperationType.Обмен)
                 TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCode.BYN) ? CurrencyCode.USD : CurrencyCode.BYN;
         }
@@ -175,7 +175,7 @@ namespace Keeper2018
             if (!LeaveOneExternalAccountInTags()) return;
 
             Left = Left - 180;
-            _receiptViewModel.Initialize(TranInWork.Amount, TranInWork.Currency, _db.SeekAccountById(256));
+            _receiptViewModel.Initialize(TranInWork.Amount, TranInWork.Currency, _db.AcMoDict[256]);
             _receiptViewModel.PlaceIt(Top, Left + Width, Height);
 
             if (_windowManager.ShowDialog(_receiptViewModel) != true) return;

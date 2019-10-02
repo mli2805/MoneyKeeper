@@ -208,7 +208,7 @@ namespace Keeper2018
 
         private void ReactOnUsersAdd()
         {
-            var tag = _db.SeekAccountById(MyTagPickerVm.TagInWork.Id);
+            var tag = _db.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Add(tag);
 
             var associatedTag = _associationFinder.GetAssociation(TranInWork, tag);
@@ -222,7 +222,7 @@ namespace Keeper2018
 
         private void ReactOnAssociationAdd()
         {
-            var tag = _db.SeekAccountById(MyTagPickerVm.AssociatedTag.Id);
+            var tag = _db.AcMoDict[MyTagPickerVm.AssociatedTag.Id];
             TranInWork.Tags.Add(tag);
 
             MyTagPickerVm.AssociatedTag = null;
@@ -230,7 +230,7 @@ namespace Keeper2018
 
         private void ReactOnRemove()
         {
-            var tag = _db.SeekAccountById(MyTagPickerVm.TagInWork.Id);
+            var tag = _db.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Remove(tag);
             MyTagPickerVm.TagInWork = null;
         }
@@ -269,7 +269,7 @@ namespace Keeper2018
         {
             if (e.PropertyName == "MyAccName")
             {
-                TranInWork.MyAccount = _db.SeekAccountById(MyAccNameSelectorVm.MyAccName.Id);
+                TranInWork.MyAccount = _db.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
                 MyAmountInputControlVm.Currency =
                     _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
             }
@@ -278,7 +278,7 @@ namespace Keeper2018
         {
             if (e.PropertyName == "MyAccName")
             {
-                TranInWork.MySecondAccount = _db.SeekAccountById(MySecondAccNameSelectorVm.MyAccName.Id);
+                TranInWork.MySecondAccount = _db.AcMoDict[MySecondAccNameSelectorVm.MyAccName.Id];
                 MyAmountInReturnInputControlVm.Currency =
                     _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
             }

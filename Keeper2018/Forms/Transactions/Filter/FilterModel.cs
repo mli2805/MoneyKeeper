@@ -254,7 +254,7 @@ namespace Keeper2018
         {
             AvailableAccNames = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.SeekAccountById(158), new List<int>())
+                new AccName().PopulateFromAccount(_db.AcMoDict[158], new List<int>())
             };
             IsAccNamePosition12 = true;
             AmountEqualTo = true;

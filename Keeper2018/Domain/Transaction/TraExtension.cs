@@ -14,7 +14,7 @@ namespace Keeper2018
                 {
                     if (id == 189) break;
                     if (_expenseGroupsIds.Contains(id)) return id;
-                    var tag = db.SeekAccountById(id);
+                    var tag = db.AcMoDict[id];
                     if (tag.Owner == null) break;
                     id = tag.Owner.Id;
                 }
@@ -25,7 +25,7 @@ namespace Keeper2018
 
         public static int GetTransactionExpenseCategory(this Transaction tr, KeeperDb db)
         {
-            var _expenseGroupsIds = db.SeekAccountById(189).Children.Select(c=>c.Id).ToList();
+            var _expenseGroupsIds = db.AcMoDict[189].Children.Select(c=>c.Id).ToList();
             return tr.GetTransactionExpenseCategory(db, _expenseGroupsIds);
         }
 

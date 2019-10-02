@@ -16,7 +16,7 @@ namespace Keeper2018
 
         public List<CategoriesDataElement> GetExpenseGrouppedByCategoryAndMonth()
         {
-            _expenseGroupsIds = _db.SeekAccountById(189).Children.Select(c=>c.Id).ToList();
+            _expenseGroupsIds = _db.AcMoDict[189].Children.Select(c=>c.Id).ToList();
             var result = new List<CategoriesDataElement>();
 
             var classifiedTrans = GetClassifiedTrans().ToList();
