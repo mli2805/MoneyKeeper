@@ -23,6 +23,11 @@ namespace Keeper2018
             return timestamp > StartDate && timestamp < FinishMoment;
         }
 
+        public override string ToString()
+        {
+            return $"{StartDate} - {FinishMoment}";
+        }
+
     }
 
 

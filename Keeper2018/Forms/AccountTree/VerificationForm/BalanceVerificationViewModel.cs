@@ -59,7 +59,7 @@ namespace Keeper2018
             {
                 Amount = tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = GetCounterparty(tr).Name,
+                Counterparty = tr.GetCounterpartyName(_db),
                 OperationType = OperationType.Доход,
                 Text = tr.Comment,
             });
@@ -98,7 +98,7 @@ namespace Keeper2018
             {
                 Amount = -tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = GetCounterparty(tr).Name,
+                Counterparty = tr.GetCounterpartyName(_db),
                 OperationType = OperationType.Расход,
                 Text = tr.Comment,
             };
@@ -130,18 +130,6 @@ namespace Keeper2018
                 Text = tr.Comment,
             });
             _total = _total + amount;
-        }
-
-        private AccountModel GetCounterparty(Transaction tr)
-        {
-            AccountModel counterparty = new AccountModel("контрагент не найден");
-            foreach (var trTag in tr.Tags)
-            {
-                var tag = _db.AcMoDict[trTag];
-                if (tag.Is(157)) // внешние
-                    counterparty = tag;
-            }
-            return counterparty;
         }
 
         public void CheckLine()

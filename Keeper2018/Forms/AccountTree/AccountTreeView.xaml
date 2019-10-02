@@ -44,6 +44,9 @@
                     </MenuItem>
                     <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsDeposit}">
+                    </MenuItem> 
+                    <MenuItem Header="Платежи по категориям" cal:Message.Attach="ShowExpensesOnAccount" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsMyAccount}">
                     </MenuItem>
                     <MenuItem Header="Для сверки остатка" cal:Message.Attach="ShowVerificationForm" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsMyAccount}">

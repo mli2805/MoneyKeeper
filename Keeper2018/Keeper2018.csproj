@@ -111,6 +111,13 @@
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Car\Car.cs" />
+    <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseCollection.cs" />
+    <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseLine.cs" />
+    <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpensesOnAccountView.xaml.cs">
+      <DependentUpon>ExpensesOnAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpensesOnAccountViewModel.cs" />
+    <Compile Include="Forms\AccountTree\ExpensesOnAccount\TranLine.cs" />
     <Compile Include="Forms\AccountTree\OneCardView.xaml.cs">
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
@@ -194,6 +201,7 @@
     <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlModel.cs" />
     <Compile Include="Forms\Charts\Expenses\Domain\YearMonth.cs" />
     <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PointsPeriodConvertor.cs" />
+    <Compile Include="Domain\Transaction\TraExtension.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\NbUsdProbabilitiesView.xaml.cs">
@@ -446,6 +454,10 @@
     <Compile Include="Forms\Transactions\TransactionsViewModel.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
     <Page Include="Forms\AccountTree\DepositReport\DepositReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\ExpensesOnAccount\ExpensesOnAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -741,5 +753,6 @@
   <ItemGroup>
     <Resource Include="Resources\salary1.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

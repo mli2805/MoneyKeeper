@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Caliburn.Micro;
+using Keeper2018.ExpensesOnAccount;
 using Keeper2018.PayCards;
 
 namespace Keeper2018
@@ -27,6 +28,7 @@ namespace Keeper2018
             builder.RegisterType<OneDepositViewModel>().SingleInstance();
             builder.RegisterType<OneCardViewModel>().SingleInstance();
             builder.RegisterType<DepositReportViewModel>().SingleInstance();
+            builder.RegisterType<ExpensesOnAccountViewModel>().SingleInstance();
             builder.RegisterType<BalanceVerificationViewModel>().SingleInstance();
             builder.RegisterType<PayCardsViewModel>().SingleInstance();
 

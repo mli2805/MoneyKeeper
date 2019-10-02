@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using Caliburn.Micro;
+using Keeper2018.ExpensesOnAccount;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using PdfSharp.Pdf;
@@ -11,6 +12,7 @@ namespace Keeper2018
     {
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
+        private readonly ExpensesOnAccountViewModel _expensesOnAccountViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
         private readonly BalanceVerificationViewModel _balanceVerificationViewModel;
         public IWindowManager WindowManager { get; }
@@ -22,10 +24,12 @@ namespace Keeper2018
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, 
+            ExpensesOnAccountViewModel expensesOnAccountViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
+            _expensesOnAccountViewModel = expensesOnAccountViewModel;
             _depositReportViewModel = depositReportViewModel;
             _balanceVerificationViewModel = balanceVerificationViewModel;
             WindowManager = windowManager;
@@ -104,6 +108,12 @@ namespace Keeper2018
         {
             _balanceVerificationViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
             WindowManager.ShowDialog(_balanceVerificationViewModel);
+        }
+
+        public void ShowExpensesOnAccount()
+        {
+            _expensesOnAccountViewModel.Initialize(ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
+            WindowManager.ShowDialog(_expensesOnAccountViewModel);
         }
 
         public void ShowTagInDetails()

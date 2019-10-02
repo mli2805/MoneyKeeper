@@ -41,7 +41,7 @@ namespace Keeper2018
                 yield return new ClassifiedTran()
                 {
                     Timestamp = tr.Timestamp,
-                    CategoryId = GetTransactionExpenseCategory(tr),
+                    CategoryId = tr.GetTransactionExpenseCategory(_db, _expenseGroupsIds),
                     AmountInUsd = tr.Currency == CurrencyCode.USD 
                         ? tr.Amount 
                         : _db.AmountInUsd(tr.Timestamp, tr.Currency, tr.Amount),
@@ -49,24 +49,5 @@ namespace Keeper2018
             }
         }
 
-        private int GetTransactionExpenseCategory(Transaction tr)
-        {
-            foreach (var tagId in tr.Tags)
-            {
-                var id = tagId;
-                while (true)
-                {
-                    if (id == 189) break;
-                    if (_expenseGroupsIds.Contains(id)) return id;
-                    var tag = _db.SeekAccountById(id);
-                    if (tag.Owner == null) break;
-                    id = tag.Owner.Id;
-                }
-            }
-            // never comes here, every expense transaction should have expense category
-            return -1;
-        }
-
-        
     }
 }
