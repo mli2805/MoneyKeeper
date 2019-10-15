@@ -5,12 +5,6 @@ namespace Keeper2018
 {
     public static class KeeperDbExt
     {
-        //TODO get rid of this: = db.AcMoDict[id];
-//        public static AccountModel SeekAccountById(this KeeperDb db, int id)
-//        {
-//            return db.AcMoDict.FirstOrDefault(p => p.Value.Id.Equals(id)).Value;
-//        }
-
         public static void FillInAccountTree(this KeeperDb db)
         {
             db.AccountsTree = new ObservableCollection<AccountModel>();
