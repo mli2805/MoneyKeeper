@@ -3,19 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DataContext="{d:DesignData FuelViewModel}">
+        mc:Ignorable="d" d:DataContext="{d:DesignData FuelViewModel}" 
+        WindowStartupLocation="CenterScreen" SizeToContent="Width" >
     <DockPanel>
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Total}" Margin="5" Background="Azure" FontWeight="Bold"></TextBlock>
         <ListView ItemsSource="{Binding Rows}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Timestamp" Width="140" DisplayMemberBinding="{Binding Timestamp, StringFormat='{}{0:dd/MM/yyyy}'}"/>
-                    <GridViewColumn Header="Volume" Width="100" DisplayMemberBinding="{Binding Volume}"/>
-                    <GridViewColumn Header="FuelType" Width="100" DisplayMemberBinding="{Binding FuelType}"/>
-                    <GridViewColumn Header="Amount" Width="100" DisplayMemberBinding="{Binding Amount}"/>
-                    <GridViewColumn Header="Currency" Width="60" DisplayMemberBinding="{Binding Currency}"/>
-                    <GridViewColumn Header="Comment" Width="260" DisplayMemberBinding="{Binding Comment}"/>
-                    <GridViewColumn Header="OneLitrePrice" Width="100" DisplayMemberBinding="{Binding OneLitrePrice}"/>
-                    <GridViewColumn Header="OneLitreInUsd" Width="100" DisplayMemberBinding="{Binding OneLitreInUsd, StringFormat='{}{0:0.00}'}"/>
+                    <GridViewColumn Header="дата покупки" Width="140" DisplayMemberBinding="{Binding Timestamp, StringFormat='{}{0:dd/MM/yyyy}'}"/>
+                    <GridViewColumn Header="объём топлива" Width="100" DisplayMemberBinding="{Binding Volume}"/>
+                    <GridViewColumn Header="тип топлива" Width="100" DisplayMemberBinding="{Binding FuelType}"/>
+                    <GridViewColumn Header="стоимость" Width="100" DisplayMemberBinding="{Binding Amount}"/>
+                    <GridViewColumn Header="валюта" Width="60" DisplayMemberBinding="{Binding Currency}"/>
+                    <GridViewColumn Header="коментарий" Width="260" DisplayMemberBinding="{Binding Comment}"/>
+                    <GridViewColumn Header="цена за литр" Width="100" DisplayMemberBinding="{Binding OneLitrePrice, StringFormat='{}{0:0.00}'}"/>
+                    <GridViewColumn Header="за литр в долл" Width="100" DisplayMemberBinding="{Binding OneLitreInUsd, StringFormat='{}{0:0.00}'}"/>
                 </GridView>
             </ListView.View>
         </ListView>

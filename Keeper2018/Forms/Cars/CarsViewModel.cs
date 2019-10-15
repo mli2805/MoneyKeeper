@@ -96,7 +96,7 @@ namespace Keeper2018
         {
             if (comment.StartsWith("Дт Евро5"))
                 comment = comment.Substring(8);
-            var resultString = Regex.Match(comment, @"\d+").Value;
+            var resultString = Regex.Match(comment, "[+-]?([0-9]*[,])?[0-9]+").Value;
             if (string.IsNullOrEmpty(resultString))
                 return 0;
             var result = double.TryParse(resultString, out double volume);
