@@ -111,6 +111,8 @@
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Domain\Car\Car.cs" />
+    <Compile Include="Domain\Car\Fuelling.cs" />
+    <Compile Include="Domain\Car\FuelType.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseCollection.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseLine.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpensesOnAccountView.xaml.cs">
@@ -173,6 +175,10 @@
     </Compile>
     <Compile Include="Forms\Cars\CarsViewModel.cs" />
     <Compile Include="Forms\Cars\CarYearVm.cs" />
+    <Compile Include="Forms\Cars\FuelView.xaml.cs">
+      <DependentUpon>FuelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Cars\FuelViewModel.cs" />
     <Compile Include="Forms\Charts\BalanceAndSaldo\BalanceAndSaldoModel.cs" />
     <Compile Include="Forms\Charts\BalanceAndSaldo\BalancesAndSaldosView.xaml.cs">
       <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>
@@ -482,6 +488,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Cars\CarsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Cars\FuelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

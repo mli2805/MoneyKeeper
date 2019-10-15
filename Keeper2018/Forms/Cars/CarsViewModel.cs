@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using Caliburn.Micro;
 
@@ -10,6 +11,8 @@ namespace Keeper2018
     public class CarsViewModel : Screen
     {
         private readonly KeeperDb _db;
+        private readonly IWindowManager _windowManager;
+        private readonly FuelViewModel _fuelViewModel;
 
         public List<CarVm> Cars { get; set; }
 
@@ -30,9 +33,11 @@ namespace Keeper2018
         public Visibility IsLastCarVisibility => SelectedCar.AccountId == Cars.Last().AccountId
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public CarsViewModel(KeeperDb db)
+        public CarsViewModel(KeeperDb db, IWindowManager windowManager, FuelViewModel fuelViewModel)
         {
             _db = db;
+            _windowManager = windowManager;
+            _fuelViewModel = fuelViewModel;
         }
 
         public void Initialize()
@@ -57,6 +62,52 @@ namespace Keeper2018
         public void AddNewCar()
         {
 
+        }
+
+        public void Fuelling()
+        {
+            var trs = _db.Bin.Transactions.Values.Where(t => t.Tags.Contains(718));
+            _db.Bin.Fuellings = new List<Fuelling>();
+            foreach (var tr in trs)
+            {
+                var volume = GetVolumeFromComment(tr.Comment);
+                var oneLitrePrice = Math.Abs(volume) < 0.01 ? 0 : tr.Amount / (decimal)volume;
+                var fuelling = new Fuelling()
+                {
+                    Timestamp = tr.Timestamp,
+                    Amount = tr.Amount,
+                    Currency = tr.Currency,
+                    Volume = volume,
+                    FuelType = GetFuelTypeFromComment(tr.Comment),
+                    Comment = tr.Comment,
+
+                    OneLitrePrice = oneLitrePrice,
+                    OneLitreInUsd = _db.AmountInUsd(tr.Timestamp, tr.Currency, oneLitrePrice),
+                };
+                _db.Bin.Fuellings.Add(fuelling);
+            }
+            Console.WriteLine($@"{_db.Bin.Fuellings.Count} заправок, {_db.Bin.Fuellings.Sum(f=>f.Volume)} литров");
+
+            _fuelViewModel.Rows = _db.Bin.Fuellings;
+            _windowManager.ShowWindow(_fuelViewModel);
+        }
+
+        private double GetVolumeFromComment(string comment)
+        {
+            if (comment.StartsWith("Дт Евро5"))
+                comment = comment.Substring(8);
+            var resultString = Regex.Match(comment, @"\d+").Value;
+            if (string.IsNullOrEmpty(resultString))
+                return 0;
+            var result = double.TryParse(resultString, out double volume);
+            return result ? volume : 0;
+        }
+
+        private FuelType GetFuelTypeFromComment(string comment)
+        {
+            if (comment.Contains("керосин"))
+                return FuelType.Керосин;
+            return FuelType.ДтЕвро5;
         }
 
         public void ShowCarReport()
