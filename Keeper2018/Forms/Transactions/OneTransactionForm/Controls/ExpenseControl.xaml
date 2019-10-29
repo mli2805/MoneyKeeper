@@ -18,6 +18,7 @@
 
             <keeper2018:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="2,10,2,0"/>
 
+            <Button Width="70" Content="Fuelling" Margin="150,0,0,0"/>
             <DockPanel Margin="0,40,0,2">
                 <keeper2018:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" />
             </DockPanel>
