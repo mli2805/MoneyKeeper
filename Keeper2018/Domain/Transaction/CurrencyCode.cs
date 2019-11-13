@@ -6,6 +6,8 @@
         BYR = 2,
         EUR = 3,
         RUB = 4,
-        BYN = 5
+        BYN = 5,
+        EGP = 6,
+
     };
 }
