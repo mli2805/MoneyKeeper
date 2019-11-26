@@ -144,46 +144,46 @@ namespace Keeper2018
 
         public ObservableCollection<string> PopupLabels { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> PopupValues { get; set; } = new ObservableCollection<string>();
-        private void InitializePopupContent(TransactionModel _tranModel)
+        private void InitializePopupContent(TransactionModel tranModel)
         {
             PopupLabels.Clear();
             PopupValues.Clear();
 
             PopupLabels.Add("Timestamp: ");
-            PopupValues.Add(_tranModel.Timestamp.ToString("dd-MM-yyyy HH:mm"));
+            PopupValues.Add(tranModel.Timestamp.ToString("dd-MM-yyyy HH:mm"));
 
-            if (_tranModel.Operation == OperationType.Перенос || _tranModel.Operation == OperationType.Обмен)
+            if (tranModel.Operation == OperationType.Перенос || tranModel.Operation == OperationType.Обмен)
             {
-                PopupLabels.Add($"{_tranModel.Operation} с:");
+                PopupLabels.Add($"{tranModel.Operation} с:");
                 PopupLabels.Add(" на:");
-                PopupValues.Add(_tranModel.MyAccount.Name);
-                PopupValues.Add(_tranModel.MySecondAccount.Name);
+                PopupValues.Add(tranModel.MyAccount.Name);
+                PopupValues.Add(tranModel.MySecondAccount.Name);
             }
 
-            if (_tranModel.Operation == OperationType.Обмен)
-                PopupValues.Add($" ({_balanceDuringTransactionHinter.GetExchangeRate(_tranModel)})");
+            if (tranModel.Operation == OperationType.Обмен)
+                PopupValues.Add($" ({_balanceDuringTransactionHinter.GetExchangeRate(tranModel)})");
 
             PopupLabels.Add("Amount: ");
-            var amount = _db.AmountInUsdWithRate(_tranModel.Timestamp, 
-                _tranModel.Currency, _tranModel.Amount, out decimal rate);
+            var amount = _db.AmountInUsdWithRate(tranModel.Timestamp, 
+                tranModel.Currency, tranModel.Amount, out decimal rate);
 
-            if (_tranModel.Currency != CurrencyCode.USD)
+            if (tranModel.Currency != CurrencyCode.USD)
                 amount += $" (rate {rate:0.####})";
             PopupValues.Add(amount);
 
-            if (_tranModel.Operation == OperationType.Обмен)
+            if (tranModel.Operation == OperationType.Обмен)
             {
                 PopupLabels.Add("Amount in return: ");
-                var amountInReturn = _db.AmountInUsdWithRate(_tranModel.Timestamp, 
-                    _tranModel.CurrencyInReturn, _tranModel.AmountInReturn, out decimal rateInReturn);
+                var amountInReturn = _db.AmountInUsdWithRate(tranModel.Timestamp, 
+                    tranModel.CurrencyInReturn, tranModel.AmountInReturn, out decimal rateInReturn);
 
-                if (_tranModel.CurrencyInReturn != CurrencyCode.USD)
+                if (tranModel.CurrencyInReturn != CurrencyCode.USD)
                     amountInReturn += $" (rate {rateInReturn:0.####})";
                 PopupValues.Add(amountInReturn);
             }
 
             var flag = true;
-            foreach (var accountModel in _tranModel.Tags)
+            foreach (var accountModel in tranModel.Tags)
             {
                 if (flag)
                 {
@@ -199,7 +199,7 @@ namespace Keeper2018
 
             
             PopupLabels.Add("Comment: ");
-            PopupValues.Add($"{_tranModel.Comment}");
+            PopupValues.Add($"{tranModel.Comment}");
         }
 
     }

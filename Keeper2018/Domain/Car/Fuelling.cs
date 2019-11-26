@@ -3,7 +3,7 @@
 namespace Keeper2018
 {
     [Serializable]
-    public class Fuelling
+    public class Fuelling : ICloneable
     {
         public DateTime Timestamp { get; set; }
         public double Volume { get; set; }
@@ -12,7 +12,13 @@ namespace Keeper2018
         public CurrencyCode Currency { get; set; }
         public string Comment { get; set; }
 
+        public int CarAccountId { get; set; }
+
         public decimal OneLitrePrice { get; set; }
         public decimal OneLitreInUsd { get; set; }
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }

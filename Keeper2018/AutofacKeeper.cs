@@ -56,6 +56,7 @@ namespace Keeper2018
             builder.RegisterType<FilterViewModel>().SingleInstance();
             builder.RegisterType<AskReceiptDeletionViewModel>().SingleInstance();
 
+            builder.RegisterType<FuellingInputViewModel>().SingleInstance();
             builder.RegisterType<TranEditExecutor>().SingleInstance();
             builder.RegisterType<TranMoveExecutor>().SingleInstance();
             builder.RegisterType<TranSelectExecutor>().SingleInstance();

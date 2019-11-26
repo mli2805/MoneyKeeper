@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,8 @@ namespace Keeper2018
         private readonly KeeperDb _db;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         private readonly AssociationFinder _associationFinder;
+        private readonly IWindowManager _windowManager;
+        private readonly FuellingInputViewModel _fuellingInputViewModel;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         private AmountInputControlVm _myAmountInputControlVm;
@@ -130,11 +133,14 @@ namespace Keeper2018
         }
 
         public UniversalControlVm(KeeperDb db, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
-                 AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder)
+                 AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder,
+                 IWindowManager windowManager, FuellingInputViewModel fuellingInputViewModel)
         {
             _db = db;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             _associationFinder = associationFinder;
+            _windowManager = windowManager;
+            _fuellingInputViewModel = fuellingInputViewModel;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
         }
 
@@ -316,6 +322,37 @@ namespace Keeper2018
             var result = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
             if (Application.Current.Dispatcher != null)
                 Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
+        }
+
+        public void InputFuelling()
+        {
+            _fuellingInputViewModel.Initialize(CreateNewFuelling());
+            var result = _windowManager.ShowDialog(_fuellingInputViewModel);
+            if (result == true)
+            {
+                ApplyInput(_fuellingInputViewModel.Vm);
+            }
+        }
+
+        private Fuelling CreateNewFuelling()
+        {
+            return new Fuelling()
+            {
+                CarAccountId = _db.Bin.Cars.Last().AccountId,
+                Timestamp = TranInWork.Timestamp,
+                Volume = 30,
+                FuelType = FuelType.ДтЕвро5,
+                Amount = TranInWork.Amount,
+                Currency = TranInWork.Currency,
+                Comment = TranInWork.Comment,
+            };
+        }
+
+        private void ApplyInput(Fuelling vm)
+        {
+            TranInWork.Timestamp = vm.Timestamp;
+            TranInWork.Amount = vm.Amount;
+            TranInWork.Currency = vm.Currency;
         }
 
     }

@@ -9,21 +9,24 @@ namespace Keeper2018
         #region Buttons Collections
         private static readonly Dictionary<string, int> ButtonsForExpense =
             new Dictionary<string, int> { ["мк"] = 162, ["юк"] = 163, ["шка"] = 167,
-                ["бум"] = 732, ["юбу"] = 735, ["джо"] = 781, ["каш"] = 776 };
+                ["бум"] = 732, ["юбу"] = 735, ["джо"] = 781, ["каш"] = 776, ["шоп"] = 785, };
 
         private static readonly Dictionary<string, int> ButtonsForExpenseTags =
             new Dictionary<string, int> { ["pro"] = 249, ["евр"] = 523, ["вит"] = 744,  ["рад"] = 532, 
                 ["ома"] = 291, ["маг"] = 252, ["еда"] = 257, ["лек"] = 199, ["стр"] = 589, ["др"] = 256, };
 
         private static readonly Dictionary<string, int> ButtonsForIncome =
-            new Dictionary<string, int> { ["шкф"] = 167, ["юк"] = 163, ["бум"] = 732, ["юбу"] = 735, ["джо"] = 781, ["каш"] = 776 };
+            new Dictionary<string, int> { ["шкф"] = 167, ["юк"] = 163, ["бум"] = 732, ["юбу"] = 735, 
+                ["джо"] = 781, ["каш"] = 776, ["шоп"] = 785,
+            };
 
         private static readonly Dictionary<string, int> ButtonsForIncomeTags =
             new Dictionary<string, int> { ["иит"] = 443, ["биб"] = 339, ["газ"] = 401, ["%%"] = 208, ["бэк"] = 701};
 
         private static readonly Dictionary<string, int> ButtonsForTransfer =
             new Dictionary<string, int> { ["мк"] = 162, ["юк"] = 163, ["джо"] = 781,
-                ["алф"] = 699, ["шкф"] = 167, ["бум"] = 732, ["юбу"] = 735, ["каш"] = 776 };
+                ["алф"] = 699, ["шкф"] = 167, ["бум"] = 732, ["юбу"] = 735, ["каш"] = 776, ["шоп"] = 785,
+            };
 
         private static readonly Dictionary<string, int> ButtonsForTransferTags = new Dictionary<string, int>();
 

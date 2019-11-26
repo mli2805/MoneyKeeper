@@ -385,6 +385,10 @@
       <DependentUpon>DatePickerWithTriangles.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\OneTransactionForm\DatePickerWithTrianglesControl\DatePickerWithTrianglesVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\FuellingInput\FuellingInputView.xaml.cs">
+      <DependentUpon>FuellingInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\FuellingInput\FuellingInputViewModel.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml.cs">
       <DependentUpon>OneTranView.xaml</DependentUpon>
     </Compile>
@@ -638,6 +642,10 @@
     <Page Include="Forms\Transactions\OneTransactionForm\DatePickerWithTrianglesControl\DatePickerWithTriangles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\FuellingInput\FuellingInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml">
       <Generator>MSBuild:Compile</Generator>
