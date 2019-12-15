@@ -41,6 +41,9 @@
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
@@ -389,6 +392,7 @@
       <DependentUpon>FuellingInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\OneTransactionForm\FuellingInput\FuellingInputViewModel.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\FuellingInput\FuellingInputVm.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml.cs">
       <DependentUpon>OneTranView.xaml</DependentUpon>
     </Compile>

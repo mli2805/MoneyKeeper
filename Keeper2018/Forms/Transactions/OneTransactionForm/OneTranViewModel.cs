@@ -26,6 +26,7 @@ namespace Keeper2018
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _db;
         private readonly ReceiptViewModel _receiptViewModel;
+        private readonly FuellingInputViewModel _fuellingInputViewModel;
 
         private string _caption;
         private TransactionModel _tranInWork;
@@ -40,6 +41,7 @@ namespace Keeper2018
             }
         }
         public List<Tuple<decimal, AccountModel, string>> ReceiptList { get; set; }
+        public TransactionModel FuellingTran { get; set; }
 
         public bool IsAddMode { get; set; }
         public bool IsOneMore { get; set; }
@@ -51,13 +53,15 @@ namespace Keeper2018
 
         public OperationTypeViewModel OperationTypeViewModel { get; } = new OperationTypeViewModel();
 
-        public OneTranViewModel(IWindowManager windowManager, KeeperDb db, ReceiptViewModel receiptViewModel,
+        public OneTranViewModel(IWindowManager windowManager, KeeperDb db,
+            ReceiptViewModel receiptViewModel, FuellingInputViewModel fuellingInputViewModel,
             UniversalControlVm myIncomeControlVm, UniversalControlVm myExpenseControlVm,
             UniversalControlVm myTransferControlVm, UniversalControlVm myExchangeControlVm)
         {
             _windowManager = windowManager;
             _db = db;
             _receiptViewModel = receiptViewModel;
+            _fuellingInputViewModel = fuellingInputViewModel;
 
             MyIncomeControlVm = myIncomeControlVm;
             MyExpenseControlVm = myExpenseControlVm;
@@ -78,6 +82,7 @@ namespace Keeper2018
         public void Init(TransactionModel tran, bool isAddMode)
         {
             ReceiptList = null;
+            FuellingTran = null;
             IsAddMode = isAddMode;
             IsOneMore = false;
             _caption = isAddMode ? "Добавить" : "Изменить";
@@ -182,6 +187,48 @@ namespace Keeper2018
 
             ReceiptList = _receiptViewModel.ResultList;
             Save();
+        }
+
+        public void Fuelling()
+        {
+            Left = Left - 180;
+            _fuellingInputViewModel.Initialize(CreateNewFuelling());
+            _fuellingInputViewModel.PlaceIt(Top, Left + Width, Height);
+
+            if (_windowManager.ShowDialog(_fuellingInputViewModel) != true) return;
+            CreateFuellingTran(_fuellingInputViewModel.Vm);
+
+            TryClose(true);
+        }
+
+        private Fuelling CreateNewFuelling()
+        {
+            return new Fuelling()
+            {
+                CarAccountId = _db.Bin.Cars.Last().AccountId,
+                Timestamp = TranInWork.Timestamp,
+                Volume = 30,
+                FuelType = FuelType.ДтЕвро5,
+                Amount = TranInWork.Amount,
+                Currency = TranInWork.Currency,
+                Comment = TranInWork.Comment,
+            };
+        }
+
+        private void CreateFuellingTran(FuellingInputVm vm)
+        {
+            var carAccount = _db.AcMoDict[vm.CarAccountId];
+            var account = carAccount.Children.First(c => c.Name.Contains("авто топливо"));
+            var azs = _db.AcMoDict[272];
+            FuellingTran = new TransactionModel()
+            {
+                Operation = OperationType.Расход,
+                Timestamp = vm.Timestamp,
+                Amount = vm.Amount,
+                Currency = vm.Currency,
+                Tags = new List<AccountModel>() { account, azs, },
+                Comment = $"{vm.Volume} л {vm.FuelType} ({vm.Comment})",
+            };
         }
     }
 }

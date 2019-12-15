@@ -3,25 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        Height="{Binding Height, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" d:DataContext="{d:DesignData FuellingInputViewModel}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
     <StackPanel Margin="10">
         <ComboBox Margin="5" ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar}"/>
         <DatePicker Margin="5" DisplayDate="{Binding Vm.Timestamp}" SelectedDate="{Binding Vm.Timestamp}" ></DatePicker>
-        <TextBlock Margin="5">Объем топлива:</TextBlock>
+        <TextBlock Margin="5">Топливо</TextBlock>
         <StackPanel Orientation="Horizontal">
-            <TextBox Margin="5" Width="120" Text="{Binding Vm.Volume}" TextAlignment="Right"/>
-            <ComboBox Margin="5" Width="80" ItemsSource="{Binding Fuels}" SelectedItem="{Binding Vm.FuelType}"/>
+            <StackPanel>
+                <TextBlock Margin="5">Тип:</TextBlock>
+                <ComboBox Margin="5" Width="120" ItemsSource="{Binding Fuels}" SelectedItem="{Binding Vm.FuelType}"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Margin="5">Объем, л:</TextBlock>
+                <TextBox Margin="5" Width="80" Height="22" TextAlignment="Right"
+                         Text="{Binding Vm.Volume, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}"/>
+            </StackPanel>
         </StackPanel>
         <TextBlock Margin="5">Стоимость:</TextBlock>
         <StackPanel Orientation="Horizontal">
-            <TextBox Margin="5" Width="120" Text="{Binding Vm.Amount}" TextAlignment="Right"/>
+            <TextBox Margin="5" Width="120" TextAlignment="Right"
+                     Text="{Binding Vm.Amount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}"/>
             <ComboBox Margin="5" Width="80" ItemsSource="{Binding Currencies}" SelectedItem="{Binding Vm.Currency}"/>
         </StackPanel>
         <TextBlock Margin="5">Примечание:</TextBlock>
         <TextBox Margin="5" Text="{Binding Vm.Comment}"></TextBox>
 
-        <TextBlock Margin="5">цена за литр:</TextBlock>
-        <TextBlock Margin="5">цена за литр в долларах:</TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5,5,0,5">цена за литр:</TextBlock>
+            <TextBlock Margin="5" Text="{Binding Vm.OneLitrePrice, StringFormat={}{0:0.00}}"/>
+            <TextBlock Margin="0,5" Text="{Binding Vm.CurrencyName}"/>
+            <TextBlock Margin="15,5,5,5" Text="{Binding Vm.OneLitreInUsd, StringFormat={}{0:0.00}}"/>
+            <TextBlock Margin="0,5" Text="usd"/>
+        </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,15,5,5">
             <Button Name="Save" Margin="5" Width="90">Save</Button>
             <Button Name="Cancel" Margin="5" Width="90">Cancel</Button>

@@ -53,6 +53,12 @@ namespace Keeper2018
 
             if (_oneTranViewModel.ReceiptList != null)
                 AddOneTranAndReceipt(_oneTranViewModel);
+            else if (_oneTranViewModel.FuellingTran != null)
+            {
+                var transactionModel = _oneTranViewModel.FuellingTran.Clone();
+                transactionModel.MyAccount = _oneTranViewModel.TranInWork.MyAccount;
+                AddOneTran(transactionModel);
+            }
             else
                 AddOneTran(_oneTranViewModel.GetTran().Clone());
 
@@ -95,6 +101,7 @@ namespace Keeper2018
                 AddOneTran(tran);
             }
         }
+
         private TransactionModel PrepareTranForAdding()
         {
             var tranForAdding = _model.SelectedTranWrappedForDatagrid.Tran.Clone();

@@ -78,18 +78,20 @@ namespace Keeper2018
 
         public void ShowTransactionsForm()
         {
-            if (_transactionsViewModel.IsFirstLaunch)
-                _transactionsViewModel.Initialize();
-            else
-                try
-                {
+            try
+            {
+                if (_transactionsViewModel.IsFirstLaunch)
+                    _transactionsViewModel.Initialize();
+                else
                     _transactionsViewModel.ReInitializeOnlyAccountLists();
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("_transactionsViewModel.ReInitializeOnlyAccountLists(); \n  " + e.Message);
-                }
-            _windowManager.ShowDialog(_transactionsViewModel);
+
+                _windowManager.ShowDialog(_transactionsViewModel);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
 
             if (_transactionsViewModel.Model.IsCollectionChanged)
             {

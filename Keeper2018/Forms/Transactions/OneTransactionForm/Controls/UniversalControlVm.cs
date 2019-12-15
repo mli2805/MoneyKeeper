@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,8 +23,6 @@ namespace Keeper2018
         private readonly KeeperDb _db;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         private readonly AssociationFinder _associationFinder;
-        private readonly IWindowManager _windowManager;
-        private readonly FuellingInputViewModel _fuellingInputViewModel;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         private AmountInputControlVm _myAmountInputControlVm;
@@ -119,28 +116,13 @@ namespace Keeper2018
         public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
         public string ExchangeRate => _balanceDuringTransactionHinter.GetExchangeRate(TranInWork);
 
-        private bool _receiptButtonPressed;
-
-        public bool ReceiptButtonPressed
-        {
-            get { return _receiptButtonPressed; }
-            set
-            {
-                if (value == _receiptButtonPressed) return;
-                _receiptButtonPressed = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public UniversalControlVm(KeeperDb db, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
-                 AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder,
-                 IWindowManager windowManager, FuellingInputViewModel fuellingInputViewModel)
+                 AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder)
         {
             _db = db;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             _associationFinder = associationFinder;
-            _windowManager = windowManager;
-            _fuellingInputViewModel = fuellingInputViewModel;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
         }
 
@@ -324,36 +306,46 @@ namespace Keeper2018
                 Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
         }
 
-        public void InputFuelling()
-        {
-            _fuellingInputViewModel.Initialize(CreateNewFuelling());
-            var result = _windowManager.ShowDialog(_fuellingInputViewModel);
-            if (result == true)
-            {
-                ApplyInput(_fuellingInputViewModel.Vm);
-            }
-        }
-
-        private Fuelling CreateNewFuelling()
-        {
-            return new Fuelling()
-            {
-                CarAccountId = _db.Bin.Cars.Last().AccountId,
-                Timestamp = TranInWork.Timestamp,
-                Volume = 30,
-                FuelType = FuelType.ДтЕвро5,
-                Amount = TranInWork.Amount,
-                Currency = TranInWork.Currency,
-                Comment = TranInWork.Comment,
-            };
-        }
-
-        private void ApplyInput(Fuelling vm)
-        {
-            TranInWork.Timestamp = vm.Timestamp;
-            TranInWork.Amount = vm.Amount;
-            TranInWork.Currency = vm.Currency;
-        }
+//        public void InputFuelling()
+//        {
+//            _fuellingInputViewModel.Initialize(CreateNewFuelling());
+//            var result = _windowManager.ShowDialog(_fuellingInputViewModel);
+//            if (result == true)
+//            {
+//                ApplyInput(_fuellingInputViewModel.Vm);
+//            }
+//        }
+//
+//        private Fuelling CreateNewFuelling()
+//        {
+//            return new Fuelling()
+//            {
+//                CarAccountId = _db.Bin.Cars.Last().AccountId,
+//                Timestamp = TranInWork.Timestamp,
+//                Volume = 30,
+//                FuelType = FuelType.ДтЕвро5,
+//                Amount = TranInWork.Amount,
+//                Currency = TranInWork.Currency,
+//                Comment = TranInWork.Comment,
+//            };
+//        }
+//
+//        private void ApplyInput(FuellingInputVm vm)
+//        {
+//            TranInWork.Timestamp = vm.Timestamp;
+//            TranInWork.Amount = vm.Amount;
+//            TranInWork.Currency = vm.Currency;
+//
+//            var carAccount = _db.AcMoDict[vm.CarAccountId];
+//            var account = carAccount.Children.First(c => c.Name.Contains("авто топливо"));
+//            TranInWork.Tags = new List<AccountModel>()
+//            {
+//                account, 
+//                _db.AcMoDict[272], // АЗС
+//            };
+//
+//
+//        }
 
     }
 }
