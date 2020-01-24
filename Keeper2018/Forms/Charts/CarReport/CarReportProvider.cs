@@ -12,7 +12,7 @@ namespace Keeper2018
         private int _accountId; // Scenic3 = 716
         private Car _car;
         private static readonly string[] TagRussians =
-            { "покупка-продажа", "государство", "авто ремонт", "ремонт ДТП", "ремонт регуляр", "авто топливо", "авто прочее" };
+            { "покупка-продажа", "государство", "авто ремонт", "ремонт ДТП", "регулярн обслуживание", "авто топливо", "авто прочее" };
         private static readonly string[] TagEnglish =
             { "buy-sell", "state", "car repair", "accident repair", "expendables", "car fuel", "other stuff" };
 
@@ -27,18 +27,33 @@ namespace Keeper2018
         {
             _accountId = accountId;
             _car = _db.Bin.Cars.First(c => c.AccountId == _accountId);
+            var isCurrentCar = _db.Bin.Cars.Last().AccountId == _accountId;
 
             Document doc = new Document();
-            Section chartSection = doc.AddSection();
-            chartSection.PageSetup.TopMargin = 40;
-            var paragraph = chartSection.AddParagraph();
+
+            Section firstPageSection = doc.AddSection();
+            firstPageSection.PageSetup.TopMargin = 40;
+            firstPageSection.PageSetup.BottomMargin = 10;
+            var paragraph = firstPageSection.AddParagraph();
             paragraph.AddFormattedText($"{_car.Title} {_car.IssueYear} г.в. {_car.Start:dd/MM/yyyy} - {_car.Finish:dd/MM/yyyy}");
             paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.3);
 
             var carReportData = ExtractCarData();
-            FillChart(chartSection, carReportData);
-            FillAggregateTable(chartSection, carReportData);
-            FillTotals(chartSection, carReportData);
+            if (isCurrentCar)
+            {
+                carReportData.Tags[0].Table.Add(new PdfReportTableRow()
+                {
+                    Date = DateTime.Today,
+                    AmountInUsd = _car.SupposedSale,
+                    AmountInCurrency = $"{_car.SupposedSale} usd",
+                    Comment = "предполагаемая продажа",
+                });
+            }
+            carReportData.FinishDate = carReportData.Tags[0].Table.Last().Date;
+
+            FillChart(firstPageSection, carReportData);
+            FillAggregateTable(firstPageSection, carReportData);
+            FillTotals(firstPageSection, carReportData);
 
             Section tablesSection = doc.AddSection();
             tablesSection.PageSetup.TopMargin = 20;
@@ -64,7 +79,6 @@ namespace Keeper2018
             }
 
             result.StartDate = result.Tags[0].Table[0].Date;
-            result.FinishDate = DateTime.Today;
             return result;
         }
 
@@ -137,67 +151,75 @@ namespace Keeper2018
             gap.Format.SpaceBefore = Unit.FromCentimeter(0.7);
 
             var total = carReportData.Tags.Sum(t => t.Table.Sum(r => r.AmountInUsd));
-            decimal total2 = 0;
+            var totalFuelling = carReportData.Tags.FirstOrDefault(t => t.English == "car fuel")?.Table
+                .Sum(r => r.AmountInUsd);
             var table = section.AddTable();
             table.Style = "Table";
             table.Borders.Width = 0.25;
 
-            var isLastCar = _db.Bin.Cars.Last().AccountId == _accountId;
-
-            var column = table.AddColumn("5cm");
+            var column = table.AddColumn("7cm");
             column.Format.Alignment = ParagraphAlignment.Left;
-            column = table.AddColumn("5.5cm");
+            column = table.AddColumn("4cm");
+            column.Format.Alignment = ParagraphAlignment.Right;
+            column.RightPadding = Unit.FromCentimeter(0.5);
+            column = table.AddColumn("4cm");
             column.Format.Alignment = ParagraphAlignment.Right;
             column.RightPadding = Unit.FromCentimeter(0.5);
 
-            if (isLastCar)
-            {
-                column = table.AddColumn("5.5cm");
-                column.Format.Alignment = ParagraphAlignment.Right;
-
-                var rowSupposedly = table.AddRow();
-                rowSupposedly.Borders.Visible = false;
-                rowSupposedly.Cells[2].AddParagraph($"при условии продажи за {_car.SupposedSale} usd");
-                total2 = total + _car.SupposedSale;
-            }
-
             var row = table.AddRow();
-            row.Cells[1].AddParagraph($"$ {-total:#,0}");
-            if (isLastCar)
-                row.Cells[2].AddParagraph($"$ {-total2:#,0}");
-            row.Format.Font.Bold = true;
+            row.Borders.Visible = false;
+            row.Cells[0].MergeRight = 1;
+            var paragraph = row.Cells[0].AddParagraph($"{_car.Finish.ToShortDateString()} - {_car.Start.ToShortDateString()}");
+            paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.1);
 
             row = table.AddRow();
+            row.Cells[0].AddParagraph($"{(_car.Finish - _car.Start).Days} дн.");
             var inAday = -total / (carReportData.FinishDate - carReportData.StartDate).Days;
-            var inAday2 = -total2 / (carReportData.FinishDate - carReportData.StartDate).Days;
-            row.Cells[0].AddParagraph("в день");
-            row.Cells[1].AddParagraph($"$ {inAday:N}");
-            if (isLastCar)
-                row.Cells[2].AddParagraph($"$ {inAday2:N}");
+            row.Cells[1].AddParagraph("в день");
+            row.Cells[2].AddParagraph($"$ {inAday:N}");
 
             row = table.AddRow();
+            row.Cells[0].AddParagraph($"{ (carReportData.FinishDate - carReportData.StartDate).Days / 365.0:#.00} лет.");
             var inAyear = (double)-total / (carReportData.FinishDate - carReportData.StartDate).Days * 365.0;
-            row.Cells[0].AddParagraph("в год");
-            row.Cells[1].AddParagraph($"$ {inAyear:N}");
-            if (isLastCar)
-            {
-                var inAyear2 = (double)-total2 / (carReportData.FinishDate - carReportData.StartDate).Days * 365.0;
-                row.Cells[2].AddParagraph($"$ {inAyear2:N}");
-            }
+            row.Cells[1].AddParagraph("в год");
+            row.Cells[2].AddParagraph($"$ {inAyear:N}");
 
             row = table.AddRow();
             row.Borders.Visible = false;
             row.Cells[0].MergeRight = 1;
-            row.Cells[0].AddParagraph($"{_car.MileageFinish} - {_car.MileageStart} = {_car.MileageFinish - _car.MileageStart} км");
-         
+            paragraph = row.Cells[0].AddParagraph($"{_car.MileageFinish} - {_car.MileageStart} = {_car.MileageFinish - _car.MileageStart} км");
+            paragraph.Format.SpaceBefore = Unit.FromCentimeter(0.1);
+            paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.1);
+
+
             row = table.AddRow();
+            row.Cells[0].MergeRight = 1;
+            row.Cells[0].AddParagraph("все расходы на 1 км");
             var forKm = (double)-total / (_car.MileageFinish - _car.MileageStart);
-            row.Cells[0].AddParagraph("за 1 км");
-            row.Cells[1].AddParagraph($"$ {forKm:N}");
-            if (isLastCar)
+            row.Cells[2].AddParagraph($"$ {forKm:N}");
+
+            row = table.AddRow();
+            row.Cells[0].MergeRight = 1;
+            row.Cells[0].AddParagraph("топливо на 1 км");
+            forKm = (double)-totalFuelling / (_car.MileageFinish - _car.MileageStart);
+            row.Cells[2].AddParagraph($"$ {forKm:N}");
+
+            if (_accountId >= 716)
             {
-                var forKm2 = (double)-total2 / (_car.MileageFinish - _car.MileageStart);
-                row.Cells[2].AddParagraph($"$ {forKm2:N}");
+                var totalLitres = _db.Bin.Fuellings.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
+
+                row = table.AddRow();
+                row.Cells[0].AddParagraph("расход топлива на 100 км");
+                var litresFor100 = totalLitres / (_car.MileageFinish - _car.MileageStart) * 100;
+                row.Cells[1].AddParagraph($"{litresFor100:N} л");
+                var usdFor100 = (double)-totalFuelling / (_car.MileageFinish - _car.MileageStart) * 100;
+                row.Cells[2].AddParagraph($"$ {usdFor100:N}");
+
+                row = table.AddRow();
+                row.Cells[0].MergeRight = 1;
+                row.Cells[0].AddParagraph("средняя стоимость литра топлива");
+                var literInUsd = (double)-totalFuelling / totalLitres;
+                row.Cells[2].AddParagraph($"$ {literInUsd:N}");
             }
         }
 

@@ -109,6 +109,7 @@ namespace Keeper2018
                 var fuelling = new Fuelling()
                 {
                     Timestamp = tr.Timestamp,
+                    CarAccountId = 716,
                     Amount = tr.Amount,
                     Currency = tr.Currency,
                     Volume = volume,

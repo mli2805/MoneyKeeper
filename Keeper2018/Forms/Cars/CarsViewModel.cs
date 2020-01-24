@@ -43,6 +43,7 @@ namespace Keeper2018
         {
             if (_db.Bin.Cars == null)
                 _db.Bin.Cars = InitializeBase();
+            _db.Bin.Cars.Last().Finish = DateTime.Today;
 
             Cars = new List<CarVm>();
             foreach (var car in _db.Bin.Cars)
