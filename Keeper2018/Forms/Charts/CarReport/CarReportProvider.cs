@@ -204,9 +204,22 @@ namespace Keeper2018
             forKm = (double)-totalFuelling / (_car.MileageFinish - _car.MileageStart);
             row.Cells[2].AddParagraph($"$ {forKm:N}");
 
-            if (_accountId >= 716)
+            if (_accountId >= 711)
             {
                 var totalLitres = _db.Bin.Fuellings.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
+
+                row = table.AddRow();
+                row.Borders.Visible = false;
+
+                row.Cells[0].MergeRight = 1;
+                paragraph.Format.SpaceBefore = Unit.FromCentimeter(0.1);
+                paragraph.Format.SpaceAfter = Unit.FromCentimeter(0.1);
+
+                row = table.AddRow();
+                row.Cells[0].AddParagraph($"приобретено топлива");
+                row.Cells[1].AddParagraph($"{totalLitres} л");
+                var literInUsd = (double)-totalFuelling / totalLitres;
+                row.Cells[2].AddParagraph($"$ {literInUsd:N} за литр");
 
                 row = table.AddRow();
                 row.Cells[0].AddParagraph("расход топлива на 100 км");
@@ -215,11 +228,6 @@ namespace Keeper2018
                 var usdFor100 = (double)-totalFuelling / (_car.MileageFinish - _car.MileageStart) * 100;
                 row.Cells[2].AddParagraph($"$ {usdFor100:N}");
 
-                row = table.AddRow();
-                row.Cells[0].MergeRight = 1;
-                row.Cells[0].AddParagraph("средняя стоимость литра топлива");
-                var literInUsd = (double)-totalFuelling / totalLitres;
-                row.Cells[2].AddParagraph($"$ {literInUsd:N}");
             }
         }
 

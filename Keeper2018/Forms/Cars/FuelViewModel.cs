@@ -100,7 +100,7 @@ namespace Keeper2018
 
         private void ExtractFuellingsFromDb()
         {
-            var trs = _db.Bin.Transactions.Values.Where(t => t.Tags.Contains(718));
+            var trs = _db.Bin.Transactions.Values.Where(t => t.Tags.Contains(718) || t.Tags.Contains(714));
             _db.Bin.Fuellings = new List<Fuelling>();
             foreach (var tr in trs)
             {
@@ -109,7 +109,7 @@ namespace Keeper2018
                 var fuelling = new Fuelling()
                 {
                     Timestamp = tr.Timestamp,
-                    CarAccountId = 716,
+                    CarAccountId = tr.Tags.Contains(718) ? 716 : 711,
                     Amount = tr.Amount,
                     Currency = tr.Currency,
                     Volume = volume,
@@ -130,6 +130,8 @@ namespace Keeper2018
                 return FuelType.Керосин;
             if (comment.ToLowerInvariant().Contains("арктика"))
                 return FuelType.ДтЕвро5Арктика;
+            if (comment.ToLowerInvariant().Contains("castrol"))
+                return FuelType.CastrolDTA;
             return FuelType.ДтЕвро5;
         }
 
