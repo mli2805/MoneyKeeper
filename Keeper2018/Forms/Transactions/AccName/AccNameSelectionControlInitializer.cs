@@ -16,16 +16,15 @@ namespace Keeper2018
                 ["ома"] = 291, ["маг"] = 252, ["еда"] = 257, ["лек"] = 199, ["стр"] = 589, ["др"] = 256, };
 
         private static readonly Dictionary<string, int> ButtonsForIncome =
-            new Dictionary<string, int> { ["шкф"] = 167, ["юк"] = 163, ["бум"] = 732, ["юбу"] = 735, 
-                ["джо"] = 781, ["каш"] = 776, ["шоп"] = 785,
-            };
+            new Dictionary<string, int> { ["алф"] = 695, ["шкф"] = 167, ["юк"] = 163, ["бум"] = 732, 
+                ["юбу"] = 735, ["джо"] = 781, ["каш"] = 776, ["шоп"] = 785, };
 
         private static readonly Dictionary<string, int> ButtonsForIncomeTags =
             new Dictionary<string, int> { ["иит"] = 443, ["биб"] = 339, ["газ"] = 401, ["%%"] = 208, ["бэк"] = 701};
 
         private static readonly Dictionary<string, int> ButtonsForTransfer =
             new Dictionary<string, int> { ["мк"] = 162, ["юк"] = 163, ["джо"] = 781,
-                ["алф"] = 699, ["шкф"] = 167, ["бум"] = 732, ["юбу"] = 735, ["каш"] = 776, ["шоп"] = 785,
+                ["алф"] = 695, ["шкф"] = 167, ["бум"] = 732, ["юбу"] = 735, ["каш"] = 776, ["шоп"] = 785,
             };
 
         private static readonly Dictionary<string, int> ButtonsForTransferTags = new Dictionary<string, int>();
