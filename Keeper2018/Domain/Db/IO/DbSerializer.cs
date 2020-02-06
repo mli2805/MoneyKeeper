@@ -50,7 +50,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message);
                 return null;
             }
         }
