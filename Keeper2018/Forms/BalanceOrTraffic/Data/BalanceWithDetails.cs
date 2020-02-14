@@ -11,10 +11,10 @@ namespace Keeper2018
         {
             foreach (var line in Lines)
             {
-                yield return $"{line.Amount} {line.Currency.ToString().ToLower()};  {line.AmountInUsd:0.00} usd;  {line.PercentOfBalance:0.00}% ";
+                yield return $"{line.Currency.ToString().ToUpper()} {line.Amount:0,0.00};    {line.PercentOfBalance:0.00}% ";
             }
 
-            yield return $"Итого: {TotalInUsd:0.00} usd";
+            yield return $"Итого: {TotalInUsd:0,0.00} usd";
         }
     }
 }

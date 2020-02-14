@@ -49,7 +49,7 @@ namespace Keeper2018
         {
             foreach (var accountGroup in Groups)
             {
-                yield return $"{accountGroup.Title}  {accountGroup.BalanceWithDetails.TotalInUsd:0.00} usd  {accountGroup.Procent:0.00}% ";
+                yield return $"{accountGroup.Title}  {accountGroup.BalanceWithDetails.TotalInUsd:0,0.00} usd  {accountGroup.Procent:0.00}% ";
             }
 
             yield return $"Итого  {TotalInUsd:0.00} usd";
@@ -64,7 +64,7 @@ namespace Keeper2018
                 result.AddRange(accountGroup.BalanceWithDetails.ToStrings());
                 result.Add("");
             }
-            result.Add($"Итого  {TotalInUsd:0.00} usd");
+            result.Add($"Итого  {TotalInUsd:0,0.00} usd");
             return result;
         }
     }
