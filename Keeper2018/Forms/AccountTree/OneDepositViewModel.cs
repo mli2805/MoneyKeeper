@@ -53,8 +53,11 @@ namespace Keeper2018
                 _selectedDepositOffer = value;
                 DepositInWork.DepositOfferId = _selectedDepositOffer.Id;
                 NotifyOfPropertyChange();
+                NotifyOfPropertyChange(IsNotRevocable);
             }
         }
+
+        public string IsNotRevocable => _selectedDepositOffer.IsNotRevocable ? "Безотзывный" : "Отзывный";
 
         public OneDepositViewModel(KeeperDb db, IWindowManager windowManager)
         {

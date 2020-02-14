@@ -11,6 +11,7 @@ namespace Keeper2018
         public int Id { get; set; }
         public int Bank { get; set; }
         public string Title { get; set; }
+        public bool IsNotRevocable { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
         // Conditions of offer could be changed (especially rates, initial sum while Title remains the same)
@@ -21,7 +22,7 @@ namespace Keeper2018
 
         public string Dump()
         {
-            return Id + " ; " + Bank + " ; " + Title + " ; " + MainCurrency + " ; " + Comment;
+            return Id + " ; " + Bank + " ; " + Title + " ; " + IsNotRevocable + " ; " + MainCurrency + " ; " + Comment;
         }
     }
 

@@ -41,6 +41,7 @@ namespace Keeper2018
             {
                 Bank = accountPlaneList.First(a=>a.Id == depositOffer.Bank),
                 Title = depositOffer.Title,
+                IsNotRevocable = depositOffer.IsNotRevocable,
                 MainCurrency = depositOffer.MainCurrency,
                 Essentials = depositOffer.Essentials,
                 Comment = depositOffer.Comment,

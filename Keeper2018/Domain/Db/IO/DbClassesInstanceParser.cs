@@ -132,8 +132,9 @@ namespace Keeper2018
                 Id = Convert.ToInt32(substrings[0]),
                 Bank = Convert.ToInt32(substrings[1]),
                 Title = substrings[2].Trim(),
-                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[3]),
-                Comment = substrings[4].Trim()
+                IsNotRevocable = bool.Parse(substrings[3].Trim()),
+                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]),
+                Comment = substrings[5].Trim()
             };
         }
 

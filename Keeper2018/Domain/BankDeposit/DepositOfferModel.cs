@@ -8,6 +8,7 @@ namespace Keeper2018
         public int Id { get; set; }
         public Account Bank { get; set; }
         public string Title { get; set; }
+        public bool IsNotRevocable { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
         // Conditions of offer could be changed (especially rates, initial sum) while Title remains the same
@@ -31,6 +32,7 @@ namespace Keeper2018
             var result = new DepositOfferModel(Id);
             result.Bank = Bank;
             result.Title = Title;
+            result.IsNotRevocable = IsNotRevocable;
             result.MainCurrency = MainCurrency;
             result.Essentials = new Dictionary<DateTime, DepositEssential>();
             foreach (var pair in Essentials)

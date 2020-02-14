@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Media;
-using System.Windows.Navigation;
 using Caliburn.Micro;
 
 namespace Keeper2018
