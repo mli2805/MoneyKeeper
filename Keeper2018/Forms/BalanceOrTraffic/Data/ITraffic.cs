@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     interface ITraffic
     {
-        void Evaluate();
+        void EvaluateAccount();
         IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode);
         string Total { get; }
 

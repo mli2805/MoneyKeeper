@@ -28,7 +28,26 @@ namespace Keeper2018
             DepositReportModel = new DepositReportModel(db);
         }
 
-        public void Evaluate()
+        public void EvaluateAccount()
+        {
+            Evaluate();
+
+            if (_isDeposit)
+            {
+                DepositReportModel.Deposit = _accountModel.Deposit;
+                DepositReportModel.Balance = _balanceWithTurnover.Balance();
+                DepositReportModel.AmountInUsd = AmountInUsd;
+                DepositReportModel.DepositName = _accountModel.Name;
+            }
+        }
+
+        public Balance EvaluateBalance()
+        {
+            Evaluate();
+            return _balanceWithTurnover.Balance();
+        }
+
+        private void Evaluate()
         {
             foreach (var tran in _db.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
             {
@@ -48,15 +67,8 @@ namespace Keeper2018
                         break;
                 }
             }
-
-            if (_isDeposit)
-            {
-                DepositReportModel.Deposit = _accountModel.Deposit;
-                DepositReportModel.Balance = _balanceWithTurnover.Balance();
-                DepositReportModel.AmountInUsd = AmountInUsd;
-                DepositReportModel.DepositName = _accountModel.Name;
-            }
         }
+
 
         private void RegisterIncome(Transaction tran)
         {

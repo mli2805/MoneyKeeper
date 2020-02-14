@@ -38,7 +38,7 @@ namespace Keeper2018.PayCards
         {
             var depositOffer = _db.Bin.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
             var calc = new TrafficOfAccountCalculator(_db, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));
-            calc.Evaluate();
+            calc.EvaluateAccount();
             calc.DepositReportModel.Balance.Currencies.TryGetValue(depositOffer.MainCurrency, out var amount);
             return new PayCardVm()
             {

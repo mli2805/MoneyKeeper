@@ -58,7 +58,7 @@ namespace Keeper2018
         {
             var trafficCalculator = new TrafficOfBranchCalculator(_db, _myAccountsRoot,
                                         new Period(new DateTime(2001, 12, 31), startDate.AddSeconds(-1)));
-            trafficCalculator.Evaluate();
+            trafficCalculator.EvaluateAccount();
             _monthAnalysisModel.BeforeViewModel.List.Add("Входящий остаток на начало месяца", FontWeights.Bold);
             _monthAnalysisModel.BeforeViewModel.List.AddList(trafficCalculator.ReportForMonthAnalysis());
             _monthAnalysisModel.Before = trafficCalculator.TotalAmount;
@@ -246,7 +246,7 @@ namespace Keeper2018
         {
             var trafficCalculator = new TrafficOfBranchCalculator(_db, _myAccountsRoot,
                                         new Period(new DateTime(2001, 12, 31), finishMoment));
-            trafficCalculator.Evaluate();
+            trafficCalculator.EvaluateAccount();
             var text = _monthAnalysisModel.IsCurrentPeriod ? "сегодня" : "конец месяца";
             _monthAnalysisModel.AfterViewModel.List.Add($"Исходящий остаток на {text}", FontWeights.Bold);
             _monthAnalysisModel.AfterViewModel.List.AddList(trafficCalculator.ReportForMonthAnalysis());

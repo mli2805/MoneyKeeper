@@ -106,7 +106,7 @@ namespace Keeper2018
                 ? (ITraffic)new TrafficOfAccountCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod)
                 : new TrafficOfBranchCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
 
-            trafficCalculator.Evaluate();
+            trafficCalculator.EvaluateAccount();
 
             _report = trafficCalculator.Report(mode).ToList();
             foreach (var pair in _report) Lines.Add(pair.Value);
@@ -121,7 +121,7 @@ namespace Keeper2018
                 ? (ITraffic) new TrafficOfTagCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod):
                 new TrafficOfTagBranchCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
 
-            trafficCalculator.Evaluate();
+            trafficCalculator.EvaluateAccount();
 
             _report = trafficCalculator.Report(BalanceOrTraffic.Traffic).ToList();
             foreach (var pair in _report) Lines.Add(pair.Value);

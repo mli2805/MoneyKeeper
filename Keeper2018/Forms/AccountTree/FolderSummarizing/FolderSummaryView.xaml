@@ -1,0 +1,14 @@
+﻿<Window x:Class="Keeper2018.FolderSummaryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance keeper2018:FolderSummaryViewModel}">
+    <StackPanel Margin="10">
+        <ListView ItemsSource="{Binding ByCurrencies}"></ListView>
+        <ListView ItemsSource="{Binding ByRevocability}"></ListView>
+    </StackPanel>
+</Window>

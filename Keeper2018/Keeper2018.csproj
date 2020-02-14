@@ -109,6 +109,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
     <Compile Include="Domain\Account\PayCard.cs" />
     <Compile Include="Domain\Account\PaymentSystem.cs" />
     <Compile Include="Domain\BankDeposit\DepositOfferExt.cs" />
@@ -123,10 +124,16 @@
     </Compile>
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpensesOnAccountViewModel.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\TranLine.cs" />
+    <Compile Include="Forms\AccountTree\FolderSummarizing\FolderSummaryView.xaml.cs">
+      <DependentUpon>FolderSummaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\FolderSummarizing\FolderSummaryViewModel.cs" />
     <Compile Include="Forms\AccountTree\OneCardView.xaml.cs">
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneCardViewModel.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceDetailedLine.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithDetails.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
     <Compile Include="Domain\Db\AssociationFinder.cs" />
     <Compile Include="Domain\Db\IO\DbClassesInstanceParser.cs" />
@@ -472,6 +479,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\AccountTree\ExpensesOnAccount\ExpensesOnAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\FolderSummarizing\FolderSummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

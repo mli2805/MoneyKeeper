@@ -203,5 +203,28 @@ namespace Keeper2018
 
             return result;
         }
+
+        public static BalanceWithDetails EvaluateDetails(this Balance balance, KeeperDb db, DateTime date)
+        {
+            var result = new BalanceWithDetails();
+            foreach (var pair in balance.Currencies)
+            {
+                var balanceDetailedLine = new BalanceDetailedLine
+                {
+                    Currency = pair.Key,
+                    Amount = pair.Value,
+                    AmountInUsd = pair.Key == CurrencyCode.USD
+                        ? pair.Value
+                        : db.AmountInUsd(date, pair.Key, pair.Value)
+                };
+                result.Lines.Add(balanceDetailedLine);
+                result.TotalInUsd += balanceDetailedLine.AmountInUsd;
+            }
+
+            foreach (var detailedLine in result.Lines)
+                detailedLine.PercentOfBalance = detailedLine.AmountInUsd * 100 / result.TotalInUsd;
+
+            return result;
+        }
     }
 }

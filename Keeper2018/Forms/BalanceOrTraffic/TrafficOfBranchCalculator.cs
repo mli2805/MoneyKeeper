@@ -20,7 +20,7 @@ namespace Keeper2018
             _period = period;
         }
 
-        public void Evaluate()
+        public void EvaluateAccount()
         {
             foreach (var tran in _db.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
                 RegisterTran(tran);

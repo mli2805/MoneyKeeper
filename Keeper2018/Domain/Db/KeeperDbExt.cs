@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Keeper2018
 {
@@ -73,6 +74,59 @@ namespace Keeper2018
                 Essentials = depositOfferModel.Essentials,
                 Comment = depositOfferModel.Comment,
             };
+        }
+
+        public static AccountGroups SeparateByRevocability(this KeeperDb db, AccountModel folder)
+        {
+            var revocable = new AccountGroup("Отзывные");
+            var notRevocable = new AccountGroup("Безотзывные");
+            foreach (var leaf in GetFoldersTerminalLeaves(folder))
+            {
+                if (leaf.IsDeposit)
+                {
+                    var depositOffer = db.Bin.DepositOffers.FirstOrDefault(o => o.Id == leaf.Deposit.DepositOfferId);
+                    if (depositOffer != null && depositOffer.IsNotRevocable)
+                    {
+                        notRevocable.Accounts.Add(leaf);
+                        continue;
+                    }
+                }
+                revocable.Accounts.Add(leaf);
+            }
+
+            return new AccountGroups(new List<AccountGroup>(){revocable, notRevocable});
+        }
+
+        public static AccountModelGroups SortFoldersTerminalChildren(this KeeperDb db, AccountModel folder)
+        {
+            var result = new AccountModelGroups();
+            foreach (var leaf in GetFoldersTerminalLeaves(folder))
+            {
+                if (leaf.IsDeposit)
+                {
+                    var depositOffer = db.Bin.DepositOffers.FirstOrDefault(o => o.Id == leaf.Deposit.DepositOfferId);
+                    if (depositOffer != null && depositOffer.IsNotRevocable)
+                    {
+                        result.NotRevocable.Add(leaf);
+                        continue;
+                    }
+                }
+                result.Revocable.Add(leaf);
+            }
+            return result;
+        }
+
+        private static List<AccountModel> GetFoldersTerminalLeaves(AccountModel folder)
+        {
+            var result = new List<AccountModel>();
+            foreach (var child in folder.Children)
+            {
+                if (child.IsFolder)
+                    result.AddRange(GetFoldersTerminalLeaves(child));
+                else
+                    result.Add(child);
+            }
+            return result;
         }
     }
 }

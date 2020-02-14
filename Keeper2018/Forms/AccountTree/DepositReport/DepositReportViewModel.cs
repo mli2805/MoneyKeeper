@@ -18,12 +18,11 @@ namespace Keeper2018
             var accountCalculator = 
                 new TrafficOfAccountCalculator(_db, accountModel, 
                     new Period(new DateTime(2001, 12, 31), DateTime.Today.GetEndOfDate()));
-            accountCalculator.Evaluate();
+            accountCalculator.EvaluateAccount();
             Model = accountCalculator.DepositReportModel;
             Model.SummarizeFacts(_db);
             if (Model.AmountInUsd != 0)
             {
-//                Model.DepositOffer.MainCurrency = 
                 Model.Foresee(_db);
             }
         }

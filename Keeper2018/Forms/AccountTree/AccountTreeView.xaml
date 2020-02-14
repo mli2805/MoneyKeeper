@@ -51,6 +51,9 @@
                     <MenuItem Header="Для сверки остатка" cal:Message.Attach="ShowVerificationForm" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsMyAccount}">
                     </MenuItem>
+                    <MenuItem Header="Раскладка папки по" cal:Message.Attach="ShowFolderSummaryForm" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
+                    </MenuItem>
                     <MenuItem Header="Расшифровка в PDF" cal:Message.Attach="ShowTagInDetails" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsTag}">
                     </MenuItem>
