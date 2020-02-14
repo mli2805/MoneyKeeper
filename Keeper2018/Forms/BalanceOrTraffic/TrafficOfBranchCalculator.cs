@@ -27,6 +27,13 @@ namespace Keeper2018
             TotalAmount = _db.BalanceInUsd(_period.FinishMoment, _balanceWithTurnovers.Balance());
         }
 
+        public Balance Evaluate()
+        {
+            foreach (var tran in _db.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
+                RegisterTran(tran);
+            return _balanceWithTurnovers.Balance();
+        }
+
         private void RegisterTran(Transaction tran)
         {
             switch (tran.Operation)

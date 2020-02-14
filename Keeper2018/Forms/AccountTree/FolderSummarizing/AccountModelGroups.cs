@@ -69,9 +69,5 @@ namespace Keeper2018
         }
     }
 
-    public class AccountModelGroups
-    {
-        public List<AccountModel> NotRevocable { get; set; } = new List<AccountModel>();
-        public List<AccountModel> Revocable { get; set; } = new List<AccountModel>();
-    }
+ 
 }

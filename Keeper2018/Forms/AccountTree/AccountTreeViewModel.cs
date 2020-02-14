@@ -13,7 +13,6 @@ namespace Keeper2018
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
         private readonly ExpensesOnAccountViewModel _expensesOnAccountViewModel;
-        private readonly FolderSummaryViewModel _folderSummaryViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
         private readonly BalanceVerificationViewModel _balanceVerificationViewModel;
         public IWindowManager WindowManager { get; }
@@ -25,13 +24,12 @@ namespace Keeper2018
         public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, 
-            ExpensesOnAccountViewModel expensesOnAccountViewModel, FolderSummaryViewModel folderSummaryViewModel,
+            ExpensesOnAccountViewModel expensesOnAccountViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
             _expensesOnAccountViewModel = expensesOnAccountViewModel;
-            _folderSummaryViewModel = folderSummaryViewModel;
             _depositReportViewModel = depositReportViewModel;
             _balanceVerificationViewModel = balanceVerificationViewModel;
             WindowManager = windowManager;
@@ -114,10 +112,10 @@ namespace Keeper2018
 
         public void ShowFolderSummaryForm()
         {
+            var _folderSummaryViewModel = new FolderSummaryViewModel(KeeperDb);
             _folderSummaryViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
-            WindowManager.ShowDialog(_folderSummaryViewModel);
+            WindowManager.ShowWindow(_folderSummaryViewModel);
         }
-
 
         public void ShowExpensesOnAccount()
         {

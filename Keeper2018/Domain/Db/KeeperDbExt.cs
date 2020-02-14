@@ -97,25 +97,7 @@ namespace Keeper2018
             return new AccountGroups(new List<AccountGroup>(){revocable, notRevocable});
         }
 
-        public static AccountModelGroups SortFoldersTerminalChildren(this KeeperDb db, AccountModel folder)
-        {
-            var result = new AccountModelGroups();
-            foreach (var leaf in GetFoldersTerminalLeaves(folder))
-            {
-                if (leaf.IsDeposit)
-                {
-                    var depositOffer = db.Bin.DepositOffers.FirstOrDefault(o => o.Id == leaf.Deposit.DepositOfferId);
-                    if (depositOffer != null && depositOffer.IsNotRevocable)
-                    {
-                        result.NotRevocable.Add(leaf);
-                        continue;
-                    }
-                }
-                result.Revocable.Add(leaf);
-            }
-            return result;
-        }
-
+    
         private static List<AccountModel> GetFoldersTerminalLeaves(AccountModel folder)
         {
             var result = new List<AccountModel>();
