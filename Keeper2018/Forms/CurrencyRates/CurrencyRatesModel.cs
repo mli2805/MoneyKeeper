@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -59,6 +60,7 @@ namespace Keeper2018
         }
 
         public string BasketStr { get; set; }
+
         public Brush BasketBrush { get; set; }
 
         public string BasketAfterBreakStr { get; set; }
@@ -77,22 +79,22 @@ namespace Keeper2018
             TodayRates = record;
             YesterdayNbRbRates = previous?.TodayRates.NbRates;
 
-            UsdStr =   TodayRates.NbRates.Usd.Value.ToString(Template, new CultureInfo("ru-RU"));
-            MyUsdStr =   TodayRates.MyUsdRate.Value.Equals(0) ? "" : TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
+            UsdStr = TodayRates.NbRates.Usd.Value.ToString(Template, new CultureInfo("ru-RU"));
+            MyUsdStr = TodayRates.MyUsdRate.Value.Equals(0) ? "" : TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroBynStr = TodayRates.NbRates.Euro.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroUsdStr = TodayRates.MyEurUsdRate.Value.Equals(0) ? "" : TodayRates.MyEurUsdRate.Value.ToString("0.###", new CultureInfo("ru-RU"));
-            RurStr =   TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
-            
+            RurStr = TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
+
             UsdBrush = YesterdayNbRbRates == null || YesterdayNbRbRates.Usd.Value.Equals(TodayRates.NbRates.Usd.Value)
-                ? Brushes.Black 
-                : YesterdayNbRbRates.Usd.Value > TodayRates.NbRates.Usd.Value 
+                ? Brushes.Black
+                : YesterdayNbRbRates.Usd.Value > TodayRates.NbRates.Usd.Value
                     ? Brushes.LimeGreen : Brushes.Red;
 
             Basket = BelBaskets.Calculate(record);
 
-            _yesterdayBasket = previous == null 
-                ? 0 
-                : previous.Date.Year == 1999 && record.Date.Year == 2000 
+            _yesterdayBasket = previous == null
+                ? 0
+                : previous.Date.Year == 1999 && record.Date.Year == 2000
                     ? previous.Basket / 1000
                     : previous.Basket;
 
@@ -145,32 +147,41 @@ namespace Keeper2018
         {
             if (annual == null) return;
 
-            var lastYear = Date.Year == 2000 
-                ? annual.TodayRates.NbRates.Usd.Value / 1000 
-                : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1) 
-                    ? annual.TodayRates.NbRates.Usd.Value / 10000 
+            var lastYear = Date.Year == 2000
+                ? annual.TodayRates.NbRates.Usd.Value / 1000
+                : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1)
+                    ? annual.TodayRates.NbRates.Usd.Value / 10000
                     : annual.TodayRates.NbRates.Usd.Value;
 
             var delta = TodayRates.NbRates.Usd.Value - lastYear;
             var proc = delta / lastYear * 100;
             UsdAnnualStr = $"{delta.ToString("#,0.####", new CultureInfo("ru-RU"))} ({proc:+0.##;-0.##;0}%)";
             UsdAnnualBrush = proc < 0 ? Brushes.LimeGreen : Brushes.Red;
-        }  
-        
+        }
+
         private void SetBasketAnnualStr(CurrencyRatesModel annual)
         {
             if (annual == null || annual.Basket.Equals(0)) return;
 
-            var lastYear = Date.Year == 2000 
-                ? annual.Basket / 1000 
-                : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1) 
-                    ? annual.Basket / 10000 
+            var lastYear = Date.Year == 2000
+                ? annual.Basket / 1000
+                : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1)
+                    ? annual.Basket / 10000
                     : annual.Basket;
 
             var delta = Basket - lastYear;
             _procBasketAnnual = delta / lastYear * 100;
             BasketAnnualStr = $"{_procBasketAnnual:+0.##;-0.##;0}%";
             BasketAnnualBrush = _procBasketAnnual < 0 ? Brushes.LimeGreen : Brushes.Red;
+        }
+
+        public string BasketStrWithoutProc
+        {
+            get
+            {
+                var indexOf = BasketStr.IndexOf(' ');
+                return BasketStr.Substring(0, indexOf);
+            }
         }
 
         #region ' _isSelected '
