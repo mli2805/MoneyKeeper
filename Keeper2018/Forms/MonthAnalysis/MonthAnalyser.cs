@@ -46,7 +46,7 @@ namespace Keeper2018
             FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
             var startMoment = startDate.AddDays(-1);
-            _monthAnalysisModel.RatesChanges = _db.GetRatesMonthDifference(startMoment, finishMoment);
+            _monthAnalysisModel.RatesChanges = _db.GetRatesDifference(startMoment, finishMoment);
             _monthAnalysisModel.FillResultList(isCurrentPeriod);
             if (isCurrentPeriod)
                 _monthAnalysisModel.FillForecast(finishMoment, (decimal)_db.GetRate(DateTime.Today, CurrencyCode.BYN).Value);

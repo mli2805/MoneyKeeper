@@ -17,7 +17,7 @@ namespace Keeper2018
             return rateLine;
         }
 
-        public static ListOfLines GetRatesMonthDifference(this KeeperDb db, DateTime startDate, DateTime finishMoment)
+        public static ListOfLines GetRatesDifference(this KeeperDb db, DateTime startDate, DateTime finishMoment)
         {
             var result = new ListOfLines();
             var ratesLine = db.GetRatesLine(startDate);
@@ -34,9 +34,7 @@ namespace Keeper2018
             var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}";
             result.Add(belka, belkaBrush);
 
-            //            var euroStart = ratesLine.NbRates.Euro.Value / ratesLine.NbRates.Usd.Value;
-            //            var euroFinish = ratesLineFinish.NbRates.Euro.Value / ratesLineFinish.NbRates.Usd.Value;
-            // my rate is more acceptable for this porpose
+            // my rate is more acceptable for this purpose
             var euroStart = ratesLine.MyEurUsdRate.Value;
             var euroFinish = ratesLineFinish.MyEurUsdRate.Value;
 
