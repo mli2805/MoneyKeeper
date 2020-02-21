@@ -69,10 +69,12 @@ namespace Keeper2018
             _monthAnalysisModel.IncomeViewModel.List.Add("Доходы", FontWeights.Bold, Brushes.Blue);
 
             var salaryList = new List<string>();
+            var rantierList = new List<string>();
             var depoList = new List<string>();
             var restList = new List<string>();
             decimal total = 0;
             decimal salaryTotal = 0;
+            decimal rantierTotal = 0;
             decimal depoTotal = 0;
             decimal restTotal = 0;
             foreach (var tran in _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
@@ -93,8 +95,16 @@ namespace Keeper2018
                         else if (tagModel.Is(188))
                         {
                             var accModel = _db.AcMoDict[tran.MyAccount];
-                            depoList.Add($"{amStr} {accModel.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
-                            depoTotal = depoTotal + amountInUsd;
+                            if (tagModel.Id == 208)
+                            {
+                                depoList.Add($"{amStr} {accModel.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                depoTotal = depoTotal + amountInUsd;
+                            }
+                            else
+                            {
+                                rantierList.Add($"{amStr} {accModel.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                rantierTotal = rantierTotal + amountInUsd;
+                            }
                         }
                         else
                         {
@@ -107,11 +117,13 @@ namespace Keeper2018
             }
 
             if (salaryList.Count > 0)
-                InsertDepoLinesIntoIncomeList(salaryList, salaryTotal, "зарплата");
+                InsertLinesIntoIncomeList(salaryList, salaryTotal, "зарплата");
             if (depoList.Count > 0)
-                InsertDepoLinesIntoIncomeList(depoList, depoTotal, "депозиты");
+                InsertLinesIntoIncomeList(depoList, depoTotal, "депозиты");
+            if (rantierList.Count > 0)
+                InsertLinesIntoIncomeList(rantierList, rantierTotal, "прочие с капитала");
             if (restList.Count > 0)
-                InsertDepoLinesIntoIncomeList(restList, restTotal, "прочее");
+                InsertLinesIntoIncomeList(restList, restTotal, "прочее");
 
             _monthAnalysisModel.IncomeViewModel.List.Add("");
             _monthAnalysisModel.IncomeViewModel.List.Add($"Итого {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
@@ -150,7 +162,7 @@ namespace Keeper2018
                 : _db.AmountInUsd(DateTime.Today, depositOffer.MainCurrency, revenue);
         }
 
-        private void InsertDepoLinesIntoIncomeList(List<string> lines, decimal total, string word)
+        private void InsertLinesIntoIncomeList(List<string> lines, decimal total, string word)
         {
             _monthAnalysisModel.IncomeViewModel.List.Add("");
             _monthAnalysisModel.IncomeViewModel.List.Add($"   {word}:", Brushes.Blue);

@@ -21,7 +21,7 @@ namespace Keeper2018
         public void Initialize()
         {
             _depoPlusCurrencyProvider.Initialize();
-            var points = _depoPlusCurrencyProvider.Evaluate(2016).ToList();
+            var points = _depoPlusCurrencyProvider.Evaluate(2012).ToList();
             InitializePlotModel(points);
         }
 
