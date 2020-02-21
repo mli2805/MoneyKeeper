@@ -14,17 +14,17 @@ namespace Keeper2018
             return Path.Combine(GetGoogleDriveDirectory(), @"Keeper2018");
         }
 
-        private static string GetDropboxPath()
-        {
-            const string infoPath = @"Dropbox\info.json";
-            var jsonPath = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? throw new InvalidOperationException(), infoPath);
-            if (!File.Exists(jsonPath)) jsonPath = Path.Combine(Environment.GetEnvironmentVariable("AppData") ?? throw new InvalidOperationException(), infoPath);
-            if (!File.Exists(jsonPath)) throw new Exception("Dropbox could not be found!");
-            var strings = File.ReadAllText(jsonPath).Split('\"');
-            var index = strings.ToList().IndexOf("path");
-            var dropboxPath = strings[index + 2].Replace(@"\\", @"\");
-            return dropboxPath;
-        }
+//        private static string GetDropboxPath()
+//        {
+//            const string infoPath = @"Dropbox\info.json";
+//            var jsonPath = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? throw new InvalidOperationException(), infoPath);
+//            if (!File.Exists(jsonPath)) jsonPath = Path.Combine(Environment.GetEnvironmentVariable("AppData") ?? throw new InvalidOperationException(), infoPath);
+//            if (!File.Exists(jsonPath)) throw new Exception("Dropbox could not be found!");
+//            var strings = File.ReadAllText(jsonPath).Split('\"');
+//            var index = strings.ToList().IndexOf("path");
+//            var dropboxPath = strings[index + 2].Replace(@"\\", @"\");
+//            return dropboxPath;
+//        }
 
         /// <summary>
         /// Retrieves the local Google Drive directory, if any.
