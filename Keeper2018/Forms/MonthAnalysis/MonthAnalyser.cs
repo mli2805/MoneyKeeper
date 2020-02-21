@@ -115,6 +115,7 @@ namespace Keeper2018
 
             _monthAnalysisModel.IncomeViewModel.List.Add("");
             _monthAnalysisModel.IncomeViewModel.List.Add($"Итого {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
+            _monthAnalysisModel.DepoIncome = depoTotal;
             _monthAnalysisModel.Income = total;
         }
 

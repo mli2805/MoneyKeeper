@@ -205,6 +205,12 @@
     <Compile Include="Forms\AccountTree\PdfReport\PdfReportTable.cs" />
     <Compile Include="Forms\AccountTree\PdfReport\PdfReporter.cs" />
     <Compile Include="Forms\AccountTree\PdfReport\PdfReportTableRow.cs" />
+    <Compile Include="Forms\Charts\DepositPlusCurrency\DepoCurrencyData.cs" />
+    <Compile Include="Forms\Charts\DepositPlusCurrency\DepoCurrResultView.xaml.cs">
+      <DependentUpon>DepoCurrResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Charts\DepositPlusCurrency\DepoCurrResultViewModel.cs" />
+    <Compile Include="Forms\Charts\DepositPlusCurrency\DepoPlusCurrencyProvider.cs" />
     <Compile Include="Forms\Charts\Expenses\Domain\CategoriesDataElement.cs" />
     <Compile Include="Forms\Charts\Expenses\CategoriesDataExtractor.cs" />
     <Compile Include="Forms\Charts\Expenses\Domain\ClassifiedTran.cs" />
@@ -521,6 +527,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Charts\BalanceAndSaldo\BalancesAndSaldosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Charts\DepositPlusCurrency\DepoCurrResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

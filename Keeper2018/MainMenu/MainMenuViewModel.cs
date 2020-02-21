@@ -18,6 +18,7 @@ namespace Keeper2018
         private readonly SettingsViewModel _settingsViewModel;
         private readonly CarsViewModel _carsViewModel;
         private readonly ExpenseByCategoriesViewModel _expenseByCategoriesViewModel;
+        private readonly DepoCurrResultViewModel _depoCurrResultViewModel;
         private readonly GskViewModel _gskViewModel;
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
@@ -27,6 +28,7 @@ namespace Keeper2018
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
+            DepoCurrResultViewModel depoCurrResultViewModel,
             GskViewModel gskViewModel, PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
         {
             _windowManager = windowManager;
@@ -40,6 +42,7 @@ namespace Keeper2018
             _settingsViewModel = settingsViewModel;
             _carsViewModel = carsViewModel;
             _expenseByCategoriesViewModel = expenseByCategoriesViewModel;
+            _depoCurrResultViewModel = depoCurrResultViewModel;
             _gskViewModel = gskViewModel;
             _payCardsViewModel = payCardsViewModel;
             _salaryViewModel = salaryViewModel;
@@ -134,6 +137,12 @@ namespace Keeper2018
         {
             _expenseByCategoriesViewModel.Initialize();
             _windowManager.ShowDialog(_expenseByCategoriesViewModel);
+        }
+
+        public void ShowDepoPlusCurreniesChart()
+        {
+            _depoCurrResultViewModel.Initialize();
+            _windowManager.ShowDialog(_depoCurrResultViewModel);
         }
 
         public void ShowSalaryForm()

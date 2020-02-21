@@ -71,6 +71,9 @@ namespace Keeper2018
             builder.RegisterType<SalaryViewModel>().SingleInstance();
             builder.RegisterType<CategoriesDataExtractor>().SingleInstance();
             builder.RegisterType<ExpenseByCategoriesViewModel>().SingleInstance();
+            builder.RegisterType<DepoPlusCurrencyProvider>().SingleInstance();
+            builder.RegisterType<DepoCurrResultViewModel>().SingleInstance();
+
 
         }
     }
