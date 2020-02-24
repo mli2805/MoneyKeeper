@@ -112,9 +112,9 @@ namespace Keeper2018
 
         public void ShowFolderSummaryForm()
         {
-            var _folderSummaryViewModel = new FolderSummaryViewModel(KeeperDb);
-            _folderSummaryViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
-            WindowManager.ShowWindow(_folderSummaryViewModel);
+            var folderSummaryViewModel = new FolderSummaryViewModel(KeeperDb);
+            folderSummaryViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+            WindowManager.ShowWindow(folderSummaryViewModel);
         }
 
         public void ShowExpensesOnAccount()

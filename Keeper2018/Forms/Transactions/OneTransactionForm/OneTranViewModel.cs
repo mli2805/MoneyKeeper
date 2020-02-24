@@ -192,6 +192,11 @@ namespace Keeper2018
         public void Fuelling()
         {
             Left = Left - 180;
+            if (_db.Bin.Cars == null)
+            {
+                MessageBox.Show("Cars должны быть заполнены!");
+                return;
+            }
             _fuellingInputViewModel.Initialize(CreateNewFuelling());
             _fuellingInputViewModel.PlaceIt(Top, Left + Width, Height);
 
