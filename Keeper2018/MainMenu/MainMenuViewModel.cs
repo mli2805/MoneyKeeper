@@ -141,7 +141,7 @@ namespace Keeper2018
 
         public void ShowDepoPlusCurreniesChart()
         {
-            _depoCurrResultViewModel.Initialize();
+          //  _depoCurrResultViewModel.Initialize();
             _windowManager.ShowDialog(_depoCurrResultViewModel);
         }
 
