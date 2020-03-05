@@ -10,10 +10,11 @@ namespace Keeper2018
     {
         public static string GetKeeper2018BasePath()
         {
-           return Path.Combine(GetDropboxPath(), @"Keeper2018");
-//            return Path.Combine(GetGoogleDriveDirectory(), @"Keeper2018");
+//           return Path.Combine(GetDropboxPath(), @"Keeper2018");
+            return Path.Combine(GetGoogleDriveDirectory(), @"Keeper2018");
         }
 
+        // ReSharper disable once UnusedMember.Local
         private static string GetDropboxPath()
         {
             const string infoPath = @"Dropbox\info.json";

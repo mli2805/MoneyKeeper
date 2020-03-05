@@ -13,7 +13,7 @@ namespace Keeper2018
         private string _caption;
         private List<CurrencyRatesModel> _rates;
 
-        public PlotModel MyPlotModel2016 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel2020 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2017 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2018 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2019 { get; set; } = new PlotModel();
@@ -27,44 +27,23 @@ namespace Keeper2018
         {
             _caption = caption;
             _rates = rates;
-            MyPlotModel2019.Series.Add(OneYearOfUsd(2019));
-            MyPlotModel2019.Axes.Add(new DateTimeAxis()
-            {
-                Minimum = DateTimeAxis.ToDouble(new DateTime(2019,1,1)),
-                IntervalLength = 45, 
-                IntervalType = DateTimeIntervalType.Days, 
-                MajorGridlineStyle = LineStyle.Solid,
-                Maximum = DateTimeAxis.ToDouble(new DateTime(2019,12,31)),
-            });
 
-            MyPlotModel2016.Series.Add(OneYearOfUsd(2016));
-            MyPlotModel2016.Axes.Add(new DateTimeAxis()
-            {
-                Minimum = DateTimeAxis.ToDouble(new DateTime(2016,1,1)),
-                IntervalLength = 45, 
-                IntervalType = DateTimeIntervalType.Days, 
-                MajorGridlineStyle = LineStyle.Solid,
-                Maximum = DateTimeAxis.ToDouble(new DateTime(2016,12,31)),
-            });
+            InitializeYear(MyPlotModel2017, 2017);
+            InitializeYear(MyPlotModel2018, 2018);
+            InitializeYear(MyPlotModel2019, 2019);
+            InitializeYear(MyPlotModel2020, 2020);
+        }
 
-            MyPlotModel2017.Series.Add(OneYearOfUsd(2017));
-            MyPlotModel2017.Axes.Add(new DateTimeAxis()
+        private void InitializeYear(PlotModel yearPlotModel, int year)
+        {
+            yearPlotModel.Series.Add(OneYearOfUsd(year));
+            yearPlotModel.Axes.Add(new DateTimeAxis()
             {
-                Minimum = DateTimeAxis.ToDouble(new DateTime(2017,1,1)),
-                IntervalLength = 45, 
-                IntervalType = DateTimeIntervalType.Days, 
+                Minimum = DateTimeAxis.ToDouble(new DateTime(year, 1, 1)),
+                IntervalLength = 45,
+                IntervalType = DateTimeIntervalType.Days,
                 MajorGridlineStyle = LineStyle.Solid,
-                Maximum = DateTimeAxis.ToDouble(new DateTime(2017,12,31)),
-            });
-
-            MyPlotModel2018.Series.Add(OneYearOfUsd(2018));
-            MyPlotModel2018.Axes.Add(new DateTimeAxis()
-            {
-                Minimum = DateTimeAxis.ToDouble(new DateTime(2018,1,1)),
-                IntervalLength = 45, 
-                IntervalType = DateTimeIntervalType.Days, 
-                MajorGridlineStyle = LineStyle.Solid,
-                Maximum = DateTimeAxis.ToDouble(new DateTime(2018,12,31)),
+                Maximum = DateTimeAxis.ToDouble(new DateTime(year, 12, 31)),
             });
         }
 
