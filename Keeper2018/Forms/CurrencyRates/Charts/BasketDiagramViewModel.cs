@@ -11,7 +11,8 @@ namespace Keeper2018
     public class BasketDiagramViewModel : Screen
     {
         private string _caption;
-        private DateTime _startDate = new DateTime(2018, 1, 1);
+        private readonly DateTime _startDate = new DateTime(2012, 7, 1);
+        private readonly DateTime _startDateD = DateTime.Now.AddMonths(-18);
         private List<CurrencyRatesModel> _rates;
 
         public PlotModel BasketPlotModel { get; set; }
@@ -35,7 +36,7 @@ namespace Keeper2018
             BasketPlotModel.Series.Add(basket);
             BasketPlotModel.Axes.Add(new DateTimeAxis()
             {
-//                IntervalType = DateTimeIntervalType.Months,
+                IntervalType = DateTimeIntervalType.Months,
                 MajorGridlineStyle = LineStyle.Solid,
             });
 
@@ -44,29 +45,34 @@ namespace Keeper2018
             BasketDeltaPlotModel.Axes.Add(new CategoryAxis()
             {
                 IsTickCentered = true,
-                MajorStep = (DateTime.Today - _startDate).Days / 18.0,
+                MajorStep = (DateTime.Today - _startDateD).Days / 18.0,
                 LabelFormatter = F,
             });
         }
 
         private string F(double day)
         {
-            return (_startDate + TimeSpan.FromDays(day)).ToShortDateString();
+            return (_startDateD + TimeSpan.FromDays(day)).ToShortDateString();
         }
 
         private void GetLinesOfBasket(out LineSeries basket, out ColumnSeries basketDelta)
         {
-            basket = new LineSeries() {Title = "Корзина 30-20-50", TextColor = OxyColors.Orange};
+            basket = new LineSeries() { Title = "Корзина 30-20-50", TextColor = OxyColors.Orange };
             basketDelta = new ColumnSeries()
             {
                 Title = "Дневное изменение корзины в %",
                 FillColor = OxyColors.Red,
                 NegativeFillColor = OxyColors.Green
             };
+            var threshold = new DateTime(2016,7,1);
             foreach (var nbRbRateOnScreen in _rates.Where(r => r.Date >= _startDate))
             {
-                basket.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nbRbRateOnScreen.Date), nbRbRateOnScreen.Basket));
-                basketDelta.Items.Add(new ColumnItem(nbRbRateOnScreen.ProcBasketDelta));
+                var basketValue = nbRbRateOnScreen.Date >= threshold
+                    ? nbRbRateOnScreen.Basket
+                    : nbRbRateOnScreen.Basket / 10000;
+                basket.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nbRbRateOnScreen.Date), basketValue));
+                if (nbRbRateOnScreen.Date >= _startDateD)
+                    basketDelta.Items.Add(new ColumnItem(nbRbRateOnScreen.ProcBasketDelta));
             }
         }
 
