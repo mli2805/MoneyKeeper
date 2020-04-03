@@ -2,6 +2,7 @@
 using System.Linq;
 using Caliburn.Micro;
 using Keeper2018.ExpensesOnAccount;
+using KeeperDomain;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using PdfSharp.Pdf;

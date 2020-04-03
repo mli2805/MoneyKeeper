@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2016
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper", "Keeper\Keeper.csproj", "{4F7AD566-C071-42F3-9BE9-139C827641DE}"
 EndProject
@@ -22,10 +22,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper2018", "Keeper2018\Ke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper2018.Tests", "Keeper2018.Tests\Keeper2018.Tests.csproj", "{80AB9AF4-0DD9-4B8C-AA89-2106FF03DCB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeeperDomain", "KeeperDomain\KeeperDomain.csproj", "{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper2020", "Keeper2020\Keeper2020.csproj", "{BC8051DD-CE59-4DC7-B187-EFCD129155EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeeperSqliteDb", "KeeperSqliteDb\KeeperSqliteDb.csproj", "{34A8D57B-EA00-42D6-80A5-29373A133E70}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -43,12 +46,27 @@ Global
 		{80AB9AF4-0DD9-4B8C-AA89-2106FF03DCB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80AB9AF4-0DD9-4B8C-AA89-2106FF03DCB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80AB9AF4-0DD9-4B8C-AA89-2106FF03DCB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC8051DD-CE59-4DC7-B187-EFCD129155EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC8051DD-CE59-4DC7-B187-EFCD129155EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC8051DD-CE59-4DC7-B187-EFCD129155EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC8051DD-CE59-4DC7-B187-EFCD129155EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34A8D57B-EA00-42D6-80A5-29373A133E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A8D57B-EA00-42D6-80A5-29373A133E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A8D57B-EA00-42D6-80A5-29373A133E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A8D57B-EA00-42D6-80A5-29373A133E70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2BF1FC9-DCC3-44D6-884B-9D600F187463}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

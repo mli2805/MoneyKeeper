@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using Caliburn.Micro;
+using KeeperDomain;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;

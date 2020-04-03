@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {

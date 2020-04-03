@@ -1,5 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {

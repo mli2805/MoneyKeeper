@@ -1,0 +1,12 @@
+C:\VSProjects\Keeper\KeeperSqliteDb\bin\Debug\netstandard2.0\KeeperSqliteDb.deps.json
+C:\VSProjects\Keeper\KeeperSqliteDb\bin\Debug\netstandard2.0\KeeperSqliteDb.dll
+C:\VSProjects\Keeper\KeeperSqliteDb\bin\Debug\netstandard2.0\KeeperDomain.dll
+C:\VSProjects\Keeper\KeeperSqliteDb\bin\Debug\netstandard2.0\KeeperDomain.pdb
+C:\VSProjects\Keeper\KeeperSqliteDb\obj\Debug\netstandard2.0\KeeperSqliteDb.csprojAssemblyReference.cache
+C:\VSProjects\Keeper\KeeperSqliteDb\obj\Debug\netstandard2.0\KeeperSqliteDb.AssemblyInfoInputs.cache
+C:\VSProjects\Keeper\KeeperSqliteDb\obj\Debug\netstandard2.0\KeeperSqliteDb.AssemblyInfo.cs
+C:\VSProjects\Keeper\KeeperSqliteDb\obj\Debug\netstandard2.0\KeeperSqliteDb.csproj.CopyComplete
+C:\VSProjects\Keeper\KeeperSqliteDb\obj\Debug\netstandard2.0\KeeperSqliteDb.csproj.CoreCompileInputs.cache
+C:\VSProjects\Keeper\KeeperSqliteDb\bin\Debug\netstandard2.0\KeeperSqliteDb.pdb
+C:\VSProjects\Keeper\KeeperSqliteDb\obj\Debug\netstandard2.0\KeeperSqliteDb.dll
+C:\VSProjects\Keeper\KeeperSqliteDb\obj\Debug\netstandard2.0\KeeperSqliteDb.pdb

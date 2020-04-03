@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
+using KeeperDomain;
 
 namespace Keeper2018
 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using KeeperDomain;
 
 namespace Keeper2018
 {

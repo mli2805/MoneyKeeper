@@ -1,4 +1,6 @@
-﻿namespace Keeper2018
+﻿using KeeperDomain;
+
+namespace Keeper2018
 {
     public class OperationTypesFilter
     {

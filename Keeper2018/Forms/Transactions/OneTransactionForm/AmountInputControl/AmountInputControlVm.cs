@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {

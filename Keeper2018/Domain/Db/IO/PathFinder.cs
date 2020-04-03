@@ -32,7 +32,7 @@ namespace Keeper2018
         /// </summary>
         /// <returns>Directory, or string.Empty if it can't be found</returns>
         // ReSharper disable once UnusedMember.Local
-        private static string GetGoogleDriveDirectory()
+        public static string GetGoogleDriveDirectory()
         {
             try
             {

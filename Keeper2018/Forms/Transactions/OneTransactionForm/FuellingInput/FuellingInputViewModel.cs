@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {

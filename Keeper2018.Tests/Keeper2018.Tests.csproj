@@ -112,6 +112,10 @@
       <Project>{f6a562a7-c323-4e40-918d-466fdda29909}</Project>
       <Name>Keeper2018</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KeeperDomain\KeeperDomain.csproj">
+      <Project>{461a62b3-b52f-41ed-aab8-e4e7378d79c7}</Project>
+      <Name>KeeperDomain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
