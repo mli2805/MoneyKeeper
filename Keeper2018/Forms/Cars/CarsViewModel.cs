@@ -120,8 +120,8 @@ namespace Keeper2018
                 new Car{AccountId = 716, Title = "Renault Grand Scenic III 1,5 dCi", IssueYear = 2010,
                     StateRegNumber = "8688 НК-7", Vin = "VF1JZ1GB642744065",
                     Start = new DateTime(2014,4,14), MileageStart = 134750,
-                    Finish = DateTime.Today, MileageFinish = 199800, // на сегодня
-                    YearMileages = new []{145750, 159750, 173750, 188250, 199750, },
+                    Finish = DateTime.Today, MileageFinish = 210750, // на сегодня
+                    YearMileages = new []{145750, 159750, 173750, 188250, 199750, 210750,},
                 },
             };
         }

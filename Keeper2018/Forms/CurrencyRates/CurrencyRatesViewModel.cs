@@ -141,6 +141,11 @@ namespace Keeper2018
                 {
                     var currencyRates = await DownloadRates(date);
                     if (currencyRates == null) break;
+                    if (currencyRates.CbrRate.Usd.Value.Equals(0))
+                    {
+                        currencyRates.CbrRate.Usd.Value =
+                            currencyRates.NbRates.Usd.Value / currencyRates.NbRates.Rur.Value * currencyRates.NbRates.Rur.Unit;
+                    }
 
                     _rates.Add(currencyRates.Date, currencyRates);
                     var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);
@@ -169,7 +174,7 @@ namespace Keeper2018
             var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
             if (nbRbRates == null) return null;
             var currencyRates = new CurrencyRates() {Date = date, NbRates = nbRbRates};
-            var usd2Rur = await CbrRatesDownloader.GetRateForDate(date);
+            var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(date);
             currencyRates.CbrRate.Usd = new OneRate() {Unit = 1, Value = usd2Rur};
             return currencyRates;
         }
