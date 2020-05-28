@@ -7,17 +7,18 @@ namespace KeeperDomain
     [Serializable]
     public class Transaction
     {
-        public DateTime Timestamp;
-        public OperationType Operation;
-        public int Receipt;
-        public int MyAccount;
-        public int MySecondAccount;
-        public decimal Amount;
-        public decimal AmountInReturn;
-        public CurrencyCode Currency;
-        public CurrencyCode? CurrencyInReturn;
-        public List<int> Tags;
-        public string Comment;
+        public int Id { get; set; } //PK
+        public DateTime Timestamp { get; set; }
+        public OperationType Operation { get; set; }
+        public int Receipt { get; set; }
+        public int MyAccount { get; set; }
+        public int MySecondAccount { get; set; }
+        public decimal Amount { get; set; }
+        public decimal AmountInReturn { get; set; }
+        public CurrencyCode Currency { get; set; }
+        public CurrencyCode? CurrencyInReturn { get; set; }
+        public List<int> Tags { get; set; }
+        public string Comment { get; set; }
 
         public string Dump()
         {

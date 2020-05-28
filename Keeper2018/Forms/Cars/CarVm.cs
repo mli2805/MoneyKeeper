@@ -43,10 +43,10 @@ namespace Keeper2018
                 YearsMileage.Add(new CarYearVm()
                 {
                     YearCount = i + 1,
-                    Mileage = car.YearMileages[i],
+                    Mileage = car.YearMileages[i].Mileage,
                     YearMileage = i == 0
-                                  ? car.YearMileages[0] - car.MileageStart
-                                  : car.YearMileages[i] - car.YearMileages[i - 1],
+                                  ? car.YearMileages[0].Mileage - car.MileageStart
+                                  : car.YearMileages[i].Mileage - car.YearMileages[i - 1].Mileage,
                 });
             }
         }

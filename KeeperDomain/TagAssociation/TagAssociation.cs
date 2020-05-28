@@ -5,6 +5,7 @@ namespace KeeperDomain
     [Serializable]
     public class TagAssociation
     {
+        public int Id { get; set; } //PK
         public int ExternalAccount { get; set; }
         public OperationType OperationType { get; set; }
         public int Tag { get; set; }

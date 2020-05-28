@@ -1,9 +1,0 @@
-C:\VSProjects\Keeper\KeeperDomain\obj\Debug\netstandard2.0\KeeperDomain.csprojAssemblyReference.cache
-C:\VSProjects\Keeper\KeeperDomain\obj\Debug\netstandard2.0\KeeperDomain.csproj.CoreCompileInputs.cache
-C:\VSProjects\Keeper\KeeperDomain\obj\Debug\netstandard2.0\KeeperDomain.AssemblyInfoInputs.cache
-C:\VSProjects\Keeper\KeeperDomain\obj\Debug\netstandard2.0\KeeperDomain.AssemblyInfo.cs
-C:\VSProjects\Keeper\KeeperDomain\bin\Debug\netstandard2.0\KeeperDomain.deps.json
-C:\VSProjects\Keeper\KeeperDomain\bin\Debug\netstandard2.0\KeeperDomain.dll
-C:\VSProjects\Keeper\KeeperDomain\bin\Debug\netstandard2.0\KeeperDomain.pdb
-C:\VSProjects\Keeper\KeeperDomain\obj\Debug\netstandard2.0\KeeperDomain.dll
-C:\VSProjects\Keeper\KeeperDomain\obj\Debug\netstandard2.0\KeeperDomain.pdb

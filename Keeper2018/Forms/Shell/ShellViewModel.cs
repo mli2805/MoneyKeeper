@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
+using KeeperSqliteDb;
 
 namespace Keeper2018
 {
@@ -46,7 +48,18 @@ namespace Keeper2018
             _dbLoader.ExpandBinToDb(_keeperDb);
             var account = _keeperDb.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
-            ShellPartsBinder.SelectedAccountModel = account;
+            ShellPartsBinder.SelectedAccountModel = account; 
+            
+            //var records = await Convert();
+        }
+
+        private async Task<int> Convert()
+        {
+            using (KeeperContext db = new KeeperContext())
+            {
+                db.Accounts.AddRange(_keeperDb.Bin.AccountPlaneList);
+                return await db.SaveChangesAsync();
+            }
         }
 
         public override async void CanClose(Action<bool> callback)

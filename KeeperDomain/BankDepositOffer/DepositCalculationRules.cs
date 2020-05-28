@@ -5,6 +5,7 @@ namespace KeeperDomain
     [Serializable]
     public class DepositCalculationRules
     {
+        public int Id { get; set; } //PK
         public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
 
 

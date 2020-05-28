@@ -101,28 +101,57 @@ namespace Keeper2018
                     Start = new DateTime(1998,7,15), MileageStart = 146800,
                     Finish = new DateTime(2006,11,15), MileageFinish = 259300,
                     Comment = "Купил в Касселе, пригнал 146800 - 148400",
-                    YearMileages = new [] { 156400, 166400,176400, 193400, 207400, 221400, 235400, 250400,},
+                    YearMileages = new []
+                    {
+                        new YearMileage() { CarId = 706, YearNumber = 1, Mileage = 156400 },
+                        new YearMileage() { CarId = 706, YearNumber = 2, Mileage = 166400 },
+                        new YearMileage() { CarId = 706, YearNumber = 3, Mileage = 176400 },
+                        new YearMileage() { CarId = 706, YearNumber = 4, Mileage = 193400 },
+                        new YearMileage() { CarId = 706, YearNumber = 5, Mileage = 207400 },
+                        new YearMileage() { CarId = 706, YearNumber = 6, Mileage = 221400 },
+                        new YearMileage() { CarId = 706, YearNumber = 7, Mileage = 235400 },
+                        new YearMileage() { CarId = 706, YearNumber = 8, Mileage = 250400 },
+                    },
                 },
 
 
                 new Car{AccountId = 708, Title = "VW Passat B4 1,9 TDI", IssueYear = 1996, StateRegNumber = "9051 АР-7",
                     Start = new DateTime(2006,10,7), MileageStart = 277100,
                     Finish = new DateTime(2009,09,23), MileageFinish = 317700,
-                    YearMileages = new []{290100, 308600,},
+                    YearMileages = new []{ 
+                        new YearMileage() { CarId = 708, YearNumber = 1, Mileage = 290100 }, 
+                        new YearMileage() { CarId = 708, YearNumber = 2, Mileage = 308600 },
+
+                    },
                 },
 
                 new Car{AccountId = 711, Title = "Renault Grand Scenic II 1,9 dCi", IssueYear = 2005,
                     StateRegNumber = "9734 КА-7", Vin = "VF1JM1GE634636175",
                     Start = new DateTime(2009,4,2), MileageStart = 157900,
                     Finish = new DateTime(2014,9,3), MileageFinish = 256150,
-                    YearMileages = new []{178300, 203300, 225400, 239400, 254200, },
+                    YearMileages = new []
+                    {
+                        new YearMileage() { CarId = 711, YearNumber = 1, Mileage = 178300 },
+                        new YearMileage() { CarId = 711, YearNumber = 2, Mileage = 203300 },
+                        new YearMileage() { CarId = 711, YearNumber = 3, Mileage = 225400 },
+                        new YearMileage() { CarId = 711, YearNumber = 4, Mileage = 239400 },
+                        new YearMileage() { CarId = 711, YearNumber = 5, Mileage = 254200 },
+                    },
                 },
 
                 new Car{AccountId = 716, Title = "Renault Grand Scenic III 1,5 dCi", IssueYear = 2010,
                     StateRegNumber = "8688 НК-7", Vin = "VF1JZ1GB642744065",
                     Start = new DateTime(2014,4,14), MileageStart = 134750,
                     Finish = DateTime.Today, MileageFinish = 210750, // на сегодня
-                    YearMileages = new []{145750, 159750, 173750, 188250, 199750, 210750,},
+                    YearMileages = new []
+                    {
+                        new YearMileage() { CarId = 716, YearNumber = 1, Mileage = 145750 },
+                        new YearMileage() { CarId = 716, YearNumber = 2, Mileage = 159750 },
+                        new YearMileage() { CarId = 716, YearNumber = 3, Mileage = 173750 },
+                        new YearMileage() { CarId = 716, YearNumber = 4, Mileage = 188250 },
+                        new YearMileage() { CarId = 716, YearNumber = 5, Mileage = 199750 },
+                        new YearMileage() { CarId = 716, YearNumber = 6, Mileage = 210750 },
+                    },
                 },
             };
         }

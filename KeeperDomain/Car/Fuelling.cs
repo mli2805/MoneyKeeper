@@ -5,6 +5,7 @@ namespace KeeperDomain
     [Serializable]
     public class Fuelling : ICloneable
     {
+        public int Id { get; set; } //PK
         public DateTime Timestamp { get; set; }
         public double Volume { get; set; }
         public FuelType FuelType { get; set; }

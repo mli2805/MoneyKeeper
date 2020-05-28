@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace KeeperDomain
 {
     [Serializable]
     public class DepositOffer
     {
-        public int Id { get; set; }
+        public int Id { get; set; } //PK
         public int Bank { get; set; }
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
@@ -23,55 +21,6 @@ namespace KeeperDomain
         public string Dump()
         {
             return Id + " ; " + Bank + " ; " + Title + " ; " + IsNotRevocable + " ; " + MainCurrency + " ; " + Comment;
-        }
-    }
-
-    [Serializable]
-    public class DepositEssential
-    {
-        // ID is necessary because Deposit can have more than one Essential 
-        // and txt file should have ID to separate RateLines from different Essentials
-        public int DepositOfferId { get; set; } 
-        public int Id { get; set; } 
-        public DepositCalculationRules CalculationRules { get; set; } = new DepositCalculationRules();
-        public List<DepositRateLine> RateLines { get; set; } = new List<DepositRateLine>();
-
-        public DepositEssential DeepCopy()
-        {
-            return new DepositEssential
-            {
-                CalculationRules = CalculationRules.ShallowCopy(),
-                RateLines = new List<DepositRateLine>(RateLines.Select(l => l.ShallowCopy()))
-            };
-        }
-        public string Comment { get; set; }
-
-        public string PartDump()
-        {
-            return DepositOfferId + " ; " + Id + " ; " + CalculationRules.Dump() + " ; " + Comment;
-        }
-    }
-
-    [Serializable]
-    public class DepositRateLine
-    {
-        public int DepositOfferId;
-        public int DepositOfferEssentialsId;
-        public DateTime DateFrom { get; set; }
-        public decimal AmountFrom { get; set; }
-        public decimal AmountTo { get; set; }
-        public decimal Rate { get; set; }
-
-        public DepositRateLine ShallowCopy()
-        {
-            return (DepositRateLine) MemberwiseClone();
-        }
-
-        public string PartDump()
-        {
-            return DepositOfferId + " ; " + DepositOfferEssentialsId  + " ; " + 
-                   $"{DateFrom:dd/MM/yyyy}" + " ; " + AmountFrom.ToString(new CultureInfo("en-US")) + " ; "
-                   + AmountTo.ToString(new CultureInfo("en-US")) + " ; " + Rate.ToString(new CultureInfo("en-US"));
         }
     }
 }

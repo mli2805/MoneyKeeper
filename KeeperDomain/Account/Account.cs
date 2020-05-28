@@ -5,24 +5,24 @@ namespace KeeperDomain
     [Serializable]
     public class Account
     {
-        public int Id;
-        public string Header;
-        public int OwnerId;
+        public int Id { get; set; }
+        public string Header { get; set; }
+        public int OwnerId { get; set; }
         public bool IsExpanded;
-        public bool IsFolder;
-        public Deposit Deposit;
+        public bool IsFolder { get; set; }
+        public Deposit Deposit { get; set; }
 
         public bool IsDeposit => Deposit != null;
         public bool IsCard => Deposit?.Card != null;
         public string Name
         {
             get => Header;
-            set => Header = value;
+            
         }
 
         public override string ToString() => Name;
-        public string Comment;
-        
+        public string Comment { get; set; }
+
         public string Dump(int level)
         {
             var shiftedName = new string(' ', level * 2) + Name;

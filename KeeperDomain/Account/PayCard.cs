@@ -5,7 +5,8 @@ namespace KeeperDomain
     [Serializable]
     public class PayCard
     {
-        public int MyAccountId;
+        public int Id { get; set; }
+        public int MyAccountId { get; set; }
 
         public string CardNumber { get; set; }
         public string CardHolder { get; set; }

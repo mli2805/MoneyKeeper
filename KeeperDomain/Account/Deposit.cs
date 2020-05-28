@@ -5,8 +5,9 @@ namespace KeeperDomain
     [Serializable]
     public class Deposit
     {
-        public int MyAccountId;
-        public int DepositOfferId;
+        public int Id { get; set; }
+        public int MyAccountId { get; set; }
+        public int DepositOfferId { get; set; }
         public string Serial { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }

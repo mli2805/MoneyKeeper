@@ -13,7 +13,7 @@ namespace KeeperSqliteDb
 
         public DbSet<DepositRateLine> DepositRateLines { get; set; }
         public DbSet<DepositEssential> DepositEssentials { get; set; }
-        public DbSet<DepositOffer> DepositOffer { get; set; }
+     //   public DbSet<DepositOffer> DepositOffer { get; set; }
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Fuelling> Fuellings { get; set; }
