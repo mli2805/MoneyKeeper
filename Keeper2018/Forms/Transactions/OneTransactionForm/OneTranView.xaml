@@ -24,8 +24,8 @@
 
 
             <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,10,0,0" Height="24"/>
-            <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,10,0" 
-                 Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="40" TextWrapping="WrapWithOverflow"/>
+            <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,10,0" MaxWidth="460" VerticalScrollBarVisibility="Auto"
+                 Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="54" TextWrapping="WrapWithOverflow"/>
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,20,10">
                 <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent" IsDefault="True"/>
@@ -36,7 +36,7 @@
 
         <Button Grid.Column="1" Name="Receipt" VerticalAlignment="Top" Height="20" Width="100" Margin="-170,100,0,0" Background="White" 
                     IsEnabled="{Binding IsAddMode}" Visibility="{Binding MyExpenseControlVm.Visibility}">Чек</Button>
-     <Button Grid.Column="1" Name="Fuelling" VerticalAlignment="Top" Height="20" Width="100" Margin="-170,130,0,0" Background="White" 
+        <Button Grid.Column="1" Name="Fuelling" VerticalAlignment="Top" Height="20" Width="100" Margin="-170,130,0,0" Background="White" 
                     IsEnabled="{Binding IsAddMode}" Visibility="{Binding MyExpenseControlVm.Visibility}">Заправка</Button>
 
         <keeper2018:OperationTypeView Grid.Column="1" Margin="0,10,7,55" DataContext="{Binding OperationTypeViewModel}"/>
