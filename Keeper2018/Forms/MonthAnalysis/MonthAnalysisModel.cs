@@ -16,10 +16,10 @@ namespace Keeper2018
 
         public BorderedListViewModel BeforeViewModel { get; set; } = new BorderedListViewModel();
         public decimal Before;
-        public BorderedListViewModel IncomeViewModel { get; set; } = new BorderedListViewModel();
+        public BorderedListViewModel IncomeViewModel { get; set; } = new BorderedListViewModel(60);
         public decimal DepoIncome;
         public decimal Income;
-        public BorderedListViewModel ExpenseViewModel { get; set; } = new BorderedListViewModel();
+        public BorderedListViewModel ExpenseViewModel { get; set; } = new BorderedListViewModel(60);
         public decimal Expense;
         public decimal LargeExpense;
         public BorderedListViewModel AfterViewModel { get; set; } = new BorderedListViewModel();
