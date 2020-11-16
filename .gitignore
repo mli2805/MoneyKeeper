@@ -21,8 +21,14 @@ obj
 /Keeper2018.Tests/obj/Debug
 /Keeper2018.Tests/bin/Debug
 
+/Keeper2020/bin
+/Keeper2020/obj
+
 /KeeperDomain/bin
 /KeeperDomain/obj
+
+/KeeperSqliteDb/bin
+/KeeperSqliteDb/obj
 
 *.psess
 *.vspx
