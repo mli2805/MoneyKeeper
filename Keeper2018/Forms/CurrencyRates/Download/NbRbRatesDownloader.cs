@@ -14,7 +14,7 @@ namespace Keeper2018
         {
             try
             {
-                string uri = "http://www.nbrb.by/API/ExRates/Rates?onDate=" + $"{date:yyyy-M-d}" + "&Periodicity=0";
+                string uri = "https://www.nbrb.by/API/ExRates/Rates?onDate=" + $"{date:yyyy-M-d}" + "&Periodicity=0";
                 var response = await MyRequest.GetAsync(uri);
                 var nbList = (List<NbRbSiteRate>)JsonConvert.DeserializeObject(response, typeof(List<NbRbSiteRate>));
                 if (nbList.Count == 0) return null; 
