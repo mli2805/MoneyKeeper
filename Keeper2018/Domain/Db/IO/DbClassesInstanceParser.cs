@@ -84,20 +84,22 @@ namespace Keeper2018
         {
             var tran = new Transaction();
             var substrings = s.Split(';');
-         //   tran.Timestamp = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             tran.Timestamp = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
             tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-            tran.Receipt = int.Parse(substrings[2].Trim());
+            tran.PaymentWay = (PaymentWay)Enum.Parse(typeof(PaymentWay), substrings[2]);
+            tran.Receipt = int.Parse(substrings[3].Trim());
 
-            tran.MyAccount = int.Parse(substrings[3].Trim());
-            tran.MySecondAccount = int.Parse(substrings[4].Trim());
+            tran.MyAccount = int.Parse(substrings[4].Trim());
+            tran.MySecondAccount = int.Parse(substrings[5].Trim());
 
-            tran.Amount = Convert.ToDecimal(substrings[5], new CultureInfo("en-US"));
-            tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[6]);
-            tran.AmountInReturn = Convert.ToDecimal(substrings[7], new CultureInfo("en-US"));
-            tran.CurrencyInReturn = substrings[8].Trim() != "" ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[8]) : CurrencyCode.USD;
-            tran.Tags = TagsFromString(substrings[9].Trim());
-            tran.Comment = substrings[10].Trim();
+            tran.Amount = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
+            tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]);
+            tran.AmountInReturn = Convert.ToDecimal(substrings[8], new CultureInfo("en-US"));
+            tran.CurrencyInReturn = substrings[9].Trim() != "" 
+                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[9]) 
+                : CurrencyCode.USD;
+            tran.Tags = TagsFromString(substrings[10].Trim());
+            tran.Comment = substrings[11].Trim();
 
             return tran;
         }

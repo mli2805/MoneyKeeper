@@ -10,6 +10,7 @@ namespace KeeperDomain
         public int Id { get; set; } //PK
         public DateTime Timestamp { get; set; }
         public OperationType Operation { get; set; }
+        public PaymentWay PaymentWay { get; set; }
         public int Receipt { get; set; }
         public int MyAccount { get; set; }
         public int MySecondAccount { get; set; }
@@ -22,9 +23,8 @@ namespace KeeperDomain
 
         public string Dump()
         {
-           // return Convert.ToString(Timestamp, new CultureInfo("ru-RU")) + " ; " +
             return Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
-                   Operation + " ; " + Receipt + " ; " +
+                   Operation + " ; " + PaymentWay + " ; " + Receipt + " ; " +
                    MyAccount + " ; " + MySecondAccount + " ; " +
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + CurrencyInReturn + " ; " +
