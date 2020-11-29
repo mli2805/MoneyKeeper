@@ -11,18 +11,18 @@ namespace KeeperSqliteDb.Migrations
                 name: "Cars",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    AccountId = table.Column<int>(nullable: false),
+                    AccountId = table.Column<int>(),
                     Title = table.Column<string>(nullable: true),
-                    IssueYear = table.Column<int>(nullable: false),
+                    IssueYear = table.Column<int>(),
                     Vin = table.Column<string>(nullable: true),
                     StateRegNumber = table.Column<string>(nullable: true),
-                    Start = table.Column<DateTime>(nullable: false),
-                    MileageStart = table.Column<int>(nullable: false),
-                    Finish = table.Column<DateTime>(nullable: false),
-                    MileageFinish = table.Column<int>(nullable: false),
-                    SupposedSale = table.Column<int>(nullable: false),
+                    Start = table.Column<DateTime>(),
+                    MileageStart = table.Column<int>(),
+                    Finish = table.Column<DateTime>(),
+                    MileageFinish = table.Column<int>(),
+                    SupposedSale = table.Column<int>(),
                     Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -34,13 +34,13 @@ namespace KeeperSqliteDb.Migrations
                 name: "Deposit",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    MyAccountId = table.Column<int>(nullable: false),
-                    DepositOfferId = table.Column<int>(nullable: false),
+                    MyAccountId = table.Column<int>(),
+                    DepositOfferId = table.Column<int>(),
                     Serial = table.Column<string>(nullable: true),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    FinishDate = table.Column<DateTime>(nullable: false),
+                    StartDate = table.Column<DateTime>(),
+                    FinishDate = table.Column<DateTime>(),
                     ShortName = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(nullable: true)
                 },
@@ -53,16 +53,16 @@ namespace KeeperSqliteDb.Migrations
                 name: "DepositCalculationRules",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    IsFactDays = table.Column<bool>(nullable: false),
-                    EveryStartDay = table.Column<bool>(nullable: false),
-                    EveryFirstDayOfMonth = table.Column<bool>(nullable: false),
-                    EveryLastDayOfMonth = table.Column<bool>(nullable: false),
-                    IsCapitalized = table.Column<bool>(nullable: false),
-                    IsRateFixed = table.Column<bool>(nullable: false),
-                    HasAdditionalProcent = table.Column<bool>(nullable: false),
-                    AdditionalProcent = table.Column<double>(nullable: false)
+                    IsFactDays = table.Column<bool>(),
+                    EveryStartDay = table.Column<bool>(),
+                    EveryFirstDayOfMonth = table.Column<bool>(),
+                    EveryLastDayOfMonth = table.Column<bool>(),
+                    IsCapitalized = table.Column<bool>(),
+                    IsRateFixed = table.Column<bool>(),
+                    HasAdditionalProcent = table.Column<bool>(),
+                    AdditionalProcent = table.Column<double>()
                 },
                 constraints: table =>
                 {
@@ -73,17 +73,17 @@ namespace KeeperSqliteDb.Migrations
                 name: "Fuellings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    Timestamp = table.Column<DateTime>(nullable: false),
-                    Volume = table.Column<double>(nullable: false),
-                    FuelType = table.Column<int>(nullable: false),
-                    Amount = table.Column<decimal>(nullable: false),
-                    Currency = table.Column<int>(nullable: false),
+                    Timestamp = table.Column<DateTime>(),
+                    Volume = table.Column<double>(),
+                    FuelType = table.Column<int>(),
+                    Amount = table.Column<decimal>(),
+                    Currency = table.Column<int>(),
                     Comment = table.Column<string>(nullable: true),
-                    CarAccountId = table.Column<int>(nullable: false),
-                    OneLitrePrice = table.Column<decimal>(nullable: false),
-                    OneLitreInUsd = table.Column<decimal>(nullable: false)
+                    CarAccountId = table.Column<int>(),
+                    OneLitrePrice = table.Column<decimal>(),
+                    OneLitreInUsd = table.Column<decimal>()
                 },
                 constraints: table =>
                 {
@@ -94,10 +94,10 @@ namespace KeeperSqliteDb.Migrations
                 name: "OneRate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    Value = table.Column<double>(nullable: false),
-                    Unit = table.Column<int>(nullable: false)
+                    Value = table.Column<double>(),
+                    Unit = table.Column<int>()
                 },
                 constraints: table =>
                 {
@@ -108,12 +108,12 @@ namespace KeeperSqliteDb.Migrations
                 name: "TagAssociations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    ExternalAccount = table.Column<int>(nullable: false),
-                    OperationType = table.Column<int>(nullable: false),
-                    Tag = table.Column<int>(nullable: false),
-                    Destination = table.Column<int>(nullable: false)
+                    ExternalAccount = table.Column<int>(),
+                    OperationType = table.Column<int>(),
+                    Tag = table.Column<int>(),
+                    Destination = table.Column<int>()
                 },
                 constraints: table =>
                 {
@@ -124,7 +124,7 @@ namespace KeeperSqliteDb.Migrations
                 name: "Transactions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
@@ -136,11 +136,11 @@ namespace KeeperSqliteDb.Migrations
                 name: "YearMileage",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    CarId = table.Column<int>(nullable: false),
-                    YearNumber = table.Column<int>(nullable: false),
-                    Mileage = table.Column<int>(nullable: false)
+                    CarId = table.Column<int>(),
+                    YearNumber = table.Column<int>(),
+                    Mileage = table.Column<int>()
                 },
                 constraints: table =>
                 {
@@ -157,11 +157,11 @@ namespace KeeperSqliteDb.Migrations
                 name: "Accounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
                     Header = table.Column<string>(nullable: true),
-                    OwnerId = table.Column<int>(nullable: false),
-                    IsFolder = table.Column<bool>(nullable: false),
+                    OwnerId = table.Column<int>(),
+                    IsFolder = table.Column<bool>(),
                     DepositId = table.Column<int>(nullable: true),
                     Comment = table.Column<string>(nullable: true)
                 },
@@ -180,9 +180,9 @@ namespace KeeperSqliteDb.Migrations
                 name: "DepositEssentials",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    DepositOfferId = table.Column<int>(nullable: false),
+                    DepositOfferId = table.Column<int>(),
                     CalculationRulesId = table.Column<int>(nullable: true),
                     Comment = table.Column<string>(nullable: true)
                 },
@@ -201,7 +201,7 @@ namespace KeeperSqliteDb.Migrations
                 name: "CbrRate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
                     UsdId = table.Column<int>(nullable: true)
                 },
@@ -220,7 +220,7 @@ namespace KeeperSqliteDb.Migrations
                 name: "NbRbRates",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
                     UsdId = table.Column<int>(nullable: true),
                     EuroId = table.Column<int>(nullable: true),
@@ -253,12 +253,12 @@ namespace KeeperSqliteDb.Migrations
                 name: "DepositRateLines",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    DateFrom = table.Column<DateTime>(nullable: false),
-                    AmountFrom = table.Column<decimal>(nullable: false),
-                    AmountTo = table.Column<decimal>(nullable: false),
-                    Rate = table.Column<decimal>(nullable: false),
+                    DateFrom = table.Column<DateTime>(),
+                    AmountFrom = table.Column<decimal>(),
+                    AmountTo = table.Column<decimal>(),
+                    Rate = table.Column<decimal>(),
                     DepositEssentialId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -276,9 +276,9 @@ namespace KeeperSqliteDb.Migrations
                 name: "Rates",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
-                    Date = table.Column<DateTime>(nullable: false),
+                    Date = table.Column<DateTime>(),
                     NbRatesId = table.Column<int>(nullable: true),
                     CbrRateId = table.Column<int>(nullable: true),
                     MyEurUsdRateId = table.Column<int>(nullable: true),

@@ -50,10 +50,11 @@ namespace Keeper2018
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountModel = account; 
             
-            //var records = await Convert();
+//            var records = await ConvertInto2020Database();
         }
 
-        private async Task<int> Convert()
+        // ReSharper disable once UnusedMember.Local
+        private async Task<int> ConvertInto2020Database()
         {
             using (KeeperContext db = new KeeperContext())
             {
