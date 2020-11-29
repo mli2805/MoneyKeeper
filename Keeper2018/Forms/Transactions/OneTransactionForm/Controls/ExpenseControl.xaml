@@ -11,14 +11,17 @@
     <Grid>
         <StackPanel Background="#FFFFF8F8">
             <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="2,0,2,0"/>
-            <Label Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
+            <Grid>
+                <ComboBox ItemsSource="{Binding PaymentWays}" SelectedItem="{Binding SelectedPaymentWay, Mode=TwoWay}" 
+                          Width="190" HorizontalAlignment="Left" Margin="70,0,0,0" Height="22"/>
+                <Label Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
+            </Grid>
 
             <keeper2018:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="5,0,0,0"/>
             <Label Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="85,0,0,0" Foreground="Red"/>
 
             <keeper2018:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="2,10,2,0"/>
 
-            <!-- <Button Name="InputFuelling" Width="70" Content="Заправка" Margin="150,0,0,0"/> -->
             <DockPanel Margin="0,40,0,2">
                 <keeper2018:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" />
             </DockPanel>

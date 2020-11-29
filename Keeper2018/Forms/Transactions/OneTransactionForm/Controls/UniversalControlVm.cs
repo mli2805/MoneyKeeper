@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +14,7 @@ namespace Keeper2018
         private Visibility _visibility;
         public Visibility Visibility
         {
-            get { return _visibility; }
+            get => _visibility;
             set
             {
                 if (value == _visibility) return;
@@ -37,7 +39,7 @@ namespace Keeper2018
 
         public AccNameSelectorVm MyAccNameSelectorVm
         {
-            get { return _myAccNameSelectorVm; }
+            get => _myAccNameSelectorVm;
             set
             {
                 if (Equals(value, _myAccNameSelectorVm)) return;
@@ -47,7 +49,7 @@ namespace Keeper2018
         }
         public AccNameSelectorVm MySecondAccNameSelectorVm
         {
-            get { return _mySecondAccNameSelectorVm; }
+            get => _mySecondAccNameSelectorVm;
             set
             {
                 if (Equals(value, _mySecondAccNameSelectorVm)) return;
@@ -57,7 +59,7 @@ namespace Keeper2018
         }
         public AmountInputControlVm MyAmountInputControlVm
         {
-            get { return _myAmountInputControlVm; }
+            get => _myAmountInputControlVm;
             set
             {
                 if (Equals(value, _myAmountInputControlVm)) return;
@@ -67,7 +69,7 @@ namespace Keeper2018
         }
         public AmountInputControlVm MyAmountInReturnInputControlVm
         {
-            get { return _myAmountInReturnInputControlVm; }
+            get => _myAmountInReturnInputControlVm;
             set
             {
                 if (Equals(value, _myAmountInReturnInputControlVm)) return;
@@ -78,7 +80,7 @@ namespace Keeper2018
 
         public TagPickerVm MyTagPickerVm
         {
-            get { return _myTagPickerVm; }
+            get => _myTagPickerVm;
             set
             {
                 if (Equals(value, _myTagPickerVm)) return;
@@ -88,7 +90,7 @@ namespace Keeper2018
         }
         public DatePickerWithTrianglesVm MyDatePickerVm
         {
-            get { return _myDatePickerVm; }
+            get => _myDatePickerVm;
             set
             {
                 if (Equals(value, _myDatePickerVm)) return;
@@ -97,11 +99,13 @@ namespace Keeper2018
             }
         }
 
-       //  public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
+        //  public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
         private string _myAccountBalance;
+        private PaymentWay _selectedPaymentWay;
+
         public string MyAccountBalance
         {
-            get { return _myAccountBalance; }
+            get => _myAccountBalance;
             set
             {
                 if (value == _myAccountBalance) return;
@@ -110,13 +114,24 @@ namespace Keeper2018
             }
         }
 
-     
-
         public string MySecondAccountBalance => _balanceDuringTransactionHinter.GetMySecondAccountBalance(TranInWork);
         public string AmountInUsd => _balanceDuringTransactionHinter.GetAmountInUsd(TranInWork);
         public string AmountInReturnInUsd => _balanceDuringTransactionHinter.GetAmountInReturnInUsd(TranInWork);
         public string ExchangeRate => _balanceDuringTransactionHinter.GetExchangeRate(TranInWork);
 
+        public List<PaymentWay> PaymentWays { get; set; }
+
+        public PaymentWay SelectedPaymentWay
+        {
+            get => _selectedPaymentWay;
+            set
+            {
+                if (value == _selectedPaymentWay) return;
+                _selectedPaymentWay = value;
+                TranInWork.PaymentWay = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public UniversalControlVm(KeeperDb db, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
                  AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder)
@@ -125,12 +140,16 @@ namespace Keeper2018
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             _associationFinder = associationFinder;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
+
+            PaymentWays = Enum.GetValues(typeof(PaymentWay)).OfType<PaymentWay>().ToList();
         }
 
         public void SetTran(TransactionModel tran)
         {
             TranInWork = tran;
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
+
+            SelectedPaymentWay = TranInWork.PaymentWay;
 
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
@@ -193,6 +212,8 @@ namespace Keeper2018
                     ReactOnUsersAdd();
                 else ReactOnAssociationAdd();
             }
+
+            SelectedPaymentWay = GuessPaymentWay();
         }
 
         private void ReactOnUsersAdd()
@@ -261,8 +282,45 @@ namespace Keeper2018
                 TranInWork.MyAccount = _db.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
                 MyAmountInputControlVm.Currency =
                     _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                SelectedPaymentWay = GuessPaymentWay();
             }
         }
+
+        private static List<int> ERIP = new List<int> { 192, 363, 285, 353 }; // коммунальные квартира и дача, кредит, медицина
+        private static List<int> Terminal = new List<int> { 179 }; // магазины
+        private static List<int> CardOther = new List<int> { 718 }; // заправка
+
+        private PaymentWay GuessPaymentWay()
+        {
+            if (TranInWork.Operation != OperationType.Расход)
+                return PaymentWay.НеЗадано;
+            if (TranInWork.MyAccount.Is(160))
+                return PaymentWay.Наличные;
+            if (TranInWork.MyAccount.Is(161))
+            {
+                foreach (var tag in TranInWork.Tags)
+                {
+                    foreach (var grou in Terminal)
+                    {
+                        if (tag.Is(grou))
+                            return PaymentWay.КартаТерминал;
+                    }
+                    foreach (var grou in CardOther)
+                    {
+                        if (tag.Is(grou))
+                            return PaymentWay.КартаДругое;
+                    }
+                    foreach (var grou in ERIP)
+                    {
+                        if (tag.Is(grou))
+                            return PaymentWay.КартаЕрип;
+                    }
+                }
+                return PaymentWay.НеЗадано;
+            }
+            return PaymentWay.НеЗадано;
+        }
+
         private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "MyAccName")
@@ -279,7 +337,6 @@ namespace Keeper2018
             {
                 case "MyAccount":
                     Task.Factory.StartNew(S);
-                  //  NotifyOfPropertyChange(nameof(MyAccountBalance));
                     break;
                 case "MySecondAccount":
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
@@ -292,7 +349,6 @@ namespace Keeper2018
                 case "Timestamp":
                     NotifyOfPropertyChange(nameof(AmountInUsd));
                     NotifyOfPropertyChange(nameof(AmountInReturnInUsd));
-                //    NotifyOfPropertyChange(nameof(MyAccountBalance));
                     Task.Factory.StartNew(S);
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     NotifyOfPropertyChange(nameof(ExchangeRate));
@@ -306,47 +362,5 @@ namespace Keeper2018
             if (Application.Current.Dispatcher != null)
                 Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
         }
-
-//        public void InputFuelling()
-//        {
-//            _fuellingInputViewModel.Initialize(CreateNewFuelling());
-//            var result = _windowManager.ShowDialog(_fuellingInputViewModel);
-//            if (result == true)
-//            {
-//                ApplyInput(_fuellingInputViewModel.Vm);
-//            }
-//        }
-//
-//        private Fuelling CreateNewFuelling()
-//        {
-//            return new Fuelling()
-//            {
-//                CarAccountId = _db.Bin.Cars.Last().AccountId,
-//                Timestamp = TranInWork.Timestamp,
-//                Volume = 30,
-//                FuelType = FuelType.ДтЕвро5,
-//                Amount = TranInWork.Amount,
-//                Currency = TranInWork.Currency,
-//                Comment = TranInWork.Comment,
-//            };
-//        }
-//
-//        private void ApplyInput(FuellingInputVm vm)
-//        {
-//            TranInWork.Timestamp = vm.Timestamp;
-//            TranInWork.Amount = vm.Amount;
-//            TranInWork.Currency = vm.Currency;
-//
-//            var carAccount = _db.AcMoDict[vm.CarAccountId];
-//            var account = carAccount.Children.First(c => c.Name.Contains("авто топливо"));
-//            TranInWork.Tags = new List<AccountModel>()
-//            {
-//                account, 
-//                _db.AcMoDict[272], // АЗС
-//            };
-//
-//
-//        }
-
     }
 }

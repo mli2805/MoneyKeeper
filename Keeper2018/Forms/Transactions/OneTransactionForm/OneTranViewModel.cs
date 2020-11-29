@@ -125,6 +125,7 @@ namespace Keeper2018
                 TranInWork.AmountInReturn = 0;
                 TranInWork.CurrencyInReturn = null;
             }
+            if (TranInWork.PaymentWay == PaymentWay.НеЗадано) return false;
             /* more checks
              * ...
             */

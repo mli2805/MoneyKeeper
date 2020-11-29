@@ -14,6 +14,7 @@ namespace Keeper2018
                 TransactionKey = tran.TransactionKey,
                 Timestamp = tran.Timestamp,
                 Operation = tran.Operation,
+                PaymentWay = tran.PaymentWay,
                 MyAccount = tran.MyAccount,
                 MySecondAccount = tran.MySecondAccount,
                 Amount = tran.Amount,
@@ -38,6 +39,7 @@ namespace Keeper2018
             destinationTran.TransactionKey = tran.TransactionKey;
             destinationTran.Timestamp = tran.Timestamp;
             destinationTran.Operation = tran.Operation;
+            destinationTran.PaymentWay = tran.PaymentWay;
             destinationTran.MyAccount = tran.MyAccount;
             destinationTran.MySecondAccount = tran.MySecondAccount;
             destinationTran.Amount = tran.Amount;
@@ -70,6 +72,7 @@ namespace Keeper2018
             return null;
 
         }
+
         public static bool HasntGotCategoryTagThoughItShould(this TransactionModel tran)
         {
             return (tran.Operation == OperationType.Доход || tran.Operation == OperationType.Расход) &&

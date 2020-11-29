@@ -23,6 +23,7 @@ namespace Keeper2018
 
         public int Receipt { get; set; }
         public OperationType Operation { get; set; }
+        public PaymentWay PaymentWay { get; set; }
 
         private AccountModel _myAccount;
         public AccountModel MyAccount
