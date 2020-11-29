@@ -54,7 +54,10 @@
                     <MenuItem Header="Раскладка папки по" cal:Message.Attach="ShowFolderSummaryForm" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
                     </MenuItem>
-                    <MenuItem Header="Расшифровка в PDF" cal:Message.Attach="ShowTagInDetails" BorderBrush="{x:Null}" 
+                    <MenuItem Header="По способам оплаты" cal:Message.Attach="ShowPaymentWaysForm" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsCard}">
+                    </MenuItem>
+                    <MenuItem Header="Расшифровка дох-расх в PDF" cal:Message.Attach="ShowTagInDetails" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsTag}">
                     </MenuItem>
                     <MenuItem Header="Сделать депозитом" cal:Message.Attach="ConvertToDeposit" BorderBrush="{x:Null}" 

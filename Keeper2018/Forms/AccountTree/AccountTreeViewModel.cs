@@ -118,6 +118,13 @@ namespace Keeper2018
             WindowManager.ShowWindow(folderSummaryViewModel);
         }
 
+        public void ShowPaymentWaysForm()
+        {
+            var paymentWaysViewModel = new PaymentWaysViewModel(KeeperDb);
+            paymentWaysViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+            WindowManager.ShowWindow(paymentWaysViewModel);
+        }
+
         public void ShowExpensesOnAccount()
         {
             _expensesOnAccountViewModel.Initialize(ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);

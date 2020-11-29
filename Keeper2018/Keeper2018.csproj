@@ -256,6 +256,10 @@
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneCardViewModel.cs" />
+    <Compile Include="Forms\AccountTree\PaymentWays\PaymentWaysView.xaml.cs">
+      <DependentUpon>PaymentWaysView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\PaymentWays\PaymentWaysViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceDetailedLine.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithDetails.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
@@ -607,6 +611,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\AccountTree\OneDepositView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\PaymentWays\PaymentWaysView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
