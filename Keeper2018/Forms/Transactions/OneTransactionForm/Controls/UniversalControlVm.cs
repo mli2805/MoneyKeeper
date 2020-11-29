@@ -126,7 +126,6 @@ namespace Keeper2018
             get => _selectedPaymentWay;
             set
             {
-                if (value == _selectedPaymentWay) return;
                 _selectedPaymentWay = value;
                 TranInWork.PaymentWay = value;
                 NotifyOfPropertyChange();
@@ -149,7 +148,7 @@ namespace Keeper2018
             TranInWork = tran;
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
 
-            SelectedPaymentWay = TranInWork.PaymentWay;
+            SelectedPaymentWay = TranInWork.PaymentWay == PaymentWay.НеЗадано ? GuessPaymentWay() : TranInWork.PaymentWay;
 
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
@@ -286,9 +285,13 @@ namespace Keeper2018
             }
         }
 
-        private static List<int> ERIP = new List<int> { 192, 363, 285, 353 }; // коммунальные квартира и дача, кредит, медицина
-        private static List<int> Terminal = new List<int> { 179 }; // магазины
-        private static List<int> CardOther = new List<int> { 718 }; // заправка
+        private static List<int> ERIP = new List<int>
+        {
+            192, 363, 285,  // коммунальные квартира и дача, кредит
+            270, 736, 303, 183, // велком, школьная столовая, страховщики, государство
+        }; 
+        private static List<int> Terminal = new List<int> { 179, 353 }; // магазины, медицина
+        private static List<int> CardOther = new List<int> { 718, 264 }; // заправка, минтранс
 
         private PaymentWay GuessPaymentWay()
         {

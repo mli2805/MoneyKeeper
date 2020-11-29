@@ -89,7 +89,7 @@ namespace Keeper2018
             _caption = isAddMode ? "Добавить" : "Изменить";
             OperationTypeViewModel.SelectedOperationType = tran.Operation;
             TranInWork = tran.Clone();
-
+                
             InitControls();
             SetControlVisibilities(TranInWork.Operation);
 
@@ -125,7 +125,12 @@ namespace Keeper2018
                 TranInWork.AmountInReturn = 0;
                 TranInWork.CurrencyInReturn = null;
             }
-            if (TranInWork.PaymentWay == PaymentWay.НеЗадано) return false;
+
+            if (TranInWork.PaymentWay == PaymentWay.НеЗадано)
+            {
+                MessageBox.Show("Не задан способ оплаты!", "Ошибка!");
+                return false;
+            }
             /* more checks
              * ...
             */
