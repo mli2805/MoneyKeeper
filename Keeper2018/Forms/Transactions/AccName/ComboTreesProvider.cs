@@ -68,7 +68,7 @@ namespace Keeper2018
             // Expense
             MyAccNamesForExpense = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.AcMoDict[158], new List<int> {393, 235, 166})
+                new AccName().PopulateFromAccount(_db.AcMoDict[158], new List<int> {166})
             };
 
             // Expense Tags

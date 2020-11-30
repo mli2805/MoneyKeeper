@@ -77,7 +77,10 @@ namespace Keeper2018
         {
             var externalAccount = tran.Tags.FirstOrDefault(a => a.Is(157));
             if (externalAccount == null)
-                MessageBox.Show("Должен быть хотя бы один продавец/услугодатель");
+                MessageBox.Show(tran.Operation == OperationType.Расход 
+                    ? "Должен быть хотя бы один продавец/услугодатель" 
+                    : "Должен быть хотя бы один плательщик");
+
             return externalAccount;
         }
 

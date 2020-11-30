@@ -126,7 +126,7 @@ namespace Keeper2018
                 TranInWork.CurrencyInReturn = null;
             }
 
-            if (TranInWork.PaymentWay == PaymentWay.НеЗадано)
+            if (TranInWork.Operation == OperationType.Расход && TranInWork.PaymentWay == PaymentWay.НеЗадано)
             {
                 MessageBox.Show("Не задан способ оплаты!", "Ошибка!");
                 return false;
