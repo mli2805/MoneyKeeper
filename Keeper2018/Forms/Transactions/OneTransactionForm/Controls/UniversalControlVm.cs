@@ -148,7 +148,9 @@ namespace Keeper2018
             TranInWork = tran;
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
 
-            SelectedPaymentWay = TranInWork.PaymentWay == PaymentWay.НеЗадано ? GuessPaymentWay() : TranInWork.PaymentWay;
+            SelectedPaymentWay = TranInWork.PaymentWay == PaymentWay.НеЗадано 
+                ? PaymentGuess.GuessPaymentWay(TranInWork) 
+                : TranInWork.PaymentWay;
 
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
@@ -212,7 +214,7 @@ namespace Keeper2018
                 else ReactOnAssociationAdd();
             }
 
-            SelectedPaymentWay = GuessPaymentWay();
+            SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
         }
 
         private void ReactOnUsersAdd()
@@ -281,49 +283,11 @@ namespace Keeper2018
                 TranInWork.MyAccount = _db.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
                 MyAmountInputControlVm.Currency =
                     _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
-                SelectedPaymentWay = GuessPaymentWay();
+                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
             }
         }
 
-        private static List<int> ERIP = new List<int>
-        {
-            192, 363, 285,  // коммунальные квартира и дача, кредит
-            270, 736, 303, 183, // велком, школьная столовая, страховщики, государство
-        }; 
-        private static List<int> Terminal = new List<int> { 179, 353 }; // магазины, медицина
-        private static List<int> CardOther = new List<int> { 718, 264 }; // заправка, минтранс
-
-        private PaymentWay GuessPaymentWay()
-        {
-            if (TranInWork.Operation != OperationType.Расход)
-                return PaymentWay.НеЗадано;
-            if (TranInWork.MyAccount.Is(160))
-                return PaymentWay.Наличные;
-            if (TranInWork.MyAccount.Is(161))
-            {
-                foreach (var tag in TranInWork.Tags)
-                {
-                    foreach (var grou in Terminal)
-                    {
-                        if (tag.Is(grou))
-                            return PaymentWay.КартаТерминал;
-                    }
-                    foreach (var grou in CardOther)
-                    {
-                        if (tag.Is(grou))
-                            return PaymentWay.КартаДругое;
-                    }
-                    foreach (var grou in ERIP)
-                    {
-                        if (tag.Is(grou))
-                            return PaymentWay.КартаЕрип;
-                    }
-                }
-                return PaymentWay.НеЗадано;
-            }
-            return PaymentWay.НеЗадано;
-        }
-
+     
         private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "MyAccName")

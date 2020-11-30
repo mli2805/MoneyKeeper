@@ -21,7 +21,7 @@
             </StackPanel>
             <StackPanel></StackPanel>
         </DockPanel>
-        <ListView DockPanel.Dock="Bottom" ItemsSource="{Binding Totals}" Margin="5" Height="76"/>
+        <ListView DockPanel.Dock="Bottom" ItemsSource="{Binding Totals}" Margin="5" Height="86"/>
         <ListView ItemsSource="{Binding Lines}" Margin="5"/>
     </DockPanel>
 </Window>

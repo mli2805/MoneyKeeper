@@ -171,12 +171,8 @@ namespace Keeper2018
 
         private bool LeaveOneExternalAccountInTags()
         {
-            var externalAccount = TranInWork.Tags.FirstOrDefault(a => a.Is(157));
-            if (externalAccount == null)
-            {
-                MessageBox.Show("Должен быть хотя бы один продавец/услугодатель");
-                return false;
-            }
+            var externalAccount = TranInWork.GetExternalAccount();
+            if (externalAccount == null) return false;
             TranInWork.Tags = new List<AccountModel>() { externalAccount };
             InitControls();
             return true;

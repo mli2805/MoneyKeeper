@@ -63,8 +63,8 @@ namespace Keeper2018
         private static AccountModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
         {
             var rootId = isIncome ? 185 : 189;
-            var result = tran.Tags.FirstOrDefault(t => t.Is(rootId));
-            if (result != null) return result;
+            var category = tran.Tags.FirstOrDefault(t => t.Is(rootId));
+            if (category != null) return category;
             MessageBox.Show(
                 batchProcessing
                     ? $"Нет категории для проводки \n {tran.Timestamp} {tran.Amount} {tran.Currency.ToString().ToLower()}"
@@ -73,9 +73,18 @@ namespace Keeper2018
 
         }
 
+        public static AccountModel GetExternalAccount(this TransactionModel tran)
+        {
+            var externalAccount = tran.Tags.FirstOrDefault(a => a.Is(157));
+            if (externalAccount == null)
+                MessageBox.Show("Должен быть хотя бы один продавец/услугодатель");
+            return externalAccount;
+        }
+
         public static bool HasntGotCategoryTagThoughItShould(this TransactionModel tran)
         {
-            return (tran.Operation == OperationType.Доход || tran.Operation == OperationType.Расход) &&
+            if (tran.Operation != OperationType.Доход && tran.Operation != OperationType.Расход) return false; // OK
+            return tran.GetExternalAccount() == null ||
                    tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null;
         }
 

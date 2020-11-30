@@ -41,6 +41,10 @@ namespace Keeper2018
             _trans = _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Расход
                                                             && t.MyAccount == _cardAccountModel.Id
                                                             && _period.Includes(t.Timestamp)).ToList();
+
+            foreach (var tran in _trans.Where(t => t.PaymentWay == PaymentWay.НеЗадано))
+                tran.PaymentWay = PaymentGuess.GuessPaymentWay(tran.Map(_db.AcMoDict, -1));
+
             Lines.Clear();
             Totals.Clear();
             foreach (var paymentWay in Enum.GetValues(typeof(PaymentWay)).OfType<PaymentWay>().ToList())

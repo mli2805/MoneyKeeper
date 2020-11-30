@@ -505,6 +505,7 @@
     <Compile Include="Forms\Transactions\OneTransactionForm\Controls\IncomeControl.xaml.cs">
       <DependentUpon>IncomeControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\Controls\PaymentGuess.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\Controls\TransferControl.xaml.cs">
       <DependentUpon>TransferControl.xaml</DependentUpon>
     </Compile>
