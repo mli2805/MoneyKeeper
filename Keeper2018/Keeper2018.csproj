@@ -256,6 +256,7 @@
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\OneCardViewModel.cs" />
+    <Compile Include="Forms\AccountTree\PaymentWays\ExpenseTran.cs" />
     <Compile Include="Forms\AccountTree\PaymentWays\PaymentWaysView.xaml.cs">
       <DependentUpon>PaymentWaysView.xaml</DependentUpon>
     </Compile>
