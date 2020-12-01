@@ -37,6 +37,8 @@ namespace Keeper2018
                 WriteTransactionsContent(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
 
+                db.WriteCars();
+
                 return true;
             }
             catch (Exception e)
@@ -77,6 +79,19 @@ namespace Keeper2018
                 }
             }
             return depoOffers;
+        }
+
+        private static void WriteCars(this KeeperDb db)
+        {
+            var cars = new List<string>();
+            var yearMileages = new List<string>();
+            foreach (var car in db.Bin.Cars)
+            {
+                cars.Add(car.Dump());
+                yearMileages.AddRange(car.YearMileages.Select(mileage => mileage.Dump()));
+            }
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Cars.txt"), cars);
+            File.WriteAllLines(DbIoUtils.GetBackupFilePath("CarYearMileages.txt"), yearMileages);
         }
 
         public static async Task<bool> ZipTxtDbAsync()

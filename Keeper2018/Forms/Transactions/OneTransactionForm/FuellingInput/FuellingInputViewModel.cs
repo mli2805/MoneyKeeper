@@ -64,7 +64,7 @@ namespace Keeper2018
             Cars = _db.Bin.Cars.Select(c => c.Title).ToList();
             Vm = Mapper.Map<Fuelling, FuellingInputVm>(vm);
             Vm.Db = _db;
-            SelectedCar = _db.Bin.Cars.First(c => c.AccountId == vm.CarAccountId).Title;
+            SelectedCar = _db.Bin.Cars.First(c => c.CarAccountId == vm.CarAccountId).Title;
         }
         protected override void OnViewLoaded(object view)
         {

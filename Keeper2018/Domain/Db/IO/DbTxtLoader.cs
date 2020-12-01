@@ -22,6 +22,7 @@ namespace Keeper2018
                 LoadDepositOffers(keeperBin);
                 LoadTagAssociations(keeperBin);
                 LoadTransactions(keeperBin);
+                LoadCars(keeperBin);
                 return keeperBin;
             }
             catch (Exception e)
@@ -70,6 +71,16 @@ namespace Keeper2018
                 }
             }
             bin.DepositOffers.Add(depositOffer);
+        }
+
+        private static void LoadCars(KeeperBin bin)
+        {
+            var carsContent = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Cars.txt"));
+            var yearMileageContent = File.ReadAllLines(DbIoUtils.GetBackupFilePath("CarYearMileages.txt"));
+            bin.Cars = carsContent.Select(line => line.CarFromString()).ToList();
+            var yearMileages = yearMileageContent.Select(line => line.YearMileageFromString()).ToList();
+            foreach (var car in bin.Cars)
+                car.YearMileages = yearMileages.Where(l => l.CarId == car.CarAccountId).ToArray();
         }
 
         private static void LoadAccounts(KeeperBin bin)

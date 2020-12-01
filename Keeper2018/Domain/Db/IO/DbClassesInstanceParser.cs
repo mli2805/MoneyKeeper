@@ -12,7 +12,6 @@ namespace Keeper2018
         {
             var rate = new CurrencyRates();
             var substrings = s.Split(';');
-         //   rate.Date = Convert.ToDateTime(substrings[0], new CultureInfo("ru-RU"));
             rate.Date = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy",CultureInfo.InvariantCulture);
             rate.NbRates = NbRbRatesFromString(substrings[1]);
             rate.CbrRate.Usd = OneRateFromString(substrings[2]);
@@ -181,6 +180,40 @@ namespace Keeper2018
             depositRateLine.AmountTo = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
             depositRateLine.Rate = Convert.ToDecimal(substrings[5], new CultureInfo("en-US"));
             return depositRateLine;
+        }
+
+        public static Car CarFromString(this string str)
+        {
+            var car = new Car();
+            var array = str.Split(';');
+            
+            car.CarAccountId = int.Parse(array[0].Trim());
+            car.Title = array[1].Trim();
+            car.IssueYear = int.Parse(array[2].Trim());
+            car.Vin = array[3].Trim();
+            car.StateRegNumber = array[4].Trim();
+
+            car.PurchaseDate = DateTime.ParseExact(array[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            car.PurchaseMileage = int.Parse(array[6].Trim());
+            car.SaleDate = DateTime.ParseExact(array[7].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            car.SaleMileage = int.Parse(array[8].Trim());
+
+            car.SupposedSalePrice = int.Parse(array[9].Trim());
+            car.Comment = array[10].Trim();
+            return car;
+        }
+
+        public static YearMileage YearMileageFromString(this string str)
+        {
+            var yearMileage = new YearMileage();
+            var array = str.Split(';');
+
+            yearMileage.Id = int.Parse(array[0].Trim());
+            yearMileage.CarId = int.Parse(array[1].Trim());
+            yearMileage.YearNumber = int.Parse(array[2].Trim());
+            yearMileage.Mileage = int.Parse(array[3].Trim());
+
+            return yearMileage;
         }
     }
 }

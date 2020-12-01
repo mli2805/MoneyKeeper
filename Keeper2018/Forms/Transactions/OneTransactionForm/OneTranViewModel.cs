@@ -213,7 +213,7 @@ namespace Keeper2018
         {
             return new Fuelling()
             {
-                CarAccountId = _db.Bin.Cars.Last().AccountId,
+                CarAccountId = _db.Bin.Cars.Last().CarAccountId,
                 Timestamp = TranInWork.Timestamp,
                 Volume = 30,
                 FuelType = FuelType.ДтЕвро5,
