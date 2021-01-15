@@ -131,6 +131,13 @@ namespace Keeper2018
             _windowManager.ShowWindow(basketDiagramViewModel);
         }
 
+        public void MonthlyChart()
+        {
+            var monthlyChartViewModel = new MonthlyChartViewModel();
+            monthlyChartViewModel.Initialize(OxyplotKey, Rows.ToList());
+            _windowManager.ShowWindow(monthlyChartViewModel);
+        }
+
         public async void Download()
         {
             IsDownloadEnabled = false;

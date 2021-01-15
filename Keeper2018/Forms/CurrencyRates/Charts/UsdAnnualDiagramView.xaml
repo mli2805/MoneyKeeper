@@ -14,9 +14,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <oxy:PlotView Grid.Row="0" Model="{Binding MyPlotModel2017}"/>
-        <oxy:PlotView Grid.Row="1" Model="{Binding MyPlotModel2018}"/>
-        <oxy:PlotView Grid.Row="2" Model="{Binding MyPlotModel2019}"/>
-        <oxy:PlotView Grid.Row="3" Model="{Binding MyPlotModel2020}"/>
+        <oxy:PlotView Grid.Row="0" Model="{Binding MyPlotModel2018}"/>
+        <oxy:PlotView Grid.Row="1" Model="{Binding MyPlotModel2019}"/>
+        <oxy:PlotView Grid.Row="2" Model="{Binding MyPlotModel2020}"/>
+        <oxy:PlotView Grid.Row="3" Model="{Binding MyPlotModel2021}"/>
     </Grid>
 </Window>

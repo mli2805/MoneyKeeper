@@ -12,35 +12,39 @@ namespace Keeper2018
     {
         private string _caption;
         private List<CurrencyRatesModel> _rates;
+        private int _firstYear = 2017;
         public PlotModel MyPlotModel { get; set; } = new PlotModel();
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = _caption;
+            DisplayName = "курс доллара по НБ РБ  ( " + _caption + ")";
         }
 
         public void Initialize(string caption, List<CurrencyRatesModel> rates)
         {
             _rates = rates;
             _caption = caption;
-//            MyPlotModel.Series.Add(OneYearOfUsd(2015)); слишком большая амплитуда , остальным остается мало места
-//            MyPlotModel.Series.Add(OneYearOfUsd(2016));
-            MyPlotModel.Series.Add(OneYearOfUsd(2017));
-            MyPlotModel.Series.Add(OneYearOfUsd(2018));
-            MyPlotModel.Series.Add(OneYearOfUsd(2019));
-            MyPlotModel.Series.Add(OneYearOfUsd(2020));
+
+            for (int i = _firstYear; i <= DateTime.Now.Year; i++)
+            {
+                MyPlotModel.Series.Add(OneYearOfUsd(i));
+                var minvalue = DateTimeAxis.ToDouble(new DateTime(_firstYear, 1, 1).AddDays(-1));
+                var maxvalue = DateTimeAxis.ToDouble(new DateTime(_firstYear, 12, 31).AddDays(1));
+                MyPlotModel.Axes.Add(new DateTimeAxis()
+                {
+                    Position = AxisPosition.Bottom, Minimum = minvalue, Maximum = maxvalue, StringFormat = "MMM/dd"
+                });
+            }
         }
 
         private LineSeries OneYearOfUsd(int year)
         {
-            var minus = new DateTime(year, 1, 1);
+            var minus = year - _firstYear;
             var result = new LineSeries() { Title = year.ToString() };
             foreach (var nbRbRateOnScreen in _rates.Where(r => r.Date.Year == year))
             {
-                var rate = nbRbRateOnScreen.Date < new DateTime(2016, 7, 1)
-                    ? nbRbRateOnScreen.TodayRates.NbRates.Usd.Value / 10000
-                    : nbRbRateOnScreen.TodayRates.NbRates.Usd.Value;
-                result.Points.Add(new DataPoint(Axis.ToDouble(nbRbRateOnScreen.Date - minus.Date), rate));
+                var rate = nbRbRateOnScreen.TodayRates.NbRates.Usd.Value;
+                result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nbRbRateOnScreen.Date.AddYears(-minus)), rate));
             }
             return result;
         }

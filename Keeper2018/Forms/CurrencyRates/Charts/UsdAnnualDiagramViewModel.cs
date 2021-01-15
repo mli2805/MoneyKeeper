@@ -13,10 +13,11 @@ namespace Keeper2018
         private string _caption;
         private List<CurrencyRatesModel> _rates;
 
-        public PlotModel MyPlotModel2020 { get; set; } = new PlotModel();
-        public PlotModel MyPlotModel2017 { get; set; } = new PlotModel();
+        // public PlotModel MyPlotModel2017 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2018 { get; set; } = new PlotModel();
         public PlotModel MyPlotModel2019 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel2020 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel2021 { get; set; } = new PlotModel();
 
         protected override void OnViewLoaded(object view)
         {
@@ -28,10 +29,11 @@ namespace Keeper2018
             _caption = caption;
             _rates = rates;
 
-            InitializeYear(MyPlotModel2017, 2017);
+            // InitializeYear(MyPlotModel2017, 2017);
             InitializeYear(MyPlotModel2018, 2018);
             InitializeYear(MyPlotModel2019, 2019);
             InitializeYear(MyPlotModel2020, 2020);
+            InitializeYear(MyPlotModel2021, 2021);
         }
 
         private void InitializeYear(PlotModel yearPlotModel, int year)

@@ -355,6 +355,10 @@
     <Compile Include="Domain\Transaction\TraExtension.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
+    <Compile Include="Forms\CurrencyRates\Charts\MonthlyChartView.xaml.cs">
+      <DependentUpon>MonthlyChartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CurrencyRates\Charts\MonthlyChartViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\NbUsdProbabilitiesView.xaml.cs">
       <DependentUpon>NbUsdProbabilitiesView.xaml</DependentUpon>
     </Compile>
@@ -651,6 +655,10 @@
     <Page Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\CurrencyRates\Charts\MonthlyChartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\CurrencyRates\Charts\NbUsdProbabilitiesView.xaml">
       <SubType>Designer</SubType>
