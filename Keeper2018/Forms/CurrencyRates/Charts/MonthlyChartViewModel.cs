@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using OxyPlot;
+using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace Keeper2018
@@ -30,12 +31,14 @@ namespace Keeper2018
                 MyPlotModel.Series.Add(OneMonthOfUsd(date));
                 date = date.AddMonths(1);
             } while (date < new DateTime(2020, 12, 1));
+            MyPlotModel.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
 
             do
             {
                 MyPlotModel2.Series.Add(OneMonthOfUsd(date));
                 date = date.AddMonths(1);
             } while (date <= DateTime.Now);
+            MyPlotModel2.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
         }
 
 
