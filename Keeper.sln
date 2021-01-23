@@ -10,12 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9831E8
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65DF484C-F041-48C2-9B45-C225655D1242}"
-	ProjectSection(SolutionItems) = preProject
-		account moving problem.txt = account moving problem.txt
-		TODO.txt = TODO.txt
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper2018", "Keeper2018\Keeper2018.csproj", "{F6A562A7-C323-4E40-918D-466FDDA29909}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper2018.Tests", "Keeper2018.Tests\Keeper2018.Tests.csproj", "{80AB9AF4-0DD9-4B8C-AA89-2106FF03DCB9}"
