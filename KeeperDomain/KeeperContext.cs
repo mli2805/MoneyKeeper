@@ -1,12 +1,12 @@
-﻿using KeeperDomain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace KeeperSqliteDb
+namespace KeeperDomain
 {
     // dotnet ef database update --project KeeperSqliteDb --startup-project Keeper2018
     public class KeeperContext: DbContext
     {
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<PayCard> PayCards { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<CurrencyRates> Rates { get; set; }
         public DbSet<TagAssociation> TagAssociations { get; set; }
@@ -18,6 +18,8 @@ namespace KeeperSqliteDb
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Fuelling> Fuellings { get; set; }
+        public DbSet<YearMileage> YearMileages { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

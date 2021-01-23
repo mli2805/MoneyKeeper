@@ -7,8 +7,11 @@ namespace KeeperDomain
     public class DepositRateLine
     {
         public int Id { get; set; } //PK
+
         public int DepositOfferId;
+
         public int DepositOfferEssentialsId;
+
         public DateTime DateFrom { get; set; }
         public decimal AmountFrom { get; set; }
         public decimal AmountTo { get; set; }
