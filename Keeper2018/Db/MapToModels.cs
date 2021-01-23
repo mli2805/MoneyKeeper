@@ -40,11 +40,11 @@ namespace Keeper2018
         {
             return new DepositOfferModel(depositOffer.Id)
             {
-                Bank = accountPlaneList.First(a=>a.Id == depositOffer.Bank),
+                Bank = accountPlaneList.First(a=>a.Id == depositOffer.BankId),
                 Title = depositOffer.Title,
                 IsNotRevocable = depositOffer.IsNotRevocable,
                 MainCurrency = depositOffer.MainCurrency,
-                Essentials = depositOffer.Essentials,
+                ConditionsMap = depositOffer.ConditionsMap,
                 Comment = depositOffer.Comment,
             };
         }

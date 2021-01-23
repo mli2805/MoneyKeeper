@@ -68,11 +68,11 @@ namespace Keeper2018
             return new DepositOffer()
             {
                 Id = depositOfferModel.Id,
-                Bank = depositOfferModel.Bank.Id,
+                BankId = depositOfferModel.Bank.Id,
                 Title = depositOfferModel.Title,
                 IsNotRevocable = depositOfferModel.IsNotRevocable,
                 MainCurrency = depositOfferModel.MainCurrency,
-                Essentials = depositOfferModel.Essentials,
+                ConditionsMap = depositOfferModel.ConditionsMap,
                 Comment = depositOfferModel.Comment,
             };
         }

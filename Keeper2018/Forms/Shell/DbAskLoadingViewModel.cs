@@ -6,26 +6,22 @@ namespace Keeper2018
     {
         public string Message { get; set; }
 
-        public int Result;
+        public bool Result;
 
         public DbAskLoadingViewModel(string message)
         {
             Message = message;
         }
 
-        public void LoadFromOld()
-        {
-            Result = 1;
-            TryClose();
-        }
+      
         public void LoadFromNew()
         {
-            Result = 2;
+            Result = true;
             TryClose();
         }
         public void Cancel()
         {
-            Result = 0;
+            Result = false;
             TryClose();
         }
     }

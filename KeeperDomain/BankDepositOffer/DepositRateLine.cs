@@ -8,9 +8,7 @@ namespace KeeperDomain
     {
         public int Id { get; set; } //PK
 
-        public int DepositOfferId;
-
-        public int DepositOfferEssentialsId;
+        public int DepositOfferConditionsId { get; set; }
 
         public DateTime DateFrom { get; set; }
         public decimal AmountFrom { get; set; }
@@ -22,9 +20,16 @@ namespace KeeperDomain
             return (DepositRateLine) MemberwiseClone();
         }
 
-        public string PartDump()
+        // public string PartDump()
+        // {
+        //     return DepositOfferId + " ; " + DepositOfferConditionsId  + " ; " + 
+        //            $"{DateFrom:dd/MM/yyyy}" + " ; " + AmountFrom.ToString(new CultureInfo("en-US")) + " ; "
+        //            + AmountTo.ToString(new CultureInfo("en-US")) + " ; " + Rate.ToString(new CultureInfo("en-US"));
+        // }   
+        //
+        public string Dump()
         {
-            return DepositOfferId + " ; " + DepositOfferEssentialsId  + " ; " + 
+            return Id  + " ; " + DepositOfferConditionsId  + " ; " + 
                    $"{DateFrom:dd/MM/yyyy}" + " ; " + AmountFrom.ToString(new CultureInfo("en-US")) + " ; "
                    + AmountTo.ToString(new CultureInfo("en-US")) + " ; " + Rate.ToString(new CultureInfo("en-US"));
         }

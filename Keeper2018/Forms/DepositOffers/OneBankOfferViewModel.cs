@@ -37,10 +37,10 @@ namespace Keeper2018
             Banks = new List<Account>(_keeperDb.Bin.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             ModelInWork = model;
-            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
-            // EssentialDates = ModelInWork.Essentials.Keys.ToList();
+            EssentialDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            // EssentialDates = ModelInWork.ConditionsMap.Keys.ToList();
             if (EssentialDates.Count > 0) SelectedDate = EssentialDates.Last();
-            //  if (EssentialDates.Count > 0) SelectedDate = ModelInWork.Essentials.Keys.First();
+            //  if (EssentialDates.Count > 0) SelectedDate = ModelInWork.ConditionsMap.Keys.First();
         }
 
         protected override void OnViewLoaded(object view)
@@ -51,14 +51,14 @@ namespace Keeper2018
         public void AddEssentials()
         {
             var date = DateTime.Today;
-            while (ModelInWork.Essentials.ContainsKey(date)) date = date.AddDays(1);
+            while (ModelInWork.ConditionsMap.ContainsKey(date)) date = date.AddDays(1);
 
-            var maxId = ModelInWork.Essentials.Values.Max(e => e.Id);
-            var depositEssential = new DepositEssential() { Id = maxId + 1 };
+            var maxId = ModelInWork.ConditionsMap.Values.Max(e => e.Id);
+            var depositEssential = new DepositConditions() { Id = maxId + 1 };
             _rulesAndRatesViewModel.Initialize(ModelInWork.Title, date, depositEssential);
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
-            ModelInWork.Essentials.Add(_rulesAndRatesViewModel.SelectedDate, depositEssential);
-            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            ModelInWork.ConditionsMap.Add(_rulesAndRatesViewModel.SelectedDate, depositEssential);
+            EssentialDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             NotifyOfPropertyChange(nameof(EssentialDates));
         }
 
@@ -66,15 +66,15 @@ namespace Keeper2018
         {
             if (SelectedDate == null) return;
             var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, date, ModelInWork.Essentials[date]);
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, date, ModelInWork.ConditionsMap[date]);
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
             if (date == _rulesAndRatesViewModel.SelectedDate) return;
 
-            var essentials = ModelInWork.Essentials[date];
-            ModelInWork.Essentials.Remove(date);
-            ModelInWork.Essentials.Add(_rulesAndRatesViewModel.SelectedDate, essentials);
+            var essentials = ModelInWork.ConditionsMap[date];
+            ModelInWork.ConditionsMap.Remove(date);
+            ModelInWork.ConditionsMap.Add(_rulesAndRatesViewModel.SelectedDate, essentials);
 
-            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            EssentialDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             NotifyOfPropertyChange(nameof(EssentialDates));
         }
 
@@ -83,9 +83,9 @@ namespace Keeper2018
             if (SelectedDate == null) return;
             var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
 
-            ModelInWork.Essentials.Remove(date);
+            ModelInWork.ConditionsMap.Remove(date);
 
-            EssentialDates = ModelInWork.Essentials.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            EssentialDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             NotifyOfPropertyChange(nameof(EssentialDates));
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using KeeperDomain;
+using static System.Boolean;
 
 namespace Keeper2018
 {
@@ -12,7 +13,7 @@ namespace Keeper2018
         {
             var rate = new CurrencyRates();
             var substrings = s.Split(';');
-            rate.Date = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy",CultureInfo.InvariantCulture);
+            rate.Date = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             rate.NbRates = NbRbRatesFromString(substrings[1]);
             rate.CbrRate.Usd = OneRateFromString(substrings[2]);
             rate.MyUsdRate = OneRateFromString(substrings[3]);
@@ -94,8 +95,8 @@ namespace Keeper2018
             tran.Amount = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
             tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]);
             tran.AmountInReturn = Convert.ToDecimal(substrings[8], new CultureInfo("en-US"));
-            tran.CurrencyInReturn = substrings[9].Trim() != "" 
-                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[9]) 
+            tran.CurrencyInReturn = substrings[9].Trim() != ""
+                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[9])
                 : CurrencyCode.USD;
             tran.Tags = TagsFromString(substrings[10].Trim());
             tran.Comment = substrings[11].Trim();
@@ -131,50 +132,94 @@ namespace Keeper2018
             return new DepositOffer()
             {
                 Id = Convert.ToInt32(substrings[0]),
-                Bank = Convert.ToInt32(substrings[1]),
+                BankId = Convert.ToInt32(substrings[1]),
                 Title = substrings[2].Trim(),
-                IsNotRevocable = bool.Parse(substrings[3].Trim()),
+                IsNotRevocable = Parse(substrings[3].Trim()),
                 MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]),
                 Comment = substrings[5].Trim()
             };
         }
 
-        public static DepositEssential DepositEssentialFromString(this string str)
+        // public static DepositConditions DepositEssentialFromString(this string str)
+        // {
+        //     var substrings = str.Split(';');
+        //     return new DepositConditions()
+        //     {
+        //         DepositOfferId = Convert.ToInt32(substrings[0]),
+        //         Id = Convert.ToInt32(substrings[1]),
+        //         CalculationRules = substrings[2].DepositOfferRulesFromString(),
+        //         Comment = substrings[3].Trim(),
+        //     };
+        // }
+
+        public static DepositConditions DepoConditionsFromString(this string str)
         {
             var substrings = str.Split(';');
-            return new DepositEssential()
+            return new DepositConditions()
             {
-                DepositOfferId = Convert.ToInt32(substrings[0]),
-                Id = Convert.ToInt32(substrings[1]),
-                CalculationRules = substrings[2].DepositOfferRulesFromString(),
+                Id = Convert.ToInt32(substrings[0]),
+                DepositOfferId = Convert.ToInt32(substrings[1]),
+                DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
                 Comment = substrings[3].Trim(),
             };
         }
 
-        public static DepositCalculationRules DepositOfferRulesFromString(this string str)
+        // public static DepositCalculationRules DepositOfferRulesFromString(this string str)
+        // {
+        //     var rules = new DepositCalculationRules();
+        //     var array = str.Split('+');
+        //     var s = array[0].Trim();
+        //
+        //     rules.IsFactDays = s[0] == '1';
+        //     rules.EveryStartDay = s[1] == '1';
+        //     rules.EveryFirstDayOfMonth = s[2] == '1';
+        //     rules.EveryLastDayOfMonth = s[3] == '1';
+        //     rules.IsCapitalized = s[4] == '1';
+        //     rules.IsRateFixed = s[5] == '1';
+        //     rules.HasAdditionalProcent = s[6] == '1';
+        //
+        //     rules.AdditionalProcent = double.Parse(array[1]);
+        //     return rules;
+        // }
+
+        public static DepositCalculationRules NewDepoCalcRulesFromString(this string str)
         {
             var rules = new DepositCalculationRules();
-            var array = str.Split('+');
-            var s = array[0].Trim();
+            var array = str.Split(';');
 
-            rules.IsFactDays = s[0] == '1';
-            rules.EveryStartDay = s[1] == '1';
-            rules.EveryFirstDayOfMonth = s[2] == '1';
-            rules.EveryLastDayOfMonth = s[3] == '1';
-            rules.IsCapitalized = s[4] == '1';
-            rules.IsRateFixed = s[5] == '1';
-            rules.HasAdditionalProcent = s[6] == '1';
+            rules.Id = int.Parse(array[0].Trim());
+            rules.DepositOfferConditionsId = int.Parse(array[1].Trim());
+            rules.IsFactDays = Parse(array[2]);
+            rules.EveryStartDay = Parse(array[3]);
+            rules.EveryFirstDayOfMonth = Parse(array[4]);
+            rules.EveryLastDayOfMonth = Parse(array[5]);
+            rules.IsCapitalized = Parse(array[6]);
+            rules.IsRateFixed = Parse(array[7]);
+            rules.HasAdditionalProcent = Parse(array[8]);
 
-            rules.AdditionalProcent = double.Parse(array[1]);
+            rules.AdditionalProcent = double.Parse(array[9]);
             return rules;
         }
 
-        public static DepositRateLine DepositRateLineFromString(this string s)
+        // public static DepositRateLine DepositRateLineFromString(this string s)
+        // {
+        //     var depositRateLine = new DepositRateLine();
+        //     var substrings = s.Split(';');
+        //     depositRateLine.DepositOfferId = int.Parse(substrings[0].Trim());
+        //     depositRateLine.DepositOfferConditionsId = int.Parse(substrings[1].Trim());
+        //     depositRateLine.DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+        //     depositRateLine.AmountFrom = Convert.ToDecimal(substrings[3], new CultureInfo("en-US"));
+        //     depositRateLine.AmountTo = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
+        //     depositRateLine.Rate = Convert.ToDecimal(substrings[5], new CultureInfo("en-US"));
+        //     return depositRateLine;
+        // }
+
+        public static DepositRateLine NewDepoRateLineFromString(this string s)
         {
             var depositRateLine = new DepositRateLine();
             var substrings = s.Split(';');
-            depositRateLine.DepositOfferId = int.Parse(substrings[0].Trim());
-            depositRateLine.DepositOfferEssentialsId = int.Parse(substrings[1].Trim());
+            depositRateLine.Id = int.Parse(substrings[0].Trim());
+            depositRateLine.DepositOfferConditionsId = int.Parse(substrings[1].Trim());
             depositRateLine.DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             depositRateLine.AmountFrom = Convert.ToDecimal(substrings[3], new CultureInfo("en-US"));
             depositRateLine.AmountTo = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
@@ -186,7 +231,7 @@ namespace Keeper2018
         {
             var car = new Car();
             var array = str.Split(';');
-            
+
             car.CarAccountId = int.Parse(array[0].Trim());
             car.Title = array[1].Trim();
             car.IssueYear = int.Parse(array[2].Trim());

@@ -8,7 +8,6 @@
     <DockPanel>
         <TextBlock Text="{Binding Message}" Height="22" Width="600" DockPanel.Dock="Top" Margin="5, 20"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="10, 20">
-            <Button Height="22" Width="200" Content="Старый формат" Margin="5" Name="LoadFromOld"/>
             <Button Height="22" Width="200" Content="Формат 2018" Margin="5" Name="LoadFromNew"/>
             <Button Height="22" Width="200" Content="Выйти" Margin="5" Name="Cancel"/>
         </StackPanel>

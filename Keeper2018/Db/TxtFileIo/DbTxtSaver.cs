@@ -24,7 +24,8 @@ namespace Keeper2018
                 var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
                 var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
                 var cards = db.Bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Deposit.Card.Dump());
-                var depoOffers = db.ExportDepos();
+                // var depoOffers = db.ExportDepos();
+                var newDepoOffers = db.NewExportDepos();
                 var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
                 var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
@@ -33,7 +34,11 @@ namespace Keeper2018
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("Accounts.txt"), accounts);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"), deposits);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("PayCards.txt"), cards);
-                File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"), depoOffers);
+                // File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"), depoOffers);
+                foreach (var pair in newDepoOffers)
+                {
+                    File.WriteAllLines(DbIoUtils.GetBackupFilePath($"{pair.Key}.txt"), pair.Value);
+                }
                 WriteTransactionsContent(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
                 File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
 
@@ -63,22 +68,49 @@ namespace Keeper2018
             }
         }
 
-        private static List<string> ExportDepos(this KeeperDb db)
+        // private static List<string> ExportDepos(this KeeperDb db)
+        // {
+        //     var depoOffers = new List<string>();
+        //     foreach (var depositOffer in db.Bin.DepositOffers)
+        //     {
+        //         depoOffers.Add($"::DOFF::| {depositOffer.Dump()}");
+        //         foreach (var pair in depositOffer.ConditionsMap)
+        //         {
+        //             depoOffers.Add($"::DOES::| {pair.Key:dd/MM/yyyy} | {pair.Value.PartDump()}");
+        //             foreach (var depositRateLine in pair.Value.RateLines)
+        //             {
+        //                 depoOffers.Add($"::DORL::| {depositRateLine.PartDump()}");
+        //             }
+        //         }
+        //     }
+        //     return depoOffers;
+        // }
+
+        private static Dictionary<string, List<string>> NewExportDepos(this KeeperDb db)
         {
+            var depoRateLines = new List<string>();
+            var depoCalcRules = new List<string>();
+            var depoConditions = new List<string>();
             var depoOffers = new List<string>();
+
             foreach (var depositOffer in db.Bin.DepositOffers)
             {
-                depoOffers.Add($"::DOFF::| {depositOffer.Dump()}");
-                foreach (var pair in depositOffer.Essentials)
+                foreach (var pair in depositOffer.ConditionsMap)
                 {
-                    depoOffers.Add($"::DOES::| {pair.Key:dd/MM/yyyy} | {pair.Value.PartDump()}");
-                    foreach (var depositRateLine in pair.Value.RateLines)
-                    {
-                        depoOffers.Add($"::DORL::| {depositRateLine.PartDump()}");
-                    }
+                    depoCalcRules.Add(pair.Value.CalculationRules.Dump());
+                    depoRateLines.AddRange(pair.Value.RateLines.Select(rateLine => rateLine.Dump()));
+                    depoConditions.Add(pair.Value.Dump());
                 }
+                depoOffers.Add(depositOffer.Dump());
             }
-            return depoOffers;
+
+            return new Dictionary<string, List<string>>
+            {
+                {"depoOffers", depoOffers},
+                {"depoConditions", depoConditions},
+                {"depoCalcRules", depoCalcRules},
+                {"depoRateLines", depoRateLines}
+            };
         }
 
         private static void WriteCars(this KeeperDb db)

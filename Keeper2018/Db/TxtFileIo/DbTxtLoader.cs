@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +18,8 @@ namespace Keeper2018
                 var keeperBin = new KeeperBin();
                 LoadCurrencyRates(keeperBin);
                 LoadAccounts(keeperBin);
-                LoadDepositOffers(keeperBin);
+                // LoadDepositOffers(keeperBin);
+                NewLoadDepositOffers(keeperBin);
                 LoadTagAssociations(keeperBin);
                 LoadTransactions(keeperBin);
                 LoadCars(keeperBin);
@@ -46,31 +46,63 @@ namespace Keeper2018
             keeperBin.TagAssociations = content.Select(l => l.TagAssociationFromString()).ToList();
         }
 
-        private static void LoadDepositOffers(KeeperBin bin)
+        // private static void LoadDepositOffers(KeeperBin bin)
+        // {
+        //     var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"));
+        //     bin.DepositOffers = new List<DepositOffer>();
+        //     DepositOffer depositOffer = null;
+        //     foreach (var line in content)
+        //     {
+        //         var parts = line.Split('|');
+        //         if (parts[0] == "::DOFF::")
+        //         {
+        //             if (depositOffer != null)
+        //                 bin.DepositOffers.Add(depositOffer);
+        //             depositOffer = parts[1].DepositOfferFromString();
+        //         }
+        //         else if (parts[0] == "::DOES::")
+        //         {
+        //             depositOffer?.ConditionsMap.Add(DateTime.ParseExact(parts[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
+        //                 parts[2].DepositEssentialFromString());
+        //         }
+        //         else if (parts[0] == "::DORL::")
+        //         {
+        //             depositOffer?.ConditionsMap.Last().Value.RateLines.Add(parts[1].DepositRateLineFromString());
+        //         }
+        //     }
+        //     bin.DepositOffers.Add(depositOffer);
+        // }
+
+        private static void NewLoadDepositOffers(KeeperBin bin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"));
-            bin.DepositOffers = new List<DepositOffer>();
-            DepositOffer depositOffer = null;
-            foreach (var line in content)
+            var content1 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoRateLines.txt"));
+            var depoRateLines = content1.Select(l => l.NewDepoRateLineFromString()).ToList();
+
+            var content2 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoCalcRules.txt"));
+            var depoCalcRules = content2.Select(l => l.NewDepoCalcRulesFromString()).ToList();
+
+            var content3 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoConditions.txt"));
+            var depoConditions = content3.Select(l => l.DepoConditionsFromString()).ToList();
+            foreach (var depoCondition in depoConditions)
             {
-                var parts = line.Split('|');
-                if (parts[0] == "::DOFF::")
+                depoCondition.CalculationRules =
+                    depoCalcRules.First(cr => cr.DepositOfferConditionsId == depoCondition.Id);
+
+                depoCondition.RateLines = depoRateLines
+                    .Where(l => l.DepositOfferConditionsId == depoCondition.Id)
+                    .OrderBy(r => r.DateFrom)
+                    .ThenBy(r => r.AmountFrom).ToList();
+            }
+
+            var content4 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoOffers.txt"));
+            bin.DepositOffers = content4.Select(l => l.DepositOfferFromString()).ToList();
+            foreach (var depoOffer in bin.DepositOffers)
+            {
+                foreach (var condition in depoConditions.Where(c => c.DepositOfferId == depoOffer.Id))
                 {
-                    if (depositOffer != null)
-                        bin.DepositOffers.Add(depositOffer);
-                    depositOffer = parts[1].DepositOfferFromString();
-                }
-                else if (parts[0] == "::DOES::")
-                {
-                    depositOffer?.Essentials.Add( DateTime.ParseExact(parts[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
-                        parts[2].DepositEssentialFromString());
-                }
-                else if (parts[0] == "::DORL::")
-                {
-                    depositOffer?.Essentials.Last().Value.RateLines.Add(parts[1].DepositRateLineFromString());
+                    depoOffer.ConditionsMap.Add(condition.DateFrom, condition);   
                 }
             }
-            bin.DepositOffers.Add(depositOffer);
         }
 
         private static void LoadCars(KeeperBin bin)
