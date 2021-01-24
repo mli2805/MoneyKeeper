@@ -29,15 +29,15 @@
         <GroupBox Header="Условия и ставки для депозитов открытых в период" Margin="5">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Right" Margin="0,5">
-                    <Button Name="AddEssentials" Height="25" Width="100" Content="Добавить" Margin="5"/>
-                    <Button Name="EditEssentials" Height="25" Width="100" Content="Изменить" Margin="5"/>
+                    <Button Name="AddConditions" Height="25" Width="100" Content="Добавить" Margin="5"/>
+                    <Button Name="EditConditions" Height="25" Width="100" Content="Изменить" Margin="5"/>
                 </StackPanel>
-                <ListView  ItemsSource="{Binding EssentialDates}" SelectedItem="{Binding SelectedDate, Mode=TwoWay}" Margin="5">
+                <ListView  ItemsSource="{Binding ConditionDates}" SelectedItem="{Binding SelectedDate, Mode=TwoWay}" Margin="5">
                     <ListView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Добавить" cal:Message.Attach="AddEssentials"/>
-                            <MenuItem Header="Изменить" cal:Message.Attach="EditEssentials"/>
-                            <MenuItem Header="Удалить" cal:Message.Attach="RemoveEssentials"/>
+                            <MenuItem Header="Добавить" cal:Message.Attach="AddConditions"/>
+                            <MenuItem Header="Изменить" cal:Message.Attach="EditConditions"/>
+                            <MenuItem Header="Удалить" cal:Message.Attach="RemoveConditions"/>
                         </ContextMenu>
                     </ListView.ContextMenu>
                 </ListView>

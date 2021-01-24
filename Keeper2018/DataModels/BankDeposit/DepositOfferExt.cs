@@ -10,10 +10,10 @@ namespace Keeper2018
         public static decimal GetRevenueUptoDepoFinish
             (this DepositOffer depositOffer, Deposit deposit, DateTime lastReceivedRevenueDate, decimal currentAmount)
         {
-            var essentials = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
 
             var rateLines =
-                essentials.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
+                conditionses.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
                                                     OrderBy(o => o.DateFrom).ToArray();
 
             decimal revenue = 0;
@@ -43,7 +43,7 @@ namespace Keeper2018
         {
             var deposit = depo.Deposit;
             var depositOffer = db.Bin.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
-            var essentials = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
             var lastRevenueTran = db.Bin.Transactions.LastOrDefault(t =>
                 t.Value.MyAccount == depo.Id && t.Value.Operation == OperationType.Доход).Value;
             var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
@@ -63,8 +63,8 @@ namespace Keeper2018
 
                 if (date >= lastReceivedRevenueDate)
                 {
-                    var k = GetKoeff(date, essentials.CalculationRules.IsFactDays);
-                    revenue += k * DayRevenue(depositBalance, essentials, date);
+                    var k = GetKoeff(date, conditionses.CalculationRules.IsFactDays);
+                    revenue += k * DayRevenue(depositBalance, conditionses, date);
                 }
 
                 date = date.AddDays(1);
@@ -127,13 +127,13 @@ namespace Keeper2018
 
         private static DateTime RevenueDate(DepositOffer depositOffer, Deposit deposit)
         {
-            var essentials = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
             var thisMonth = DateTime.Today.Month;
             var thisYear = DateTime.Today.Year;
 
-            if (essentials.CalculationRules.EveryFirstDayOfMonth)
+            if (conditionses.CalculationRules.EveryFirstDayOfMonth)
                 return new DateTime(thisYear, thisMonth, 1);
-            if (essentials.CalculationRules.EveryLastDayOfMonth)
+            if (conditionses.CalculationRules.EveryLastDayOfMonth)
                 return DateTime.Today.GetEndOfMonthForDate();
             var maxDay = DateTime.DaysInMonth(thisYear, thisMonth);
 

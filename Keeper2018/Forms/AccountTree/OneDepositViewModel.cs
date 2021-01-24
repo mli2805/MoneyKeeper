@@ -123,10 +123,10 @@ namespace Keeper2018
         public void CompileAccountName()
         {
             decimal rate;
-            var essentials = SelectedDepositOffer.ConditionsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
+            var conditionses = SelectedDepositOffer.ConditionsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
        //     if (conditionses != null)
             {
-                var line = essentials.Value.RateLines.Last();
+                var line = conditionses.Value.RateLines.Last();
                 rate = line.Rate;
             }
 
@@ -138,8 +138,9 @@ namespace Keeper2018
         public void FillDepositRatesTable()
         {
             var vm = new RulesAndRatesViewModel();
-            vm.Initialize("", DepositInWork.StartDate, 
-                SelectedDepositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value);
+            vm.Initialize("", 
+                SelectedDepositOffer.ConditionsMap.OrderBy(k => k.Key)
+                    .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value);
             _windowManager.ShowDialog(vm);
         }
     }

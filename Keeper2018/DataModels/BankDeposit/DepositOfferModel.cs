@@ -20,7 +20,8 @@ namespace Keeper2018
         public DepositOfferModel(int id)
         {
             Id = id;
-            ConditionsMap = new Dictionary<DateTime, DepositConditions>() { { DateTime.Today, new DepositConditions() { DepositOfferId = Id } } };
+            ConditionsMap = new Dictionary<DateTime, DepositConditions>();
+                // { { DateTime.Today, new DepositConditions() { DepositOfferId = Id } } };
         }
 
         public override string ToString()

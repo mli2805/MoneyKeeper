@@ -75,6 +75,13 @@ namespace Keeper2018
 
         public void RemoveSelectedOffer()
         {
+            if (_db.Bin.AccountPlaneList.Any(a => a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
+            {
+                var strs = new List<string> {"Существует как минимум один депозит открытый по этой оферте.", "", "Сначала удалите депозиты."};
+                var vm = new MyMessageBoxViewModel(MessageType.Error, strs);
+                _windowManager.ShowDialog(vm);
+                return;
+            }
             Rows.Remove(SelectedDepositOffer);
         }
 

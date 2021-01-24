@@ -155,11 +155,11 @@ namespace Keeper2018
         public static DepositConditions DepoConditionsFromString(this string str)
         {
             var substrings = str.Split(';');
-            return new DepositConditions()
+            return new DepositConditions(
+                Convert.ToInt32(substrings[0]),
+                Convert.ToInt32(substrings[1]), 
+                DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture))
             {
-                Id = Convert.ToInt32(substrings[0]),
-                DepositOfferId = Convert.ToInt32(substrings[1]),
-                DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
                 Comment = substrings[3].Trim(),
             };
         }

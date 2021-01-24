@@ -11,13 +11,11 @@ namespace Keeper2018
         public string Title;
         public DepositConditions Conditions { get; set; }
         public ObservableCollection<DepositRateLine> Rows { get; set; }
-        public DateTime SelectedDate { get; set; }
         public DateTime NewDate { get; set; } = DateTime.Today;
 
-        public void Initialize(string title, DateTime selectedDate, DepositConditions conditions)
+        public void Initialize(string title, DepositConditions conditions)
         {
             Title = title;
-            SelectedDate = selectedDate;
             Conditions = conditions;
             Rows = new ObservableCollection<DepositRateLine>();
             foreach (var rateLine in conditions.RateLines)
@@ -26,7 +24,6 @@ namespace Keeper2018
             }
             if (Rows.Count == 0)
                 Rows.Add(new DepositRateLine(){
-                    // DepositOfferId = Conditions.DepositOfferId, 
                     DepositOfferConditionsId = Conditions.Id,
                     DateFrom = DateTime.Today, AmountFrom = 0, AmountTo = 999999999999, Rate = 10});
         }
@@ -41,7 +38,6 @@ namespace Keeper2018
             var lastLine = Rows.Last();
             var newLine = new DepositRateLine()
             {
-                // DepositOfferId = lastLine.DepositOfferId,
                 DepositOfferConditionsId = lastLine.DepositOfferConditionsId,
                 DateFrom = lastLine.DateFrom,
                 AmountFrom = lastLine.AmountTo + (decimal)0.01,
@@ -57,7 +53,6 @@ namespace Keeper2018
             var copy = Rows.Where(r => r.DateFrom == lastLine.DateFrom)
                 .Select(line => new DepositRateLine()
                 {
-                    // DepositOfferId = line.DepositOfferId,
                     DepositOfferConditionsId = line.DepositOfferConditionsId,
                     DateFrom = NewDate,
                     AmountFrom = line.AmountFrom,

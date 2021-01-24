@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -21,8 +20,6 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
-
-        public List<DepositOffer> DepoOffers; // temp! compare with DepositOffers in bin! if equal parse into old list at once!
 
         public ObservableCollection<TagAssociationModel> TagAssociationModels { get; set; }
     }
