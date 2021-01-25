@@ -34,7 +34,7 @@ namespace Keeper2018
 
         private static void LoadTransactions(KeeperBin keeperBin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Transactions.txt"));
+            var content = File.ReadAllLines(PathFactory.GetBackupFilePath("Transactions.txt"));
             keeperBin.Transactions = new Dictionary<int, Transaction>();
             for (int i = 0; i < content.Length; i++)
                 keeperBin.Transactions.Add(i, content[i].TransactionFromString());
@@ -42,13 +42,13 @@ namespace Keeper2018
 
         private static void LoadTagAssociations(KeeperBin keeperBin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"));
+            var content = File.ReadAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"));
             keeperBin.TagAssociations = content.Select(l => l.TagAssociationFromString()).ToList();
         }
 
         // private static void LoadDepositOffers(KeeperBin bin)
         // {
-        //     var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"));
+        //     var content = File.ReadAllLines(PathFactory.GetBackupFilePath("DepositOffers.txt"));
         //     bin.DepositOffers = new List<DepositOffer>();
         //     DepositOffer depositOffer = null;
         //     foreach (var line in content)
@@ -75,13 +75,13 @@ namespace Keeper2018
 
         private static void NewLoadDepositOffers(KeeperBin bin)
         {
-            var content1 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoRateLines.txt"));
+            var content1 = File.ReadAllLines(PathFactory.GetBackupFilePath("depoRateLines.txt"));
             var depoRateLines = content1.Select(l => l.NewDepoRateLineFromString()).ToList();
 
-            var content2 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoCalcRules.txt"));
+            var content2 = File.ReadAllLines(PathFactory.GetBackupFilePath("depoCalcRules.txt"));
             var depoCalcRules = content2.Select(l => l.NewDepoCalcRulesFromString()).ToList();
 
-            var content3 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoConditions.txt"));
+            var content3 = File.ReadAllLines(PathFactory.GetBackupFilePath("depoConditions.txt"));
             var depoConditions = content3.Select(l => l.DepoConditionsFromString()).ToList();
             foreach (var depoCondition in depoConditions)
             {
@@ -94,7 +94,7 @@ namespace Keeper2018
                     .ThenBy(r => r.AmountFrom).ToList();
             }
 
-            var content4 = File.ReadAllLines(DbIoUtils.GetBackupFilePath("depoOffers.txt"));
+            var content4 = File.ReadAllLines(PathFactory.GetBackupFilePath("depoOffers.txt"));
             bin.DepositOffers = content4.Select(l => l.DepositOfferFromString()).ToList();
             foreach (var depoOffer in bin.DepositOffers)
             {
@@ -107,8 +107,8 @@ namespace Keeper2018
 
         private static void LoadCars(KeeperBin bin)
         {
-            var carsContent = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Cars.txt"));
-            var yearMileageContent = File.ReadAllLines(DbIoUtils.GetBackupFilePath("CarYearMileages.txt"));
+            var carsContent = File.ReadAllLines(PathFactory.GetBackupFilePath("Cars.txt"));
+            var yearMileageContent = File.ReadAllLines(PathFactory.GetBackupFilePath("CarYearMileages.txt"));
             bin.Cars = carsContent.Select(line => line.CarFromString()).ToList();
             var yearMileages = yearMileageContent.Select(line => line.YearMileageFromString()).ToList();
             foreach (var car in bin.Cars)
@@ -117,9 +117,9 @@ namespace Keeper2018
 
         private static void LoadAccounts(KeeperBin bin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Accounts.txt"));
+            var content = File.ReadAllLines(PathFactory.GetBackupFilePath("Accounts.txt"));
             bin.AccountPlaneList = content.Select(l => l.AccountFromString()).ToList();
-            var deposits = File.ReadAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"));
+            var deposits = File.ReadAllLines(PathFactory.GetBackupFilePath("Deposits.txt"));
             foreach (var depo in deposits)
             {
                 try
@@ -133,7 +133,7 @@ namespace Keeper2018
                 }
 
             }
-            var cards = File.ReadAllLines(DbIoUtils.GetBackupFilePath("PayCards.txt"));
+            var cards = File.ReadAllLines(PathFactory.GetBackupFilePath("PayCards.txt"));
             foreach (var line in cards)
             {
                 var card = line.CardFromString();
@@ -143,7 +143,7 @@ namespace Keeper2018
 
         private static void LoadCurrencyRates(KeeperBin bin)
         {
-            var content = File.ReadAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates.txt"));
+            var content = File.ReadAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"));
             bin.Rates = new Dictionary<DateTime, CurrencyRates>();
             foreach (var line in content)
             {

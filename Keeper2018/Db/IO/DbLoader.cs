@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -24,7 +25,7 @@ namespace Keeper2018
 
         public async Task<bool> Load()
         {
-            var path = DbIoUtils.GetDbFullPath();
+            var path = PathFactory.GetDbFullPath();
             string question;
             if (File.Exists(path))
             {

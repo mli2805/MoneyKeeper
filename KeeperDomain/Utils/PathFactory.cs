@@ -1,8 +1,8 @@
 using System.IO;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
-    public static class DbIoUtils
+    public static class PathFactory
     {
         // export from old Keeper
         public static string GetOldTxtFullPath(string filename)

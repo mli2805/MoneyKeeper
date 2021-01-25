@@ -12,11 +12,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
-    <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.113" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewDepoClasses\" />
+    <Folder Include="TextFilesIO\" />
   </ItemGroup>
 
 </Project>

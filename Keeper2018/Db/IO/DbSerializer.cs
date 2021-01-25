@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -19,7 +20,7 @@ namespace Keeper2018
 
         public static async Task<bool> Serialize(KeeperBin bin)
         {
-            var path = DbIoUtils.GetDbFullPath();
+            var path = PathFactory.GetDbFullPath();
             MadeDbxBackup(path);
             try
             {

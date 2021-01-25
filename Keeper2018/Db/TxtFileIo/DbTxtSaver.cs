@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Ionic.Zip;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -30,17 +30,17 @@ namespace Keeper2018
                 var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
 
-                File.WriteAllLines(DbIoUtils.GetBackupFilePath("CurrencyRates.txt"), currencyRates);
-                File.WriteAllLines(DbIoUtils.GetBackupFilePath("Accounts.txt"), accounts);
-                File.WriteAllLines(DbIoUtils.GetBackupFilePath("Deposits.txt"), deposits);
-                File.WriteAllLines(DbIoUtils.GetBackupFilePath("PayCards.txt"), cards);
-                // File.WriteAllLines(DbIoUtils.GetBackupFilePath("DepositOffers.txt"), depoOffers);
+                File.WriteAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"), currencyRates);
+                File.WriteAllLines(PathFactory.GetBackupFilePath("Accounts.txt"), accounts);
+                File.WriteAllLines(PathFactory.GetBackupFilePath("Deposits.txt"), deposits);
+                File.WriteAllLines(PathFactory.GetBackupFilePath("PayCards.txt"), cards);
+                // File.WriteAllLines(PathFactory.GetBackupFilePath("DepositOffers.txt"), depoOffers);
                 foreach (var pair in newDepoOffers)
                 {
-                    File.WriteAllLines(DbIoUtils.GetBackupFilePath($"{pair.Key}.txt"), pair.Value);
+                    File.WriteAllLines(PathFactory.GetBackupFilePath($"{pair.Key}.txt"), pair.Value);
                 }
-                WriteTransactionsContent(DbIoUtils.GetBackupFilePath("Transactions.txt"), transactions);
-                File.WriteAllLines(DbIoUtils.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
+                WriteTransactionsContent(PathFactory.GetBackupFilePath("Transactions.txt"), transactions);
+                File.WriteAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
 
                 db.WriteCars();
 
@@ -122,47 +122,20 @@ namespace Keeper2018
                 cars.Add(car.Dump());
                 yearMileages.AddRange(car.YearMileages.Select(mileage => mileage.Dump()));
             }
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("Cars.txt"), cars);
-            File.WriteAllLines(DbIoUtils.GetBackupFilePath("CarYearMileages.txt"), yearMileages);
+            File.WriteAllLines(PathFactory.GetBackupFilePath("Cars.txt"), cars);
+            File.WriteAllLines(PathFactory.GetBackupFilePath("CarYearMileages.txt"), yearMileages);
         }
 
         public static async Task<bool> ZipTxtDbAsync()
         {
-            return await Task.Factory.StartNew(ZipTxtDb);
-        }
-
-        private static bool ZipTxtDb()
-        {
-            var archiveName = $"DB{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.zip";
-            var zipFileToCreate = Path.Combine(DbIoUtils.GetBackupFilePath(archiveName));
-            var backupFolder = DbIoUtils.GetBackupPath();
-            try
-            {
-                using (var zip = new ZipFile())
-                {
-                    zip.Password = "1";
-                    zip.Encryption = EncryptionAlgorithm.WinZipAes256;
-                    var filenames =
-                        Directory.GetFiles(backupFolder, "*.txt"); // note: this does not recurse directories! 
-                    foreach (var filename in filenames)
-                        zip.AddFile(filename, string.Empty);
-                    zip.Save(zipFileToCreate);
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"Exception during database zipping: {e.Message}");
-                return false;
-            }
+            return await Task.Factory.StartNew(Zipper.ZipAllFiles);
         }
 
         public static bool DeleteTxtFiles()
         {
             try
             {
-                var backupPath = DbIoUtils.GetBackupPath();
+                var backupPath = PathFactory.GetBackupPath();
                 if (!Directory.Exists(backupPath)) return false;
                 var filenames = Directory.GetFiles(backupPath, "*.txt"); // note: this does not recurse directories! 
                 foreach (var filename in filenames)

@@ -56,9 +56,6 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -226,9 +223,9 @@
     </ApplicationDefinition>
     <Compile Include="DataModels\Account\AccountModel.cs" />
     <Compile Include="DataModels\BankDeposit\DepositOfferExt.cs" />
-    <Compile Include="Db\IO\PathFinder.cs" />
     <Compile Include="DataModels\TagAssociationModel.cs" />
     <Compile Include="DataModels\Transaction\OperationTypeExtantions.cs" />
+    <Compile Include="Db\TxtFileIo\DbTxtSaver.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
     <Compile Include="DataModels\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseCollection.cs" />
@@ -257,7 +254,6 @@
     <Compile Include="Db\AssociationFinder.cs" />
     <Compile Include="Db\TxtFileIo\DbClassesInstanceParser.cs" />
     <Compile Include="Db\TxtFileIo\DbTxtLoader.cs" />
-    <Compile Include="Db\TxtFileIo\DbTxtSaver.cs" />
     <Compile Include="Db\IO\DbLoader.cs" />
     <Compile Include="Db\MapToModels.cs" />
     <Compile Include="Db\RatesExt.cs" />
@@ -544,7 +540,6 @@
     <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
     <Compile Include="Forms\CurrencyRates\CurrencyRatesModel.cs" />
-    <Compile Include="Db\IO\DbIoUtils.cs" />
     <Compile Include="Forms\Shell\IShell.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>

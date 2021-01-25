@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -77,7 +78,7 @@ namespace Keeper2018
             try
             {
                 string filename = $@"{SelectedCar.Title}.pdf";
-                var path = DbIoUtils.GetReportFullPath(filename);
+                var path = PathFactory.GetReportFullPath(filename);
                 document.Save(path);
                 Process.Start(path);
             }
