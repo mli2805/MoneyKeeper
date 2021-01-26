@@ -50,23 +50,6 @@ namespace Keeper2018
             _currencyRatesViewModel.Initialize();
             keeperDb.FillInAccountTree(); // must be first
 
-            // only once
-            // var depoConditionsId = 1;
-            // foreach (var depositOffer in keeperDb.Bin.DepositOffers)
-            // {
-            //     foreach (var pairDepositEssential in depositOffer.ConditionsMap)
-            //     {
-            //         pairDepositEssential.Value.Id = depoConditionsId++;
-            //         foreach (var rateLine in pairDepositEssential.Value.RateLines)
-            //         {
-            //             rateLine.DepositOfferConditionsId = pairDepositEssential.Value.Id;
-            //         }
-            //
-            //         pairDepositEssential.Value.CalculationRules.DepositOfferConditionsId =
-            //             pairDepositEssential.Value.Id;
-            //     }
-            // }
-
             keeperDb.TagAssociationModels = new ObservableCollection<TagAssociationModel>
                 (keeperDb.Bin.TagAssociations.Select(a => a.Map(keeperDb.AcMoDict)));
         }
