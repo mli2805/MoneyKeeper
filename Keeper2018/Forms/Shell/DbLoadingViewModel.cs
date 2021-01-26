@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -25,15 +27,29 @@ namespace Keeper2018
 
         private async void Load()
         {
-            _keeperDb.Bin = await DbTxtLoader.LoadAllFromNewTxt();
-            if (_keeperDb.Bin == null)
+            var result = await DbTxtLoader.LoadAllFromNewTxt();
+            if (!result.IsSuccess)
             {
+                _keeperDb.Bin = null;
                 DbLoaded = false;
+                MessageBox.Show(result.Exception.Message);
                 return;
             }
-            DbTxtSaver.DeleteTxtFiles();
+
+            _keeperDb.Bin = (KeeperBin) result.Payload;
+          
+            var result2 = DbTxtSaver.DeleteTxtFiles();
+            if (!result2.IsSuccess)
+            {
+                MessageBox.Show(result2.Exception.Message);
+            }
             DbLoaded = true;
-            await DbSerializer.Serialize(_keeperDb.Bin);
+
+            var result3 = await BinSerializer.Serialize(_keeperDb.Bin);
+            if (!result3.IsSuccess)
+            {
+                MessageBox.Show(result3.Exception.Message);
+            }
             TryClose();
         }
 

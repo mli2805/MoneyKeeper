@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using KeeperDomain;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
     public static class DbTxtLoader
     {
-        public static async Task<KeeperBin> LoadAllFromNewTxt()
+        public static async Task<LibResult> LoadAllFromNewTxt()
         {
             await Task.Delay(1);
             try
@@ -23,12 +21,11 @@ namespace Keeper2018
                 LoadTagAssociations(keeperBin);
                 LoadTransactions(keeperBin);
                 LoadCars(keeperBin);
-                return keeperBin;
+                return new LibResult(true, keeperBin);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
-                return null;
+                return new LibResult(e);
             }
         }
 

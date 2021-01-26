@@ -14,8 +14,4 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TextFilesIO\" />
-  </ItemGroup>
-
 </Project>

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using KeeperDomain;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
     [Serializable]
     public class KeeperBin

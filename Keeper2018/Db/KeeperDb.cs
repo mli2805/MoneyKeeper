@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {

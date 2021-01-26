@@ -2,6 +2,7 @@
 using System.Windows;
 using Caliburn.Micro;
 using Keeper2018.PayCards;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -178,11 +179,29 @@ namespace Keeper2018
                 _shellPartsBinder.IsBusy = true;
                 _shellPartsBinder.FooterVisibility = Visibility.Visible;
                 _keeperDb.FlattenAccountTree();
-                await DbSerializer.Serialize(_keeperDb.Bin);
 
-                if (await _keeperDb.SaveAllToNewTxtAsync())
+                var result3 = await BinSerializer.Serialize(_keeperDb.Bin);
+                if (!result3.IsSuccess)
+                {
+                    MessageBox.Show(result3.Exception.Message);
+                }
+
+                var result = await _keeperDb.Bin.SaveAllToNewTxtAsync();
+                if (result.IsSuccess)
+                {
                     if (await DbTxtSaver.ZipTxtDbAsync())
-                        DbTxtSaver.DeleteTxtFiles();
+                    {
+                        var result2 = DbTxtSaver.DeleteTxtFiles();
+                        if (!result2.IsSuccess)
+                        {
+                            MessageBox.Show(result2.Exception.Message);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(result.Exception.Message);
+                }
 
                 _transactionsViewModel.Model.IsCollectionChanged = false;
                 _shellPartsBinder.FooterVisibility = Visibility.Collapsed;

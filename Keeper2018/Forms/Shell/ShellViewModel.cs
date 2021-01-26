@@ -72,12 +72,32 @@ namespace Keeper2018
             {
                 ShellPartsBinder.FooterVisibility = Visibility.Visible;
                 _keeperDb.FlattenAccountTree();
-                await DbSerializer.Serialize(_keeperDb.Bin);
+
+                var result3 = await BinSerializer.Serialize(_keeperDb.Bin);
+                if (!result3.IsSuccess)
+                {
+                    MessageBox.Show(result3.Exception.Message);
+                }
 
                 if (_tranModel.IsCollectionChanged)
-                    if (await _keeperDb.SaveAllToNewTxtAsync())
+                {
+                    var result = await _keeperDb.Bin.SaveAllToNewTxtAsync();
+                    if (result.IsSuccess)
+                    {
                         if (await DbTxtSaver.ZipTxtDbAsync())
-                            DbTxtSaver.DeleteTxtFiles();
+                        {
+                            var result2 = DbTxtSaver.DeleteTxtFiles();
+                            if (!result2.IsSuccess)
+                            {
+                                MessageBox.Show(result2.Exception.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Exception.Message);
+                    }
+                }
 
                 ShellPartsBinder.FooterVisibility = Visibility.Collapsed;
             }

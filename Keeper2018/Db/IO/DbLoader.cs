@@ -29,11 +29,14 @@ namespace Keeper2018
             string question;
             if (File.Exists(path))
             {
-                await Task.Delay(1);
-                _keeperDb.Bin = DbSerializer.Deserialize(path);
-                if (_keeperDb.Bin != null)
+                var result = await BinSerializer.Deserialize(path);
+                if (result.IsSuccess)
+                {
+                    _keeperDb.Bin = (KeeperBin)result.Payload;
                     return true;
-                question = $"Ошибка загрузки из файла {path}";
+                }
+                // question =  $"Ошибка загрузки из файла {path}";
+                question = result.Exception.Message;
             }
             else question = $"Файл {path} не найден";
             var vm = new DbAskLoadingViewModel(question);

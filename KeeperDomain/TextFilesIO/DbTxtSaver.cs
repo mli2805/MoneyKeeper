@@ -4,30 +4,29 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using KeeperDomain;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
     public static class DbTxtSaver
     {
-        public static async Task<bool> SaveAllToNewTxtAsync(this KeeperDb db)
+        public static async Task<LibResult> SaveAllToNewTxtAsync(this KeeperBin bin)
         {
-            return await Task.Factory.StartNew(db.SaveAllToNewTxt);
+            return await Task.Factory.StartNew(bin.SaveAllToNewTxt);
         }
 
-        private static bool SaveAllToNewTxt(this KeeperDb db)
+        private static LibResult SaveAllToNewTxt(this KeeperBin bin)
         {
             try
             {
-                var currencyRates = db.Bin.Rates.Values.Select(l => l.Dump());
-                var accounts = db.Bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
-                var deposits = db.Bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
-                var cards = db.Bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Deposit.Card.Dump());
+                var currencyRates = bin.Rates.Values.Select(l => l.Dump());
+                //    var accounts = bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
+                var accounts = bin.AccountsExport();
+                var deposits = bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
+                var cards = bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Deposit.Card.Dump());
                 // var depoOffers = db.ExportDepos();
-                var newDepoOffers = db.NewExportDepos();
-                var transactions = db.Bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
-                var tagAssociations = db.Bin.TagAssociations.OrderBy(a => a.OperationType).
+                var newDepoOffers = bin.NewExportDepos();
+                var transactions = bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
+                var tagAssociations = bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
 
                 File.WriteAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"), currencyRates);
@@ -42,15 +41,43 @@ namespace Keeper2018
                 WriteTransactionsContent(PathFactory.GetBackupFilePath("Transactions.txt"), transactions);
                 File.WriteAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
 
-                db.WriteCars();
+                bin.WriteCars();
 
-                return true;
+                return new LibResult();
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Exception during text files saving:{Environment.NewLine} {e.Message}");
-                return false;
+                return new LibResult(e);
             }
+        }
+
+        private static List<string> AccountsExport(this KeeperBin bin)
+        {
+            var result = new List<string>();
+
+            Stack<int> previousParents = new Stack<int>();
+            previousParents.Push(0);
+            var previousAccountId = 0;
+            var level = 0;
+            foreach (var account in bin.AccountPlaneList)
+            {
+                if (account.OwnerId != previousParents.Peek())
+                {
+                    if (account.OwnerId == previousAccountId)
+                    {
+                        level++;
+                        previousParents.Push(previousAccountId);
+                    }
+                    else
+                    {
+                        level--;
+                        previousParents.Pop();
+                    }
+                }
+                result.Add(account.Dump(level));
+                previousAccountId = account.Id;
+            }
+            return result;
         }
 
         // supposedly it should be faster than File.WriteAllLines because of increased buffer
@@ -86,14 +113,14 @@ namespace Keeper2018
         //     return depoOffers;
         // }
 
-        private static Dictionary<string, List<string>> NewExportDepos(this KeeperDb db)
+        private static Dictionary<string, List<string>> NewExportDepos(this KeeperBin bin)
         {
             var depoRateLines = new List<string>();
             var depoCalcRules = new List<string>();
             var depoConditions = new List<string>();
             var depoOffers = new List<string>();
 
-            foreach (var depositOffer in db.Bin.DepositOffers)
+            foreach (var depositOffer in bin.DepositOffers)
             {
                 foreach (var pair in depositOffer.ConditionsMap)
                 {
@@ -113,11 +140,11 @@ namespace Keeper2018
             };
         }
 
-        private static void WriteCars(this KeeperDb db)
+        private static void WriteCars(this KeeperBin bin)
         {
             var cars = new List<string>();
             var yearMileages = new List<string>();
-            foreach (var car in db.Bin.Cars)
+            foreach (var car in bin.Cars)
             {
                 cars.Add(car.Dump());
                 yearMileages.AddRange(car.YearMileages.Select(mileage => mileage.Dump()));
@@ -131,21 +158,20 @@ namespace Keeper2018
             return await Task.Factory.StartNew(Zipper.ZipAllFiles);
         }
 
-        public static bool DeleteTxtFiles()
+        public static LibResult DeleteTxtFiles()
         {
             try
             {
                 var backupPath = PathFactory.GetBackupPath();
-                if (!Directory.Exists(backupPath)) return false;
+                if (!Directory.Exists(backupPath)) return new LibResult(new Exception("Backup directory does not exist!"));
                 var filenames = Directory.GetFiles(backupPath, "*.txt"); // note: this does not recurse directories! 
                 foreach (var filename in filenames)
                     File.Delete(filename);
-                return true;
+                return new LibResult();
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Exception during database zipping: {e.Message}");
-                return false;
+                return new LibResult(e);
             }
         }
     }

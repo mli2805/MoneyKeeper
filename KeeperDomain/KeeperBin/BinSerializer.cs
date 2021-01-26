@@ -2,12 +2,10 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
-using System.Windows;
-using KeeperDomain;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
-    public static class DbSerializer
+    public static class BinSerializer
     {
         private static void MadeDbxBackup(string filename)
         {
@@ -18,7 +16,7 @@ namespace Keeper2018
             File.Copy(filename, backupFilename, true);
         }
 
-        public static async Task<bool> Serialize(KeeperBin bin)
+        public static async Task<LibResult> Serialize(KeeperBin bin)
         {
             var path = PathFactory.GetDbFullPath();
             MadeDbxBackup(path);
@@ -30,29 +28,29 @@ namespace Keeper2018
                     binaryFormatter.Serialize(fStream, bin);
                 }
                 await Task.Delay(1);
-                return true;
+                return new LibResult();
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
-                return false;
+                return new LibResult(e);
             }
         }
 
-        public static KeeperBin Deserialize(string path)
+        public static async Task<LibResult> Deserialize(string path)
         {
             try
             {
+                await Task.Delay(1);
                 using (Stream fStream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
                     var binaryFormatter = new BinaryFormatter();
-                    return (KeeperBin)binaryFormatter.Deserialize(fStream);
+                    var keeperBin = binaryFormatter.Deserialize(fStream);
+                    return new LibResult(true, keeperBin);
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
-                return null;
+                return new LibResult(e);
             }
         }
     }

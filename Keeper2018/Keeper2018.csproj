@@ -225,7 +225,6 @@
     <Compile Include="DataModels\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="DataModels\TagAssociationModel.cs" />
     <Compile Include="DataModels\Transaction\OperationTypeExtantions.cs" />
-    <Compile Include="Db\TxtFileIo\DbTxtSaver.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
     <Compile Include="DataModels\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseCollection.cs" />
@@ -252,8 +251,6 @@
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithDetails.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
     <Compile Include="Db\AssociationFinder.cs" />
-    <Compile Include="Db\TxtFileIo\DbClassesInstanceParser.cs" />
-    <Compile Include="Db\TxtFileIo\DbTxtLoader.cs" />
     <Compile Include="Db\IO\DbLoader.cs" />
     <Compile Include="Db\MapToModels.cs" />
     <Compile Include="Db\RatesExt.cs" />
@@ -442,8 +439,6 @@
     <Compile Include="Forms\AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
     <Compile Include="Db\KeeperDbExt.cs" />
-    <Compile Include="Db\KeeperBin.cs" />
-    <Compile Include="Db\IO\DbSerializer.cs" />
     <Compile Include="DataModels\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
     <Compile Include="DataModels\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
     <Compile Include="DataModels\Transaction\ComboboxTreeview\ITreeViewItemModel.cs" />

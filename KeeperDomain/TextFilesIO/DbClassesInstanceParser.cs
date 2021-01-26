@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using KeeperDomain;
 using static System.Boolean;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
     public static class DbClassesInstanceParser
     {
