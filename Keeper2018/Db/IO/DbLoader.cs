@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -12,15 +10,13 @@ namespace Keeper2018
         private readonly KeeperDb _keeperDb;
         private readonly IWindowManager _windowManager;
         private readonly DbLoadingViewModel _dbLoadingViewModel;
-        private readonly CurrencyRatesViewModel _currencyRatesViewModel;
 
         public DbLoader(KeeperDb keeperDb, IWindowManager windowManager,
-            DbLoadingViewModel dbLoadingViewModel, CurrencyRatesViewModel currencyRatesViewModel)
+            DbLoadingViewModel dbLoadingViewModel)
         {
             _keeperDb = keeperDb;
             _windowManager = windowManager;
             _dbLoadingViewModel = dbLoadingViewModel;
-            _currencyRatesViewModel = currencyRatesViewModel;
         }
 
         public async Task<bool> Load()
@@ -48,13 +44,6 @@ namespace Keeper2018
             return _dbLoadingViewModel.DbLoaded;
         }
 
-        public void ExpandBinToDb(KeeperDb keeperDb)
-        {
-            _currencyRatesViewModel.Initialize();
-            keeperDb.FillInAccountTree(); // must be first
-
-            keeperDb.TagAssociationModels = new ObservableCollection<TagAssociationModel>
-                (keeperDb.Bin.TagAssociations.Select(a => a.Map(keeperDb.AcMoDict)));
-        }
+      
     }
 }

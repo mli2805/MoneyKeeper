@@ -1,9 +1,7 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using Caliburn.Micro;
-using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -16,12 +14,14 @@ namespace Keeper2018
 
         private readonly KeeperDb _keeperDb;
         private readonly DbLoader _dbLoader;
-        private readonly TranModel _tranModel;
+        private readonly DbSaver _dbSaver;
+        private readonly CurrencyRatesViewModel _currencyRatesViewModel;
         public ShellPartsBinder ShellPartsBinder { get; }
         private bool _dbLoaded;
 
-        public ShellViewModel(KeeperDb keeperDb, DbLoader dbLoader, ShellPartsBinder shellPartsBinder,
-            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, TranModel tranModel,
+        public ShellViewModel(KeeperDb keeperDb, ShellPartsBinder shellPartsBinder, 
+            DbLoader dbLoader, DbSaver dbSaver, CurrencyRatesViewModel currencyRatesViewModel,
+            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, 
             BalanceOrTrafficViewModel balanceOrTrafficViewModel, TwoSelectorsViewModel twoSelectorsViewModel)
         {
             MainMenuViewModel = mainMenuViewModel;
@@ -31,7 +31,8 @@ namespace Keeper2018
 
             _keeperDb = keeperDb;
             _dbLoader = dbLoader;
-            _tranModel = tranModel;
+            _dbSaver = dbSaver;
+            _currencyRatesViewModel = currencyRatesViewModel;
             ShellPartsBinder = shellPartsBinder;
         }
 
@@ -45,61 +46,26 @@ namespace Keeper2018
                 return;
             }
 
-            _dbLoader.ExpandBinToDb(_keeperDb);
+            ExpandBinToDb(_keeperDb);
             var account = _keeperDb.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountModel = account; 
-            
-//            var records = await ConvertInto2020Database();
         }
 
-        // ReSharper disable once UnusedMember.Local
-        private async Task<int> ConvertInto2020Database()
+        private void ExpandBinToDb(KeeperDb keeperDb)
         {
-            using (KeeperContext db = new KeeperContext())
-            {
-                db.Accounts.AddRange(_keeperDb.Bin.AccountPlaneList);
-                return await db.SaveChangesAsync();
-            }
-        }
+            _currencyRatesViewModel.Initialize();
+            keeperDb.FillInAccountTree(); // must be first
 
+            keeperDb.TagAssociationModels = new ObservableCollection<TagAssociationModel>
+                (keeperDb.Bin.TagAssociations.Select(a => a.Map(keeperDb.AcMoDict)));
+        }
+      
         public override async void CanClose(Action<bool> callback)
         {
-            if (ShellPartsBinder.IsBusy) return;
-            ShellPartsBinder.IsBusy = true;
-
             if (_dbLoaded)
             {
-                ShellPartsBinder.FooterVisibility = Visibility.Visible;
-                _keeperDb.FlattenAccountTree();
-
-                var result3 = await BinSerializer.Serialize(_keeperDb.Bin);
-                if (!result3.IsSuccess)
-                {
-                    MessageBox.Show(result3.Exception.Message);
-                }
-
-                if (_tranModel.IsCollectionChanged)
-                {
-                    var result = await _keeperDb.Bin.SaveAllToNewTxtAsync();
-                    if (result.IsSuccess)
-                    {
-                        if (await DbTxtSaver.ZipTxtDbAsync())
-                        {
-                            var result2 = DbTxtSaver.DeleteTxtFiles();
-                            if (!result2.IsSuccess)
-                            {
-                                MessageBox.Show(result2.Exception.Message);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show(result.Exception.Message);
-                    }
-                }
-
-                ShellPartsBinder.FooterVisibility = Visibility.Collapsed;
+                if (!await _dbSaver.Save()) return;
             }
 
             base.CanClose(callback);

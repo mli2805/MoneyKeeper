@@ -2,7 +2,6 @@
 using System.Windows;
 using Caliburn.Micro;
 using Keeper2018.PayCards;
-using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -10,6 +9,7 @@ namespace Keeper2018
     {
         private readonly IWindowManager _windowManager;
         private readonly KeeperDb _keeperDb;
+        private readonly DbSaver _dbSaver;
         private readonly ShellPartsBinder _shellPartsBinder;
         private readonly CurrencyRatesViewModel _currencyRatesViewModel;
         private readonly MonthAnalysisViewModel _monthAnalysisViewModel;
@@ -24,16 +24,18 @@ namespace Keeper2018
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
 
-        public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, ShellPartsBinder shellPartsBinder,
+        public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, 
+            DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
-            DepoCurrResultViewModel depoCurrResultViewModel,
-            GskViewModel gskViewModel, PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
+            DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel, 
+            PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
         {
             _windowManager = windowManager;
             _keeperDb = keeperDb;
+            _dbSaver = dbSaver;
             _shellPartsBinder = shellPartsBinder;
             _currencyRatesViewModel = currencyRatesViewModel;
             _monthAnalysisViewModel = monthAnalysisViewModel;
@@ -170,48 +172,9 @@ namespace Keeper2018
             _windowManager.ShowDialog(_payCardsViewModel);
         }
 
-
         public async void Save()
         {
-            try
-            {
-                if (_shellPartsBinder.IsBusy) return;
-                _shellPartsBinder.IsBusy = true;
-                _shellPartsBinder.FooterVisibility = Visibility.Visible;
-                _keeperDb.FlattenAccountTree();
-
-                var result3 = await BinSerializer.Serialize(_keeperDb.Bin);
-                if (!result3.IsSuccess)
-                {
-                    MessageBox.Show(result3.Exception.Message);
-                }
-
-                var result = await _keeperDb.Bin.SaveAllToNewTxtAsync();
-                if (result.IsSuccess)
-                {
-                    if (await DbTxtSaver.ZipTxtDbAsync())
-                    {
-                        var result2 = DbTxtSaver.DeleteTxtFiles();
-                        if (!result2.IsSuccess)
-                        {
-                            MessageBox.Show(result2.Exception.Message);
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(result.Exception.Message);
-                }
-
-                _transactionsViewModel.Model.IsCollectionChanged = false;
-                _shellPartsBinder.FooterVisibility = Visibility.Collapsed;
-                _shellPartsBinder.IsBusy = false;
-            }
-            catch (Exception e)
-            {
-                var vm = new MyMessageBoxViewModel(MessageType.Error, $"Exception during db saving: {e.Message}");
-                _windowManager.ShowDialog(vm);
-            }
+            await _dbSaver.Save();
         }
 
         public void ShowSettingsForm()

@@ -225,6 +225,7 @@
     <Compile Include="DataModels\BankDeposit\DepositOfferExt.cs" />
     <Compile Include="DataModels\TagAssociationModel.cs" />
     <Compile Include="DataModels\Transaction\OperationTypeExtantions.cs" />
+    <Compile Include="Db\IO\DbSaver.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
     <Compile Include="DataModels\BankDeposit\DepositOfferModel.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseCollection.cs" />
