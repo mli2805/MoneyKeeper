@@ -8,7 +8,7 @@ namespace Keeper2018
     public class MainMenuViewModel : PropertyChangedBase
     {
         private readonly IWindowManager _windowManager;
-        private readonly KeeperDb _keeperDb;
+        private readonly KeeperDataModel _keeperDataModel;
         private readonly DbSaver _dbSaver;
         private readonly ShellPartsBinder _shellPartsBinder;
         private readonly CurrencyRatesViewModel _currencyRatesViewModel;
@@ -24,7 +24,7 @@ namespace Keeper2018
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
 
-        public MainMenuViewModel(IWindowManager windowManager, KeeperDb keeperDb, 
+        public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel, 
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
@@ -34,7 +34,7 @@ namespace Keeper2018
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
         {
             _windowManager = windowManager;
-            _keeperDb = keeperDb;
+            _keeperDataModel = keeperDataModel;
             _dbSaver = dbSaver;
             _shellPartsBinder = shellPartsBinder;
             _currencyRatesViewModel = currencyRatesViewModel;
@@ -132,7 +132,7 @@ namespace Keeper2018
         public void ShowBalancesAndSaldosChart()
         {
             var vm = new BalancesAndSaldosViewModel();
-            vm.Initialize(_keeperDb);
+            vm.Initialize(_keeperDataModel);
             _windowManager.ShowWindow(vm);
         }
 

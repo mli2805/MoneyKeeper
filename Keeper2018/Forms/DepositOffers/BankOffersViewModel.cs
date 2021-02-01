@@ -10,7 +10,7 @@ namespace Keeper2018
     public class BankOffersViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly OneBankOfferViewModel _oneBankOfferViewModel;
         public ObservableCollection<DepositOfferModel> Rows { get; set; }
 
@@ -26,18 +26,18 @@ namespace Keeper2018
             }
         }
 
-        public BankOffersViewModel(IWindowManager windowManager, KeeperDb db,
+        public BankOffersViewModel(IWindowManager windowManager, KeeperDataModel dataModel,
             OneBankOfferViewModel oneBankOfferViewModel)
         {
             _windowManager = windowManager;
-            _db = db;
+            _dataModel = dataModel;
             _oneBankOfferViewModel = oneBankOfferViewModel;
         }
 
         public void Initialize()
         {
             Rows = new ObservableCollection<DepositOfferModel>
-                (_db.Bin.DepositOffers.Select(x => x.Map(_db.Bin.AccountPlaneList)));
+                (_dataModel.Bin.DepositOffers.Select(x => x.Map(_dataModel.Bin.AccountPlaneList)));
             SelectedDepositOffer = Rows.Last();
         }
 
@@ -75,7 +75,7 @@ namespace Keeper2018
 
         public void RemoveSelectedOffer()
         {
-            if (_db.Bin.AccountPlaneList.Any(a => a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
+            if (_dataModel.Bin.AccountPlaneList.Any(a => a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
             {
                 var strs = new List<string> {"Существует как минимум один депозит открытый по этой оферте.", "", "Сначала удалите депозиты."};
                 var vm = new MyMessageBoxViewModel(MessageType.Error, strs);
@@ -87,7 +87,7 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
-            _db.Bin.DepositOffers = new List<DepositOffer>(Rows.Select(d => d.Map()));
+            _dataModel.Bin.DepositOffers = new List<DepositOffer>(Rows.Select(d => d.Map()));
             base.CanClose(callback);
         }
     }

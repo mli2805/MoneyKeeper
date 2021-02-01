@@ -25,7 +25,7 @@ namespace Keeper2018
         public int Height { get; set; }
 
         private readonly IWindowManager _windowManager;
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly ReceiptViewModel _receiptViewModel;
         private readonly FuellingInputViewModel _fuellingInputViewModel;
 
@@ -54,13 +54,13 @@ namespace Keeper2018
 
         public OperationTypeViewModel OperationTypeViewModel { get; } = new OperationTypeViewModel();
 
-        public OneTranViewModel(IWindowManager windowManager, KeeperDb db,
+        public OneTranViewModel(IWindowManager windowManager, KeeperDataModel dataModel,
             ReceiptViewModel receiptViewModel, FuellingInputViewModel fuellingInputViewModel,
             UniversalControlVm myIncomeControlVm, UniversalControlVm myExpenseControlVm,
             UniversalControlVm myTransferControlVm, UniversalControlVm myExchangeControlVm)
         {
             _windowManager = windowManager;
-            _db = db;
+            _dataModel = dataModel;
             _receiptViewModel = receiptViewModel;
             _fuellingInputViewModel = fuellingInputViewModel;
 
@@ -108,7 +108,7 @@ namespace Keeper2018
         {
             TranInWork.Tags.Clear();
             if (TranInWork.MySecondAccount == null && (TranInWork.Operation == OperationType.Перенос || TranInWork.Operation == OperationType.Обмен))
-                TranInWork.MySecondAccount = _db.AcMoDict[163];
+                TranInWork.MySecondAccount = _dataModel.AcMoDict[163];
             if (TranInWork.CurrencyInReturn == null && TranInWork.Operation == OperationType.Обмен)
                 TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCode.BYN) ? CurrencyCode.USD : CurrencyCode.BYN;
         }
@@ -183,7 +183,7 @@ namespace Keeper2018
             if (!LeaveOneExternalAccountInTags()) return;
 
             Left = Left - 180;
-            _receiptViewModel.Initialize(TranInWork.Amount, TranInWork.Currency, _db.AcMoDict[256]);
+            _receiptViewModel.Initialize(TranInWork.Amount, TranInWork.Currency, _dataModel.AcMoDict[256]);
             _receiptViewModel.PlaceIt(Top, Left + Width, Height);
 
             if (_windowManager.ShowDialog(_receiptViewModel) != true) return;
@@ -195,7 +195,7 @@ namespace Keeper2018
         public void Fuelling()
         {
             Left = Left - 180;
-            if (_db.Bin.Cars == null)
+            if (_dataModel.Bin.Cars == null)
             {
                 MessageBox.Show("Cars должны быть заполнены!");
                 return;
@@ -213,7 +213,7 @@ namespace Keeper2018
         {
             return new Fuelling()
             {
-                CarAccountId = _db.Bin.Cars.Last().CarAccountId,
+                CarAccountId = _dataModel.Bin.Cars.Last().CarAccountId,
                 Timestamp = TranInWork.Timestamp,
                 Volume = 30,
                 FuelType = FuelType.ДтЕвро5,
@@ -225,9 +225,9 @@ namespace Keeper2018
 
         private void CreateFuellingTran(FuellingInputVm vm)
         {
-            var carAccount = _db.AcMoDict[vm.CarAccountId];
+            var carAccount = _dataModel.AcMoDict[vm.CarAccountId];
             var account = carAccount.Children.First(c => c.Name.Contains("авто топливо"));
-            var azs = _db.AcMoDict[272];
+            var azs = _dataModel.AcMoDict[272];
             FuellingTran = new TransactionModel()
             {
                 Operation = OperationType.Расход,

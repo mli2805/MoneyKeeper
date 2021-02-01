@@ -10,7 +10,7 @@ namespace Keeper2018
 {
     public class CarsViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly IWindowManager _windowManager;
         private readonly FuelViewModel _fuelViewModel;
 
@@ -33,19 +33,19 @@ namespace Keeper2018
         public Visibility IsLastCarVisibility => SelectedCar.AccountId == Cars.Last().AccountId
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public CarsViewModel(KeeperDb db, IWindowManager windowManager, FuelViewModel fuelViewModel)
+        public CarsViewModel(KeeperDataModel dataModel, IWindowManager windowManager, FuelViewModel fuelViewModel)
         {
-            _db = db;
+            _dataModel = dataModel;
             _windowManager = windowManager;
             _fuelViewModel = fuelViewModel;
         }
 
         public void Initialize()
         {
-            _db.Bin.Cars.Last().SaleDate = DateTime.Today;
+            _dataModel.Bin.Cars.Last().SaleDate = DateTime.Today;
 
             Cars = new List<CarVm>();
-            foreach (var car in _db.Bin.Cars)
+            foreach (var car in _dataModel.Bin.Cars)
             {
                 Cars.Add(new CarVm(car));
             }
@@ -72,7 +72,7 @@ namespace Keeper2018
         public void ShowCarReport()
         {
             if (SelectedCar.AccountId < 711) return;
-            var provider = new CarReportProvider(_db);
+            var provider = new CarReportProvider(_dataModel);
             var document = provider.CreateCarReport(SelectedCar.AccountId);
 
             try

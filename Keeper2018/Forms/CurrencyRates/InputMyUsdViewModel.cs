@@ -5,16 +5,16 @@ namespace Keeper2018
 {
     public class InputMyUsdViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         public CurrencyRatesModel CurrentLine { get; set; }
 
         public double MyUsdRate { get; set; }
         public double EurUsd { get; set; }
         public double RubUsd { get; set; }
 
-        public InputMyUsdViewModel(KeeperDb db)
+        public InputMyUsdViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         public void Initialize(CurrencyRatesModel currentLine, CurrencyRates previousDate)
@@ -39,7 +39,7 @@ namespace Keeper2018
 
         public void Save()
         {
-            var rateLine = _db.Bin.Rates[CurrentLine.Date];
+            var rateLine = _dataModel.Bin.Rates[CurrentLine.Date];
             rateLine.MyUsdRate.Value = MyUsdRate;
             rateLine.MyEurUsdRate.Value = EurUsd;
             rateLine.CbrRate.Usd.Value = RubUsd;

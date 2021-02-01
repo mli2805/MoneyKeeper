@@ -26,7 +26,7 @@ namespace Keeper2018
             }
         }
 
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly IWindowManager _windowManager;
         public bool IsSavePressed { get; set; }
 
@@ -60,9 +60,9 @@ namespace Keeper2018
 
         public string IsNotRevocable => _selectedDepositOffer.IsNotRevocable ? "Безотзывный" : "Отзывный";
 
-        public OneDepositViewModel(KeeperDb db, IWindowManager windowManager)
+        public OneDepositViewModel(KeeperDataModel dataModel, IWindowManager windowManager)
         {
-            _db = db;
+            _dataModel = dataModel;
             _windowManager = windowManager;
         }
 
@@ -71,7 +71,7 @@ namespace Keeper2018
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
             _accountModel = accountModel;
-            DepositOffers = _db.Bin.DepositOffers.Select(x => x.Map(_db.Bin.AccountPlaneList)).ToList();
+            DepositOffers = _dataModel.Bin.DepositOffers.Select(x => x.Map(_dataModel.Bin.AccountPlaneList)).ToList();
             DepositInWork = accountModel.Deposit;
             DepositInWork.MyAccountId = accountModel.Id;
             ParentName = accountModel.Owner.Name;

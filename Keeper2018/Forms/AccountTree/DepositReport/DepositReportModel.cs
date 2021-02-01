@@ -8,8 +8,8 @@ namespace Keeper2018
 {
     public class DepositReportModel
     {
-        private readonly KeeperDb _db;
-        public DepositReportModel(KeeperDb db) { _db = db; }
+        private readonly KeeperDataModel _dataModel;
+        public DepositReportModel(KeeperDataModel dataModel) { _dataModel = dataModel; }
 
         public bool IsInUsd;
         public Deposit Deposit
@@ -18,7 +18,7 @@ namespace Keeper2018
             set
             {
                 _deposit = value;
-                DepositOffer = _db.Bin.DepositOffers.First(o => o.Id == _deposit.DepositOfferId);
+                DepositOffer = _dataModel.Bin.DepositOffers.First(o => o.Id == _deposit.DepositOfferId);
                 IsInUsd = DepositOffer.MainCurrency == CurrencyCode.USD;
             }
         }
@@ -30,7 +30,7 @@ namespace Keeper2018
 
         public string DepositName { get; set; }
         public string DepositState => AmountInUsd == 0 ? "Депозит закрыт." : "Действующий депозит.";
-        public string BalanceInHeader => $"Остаток составляет {_db.BalanceInUsdString(DateTime.Today.GetEndOfDate(), Balance)}";
+        public string BalanceInHeader => $"Остаток составляет {_dataModel.BalanceInUsdString(DateTime.Today.GetEndOfDate(), Balance)}";
 
         public List<ReportLine> Traffic { get; set; } = new List<ReportLine>();
         public Balance Contribution { get; set; } = new Balance(); // I put on depo
@@ -48,7 +48,7 @@ namespace Keeper2018
         public string ContributionStr => $"Внесено {Contribution}" + (IsInUsd ? "" : $" ( ${ContributionUsd:0.00} )");
         public string RevenueStr => $"+ Проценты {Revenue}" + (IsInUsd ? "" : $" ( ${RevenueUsd:0.00} )");
         public string СonsumptionStr => $"- Снято {Сonsumption}" + (IsInUsd ? "" : $" ( ${ConsumptionUsd:0.00} )");
-        public string BalanceStr => $"- Остаток {_db.BalanceInUsdString(DateTime.Today.GetEndOfDate(), Balance)}";
+        public string BalanceStr => $"- Остаток {_dataModel.BalanceInUsdString(DateTime.Today.GetEndOfDate(), Balance)}";
         public string DevaluationStr => IsInUsd ? "" : $"= Курсовые разницы ${DevaluationUsd:0.00}";
         public Brush DevaluationBrush => DevaluationUsd > 0 ? Brushes.Blue : Brushes.Red;
         public string FinResultStr => $"Текущий профит ${FinResultUsd:0.00}";

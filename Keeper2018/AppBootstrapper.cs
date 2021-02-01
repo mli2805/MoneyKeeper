@@ -53,10 +53,6 @@ using System.Threading;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
 
-//            KeeperDb keeperDb = await DbLoader.Load();
-//            builder.RegisterInstance(keeperDb);
-
-
             _container = builder.Build();
 
             DisplayRootViewFor<IShell>();

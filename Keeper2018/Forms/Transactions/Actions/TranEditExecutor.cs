@@ -9,17 +9,17 @@ namespace Keeper2018
         private readonly TranModel _model;
 
         private readonly IWindowManager _windowManager;
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly OneTranViewModel _oneTranViewModel;
         private readonly AskReceiptDeletionViewModel _askReceiptDeletionViewModel;
 
         public TranEditExecutor(TranModel model, IWindowManager windowManager,
-            KeeperDb db, OneTranViewModel oneTranViewModel, AskReceiptDeletionViewModel askReceiptDeletionViewModel)
+            KeeperDataModel dataModel, OneTranViewModel oneTranViewModel, AskReceiptDeletionViewModel askReceiptDeletionViewModel)
         {
             _model = model;
 
             _windowManager = windowManager;
-            _db = db;
+            _dataModel = dataModel;
             _oneTranViewModel = oneTranViewModel;
             _askReceiptDeletionViewModel = askReceiptDeletionViewModel;
         }
@@ -36,8 +36,8 @@ namespace Keeper2018
 
             _oneTranViewModel.GetTran().CopyInto(selectedTran);
 
-            _db.Bin.Transactions.Remove(selectedTran.TransactionKey);
-            _db.Bin.Transactions.Add(selectedTran.TransactionKey, selectedTran.Map());
+            _dataModel.Bin.Transactions.Remove(selectedTran.TransactionKey);
+            _dataModel.Bin.Transactions.Add(selectedTran.TransactionKey, selectedTran.Map());
 
             _model.SortedRows.Refresh();
             _model.IsCollectionChanged = true;
@@ -69,27 +69,27 @@ namespace Keeper2018
 
         private void AddOneTran(TransactionModel tran)
         {
-            tran.TransactionKey = _db.Bin.Transactions.Keys.Max() + 1;
+            tran.TransactionKey = _dataModel.Bin.Transactions.Keys.Max() + 1;
 
             var wrappedTransactionsAfterInserted =
                 _model.Rows.Where(t => t.Tran.Timestamp.Date == tran.Timestamp.Date && t.Tran.Timestamp >= tran.Timestamp).ToList();
             foreach (var wrapped in wrappedTransactionsAfterInserted)
             {
                 wrapped.Tran.Timestamp = wrapped.Tran.Timestamp.AddMinutes(1);
-                _db.Bin.Transactions[wrapped.Tran.TransactionKey].Timestamp = wrapped.Tran.Timestamp;
+                _dataModel.Bin.Transactions[wrapped.Tran.TransactionKey].Timestamp = wrapped.Tran.Timestamp;
             }
 
             var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
             _model.Rows.Add(tranWrappedForDatagrid);
             _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
 
-            _db.Bin.Transactions.Add(tran.TransactionKey, tran.Map());
+            _dataModel.Bin.Transactions.Add(tran.TransactionKey, tran.Map());
         }
 
         private void AddOneTranAndReceipt(OneTranViewModel oneTranForm)
         {
             var oneTran = oneTranForm.GetTran();
-            var sameDayTransactions = _db.Bin.Transactions.Values.Where(t => t.Timestamp.Date == oneTran.Timestamp.Date).ToList();
+            var sameDayTransactions = _dataModel.Bin.Transactions.Values.Where(t => t.Timestamp.Date == oneTran.Timestamp.Date).ToList();
             var receiptId = sameDayTransactions.Any() ? sameDayTransactions.Max(r => r.Receipt) + 1 : 1;
             foreach (var tuple in oneTranForm.ReceiptList)
             {
@@ -149,7 +149,7 @@ namespace Keeper2018
             int n = _model.Rows.IndexOf(wrappedTrans.First());
             foreach (var wrappedTran in wrappedTrans)
             {
-                _db.Bin.Transactions.Remove(wrappedTran.Tran.TransactionKey);
+                _dataModel.Bin.Transactions.Remove(wrappedTran.Tran.TransactionKey);
                 _model.Rows.Remove(wrappedTran);
             }
 

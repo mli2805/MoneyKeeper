@@ -15,7 +15,7 @@ namespace Keeper2018
 {
     public class FuelViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         public List<Fuelling> Rows { get; set; }
         public string Total => $"Итого {Rows.Sum(f => f.Volume)} литров";
 
@@ -45,9 +45,9 @@ namespace Keeper2018
             }
         }
 
-        public FuelViewModel(KeeperDb db)
+        public FuelViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -58,7 +58,7 @@ namespace Keeper2018
         public void Initialize()
         {
             ExtractFuellingsFromDb();
-            Rows = _db.Bin.Fuellings;
+            Rows = _dataModel.Bin.Fuellings;
 
             InitializeChartModel();
         }
@@ -85,14 +85,14 @@ namespace Keeper2018
 
             var dieselSeries = new LineSeries()
             { Title = "Дт Евро5", Color = OxyColors.BlueViolet };
-            foreach (var fuelling in _db.Bin.Fuellings.Where(f => f.FuelType == FuelType.ДтЕвро5))
+            foreach (var fuelling in _dataModel.Bin.Fuellings.Where(f => f.FuelType == FuelType.ДтЕвро5))
             {
                 dieselSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
             }
             ChartModel.Series.Add(dieselSeries);
 
             var arkticSeries = new ScatterSeries() {Title = "Дт Арктика", MarkerType  = MarkerType.Circle, MarkerFill = OxyColors.Red };
-            foreach (var fuelling in _db.Bin.Fuellings.Where(f => f.FuelType == FuelType.ДтЕвро5Арктика))
+            foreach (var fuelling in _dataModel.Bin.Fuellings.Where(f => f.FuelType == FuelType.ДтЕвро5Арктика))
             {
                 arkticSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
             }
@@ -101,8 +101,8 @@ namespace Keeper2018
 
         private void ExtractFuellingsFromDb()
         {
-            var trs = _db.Bin.Transactions.Values.Where(t => t.Tags.Contains(718) || t.Tags.Contains(714));
-            _db.Bin.Fuellings = new List<Fuelling>();
+            var trs = _dataModel.Bin.Transactions.Values.Where(t => t.Tags.Contains(718) || t.Tags.Contains(714));
+            _dataModel.Bin.Fuellings = new List<Fuelling>();
             foreach (var tr in trs)
             {
                 var volume = GetVolumeFromComment(tr.Comment);
@@ -118,11 +118,11 @@ namespace Keeper2018
                     Comment = tr.Comment,
 
                     OneLitrePrice = oneLitrePrice,
-                    OneLitreInUsd = _db.AmountInUsd(tr.Timestamp, tr.Currency, oneLitrePrice),
+                    OneLitreInUsd = _dataModel.AmountInUsd(tr.Timestamp, tr.Currency, oneLitrePrice),
                 };
-                _db.Bin.Fuellings.Add(fuelling);
+                _dataModel.Bin.Fuellings.Add(fuelling);
             }
-            Console.WriteLine($@"{_db.Bin.Fuellings.Count} заправок, {_db.Bin.Fuellings.Sum(f => f.Volume)} литров");
+            Console.WriteLine($@"{_dataModel.Bin.Fuellings.Count} заправок, {_dataModel.Bin.Fuellings.Sum(f => f.Volume)} литров");
         }
 
         private FuelType GetFuelTypeFromComment(string comment)

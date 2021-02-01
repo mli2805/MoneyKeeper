@@ -7,14 +7,14 @@ namespace Keeper2018
 {
     public class DbLoader
     {
-        private readonly KeeperDb _keeperDb;
+        private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly DbLoadingViewModel _dbLoadingViewModel;
 
-        public DbLoader(KeeperDb keeperDb, IWindowManager windowManager,
+        public DbLoader(KeeperDataModel keeperDataModel, IWindowManager windowManager,
             DbLoadingViewModel dbLoadingViewModel)
         {
-            _keeperDb = keeperDb;
+            _keeperDataModel = keeperDataModel;
             _windowManager = windowManager;
             _dbLoadingViewModel = dbLoadingViewModel;
         }
@@ -28,7 +28,7 @@ namespace Keeper2018
                 var result = await BinSerializer.Deserialize(path);
                 if (result.IsSuccess)
                 {
-                    _keeperDb.Bin = (KeeperBin)result.Payload;
+                    _keeperDataModel.Bin = (KeeperBin)result.Payload;
                     return true;
                 }
                 // question =  $"Ошибка загрузки из файла {path}";

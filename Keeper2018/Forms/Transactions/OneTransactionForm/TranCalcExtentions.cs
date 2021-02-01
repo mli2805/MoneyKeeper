@@ -6,14 +6,14 @@ namespace Keeper2018
 {
     static class TranCalcExtentions
     {
-        public static decimal AmountForAccount(this Transaction tran, KeeperDb db, AccountModel account, CurrencyCode? currency, DateTime upToDateTime)
+        public static decimal AmountForAccount(this Transaction tran, KeeperDataModel dataModel, AccountModel account, CurrencyCode? currency, DateTime upToDateTime)
         {
-            return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, db, account, currency) : 0;
+            return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, dataModel, account, currency) : 0;
         }
 
-        private static decimal AmountForAccount(this Transaction tran, KeeperDb db, AccountModel account, CurrencyCode? currency)
+        private static decimal AmountForAccount(this Transaction tran, KeeperDataModel dataModel, AccountModel account, CurrencyCode? currency)
         {
-            var isAccount = db.AcMoDict[tran.MyAccount].Is(account);
+            var isAccount = dataModel.AcMoDict[tran.MyAccount].Is(account);
             bool isSecondAccount;
             switch (tran.Operation)
             {
@@ -23,11 +23,11 @@ namespace Keeper2018
                     return isAccount && tran.Currency == currency ? -tran.Amount : 0;
                 case OperationType.Перенос:
                     if (isAccount && tran.Currency == currency) return -tran.Amount;
-                    isSecondAccount = tran.MySecondAccount != -1 && db.AcMoDict[tran.MySecondAccount].Is(account);
+                    isSecondAccount = tran.MySecondAccount != -1 && dataModel.AcMoDict[tran.MySecondAccount].Is(account);
                     return isSecondAccount && tran.Currency == currency ? tran.Amount : 0;
                 case OperationType.Обмен:
                     if (isAccount && tran.Currency == currency) return -tran.Amount;
-                    isSecondAccount = tran.MySecondAccount != -1 && db.AcMoDict[tran.MySecondAccount].Is(account);
+                    isSecondAccount = tran.MySecondAccount != -1 && dataModel.AcMoDict[tran.MySecondAccount].Is(account);
                     if (isSecondAccount && tran.CurrencyInReturn == currency) return tran.AmountInReturn;
                     return 0;
                 default:
@@ -58,9 +58,9 @@ namespace Keeper2018
             }
         }
 
-        public static Balance BalanceForTag(this Transaction tran, KeeperDb db, int tagId)
+        public static Balance BalanceForTag(this Transaction tran, KeeperDataModel dataModel, int tagId)
         {
-            if (!CollectionContainsTag(db, tran.Tags, tagId)) return null;
+            if (!CollectionContainsTag(dataModel, tran.Tags, tagId)) return null;
             switch (tran.Operation)
             {
                 case OperationType.Доход:
@@ -79,11 +79,11 @@ namespace Keeper2018
             }
         }
 
-        private static bool CollectionContainsTag(KeeperDb db, List<int> collection, int tagId)
+        private static bool CollectionContainsTag(KeeperDataModel dataModel, List<int> collection, int tagId)
         {
             foreach (var id in collection)
             {
-                var tag = db.AcMoDict[id];
+                var tag = dataModel.AcMoDict[id];
                 if (tag.Is(tagId)) return true;
             }
             return false;

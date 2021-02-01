@@ -10,7 +10,7 @@ namespace Keeper2018
 {
     public class ExpenseByCategoriesViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly CategoriesDataExtractor _categoriesDataExtractor;
         private List<CategoriesDataElement> _fullData;
      
@@ -62,9 +62,9 @@ namespace Keeper2018
             }
         }
 
-        public ExpenseByCategoriesViewModel(KeeperDb db, CategoriesDataExtractor categoriesDataExtractor)
+        public ExpenseByCategoriesViewModel(KeeperDataModel dataModel, CategoriesDataExtractor categoriesDataExtractor)
         {
-            _db = db;
+            _dataModel = dataModel;
             _categoriesDataExtractor = categoriesDataExtractor;
         }
         protected override void OnViewLoaded(object view)
@@ -94,7 +94,7 @@ namespace Keeper2018
             var series = new PieSeries();
             foreach (var element in pieData)
             {
-                var category = _db.AcMoDict[element.CategoryId];
+                var category = _dataModel.AcMoDict[element.CategoryId];
                 series.Slices.Add(new PieSlice(category.Name, (double)element.Amount));
             }
             return series;
@@ -106,7 +106,7 @@ namespace Keeper2018
             var sum = pieData.Sum(a => a.Amount);
             foreach (var element in pieData)
             {
-                var category = _db.AcMoDict[element.CategoryId];
+                var category = _dataModel.AcMoDict[element.CategoryId];
                 result.Add(
                     $"{category.Name} - {Math.Round(element.Amount/sum*100, 0)}%  (${Math.Round(element.Amount, 0):0,0})");
             }

@@ -38,14 +38,14 @@ namespace Keeper2018
         public DateTime AskedDate { get; set; } = DateTime.Now;
         public bool IsCollectionChanged { get; set; }
 
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly FilterModel _filterModel;
         private TranFilter _tranFilter;
 
 
-        public TranModel(KeeperDb db, FilterModel filterModel)
+        public TranModel(KeeperDataModel dataModel, FilterModel filterModel)
         {
-            _db = db;
+            _dataModel = dataModel;
             _filterModel = filterModel;
         }
 
@@ -53,7 +53,7 @@ namespace Keeper2018
         {
             _tranFilter = new TranFilter();
 
-            Rows = WrapTransactions(_db.Bin.Transactions);
+            Rows = WrapTransactions(_dataModel.Bin.Transactions);
             Rows.CollectionChanged += Rows_CollectionChanged;
 
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
@@ -90,7 +90,7 @@ namespace Keeper2018
             var result = new ObservableCollection<TranWrappedForDatagrid>();
             foreach (var pair in transactions)
             {
-                var tranModel = pair.Value.Map(_db.AcMoDict, pair.Key);
+                var tranModel = pair.Value.Map(_dataModel.AcMoDict, pair.Key);
                 var wrapped = new TranWrappedForDatagrid() { Tran = tranModel };
                 result.Add(wrapped);
             }

@@ -9,12 +9,12 @@ namespace Keeper2018
         public enum Destination { Up, Down }
 
         private readonly TranModel _model;
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
 
-        public TranMoveExecutor(TranModel model, KeeperDb db)
+        public TranMoveExecutor(TranModel model, KeeperDataModel dataModel)
         {
             _model = model;
-            _db = db;
+            _dataModel = dataModel;
         }
 
         private List<TransactionModel> _selectedTransactions;
@@ -124,7 +124,7 @@ namespace Keeper2018
             foreach (var transactionModel in list)
             {
                 transactionModel.Timestamp = newTimestamp;
-                var transaction = _db.Bin.Transactions[transactionModel.TransactionKey];
+                var transaction = _dataModel.Bin.Transactions[transactionModel.TransactionKey];
                 transaction.Timestamp = newTimestamp;
                 newTimestamp = newTimestamp.AddMinutes(1);
             }

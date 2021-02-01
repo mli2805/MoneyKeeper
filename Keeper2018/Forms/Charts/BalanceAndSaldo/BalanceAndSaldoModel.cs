@@ -10,7 +10,7 @@ namespace Keeper2018
 {
     public class BalanceAndSaldoModel
     {
-        private KeeperDb _db;
+        private KeeperDataModel _dataModel;
         public LineSeries DailyBalancesSeries { get; set; }
         public ColumnSeries MonthlySaldoSeries { get; set; }
         public ColumnSeries AnnualSaldoSeries { get; set; }
@@ -18,9 +18,9 @@ namespace Keeper2018
         public List<string> MonthLabels = new List<string>();
         public List<string> YearLabels = new List<string>();
 
-        public void Initialize(KeeperDb db)
+        public void Initialize(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
             DailyBalancesSeries = new LineSeries()
             { Title = "Дневные остатки", Color = OxyColors.BlueViolet };
             MonthlySaldoSeries = new ColumnSeries()
@@ -39,7 +39,7 @@ namespace Keeper2018
         private DateTime _previousDate;
         public void PrepareSeries()
         {
-            foreach (var tran in _db.Bin.Transactions.Values.OrderBy(t=>t.Timestamp))
+            foreach (var tran in _dataModel.Bin.Transactions.Values.OrderBy(t=>t.Timestamp))
             {
                 if (!tran.Timestamp.Date.Equals(_currentDate))
                 {
@@ -52,7 +52,7 @@ namespace Keeper2018
 
         private void RegisterDay(Transaction tran)
         {
-            _balanceInUsd = (double) _db.BalanceInUsd(_currentDate, _balance);
+            _balanceInUsd = (double) _dataModel.BalanceInUsd(_currentDate, _balance);
             DailyBalancesSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(_currentDate), _balanceInUsd));
 
             _previousDate = _currentDate;

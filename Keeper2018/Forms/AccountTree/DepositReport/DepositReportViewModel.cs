@@ -5,25 +5,25 @@ namespace Keeper2018
 {
     public class DepositReportViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         public DepositReportModel Model { get; set; }
 
-        public DepositReportViewModel(KeeperDb db)
+        public DepositReportViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         public void Initialize(AccountModel accountModel)
         {
             var accountCalculator = 
-                new TrafficOfAccountCalculator(_db, accountModel, 
+                new TrafficOfAccountCalculator(_dataModel, accountModel, 
                     new Period(new DateTime(2001, 12, 31), DateTime.Today.GetEndOfDate()));
             accountCalculator.EvaluateAccount();
             Model = accountCalculator.DepositReportModel;
-            Model.SummarizeFacts(_db);
+            Model.SummarizeFacts(_dataModel);
             if (Model.AmountInUsd != 0)
             {
-                Model.Foresee(_db);
+                Model.Foresee(_dataModel);
             }
         }
 

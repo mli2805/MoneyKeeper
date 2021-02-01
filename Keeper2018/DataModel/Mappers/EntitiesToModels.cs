@@ -5,7 +5,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public static class MapToModels
+    public static class EntitiesToModels
     {
         public static AccountModel Map(this Account account, Dictionary<int, AccountModel> acMoDict)
         {
@@ -60,17 +60,7 @@ namespace Keeper2018
             };
         }
 
-        public static LineModel Map(this TagAssociationModel tagAssociationModel)
-        {
-            return new LineModel
-            {
-                OperationType = tagAssociationModel.OperationType,
-                ExternalAccount = tagAssociationModel.ExternalAccount.Name,
-                Tag = tagAssociationModel.Tag.Name,
-                Destination = tagAssociationModel.Destination,
-            };
-        }
-
+      
         public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict, int transactionKey)
         {
             return new TransactionModel()
@@ -88,25 +78,6 @@ namespace Keeper2018
                 CurrencyInReturn = transaction.CurrencyInReturn,
                 Tags = transaction.Tags.Select(t => acMoDict[t]).ToList(),
                 Comment = transaction.Comment,
-            };
-        }
-
-        public static Transaction Map(this TransactionModel transactionModel)
-        {
-            return new Transaction()
-            {
-                Timestamp = transactionModel.Timestamp,
-                Receipt = transactionModel.Receipt,
-                Operation = transactionModel.Operation,
-                PaymentWay = transactionModel.PaymentWay,
-                MyAccount = transactionModel.MyAccount.Id,
-                MySecondAccount = transactionModel.MySecondAccount?.Id ?? -1,
-                Amount = transactionModel.Amount,
-                AmountInReturn = transactionModel.AmountInReturn,
-                Currency = transactionModel.Currency,
-                CurrencyInReturn = transactionModel.CurrencyInReturn,
-                Tags = transactionModel.Tags.Select(t => t.Id).ToList(),
-                Comment = transactionModel.Comment,
             };
         }
     }

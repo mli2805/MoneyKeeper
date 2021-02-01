@@ -6,7 +6,7 @@ namespace Keeper2018
 {
     public class FuellingInputVm: PropertyChangedBase
     {
-        public KeeperDb Db;
+        public KeeperDataModel DataModel;
 
         private double _volume;
         private decimal _amount;
@@ -84,9 +84,9 @@ namespace Keeper2018
        
         private void EvaluatePrices()
         {
-            if (Db == null || _amount == 0 || Math.Abs(_volume) < 0.01) return;
+            if (DataModel == null || _amount == 0 || Math.Abs(_volume) < 0.01) return;
             OneLitrePrice = _amount / (decimal)_volume;
-            OneLitreInUsd = Db.AmountInUsd(Timestamp, _currency, _amount) / (decimal)_volume;
+            OneLitreInUsd = DataModel.AmountInUsd(Timestamp, _currency, _amount) / (decimal)_volume;
         }
 
     }

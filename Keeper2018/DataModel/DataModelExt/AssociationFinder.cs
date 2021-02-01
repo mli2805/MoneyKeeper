@@ -3,29 +3,23 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class AssociationFinder
+    public static class AssociationFinder
     {
-        private readonly KeeperDb _db;
 
-        public AssociationFinder(KeeperDb db)
+        public static AccountModel GetAssociation(this KeeperDataModel dataModel, TransactionModel tran, AccountModel tag)
         {
-            _db = db;
-        }
-
-        public AccountModel GetAssociation(TransactionModel tran, AccountModel tag)
-        {
-            var associatedTag = GetTagToTagAssociation(tran, tag);
+            var associatedTag = dataModel.GetTagToTagAssociation(tran, tag);
             return (associatedTag == null || tran.Tags.Contains(associatedTag)) ? null : associatedTag;
         }
 
-        private AccountModel GetTagToTagAssociation(TransactionModel tran, AccountModel tag)
+        private static AccountModel GetTagToTagAssociation(this KeeperDataModel dataModel, TransactionModel tran, AccountModel tag)
         {
-            var association = (from a in _db.TagAssociationModels
+            var association = (from a in dataModel.TagAssociationModels
                                where a.ExternalAccount.Id == tag.Id && a.OperationType == tran.Operation
                                select a).FirstOrDefault();
             if (association != null) return association.Tag;
 
-            var reverseAssociation = (from a in _db.TagAssociationModels
+            var reverseAssociation = (from a in dataModel.TagAssociationModels
                            where a.Destination == AssociationType.TwoWay && a.Tag.Id == tag.Id && a.OperationType == tran.Operation
                                       select a).FirstOrDefault();
 

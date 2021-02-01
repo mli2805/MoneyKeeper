@@ -10,7 +10,7 @@ namespace Keeper2018
     public class OneBankOfferViewModel : Screen
     {
         private readonly string _dateTemplate = "dd-MM-yyyy";
-        private readonly KeeperDb _keeperDb;
+        private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
         public List<Account> Banks { get; set; }
@@ -24,17 +24,17 @@ namespace Keeper2018
 
         public bool IsCancelled { get; set; }
 
-        public OneBankOfferViewModel(KeeperDb keeperDb, IWindowManager windowManager, RulesAndRatesViewModel rulesAndRatesViewModel)
+        public OneBankOfferViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, RulesAndRatesViewModel rulesAndRatesViewModel)
         {
-            _keeperDb = keeperDb;
+            _keeperDataModel = keeperDataModel;
             _windowManager = windowManager;
             _rulesAndRatesViewModel = rulesAndRatesViewModel;
         }
 
         public void Initialize(DepositOfferModel model)
         {
-            var bankFolder = _keeperDb.Bin.AccountPlaneList.First(a => a.Name == "Банки");
-            Banks = new List<Account>(_keeperDb.Bin.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
+            var bankFolder = _keeperDataModel.Bin.AccountPlaneList.First(a => a.Name == "Банки");
+            Banks = new List<Account>(_keeperDataModel.Bin.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             ModelInWork = model;
             ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
@@ -51,7 +51,7 @@ namespace Keeper2018
             var date = DateTime.Today;
             while (ModelInWork.ConditionsMap.ContainsKey(date)) date = date.AddDays(1);
 
-            var lastIdInDb = _keeperDb.Bin.DepositOffers
+            var lastIdInDb = _keeperDataModel.Bin.DepositOffers
                 .SelectMany(depositOffer => depositOffer.ConditionsMap.Values)
                 .ToList()
                 .Max(c => c.Id);

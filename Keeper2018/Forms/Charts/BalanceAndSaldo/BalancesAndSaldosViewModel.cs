@@ -56,10 +56,10 @@ namespace Keeper2018
             DisplayName = "T - Toggle chart";
         }
 
-        public void Initialize(KeeperDb db)
+        public void Initialize(KeeperDataModel dataModel)
         {
             var model = new BalanceAndSaldoModel();
-            model.Initialize(db);
+            model.Initialize(dataModel);
             model.PrepareSeries();
 
             InitializeDailyBalances(model);

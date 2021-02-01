@@ -34,7 +34,7 @@ namespace Keeper2018
         }
         public int Height { get; set; }
 
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         public FuellingInputVm Vm { get; set; }
 
         public List<CurrencyCode> Currencies { get; set; } = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
@@ -54,17 +54,17 @@ namespace Keeper2018
             }
         }
 
-        public FuellingInputViewModel(KeeperDb db)
+        public FuellingInputViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         public void Initialize(Fuelling vm)
         {
-            Cars = _db.Bin.Cars.Select(c => c.Title).ToList();
+            Cars = _dataModel.Bin.Cars.Select(c => c.Title).ToList();
             Vm = Mapper.Map<Fuelling, FuellingInputVm>(vm);
-            Vm.Db = _db;
-            SelectedCar = _db.Bin.Cars.First(c => c.CarAccountId == vm.CarAccountId).Title;
+            Vm.DataModel = _dataModel;
+            SelectedCar = _dataModel.Bin.Cars.First(c => c.CarAccountId == vm.CarAccountId).Title;
         }
         protected override void OnViewLoaded(object view)
         {

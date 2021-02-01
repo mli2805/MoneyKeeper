@@ -5,7 +5,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class KeeperDb : PropertyChangedBase
+    public class KeeperDataModel : PropertyChangedBase
     {
         public KeeperBin Bin;
         public Dictionary<int, AccountModel> AcMoDict;

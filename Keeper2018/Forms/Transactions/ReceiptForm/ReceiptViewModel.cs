@@ -8,7 +8,7 @@ namespace Keeper2018
 {
     public class ReceiptViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         public int Top { get; set; }
         private int _left;
@@ -105,9 +105,9 @@ namespace Keeper2018
 
         public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
 
-        public ReceiptViewModel(KeeperDb db, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+        public ReceiptViewModel(KeeperDataModel dataModel, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
-            _db = db;
+            _dataModel = dataModel;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
             CurrencyList = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
         }
@@ -157,7 +157,7 @@ namespace Keeper2018
 
         public void OnceMore()
         {
-            var partialArticle = _db.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
+            var partialArticle = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
             ResultList.Add(new Tuple<decimal, AccountModel, string>(PartialAmount, partialArticle, PartialComment));
             ChangeAllProperties();
         }

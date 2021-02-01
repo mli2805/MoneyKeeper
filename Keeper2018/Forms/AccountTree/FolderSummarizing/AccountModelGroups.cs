@@ -21,28 +21,28 @@ namespace Keeper2018
 
         public AccountGroups(List<AccountGroup> groups) { Groups = groups; }
 
-        public void Evaluate(KeeperDb db)
+        public void Evaluate(KeeperDataModel dataModel)
         {
             foreach (var accountGroup in Groups)
-                accountGroup.BalanceWithDetails = EvaluateOneGroupBalance(accountGroup.Accounts, db);
+                accountGroup.BalanceWithDetails = EvaluateOneGroupBalance(accountGroup.Accounts, dataModel);
 
             TotalInUsd = Groups.Sum(g => g.BalanceWithDetails.TotalInUsd);
             foreach (var accountGroup in Groups)
                 accountGroup.Procent = accountGroup.BalanceWithDetails.TotalInUsd * 100 / TotalInUsd;
         }
 
-        private BalanceWithDetails EvaluateOneGroupBalance(List<AccountModel> group, KeeperDb db)
+        private BalanceWithDetails EvaluateOneGroupBalance(List<AccountModel> group, KeeperDataModel dataModel)
         {
             var groupBalance = new Balance();
             foreach (var accountModel in group)
             {
-                var calc = new TrafficOfAccountCalculator(db, accountModel,
+                var calc = new TrafficOfAccountCalculator(dataModel, accountModel,
                         new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
                 var bal = calc.EvaluateBalance();
                 groupBalance.AddBalance(bal);
             }
 
-            return groupBalance.EvaluateDetails(db, DateTime.Today.AddDays(1));
+            return groupBalance.EvaluateDetails(dataModel, DateTime.Today.AddDays(1));
         }
 
         public IEnumerable<string> ToStrings()

@@ -101,8 +101,6 @@ namespace Keeper2018
                 case DragAndDropAction.Cancel: return;
                 default: return;
             }
-
-            //       ((AccountTreeViewModel)DataContext).KeeperDb.Flatten();
         }
 
         private void MoveAccount(TreeViewItem source, TreeViewItem destination, Place place)
@@ -150,7 +148,7 @@ namespace Keeper2018
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             ((AccountTreeViewModel)DataContext).ShellPartsBinder.SelectedAccountModel =
-                ((AccountTreeViewModel)DataContext).KeeperDb.GetSelectedAccountModel();
+                ((AccountTreeViewModel)DataContext).KeeperDataModel.GetSelectedAccountModel();
         }
 
         private void MoveIntoFolder(TreeViewItem source, TreeViewItem destination)

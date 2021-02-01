@@ -6,9 +6,9 @@ namespace Keeper2018
    
     public static class AccountComboboxProvider
     {
-        public static List<AccountModel> GetLeavesOf(this KeeperDb db, string accountHeader)
+        public static List<AccountModel> GetLeavesOf(this KeeperDataModel dataModel, string accountHeader)
         {
-            var start = db.AccountsTree.First(r => (string)r.Header == accountHeader);
+            var start = dataModel.AccountsTree.First(r => (string)r.Header == accountHeader);
             return GetLeaves(start);
         }
        

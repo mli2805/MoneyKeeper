@@ -7,12 +7,12 @@ namespace Keeper2018
 {
     public static class PdfReporter
     {
-        public static List<PdfReportTableRow> GetTableForTag(this KeeperDb db, AccountModel tag)
+        public static List<PdfReportTableRow> GetTableForTag(this KeeperDataModel dataModel, AccountModel tag)
         {
             var rows = new List<PdfReportTableRow>();
-            foreach (var transaction in db.Bin.Transactions.Values.OrderBy(t=>t.Timestamp))
+            foreach (var transaction in dataModel.Bin.Transactions.Values.OrderBy(t=>t.Timestamp))
             {
-                var balanceForTag = transaction.BalanceForTag(db, tag.Id);
+                var balanceForTag = transaction.BalanceForTag(dataModel, tag.Id);
                 if (balanceForTag == null) continue;
                 var row = new PdfReportTableRow
                 {
@@ -23,7 +23,7 @@ namespace Keeper2018
                 var moneyPair = balanceForTag.Currencies.First();
                 row.AmountInUsd = moneyPair.Key == CurrencyCode.USD
                     ? moneyPair.Value
-                    : db.AmountInUsd(transaction.Timestamp, moneyPair.Key, moneyPair.Value);
+                    : dataModel.AmountInUsd(transaction.Timestamp, moneyPair.Key, moneyPair.Value);
 
                 rows.Add(row);
             }

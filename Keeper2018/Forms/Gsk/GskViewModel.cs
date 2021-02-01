@@ -7,24 +7,24 @@ namespace Keeper2018
 {
     public class GskViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         public GskModel Model { get; set; }
 
-        public GskViewModel(KeeperDb db)
+        public GskViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         public void Initialize()
         {
             Model = new GskModel();
-            var list = _db.Bin.Transactions.Values.Where(t => t.Tags.Contains(285)).ToList(); // погашение кредита ЖСК
+            var list = _dataModel.Bin.Transactions.Values.Where(t => t.Tags.Contains(285)).ToList(); // погашение кредита ЖСК
             foreach (var tr in list)
             {
                 var paymentLine = new PaymentLineModel()
                 {
                     Date = tr.Timestamp.ToShortDateString(),
-                    Sum = _db.AmountInUsdString(tr, out decimal amountIsUsd),
+                    Sum = _dataModel.AmountInUsdString(tr.Timestamp, tr.Currency, tr.Amount,  out decimal amountIsUsd),
                 };
                 Model.Rows.Add(paymentLine);
                 Model.PaidAmountInUsd += amountIsUsd;
@@ -33,7 +33,7 @@ namespace Keeper2018
 
             Model.NumberOfFuturePayments = Model.TotalNumberOfPayments - Model.NumberOfMadePayments;
             Model.ForecastAmountInUsd = Model.NumberOfFuturePayments 
-                                        * _db.AmountInUsd(DateTime.Today, CurrencyCode.BYN, 9);
+                                        * _dataModel.AmountInUsd(DateTime.Today, CurrencyCode.BYN, 9);
             Model.TotalAmountInUsd = Model.PaidAmountInUsd + Model.ForecastAmountInUsd;
         }
     }

@@ -11,8 +11,9 @@ namespace Keeper2018
         {
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
 
-            builder.RegisterType<KeeperDb>().SingleInstance();
+            builder.RegisterType<KeeperDataModel>().SingleInstance();
             builder.RegisterType<DbLoader>().SingleInstance();
+            builder.RegisterType<DbSaver>().SingleInstance();
             builder.RegisterType<DbLoadingViewModel>().SingleInstance();
 
             builder.RegisterType<ShellPartsBinder>().SingleInstance();
@@ -46,7 +47,6 @@ namespace Keeper2018
             builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();
 
             builder.RegisterType<ComboTreesProvider>().SingleInstance();
-            builder.RegisterType<AssociationFinder>().SingleInstance();
             builder.RegisterType<AccNameSelectionControlInitializer>().SingleInstance();
             builder.RegisterType<BalanceDuringTransactionHinter>().SingleInstance();
             builder.RegisterType<UniversalControlVm>();

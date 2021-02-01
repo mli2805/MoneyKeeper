@@ -8,11 +8,11 @@ namespace Keeper2018
     {
         private const string TemplateForByr = "{0:#,0} {2} -> {1:#,0} {2}";
         private const string TemplateForCurrencies = "{0:#,0.00} {2} -> {1:#,0.00} {2}";
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
 
-        public BalanceDuringTransactionHinter(KeeperDb db)
+        public BalanceDuringTransactionHinter(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         private string BuildTip(decimal before, decimal after, CurrencyCode? currency)
@@ -26,7 +26,7 @@ namespace Keeper2018
         {
             return tranInWork.Currency == CurrencyCode.USD
                 ? ""
-                : _db.AmountInUsdString(tranInWork.Timestamp, tranInWork.Currency, tranInWork.Amount);
+                : _dataModel.AmountInUsdString(tranInWork.Timestamp, tranInWork.Currency, tranInWork.Amount);
         }
 
         public string GetAmountInReturnInUsd(TransactionModel tranInWork)
@@ -34,7 +34,7 @@ namespace Keeper2018
             return tranInWork.CurrencyInReturn != null
                     ? tranInWork.CurrencyInReturn == CurrencyCode.USD
                         ? ""
-                        : _db.AmountInUsdString(tranInWork.Timestamp, tranInWork.CurrencyInReturn, tranInWork.AmountInReturn)
+                        : _dataModel.AmountInUsdString(tranInWork.Timestamp, tranInWork.CurrencyInReturn, tranInWork.AmountInReturn)
                     : "не задана валюта";
         }
 
@@ -44,8 +44,8 @@ namespace Keeper2018
             if (transactionInWork?.MyAccount == null || !transactionInWork.MyAccount.Is(158)) return "было ххх - стало ххх";
 
             var balanceBefore =
-                _db.Bin.Transactions.Values.Sum(t => t.AmountForAccount(
-                    _db, transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                _dataModel.Bin.Transactions.Values.Sum(t => t.AmountForAccount(
+                    _dataModel, transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
             return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(
                                                transactionInWork.MyAccount, transactionInWork.Currency), transactionInWork.Currency);
@@ -59,8 +59,8 @@ namespace Keeper2018
             if (transactionInWork.Operation == OperationType.Перенос)
             {
                 var balanceBefore =
-                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(
-                        _db, transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                    _dataModel.Bin.Transactions.Values.Sum(a => a.AmountForAccount(
+                        _dataModel, transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
                 return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(
                                                    transactionInWork.MySecondAccount, transactionInWork.Currency), transactionInWork.Currency);
@@ -68,8 +68,8 @@ namespace Keeper2018
             else // OperationType.Обмен
             {
                 var balanceBefore =
-                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(
-                        _db, transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                    _dataModel.Bin.Transactions.Values.Sum(a => a.AmountForAccount(
+                        _dataModel, transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
                 return BuildTip(balanceBefore, balanceBefore +
                                   transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn),

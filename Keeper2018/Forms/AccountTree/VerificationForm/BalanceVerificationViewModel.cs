@@ -7,15 +7,15 @@ namespace Keeper2018
 {
     public class BalanceVerificationViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private string _caption;
         private decimal _total;
         public List<VerificationLine> Lines { get; set; }
         public VerificationLine SelectedLine { get; set; }
 
-        public BalanceVerificationViewModel(KeeperDb db)
+        public BalanceVerificationViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -29,7 +29,7 @@ namespace Keeper2018
         {
             Lines = new List<VerificationLine>();
             _total = 0;
-            _trans = _db.Bin.Transactions.Values.OrderBy(t => t.Timestamp)
+            _trans = _dataModel.Bin.Transactions.Values.OrderBy(t => t.Timestamp)
                 .Where(t => t.MyAccount == accountModel.Id || t.MySecondAccount == accountModel.Id).ToArray();
             _transIndex = 0;
             while (true)
@@ -60,7 +60,7 @@ namespace Keeper2018
             {
                 Amount = tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = tr.GetCounterpartyName(_db),
+                Counterparty = tr.GetCounterpartyName(_dataModel),
                 OperationType = OperationType.Доход,
                 Text = tr.Comment,
             });
@@ -99,7 +99,7 @@ namespace Keeper2018
             {
                 Amount = -tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = tr.GetCounterpartyName(_db),
+                Counterparty = tr.GetCounterpartyName(_dataModel),
                 OperationType = OperationType.Расход,
                 Text = tr.Comment,
             };
@@ -112,7 +112,7 @@ namespace Keeper2018
             {
                 Amount = amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = _db.AcMoDict[tr.MyAccount == accountModel.Id ? tr.MySecondAccount : tr.MyAccount].Name,
+                Counterparty = _dataModel.AcMoDict[tr.MyAccount == accountModel.Id ? tr.MySecondAccount : tr.MyAccount].Name,
                 OperationType = OperationType.Перенос,
                 Text = tr.Comment,
             });
@@ -126,7 +126,7 @@ namespace Keeper2018
             {
                 Amount = amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = _db.AcMoDict[tr.MyAccount == accountModel.Id ? tr.MySecondAccount : tr.MyAccount].Name,
+                Counterparty = _dataModel.AcMoDict[tr.MyAccount == accountModel.Id ? tr.MySecondAccount : tr.MyAccount].Name,
                 OperationType = OperationType.Обмен,
                 Text = tr.Comment,
             });

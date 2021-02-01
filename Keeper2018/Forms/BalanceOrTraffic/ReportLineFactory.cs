@@ -4,7 +4,7 @@ namespace Keeper2018
 {
     public static class ReportLineFactory
     {
-        public static ReportLine ReportLine(this KeeperDb db, Balance before, Transaction tran, bool isInReturn, int sign, DepositOperationType type)
+        public static ReportLine ReportLine(this KeeperDataModel dataModel, Balance before, Transaction tran, bool isInReturn, int sign, DepositOperationType type)
         {
             var line = new ReportLine();
             line.Date = tran.Timestamp.Date;
@@ -30,7 +30,7 @@ namespace Keeper2018
             return line;
         }
 
-        public static ReportLine ReportLineOneAccountExchange(this KeeperDb db, Balance before, Transaction tran)
+        public static ReportLine ReportLineOneAccountExchange(this KeeperDataModel dataModel, Balance before, Transaction tran)
         {
             var line = new ReportLine();
             line.Date = tran.Timestamp.Date;

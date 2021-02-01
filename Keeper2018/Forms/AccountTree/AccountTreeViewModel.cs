@@ -20,9 +20,9 @@ namespace Keeper2018
         public ShellPartsBinder ShellPartsBinder { get; }
         public AskDragAccountActionViewModel AskDragAccountActionViewModel { get; }
 
-        public KeeperDb KeeperDb { get; set; }
+        public KeeperDataModel KeeperDataModel { get; set; }
 
-        public AccountTreeViewModel(KeeperDb keeperDb, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
+        public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, 
             ExpensesOnAccountViewModel expensesOnAccountViewModel,
@@ -37,14 +37,14 @@ namespace Keeper2018
             ShellPartsBinder = shellPartsBinder;
             AskDragAccountActionViewModel = askDragAccountActionViewModel;
 
-            KeeperDb = keeperDb;
+            KeeperDataModel = keeperDataModel;
         }
 
         public void AddAccount()
         {
             var accountModel = new AccountModel("")
             {
-                Id = KeeperDb.AcMoDict.Keys.Max() + 1,
+                Id = KeeperDataModel.AcMoDict.Keys.Max() + 1,
                 Owner = ShellPartsBinder.SelectedAccountModel
             };
             _oneAccountViewModel.Initialize(accountModel, true);
@@ -52,15 +52,15 @@ namespace Keeper2018
             if (!_oneAccountViewModel.IsSavePressed) return;
 
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
-            KeeperDb.Bin.AccountPlaneList.Add(accountModel.Map());
-            KeeperDb.AcMoDict.Add(accountModel.Id, accountModel);
+            KeeperDataModel.Bin.AccountPlaneList.Add(accountModel.Map());
+            KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void AddAccountDeposit()
         {
             var accountModel = new AccountModel("")
             {
-                Id = KeeperDb.Bin.AccountPlaneList.Max(a => a.Id) + 1,
+                Id = KeeperDataModel.Bin.AccountPlaneList.Max(a => a.Id) + 1,
                 Owner = ShellPartsBinder.SelectedAccountModel,
                 Deposit = new Deposit()
             };
@@ -69,8 +69,8 @@ namespace Keeper2018
             if (!_oneDepositViewModel.IsSavePressed) return;
 
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
-            KeeperDb.Bin.AccountPlaneList.Add(accountModel.Map());
-            KeeperDb.AcMoDict.Add(accountModel.Id, accountModel);
+            KeeperDataModel.Bin.AccountPlaneList.Add(accountModel.Map());
+            KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void ChangeAccount()
@@ -82,7 +82,7 @@ namespace Keeper2018
                 WindowManager.ShowDialog(_oneDepositViewModel);
 
                 if (_oneDepositViewModel.IsSavePressed)
-                    KeeperDb.FlattenAccountTree();
+                    KeeperDataModel.FlattenAccountTree();
             }
             else
             {
@@ -91,12 +91,12 @@ namespace Keeper2018
                 WindowManager.ShowDialog(_oneAccountViewModel);
 
                 if (_oneAccountViewModel.IsSavePressed)
-                    KeeperDb.FlattenAccountTree();
+                    KeeperDataModel.FlattenAccountTree();
             }
         }
         public void RemoveSelectedAccount()
         {
-            KeeperDb.RemoveSelectedAccount();
+            KeeperDataModel.RemoveSelectedAccount();
         }
 
         public void ShowDepositReport()
@@ -113,14 +113,14 @@ namespace Keeper2018
 
         public void ShowFolderSummaryForm()
         {
-            var folderSummaryViewModel = new FolderSummaryViewModel(KeeperDb);
+            var folderSummaryViewModel = new FolderSummaryViewModel(KeeperDataModel);
             folderSummaryViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
             WindowManager.ShowWindow(folderSummaryViewModel);
         }
 
         public void ShowPaymentWaysForm()
         {
-            var paymentWaysViewModel = new PaymentWaysViewModel(KeeperDb);
+            var paymentWaysViewModel = new PaymentWaysViewModel(KeeperDataModel);
             paymentWaysViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
             WindowManager.ShowWindow(paymentWaysViewModel);
         }
@@ -136,7 +136,7 @@ namespace Keeper2018
             var tag = ShellPartsBinder.SelectedAccountModel;
             var doc = new Document();
             var section = doc.AddSection();
-            var tableData = new PdfReportTable(tag.Name, "", KeeperDb.GetTableForTag(tag));
+            var tableData = new PdfReportTable(tag.Name, "", KeeperDataModel.GetTableForTag(tag));
             section.DrawTableFromTag(tableData);
 
             PdfDocumentRenderer pdfDocumentRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);

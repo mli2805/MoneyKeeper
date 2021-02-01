@@ -25,14 +25,14 @@ namespace Keeper2018
             Comment = tr.Comment;
         }
 
-        public string ToString(KeeperDb db)
+        public string ToString(KeeperDataModel dataModel)
         {
             return Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
-                   TagsToString(db) + " ; " + Comment;
+                   TagsToString(dataModel) + " ; " + Comment;
         }
 
-        private string TagsToString(KeeperDb db)
+        private string TagsToString(KeeperDataModel dataModel)
         {
             if (Tags == null || Tags.Count == 0) return " ";
 
@@ -40,7 +40,7 @@ namespace Keeper2018
             string result = "";
             foreach (var t in Tags)
             {
-                var acc = db.AcMoDict[t];
+                var acc = dataModel.AcMoDict[t];
                 if (Receipt > 0 && acc.Is(179))
                     return acc.Name;
                 result = result + acc.Name + " | ";

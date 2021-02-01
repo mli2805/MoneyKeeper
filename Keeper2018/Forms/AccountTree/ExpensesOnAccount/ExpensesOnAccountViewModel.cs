@@ -7,15 +7,15 @@ namespace Keeper2018.ExpensesOnAccount
 {
     public class ExpensesOnAccountViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private string _caption;
         public List<ExpenseLine> Categories { get; set; }
         public List<TranLine> Transactions { get; set; }
         public string TotalStr { get; set; }
         public string PeriodStr { get; set; }
-        public ExpensesOnAccountViewModel(KeeperDb db)
+        public ExpensesOnAccountViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -28,21 +28,21 @@ namespace Keeper2018.ExpensesOnAccount
             var expenses = new ExpenseCollection();
             Transactions = new List<TranLine>();
 
-            var trans = _db.Bin.Transactions.Values.OrderBy(t => t.Timestamp)
+            var trans = _dataModel.Bin.Transactions.Values.OrderBy(t => t.Timestamp)
                 .Where(t => t.MyAccount == accountModel.Id 
                             && t.Operation == OperationType.Расход
                             && period.Includes(t.Timestamp)).ToArray();
 
             foreach (var transaction in trans)
             {
-                var catId = transaction.GetTransactionExpenseCategory(_db);
-                var catAccount = _db.AcMoDict[catId];
+                var catId = transaction.GetTransactionExpenseCategory(_dataModel);
+                var catAccount = _dataModel.AcMoDict[catId];
                 expenses.Add(catAccount.Name, transaction.Amount);
                 Transactions.Add(new TranLine()
                 {
                     Timestamp = transaction.Timestamp,
                     Category = catAccount.Name,
-                    CounterpartyName = transaction.GetCounterpartyName(_db),
+                    CounterpartyName = transaction.GetCounterpartyName(_dataModel),
                     Amount = transaction.Amount, 
                     Currency = transaction.Currency, 
                     Comment = transaction.Comment,

@@ -9,7 +9,7 @@ namespace Keeper2018
 {
     public class FilterModel : PropertyChangedBase
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         public List<OperationTypesFilter> OperationTypes { get; set; } = InitOperationTypesFilter();
         private OperationTypesFilter _myOperationType;
@@ -245,9 +245,9 @@ namespace Keeper2018
             }
         }
 
-        public FilterModel(KeeperDb db, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+        public FilterModel(KeeperDataModel dataModel, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
-            _db = db;
+            _dataModel = dataModel;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
         }
 
@@ -255,7 +255,7 @@ namespace Keeper2018
         {
             AvailableAccNames = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_db.AcMoDict[158], new List<int>())
+                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], new List<int>())
             };
             IsAccNamePosition12 = true;
             AmountEqualTo = true;

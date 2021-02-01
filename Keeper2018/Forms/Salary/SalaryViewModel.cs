@@ -11,7 +11,7 @@ namespace Keeper2018
 {
     public class SalaryViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
 
         private List<SalaryLineModel> _rows = new List<SalaryLineModel>();
         public List<SalaryLineModel> Rows
@@ -68,9 +68,9 @@ namespace Keeper2018
             }
         } // "In details"
 
-        public SalaryViewModel(KeeperDb db)
+        public SalaryViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -80,10 +80,10 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            var mySalaryFolder = _db.AcMoDict[772];
+            var mySalaryFolder = _dataModel.AcMoDict[772];
             BuildFor(mySalaryFolder, OnlySalary);
 
-            var myEmployersFolder = _db.AcMoDict[171];
+            var myEmployersFolder = _dataModel.AcMoDict[171];
             BuildFor(myEmployersFolder, SalaryAndIrregulars);
 
             Rows = SalaryAndIrregulars;
@@ -132,7 +132,7 @@ namespace Keeper2018
         private void BuildFor(AccountModel accountModelFolder, List<SalaryLineModel> result)
         {
             result.Clear();
-            var lines = _db.Bin.Transactions.Where(t => t.Value.Tags.ToList().Intersect(accountModelFolder.Children.Select(c => c.Id)).Any());
+            var lines = _dataModel.Bin.Transactions.Where(t => t.Value.Tags.ToList().Intersect(accountModelFolder.Children.Select(c => c.Id)).Any());
             foreach (var keyValuePair in lines)
             {
                 result.Add(ToSalaryLine(keyValuePair.Value));
@@ -179,7 +179,7 @@ namespace Keeper2018
             SalaryLineModel result = new SalaryLineModel();
             result.Timestamp = transaction.Timestamp;
             result.Employer = GetEmployer(transaction.Tags);
-            result.Amount = _db.AmountInUsdString(transaction.Timestamp, transaction.Currency, transaction.Amount, out decimal amountInUsd);
+            result.Amount = _dataModel.AmountInUsdString(transaction.Timestamp, transaction.Currency, transaction.Amount, out decimal amountInUsd);
             result.AmountInUsd = amountInUsd;
             result.Comment = transaction.Comment;
             return result;
@@ -189,7 +189,7 @@ namespace Keeper2018
         {
             foreach (var tag in tags)
             {
-                var accountModel = _db.AcMoDict[tag];
+                var accountModel = _dataModel.AcMoDict[tag];
                 if (accountModel.IsTag)
                     continue;
                 return accountModel.Name;

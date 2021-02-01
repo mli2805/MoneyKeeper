@@ -221,13 +221,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataModels\Account\AccountModel.cs" />
-    <Compile Include="DataModels\BankDeposit\DepositOfferExt.cs" />
-    <Compile Include="DataModels\TagAssociationModel.cs" />
-    <Compile Include="DataModels\Transaction\OperationTypeExtantions.cs" />
-    <Compile Include="Db\IO\DbSaver.cs" />
+    <Compile Include="DataModel\EntityModels\AccountModel.cs" />
+    <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
+    <Compile Include="DataModel\EntityModels\TagAssociationModel.cs" />
+    <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
+    <Compile Include="DataModel\IO\DbSaver.cs" />
+    <Compile Include="DataModel\DataModelExt\AmountInUsdProvider.cs" />
+    <Compile Include="DataModel\DataModelExt\BalanceCalculator.cs" />
+    <Compile Include="DataModel\DataModelExt\DepoByRevocabilitySeparator.cs" />
+    <Compile Include="Forms\MonthAnalysis\MonthRatesDifferenciesProvider.cs" />
+    <Compile Include="DataModel\Mappers\ModelsToEntities.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
-    <Compile Include="DataModels\BankDeposit\DepositOfferModel.cs" />
+    <Compile Include="DataModel\EntityModels\DepositOfferModel.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseCollection.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpenseLine.cs" />
     <Compile Include="Forms\AccountTree\ExpensesOnAccount\ExpensesOnAccountView.xaml.cs">
@@ -251,11 +256,11 @@
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceDetailedLine.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithDetails.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
-    <Compile Include="Db\AssociationFinder.cs" />
-    <Compile Include="Db\IO\DbLoader.cs" />
-    <Compile Include="Db\MapToModels.cs" />
-    <Compile Include="Db\RatesExt.cs" />
-    <Compile Include="DataModels\Transaction\TransactionModel.cs" />
+    <Compile Include="DataModel\DataModelExt\AssociationFinder.cs" />
+    <Compile Include="DataModel\IO\DbLoader.cs" />
+    <Compile Include="DataModel\Mappers\EntitiesToModels.cs" />
+    <Compile Include="DataModel\DataModelExt\RateProvider.cs" />
+    <Compile Include="DataModel\EntityModels\Transaction\TransactionModel.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModel.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModelExt.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportView.xaml.cs">
@@ -336,7 +341,7 @@
     <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControlModel.cs" />
     <Compile Include="Forms\Charts\Expenses\Domain\YearMonth.cs" />
     <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PointsPeriodConvertor.cs" />
-    <Compile Include="DataModels\Transaction\TraExtension.cs" />
+    <Compile Include="DataModel\EntityModels\Transaction\TraExtension.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
     <Compile Include="Forms\CurrencyRates\Charts\MonthlyChartView.xaml.cs">
@@ -425,9 +430,9 @@
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shell\DbLoadingViewModel.cs" />
-    <Compile Include="Db\AccountComboboxProvider.cs" />
+    <Compile Include="DataModel\DataModelExt\AccountComboboxProvider.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeGardener.cs" />
-    <Compile Include="Db\KeeperDb.cs" />
+    <Compile Include="DataModel\KeeperDataModel.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeViewModel.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeView.xaml.cs">
@@ -439,10 +444,10 @@
     </Compile>
     <Compile Include="Forms\AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
-    <Compile Include="Db\KeeperDbExt.cs" />
-    <Compile Include="DataModels\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
-    <Compile Include="DataModels\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
-    <Compile Include="DataModels\Transaction\ComboboxTreeview\ITreeViewItemModel.cs" />
+    <Compile Include="DataModel\DataModelExt\AccountGardener.cs" />
+    <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
+    <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
+    <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ITreeViewItemModel.cs" />
     <Compile Include="Forms\DepositOffers\BankOffersView.xaml.cs">
       <DependentUpon>BankOffersView.xaml</DependentUpon>
     </Compile>

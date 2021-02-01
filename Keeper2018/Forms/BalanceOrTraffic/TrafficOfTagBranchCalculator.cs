@@ -7,7 +7,7 @@ namespace Keeper2018
 {
     public class TrafficOfTagBranchCalculator : ITraffic
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly AccountModel _tag;
         private readonly Period _period;
 
@@ -16,20 +16,20 @@ namespace Keeper2018
         public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##;- #,0.##} usd ( знак относительно меня)";
      //   public string Total => "";
 
-        public TrafficOfTagBranchCalculator(KeeperDb db, AccountModel tag, Period period)
+        public TrafficOfTagBranchCalculator(KeeperDataModel dataModel, AccountModel tag, Period period)
         {
-            _db = db;
+            _dataModel = dataModel;
             _tag = tag;
             _period = period;
         }
 
         public void EvaluateAccount()
         {
-            foreach (var tran in _db.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
+            foreach (var tran in _dataModel.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
             {
                 foreach (var tag in tran.Tags)
                 {
-                    var tagAccModel = _db.AcMoDict[tag];
+                    var tagAccModel = _dataModel.AcMoDict[tag];
                     var myTag = tagAccModel.IsC(_tag);
                     if (myTag != null)
                         RegisterTran(tran, myTag);
@@ -44,12 +44,12 @@ namespace Keeper2018
             {
                 case OperationType.Доход:
                     _balanceWithTurnovers.Add(myTag, tran.Currency, tran.Amount);
-                    inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                    inUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                     _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
                     break;
                 case OperationType.Расход:
                     _balanceWithTurnovers.Sub(myTag, tran.Currency, tran.Amount);
-                    inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                    inUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                     _trafficInUsd.Minus = _trafficInUsd.Minus - inUsd;
                     break;
                 case OperationType.Перенос:
@@ -61,9 +61,9 @@ namespace Keeper2018
                     // ReSharper disable once PossibleInvalidOperationException
                     _balanceWithTurnovers.Sub(myTag, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
 
-                        inUsd = _db.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                        inUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                         _trafficInUsd.Minus = _trafficInUsd.Minus - inUsd;
-                        inUsd = _db.AmountInUsd(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn);
+                        inUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn);
                         _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
                     break;
             }

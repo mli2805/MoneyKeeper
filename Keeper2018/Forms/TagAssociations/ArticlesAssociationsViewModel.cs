@@ -10,7 +10,7 @@ namespace Keeper2018
 {
     public class ArticlesAssociationsViewModel : Screen
     {
-        private static KeeperDb _db;
+        private static KeeperDataModel _dataModel;
 
         public ObservableCollection<LineModel> Rows { get; set; }
 
@@ -35,9 +35,9 @@ namespace Keeper2018
         public static List<OperationType> OperationTypes { get; private set; }
         public static List<AssociationType> AssociationTypes { get; private set; }
 
-        public ArticlesAssociationsViewModel(KeeperDb db)
+        public ArticlesAssociationsViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         
 
 
@@ -56,7 +56,7 @@ namespace Keeper2018
         private void InitilizeGrid()
         {
             Rows = new ObservableCollection<LineModel>();
-            foreach (var lineModel in _db.TagAssociationModels.Select(a => a.Map()))
+            foreach (var lineModel in _dataModel.TagAssociationModels.Select(a => a.Map()))
             {
                 Rows.Add(lineModel);
             }
@@ -65,9 +65,9 @@ namespace Keeper2018
 
         private void InitializeListsForCombobox()
         {
-            ExternalAccounts = _db.GetLeavesOf("Внешние").Select(x=>x.Name).ToList();
-            AssociatedArticles = _db.GetLeavesOf("Все доходы").Select(x=>x.Name).ToList();
-            AssociatedArticles.AddRange(_db.GetLeavesOf("Все расходы").Select(x=>x.Name).ToList());
+            ExternalAccounts = _dataModel.GetLeavesOf("Внешние").Select(x=>x.Name).ToList();
+            AssociatedArticles = _dataModel.GetLeavesOf("Все доходы").Select(x=>x.Name).ToList();
+            AssociatedArticles.AddRange(_dataModel.GetLeavesOf("Все расходы").Select(x=>x.Name).ToList());
             OperationTypes = Enum.GetValues(typeof (OperationType)).Cast<OperationType>().ToList();
             AssociationTypes = Enum.GetValues(typeof (AssociationType)).Cast<AssociationType>().ToList();
         }
@@ -99,9 +99,9 @@ namespace Keeper2018
                 }
             }
 
-            _db.Bin.TagAssociations = tagAssociations;
-            _db.TagAssociationModels = new ObservableCollection<TagAssociationModel>
-                (_db.Bin.TagAssociations.Select(a => a.Map(_db.AcMoDict)));
+            _dataModel.Bin.TagAssociations = tagAssociations;
+            _dataModel.TagAssociationModels = new ObservableCollection<TagAssociationModel>
+                (_dataModel.Bin.TagAssociations.Select(a => a.Map(_dataModel.AcMoDict)));
 
         }
 
@@ -110,10 +110,10 @@ namespace Keeper2018
             return new TagAssociation
             {
                 OperationType = lineModel.OperationType,
-                ExternalAccount = _db.GetLeavesOf("Внешние").First(x => x.Name == lineModel.ExternalAccount).Id,
+                ExternalAccount = _dataModel.GetLeavesOf("Внешние").First(x => x.Name == lineModel.ExternalAccount).Id,
                 Tag = lineModel.OperationType == OperationType.Доход
-                    ? _db.GetLeavesOf("Все доходы").First(x => x.Name == lineModel.Tag).Id
-                    : _db.GetLeavesOf("Все расходы").First(x => x.Name == lineModel.Tag).Id,
+                    ? _dataModel.GetLeavesOf("Все доходы").First(x => x.Name == lineModel.Tag).Id
+                    : _dataModel.GetLeavesOf("Все расходы").First(x => x.Name == lineModel.Tag).Id,
                 Destination = lineModel.Destination
             };
         }

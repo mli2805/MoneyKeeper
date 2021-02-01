@@ -9,7 +9,7 @@ namespace Keeper2018
 {
     public class BalanceOrTrafficViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         private ShellPartsBinder ShellPartsBinder { get; }
@@ -78,10 +78,10 @@ namespace Keeper2018
             }
         }
 
-        public BalanceOrTrafficViewModel(ShellPartsBinder shellPartsBinder, KeeperDb db, 
+        public BalanceOrTrafficViewModel(ShellPartsBinder shellPartsBinder, KeeperDataModel dataModel, 
             BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
-            _db = db;
+            _dataModel = dataModel;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             ShellPartsBinder = shellPartsBinder;
             ShellPartsBinder.PropertyChanged += ShellPartsBinder_PropertyChanged;
@@ -93,7 +93,7 @@ namespace Keeper2018
             if (ShellPartsBinder.SelectedAccountModel == null) return;
             Lines.Clear();
             AccountName = ShellPartsBinder.SelectedAccountModel.Name;
-            var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_db.AccountsTree.First(a => a.Name == "Мои"));
+            var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));
 
             if (isTag) ShowTag();
             else ShowAccount(ShellPartsBinder.BalanceOrTraffic);
@@ -104,8 +104,8 @@ namespace Keeper2018
             var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
 
             var trafficCalculator = isLeaf
-                ? (ITraffic)new TrafficOfAccountCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod)
-                : new TrafficOfBranchCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
+                ? (ITraffic)new TrafficOfAccountCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod)
+                : new TrafficOfBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
 
             trafficCalculator.EvaluateAccount();
 
@@ -119,8 +119,8 @@ namespace Keeper2018
             var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
 
             var trafficCalculator = isLeaf
-                ? (ITraffic) new TrafficOfTagCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod):
-                new TrafficOfTagBranchCalculator(_db, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
+                ? (ITraffic) new TrafficOfTagCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod):
+                new TrafficOfTagBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
 
             trafficCalculator.EvaluateAccount();
 
@@ -136,10 +136,10 @@ namespace Keeper2018
             var pair = _report.FirstOrDefault(p => p.Value == SelectedLine);
             if (pair.Key == DateTime.MinValue) return;
 
-            var transaction = _db.Bin.Transactions.Values.FirstOrDefault(t=>t.Timestamp == pair.Key);
+            var transaction = _dataModel.Bin.Transactions.Values.FirstOrDefault(t=>t.Timestamp == pair.Key);
             if (transaction == null) return;
 
-            InitializePopupContent(transaction.Map(_db.AcMoDict, -1));
+            InitializePopupContent(transaction.Map(_dataModel.AcMoDict, -1));
             IsPopupOpen = true;
         }
 
@@ -165,7 +165,7 @@ namespace Keeper2018
                 PopupValues.Add($" ({_balanceDuringTransactionHinter.GetExchangeRate(tranModel)})");
 
             PopupLabels.Add("Amount: ");
-            var amount = _db.AmountInUsdWithRate(tranModel.Timestamp, 
+            var amount = _dataModel.AmountInUsdWithRate(tranModel.Timestamp, 
                 tranModel.Currency, tranModel.Amount, out decimal rate);
 
             if (tranModel.Currency != CurrencyCode.USD)
@@ -175,7 +175,7 @@ namespace Keeper2018
             if (tranModel.Operation == OperationType.Обмен)
             {
                 PopupLabels.Add("Amount in return: ");
-                var amountInReturn = _db.AmountInUsdWithRate(tranModel.Timestamp, 
+                var amountInReturn = _dataModel.AmountInUsdWithRate(tranModel.Timestamp, 
                     tranModel.CurrencyInReturn, tranModel.AmountInReturn, out decimal rateInReturn);
 
                 if (tranModel.CurrencyInReturn != CurrencyCode.USD)

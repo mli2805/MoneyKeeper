@@ -23,9 +23,8 @@ namespace Keeper2018
             }
         }
 
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
-        private readonly AssociationFinder _associationFinder;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         private AmountInputControlVm _myAmountInputControlVm;
@@ -132,12 +131,11 @@ namespace Keeper2018
             }
         }
 
-        public UniversalControlVm(KeeperDb db, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
-                 AccNameSelectionControlInitializer accNameSelectionControlInitializer, AssociationFinder associationFinder)
+        public UniversalControlVm(KeeperDataModel dataModel, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
+                 AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
-            _db = db;
+            _dataModel = dataModel;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
-            _associationFinder = associationFinder;
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
 
             PaymentWays = Enum.GetValues(typeof(PaymentWay)).OfType<PaymentWay>().ToList();
@@ -219,10 +217,10 @@ namespace Keeper2018
 
         private void ReactOnUsersAdd()
         {
-            var tag = _db.AcMoDict[MyTagPickerVm.TagInWork.Id];
+            var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Add(tag);
 
-            var associatedTag = _associationFinder.GetAssociation(TranInWork, tag);
+            var associatedTag = _dataModel.GetAssociation(TranInWork, tag);
             if (associatedTag != null)
             {
                 MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag, null);
@@ -233,7 +231,7 @@ namespace Keeper2018
 
         private void ReactOnAssociationAdd()
         {
-            var tag = _db.AcMoDict[MyTagPickerVm.AssociatedTag.Id];
+            var tag = _dataModel.AcMoDict[MyTagPickerVm.AssociatedTag.Id];
             TranInWork.Tags.Add(tag);
 
             MyTagPickerVm.AssociatedTag = null;
@@ -241,7 +239,7 @@ namespace Keeper2018
 
         private void ReactOnRemove()
         {
-            var tag = _db.AcMoDict[MyTagPickerVm.TagInWork.Id];
+            var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Remove(tag);
             MyTagPickerVm.TagInWork = null;
         }
@@ -249,7 +247,7 @@ namespace Keeper2018
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var selectedDate = MyDatePickerVm.SelectedDate;
-            var dayTransactions = _db.Bin.Transactions.Values.Where(t => t.Timestamp.Date == selectedDate.Date).ToList();
+            var dayTransactions = _dataModel.Bin.Transactions.Values.Where(t => t.Timestamp.Date == selectedDate.Date).ToList();
 
             int minute = 1;
             if (dayTransactions.Any())
@@ -266,7 +264,7 @@ namespace Keeper2018
             if (e.PropertyName == "ButtonAllInPressed")
             {
                 MyAmountInputControlVm.Amount =
-                    _db.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_db, TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
+                    _dataModel.Bin.Transactions.Values.Sum(a => a.AmountForAccount(_dataModel, TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
             }
         }
 
@@ -280,9 +278,9 @@ namespace Keeper2018
         {
             if (e.PropertyName == "MyAccName")
             {
-                TranInWork.MyAccount = _db.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
+                TranInWork.MyAccount = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
                 MyAmountInputControlVm.Currency =
-                    _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                    _dataModel.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
                 SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
             }
         }
@@ -292,9 +290,9 @@ namespace Keeper2018
         {
             if (e.PropertyName == "MyAccName")
             {
-                TranInWork.MySecondAccount = _db.AcMoDict[MySecondAccNameSelectorVm.MyAccName.Id];
+                TranInWork.MySecondAccount = _dataModel.AcMoDict[MySecondAccNameSelectorVm.MyAccName.Id];
                 MyAmountInReturnInputControlVm.Currency =
-                    _db.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                    _dataModel.Bin.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
             }
         }
 

@@ -6,18 +6,18 @@ namespace Keeper2018
 {
     public class CategoriesDataExtractor
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private List<int> _expenseGroupsIds;
 
-        public CategoriesDataExtractor(KeeperDb db)
+        public CategoriesDataExtractor(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
 
         }
 
         public List<CategoriesDataElement> GetExpenseGrouppedByCategoryAndMonth()
         {
-            _expenseGroupsIds = _db.AcMoDict[189].Children.Select(c=>c.Id).ToList();
+            _expenseGroupsIds = _dataModel.AcMoDict[189].Children.Select(c=>c.Id).ToList();
             var result = new List<CategoriesDataElement>();
 
             var classifiedTrans = GetClassifiedTrans().ToList();
@@ -37,15 +37,15 @@ namespace Keeper2018
 
         private IEnumerable<ClassifiedTran> GetClassifiedTrans()
         {
-            foreach (var tr in _db.Bin.Transactions.Values.Where(t=>t.Operation == OperationType.Расход))
+            foreach (var tr in _dataModel.Bin.Transactions.Values.Where(t=>t.Operation == OperationType.Расход))
             {
                 yield return new ClassifiedTran()
                 {
                     Timestamp = tr.Timestamp,
-                    CategoryId = tr.GetTransactionExpenseCategory(_db, _expenseGroupsIds),
+                    CategoryId = tr.GetTransactionExpenseCategory(_dataModel, _expenseGroupsIds),
                     AmountInUsd = tr.Currency == CurrencyCode.USD 
                         ? tr.Amount 
-                        : _db.AmountInUsd(tr.Timestamp, tr.Currency, tr.Amount),
+                        : _dataModel.AmountInUsd(tr.Timestamp, tr.Currency, tr.Amount),
                 };
             }
         }

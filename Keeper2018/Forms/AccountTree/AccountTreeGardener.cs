@@ -11,9 +11,9 @@ namespace Keeper2018
 
     public static class AccountTreeGardener
     {
-        public static AccountModel GetSelectedAccountModel(this KeeperDb db)
+        public static AccountModel GetSelectedAccountModel(this KeeperDataModel dataModel)
         {
-            foreach (var root in db.AccountsTree)
+            foreach (var root in dataModel.AccountsTree)
             {
                 var selected = GetSelectedAccountModelInBranch(root);
                 if (selected != null) return selected;
@@ -32,12 +32,12 @@ namespace Keeper2018
             return null;
         }
 
-        public static void RemoveSelectedAccount(this KeeperDb db)
+        public static void RemoveSelectedAccount(this KeeperDataModel dataModel)
         {
-            var accountModel = db.GetSelectedAccountModel();
+            var accountModel = dataModel.GetSelectedAccountModel();
             if (accountModel == null) return;
             var windowManager = new WindowManager();
-            switch (CheckIfAccountCanBeDeleted(db, accountModel))
+            switch (CheckIfAccountCanBeDeleted(dataModel, accountModel))
             {
                 case AccountCantBeDeletedReasons.CanDelete:
                     var myMessageBoxViewModel = new MyMessageBoxViewModel(MessageType.Confirmation,
@@ -50,7 +50,7 @@ namespace Keeper2018
                         });
                     windowManager.ShowDialog(myMessageBoxViewModel);
                     if (myMessageBoxViewModel.IsAnswerPositive)
-                        RemoveAccountLowLevel(db, accountModel);
+                        RemoveAccountLowLevel(dataModel, accountModel);
                     break;
                 case AccountCantBeDeletedReasons.IsRoot:
                     windowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
@@ -67,11 +67,11 @@ namespace Keeper2018
             }
         }
 
-        private static AccountCantBeDeletedReasons CheckIfAccountCanBeDeleted(this KeeperDb db, AccountModel account)
+        private static AccountCantBeDeletedReasons CheckIfAccountCanBeDeleted(this KeeperDataModel dataModel, AccountModel account)
         {
             if (account.Owner == null) return AccountCantBeDeletedReasons.IsRoot;
             if (account.Children.Any()) return AccountCantBeDeletedReasons.HasChildren;
-            if (db.Bin.Transactions.Values.Any(t =>
+            if (dataModel.Bin.Transactions.Values.Any(t =>
                 t.MyAccount.Equals(account.Id) || 
                 t.MySecondAccount.Equals(account.Id) ||
                 t.Tags != null && t.Tags.Contains(account.Id)))
@@ -79,12 +79,12 @@ namespace Keeper2018
             return AccountCantBeDeletedReasons.CanDelete;
         }
 
-        private static void RemoveAccountLowLevel(this KeeperDb db, AccountModel accountModel)
+        private static void RemoveAccountLowLevel(this KeeperDataModel dataModel, AccountModel accountModel)
         {
             var owner = accountModel.Owner;
             accountModel.Owner = null;
             owner.Items.Remove(accountModel);
-            db.Bin.AccountPlaneList.RemoveAll(a => a.Id == accountModel.Id);
+            dataModel.Bin.AccountPlaneList.RemoveAll(a => a.Id == accountModel.Id);
         }
     }
 }

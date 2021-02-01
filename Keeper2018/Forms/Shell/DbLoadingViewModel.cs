@@ -8,14 +8,14 @@ namespace Keeper2018
 {
     public class DbLoadingViewModel : Screen
     {
-        private readonly KeeperDb _keeperDb;
+        private readonly KeeperDataModel _keeperDataModel;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
         public bool DbLoaded { get; private set; }
 
-        public DbLoadingViewModel(KeeperDb keeperDb)
+        public DbLoadingViewModel(KeeperDataModel keeperDataModel)
         {
-            _keeperDb = keeperDb;
+            _keeperDataModel = keeperDataModel;
             _cancellationToken = _cancellationTokenSource.Token;
         }
 
@@ -30,13 +30,13 @@ namespace Keeper2018
             var result = await DbTxtLoader.LoadAllFromNewTxt();
             if (!result.IsSuccess)
             {
-                _keeperDb.Bin = null;
+                _keeperDataModel.Bin = null;
                 DbLoaded = false;
                 MessageBox.Show(result.Exception.Message);
                 return;
             }
 
-            _keeperDb.Bin = (KeeperBin) result.Payload;
+            _keeperDataModel.Bin = (KeeperBin) result.Payload;
           
             var result2 = DbTxtSaver.DeleteTxtFiles();
             if (!result2.IsSuccess)
@@ -45,7 +45,7 @@ namespace Keeper2018
             }
             DbLoaded = true;
 
-            var result3 = await BinSerializer.Serialize(_keeperDb.Bin);
+            var result3 = await BinSerializer.Serialize(_keeperDataModel.Bin);
             if (!result3.IsSuccess)
             {
                 MessageBox.Show(result3.Exception.Message);

@@ -7,19 +7,19 @@ namespace Keeper2018.PayCards
 {
     public class PayCardsViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
 
         public List<PayCardVm> Rows { get; set; } = new List<PayCardVm>();
 
-        public PayCardsViewModel(KeeperDb db)
+        public PayCardsViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         public void Initialize()
         {
             Rows.Clear();
-            Rows.AddRange(_db.AccountsTree.SelectMany(GetActiveCards).Select(GetVm));
+            Rows.AddRange(_dataModel.AccountsTree.SelectMany(GetActiveCards).Select(GetVm));
         }
 
         private List<AccountModel> GetActiveCards(AccountModel root)
@@ -36,8 +36,8 @@ namespace Keeper2018.PayCards
 
         private PayCardVm GetVm(AccountModel account)
         {
-            var depositOffer = _db.Bin.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
-            var calc = new TrafficOfAccountCalculator(_db, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));
+            var depositOffer = _dataModel.Bin.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
+            var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));
             calc.EvaluateAccount();
             calc.DepositReportModel.Balance.Currencies.TryGetValue(depositOffer.MainCurrency, out var amount);
             return new PayCardVm()
@@ -54,7 +54,7 @@ namespace Keeper2018.PayCards
                 FinishDate = account.Deposit.FinishDate,
                 Comment = account.Deposit.Comment,
 
-                BankAccount = _db.Bin.AccountPlaneList.First(a => a.Id == depositOffer.BankId),
+                BankAccount = _dataModel.Bin.AccountPlaneList.First(a => a.Id == depositOffer.BankId),
                 MainCurrency = depositOffer.MainCurrency,
 
                 Name = account.Name,

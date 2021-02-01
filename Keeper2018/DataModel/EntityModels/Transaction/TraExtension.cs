@@ -6,7 +6,7 @@ namespace Keeper2018
 {
     public static class TraExtension
     {
-        public static int GetTransactionExpenseCategory(this Transaction tr, KeeperDb db, List<int> expenseGroupsIds)
+        public static int GetTransactionExpenseCategory(this Transaction tr, KeeperDataModel dataModel, List<int> expenseGroupsIds)
         {
             foreach (var tagId in tr.Tags)
             {
@@ -15,7 +15,7 @@ namespace Keeper2018
                 {
                     if (id == 189) break;
                     if (expenseGroupsIds.Contains(id)) return id;
-                    var tag = db.AcMoDict[id];
+                    var tag = dataModel.AcMoDict[id];
                     if (tag.Owner == null) break;
                     id = tag.Owner.Id;
                 }
@@ -24,17 +24,17 @@ namespace Keeper2018
             return -1;
         }
 
-        public static int GetTransactionExpenseCategory(this Transaction tr, KeeperDb db)
+        public static int GetTransactionExpenseCategory(this Transaction tr, KeeperDataModel dataModel)
         {
-            var expenseGroupsIds = db.AcMoDict[189].Children.Select(c=>c.Id).ToList();
-            return tr.GetTransactionExpenseCategory(db, expenseGroupsIds);
+            var expenseGroupsIds = dataModel.AcMoDict[189].Children.Select(c=>c.Id).ToList();
+            return tr.GetTransactionExpenseCategory(dataModel, expenseGroupsIds);
         }
 
-        public static string GetCounterpartyName(this Transaction tr, KeeperDb db)
+        public static string GetCounterpartyName(this Transaction tr, KeeperDataModel dataModel)
         {
             foreach (var trTag in tr.Tags)
             {
-                var tag = db.AcMoDict[trTag];
+                var tag = dataModel.AcMoDict[trTag];
                 if (tag.Is(157)) // внешние
                     return tag.Name;
             }

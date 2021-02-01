@@ -4,54 +4,21 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public static class DepositOfferExt
+    public static class DepoRevenueInThisMonthCalculator
     {
-
-        public static decimal GetRevenueUptoDepoFinish
-            (this DepositOffer depositOffer, Deposit deposit, DateTime lastReceivedRevenueDate, decimal currentAmount)
-        {
-            var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
-
-            var rateLines =
-                conditionses.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
-                                                    OrderBy(o => o.DateFrom).ToArray();
-
-            decimal revenue = 0;
-            int i;
-            for (i = 0; i < rateLines.Length; i++)
-            {
-                if (rateLines[i].DateFrom > lastReceivedRevenueDate) break;
-            }
-
-            if (i == rateLines.Length) i--;
-
-            var startPeriod = lastReceivedRevenueDate;
-            for (int j = i; j < rateLines.Length; j++)
-            {
-                var endOfPeriod = deposit.FinishDate;
-                if (rateLines.Length > j + 1 && rateLines[j + 1].DateFrom < endOfPeriod)
-                    endOfPeriod = rateLines[j + 1].DateFrom;
-
-                var days = (endOfPeriod - startPeriod).Days;
-                revenue = revenue + currentAmount * rateLines[j].Rate / 100 * days / 365;
-            }
-
-            return revenue;
-        }
-
-        public static decimal GetRevenueInThisMonth(this AccountModel depo, KeeperDb db)
+        public static decimal GetRevenueInThisMonth(this AccountModel depo, KeeperDataModel dataModel)
         {
             var deposit = depo.Deposit;
-            var depositOffer = db.Bin.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
+            var depositOffer = dataModel.Bin.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
             var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
-            var lastRevenueTran = db.Bin.Transactions.LastOrDefault(t =>
+            var lastRevenueTran = dataModel.Bin.Transactions.LastOrDefault(t =>
                 t.Value.MyAccount == depo.Id && t.Value.Operation == OperationType.Доход).Value;
             var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
             var thisMonthRevenueDate = RevenueDate(depositOffer, deposit);
 
             var depositBalance = new Balance();
             decimal revenue = 0;
-            var depoTraffic = db.Bin.Transactions.Values.OrderBy(o => o.Timestamp)
+            var depoTraffic = dataModel.Bin.Transactions.Values.OrderBy(o => o.Timestamp)
                 .Where(t => t.MyAccount == depo.Id || t.MySecondAccount == depo.Id).ToList();
             var date = deposit.StartDate;
             while (date <= thisMonthRevenueDate)

@@ -17,18 +17,18 @@ namespace Keeper2018
         private static readonly string[] TagEnglish =
             { "buy-sell", "state", "car repair", "accident repair", "expendables", "car fuel", "other stuff" };
 
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
 
-        public CarReportProvider(KeeperDb db)
+        public CarReportProvider(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         public PdfDocument CreateCarReport(int accountId)
         {
             _accountId = accountId;
-            _car = _db.Bin.Cars.First(c => c.CarAccountId == _accountId);
-            var isCurrentCar = _db.Bin.Cars.Last().CarAccountId == _accountId;
+            _car = _dataModel.Bin.Cars.First(c => c.CarAccountId == _accountId);
+            var isCurrentCar = _dataModel.Bin.Cars.Last().CarAccountId == _accountId;
 
             Document doc = new Document();
 
@@ -71,11 +71,11 @@ namespace Keeper2018
         private CarReportData ExtractCarData()
         {
             var result = new CarReportData();
-            var carAccount = _db.AcMoDict[_accountId];
+            var carAccount = _dataModel.AcMoDict[_accountId];
             for (int i = 0; i < TagRussians.Length; i++)
             {
                 var tag = carAccount.Children.First(c => c.Name.Contains(TagRussians[i]));
-                var rows = _db.GetTableForTag(tag);
+                var rows = _dataModel.GetTableForTag(tag);
                 result.Tags.Add(new PdfReportTable(TagRussians[i], TagEnglish[i], rows));
             }
 
@@ -207,7 +207,7 @@ namespace Keeper2018
 
             if (_accountId >= 711)
             {
-                var totalLitres = _db.Bin.Fuellings.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
+                var totalLitres = _dataModel.Bin.Fuellings.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
 
                 row = table.AddRow();
                 row.Borders.Visible = false;

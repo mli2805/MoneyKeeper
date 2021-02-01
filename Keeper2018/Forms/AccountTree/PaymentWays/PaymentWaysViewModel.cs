@@ -11,7 +11,7 @@ namespace Keeper2018
 {
     public class PaymentWaysViewModel : Screen
     {
-        private readonly KeeperDb _db;
+        private readonly KeeperDataModel _dataModel;
         private AccountModel _cardAccountModel;
         private Period _period;
         private List<Transaction> _trans;
@@ -19,9 +19,9 @@ namespace Keeper2018
         public ObservableCollection<string> Totals { get; set; } = new ObservableCollection<string>();
         public decimal Total { get; set; }
 
-        public PaymentWaysViewModel(KeeperDb db)
+        public PaymentWaysViewModel(KeeperDataModel dataModel)
         {
-            _db = db;
+            _dataModel = dataModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -38,12 +38,12 @@ namespace Keeper2018
 
         private void Initialize()
         {
-            _trans = _db.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Расход
+            _trans = _dataModel.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Расход
                                                             && t.MyAccount == _cardAccountModel.Id
                                                             && _period.Includes(t.Timestamp)).ToList();
 
             foreach (var tran in _trans.Where(t => t.PaymentWay == PaymentWay.НеЗадано))
-                tran.PaymentWay = PaymentGuess.GuessPaymentWay(tran.Map(_db.AcMoDict, -1));
+                tran.PaymentWay = PaymentGuess.GuessPaymentWay(tran.Map(_dataModel.AcMoDict, -1));
 
             Lines.Clear();
             Totals.Clear();
@@ -101,7 +101,7 @@ namespace Keeper2018
                 };
                 singles.Add(tr);
             }
-            return singles.OrderBy(t => t.Timestamp).Select(t => t.ToString(_db)).ToList();
+            return singles.OrderBy(t => t.Timestamp).Select(t => t.ToString(_dataModel)).ToList();
         }
     }
 }

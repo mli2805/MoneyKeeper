@@ -8,15 +8,15 @@ namespace Keeper2018
 {
     public class DbSaver
     {
-        private readonly KeeperDb _keeperDb;
+        private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly ShellPartsBinder _shellPartsBinder;
         private readonly TransactionsViewModel _transactionsViewModel;
 
-        public DbSaver(KeeperDb keeperDb, IWindowManager windowManager,
+        public DbSaver(KeeperDataModel keeperDataModel, IWindowManager windowManager,
             ShellPartsBinder shellPartsBinder, TransactionsViewModel transactionsViewModel)
         {
-            _keeperDb = keeperDb;
+            _keeperDataModel = keeperDataModel;
             _windowManager = windowManager;
             _shellPartsBinder = shellPartsBinder;
             _transactionsViewModel = transactionsViewModel;
@@ -29,16 +29,16 @@ namespace Keeper2018
                 if (_shellPartsBinder.IsBusy) return false;
                 _shellPartsBinder.IsBusy = true;
                 _shellPartsBinder.FooterVisibility = Visibility.Visible;
-                _keeperDb.FlattenAccountTree();
+                _keeperDataModel.FlattenAccountTree();
 
-                var result3 = await BinSerializer.Serialize(_keeperDb.Bin);
+                var result3 = await BinSerializer.Serialize(_keeperDataModel.Bin);
                 if (!result3.IsSuccess)
                 {
                     MessageBox.Show(result3.Exception.Message);
                     return false;
                 }
 
-                var result = await _keeperDb.Bin.SaveAllToNewTxtAsync();
+                var result = await _keeperDataModel.Bin.SaveAllToNewTxtAsync();
                 if (result.IsSuccess)
                 {
                     if (await DbTxtSaver.ZipTxtDbAsync())
@@ -60,7 +60,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                var vm = new MyMessageBoxViewModel(MessageType.Error, $"Exception during db saving: {e.Message}");
+                var vm = new MyMessageBoxViewModel(MessageType.Error, $"Exception during dataModel saving: {e.Message}");
                 _windowManager.ShowDialog(vm);
                 return false;
             }

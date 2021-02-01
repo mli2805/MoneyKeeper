@@ -15,7 +15,7 @@ namespace Keeper2018
         private const string OxyplotKey = "A - Reset zoom  ;  Ctrl+RightMouse - Rectangle Zoom";
 
         private readonly IWindowManager _windowManager;
-        private readonly KeeperDb _keeperDb;
+        private readonly KeeperDataModel _keeperDataModel;
         private readonly InputMyUsdViewModel _inputMyUsdViewModel;
 
         private Dictionary<DateTime, CurrencyRates> _rates;
@@ -48,11 +48,11 @@ namespace Keeper2018
             }
         }
 
-        public CurrencyRatesViewModel(IWindowManager windowManager, KeeperDb keeperDb,
+        public CurrencyRatesViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             InputMyUsdViewModel inputMyUsdViewModel)
         {
             _windowManager = windowManager;
-            _keeperDb = keeperDb;
+            _keeperDataModel = keeperDataModel;
             _inputMyUsdViewModel = inputMyUsdViewModel;
         }
 
@@ -64,7 +64,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            _rates = _keeperDb.Bin.Rates;
+            _rates = _keeperDataModel.Bin.Rates;
             Task.Factory.StartNew(Init);
             IsDownloadEnabled = true;
         }

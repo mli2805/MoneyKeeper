@@ -12,14 +12,14 @@ namespace Keeper2018
         public BalanceOrTrafficViewModel BalanceOrTrafficViewModel { get; }
         public TwoSelectorsViewModel TwoSelectorsViewModel { get; }
 
-        private readonly KeeperDb _keeperDb;
+        private readonly KeeperDataModel _keeperDataModel;
         private readonly DbLoader _dbLoader;
         private readonly DbSaver _dbSaver;
         private readonly CurrencyRatesViewModel _currencyRatesViewModel;
         public ShellPartsBinder ShellPartsBinder { get; }
         private bool _dbLoaded;
 
-        public ShellViewModel(KeeperDb keeperDb, ShellPartsBinder shellPartsBinder, 
+        public ShellViewModel(KeeperDataModel keeperDataModel, ShellPartsBinder shellPartsBinder, 
             DbLoader dbLoader, DbSaver dbSaver, CurrencyRatesViewModel currencyRatesViewModel,
             MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, 
             BalanceOrTrafficViewModel balanceOrTrafficViewModel, TwoSelectorsViewModel twoSelectorsViewModel)
@@ -29,7 +29,7 @@ namespace Keeper2018
             BalanceOrTrafficViewModel = balanceOrTrafficViewModel;
             TwoSelectorsViewModel = twoSelectorsViewModel;
 
-            _keeperDb = keeperDb;
+            _keeperDataModel = keeperDataModel;
             _dbLoader = dbLoader;
             _dbSaver = dbSaver;
             _currencyRatesViewModel = currencyRatesViewModel;
@@ -46,19 +46,19 @@ namespace Keeper2018
                 return;
             }
 
-            ExpandBinToDb(_keeperDb);
-            var account = _keeperDb.AccountsTree.First(r => r.Name == "Мои");
+            ExpandBinToDb(_keeperDataModel);
+            var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountModel = account; 
         }
 
-        private void ExpandBinToDb(KeeperDb keeperDb)
+        private void ExpandBinToDb(KeeperDataModel keeperDataModel)
         {
             _currencyRatesViewModel.Initialize();
-            keeperDb.FillInAccountTree(); // must be first
+            keeperDataModel.FillInAccountTree(); // must be first
 
-            keeperDb.TagAssociationModels = new ObservableCollection<TagAssociationModel>
-                (keeperDb.Bin.TagAssociations.Select(a => a.Map(keeperDb.AcMoDict)));
+            keeperDataModel.TagAssociationModels = new ObservableCollection<TagAssociationModel>
+                (keeperDataModel.Bin.TagAssociations.Select(a => a.Map(keeperDataModel.AcMoDict)));
         }
       
         public override async void CanClose(Action<bool> callback)
