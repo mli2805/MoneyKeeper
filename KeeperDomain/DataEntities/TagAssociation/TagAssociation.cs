@@ -13,7 +13,8 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return ExternalAccount + " ; " +
+            return Id + " ; " +
+                   ExternalAccount + " ; " +
                    Tag + " ; " +
                    OperationType + " ; " +
                    Destination;

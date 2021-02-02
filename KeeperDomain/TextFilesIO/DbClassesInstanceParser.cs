@@ -118,10 +118,11 @@ namespace KeeperDomain
         {
             var association = new TagAssociation();
             var substrings = s.Split(';');
-            association.ExternalAccount = int.Parse(substrings[0].Trim());
-            association.Tag = int.Parse(substrings[1].Trim());
-            association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[2]);
-            association.Destination = (AssociationType)Enum.Parse(typeof(AssociationType), substrings[3]);
+            association.Id = int.Parse(substrings[0].Trim());
+            association.ExternalAccount = int.Parse(substrings[1].Trim());
+            association.Tag = int.Parse(substrings[2].Trim());
+            association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[3]);
+            association.Destination = (AssociationType)Enum.Parse(typeof(AssociationType), substrings[4]);
             return association;
         }
 

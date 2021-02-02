@@ -53,6 +53,7 @@ namespace Keeper2018
         {
             return new TagAssociationModel
             {
+                Id = tagAssociation.Id,
                 OperationType = tagAssociation.OperationType,
                 ExternalAccount = acMoDict[tagAssociation.ExternalAccount],
                 Tag = acMoDict[tagAssociation.Tag],
