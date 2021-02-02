@@ -37,7 +37,7 @@ namespace Keeper2018
         public void Initialize()
         {
             Rows = new ObservableCollection<DepositOfferModel>
-                (_dataModel.Bin.DepositOffers.Select(x => x.Map(_dataModel.Bin.AccountPlaneList)));
+                (_dataModel.DepositOffers.Select(x => x.Map(_dataModel.AccountPlaneList)));
             SelectedDepositOffer = Rows.Last();
         }
 
@@ -75,7 +75,7 @@ namespace Keeper2018
 
         public void RemoveSelectedOffer()
         {
-            if (_dataModel.Bin.AccountPlaneList.Any(a => a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
+            if (_dataModel.AccountPlaneList.Any(a => a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
             {
                 var strs = new List<string> {"Существует как минимум один депозит открытый по этой оферте.", "", "Сначала удалите депозиты."};
                 var vm = new MyMessageBoxViewModel(MessageType.Error, strs);
@@ -87,7 +87,7 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
-            _dataModel.Bin.DepositOffers = new List<DepositOffer>(Rows.Select(d => d.Map()));
+            _dataModel.DepositOffers = new List<DepositOffer>(Rows.Select(d => d.Map()));
             base.CanClose(callback);
         }
     }

@@ -14,16 +14,17 @@ namespace Keeper2018
 
         private static AccountModel GetTagToTagAssociation(this KeeperDataModel dataModel, TransactionModel tran, AccountModel tag)
         {
-            var association = (from a in dataModel.TagAssociationModels
-                               where a.ExternalAccount.Id == tag.Id && a.OperationType == tran.Operation
+            var association = (from a in dataModel.TagAssociations
+                               where a.ExternalAccount == tag.Id && a.OperationType == tran.Operation
                                select a).FirstOrDefault();
-            if (association != null) return association.Tag;
+            if (association != null) return dataModel.AcMoDict[association.Tag];
 
-            var reverseAssociation = (from a in dataModel.TagAssociationModels
-                           where a.Destination == AssociationType.TwoWay && a.Tag.Id == tag.Id && a.OperationType == tran.Operation
+            var reverseAssociation = (from a in dataModel.TagAssociations
+                                      where (a.Destination == AssociationType.TwoWay || a.Destination == AssociationType.RightToLeft)
+                                            && a.Tag == tag.Id && a.OperationType == tran.Operation
                                       select a).FirstOrDefault();
 
-            return reverseAssociation?.ExternalAccount;
+            return reverseAssociation == null ? null : dataModel.AcMoDict[reverseAssociation.ExternalAccount];
         }
 
     }

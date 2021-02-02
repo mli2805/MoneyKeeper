@@ -71,7 +71,7 @@ namespace Keeper2018
         {
             if (account.Owner == null) return AccountCantBeDeletedReasons.IsRoot;
             if (account.Children.Any()) return AccountCantBeDeletedReasons.HasChildren;
-            if (dataModel.Bin.Transactions.Values.Any(t =>
+            if (dataModel.Transactions.Values.Any(t =>
                 t.MyAccount.Equals(account.Id) || 
                 t.MySecondAccount.Equals(account.Id) ||
                 t.Tags != null && t.Tags.Contains(account.Id)))
@@ -84,7 +84,7 @@ namespace Keeper2018
             var owner = accountModel.Owner;
             accountModel.Owner = null;
             owner.Items.Remove(accountModel);
-            dataModel.Bin.AccountPlaneList.RemoveAll(a => a.Id == accountModel.Id);
+            dataModel.AccountPlaneList.RemoveAll(a => a.Id == accountModel.Id);
         }
     }
 }

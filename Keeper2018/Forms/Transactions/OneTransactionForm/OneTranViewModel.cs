@@ -195,7 +195,7 @@ namespace Keeper2018
         public void Fuelling()
         {
             Left = Left - 180;
-            if (_dataModel.Bin.Cars == null)
+            if (_dataModel.Cars == null)
             {
                 MessageBox.Show("Cars должны быть заполнены!");
                 return;
@@ -213,7 +213,7 @@ namespace Keeper2018
         {
             return new Fuelling()
             {
-                CarAccountId = _dataModel.Bin.Cars.Last().CarAccountId,
+                CarAccountId = _dataModel.Cars.Last().CarAccountId,
                 Timestamp = TranInWork.Timestamp,
                 Volume = 30,
                 FuelType = FuelType.ДтЕвро5,

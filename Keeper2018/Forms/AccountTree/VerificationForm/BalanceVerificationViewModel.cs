@@ -29,7 +29,7 @@ namespace Keeper2018
         {
             Lines = new List<VerificationLine>();
             _total = 0;
-            _trans = _dataModel.Bin.Transactions.Values.OrderBy(t => t.Timestamp)
+            _trans = _dataModel.Transactions.Values.OrderBy(t => t.Timestamp)
                 .Where(t => t.MyAccount == accountModel.Id || t.MySecondAccount == accountModel.Id).ToArray();
             _transIndex = 0;
             while (true)

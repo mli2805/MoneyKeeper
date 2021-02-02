@@ -48,19 +48,6 @@ namespace Keeper2018
                 Comment = depositOffer.Comment,
             };
         }
-
-        public static TagAssociationModel Map(this TagAssociation tagAssociation, Dictionary<int, AccountModel> acMoDict)
-        {
-            return new TagAssociationModel
-            {
-                Id = tagAssociation.Id,
-                OperationType = tagAssociation.OperationType,
-                ExternalAccount = acMoDict[tagAssociation.ExternalAccount],
-                Tag = acMoDict[tagAssociation.Tag],
-                Destination = tagAssociation.Destination,
-            };
-        }
-
       
         public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict, int transactionKey)
         {

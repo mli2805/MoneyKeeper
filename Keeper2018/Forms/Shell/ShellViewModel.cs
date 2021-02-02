@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -39,28 +38,20 @@ namespace Keeper2018
         protected override async void OnViewLoaded(object view)
         {
             DisplayName = "Keeper 2018";
-            _dbLoaded = await _dbLoader.Load();
+            _dbLoaded = await _dbLoader.LoadAndExpand();
             if (!_dbLoaded)
             {
                 TryClose();
                 return;
             }
 
-            ExpandBinToDb(_keeperDataModel);
+            _currencyRatesViewModel.Initialize();
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountModel = account; 
         }
 
-        private void ExpandBinToDb(KeeperDataModel keeperDataModel)
-        {
-            _currencyRatesViewModel.Initialize();
-            keeperDataModel.FillInAccountTree(); // must be first
-
-            keeperDataModel.TagAssociationModels = new ObservableCollection<TagAssociationModel>
-                (keeperDataModel.Bin.TagAssociations.Select(a => a.Map(keeperDataModel.AcMoDict)));
-        }
-      
+     
         public override async void CanClose(Action<bool> callback)
         {
             if (_dbLoaded)

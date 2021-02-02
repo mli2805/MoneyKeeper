@@ -61,10 +61,10 @@ namespace Keeper2018
 
         public void Initialize(Fuelling vm)
         {
-            Cars = _dataModel.Bin.Cars.Select(c => c.Title).ToList();
+            Cars = _dataModel.Cars.Select(c => c.Title).ToList();
             Vm = Mapper.Map<Fuelling, FuellingInputVm>(vm);
             Vm.DataModel = _dataModel;
-            SelectedCar = _dataModel.Bin.Cars.First(c => c.CarAccountId == vm.CarAccountId).Title;
+            SelectedCar = _dataModel.Cars.First(c => c.CarAccountId == vm.CarAccountId).Title;
         }
         protected override void OnViewLoaded(object view)
         {

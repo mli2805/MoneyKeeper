@@ -10,7 +10,7 @@ namespace Keeper2018
         {
             dataModel.AccountsTree = new ObservableCollection<AccountModel>();
             dataModel.AcMoDict = new Dictionary<int, AccountModel>();
-            foreach (var account in dataModel.Bin.AccountPlaneList)
+            foreach (var account in dataModel.AccountPlaneList)
             {
                 var accountModel = account.Map(dataModel.AcMoDict);
                 if (account.OwnerId == 0)
@@ -20,10 +20,10 @@ namespace Keeper2018
 
         public static void FlattenAccountTree(this KeeperDataModel dataModel)
         {
-            dataModel.Bin.AccountPlaneList = new List<Account>();
+            dataModel.AccountPlaneList = new List<Account>();
             foreach (var root in dataModel.AccountsTree)
             {
-                dataModel.Bin.AccountPlaneList.AddRange(FlattenOne(root));
+                dataModel.AccountPlaneList.AddRange(FlattenOne(root));
             }
         }
 

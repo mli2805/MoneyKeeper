@@ -223,7 +223,6 @@
     </ApplicationDefinition>
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
-    <Compile Include="DataModel\EntityModels\TagAssociationModel.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />
     <Compile Include="DataModel\DataModelExt\AmountInUsdProvider.cs" />
@@ -457,7 +456,7 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
-    <Compile Include="Forms\TagAssociations\LineModel.cs" />
+    <Compile Include="DataModel\EntityModels\TagAssociationModel.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameExt.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameSelectionControlInitializer.cs" />
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameButtonVm.cs" />

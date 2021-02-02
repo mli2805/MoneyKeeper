@@ -36,7 +36,7 @@ namespace Keeper2018.PayCards
 
         private PayCardVm GetVm(AccountModel account)
         {
-            var depositOffer = _dataModel.Bin.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
+            var depositOffer = _dataModel.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
             var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));
             calc.EvaluateAccount();
             calc.DepositReportModel.Balance.Currencies.TryGetValue(depositOffer.MainCurrency, out var amount);
@@ -54,7 +54,7 @@ namespace Keeper2018.PayCards
                 FinishDate = account.Deposit.FinishDate,
                 Comment = account.Deposit.Comment,
 
-                BankAccount = _dataModel.Bin.AccountPlaneList.First(a => a.Id == depositOffer.BankId),
+                BankAccount = _dataModel.AccountPlaneList.First(a => a.Id == depositOffer.BankId),
                 MainCurrency = depositOffer.MainCurrency,
 
                 Name = account.Name,

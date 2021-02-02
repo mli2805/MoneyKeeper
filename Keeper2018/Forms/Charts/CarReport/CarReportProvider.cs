@@ -27,8 +27,8 @@ namespace Keeper2018
         public PdfDocument CreateCarReport(int accountId)
         {
             _accountId = accountId;
-            _car = _dataModel.Bin.Cars.First(c => c.CarAccountId == _accountId);
-            var isCurrentCar = _dataModel.Bin.Cars.Last().CarAccountId == _accountId;
+            _car = _dataModel.Cars.First(c => c.CarAccountId == _accountId);
+            var isCurrentCar = _dataModel.Cars.Last().CarAccountId == _accountId;
 
             Document doc = new Document();
 
@@ -207,7 +207,7 @@ namespace Keeper2018
 
             if (_accountId >= 711)
             {
-                var totalLitres = _dataModel.Bin.Fuellings.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
+                var totalLitres = _dataModel.Fuellings.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
 
                 row = table.AddRow();
                 row.Borders.Visible = false;

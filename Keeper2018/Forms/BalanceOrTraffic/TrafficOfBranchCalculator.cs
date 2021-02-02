@@ -23,14 +23,14 @@ namespace Keeper2018
 
         public void EvaluateAccount()
         {
-            foreach (var tran in _dataModel.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
+            foreach (var tran in _dataModel.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
                 RegisterTran(tran);
             TotalAmount = _dataModel.BalanceInUsd(_period.FinishMoment, _balanceWithTurnovers.Balance());
         }
 
         public Balance Evaluate()
         {
-            foreach (var tran in _dataModel.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
+            foreach (var tran in _dataModel.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
                 RegisterTran(tran);
             return _balanceWithTurnovers.Balance();
         }

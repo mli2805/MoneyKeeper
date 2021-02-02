@@ -12,10 +12,10 @@ namespace Keeper2018
     {
         private static KeeperDataModel _dataModel;
 
-        public ObservableCollection<LineModel> Rows { get; set; }
+        public ObservableCollection<TagAssociationModel> Rows { get; set; }
 
-        private LineModel _selectedRow;
-        public LineModel SelectedRow
+        private TagAssociationModel _selectedRow;
+        public TagAssociationModel SelectedRow
         {
             get { return _selectedRow; }
             set
@@ -38,13 +38,6 @@ namespace Keeper2018
         public ArticlesAssociationsViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
-        
-
-
-
-//            var view = CollectionViewSource.GetDefaultView(Rows);
-//            view.SortDescriptions.Add(new SortDescription("OperationType", ListSortDirection.Ascending));
-//            view.SortDescriptions.Add(new SortDescription("ExternalAccount", ListSortDirection.Ascending));
         }
 
         public void Init()
@@ -55,8 +48,8 @@ namespace Keeper2018
 
         private void InitilizeGrid()
         {
-            Rows = new ObservableCollection<LineModel>();
-            foreach (var lineModel in _dataModel.TagAssociationModels.Select(a => a.Map()))
+            Rows = new ObservableCollection<TagAssociationModel>();
+            foreach (var lineModel in _dataModel.TagAssociations.Select(a => Map(a)))
             {
                 Rows.Add(lineModel);
             }
@@ -65,11 +58,11 @@ namespace Keeper2018
 
         private void InitializeListsForCombobox()
         {
-            ExternalAccounts = _dataModel.GetLeavesOf("Внешние").Select(x=>x.Name).ToList();
-            AssociatedArticles = _dataModel.GetLeavesOf("Все доходы").Select(x=>x.Name).ToList();
-            AssociatedArticles.AddRange(_dataModel.GetLeavesOf("Все расходы").Select(x=>x.Name).ToList());
-            OperationTypes = Enum.GetValues(typeof (OperationType)).Cast<OperationType>().ToList();
-            AssociationTypes = Enum.GetValues(typeof (AssociationType)).Cast<AssociationType>().ToList();
+            ExternalAccounts = _dataModel.GetLeavesOf("Внешние").Select(x => x.Name).ToList();
+            AssociatedArticles = _dataModel.GetLeavesOf("Все доходы").Select(x => x.Name).ToList();
+            AssociatedArticles.AddRange(_dataModel.GetLeavesOf("Все расходы").Select(x => x.Name).ToList());
+            OperationTypes = Enum.GetValues(typeof(OperationType)).Cast<OperationType>().ToList();
+            AssociationTypes = Enum.GetValues(typeof(AssociationType)).Cast<AssociationType>().ToList();
         }
 
         protected override void OnViewLoaded(object view)
@@ -99,22 +92,32 @@ namespace Keeper2018
                 }
             }
 
-            _dataModel.Bin.TagAssociations = tagAssociations;
-            _dataModel.TagAssociationModels = new ObservableCollection<TagAssociationModel>
-                (_dataModel.Bin.TagAssociations.Select(a => a.Map(_dataModel.AcMoDict)));
-
+            _dataModel.TagAssociations = tagAssociations;
         }
 
-        private TagAssociation Map(LineModel lineModel)
+        private TagAssociation Map(TagAssociationModel tagAssociationModel)
         {
             return new TagAssociation
             {
-                OperationType = lineModel.OperationType,
-                ExternalAccount = _dataModel.GetLeavesOf("Внешние").First(x => x.Name == lineModel.ExternalAccount).Id,
-                Tag = lineModel.OperationType == OperationType.Доход
-                    ? _dataModel.GetLeavesOf("Все доходы").First(x => x.Name == lineModel.Tag).Id
-                    : _dataModel.GetLeavesOf("Все расходы").First(x => x.Name == lineModel.Tag).Id,
-                Destination = lineModel.Destination
+                Id = tagAssociationModel.Id,
+                OperationType = tagAssociationModel.OperationType,
+                ExternalAccount = _dataModel.GetLeavesOf("Внешние").First(x => x.Name == tagAssociationModel.ExternalAccount).Id,
+                Tag = tagAssociationModel.OperationType == OperationType.Доход
+                    ? _dataModel.GetLeavesOf("Все доходы").First(x => x.Name == tagAssociationModel.Tag).Id
+                    : _dataModel.GetLeavesOf("Все расходы").First(x => x.Name == tagAssociationModel.Tag).Id,
+                Destination = tagAssociationModel.Destination
+            };
+        }
+
+        private TagAssociationModel Map(TagAssociation tagAssociation)
+        {
+            return new TagAssociationModel()
+            {
+                Id = tagAssociation.Id,
+                OperationType = tagAssociation.OperationType,
+                ExternalAccount = _dataModel.AcMoDict[tagAssociation.ExternalAccount].Name,
+                Tag = _dataModel.AcMoDict[tagAssociation.Tag].Name,
+                Destination = tagAssociation.Destination,
             };
         }
     }

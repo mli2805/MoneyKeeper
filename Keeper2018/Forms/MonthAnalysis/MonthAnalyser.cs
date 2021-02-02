@@ -78,7 +78,7 @@ namespace Keeper2018
             decimal rantierTotal = 0;
             decimal depoTotal = 0;
             decimal restTotal = 0;
-            foreach (var tran in _dataModel.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
+            foreach (var tran in _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                                                   && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
                 var amStr = _dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
@@ -134,7 +134,7 @@ namespace Keeper2018
 
         private void FillIncomeForecastList(DateTime startDate, DateTime finishMoment)
         {
-            var realIncomes = _dataModel.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Доход
+            var realIncomes = _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                               && t.Timestamp >= startDate && t.Timestamp <= finishMoment).ToList();
             var salaryAccountId = 204;
             if (realIncomes.FirstOrDefault(t => t.Tags.Contains(salaryAccountId)) == null)
@@ -152,7 +152,7 @@ namespace Keeper2018
 
         private void ForeseeDepoIncome(AccountModel depo)
         {
-            var depositOffer = _dataModel.Bin.DepositOffers.First(o => o.Id == depo.Deposit.DepositOfferId);
+            var depositOffer = _dataModel.DepositOffers.First(o => o.Id == depo.Deposit.DepositOfferId);
 
             var revenue = depo.GetRevenueInThisMonth(_dataModel);
             var currency = depositOffer.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : depositOffer.MainCurrency;
@@ -207,7 +207,7 @@ namespace Keeper2018
             var largeExpenses = new ListOfLines();
             decimal total = 0;
             decimal largeTotal = 0;
-            foreach (var tran in _dataModel.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Расход
+            foreach (var tran in _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Расход
                                                && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
                 foreach (var tagId in tran.Tags)

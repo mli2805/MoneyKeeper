@@ -39,7 +39,7 @@ namespace Keeper2018
 
         public void Save()
         {
-            var rateLine = _dataModel.Bin.Rates[CurrentLine.Date];
+            var rateLine = _dataModel.Rates[CurrentLine.Date];
             rateLine.MyUsdRate.Value = MyUsdRate;
             rateLine.MyEurUsdRate.Value = EurUsd;
             rateLine.CbrRate.Usd.Value = RubUsd;

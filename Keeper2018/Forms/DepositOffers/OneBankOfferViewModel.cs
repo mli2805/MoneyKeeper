@@ -33,8 +33,8 @@ namespace Keeper2018
 
         public void Initialize(DepositOfferModel model)
         {
-            var bankFolder = _keeperDataModel.Bin.AccountPlaneList.First(a => a.Name == "Банки");
-            Banks = new List<Account>(_keeperDataModel.Bin.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
+            var bankFolder = _keeperDataModel.AccountPlaneList.First(a => a.Name == "Банки");
+            Banks = new List<Account>(_keeperDataModel.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             ModelInWork = model;
             ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
@@ -51,7 +51,7 @@ namespace Keeper2018
             var date = DateTime.Today;
             while (ModelInWork.ConditionsMap.ContainsKey(date)) date = date.AddDays(1);
 
-            var lastIdInDb = _keeperDataModel.Bin.DepositOffers
+            var lastIdInDb = _keeperDataModel.DepositOffers
                 .SelectMany(depositOffer => depositOffer.ConditionsMap.Values)
                 .ToList()
                 .Max(c => c.Id);

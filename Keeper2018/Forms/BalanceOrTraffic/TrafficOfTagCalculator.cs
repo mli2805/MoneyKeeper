@@ -25,7 +25,7 @@ namespace Keeper2018
 
         public void EvaluateAccount()
         {
-            foreach (var tran in _dataModel.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
+            foreach (var tran in _dataModel.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
             {
                 if (!tran.Tags.Contains(_accountModel.Id)) continue;
 

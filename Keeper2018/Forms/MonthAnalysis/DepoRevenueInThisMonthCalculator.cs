@@ -9,16 +9,16 @@ namespace Keeper2018
         public static decimal GetRevenueInThisMonth(this AccountModel depo, KeeperDataModel dataModel)
         {
             var deposit = depo.Deposit;
-            var depositOffer = dataModel.Bin.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
+            var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
             var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
-            var lastRevenueTran = dataModel.Bin.Transactions.LastOrDefault(t =>
+            var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
                 t.Value.MyAccount == depo.Id && t.Value.Operation == OperationType.Доход).Value;
             var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
             var thisMonthRevenueDate = RevenueDate(depositOffer, deposit);
 
             var depositBalance = new Balance();
             decimal revenue = 0;
-            var depoTraffic = dataModel.Bin.Transactions.Values.OrderBy(o => o.Timestamp)
+            var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
                 .Where(t => t.MyAccount == depo.Id || t.MySecondAccount == depo.Id).ToList();
             var date = deposit.StartDate;
             while (date <= thisMonthRevenueDate)

@@ -39,7 +39,7 @@ namespace Keeper2018
         private DateTime _previousDate;
         public void PrepareSeries()
         {
-            foreach (var tran in _dataModel.Bin.Transactions.Values.OrderBy(t=>t.Timestamp))
+            foreach (var tran in _dataModel.Transactions.Values.OrderBy(t=>t.Timestamp))
             {
                 if (!tran.Timestamp.Date.Equals(_currentDate))
                 {

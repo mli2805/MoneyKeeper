@@ -24,17 +24,6 @@ namespace Keeper2018
             };
         }
 
-        public static LineModel Map(this TagAssociationModel tagAssociationModel)
-        {
-            return new LineModel
-            {
-                OperationType = tagAssociationModel.OperationType,
-                ExternalAccount = tagAssociationModel.ExternalAccount.Name,
-                Tag = tagAssociationModel.Tag.Name,
-                Destination = tagAssociationModel.Destination,
-            };
-        }
-
         public static Account Map(this AccountModel model)
         {
             return new Account()

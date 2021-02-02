@@ -37,7 +37,7 @@ namespace Keeper2018
 
         private IEnumerable<ClassifiedTran> GetClassifiedTrans()
         {
-            foreach (var tr in _dataModel.Bin.Transactions.Values.Where(t=>t.Operation == OperationType.Расход))
+            foreach (var tr in _dataModel.Transactions.Values.Where(t=>t.Operation == OperationType.Расход))
             {
                 yield return new ClassifiedTran()
                 {

@@ -31,7 +31,7 @@ namespace Keeper2018
         public static CurrencyRates GetRatesLine(this KeeperDataModel dataModel, DateTime date)
         {
             CurrencyRates rateLine;
-            while (!dataModel.Bin.Rates.TryGetValue(date.Date, out rateLine) || (rateLine.MyUsdRate.Value) <= 0.001)
+            while (!dataModel.Rates.TryGetValue(date.Date, out rateLine) || (rateLine.MyUsdRate.Value) <= 0.001)
             {
                 date = date.AddDays(-1);
             }

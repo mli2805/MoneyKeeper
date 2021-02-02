@@ -132,7 +132,7 @@ namespace Keeper2018
         private void BuildFor(AccountModel accountModelFolder, List<SalaryLineModel> result)
         {
             result.Clear();
-            var lines = _dataModel.Bin.Transactions.Where(t => t.Value.Tags.ToList().Intersect(accountModelFolder.Children.Select(c => c.Id)).Any());
+            var lines = _dataModel.Transactions.Where(t => t.Value.Tags.ToList().Intersect(accountModelFolder.Children.Select(c => c.Id)).Any());
             foreach (var keyValuePair in lines)
             {
                 result.Add(ToSalaryLine(keyValuePair.Value));

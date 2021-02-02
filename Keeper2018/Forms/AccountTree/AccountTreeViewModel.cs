@@ -52,7 +52,7 @@ namespace Keeper2018
             if (!_oneAccountViewModel.IsSavePressed) return;
 
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
-            KeeperDataModel.Bin.AccountPlaneList.Add(accountModel.Map());
+            KeeperDataModel.AccountPlaneList.Add(accountModel.Map());
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
@@ -60,7 +60,7 @@ namespace Keeper2018
         {
             var accountModel = new AccountModel("")
             {
-                Id = KeeperDataModel.Bin.AccountPlaneList.Max(a => a.Id) + 1,
+                Id = KeeperDataModel.AccountPlaneList.Max(a => a.Id) + 1,
                 Owner = ShellPartsBinder.SelectedAccountModel,
                 Deposit = new Deposit()
             };
@@ -69,7 +69,7 @@ namespace Keeper2018
             if (!_oneDepositViewModel.IsSavePressed) return;
 
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
-            KeeperDataModel.Bin.AccountPlaneList.Add(accountModel.Map());
+            KeeperDataModel.AccountPlaneList.Add(accountModel.Map());
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 

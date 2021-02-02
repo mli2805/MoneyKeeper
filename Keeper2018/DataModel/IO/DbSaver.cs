@@ -29,16 +29,16 @@ namespace Keeper2018
                 if (_shellPartsBinder.IsBusy) return false;
                 _shellPartsBinder.IsBusy = true;
                 _shellPartsBinder.FooterVisibility = Visibility.Visible;
-                _keeperDataModel.FlattenAccountTree();
+                var bin = MapBack();
 
-                var result3 = await BinSerializer.Serialize(_keeperDataModel.Bin);
+                var result3 = await BinSerializer.Serialize(bin);
                 if (!result3.IsSuccess)
                 {
                     MessageBox.Show(result3.Exception.Message);
                     return false;
                 }
 
-                var result = await _keeperDataModel.Bin.SaveAllToNewTxtAsync();
+                var result = await bin.SaveAllToNewTxtAsync();
                 if (result.IsSuccess)
                 {
                     if (await DbTxtSaver.ZipTxtDbAsync())
@@ -72,5 +72,24 @@ namespace Keeper2018
 
             return true;
         }
+
+
+        private KeeperBin MapBack()
+        {
+            var result = new KeeperBin();
+
+            _keeperDataModel.FlattenAccountTree();
+            result.AccountPlaneList = _keeperDataModel.AccountPlaneList;
+            result.Rates = _keeperDataModel.Rates;
+            result.Transactions = _keeperDataModel.Transactions;
+            result.DepositOffers = _keeperDataModel.DepositOffers;
+            result.Cars = _keeperDataModel.Cars;
+            result.Fuellings = _keeperDataModel.Fuellings;
+            result.TagAssociations = _keeperDataModel.TagAssociations;
+
+            return result;
+        }
     }
+
+
 }

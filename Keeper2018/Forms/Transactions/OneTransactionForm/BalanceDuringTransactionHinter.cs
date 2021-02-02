@@ -44,7 +44,7 @@ namespace Keeper2018
             if (transactionInWork?.MyAccount == null || !transactionInWork.MyAccount.Is(158)) return "было ххх - стало ххх";
 
             var balanceBefore =
-                _dataModel.Bin.Transactions.Values.Sum(t => t.AmountForAccount(
+                _dataModel.Transactions.Values.Sum(t => t.AmountForAccount(
                     _dataModel, transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
             return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(
@@ -59,7 +59,7 @@ namespace Keeper2018
             if (transactionInWork.Operation == OperationType.Перенос)
             {
                 var balanceBefore =
-                    _dataModel.Bin.Transactions.Values.Sum(a => a.AmountForAccount(
+                    _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(
                         _dataModel, transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
                 return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(
@@ -68,7 +68,7 @@ namespace Keeper2018
             else // OperationType.Обмен
             {
                 var balanceBefore =
-                    _dataModel.Bin.Transactions.Values.Sum(a => a.AmountForAccount(
+                    _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(
                         _dataModel, transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
                 return BuildTip(balanceBefore, balanceBefore +

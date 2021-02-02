@@ -50,7 +50,7 @@ namespace Keeper2018
 
         private void Evaluate()
         {
-            foreach (var tran in _dataModel.Bin.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
+            foreach (var tran in _dataModel.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
             {
                 switch (tran.Operation)
                 {

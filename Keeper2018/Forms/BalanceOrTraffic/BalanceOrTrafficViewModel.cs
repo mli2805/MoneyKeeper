@@ -136,7 +136,7 @@ namespace Keeper2018
             var pair = _report.FirstOrDefault(p => p.Value == SelectedLine);
             if (pair.Key == DateTime.MinValue) return;
 
-            var transaction = _dataModel.Bin.Transactions.Values.FirstOrDefault(t=>t.Timestamp == pair.Key);
+            var transaction = _dataModel.Transactions.Values.FirstOrDefault(t=>t.Timestamp == pair.Key);
             if (transaction == null) return;
 
             InitializePopupContent(transaction.Map(_dataModel.AcMoDict, -1));

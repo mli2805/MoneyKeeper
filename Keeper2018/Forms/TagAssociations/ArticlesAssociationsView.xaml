@@ -49,19 +49,19 @@
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Тип операции" Width="100" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding (keeper2018:LineModel.OperationType)}"
+                                SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.OperationType)}"
                                 ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.OperationTypes}"/>
                 <DataGridComboBoxColumn Header="Контрагент" Width="210"
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding (keeper2018:LineModel.ExternalAccount)}"
+                                SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.ExternalAccount)}"
                                 ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.ExternalAccounts}"/>
                 <DataGridComboBoxColumn Header="Ассоциированная категория" Width="220" 
                                 ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                SelectedItemBinding ="{Binding (keeper2018:LineModel.Tag)}"
+                                SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.Tag)}"
                                 ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.AssociatedArticles}"/>
                 <DataGridComboBoxColumn Header="Направление" Width="100" 
                                         ElementStyle="{StaticResource ComboBoxCellTextStyle}"
-                                        SelectedItemBinding ="{Binding (keeper2018:LineModel.Destination)}"
+                                        SelectedItemBinding ="{Binding (keeper2018:TagAssociationModel.Destination)}"
                                         ItemsSource="{x:Static keeper2018:ArticlesAssociationsViewModel.AssociationTypes}"/>
             </DataGrid.Columns>
         </DataGrid>

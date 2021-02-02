@@ -64,7 +64,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            _rates = _keeperDataModel.Bin.Rates;
+            _rates = _keeperDataModel.Rates;
             Task.Factory.StartNew(Init);
             IsDownloadEnabled = true;
         }

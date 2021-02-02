@@ -53,7 +53,7 @@ namespace Keeper2018
         {
             _tranFilter = new TranFilter();
 
-            Rows = WrapTransactions(_dataModel.Bin.Transactions);
+            Rows = WrapTransactions(_dataModel.Transactions);
             Rows.CollectionChanged += Rows_CollectionChanged;
 
             SortedRows = CollectionViewSource.GetDefaultView(Rows);

@@ -8,14 +8,12 @@ namespace Keeper2018
 {
     public class DbLoadingViewModel : Screen
     {
-        private readonly KeeperDataModel _keeperDataModel;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
-        public bool DbLoaded { get; private set; }
+        public LibResult LoadResult { get; set; }
 
-        public DbLoadingViewModel(KeeperDataModel keeperDataModel)
+        public DbLoadingViewModel()
         {
-            _keeperDataModel = keeperDataModel;
             _cancellationToken = _cancellationTokenSource.Token;
         }
 
@@ -27,28 +25,23 @@ namespace Keeper2018
 
         private async void Load()
         {
-            var result = await DbTxtLoader.LoadAllFromNewTxt();
-            if (!result.IsSuccess)
+            LoadResult = await DbTxtLoader.LoadAllFromNewTxt();
+            if (!LoadResult.IsSuccess)
             {
-                _keeperDataModel.Bin = null;
-                DbLoaded = false;
-                MessageBox.Show(result.Exception.Message);
+                MessageBox.Show(LoadResult.Exception.Message);
                 return;
             }
 
-            _keeperDataModel.Bin = (KeeperBin) result.Payload;
-          
-            var result2 = DbTxtSaver.DeleteTxtFiles();
-            if (!result2.IsSuccess)
+            var delResult = DbTxtSaver.DeleteTxtFiles();
+            if (!delResult.IsSuccess)
             {
-                MessageBox.Show(result2.Exception.Message);
+                MessageBox.Show(delResult.Exception.Message);
             }
-            DbLoaded = true;
 
-            var result3 = await BinSerializer.Serialize(_keeperDataModel.Bin);
-            if (!result3.IsSuccess)
+            var serializeResult = await BinSerializer.Serialize((KeeperBin)LoadResult.Payload);
+            if (!serializeResult.IsSuccess)
             {
-                MessageBox.Show(result3.Exception.Message);
+                MessageBox.Show(serializeResult.Exception.Message);
             }
             TryClose();
         }

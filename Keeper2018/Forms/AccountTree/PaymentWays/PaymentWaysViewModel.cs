@@ -38,7 +38,7 @@ namespace Keeper2018
 
         private void Initialize()
         {
-            _trans = _dataModel.Bin.Transactions.Values.Where(t => t.Operation == OperationType.Расход
+            _trans = _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Расход
                                                             && t.MyAccount == _cardAccountModel.Id
                                                             && _period.Includes(t.Timestamp)).ToList();
 

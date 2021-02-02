@@ -18,7 +18,7 @@ namespace Keeper2018
             set
             {
                 _deposit = value;
-                DepositOffer = _dataModel.Bin.DepositOffers.First(o => o.Id == _deposit.DepositOfferId);
+                DepositOffer = _dataModel.DepositOffers.First(o => o.Id == _deposit.DepositOfferId);
                 IsInUsd = DepositOffer.MainCurrency == CurrencyCode.USD;
             }
         }

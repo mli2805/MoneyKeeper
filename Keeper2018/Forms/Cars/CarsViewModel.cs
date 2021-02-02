@@ -42,10 +42,10 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            _dataModel.Bin.Cars.Last().SaleDate = DateTime.Today;
+            _dataModel.Cars.Last().SaleDate = DateTime.Today;
 
             Cars = new List<CarVm>();
-            foreach (var car in _dataModel.Bin.Cars)
+            foreach (var car in _dataModel.Cars)
             {
                 Cars.Add(new CarVm(car));
             }
