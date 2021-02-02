@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -16,7 +14,7 @@ namespace Keeper2018
     public class FuelViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        public List<Fuelling> Rows { get; set; }
+        public List<FuellingVm> Rows { get; set; }
         public string Total => $"Итого {Rows.Sum(f => f.Volume)} литров";
 
         public PlotModel ChartModel { get; set; }
@@ -57,8 +55,9 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            ExtractFuellingsFromDb();
-            Rows = _dataModel.Fuellings;
+            // TransactionsToFuellingsTable();
+
+            Rows = _dataModel.FuellingVms;
 
             InitializeChartModel();
         }
@@ -85,67 +84,61 @@ namespace Keeper2018
 
             var dieselSeries = new LineSeries()
             { Title = "Дт Евро5", Color = OxyColors.BlueViolet };
-            foreach (var fuelling in _dataModel.Fuellings.Where(f => f.FuelType == FuelType.ДтЕвро5))
+            foreach (var fuelling in Rows.Where(f => f.FuelType == FuelType.ДтЕвро5))
             {
                 dieselSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
             }
             ChartModel.Series.Add(dieselSeries);
 
             var arkticSeries = new ScatterSeries() {Title = "Дт Арктика", MarkerType  = MarkerType.Circle, MarkerFill = OxyColors.Red };
-            foreach (var fuelling in _dataModel.Fuellings.Where(f => f.FuelType == FuelType.ДтЕвро5Арктика))
+            foreach (var fuelling in Rows.Where(f => f.FuelType == FuelType.ДтЕвро5Арктика))
             {
                 arkticSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
             }
             ChartModel.Series.Add(arkticSeries);
         }
+       
 
-        private void ExtractFuellingsFromDb()
-        {
-            var trs = _dataModel.Transactions.Values.Where(t => t.Tags.Contains(718) || t.Tags.Contains(714));
-            _dataModel.Fuellings = new List<Fuelling>();
-            foreach (var tr in trs)
-            {
-                var volume = GetVolumeFromComment(tr.Comment);
-                var oneLitrePrice = Math.Abs(volume) < 0.01 ? 0 : tr.Amount / (decimal)volume;
-                var fuelling = new Fuelling()
-                {
-                    Timestamp = tr.Timestamp,
-                    CarAccountId = tr.Tags.Contains(718) ? 716 : 711,
-                    Amount = tr.Amount,
-                    Currency = tr.Currency,
-                    Volume = volume,
-                    FuelType = GetFuelTypeFromComment(tr.Comment),
-                    Comment = tr.Comment,
+        // once
+        // private void TransactionsToFuellingsTable()
+        // {
+        //     var trs = _dataModel.Transactions.Values.Where(t => t.Tags.Contains(718) || t.Tags.Contains(714));
+        //     _dataModel.Fuellings = new List<Fuelling>();
+        //     var id = 1;
+        //     foreach (var tr in trs)
+        //     {
+        //         var fuelling = new Fuelling()
+        //         {
+        //             Id = id++,
+        //             TransactionId = tr.Id,
+        //             Volume = GetVolumeFromComment(tr.Comment),
+        //             FuelType = GetFuelTypeFromComment(tr.Comment),
+        //         };
+        //         _dataModel.Fuellings.Add(fuelling);
+        //     }
+        // }
 
-                    OneLitrePrice = oneLitrePrice,
-                    OneLitreInUsd = _dataModel.AmountInUsd(tr.Timestamp, tr.Currency, oneLitrePrice),
-                };
-                _dataModel.Fuellings.Add(fuelling);
-            }
-            Console.WriteLine($@"{_dataModel.Fuellings.Count} заправок, {_dataModel.Fuellings.Sum(f => f.Volume)} литров");
-        }
+        // private FuelType GetFuelTypeFromComment(string comment)
+        // {
+        //     if (comment.Contains("керосин"))
+        //         return FuelType.Керосин;
+        //     if (comment.ToLowerInvariant().Contains("арктика"))
+        //         return FuelType.ДтЕвро5Арктика;
+        //     if (comment.ToLowerInvariant().Contains("castrol"))
+        //         return FuelType.CastrolDTA;
+        //     return FuelType.ДтЕвро5;
+        // }
 
-        private FuelType GetFuelTypeFromComment(string comment)
-        {
-            if (comment.Contains("керосин"))
-                return FuelType.Керосин;
-            if (comment.ToLowerInvariant().Contains("арктика"))
-                return FuelType.ДтЕвро5Арктика;
-            if (comment.ToLowerInvariant().Contains("castrol"))
-                return FuelType.CastrolDTA;
-            return FuelType.ДтЕвро5;
-        }
-
-        private double GetVolumeFromComment(string comment)
-        {
-            if (comment.StartsWith("Дт Евро5"))
-                comment = comment.Substring(8);
-            var resultString = Regex.Match(comment, "[+-]?([0-9]*[,])?[0-9]+").Value;
-            if (string.IsNullOrEmpty(resultString))
-                return 0;
-            var result = double.TryParse(resultString, out double volume);
-            return result ? volume : 0;
-        }
+        // private double GetVolumeFromComment(string comment)
+        // {
+        //     if (comment.StartsWith("Дт Евро5"))
+        //         comment = comment.Substring(8);
+        //     var resultString = Regex.Match(comment, "[+-]?([0-9]*[,])?[0-9]+").Value;
+        //     if (string.IsNullOrEmpty(resultString))
+        //         return 0;
+        //     var result = double.TryParse(resultString, out double volume);
+        //     return result ? volume : 0;
+        // }
 
         public void ToggleMode()
         {

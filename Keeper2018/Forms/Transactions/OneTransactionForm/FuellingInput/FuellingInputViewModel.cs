@@ -11,7 +11,7 @@ namespace Keeper2018
     {
         public MappingProfile()
         {
-            CreateMap<Fuelling, FuellingInputVm>();
+            CreateMap<FuellingVm, FuellingInputVm>();
         }
     }
     public class FuellingInputViewModel : Screen
@@ -59,10 +59,10 @@ namespace Keeper2018
             _dataModel = dataModel;
         }
 
-        public void Initialize(Fuelling vm)
+        public void Initialize(FuellingVm vm)
         {
             Cars = _dataModel.Cars.Select(c => c.Title).ToList();
-            Vm = Mapper.Map<Fuelling, FuellingInputVm>(vm);
+            Vm = Mapper.Map<FuellingVm, FuellingInputVm>(vm);
             Vm.DataModel = _dataModel;
             SelectedCar = _dataModel.Cars.First(c => c.CarAccountId == vm.CarAccountId).Title;
         }

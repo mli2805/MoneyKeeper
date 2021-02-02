@@ -27,6 +27,7 @@ namespace Keeper2018
 
             Map((KeeperBin)loadResult.Payload);
             _keeperDataModel.FillInAccountTreeAndDict();
+            _keeperDataModel.FuellingJoinTransaction();
             return true;
         }
 

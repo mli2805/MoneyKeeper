@@ -30,5 +30,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        public List<FuellingVm> FuellingVms { get; set; }
     }
 }

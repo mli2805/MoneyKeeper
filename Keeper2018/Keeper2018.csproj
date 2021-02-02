@@ -222,6 +222,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
+    <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
+    <Compile Include="Forms\Cars\FuellingVm.cs" />
     <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />

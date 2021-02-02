@@ -19,13 +19,12 @@ namespace KeeperDomain
             try
             {
                 var currencyRates = bin.Rates.Values.Select(l => l.Dump());
-                //    var accounts = bin.AccountPlaneList.Select(a => a.Dump(db.GetAccountLevel(a))).ToList();
                 var accounts = bin.AccountsExport();
                 var deposits = bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
                 var cards = bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Deposit.Card.Dump());
-                // var depoOffers = db.ExportDepos();
                 var newDepoOffers = bin.NewExportDepos();
                 var transactions = bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
+                var fuelling = bin.Fuellings.Select(f => f.Dump()).ToList();
                 var tagAssociations = bin.TagAssociations.OrderBy(a => a.OperationType).
                     ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
 
@@ -33,13 +32,13 @@ namespace KeeperDomain
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Accounts.txt"), accounts);
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Deposits.txt"), deposits);
                 File.WriteAllLines(PathFactory.GetBackupFilePath("PayCards.txt"), cards);
-                // File.WriteAllLines(PathFactory.GetBackupFilePath("DepositOffers.txt"), depoOffers);
                 foreach (var pair in newDepoOffers)
                 {
                     File.WriteAllLines(PathFactory.GetBackupFilePath($"{pair.Key}.txt"), pair.Value);
                 }
                 WriteTransactionsContent(PathFactory.GetBackupFilePath("Transactions.txt"), transactions);
                 File.WriteAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
+                File.WriteAllLines(PathFactory.GetBackupFilePath("Fuellings.txt"), fuelling);
 
                 bin.WriteCars();
 
@@ -94,24 +93,6 @@ namespace KeeperDomain
                 }
             }
         }
-
-        // private static List<string> ExportDepos(this KeeperDb db)
-        // {
-        //     var depoOffers = new List<string>();
-        //     foreach (var depositOffer in db.Bin.DepositOffers)
-        //     {
-        //         depoOffers.Add($"::DOFF::| {depositOffer.Dump()}");
-        //         foreach (var pair in depositOffer.ConditionsMap)
-        //         {
-        //             depoOffers.Add($"::DOES::| {pair.Key:dd/MM/yyyy} | {pair.Value.PartDump()}");
-        //             foreach (var depositRateLine in pair.Value.RateLines)
-        //             {
-        //                 depoOffers.Add($"::DORL::| {depositRateLine.PartDump()}");
-        //             }
-        //         }
-        //     }
-        //     return depoOffers;
-        // }
 
         private static Dictionary<string, List<string>> NewExportDepos(this KeeperBin bin)
         {

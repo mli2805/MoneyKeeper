@@ -23,7 +23,8 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
+            return Id  + " ; " +
+                   Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
                    Operation + " ; " + PaymentWay + " ; " + Receipt + " ; " +
                    MyAccount + " ; " + MySecondAccount + " ; " +
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +

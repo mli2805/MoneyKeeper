@@ -16,11 +16,11 @@ namespace KeeperDomain
                 var keeperBin = new KeeperBin();
                 LoadCurrencyRates(keeperBin);
                 LoadAccounts(keeperBin);
-                // LoadDepositOffers(keeperBin);
                 NewLoadDepositOffers(keeperBin);
                 LoadTagAssociations(keeperBin);
                 LoadTransactions(keeperBin);
                 LoadCars(keeperBin);
+                LoadFuellings(keeperBin);
                 return new LibResult(true, keeperBin);
             }
             catch (Exception e)
@@ -33,8 +33,11 @@ namespace KeeperDomain
         {
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("Transactions.txt"));
             keeperBin.Transactions = new Dictionary<int, Transaction>();
-            for (int i = 0; i < content.Length; i++)
-                keeperBin.Transactions.Add(i, content[i].TransactionFromString());
+            foreach (var str in content)
+            {
+                var transaction = str.TransactionFromString();
+                keeperBin.Transactions.Add(transaction.Id, transaction);
+            }
         }
 
         private static void LoadTagAssociations(KeeperBin keeperBin)
@@ -42,33 +45,6 @@ namespace KeeperDomain
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"));
             keeperBin.TagAssociations = content.Select(l => l.TagAssociationFromString()).ToList();
         }
-
-        // private static void LoadDepositOffers(KeeperBin bin)
-        // {
-        //     var content = File.ReadAllLines(PathFactory.GetBackupFilePath("DepositOffers.txt"));
-        //     bin.DepositOffers = new List<DepositOffer>();
-        //     DepositOffer depositOffer = null;
-        //     foreach (var line in content)
-        //     {
-        //         var parts = line.Split('|');
-        //         if (parts[0] == "::DOFF::")
-        //         {
-        //             if (depositOffer != null)
-        //                 bin.DepositOffers.Add(depositOffer);
-        //             depositOffer = parts[1].DepositOfferFromString();
-        //         }
-        //         else if (parts[0] == "::DOES::")
-        //         {
-        //             depositOffer?.ConditionsMap.Add(DateTime.ParseExact(parts[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
-        //                 parts[2].DepositEssentialFromString());
-        //         }
-        //         else if (parts[0] == "::DORL::")
-        //         {
-        //             depositOffer?.ConditionsMap.Last().Value.RateLines.Add(parts[1].DepositRateLineFromString());
-        //         }
-        //     }
-        //     bin.DepositOffers.Add(depositOffer);
-        // }
 
         private static void NewLoadDepositOffers(KeeperBin bin)
         {
@@ -110,6 +86,12 @@ namespace KeeperDomain
             var yearMileages = yearMileageContent.Select(line => line.YearMileageFromString()).ToList();
             foreach (var car in bin.Cars)
                 car.YearMileages = yearMileages.Where(l => l.CarId == car.CarAccountId).ToArray();
+        }
+
+        private static void LoadFuellings(KeeperBin bin)
+        {
+            var fuellingsContent = File.ReadAllLines(PathFactory.GetBackupFilePath("Fuellings.txt"));
+            bin.Fuellings = fuellingsContent.Select(l => l.FuellingFromString()).ToList();
         }
 
         private static void LoadAccounts(KeeperBin bin)

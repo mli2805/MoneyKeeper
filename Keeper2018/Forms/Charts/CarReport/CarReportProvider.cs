@@ -207,7 +207,7 @@ namespace Keeper2018
 
             if (_accountId >= 711)
             {
-                var totalLitres = _dataModel.Fuellings.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
+                var totalLitres = _dataModel.FuellingVms.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
 
                 row = table.AddRow();
                 row.Borders.Visible = false;

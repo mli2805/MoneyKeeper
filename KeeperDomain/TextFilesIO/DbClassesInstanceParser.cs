@@ -83,22 +83,23 @@ namespace KeeperDomain
         {
             var tran = new Transaction();
             var substrings = s.Split(';');
-            tran.Timestamp = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
-            tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[1]);
-            tran.PaymentWay = (PaymentWay)Enum.Parse(typeof(PaymentWay), substrings[2]);
-            tran.Receipt = int.Parse(substrings[3].Trim());
+            tran.Id = int.Parse(substrings[0].Trim());
+            tran.Timestamp = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+            tran.Operation = (OperationType)Enum.Parse(typeof(OperationType), substrings[2]);
+            tran.PaymentWay = (PaymentWay)Enum.Parse(typeof(PaymentWay), substrings[3]);
+            tran.Receipt = int.Parse(substrings[4].Trim());
 
-            tran.MyAccount = int.Parse(substrings[4].Trim());
-            tran.MySecondAccount = int.Parse(substrings[5].Trim());
+            tran.MyAccount = int.Parse(substrings[5].Trim());
+            tran.MySecondAccount = int.Parse(substrings[6].Trim());
 
-            tran.Amount = Convert.ToDecimal(substrings[6], new CultureInfo("en-US"));
-            tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]);
-            tran.AmountInReturn = Convert.ToDecimal(substrings[8], new CultureInfo("en-US"));
-            tran.CurrencyInReturn = substrings[9].Trim() != ""
-                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[9])
+            tran.Amount = Convert.ToDecimal(substrings[7], new CultureInfo("en-US"));
+            tran.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[8]);
+            tran.AmountInReturn = Convert.ToDecimal(substrings[9], new CultureInfo("en-US"));
+            tran.CurrencyInReturn = substrings[10].Trim() != ""
+                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[10])
                 : CurrencyCode.USD;
-            tran.Tags = TagsFromString(substrings[10].Trim());
-            tran.Comment = substrings[11].Trim();
+            tran.Tags = TagsFromString(substrings[11].Trim());
+            tran.Comment = substrings[12].Trim();
 
             return tran;
         }
@@ -140,47 +141,17 @@ namespace KeeperDomain
             };
         }
 
-        // public static DepositConditions DepositEssentialFromString(this string str)
-        // {
-        //     var substrings = str.Split(';');
-        //     return new DepositConditions()
-        //     {
-        //         DepositOfferId = Convert.ToInt32(substrings[0]),
-        //         Id = Convert.ToInt32(substrings[1]),
-        //         CalculationRules = substrings[2].DepositOfferRulesFromString(),
-        //         Comment = substrings[3].Trim(),
-        //     };
-        // }
-
         public static DepositConditions DepoConditionsFromString(this string str)
         {
             var substrings = str.Split(';');
             return new DepositConditions(
                 Convert.ToInt32(substrings[0]),
-                Convert.ToInt32(substrings[1]), 
+                Convert.ToInt32(substrings[1]),
                 DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture))
             {
                 Comment = substrings[3].Trim(),
             };
         }
-
-        // public static DepositCalculationRules DepositOfferRulesFromString(this string str)
-        // {
-        //     var rules = new DepositCalculationRules();
-        //     var array = str.Split('+');
-        //     var s = array[0].Trim();
-        //
-        //     rules.IsFactDays = s[0] == '1';
-        //     rules.EveryStartDay = s[1] == '1';
-        //     rules.EveryFirstDayOfMonth = s[2] == '1';
-        //     rules.EveryLastDayOfMonth = s[3] == '1';
-        //     rules.IsCapitalized = s[4] == '1';
-        //     rules.IsRateFixed = s[5] == '1';
-        //     rules.HasAdditionalProcent = s[6] == '1';
-        //
-        //     rules.AdditionalProcent = double.Parse(array[1]);
-        //     return rules;
-        // }
 
         public static DepositCalculationRules NewDepoCalcRulesFromString(this string str)
         {
@@ -200,19 +171,6 @@ namespace KeeperDomain
             rules.AdditionalProcent = double.Parse(array[9]);
             return rules;
         }
-
-        // public static DepositRateLine DepositRateLineFromString(this string s)
-        // {
-        //     var depositRateLine = new DepositRateLine();
-        //     var substrings = s.Split(';');
-        //     depositRateLine.DepositOfferId = int.Parse(substrings[0].Trim());
-        //     depositRateLine.DepositOfferConditionsId = int.Parse(substrings[1].Trim());
-        //     depositRateLine.DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-        //     depositRateLine.AmountFrom = Convert.ToDecimal(substrings[3], new CultureInfo("en-US"));
-        //     depositRateLine.AmountTo = Convert.ToDecimal(substrings[4], new CultureInfo("en-US"));
-        //     depositRateLine.Rate = Convert.ToDecimal(substrings[5], new CultureInfo("en-US"));
-        //     return depositRateLine;
-        // }
 
         public static DepositRateLine NewDepoRateLineFromString(this string s)
         {
@@ -259,6 +217,18 @@ namespace KeeperDomain
             yearMileage.Mileage = int.Parse(array[3].Trim());
 
             return yearMileage;
+        }
+
+        public static Fuelling FuellingFromString(this string str)
+        {
+            var fuelling = new Fuelling();
+            var array = str.Split(';');
+
+            fuelling.Id = int.Parse(array[0].Trim());
+            fuelling.TransactionId = int.Parse(array[1].Trim());
+            fuelling.Volume = double.Parse(array[2].Trim());
+            fuelling.FuelType = (FuelType)Enum.Parse(typeof(FuelType), array[3]);
+            return fuelling;
         }
     }
 }
