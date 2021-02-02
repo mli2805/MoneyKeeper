@@ -26,18 +26,13 @@ namespace KeeperDomain
         {
             return new DepositConditions(Id, DepositOfferId, DateFrom)
             {
-                CalculationRules = CalculationRules.ShallowCopy(),
-                RateLines = new List<DepositRateLine>(RateLines.Select(l => l.ShallowCopy()))
+                CalculationRules = (DepositCalculationRules)CalculationRules.Clone(),
+                RateLines = new List<DepositRateLine>(RateLines.Select(l => (DepositRateLine)l.Clone()))
             };
         }
 
         public string Comment { get; set; }
 
-        // public string PartDump()
-        // {
-        //     return DepositOfferId + " ; " + Id + " ; " + CalculationRules.Dump() + " ; " + Comment;
-        // }
-        //
         public string Dump()
         {
             return Id + " ; " + DepositOfferId + " ; " + $"{DateFrom:dd/MM/yyyy}" + " ; " + Comment;

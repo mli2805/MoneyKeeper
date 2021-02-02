@@ -4,7 +4,7 @@ using System.Globalization;
 namespace KeeperDomain
 {
     [Serializable]
-    public class DepositCalculationRules
+    public class DepositCalculationRules : ICloneable
     {
         public int Id { get; set; } //PK
         public int DepositOfferConditionsId { get; set; }
@@ -23,29 +23,7 @@ namespace KeeperDomain
         public bool HasAdditionalProcent { get; set; }
         public double AdditionalProcent { get; set; }
 
-        public DepositCalculationRules ShallowCopy()
-        {
-            return (DepositCalculationRules)MemberwiseClone();
-        }
-
-        // public string Dump()
-        // {
-        //     var result = "";
-        //
-        //     result += IsFactDays ? "1" : "0";
-        //     result += EveryStartDay ? "1" : "0";
-        //     result += EveryFirstDayOfMonth ? "1" : "0";
-        //     result += EveryLastDayOfMonth ? "1" : "0";
-        //     result += IsCapitalized ? "1" : "0";
-        //     result += IsRateFixed ? "1" : "0";
-        //     result += HasAdditionalProcent ? "1" : "0";
-        //
-        //     result += " + ";
-        //     result += AdditionalProcent;
-        //
-        //     return result;
-        // }
-
+      
         public string Dump()
         {
             return Id  + " ; " + DepositOfferConditionsId  + " ; " + 
@@ -54,5 +32,9 @@ namespace KeeperDomain
                    AdditionalProcent.ToString(new CultureInfo("en-US"));
         }
 
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }
