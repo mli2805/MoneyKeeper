@@ -29,6 +29,8 @@ namespace Keeper2018
                 if (_shellPartsBinder.IsBusy) return false;
                 _shellPartsBinder.IsBusy = true;
                 _shellPartsBinder.FooterVisibility = Visibility.Visible;
+
+                _keeperDataModel.FlattenAccountTree();
                 var bin = MapBack();
 
                 var result3 = await BinSerializer.Serialize(bin);
@@ -76,18 +78,16 @@ namespace Keeper2018
 
         private KeeperBin MapBack()
         {
-            var result = new KeeperBin();
-
-            _keeperDataModel.FlattenAccountTree();
-            result.AccountPlaneList = _keeperDataModel.AccountPlaneList;
-            result.Rates = _keeperDataModel.Rates;
-            result.Transactions = _keeperDataModel.Transactions;
-            result.DepositOffers = _keeperDataModel.DepositOffers;
-            result.Cars = _keeperDataModel.Cars;
-            result.Fuellings = _keeperDataModel.Fuellings;
-            result.TagAssociations = _keeperDataModel.TagAssociations;
-
-            return result;
+            return new KeeperBin
+            {
+                AccountPlaneList = _keeperDataModel.AccountPlaneList,
+                Rates = _keeperDataModel.Rates,
+                Transactions = _keeperDataModel.Transactions,
+                DepositOffers = _keeperDataModel.DepositOffers,
+                Cars = _keeperDataModel.Cars,
+                Fuellings = _keeperDataModel.Fuellings,
+                TagAssociations = _keeperDataModel.TagAssociations
+            };
         }
     }
 

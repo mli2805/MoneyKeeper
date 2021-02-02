@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using KeeperDomain;
@@ -7,33 +6,15 @@ namespace Keeper2018
 {
     public static class EntitiesToModels
     {
-        public static AccountModel Map(this Account account, Dictionary<int, AccountModel> acMoDict)
+        public static AccountModel Map(this Account account)
         {
-            var accountModel = new AccountModel(account.Header)
+            return new AccountModel(account.Header)
             {
                 Id = account.Id,
                 IsExpanded = account.IsExpanded,
                 IsFolder = account.IsFolder,
                 Deposit = account.Deposit,
             };
-
-            try
-            {
-                acMoDict.Add(accountModel.Id, accountModel);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            if (account.OwnerId != 0)
-            {
-                var ownerModel = acMoDict[account.OwnerId];
-                ownerModel.Items.Add(accountModel);
-                accountModel.Owner = ownerModel;
-            }
-
-            return accountModel;
         }
 
         public static DepositOfferModel Map(this DepositOffer depositOffer, List<Account> accountPlaneList)

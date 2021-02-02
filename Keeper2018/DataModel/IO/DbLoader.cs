@@ -25,7 +25,8 @@ namespace Keeper2018
             var loadResult = await LoadFromBinOrTxt();
             if (!loadResult.IsSuccess) return false;
 
-            ExpandBinToDb((KeeperBin)loadResult.Payload);
+            Map((KeeperBin)loadResult.Payload);
+            _keeperDataModel.FillInAccountTreeAndDict();
             return true;
         }
 
@@ -57,12 +58,10 @@ namespace Keeper2018
             return _dbLoadingViewModel.LoadResult;
         }
 
-        private void ExpandBinToDb(KeeperBin bin)
+        private void Map(KeeperBin bin)
         {
             _keeperDataModel.Rates = bin.Rates;
             _keeperDataModel.AccountPlaneList = bin.AccountPlaneList;
-            _keeperDataModel.FillInAccountTree(); // must be first
-            
             _keeperDataModel.Transactions = bin.Transactions;
             _keeperDataModel.DepositOffers = bin.DepositOffers;
             _keeperDataModel.Cars = bin.Cars;

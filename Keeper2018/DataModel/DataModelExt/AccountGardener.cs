@@ -6,15 +6,22 @@ namespace Keeper2018
 {
     public static class AccountGardener
     {
-        public static void FillInAccountTree(this KeeperDataModel dataModel)
+        public static void FillInAccountTreeAndDict(this KeeperDataModel dataModel)
         {
             dataModel.AccountsTree = new ObservableCollection<AccountModel>();
             dataModel.AcMoDict = new Dictionary<int, AccountModel>();
             foreach (var account in dataModel.AccountPlaneList)
             {
-                var accountModel = account.Map(dataModel.AcMoDict);
+                var accountModel = account.Map();
+                dataModel.AcMoDict.Add(accountModel.Id, accountModel);
                 if (account.OwnerId == 0)
                     dataModel.AccountsTree.Add(accountModel);
+                else
+                {
+                    var ownerModel = dataModel.AcMoDict[account.OwnerId];
+                    ownerModel.Items.Add(accountModel);
+                    accountModel.Owner = ownerModel;
+                }
             }
         }
 
