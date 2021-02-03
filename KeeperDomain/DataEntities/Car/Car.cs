@@ -24,7 +24,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return CarAccountId + " ; " + Title + " ; " + IssueYear + " ; " + Vin + " ; " + StateRegNumber + " ; " 
+            return Id + " ; " + CarAccountId + " ; " + Title + " ; " + IssueYear + " ; " + Vin + " ; " + StateRegNumber + " ; " 
                    + PurchaseDate.ToString("dd/MM/yyyy") + " ; " + PurchaseMileage + " ; "
                    + SaleDate.ToString("dd/MM/yyyy") + " ; " + SaleMileage + " ; " + SupposedSalePrice + " ; "
                    + Comment;

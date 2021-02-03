@@ -15,7 +15,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Date.ToString("dd/MM/yyyy") + " ; " +
+            return Id + " ; " + Date.ToString("dd/MM/yyyy") + " ; " +
                    NbRates.Dump() + " ; " + CbrRate.Usd.Dump() + " ; " + MyUsdRate.Dump() + " ; " + MyEurUsdRate.Dump();
         }
     }

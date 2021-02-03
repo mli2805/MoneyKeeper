@@ -12,11 +12,12 @@ namespace KeeperDomain
         {
             var rate = new CurrencyRates();
             var substrings = s.Split(';');
-            rate.Date = DateTime.ParseExact(substrings[0].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            rate.NbRates = NbRbRatesFromString(substrings[1]);
-            rate.CbrRate.Usd = OneRateFromString(substrings[2]);
-            rate.MyUsdRate = OneRateFromString(substrings[3]);
-            rate.MyEurUsdRate = OneRateFromString(substrings[4]);
+            rate.Id = Convert.ToInt32(substrings[0]);
+            rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            rate.NbRates = NbRbRatesFromString(substrings[2]);
+            rate.CbrRate.Usd = OneRateFromString(substrings[3]);
+            rate.MyUsdRate = OneRateFromString(substrings[4]);
+            rate.MyEurUsdRate = OneRateFromString(substrings[5]);
             return rate;
         }
 
@@ -190,19 +191,20 @@ namespace KeeperDomain
             var car = new Car();
             var array = str.Split(';');
 
-            car.CarAccountId = int.Parse(array[0].Trim());
-            car.Title = array[1].Trim();
-            car.IssueYear = int.Parse(array[2].Trim());
-            car.Vin = array[3].Trim();
-            car.StateRegNumber = array[4].Trim();
+            car.Id = int.Parse(array[0].Trim());
+            car.CarAccountId = int.Parse(array[1].Trim());
+            car.Title = array[2].Trim();
+            car.IssueYear = int.Parse(array[3].Trim());
+            car.Vin = array[4].Trim();
+            car.StateRegNumber = array[5].Trim();
 
-            car.PurchaseDate = DateTime.ParseExact(array[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            car.PurchaseMileage = int.Parse(array[6].Trim());
-            car.SaleDate = DateTime.ParseExact(array[7].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            car.SaleMileage = int.Parse(array[8].Trim());
+            car.PurchaseDate = DateTime.ParseExact(array[6].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            car.PurchaseMileage = int.Parse(array[7].Trim());
+            car.SaleDate = DateTime.ParseExact(array[8].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            car.SaleMileage = int.Parse(array[9].Trim());
 
-            car.SupposedSalePrice = int.Parse(array[9].Trim());
-            car.Comment = array[10].Trim();
+            car.SupposedSalePrice = int.Parse(array[10].Trim());
+            car.Comment = array[11].Trim();
             return car;
         }
 

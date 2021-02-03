@@ -55,10 +55,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            // TransactionsToFuellingsTable();
-
             Rows = _dataModel.FuellingVms;
-
             InitializeChartModel();
         }
 
@@ -97,49 +94,7 @@ namespace Keeper2018
             }
             ChartModel.Series.Add(arkticSeries);
         }
-       
-
-        // once
-        // private void TransactionsToFuellingsTable()
-        // {
-        //     var trs = _dataModel.Transactions.Values.Where(t => t.Tags.Contains(718) || t.Tags.Contains(714));
-        //     _dataModel.Fuellings = new List<Fuelling>();
-        //     var id = 1;
-        //     foreach (var tr in trs)
-        //     {
-        //         var fuelling = new Fuelling()
-        //         {
-        //             Id = id++,
-        //             TransactionId = tr.Id,
-        //             Volume = GetVolumeFromComment(tr.Comment),
-        //             FuelType = GetFuelTypeFromComment(tr.Comment),
-        //         };
-        //         _dataModel.Fuellings.Add(fuelling);
-        //     }
-        // }
-
-        // private FuelType GetFuelTypeFromComment(string comment)
-        // {
-        //     if (comment.Contains("керосин"))
-        //         return FuelType.Керосин;
-        //     if (comment.ToLowerInvariant().Contains("арктика"))
-        //         return FuelType.ДтЕвро5Арктика;
-        //     if (comment.ToLowerInvariant().Contains("castrol"))
-        //         return FuelType.CastrolDTA;
-        //     return FuelType.ДтЕвро5;
-        // }
-
-        // private double GetVolumeFromComment(string comment)
-        // {
-        //     if (comment.StartsWith("Дт Евро5"))
-        //         comment = comment.Substring(8);
-        //     var resultString = Regex.Match(comment, "[+-]?([0-9]*[,])?[0-9]+").Value;
-        //     if (string.IsNullOrEmpty(resultString))
-        //         return 0;
-        //     var result = double.TryParse(resultString, out double volume);
-        //     return result ? volume : 0;
-        // }
-
+    
         public void ToggleMode()
         {
             if (_tableVisibility == Visibility.Visible)
