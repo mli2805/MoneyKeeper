@@ -60,7 +60,7 @@ namespace Keeper2018
         }
 
         private static decimal GetRevenueUptoDepoFinish
-            (Deposit deposit, DepositOffer depositOffer, DateTime lastReceivedRevenueDate, decimal currentAmount)
+            (Deposit deposit, DepositOfferModel depositOffer, DateTime lastReceivedRevenueDate, decimal currentAmount)
         {
             var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
 

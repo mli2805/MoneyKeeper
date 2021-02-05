@@ -9,6 +9,7 @@ namespace Keeper2018
         {
             return new Transaction()
             {
+                Id = transactionModel.TransactionKey,
                 Timestamp = transactionModel.Timestamp,
                 Receipt = transactionModel.Receipt,
                 Operation = transactionModel.Operation,
@@ -46,7 +47,6 @@ namespace Keeper2018
                 Title = depositOfferModel.Title,
                 IsNotRevocable = depositOfferModel.IsNotRevocable,
                 MainCurrency = depositOfferModel.MainCurrency,
-                ConditionsMap = depositOfferModel.ConditionsMap,
                 Comment = depositOfferModel.Comment,
             };
         }

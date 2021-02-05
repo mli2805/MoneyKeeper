@@ -12,7 +12,7 @@ namespace Keeper2018
     {
         private string _caption;
         private readonly DateTime _startDate = new DateTime(2012, 7, 1);
-        private readonly DateTime _startDateD = DateTime.Now.AddMonths(-18);
+        private readonly DateTime _startDateD = DateTime.Now.AddMonths(-6);
         private List<CurrencyRatesModel> _rates;
 
         public PlotModel BasketPlotModel { get; set; }
@@ -45,7 +45,7 @@ namespace Keeper2018
             BasketDeltaPlotModel.Axes.Add(new CategoryAxis()
             {
                 IsTickCentered = true,
-                MajorStep = (DateTime.Today - _startDateD).Days / 18.0,
+                MajorStep = (DateTime.Today - _startDateD).Days / 12.0,
                 LabelFormatter = F,
             });
         }

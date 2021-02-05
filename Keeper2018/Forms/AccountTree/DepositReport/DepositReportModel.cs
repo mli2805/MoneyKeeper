@@ -23,7 +23,7 @@ namespace Keeper2018
             }
         }
 
-        public DepositOffer DepositOffer { get; private set; }
+        public DepositOfferModel DepositOffer { get; private set; }
         public Balance Balance { get; set; } = new Balance();
         public decimal AmountInUsd { get; set; }
 

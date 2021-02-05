@@ -12,16 +12,17 @@ namespace Keeper2018
         public bool IsNotRevocable { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
-        // Conditions of offer could be changed (especially rates, initial sum) while Title remains the same
+        // Conditions of offer could be changed (especially rates, initial sum while Title remains the same)
+        // only for newly opened deposits
         // Conditions are applied from some date - key in dictionary
-        public Dictionary<DateTime, DepositConditions> ConditionsMap {get; set; }
+        public Dictionary<DateTime, DepositConditions> ConditionsMap { get; set; }
         public string Comment { get; set; }
 
         public DepositOfferModel(int id)
         {
             Id = id;
             ConditionsMap = new Dictionary<DateTime, DepositConditions>();
-                // { { DateTime.Today, new DepositConditions() { DepositOfferId = Id } } };
+            // { { DateTime.Today, new DepositConditions() { DepositOfferId = Id } } };
         }
 
         public override string ToString()

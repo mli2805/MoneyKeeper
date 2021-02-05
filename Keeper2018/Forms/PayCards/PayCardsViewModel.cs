@@ -54,7 +54,7 @@ namespace Keeper2018.PayCards
                 FinishDate = account.Deposit.FinishDate,
                 Comment = account.Deposit.Comment,
 
-                BankAccount = _dataModel.AccountPlaneList.First(a => a.Id == depositOffer.BankId),
+                BankAccount = _dataModel.AccountPlaneList.First(a => a.Id == depositOffer.Bank.Id),
                 MainCurrency = depositOffer.MainCurrency,
 
                 Name = account.Name,

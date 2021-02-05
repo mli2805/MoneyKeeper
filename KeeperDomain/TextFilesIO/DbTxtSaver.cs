@@ -18,29 +18,43 @@ namespace KeeperDomain
         {
             try
             {
-                var currencyRates = bin.Rates.Values.Select(l => l.Dump());
-                var accounts = bin.AccountsExport();
-                var deposits = bin.AccountPlaneList.Where(a => a.IsDeposit).Select(m => m.Deposit.Dump());
-                var cards = bin.AccountPlaneList.Where(a => a.IsCard).Select(m => m.Deposit.Card.Dump());
-                var newDepoOffers = bin.NewExportDepos();
-                var transactions = bin.Transactions.Values.OrderBy(t => t.Timestamp).Select(l => l.Dump()).ToList();
-                var fuelling = bin.Fuellings.Select(f => f.Dump()).ToList();
-                var tagAssociations = bin.TagAssociations.OrderBy(a => a.OperationType).
-                    ThenBy(b => b.ExternalAccount).Select(tagAssociation => tagAssociation.Dump());
-
+                var currencyRates = bin.Rates.Select(l => l.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"), currencyRates);
+
+                var accounts = bin.DumpWithOffsets();
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Accounts.txt"), accounts);
+                var deposits = bin.Deposits.Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Deposits.txt"), deposits);
+                var cards = bin.PayCards.Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("PayCards.txt"), cards);
-                foreach (var pair in newDepoOffers)
-                {
-                    File.WriteAllLines(PathFactory.GetBackupFilePath($"{pair.Key}.txt"), pair.Value);
-                }
+
+                var transactions = bin.Transactions
+                    .OrderBy(t => t.Timestamp).
+                    Select(l => l.Dump());
                 WriteTransactionsContent(PathFactory.GetBackupFilePath("Transactions.txt"), transactions);
-                File.WriteAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
+
+                var fuelling = bin.Fuellings.Select(f => f.Dump()).ToList();
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Fuellings.txt"), fuelling);
 
-                bin.WriteCars();
+                var tagAssociations = bin.TagAssociations
+                    .OrderBy(a => a.OperationType)
+                    .ThenBy(b => b.ExternalAccount)
+                    .Select(tagAssociation => tagAssociation.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
+
+                var depoOffers = bin.DepositOffers.Select(o => o.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("depoOffers.txt"), depoOffers);
+                var depoConditions = bin.DepositOffers.Select(o => o.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("depoConditions.txt"), depoConditions);
+                var depoCalcRules = bin.DepositOffers.Select(o => o.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("depoCalcRules.txt"), depoCalcRules);
+                var depoRateLines = bin.DepositOffers.Select(o => o.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("depoRateLines.txt"), depoRateLines);
+
+                var cars = bin.Cars.Select(o => o.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("Cars.txt"), cars);
+                var yearMileages = bin.YearMileages.Select(o => o.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("CarYearMileages.txt"), yearMileages);
 
                 return new LibResult();
             }
@@ -50,7 +64,7 @@ namespace KeeperDomain
             }
         }
 
-        private static List<string> AccountsExport(this KeeperBin bin)
+        private static List<string> DumpWithOffsets(this KeeperBin bin)
         {
             var result = new List<string>();
 
@@ -92,46 +106,6 @@ namespace KeeperDomain
                     sw.WriteLine(str);
                 }
             }
-        }
-
-        private static Dictionary<string, List<string>> NewExportDepos(this KeeperBin bin)
-        {
-            var depoRateLines = new List<string>();
-            var depoCalcRules = new List<string>();
-            var depoConditions = new List<string>();
-            var depoOffers = new List<string>();
-
-            foreach (var depositOffer in bin.DepositOffers)
-            {
-                foreach (var pair in depositOffer.ConditionsMap)
-                {
-                    depoCalcRules.Add(pair.Value.CalculationRules.Dump());
-                    depoRateLines.AddRange(pair.Value.RateLines.Select(rateLine => rateLine.Dump()));
-                    depoConditions.Add(pair.Value.Dump());
-                }
-                depoOffers.Add(depositOffer.Dump());
-            }
-
-            return new Dictionary<string, List<string>>
-            {
-                {"depoOffers", depoOffers},
-                {"depoConditions", depoConditions},
-                {"depoCalcRules", depoCalcRules},
-                {"depoRateLines", depoRateLines}
-            };
-        }
-
-        private static void WriteCars(this KeeperBin bin)
-        {
-            var cars = new List<string>();
-            var yearMileages = new List<string>();
-            foreach (var car in bin.Cars)
-            {
-                cars.Add(car.Dump());
-                yearMileages.AddRange(car.YearMileages.Select(mileage => mileage.Dump()));
-            }
-            File.WriteAllLines(PathFactory.GetBackupFilePath("Cars.txt"), cars);
-            File.WriteAllLines(PathFactory.GetBackupFilePath("CarYearMileages.txt"), yearMileages);
         }
 
         public static async Task<bool> ZipTxtDbAsync()

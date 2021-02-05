@@ -92,7 +92,7 @@ namespace Keeper2018
             return currentAmount * rateLines[i].Rate / 100 * 1 / 365;
         }
 
-        private static DateTime RevenueDate(DepositOffer depositOffer, Deposit deposit)
+        private static DateTime RevenueDate(DepositOfferModel depositOffer, Deposit deposit)
         {
             var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
             var thisMonth = DateTime.Today.Month;

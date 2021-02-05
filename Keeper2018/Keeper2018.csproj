@@ -221,6 +221,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
     <Compile Include="Forms\Cars\FuellingVm.cs" />

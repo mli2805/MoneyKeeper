@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
@@ -78,18 +80,39 @@ namespace Keeper2018
 
         private KeeperBin MapBack()
         {
-            return new KeeperBin
+            var bin = new KeeperBin
             {
+                Rates = _keeperDataModel.Rates.Values.ToList(),
+
                 AccountPlaneList = _keeperDataModel.AccountPlaneList,
-                Rates = _keeperDataModel.Rates,
-                Transactions = _keeperDataModel.Transactions,
-                DepositOffers = _keeperDataModel.DepositOffers,
+                Deposits = _keeperDataModel.AccountPlaneList.Where(a=>a.IsDeposit).Select(ac=>ac.Deposit).ToList(),
+                PayCards = _keeperDataModel.AccountPlaneList.Where(a=>a.IsCard).Select(ac=>ac.Deposit.Card).ToList(),
+
+                Transactions = _keeperDataModel.Transactions.Values.ToList(),
+
+                TagAssociations = _keeperDataModel.TagAssociations,
+                
+
+                DepositOffers = _keeperDataModel.DepositOffers.Select(o=>o.Map()).ToList(),
                 Cars = _keeperDataModel.Cars,
-                Fuellings = _keeperDataModel.Fuellings,
-                TagAssociations = _keeperDataModel.TagAssociations
+                YearMileages = _keeperDataModel.Cars.SelectMany(c=>c.YearMileages).ToList(),
+
+                Fuellings = _keeperDataModel.Fuellings
             };
+
+            bin.DepositRateLines = new List<DepositRateLine>();
+            bin.DepositCalculationRules = new List<DepositCalculationRules>();
+            bin.DepositConditions = new List<DepositConditions>();
+            foreach (var depositOffer in _keeperDataModel.DepositOffers)
+            {
+                foreach (var pair in depositOffer.ConditionsMap)
+                {
+                    bin.DepositCalculationRules.Add(pair.Value.CalculationRules);
+                    bin.DepositRateLines.AddRange(pair.Value.RateLines);
+                    bin.DepositConditions.Add(pair.Value);
+                }
+            }
+            return bin;
         }
     }
-
-
 }

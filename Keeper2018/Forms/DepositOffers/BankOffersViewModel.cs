@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
-using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -17,7 +16,7 @@ namespace Keeper2018
         private DepositOfferModel _selectedDepositOffer;
         public DepositOfferModel SelectedDepositOffer
         {
-            get { return _selectedDepositOffer; }
+            get => _selectedDepositOffer;
             set
             {
                 if (Equals(value, _selectedDepositOffer)) return;
@@ -37,7 +36,8 @@ namespace Keeper2018
         public void Initialize()
         {
             Rows = new ObservableCollection<DepositOfferModel>
-                (_dataModel.DepositOffers.Select(x => x.Map(_dataModel.AccountPlaneList)));
+                // (_dataModel.DepositOffers.Select(x => x.Map(_dataModel.AccountPlaneList)));
+                (_dataModel.DepositOffers);
             SelectedDepositOffer = Rows.Last();
         }
 
@@ -87,7 +87,7 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
-            _dataModel.DepositOffers = new List<DepositOffer>(Rows.Select(d => d.Map()));
+            _dataModel.DepositOffers = Rows.ToList();
             base.CanClose(callback);
         }
     }

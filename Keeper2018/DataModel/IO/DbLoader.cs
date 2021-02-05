@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
@@ -28,6 +29,7 @@ namespace Keeper2018
             Map((KeeperBin)loadResult.Payload);
             _keeperDataModel.FillInAccountTreeAndDict();
             _keeperDataModel.FuellingJoinTransaction();
+
             return true;
         }
 
@@ -61,13 +63,20 @@ namespace Keeper2018
 
         private void Map(KeeperBin bin)
         {
-            _keeperDataModel.Rates = bin.Rates;
-            _keeperDataModel.AccountPlaneList = bin.AccountPlaneList;
-            _keeperDataModel.Transactions = bin.Transactions;
-            _keeperDataModel.DepositOffers = bin.DepositOffers;
-            _keeperDataModel.Cars = bin.Cars;
+            _keeperDataModel.Rates = new Dictionary<DateTime, CurrencyRates>();
+            foreach (var rate in bin.Rates)
+                _keeperDataModel.Rates.Add(rate.Date, rate);
+
+            _keeperDataModel.AccountPlaneList = bin.JoinAccountParts();
+
+            _keeperDataModel.Transactions = new Dictionary<int, Transaction>();
+            foreach (var transaction in bin.Transactions)
+                _keeperDataModel.Transactions.Add(transaction.Id, transaction);
+
             _keeperDataModel.Fuellings = bin.Fuellings;
             _keeperDataModel.TagAssociations = bin.TagAssociations;
+            _keeperDataModel.Cars = bin.JoinCarParts();
+            _keeperDataModel.DepositOffers = bin.JoinDepoParts();
         }
 
     }
