@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
-using static System.Boolean;
 
 namespace KeeperDomain
 {
-    public static class DbClassesInstanceParser
+    public static class TxtParser
     {
         public static CurrencyRates CurrencyRateFromString(this string s)
         {
@@ -135,7 +134,7 @@ namespace KeeperDomain
                 Id = Convert.ToInt32(substrings[0]),
                 BankId = Convert.ToInt32(substrings[1]),
                 Title = substrings[2].Trim(),
-                IsNotRevocable = Parse(substrings[3].Trim()),
+                IsNotRevocable = bool.Parse(substrings[3].Trim()),
                 MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]),
                 Comment = substrings[5].Trim()
             };
@@ -160,13 +159,13 @@ namespace KeeperDomain
 
             rules.Id = int.Parse(array[0].Trim());
             rules.DepositOfferConditionsId = int.Parse(array[1].Trim());
-            rules.IsFactDays = Parse(array[2]);
-            rules.EveryStartDay = Parse(array[3]);
-            rules.EveryFirstDayOfMonth = Parse(array[4]);
-            rules.EveryLastDayOfMonth = Parse(array[5]);
-            rules.IsCapitalized = Parse(array[6]);
-            rules.IsRateFixed = Parse(array[7]);
-            rules.HasAdditionalProcent = Parse(array[8]);
+            rules.IsFactDays = bool.Parse(array[2]);
+            rules.EveryStartDay = bool.Parse(array[3]);
+            rules.EveryFirstDayOfMonth = bool.Parse(array[4]);
+            rules.EveryLastDayOfMonth = bool.Parse(array[5]);
+            rules.IsCapitalized = bool.Parse(array[6]);
+            rules.IsRateFixed = bool.Parse(array[7]);
+            rules.HasAdditionalProcent = bool.Parse(array[8]);
 
             rules.AdditionalProcent = double.Parse(array[9]);
             return rules;

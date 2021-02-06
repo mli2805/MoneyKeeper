@@ -25,14 +25,14 @@ namespace Keeper2018
 
         private async void Load()
         {
-            LoadResult = await DbTxtLoader.LoadAllFromNewTxt();
+            LoadResult = await TxtLoader.LoadAllFromNewTxt();
             if (!LoadResult.IsSuccess)
             {
                 MessageBox.Show(LoadResult.Exception.Message);
                 return;
             }
 
-            var delResult = DbTxtSaver.DeleteTxtFiles();
+            var delResult = TxtSaver.DeleteTxtFiles();
             if (!delResult.IsSuccess)
             {
                 MessageBox.Show(delResult.Exception.Message);

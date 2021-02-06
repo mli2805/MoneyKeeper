@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace KeeperDomain
 {
-    public static class DbTxtLoader
+    public static class TxtLoader
     {
         public static async Task<LibResult> LoadAllFromNewTxt()
         {

@@ -45,9 +45,9 @@ namespace Keeper2018
                 var result = await bin.SaveAllToNewTxtAsync();
                 if (result.IsSuccess)
                 {
-                    if (await DbTxtSaver.ZipTxtDbAsync())
+                    if (await TxtSaver.ZipTxtDbAsync())
                     {
-                        var result2 = DbTxtSaver.DeleteTxtFiles();
+                        var result2 = TxtSaver.DeleteTxtFiles();
                         if (!result2.IsSuccess)
                         {
                             MessageBox.Show(result2.Exception.Message);

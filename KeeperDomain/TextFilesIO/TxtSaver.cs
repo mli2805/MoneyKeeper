@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KeeperDomain
 {
-    public static class DbTxtSaver
+    public static class TxtSaver
     {
         public static async Task<LibResult> SaveAllToNewTxtAsync(this KeeperBin bin)
         {

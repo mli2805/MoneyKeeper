@@ -35,7 +35,7 @@ namespace KeeperDomain
             if (string.IsNullOrEmpty(googleDrive))
                 dataSourcePath = "Keeper2020.db";
             else
-                dataSourcePath = googleDrive + @"\Keeper2018\sqlite\Keeper2020.db";
+                dataSourcePath = googleDrive + @"\Keeper2018\Sqlite\Keeper2020.db";
             var connectionString = $"Data Source={dataSourcePath}";
             options.UseSqlite(connectionString);
         }
