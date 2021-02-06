@@ -6,14 +6,12 @@ namespace KeeperDomain
     [Serializable]
     public class KeeperBin
     {
-        // public Dictionary<DateTime, CurrencyRates> Rates { get; set; }
         public List<CurrencyRates> Rates { get; set; }
 
         public List<Account> AccountPlaneList { get; set; }
         public List<Deposit> Deposits { get; set; }
         public List<PayCard> PayCards { get; set; }
 
-        // public Dictionary<int, Transaction> Transactions { get; set; }
         public List<Transaction> Transactions { get; set; }
 
         public List<TagAssociation> TagAssociations { get; set; }

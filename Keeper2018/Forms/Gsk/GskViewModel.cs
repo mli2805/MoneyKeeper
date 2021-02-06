@@ -18,7 +18,9 @@ namespace Keeper2018
         public void Initialize()
         {
             Model = new GskModel();
-            var list = _dataModel.Transactions.Values.Where(t => t.Tags.Contains(285)).ToList(); // погашение кредита ЖСК
+            var list = _dataModel.Transactions.Values
+                .Where(t => t.Tags.Select(tt=>tt.Id)
+                    .Contains(285)).ToList(); // погашение кредита ЖСК
             foreach (var tr in list)
             {
                 var paymentLine = new PaymentLineModel()

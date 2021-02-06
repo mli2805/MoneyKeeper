@@ -12,14 +12,14 @@ namespace Keeper2018
             var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
             var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
             var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
-                t.Value.MyAccount == depo.Id && t.Value.Operation == OperationType.Доход).Value;
+                t.Value.MyAccount.Id == depo.Id && t.Value.Operation == OperationType.Доход).Value;
             var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
             var thisMonthRevenueDate = RevenueDate(depositOffer, deposit);
 
             var depositBalance = new Balance();
             decimal revenue = 0;
             var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
-                .Where(t => t.MyAccount == depo.Id || t.MySecondAccount == depo.Id).ToList();
+                .Where(t => t.MyAccount.Id == depo.Id || t.MySecondAccount.Id == depo.Id).ToList();
             var date = deposit.StartDate;
             while (date <= thisMonthRevenueDate)
             {
@@ -56,20 +56,20 @@ namespace Keeper2018
             return 1;
         }
 
-        private static void ApplyTransaction(this AccountModel depo, Transaction tran, Balance balanceBefore)
+        private static void ApplyTransaction(this AccountModel depo, TransactionModel tran, Balance balanceBefore)
         {
             switch (tran.Operation)
             {
                 case OperationType.Доход: balanceBefore.Add(tran.Currency, tran.Amount); return;
                 case OperationType.Расход: balanceBefore.Sub(tran.Currency, tran.Amount); return;
                 case OperationType.Перенос:
-                    if (tran.MyAccount == depo.Id) balanceBefore.Sub(tran.Currency, tran.Amount);
-                    if (tran.MySecondAccount == depo.Id) balanceBefore.Add(tran.Currency, tran.Amount);
+                    if (tran.MyAccount.Id == depo.Id) balanceBefore.Sub(tran.Currency, tran.Amount);
+                    if (tran.MySecondAccount.Id == depo.Id) balanceBefore.Add(tran.Currency, tran.Amount);
                     return;
                 case OperationType.Обмен:
-                    if (tran.MyAccount == depo.Id) balanceBefore.Sub(tran.Currency, tran.Amount);
+                    if (tran.MyAccount.Id == depo.Id) balanceBefore.Sub(tran.Currency, tran.Amount);
                     // ReSharper disable once PossibleInvalidOperationException
-                    if (tran.MySecondAccount == depo.Id) balanceBefore.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
+                    if (tran.MySecondAccount.Id == depo.Id) balanceBefore.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
                     return;
                 default: return;
             }

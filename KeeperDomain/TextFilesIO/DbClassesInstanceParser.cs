@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using static System.Boolean;
 
 namespace KeeperDomain
@@ -99,22 +97,23 @@ namespace KeeperDomain
             tran.CurrencyInReturn = substrings[10].Trim() != ""
                 ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[10])
                 : CurrencyCode.USD;
-            tran.Tags = TagsFromString(substrings[11].Trim());
+            // tran.Tags = TagsFromString(substrings[11].Trim());
+            tran.Tags = substrings[11].Trim();
             tran.Comment = substrings[12].Trim();
 
             return tran;
         }
 
-        private static List<int> TagsFromString(string str)
-        {
-            var tags = new List<int>();
-            if (str == "") return tags;
-
-            var substrings = str.Split('|');
-            tags.AddRange(substrings.Select(substring => int.Parse(substring.Trim())));
-
-            return tags;
-        }
+        // private static List<int> TagsFromString(string str)
+        // {
+        //     var tags = new List<int>();
+        //     if (str == "") return tags;
+        //
+        //     var substrings = str.Split('|');
+        //     tags.AddRange(substrings.Select(substring => int.Parse(substring.Trim())));
+        //
+        //     return tags;
+        // }
 
         public static TagAssociation TagAssociationFromString(this string s)
         {

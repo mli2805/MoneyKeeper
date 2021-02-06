@@ -36,8 +36,8 @@ namespace Keeper2018
 
             _oneTranViewModel.GetTran().CopyInto(selectedTran);
 
-            _dataModel.Transactions.Remove(selectedTran.TransactionKey);
-            _dataModel.Transactions.Add(selectedTran.TransactionKey, selectedTran.Map());
+            _dataModel.Transactions.Remove(selectedTran.Id);
+            _dataModel.Transactions.Add(selectedTran.Id, selectedTran);
 
             _model.SortedRows.Refresh();
             _model.IsCollectionChanged = true;
@@ -69,21 +69,21 @@ namespace Keeper2018
 
         private void AddOneTran(TransactionModel tran)
         {
-            tran.TransactionKey = _dataModel.Transactions.Keys.Max() + 1;
+            tran.Id = _dataModel.Transactions.Keys.Max() + 1;
 
             var wrappedTransactionsAfterInserted =
                 _model.Rows.Where(t => t.Tran.Timestamp.Date == tran.Timestamp.Date && t.Tran.Timestamp >= tran.Timestamp).ToList();
             foreach (var wrapped in wrappedTransactionsAfterInserted)
             {
                 wrapped.Tran.Timestamp = wrapped.Tran.Timestamp.AddMinutes(1);
-                _dataModel.Transactions[wrapped.Tran.TransactionKey].Timestamp = wrapped.Tran.Timestamp;
+                _dataModel.Transactions[wrapped.Tran.Id].Timestamp = wrapped.Tran.Timestamp;
             }
 
-            var tranWrappedForDatagrid = new TranWrappedForDatagrid() { Tran = tran };
+            var tranWrappedForDatagrid = new TranWrappedForDatagrid(tran);
             _model.Rows.Add(tranWrappedForDatagrid);
             _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
 
-            _dataModel.Transactions.Add(tran.TransactionKey, tran.Map());
+            _dataModel.Transactions.Add(tran.Id, tran);
         }
 
         private void AddOneTranAndReceipt(OneTranViewModel oneTranForm)
@@ -149,7 +149,7 @@ namespace Keeper2018
             int n = _model.Rows.IndexOf(wrappedTrans.First());
             foreach (var wrappedTran in wrappedTrans)
             {
-                _dataModel.Transactions.Remove(wrappedTran.Tran.TransactionKey);
+                _dataModel.Transactions.Remove(wrappedTran.Tran.Id);
                 _model.Rows.Remove(wrappedTran);
             }
 

@@ -29,7 +29,7 @@ namespace Keeper2018.ExpensesOnAccount
             Transactions = new List<TranLine>();
 
             var trans = _dataModel.Transactions.Values.OrderBy(t => t.Timestamp)
-                .Where(t => t.MyAccount == accountModel.Id 
+                .Where(t => t.MyAccount.Id == accountModel.Id 
                             && t.Operation == OperationType.Расход
                             && period.Includes(t.Timestamp)).ToArray();
 

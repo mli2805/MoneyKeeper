@@ -50,7 +50,7 @@ namespace Keeper2018
             RegisterDay(null);
         }
 
-        private void RegisterDay(Transaction tran)
+        private void RegisterDay(TransactionModel tran)
         {
             _balanceInUsd = (double) _dataModel.BalanceInUsd(_currentDate, _balance);
             DailyBalancesSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(_currentDate), _balanceInUsd));
@@ -83,7 +83,7 @@ namespace Keeper2018
             }
         }
 
-        private void RegisterTran(Transaction tran)
+        private void RegisterTran(TransactionModel tran)
         {
             switch (tran.Operation)
             {

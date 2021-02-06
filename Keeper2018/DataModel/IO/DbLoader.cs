@@ -27,8 +27,6 @@ namespace Keeper2018
             if (!loadResult.IsSuccess) return false;
 
             Map((KeeperBin)loadResult.Payload);
-            _keeperDataModel.FillInAccountTreeAndDict();
-            _keeperDataModel.FuellingJoinTransaction();
 
             return true;
         }
@@ -68,12 +66,15 @@ namespace Keeper2018
                 _keeperDataModel.Rates.Add(rate.Date, rate);
 
             _keeperDataModel.AccountPlaneList = bin.JoinAccountParts();
+            _keeperDataModel.FillInAccountTreeAndDict();
 
-            _keeperDataModel.Transactions = new Dictionary<int, Transaction>();
+            _keeperDataModel.Transactions = new Dictionary<int, TransactionModel>();
             foreach (var transaction in bin.Transactions)
-                _keeperDataModel.Transactions.Add(transaction.Id, transaction);
+                _keeperDataModel.Transactions.Add(transaction.Id, transaction.Map(_keeperDataModel.AcMoDict));
 
             _keeperDataModel.Fuellings = bin.Fuellings;
+            _keeperDataModel.FuellingJoinTransaction();
+
             _keeperDataModel.TagAssociations = bin.TagAssociations;
             _keeperDataModel.Cars = bin.JoinCarParts();
             _keeperDataModel.DepositOffers = bin.JoinDepoParts();

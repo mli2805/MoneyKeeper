@@ -29,15 +29,14 @@ namespace Keeper2018
             {
                 foreach (var tag in tran.Tags)
                 {
-                    var tagAccModel = _dataModel.AcMoDict[tag];
-                    var myTag = tagAccModel.IsC(_tag);
+                    var myTag = tag.IsC(_tag);
                     if (myTag != null)
                         RegisterTran(tran, myTag);
                 }
             }
         }
 
-        private void RegisterTran(Transaction tran, AccountModel myTag)
+        private void RegisterTran(TransactionModel tran, AccountModel myTag)
         {
                 decimal inUsd;
             switch (tran.Operation)

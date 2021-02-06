@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -9,7 +9,7 @@ namespace Keeper2018
         {
             return new Transaction()
             {
-                Id = transactionModel.TransactionKey,
+                Id = transactionModel.Id,
                 Timestamp = transactionModel.Timestamp,
                 Receipt = transactionModel.Receipt,
                 Operation = transactionModel.Operation,
@@ -20,9 +20,22 @@ namespace Keeper2018
                 AmountInReturn = transactionModel.AmountInReturn,
                 Currency = transactionModel.Currency,
                 CurrencyInReturn = transactionModel.CurrencyInReturn,
-                Tags = transactionModel.Tags.Select(t => t.Id).ToList(),
+                // Tags = transactionModel.Tags.Select(t => t.Id).ToList(),
+                Tags = transactionModel.Tags.MapTags(),
                 Comment = transactionModel.Comment,
             };
+        }
+
+        private static string MapTags(this List<AccountModel> tags)
+        {
+            if (tags == null || tags.Count == 0) return " ";
+            string result = "";
+            foreach (var t in tags)
+            {
+                result = result + t.Id + " | ";
+            }
+            result = result.Substring(0, result.Length - 3);
+            return result;
         }
 
         public static Account Map(this AccountModel model)

@@ -71,18 +71,18 @@ namespace Keeper2018
         }
 
 
-        private void RegisterIncome(Transaction tran)
+        private void RegisterIncome(TransactionModel tran)
         {
-            if (tran.MyAccount != _accountModel.Id) return;
+            if (tran.MyAccount.Id != _accountModel.Id) return;
 
             _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, false, 1));
             DepositReportModel.Traffic.Add(_dataModel.ReportLine(_balanceWithTurnover.Balance(), tran, false, 1, DepositOperationType.Revenue));
             _balanceWithTurnover.Add(tran.Currency, tran.Amount);
         }
 
-        private void RegisterOutcome(Transaction tran)
+        private void RegisterOutcome(TransactionModel tran)
         {
-            if (tran.MyAccount != _accountModel.Id) return;
+            if (tran.MyAccount.Id != _accountModel.Id) return;
 
             _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, false, -1));
             if (_isDeposit)
@@ -90,9 +90,9 @@ namespace Keeper2018
             _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
         }
 
-        private void RegisterTransfer(Transaction tran)
+        private void RegisterTransfer(TransactionModel tran)
         {
-            if (tran.MyAccount == _accountModel.Id)
+            if (tran.MyAccount.Id == _accountModel.Id)
             {
                 _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, false, -1));
                 if (_isDeposit)
@@ -100,7 +100,7 @@ namespace Keeper2018
                 _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
             }
 
-            if (tran.MySecondAccount ==_accountModel.Id)
+            if (tran.MySecondAccount.Id ==_accountModel.Id)
             {
                 _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, false, 1));
                 if (_isDeposit)
@@ -109,10 +109,10 @@ namespace Keeper2018
             }
         }
 
-        private void RegisterExchange(Transaction tran)
+        private void RegisterExchange(TransactionModel tran)
         {
             // явочный обмен - приходишь в банк и меняешь - была в кармане одна валюта - стала другая в том же кармане
-            if (tran.MyAccount == _accountModel.Id && tran.MySecondAccount == _accountModel.Id)
+            if (tran.MyAccount.Id == _accountModel.Id && tran.MySecondAccount.Id == _accountModel.Id)
             {
                 _shortTrans.Add(tran.Timestamp, _dataModel.ShortLineOneAccountExchange(tran));
                 if (_isDeposit)
@@ -124,7 +124,7 @@ namespace Keeper2018
             // безнальный обмен - с одного счета списалась одна валюта, на другой зачислилась другая
             else
             {
-                if (tran.MyAccount == _accountModel.Id)
+                if (tran.MyAccount.Id == _accountModel.Id)
                 {
                     _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, false, -1));
                     if (_isDeposit)
@@ -132,7 +132,7 @@ namespace Keeper2018
                     _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                 }
 
-                if (tran.MySecondAccount == _accountModel.Id)
+                if (tran.MySecondAccount.Id == _accountModel.Id)
                 {
                     _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, true, 1));
                     if (_isDeposit)

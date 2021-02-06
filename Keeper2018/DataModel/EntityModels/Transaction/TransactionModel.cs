@@ -7,12 +7,12 @@ namespace Keeper2018
 {
     public class TransactionModel : PropertyChangedBase
     {
-        public int TransactionKey;
+        public int Id;
 
         private DateTime _timestamp;
         public DateTime Timestamp
         {
-            get { return _timestamp; }
+            get => _timestamp;
             set
             {
                 if (value.Equals(_timestamp)) return;
@@ -28,7 +28,7 @@ namespace Keeper2018
         private AccountModel _myAccount;
         public AccountModel MyAccount
         {
-            get { return _myAccount; }
+            get => _myAccount;
             set
             {
                 if (Equals(value, _myAccount)) return;
@@ -40,7 +40,7 @@ namespace Keeper2018
         private AccountModel _mySecondAccount;
         public AccountModel MySecondAccount
         {
-            get { return _mySecondAccount; }
+            get => _mySecondAccount;
             set
             {
                 if (Equals(value, _mySecondAccount)) return;
@@ -52,7 +52,7 @@ namespace Keeper2018
         private decimal _amount;
         public decimal Amount
         {
-            get { return _amount; }
+            get => _amount;
             set
             {
                 if (value == _amount) return;
@@ -65,7 +65,7 @@ namespace Keeper2018
 
         public decimal AmountInReturn
         {
-            get { return _amountInReturn; }
+            get => _amountInReturn;
             set
             {
                 if (value == _amountInReturn) return;
@@ -77,7 +77,7 @@ namespace Keeper2018
         private CurrencyCode _currency;
         public CurrencyCode Currency
         {
-            get { return _currency; }
+            get => _currency;
             set
             {
                 if (value == _currency) return;
@@ -89,7 +89,7 @@ namespace Keeper2018
         private CurrencyCode? _currencyInReturn;
         public CurrencyCode? CurrencyInReturn
         {
-            get { return _currencyInReturn; }
+            get => _currencyInReturn;
             set
             {
                 if (value == _currencyInReturn) return;

@@ -264,7 +264,7 @@ namespace Keeper2018
             if (e.PropertyName == "ButtonAllInPressed")
             {
                 MyAmountInputControlVm.Amount =
-                    _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(_dataModel, TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
+                    _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
             }
         }
 
@@ -280,7 +280,7 @@ namespace Keeper2018
             {
                 TranInWork.MyAccount = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
                 MyAmountInputControlVm.Currency =
-                    _dataModel.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                    _dataModel.Transactions.Values.LastOrDefault(t => t.MyAccount.Id == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
                 SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
             }
         }
@@ -292,7 +292,7 @@ namespace Keeper2018
             {
                 TranInWork.MySecondAccount = _dataModel.AcMoDict[MySecondAccNameSelectorVm.MyAccName.Id];
                 MyAmountInReturnInputControlVm.Currency =
-                    _dataModel.Transactions.Values.LastOrDefault(t => t.MyAccount == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                    _dataModel.Transactions.Values.LastOrDefault(t => t.MyAccount.Id == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
             }
         }
 

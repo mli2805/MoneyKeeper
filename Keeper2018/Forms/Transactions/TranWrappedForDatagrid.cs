@@ -24,6 +24,11 @@ namespace Keeper2018
             }
         }
 
+        public TranWrappedForDatagrid(TransactionModel tran)
+        {
+            Tran = tran;
+        }
+
         public string AccountForDatagrid => GetAccountForDatagrid();
         public string AmountForDatagrid => GetAmountForDatagrid();
         public string TagsForDatagrid => GetTagsForDatagrid();

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using KeeperDomain;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -132,7 +131,9 @@ namespace Keeper2018
         private void BuildFor(AccountModel accountModelFolder, List<SalaryLineModel> result)
         {
             result.Clear();
-            var lines = _dataModel.Transactions.Where(t => t.Value.Tags.ToList().Intersect(accountModelFolder.Children.Select(c => c.Id)).Any());
+            var lines = _dataModel.Transactions
+                .Where(t => t.Value.Tags.Select(tt=>tt.Id).ToList()
+                    .Intersect(accountModelFolder.Children.Select(c => c.Id)).Any());
             foreach (var keyValuePair in lines)
             {
                 result.Add(ToSalaryLine(keyValuePair.Value));
@@ -174,7 +175,7 @@ namespace Keeper2018
             return aggr;
         }
 
-        private SalaryLineModel ToSalaryLine(Transaction transaction)
+        private SalaryLineModel ToSalaryLine(TransactionModel transaction)
         {
             SalaryLineModel result = new SalaryLineModel();
             result.Timestamp = transaction.Timestamp;
@@ -185,14 +186,13 @@ namespace Keeper2018
             return result;
         }
 
-        private string GetEmployer(List<int> tags)
+        private string GetEmployer(List<AccountModel> tags)
         {
             foreach (var tag in tags)
             {
-                var accountModel = _dataModel.AcMoDict[tag];
-                if (accountModel.IsTag)
+                if (tag.IsTag)
                     continue;
-                return accountModel.Name;
+                return tag.Name;
             }
             return "";
         }

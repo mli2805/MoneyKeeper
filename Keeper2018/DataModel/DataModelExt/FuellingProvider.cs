@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Keeper2018
 {
@@ -15,7 +16,7 @@ namespace Keeper2018
                 dataModel.FuellingVms.Add(new FuellingVm()
                 {
                     Timestamp = tr.Timestamp,
-                    CarAccountId = tr.Tags.Contains(718) ? 716 : 711,
+                    CarAccountId = tr.Tags.Select(t=>t.Id).Contains(718) ? 716 : 711,
                     Amount = tr.Amount,
                     Currency = tr.Currency,
                     Volume = fuelling.Volume,

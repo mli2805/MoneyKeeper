@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -15,13 +16,13 @@ namespace Keeper2018
         public string Comment { get; set; }
 
 
-        public ExpenseTran(Transaction tr)
+        public ExpenseTran(TransactionModel tr)
         {
             Timestamp = tr.Timestamp;
             Receipt = tr.Receipt;
             Amount = tr.Amount;
             Currency = tr.Currency;
-            Tags = tr.Tags;
+            Tags = tr.Tags.Select(t=>t.Id).ToList();
             Comment = tr.Comment;
         }
 

@@ -83,27 +83,25 @@ namespace Keeper2018
             {
                 var amStr = _dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
 
-                foreach (var tagId in tran.Tags)
+                foreach (var tag in tran.Tags)
                 {
-                    var tagModel = _dataModel.AcMoDict[tagId];
-                    if (tagModel.Is(185))
+                    if (tag.Is(185))
                     {
-                        if (tagModel.Is(186))
+                        if (tag.Is(186))
                         {
                             salaryList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran)} {tran.Timestamp:dd MMM}");
                             salaryTotal = salaryTotal + amountInUsd;
                         }
-                        else if (tagModel.Is(188))
+                        else if (tag.Is(188))
                         {
-                            var accModel = _dataModel.AcMoDict[tran.MyAccount];
-                            if (tagModel.Id == 208)
+                            if (tag.Id == 208)
                             {
-                                depoList.Add($"{amStr} {accModel.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                depoList.Add($"{amStr} {tran.MyAccount.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
                                 depoTotal = depoTotal + amountInUsd;
                             }
                             else
                             {
-                                rantierList.Add($"{amStr} {accModel.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                rantierList.Add($"{amStr} {tran.MyAccount.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
                                 rantierTotal = rantierTotal + amountInUsd;
                             }
                         }
@@ -137,7 +135,7 @@ namespace Keeper2018
             var realIncomes = _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                               && t.Timestamp >= startDate && t.Timestamp <= finishMoment).ToList();
             var salaryAccountId = 204;
-            if (realIncomes.FirstOrDefault(t => t.Tags.Contains(salaryAccountId)) == null)
+            if (realIncomes.FirstOrDefault(t => t.Tags.Select(tt=>tt.Id).Contains(salaryAccountId)) == null)
             {
                 var salaryInUsdValue = 1500;
                 _monthAnalysisModel.IncomeForecastList.Add($"зарплата {salaryInUsdValue} usd");
@@ -146,7 +144,8 @@ namespace Keeper2018
 
             var depos = _dataModel.AcMoDict[166];
             foreach (var depo in depos.Children.Where(c => c.IsDeposit))
-                if (realIncomes.FirstOrDefault(t => t.MyAccount == depo.Id && t.Tags.Contains(208)) == null)
+                if (realIncomes.FirstOrDefault(t => t.MyAccount.Id == depo.Id 
+                                                    && t.Tags.Select(tt=>tt.Id).Contains(208)) == null)
                     ForeseeDepoIncome(depo);
         }
 
@@ -177,19 +176,18 @@ namespace Keeper2018
             _monthAnalysisModel.IncomeViewModel.List.Add($"   Итого {word} {total:#,0.00} usd", Brushes.Blue);
         }
 
-        private string BuildCommentForIncomeTransaction(Transaction tran)
+        private string BuildCommentForIncomeTransaction(TransactionModel tran)
         {
             var comment = "";
             if (!string.IsNullOrEmpty(tran.Comment))
                 comment = tran.Comment;
             else
             {
-                foreach (var tagId in tran.Tags)
+                foreach (var tag in tran.Tags)
                 {
-                    var tagModel = _dataModel.AcMoDict[tagId];
-                    if (tagModel.Is(_incomesRoot))
+                    if (tag.Is(_incomesRoot))
                     {
-                        comment = tagModel.Name;
+                        comment = tag.Name;
                         break;
                     }
                 }
@@ -210,10 +208,9 @@ namespace Keeper2018
             foreach (var tran in _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Расход
                                                && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
-                foreach (var tagId in tran.Tags)
+                foreach (var tag in tran.Tags)
                 {
-                    var accModel = _dataModel.AcMoDict[tagId];
-                    var expenseArticle = accModel.IsC(_expensesRoot);
+                    var expenseArticle = tag.IsC(_expensesRoot);
                     if (expenseArticle == null) continue;
                     var amountInUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                     articles.Add(expenseArticle, CurrencyCode.USD, amountInUsd);

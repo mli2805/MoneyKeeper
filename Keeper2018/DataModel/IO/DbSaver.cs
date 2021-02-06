@@ -88,7 +88,7 @@ namespace Keeper2018
                 Deposits = _keeperDataModel.AccountPlaneList.Where(a=>a.IsDeposit).Select(ac=>ac.Deposit).ToList(),
                 PayCards = _keeperDataModel.AccountPlaneList.Where(a=>a.IsCard).Select(ac=>ac.Deposit.Card).ToList(),
 
-                Transactions = _keeperDataModel.Transactions.Values.ToList(),
+                Transactions = _keeperDataModel.Transactions.Values.Select(t=>t.Map()).ToList(),
 
                 TagAssociations = _keeperDataModel.TagAssociations,
                 

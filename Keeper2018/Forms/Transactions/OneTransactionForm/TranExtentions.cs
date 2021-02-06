@@ -11,7 +11,7 @@ namespace Keeper2018
         {
             var result = new TransactionModel
             {
-                TransactionKey = tran.TransactionKey,
+                Id = tran.Id,
                 Timestamp = tran.Timestamp,
                 Operation = tran.Operation,
                 PaymentWay = tran.PaymentWay,
@@ -36,7 +36,7 @@ namespace Keeper2018
 
         public static void CopyInto(this TransactionModel tran, TransactionModel destinationTran)
         {
-            destinationTran.TransactionKey = tran.TransactionKey;
+            destinationTran.Id = tran.Id;
             destinationTran.Timestamp = tran.Timestamp;
             destinationTran.Operation = tran.Operation;
             destinationTran.PaymentWay = tran.PaymentWay;

@@ -139,7 +139,7 @@ namespace Keeper2018
             var transaction = _dataModel.Transactions.Values.FirstOrDefault(t=>t.Timestamp == pair.Key);
             if (transaction == null) return;
 
-            InitializePopupContent(transaction.Map(_dataModel.AcMoDict, -1));
+            InitializePopupContent(transaction);
             IsPopupOpen = true;
         }
 

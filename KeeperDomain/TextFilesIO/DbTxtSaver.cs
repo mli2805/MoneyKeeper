@@ -44,11 +44,11 @@ namespace KeeperDomain
 
                 var depoOffers = bin.DepositOffers.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("depoOffers.txt"), depoOffers);
-                var depoConditions = bin.DepositOffers.Select(o => o.Dump());
+                var depoConditions = bin.DepositConditions.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("depoConditions.txt"), depoConditions);
-                var depoCalcRules = bin.DepositOffers.Select(o => o.Dump());
+                var depoCalcRules = bin.DepositCalculationRules.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("depoCalcRules.txt"), depoCalcRules);
-                var depoRateLines = bin.DepositOffers.Select(o => o.Dump());
+                var depoRateLines = bin.DepositRateLines.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("depoRateLines.txt"), depoRateLines);
 
                 var cars = bin.Cars.Select(o => o.Dump());

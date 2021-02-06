@@ -27,7 +27,7 @@ namespace Keeper2018
         {
             foreach (var tran in _dataModel.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
             {
-                if (!tran.Tags.Contains(_accountModel.Id)) continue;
+                if (!tran.Tags.Select(t=>t.Id).Contains(_accountModel.Id)) continue;
 
                 decimal inUsd;
                 switch (tran.Operation)

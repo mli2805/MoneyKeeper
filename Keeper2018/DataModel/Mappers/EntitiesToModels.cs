@@ -29,11 +29,11 @@ namespace Keeper2018
             };
         }
       
-        public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict, int transactionKey)
+        public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict)
         {
             return new TransactionModel()
             {
-                TransactionKey = transactionKey,
+                Id = transaction.Id,
                 Timestamp = transaction.Timestamp,
                 Receipt = transaction.Receipt,
                 Operation = transaction.Operation,
@@ -44,9 +44,23 @@ namespace Keeper2018
                 AmountInReturn = transaction.AmountInReturn,
                 Currency = transaction.Currency,
                 CurrencyInReturn = transaction.CurrencyInReturn,
-                Tags = transaction.Tags.Select(t => acMoDict[t]).ToList(),
+                // Tags = transaction.Tags.Select(t => acMoDict[t]).ToList(),
+                Tags = transaction.Tags.MapTags(acMoDict),
                 Comment = transaction.Comment,
             };
+        }
+
+        private static List<AccountModel> MapTags(this string tagStr, Dictionary<int, AccountModel> acMoDict)
+        {
+            var tags = new List<AccountModel>();
+            if (tagStr == "") return tags;
+
+            var substrings = tagStr.Split('|');
+            tags.AddRange(substrings
+                .Select(substring => int.Parse(substring.Trim()))
+                .Select(i=>acMoDict[i]));
+
+            return tags;
         }
     }
 }

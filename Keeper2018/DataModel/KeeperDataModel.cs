@@ -10,7 +10,7 @@ namespace Keeper2018
     {
         public Dictionary<DateTime, CurrencyRates> Rates { get; set; }
         public List<Account> AccountPlaneList { get; set; }
-        public Dictionary<int, Transaction> Transactions { get; set; }
+        public Dictionary<int, TransactionModel> Transactions { get; set; }
         public List<TagAssociation> TagAssociations { get; set; }
         public List<Car> Cars { get; set; }
         public List<Fuelling> Fuellings { get; set; }

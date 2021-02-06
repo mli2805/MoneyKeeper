@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
-using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -53,7 +52,9 @@ namespace Keeper2018
         {
             _tranFilter = new TranFilter();
 
-            Rows = WrapTransactions(_dataModel.Transactions);
+            // Rows = WrapTransactions(_dataModel.Transactions);
+            Rows = new ObservableCollection<TranWrappedForDatagrid>(
+                _dataModel.Transactions.Values.Select(t => new TranWrappedForDatagrid(t)));
             Rows.CollectionChanged += Rows_CollectionChanged;
 
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
@@ -85,16 +86,15 @@ namespace Keeper2018
             IsCollectionChanged = true;
         }
 
-        private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(Dictionary<int, Transaction> transactions)
-        {
-            var result = new ObservableCollection<TranWrappedForDatagrid>();
-            foreach (var pair in transactions)
-            {
-                var tranModel = pair.Value.Map(_dataModel.AcMoDict, pair.Key);
-                var wrapped = new TranWrappedForDatagrid() { Tran = tranModel };
-                result.Add(wrapped);
-            }
-            return result;
-        }
+        // private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(Dictionary<int, TransactionModel> transactions)
+        // {
+        //     var result = new ObservableCollection<TranWrappedForDatagrid>();
+        //     foreach (var tran in transactions.Values)
+        //     {
+        //         var wrapped = new TranWrappedForDatagrid() { Tran = tran };
+        //         result.Add(wrapped);
+        //     }
+        //     return result;
+        // }
     }
 }

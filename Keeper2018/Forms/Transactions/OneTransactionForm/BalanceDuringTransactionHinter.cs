@@ -45,7 +45,7 @@ namespace Keeper2018
 
             var balanceBefore =
                 _dataModel.Transactions.Values.Sum(t => t.AmountForAccount(
-                    _dataModel, transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                    transactionInWork.MyAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
             return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(
                                                transactionInWork.MyAccount, transactionInWork.Currency), transactionInWork.Currency);
@@ -60,7 +60,7 @@ namespace Keeper2018
             {
                 var balanceBefore =
                     _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(
-                        _dataModel, transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                        transactionInWork.MySecondAccount, transactionInWork.Currency, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
                 return BuildTip(balanceBefore, balanceBefore + transactionInWork.AmountForAccount(
                                                    transactionInWork.MySecondAccount, transactionInWork.Currency), transactionInWork.Currency);
@@ -69,7 +69,7 @@ namespace Keeper2018
             {
                 var balanceBefore =
                     _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(
-                        _dataModel, transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
+                        transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn, transactionInWork.Timestamp.AddMilliseconds(-1)));
 
                 return BuildTip(balanceBefore, balanceBefore +
                                   transactionInWork.AmountForAccount(transactionInWork.MySecondAccount, transactionInWork.CurrencyInReturn),

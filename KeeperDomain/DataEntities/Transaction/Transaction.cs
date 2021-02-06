@@ -18,7 +18,8 @@ namespace KeeperDomain
         public decimal AmountInReturn { get; set; }
         public CurrencyCode Currency { get; set; }
         public CurrencyCode? CurrencyInReturn { get; set; }
-        public List<int> Tags { get; set; }
+        // public List<int> Tags { get; set; }
+        public string Tags { get; set; }
         public string Comment { get; set; }
 
         public string Dump()
@@ -29,7 +30,7 @@ namespace KeeperDomain
                    MyAccount + " ; " + MySecondAccount + " ; " +
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + CurrencyInReturn + " ; " +
-                   Dump(Tags) + " ; " + Comment;
+                   Tags + " ; " + Comment;
         }
 
         private string Dump(List<int> tags)

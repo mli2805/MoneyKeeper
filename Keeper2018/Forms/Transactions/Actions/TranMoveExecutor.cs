@@ -124,7 +124,7 @@ namespace Keeper2018
             foreach (var transactionModel in list)
             {
                 transactionModel.Timestamp = newTimestamp;
-                var transaction = _dataModel.Transactions[transactionModel.TransactionKey];
+                var transaction = _dataModel.Transactions[transactionModel.Id];
                 transaction.Timestamp = newTimestamp;
                 newTimestamp = newTimestamp.AddMinutes(1);
             }

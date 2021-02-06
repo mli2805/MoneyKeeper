@@ -1,39 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
 {
     static class TranCalcExtentions
     {
-        public static decimal AmountForAccount(this Transaction tran, KeeperDataModel dataModel, AccountModel account, CurrencyCode? currency, DateTime upToDateTime)
+        public static decimal AmountForAccount(this TransactionModel tran, AccountModel account, CurrencyCode? currency, DateTime upToDateTime)
         {
-            return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, dataModel, account, currency) : 0;
+            return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, account, currency) : 0;
         }
 
-        private static decimal AmountForAccount(this Transaction tran, KeeperDataModel dataModel, AccountModel account, CurrencyCode? currency)
-        {
-            var isAccount = dataModel.AcMoDict[tran.MyAccount].Is(account);
-            bool isSecondAccount;
-            switch (tran.Operation)
-            {
-                case OperationType.Доход:
-                    return isAccount && tran.Currency == currency ? tran.Amount : 0;
-                case OperationType.Расход:
-                    return isAccount && tran.Currency == currency ? -tran.Amount : 0;
-                case OperationType.Перенос:
-                    if (isAccount && tran.Currency == currency) return -tran.Amount;
-                    isSecondAccount = tran.MySecondAccount != -1 && dataModel.AcMoDict[tran.MySecondAccount].Is(account);
-                    return isSecondAccount && tran.Currency == currency ? tran.Amount : 0;
-                case OperationType.Обмен:
-                    if (isAccount && tran.Currency == currency) return -tran.Amount;
-                    isSecondAccount = tran.MySecondAccount != -1 && dataModel.AcMoDict[tran.MySecondAccount].Is(account);
-                    if (isSecondAccount && tran.CurrencyInReturn == currency) return tran.AmountInReturn;
-                    return 0;
-                default:
-                    return 0;
-            }
-        }
+        // private static decimal AmountForAccount(this TransactionModel tran, AccountModel account, CurrencyCode? currency)
+        // {
+        //     var isAccount = tran.MyAccount.Is(account);
+        //     bool isSecondAccount;
+        //     switch (tran.Operation)
+        //     {
+        //         case OperationType.Доход:
+        //             return isAccount && tran.Currency == currency ? tran.Amount : 0;
+        //         case OperationType.Расход:
+        //             return isAccount && tran.Currency == currency ? -tran.Amount : 0;
+        //         case OperationType.Перенос:
+        //             if (isAccount && tran.Currency == currency) return -tran.Amount;
+        //             isSecondAccount = tran.MySecondAccount != null && tran.MySecondAccount.Is(account);
+        //             return isSecondAccount && tran.Currency == currency ? tran.Amount : 0;
+        //         case OperationType.Обмен:
+        //             if (isAccount && tran.Currency == currency) return -tran.Amount;
+        //             isSecondAccount = tran.MySecondAccount != null && tran.MySecondAccount.Is(account);
+        //             if (isSecondAccount && tran.CurrencyInReturn == currency) return tran.AmountInReturn;
+        //             return 0;
+        //         default:
+        //             return 0;
+        //     }
+        // }
 
 
         public static decimal AmountForAccount(this TransactionModel tran, AccountModel account, CurrencyCode? currency)
@@ -58,9 +58,9 @@ namespace Keeper2018
             }
         }
 
-        public static Balance BalanceForTag(this Transaction tran, KeeperDataModel dataModel, int tagId)
+        public static Balance BalanceForTag(this TransactionModel tran, KeeperDataModel dataModel, int tagId)
         {
-            if (!CollectionContainsTag(dataModel, tran.Tags, tagId)) return null;
+            if (!tran.Tags.Any(accountModel => accountModel.Is(tagId))) return null;
             switch (tran.Operation)
             {
                 case OperationType.Доход:
@@ -78,16 +78,5 @@ namespace Keeper2018
                     return null;
             }
         }
-
-        private static bool CollectionContainsTag(KeeperDataModel dataModel, List<int> collection, int tagId)
-        {
-            foreach (var id in collection)
-            {
-                var tag = dataModel.AcMoDict[id];
-                if (tag.Is(tagId)) return true;
-            }
-            return false;
-        }
-
     }
 }

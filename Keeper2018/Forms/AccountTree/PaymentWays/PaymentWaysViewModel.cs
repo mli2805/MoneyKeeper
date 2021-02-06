@@ -14,7 +14,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private AccountModel _cardAccountModel;
         private Period _period;
-        private List<Transaction> _trans;
+        private List<TransactionModel> _trans;
         public ObservableCollection<string> Lines { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Totals { get; set; } = new ObservableCollection<string>();
         public decimal Total { get; set; }
@@ -39,11 +39,11 @@ namespace Keeper2018
         private void Initialize()
         {
             _trans = _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Расход
-                                                            && t.MyAccount == _cardAccountModel.Id
+                                                            && t.MyAccount.Id == _cardAccountModel.Id
                                                             && _period.Includes(t.Timestamp)).ToList();
 
             foreach (var tran in _trans.Where(t => t.PaymentWay == PaymentWay.НеЗадано))
-                tran.PaymentWay = PaymentGuess.GuessPaymentWay(tran.Map(_dataModel.AcMoDict, -1));
+                tran.PaymentWay = PaymentGuess.GuessPaymentWay(tran);
 
             Lines.Clear();
             Totals.Clear();
@@ -87,7 +87,7 @@ namespace Keeper2018
         }
         public void Close() { TryClose(); }
 
-        private List<string> ShrinkReceipts(List<Transaction> trans)
+        private List<string> ShrinkReceipts(List<TransactionModel> trans)
         {
             var singles = trans.Where(t => t.Receipt == 0).Select(t => new ExpenseTran(t)).ToList();
             var groups = trans.Where(t => t.Receipt > 0).GroupBy(t => t.Receipt.ToString() + "_" + t.Timestamp.Date).ToList();
