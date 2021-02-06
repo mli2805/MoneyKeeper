@@ -19,7 +19,7 @@ namespace Keeper2018
             var depositBalance = new Balance();
             decimal revenue = 0;
             var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
-                .Where(t => t.MyAccount.Id == depo.Id || t.MySecondAccount.Id == depo.Id).ToList();
+                .Where(t => t.MyAccount.Id == depo.Id || (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
             var date = deposit.StartDate;
             while (date <= thisMonthRevenueDate)
             {

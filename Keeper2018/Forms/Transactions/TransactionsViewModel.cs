@@ -55,7 +55,7 @@ namespace Keeper2018
         {
             _comboTreesProvider.Initialize();
             _filterModel.Initialize();
-           Model.Initialize();
+            Model.Initialize();
             IsFirstLaunch = false;
         }
 
@@ -83,7 +83,7 @@ namespace Keeper2018
 
             Model.SortedRows.Refresh();
             Model.SortedRows.MoveCurrentToLast();
-            Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid) Model.SortedRows.CurrentItem;
+            Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
         }
 
         private void FilterViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -91,7 +91,7 @@ namespace Keeper2018
             if (e.PropertyName == "IsActive" && _filterViewModel.IsActive == false)
             {
                 Model.SortedRows.MoveCurrentToLast();
-                Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid) Model.SortedRows.CurrentItem;
+                Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
             }
         }
 

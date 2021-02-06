@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -165,7 +164,8 @@ namespace Keeper2018
                 ButtonAllInVisibility = tran.Operation == OperationType.Доход ? Visibility.Collapsed : Visibility.Visible,
             };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
-            Task.Factory.StartNew(S);
+            // Task.Factory.StartNew(GetMyAccountBalanceInOtherThread);
+            MyAccountBalance = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
             {
@@ -301,7 +301,8 @@ namespace Keeper2018
             switch (e.PropertyName)
             {
                 case "MyAccount":
-                    Task.Factory.StartNew(S);
+                    // Task.Factory.StartNew(GetMyAccountBalanceInOtherThread);
+                    MyAccountBalance = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
                     break;
                 case "MySecondAccount":
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
@@ -314,18 +315,19 @@ namespace Keeper2018
                 case "Timestamp":
                     NotifyOfPropertyChange(nameof(AmountInUsd));
                     NotifyOfPropertyChange(nameof(AmountInReturnInUsd));
-                    Task.Factory.StartNew(S);
+                    // Task.Factory.StartNew(GetMyAccountBalanceInOtherThread);
+                    MyAccountBalance = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     NotifyOfPropertyChange(nameof(ExchangeRate));
                     break;
             }
         }
 
-        private void S()
-        {
-            var result = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
-            if (Application.Current.Dispatcher != null)
-                Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
-        }
+        // private void GetMyAccountBalanceInOtherThread()
+        // {
+        //     var result = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
+        //     if (Application.Current.Dispatcher != null)
+        //         Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
+        // }
     }
 }

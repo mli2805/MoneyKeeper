@@ -12,7 +12,7 @@ namespace Keeper2018
         private ObservableCollection<TranWrappedForDatagrid> _rows;
         public ObservableCollection<TranWrappedForDatagrid> Rows
         {
-            get { return _rows; }
+            get => _rows;
             set
             {
                 if (Equals(value, _rows)) return;
@@ -25,7 +25,7 @@ namespace Keeper2018
         private TranWrappedForDatagrid _selectedTranWrappedForDatagrid;
         public TranWrappedForDatagrid SelectedTranWrappedForDatagrid
         {
-            get { return _selectedTranWrappedForDatagrid; }
+            get => _selectedTranWrappedForDatagrid;
             set
             {
                 if (Equals(value, _selectedTranWrappedForDatagrid)) return;
@@ -52,7 +52,6 @@ namespace Keeper2018
         {
             _tranFilter = new TranFilter();
 
-            // Rows = WrapTransactions(_dataModel.Transactions);
             Rows = new ObservableCollection<TranWrappedForDatagrid>(
                 _dataModel.Transactions.Values.Select(t => new TranWrappedForDatagrid(t)));
             Rows.CollectionChanged += Rows_CollectionChanged;
@@ -60,7 +59,7 @@ namespace Keeper2018
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
             SortedRows.Filter += Filter;
             SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
-            SortedRows.CurrentChanged += SortedRows_CurrentChanged;
+            // SortedRows.CurrentChanged += SortedRows_CurrentChanged;
 
             SortedRows.MoveCurrentToLast();
             SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)SortedRows.CurrentItem;
@@ -69,12 +68,12 @@ namespace Keeper2018
             IsCollectionChanged = false;
         }
 
-        private void SortedRows_CurrentChanged(object sender, EventArgs e)
-        {
-            var wrapped = (TranWrappedForDatagrid)((ICollectionView) sender).CurrentItem;
-            if (wrapped != null)
-                Console.WriteLine($@"current tran is {wrapped.Tran.Timestamp}");
-        }
+        // private void SortedRows_CurrentChanged(object sender, EventArgs e)
+        // {
+        //     var wrapped = (TranWrappedForDatagrid)((ICollectionView) sender).CurrentItem;
+        //     if (wrapped != null)
+        //         Console.WriteLine($@"current tran is {wrapped.Tran.Timestamp}");
+        // }
 
         private bool Filter(object o)
         {
@@ -86,15 +85,5 @@ namespace Keeper2018
             IsCollectionChanged = true;
         }
 
-        // private ObservableCollection<TranWrappedForDatagrid> WrapTransactions(Dictionary<int, TransactionModel> transactions)
-        // {
-        //     var result = new ObservableCollection<TranWrappedForDatagrid>();
-        //     foreach (var tran in transactions.Values)
-        //     {
-        //         var wrapped = new TranWrappedForDatagrid() { Tran = tran };
-        //         result.Add(wrapped);
-        //     }
-        //     return result;
-        // }
     }
 }

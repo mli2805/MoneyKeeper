@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
@@ -25,7 +26,7 @@ namespace Keeper2018
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(exception);
+                    File.WriteAllText(@"c:\temp\scroll.exp", $@"{exception.Message}");
                 }
             }
         }

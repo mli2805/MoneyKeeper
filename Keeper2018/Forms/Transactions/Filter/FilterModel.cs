@@ -15,7 +15,7 @@ namespace Keeper2018
         private OperationTypesFilter _myOperationType;
         public OperationTypesFilter MyOperationType
         {
-            get { return _myOperationType; }
+            get => _myOperationType;
             set
             {
                 if (value == _myOperationType) return;
@@ -38,7 +38,7 @@ namespace Keeper2018
         private List<AccName> _availableAccNames;
         public List<AccName> AvailableAccNames
         {
-            get { return _availableAccNames; }
+            get => _availableAccNames;
             set
             {
                 if (Equals(value, _availableAccNames)) return;
@@ -50,8 +50,8 @@ namespace Keeper2018
         private AccName _myAccName;
         public AccName MyAccName
         {
-            get { return _myAccName; }
-            set
+            get => _myAccName;
+            private set
             {
                 if (Equals(value, _myAccName)) return;
                 _myAccName = value;
@@ -62,7 +62,7 @@ namespace Keeper2018
         private bool _isAccNamePosition1;
         public bool IsAccNamePosition1
         {
-            get { return _isAccNamePosition1; }
+            get => _isAccNamePosition1;
             set
             {
                 if (value == _isAccNamePosition1) return;
@@ -74,7 +74,7 @@ namespace Keeper2018
         private bool _isAccNamePosition2;
         public bool IsAccNamePosition2
         {
-            get { return _isAccNamePosition2; }
+            get => _isAccNamePosition2;
             set
             {
                 if (value == _isAccNamePosition2) return;
@@ -86,7 +86,7 @@ namespace Keeper2018
         private bool _isAccNamePosition12;
         public bool IsAccNamePosition12
         {
-            get { return _isAccNamePosition12; }
+            get => _isAccNamePosition12;
             set
             {
                 if (value == _isAccNamePosition12) return;
@@ -98,7 +98,7 @@ namespace Keeper2018
         private string _amount;
         public string Amount
         {
-            get { return _amount; }
+            get => _amount;
             set
             {
                 if (value == _amount) return;
@@ -110,7 +110,7 @@ namespace Keeper2018
         private bool _amountEqualTo;
         public bool AmountEqualTo
         {
-            get { return _amountEqualTo; }
+            get => _amountEqualTo;
             set
             {
                 if (value == _amountEqualTo) return;
@@ -122,7 +122,7 @@ namespace Keeper2018
         private bool _amountLessThan;
         public bool AmountLessThan
         {
-            get { return _amountLessThan; }
+            get => _amountLessThan;
             set
             {
                 if (value == _amountLessThan) return;
@@ -134,7 +134,7 @@ namespace Keeper2018
         private bool _amountGreaterThan;
         public bool AmountGreaterThan
         {
-            get { return _amountGreaterThan; }
+            get => _amountGreaterThan;
             set
             {
                 if (value == _amountGreaterThan) return;
@@ -147,7 +147,7 @@ namespace Keeper2018
         private CurrencyCodesFilter _myCurrency;
         public CurrencyCodesFilter MyCurrency
         {
-            get { return _myCurrency; }
+            get => _myCurrency;
             set
             {
                 if (Equals(value, _myCurrency)) return;
@@ -159,7 +159,7 @@ namespace Keeper2018
         private bool _isCurrencyPosition1;
         public bool IsCurrencyPosition1
         {
-            get { return _isCurrencyPosition1; }
+            get => _isCurrencyPosition1;
             set
             {
                 if (value == _isCurrencyPosition1) return;
@@ -171,7 +171,7 @@ namespace Keeper2018
         private bool _isCurrencyPosition2;
         public bool IsCurrencyPosition2
         {
-            get { return _isCurrencyPosition2; }
+            get => _isCurrencyPosition2;
             set
             {
                 if (value == _isCurrencyPosition2) return;
@@ -183,7 +183,7 @@ namespace Keeper2018
         private bool _isCurrencyPosition12;
         public bool IsCurrencyPosition12
         {
-            get { return _isCurrencyPosition12; }
+            get => _isCurrencyPosition12;
             set
             {
                 if (value == _isCurrencyPosition12) return;
@@ -206,7 +206,7 @@ namespace Keeper2018
         private bool _isTagsJoinedByAnd;
         public bool IsTagsJoinedByAnd
         {
-            get { return _isTagsJoinedByAnd; }
+            get => _isTagsJoinedByAnd;
             set
             {
                 if (value == _isTagsJoinedByAnd) return;
@@ -223,7 +223,7 @@ namespace Keeper2018
         private bool _isTagsJoinedByOr;
         public bool IsTagsJoinedByOr
         {
-            get { return _isTagsJoinedByOr; }
+            get => _isTagsJoinedByOr;
             set
             {
                 if (value == _isTagsJoinedByOr) return;
@@ -236,7 +236,7 @@ namespace Keeper2018
 
         public string MyComment
         {
-            get { return _myComment; }
+            get => _myComment;
             set
             {
                 if (value == _myComment) return;
