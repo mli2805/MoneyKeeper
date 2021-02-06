@@ -103,7 +103,6 @@ namespace Keeper2018
 
                 Cars = _keeperDataModel.Cars.Select(c => c.Map()).ToList(),
                 YearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => y.Map()).ToList(),
-                // YearMileages = CarOnce(),
 
                 Fuellings = _keeperDataModel.Fuellings
             };
@@ -123,22 +122,5 @@ namespace Keeper2018
             return bin;
         }
 
-        // private List<YearMileage> CarOnce()
-        // {
-        //     var result = new List<YearMileage>();
-        //     var i = 1;
-        //     foreach (var carVm in _keeperDataModel.Cars)
-        //     {
-        //         var yearMileages = carVm.YearsMileage.Select(y => y.Map()).ToList();
-        //         foreach (var mileage in yearMileages)
-        //         {
-        //             mileage.CarId = carVm.Id;
-        //             mileage.Id = i++;
-        //         }
-        //         result.AddRange(yearMileages);
-        //     }
-        //
-        //     return result;
-        // }
     }
 }

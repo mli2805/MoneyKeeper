@@ -9,6 +9,7 @@ namespace Keeper2018
 {
     public class CurrencyRatesModel : PropertyChangedBase
     {
+        public int Id;
         public DateTime Date { get; set; }
         public CurrencyRates TodayRates { get; set; }
         private NbRbRates YesterdayNbRbRates { get; set; }
@@ -76,6 +77,7 @@ namespace Keeper2018
 
         public CurrencyRatesModel(CurrencyRates record, CurrencyRatesModel previous, CurrencyRatesModel annual)
         {
+            Id = record.Id;
             Date = record.Date;
             TodayRates = record;
             YesterdayNbRbRates = previous?.TodayRates.NbRates;

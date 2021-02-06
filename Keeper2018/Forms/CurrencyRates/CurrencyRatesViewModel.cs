@@ -155,6 +155,7 @@ namespace Keeper2018
                             currencyRates.NbRates.Usd.Value / currencyRates.NbRates.Rur.Value * currencyRates.NbRates.Rur.Unit;
                     }
 
+                    currencyRates.Id = Rows.Last().Id + 1;
                     _rates.Add(currencyRates.Date, currencyRates);
                     var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);
                     Rows.Add(line);
