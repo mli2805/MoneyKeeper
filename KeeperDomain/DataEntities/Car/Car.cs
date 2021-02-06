@@ -20,8 +20,6 @@ namespace KeeperDomain
         public int SupposedSalePrice { get; set; }
         public string Comment { get; set; }
 
-        public YearMileage[] YearMileages { get; set; }
-
         public string Dump()
         {
             return Id + " ; " + CarAccountId + " ; " + Title + " ; " + IssueYear + " ; " + Vin + " ; " + StateRegNumber + " ; " 

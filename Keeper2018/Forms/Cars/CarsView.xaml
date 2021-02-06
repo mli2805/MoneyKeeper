@@ -8,7 +8,7 @@
         Width="754"  Height="450" WindowStartupLocation="CenterScreen">
     <DockPanel Margin="5">
         <ListView DockPanel.Dock="Top" ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" 
-                  Margin="5" SelectionMode="Single" >
+                  Margin="5" SelectionMode="Single">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="BorderBrush" Value="LightGray" />
@@ -23,7 +23,7 @@
                     <GridViewColumn Header="покупка" Width="120">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Start}" TextAlignment="Right"
+                                <TextBlock Text="{Binding PurchaseDate, StringFormat='{}{0:d/MM/yyyy}'}" TextAlignment="Right"
                                            d:DataContext="{d:DesignInstance keeper2018:CarVm}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -31,7 +31,7 @@
                     <GridViewColumn Header="до" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding MileageStart}" TextAlignment="Right"
+                                <TextBlock Text="{Binding PurchaseMileage}" TextAlignment="Right"
                                            d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -39,7 +39,7 @@
                     <GridViewColumn Header="продажа" Width="120">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Finish}" TextAlignment="Right"
+                                <TextBlock Text="{Binding SaleDate, StringFormat='{}{0:d/MM/yyyy}'}" TextAlignment="Right"
                                            d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -47,7 +47,7 @@
                     <GridViewColumn Header="после" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding MileageFinish}" TextAlignment="Right"
+                                <TextBlock Text="{Binding SaleMileage}" TextAlignment="Right"
                                            d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -84,7 +84,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="год" Width="40" DisplayMemberBinding="{Binding YearCount}"/>
+                            <GridViewColumn Header="год" Width="40" DisplayMemberBinding="{Binding YearNumber}"/>
                             <GridViewColumn Header="одометр" Width="60" DisplayMemberBinding="{Binding Mileage}"/>
                             <GridViewColumn Header="пробег" Width="60" DisplayMemberBinding="{Binding YearMileage}"/>
                         </GridView>
@@ -105,12 +105,12 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5" Visibility="{Binding IsLastCarVisibility}">
                         <TextBlock Text="Конечный пробег" Margin="5,0,5,3" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SelectedCar.MileageFinish}" Width="70" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding SelectedCar.SaleMileage}" Width="70" VerticalAlignment="Center"/>
                         <TextBlock Text="км. " Margin="5,0,5,3" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,5" Visibility="{Binding IsLastCarVisibility}">
                         <TextBlock Text="Предполагаемая продажа " Margin="5,0,5,3" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SelectedCar.SupposedSale}" Width="70" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding SelectedCar.SupposedSalePrice}" Width="70" VerticalAlignment="Center"/>
                         <TextBlock Text="usd" Margin="5,0,5,3" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>

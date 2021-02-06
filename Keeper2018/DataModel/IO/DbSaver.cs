@@ -60,6 +60,12 @@ namespace Keeper2018
                     MessageBox.Show(result.Exception.Message);
                     return false;
                 }
+
+                // var dbResult = await bin.SeedDbContext();
+                // if (!dbResult.IsSuccess)
+                // {
+                //     MessageBox.Show(dbResult.Exception.Message);
+                // }
                 _transactionsViewModel.Model.IsCollectionChanged = false;
             }
             catch (Exception e)
@@ -85,17 +91,19 @@ namespace Keeper2018
                 Rates = _keeperDataModel.Rates.Values.ToList(),
 
                 AccountPlaneList = _keeperDataModel.AccountPlaneList,
-                Deposits = _keeperDataModel.AccountPlaneList.Where(a=>a.IsDeposit).Select(ac=>ac.Deposit).ToList(),
-                PayCards = _keeperDataModel.AccountPlaneList.Where(a=>a.IsCard).Select(ac=>ac.Deposit.Card).ToList(),
+                Deposits = _keeperDataModel.AccountPlaneList.Where(a => a.IsDeposit).Select(ac => ac.Deposit).ToList(),
+                PayCards = _keeperDataModel.AccountPlaneList.Where(a => a.IsCard).Select(ac => ac.Deposit.Card).ToList(),
 
-                Transactions = _keeperDataModel.Transactions.Values.Select(t=>t.Map()).ToList(),
+                Transactions = _keeperDataModel.Transactions.Values.Select(t => t.Map()).ToList(),
 
                 TagAssociations = _keeperDataModel.TagAssociations,
-                
 
-                DepositOffers = _keeperDataModel.DepositOffers.Select(o=>o.Map()).ToList(),
-                Cars = _keeperDataModel.Cars,
-                YearMileages = _keeperDataModel.Cars.SelectMany(c=>c.YearMileages).ToList(),
+
+                DepositOffers = _keeperDataModel.DepositOffers.Select(o => o.Map()).ToList(),
+
+                Cars = _keeperDataModel.Cars.Select(c => c.Map()).ToList(),
+                YearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => y.Map()).ToList(),
+                // YearMileages = CarOnce(),
 
                 Fuellings = _keeperDataModel.Fuellings
             };
@@ -114,5 +122,23 @@ namespace Keeper2018
             }
             return bin;
         }
+
+        // private List<YearMileage> CarOnce()
+        // {
+        //     var result = new List<YearMileage>();
+        //     var i = 1;
+        //     foreach (var carVm in _keeperDataModel.Cars)
+        //     {
+        //         var yearMileages = carVm.YearsMileage.Select(y => y.Map()).ToList();
+        //         foreach (var mileage in yearMileages)
+        //         {
+        //             mileage.CarId = carVm.Id;
+        //             mileage.Id = i++;
+        //         }
+        //         result.AddRange(yearMileages);
+        //     }
+        //
+        //     return result;
+        // }
     }
 }

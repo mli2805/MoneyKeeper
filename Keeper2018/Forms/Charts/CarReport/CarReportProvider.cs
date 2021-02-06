@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using KeeperDomain;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using MigraDoc.Rendering;
@@ -11,7 +10,7 @@ namespace Keeper2018
     public class CarReportProvider
     {
         private int _accountId; // Scenic3 = 716
-        private Car _car;
+        private CarVm _car;
         private static readonly string[] TagRussians =
             { "покупка-продажа", "государство", "авто ремонт", "ремонт ДТП", "регулярн обслуживание", "авто топливо", "авто прочее" };
         private static readonly string[] TagEnglish =

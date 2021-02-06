@@ -63,5 +63,34 @@ namespace Keeper2018
                 Comment = depositOfferModel.Comment,
             };
         }
+
+        public static Car Map(this CarVm carVm)
+        {
+            return new Car()
+            {
+                Id = carVm.Id,
+                CarAccountId = carVm.CarAccountId,
+                Title = carVm.Title,
+                IssueYear = carVm.IssueYear,
+                Vin = carVm.Vin,
+                StateRegNumber = carVm.StateRegNumber,
+                PurchaseDate = carVm.PurchaseDate,
+                PurchaseMileage = carVm.PurchaseMileage,
+                SaleDate = carVm.SaleDate,
+                SaleMileage = carVm.SaleMileage,
+                SupposedSalePrice = carVm.SupposedSalePrice,
+            };
+        }
+
+        public static YearMileage Map(this YearMileageVm yearMileageVm)
+        {
+            return new YearMileage()
+            {
+                Id = yearMileageVm.Id,
+                CarId = yearMileageVm.CarId,
+                YearNumber = yearMileageVm.YearNumber,
+                Mileage = yearMileageVm.Mileage
+            };
+        }
     }
 }

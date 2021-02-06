@@ -53,7 +53,7 @@ namespace Keeper2018
         private static List<AccountModel> MapTags(this string tagStr, Dictionary<int, AccountModel> acMoDict)
         {
             var tags = new List<AccountModel>();
-            if (tagStr == "") return tags;
+            if (tagStr == "" || tagStr == " ") return tags;
 
             var substrings = tagStr.Split('|');
             tags.AddRange(substrings
@@ -61,6 +61,35 @@ namespace Keeper2018
                 .Select(i=>acMoDict[i]));
 
             return tags;
+        }
+
+        public static CarVm Map(this Car car)
+        {
+            return new CarVm()
+            {
+                Id = car.Id,
+                CarAccountId = car.CarAccountId,
+                Title = car.Title,
+                IssueYear = car.IssueYear,
+                Vin = car.Vin,
+                StateRegNumber = car.StateRegNumber,
+                PurchaseDate = car.PurchaseDate,
+                PurchaseMileage = car.PurchaseMileage,
+                SaleDate = car.SaleDate,
+                SaleMileage = car.SaleMileage,
+                SupposedSalePrice = car.SupposedSalePrice,
+            };
+        }
+
+        public static YearMileageVm Map(this YearMileage yearMileage)
+        {
+            return new YearMileageVm()
+            {
+                Id = yearMileage.Id,
+                CarId = yearMileage.CarId,
+                YearNumber = yearMileage.YearNumber,
+                Mileage = yearMileage.Mileage
+            };
         }
     }
 }

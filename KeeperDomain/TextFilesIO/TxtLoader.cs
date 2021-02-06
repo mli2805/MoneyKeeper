@@ -63,6 +63,11 @@ namespace KeeperDomain
 
             var yearMileageContent = File.ReadAllLines(PathFactory.GetBackupFilePath("CarYearMileages.txt"));
             bin.YearMileages = yearMileageContent.Select(y => y.YearMileageFromString()).ToList();
+            var i = 1;
+            foreach (var yearMileage in bin.YearMileages)
+            {
+                yearMileage.Id = i++;
+            }
         }
 
 

@@ -30,7 +30,7 @@ namespace Keeper2018
             }
         }
 
-        public Visibility IsLastCarVisibility => SelectedCar.AccountId == Cars.Last().AccountId
+        public Visibility IsLastCarVisibility => SelectedCar.Id == Cars.Last().Id
             ? Visibility.Visible : Visibility.Collapsed;
 
         public CarsViewModel(KeeperDataModel dataModel, IWindowManager windowManager, FuelViewModel fuelViewModel)
@@ -44,12 +44,7 @@ namespace Keeper2018
         {
             _dataModel.Cars.Last().SaleDate = DateTime.Today;
 
-            Cars = new List<CarVm>();
-            foreach (var car in _dataModel.Cars)
-            {
-                Cars.Add(new CarVm(car));
-            }
-
+            Cars = _dataModel.Cars;
             SelectedCar = Cars.Last();
         }
 
@@ -71,9 +66,9 @@ namespace Keeper2018
      
         public void ShowCarReport()
         {
-            if (SelectedCar.AccountId < 711) return;
+            if (SelectedCar.Id < 711) return;
             var provider = new CarReportProvider(_dataModel);
-            var document = provider.CreateCarReport(SelectedCar.AccountId);
+            var document = provider.CreateCarReport(SelectedCar.Id);
 
             try
             {

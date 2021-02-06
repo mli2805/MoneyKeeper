@@ -16,18 +16,28 @@ namespace Keeper2018
                 result.First(a => a.Id == card.MyAccountId).Deposit.Card = card;
             return result;
         }
-   
-        public static List<Car> JoinCarParts(this KeeperBin bin)
+
+        public static List<CarVm> JoinCarParts(this KeeperBin bin)
         {
-            var result = bin.Cars;
+            var result = bin.Cars.Select(c => c.Map()).ToList();
             foreach (var car in result)
-                car.YearMileages = bin.YearMileages.Where(l => l.CarId == car.CarAccountId).ToArray();
+            {
+                var arr = bin.YearMileages.Where(l => l.CarId == car.Id).ToArray();
+                var prev = car.PurchaseMileage;
+                foreach (var t in arr)
+                {
+                    var cc = t.Map();
+                    cc.YearMileage = t.Mileage - prev;
+                    car.YearsMileage.Add(cc);
+                    prev = t.Mileage;
+                }
+            }
             return result;
         }
-     
+
         public static List<DepositOfferModel> JoinDepoParts(this KeeperBin bin)
         {
-            var result = bin.DepositOffers.Select(o=>o.Map(bin.AccountPlaneList)).ToList();
+            var result = bin.DepositOffers.Select(o => o.Map(bin.AccountPlaneList)).ToList();
             foreach (var depoOffer in result)
             {
                 foreach (var depoCondition in bin.DepositConditions.Where(c => c.DepositOfferId == depoOffer.Id))
