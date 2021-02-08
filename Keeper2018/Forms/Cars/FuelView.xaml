@@ -7,6 +7,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d" d:DataContext="{d:DesignData FuelViewModel}" 
         WindowStartupLocation="CenterScreen" Width="1104" >
     <i:Interaction.Triggers>
@@ -17,7 +18,7 @@
     <Grid>
         <DockPanel Visibility="{Binding TableVisibility}">
             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Total}" Margin="5" Background="Azure" FontWeight="Bold"></TextBlock>
-            <ListView ItemsSource="{Binding Rows}">
+            <ListView ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="дата покупки" Width="140" DisplayMemberBinding="{Binding Timestamp, StringFormat='{}{0:dd/MM/yyyy}'}"/>
@@ -30,6 +31,10 @@
                         <GridViewColumn Header="за литр в долл" Width="100" DisplayMemberBinding="{Binding OneLitreInUsd, StringFormat='{}{0:0.00}'}"/>
                     </GridView>
                 </ListView.View>
+                <i:Interaction.Behaviors>
+                    <keeper2018:ScrollListViewToBottomOnAddBehavior />
+                    <keeper2018:ScrollListViewToBottomOnLoadBehavior />
+                </i:Interaction.Behaviors> 
             </ListView>
         </DockPanel>
         <oxy:PlotView Model="{Binding ChartModel}" Visibility="{Binding ChartVisibility}"/>

@@ -380,7 +380,6 @@
       <DependentUpon>RulesAndRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\RulesAndRatesViewModel.cs" />
-    <Compile Include="Forms\Gsk\GskModel.cs" />
     <Compile Include="Forms\Gsk\GskView.xaml.cs">
       <DependentUpon>GskView.xaml</DependentUpon>
     </Compile>

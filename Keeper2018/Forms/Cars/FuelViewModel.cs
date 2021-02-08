@@ -15,6 +15,7 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
         public List<FuellingVm> Rows { get; set; }
+        public FuellingVm SelectedRow { get; set; }
         public string Total => $"Итого {Rows.Sum(f => f.Volume)} литров";
 
         public PlotModel ChartModel { get; set; }
@@ -56,6 +57,7 @@ namespace Keeper2018
         public void Initialize()
         {
             Rows = _dataModel.FuellingVms;
+            SelectedRow = Rows.Last();
             InitializeChartModel();
         }
 

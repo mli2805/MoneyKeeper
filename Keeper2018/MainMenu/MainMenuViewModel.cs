@@ -24,13 +24,13 @@ namespace Keeper2018
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
 
-        public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel, 
+        public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
-            DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel, 
+            DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
         {
             _windowManager = windowManager;
@@ -144,7 +144,6 @@ namespace Keeper2018
 
         public void ShowDepoPlusCurreniesChart()
         {
-          //  _depoCurrResultViewModel.Initialize();
             _windowManager.ShowDialog(_depoCurrResultViewModel);
         }
 
