@@ -66,7 +66,7 @@ namespace Keeper2018
      
         public void ShowCarReport()
         {
-            if (SelectedCar.Id < 711) return;
+            if (SelectedCar.Id < 3) return;
             var provider = new CarReportProvider(_dataModel);
             var document = provider.CreateCarReport(SelectedCar.Id);
 

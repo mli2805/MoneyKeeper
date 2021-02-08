@@ -9,7 +9,6 @@ namespace Keeper2018
 {
     public class CarReportProvider
     {
-        private int _accountId; // Scenic3 = 716
         private CarVm _car;
         private static readonly string[] TagRussians =
             { "покупка-продажа", "государство", "авто ремонт", "ремонт ДТП", "регулярн обслуживание", "авто топливо", "авто прочее" };
@@ -23,11 +22,10 @@ namespace Keeper2018
             _dataModel = dataModel;
         }
 
-        public PdfDocument CreateCarReport(int accountId)
+        public PdfDocument CreateCarReport(int carId)
         {
-            _accountId = accountId;
-            _car = _dataModel.Cars.First(c => c.CarAccountId == _accountId);
-            var isCurrentCar = _dataModel.Cars.Last().CarAccountId == _accountId;
+            _car = _dataModel.Cars.First(c => c.Id == carId);
+            var isCurrentCar = _dataModel.Cars.Last().Id == carId;
 
             Document doc = new Document();
 
@@ -70,7 +68,7 @@ namespace Keeper2018
         private CarReportData ExtractCarData()
         {
             var result = new CarReportData();
-            var carAccount = _dataModel.AcMoDict[_accountId];
+            var carAccount = _dataModel.AcMoDict[_car.CarAccountId];
             for (int i = 0; i < TagRussians.Length; i++)
             {
                 var tag = carAccount.Children.First(c => c.Name.Contains(TagRussians[i]));
@@ -204,9 +202,11 @@ namespace Keeper2018
             forKm = (double)-totalFuelling / (_car.SaleMileage - _car.PurchaseMileage);
             row.Cells[2].AddParagraph($"$ {forKm:N}");
 
-            if (_accountId >= 711)
+            if (_car.Id >= 3)
             {
-                var totalLitres = _dataModel.FuellingVms.Where(f => f.CarAccountId == _accountId).Sum(f => f.Volume);
+                var totalLitres = _dataModel.FuellingVms
+                    .Where(f => f.CarAccountId == _car.CarAccountId)
+                    .Sum(f => f.Volume);
 
                 row = table.AddRow();
                 row.Borders.Visible = false;
