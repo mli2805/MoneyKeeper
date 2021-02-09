@@ -97,11 +97,15 @@ namespace Keeper2018
 
         public void PayCard()
         {
-             var vm = new OneCardViewModel();
+            var vm = new OneCardViewModel();
             vm.InitializeForm(_accountModel, DepositInWork.Card == null);
             _windowManager.ShowDialog(vm);
             if (vm.IsSavePressed)
+            {
                 DepositInWork.Card = vm.CardInWork;
+                DepositInWork.Card.Id = _dataModel.AcMoDict.Values
+                    .Where(a => a.IsDeposit && a.Deposit.Card != null).Max(a => a.Deposit.Card.Id) + 1;
+            }
         }
 
         public void SaveDeposit()
@@ -124,7 +128,7 @@ namespace Keeper2018
         {
             decimal rate;
             var conditionses = SelectedDepositOffer.ConditionsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
-       //     if (conditionses != null)
+            //     if (conditionses != null)
             {
                 var line = conditionses.Value.RateLines.Last();
                 rate = line.Rate;
@@ -138,7 +142,7 @@ namespace Keeper2018
         public void FillDepositRatesTable()
         {
             var vm = new RulesAndRatesViewModel();
-            vm.Initialize("", 
+            vm.Initialize("",
                 SelectedDepositOffer.ConditionsMap.OrderBy(k => k.Key)
                     .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value);
             _windowManager.ShowDialog(vm);

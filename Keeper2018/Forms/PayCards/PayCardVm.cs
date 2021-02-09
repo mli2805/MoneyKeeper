@@ -5,8 +5,6 @@ namespace Keeper2018.PayCards
 {
     public class PayCardVm
     {
-        public int MyAccountId;
-
         public string CardNumber { get; set; }
         public string CardHolder { get; set; }
 
@@ -18,7 +16,7 @@ namespace Keeper2018.PayCards
         public DateTime FinishDate { get; set; }
         public string Comment { get; set; }
 
-        public Account BankAccount { get; set; }
+        public AccountModel BankAccount { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
         public string Name { get; set; }

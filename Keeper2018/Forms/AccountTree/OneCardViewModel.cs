@@ -30,7 +30,6 @@ namespace Keeper2018
                 CardInWork.PaymentSystem = _accountModel.Deposit.Card.PaymentSystem;
                 CardInWork.IsPayPass = _accountModel.Deposit.Card.IsPayPass;
             }
-
         }
 
         protected override void OnViewLoaded(object view)

@@ -19,19 +19,10 @@ namespace Keeper2018.PayCards
         public void Initialize()
         {
             Rows.Clear();
-            Rows.AddRange(_dataModel.AccountsTree.SelectMany(GetActiveCards).Select(GetVm));
-        }
-
-        private List<AccountModel> GetActiveCards(AccountModel root)
-        {
-            var result = new List<AccountModel>();
-            if (root.IsCard)
-                result.Add(root);
-            if (root.Id == 393 || root.Id == 235)
-                return result;
-            foreach (var child in root.Children)
-                result.AddRange(GetActiveCards(child));
-            return result;
+            Rows.AddRange(_dataModel.AcMoDict.Values
+                .Where(a => !a.Is(393) && !a.Is(235) // закрытые
+                                       && a.IsDeposit && a.Deposit.Card != null)
+                .Select(GetVm));
         }
 
         private PayCardVm GetVm(AccountModel account)
@@ -42,8 +33,6 @@ namespace Keeper2018.PayCards
             calc.DepositReportModel.Balance.Currencies.TryGetValue(depositOffer.MainCurrency, out var amount);
             return new PayCardVm()
             {
-                MyAccountId = account.Id,
-
                 CardNumber = account.Deposit.Card.CardNumber,
                 CardHolder = account.Deposit.Card.CardHolder,
                 PaymentSystem = account.Deposit.Card.PaymentSystem,
@@ -54,7 +43,7 @@ namespace Keeper2018.PayCards
                 FinishDate = account.Deposit.FinishDate,
                 Comment = account.Deposit.Comment,
 
-                BankAccount = _dataModel.AccountPlaneList.First(a => a.Id == depositOffer.Bank.Id),
+                BankAccount = _dataModel.AcMoDict.Values.First(a => a.Id == depositOffer.Bank.Id),
                 MainCurrency = depositOffer.MainCurrency,
 
                 Name = account.Name,
