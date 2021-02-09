@@ -23,9 +23,9 @@ namespace KeeperDomain
 
                 var accounts = bin.DumpWithOffsets();
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Accounts.txt"), accounts);
-                var deposits = bin.Deposits.Select(m => m.Dump());
+                var deposits = bin.Deposits.OrderBy(d=>d.Id).Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Deposits.txt"), deposits);
-                var cards = bin.PayCards.Select(m => m.Dump());
+                var cards = bin.PayCards.OrderBy(d=>d.Id).Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("PayCards.txt"), cards);
 
                 var transactions = bin.Transactions

@@ -84,7 +84,7 @@ namespace Keeper2018
             var owner = accountModel.Owner;
             accountModel.Owner = null;
             owner.Items.Remove(accountModel);
-            dataModel.AccountPlaneList.RemoveAll(a => a.Id == accountModel.Id);
+            dataModel.AcMoDict.Remove(accountModel.Id);
         }
     }
 }

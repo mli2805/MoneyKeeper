@@ -9,7 +9,6 @@ namespace Keeper2018
     public class KeeperDataModel : PropertyChangedBase
     {
         public Dictionary<DateTime, CurrencyRates> Rates { get; set; }
-        public List<Account> AccountPlaneList { get; set; }
         public Dictionary<int, TransactionModel> Transactions { get; set; }
         public List<TagAssociation> TagAssociations { get; set; }
         public List<Fuelling> Fuellings { get; set; }

@@ -35,21 +35,17 @@ namespace Keeper2018
             }
         }
 
-        public static void FlattenAccountTree(this KeeperDataModel dataModel)
+        public static IEnumerable<Account> FlattenAccountTree(this KeeperDataModel dataModel)
         {
-            dataModel.AccountPlaneList = new List<Account>();
-            foreach (var root in dataModel.AccountsTree)
-            {
-                dataModel.AccountPlaneList.AddRange(FlattenOne(root));
-            }
+            return dataModel.AccountsTree.SelectMany(FlattenBranch);
         }
 
-        private static IEnumerable<Account> FlattenOne(AccountModel accountModel)
+        private static IEnumerable<Account> FlattenBranch(AccountModel accountModel)
         {
             var result = new List<Account> { accountModel.Map() };
             foreach (var child in accountModel.Children)
             {
-                result.AddRange(FlattenOne(child));
+                result.AddRange(FlattenBranch(child));
             }
             return result;
         }

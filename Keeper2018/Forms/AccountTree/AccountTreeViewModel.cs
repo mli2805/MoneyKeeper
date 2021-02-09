@@ -52,7 +52,6 @@ namespace Keeper2018
             if (!_oneAccountViewModel.IsSavePressed) return;
 
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
-            KeeperDataModel.AccountPlaneList.Add(accountModel.Map());
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
@@ -74,7 +73,6 @@ namespace Keeper2018
             if (accountModel.Deposit.Card != null)
                 accountModel.Deposit.Card.DepositId = accountModel.Deposit.Id;
             ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
-            KeeperDataModel.AccountPlaneList.Add(accountModel.Map());
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
@@ -85,18 +83,12 @@ namespace Keeper2018
                 var accountModel = ShellPartsBinder.SelectedAccountModel;
                 _oneDepositViewModel.InitializeForm(accountModel, false);
                 WindowManager.ShowDialog(_oneDepositViewModel);
-
-                if (_oneDepositViewModel.IsSavePressed)
-                    KeeperDataModel.FlattenAccountTree();
             }
             else
             {
                 var accountModel = ShellPartsBinder.SelectedAccountModel;
                 _oneAccountViewModel.Initialize(accountModel, false);
                 WindowManager.ShowDialog(_oneAccountViewModel);
-
-                if (_oneAccountViewModel.IsSavePressed)
-                    KeeperDataModel.FlattenAccountTree();
             }
         }
         public void RemoveSelectedAccount()

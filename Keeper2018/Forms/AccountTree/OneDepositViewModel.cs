@@ -34,7 +34,7 @@ namespace Keeper2018
 
         public List<DepositOfferModel> DepositOffers
         {
-            get { return _depositOffers; }
+            get => _depositOffers;
             set
             {
                 if (Equals(value, _depositOffers)) return;
@@ -47,7 +47,7 @@ namespace Keeper2018
 
         public DepositOfferModel SelectedDepositOffer
         {
-            get { return _selectedDepositOffer; }
+            get => _selectedDepositOffer;
             set
             {
                 if (Equals(value, _selectedDepositOffer) || value == null) return;
@@ -128,7 +128,6 @@ namespace Keeper2018
         {
             decimal rate;
             var conditionses = SelectedDepositOffer.ConditionsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
-            //     if (conditionses != null)
             {
                 var line = conditionses.Value.RateLines.Last();
                 rate = line.Rate;

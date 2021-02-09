@@ -18,7 +18,6 @@ namespace Keeper2018
 
         public new string Name => (string)Header;
         public bool IsDeposit => Deposit != null;
-        public bool IsCard => Deposit?.Card != null;
 
         public override string ToString() => (string)Header;
         public int CompareTo(object obj)

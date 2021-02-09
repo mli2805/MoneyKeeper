@@ -32,7 +32,6 @@ namespace Keeper2018
                 _shellPartsBinder.IsBusy = true;
                 _shellPartsBinder.FooterVisibility = Visibility.Visible;
 
-                _keeperDataModel.FlattenAccountTree();
                 var bin = MapBack();
 
                 var result3 = await BinSerializer.Serialize(bin);
@@ -95,7 +94,7 @@ namespace Keeper2018
             {
                 Rates = _keeperDataModel.Rates.Values.ToList(),
 
-                AccountPlaneList = _keeperDataModel.AccountPlaneList,
+                AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),
                 Deposits = deposits,
                 PayCards = deposits.Where(d => d.Card != null).Select(c => c.Card).ToList(),
                 
