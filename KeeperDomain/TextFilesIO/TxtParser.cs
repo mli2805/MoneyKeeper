@@ -45,9 +45,8 @@ namespace KeeperDomain
             account.Id = Convert.ToInt32(substrings[0]);
             account.Header = substrings[1].Trim();
             account.OwnerId = Convert.ToInt32(substrings[2]);
-            account.IsFolder = Convert.ToBoolean(substrings[3]);
-            account.IsExpanded = Convert.ToBoolean(substrings[4]);
-            account.Comment = substrings[5].Trim();
+            account.IsExpanded = Convert.ToBoolean(substrings[3]);
+            account.Comment = substrings[4].Trim();
             return account;
         }
 

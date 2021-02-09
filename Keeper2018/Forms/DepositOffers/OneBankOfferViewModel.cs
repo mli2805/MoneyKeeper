@@ -13,7 +13,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
-        public List<Account> Banks { get; set; }
+        public List<AccountModel> Banks { get; set; }
         public List<CurrencyCode> Currencies { get; set; }
         public DepositOfferModel ModelInWork { get; set; }
 
@@ -33,8 +33,7 @@ namespace Keeper2018
 
         public void Initialize(DepositOfferModel model)
         {
-            var bankFolder = _keeperDataModel.AccountPlaneList.First(a => a.Name == "Банки");
-            Banks = new List<Account>(_keeperDataModel.AccountPlaneList.Where(a => a.OwnerId == bankFolder.Id));
+            Banks = _keeperDataModel.AcMoDict[220].Children;
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             ModelInWork = model;
             ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();

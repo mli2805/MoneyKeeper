@@ -45,7 +45,6 @@ namespace Keeper2018
                 Id = model.Id,
                 OwnerId = model.Owner?.Id ?? 0,
                 Header = (string)model.Header,
-                IsFolder = model.IsFolder,
                 IsExpanded = model.IsExpanded,
                 Deposit = model.Deposit,
             };

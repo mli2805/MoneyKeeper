@@ -9,25 +9,17 @@ namespace KeeperDomain
         public string Header { get; set; }
         public int OwnerId { get; set; }
         public bool IsExpanded;
-        public bool IsFolder { get; set; }
+
         public Deposit Deposit { get; set; }
 
-        public bool IsDeposit => Deposit != null;
-        public bool IsCard => Deposit?.Card != null;
-        public string Name
-        {
-            get => Header;
-            
-        }
-
-        public override string ToString() => Name;
+        public override string ToString() => Header;
         public string Comment { get; set; }
 
         public string Dump(int level)
         {
-            var shiftedName = new string(' ', level * 2) + Name;
+            var shiftedName = new string(' ', level * 2) + Header;
             return Id + " ; " + shiftedName + " ; " + OwnerId + " ; " +
-                   IsFolder + " ; " + IsExpanded + " ; " + (Comment?.Replace("\r\n", "|") ?? "");
+                   IsExpanded + " ; " + (Comment?.Replace("\r\n", "|") ?? "");
         }
 
     }

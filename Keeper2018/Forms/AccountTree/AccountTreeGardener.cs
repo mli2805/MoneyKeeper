@@ -73,7 +73,7 @@ namespace Keeper2018
             if (account.Children.Any()) return AccountCantBeDeletedReasons.HasChildren;
             if (dataModel.Transactions.Values.Any(t =>
                 t.MyAccount.Id == account.Id || 
-                t.MySecondAccount.Id == account.Id ||
+                (t.MySecondAccount != null && t.MySecondAccount.Id == account.Id) ||
                 t.Tags != null && t.Tags.Select(tag=>tag.Id).Contains(account.Id)))
                 return AccountCantBeDeletedReasons.HasRelatedTransactions;
             return AccountCantBeDeletedReasons.CanDelete;

@@ -75,7 +75,7 @@ namespace Keeper2018
 
         public void RemoveSelectedOffer()
         {
-            if (_dataModel.AccountPlaneList.Any(a => a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
+            if (_dataModel.AcMoDict.Values.Any(a=>a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
             {
                 var strs = new List<string> {"Существует как минимум один депозит открытый по этой оферте.", "", "Сначала удалите депозиты."};
                 var vm = new MyMessageBoxViewModel(MessageType.Error, strs);
