@@ -55,13 +55,14 @@ namespace KeeperDomain
         {
             var deposit = new Deposit();
             var substrings = s.Split(';');
-            deposit.MyAccountId = Convert.ToInt32(substrings[0]);
-            deposit.DepositOfferId = Convert.ToInt32(substrings[1]);
-            deposit.Serial = substrings[2].Trim();
-            deposit.StartDate = DateTime.ParseExact(substrings[3].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            deposit.FinishDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            deposit.ShortName = substrings[5].Trim();
-            deposit.Comment = substrings[6].Replace("|", "\r\n");
+            deposit.Id = int.Parse(substrings[0].Trim());
+            deposit.MyAccountId = Convert.ToInt32(substrings[1]);
+            deposit.DepositOfferId = Convert.ToInt32(substrings[2]);
+            deposit.Serial = substrings[3].Trim();
+            deposit.StartDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            deposit.FinishDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            deposit.ShortName = substrings[6].Trim();
+            deposit.Comment = substrings[7].Replace("|", "\r\n");
             return deposit;
         }
 
@@ -69,11 +70,12 @@ namespace KeeperDomain
         {
             var card = new PayCard();
             var substrings = s.Split(';');
-            card.MyAccountId = Convert.ToInt32(substrings[0]);
-            card.CardNumber = substrings[1].Trim();
-            card.CardHolder = substrings[2].Trim();
-            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[3]);
-            card.IsPayPass = Convert.ToBoolean(substrings[4]);
+            card.Id = Convert.ToInt32(substrings[0]);
+            card.MyAccountId = Convert.ToInt32(substrings[1]);
+            card.CardNumber = substrings[2].Trim();
+            card.CardHolder = substrings[3].Trim();
+            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[4]);
+            card.IsPayPass = Convert.ToBoolean(substrings[5]);
             return card;
         }
 

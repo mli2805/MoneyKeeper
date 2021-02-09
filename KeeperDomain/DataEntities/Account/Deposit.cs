@@ -18,9 +18,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-//            if (MyAccountId == 0)
-//                MessageBox.Show($"MyAccountId == 0    {StartDate}  {FinishDate}  {ShortName}  {Comment}");
-            return MyAccountId + " ; " + DepositOfferId + " ; " + Serial +" ; " + 
+            return Id + " ; " + MyAccountId + " ; " + DepositOfferId + " ; " + Serial +" ; " + 
                    $"{StartDate.Date:dd/MM/yyyy}" + " ; " + $"{FinishDate.Date:dd/MM/yyyy}" + " ; " + 
                    ShortName + " ; " + (Comment?.Replace("\r\n", "|") ?? "");
         }

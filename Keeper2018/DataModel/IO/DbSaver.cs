@@ -86,14 +86,19 @@ namespace Keeper2018
 
         private KeeperBin MapBack()
         {
+            var deposits = _keeperDataModel.AcMoDict.Values
+                .Where(a => a.Deposit != null)
+                .Select(ac => ac.Deposit)
+                .ToList();
+
             var bin = new KeeperBin
             {
                 Rates = _keeperDataModel.Rates.Values.ToList(),
 
                 AccountPlaneList = _keeperDataModel.AccountPlaneList,
-                Deposits = _keeperDataModel.AccountPlaneList.Where(a => a.IsDeposit).Select(ac => ac.Deposit).ToList(),
-                PayCards = _keeperDataModel.AccountPlaneList.Where(a => a.IsCard).Select(ac => ac.Deposit.Card).ToList(),
-
+                Deposits = deposits,
+                PayCards = deposits.Where(d => d.Card != null).Select(c => c.Card).ToList(),
+                
                 Transactions = _keeperDataModel.Transactions.Values.Select(t => t.Map()).ToList(),
 
                 TagAssociations = _keeperDataModel.TagAssociations,

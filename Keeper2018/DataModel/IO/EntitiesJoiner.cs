@@ -8,13 +8,13 @@ namespace Keeper2018
     {
         public static List<Account> JoinAccountParts(this KeeperBin bin)
         {
-            var result = bin.AccountPlaneList;
+            var accounts = bin.AccountPlaneList;
             foreach (var deposit in bin.Deposits)
-                result.First(a => a.Id == deposit.MyAccountId).Deposit = deposit;
+                accounts.First(a => a.Id == deposit.MyAccountId).Deposit = deposit;
 
             foreach (var card in bin.PayCards)
-                result.First(a => a.Id == card.MyAccountId).Deposit.Card = card;
-            return result;
+                accounts.First(a => a.Id == card.MyAccountId).Deposit.Card = card;
+            return accounts;
         }
 
         public static List<CarVm> JoinCarParts(this KeeperBin bin)

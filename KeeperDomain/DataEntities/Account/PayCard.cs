@@ -16,7 +16,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return  MyAccountId + " ; " + CardNumber + " ; " + CardHolder + " ; " + 
+            return  Id + " ; " + MyAccountId + " ; " + CardNumber + " ; " + CardHolder + " ; " + 
                     PaymentSystem + " ; " + IsPayPass;
         }
 

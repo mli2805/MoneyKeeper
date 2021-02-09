@@ -55,15 +55,15 @@ namespace Keeper2018
             return Owner.IsC(accountModel);
         }
 
-        public bool IsMyAccount => Is(158);
+        // public bool IsMyAccount => Is(158);
         public bool IsTag => Is(185) || Is(189);
 
-        public string Dump(int level)
-        {
-            var shiftedName = new string(' ', level * 2) + Name;
-            return Id + " ; " + shiftedName + " ; " + (Owner?.Id ?? 0) + " ; " +
-                   IsFolder + " ; " + IsExpanded;
-        }
+        // public string Dump(int level)
+        // {
+        //     var shiftedName = new string(' ', level * 2) + Name;
+        //     return Id + " ; " + shiftedName + " ; " + (Owner?.Id ?? 0) + " ; " +
+        //            IsFolder + " ; " + IsExpanded;
+        // }
 
     }
 
