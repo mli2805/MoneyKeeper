@@ -12,7 +12,7 @@ namespace Keeper2018
             {
                 Id = account.Id,
                 IsExpanded = account.IsExpanded,
-                Deposit = account.Deposit,
+                // Deposit = account.Deposit,
             };
         }
 

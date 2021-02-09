@@ -71,7 +71,6 @@ namespace Keeper2018
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
             _accountModel = accountModel;
-            // DepositOffers = _dataModel.DepositOffers.Select(x => x.Map(_dataModel.AccountPlaneList)).ToList();
             DepositOffers = _dataModel.DepositOffers;
             DepositInWork = accountModel.Deposit;
             DepositInWork.MyAccountId = accountModel.Id;

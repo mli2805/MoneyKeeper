@@ -6,17 +6,6 @@ namespace Keeper2018
 {
     public static class EntitiesJoiner
     {
-        public static List<Account> JoinAccountParts(this KeeperBin bin)
-        {
-            var accounts = bin.AccountPlaneList;
-            foreach (var deposit in bin.Deposits)
-                accounts.First(a => a.Id == deposit.MyAccountId).Deposit = deposit;
-
-            foreach (var card in bin.PayCards)
-                accounts.First(a => a.Id == card.MyAccountId).Deposit.Card = card;
-            return accounts;
-        }
-
         public static List<CarVm> JoinCarParts(this KeeperBin bin)
         {
             var result = bin.Cars.Select(c => c.Map()).ToList();

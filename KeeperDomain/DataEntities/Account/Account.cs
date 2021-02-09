@@ -10,9 +10,7 @@ namespace KeeperDomain
         public int OwnerId { get; set; }
         public bool IsExpanded;
 
-        public Deposit Deposit { get; set; }
-
-        public override string ToString() => Header;
+        // public override string ToString() => Header;
         public string Comment { get; set; }
 
         public string Dump(int level)

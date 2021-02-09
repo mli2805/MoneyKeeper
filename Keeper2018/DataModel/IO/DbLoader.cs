@@ -65,8 +65,8 @@ namespace Keeper2018
             foreach (var rate in bin.Rates)
                 _keeperDataModel.Rates.Add(rate.Date, rate);
 
-            _keeperDataModel.AccountPlaneList = bin.JoinAccountParts();
-            _keeperDataModel.FillInAccountTreeAndDict();
+            _keeperDataModel.AccountPlaneList = bin.AccountPlaneList;
+            _keeperDataModel.FillInAccountTreeAndDict(bin);
 
             _keeperDataModel.Transactions = new Dictionary<int, TransactionModel>();
             foreach (var transaction in bin.Transactions)

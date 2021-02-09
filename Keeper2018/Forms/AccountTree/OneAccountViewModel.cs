@@ -17,7 +17,7 @@ namespace Keeper2018
             AccountInWork = accountInWork;
             _isInAddMode = isInAddMode;
 
-            ParentFolder = AccountInWork.Owner.Name;
+            ParentFolder = AccountInWork.Owner == null ? "Корневой счет" : AccountInWork.Owner.Name;
             _oldName = accountInWork.Name;
         }
 
