@@ -18,7 +18,11 @@ namespace Keeper2018
 
                 accountModel.Deposit = bin.Deposits.FirstOrDefault(d => d.MyAccountId == accountModel.Id);
                 if (accountModel.Deposit != null)
-                    accountModel.Deposit.Card = bin.PayCards.FirstOrDefault(c => c.MyAccountId == accountModel.Id);
+                {
+                    accountModel.Deposit.Card = bin.PayCards.FirstOrDefault(c => c.DepositId == accountModel.Deposit.Id);
+                    if (accountModel.Deposit.Card != null)
+                        accountModel.Deposit.Card.DepositId = accountModel.Deposit.Id;
+                }
 
                 if (account.OwnerId == 0)
                     dataModel.AccountsTree.Add(accountModel);

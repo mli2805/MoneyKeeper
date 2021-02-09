@@ -6,7 +6,7 @@ namespace KeeperDomain
     public class PayCard
     {
         public int Id { get; set; }
-        public int MyAccountId { get; set; }
+        public int DepositId { get; set; }
 
         public string CardNumber { get; set; }
         public string CardHolder { get; set; }
@@ -16,7 +16,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return  Id + " ; " + MyAccountId + " ; " + CardNumber + " ; " + CardHolder + " ; " + 
+            return  Id + " ; " + DepositId + " ; " + CardNumber + " ; " + CardHolder + " ; " + 
                     PaymentSystem + " ; " + IsPayPass;
         }
 

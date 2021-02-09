@@ -70,7 +70,7 @@ namespace KeeperDomain
             var card = new PayCard();
             var substrings = s.Split(';');
             card.Id = Convert.ToInt32(substrings[0]);
-            card.MyAccountId = Convert.ToInt32(substrings[1]);
+            card.DepositId = Convert.ToInt32(substrings[1]);
             card.CardNumber = substrings[2].Trim();
             card.CardHolder = substrings[3].Trim();
             card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[4]);

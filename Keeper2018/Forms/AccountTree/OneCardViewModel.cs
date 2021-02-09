@@ -22,18 +22,15 @@ namespace Keeper2018
             _accountModel = accountModel;
             PaymentSystems = Enum.GetValues(typeof(PaymentSystem)).OfType<PaymentSystem>().ToList();
 
-            if (isInAddMode)
+            CardInWork.DepositId = _accountModel.Deposit.Id;
+            if (!isInAddMode)
             {
-                CardInWork.MyAccountId = _accountModel.Id;
-            }
-            else
-            {
-                CardInWork.MyAccountId = _accountModel.Id;
                 CardInWork.CardNumber = _accountModel.Deposit.Card.CardNumber;
                 CardInWork.CardHolder = _accountModel.Deposit.Card.CardHolder;
                 CardInWork.PaymentSystem = _accountModel.Deposit.Card.PaymentSystem;
                 CardInWork.IsPayPass = _accountModel.Deposit.Card.IsPayPass;
             }
+
         }
 
         protected override void OnViewLoaded(object view)
