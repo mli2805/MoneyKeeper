@@ -9,7 +9,7 @@ namespace KeeperDomain
         {
             var rate = new CurrencyRates();
             var substrings = s.Split(';');
-            rate.Id = Convert.ToInt32(substrings[0]);
+            rate.Id = int.Parse(substrings[0]);
             rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             rate.NbRates = NbRbRatesFromString(substrings[2]);
             rate.CbrRate.Usd = OneRateFromString(substrings[3]);
@@ -42,9 +42,9 @@ namespace KeeperDomain
         {
             var account = new Account();
             var substrings = s.Split(';');
-            account.Id = Convert.ToInt32(substrings[0]);
+            account.Id = int.Parse(substrings[0]);
             account.Header = substrings[1].Trim();
-            account.OwnerId = Convert.ToInt32(substrings[2]);
+            account.OwnerId = int.Parse(substrings[2]);
             account.IsExpanded = Convert.ToBoolean(substrings[3]);
             account.Comment = substrings[4].Trim();
             return account;
@@ -55,8 +55,8 @@ namespace KeeperDomain
             var deposit = new Deposit();
             var substrings = s.Split(';');
             deposit.Id = int.Parse(substrings[0].Trim());
-            deposit.MyAccountId = Convert.ToInt32(substrings[1]);
-            deposit.DepositOfferId = Convert.ToInt32(substrings[2]);
+            deposit.MyAccountId = int.Parse(substrings[1]);
+            deposit.DepositOfferId = int.Parse(substrings[2]);
             deposit.Serial = substrings[3].Trim();
             deposit.StartDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             deposit.FinishDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
@@ -69,8 +69,8 @@ namespace KeeperDomain
         {
             var card = new PayCard();
             var substrings = s.Split(';');
-            card.Id = Convert.ToInt32(substrings[0]);
-            card.DepositId = Convert.ToInt32(substrings[1]);
+            card.Id = int.Parse(substrings[0]);
+            card.DepositId = int.Parse(substrings[1]);
             card.CardNumber = substrings[2].Trim();
             card.CardHolder = substrings[3].Trim();
             card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[4]);
@@ -97,23 +97,11 @@ namespace KeeperDomain
             tran.CurrencyInReturn = substrings[10].Trim() != ""
                 ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[10])
                 : CurrencyCode.USD;
-            // tran.Tags = TagsFromString(substrings[11].Trim());
             tran.Tags = substrings[11].Trim();
             tran.Comment = substrings[12].Trim();
 
             return tran;
         }
-
-        // private static List<int> TagsFromString(string str)
-        // {
-        //     var tags = new List<int>();
-        //     if (str == "") return tags;
-        //
-        //     var substrings = str.Split('|');
-        //     tags.AddRange(substrings.Select(substring => int.Parse(substring.Trim())));
-        //
-        //     return tags;
-        // }
 
         public static TagAssociation TagAssociationFromString(this string s)
         {
@@ -132,8 +120,8 @@ namespace KeeperDomain
             var substrings = s.Split(';');
             return new DepositOffer()
             {
-                Id = Convert.ToInt32(substrings[0]),
-                BankId = Convert.ToInt32(substrings[1]),
+                Id = int.Parse(substrings[0]),
+                BankId = int.Parse(substrings[1]),
                 Title = substrings[2].Trim(),
                 IsNotRevocable = bool.Parse(substrings[3].Trim()),
                 MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]),
@@ -145,8 +133,8 @@ namespace KeeperDomain
         {
             var substrings = str.Split(';');
             return new DepositConditions(
-                Convert.ToInt32(substrings[0]),
-                Convert.ToInt32(substrings[1]),
+                int.Parse(substrings[0]),
+                int.Parse(substrings[1]),
                 DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture))
             {
                 Comment = substrings[3].Trim(),
