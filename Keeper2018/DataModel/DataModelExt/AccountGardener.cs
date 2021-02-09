@@ -20,7 +20,6 @@ namespace Keeper2018
                 {
                     var ownerModel = dataModel.AcMoDict[account.OwnerId];
                     ownerModel.Items.Add(accountModel);
-                    ownerModel.IsFolder = true;
                     accountModel.Owner = ownerModel;
                 }
             }

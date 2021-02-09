@@ -32,7 +32,7 @@ namespace Keeper2018
             IsExpanded = true;
         }
 
-        public bool IsFolder { get; set; }
+        public bool IsFolder => Children.Any();
 
         public bool Is(AccountModel accountModel)
         {
