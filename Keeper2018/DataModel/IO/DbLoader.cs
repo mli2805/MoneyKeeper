@@ -71,12 +71,11 @@ namespace Keeper2018
             foreach (var transaction in bin.Transactions)
                 _keeperDataModel.Transactions.Add(transaction.Id, transaction.Map(_keeperDataModel.AcMoDict));
 
-            _keeperDataModel.Fuellings = bin.Fuellings;
-            _keeperDataModel.FuellingJoinTransaction();
+            _keeperDataModel.FuellingJoinTransaction(bin.Fuellings);
 
             _keeperDataModel.TagAssociations = bin.TagAssociations;
             _keeperDataModel.Cars = bin.JoinCarParts();
-            _keeperDataModel.DepositOffers = bin.JoinDepoParts();
+            _keeperDataModel.DepositOffers = bin.JoinDepoParts(_keeperDataModel.AcMoDict);
         }
 
     }

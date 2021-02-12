@@ -20,7 +20,6 @@ namespace Keeper2018
                 AmountInReturn = transactionModel.AmountInReturn,
                 Currency = transactionModel.Currency,
                 CurrencyInReturn = transactionModel.CurrencyInReturn,
-                // Tags = transactionModel.Tags.Select(t => t.Id).ToList(),
                 Tags = transactionModel.Tags.MapTags(),
                 Comment = transactionModel.Comment,
             };
@@ -46,7 +45,6 @@ namespace Keeper2018
                 OwnerId = model.Owner?.Id ?? 0,
                 Header = (string)model.Header,
                 IsExpanded = model.IsExpanded,
-                // Deposit = model.Deposit,
             };
         }
 
@@ -89,6 +87,17 @@ namespace Keeper2018
                 CarId = yearMileageVm.CarId,
                 YearNumber = yearMileageVm.YearNumber,
                 Mileage = yearMileageVm.Mileage
+            };
+        }
+
+        public static Fuelling Map(this FuellingVm fuellingVm)
+        {
+            return new Fuelling()
+            {
+                Id = fuellingVm.CarAccountId,
+                TransactionId = fuellingVm.Transaction.Id,
+                Volume = fuellingVm.Volume,
+                FuelType = fuellingVm.FuelType,
             };
         }
     }

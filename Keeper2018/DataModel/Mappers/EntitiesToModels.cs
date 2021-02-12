@@ -12,15 +12,14 @@ namespace Keeper2018
             {
                 Id = account.Id,
                 IsExpanded = account.IsExpanded,
-                // Deposit = account.Deposit,
             };
         }
 
-        public static DepositOfferModel Map(this DepositOffer depositOffer, List<Account> accountPlaneList)
+        public static DepositOfferModel Map(this DepositOffer depositOffer, Dictionary<int, AccountModel> acMoDict)
         {
             return new DepositOfferModel(depositOffer.Id)
             {
-                Bank = accountPlaneList.First(a=>a.Id == depositOffer.BankId),
+                Bank = acMoDict[depositOffer.BankId],
                 Title = depositOffer.Title,
                 IsNotRevocable = depositOffer.IsNotRevocable,
                 MainCurrency = depositOffer.MainCurrency,

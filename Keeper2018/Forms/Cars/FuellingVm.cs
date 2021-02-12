@@ -6,7 +6,7 @@ namespace Keeper2018
     public class FuellingVm
     {
         public int Id { get; set; } //PK
-        public Transaction Transaction { get; set; }
+        public TransactionModel Transaction { get; set; }
 
         public DateTime Timestamp { get; set; }
         public double Volume { get; set; }

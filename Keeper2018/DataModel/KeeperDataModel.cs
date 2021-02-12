@@ -11,7 +11,7 @@ namespace Keeper2018
         public Dictionary<DateTime, CurrencyRates> Rates { get; set; }
         public Dictionary<int, TransactionModel> Transactions { get; set; }
         public List<TagAssociation> TagAssociations { get; set; }
-        public List<Fuelling> Fuellings { get; set; }
+        // public List<Fuelling> Fuellings { get; set; }
 
 
         //---------------------------------------------------------------

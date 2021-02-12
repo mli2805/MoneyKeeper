@@ -7,7 +7,7 @@ namespace Keeper2018
     public class DepositOfferModel
     {
         public int Id { get; set; }
-        public Account Bank { get; set; }
+        public AccountModel Bank { get; set; }
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
         public CurrencyCode MainCurrency { get; set; }

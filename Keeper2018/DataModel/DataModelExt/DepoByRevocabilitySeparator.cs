@@ -32,7 +32,7 @@ namespace Keeper2018
             var result = new List<AccountModel>();
             foreach (var child in folder.Children)
             {
-                if (child.IsFolder)
+                if (child.Children.Any())
                     result.AddRange(GetFoldersTerminalLeaves(child));
                 else
                     result.Add(child);

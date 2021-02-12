@@ -57,7 +57,7 @@
         <Button Name="ShowMonthAnalysisForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Month analysis">
             <Image Source="../../Resources/month_analysis.png" Width="24" Height="24" />
         </Button>
-        <Button Name="ShowDepositOffersForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="BankId offers">
+        <Button Name="ShowDepositOffersForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Bank offers">
             <Image Source="../../Resources/bank_offer.png" Width="24" Height="24" />
         </Button>
         <Button Name="ShowTagAssociationsForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Tag associations">

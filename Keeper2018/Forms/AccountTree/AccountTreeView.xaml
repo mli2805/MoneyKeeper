@@ -21,13 +21,13 @@
                 <ContextMenu>
                   
                     <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
+                              Background="White">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Добавить депозит" cal:Message.Attach="AddAccountDeposit" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
+                              Background="White">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>

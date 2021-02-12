@@ -31,8 +31,6 @@ namespace Keeper2018
             IsExpanded = true;
         }
 
-        public bool IsFolder => Children.Any();
-
         public bool Is(AccountModel accountModel)
         {
             if (Equals(accountModel)) return true;

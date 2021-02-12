@@ -101,7 +101,7 @@ namespace Keeper2018
 
         private void ShowAccount(BalanceOrTraffic mode)
         {
-            var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
+            var isLeaf = !ShellPartsBinder.SelectedAccountModel.Children.Any();
 
             var trafficCalculator = isLeaf
                 ? (ITraffic)new TrafficOfAccountCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod)
@@ -116,7 +116,7 @@ namespace Keeper2018
 
         private void ShowTag()
         {
-            var isLeaf = !ShellPartsBinder.SelectedAccountModel.IsFolder;
+            var isLeaf = !ShellPartsBinder.SelectedAccountModel.Children.Any();
 
             var trafficCalculator = isLeaf
                 ? (ITraffic) new TrafficOfTagCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod):

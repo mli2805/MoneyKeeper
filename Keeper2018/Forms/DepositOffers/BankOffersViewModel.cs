@@ -36,7 +36,6 @@ namespace Keeper2018
         public void Initialize()
         {
             Rows = new ObservableCollection<DepositOfferModel>
-                // (_dataModel.DepositOffers.Select(x => x.Map(_dataModel.AccountPlaneList)));
                 (_dataModel.DepositOffers);
             SelectedDepositOffer = Rows.Last();
         }

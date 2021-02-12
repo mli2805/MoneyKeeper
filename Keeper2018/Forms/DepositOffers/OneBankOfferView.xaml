@@ -6,11 +6,13 @@
         xmlns:keeper2018="clr-namespace:Keeper2018"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        SizeToContent="Height" Width="390" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance keeper2018:OneBankOfferViewModel}">
+        SizeToContent="Height" Width="390" WindowStartupLocation="CenterScreen" 
+        d:DataContext="{d:DesignInstance keeper2018:OneBankOfferViewModel}">
     <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5" Height="32">
             <TextBlock Text="Банк" Margin="5,5,5,5" Width="100"/>
-            <ComboBox Margin="5" ItemsSource="{Binding Banks}" SelectedItem="{Binding ModelInWork.Bank}" Width="240"/>
+            <ComboBox Margin="5" ItemsSource="{Binding Banks}" 
+                      SelectedItem="{Binding ModelInWork.Bank}" Width="240"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5" Height="30">
             <TextBlock Text="Название" Margin="5,5,5,5" Width="100"/>
