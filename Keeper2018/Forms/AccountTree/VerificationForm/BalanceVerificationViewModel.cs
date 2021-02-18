@@ -31,7 +31,8 @@ namespace Keeper2018
             _total = 0;
             _trans = _dataModel.Transactions.Values
                 .OrderBy(t => t.Timestamp)
-                .Where(t => t.MyAccount.Id == accountModel.Id || t.MySecondAccount.Id == accountModel.Id)
+                .Where(t => t.MyAccount.Id == accountModel.Id || 
+                            (t.MySecondAccount != null && t.MySecondAccount.Id == accountModel.Id))
                 .ToArray();
             _transIndex = 0;
             while (true)

@@ -292,7 +292,8 @@ namespace Keeper2018
             {
                 TranInWork.MySecondAccount = _dataModel.AcMoDict[MySecondAccNameSelectorVm.MyAccName.Id];
                 MyAmountInReturnInputControlVm.Currency =
-                    _dataModel.Transactions.Values.LastOrDefault(t => t.MyAccount.Id == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                    _dataModel.Transactions.Values
+                        .LastOrDefault(t => t.MyAccount.Id == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
             }
         }
 
