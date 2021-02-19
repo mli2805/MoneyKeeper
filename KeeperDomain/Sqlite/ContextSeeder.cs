@@ -26,8 +26,7 @@ namespace KeeperDomain
                     await dbContext.Fuellings.AddRangeAsync(bin.Fuellings);
 
                     await dbContext.DepositOffers.AddRangeAsync(bin.DepositOffers);
-                    await dbContext.DepositConditions.AddRangeAsync(bin.DepositConditions);
-                    await dbContext.DepositCalculationRules.AddRangeAsync(bin.DepositCalculationRules);
+                    await dbContext.DepositConditions.AddRangeAsync(bin.DepoNewConds);
                     await dbContext.DepositRateLines.AddRangeAsync(bin.DepositRateLines);
 
                     await dbContext.SaveChangesAsync();

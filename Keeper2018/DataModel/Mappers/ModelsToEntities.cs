@@ -61,6 +61,28 @@ namespace Keeper2018
             };
         }
 
+        public static DepoNewConds Map(this  DepoCondsModel depoCondsModel)
+        {
+            return new DepoNewConds()
+            {
+                Id = depoCondsModel.Id,
+                DepositOfferId = depoCondsModel.DepositOfferId,
+                DateFrom = depoCondsModel.DateFrom,
+            
+                IsFactDays = depoCondsModel.IsFactDays,
+                EveryStartDay = depoCondsModel.EveryStartDay,
+                EveryFirstDayOfMonth = depoCondsModel.EveryFirstDayOfMonth,
+                EveryLastDayOfMonth = depoCondsModel.EveryLastDayOfMonth,
+                IsCapitalized = depoCondsModel.IsCapitalized,
+                IsRateFixed = depoCondsModel.IsRateFixed,
+                HasAdditionalProcent = depoCondsModel.HasAdditionalProcent,
+                AdditionalProcent = depoCondsModel.AdditionalProcent,
+            
+                Comment = depoCondsModel.Comment,
+            };
+        }
+
+
         public static Car Map(this CarVm carVm)
         {
             return new Car()

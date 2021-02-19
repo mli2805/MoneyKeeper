@@ -29,20 +29,21 @@ namespace Keeper2018
             var result = bin.DepositOffers.Select(o => o.Map(acMoDict)).ToList();
             foreach (var depoOffer in result)
             {
-                foreach (var depoCondition in bin.DepositConditions.Where(c => c.DepositOfferId == depoOffer.Id))
+                foreach (var depoCondition in bin.DepoNewConds.Where(c => c.DepositOfferId == depoOffer.Id))
                 {
-                    depoCondition.CalculationRules =
-                        bin.DepositCalculationRules.First(cr => cr.DepositOfferConditionsId == depoCondition.Id);
+                    var depoCondsModel = depoCondition.Map();
 
-                    depoCondition.RateLines = bin.DepositRateLines
+                    depoCondsModel.RateLines = bin.DepositRateLines
                         .Where(l => l.DepositOfferConditionsId == depoCondition.Id)
                         .OrderBy(r => r.DateFrom)
                         .ThenBy(r => r.AmountFrom).ToList();
 
-                    depoOffer.ConditionsMap.Add(depoCondition.DateFrom, depoCondition);
+                    depoOffer.CondsMap.Add(depoCondition.DateFrom, depoCondsModel);
                 }
             }
             return result;
         }
+        
+      
     }
 }

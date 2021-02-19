@@ -141,6 +141,30 @@ namespace KeeperDomain
             };
         }
 
+        public static DepoNewConds DepoNewCondsFromString(this string str)
+        {
+            var substrings = str.Split(';');
+            var result = new DepoNewConds()
+            {
+                Id = int.Parse(substrings[0]),
+                DepositOfferId = int.Parse(substrings[1]),
+                DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
+
+                IsFactDays = bool.Parse(substrings[3]),
+                EveryStartDay = bool.Parse(substrings[4]),
+                EveryFirstDayOfMonth = bool.Parse(substrings[5]),
+                EveryLastDayOfMonth = bool.Parse(substrings[6]),
+                IsCapitalized = bool.Parse(substrings[7]),
+                IsRateFixed = bool.Parse(substrings[8]),
+                HasAdditionalProcent = bool.Parse(substrings[9]),
+                AdditionalProcent = double.Parse(substrings[10]),
+
+                Comment = substrings[11].Trim()
+            };
+               
+            return result;
+        }
+
         public static DepositCalculationRules NewDepoCalcRulesFromString(this string str)
         {
             var rules = new DepositCalculationRules();

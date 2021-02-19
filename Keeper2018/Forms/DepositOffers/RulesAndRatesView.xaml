@@ -26,22 +26,22 @@
         <Button Name="Close" DockPanel.Dock="Bottom" Margin="5,10" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
         <StackPanel DockPanel.Dock="Bottom" Margin="5">
             <CheckBox Name="IsFactDays" Content="исходя из фактического количества дней в году" Margin="5"
-              IsChecked="{Binding Conditions.CalculationRules.IsFactDays, Mode=TwoWay}"/>
+              IsChecked="{Binding Conditions.IsFactDays, Mode=TwoWay}"/>
             <CheckBox Name="IsRateFixed" Content="процентная ставка фиксированная" Margin="5"
-              IsChecked="{Binding Conditions.CalculationRules.IsRateFixed, Mode=TwoWay}"/>
+              IsChecked="{Binding Conditions.IsRateFixed, Mode=TwoWay}"/>
             <CheckBox Name="EveryFirstDayOfMonth" Content="каждое первое число месяца" Margin="5"
-              IsChecked="{Binding Conditions.CalculationRules.EveryFirstDayOfMonth, Mode=TwoWay}"/>
+              IsChecked="{Binding Conditions.EveryFirstDayOfMonth, Mode=TwoWay}"/>
             <CheckBox Name="EveryLastDayOfMonth" Content="каждый последний день месяца" Margin="5"
-              IsChecked="{Binding Conditions.CalculationRules.EveryLastDayOfMonth, Mode=TwoWay}"/>
+              IsChecked="{Binding Conditions.EveryLastDayOfMonth, Mode=TwoWay}"/>
             <CheckBox Name="EveryStartDay" Content="каждое число открытия" Margin="5"
-              IsChecked="{Binding Conditions.CalculationRules.EveryStartDay, Mode=TwoWay}"/>
+              IsChecked="{Binding Conditions.EveryStartDay, Mode=TwoWay}"/>
             <CheckBox Name="IsCapitalized" Content="проценты капитализируются" Margin="5"
-              IsChecked="{Binding Conditions.CalculationRules.IsCapitalized, Mode=TwoWay}"/>
+              IsChecked="{Binding Conditions.IsCapitalized, Mode=TwoWay}"/>
             <StackPanel Orientation="Horizontal">
                 <CheckBox Name="HasAdditionalProcent" Content="доп процент в конце срока" Margin="5"
-                         IsChecked="{Binding Conditions.CalculationRules.HasAdditionalProcent, Mode=TwoWay}"/>
+                         IsChecked="{Binding Conditions.HasAdditionalProcent, Mode=TwoWay}"/>
                 <TextBox Name="AdditionalProcent" Margin="5" Width="100"
-                        Text="{Binding Conditions.CalculationRules.AdditionalProcent, Mode=TwoWay}"/>
+                        Text="{Binding Conditions.AdditionalProcent, Mode=TwoWay}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="5">

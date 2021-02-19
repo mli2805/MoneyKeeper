@@ -26,6 +26,27 @@ namespace Keeper2018
                 Comment = depositOffer.Comment,
             };
         }
+
+        public static DepoCondsModel Map(this DepoNewConds depoConds)
+        {
+            return new DepoCondsModel()
+            {
+                Id = depoConds.Id,
+                DepositOfferId = depoConds.DepositOfferId,
+                DateFrom = depoConds.DateFrom,
+            
+                IsFactDays = depoConds.IsFactDays,
+                EveryStartDay = depoConds.EveryStartDay,
+                EveryFirstDayOfMonth = depoConds.EveryFirstDayOfMonth,
+                EveryLastDayOfMonth = depoConds.EveryLastDayOfMonth,
+                IsCapitalized = depoConds.IsCapitalized,
+                IsRateFixed = depoConds.IsRateFixed,
+                HasAdditionalProcent = depoConds.HasAdditionalProcent,
+                AdditionalProcent = depoConds.AdditionalProcent,
+            
+                Comment = depoConds.Comment,
+            };
+        }
       
         public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict)
         {
@@ -42,7 +63,6 @@ namespace Keeper2018
                 AmountInReturn = transaction.AmountInReturn,
                 Currency = transaction.Currency,
                 CurrencyInReturn = transaction.CurrencyInReturn,
-                // Tags = transaction.Tags.Select(t => acMoDict[t]).ToList(),
                 Tags = transaction.Tags.MapTags(acMoDict),
                 Comment = transaction.Comment,
             };

@@ -10,7 +10,7 @@ namespace Keeper2018
         {
             var deposit = depo.Deposit;
             var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
-            var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditionses = depositOffer.CondsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
             var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
                 t.Value.MyAccount.Id == depo.Id && t.Value.Operation == OperationType.Доход).Value;
             var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
@@ -30,7 +30,7 @@ namespace Keeper2018
 
                 if (date >= lastReceivedRevenueDate)
                 {
-                    var k = GetKoeff(date, conditionses.CalculationRules.IsFactDays);
+                    var k = GetKoeff(date, conditionses.IsFactDays);
                     revenue += k * DayRevenue(depositBalance, conditionses, date);
                 }
 
@@ -75,11 +75,11 @@ namespace Keeper2018
             }
         }
 
-        private static decimal DayRevenue(Balance depoBalance, DepositConditions conditionses, DateTime date)
+        private static decimal DayRevenue(Balance depoBalance, DepoCondsModel conditions, DateTime date)
         {
             var currentAmount = depoBalance.Currencies.FirstOrDefault(c=>!c.Value.Equals(0)).Value;
             var rateLines =
-                conditionses.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
+                conditions.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
                     OrderBy(o => o.DateFrom).ToArray();
 
             int i;
@@ -94,13 +94,13 @@ namespace Keeper2018
 
         private static DateTime RevenueDate(DepositOfferModel depositOffer, Deposit deposit)
         {
-            var conditionses = depositOffer.ConditionsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditionses = depositOffer.CondsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
             var thisMonth = DateTime.Today.Month;
             var thisYear = DateTime.Today.Year;
 
-            if (conditionses.CalculationRules.EveryFirstDayOfMonth)
+            if (conditionses.EveryFirstDayOfMonth)
                 return new DateTime(thisYear, thisMonth, 1);
-            if (conditionses.CalculationRules.EveryLastDayOfMonth)
+            if (conditionses.EveryLastDayOfMonth)
                 return DateTime.Today.GetEndOfMonthForDate();
             var maxDay = DateTime.DaysInMonth(thisYear, thisMonth);
 

@@ -36,7 +36,7 @@ namespace Keeper2018
             Banks = _keeperDataModel.AcMoDict[220].Children;
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             ModelInWork = model;
-            ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             if (ConditionDates.Count > 0) SelectedDate = ConditionDates.Last();
         }
 
@@ -48,19 +48,25 @@ namespace Keeper2018
         public void AddConditions()
         {
             var date = DateTime.Today;
-            while (ModelInWork.ConditionsMap.ContainsKey(date)) date = date.AddDays(1);
+            while (ModelInWork.CondsMap.ContainsKey(date)) date = date.AddDays(1); // че та не работает
 
             var lastIdInDb = _keeperDataModel.GetDepoConditionsMaxId();
-            var lastIdHere = ModelInWork.ConditionsMap.Any() 
-                ? ModelInWork.ConditionsMap.Values.ToList().Max(c=>c.Id) 
+            var lastIdHere = ModelInWork.CondsMap.Any() 
+                ? ModelInWork.CondsMap.Values.ToList().Max(c=>c.Id) 
                 : 0;
             var maxId = Math.Max(lastIdInDb, lastIdHere);
 
-            var depositConditions = new DepositConditions(maxId + 1, ModelInWork.Id, DateTime.Today);
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depositConditions, _keeperDataModel, ModelInWork.ConditionsMap.Keys.ToList());
+            // var depositConditions = new DepositConditions(maxId + 1, ModelInWork.Id, DateTime.Today);
+            var depoCondsModel = new DepoCondsModel()
+            {
+                Id = maxId + 1, 
+                DepositOfferId = ModelInWork.Id,
+                DateFrom = DateTime.Today,
+            };
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depoCondsModel, _keeperDataModel, ModelInWork.CondsMap.Keys.ToList());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
-            ModelInWork.ConditionsMap.Add(depositConditions.DateFrom, depositConditions);
-            ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            ModelInWork.CondsMap.Add(depoCondsModel.DateFrom, depoCondsModel);
+            ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             NotifyOfPropertyChange(nameof(ConditionDates));
         }
 
@@ -68,16 +74,16 @@ namespace Keeper2018
         {
             if (SelectedDate == null) return;
             var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.ConditionsMap[date], _keeperDataModel,
-                ModelInWork.ConditionsMap.Keys.ToList());
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.CondsMap[date], _keeperDataModel,
+                ModelInWork.CondsMap.Keys.ToList());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
-            if (date == ModelInWork.ConditionsMap[date].DateFrom) return;
+            if (date == ModelInWork.CondsMap[date].DateFrom) return;
 
-            var conditions = ModelInWork.ConditionsMap[date];
-            ModelInWork.ConditionsMap.Remove(date);
-            ModelInWork.ConditionsMap.Add(conditions.DateFrom, conditions);
+            var depoCondsModel = ModelInWork.CondsMap[date];
+            ModelInWork.CondsMap.Remove(date);
+            ModelInWork.CondsMap.Add(depoCondsModel.DateFrom, depoCondsModel);
 
-            ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             NotifyOfPropertyChange(nameof(ConditionDates));
         }
 
@@ -86,9 +92,9 @@ namespace Keeper2018
             if (SelectedDate == null) return;
             var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
 
-            ModelInWork.ConditionsMap.Remove(date);
+            ModelInWork.CondsMap.Remove(date);
 
-            ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
+            ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             NotifyOfPropertyChange(nameof(ConditionDates));
         }
 

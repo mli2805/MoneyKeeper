@@ -7,16 +7,7 @@ namespace Keeper2018
         public static int GetDepoConditionsMaxId(this KeeperDataModel dataModel)
         {
             return dataModel.DepositOffers
-                .SelectMany(depositOffer => depositOffer.ConditionsMap.Values)
-                .ToList()
-                .Max(c => c.Id);
-        }
-
-        public static int GetDepoCalcRulesMaxId(this KeeperDataModel dataModel)
-        {
-            return dataModel.DepositOffers
-                .SelectMany(depositOffer => depositOffer.ConditionsMap.Values)
-                .Select(dc => dc.CalculationRules)
+                .SelectMany(depositOffer => depositOffer.CondsMap.Values)
                 .ToList()
                 .Max(c => c.Id);
         }
@@ -24,7 +15,7 @@ namespace Keeper2018
         public static int GetDepoRateLinesMaxId(this KeeperDataModel dataModel)
         {
             return dataModel.DepositOffers
-                .SelectMany(depositOffer => depositOffer.ConditionsMap.Values)
+                .SelectMany(depositOffer => depositOffer.CondsMap.Values)
                 .SelectMany(dc=>dc.RateLines)
                 .ToList()
                 .Max(c => c.Id);

@@ -44,12 +44,11 @@ namespace KeeperDomain
 
                 var depoOffers = bin.DepositOffers.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("depoOffers.txt"), depoOffers);
-                var depoConditions = bin.DepositConditions.Select(o => o.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("depoConditions.txt"), depoConditions);
-                var depoCalcRules = bin.DepositCalculationRules.Select(o => o.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("depoCalcRules.txt"), depoCalcRules);
                 var depoRateLines = bin.DepositRateLines.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("depoRateLines.txt"), depoRateLines);
+                var depoNewConds = bin.DepoNewConds.Select(o => o.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("depoConds.txt"), depoNewConds);
+
 
                 var cars = bin.Cars.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Cars.txt"), cars);
@@ -63,7 +62,7 @@ namespace KeeperDomain
                 return new LibResult(e);
             }
         }
-
+        
         private static List<string> DumpWithOffsets(this KeeperBin bin)
         {
             var result = new List<string>();

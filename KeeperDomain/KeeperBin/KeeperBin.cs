@@ -20,8 +20,9 @@ namespace KeeperDomain
         public List<Fuelling> Fuellings { get; set; }
 
         public List<DepositOffer> DepositOffers { get; set; }
-        public List<DepositConditions> DepositConditions { get; set; }
-        public List<DepositCalculationRules> DepositCalculationRules { get; set; }
         public List<DepositRateLine> DepositRateLines { get; set; }
+
+        public List<DepoNewConds> DepoNewConds { get; set; }
+
     }
 }

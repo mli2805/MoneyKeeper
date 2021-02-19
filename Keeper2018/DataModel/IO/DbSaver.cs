@@ -112,15 +112,24 @@ namespace Keeper2018
             };
 
             bin.DepositRateLines = new List<DepositRateLine>();
-            bin.DepositCalculationRules = new List<DepositCalculationRules>();
-            bin.DepositConditions = new List<DepositConditions>();
+            // bin.DepositCalculationRules = new List<DepositCalculationRules>();
+            // bin.DepositConditions = new List<DepositConditions>();
+
+            bin.DepoNewConds = new List<DepoNewConds>();
+
             foreach (var depositOffer in _keeperDataModel.DepositOffers)
             {
-                foreach (var pair in depositOffer.ConditionsMap)
+                // foreach (var pair in depositOffer.ConditionsMap)
+                // {
+                //     bin.DepositCalculationRules.Add(pair.Value.CalculationRules);
+                //     bin.DepositRateLines.AddRange(pair.Value.RateLines);
+                //     bin.DepositConditions.Add(pair.Value);
+                // }
+
+                foreach (var pair in depositOffer.CondsMap)
                 {
-                    bin.DepositCalculationRules.Add(pair.Value.CalculationRules);
                     bin.DepositRateLines.AddRange(pair.Value.RateLines);
-                    bin.DepositConditions.Add(pair.Value);
+                    bin.DepoNewConds.Add(pair.Value.Map());
                 }
             }
             return bin;

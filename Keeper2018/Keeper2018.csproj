@@ -222,6 +222,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataModel\DataModelExt\DepoPartIdProvider.cs" />
+    <Compile Include="DataModel\EntityModels\DepoCondsModel.cs" />
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />

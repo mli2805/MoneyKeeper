@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -11,13 +10,13 @@ namespace Keeper2018
     public class RulesAndRatesViewModel : Screen
     {
         public string Title;
-        public DepositConditions Conditions { get; set; }
+        public DepoCondsModel Conditions { get; set; }
         public ObservableCollection<DepositRateLine> Rows { get; set; }
         public DateTime NewDate { get; set; } = DateTime.Today;
 
         public List<DateTime> _conditionDateTimes;
 
-        public void Initialize(string title, DepositConditions conditions, KeeperDataModel keeperDataModel, List<DateTime> conditionDateTimes)
+        public void Initialize(string title, DepoCondsModel conditions, KeeperDataModel keeperDataModel, List<DateTime> conditionDateTimes)
         {
             Title = title;
             Conditions = conditions;
@@ -80,11 +79,11 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
-            if (_conditionDateTimes.Contains(Conditions.DateFrom))
-            {
-                MessageBox.Show("Уже есть условия действующие с этой даты.");
-                return;
-            }
+            // if (_conditionDateTimes.Contains(Conditions.DateFrom))
+            // {
+            //     MessageBox.Show("Уже есть условия действующие с этой даты.");
+            //     return;
+            // }
             Conditions.RateLines = Rows.ToList();
             base.CanClose(callback);
         }

@@ -15,13 +15,15 @@ namespace Keeper2018
         // Conditions of offer could be changed (especially rates, initial sum while Title remains the same)
         // only for newly opened deposits
         // Conditions are applied from some date - key in dictionary
-        public Dictionary<DateTime, DepositConditions> ConditionsMap { get; set; }
+        // public Dictionary<DateTime, DepositConditions> ConditionsMap { get; set; }
+        public Dictionary<DateTime, DepoCondsModel> CondsMap { get; set; }
         public string Comment { get; set; }
 
         public DepositOfferModel(int id)
         {
             Id = id;
-            ConditionsMap = new Dictionary<DateTime, DepositConditions>();
+            // ConditionsMap = new Dictionary<DateTime, DepositConditions>();
+            CondsMap = new Dictionary<DateTime, DepoCondsModel>();
         }
 
         public override string ToString()
@@ -36,10 +38,10 @@ namespace Keeper2018
             result.Title = Title;
             result.IsNotRevocable = IsNotRevocable;
             result.MainCurrency = MainCurrency;
-            result.ConditionsMap = new Dictionary<DateTime, DepositConditions>();
-            foreach (var pair in ConditionsMap)
+            result.CondsMap = new Dictionary<DateTime, DepoCondsModel>();
+            foreach (var pair in CondsMap)
             {
-                result.ConditionsMap.Add(pair.Key, pair.Value.DeepCopy());
+                result.CondsMap.Add(pair.Key, pair.Value.DeepCopy());
             }
             result.Comment = Comment;
             return result;
