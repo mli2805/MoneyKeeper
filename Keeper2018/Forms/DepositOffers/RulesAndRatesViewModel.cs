@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -13,10 +15,13 @@ namespace Keeper2018
         public ObservableCollection<DepositRateLine> Rows { get; set; }
         public DateTime NewDate { get; set; } = DateTime.Today;
 
-        public void Initialize(string title, DepositConditions conditions)
+        public List<DateTime> _conditionDateTimes;
+
+        public void Initialize(string title, DepositConditions conditions, KeeperDataModel keeperDataModel, List<DateTime> conditionDateTimes)
         {
             Title = title;
             Conditions = conditions;
+            _conditionDateTimes = conditionDateTimes;
             Rows = new ObservableCollection<DepositRateLine>();
             foreach (var rateLine in conditions.RateLines)
             {
@@ -24,8 +29,13 @@ namespace Keeper2018
             }
             if (Rows.Count == 0)
                 Rows.Add(new DepositRateLine(){
+                    Id = keeperDataModel.GetDepoRateLinesMaxId() + 1,
                     DepositOfferConditionsId = Conditions.Id,
-                    DateFrom = DateTime.Today, AmountFrom = 0, AmountTo = 999999999999, Rate = 10});
+                    DateFrom = DateTime.Today, 
+                    AmountFrom = 0, 
+                    AmountTo = 999999999999, 
+                    Rate = 0
+                });
         }
 
         protected override void OnViewLoaded(object view)
@@ -38,6 +48,7 @@ namespace Keeper2018
             var lastLine = Rows.Last();
             var newLine = new DepositRateLine()
             {
+                Id = lastLine.Id + 1,
                 DepositOfferConditionsId = lastLine.DepositOfferConditionsId,
                 DateFrom = lastLine.DateFrom,
                 AmountFrom = lastLine.AmountTo + (decimal)0.01,
@@ -69,6 +80,11 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
+            if (_conditionDateTimes.Contains(Conditions.DateFrom))
+            {
+                MessageBox.Show("Уже есть условия действующие с этой даты.");
+                return;
+            }
             Conditions.RateLines = Rows.ToList();
             base.CanClose(callback);
         }

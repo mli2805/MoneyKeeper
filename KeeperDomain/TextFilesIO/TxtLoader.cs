@@ -47,7 +47,7 @@ namespace KeeperDomain
 
             var content2 = File.ReadAllLines(PathFactory.GetBackupFilePath("depoCalcRules.txt"));
             bin.DepositCalculationRules = content2.Select(l => l.NewDepoCalcRulesFromString()).ToList();
-
+           
             var content3 = File.ReadAllLines(PathFactory.GetBackupFilePath("depoConditions.txt"));
             bin.DepositConditions = content3.Select(l => l.DepoConditionsFromString()).ToList();
 

@@ -22,12 +22,11 @@ namespace Keeper2018
         {
             Id = id;
             ConditionsMap = new Dictionary<DateTime, DepositConditions>();
-            // { { DateTime.Today, new DepositConditions() { DepositOfferId = Id } } };
         }
 
         public override string ToString()
         {
-            return $"{Bank.Header} {Title} {MainCurrency.ToString()}";
+            return $"{Bank.Header} {Title} {MainCurrency}";
         }
 
         public DepositOfferModel DeepCopy()

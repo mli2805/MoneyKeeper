@@ -50,17 +50,14 @@ namespace Keeper2018
             var date = DateTime.Today;
             while (ModelInWork.ConditionsMap.ContainsKey(date)) date = date.AddDays(1);
 
-            var lastIdInDb = _keeperDataModel.DepositOffers
-                .SelectMany(depositOffer => depositOffer.ConditionsMap.Values)
-                .ToList()
-                .Max(c => c.Id);
+            var lastIdInDb = _keeperDataModel.GetDepoConditionsMaxId();
             var lastIdHere = ModelInWork.ConditionsMap.Any() 
                 ? ModelInWork.ConditionsMap.Values.ToList().Max(c=>c.Id) 
                 : 0;
             var maxId = Math.Max(lastIdInDb, lastIdHere);
 
             var depositConditions = new DepositConditions(maxId + 1, ModelInWork.Id, DateTime.Today);
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depositConditions);
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depositConditions, _keeperDataModel, ModelInWork.ConditionsMap.Keys.ToList());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
             ModelInWork.ConditionsMap.Add(depositConditions.DateFrom, depositConditions);
             ConditionDates = ModelInWork.ConditionsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
@@ -71,7 +68,8 @@ namespace Keeper2018
         {
             if (SelectedDate == null) return;
             var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.ConditionsMap[date]);
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.ConditionsMap[date], _keeperDataModel,
+                ModelInWork.ConditionsMap.Keys.ToList());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
             if (date == ModelInWork.ConditionsMap[date].DateFrom) return;
 

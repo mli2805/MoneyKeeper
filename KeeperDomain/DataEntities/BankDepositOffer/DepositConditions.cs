@@ -19,7 +19,11 @@ namespace KeeperDomain
             Id = id;
             DepositOfferId = depositOfferId;
             DateFrom = dateFrom;
-            CalculationRules = new DepositCalculationRules() { DepositOfferConditionsId = id };
+            CalculationRules = new DepositCalculationRules()
+            {
+                Id = id, // depo conditions match depo calc rules
+                DepositOfferConditionsId = id
+            };
         }
 
         public DepositConditions DeepCopy()
