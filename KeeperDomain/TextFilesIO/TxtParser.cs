@@ -129,18 +129,6 @@ namespace KeeperDomain
             };
         }
 
-        public static DepositConditions DepoConditionsFromString(this string str)
-        {
-            var substrings = str.Split(';');
-            return new DepositConditions(
-                int.Parse(substrings[0]),
-                int.Parse(substrings[1]),
-                DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture))
-            {
-                Comment = substrings[3].Trim(),
-            };
-        }
-
         public static DepoNewConds DepoNewCondsFromString(this string str)
         {
             var substrings = str.Split(';');
@@ -161,27 +149,8 @@ namespace KeeperDomain
 
                 Comment = substrings[11].Trim()
             };
-               
+
             return result;
-        }
-
-        public static DepositCalculationRules NewDepoCalcRulesFromString(this string str)
-        {
-            var rules = new DepositCalculationRules();
-            var array = str.Split(';');
-
-            rules.Id = int.Parse(array[0].Trim());
-            rules.DepositOfferConditionsId = int.Parse(array[1].Trim());
-            rules.IsFactDays = bool.Parse(array[2]);
-            rules.EveryStartDay = bool.Parse(array[3]);
-            rules.EveryFirstDayOfMonth = bool.Parse(array[4]);
-            rules.EveryLastDayOfMonth = bool.Parse(array[5]);
-            rules.IsCapitalized = bool.Parse(array[6]);
-            rules.IsRateFixed = bool.Parse(array[7]);
-            rules.HasAdditionalProcent = bool.Parse(array[8]);
-
-            rules.AdditionalProcent = double.Parse(array[9]);
-            return rules;
         }
 
         public static DepositRateLine NewDepoRateLineFromString(this string s)
