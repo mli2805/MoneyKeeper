@@ -143,8 +143,7 @@ namespace Keeper2018
             var vm = new RulesAndRatesViewModel();
             vm.Initialize("",
                 SelectedDepositOffer.CondsMap.OrderBy(k => k.Key)
-                    .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value, _dataModel,
-                SelectedDepositOffer.CondsMap.Keys.ToList());
+                    .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value, _dataModel.GetDepoRateLinesMaxId());
             _windowManager.ShowDialog(vm);
         }
     }

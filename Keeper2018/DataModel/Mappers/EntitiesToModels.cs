@@ -17,8 +17,9 @@ namespace Keeper2018
 
         public static DepositOfferModel Map(this DepositOffer depositOffer, Dictionary<int, AccountModel> acMoDict)
         {
-            return new DepositOfferModel(depositOffer.Id)
+            return new DepositOfferModel
             {
+                Id = depositOffer.Id,
                 Bank = acMoDict[depositOffer.BankId],
                 Title = depositOffer.Title,
                 IsNotRevocable = depositOffer.IsNotRevocable,

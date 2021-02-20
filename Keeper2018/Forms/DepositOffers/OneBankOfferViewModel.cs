@@ -48,34 +48,42 @@ namespace Keeper2018
         public void AddConditions()
         {
             var date = DateTime.Today;
-            while (ModelInWork.CondsMap.ContainsKey(date)) date = date.AddDays(1); // че та не работает
+            while (ModelInWork.CondsMap.ContainsKey(date)) date = date.AddDays(1);
 
             var lastIdInDb = _keeperDataModel.GetDepoConditionsMaxId();
-            var lastIdHere = ModelInWork.CondsMap.Any() 
-                ? ModelInWork.CondsMap.Values.ToList().Max(c=>c.Id) 
+            var lastIdHere = ModelInWork.CondsMap.Any()
+                ? ModelInWork.CondsMap.Values.ToList().Max(c => c.Id)
                 : 0;
             var maxId = Math.Max(lastIdInDb, lastIdHere);
 
-            // var depositConditions = new DepositConditions(maxId + 1, ModelInWork.Id, DateTime.Today);
             var depoCondsModel = new DepoCondsModel()
             {
-                Id = maxId + 1, 
+                Id = maxId + 1,
                 DepositOfferId = ModelInWork.Id,
-                DateFrom = DateTime.Today,
+                DateFrom = date,
             };
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depoCondsModel, _keeperDataModel, ModelInWork.CondsMap.Keys.ToList());
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depoCondsModel, GetMaxDepoRateLineId());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
             ModelInWork.CondsMap.Add(depoCondsModel.DateFrom, depoCondsModel);
             ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
             NotifyOfPropertyChange(nameof(ConditionDates));
         }
 
+        private int GetMaxDepoRateLineId()
+        {
+            var lastInDb = _keeperDataModel.GetDepoRateLinesMaxId();
+            var lastIdHere = ModelInWork.CondsMap.Any()
+                ? ModelInWork.CondsMap.Values.ToList()
+                    .SelectMany(c => c.RateLines).Max(r => r.Id) 
+                : 0;
+            return Math.Max(lastInDb, lastIdHere);
+        }
+
         public void EditConditions()
         {
             if (SelectedDate == null) return;
             var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.CondsMap[date], _keeperDataModel,
-                ModelInWork.CondsMap.Keys.ToList());
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.CondsMap[date], GetMaxDepoRateLineId());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
             if (date == ModelInWork.CondsMap[date].DateFrom) return;
 

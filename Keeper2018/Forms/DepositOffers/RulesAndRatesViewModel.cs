@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
@@ -13,26 +12,26 @@ namespace Keeper2018
         public DepoCondsModel Conditions { get; set; }
         public ObservableCollection<DepositRateLine> Rows { get; set; }
         public DateTime NewDate { get; set; } = DateTime.Today;
+        private int _maxDepoRateLineId;
 
-        public List<DateTime> _conditionDateTimes;
-
-        public void Initialize(string title, DepoCondsModel conditions, KeeperDataModel keeperDataModel, List<DateTime> conditionDateTimes)
+        public void Initialize(string title, DepoCondsModel conditions, int maxDepoRateLineId)
         {
             Title = title;
             Conditions = conditions;
-            _conditionDateTimes = conditionDateTimes;
+            _maxDepoRateLineId = maxDepoRateLineId;
             Rows = new ObservableCollection<DepositRateLine>();
             foreach (var rateLine in conditions.RateLines)
             {
                 Rows.Add(rateLine);
             }
             if (Rows.Count == 0)
-                Rows.Add(new DepositRateLine(){
-                    Id = keeperDataModel.GetDepoRateLinesMaxId() + 1,
+                Rows.Add(new DepositRateLine()
+                {
+                    Id = maxDepoRateLineId + 1,
                     DepositOfferConditionsId = Conditions.Id,
-                    DateFrom = DateTime.Today, 
-                    AmountFrom = 0, 
-                    AmountTo = 999999999999, 
+                    DateFrom = DateTime.Today,
+                    AmountFrom = 0,
+                    AmountTo = 999999999999,
                     Rate = 0
                 });
         }
@@ -45,9 +44,10 @@ namespace Keeper2018
         public void AddLine()
         {
             var lastLine = Rows.Last();
+            var id = Math.Max(_maxDepoRateLineId, Rows.Max(r => r.Id));
             var newLine = new DepositRateLine()
             {
-                Id = lastLine.Id + 1,
+                Id = id + 1,
                 DepositOfferConditionsId = lastLine.DepositOfferConditionsId,
                 DateFrom = lastLine.DateFrom,
                 AmountFrom = lastLine.AmountTo + (decimal)0.01,
@@ -71,19 +71,16 @@ namespace Keeper2018
                 })
                 .ToList();
 
+            var id = Math.Max(_maxDepoRateLineId, Rows.Max(r => r.Id));
             foreach (var line in copy)
             {
+                line.Id = ++id;
                 Rows.Add(line);
             }
         }
 
         public override void CanClose(Action<bool> callback)
         {
-            // if (_conditionDateTimes.Contains(Conditions.DateFrom))
-            // {
-            //     MessageBox.Show("Уже есть условия действующие с этой даты.");
-            //     return;
-            // }
             Conditions.RateLines = Rows.ToList();
             base.CanClose(callback);
         }

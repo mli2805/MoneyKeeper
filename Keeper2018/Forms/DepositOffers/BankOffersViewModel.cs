@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -47,29 +48,34 @@ namespace Keeper2018
 
         public void AddOffer()
         {
-            var offer = new DepositOfferModel (Rows.Max(l => l.Id) + 1);
+            var offerModel = new DepositOfferModel
+            {
+                Id = Rows.Max(l => l.Id) + 1, 
+                Bank = SelectedDepositOffer.Bank, 
+                MainCurrency = CurrencyCode.BYN,
+            };
 
-            _oneBankOfferViewModel.Initialize(offer);
+            _oneBankOfferViewModel.Initialize(offerModel);
             _windowManager.ShowDialog(_oneBankOfferViewModel);
             if (_oneBankOfferViewModel.IsCancelled) return;
 
             Rows.Add(_oneBankOfferViewModel.ModelInWork);
+            _dataModel.DepositOffers = Rows.ToList();
             SelectedDepositOffer = Rows.Last();
         }
 
         public void EditSelectedOffer()
         {
-            var model = SelectedDepositOffer.DeepCopy();
-            _oneBankOfferViewModel.Initialize(model);
+            var offerModel = SelectedDepositOffer.DeepCopy();
+            _oneBankOfferViewModel.Initialize(offerModel);
             _windowManager.ShowDialog(_oneBankOfferViewModel);
+            if (_oneBankOfferViewModel.IsCancelled) return;
 
-            if (!_oneBankOfferViewModel.IsCancelled)
-            {
-                var index = Rows.IndexOf(SelectedDepositOffer);
-                Rows.Remove(SelectedDepositOffer);
-                SelectedDepositOffer = model.DeepCopy();
-                Rows.Insert(index, SelectedDepositOffer);
-            }
+            var index = Rows.IndexOf(SelectedDepositOffer);
+            Rows.Remove(SelectedDepositOffer);
+            Rows.Insert(index, offerModel);
+            SelectedDepositOffer = Rows[index];
+            _dataModel.DepositOffers = Rows.ToList();
         }
 
         public void RemoveSelectedOffer()
@@ -82,6 +88,7 @@ namespace Keeper2018
                 return;
             }
             Rows.Remove(SelectedDepositOffer);
+            _dataModel.DepositOffers = Rows.ToList();
         }
 
         public override void CanClose(Action<bool> callback)
