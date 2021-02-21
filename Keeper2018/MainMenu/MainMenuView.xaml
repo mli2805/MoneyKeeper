@@ -111,7 +111,10 @@
         <Button Name="ShowCarForm" Margin="6,0,0,0" Background="White" BorderBrush="White" ToolTip="Cars">
             <Image Source="../../Resources/car.png" Width="32" Height="32"  />
         </Button>  
-        <Button Name="ShowPayCardsForm" Margin="8,-3,0,0" Background="White" BorderBrush="White" ToolTip="Cards" Opacity="0.7">
+        <Button Name="ShowDepositsForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Deposits">
+            <Image Source="../../Resources/deposits.png" Width="24" Height="24"  />
+        </Button>  
+        <Button Name="ShowPayCardsForm" Margin="6,-3,0,0" Background="White" BorderBrush="White" ToolTip="Cards" Opacity="0.7">
             <Image Source="../../Resources/paycard.png" Width="32" Height="32"  />
         </Button>  
 

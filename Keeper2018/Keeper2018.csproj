@@ -227,6 +227,10 @@
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
     <Compile Include="Forms\Cars\FuellingVm.cs" />
+    <Compile Include="Forms\Deposits\OpenDepositsView.xaml.cs">
+      <DependentUpon>OpenDepositsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Deposits\OpenDepositsViewModel.cs" />
     <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />
@@ -654,6 +658,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Deposits\OpenDepositsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\DoubleSelector\DateSelectControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -910,6 +918,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Forms\CurrencyRates\IO\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\deposits.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

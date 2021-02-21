@@ -21,6 +21,7 @@ namespace Keeper2018
         private readonly ExpenseByCategoriesViewModel _expenseByCategoriesViewModel;
         private readonly DepoCurrResultViewModel _depoCurrResultViewModel;
         private readonly GskViewModel _gskViewModel;
+        private readonly OpenDepositsViewModel _openDepositsViewModel;
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
 
@@ -31,6 +32,7 @@ namespace Keeper2018
             ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
+            OpenDepositsViewModel openDepositsViewModel,
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
         {
             _windowManager = windowManager;
@@ -47,6 +49,7 @@ namespace Keeper2018
             _expenseByCategoriesViewModel = expenseByCategoriesViewModel;
             _depoCurrResultViewModel = depoCurrResultViewModel;
             _gskViewModel = gskViewModel;
+            _openDepositsViewModel = openDepositsViewModel;
             _payCardsViewModel = payCardsViewModel;
             _salaryViewModel = salaryViewModel;
         }
@@ -163,6 +166,12 @@ namespace Keeper2018
         {
             _carsViewModel.Initialize();
             _windowManager.ShowDialog(_carsViewModel);
+        }
+
+        public void ShowDepositsForm()
+        {
+            _openDepositsViewModel.Initialize();
+            _windowManager.ShowDialog(_openDepositsViewModel);
         }
 
         public void ShowPayCardsForm()
