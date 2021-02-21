@@ -437,7 +437,7 @@
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shell\DbLoadingViewModel.cs" />
-    <Compile Include="DataModel\DataModelExt\AccountComboboxProvider.cs" />
+    <Compile Include="Forms\TagAssociations\AccountComboboxProvider.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeGardener.cs" />
     <Compile Include="DataModel\KeeperDataModel.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />

@@ -54,7 +54,8 @@
                     Style="{StaticResource MyButtonStyle}"
                     Content="Close" IsCancel="True" />
         </DockPanel>
-        <DataGrid Name="MainDatagrid" ItemsSource="{Binding Model.Rows}" SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}"
+        <DataGrid Name="MainDatagrid" ItemsSource="{Binding Model.Rows}" 
+                  SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" IsSynchronizedWithCurrentItem="True"
                   SelectionChanged="OnSelectionChanged">
