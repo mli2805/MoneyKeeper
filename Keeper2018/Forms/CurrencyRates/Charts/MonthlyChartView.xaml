@@ -11,8 +11,14 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <oxy:PlotView Grid.Column="0" Model="{Binding MyPlotModel}"/>
-        <oxy:PlotView Grid.Column="1" Model="{Binding MyPlotModel2}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <oxy:PlotView Grid.Row="0" Grid.Column="0" Model="{Binding MyPlotModel00}"/>
+        <oxy:PlotView Grid.Row="0" Grid.Column="1" Model="{Binding MyPlotModel01}"/>
+        <oxy:PlotView Grid.Row="1" Grid.Column="0" Model="{Binding MyPlotModel10}"/>
+        <oxy:PlotView Grid.Row="1" Grid.Column="1" Model="{Binding MyPlotModel11}"/>
 
     </Grid>
 </Window>

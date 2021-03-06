@@ -12,8 +12,10 @@ namespace Keeper2018
     {
         private string _caption;
         private List<CurrencyRatesModel> _rates;
-        public PlotModel MyPlotModel { get; set; } = new PlotModel();
-        public PlotModel MyPlotModel2 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel00 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel01 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel10 { get; set; } = new PlotModel();
+        public PlotModel MyPlotModel11 { get; set; } = new PlotModel();
 
         protected override void OnViewLoaded(object view)
         {
@@ -25,20 +27,34 @@ namespace Keeper2018
             _rates = rates;
             _caption = caption;
 
-            var date = new DateTime(2020, 9, 1);
+            var date = new DateTime(2020, 4, 1);
             do
             {
-                MyPlotModel.Series.Add(OneMonthOfUsd(date));
+                MyPlotModel00.Series.Add(OneMonthOfUsd(date));
                 date = date.AddMonths(1);
-            } while (date < new DateTime(2020, 12, 1));
-            MyPlotModel.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
+            } while (date < new DateTime(2020, 7, 1));
+            // MyPlotModel00.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
+
+           do
+            {
+                MyPlotModel01.Series.Add(OneMonthOfUsd(date));
+                date = date.AddMonths(1);
+            } while (date < new DateTime(2020, 10, 1));
+            // MyPlotModel01.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
+
+           do
+            {
+                MyPlotModel10.Series.Add(OneMonthOfUsd(date));
+                date = date.AddMonths(1);
+            } while (date < new DateTime(2021, 1, 1));
+            MyPlotModel10.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
 
             do
             {
-                MyPlotModel2.Series.Add(OneMonthOfUsd(date));
+                MyPlotModel11.Series.Add(OneMonthOfUsd(date));
                 date = date.AddMonths(1);
             } while (date <= DateTime.Now);
-            MyPlotModel2.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
+            MyPlotModel11.Axes.Add(new LinearAxis(){ Minimum = 2.515, Maximum = 2.67 });
         }
 
 
