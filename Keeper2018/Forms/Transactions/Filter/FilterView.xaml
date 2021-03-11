@@ -6,7 +6,8 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Title="FilterView" SizeToContent="Height" Width="{Binding Width, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
+        Title="FilterView" SizeToContent="Height" Width="{Binding Width, Mode=TwoWay}" 
+        Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
     <Window.Resources>
         <ResourceDictionary>
              <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
@@ -20,7 +21,8 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <StackPanel Orientation="Horizontal" Height="25" Margin="5">
-                <Button Width="20" Margin="0,3,5,0" Content="x"  VerticalContentAlignment="Top" Style="{StaticResource MyButtonStyle}"
+                <Button Width="20" Margin="0,3,5,0" Content="x"  VerticalContentAlignment="Top" 
+                        Style="{StaticResource MyButtonStyle}"
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(1)]"/>
                 <TextBlock Padding="5">Тип операции</TextBlock>
             </StackPanel>
@@ -36,9 +38,12 @@
                       VerticalAlignment="Top" ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="True"
                       ItemsSource="{Binding FilterModel.AvailableAccNames}" SelectedItem="{Binding FilterModel.MyAccName, Mode=TwoWay}" />
                 <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
-                    <RadioButton GroupName="AccNamePosition" Content="1" IsChecked="{Binding FilterModel.IsAccNamePosition1}" Margin="15,0,0,0"/>
-                    <RadioButton GroupName="AccNamePosition" Content="2" IsChecked="{Binding FilterModel.IsAccNamePosition2}" Margin="15,0,0,0"/>
-                    <RadioButton GroupName="AccNamePosition" Content="1 or 2" IsChecked="{Binding FilterModel.IsAccNamePosition12}"  Margin="15,0,0,0"/>
+                    <RadioButton GroupName="AccNamePosition" Content="1" 
+                                 IsChecked="{Binding FilterModel.IsAccNamePosition1}" Margin="15,0,0,0"/>
+                    <RadioButton GroupName="AccNamePosition" Content="2" 
+                                 IsChecked="{Binding FilterModel.IsAccNamePosition2}" Margin="15,0,0,0"/>
+                    <RadioButton GroupName="AccNamePosition" Content="1 or 2" 
+                                 IsChecked="{Binding FilterModel.IsAccNamePosition12}"  Margin="15,0,0,0"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="25" Margin="5">
@@ -46,33 +51,45 @@
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(3)]"/>
                 <TextBlock Padding="5">Сумма</TextBlock>
             </StackPanel>
-            <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" TextAlignment="Right" VerticalContentAlignment="Center" 
-                         Text="{Binding FilterModel.Amount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" />
+            <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" 
+                     TextAlignment="Right" VerticalContentAlignment="Center" 
+                         Text="{Binding FilterModel.Amount, 
+                UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" />
             <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
-                <RadioButton GroupName="AmountComparison" Content="&lt;" IsChecked="{Binding FilterModel.AmountLessThan}" Margin="15,0,0,0"/>
-                <RadioButton GroupName="AmountComparison" Content="&gt;" IsChecked="{Binding FilterModel.AmountGreaterThan}" Margin="15,0,0,0"/>
-                <RadioButton GroupName="AmountComparison" Content="=" IsChecked="{Binding FilterModel.AmountEqualTo}"  Margin="15,0,0,0"/>
+                <RadioButton GroupName="AmountComparison" Content="&lt;" 
+                             IsChecked="{Binding FilterModel.AmountLessThan}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="AmountComparison" Content="&gt;" 
+                             IsChecked="{Binding FilterModel.AmountGreaterThan}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="AmountComparison" Content="=" 
+                             IsChecked="{Binding FilterModel.AmountEqualTo}"  Margin="15,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="25" Margin="5">
                 <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}"
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(4)]"/>
                 <TextBlock Padding="5">Валюта</TextBlock>
             </StackPanel>
-            <ComboBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" ItemsSource="{Binding FilterModel.Currencies}" SelectedItem="{Binding FilterModel.MyCurrency, Mode=TwoWay}"/>
+            <ComboBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" 
+                      ItemsSource="{Binding FilterModel.Currencies}" SelectedItem="{Binding FilterModel.MyCurrency, Mode=TwoWay}"/>
             <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
-                <RadioButton GroupName="CurrencyPosition" Content="1" IsChecked="{Binding FilterModel.IsCurrencyPosition1}" Margin="15,0,0,0"/>
-                <RadioButton GroupName="CurrencyPosition" Content="2" IsChecked="{Binding FilterModel.IsCurrencyPosition2}" Margin="15,0,0,0"/>
-                <RadioButton GroupName="CurrencyPosition" Content="1 or 2" IsChecked="{Binding FilterModel.IsCurrencyPosition12}"  Margin="15,0,0,0"/>
+                <RadioButton GroupName="CurrencyPosition" Content="1" 
+                             IsChecked="{Binding FilterModel.IsCurrencyPosition1}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="CurrencyPosition" Content="2" 
+                             IsChecked="{Binding FilterModel.IsCurrencyPosition2}" Margin="15,0,0,0"/>
+                <RadioButton GroupName="CurrencyPosition" Content="1 or 2" 
+                             IsChecked="{Binding FilterModel.IsCurrencyPosition12}"  Margin="15,0,0,0"/>
             </StackPanel>
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Height="25" Margin="5">
                     <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}" 
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(5)]"/>
                     <TextBlock Padding="5">Тэги</TextBlock>
-                    <RadioButton GroupName="Tags" Content="И" IsChecked="{Binding FilterModel.IsTagsJoinedByAnd}" Margin="15,6,0,0"/>
-                    <RadioButton GroupName="Tags" Content="ИЛИ" IsChecked="{Binding FilterModel.IsTagsJoinedByOr}" Margin="15,6,0,0"/>
+                    <RadioButton GroupName="Tags" Content="И" 
+                                 IsChecked="{Binding FilterModel.IsTagsJoinedByAnd}" Margin="15,6,0,0"/>
+                    <RadioButton GroupName="Tags" Content="ИЛИ" 
+                                 IsChecked="{Binding FilterModel.IsTagsJoinedByOr}" Margin="15,6,0,0"/>
                 </StackPanel>
-                <keeper2018:TagPicker Width="200" HorizontalAlignment="Left" Margin="5,-25,0,5" DataContext="{Binding FilterModel.MyTagPickerVm}" />
+                <keeper2018:TagPicker Width="200" HorizontalAlignment="Left" Margin="5,-25,0,5" 
+                                      DataContext="{Binding FilterModel.MyTagPickerVm}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="25" Margin="5">
                 <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}" 
@@ -82,7 +99,8 @@
             <TextBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" VerticalContentAlignment="Center" 
                      Text="{Binding FilterModel.MyComment, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
-        <Button Grid.Row="1" HorizontalAlignment="Left" Width="80" Height="25" Margin="5" Content="Clean all" Style="{StaticResource MyButtonStyle}"
+        <Button Grid.Row="1" HorizontalAlignment="Left" Width="80" Height="25" Margin="5" Content="Clean all" 
+                Style="{StaticResource MyButtonStyle}"
                 cal:Message.Attach="[Event Click] = [Action CleanProperty(99)]"/>
     </Grid>
 </Window>

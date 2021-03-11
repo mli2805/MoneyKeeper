@@ -51,7 +51,7 @@ namespace Keeper2018
         public AccName MyAccName
         {
             get => _myAccName;
-            private set
+            set
             {
                 if (Equals(value, _myAccName)) return;
                 _myAccName = value;
