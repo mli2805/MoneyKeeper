@@ -18,6 +18,9 @@ namespace Keeper2018
 
         public new string Name => (string)Header;
         public bool IsDeposit => Deposit != null;
+        public bool IsFolder => Children.Any(); // in XAML
+        public bool IsCard => Deposit != null && Deposit.Card != null; // in XAML
+
 
         public override string ToString() => (string)Header;
         public int CompareTo(object obj)
@@ -53,6 +56,7 @@ namespace Keeper2018
         }
 
         public bool IsTag => Is(185) || Is(189);
+        public bool IsMyAccount => Is(158); // in XAML
     }
 
 }
