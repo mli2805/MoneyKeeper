@@ -1,11 +1,7 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using Caliburn.Micro;
 using Keeper2018.ExpensesOnAccount;
 using KeeperDomain;
-using MigraDoc.DocumentObjectModel;
-using MigraDoc.Rendering;
-using PdfSharp.Pdf;
 
 namespace Keeper2018
 {
@@ -24,7 +20,7 @@ namespace Keeper2018
 
         public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
-            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, 
+            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
             ExpensesOnAccountViewModel expensesOnAccountViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
@@ -42,6 +38,12 @@ namespace Keeper2018
 
         public void AddAccount()
         {
+            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountModel.Id))
+            {
+                WindowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
+                    "Этот счет используется в проводках!"));
+                return;
+            }
             var accountModel = new AccountModel("")
             {
                 Id = KeeperDataModel.AcMoDict.Keys.Max() + 1,
@@ -57,6 +59,12 @@ namespace Keeper2018
 
         public void AddAccountDeposit()
         {
+            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountModel.Id))
+            {
+                WindowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
+                    "Этот счет используется в проводках!"));
+                return;
+            }
             var accountModel = new AccountModel("")
             {
                 Id = KeeperDataModel.AcMoDict.Keys.Max() + 1,
@@ -126,22 +134,6 @@ namespace Keeper2018
         {
             _expensesOnAccountViewModel.Initialize(ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
             WindowManager.ShowDialog(_expensesOnAccountViewModel);
-        }
-
-        public void ShowTagInDetails()
-        {
-            var tag = ShellPartsBinder.SelectedAccountModel;
-            var doc = new Document();
-            var section = doc.AddSection();
-            var tableData = new PdfReportTable(tag.Name, "", KeeperDataModel.GetTableForTag(tag));
-            section.DrawTableFromTag(tableData);
-
-            PdfDocumentRenderer pdfDocumentRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
-            pdfDocumentRenderer.Document = doc;
-            pdfDocumentRenderer.RenderDocument();
-            string filename = $@"c:\temp\{tag.Name}.pdf";
-            pdfDocumentRenderer.Save(filename);
-            Process.Start(filename);
         }
 
         public void ConvertToDeposit()

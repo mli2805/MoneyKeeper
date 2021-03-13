@@ -19,20 +19,22 @@
             </TreeView.ItemContainerStyle>
             <TreeView.ContextMenu>
                 <ContextMenu>
-                  
+
                     <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
-                              Background="White">
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledAddIntoAccount}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Добавить депозит" cal:Message.Attach="AddAccountDeposit" BorderBrush="{x:Null}" 
-                              Background="White">
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledAddIntoAccount}"
+                              Visibility="{Binding ShellPartsBinder.AddDepositVisibility}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" Background="White">
+                    <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledDeleteAccount}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/minus16.ico" Width="16"/>
                         </MenuItem.Icon>
@@ -43,25 +45,26 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsDeposit}">
-                    </MenuItem> 
-                    <MenuItem Header="Платежи по категориям" cal:Message.Attach="ShowExpensesOnAccount" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsMyAccount}">
+                              Background="White" Visibility="{Binding ShellPartsBinder.DepositMenuVisibility}">
                     </MenuItem>
-                    <MenuItem Header="Для сверки остатка" cal:Message.Attach="ShowVerificationForm" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsMyAccount}">
+                    <MenuItem Header="Раскладка транзакций по категориям" cal:Message.Attach="ShowExpensesOnAccount" BorderBrush="{x:Null}" 
+                              Background="White" Visibility="{Binding ShellPartsBinder.MyLeafMenuVisibility}"
+                              ToolTip="Доходы/расходы в разрезе категорий">
                     </MenuItem>
-                    <MenuItem Header="Раскладка папки по" cal:Message.Attach="ShowFolderSummaryForm" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsFolder}">
+                    <MenuItem Header="Сверка остатка с выпиской по карточке" cal:Message.Attach="ShowVerificationForm" BorderBrush="{x:Null}" 
+                              Background="White" Visibility="{Binding ShellPartsBinder.CardMenuVisibility}" 
+                              ToolTip="Для сверки с выпиской по карточке">
                     </MenuItem>
-                    <MenuItem Header="По способам оплаты" cal:Message.Attach="ShowPaymentWaysForm" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsCard}">
+                    <MenuItem Header="Раскладка папки" cal:Message.Attach="ShowFolderSummaryForm" BorderBrush="{x:Null}" 
+                              Background="White" Visibility="{Binding ShellPartsBinder.MyFolderMenuVisibility}"
+                              ToolTip="Раскладка по валютам и отзывности">
                     </MenuItem>
-                    <MenuItem Header="Расшифровка дох-расх в PDF" cal:Message.Attach="ShowTagInDetails" BorderBrush="{x:Null}" 
-                              Background="White" IsEnabled="{Binding ShellPartsBinder.SelectedAccountModel.IsTag}">
+                    <MenuItem Header="По способам оплаты по банковской карте" cal:Message.Attach="ShowPaymentWaysForm" BorderBrush="{x:Null}" 
+                              Background="White" Visibility="{Binding ShellPartsBinder.CardMenuVisibility}"
+                              ToolTip="Способы оплаты по банковской карте">
                     </MenuItem>
                     <MenuItem Header="Сделать депозитом" cal:Message.Attach="ConvertToDeposit" BorderBrush="{x:Null}" 
-                              Background="White" />
+                              Background="White" Visibility="{Binding ShellPartsBinder.MyLeafNotDepositMenuVisibility}" />
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>

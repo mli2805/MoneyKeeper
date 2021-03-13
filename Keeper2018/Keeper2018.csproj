@@ -221,6 +221,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataModel\DataModelExt\AccountModelExt.cs" />
     <Compile Include="DataModel\DataModelExt\DepoPartIdProvider.cs" />
     <Compile Include="DataModel\EntityModels\DepoCondsModel.cs" />
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />

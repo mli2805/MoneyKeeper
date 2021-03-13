@@ -19,7 +19,8 @@ namespace Keeper2018
         public new string Name => (string)Header;
         public bool IsDeposit => Deposit != null;
         public bool IsFolder => Children.Any(); // in XAML
-        public bool IsCard => Deposit != null && Deposit.Card != null; // in XAML
+        public bool IsLeaf => !Children.Any(); // in XAML
+        public bool IsCard => Deposit?.Card != null; // in XAML
 
 
         public override string ToString() => (string)Header;
