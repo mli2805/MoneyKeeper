@@ -42,7 +42,7 @@ namespace Keeper2018
                 yield return new ClassifiedTran()
                 {
                     Timestamp = tr.Timestamp,
-                    CategoryId = tr.GetTransactionExpenseCategory(_dataModel, _expenseGroupsIds),
+                    CategoryId = tr.GetTransactionBaseCategory(_dataModel, _expenseGroupsIds),
                     AmountInUsd = tr.Currency == CurrencyCode.USD 
                         ? tr.Amount 
                         : _dataModel.AmountInUsd(tr.Timestamp, tr.Currency, tr.Amount),

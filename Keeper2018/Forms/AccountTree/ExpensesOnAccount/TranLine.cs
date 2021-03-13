@@ -12,5 +12,7 @@ namespace Keeper2018.ExpensesOnAccount
         public string AmountStr => Amount.ToString("#,0.##") + " " + Currency.ToString().ToLower();
         public CurrencyCode Currency { get; set; }
         public string Comment { get; set; }
+
+        public string ColorStr { get; set; }
     }
 }

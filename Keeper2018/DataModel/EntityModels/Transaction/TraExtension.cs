@@ -1,19 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using KeeperDomain;
 
 namespace Keeper2018
 {
     public static class TraExtension
     {
-        public static int GetTransactionExpenseCategory(this TransactionModel tr, KeeperDataModel dataModel, List<int> expenseGroupsIds)
+        public static int GetTransactionBaseCategory(this TransactionModel tr, 
+            KeeperDataModel dataModel, List<int> tagGroupsIds)
         {
             foreach (var tag in tr.Tags)
             {
                 var id = tag.Id;
                 while (true)
                 {
-                    if (id == 189) break;
-                    if (expenseGroupsIds.Contains(id)) return id;
+                    if (id == 185 || id == 189) break;
+                    if (tagGroupsIds.Contains(id)) return id;
                     var cat = dataModel.AcMoDict[id];
                     if (cat.Owner == null) break;
                     id = cat.Owner.Id;
@@ -23,10 +25,13 @@ namespace Keeper2018
             return -1;
         }
 
-        public static int GetTransactionExpenseCategory(this TransactionModel tr, KeeperDataModel dataModel)
+        public static int GetTransactionBaseCategory(this TransactionModel tr, KeeperDataModel dataModel, OperationType operationType)
         {
-            var expenseGroupsIds = dataModel.AcMoDict[189].Children.Select(c=>c.Id).ToList();
-            return tr.GetTransactionExpenseCategory(dataModel, expenseGroupsIds);
+            var expenseGroupsIds = 
+                dataModel.AcMoDict[operationType == OperationType.Доход ? 185 :189]
+                .Children.Select(c=>c.Id)
+                .ToList();
+            return tr.GetTransactionBaseCategory(dataModel, expenseGroupsIds);
         }
 
         public static string GetCounterpartyName(this TransactionModel tr, KeeperDataModel dataModel)

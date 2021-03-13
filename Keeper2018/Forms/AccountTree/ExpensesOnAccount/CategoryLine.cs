@@ -1,6 +1,6 @@
 ﻿namespace Keeper2018.ExpensesOnAccount
 {
-    public class ExpenseLine
+    public class CategoryLine
     {
         public string Category { get; set; }
         public decimal Total { get; set; }

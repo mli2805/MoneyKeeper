@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace Keeper2018.ExpensesOnAccount
 {
-    public class ExpenseCollection
+    public class CategoriesCollection
     {
-        public List<ExpenseLine> Collection { get; set; }
+        public List<CategoryLine> Collection { get; set; }
 
-        public ExpenseCollection()
+        public CategoriesCollection()
         {
-            Collection = new List<ExpenseLine>();
+            Collection = new List<CategoryLine>();
         }
 
         public void Add(string category, decimal amount)
@@ -18,7 +18,7 @@ namespace Keeper2018.ExpensesOnAccount
             if (line != null)
                 line.Total += amount;
             else
-                Collection.Add(new ExpenseLine() { Category = category, Total = amount });
+                Collection.Add(new CategoryLine() { Category = category, Total = amount });
         }
 
     }

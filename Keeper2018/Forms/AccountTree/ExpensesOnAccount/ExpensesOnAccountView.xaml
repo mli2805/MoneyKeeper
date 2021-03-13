@@ -5,20 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:expensesOnAccount="clr-namespace:Keeper2018.ExpensesOnAccount"
         mc:Ignorable="d"
-        SizeToContent="Width" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance expensesOnAccount:ExpensesOnAccountViewModel}">
+        SizeToContent="Width" WindowStartupLocation="CenterScreen" 
+        d:DataContext="{d:DesignInstance expensesOnAccount:ExpensesOnAccountViewModel}">
     <DockPanel>
-        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding Categories}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="28"/>
+            </Grid.RowDefinitions>
+            <DataGrid ItemsSource="{Binding Expenses}" 
+                          AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Foreground="Red"
+                          HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush" Margin="5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="10"/>
+                    <DataGridTextColumn Binding="{Binding Category}" Width="160"/>
+                    <DataGridTextColumn Binding="{Binding TotalStr}" Width="190"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding ExpensesTotalStr}" 
+                           Margin="220,2,5,2" FontWeight="Bold" Foreground="Red"/>
+            <DataGrid Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Incomes}" 
+                         AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Foreground="Blue"
+                         HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush" Margin="5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="10"/>
+                    <DataGridTextColumn Binding="{Binding Category}" Width="160"/>
+                    <DataGridTextColumn Binding="{Binding TotalStr}" Width="190"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Grid.Row="1" Grid.Column="1"  Text="{Binding IncomesTotalStr}" 
+                       Margin="220,2,5,2" FontWeight="Bold" Foreground="Blue"/>
+        </Grid>
+
+        <DataGrid ItemsSource="{Binding Transactions}" 
+                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
                   HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush" Margin="5">
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="10"/>
-                <DataGridTextColumn Binding="{Binding Category}" Width="160"/>
-                <DataGridTextColumn Binding="{Binding TotalStr}" Width="190"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <TextBlock DockPanel.Dock="Top" Text="{Binding TotalStr}" Margin="220,2,5,2" FontWeight="Bold"/>
-        <TextBlock DockPanel.Dock="Bottom" Text="{Binding PeriodStr}" Margin="15,5,5,5"/>
-        <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
-                  HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush" Margin="5">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="{Binding ColorStr}" />
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="10"/>
                 <DataGridTextColumn Binding="{Binding Timestamp , StringFormat='{}{0:dd/MM/yyyy}'}" Width="70"/>
