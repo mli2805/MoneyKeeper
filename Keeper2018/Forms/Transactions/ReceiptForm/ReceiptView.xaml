@@ -14,37 +14,42 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="85"/>
             <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
 
         <!--    рисунок чека-->
-        <Label Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding ReceiptFigure}">
-        </Label>
+        <Label Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding ReceiptFigure}"/>
 
         <!--    сумма чека-->
         <TextBlock Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="160,0,0,0">Сумма по чеку</TextBlock>
-        <TextBox Grid.Row="1" Margin="250,0,0,0" Width="70" Height="22" HorizontalAlignment="Left" BorderBrush="#555555" 
-             VerticalAlignment="Top" TextAlignment="Right"
+        <TextBox Grid.Row="1" Margin="250,0,0,0" Width="70" Height="22" HorizontalAlignment="Left" VerticalContentAlignment="Center" 
+                 BorderBrush="#555555" VerticalAlignment="Top" TextAlignment="Right"
              Text="{Binding TotalAmount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" />
         <ComboBox Grid.Row="1" Name="ExpenseCurrency" HorizontalAlignment="Left" Margin="325,0,10,0" 
               Background="White" VerticalAlignment="top" Width="50"
               ItemsSource="{Binding CurrencyList}"
               SelectedItem="{Binding Currency}" Height="22" />
-        <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,5">Осталось</TextBlock>
         <!--    поля ввода-->
-        <TextBox Name="Amount" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Top" 
-             Width="70" BorderBrush="#555555" TextAlignment="Right" Height="22"
-             Text="{Binding PartialAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}"  />
-        <TextBlock HorizontalAlignment="Left" Margin="82,4,0,0" Grid.Row="2" Width="30" Text="{Binding Currency}" VerticalAlignment="Top"/>
-        <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Grid.Row="2" Width="140" Margin="112,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <TextBox Name="Comment" HorizontalAlignment="Left" Margin="260,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="115" 
-             BorderBrush="#555555" Height="22"
-             Text="{Binding PartialComment, Mode=TwoWay}" />
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="20,5,0,0" Text="Осталось"/>
+        <TextBox Grid.Row="2" Name="Amount" HorizontalAlignment="Left" Margin="10,-11,0,0" 
+                 Width="70" BorderBrush="#555555" TextAlignment="Right" VerticalContentAlignment="Center" Height="22"
+                 Text="{Binding PartialAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                 Converter={StaticResource DoubleToStringConverter}}"  />
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="82,29,0,0" Width="30" 
+                   Text="{Binding Currency}" VerticalAlignment="Top"/>
+        <keeper2018:AccNameSelector Grid.Row="2" DataContext="{Binding MyAccNameSelectorVm}" Width="260" 
+                                    Margin="116,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBox Name="Comment" HorizontalAlignment="Left" Margin="116,58,0,0" Grid.Row="2" VerticalAlignment="Top" 
+                 Width="260" BorderBrush="#555555" Height="22" Text="{Binding PartialComment, Mode=TwoWay}" />
         <!--    кнопки-->
-        <Button Content="Еще"      Name="OnceMore"  Grid.Row="3" Margin="120,12,  0,12" Width="70" HorizontalAlignment="Left" Style="{StaticResource MyButtonStyle}"/>
-        <Button Content="Вернуть"  Name="DeleteOne" Grid.Row="3" Margin="  0,12,120,12" Width="70" HorizontalAlignment="Right" Style="{StaticResource MyButtonStyle}"/>
-        <Button Content="Принять"  Name="AcceptReceipt"  Grid.Row="3" Margin=" 10,10,  0,10" Width="100" HorizontalAlignment="Left" Style="{StaticResource MyButtonStyle}" />
-        <Button Content="Отменить" Name="CancelReceipt" IsCancel="True" Grid.Row="3" Margin="  0,10, 10,10" Width="100" HorizontalAlignment="Right" Style="{StaticResource MyButtonStyle}" />
+        <Button Grid.Row="3" Content="Еще" Name="OnceMore" Margin="120,12,  0,12" Width="70" 
+                HorizontalAlignment="Left" Style="{StaticResource MyButtonStyle}"/>
+        <Button Grid.Row="3" Content="Вернуть" Name="DeleteOne" Margin="  0,12,120,12" Width="70" 
+                HorizontalAlignment="Right" Style="{StaticResource MyButtonStyle}"/>
+        <Button Grid.Row="3" Content="Принять" Name="AcceptReceipt" Margin=" 10,10,  0,10" Width="100" 
+                HorizontalAlignment="Left" Style="{StaticResource MyButtonStyle}" />
+        <Button Grid.Row="3" Content="Отменить" Name="CancelReceipt" IsCancel="True" Margin="  0,10, 10,10" 
+                Width="100" HorizontalAlignment="Right" Style="{StaticResource MyButtonStyle}" />
     </Grid>
 </Window>

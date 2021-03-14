@@ -15,7 +15,7 @@ namespace Keeper2018.ExpensesOnAccount
 
         public List<TranLine> Transactions
         {
-            get => _transactions.OrderBy(t=>t.Timestamp).ToList();
+            get => _transactions.OrderByDescending(t=>t.Timestamp).ToList();
             set => _transactions = value;
         }
 

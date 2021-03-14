@@ -4,7 +4,6 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-  
     public class AccNameSelectionControlInitializer
     {
         #region Buttons Collections
@@ -15,6 +14,9 @@ namespace Keeper2018
         private static readonly Dictionary<string, int> ButtonsForExpenseTags =
             new Dictionary<string, int> { ["pro"] = 249, ["евр"] = 523, ["вит"] = 744,  ["рад"] = 532, 
                 ["ома"] = 291, ["маг"] = 252, ["еда"] = 257, ["лек"] = 199, ["стр"] = 589, ["др"] = 256, };
+
+        private static readonly Dictionary<string, int> ButtonsForReceiptTags =
+            new Dictionary<string, int> {["еда"] = 257, ["c/x"] = 446, ["др"] = 256, ["др-д"] = 362, };
 
         private static readonly Dictionary<string, int> ButtonsForIncome =
             new Dictionary<string, int> { ["алф"] = 695, ["шкф"] = 167, ["юк"] = 163, ["бум"] = 732, 
@@ -31,7 +33,8 @@ namespace Keeper2018
         private static readonly Dictionary<string, int> ButtonsForTransferTags = new Dictionary<string, int>();
 
         private static readonly Dictionary<string, int> ButtonsForExchange =
-            new Dictionary<string, int> { ["мк"] = 162, ["джо"] = 781, ["биб$"] = 690, ["газ"] = 675, ["газ$"] = 504, ["бум"] = 732,  ["при$"] = 733,};
+            new Dictionary<string, int> { ["мк"] = 162, ["джо"] = 781, ["биб$"] = 690, ["газ"] = 675, 
+                ["газ$"] = 504, ["бум"] = 732,  ["при$"] = 733,};
 
         private static readonly Dictionary<string, int> ButtonsForExchangeTags = new Dictionary<string, int>();
          #endregion
@@ -84,19 +87,22 @@ namespace Keeper2018
                     _comboTreesProvider.AccNamesForTransferTags, tran.MyAccount.Id, 579);
                 // case OperationType.Обмен:
                 default:
-                    return Build("Теги", ButtonsForExchangeTags, _comboTreesProvider.AccNamesForExchangeTags, tran.MyAccount.Id, 339);
+                    return Build("Теги", ButtonsForExchangeTags, 
+                        _comboTreesProvider.AccNamesForExchangeTags, tran.MyAccount.Id, 339);
             }
         }
 
         public AccNameSelectorVm ForReceipt(int initialAccountId)
         {
-            return Build("", ButtonsForExpenseTags, _comboTreesProvider.AccNamesForExpenseTags, initialAccountId, 0);
+            return Build("", ButtonsForReceiptTags,
+                _comboTreesProvider.AccNamesForExpenseTags, initialAccountId, 0);
         }
 
         public AccNameSelectorVm ForFilter()
         {
 
-            return Build("", new Dictionary<string, int>(), _comboTreesProvider.AccNamesForFilterTags, 256, 0);
+            return Build("", new Dictionary<string, int>(), 
+                _comboTreesProvider.AccNamesForFilterTags, 256, 0);
         }
 
         private AccNameSelectorVm Build(string controlTitle, Dictionary<string, int> frequentAccountButtonNames,

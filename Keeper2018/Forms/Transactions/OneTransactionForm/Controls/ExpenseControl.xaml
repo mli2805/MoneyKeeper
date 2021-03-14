@@ -18,7 +18,8 @@
             </Grid>
 
             <keeper2018:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="5,0,0,0"/>
-            <Label Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="85,0,0,0" Foreground="Red"/>
+            <Label Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" 
+                   Margin="85,0,0,0" Foreground="Red"/>
 
             <keeper2018:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="2,10,2,0"/>
 
