@@ -29,6 +29,7 @@
             <Button Name="Download" Margin="5" Width="80" Content="Download"
                     DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"
                     ToolTip="Загрузить НБРБ и ЦБРФ курсы"/>
+            <Button Name="GoldView" Margin="5" Width="80" Content="Gold" DockPanel.Dock="Right" />
             <TextBlock/>
         </DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
@@ -49,13 +50,15 @@
             <DataGrid.Resources>
                 <DataTemplate x:Key="UsdTemplate" DataType="keeper2018:CurrencyRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding UsdStr}" Width="65" HorizontalAlignment="Center" Foreground="{Binding UsdBrush}"/>
+                        <TextBlock Text="{Binding UsdStr}" Width="65" 
+                                   HorizontalAlignment="Center" Foreground="{Binding UsdBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="MyUsdTemplate" DataType="keeper2018:CurrencyRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding MyUsdStr}" Width="50" HorizontalAlignment="Center" Foreground="Black"  FontSize="11"/>
+                        <TextBlock Text="{Binding MyUsdStr}" Width="50" 
+                                   HorizontalAlignment="Center" Foreground="Black"  FontSize="11"/>
                         <TextBlock Text=" "/>
                     </StackPanel>
                 </DataTemplate>
@@ -73,7 +76,8 @@
                 </DataTemplate>
                 <DataTemplate x:Key="EuroUsdTemplate" DataType="keeper2018:CurrencyRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding EuroUsdStr}" Width="50" FontSize="11" Foreground="Black" />
+                        <TextBlock Text="{Binding EuroUsdStr}" Width="50" FontSize="11" 
+                                   Foreground="Black" />
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
@@ -91,19 +95,22 @@
                 </DataTemplate>
                 <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:CurrencyRatesModel">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding BasketAfterBreakStr}" Width="75" Foreground="{Binding BasketBreakBrush}" FontSize="12"/>
+                        <TextBlock Text="{Binding BasketAfterBreakStr}" Width="75" 
+                                   Foreground="{Binding BasketBreakBrush}" FontSize="12"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:CurrencyRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding BasketStr}" Width="120" HorizontalAlignment="Center" Foreground="{Binding BasketBrush}"/>
+                        <TextBlock Text="{Binding BasketStr}" Width="120" 
+                                   HorizontalAlignment="Center" Foreground="{Binding BasketBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:CurrencyRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding BasketAnnualStr}" Width="55" Foreground="{Binding BasketAnnualBrush}" FontSize="12"/>
+                        <TextBlock Text="{Binding BasketAnnualStr}" Width="55" 
+                                   Foreground="{Binding BasketAnnualBrush}" FontSize="12"/>
                         <TextBlock Text="  "/>
                     </StackPanel>
                 </DataTemplate>

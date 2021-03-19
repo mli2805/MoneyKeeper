@@ -228,6 +228,11 @@
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
     <Compile Include="Forms\Cars\FuellingVm.cs" />
+    <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsModel.cs" />
+    <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsView.xaml.cs">
+      <DependentUpon>GoldCoinsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsViewModel.cs" />
     <Compile Include="Forms\Deposits\OpenDepositsView.xaml.cs">
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
     </Compile>
@@ -656,6 +661,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\CurrencyRates\Gold\GoldCoinsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -64,6 +64,7 @@ namespace Keeper2018
             _keeperDataModel.Rates = new Dictionary<DateTime, CurrencyRates>();
             foreach (var rate in bin.Rates)
                 _keeperDataModel.Rates.Add(rate.Date, rate);
+            _keeperDataModel.MetalRates = bin.MetalRates;
 
             _keeperDataModel.FillInAccountTreeAndDict(bin);
 

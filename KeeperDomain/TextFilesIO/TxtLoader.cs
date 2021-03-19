@@ -14,6 +14,7 @@ namespace KeeperDomain
             {
                 var keeperBin = new KeeperBin();
                 LoadCurrencyRates(keeperBin);
+                LoadMetalRates(keeperBin);
                 LoadAccounts(keeperBin);
                 LoadDepoParts(keeperBin);
                 LoadTagAssociations(keeperBin);
@@ -89,6 +90,12 @@ namespace KeeperDomain
         {
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"));
             bin.Rates = content.Select(s => s.CurrencyRateFromString()).ToList();
+        }  
+        
+        private static void LoadMetalRates(KeeperBin bin)
+        {
+            var content = File.ReadAllLines(PathFactory.GetBackupFilePath("MetalRates.txt"));
+            bin.MetalRates = content.Select(s => s.MetalRateFromString()).ToList();
         }
     }
 }

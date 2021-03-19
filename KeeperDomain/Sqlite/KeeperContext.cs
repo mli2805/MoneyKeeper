@@ -9,6 +9,7 @@ namespace KeeperDomain
     public class KeeperContext : DbContext
     {
         public DbSet<CurrencyRates> Rates { get; set; }
+        public DbSet<MinfinMetalRate> MetalRates { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Deposit> Deposits { get; set; }

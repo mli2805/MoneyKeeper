@@ -93,11 +93,12 @@ namespace Keeper2018
             var bin = new KeeperBin
             {
                 Rates = _keeperDataModel.Rates.Values.ToList(),
+                MetalRates = _keeperDataModel.MetalRates,
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),
                 Deposits = deposits,
                 PayCards = deposits.Where(d => d.Card != null).Select(c => c.Card).ToList(),
-                
+
                 Transactions = _keeperDataModel.Transactions.Values.Select(t => t.Map()).ToList(),
 
                 TagAssociations = _keeperDataModel.TagAssociations,
@@ -108,24 +109,13 @@ namespace Keeper2018
                 Cars = _keeperDataModel.Cars.Select(c => c.Map()).ToList(),
                 YearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => y.Map()).ToList(),
 
-                Fuellings = _keeperDataModel.FuellingVms.Select(f=>f.Map()).ToList(),
+                Fuellings = _keeperDataModel.FuellingVms.Select(f => f.Map()).ToList(),
             };
 
             bin.DepositRateLines = new List<DepositRateLine>();
-            // bin.DepositCalculationRules = new List<DepositCalculationRules>();
-            // bin.DepositConditions = new List<DepositConditions>();
-
             bin.DepoNewConds = new List<DepoNewConds>();
-
             foreach (var depositOffer in _keeperDataModel.DepositOffers)
             {
-                // foreach (var pair in depositOffer.ConditionsMap)
-                // {
-                //     bin.DepositCalculationRules.Add(pair.Value.CalculationRules);
-                //     bin.DepositRateLines.AddRange(pair.Value.RateLines);
-                //     bin.DepositConditions.Add(pair.Value);
-                // }
-
                 foreach (var pair in depositOffer.CondsMap)
                 {
                     bin.DepositRateLines.AddRange(pair.Value.RateLines);

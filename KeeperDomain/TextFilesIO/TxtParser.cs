@@ -18,6 +18,18 @@ namespace KeeperDomain
             return rate;
         }
 
+        public static MinfinMetalRate MetalRateFromString(this string s)
+        {
+            var rate = new MinfinMetalRate();
+            var substrings = s.Split(';');
+            rate.Id = int.Parse(substrings[0]);
+            rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            rate.Metal = (Metal)Enum.Parse(typeof(Metal), substrings[2]);
+            rate.Proba = int.Parse(substrings[3]);
+            rate.Price = double.Parse(substrings[4], new CultureInfo("en-US"));
+            return rate;
+        }
+
         private static NbRbRates NbRbRatesFromString(string s)
         {
             var rate = new NbRbRates();

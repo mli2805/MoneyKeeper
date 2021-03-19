@@ -37,7 +37,7 @@ namespace Keeper2018
                 ["газ$"] = 504, ["бум"] = 732,  ["при$"] = 733,};
 
         private static readonly Dictionary<string, int> ButtonsForExchangeTags = new Dictionary<string, int>();
-         #endregion
+        #endregion
 
         private readonly ComboTreesProvider _comboTreesProvider;
 

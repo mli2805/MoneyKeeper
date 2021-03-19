@@ -17,6 +17,7 @@ namespace Keeper2018
         private readonly IWindowManager _windowManager;
         private readonly KeeperDataModel _keeperDataModel;
         private readonly InputMyUsdViewModel _inputMyUsdViewModel;
+        private readonly GoldCoinsViewModel _goldCoinsViewModel;
 
         private Dictionary<DateTime, CurrencyRates> _rates;
         public ObservableCollection<CurrencyRatesModel> Rows { get; set; } = new ObservableCollection<CurrencyRatesModel>();
@@ -49,11 +50,12 @@ namespace Keeper2018
         }
 
         public CurrencyRatesViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
-            InputMyUsdViewModel inputMyUsdViewModel)
+            InputMyUsdViewModel inputMyUsdViewModel, GoldCoinsViewModel goldCoinsViewModel)
         {
             _windowManager = windowManager;
             _keeperDataModel = keeperDataModel;
             _inputMyUsdViewModel = inputMyUsdViewModel;
+            _goldCoinsViewModel = goldCoinsViewModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -136,6 +138,12 @@ namespace Keeper2018
             var monthlyChartViewModel = new MonthlyChartViewModel();
             monthlyChartViewModel.Initialize(OxyplotKey, Rows.ToList());
             _windowManager.ShowWindow(monthlyChartViewModel);
+        }
+
+        public void GoldView()
+        {
+            _goldCoinsViewModel.Initialize();
+            _windowManager.ShowWindow(_goldCoinsViewModel);
         }
 
         public async void Download()

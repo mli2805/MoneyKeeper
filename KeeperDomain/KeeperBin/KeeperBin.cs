@@ -7,6 +7,7 @@ namespace KeeperDomain
     public class KeeperBin
     {
         public List<CurrencyRates> Rates { get; set; }
+        public List<MinfinMetalRate> MetalRates { get; set; }
 
         public List<Account> AccountPlaneList { get; set; }
         public List<Deposit> Deposits { get; set; }
