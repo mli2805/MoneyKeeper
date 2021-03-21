@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -33,6 +34,8 @@ namespace Keeper2018
         }
 
         public string ControlTitle { get; set; }
+
+        public Visibility Visibility { get; set; }
 
     }
 }

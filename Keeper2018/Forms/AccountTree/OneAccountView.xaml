@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Height="204" Width="400" WindowStartupLocation="CenterOwner"
+        SizeToContent="Height" Width="400" WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance keeper2018:OneAccountViewModel}">
-    <DockPanel>
+    <StackPanel>
         <DockPanel DockPanel.Dock="Top" Height="30" Margin="5,10,5,0">
             <TextBlock DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding ParentFolder}"/>
             <TextBlock Margin="5" Text="В папке" HorizontalAlignment="Left"/>
@@ -16,10 +16,18 @@
             <TextBox DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding AccountInWork.Header, Mode= TwoWay}"/>
             <TextBlock Margin="5" Text="Название" HorizontalAlignment="Left"/>
         </DockPanel>
-        <Rectangle DockPanel.Dock="Top" Margin="3,5,3,4" Stroke="LightGray" StrokeThickness="1,"/>
+
+        <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" 
+                                        Margin="7,0" Visibility="{Binding Visibility}"/>
+        <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm2}" 
+                                        Margin="7,0" Visibility="{Binding Visibility}"/>
+        <TextBlock Margin="10, 0, 10, 10" TextWrapping="Wrap" TextAlignment="Center" 
+                   Visibility="{Binding TextVisibility }"
+                   Text="Можно оставить пустой комбик, тогда при вводе соответстующей проводки надо будет выбрать тэг вручную"/>
+
         <StackPanel DockPanel.Dock="Bottom" Height="40" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="Save" Content="Принять" Height="22" Width="100" Margin="5"/>
             <Button Name="Cancel" Content="Отклонить" Height="22" Width="100" Margin="5"/>
         </StackPanel>
-    </DockPanel>
+    </StackPanel>
 </Window>

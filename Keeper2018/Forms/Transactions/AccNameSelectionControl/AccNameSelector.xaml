@@ -7,7 +7,9 @@
              xmlns:keeper2018="clr-namespace:Keeper2018"
              mc:Ignorable="d" 
              d:DesignWidth="300" 
-             cal:Bind.ModelWithoutContext="{Binding .}" d:DataContext="{d:DesignInstance keeper2018:AccNameSelectorVm}">
+             cal:Bind.ModelWithoutContext="{Binding .}" 
+             d:DataContext="{d:DesignInstance keeper2018:AccNameSelectorVm}"
+             Visibility="{Binding Visibility}">
     <DockPanel Margin="0,0,0,10">
         <keeper2018:ComboBoxTreeView DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Background="White" 
                       VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="False"

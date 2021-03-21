@@ -25,6 +25,16 @@ namespace Keeper2018
             _dataModel = dataModel;
         }
 
+        public List<AccName> GetAllIncomeTags()
+        {
+            return new List<AccName> {new AccName().PopulateFromAccount(_dataModel.AcMoDict[185], null)};
+        }
+
+        public List<AccName> GetFullBranch(int branchId)
+        {
+            return new List<AccName> {new AccName().PopulateFromAccount(_dataModel.AcMoDict[branchId], null)};
+        }
+
         public void Initialize()
         {
             InitializeListsForIncome();

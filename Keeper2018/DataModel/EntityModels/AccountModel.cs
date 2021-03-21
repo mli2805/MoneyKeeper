@@ -22,6 +22,11 @@ namespace Keeper2018
         public bool IsLeaf => !Children.Any(); // in XAML
         public bool IsCard => Deposit?.Card != null; // in XAML
 
+        // мои счета не используют ассоциации
+        public int AssociatedIncomeId { get; set; } // for external
+        public int AssociatiedExpenseId { get; set; } // for external
+        public int AssociatiedExternalId { get; set; } // for tag
+
 
         public override string ToString() => (string)Header;
         public int CompareTo(object obj)
