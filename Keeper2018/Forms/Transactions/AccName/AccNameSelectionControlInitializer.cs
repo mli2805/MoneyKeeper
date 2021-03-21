@@ -85,12 +85,16 @@ namespace Keeper2018
         private static readonly Dictionary<string, int> ButtonsForExchangeTags = new Dictionary<string, int>();
 
         private static readonly Dictionary<string, int> ButtonsIncomesForExternal =
-            new Dictionary<string, int> { ["%%"] = 208, ["бэк"] = 701 };
+            new Dictionary<string, int> { ["з.п"] = 204, ["юфр"] = 314, ["%%"] = 208, ["бэк"] = 701 };
 
         private static readonly Dictionary<string, int> ButtonsExpensesForExternal =
-            new Dictionary<string, int> { ["еда"] = 257, ["лек"] = 199, ["др"] = 256, };
+            new Dictionary<string, int> { ["еда"] = 257, ["обе"] = 193, ["с/х"] = 446, ["дпр"] = 362, ["лек"] = 199, ["леч"] = 354, ["гад"] = 751, ["др"] = 256, };
 
+        private static readonly Dictionary<string, int> ButtonsExternalForIncome =
+                  new Dictionary<string, int> { ["фсзн"] = 177, ["род"] = 225, };
 
+        private static readonly Dictionary<string, int> ButtonsExternalForExpense =
+                         new Dictionary<string, int> { ["нал"] = 520, ["рикз"] = 668, ["род"] = 225, };
         #endregion
 
         private readonly ComboTreesProvider _comboTreesProvider;
@@ -199,14 +203,14 @@ namespace Keeper2018
                         _comboTreesProvider.GetFullBranch(185), selectedId, 0); return;
                 case AssociationEnum.expenseForExternal:
                     Initialize(selector, "Для расхода", ButtonsExpensesForExternal,
-                        _comboTreesProvider.GetFullBranch(189), selectedId, 285); return;
+                        _comboTreesProvider.GetFullBranch(189), selectedId, 0); return;
                 case AssociationEnum.externalForIncome:
-                    Initialize(selector, "Контрагент", ButtonsForIncomeTags,
-                        _comboTreesProvider.GetFullBranch(157), selectedId, 171); return;
+                    Initialize(selector, "Контрагент", ButtonsExternalForIncome,
+                        _comboTreesProvider.GetFullBranch(157), selectedId, 0); return;
                 // case AssociationEnum.externalForExpense:
                 default:
-                    Initialize(selector, "Контрагент", ButtonsForExpenseTags,
-                        _comboTreesProvider.GetFullBranch(157), selectedId, 249); return;
+                    Initialize(selector, "Контрагент", ButtonsExternalForExpense,
+                        _comboTreesProvider.GetFullBranch(157), selectedId, 0); return;
             }
         }
 

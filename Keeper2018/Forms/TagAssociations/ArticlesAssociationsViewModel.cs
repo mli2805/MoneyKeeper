@@ -44,7 +44,40 @@ namespace Keeper2018
         {
             InitializeListsForCombobox();
             InitilizeGrid();
+
+            // Once();
         }
+
+        // private void Once()
+        // {
+        //     foreach (var tagAssociation in _dataModel.TagAssociations)
+        //     {
+        //         var extertnalAccount = _dataModel.AcMoDict[tagAssociation.ExternalAccount];
+        //         var tag = _dataModel.AcMoDict[tagAssociation.Tag];
+        //
+        //         if (tagAssociation.Destination == AssociationType.TwoWay ||
+        //             tagAssociation.Destination == AssociationType.LeftToRight)
+        //         {
+        //             
+        //             if (tagAssociation.OperationType == OperationType.Доход)
+        //             {
+        //                 extertnalAccount.AssociatedIncomeId = tag.Id;
+        //             }
+        //             else
+        //             {
+        //                 extertnalAccount.AssociatiedExpenseId = tag.Id;
+        //             }
+        //         }
+        //
+        //         if (tagAssociation.Destination == AssociationType.TwoWay ||
+        //             tagAssociation.Destination == AssociationType.RightToLeft)
+        //         {
+        //             tag.AssociatiedExternalId = extertnalAccount.Id;
+        //         }
+        //
+        //
+        //     }
+        // }
 
         private void InitilizeGrid()
         {
