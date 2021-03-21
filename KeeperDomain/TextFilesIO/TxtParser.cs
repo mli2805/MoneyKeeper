@@ -58,7 +58,10 @@ namespace KeeperDomain
             account.Header = substrings[1].Trim();
             account.OwnerId = int.Parse(substrings[2]);
             account.IsExpanded = Convert.ToBoolean(substrings[3]);
-            account.Comment = substrings[4].Trim();
+            account.AssociatedIncomeId = int.Parse(substrings[4]);
+            account.AssociatiedExpenseId = int.Parse(substrings[5]);
+            account.AssociatiedExternalId = int.Parse(substrings[6]);
+            account.Comment = substrings[7].Trim();
             return account;
         }
 
