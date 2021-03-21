@@ -17,8 +17,6 @@ namespace KeeperDomain
 
         public DbSet<Transaction> Transactions { get; set; }
 
-        public DbSet<TagAssociation> TagAssociations { get; set; }
-
         public DbSet<DepositRateLine> DepositRateLines { get; set; }
         public DbSet<DepoNewConds> DepositConditions { get; set; }
         public DbSet<DepositOffer> DepositOffers { get; set; }

@@ -74,7 +74,6 @@ namespace Keeper2018
 
             _keeperDataModel.FuellingJoinTransaction(bin.Fuellings);
 
-            _keeperDataModel.TagAssociations = bin.TagAssociations;
             _keeperDataModel.Cars = bin.JoinCarParts();
             _keeperDataModel.DepositOffers = bin.JoinDepoParts(_keeperDataModel.AcMoDict);
         }

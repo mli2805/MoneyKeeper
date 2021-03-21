@@ -220,13 +220,24 @@ namespace Keeper2018
             var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Add(tag);
 
-            var associatedTag = _dataModel.GetAssociation(TranInWork, tag);
+            // var associatedTag = _dataModel.GetAssociation(TranInWork, tag);
+            var associatedTag = FindAssociated(tag, TranInWork.Operation);
             if (associatedTag != null)
             {
                 MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag, null);
             }
 
             MyTagPickerVm.TagInWork = null;
+        }
+
+        private AccountModel FindAssociated(AccountModel accountModel, OperationType opType)
+        {
+            var associatedId =  accountModel.IsTag
+                    ? accountModel.AssociatiedExternalId
+                    : opType == OperationType.Доход 
+                        ? accountModel.AssociatedIncomeId 
+                        : accountModel.AssociatiedExpenseId;
+            return _dataModel.AcMoDict[associatedId];
         }
 
         private void ReactOnAssociationAdd()

@@ -101,9 +101,6 @@ namespace Keeper2018
 
                 Transactions = _keeperDataModel.Transactions.Values.Select(t => t.Map()).ToList(),
 
-                TagAssociations = _keeperDataModel.TagAssociations,
-
-
                 DepositOffers = _keeperDataModel.DepositOffers.Select(o => o.Map()).ToList(),
 
                 Cars = _keeperDataModel.Cars.Select(c => c.Map()).ToList(),

@@ -30,11 +30,6 @@
                 <cal:Parameter Value="ShowMonthAnalysisForm"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
-        <ei:KeyTrigger Key="T">
-            <cal:ActionMessage MethodName="ActionMethod">
-                <cal:Parameter Value="ShowTagAssociationsForm"/>
-            </cal:ActionMessage>
-        </ei:KeyTrigger>
         <ei:KeyTrigger Key="S">
             <cal:ActionMessage MethodName="ActionMethod">
                 <cal:Parameter Value="Save"/>
@@ -59,9 +54,6 @@
         </Button>
         <Button Name="ShowDepositOffersForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Bank offers">
             <Image Source="../../Resources/bank_offer.png" Width="24" Height="24" />
-        </Button>
-        <Button Name="ShowTagAssociationsForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Tag associations">
-            <Image Source="../../Resources/association.png" Width="24" Height="24" />
         </Button>
 
         <Menu Margin="15,0,0,0" Background="White" BorderBrush="White">

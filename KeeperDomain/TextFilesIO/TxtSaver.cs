@@ -41,12 +41,6 @@ namespace KeeperDomain
                 var fuelling = bin.Fuellings.Select(f => f.Dump()).ToList();
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Fuellings.txt"), fuelling);
 
-                var tagAssociations = bin.TagAssociations
-                    .OrderBy(a => a.OperationType)
-                    .ThenBy(b => b.ExternalAccount)
-                    .Select(tagAssociation => tagAssociation.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("TagAssociations.txt"), tagAssociations);
-
                 var depoOffers = bin.DepositOffers.Select(o => o.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("depoOffers.txt"), depoOffers);
                 var depoRateLines = bin.DepositRateLines.Select(o => o.Dump());

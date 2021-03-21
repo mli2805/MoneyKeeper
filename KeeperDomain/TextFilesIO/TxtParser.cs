@@ -118,18 +118,6 @@ namespace KeeperDomain
             return tran;
         }
 
-        public static TagAssociation TagAssociationFromString(this string s)
-        {
-            var association = new TagAssociation();
-            var substrings = s.Split(';');
-            association.Id = int.Parse(substrings[0].Trim());
-            association.ExternalAccount = int.Parse(substrings[1].Trim());
-            association.Tag = int.Parse(substrings[2].Trim());
-            association.OperationType = (OperationType)Enum.Parse(typeof(OperationType), substrings[3]);
-            association.Destination = (AssociationType)Enum.Parse(typeof(AssociationType), substrings[4]);
-            return association;
-        }
-
         public static DepositOffer DepositOfferFromString(this string s)
         {
             var substrings = s.Split(';');

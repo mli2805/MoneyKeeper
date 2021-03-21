@@ -15,7 +15,6 @@ namespace KeeperDomain
 
         public List<Transaction> Transactions { get; set; }
 
-        public List<TagAssociation> TagAssociations { get; set; }
         public List<Car> Cars { get; set; }
         public List<YearMileage> YearMileages { get; set; }
         public List<Fuelling> Fuellings { get; set; }

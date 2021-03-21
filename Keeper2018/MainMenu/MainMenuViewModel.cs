@@ -15,7 +15,6 @@ namespace Keeper2018
         private readonly MonthAnalysisViewModel _monthAnalysisViewModel;
         private readonly TransactionsViewModel _transactionsViewModel;
         private readonly BankOffersViewModel _bankOffersViewModel;
-        private readonly ArticlesAssociationsViewModel _articlesAssociationsViewModel;
         private readonly SettingsViewModel _settingsViewModel;
         private readonly CarsViewModel _carsViewModel;
         private readonly ExpenseByCategoriesViewModel _expenseByCategoriesViewModel;
@@ -29,7 +28,7 @@ namespace Keeper2018
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
-            ArticlesAssociationsViewModel articlesAssociationsViewModel, SettingsViewModel settingsViewModel,
+             SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             OpenDepositsViewModel openDepositsViewModel,
@@ -43,7 +42,6 @@ namespace Keeper2018
             _monthAnalysisViewModel = monthAnalysisViewModel;
             _transactionsViewModel = transactionsViewModel;
             _bankOffersViewModel = bankOffersViewModel;
-            _articlesAssociationsViewModel = articlesAssociationsViewModel;
             _settingsViewModel = settingsViewModel;
             _carsViewModel = carsViewModel;
             _expenseByCategoriesViewModel = expenseByCategoriesViewModel;
@@ -70,9 +68,6 @@ namespace Keeper2018
                     break;
                 case MainMenuAction.ShowDepositOffersForm:
                     ShowDepositOffersForm();
-                    break;
-                case MainMenuAction.ShowTagAssociationsForm:
-                    ShowTagAssociationsForm();
                     break;
                 case MainMenuAction.Save:
                     Save();
@@ -121,17 +116,13 @@ namespace Keeper2018
             _monthAnalysisViewModel.Initialize();
             _windowManager.ShowDialog(_monthAnalysisViewModel);
         }
+
         public void ShowDepositOffersForm()
         {
             _bankOffersViewModel.Initialize();
             _windowManager.ShowDialog(_bankOffersViewModel);
         }
-        public void ShowTagAssociationsForm()
-        {
-            _articlesAssociationsViewModel.Init();
-            _windowManager.ShowDialog(_articlesAssociationsViewModel);
-        }
-
+      
         public void ShowBalancesAndSaldosChart()
         {
             var vm = new BalancesAndSaldosViewModel();

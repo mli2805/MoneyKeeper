@@ -46,8 +46,6 @@ namespace Keeper2018
             builder.RegisterType<OneBankOfferViewModel>().SingleInstance();
             builder.RegisterType<RulesAndRatesViewModel>().SingleInstance();
 
-            builder.RegisterType<ArticlesAssociationsViewModel>().SingleInstance();
-
             builder.RegisterType<ComboTreesProvider>().SingleInstance();
             builder.RegisterType<AccNameSelectionControlInitializer>().SingleInstance();
             builder.RegisterType<BalanceDuringTransactionHinter>().SingleInstance();

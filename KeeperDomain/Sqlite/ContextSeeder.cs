@@ -19,8 +19,6 @@ namespace KeeperDomain
 
                     await dbContext.Transactions.AddRangeAsync(bin.Transactions);
 
-                    await dbContext.TagAssociations.AddRangeAsync(bin.TagAssociations);
-
                     await dbContext.Cars.AddRangeAsync(bin.Cars);
                     await dbContext.YearMileages.AddRangeAsync(bin.YearMileages);
                     await dbContext.Fuellings.AddRangeAsync(bin.Fuellings);

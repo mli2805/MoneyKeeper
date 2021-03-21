@@ -270,7 +270,6 @@
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceDetailedLine.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithDetails.cs" />
     <Compile Include="Forms\Cars\CarVm.cs" />
-    <Compile Include="DataModel\DataModelExt\AssociationFinder.cs" />
     <Compile Include="DataModel\IO\DbLoader.cs" />
     <Compile Include="DataModel\Mappers\EntitiesToModels.cs" />
     <Compile Include="DataModel\DataModelExt\RateProvider.cs" />
@@ -443,7 +442,6 @@
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shell\DbLoadingViewModel.cs" />
-    <Compile Include="Forms\TagAssociations\AccountComboboxProvider.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeGardener.cs" />
     <Compile Include="DataModel\KeeperDataModel.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />
@@ -470,7 +468,6 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
-    <Compile Include="DataModel\EntityModels\TagAssociationModel.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameExt.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameSelectionControlInitializer.cs" />
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameButtonVm.cs" />
@@ -547,10 +544,6 @@
     <Compile Include="Utils\DateTimeExtansions.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
-    <Compile Include="Forms\TagAssociations\ArticlesAssociationsView.xaml.cs">
-      <DependentUpon>ArticlesAssociationsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\TagAssociations\ArticlesAssociationsViewModel.cs" />
     <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
     <Compile Include="Forms\CurrencyRates\CurrencyRatesModel.cs" />
@@ -749,10 +742,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\TagAssociations\ArticlesAssociationsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
