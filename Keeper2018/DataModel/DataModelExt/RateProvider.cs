@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -23,6 +24,13 @@ namespace Keeper2018
                     result = ratesLine.NbRates.Rur.Clone();
                     if (isForUsd)
                         result.Value = ratesLine.NbRates.Usd.Value / (result.Value / result.Unit);
+                    return result;
+
+                case CurrencyCode.GLD:
+                    var line = dataModel.MetalRates.LastOrDefault(m => m.Date <= dt);
+                    result = new OneRate() { Value = line?.Price ?? 0 };
+                    if (isForUsd)
+                        result.Value = result.Value / ratesLine.MyUsdRate.Value;
                     return result;
             }
             return null;

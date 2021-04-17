@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -58,6 +59,10 @@ namespace Keeper2018
                     return amount * rate;
                 case CurrencyCode.RUB:
                     rate = (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value;
+                    return amount * rate;
+                case CurrencyCode.GLD:
+                    var line = dataModel.MetalRates.LastOrDefault(m => m.Date <= date);
+                    rate = (decimal)((line?.Price ?? 0)  / rateLine.MyUsdRate.Value);
                     return amount * rate;
             }
 

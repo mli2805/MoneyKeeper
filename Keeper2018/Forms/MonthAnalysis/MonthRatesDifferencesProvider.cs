@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows.Media;
 
 namespace Keeper2018
@@ -27,7 +28,6 @@ namespace Keeper2018
             var euroStart = ratesLine.MyEurUsdRate.Value;
             var euroFinish = ratesLineFinish.MyEurUsdRate.Value;
             double euroPercent = (euroFinish - euroStart) / euroFinish * 100;
-
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
             var euro = $"      Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}  ({euroPercent:0.0}%)";
@@ -40,6 +40,17 @@ namespace Keeper2018
             var rubBrush = rubFinish < rubStart ? Brushes.Blue : Brushes.Red;
             var rub = $"      Rur {rubWord}: {rubStart:0.0} - {rubFinish:0.0}  ({rubPercent:0.0}%)";
             result.Add(rub, rubBrush);
+
+            var gldStartByn = dataModel.MetalRates.LastOrDefault(m => m.Date <= startDate)?.Price ?? 0;
+            var gldFinishByn = dataModel.MetalRates.LastOrDefault(m => m.Date <= finishMoment)?.Price ?? 0;
+
+            var gldStart = gldStartByn / ratesLine.MyUsdRate.Value;
+            var gldFinish = gldFinishByn / ratesLineFinish.MyUsdRate.Value;
+            var gldPercent = (gldFinish - gldStart) / gldFinish * 100;
+            var gldWord = gldFinish > gldStart ? "выросло" : "упало";
+            var gldBrush = gldFinish > gldStart ? Brushes.Blue : Brushes.Red;
+            var gld = $"      Gold {gldWord}: {gldStart:0.0} - {gldFinish:0.0}  ({gldPercent:0.0}%)";
+            result.Add(gld, gldBrush);
 
             return result;
         }
