@@ -4,14 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
-        mc:Ignorable="d" SizeToContent="WidthAndHeight"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
         >
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="10">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Ввести дату и цену золота 900-й пробы и нажать " VerticalAlignment="Center"/>
+                <Button Name="Recount" Content="рассчитать" Margin="5,0" Width="80" Height="24"></Button>
+            </StackPanel>
             <TextBlock Text="Цены Минфина за 1 г золота 900-й пробы"/>
-            <TextBlock Text="Цены на монеты исходя из веса 5-ки - 3.87 г и 10-ки - 7.74 г"></TextBlock>
+            <TextBlock Text="http://www.minfin.gov.by/ru/activities_jewels/fund/pokupka/fizlic/archive/" Margin="15,0,0,0"/>
+            <TextBlock Text="Цены на монеты исходя из веса 5-ки - 3.87 г и 10-ки - 7.74 г"/>
         </StackPanel>
-    <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False">
+    <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False" Margin="5">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="30">
                 <DataGridTextColumn.ElementStyle>
@@ -54,7 +59,7 @@
                     </Style>
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn Header="5-ка" Binding="{Binding G5RubRate, StringFormat='{}{0:0.00}'}" Width="80">
+            <DataGridTextColumn Header="5-ка (byn)" Binding="{Binding G5RubRate, StringFormat='{}{0:0.00}'}" Width="80">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Right" />
@@ -70,7 +75,7 @@
                     </Style>
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn Header="10-ка" Binding="{Binding G10RubRate, StringFormat='{}{0:0,0.00}', 
+            <DataGridTextColumn Header="10-ка (byn)" Binding="{Binding G10RubRate, StringFormat='{}{0:0,0.00}', 
                 ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Width="80">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
