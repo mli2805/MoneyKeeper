@@ -162,7 +162,10 @@ namespace Keeper2018
             }
 
             if (tranModel.Operation == OperationType.Обмен)
+            {
+                PopupLabels.Add("");
                 PopupValues.Add($" ({_balanceDuringTransactionHinter.GetExchangeRate(tranModel)})");
+            }
 
             PopupLabels.Add("Amount: ");
             var amount = _dataModel.AmountInUsdWithRate(tranModel.Timestamp, 
