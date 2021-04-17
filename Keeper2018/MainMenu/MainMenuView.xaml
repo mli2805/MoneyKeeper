@@ -35,8 +35,7 @@
                 <cal:Parameter Value="Save"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
-        <ei:KeyTrigger>
-            <ei:KeyTrigger.Key>E</ei:KeyTrigger.Key>
+        <ei:KeyTrigger Key="E">
             <cal:ActionMessage MethodName="ActionMethod">
                 <cal:Parameter Value="Experiment"/>
             </cal:ActionMessage>

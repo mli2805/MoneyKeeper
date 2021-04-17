@@ -237,7 +237,7 @@ namespace Keeper2018
                     : opType == OperationType.Доход 
                         ? accountModel.AssociatedIncomeId 
                         : accountModel.AssociatiedExpenseId;
-            return _dataModel.AcMoDict[associatedId];
+            return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
         }
 
         private void ReactOnAssociationAdd()

@@ -22,6 +22,7 @@ namespace Keeper2018.PayCards
             Rows.AddRange(_dataModel.AcMoDict.Values
                 .Where(a => !a.Is(393) && !a.Is(235) // закрытые
                                        && a.IsDeposit && a.Deposit.Card != null)
+                .OrderBy(d=>d.Deposit.FinishDate)
                 .Select(GetVm));
         }
 
