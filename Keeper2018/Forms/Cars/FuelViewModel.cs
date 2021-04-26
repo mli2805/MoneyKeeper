@@ -14,8 +14,8 @@ namespace Keeper2018
     public class FuelViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        public List<FuellingVm> Rows { get; set; }
-        public FuellingVm SelectedRow { get; set; }
+        public List<FuellingModel> Rows { get; set; }
+        public FuellingModel SelectedRow { get; set; }
         public string Total => $"Итого {Rows.Sum(f => f.Volume)} литров";
 
         public PlotModel ChartModel { get; set; }

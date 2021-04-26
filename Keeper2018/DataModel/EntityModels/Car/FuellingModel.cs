@@ -3,7 +3,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class FuellingVm
+    public class FuellingModel
     {
         public int Id { get; set; } //PK
         public TransactionModel Transaction { get; set; }

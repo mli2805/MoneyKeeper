@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Keeper2018
 {
-    public class CarVm
+    public class CarModel
     {
         public int Id { get; set; } //PK
         public int CarAccountId { get; set; }
@@ -23,7 +23,7 @@ namespace Keeper2018
 
         public int MileageDifference => SaleMileage - PurchaseMileage;
         public int MileageAday => MileageDifference / (SaleDate - PurchaseDate).Days;
-        public List<YearMileageVm> YearsMileage { get; set; } = new List<YearMileageVm>();
+        public List<YearMileageModel> YearsMileage { get; set; } = new List<YearMileageModel>();
 
     }
 }

@@ -9,12 +9,12 @@ namespace Keeper2018
     {
         public static void FuellingJoinTransaction(this KeeperDataModel dataModel, List<Fuelling> fuellings)
         {
-            dataModel.FuellingVms = new List<FuellingVm>();
+            dataModel.FuellingVms = new List<FuellingModel>();
             foreach (var fuelling in fuellings)
             {
                 var tr = dataModel.Transactions[fuelling.TransactionId];
                 var oneLitrePrice = Math.Abs(fuelling.Volume) < 0.01 ? 0 : tr.Amount / (decimal)fuelling.Volume;
-                dataModel.FuellingVms.Add(new FuellingVm()
+                dataModel.FuellingVms.Add(new FuellingModel()
                 {
                     Timestamp = tr.Timestamp,
                     Transaction = tr,

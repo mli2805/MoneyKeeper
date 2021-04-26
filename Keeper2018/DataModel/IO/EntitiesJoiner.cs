@@ -6,7 +6,7 @@ namespace Keeper2018
 {
     public static class EntitiesJoiner
     {
-        public static List<CarVm> JoinCarParts(this KeeperBin bin)
+        public static List<CarModel> JoinCarParts(this KeeperBin bin)
         {
             var result = bin.Cars.Select(c => c.Map()).ToList();
             foreach (var car in result)

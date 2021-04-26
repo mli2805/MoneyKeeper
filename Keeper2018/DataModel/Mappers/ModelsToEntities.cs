@@ -86,43 +86,43 @@ namespace Keeper2018
         }
 
 
-        public static Car Map(this CarVm carVm)
+        public static Car Map(this CarModel carModel)
         {
             return new Car()
             {
-                Id = carVm.Id,
-                CarAccountId = carVm.CarAccountId,
-                Title = carVm.Title,
-                IssueYear = carVm.IssueYear,
-                Vin = carVm.Vin,
-                StateRegNumber = carVm.StateRegNumber,
-                PurchaseDate = carVm.PurchaseDate,
-                PurchaseMileage = carVm.PurchaseMileage,
-                SaleDate = carVm.SaleDate,
-                SaleMileage = carVm.SaleMileage,
-                SupposedSalePrice = carVm.SupposedSalePrice,
+                Id = carModel.Id,
+                CarAccountId = carModel.CarAccountId,
+                Title = carModel.Title,
+                IssueYear = carModel.IssueYear,
+                Vin = carModel.Vin,
+                StateRegNumber = carModel.StateRegNumber,
+                PurchaseDate = carModel.PurchaseDate,
+                PurchaseMileage = carModel.PurchaseMileage,
+                SaleDate = carModel.SaleDate,
+                SaleMileage = carModel.SaleMileage,
+                SupposedSalePrice = carModel.SupposedSalePrice,
             };
         }
 
-        public static YearMileage Map(this YearMileageVm yearMileageVm)
+        public static YearMileage Map(this YearMileageModel yearMileageModel)
         {
             return new YearMileage()
             {
-                Id = yearMileageVm.Id,
-                CarId = yearMileageVm.CarId,
-                YearNumber = yearMileageVm.YearNumber,
-                Mileage = yearMileageVm.Mileage
+                Id = yearMileageModel.Id,
+                CarId = yearMileageModel.CarId,
+                YearNumber = yearMileageModel.YearNumber,
+                Mileage = yearMileageModel.Mileage
             };
         }
 
-        public static Fuelling Map(this FuellingVm fuellingVm)
+        public static Fuelling Map(this FuellingModel fuellingModel)
         {
             return new Fuelling()
             {
-                Id = fuellingVm.CarAccountId,
-                TransactionId = fuellingVm.Transaction.Id,
-                Volume = fuellingVm.Volume,
-                FuelType = fuellingVm.FuelType,
+                Id = fuellingModel.CarAccountId,
+                TransactionId = fuellingModel.Transaction.Id,
+                Volume = fuellingModel.Volume,
+                FuelType = fuellingModel.FuelType,
             };
         }
     }

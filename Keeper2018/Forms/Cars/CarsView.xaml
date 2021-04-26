@@ -24,7 +24,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding PurchaseDate, StringFormat='{}{0:d/MM/yyyy}'}" TextAlignment="Right"
-                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}" />
+                                           d:DataContext="{d:DesignInstance keeper2018:CarModel}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -32,7 +32,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding PurchaseMileage}" TextAlignment="Right"
-                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                                           d:DataContext="{d:DesignInstance keeper2018:CarModel}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -40,7 +40,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding SaleDate, StringFormat='{}{0:d/MM/yyyy}'}" TextAlignment="Right"
-                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                                           d:DataContext="{d:DesignInstance keeper2018:CarModel}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -48,7 +48,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding SaleMileage}" TextAlignment="Right"
-                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                                           d:DataContext="{d:DesignInstance keeper2018:CarModel}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -56,7 +56,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding MileageDifference}" TextAlignment="Right"
-                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                                           d:DataContext="{d:DesignInstance keeper2018:CarModel}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -64,7 +64,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding MileageAday}" TextAlignment="Right"
-                                           d:DataContext="{d:DesignInstance keeper2018:CarVm}"/>
+                                           d:DataContext="{d:DesignInstance keeper2018:CarModel}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

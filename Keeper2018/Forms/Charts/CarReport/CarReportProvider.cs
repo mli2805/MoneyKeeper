@@ -9,7 +9,7 @@ namespace Keeper2018
 {
     public class CarReportProvider
     {
-        private CarVm _car;
+        private CarModel _car;
         private static readonly string[] TagRussians =
             { "покупка-продажа", "государство", "авто ремонт", "ремонт ДТП", "регулярн обслуживание", "авто топливо", "авто прочее" };
         private static readonly string[] TagEnglish =

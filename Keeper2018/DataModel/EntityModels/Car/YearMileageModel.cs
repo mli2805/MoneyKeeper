@@ -1,6 +1,6 @@
 ﻿namespace Keeper2018
 {
-    public class YearMileageVm
+    public class YearMileageModel
     {
         public int Id { get; set; } //PK
         public int CarId { get; set; }

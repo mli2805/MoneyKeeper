@@ -85,9 +85,9 @@ namespace Keeper2018
             return tags;
         }
 
-        public static CarVm Map(this Car car)
+        public static CarModel Map(this Car car)
         {
-            return new CarVm()
+            return new CarModel()
             {
                 Id = car.Id,
                 CarAccountId = car.CarAccountId,
@@ -103,9 +103,9 @@ namespace Keeper2018
             };
         }
 
-        public static YearMileageVm Map(this YearMileage yearMileage)
+        public static YearMileageModel Map(this YearMileage yearMileage)
         {
-            return new YearMileageVm()
+            return new YearMileageModel()
             {
                 Id = yearMileage.Id,
                 CarId = yearMileage.CarId,

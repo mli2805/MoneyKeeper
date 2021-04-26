@@ -14,11 +14,11 @@ namespace Keeper2018
         private readonly IWindowManager _windowManager;
         private readonly FuelViewModel _fuelViewModel;
 
-        public List<CarVm> Cars { get; set; }
+        public List<CarModel> Cars { get; set; }
 
-        private CarVm _selectedCar;
+        private CarModel _selectedCar;
 
-        public CarVm SelectedCar
+        public CarModel SelectedCar
         {
             get { return _selectedCar; }
             set

@@ -28,7 +28,7 @@ namespace Keeper2018
         }
 
         public List<DepositOfferModel> DepositOffers { get; set; }
-        public List<CarVm> Cars { get; set; }
-        public List<FuellingVm> FuellingVms { get; set; }
+        public List<CarModel> Cars { get; set; }
+        public List<FuellingModel> FuellingVms { get; set; }
     }
 }

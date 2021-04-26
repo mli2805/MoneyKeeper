@@ -227,7 +227,7 @@
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
-    <Compile Include="Forms\Cars\FuellingVm.cs" />
+    <Compile Include="DataModel\EntityModels\Car\FuellingModel.cs" />
     <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsModel.cs" />
     <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsView.xaml.cs">
       <DependentUpon>GoldCoinsView.xaml</DependentUpon>
@@ -269,7 +269,7 @@
     <Compile Include="Forms\AccountTree\PaymentWays\PaymentWaysViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceDetailedLine.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithDetails.cs" />
-    <Compile Include="Forms\Cars\CarVm.cs" />
+    <Compile Include="DataModel\EntityModels\Car\CarModel.cs" />
     <Compile Include="DataModel\IO\DbLoader.cs" />
     <Compile Include="DataModel\Mappers\EntitiesToModels.cs" />
     <Compile Include="DataModel\DataModelExt\RateProvider.cs" />
@@ -315,7 +315,7 @@
       <DependentUpon>CarsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Cars\CarsViewModel.cs" />
-    <Compile Include="Forms\Cars\YearMileageVm.cs" />
+    <Compile Include="DataModel\EntityModels\Car\YearMileageModel.cs" />
     <Compile Include="Forms\Cars\FuelView.xaml.cs">
       <DependentUpon>FuelView.xaml</DependentUpon>
     </Compile>

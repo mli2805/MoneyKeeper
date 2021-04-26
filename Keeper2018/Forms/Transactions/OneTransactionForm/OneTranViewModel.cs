@@ -209,9 +209,9 @@ namespace Keeper2018
             TryClose(true);
         }
 
-        private FuellingVm CreateNewFuelling()
+        private FuellingModel CreateNewFuelling()
         {
-            return new FuellingVm()
+            return new FuellingModel()
             {
                 CarAccountId = _dataModel.Cars.Last().CarAccountId,
                 Timestamp = TranInWork.Timestamp,
