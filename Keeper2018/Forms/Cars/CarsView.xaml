@@ -73,23 +73,17 @@
         </ListView>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
             <DockPanel DockPanel.Dock="Left" >
-                <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedCar.Title}" HorizontalAlignment="Left" Margin="5" Width="400"></TextBlock>
-                <ListView DockPanel.Dock="Left" ItemsSource="{Binding SelectedCar.YearsMileage}" Margin="5,0,5,5" Width="184">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}">
-                            <Setter Property="BorderBrush" Value="LightGray" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="год" Width="40" DisplayMemberBinding="{Binding YearNumber}"/>
-                            <GridViewColumn Header="одометр" Width="60" DisplayMemberBinding="{Binding Mileage}"/>
-                            <GridViewColumn Header="пробег" Width="60" DisplayMemberBinding="{Binding YearMileage}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedCar.Title}" HorizontalAlignment="Left" Margin="5" Width="480"></TextBlock>
+                <DataGrid DockPanel.Dock="Left" ItemsSource="{Binding SelectedCar.YearsMileage}" 
+                          Margin="5,0,5,5" Width="264" AutoGenerateColumns="False"
+                          HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" Width="30" Binding="{Binding YearNumber}"/>
+                        <DataGridTextColumn Header="год" Width="60" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="одометр" Width="60" Binding="{Binding Odometer}"/>
+                        <DataGridTextColumn Header="пробег" Width="60" Binding="{Binding Mileage}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
                 <StackPanel Margin="5">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="VIN:" Margin="5" Width="40"/>
@@ -123,7 +117,7 @@
             <Button Content="Авто отчет" Width="120" Margin="5" Name="ShowCarReport"/>
             <Button Content="Закрыть" Width="120" Margin="5" Name="Close"/>
         </StackPanel>
-        <StackPanel Margin="20">
+        <StackPanel Margin="5,20" HorizontalAlignment="Right">
             <Button Content="Заправка" Width="120" Margin="5" Name="Fuelling"/>
 
         </StackPanel>

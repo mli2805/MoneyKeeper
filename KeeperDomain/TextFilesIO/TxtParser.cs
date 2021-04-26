@@ -199,7 +199,8 @@ namespace KeeperDomain
             yearMileage.Id = int.Parse(array[0].Trim());
             yearMileage.CarId = int.Parse(array[1].Trim());
             yearMileage.YearNumber = int.Parse(array[2].Trim());
-            yearMileage.Mileage = int.Parse(array[3].Trim());
+            yearMileage.Year = int.Parse(array[3].Trim());
+            yearMileage.Odometer = int.Parse(array[4].Trim());
 
             return yearMileage;
         }

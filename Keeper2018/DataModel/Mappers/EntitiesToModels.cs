@@ -110,7 +110,8 @@ namespace Keeper2018
                 Id = yearMileage.Id,
                 CarId = yearMileage.CarId,
                 YearNumber = yearMileage.YearNumber,
-                Mileage = yearMileage.Mileage
+                Year = yearMileage.Year,
+                Odometer = yearMileage.Odometer,
             };
         }
     }

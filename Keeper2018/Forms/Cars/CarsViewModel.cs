@@ -82,7 +82,32 @@ namespace Keeper2018
                 MessageBox.Show(e.Message);
             }
         }
-        public void Close() { TryClose(); }
+
+        public override void CanClose(Action<bool> callback)
+        {
+            Save();
+            base.CanClose(callback);
+        }
+        
+        public void Close()
+        {
+            TryClose();
+        }
+
+        private void Save()
+        {
+            var yId = 1;
+            foreach (var carModel in Cars)
+            {
+                foreach (var yearMileageModel in carModel.YearsMileage)
+                {
+                    yearMileageModel.Id = yId++;
+                    yearMileageModel.CarId = carModel.Id;
+                }
+            }
+
+            _dataModel.Cars = Cars;
+        }
 
     }
 }

@@ -16,9 +16,9 @@ namespace Keeper2018
                 foreach (var t in arr)
                 {
                     var cc = t.Map();
-                    cc.YearMileage = t.Mileage - prev;
+                    cc.Mileage = t.Odometer - prev;
                     car.YearsMileage.Add(cc);
-                    prev = t.Mileage;
+                    prev = t.Odometer;
                 }
             }
             return result;
