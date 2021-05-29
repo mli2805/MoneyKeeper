@@ -29,7 +29,7 @@ namespace Keeper2018
         public string ToString(KeeperDataModel dataModel)
         {
             return Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
-                   Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
+                   Amount.ToString(new CultureInfo("en-US")) + " " + Currency + " ; " +
                    TagsToString(dataModel) + " ; " + Comment;
         }
 

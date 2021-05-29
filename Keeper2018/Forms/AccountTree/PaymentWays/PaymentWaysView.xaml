@@ -21,7 +21,10 @@
             </StackPanel>
             <StackPanel></StackPanel>
         </DockPanel>
-        <ListView DockPanel.Dock="Bottom" ItemsSource="{Binding Totals}" Margin="5" Height="86"/>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <ListView ItemsSource="{Binding Expenses}" Foreground="Red" Margin="5,5,0,5" Height="108" Width="384"/>
+            <ListView ItemsSource="{Binding Incomes}" Foreground="Blue" Margin="5" Height="108" Width="384"/>
+        </StackPanel>
         <ListView ItemsSource="{Binding Lines}" Margin="5"/>
     </DockPanel>
 </Window>
