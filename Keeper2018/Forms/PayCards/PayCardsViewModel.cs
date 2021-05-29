@@ -10,6 +10,7 @@ namespace Keeper2018.PayCards
         private readonly KeeperDataModel _dataModel;
 
         public List<PayCardVm> Rows { get; set; } = new List<PayCardVm>();
+        public string Total { get; set; }
 
         public PayCardsViewModel(KeeperDataModel dataModel)
         {
@@ -24,6 +25,8 @@ namespace Keeper2018.PayCards
                                        && a.IsDeposit && a.Deposit.Card != null)
                 .OrderBy(d=>d.Deposit.FinishDate)
                 .Select(GetVm));
+
+            Total = $"Всего {Rows.Count}";
         }
 
         private PayCardVm GetVm(AccountModel account)

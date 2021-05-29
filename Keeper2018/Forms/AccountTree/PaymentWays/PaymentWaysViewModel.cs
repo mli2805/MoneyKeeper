@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Caliburn.Micro;
-using Keeper2018;
 using KeeperDomain;
 using Microsoft.Win32;
 
@@ -112,7 +111,7 @@ namespace Keeper2018
             string result = "";
             foreach (var accountModel in tr.Tags)
             {
-                result += accountModel.ToString() + " | ";
+                result += accountModel + " | ";
             }
             return result;
 

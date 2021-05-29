@@ -18,6 +18,7 @@
                 <DataGridTextColumn Header="Платежная система" Width="135" Binding="{Binding PaymentSystem}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <TextBlock Height="22" Margin="5" Text="{Binding Total}"/>
         <Button Content="Close" Width="120" Height="22" Margin="5,10,22,10" HorizontalAlignment="Right" IsCancel="True" IsDefault="True"/>
     </DockPanel>
 </Window>

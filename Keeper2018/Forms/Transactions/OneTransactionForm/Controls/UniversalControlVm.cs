@@ -145,8 +145,8 @@ namespace Keeper2018
             TranInWork = tran;
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
 
-            SelectedPaymentWay = TranInWork.PaymentWay == PaymentWay.НеЗадано 
-                ? PaymentGuess.GuessPaymentWay(TranInWork) 
+            SelectedPaymentWay = TranInWork.PaymentWay == PaymentWay.НеЗадано
+                ? PaymentGuess.GuessPaymentWay(TranInWork)
                 : TranInWork.PaymentWay;
 
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
@@ -222,7 +222,7 @@ namespace Keeper2018
 
             // var associatedTag = _dataModel.GetAssociation(TranInWork, tag);
             var associatedTag = FindAssociated(tag, TranInWork.Operation);
-            if (associatedTag != null)
+            if (associatedTag != null && !TranInWork.Tags.Contains(associatedTag))
             {
                 MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag, null);
             }
@@ -232,10 +232,10 @@ namespace Keeper2018
 
         private AccountModel FindAssociated(AccountModel accountModel, OperationType opType)
         {
-            var associatedId =  accountModel.IsTag
+            var associatedId = accountModel.IsTag
                     ? accountModel.AssociatiedExternalId
-                    : opType == OperationType.Доход 
-                        ? accountModel.AssociatedIncomeId 
+                    : opType == OperationType.Доход
+                        ? accountModel.AssociatedIncomeId
                         : accountModel.AssociatiedExpenseId;
             return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
         }
@@ -296,7 +296,7 @@ namespace Keeper2018
             }
         }
 
-     
+
         private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "MyAccName")
