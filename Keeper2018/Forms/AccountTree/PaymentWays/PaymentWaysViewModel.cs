@@ -19,10 +19,10 @@ namespace Keeper2018
         public ObservableCollection<string> Lines { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Expenses { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Incomes { get; set; } = new ObservableCollection<string>();
-        public decimal Expense { get; set; }
-        public decimal Income { get; set; }
-        public decimal ETotal { get; set; }
-        public decimal ITotal { get; set; }
+        private decimal _eTotal { get; set; }
+        private decimal _iTotal { get; set; }
+
+        public string Total => $"Итого: {_iTotal} - {_eTotal} = {_iTotal - _eTotal}";
 
         public PaymentWaysViewModel(KeeperDataModel dataModel)
         {
@@ -31,7 +31,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = $"{_cardAccountModel.Name}: Раскладка по способам оплаты   {ITotal} - {ETotal} = {ITotal - ETotal}";
+            DisplayName = $"{_cardAccountModel.Name}: Раскладка по способам оплаты";
         }
 
         public void Initialize(AccountModel accountModel)
@@ -43,47 +43,54 @@ namespace Keeper2018
 
         private void Initialize()
         {
+            ClearVars();
+
             var monthTrans = _dataModel.Transactions.Values
                 .Where(t => _period.Includes(t.Timestamp)).ToList();
 
             _expenses = monthTrans.Where(t => t.Operation == OperationType.Расход
                                               && t.MyAccount.Id == _cardAccountModel.Id).ToList();
-
             foreach (var tran in _expenses.Where(t => t.PaymentWay == PaymentWay.НеЗадано))
                 tran.PaymentWay = PaymentGuess.GuessPaymentWay(tran);
 
-            Lines.Clear();
-            Expenses.Clear();
-            Incomes.Clear();
             StepOne(_expenses, Lines, Expenses);
 
             var transfersToCache = monthTrans
                 .Where(t => (t.Operation == OperationType.Перенос || t.Operation == OperationType.Обмен)
                                                                   && t.MyAccount.Id == _cardAccountModel.Id
                                                                   && t.MySecondAccount.Is(160)).ToList();
-            ETotal += StepTwo("Снято налом", transfersToCache, Lines, Expenses);
+            _eTotal += StepTwo("Снято налом", transfersToCache, Lines, Expenses);
 
             var transfersToCards = monthTrans
                 .Where(t => (t.Operation == OperationType.Перенос || t.Operation == OperationType.Обмен)
                                                                             && t.MyAccount.Id == _cardAccountModel.Id
                                                                             && t.MySecondAccount.Is(161)).ToList();
-            ETotal += StepTwo("Переведено на карты", transfersToCards, Lines, Expenses);
+            _eTotal += StepTwo("Переведено на карты", transfersToCards, Lines, Expenses);
 
             var incomes = monthTrans.Where(t => t.Operation == OperationType.Доход
                                                 && t.MyAccount.Id == _cardAccountModel.Id).ToList();
-            ITotal += StepTwo("Доходы", incomes, Lines, Incomes);
+            _iTotal += StepTwo("Доходы", incomes, Lines, Incomes);
 
             var transfersFromCache = monthTrans
                 .Where(t => (t.Operation == OperationType.Перенос || t.Operation == OperationType.Обмен)
                                                                         && t.MySecondAccount.Id == _cardAccountModel.Id
                                                                         && t.MyAccount.Is(160)).ToList();
-            ITotal += StepTwo("Пополнено налом", transfersFromCache, Lines, Incomes);
+            _iTotal += StepTwo("Пополнено налом", transfersFromCache, Lines, Incomes);
            
             var transfersFromCards = monthTrans
                 .Where(t => (t.Operation == OperationType.Перенос || t.Operation == OperationType.Обмен)
                                                                              && t.MySecondAccount.Id == _cardAccountModel.Id
                                                                              && t.MyAccount.Is(161)).ToList();
-            ITotal += StepTwo("Пополнено с карт", transfersFromCards, Lines, Incomes);
+            _iTotal += StepTwo("Пополнено с карт", transfersFromCards, Lines, Incomes);
+        }
+
+        private void ClearVars()
+        {
+            Lines.Clear();
+            Expenses.Clear();
+            Incomes.Clear();
+            _eTotal = 0;
+            _iTotal = 0;
         }
 
         private decimal StepTwo(string title, List<TransactionModel> source, ObservableCollection<string> lines, ObservableCollection<string> totals)
@@ -127,7 +134,7 @@ namespace Keeper2018
                     var total = onePaymentWay.Sum(t => t.Amount);
                     lines.Add($"        {paymentWay}:   {total}");
                     totals.Add($"{paymentWay}:   {total}");
-                    ETotal += total;
+                    _eTotal += total;
                     foreach (var receipt in ShrinkReceipts(onePaymentWay))
                         lines.Add(receipt);
                     lines.Add("");
@@ -139,12 +146,14 @@ namespace Keeper2018
         {
             _period = _period.StartDate.AddMonths(-1).GetFullMonthForDate();
             Initialize();
+            NotifyOfPropertyChange(nameof(Total));
         }
 
         public void StepMonthAfter()
         {
             _period = _period.StartDate.AddMonths(1).GetFullMonthForDate();
             Initialize();
+            NotifyOfPropertyChange(nameof(Total));
         }
 
         public void Export()

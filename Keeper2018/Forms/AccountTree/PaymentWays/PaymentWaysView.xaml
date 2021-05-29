@@ -14,6 +14,7 @@
                     <Button Name="StepMonthAfter" Content="After" Width="60" Margin="5"/>
                 </StackPanel>
             </Border>
+            <TextBlock Text="{Binding Total}" Margin="50,5,5,5"/>
           
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="5">
                 <Button Name="Export" Width="120" HorizontalAlignment="Right" Margin="5">Export</Button>
