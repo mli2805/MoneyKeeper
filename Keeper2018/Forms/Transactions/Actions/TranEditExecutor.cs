@@ -58,6 +58,14 @@ namespace Keeper2018
                 var transactionModel = _oneTranViewModel.FuellingTran.Clone();
                 transactionModel.MyAccount = _oneTranViewModel.TranInWork.MyAccount;
                 AddOneTran(transactionModel);
+
+                if (_oneTranViewModel.FuellingModel != null)
+                {
+                    var fm = _oneTranViewModel.FuellingModel.Clone();
+                    fm.Transaction = transactionModel;
+                    fm.Comment = transactionModel.Comment;
+                    _dataModel.FuellingVms.Add(fm);
+                }
             }
             else
                 AddOneTran(_oneTranViewModel.GetTran().Clone());
@@ -131,10 +139,14 @@ namespace Keeper2018
 
         private void DeleteOneTransaction()
         {
+            var trId = _model.SelectedTranWrappedForDatagrid.Tran.Id;
             var wrappedTrans = new List<TranWrappedForDatagrid>() { _model.SelectedTranWrappedForDatagrid };
             Delete(wrappedTrans);
-
+            var fuellingModel = _dataModel.FuellingVms.FirstOrDefault(f => f.Transaction.Id == trId);
+            if (fuellingModel != null)
+                _dataModel.FuellingVms.Remove(fuellingModel);
         }
+
         private void DeleteWholeReceipt()
         {
             var wrappedTrans = _model.Rows.Where(t =>

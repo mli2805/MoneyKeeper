@@ -120,8 +120,9 @@ namespace Keeper2018
         {
             return new Fuelling()
             {
-                Id = fuellingModel.CarAccountId,
+                Id = fuellingModel.Id,
                 TransactionId = fuellingModel.Transaction.Id,
+                CarAccountId = fuellingModel.CarAccountId,
                 Volume = fuellingModel.Volume,
                 FuelType = fuellingModel.FuelType,
             };

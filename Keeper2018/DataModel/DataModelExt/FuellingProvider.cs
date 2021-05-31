@@ -16,6 +16,7 @@ namespace Keeper2018
                 var oneLitrePrice = Math.Abs(fuelling.Volume) < 0.01 ? 0 : tr.Amount / (decimal)fuelling.Volume;
                 dataModel.FuellingVms.Add(new FuellingModel()
                 {
+                    Id = fuelling.Id,
                     Timestamp = tr.Timestamp,
                     Transaction = tr,
                     CarAccountId = tr.Tags.Select(t=>t.Id).Contains(718) ? 716 : 711,

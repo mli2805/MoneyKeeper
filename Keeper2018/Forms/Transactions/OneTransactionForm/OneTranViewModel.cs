@@ -43,6 +43,7 @@ namespace Keeper2018
         }
         public List<Tuple<decimal, AccountModel, string>> ReceiptList { get; set; }
         public TransactionModel FuellingTran { get; set; }
+        public FuellingModel FuellingModel { get; set; }
 
         public bool IsAddMode { get; set; }
         public bool IsOneMore { get; set; }
@@ -204,7 +205,8 @@ namespace Keeper2018
             _fuellingInputViewModel.PlaceIt(Top, Left + Width, Height);
 
             if (_windowManager.ShowDialog(_fuellingInputViewModel) != true) return;
-            CreateFuellingTran(_fuellingInputViewModel.Vm);
+            FuellingTran = CreateFuellingTran(_fuellingInputViewModel.Vm);
+            FuellingModel = CreateFuellingModel(FuellingTran, _fuellingInputViewModel.Vm);
 
             TryClose(true);
         }
@@ -223,12 +225,12 @@ namespace Keeper2018
             };
         }
 
-        private void CreateFuellingTran(FuellingInputVm vm)
+        private TransactionModel CreateFuellingTran(FuellingInputVm vm)
         {
             var carAccount = _dataModel.AcMoDict[vm.CarAccountId];
             var account = carAccount.Children.First(c => c.Name.Contains("авто топливо"));
             var azs = _dataModel.AcMoDict[272];
-            FuellingTran = new TransactionModel()
+            return new TransactionModel()
             {
                 Operation = OperationType.Расход,
                 Timestamp = vm.Timestamp,
@@ -236,6 +238,26 @@ namespace Keeper2018
                 Currency = vm.Currency,
                 Tags = new List<AccountModel>() { account, azs, },
                 Comment = $"{vm.Volume} л {vm.FuelType} ({vm.Comment})",
+            };
+        }
+
+        private FuellingModel CreateFuellingModel(TransactionModel transactionModel, FuellingInputVm vm)
+        {
+            var maxId = _dataModel.FuellingVms.Max(f => f.Id);
+            return new FuellingModel()
+            {
+                Id = maxId + 1,
+                Transaction = transactionModel,
+
+                Timestamp = vm.Timestamp,
+                Volume = vm.Volume,
+                CarAccountId = vm.CarAccountId,
+                FuelType = vm.FuelType,
+                Amount = vm.Amount,
+                Currency = vm.Currency,
+                Comment = vm.Comment,
+                OneLitrePrice = vm.OneLitrePrice,
+                OneLitreInUsd = vm.OneLitreInUsd,
             };
         }
     }

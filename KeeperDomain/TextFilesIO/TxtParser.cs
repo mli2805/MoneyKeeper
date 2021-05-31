@@ -212,8 +212,9 @@ namespace KeeperDomain
 
             fuelling.Id = int.Parse(array[0].Trim());
             fuelling.TransactionId = int.Parse(array[1].Trim());
-            fuelling.Volume = double.Parse(array[2].Trim());
-            fuelling.FuelType = (FuelType)Enum.Parse(typeof(FuelType), array[3]);
+            fuelling.CarAccountId = int.Parse(array[2].Trim());
+            fuelling.Volume = double.Parse(array[3].Trim());
+            fuelling.FuelType = (FuelType)Enum.Parse(typeof(FuelType), array[4]);
             return fuelling;
         }
     }
