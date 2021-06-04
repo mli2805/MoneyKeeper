@@ -1,4 +1,4 @@
-// ReSharper disable InconsistentNaming
+п»ї// ReSharper disable InconsistentNaming
 namespace KeeperDomain
 {
     public enum PaymentSystem
@@ -14,6 +14,6 @@ namespace KeeperDomain
         MasterCard_World, 
         MasterCard_Platinum, 
         
-        Белкарт, 
+        пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 
     }
 }
