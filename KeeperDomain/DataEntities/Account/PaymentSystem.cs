@@ -15,5 +15,7 @@ namespace KeeperDomain
         MasterCard_Platinum, 
         
         �������, 
+
+        Русссс,
     }
 }
