@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -22,7 +22,7 @@ namespace Keeper2018
         public bool IsLeaf => !Children.Any(); // in XAML
         public bool IsCard => Deposit?.Card != null; // in XAML
 
-        // мои счета не используют ассоциации
+        // my accounts do not use associations
         public int AssociatedIncomeId { get; set; } // for external
         public int AssociatiedExpenseId { get; set; } // for external
         public int AssociatiedExternalId { get; set; } // for tag
@@ -52,7 +52,7 @@ namespace Keeper2018
             return Owner != null && Owner.Is(accountId);
         }
 
-        // возвращает первого потомка accountModel'a , если this не сам accountModel.
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ accountModel'a , пїЅпїЅпїЅпїЅ this пїЅпїЅ пїЅпїЅпїЅ accountModel.
         public AccountModel IsC(AccountModel accountModel)
         {
             if (Equals(accountModel)) return this;

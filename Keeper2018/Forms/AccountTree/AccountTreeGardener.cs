@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -43,10 +43,10 @@ namespace Keeper2018
                     var myMessageBoxViewModel = new MyMessageBoxViewModel(MessageType.Confirmation,
                         new List<string>()
                         {
-                            "Проверено, счет не используется в транзакциях.",
-                            "Удаление счета", "",
+                            "РџСЂРѕРІРµСЂРµРЅРѕ, СЃС‡РµС‚ РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚СЂР°РЅР·Р°РєС†РёСЏС….",
+                            "РЈРґР°Р»РµРЅРёРµ СЃС‡РµС‚Р°", "",
                             $"<<{accountModel.Name}>>", "",
-                            "Удалить?"
+                            "РЈРґР°Р»РёС‚СЊ?"
                         });
                     windowManager.ShowDialog(myMessageBoxViewModel);
                     if (myMessageBoxViewModel.IsAnswerPositive)
@@ -54,15 +54,15 @@ namespace Keeper2018
                     break;
                 case AccountCantBeDeletedReasons.IsRoot:
                     windowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
-                        "Корневой счет нельзя удалять!"));
+                        "РљРѕСЂРЅРµРІРѕР№ СЃС‡РµС‚ РЅРµР»СЊР·СЏ СѓРґР°Р»СЏС‚СЊ!"));
                     break;
                 case AccountCantBeDeletedReasons.HasChildren:
                     windowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
-                        new List<string>() { "Разрешено удалять", "", "только конечные листья дерева счетов!" }, -1));
+                        new List<string>() { "Р Р°Р·СЂРµС€РµРЅРѕ СѓРґР°Р»СЏС‚СЊ", "", "С‚РѕР»СЊРєРѕ РєРѕРЅРµС‡РЅС‹Рµ Р»РёСЃС‚СЊСЏ РґРµСЂРµРІР° СЃС‡РµС‚РѕРІ!" }, -1));
                     break;
                 case AccountCantBeDeletedReasons.HasRelatedTransactions:
                     windowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
-                        "Этот счет используется в проводках!"));
+                        "Р­С‚РѕС‚ СЃС‡РµС‚ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РїСЂРѕРІРѕРґРєР°С…!"));
                     break;
             }
         }

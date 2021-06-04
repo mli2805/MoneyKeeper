@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -46,7 +46,7 @@ namespace Keeper2018
             }
 
             _currencyRatesViewModel.Initialize();
-            var account = _keeperDataModel.AccountsTree.First(r => r.Name == "ÃÓË");
+            var account = _keeperDataModel.AccountsTree.First(r => r.Name == "–ú–æ–∏");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountModel = account; 
         }

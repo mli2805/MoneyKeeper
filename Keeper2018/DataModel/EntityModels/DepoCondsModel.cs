@@ -1,4 +1,4 @@
-using System;
+пїњusing System;
 using System.Collections.Generic;
 using System.Linq;
 using KeeperDomain;
@@ -13,12 +13,9 @@ namespace Keeper2018
 
 
         public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
-        public bool EveryStartDay { get; set; } // каждое число открыти€
-        // и/или
-        public bool EveryFirstDayOfMonth { get; set; } // каждое первое число мес€ца
-        // и/или
-        public bool EveryLastDayOfMonth { get; set; } // каждый последний день мес€ца
-        // и эти проценты
+        public bool EveryStartDay { get; set; } 
+        public bool EveryFirstDayOfMonth { get; set; }
+        public bool EveryLastDayOfMonth { get; set; }
         public bool IsCapitalized { get; set; }
 
         public bool IsRateFixed { get; set; }

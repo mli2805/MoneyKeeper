@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using KeeperDomain;
 
 namespace Keeper2018

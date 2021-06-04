@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,7 +52,7 @@ namespace Keeper2018
                 yield return $"{accountGroup.Title}  {accountGroup.BalanceWithDetails.TotalInUsd:0,0.00} usd  {accountGroup.Procent:0.00}% ";
             }
 
-            yield return $"»ÚÓ„Ó  {TotalInUsd:0.00} usd";
+            yield return $"–ò—Ç–æ–≥–æ  {TotalInUsd:0.00} usd";
         }
 
         public List<string> ToStringList()
@@ -64,7 +64,7 @@ namespace Keeper2018
                 result.AddRange(accountGroup.BalanceWithDetails.ToStrings());
                 result.Add("");
             }
-            result.Add($"»ÚÓ„Ó  {TotalInUsd:0,0.00} usd");
+            result.Add($"–ò—Ç–æ–≥–æ  {TotalInUsd:0,0.00} usd");
             return result;
         }
     }

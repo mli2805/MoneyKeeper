@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Linq;
 using System.Windows;
 using KeeperDomain;
@@ -55,7 +55,7 @@ namespace Keeper2018
                     result.Add($"{offset}{pair.Value:#,0.00} {pair.Key.ToString().ToLower()} (= {inUsd:#,0.00} usd)");
                 }
             }
-            result.Add($"{offset}»ÚÓ„Ó {amountInUsd:#,0.00} usd", fontWeight);
+            result.Add($"{offset}–ò—Ç–æ–≥–æ {amountInUsd:#,0.00} usd", fontWeight);
 
             return result;
         }

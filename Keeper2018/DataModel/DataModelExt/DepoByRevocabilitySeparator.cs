@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018
@@ -7,8 +7,8 @@ namespace Keeper2018
     {
         public static AccountGroups SeparateByRevocability(this KeeperDataModel dataModel, AccountModel folder)
         {
-            var revocable = new AccountGroup("Отзывные");
-            var notRevocable = new AccountGroup("Безотзывные");
+            var revocable = new AccountGroup("РћС‚Р·С‹РІРЅС‹Рµ");
+            var notRevocable = new AccountGroup("Р‘РµР·РѕС‚Р·С‹РІРЅС‹Рµ");
             foreach (var leaf in GetFoldersTerminalLeaves(folder))
             {
                 if (leaf.IsDeposit)
