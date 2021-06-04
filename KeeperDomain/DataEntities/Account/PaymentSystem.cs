@@ -14,8 +14,6 @@ namespace KeeperDomain
         MasterCard_World, 
         MasterCard_Platinum, 
         
-        �������, 
-
-        Русссс,
+        Белкарт,
     }
 }
