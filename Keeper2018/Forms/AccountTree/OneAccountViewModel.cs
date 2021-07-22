@@ -79,8 +79,8 @@ namespace Keeper2018
                 _accNameSelectionControlInitializer
                     .ForAssociation(MyAccNameSelectorVm,
                                     AccountInWork.Is(185)
-                                        ? AssociationEnum.externalForIncome
-                                        : AssociationEnum.externalForExpense,
+                                        ? AssociationEnum.ExternalForIncome
+                                        : AssociationEnum.ExternalForExpense,
                                     AccountInWork.AssociatiedExternalId);
             }
             else
@@ -89,9 +89,9 @@ namespace Keeper2018
                 MyAccNameSelectorVm2.Visibility = Visibility.Visible;
                 TextVisibility = Visibility.Visible;
                 _accNameSelectionControlInitializer
-                    .ForAssociation(MyAccNameSelectorVm, AssociationEnum.incomeForExternal, AccountInWork.AssociatedIncomeId);
+                    .ForAssociation(MyAccNameSelectorVm, AssociationEnum.IncomeForExternal, AccountInWork.AssociatedIncomeId);
                 _accNameSelectionControlInitializer
-                    .ForAssociation(MyAccNameSelectorVm2, AssociationEnum.expenseForExternal, AccountInWork.AssociatiedExpenseId);
+                    .ForAssociation(MyAccNameSelectorVm2, AssociationEnum.ExpenseForExternal, AccountInWork.AssociatiedExpenseId);
             }
         }
 

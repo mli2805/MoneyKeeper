@@ -8,6 +8,6 @@
         Аи92,
         Аи95,
         Аи98,
-        CastrolDTA,
+        CastrolDta,
     }
 }

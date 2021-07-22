@@ -198,13 +198,13 @@ namespace Keeper2018
         {
             switch (associationType)
             {
-                case AssociationEnum.incomeForExternal:
+                case AssociationEnum.IncomeForExternal:
                     Initialize(selector, "Для дохода", ButtonsIncomesForExternal,
                         _comboTreesProvider.GetFullBranch(185), selectedId, 0); return;
-                case AssociationEnum.expenseForExternal:
+                case AssociationEnum.ExpenseForExternal:
                     Initialize(selector, "Для расхода", ButtonsExpensesForExternal,
                         _comboTreesProvider.GetFullBranch(189), selectedId, 0); return;
-                case AssociationEnum.externalForIncome:
+                case AssociationEnum.ExternalForIncome:
                     Initialize(selector, "Контрагент", ButtonsExternalForIncome,
                         _comboTreesProvider.GetFullBranch(157), selectedId, 0); return;
                 // case AssociationEnum.externalForExpense:
@@ -229,5 +229,5 @@ namespace Keeper2018
         }
     }
 
-    public enum AssociationEnum { incomeForExternal, expenseForExternal, externalForIncome, externalForExpense }
+    public enum AssociationEnum { IncomeForExternal, ExpenseForExternal, ExternalForIncome, ExternalForExpense }
 }

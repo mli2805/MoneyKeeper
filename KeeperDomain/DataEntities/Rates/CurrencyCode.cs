@@ -1,4 +1,5 @@
-﻿namespace KeeperDomain
+﻿// ReSharper disable InconsistentNaming
+namespace KeeperDomain
 {
     public enum CurrencyCode
     {

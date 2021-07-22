@@ -19,8 +19,8 @@ namespace Keeper2018
         public ObservableCollection<string> Lines { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Expenses { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Incomes { get; set; } = new ObservableCollection<string>();
-        private decimal _eTotal { get; set; }
-        private decimal _iTotal { get; set; }
+        private decimal _eTotal;
+        private decimal _iTotal;
 
         public string Total => $"Итого: {_iTotal} - {_eTotal} = {_iTotal - _eTotal}";
 

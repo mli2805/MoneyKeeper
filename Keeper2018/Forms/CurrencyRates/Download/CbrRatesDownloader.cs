@@ -56,8 +56,8 @@ namespace Keeper2018
 
     public class Xml
     {
-        public string version { get; set; }
-        public string encoding { get; set; }
+        public string Version { get; set; }
+        public string Encoding { get; set; }
     }
 
     public class Record
@@ -70,10 +70,10 @@ namespace Keeper2018
 
     public class ValCurs
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string DateRange1 { get; set; }
         public string DateRange2 { get; set; }
-        public string name { get; set; }
+        public string Name { get; set; }
         public Record Record { get; set; }
     }
 
