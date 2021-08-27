@@ -26,7 +26,7 @@ namespace Keeper2018.PayCards
                 .OrderBy(d=>d.Deposit.FinishDate)
                 .Select(GetVm));
 
-            Total = $"Всего {Rows.Count}";
+            Total = $"Всего {Rows.Count} ({Rows.Count(r => r.CardOwner == 0)} + {Rows.Count(r => r.CardOwner == 1)})";
         }
 
         private PayCardVm GetVm(AccountModel account)
@@ -39,6 +39,7 @@ namespace Keeper2018.PayCards
             {
                 CardNumber = account.Deposit.Card.CardNumber,
                 CardHolder = account.Deposit.Card.CardHolder,
+                CardOwner = account.Deposit.Card.CardOwner,
                 PaymentSystem = account.Deposit.Card.PaymentSystem,
                 IsPayPass = account.Deposit.Card.IsPayPass,
 

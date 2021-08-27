@@ -10,6 +10,8 @@
         <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False" IsReadOnly="True" DockPanel.Dock="Top">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Width="200" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header=" " Width="20" Binding="{Binding CardOwner}"/>
+                <DataGridTextColumn Header="Номер" Width="160" Binding="{Binding CardNumber}"/>
                 <DataGridTextColumn Header="Банк" Width="75" Binding="{Binding BankAccount.Header}"/>
                 <DataGridTextColumn Header="Остаток" Width="75" Binding="{Binding Amount}"/>
                 <DataGridTextColumn Header="Валюта" Width="75" Binding="{Binding MainCurrency}"/>

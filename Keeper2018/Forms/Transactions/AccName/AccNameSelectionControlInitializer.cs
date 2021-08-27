@@ -17,7 +17,7 @@ namespace Keeper2018
                 ["юбу"] = 735,
                 ["джо"] = 781,
                 ["каш"] = 776,
-                ["шоп"] = 785,
+                ["шоп"] = 878,
             };
 
         private static readonly Dictionary<string, int> ButtonsForExpenseTags =
@@ -26,7 +26,7 @@ namespace Keeper2018
                 ["pro"] = 249,
                 ["евр"] = 523,
                 ["вит"] = 744,
-                ["рад"] = 532,
+                ["гпп"] = 824,
                 ["ома"] = 291,
                 ["маг"] = 252,
                 ["еда"] = 257,
@@ -48,7 +48,7 @@ namespace Keeper2018
                 ["юбу"] = 735,
                 ["джо"] = 781,
                 ["каш"] = 776,
-                ["шоп"] = 785,
+                ["шоп"] = 878,
             };
 
         private static readonly Dictionary<string, int> ButtonsForIncomeTags =
@@ -65,7 +65,7 @@ namespace Keeper2018
                 ["бум"] = 732,
                 ["юбу"] = 735,
                 ["каш"] = 776,
-                ["шоп"] = 785,
+                ["шоп"] = 878,
             };
 
         private static readonly Dictionary<string, int> ButtonsForTransferTags = new Dictionary<string, int>();

@@ -7,6 +7,7 @@ namespace Keeper2018.PayCards
     {
         public string CardNumber { get; set; }
         public string CardHolder { get; set; }
+        public int CardOwner { get; set; }
 
         public PaymentSystem PaymentSystem { get; set; }
         public bool IsPayPass { get; set; }
