@@ -45,6 +45,7 @@ namespace Keeper2018
             ExchangeDifference = After - (Before + Income - Expense);
             var exchangeForeground = ExchangeDifference > 0 ? Brushes.Blue : Brushes.Red;
             FinResultViewModel.List.Add("Курсовые разницы", exchangeForeground);
+            FinResultViewModel.List.Add("  с последнего дня месяца", exchangeForeground);
             FinResultViewModel.List.AddList(RatesChanges);
             FinResultViewModel.List.Add("");
             FinResultViewModel.List.Add($"{After:N} - ({Before:N} + {Income:N} - {Expense:N})", exchangeForeground);
@@ -54,7 +55,7 @@ namespace Keeper2018
 
             var finResultWithDifference = profit + ExchangeDifference;
             var resultForeground = finResultWithDifference > 0 ? Brushes.Blue : Brushes.Red;
-            FinResultViewModel.List.Add("Финансовый результат", FontWeights.Bold, profitForeground);
+            FinResultViewModel.List.Add("Финансовый результат", FontWeights.Bold, resultForeground);
             FinResultViewModel.List.Add("    c учетом курсовых разниц", FontWeights.Bold, resultForeground);
             FinResultViewModel.List.Add("");
             FinResultViewModel.List.Add($"{Income:N} - {Expense:N} + {ExchangeDifference:N}", resultForeground);
