@@ -11,20 +11,15 @@ namespace KeeperDomain
         public static string GetKeeper2018BasePath()
         {
 //           return Path.Combine(GetDropboxPath(), @"Keeper2018");
-            return Path.Combine(GetGoogleDriveDirectory(), @"Keeper2018");
+            return Path.Combine(GetGoogleDrivePath2021(), @"Keeper2018");
         }
 
-        // ReSharper disable once UnusedMember.Local
-        private static string GetDropboxPath()
+        private static string GetGoogleDrivePath2021()
         {
-            const string infoPath = @"Dropbox\info.json";
-            var jsonPath = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? throw new InvalidOperationException(), infoPath);
-            if (!File.Exists(jsonPath)) jsonPath = Path.Combine(Environment.GetEnvironmentVariable("AppData") ?? throw new InvalidOperationException(), infoPath);
-            if (!File.Exists(jsonPath)) throw new Exception("Dropbox could not be found!");
-            var strings = File.ReadAllText(jsonPath).Split('\"');
-            var index = strings.ToList().IndexOf("path");
-            var dropboxPath = strings[index + 2].Replace(@"\\", @"\");
-            return dropboxPath;
+            string machineName = Environment.MachineName.ToLower();
+            return machineName == "opx-lmarholin3" 
+                ? @"d:\Google Drive" 
+                : @"c:\Users\Leanid\Google Drive\";
         }
 
         /// <summary>
