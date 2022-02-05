@@ -23,6 +23,8 @@ namespace Keeper2018
         private readonly OpenDepositsViewModel _openDepositsViewModel;
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
+        private readonly StockTickersViewModel _stockTickersViewModel;
+        private readonly TickerRatesViewModel _tickerRatesViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
@@ -32,7 +34,8 @@ namespace Keeper2018
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             OpenDepositsViewModel openDepositsViewModel,
-            PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel)
+            PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel,
+            StockTickersViewModel stockTickersViewModel, TickerRatesViewModel tickerRatesViewModel)
         {
             _windowManager = windowManager;
             _keeperDataModel = keeperDataModel;
@@ -50,6 +53,8 @@ namespace Keeper2018
             _openDepositsViewModel = openDepositsViewModel;
             _payCardsViewModel = payCardsViewModel;
             _salaryViewModel = salaryViewModel;
+            _stockTickersViewModel = stockTickersViewModel;
+            _tickerRatesViewModel = tickerRatesViewModel;
         }
 
         // for short-cuts
@@ -169,6 +174,18 @@ namespace Keeper2018
         {
             _payCardsViewModel.Initialize();
             _windowManager.ShowDialog(_payCardsViewModel);
+        }
+
+        public void ShowStockTickersForm()
+        {
+            _stockTickersViewModel.Initialize();
+            _windowManager.ShowDialog(_stockTickersViewModel);
+        }
+
+        public void ShowTickerRatesForm()
+        {
+            _tickerRatesViewModel.Initialize();
+            _windowManager.ShowDialog(_tickerRatesViewModel);
         }
 
         public async void Save()

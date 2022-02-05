@@ -92,22 +92,51 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+     
 
         <Button Name="ShowSalaryForm" Margin="1,0,5,0" Background="White" BorderBrush="White" ToolTip="Salary">
             <Image Source="../../Resources/salary1.png" Width="24" Height="24" />
-        </Button> 
-         <Button Name="ShowGskForm" Margin="2,0,0,0" Background="White" BorderBrush="White" ToolTip="ЖСК">
+        </Button>
+        <Button Name="ShowGskForm" Margin="2,0,0,0" Background="White" BorderBrush="White" ToolTip="ЖСК">
             <Image Source="../../Resources/gsk.png" Width="24" Height="24" />
-        </Button> 
+        </Button>
         <Button Name="ShowCarForm" Margin="6,0,0,0" Background="White" BorderBrush="White" ToolTip="Cars">
             <Image Source="../../Resources/car.png" Width="32" Height="32"  />
-        </Button>  
+        </Button>
         <Button Name="ShowDepositsForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Deposits">
             <Image Source="../../Resources/deposits.png" Width="24" Height="24"  />
-        </Button>  
+        </Button>
         <Button Name="ShowPayCardsForm" Margin="6,-3,0,0" Background="White" BorderBrush="White" ToolTip="Cards" Opacity="0.7">
             <Image Source="../../Resources/paycard.png" Width="32" Height="32"  />
-        </Button>  
+        </Button>
+
+        <Menu Margin="-1,0,0,0" Background="White" BorderBrush="White">
+            <MenuItem Background="White" BorderBrush="White">
+                <MenuItem.Header>
+                    <Image Source="../../Resources/stock.png" Width="24" Height="28" />
+                </MenuItem.Header>
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Тикеры акций"/>
+                    </MenuItem.Header>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ShowStockTickersForm"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Курсы акций"/>
+                    </MenuItem.Header>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ShowTickerRatesForm"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
 
         <Button Name="Save" Margin="25,0,0,0" Background="White" BorderBrush="White" ToolTip="Save">
             <Image Source="../../Resources/save.png" Width="24" Height="24" />

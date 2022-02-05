@@ -15,8 +15,8 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + TickerId + " ; " + Date.ToString("dd/MM/yyyy") + " ; " +
-                   Value.ToString(new CultureInfo("en-US")) + " ; " + Unit + " ; " + Currency;
+            return Id + " ; " + TickerId + " ; " + Date.ToString("dd/MM/yyyy") + " ; " + Unit + " ; " +
+                   Value.ToString(new CultureInfo("en-US")) + " ; " + Currency;
         }
     }
 }

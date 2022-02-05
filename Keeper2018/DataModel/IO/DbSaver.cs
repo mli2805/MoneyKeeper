@@ -95,6 +95,9 @@ namespace Keeper2018
                 Rates = _keeperDataModel.Rates.Values.ToList(),
                 MetalRates = _keeperDataModel.MetalRates,
 
+                StockTickers = _keeperDataModel.StockTickers,
+                TickerRates = _keeperDataModel.TickerRates,
+
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),
                 Deposits = deposits,
                 PayCards = deposits.Where(d => d.Card != null).Select(c => c.Card).ToList(),
