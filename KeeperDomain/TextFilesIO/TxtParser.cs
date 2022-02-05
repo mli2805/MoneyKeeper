@@ -30,6 +30,29 @@ namespace KeeperDomain
             return rate;
         }
 
+        public static StockTiсker StockTiсkerFromString(this string s)
+        {
+            var ticker = new StockTiсker();
+            var substrings = s.Split(';');
+            ticker.Id = int.Parse(substrings[0]);
+            ticker.Ticker = substrings[1];
+            ticker.Title = substrings[2];
+            return ticker;
+        }
+
+        public static TickerRate TickerRateFromString(this string s)
+        {
+            var rate = new TickerRate();
+            var substrings = s.Split(';');
+            rate.Id = int.Parse(substrings[0]);
+            rate.TickerId = int.Parse(substrings[1]);
+            rate.Date = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            rate.Value = double.Parse(substrings[3], new CultureInfo("en-US"));
+            rate.Unit = int.Parse(substrings[4]);
+            rate.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]);
+            return rate;
+        }
+
         private static NbRbRates NbRbRatesFromString(string s)
         {
             var rate = new NbRbRates();

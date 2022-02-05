@@ -14,6 +14,7 @@ namespace KeeperDomain
             {
                 var keeperBin = new KeeperBin();
                 LoadCurrencyRates(keeperBin);
+                LoadStock(keeperBin);
                 LoadMetalRates(keeperBin);
                 LoadAccounts(keeperBin);
                 LoadDepoParts(keeperBin);
@@ -83,6 +84,14 @@ namespace KeeperDomain
         {
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"));
             bin.Rates = content.Select(s => s.CurrencyRateFromString()).ToList();
+        }
+
+        private static void LoadStock(KeeperBin bin)
+        {
+            var tickers = File.ReadAllLines(PathFactory.GetBackupFilePath("StockTickers.txt"));
+            bin.StockTickers = tickers.Select(s => s.StockTiсkerFromString()).ToList();
+            var rates = File.ReadAllLines(PathFactory.GetBackupFilePath("TickerRates.txt"));
+            bin.TickerRates = rates.Select(s => s.TickerRateFromString()).ToList();
         }
 
         private static void LoadMetalRates(KeeperBin bin)
