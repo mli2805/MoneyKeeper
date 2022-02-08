@@ -43,10 +43,5 @@ namespace Keeper2018
             }
             return result;
         }
-
-        public static IEnumerable<TickerRateModel> GetTickerRates(this KeeperBin bin)
-        {
-            return bin.TickerRates.Select(tickerRate => tickerRate.Map(bin.StockTickers));
-        }
     }
 }

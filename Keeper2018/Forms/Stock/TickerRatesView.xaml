@@ -7,6 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
         mc:Ignorable="d"
         Title="TickerRatesView" Height="450" Width="800" 
         d:DataContext="{d:DesignInstance keeper2018:TickerRatesViewModel}">
@@ -45,13 +46,15 @@
                             <DatePicker SelectedDate="{Binding Date,
                                                  StringFormat=dd/MM/yyyy,
                                        Mode=TwoWay,
-                                       UpdateSourceTrigger=PropertyChanged}" />
+                                       UpdateSourceTrigger=PropertyChanged}"
+                                        d:DataContext="{d:DesignInstance keeperDomain:TickerRate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Date,
-                                                 StringFormat=dd/MM/yyyy}" />
+                                                 StringFormat=dd/MM/yyyy}"
+                                       d:DataContext="{d:DesignInstance keeperDomain:TickerRate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

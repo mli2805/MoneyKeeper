@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -68,7 +67,6 @@ namespace Keeper2018
             _keeperDataModel.MetalRates = bin.MetalRates;
 
             _keeperDataModel.StockTickers = bin.StockTickers;
-            // _keeperDataModel.TickerRates = bin.TickerRates.Select(tickerRate => tickerRate.Map(bin.StockTickers)).ToList();
             _keeperDataModel.TickerRates = bin.TickerRates;
 
             _keeperDataModel.FillInAccountTreeAndDict(bin);

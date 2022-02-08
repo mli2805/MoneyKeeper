@@ -11,8 +11,6 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
 
-        public List<TickerRateModel> Rates1 { get; set; }
-
         public ObservableCollection<TickerRate> Rates { get; set; }
         public TickerRate SelectedRate { get; set; }
         public List<StockTiсker> Tickers { get; set; }
