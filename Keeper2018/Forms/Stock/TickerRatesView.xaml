@@ -3,9 +3,63 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="TickerRatesView" Height="450" Width="800">
+        Title="TickerRatesView" Height="450" Width="800" 
+        d:DataContext="{d:DesignInstance keeper2018:TickerRatesViewModel}">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Delete" Modifiers="Control">
+            <cal:ActionMessage MethodName="DeleteSelected"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-        <DataGrid ItemsSource="{Binding Rates}"></DataGrid>
+        <DataGrid ItemsSource="{Binding Rates}" SelectedItem="{Binding SelectedRate}"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
+
+                <DataGridComboBoxColumn  Header="Ticker" Width="60" SelectedValueBinding="{Binding TickerId}"
+                                         DisplayMemberPath="Ticker" SelectedValuePath="Id">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="{x:Type ComboBox}">
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Tickers, 
+                                RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="{x:Type ComboBox}">
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Tickers, 
+                                RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
+
+                <!-- <DataGridTextColumn Header="Дата" Width="80" Binding="{Binding Date, StringFormat='dd\/MM\/yyyy'}" /> -->
+
+                <DataGridTemplateColumn Header="Дата" Width="120" >
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding Date,
+                                                 StringFormat=dd/MM/yyyy,
+                                       Mode=TwoWay,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Date,
+                                                 StringFormat=dd/MM/yyyy}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Лот" Width="40" Binding="{Binding Unit}" />
+                <DataGridTextColumn Header="Цена" Width="70" Binding="{Binding Value}"/>
+                <DataGridTextColumn Header="Валюта" Width="50" Binding="{Binding Currency}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

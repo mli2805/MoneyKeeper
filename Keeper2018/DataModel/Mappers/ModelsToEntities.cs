@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -125,6 +126,19 @@ namespace Keeper2018
                 CarAccountId = fuellingModel.CarAccountId,
                 Volume = fuellingModel.Volume,
                 FuelType = fuellingModel.FuelType,
+            };
+        }
+
+        public static TickerRate Map(this TickerRateModel tickerRateModel, List<StockTiсker> tickers)
+        {
+            return new TickerRate()
+            {
+                Id = tickerRateModel.Id,
+                TickerId = tickers.First(t => t.Ticker == tickerRateModel.Ticker.Ticker).Id,
+                Date = tickerRateModel.Date,
+                Unit = tickerRateModel.Unit,
+                Value = tickerRateModel.Value,
+                Currency = tickerRateModel.Currency,
             };
         }
     }

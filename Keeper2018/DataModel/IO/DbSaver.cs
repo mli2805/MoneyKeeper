@@ -96,6 +96,7 @@ namespace Keeper2018
                 MetalRates = _keeperDataModel.MetalRates,
 
                 StockTickers = _keeperDataModel.StockTickers,
+                // TickerRates = _keeperDataModel.TickerRates.Select(r=>r.Map(_keeperDataModel.StockTickers)).ToList(),
                 TickerRates = _keeperDataModel.TickerRates,
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),

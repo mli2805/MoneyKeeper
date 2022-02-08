@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -8,7 +11,8 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
 
-        public List<StockTiсker> Tickers { get; set; }
+        public ObservableCollection<StockTiсker> Tickers { get; set; }
+        public StockTiсker SelectedTicker { get; set; }
 
         public StockTickersViewModel(KeeperDataModel dataModel)
         {
@@ -17,7 +21,11 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Tickers = _dataModel.StockTickers;
+            Tickers = new ObservableCollection<StockTiсker>();
+            foreach (var stockTicker in _dataModel.StockTickers.OrderBy(l=>l.Id))
+            {
+                Tickers.Add(stockTicker);
+            }
         }
 
         protected override void OnViewLoaded(object view)
@@ -25,6 +33,17 @@ namespace Keeper2018
             DisplayName = "Инвестиционные инструменты";
         }
 
+       
+        public void DeleteSelected()
+        {
+            if (SelectedTicker != null)
+                Tickers.Remove(SelectedTicker);
+        }
 
+        public override void CanClose(Action<bool> callback)
+        {
+            _dataModel.StockTickers = Tickers.ToList();
+            base.CanClose(callback);
+        }
     }
 }
