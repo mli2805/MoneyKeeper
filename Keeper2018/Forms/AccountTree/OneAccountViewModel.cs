@@ -81,7 +81,7 @@ namespace Keeper2018
                                     AccountInWork.Is(185)
                                         ? AssociationEnum.ExternalForIncome
                                         : AssociationEnum.ExternalForExpense,
-                                    AccountInWork.AssociatiedExternalId);
+                                    AccountInWork.AssociatedExternalId);
             }
             else
             {
@@ -91,7 +91,7 @@ namespace Keeper2018
                 _accNameSelectionControlInitializer
                     .ForAssociation(MyAccNameSelectorVm, AssociationEnum.IncomeForExternal, AccountInWork.AssociatedIncomeId);
                 _accNameSelectionControlInitializer
-                    .ForAssociation(MyAccNameSelectorVm2, AssociationEnum.ExpenseForExternal, AccountInWork.AssociatiedExpenseId);
+                    .ForAssociation(MyAccNameSelectorVm2, AssociationEnum.ExpenseForExternal, AccountInWork.AssociatedExpenseId);
             }
         }
 
@@ -114,12 +114,12 @@ namespace Keeper2018
             }
             else if (AccountInWork.IsTag)
             {
-                AccountInWork.AssociatiedExternalId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
+                AccountInWork.AssociatedExternalId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
             }
             else
             {
                 AccountInWork.AssociatedIncomeId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
-                AccountInWork.AssociatiedExpenseId = MyAccNameSelectorVm2.MyAccName?.Id ?? 0;
+                AccountInWork.AssociatedExpenseId = MyAccNameSelectorVm2.MyAccName?.Id ?? 0;
             }
         }
 

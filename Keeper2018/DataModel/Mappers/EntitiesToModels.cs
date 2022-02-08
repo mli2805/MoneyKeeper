@@ -13,8 +13,8 @@ namespace Keeper2018
                 Id = account.Id,
                 IsExpanded = account.IsExpanded,
                 AssociatedIncomeId = account.AssociatedIncomeId,
-                AssociatiedExpenseId = account.AssociatiedExpenseId,
-                AssociatiedExternalId = account.AssociatiedExternalId,
+                AssociatedExpenseId = account.AssociatiedExpenseId,
+                AssociatedExternalId = account.AssociatiedExternalId,
             };
         }
 

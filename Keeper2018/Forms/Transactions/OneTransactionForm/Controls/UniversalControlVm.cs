@@ -233,10 +233,10 @@ namespace Keeper2018
         private AccountModel FindAssociated(AccountModel accountModel, OperationType opType)
         {
             var associatedId = accountModel.IsTag
-                    ? accountModel.AssociatiedExternalId
+                    ? accountModel.AssociatedExternalId
                     : opType == OperationType.Доход
                         ? accountModel.AssociatedIncomeId
-                        : accountModel.AssociatiedExpenseId;
+                        : accountModel.AssociatedExpenseId;
             return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
         }
 

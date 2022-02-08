@@ -47,8 +47,8 @@ namespace Keeper2018
                 Header = (string)model.Header,
                 IsExpanded = model.IsExpanded,
                 AssociatedIncomeId = model.AssociatedIncomeId,
-                AssociatiedExpenseId = model.AssociatiedExpenseId,
-                AssociatiedExternalId = model.AssociatiedExternalId,
+                AssociatiedExpenseId = model.AssociatedExpenseId,
+                AssociatiedExternalId = model.AssociatedExternalId,
             };
         }
 

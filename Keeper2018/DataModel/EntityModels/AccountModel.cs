@@ -24,8 +24,8 @@ namespace Keeper2018
 
         // my accounts do not use associations
         public int AssociatedIncomeId { get; set; } // for external
-        public int AssociatiedExpenseId { get; set; } // for external
-        public int AssociatiedExternalId { get; set; } // for tag
+        public int AssociatedExpenseId { get; set; } // for external
+        public int AssociatedExternalId { get; set; } // for tag
 
 
         public override string ToString() => (string)Header;
@@ -52,7 +52,6 @@ namespace Keeper2018
             return Owner != null && Owner.Is(accountId);
         }
 
-        // ���������� ������� ������� accountModel'a , ���� this �� ��� accountModel.
         public AccountModel IsC(AccountModel accountModel)
         {
             if (Equals(accountModel)) return this;
