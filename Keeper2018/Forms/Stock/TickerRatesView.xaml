@@ -8,10 +8,17 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="TickerRatesView" Height="450" Width="800" 
+        Height="450" SizeToContent="Width" WindowStartupLocation="CenterOwner" 
         d:DataContext="{d:DesignInstance keeper2018:TickerRatesViewModel}">
-    <i:Interaction.Triggers>
+    <Window.Resources>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="keeperDomain:CurrencyCode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>  <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="DeleteSelected"/>
         </ei:KeyTrigger>
@@ -20,9 +27,9 @@
         <DataGrid ItemsSource="{Binding Rates}" SelectedItem="{Binding SelectedRate}"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Id" Width="40" Binding="{Binding Id}" />
 
-                <DataGridComboBoxColumn  Header="Ticker" Width="60" SelectedValueBinding="{Binding TickerId}"
+                <DataGridComboBoxColumn  Header="Тикер" Width="80" SelectedValueBinding="{Binding TickerId}"
                                          DisplayMemberPath="Ticker" SelectedValuePath="Id">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
@@ -38,9 +45,7 @@
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
 
-                <!-- <DataGridTextColumn Header="Дата" Width="80" Binding="{Binding Date, StringFormat='dd\/MM\/yyyy'}" /> -->
-
-                <DataGridTemplateColumn Header="Дата" Width="120" >
+                <DataGridTemplateColumn Header="Дата" Width="100" >
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <DatePicker SelectedDate="{Binding Date,
@@ -61,7 +66,10 @@
 
                 <DataGridTextColumn Header="Лот" Width="40" Binding="{Binding Unit}" />
                 <DataGridTextColumn Header="Цена" Width="70" Binding="{Binding Value}"/>
-                <DataGridTextColumn Header="Валюта" Width="50" Binding="{Binding Currency}"/>
+
+                <DataGridComboBoxColumn  Header="Валюта" Width="60" 
+                                         ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
+                                         SelectedValueBinding="{Binding Currency}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -33,7 +33,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Инвестиционные инструменты";
+            DisplayName = "Инвестиционные активы";
         }
 
        

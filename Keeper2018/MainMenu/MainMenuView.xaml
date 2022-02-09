@@ -117,7 +117,7 @@
                 </MenuItem.Header>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
-                        <TextBlock Text="Тикеры акций"/>
+                        <TextBlock Text="Инвестиционные активы"/>
                     </MenuItem.Header>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
@@ -127,7 +127,7 @@
                 </MenuItem>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
-                        <TextBlock Text="Курсы акций"/>
+                        <TextBlock Text="Стоимость активов"/>
                     </MenuItem.Header>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">

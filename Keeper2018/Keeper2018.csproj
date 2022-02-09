@@ -469,6 +469,10 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
+    <Compile Include="Forms\Stock\TrustOperationsView.xaml.cs">
+      <DependentUpon>TrustOperationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Stock\TrustOperationsViewModel.cs" />
     <Compile Include="Forms\Stock\TrustTickersView.xaml.cs">
       <DependentUpon>TrustTickersView.xaml</DependentUpon>
     </Compile>
@@ -753,6 +757,10 @@
     <Page Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Stock\TrustOperationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Stock\TrustTickersView.xaml">
       <SubType>Designer</SubType>

@@ -7,11 +7,12 @@ namespace KeeperDomain
     public class TickerRate
     {
         public int Id { get; set; }
-        public int TickerId { get; set; }
-        public DateTime Date { get; set; }
+        public int TickerId { get; set; } = 1;
+        public DateTime Date { get; set; } = DateTime.Today;
         public double Value { get; set; }
         public int Unit { get; set; } = 1;
-        public CurrencyCode Currency { get; set; }
+        public CurrencyCode Currency { get; set; } = CurrencyCode.USD;
+
 
         public string Dump()
         {

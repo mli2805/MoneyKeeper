@@ -10,7 +10,7 @@
         xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="TrustTickersView" Height="450" SizeToContent="Width" WindowStartupLocation="CenterScreen"
+        Height="450" SizeToContent="Width" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance keeper2018:TrustTickersViewModel}">
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
@@ -29,10 +29,10 @@
                   SelectedItem="{Binding SelectedTicker}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="Ticker" Width="80" Binding="{Binding Ticker}" />
-                <DataGridTextColumn Header="Title" Width="200" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Тикер" Width="80" Binding="{Binding Ticker}" />
+                <DataGridTextColumn Header="Актив" Width="200" Binding="{Binding Title}" />
 
-                <DataGridComboBoxColumn  Header="Type" Width="60" 
+                <DataGridComboBoxColumn  Header="Тип" Width="60" 
                                          ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
                                          SelectedValueBinding="{Binding SecuritiesType}"/>
 
@@ -57,7 +57,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Comment" Width="400" Binding="{Binding Comment}" />
+                <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
             </DataGrid.Columns>
 
         </DataGrid>

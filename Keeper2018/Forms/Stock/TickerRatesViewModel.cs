@@ -33,7 +33,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Курсы акций";
+            DisplayName = "Стоимость активов";
         }
 
         public void DeleteSelected()
