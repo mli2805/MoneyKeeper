@@ -176,17 +176,30 @@ namespace Keeper2018
             _windowManager.ShowDialog(_payCardsViewModel);
         }
 
-        public void ShowStockTickersForm()
+        #region Investments
+        public void ShowInvestmentAssetsForm()
         {
             _investmentAssetsViewModel.Initialize();
             _windowManager.ShowDialog(_investmentAssetsViewModel);
         }
 
-        public void ShowTickerRatesForm()
+        public void ShowAssetRatesForm()
         {
             _assetRatesViewModel.Initialize();
             _windowManager.ShowDialog(_assetRatesViewModel);
         }
+
+        public void ShowTrustAccountsForm()
+        {
+
+        }
+
+        public void ShowInvestmentTransactionsForm()
+        {
+
+        }
+        #endregion
+
 
         public async void Save()
         {

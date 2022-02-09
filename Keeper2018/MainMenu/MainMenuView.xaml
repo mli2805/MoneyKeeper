@@ -121,17 +121,36 @@
                     </MenuItem.Header>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ShowStockTickersForm"/>
+                            <cal:ActionMessage MethodName="ShowInvestmentAssetsForm"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
-                        <TextBlock Text="Стоимость активов"/>
+                        <TextBlock Text="Котировки активов"/>
                     </MenuItem.Header>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ShowTickerRatesForm"/>
+                            <cal:ActionMessage MethodName="ShowAssetRatesForm"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>  
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Трастовые счета"/>
+                    </MenuItem.Header>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ShowTrustAccountsForm"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>  <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Транзакции"/>
+                    </MenuItem.Header>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ShowInvestmentTransactionsForm"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>

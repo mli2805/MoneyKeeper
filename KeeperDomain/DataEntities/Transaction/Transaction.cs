@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace KeeperDomain
@@ -33,17 +32,17 @@ namespace KeeperDomain
                    Tags + " ; " + Comment;
         }
 
-        private string Dump(List<int> tags)
-        {
-            if (tags == null || tags.Count == 0) return " ";
-            string result = "";
-            foreach (var t in tags)
-            {
-                result = result + t + " | ";
-            }
-            result = result.Substring(0, result.Length - 3);
-            return result;
-        }
+        // private string Dump(List<int> tags)
+        // {
+        //     if (tags == null || tags.Count == 0) return " ";
+        //     string result = "";
+        //     foreach (var t in tags)
+        //     {
+        //         result = result + t + " | ";
+        //     }
+        //     result = result.Substring(0, result.Length - 3);
+        //     return result;
+        // }
 
     }
 }

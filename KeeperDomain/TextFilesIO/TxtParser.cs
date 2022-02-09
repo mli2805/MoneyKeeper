@@ -30,7 +30,7 @@ namespace KeeperDomain
             return rate;
         }
 
-        public static InvestmentAsset TrustTiсkerFromString(this string s)
+        public static InvestmentAsset InvestmentAssetFromString(this string s)
         {
             var ticker = new InvestmentAsset();
             var substrings = s.Split(';');
@@ -45,7 +45,7 @@ namespace KeeperDomain
             return ticker;
         }
 
-        public static AssetRate TickerRateFromString(this string s)
+        public static AssetRate AssetRateFromString(this string s)
         {
             var rate = new AssetRate();
             var substrings = s.Split(';');
@@ -56,6 +56,39 @@ namespace KeeperDomain
             rate.Value = double.Parse(substrings[4], new CultureInfo("en-US"));
             rate.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]);
             return rate;
+        }
+
+        public static TrustAccount TrustAccountFromString(this string s)
+        {
+            var trustAccount = new TrustAccount();
+            var substrings = s.Split(';');
+            trustAccount.Id = int.Parse(substrings[0]);
+            trustAccount.Title = substrings[1]; 
+            trustAccount.Number = substrings[2]; 
+            trustAccount.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[3]);
+            trustAccount.AccountId = int.Parse(substrings[4]);
+            trustAccount.Comment = substrings[5];
+            return trustAccount;
+        }
+
+        public static InvestmentTransaction InvestmentTransactionFromString(this string s)
+        {
+            var trans = new InvestmentTransaction();
+            var substrings = s.Split(';');
+            trans.Id = int.Parse(substrings[0]);
+            trans.InvestOperationType = (InvestOperationType)Enum.Parse(typeof(InvestOperationType), substrings[1]);
+            trans.Timestamp = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+            trans.AccountId = int.Parse(substrings[3]);
+            trans.TrustAccountId = int.Parse(substrings[4]);
+
+            trans.CurrencyAmount = double.Parse(substrings[5], new CultureInfo("en-US"));
+            trans.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[6]);
+
+            trans.AssetAmount = double.Parse(substrings[7], new CultureInfo("en-US"));
+            trans.Asset = (InvestmentAsset)Enum.Parse(typeof(InvestmentAsset), substrings[8]);
+
+            trans.Comment = substrings[9];
+            return trans;
         }
 
         private static NbRbRates NbRbRatesFromString(string s)

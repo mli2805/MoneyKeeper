@@ -11,6 +11,8 @@ namespace KeeperDomain
 
         public List<InvestmentAsset> InvestmentAssets { get; set; }
         public List<AssetRate> AssetRates { get; set; }
+        public List<TrustAccount> TrustAccounts { get; set; }
+        public List<InvestmentTransaction> InvestmentTransactions { get; set; }
 
         public List<Account> AccountPlaneList { get; set; }
         public List<Deposit> Deposits { get; set; }
