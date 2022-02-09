@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
@@ -6,22 +7,25 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class StockTickersViewModel : Screen
+    public class TrustTickersViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
 
-        public ObservableCollection<StockTiсker> Tickers { get; set; }
-        public StockTiсker SelectedTicker { get; set; }
+        public ObservableCollection<TrustTiсker> Tickers { get; set; }
+        public TrustTiсker SelectedTicker { get; set; }
 
-        public StockTickersViewModel(KeeperDataModel dataModel)
+        public List<SecuritiesType> SecuritiesTypes { get; set; }
+
+        public TrustTickersViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
+            SecuritiesTypes = Enum.GetValues(typeof(SecuritiesType)).OfType<SecuritiesType>().ToList();
         }
 
         public void Initialize()
         {
-            Tickers = new ObservableCollection<StockTiсker>();
-            foreach (var stockTicker in _dataModel.StockTickers.OrderBy(l=>l.Id))
+            Tickers = new ObservableCollection<TrustTiсker>();
+            foreach (var stockTicker in _dataModel.TrustTickers.OrderBy(l=>l.Id))
             {
                 Tickers.Add(stockTicker);
             }
@@ -41,7 +45,7 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
-            _dataModel.StockTickers = Tickers.ToList();
+            _dataModel.TrustTickers = Tickers.ToList();
             base.CanClose(callback);
         }
     }

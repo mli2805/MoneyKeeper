@@ -469,10 +469,10 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
-    <Compile Include="Forms\Stock\StockTickersView.xaml.cs">
-      <DependentUpon>StockTickersView.xaml</DependentUpon>
+    <Compile Include="Forms\Stock\TrustTickersView.xaml.cs">
+      <DependentUpon>TrustTickersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Stock\StockTickersViewModel.cs" />
+    <Compile Include="Forms\Stock\TrustTickersViewModel.cs" />
     <Compile Include="Forms\Stock\TickerRatesView.xaml.cs">
       <DependentUpon>TickerRatesView.xaml</DependentUpon>
     </Compile>
@@ -754,7 +754,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\Stock\StockTickersView.xaml">
+    <Page Include="Forms\Stock\TrustTickersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

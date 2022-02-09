@@ -60,11 +60,6 @@ namespace Keeper2018
                     return false;
                 }
 
-                // var dbResult = await bin.SeedDbContext();
-                // if (!dbResult.IsSuccess)
-                // {
-                //     MessageBox.Show(dbResult.Exception.Message);
-                // }
                 _transactionsViewModel.Model.IsCollectionChanged = false;
             }
             catch (Exception e)
@@ -95,8 +90,7 @@ namespace Keeper2018
                 Rates = _keeperDataModel.Rates.Values.ToList(),
                 MetalRates = _keeperDataModel.MetalRates,
 
-                StockTickers = _keeperDataModel.StockTickers,
-                // TickerRates = _keeperDataModel.TickerRates.Select(r=>r.Map(_keeperDataModel.StockTickers)).ToList(),
+                TrustTickers = _keeperDataModel.TrustTickers,
                 TickerRates = _keeperDataModel.TickerRates,
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),

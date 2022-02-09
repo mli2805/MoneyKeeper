@@ -66,7 +66,7 @@ namespace Keeper2018
                 _keeperDataModel.Rates.Add(rate.Date, rate);
             _keeperDataModel.MetalRates = bin.MetalRates;
 
-            _keeperDataModel.StockTickers = bin.StockTickers;
+            _keeperDataModel.TrustTickers = bin.TrustTickers;
             _keeperDataModel.TickerRates = bin.TickerRates;
 
             _keeperDataModel.FillInAccountTreeAndDict(bin);

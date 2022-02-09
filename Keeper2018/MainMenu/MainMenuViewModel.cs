@@ -23,7 +23,7 @@ namespace Keeper2018
         private readonly OpenDepositsViewModel _openDepositsViewModel;
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
-        private readonly StockTickersViewModel _stockTickersViewModel;
+        private readonly TrustTickersViewModel _trustTickersViewModel;
         private readonly TickerRatesViewModel _tickerRatesViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
@@ -35,7 +35,7 @@ namespace Keeper2018
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             OpenDepositsViewModel openDepositsViewModel,
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel,
-            StockTickersViewModel stockTickersViewModel, TickerRatesViewModel tickerRatesViewModel)
+            TrustTickersViewModel trustTickersViewModel, TickerRatesViewModel tickerRatesViewModel)
         {
             _windowManager = windowManager;
             _keeperDataModel = keeperDataModel;
@@ -53,7 +53,7 @@ namespace Keeper2018
             _openDepositsViewModel = openDepositsViewModel;
             _payCardsViewModel = payCardsViewModel;
             _salaryViewModel = salaryViewModel;
-            _stockTickersViewModel = stockTickersViewModel;
+            _trustTickersViewModel = trustTickersViewModel;
             _tickerRatesViewModel = tickerRatesViewModel;
         }
 
@@ -178,8 +178,8 @@ namespace Keeper2018
 
         public void ShowStockTickersForm()
         {
-            _stockTickersViewModel.Initialize();
-            _windowManager.ShowDialog(_stockTickersViewModel);
+            _trustTickersViewModel.Initialize();
+            _windowManager.ShowDialog(_trustTickersViewModel);
         }
 
         public void ShowTickerRatesForm()

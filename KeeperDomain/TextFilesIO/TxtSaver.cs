@@ -23,10 +23,10 @@ namespace KeeperDomain
                 var metalRates = bin.MetalRates.Select(l => l.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("MetalRates.txt"), metalRates);
 
-                if (bin.StockTickers != null)
+                if (bin.TrustTickers != null)
                 {
-                    var stockTickers = bin.StockTickers.Select(l => l.Dump());
-                    File.WriteAllLines(PathFactory.GetBackupFilePath("StockTickers.txt"), stockTickers);
+                    var stockTickers = bin.TrustTickers.Select(l => l.Dump());
+                    File.WriteAllLines(PathFactory.GetBackupFilePath("TrustTickers.txt"), stockTickers);
                 }
                 if (bin.TickerRates != null)
                 {

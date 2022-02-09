@@ -9,7 +9,7 @@ namespace KeeperDomain
         public List<CurrencyRates> Rates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
 
-        public List<StockTiсker> StockTickers { get; set; }
+        public List<TrustTiсker> TrustTickers { get; set; }
         public List<TickerRate> TickerRates { get; set; }
 
         public List<Account> AccountPlaneList { get; set; }

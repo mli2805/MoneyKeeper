@@ -13,7 +13,7 @@ namespace Keeper2018
 
         public ObservableCollection<TickerRate> Rates { get; set; }
         public TickerRate SelectedRate { get; set; }
-        public List<StockTiсker> Tickers { get; set; }
+        public List<TrustTiсker> Tickers { get; set; }
 
         public TickerRatesViewModel(KeeperDataModel dataModel)
         {
@@ -22,7 +22,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Tickers = _dataModel.StockTickers;
+            Tickers = _dataModel.TrustTickers;
             Rates = new ObservableCollection<TickerRate>();
             foreach (var rate in _dataModel.TickerRates)
             {

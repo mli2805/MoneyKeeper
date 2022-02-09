@@ -30,13 +30,18 @@ namespace KeeperDomain
             return rate;
         }
 
-        public static StockTiсker StockTiсkerFromString(this string s)
+        public static TrustTiсker TrustTiсkerFromString(this string s)
         {
-            var ticker = new StockTiсker();
+            var ticker = new TrustTiсker();
             var substrings = s.Split(';');
             ticker.Id = int.Parse(substrings[0]);
             ticker.Ticker = substrings[1];
             ticker.Title = substrings[2];
+            ticker.SecuritiesType = (SecuritiesType)Enum.Parse(typeof(SecuritiesType), substrings[3]);
+            ticker.BondCoupon = double.Parse(substrings[4], new CultureInfo("en-US"));
+            ticker.BondExpirationDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            ticker.Comment = substrings[6];
+
             return ticker;
         }
 
@@ -47,8 +52,8 @@ namespace KeeperDomain
             rate.Id = int.Parse(substrings[0]);
             rate.TickerId = int.Parse(substrings[1]);
             rate.Date = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            rate.Value = double.Parse(substrings[3], new CultureInfo("en-US"));
-            rate.Unit = int.Parse(substrings[4]);
+            rate.Unit = int.Parse(substrings[3]);
+            rate.Value = double.Parse(substrings[4], new CultureInfo("en-US"));
             rate.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]);
             return rate;
         }

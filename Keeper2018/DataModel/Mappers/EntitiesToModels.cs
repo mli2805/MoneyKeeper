@@ -115,17 +115,17 @@ namespace Keeper2018
             };
         }
 
-        public static TickerRateModel Map(this TickerRate tickerRate, List<StockTiсker> tickers)
-        {
-            return new TickerRateModel()
-            {
-                Id = tickerRate.Id,
-                Ticker = tickers.First(t=>t.Id == tickerRate.TickerId),
-                Date = tickerRate.Date,
-                Unit = tickerRate.Unit,
-                Value = tickerRate.Value,
-                Currency = tickerRate.Currency,
-            };
-        }
+        // public static TickerRateModel Map(this TickerRate tickerRate, List<TrustTiсker> tickers)
+        // {
+        //     return new TickerRateModel()
+        //     {
+        //         Id = tickerRate.Id,
+        //         Ticker = tickers.First(t=>t.Id == tickerRate.TickerId),
+        //         Date = tickerRate.Date,
+        //         Unit = tickerRate.Unit,
+        //         Value = tickerRate.Value,
+        //         Currency = tickerRate.Currency,
+        //     };
+        // }
     }
 }

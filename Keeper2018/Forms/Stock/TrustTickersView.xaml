@@ -1,0 +1,65 @@
+﻿<Window x:Class="Keeper2018.TrustTickersView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="TrustTickersView" Height="450" SizeToContent="Width" WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance keeper2018:TrustTickersViewModel}">
+    <Window.Resources>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="keeperDomain:SecuritiesType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Delete" Modifiers="Control">
+            <cal:ActionMessage MethodName="DeleteSelected"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <DataGrid ItemsSource="{Binding Tickers}" 
+                  SelectedItem="{Binding SelectedTicker}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Ticker" Width="80" Binding="{Binding Ticker}" />
+                <DataGridTextColumn Header="Title" Width="200" Binding="{Binding Title}" />
+
+                <DataGridComboBoxColumn  Header="Type" Width="60" 
+                                         ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
+                                         SelectedValueBinding="{Binding SecuritiesType}"/>
+
+                <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding BondCoupon}" />
+
+                <DataGridTemplateColumn Header="Дата окончания" Width="100" >
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding BondExpirationDate,
+                                                 StringFormat=dd/MM/yyyy,
+                                       Mode=TwoWay,
+                                       UpdateSourceTrigger=PropertyChanged}"
+                                        d:DataContext="{d:DesignInstance keeperDomain:TrustTiсker}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding BondExpirationDate,
+                                                 StringFormat=dd/MM/yyyy}"
+                                       d:DataContext="{d:DesignInstance keeperDomain:TrustTiсker}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Comment" Width="400" Binding="{Binding Comment}" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</Window>
