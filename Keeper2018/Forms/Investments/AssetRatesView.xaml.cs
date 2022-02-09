@@ -1,11 +1,11 @@
 ﻿namespace Keeper2018
 {
     /// <summary>
-    /// Interaction logic for TickerRatesView.xaml
+    /// Interaction logic for AssetRatesView.xaml
     /// </summary>
-    public partial class TickerRatesView
+    public partial class AssetRatesView
     {
-        public TickerRatesView()
+        public AssetRatesView()
         {
             InitializeComponent();
         }

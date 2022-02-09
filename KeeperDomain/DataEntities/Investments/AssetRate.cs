@@ -4,7 +4,7 @@ using System.Globalization;
 namespace KeeperDomain
 {
     [Serializable]
-    public class TickerRate
+    public class AssetRate
     {
         public int Id { get; set; }
         public int TickerId { get; set; } = 1;

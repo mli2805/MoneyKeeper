@@ -7,15 +7,15 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class TickerRatesViewModel : Screen
+    public class AssetRatesViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
 
-        public ObservableCollection<TickerRate> Rates { get; set; }
-        public TickerRate SelectedRate { get; set; }
-        public List<TrustTiсker> Tickers { get; set; }
+        public ObservableCollection<AssetRate> Rates { get; set; }
+        public AssetRate SelectedRate { get; set; }
+        public List<InvestmentAsset> Tickers { get; set; }
 
-        public TickerRatesViewModel(KeeperDataModel dataModel)
+        public AssetRatesViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
         }
@@ -23,7 +23,7 @@ namespace Keeper2018
         public void Initialize()
         {
             Tickers = _dataModel.TrustTickers;
-            Rates = new ObservableCollection<TickerRate>();
+            Rates = new ObservableCollection<AssetRate>();
             foreach (var rate in _dataModel.TickerRates)
             {
                 Rates.Add(rate);

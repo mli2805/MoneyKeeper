@@ -23,8 +23,8 @@ namespace Keeper2018
         private readonly OpenDepositsViewModel _openDepositsViewModel;
         private readonly PayCardsViewModel _payCardsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
-        private readonly TrustTickersViewModel _trustTickersViewModel;
-        private readonly TickerRatesViewModel _tickerRatesViewModel;
+        private readonly InvestmentAssetsViewModel _investmentAssetsViewModel;
+        private readonly AssetRatesViewModel _assetRatesViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
@@ -35,7 +35,7 @@ namespace Keeper2018
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             OpenDepositsViewModel openDepositsViewModel,
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel,
-            TrustTickersViewModel trustTickersViewModel, TickerRatesViewModel tickerRatesViewModel)
+            InvestmentAssetsViewModel investmentAssetsViewModel, AssetRatesViewModel assetRatesViewModel)
         {
             _windowManager = windowManager;
             _keeperDataModel = keeperDataModel;
@@ -53,8 +53,8 @@ namespace Keeper2018
             _openDepositsViewModel = openDepositsViewModel;
             _payCardsViewModel = payCardsViewModel;
             _salaryViewModel = salaryViewModel;
-            _trustTickersViewModel = trustTickersViewModel;
-            _tickerRatesViewModel = tickerRatesViewModel;
+            _investmentAssetsViewModel = investmentAssetsViewModel;
+            _assetRatesViewModel = assetRatesViewModel;
         }
 
         // for short-cuts
@@ -178,14 +178,14 @@ namespace Keeper2018
 
         public void ShowStockTickersForm()
         {
-            _trustTickersViewModel.Initialize();
-            _windowManager.ShowDialog(_trustTickersViewModel);
+            _investmentAssetsViewModel.Initialize();
+            _windowManager.ShowDialog(_investmentAssetsViewModel);
         }
 
         public void ShowTickerRatesForm()
         {
-            _tickerRatesViewModel.Initialize();
-            _windowManager.ShowDialog(_tickerRatesViewModel);
+            _assetRatesViewModel.Initialize();
+            _windowManager.ShowDialog(_assetRatesViewModel);
         }
 
         public async void Save()

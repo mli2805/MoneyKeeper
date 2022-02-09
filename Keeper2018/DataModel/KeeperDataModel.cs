@@ -11,8 +11,8 @@ namespace Keeper2018
         public Dictionary<DateTime, CurrencyRates> Rates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
 
-        public List<TrustTiсker> TrustTickers { get; set; }
-        public List<TickerRate> TickerRates { get; set; }
+        public List<InvestmentAsset> TrustTickers { get; set; }
+        public List<AssetRate> TickerRates { get; set; }
 
         public Dictionary<int, TransactionModel> Transactions { get; set; }
 

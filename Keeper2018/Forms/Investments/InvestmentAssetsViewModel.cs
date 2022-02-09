@@ -7,24 +7,24 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class TrustTickersViewModel : Screen
+    public class InvestmentAssetsViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
 
-        public ObservableCollection<TrustTiсker> Tickers { get; set; }
-        public TrustTiсker SelectedTicker { get; set; }
+        public ObservableCollection<InvestmentAsset> Tickers { get; set; }
+        public InvestmentAsset SelectedTicker { get; set; }
 
-        public List<SecuritiesType> SecuritiesTypes { get; set; }
+        public List<AssetType> SecuritiesTypes { get; set; }
 
-        public TrustTickersViewModel(KeeperDataModel dataModel)
+        public InvestmentAssetsViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
-            SecuritiesTypes = Enum.GetValues(typeof(SecuritiesType)).OfType<SecuritiesType>().ToList();
+            SecuritiesTypes = Enum.GetValues(typeof(AssetType)).OfType<AssetType>().ToList();
         }
 
         public void Initialize()
         {
-            Tickers = new ObservableCollection<TrustTiсker>();
+            Tickers = new ObservableCollection<InvestmentAsset>();
             foreach (var stockTicker in _dataModel.TrustTickers.OrderBy(l=>l.Id))
             {
                 Tickers.Add(stockTicker);

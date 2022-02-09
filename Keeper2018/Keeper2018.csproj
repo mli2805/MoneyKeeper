@@ -469,18 +469,18 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
-    <Compile Include="Forms\Stock\TrustOperationsView.xaml.cs">
+    <Compile Include="Forms\Investments\TrustOperationsView.xaml.cs">
       <DependentUpon>TrustOperationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Stock\TrustOperationsViewModel.cs" />
-    <Compile Include="Forms\Stock\TrustTickersView.xaml.cs">
-      <DependentUpon>TrustTickersView.xaml</DependentUpon>
+    <Compile Include="Forms\Investments\TrustOperationsViewModel.cs" />
+    <Compile Include="Forms\Investments\InvestmentAssetsView.xaml.cs">
+      <DependentUpon>InvestmentAssetsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Stock\TrustTickersViewModel.cs" />
-    <Compile Include="Forms\Stock\TickerRatesView.xaml.cs">
-      <DependentUpon>TickerRatesView.xaml</DependentUpon>
+    <Compile Include="Forms\Investments\InvestmentAssetsViewModel.cs" />
+    <Compile Include="Forms\Investments\AssetRatesView.xaml.cs">
+      <DependentUpon>AssetRatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Stock\TickerRatesViewModel.cs" />
+    <Compile Include="Forms\Investments\AssetRatesViewModel.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameExt.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameSelectionControlInitializer.cs" />
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameButtonVm.cs" />
@@ -758,15 +758,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\Stock\TrustOperationsView.xaml">
+    <Page Include="Forms\Investments\TrustOperationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Stock\TrustTickersView.xaml">
+    <Page Include="Forms\Investments\InvestmentAssetsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Stock\TickerRatesView.xaml">
+    <Page Include="Forms\Investments\AssetRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

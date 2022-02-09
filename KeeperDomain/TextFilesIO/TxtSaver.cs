@@ -23,15 +23,15 @@ namespace KeeperDomain
                 var metalRates = bin.MetalRates.Select(l => l.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("MetalRates.txt"), metalRates);
 
-                if (bin.TrustTickers != null)
+                if (bin.InvestmentAssets != null)
                 {
-                    var stockTickers = bin.TrustTickers.Select(l => l.Dump());
-                    File.WriteAllLines(PathFactory.GetBackupFilePath("TrustTickers.txt"), stockTickers);
+                    var investmentAssets = bin.InvestmentAssets.Select(l => l.Dump());
+                    File.WriteAllLines(PathFactory.GetBackupFilePath("InvestmentAssets.txt"), investmentAssets);
                 }
-                if (bin.TickerRates != null)
+                if (bin.AssetRates != null)
                 {
-                    var tickerRates = bin.TickerRates.Select(l => l.Dump());
-                    File.WriteAllLines(PathFactory.GetBackupFilePath("TickerRates.txt"), tickerRates);
+                    var assetRates = bin.AssetRates.Select(l => l.Dump());
+                    File.WriteAllLines(PathFactory.GetBackupFilePath("AssetRates.txt"), assetRates);
                 }
 
                 var accounts = bin.DumpWithOffsets();

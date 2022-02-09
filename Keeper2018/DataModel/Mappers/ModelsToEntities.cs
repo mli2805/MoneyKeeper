@@ -128,9 +128,9 @@ namespace Keeper2018
             };
         }
 
-        // public static TickerRate Map(this TickerRateModel tickerRateModel, List<TrustTiсker> tickers)
+        // public static AssetRate Map(this TickerRateModel tickerRateModel, List<InvestmentAsset> tickers)
         // {
-        //     return new TickerRate()
+        //     return new AssetRate()
         //     {
         //         Id = tickerRateModel.Id,
         //         TickerId = tickers.First(t => t.Ticker == tickerRateModel.Ticker.Ticker).Id,

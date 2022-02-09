@@ -4,13 +4,13 @@ using System.Globalization;
 namespace KeeperDomain
 {
     [Serializable]
-    public class TrustTiсker
+    public class InvestmentAsset
     {
         public int Id { get; set; }
 
         public string Ticker { get; set; }
         public string Title { get; set; }
-        public SecuritiesType SecuritiesType { get; set; }
+        public AssetType AssetType { get; set; }
 
         public double BondCoupon { get; set; }
         public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;
@@ -19,7 +19,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + Ticker + " ; " + Title + " ; " + SecuritiesType + " ; " + 
+            return Id + " ; " + Ticker + " ; " + Title + " ; " + AssetType + " ; " + 
                    BondCoupon.ToString(new CultureInfo("en-US")) + " ; " + 
                    BondExpirationDate.ToString("dd/MM/yyyy") + " ; " + Comment;
         }
