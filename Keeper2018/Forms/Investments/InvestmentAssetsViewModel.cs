@@ -11,24 +11,20 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
 
-        public ObservableCollection<InvestmentAsset> Tickers { get; set; }
-        public InvestmentAsset SelectedTicker { get; set; }
+        public ObservableCollection<InvestmentAsset> Assets { get; set; }
+        public InvestmentAsset SelectedAsset { get; set; }
 
-        public List<AssetType> SecuritiesTypes { get; set; }
+        public List<AssetType> AssetTypes { get; set; }
 
         public InvestmentAssetsViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
-            SecuritiesTypes = Enum.GetValues(typeof(AssetType)).OfType<AssetType>().ToList();
+            AssetTypes = Enum.GetValues(typeof(AssetType)).OfType<AssetType>().ToList();
         }
 
         public void Initialize()
         {
-            Tickers = new ObservableCollection<InvestmentAsset>();
-            foreach (var stockTicker in _dataModel.TrustTickers.OrderBy(l=>l.Id))
-            {
-                Tickers.Add(stockTicker);
-            }
+            Assets = new ObservableCollection<InvestmentAsset>(_dataModel.InvestmentAssets.OrderBy(l => l.Id));
         }
 
         protected override void OnViewLoaded(object view)
@@ -39,13 +35,13 @@ namespace Keeper2018
        
         public void DeleteSelected()
         {
-            if (SelectedTicker != null)
-                Tickers.Remove(SelectedTicker);
+            if (SelectedAsset != null)
+                Assets.Remove(SelectedAsset);
         }
 
         public override void CanClose(Action<bool> callback)
         {
-            _dataModel.TrustTickers = Tickers.ToList();
+            _dataModel.InvestmentAssets = Assets.ToList();
             base.CanClose(callback);
         }
     }

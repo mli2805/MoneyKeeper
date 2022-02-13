@@ -238,6 +238,10 @@
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Deposits\OpenDepositsViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccountsView.xaml.cs">
+      <DependentUpon>TrustAccountsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Investments\TrustAccountsViewModel.cs" />
     <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />
@@ -469,10 +473,10 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustOperationsView.xaml.cs">
-      <DependentUpon>TrustOperationsView.xaml</DependentUpon>
+    <Compile Include="Forms\Investments\InvestmentTransactionsView.xaml.cs">
+      <DependentUpon>InvestmentTransactionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\TrustOperationsViewModel.cs" />
+    <Compile Include="Forms\Investments\InvestmentTransactionsViewModel.cs" />
     <Compile Include="Forms\Investments\InvestmentAssetsView.xaml.cs">
       <DependentUpon>InvestmentAssetsView.xaml</DependentUpon>
     </Compile>
@@ -702,6 +706,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Investments\TrustAccountsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\ListOfLinesControls\BorderedList\BorderedListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -758,7 +766,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\Investments\TrustOperationsView.xaml">
+    <Page Include="Forms\Investments\InvestmentTransactionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

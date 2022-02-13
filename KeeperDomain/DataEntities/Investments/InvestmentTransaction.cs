@@ -3,6 +3,7 @@ using System.Globalization;
 
 namespace KeeperDomain
 {
+    [Serializable]
     public class InvestmentTransaction
     {
         public int Id { get; set; }

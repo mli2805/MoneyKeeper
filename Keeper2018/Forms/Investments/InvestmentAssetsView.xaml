@@ -25,8 +25,8 @@
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <DataGrid ItemsSource="{Binding Tickers}" 
-                  SelectedItem="{Binding SelectedTicker}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Assets}" 
+                  SelectedItem="{Binding SelectedAsset}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Тикер" Width="80" Binding="{Binding Ticker}" />

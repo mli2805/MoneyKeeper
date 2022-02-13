@@ -1,5 +1,8 @@
-﻿namespace KeeperDomain
+﻿using System;
+
+namespace KeeperDomain
 {
+    [Serializable]
     public class TrustAccount
     {
         public int Id { get; set; }

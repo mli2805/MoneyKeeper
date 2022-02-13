@@ -1,0 +1,48 @@
+﻿<Window x:Class="Keeper2018.TrustAccountsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        mc:Ignorable="d"
+        Height="450" SizeToContent="Width" WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance keeper2018:TrustAccountsViewModel}">
+    <Window.Resources>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="keeperDomain:CurrencyCode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Delete" Modifiers="Control">
+            <cal:ActionMessage MethodName="DeleteSelected"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers> 
+    <Grid>
+        <DataGrid ItemsSource="{Binding TrustAccounts}" 
+                  SelectedItem="{Binding SelectedAccount}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Название" Width="150" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Номер" Width="80" Binding="{Binding Number}" />
+
+                <DataGridComboBoxColumn  Header="Валюта" Width="60" 
+                                         ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
+                                         SelectedValueBinding="{Binding Currency}"/>
+               
+
+                <DataGridTextColumn Header="AccountId" Width="70" Binding="{Binding AccountId}" />
+
+              <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+  
+    </Grid>
+</Window>

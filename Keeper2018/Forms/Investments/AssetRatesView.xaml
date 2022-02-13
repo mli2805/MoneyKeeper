@@ -18,7 +18,8 @@
                 <x:Type TypeName="keeperDomain:CurrencyCode"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-    </Window.Resources>  <i:Interaction.Triggers>
+    </Window.Resources>  
+    <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="DeleteSelected"/>
         </ei:KeyTrigger>
@@ -33,13 +34,13 @@
                                          DisplayMemberPath="Ticker" SelectedValuePath="Id">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
-                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Tickers, 
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Assets, 
                                 RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
-                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Tickers, 
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Assets, 
                                 RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>

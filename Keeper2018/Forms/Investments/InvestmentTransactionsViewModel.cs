@@ -7,15 +7,15 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class AssetRatesViewModel : Screen
+    public class InvestmentTransactionsViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
 
-        public ObservableCollection<AssetRate> Rates { get; set; }
-        public AssetRate SelectedRate { get; set; }
+        public ObservableCollection<InvestmentTransaction> Transactions { get; set; }
+        public InvestmentTransaction SelectedTransaction { get; set; }
         public List<InvestmentAsset> Assets { get; set; }
 
-        public AssetRatesViewModel(KeeperDataModel dataModel)
+        public InvestmentTransactionsViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
         }
@@ -23,24 +23,24 @@ namespace Keeper2018
         public void Initialize()
         {
             Assets = _dataModel.InvestmentAssets;
-            Rates = new ObservableCollection<AssetRate>(_dataModel.AssetRates);
-            SelectedRate = Rates.Last();
+
+            Transactions = new ObservableCollection<InvestmentTransaction>(_dataModel.InvestmentTransactions);
         }
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Стоимость активов";
+            DisplayName = "Проводки";
         }
 
         public void DeleteSelected()
         {
-            if (SelectedRate != null)
-                Rates.Remove(SelectedRate);
+            if (SelectedTransaction != null)
+                Transactions.Remove(SelectedTransaction);
         }
 
         public override void CanClose(Action<bool> callback)
         {
-            _dataModel.AssetRates = Rates.ToList();
+            _dataModel.InvestmentTransactions = Transactions.ToList();
             base.CanClose(callback);
         }
     }

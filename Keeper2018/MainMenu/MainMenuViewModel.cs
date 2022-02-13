@@ -25,6 +25,8 @@ namespace Keeper2018
         private readonly SalaryViewModel _salaryViewModel;
         private readonly InvestmentAssetsViewModel _investmentAssetsViewModel;
         private readonly AssetRatesViewModel _assetRatesViewModel;
+        private readonly TrustAccountsViewModel _trustAccountsViewModel;
+        private readonly InvestmentTransactionsViewModel _investmentTransactionsViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
@@ -35,7 +37,8 @@ namespace Keeper2018
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             OpenDepositsViewModel openDepositsViewModel,
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel,
-            InvestmentAssetsViewModel investmentAssetsViewModel, AssetRatesViewModel assetRatesViewModel)
+            InvestmentAssetsViewModel investmentAssetsViewModel, AssetRatesViewModel assetRatesViewModel,
+            TrustAccountsViewModel trustAccountsViewModel, InvestmentTransactionsViewModel investmentTransactionsViewModel)
         {
             _windowManager = windowManager;
             _keeperDataModel = keeperDataModel;
@@ -55,6 +58,8 @@ namespace Keeper2018
             _salaryViewModel = salaryViewModel;
             _investmentAssetsViewModel = investmentAssetsViewModel;
             _assetRatesViewModel = assetRatesViewModel;
+            _trustAccountsViewModel = trustAccountsViewModel;
+            _investmentTransactionsViewModel = investmentTransactionsViewModel;
         }
 
         // for short-cuts
@@ -191,12 +196,14 @@ namespace Keeper2018
 
         public void ShowTrustAccountsForm()
         {
-
+            _trustAccountsViewModel.Initialize();
+            _windowManager.ShowDialog(_trustAccountsViewModel);
         }
 
         public void ShowInvestmentTransactionsForm()
         {
-
+            _investmentTransactionsViewModel.Initialize();
+            _windowManager.ShowDialog(_investmentTransactionsViewModel);
         }
         #endregion
 
