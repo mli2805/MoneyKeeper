@@ -115,17 +115,21 @@ namespace Keeper2018
             };
         }
 
-        // public static TickerRateModel Map(this AssetRate tickerRate, List<InvestmentAsset> tickers)
-        // {
-        //     return new TickerRateModel()
-        //     {
-        //         Id = tickerRate.Id,
-        //         Ticker = tickers.First(t=>t.Id == tickerRate.TickerId),
-        //         Date = tickerRate.Date,
-        //         Unit = tickerRate.Unit,
-        //         Value = tickerRate.Value,
-        //         Currency = tickerRate.Currency,
-        //     };
-        // }
+        public static InvestTranModel Map(this InvestmentTransaction transaction, KeeperDataModel dataModel)
+        {
+            return new InvestTranModel()
+            {
+                Id = transaction.Id,
+                InvestOperationType = transaction.InvestOperationType,
+                Timestamp = transaction.Timestamp,
+                AccountModel = dataModel.AcMoDict[transaction.AccountId],
+                TrustAccount = dataModel.TrustAccounts.First(t => t.Id == transaction.TrustAccountId),
+                CurrencyAmount = transaction.CurrencyAmount,
+                Currency = transaction.Currency,
+                AssetAmount = transaction.AssetAmount,
+                Asset = dataModel.InvestmentAssets.First(a => a.Id == transaction.AssetId),
+                Comment = transaction.Comment,
+            };
+        }
     }
 }

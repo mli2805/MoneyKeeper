@@ -1,0 +1,51 @@
+﻿<Window x:Class="Keeper2018.InvestmentTransactionsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        mc:Ignorable="d"
+        Height="450" SizeToContent="Width" WindowStartupLocation="CenterOwner" 
+        d:DataContext="{d:DesignInstance keeper2018:InvestmentTransactionsViewModel}">
+    <DockPanel>
+        <Border Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DockPanel.Dock="Right">
+            <DockPanel>
+
+                <StackPanel Width="220" Margin="5" DockPanel.Dock="Top">
+                    <Button Name="TopUpTrustAccount" Content="Пополнить трастовый счет" Margin="5"/>
+                    <Button Name="BuyBonds" Content="Купить облигации" Margin="5"/>
+                    <Button Name="BuyStocks" Content="Купить акции" Margin="5"/>
+                    <Button Name="PayPurchaseFee" Content="Оплатить комиссию за покупку" Margin="5"/>
+                    <Button Name="PayBaseCommission" Content="Оплатить базовую комиссию" Margin="5"/>
+                    <Button Name="SellBonds" Content="Продать облигации" Margin="5"/>
+                    <Button Name="SellStocks" Content="Продать акции" Margin="5"/>
+                    <Button Name="EnrollCouponOrDividends" Content="Зачислить купон или дивиденды" Margin="5"/>
+                    <Button Name="WithdrawFromTrustAccount" Content="Вывести с трастового счета" Margin="5"/>
+                    <Button Name="PayWithdrawalTax" Content="Оплатить налог на вывод средств" Margin="5"/>
+                </StackPanel>
+                <StackPanel Width="220" Margin="5" DockPanel.Dock="Bottom">
+                    <Button Name="Close" Content="Close"/>
+                </StackPanel>
+                <StackPanel></StackPanel>
+            </DockPanel>
+        </Border>
+        
+        <DockPanel Dock="Left">
+            <DataGrid ItemsSource="{Binding Transactions}"
+                      SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                      AutoGenerateColumns="False" Margin="5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn  Header="Id" Width="30" Binding="{Binding Id}"/>
+                    <DataGridTextColumn  Header="Date" Width="70" Binding="{Binding Timestamp}"/>
+                    <DataGridTextColumn  Header="Account" Width="120" Binding="{Binding AccountModel.Name}"/>
+                    <DataGridTextColumn  Header="Trust account" Width="100" Binding="{Binding TrustAccount.Number}"/>
+                    <DataGridTextColumn  Header="Сумма" Width="70" Binding="{Binding CurrencyAmount}"/>
+                    <DataGridTextColumn  Header="Валюта" Width="70" Binding="{Binding Currency}"/>
+                    <DataGridTextColumn  Header="Колво" Width="70" Binding="{Binding AssetAmount}"/>
+                    <DataGridTextColumn  Header="Тикер" Width="70" Binding="{Binding Asset.Ticker}"/>
+                    <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </DockPanel>
+</Window>

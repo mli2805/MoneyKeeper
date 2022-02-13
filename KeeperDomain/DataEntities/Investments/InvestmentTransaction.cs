@@ -17,7 +17,7 @@ namespace KeeperDomain
         public CurrencyCode Currency { get; set; }
 
         public double AssetAmount { get; set; }
-        public InvestmentAsset Asset { get; set; }
+        public int AssetId { get; set; }
 
         public string Comment { get; set; }
 
@@ -26,7 +26,7 @@ namespace KeeperDomain
             return Id + " ; " + InvestOperationType + " ; " + Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " + 
                    AccountId + " ; " + TrustAccountId + " ; " +
                    CurrencyAmount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
-                   AssetAmount.ToString(new CultureInfo("en-US")) + " ; " + Asset + " ; " + 
+                   AssetAmount.ToString(new CultureInfo("en-US")) + " ; " + AssetId + " ; " + 
                    Comment;
         }
     }

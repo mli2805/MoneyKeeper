@@ -85,7 +85,7 @@ namespace KeeperDomain
             trans.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[6]);
 
             trans.AssetAmount = double.Parse(substrings[7], new CultureInfo("en-US"));
-            trans.Asset = (InvestmentAsset)Enum.Parse(typeof(InvestmentAsset), substrings[8]);
+            trans.AssetId = int.Parse(substrings[8]);
 
             trans.Comment = substrings[9];
             return trans;

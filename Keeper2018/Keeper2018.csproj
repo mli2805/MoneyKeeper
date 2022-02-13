@@ -224,7 +224,7 @@
     <Compile Include="DataModel\DataModelExt\AccountModelExt.cs" />
     <Compile Include="DataModel\DataModelExt\DepoPartIdProvider.cs" />
     <Compile Include="DataModel\EntityModels\DepoCondsModel.cs" />
-    <Compile Include="DataModel\EntityModels\TickerRateModel.cs" />
+    <Compile Include="DataModel\EntityModels\InvestTranModel.cs" />
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
@@ -238,6 +238,10 @@
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Deposits\OpenDepositsViewModel.cs" />
+    <Compile Include="Forms\Investments\InvestTrans\OneInvestTranView.xaml.cs">
+      <DependentUpon>OneInvestTranView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Investments\InvestTrans\OneInvestTranViewModel.cs" />
     <Compile Include="Forms\Investments\TrustAccountsView.xaml.cs">
       <DependentUpon>TrustAccountsView.xaml</DependentUpon>
     </Compile>
@@ -473,10 +477,10 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
-    <Compile Include="Forms\Investments\InvestmentTransactionsView.xaml.cs">
+    <Compile Include="Forms\Investments\InvestTrans\InvestmentTransactionsView.xaml.cs">
       <DependentUpon>InvestmentTransactionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\InvestmentTransactionsViewModel.cs" />
+    <Compile Include="Forms\Investments\InvestTrans\InvestmentTransactionsViewModel.cs" />
     <Compile Include="Forms\Investments\InvestmentAssetsView.xaml.cs">
       <DependentUpon>InvestmentAssetsView.xaml</DependentUpon>
     </Compile>
@@ -492,6 +496,7 @@
       <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Forms\Transactions\AccName\AssociationEnum.cs" />
     <Compile Include="Forms\Transactions\AccName\ComboTreesProvider.cs" />
     <Compile Include="Forms\Transactions\Actions\AskReceiptDeletionView.xaml.cs">
       <DependentUpon>AskReceiptDeletionView.xaml</DependentUpon>
@@ -706,6 +711,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Investments\InvestTrans\OneInvestTranView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\Investments\TrustAccountsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -766,7 +775,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\Investments\InvestmentTransactionsView.xaml">
+    <Page Include="Forms\Investments\InvestTrans\InvestmentTransactionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -93,7 +93,7 @@ namespace Keeper2018
                 InvestmentAssets = _keeperDataModel.InvestmentAssets,
                 AssetRates = _keeperDataModel.AssetRates,
                 TrustAccounts = _keeperDataModel.TrustAccounts,
-                InvestmentTransactions = _keeperDataModel.InvestmentTransactions,
+                InvestmentTransactions = _keeperDataModel.InvestTranModels.Select(t=>t.Map()).ToList(),
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),
                 Deposits = deposits,

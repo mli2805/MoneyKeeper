@@ -228,6 +228,4 @@ namespace Keeper2018
                                  ?? availableAccNames.FindThroughTheForestById(defaultAccountId);
         }
     }
-
-    public enum AssociationEnum { IncomeForExternal, ExpenseForExternal, ExternalForIncome, ExternalForExpense }
 }

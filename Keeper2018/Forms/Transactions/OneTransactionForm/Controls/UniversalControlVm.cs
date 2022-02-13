@@ -26,15 +26,10 @@ namespace Keeper2018
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
-        private AmountInputControlVm _myAmountInputControlVm;
-        private AccNameSelectorVm _mySecondAccNameSelectorVm;
-        private AccNameSelectorVm _myAccNameSelectorVm;
-        private AmountInputControlVm _myAmountInReturnInputControlVm;
-        private TagPickerVm _myTagPickerVm;
-        private DatePickerWithTrianglesVm _myDatePickerVm;
 
         public TransactionModel TranInWork { get; set; } = new TransactionModel();
 
+        private AccNameSelectorVm _myAccNameSelectorVm;
         public AccNameSelectorVm MyAccNameSelectorVm
         {
             get => _myAccNameSelectorVm;
@@ -45,6 +40,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+        private AccNameSelectorVm _mySecondAccNameSelectorVm;
         public AccNameSelectorVm MySecondAccNameSelectorVm
         {
             get => _mySecondAccNameSelectorVm;
@@ -55,6 +51,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+        private AmountInputControlVm _myAmountInputControlVm;
         public AmountInputControlVm MyAmountInputControlVm
         {
             get => _myAmountInputControlVm;
@@ -65,6 +62,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+        private AmountInputControlVm _myAmountInReturnInputControlVm;
         public AmountInputControlVm MyAmountInReturnInputControlVm
         {
             get => _myAmountInReturnInputControlVm;
@@ -76,6 +74,7 @@ namespace Keeper2018
             }
         }
 
+        private TagPickerVm _myTagPickerVm;
         public TagPickerVm MyTagPickerVm
         {
             get => _myTagPickerVm;
@@ -86,6 +85,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+        private DatePickerWithTrianglesVm _myDatePickerVm;
         public DatePickerWithTrianglesVm MyDatePickerVm
         {
             get => _myDatePickerVm;
@@ -97,7 +97,6 @@ namespace Keeper2018
             }
         }
 
-        //  public string MyAccountBalance => _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
         private string _myAccountBalance;
         private PaymentWay _selectedPaymentWay;
 
@@ -220,7 +219,6 @@ namespace Keeper2018
             var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Add(tag);
 
-            // var associatedTag = _dataModel.GetAssociation(TranInWork, tag);
             var associatedTag = FindAssociated(tag, TranInWork.Operation);
             if (associatedTag != null && !TranInWork.Tags.Contains(associatedTag))
             {
@@ -335,11 +333,5 @@ namespace Keeper2018
             }
         }
 
-        // private void GetMyAccountBalanceInOtherThread()
-        // {
-        //     var result = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
-        //     if (Application.Current.Dispatcher != null)
-        //         Application.Current.Dispatcher.Invoke(() => MyAccountBalance = result);
-        // }
     }
 }

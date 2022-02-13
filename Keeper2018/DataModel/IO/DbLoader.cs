@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -73,7 +74,8 @@ namespace Keeper2018
             _keeperDataModel.TrustAccounts = bin.TrustAccounts;
             if (bin.InvestmentTransactions == null)
                 bin.InvestmentTransactions = new List<InvestmentTransaction>();
-            _keeperDataModel.InvestmentTransactions = bin.InvestmentTransactions;
+            _keeperDataModel.InvestTranModels = 
+                bin.InvestmentTransactions.Select(t=>t.Map(_keeperDataModel)).ToList();
 
             _keeperDataModel.FillInAccountTreeAndDict(bin);
 

@@ -39,6 +39,7 @@ namespace Keeper2018
             builder.RegisterType<AssetRatesViewModel>().SingleInstance();
             builder.RegisterType<TrustAccountsViewModel>().SingleInstance();
             builder.RegisterType<InvestmentTransactionsViewModel>().SingleInstance();
+            builder.RegisterType<OneInvestTranViewModel>();
 
             builder.RegisterType<CurrencyRatesViewModel>().SingleInstance();
             builder.RegisterType<InputMyUsdViewModel>().SingleInstance();
