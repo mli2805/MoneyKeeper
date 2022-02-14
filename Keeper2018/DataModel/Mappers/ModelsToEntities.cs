@@ -135,12 +135,12 @@ namespace Keeper2018
                 Id = transaction.Id,
                 InvestOperationType = transaction.InvestOperationType,
                 Timestamp = transaction.Timestamp,
-                AccountId = transaction.AccountModel.Id,
-                TrustAccountId = transaction.TrustAccount.Id,
+                AccountId = transaction.AccountModel?.Id ?? 0,
+                TrustAccountId = transaction.TrustAccount?.Id ?? 0,
                 CurrencyAmount = transaction.CurrencyAmount,
                 Currency = transaction.Currency,
                 AssetAmount = transaction.AssetAmount,
-                AssetId = transaction.Asset.Id,
+                AssetId = transaction.Asset?.Id ?? 0,
                 Comment = transaction.Comment,
             };
         }

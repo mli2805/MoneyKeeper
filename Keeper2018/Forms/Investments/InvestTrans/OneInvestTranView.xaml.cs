@@ -1,4 +1,6 @@
-﻿namespace Keeper2018
+﻿using System.Windows.Markup;
+
+namespace Keeper2018
 {
     /// <summary>
     /// Interaction logic for OneInvestTranView.xaml
@@ -8,6 +10,7 @@
         public OneInvestTranView()
         {
             InitializeComponent();
+            Language = XmlLanguage.GetLanguage("ru-RU");
         }
     }
 }

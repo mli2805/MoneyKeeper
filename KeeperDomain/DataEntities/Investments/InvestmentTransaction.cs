@@ -13,7 +13,7 @@ namespace KeeperDomain
         public int AccountId { get; set; }
         public int TrustAccountId { get; set; }
 
-        public double CurrencyAmount { get; set; }
+        public decimal CurrencyAmount { get; set; }
         public CurrencyCode Currency { get; set; }
 
         public double AssetAmount { get; set; }

@@ -122,12 +122,12 @@ namespace Keeper2018
                 Id = transaction.Id,
                 InvestOperationType = transaction.InvestOperationType,
                 Timestamp = transaction.Timestamp,
-                AccountModel = dataModel.AcMoDict[transaction.AccountId],
-                TrustAccount = dataModel.TrustAccounts.First(t => t.Id == transaction.TrustAccountId),
+                AccountModel = transaction.AccountId != 0 ? dataModel.AcMoDict[transaction.AccountId] : null,
+                TrustAccount = dataModel.TrustAccounts.FirstOrDefault(t => t.Id == transaction.TrustAccountId),
                 CurrencyAmount = transaction.CurrencyAmount,
                 Currency = transaction.Currency,
                 AssetAmount = transaction.AssetAmount,
-                Asset = dataModel.InvestmentAssets.First(a => a.Id == transaction.AssetId),
+                Asset = dataModel.InvestmentAssets.FirstOrDefault(a => a.Id == transaction.AssetId),
                 Comment = transaction.Comment,
             };
         }

@@ -496,7 +496,10 @@
       <DependentUpon>AccNameSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorVm.cs" />
+    <Compile Include="Forms\Transactions\AccName\AccNameSelectorForAssociations.cs" />
+    <Compile Include="Forms\Transactions\AccName\AccNameSelectorForInvestment.cs" />
     <Compile Include="Forms\Transactions\AccName\AssociationEnum.cs" />
+    <Compile Include="Forms\Transactions\AccName\ButtonCollections.cs" />
     <Compile Include="Forms\Transactions\AccName\ComboTreesProvider.cs" />
     <Compile Include="Forms\Transactions\Actions\AskReceiptDeletionView.xaml.cs">
       <DependentUpon>AskReceiptDeletionView.xaml</DependentUpon>

@@ -12,6 +12,8 @@ namespace KeeperDomain
         public int AccountId { get; set; }
         public string Comment { get; set; }
 
+        public string ToCombo => Title + " - " + Number;
+
         public string Dump()
         {
             return Id + " ; " + Title + " ; " + Number + " ; " + Currency + " ; " + AccountId + " ; " + Comment;

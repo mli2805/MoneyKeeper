@@ -67,6 +67,8 @@ namespace Keeper2018
                 _keeperDataModel.Rates.Add(rate.Date, rate);
             _keeperDataModel.MetalRates = bin.MetalRates;
 
+            _keeperDataModel.FillInAccountTreeAndDict(bin);
+            
             _keeperDataModel.InvestmentAssets = bin.InvestmentAssets;
             _keeperDataModel.AssetRates = bin.AssetRates;
             if (bin.TrustAccounts == null)
@@ -77,7 +79,6 @@ namespace Keeper2018
             _keeperDataModel.InvestTranModels = 
                 bin.InvestmentTransactions.Select(t=>t.Map(_keeperDataModel)).ToList();
 
-            _keeperDataModel.FillInAccountTreeAndDict(bin);
 
             _keeperDataModel.Transactions = new Dictionary<int, TransactionModel>();
             foreach (var transaction in bin.Transactions)

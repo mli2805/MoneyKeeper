@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Markup;
 
 namespace Keeper2018
 {
@@ -10,6 +11,7 @@ namespace Keeper2018
         public DatePickerWithTriangles()
         {
             InitializeComponent();
+            Language = XmlLanguage.GetLanguage("ru-RU");
         }
 
 

@@ -13,7 +13,7 @@
 
                 <StackPanel Width="220" Margin="5" DockPanel.Dock="Top">
                     <Button Name="TopUpTrustAccount" Content="Пополнить трастовый счет" Margin="5"/>
-                    <Button Name="BuyBonds" Content="Купить облигации" Margin="5"/>
+                    <Button Name="BuyBonds" Content="Купить облигации с НКД" Margin="5"/>
                     <Button Name="BuyStocks" Content="Купить акции" Margin="5"/>
                     <Button Name="PayPurchaseFee" Content="Оплатить комиссию за покупку" Margin="5"/>
                     <Button Name="PayBaseCommission" Content="Оплатить базовую комиссию" Margin="5"/>
@@ -36,12 +36,13 @@
                       AutoGenerateColumns="False" Margin="5">
                 <DataGrid.Columns>
                     <DataGridTextColumn  Header="Id" Width="30" Binding="{Binding Id}"/>
-                    <DataGridTextColumn  Header="Date" Width="70" Binding="{Binding Timestamp}"/>
-                    <DataGridTextColumn  Header="Account" Width="120" Binding="{Binding AccountModel.Name}"/>
+                    <DataGridTextColumn  Header="Тип" Width="160" Binding="{Binding TypeForDatagrid}"/>
+                    <DataGridTextColumn  Header="Date" Width="70" Binding="{Binding Timestamp, StringFormat='dd/MM/yyyy'}"/>
+                    <DataGridTextColumn  Header="Account" Width="120" Binding="{Binding AccountForDataGrid}"/>
                     <DataGridTextColumn  Header="Trust account" Width="100" Binding="{Binding TrustAccount.Number}"/>
-                    <DataGridTextColumn  Header="Сумма" Width="70" Binding="{Binding CurrencyAmount}"/>
-                    <DataGridTextColumn  Header="Валюта" Width="70" Binding="{Binding Currency}"/>
-                    <DataGridTextColumn  Header="Колво" Width="70" Binding="{Binding AssetAmount}"/>
+                    <DataGridTextColumn  Header="Сумма" Width="80" Binding="{Binding CurrencyAmountForDatagrid}"/>
+                    <!-- <DataGridTextColumn  Header="Валюта" Width="70" Binding="{Binding Currency}"/> -->
+                    <DataGridTextColumn  Header="Колво" Width="70" Binding="{Binding AssetAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Тикер" Width="70" Binding="{Binding Asset.Ticker}"/>
                     <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
                 </DataGrid.Columns>

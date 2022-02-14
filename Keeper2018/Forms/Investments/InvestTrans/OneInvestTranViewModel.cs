@@ -1,14 +1,16 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.Generic;
+using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {
     public class OneInvestTranViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
+        private readonly ComboTreesProvider _comboTreesProvider;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
-        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
 
-        private AccNameSelectorVm _myAccNameSelectorVm;
+        private AccNameSelectorVm _myAccNameSelectorVm = new AccNameSelectorVm();
         public AccNameSelectorVm MyAccNameSelectorVm
         {
             get => _myAccNameSelectorVm;
@@ -20,19 +22,7 @@ namespace Keeper2018
             }
         }
 
-        private AmountInputControlVm _myAmountInputControlVm;
-        public AmountInputControlVm MyAmountInputControlVm
-        {
-            get => _myAmountInputControlVm;
-            set
-            {
-                if (Equals(value, _myAmountInputControlVm)) return;
-                _myAmountInputControlVm = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        private DatePickerWithTrianglesVm _myDatePickerVm;
+        private DatePickerWithTrianglesVm _myDatePickerVm = new DatePickerWithTrianglesVm();
         public DatePickerWithTrianglesVm MyDatePickerVm
         {
             get => _myDatePickerVm;
@@ -44,22 +34,40 @@ namespace Keeper2018
             }
         }
 
+        public List<TrustAccount> TrustAccounts { get; set; }
+
         public InvestTranModel TranInWork { get; set; } = new InvestTranModel();
 
-        public OneInvestTranViewModel(KeeperDataModel dataModel, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
-            AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+        public OneInvestTranViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider,
+            BalanceDuringTransactionHinter balanceDuringTransactionHinter)
         {
             _dataModel = dataModel;
+            _comboTreesProvider = comboTreesProvider;
+            _comboTreesProvider.Initialize();
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
-            _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
+            TrustAccounts = dataModel.TrustAccounts;
         }
 
 
         public void Initialize(InvestTranModel tran)
         {
             TranInWork = tran;
-            // MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
+            MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+            // MyDatePickerVm = new DatePickerWithTrianglesVm() { SelectedDate = TranInWork.Timestamp };
+            MyDatePickerVm.SelectedDate = TranInWork.Timestamp;
+        }
 
+        public void Save()
+        {
+            TranInWork.Timestamp = MyDatePickerVm.SelectedDate;
+            TranInWork.AccountModel = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
+            TranInWork.Currency = TranInWork.TrustAccount.Currency;
+            TryClose(true);
+        }
+
+        public void Cancel()
+        {
+            TryClose(false);
         }
     }
 }
