@@ -92,5 +92,8 @@ namespace Keeper2018
 
         public static readonly Dictionary<string, int> ExternalForExpense =
             new Dictionary<string, int> { ["нал"] = 520, ["рикз"] = 668, ["род"] = 225, };
+
+        public static readonly Dictionary<string, int> InvestAccounts = 
+            new Dictionary<string, int> { ["usd"] = 829, ["rub"] = 892, ["byn"] = 695, ["alb"] = 696, };
     }
 }

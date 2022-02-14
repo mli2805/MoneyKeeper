@@ -19,17 +19,17 @@ namespace Keeper2018
             {
                 case OperationType.Доход:
                     return Build("Куда", ButtonCollections.ForIncome,
-                            _comboTreesProvider.MyAccNamesForIncome, tran.MyAccount.Id, 167);
+                            _comboTreesProvider.MyAccNamesForIncome, tran.MyAccount?.Id ?? 167);
                 case OperationType.Расход:
                     return Build("Откуда", ButtonCollections.ForExpense,
-                            _comboTreesProvider.MyAccNamesForExpense, tran.MyAccount.Id, 162);
+                            _comboTreesProvider.MyAccNamesForExpense, tran.MyAccount?.Id ?? 162);
                 case OperationType.Перенос:
                     return Build("Откуда", ButtonCollections.ButtonsForTransfer,
-                            _comboTreesProvider.MyAccNamesForTransfer, tran.MyAccount.Id, 162);
+                            _comboTreesProvider.MyAccNamesForTransfer, tran.MyAccount?.Id ?? 162);
                 // case OperationType.Обмен:
                 default:
                     return Build("Откуда", ButtonCollections.ForExchange,
-                        _comboTreesProvider.MyAccNamesForExchange, tran.MyAccount.Id, 162);
+                        _comboTreesProvider.MyAccNamesForExchange, tran.MyAccount?.Id ?? 162);
             }
         }
 
@@ -39,13 +39,13 @@ namespace Keeper2018
             {
                 case OperationType.Перенос:
                     return Build("Куда", ButtonCollections.ButtonsForTransfer,
-                        _comboTreesProvider.MyAccNamesForTransfer, tran.MySecondAccount?.Id ?? 0, 163);
+                        _comboTreesProvider.MyAccNamesForTransfer, tran.MySecondAccount?.Id ?? 163);
                 case OperationType.Обмен:
                     return Build("Куда", ButtonCollections.ForExchange,
-                        _comboTreesProvider.MyAccNamesForExchange, tran.MySecondAccount?.Id ?? 0, 162);
+                        _comboTreesProvider.MyAccNamesForExchange, tran.MySecondAccount?.Id ?? 162);
                 default:
                     return Build("Куда", ButtonCollections.ForExchange,
-                        _comboTreesProvider.MyAccNamesForExchange, 162, 162);
+                        _comboTreesProvider.MyAccNamesForExchange, 162);
             }
         }
         public AccNameSelectorVm ForTags(TransactionModel tran)
@@ -54,35 +54,35 @@ namespace Keeper2018
             {
                 case OperationType.Доход:
                     return Build("Кто, за что", ButtonCollections.ForIncomeTags,
-                        _comboTreesProvider.AccNamesForIncomeTags, tran.MyAccount.Id, 443);
+                        _comboTreesProvider.AccNamesForIncomeTags, tran.MyAccount?.Id ?? 443);
                 case OperationType.Расход:
                     return Build("Кому, за что", ButtonCollections.ForExpenseTags,
-                        _comboTreesProvider.AccNamesForExpenseTags, tran.MyAccount.Id, 256);
+                        _comboTreesProvider.AccNamesForExpenseTags, tran.MyAccount?.Id ?? 256);
                 case OperationType.Перенос:
                     return Build("Теги", ButtonCollections.ForTransferTags,
-                        _comboTreesProvider.AccNamesForTransferTags, tran.MyAccount.Id, 579);
+                        _comboTreesProvider.AccNamesForTransferTags, tran.MyAccount?.Id ?? 579);
                 // case OperationType.Обмен:
                 default:
                     return Build("Теги", ButtonCollections.ForExchangeTags,
-                        _comboTreesProvider.AccNamesForExchangeTags, tran.MyAccount.Id, 339);
+                        _comboTreesProvider.AccNamesForExchangeTags, tran.MyAccount?.Id ?? 339);
             }
         }
 
         public AccNameSelectorVm ForReceipt(int initialAccountId)
         {
             return Build("", ButtonCollections.ForReceiptTags,
-                _comboTreesProvider.AccNamesForExpenseTags, initialAccountId, 0);
+                _comboTreesProvider.AccNamesForExpenseTags, initialAccountId);
         }
 
         public AccNameSelectorVm ForFilter()
         {
 
             return Build("", new Dictionary<string, int>(),
-                _comboTreesProvider.AccNamesForFilterTags, 256, 0);
+                _comboTreesProvider.AccNamesForFilterTags, 256);
         }
 
         private AccNameSelectorVm Build(string controlTitle, Dictionary<string, int> frequentAccountButtonNames,
-                                            List<AccName> availableAccNames, int activeAccountId, int defaultAccountId)
+                                            List<AccName> availableAccNames, int activeAccountId)
         {
             return new AccNameSelectorVm
             {
@@ -91,9 +91,7 @@ namespace Keeper2018
                     button => new AccNameButtonVm(button.Key,
                         availableAccNames.FindThroughTheForestById(button.Value))).ToList(),
                 AvailableAccNames = availableAccNames,
-                MyAccName = availableAccNames.FindThroughTheForestById(activeAccountId)
-                            ?? availableAccNames.FindThroughTheForestById(defaultAccountId)
-
+                MyAccName = availableAccNames.FindThroughTheForestById(activeAccountId),
             };
         }
     }

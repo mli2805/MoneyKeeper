@@ -3,14 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:keeper2018="clr-namespace:Keeper2018" 
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance keeper2018:OneInvestTranViewModel}">
+    <Window.Resources>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="keeperDomain:CurrencyCode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <StackPanel Margin="5" Width="300">
-        <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
+        <StackPanel Visibility="{Binding AccountVisibility}">
+            <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
+        </StackPanel>
+
         <StackPanel >
-            <TextBlock Text="На трастовый счет" Margin="5"/>
+            <TextBlock Text="{Binding TrustAccountLabel}" Margin="5"/>
             <ComboBox ItemsSource="{Binding TrustAccounts}" 
                       SelectedItem="{Binding TranInWork.TrustAccount, Mode=TwoWay}"
                       DisplayMemberPath="ToCombo"/>
@@ -18,12 +30,25 @@
         <StackPanel Orientation="Horizontal" Margin="5,15">
             <TextBlock Text="Сумма"/>
             <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CurrencyAmount}" TextAlignment="Right"/>
-            <TextBlock Text="{Binding TranInWork.TrustAccount.Currency}"/>
+            <ComboBox ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
+                      SelectedValue="{Binding TranInWork.Currency}" Width="60"/>
         </StackPanel>
+
+        <StackPanel Visibility="{Binding AssetVisibility}">
+            <TextBlock Text="{Binding AssetLabel}" Margin="5"/>
+            <ComboBox ItemsSource="{Binding Assets}" Margin="0,0,0,15"
+                      SelectedItem="{Binding TranInWork.Asset, Mode=TwoWay}"
+                      DisplayMemberPath="Title"/>
+            <StackPanel Orientation="Horizontal" Margin="5,0,5,15" Visibility="{Binding AssetAmountVisibility}">
+                <TextBlock Text="Количество"/>
+                <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.AssetAmount}" TextAlignment="Right"/>
+            </StackPanel>
+        </StackPanel>
+
         <keeper2018:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="0,5" />
         <StackPanel>
             <TextBlock Text="Коментарий" Margin="5"/>
-            <TextBox Height="40"/>
+            <TextBox Height="40" Text="{Binding TranInWork.Comment}"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="5,15, 5, 0" HorizontalAlignment="Center">

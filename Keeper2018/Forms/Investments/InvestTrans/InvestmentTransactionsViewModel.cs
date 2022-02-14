@@ -73,40 +73,20 @@ namespace Keeper2018
 
         }
 
-        public void TopUpTrustAccount()
+        public void InvestOperation(InvestOperationType investOperationType)
         {
             var vm = _globalScope.Resolve<OneInvestTranViewModel>();
             var tranInWork = new InvestTranModel()
             {
                 Id = Transactions.Any() ? Transactions.Max(t => t.Id) + 1 : 1,
-                InvestOperationType = InvestOperationType.TopUpTrustAccount,
+                InvestOperationType = investOperationType,
                 Timestamp = DateTime.Today,
                 Currency = CurrencyCode.USD,
             };
             vm.Initialize(tranInWork);
             bool? result = _windowManager.ShowDialog(vm);
             if (result == true)
-            {
                 Transactions.Add(tranInWork);
-            }
-        }
-
-        public void BuyStocks()
-        {
-            var vm = _globalScope.Resolve<OneInvestTranViewModel>();
-            var tranInWork = new InvestTranModel()
-            {
-                Id = Transactions.Any() ? Transactions.Max(t => t.Id) + 1 : 1,
-                InvestOperationType = InvestOperationType.BuyStocks,
-                Timestamp = DateTime.Today,
-                Currency = CurrencyCode.USD,
-            };
-            vm.Initialize(tranInWork);
-            bool? result = _windowManager.ShowDialog(vm);
-            if (result == true)
-            {
-                Transactions.Add(tranInWork);
-            }
         }
 
         public void Close()

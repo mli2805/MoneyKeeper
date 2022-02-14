@@ -49,7 +49,7 @@ namespace Keeper2018
             }
         }
 
-        public string AccountForDataGrid => AccountModel.Name;
+        public string AccountForDataGrid => AccountModel?.Name ?? "";
 
         private TrustAccount _trustAccount;
         public TrustAccount TrustAccount
@@ -116,6 +116,20 @@ namespace Keeper2018
                 if (Equals(value, _asset)) return;
                 _asset = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        public string AssetForDatagrid => AssetToTable();
+
+        private string AssetToTable()
+        {
+            switch (InvestOperationType)
+            {
+                case InvestOperationType.BuyBonds:
+                case InvestOperationType.BuyStocks:
+                case InvestOperationType.EnrollCouponOrDividends:
+                    return $"{Asset.Ticker}::{Asset.Title}";
+                default: return "";
             }
         }
 

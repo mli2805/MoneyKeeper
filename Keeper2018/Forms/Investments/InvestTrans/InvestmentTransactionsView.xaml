@@ -32,16 +32,16 @@
             <DockPanel>
 
                 <StackPanel Width="220" Margin="5" DockPanel.Dock="Top">
-                    <Button Name="TopUpTrustAccount" Content="Пополнить трастовый счет" Margin="5"/>
-                    <Button Name="BuyBonds" Content="Купить облигации с НКД" Margin="5"/>
-                    <Button Name="BuyStocks" Content="Купить акции" Margin="5"/>
-                    <Button Name="PayPurchaseFee" Content="Оплатить комиссию за покупку" Margin="5"/>
-                    <Button Name="PayBaseCommission" Content="Оплатить базовую комиссию" Margin="5"/>
-                    <Button Name="SellBonds" Content="Продать облигации" Margin="5"/>
-                    <Button Name="SellStocks" Content="Продать акции" Margin="5"/>
-                    <Button Name="EnrollCouponOrDividends" Content="Зачислить купон или дивиденды" Margin="5"/>
-                    <Button Name="WithdrawFromTrustAccount" Content="Вывести с трастового счета" Margin="5"/>
-                    <Button Name="PayWithdrawalTax" Content="Оплатить налог на вывод средств" Margin="5"/>
+                    <Button Content="Пополнить трастовый счет" Margin="5" cal:Message.Attach="InvestOperation('TopUpTrustAccount')"/>
+                    <Button Content="Купить облигации с НКД" Margin="5" cal:Message.Attach="InvestOperation('BuyBonds')"/>
+                    <Button Content="Купить акции" Margin="5"  cal:Message.Attach="InvestOperation('BuyStocks')"/>
+                    <Button Content="Оплатить комиссию за покупку" Margin="5" cal:Message.Attach="InvestOperation('PayPurchaseFee')"/>
+                    <Button Content="Оплатить базовую комиссию" Margin="5" cal:Message.Attach="InvestOperation('PayBaseCommission')"/>
+                    <Button Content="Продать облигации" Margin="5" cal:Message.Attach="InvestOperation('SellBonds')"/>
+                    <Button Content="Продать акции" Margin="5" cal:Message.Attach="InvestOperation('SellStocks')"/>
+                    <Button Content="Зачислить купон или дивиденды" Margin="5" cal:Message.Attach="InvestOperation('EnrollCouponOrDividends')"/>
+                    <Button Content="Вывести с трастового счета" Margin="5" cal:Message.Attach="InvestOperation('WithdrawFromTrustAccount')"/>
+                    <Button Content="Оплатить налог на вывод средств" Margin="5" cal:Message.Attach="InvestOperation('PayWithdrawalTax')"/>
                 </StackPanel>
                 <StackPanel Width="220" Margin="5" DockPanel.Dock="Bottom">
                     <Button Name="Close" Content="Close"/>
@@ -57,13 +57,13 @@
                       IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" Margin="5">
                 <DataGrid.Columns>
                     <DataGridTextColumn  Header="Id" Width="30" Binding="{Binding Id}"/>
+                    <DataGridTextColumn  Header="Дата" Width="70" Binding="{Binding Timestamp, StringFormat='dd/MM/yyyy'}"/>
                     <DataGridTextColumn  Header="Тип" Width="160" Binding="{Binding TypeForDatagrid}"/>
-                    <DataGridTextColumn  Header="Date" Width="70" Binding="{Binding Timestamp, StringFormat='dd/MM/yyyy'}"/>
-                    <DataGridTextColumn  Header="Account" Width="180" Binding="{Binding AccountForDataGrid}"/>
-                    <DataGridTextColumn  Header="Trust account" Width="100" Binding="{Binding TrustAccount.Number}"/>
+                    <DataGridTextColumn  Header="Счет" Width="150" Binding="{Binding AccountForDataGrid}"/>
+                    <DataGridTextColumn  Header="Трастовый" Width="80" Binding="{Binding TrustAccount.Number}"/>
                     <DataGridTextColumn  Header="Сумма" Width="80" Binding="{Binding CurrencyAmountForDatagrid}"/>
-                    <DataGridTextColumn  Header="Колво" Width="70" Binding="{Binding AssetAmountForDatagrid}"/>
-                    <DataGridTextColumn  Header="Тикер" Width="70" Binding="{Binding Asset.Ticker}"/>
+                    <DataGridTextColumn  Header="Колво" Width="50" Binding="{Binding AssetAmountForDatagrid}"/>
+                    <DataGridTextColumn  Header="Бумаги" Width="200" Binding="{Binding AssetForDatagrid}"/>
                     <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
                 </DataGrid.Columns>
             </DataGrid>

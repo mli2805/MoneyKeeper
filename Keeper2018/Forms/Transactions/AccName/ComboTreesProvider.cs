@@ -20,6 +20,9 @@ namespace Keeper2018
 
         public List<AccName> AccNamesForFilterTags { get; set; }
 
+        public List<AccName> AccNamesForInvestmentExpense { get; set; }
+        public List<AccName> AccNamesForInvestmentIncome { get; set; }
+
         public ComboTreesProvider(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
@@ -27,12 +30,12 @@ namespace Keeper2018
 
         public List<AccName> GetAllIncomeTags()
         {
-            return new List<AccName> {new AccName().PopulateFromAccount(_dataModel.AcMoDict[185], null)};
+            return new List<AccName> { new AccName().PopulateFromAccount(_dataModel.AcMoDict[185], null) };
         }
 
         public List<AccName> GetFullBranch(int branchId)
         {
-            return new List<AccName> {new AccName().PopulateFromAccount(_dataModel.AcMoDict[branchId], null)};
+            return new List<AccName> { new AccName().PopulateFromAccount(_dataModel.AcMoDict[branchId], null) };
         }
 
         public void Initialize()
@@ -42,6 +45,7 @@ namespace Keeper2018
             InitializeListsForTransfer();
             InitializeListsForExchange();
             InitializeListForFilterTags();
+            InitializeForInvestments();
         }
 
         private void InitializeListForFilterTags()
@@ -71,6 +75,18 @@ namespace Keeper2018
                 var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
                 AccNamesForIncomeTags.Add(root);
             }
+        }
+
+        private void InitializeForInvestments()
+        {
+            AccNamesForInvestmentExpense = new List<AccName>
+            {
+                new AccName().PopulateFromAccount(_dataModel.AcMoDict[161], null)
+            };
+            AccNamesForInvestmentIncome = new List<AccName>
+            {
+                new AccName().PopulateFromAccount(_dataModel.AcMoDict[220], null)
+            };
         }
 
         private void InitializeListsForExpense()
@@ -119,7 +135,7 @@ namespace Keeper2018
 
             // Exchange Tags
             AccNamesForExchangeTags = new List<AccName>();
-            var list = new List<int>() { 220, 579,};
+            var list = new List<int>() { 220, 579, };
             foreach (var element in list)
             {
                 var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
@@ -129,5 +145,5 @@ namespace Keeper2018
 
     }
 
-    
+
 }
