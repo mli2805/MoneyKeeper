@@ -4,9 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Height="450" SizeToContent="Width" WindowStartupLocation="CenterOwner" 
         d:DataContext="{d:DesignInstance keeper2018:InvestmentTransactionsViewModel}">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Space">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="Edit" />
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="Insert">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="AddAfterSelected" />
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="Delete" Modifiers="Control">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="Delete" />
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DockPanel.Dock="Right">
             <DockPanel>
@@ -33,15 +53,15 @@
         <DockPanel Dock="Left">
             <DataGrid ItemsSource="{Binding Transactions}"
                       SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                      AutoGenerateColumns="False" Margin="5">
+                      cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
+                      IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" Margin="5">
                 <DataGrid.Columns>
                     <DataGridTextColumn  Header="Id" Width="30" Binding="{Binding Id}"/>
                     <DataGridTextColumn  Header="Тип" Width="160" Binding="{Binding TypeForDatagrid}"/>
                     <DataGridTextColumn  Header="Date" Width="70" Binding="{Binding Timestamp, StringFormat='dd/MM/yyyy'}"/>
-                    <DataGridTextColumn  Header="Account" Width="120" Binding="{Binding AccountForDataGrid}"/>
+                    <DataGridTextColumn  Header="Account" Width="180" Binding="{Binding AccountForDataGrid}"/>
                     <DataGridTextColumn  Header="Trust account" Width="100" Binding="{Binding TrustAccount.Number}"/>
                     <DataGridTextColumn  Header="Сумма" Width="80" Binding="{Binding CurrencyAmountForDatagrid}"/>
-                    <!-- <DataGridTextColumn  Header="Валюта" Width="70" Binding="{Binding Currency}"/> -->
                     <DataGridTextColumn  Header="Колво" Width="70" Binding="{Binding AssetAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Тикер" Width="70" Binding="{Binding Asset.Ticker}"/>
                     <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>

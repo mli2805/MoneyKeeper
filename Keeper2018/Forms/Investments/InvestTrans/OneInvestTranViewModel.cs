@@ -53,7 +53,6 @@ namespace Keeper2018
         {
             TranInWork = tran;
             MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
-            // MyDatePickerVm = new DatePickerWithTrianglesVm() { SelectedDate = TranInWork.Timestamp };
             MyDatePickerVm.SelectedDate = TranInWork.Timestamp;
         }
 

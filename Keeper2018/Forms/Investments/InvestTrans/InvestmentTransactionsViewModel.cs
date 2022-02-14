@@ -40,13 +40,64 @@ namespace Keeper2018
                 Transactions.Remove(SelectedTransaction);
         }
 
+        public void ActionsMethod(TranAction action)
+        {
+            switch (action)
+            {
+                case TranAction.Edit:
+                    EditSelected();
+                    return;
+                case TranAction.AddAfterSelected:
+                    AddNewTran();
+                    return;
+                case TranAction.Delete:
+                    DeleteSelected();
+                    return;
+            }
+        }
+
+        public void EditSelected()
+        {
+            var vm = _globalScope.Resolve<OneInvestTranViewModel>();
+            var tranInWork = SelectedTransaction.ShallowCopy();
+            vm.Initialize(tranInWork);
+            bool? result = _windowManager.ShowDialog(vm);
+            if (result == true)
+            {
+                SelectedTransaction.CopyFieldsFrom(tranInWork);
+            }
+        }
+
+        public void AddNewTran()
+        {
+
+        }
+
         public void TopUpTrustAccount()
         {
             var vm = _globalScope.Resolve<OneInvestTranViewModel>();
             var tranInWork = new InvestTranModel()
             {
-                Id = Transactions.Any() ? Transactions.Max(t=>t.Id) + 1 : 1,
+                Id = Transactions.Any() ? Transactions.Max(t => t.Id) + 1 : 1,
                 InvestOperationType = InvestOperationType.TopUpTrustAccount,
+                Timestamp = DateTime.Today,
+                Currency = CurrencyCode.USD,
+            };
+            vm.Initialize(tranInWork);
+            bool? result = _windowManager.ShowDialog(vm);
+            if (result == true)
+            {
+                Transactions.Add(tranInWork);
+            }
+        }
+
+        public void BuyStocks()
+        {
+            var vm = _globalScope.Resolve<OneInvestTranViewModel>();
+            var tranInWork = new InvestTranModel()
+            {
+                Id = Transactions.Any() ? Transactions.Max(t => t.Id) + 1 : 1,
+                InvestOperationType = InvestOperationType.BuyStocks,
                 Timestamp = DateTime.Today,
                 Currency = CurrencyCode.USD,
             };
