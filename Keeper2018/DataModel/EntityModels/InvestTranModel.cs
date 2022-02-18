@@ -76,6 +76,8 @@ namespace Keeper2018
             }
         }
 
+        public decimal CouponCurrencyAmount { get; set; }
+
         private CurrencyCode _currency;
         public CurrencyCode Currency
         {
@@ -91,8 +93,8 @@ namespace Keeper2018
 
         public string CurrencyAmountForDatagrid => $"{CurrencyAmount} {Currency.ToString().ToLowerInvariant()}";
 
-        private double _assetAmount;
-        public double AssetAmount
+        private int _assetAmount;
+        public int AssetAmount
         {
             get => _assetAmount;
             set

@@ -16,7 +16,7 @@ namespace KeeperDomain
         public decimal CurrencyAmount { get; set; }
         public CurrencyCode Currency { get; set; }
 
-        public double AssetAmount { get; set; }
+        public int AssetAmount { get; set; }
         public int AssetId { get; set; }
 
         public string Comment { get; set; }

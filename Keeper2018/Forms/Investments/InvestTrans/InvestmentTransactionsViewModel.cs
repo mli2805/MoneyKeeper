@@ -17,7 +17,8 @@ namespace Keeper2018
         public ObservableCollection<InvestTranModel> Transactions { get; set; }
         public InvestTranModel SelectedTransaction { get; set; }
 
-        public InvestmentTransactionsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel, IWindowManager windowManager)
+        public InvestmentTransactionsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel, 
+            IWindowManager windowManager)
         {
             _globalScope = globalScope;
             _dataModel = dataModel;
@@ -73,6 +74,7 @@ namespace Keeper2018
 
         }
 
+        // Adds specific invest operation
         public void InvestOperation(InvestOperationType investOperationType)
         {
             var vm = _globalScope.Resolve<OneInvestTranViewModel>();

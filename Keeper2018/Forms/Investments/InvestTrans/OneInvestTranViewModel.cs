@@ -11,9 +11,10 @@ namespace Keeper2018
         private readonly ComboTreesProvider _comboTreesProvider;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
-        public Visibility AccountVisibility { get; set; }
-        public Visibility AssetVisibility { get; set; }
-        public Visibility AssetAmountVisibility { get; set; }
+        public Visibility AccountVisibility { get; set; } = Visibility.Collapsed;
+        public Visibility AssetVisibility { get; set; } = Visibility.Collapsed;
+        public Visibility CouponVisibility { get; set; } = Visibility.Collapsed;
+        public Visibility AssetAmountVisibility { get; set; } = Visibility.Collapsed;
 
         private AccNameSelectorVm _myAccNameSelectorVm;
         public AccNameSelectorVm MyAccNameSelectorVm
@@ -26,6 +27,8 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        public string CurrencyAmountText { get; set; } = "";
 
         private DatePickerWithTrianglesVm _myDatePickerVm = new DatePickerWithTrianglesVm();
         public DatePickerWithTrianglesVm MyDatePickerVm
@@ -57,6 +60,10 @@ namespace Keeper2018
             Assets = dataModel.InvestmentAssets;
         }
 
+        protected override void OnViewLoaded(object view)
+        {
+            DisplayName = TranInWork.InvestOperationType.GetRussian();
+        }
 
         public void Initialize(InvestTranModel tran)
         {
@@ -66,32 +73,39 @@ namespace Keeper2018
             {
                 case InvestOperationType.TopUpTrustAccount:
                     AccountVisibility = Visibility.Visible;
-                    AssetVisibility = Visibility.Collapsed;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
                     MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "На трастовый счет";
                     break;
                 case InvestOperationType.BuyStocks:
-                    AccountVisibility = Visibility.Collapsed;
+                    CurrencyAmountText = "Сумма";
                     AssetVisibility = Visibility.Visible;
                     AssetAmountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = null;
                     TrustAccountLabel = "С трастового счета";
                     break;
+                case InvestOperationType.BuyBonds:
+                    CurrencyAmountText = "За  сами  облигации";
+                    CouponVisibility = Visibility.Visible;
+                    AssetVisibility = Visibility.Visible;
+                    AssetAmountVisibility = Visibility.Visible;
+                    MyAccNameSelectorVm = null;
+                    TrustAccountLabel = "С трастового счета"; break;
                 case InvestOperationType.PayBaseCommission:
                     AccountVisibility = Visibility.Visible;
-                    AssetVisibility = Visibility.Collapsed;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
                     MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "По трастовому счету";
                     TranInWork.Currency = CurrencyCode.BYN;
                     break;
                 case InvestOperationType.EnrollCouponOrDividends:
                     AccountVisibility = Visibility.Visible;
                     AssetVisibility = Visibility.Visible;
-                    AssetAmountVisibility = Visibility.Collapsed;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
                     MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "На трастовый счет";
                     AssetLabel = "По бумаге";
                     break;
@@ -106,10 +120,7 @@ namespace Keeper2018
         {
             if (e.PropertyName == "TrustAccount")
             {
-                if (TranInWork.InvestOperationType == InvestOperationType.TopUpTrustAccount)
-                {
-                    TranInWork.Currency = TranInWork.TrustAccount.Currency;
-                }
+                TranInWork.Currency = TranInWork.TrustAccount.Currency;
             }
         }
 

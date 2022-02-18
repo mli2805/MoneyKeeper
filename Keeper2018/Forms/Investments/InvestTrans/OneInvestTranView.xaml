@@ -21,17 +21,24 @@
             <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
         </StackPanel>
 
-        <StackPanel >
+        <StackPanel>
             <TextBlock Text="{Binding TrustAccountLabel}" Margin="5"/>
             <ComboBox ItemsSource="{Binding TrustAccounts}" 
                       SelectedItem="{Binding TranInWork.TrustAccount, Mode=TwoWay}"
                       DisplayMemberPath="ToCombo"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,15">
-            <TextBlock Text="Сумма"/>
+            <TextBlock Text="{Binding CurrencyAmountText}"/>
             <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CurrencyAmount}" TextAlignment="Right"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
-                      SelectedValue="{Binding TranInWork.Currency}" Width="60"/>
+                      SelectedValue="{Binding TranInWork.Currency, Mode=TwoWay}" Width="60"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="5,0, 5, 15" Visibility="{Binding CouponVisibility}">
+            <TextBlock Text="НКД по облигациям"/>
+            <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CouponCurrencyAmount}" TextAlignment="Right"/>
+            <ComboBox ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
+                      SelectedValue="{Binding TranInWork.Currency, Mode=TwoWay}" Width="60"/>
         </StackPanel>
 
         <StackPanel Visibility="{Binding AssetVisibility}">
