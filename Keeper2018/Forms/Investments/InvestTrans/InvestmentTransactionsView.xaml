@@ -59,11 +59,12 @@
                     <DataGridTextColumn  Header="Дата" Width="70" Binding="{Binding Timestamp, StringFormat='dd/MM/yyyy'}"/>
                     <DataGridTextColumn  Header="Тип" Width="200" Binding="{Binding TypeForDatagrid}"/>
                     <DataGridTextColumn  Header="Счет" Width="150" Binding="{Binding AccountForDataGrid}"/>
-                    <DataGridTextColumn  Header="Трастовый" Width="80" Binding="{Binding TrustAccount.Number}"/>
+                    <DataGridTextColumn  Header="Трастовый" Width="70" Binding="{Binding TrustAccount.StockMarket}"/>
                     <DataGridTextColumn  Header="Сумма" Width="90" Binding="{Binding CurrencyAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="НКД" Width="80" Binding="{Binding CouponAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Колво" Width="50" Binding="{Binding AssetAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Бумаги" Width="260" Binding="{Binding AssetForDatagrid}"/>
+                    <DataGridTextColumn  Header="Комиссия" Width="60" Binding="{Binding PurchaseFeeForDataGrid}"/>
                     <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
                 </DataGrid.Columns>
             </DataGrid>

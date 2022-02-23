@@ -129,6 +129,9 @@ namespace Keeper2018
                 Currency = transaction.Currency,
                 AssetAmount = transaction.AssetAmount,
                 Asset = dataModel.InvestmentAssets.FirstOrDefault(a => a.Id == transaction.AssetId),
+                PurchaseFee = transaction.PurchaseFee,
+                PurchaseFeeCurrency = transaction.PurchaseFeeCurrency == 0 ? CurrencyCode.BYN : transaction.PurchaseFeeCurrency,
+                IsPurchaseFeePaid = transaction.IsPurchaseFeePaid,
                 Comment = transaction.Comment,
             };
         }

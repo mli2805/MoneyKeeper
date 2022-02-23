@@ -63,11 +63,12 @@ namespace KeeperDomain
             var trustAccount = new TrustAccount();
             var substrings = s.Split(';');
             trustAccount.Id = int.Parse(substrings[0]);
-            trustAccount.Title = substrings[1]; 
-            trustAccount.Number = substrings[2]; 
-            trustAccount.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[3]);
-            trustAccount.AccountId = int.Parse(substrings[4]);
-            trustAccount.Comment = substrings[5];
+            trustAccount.Title = substrings[1];
+            trustAccount.StockMarket = (Market)Enum.Parse(typeof(Market), substrings[2]);
+            trustAccount.Number = substrings[3]; 
+            trustAccount.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]);
+            trustAccount.AccountId = int.Parse(substrings[5]);
+            trustAccount.Comment = substrings[6];
             return trustAccount;
         }
 
@@ -88,7 +89,11 @@ namespace KeeperDomain
             trans.AssetAmount = int.Parse(substrings[8]);
             trans.AssetId = int.Parse(substrings[9]);
 
-            trans.Comment = substrings[10];
+            trans.PurchaseFee = decimal.Parse(substrings[10], new CultureInfo("en-US"));
+            trans.PurchaseFeeCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[11]);
+            trans.IsPurchaseFeePaid = Convert.ToBoolean(substrings[12]);
+
+            trans.Comment = substrings[13];
             return trans;
         }
 

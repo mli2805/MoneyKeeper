@@ -20,6 +20,10 @@ namespace KeeperDomain
         public int AssetAmount { get; set; }
         public int AssetId { get; set; }
 
+        public decimal PurchaseFee { get; set; }
+        public CurrencyCode PurchaseFeeCurrency { get; set; } = CurrencyCode.BYN;
+        public bool IsPurchaseFeePaid { get; set; }
+
         public string Comment { get; set; }
 
         public string Dump()
@@ -28,7 +32,8 @@ namespace KeeperDomain
                    AccountId + " ; " + TrustAccountId + " ; " +
                    CurrencyAmount.ToString(new CultureInfo("en-US")) + " ; " + 
                    CouponAmount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
-                   AssetAmount.ToString(new CultureInfo("en-US")) + " ; " + AssetId + " ; " + 
+                   AssetAmount.ToString(new CultureInfo("en-US")) + " ; " + AssetId + " ; " +
+                   PurchaseFee.ToString(new CultureInfo("en-US")) + " ; " + PurchaseFeeCurrency + " ; " + IsPurchaseFeePaid + " ; " + 
                    Comment;
         }
     }

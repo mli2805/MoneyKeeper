@@ -18,32 +18,36 @@
                 <x:Type TypeName="keeperDomain:CurrencyCode"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetMarketEnumValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="keeperDomain:Market"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="DeleteSelected"/>
         </ei:KeyTrigger>
-    </i:Interaction.Triggers> 
+    </i:Interaction.Triggers>
     <Grid>
         <DataGrid ItemsSource="{Binding TrustAccounts}" 
                   SelectedItem="{Binding SelectedAccount}" AutoGenerateColumns="False"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowTrustAccountState()]">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="Название" Width="150" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Название" Width="180" Binding="{Binding Title}" />
+                <DataGridComboBoxColumn Header="Рынок" Width="70"
+                                        ItemsSource="{Binding Source={StaticResource GetMarketEnumValues}}"
+                                        SelectedValueBinding="{Binding StockMarket}"/>
                 <DataGridTextColumn Header="Номер" Width="80" Binding="{Binding Number}" />
-
                 <DataGridComboBoxColumn  Header="Валюта" Width="60" 
                                          ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
                                          SelectedValueBinding="{Binding Currency}"/>
-               
-
                 <DataGridTextColumn Header="AccountId" Width="70" Binding="{Binding AccountId}" />
-
-              <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
+                <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
             </DataGrid.Columns>
 
         </DataGrid>
-  
+
     </Grid>
 </Window>
