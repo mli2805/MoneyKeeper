@@ -54,17 +54,17 @@ namespace Keeper2018
             {
                 case OperationType.Доход:
                     return Build("Кто, за что", ButtonCollections.ForIncomeTags,
-                        _comboTreesProvider.AccNamesForIncomeTags, tran.MyAccount?.Id ?? 443);
+                        _comboTreesProvider.AccNamesForIncomeTags, tran.Tags?.First()?.Id ?? 443);
                 case OperationType.Расход:
                     return Build("Кому, за что", ButtonCollections.ForExpenseTags,
-                        _comboTreesProvider.AccNamesForExpenseTags, tran.MyAccount?.Id ?? 256);
+                        _comboTreesProvider.AccNamesForExpenseTags, tran.Tags?.First()?.Id ?? 256);
                 case OperationType.Перенос:
                     return Build("Теги", ButtonCollections.ForTransferTags,
-                        _comboTreesProvider.AccNamesForTransferTags, tran.MyAccount?.Id ?? 579);
+                        _comboTreesProvider.AccNamesForTransferTags, tran.Tags?.First()?.Id ?? 579);
                 // case OperationType.Обмен:
                 default:
                     return Build("Теги", ButtonCollections.ForExchangeTags,
-                        _comboTreesProvider.AccNamesForExchangeTags, tran.MyAccount?.Id ?? 339);
+                        _comboTreesProvider.AccNamesForExchangeTags, tran.Tags?.First()?.Id ?? 339);
             }
         }
 
