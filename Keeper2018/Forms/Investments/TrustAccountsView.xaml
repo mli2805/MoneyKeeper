@@ -26,7 +26,8 @@
     </i:Interaction.Triggers> 
     <Grid>
         <DataGrid ItemsSource="{Binding TrustAccounts}" 
-                  SelectedItem="{Binding SelectedAccount}" AutoGenerateColumns="False">
+                  SelectedItem="{Binding SelectedAccount}" AutoGenerateColumns="False"
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowTrustAccountState()]">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Название" Width="150" Binding="{Binding Title}" />

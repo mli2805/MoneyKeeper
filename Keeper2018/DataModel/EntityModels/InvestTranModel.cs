@@ -76,7 +76,18 @@ namespace Keeper2018
             }
         }
 
-        public decimal CouponCurrencyAmount { get; set; }
+        private decimal _couponAmount;
+        public decimal CouponAmount
+        {
+            get => _couponAmount;
+            set
+            {
+                if (value == _couponAmount) return;
+                _couponAmount = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(CouponAmountForDatagrid));
+            }
+        }
 
         private CurrencyCode _currency;
         public CurrencyCode Currency
@@ -91,7 +102,11 @@ namespace Keeper2018
             }
         }
 
-        public string CurrencyAmountForDatagrid => $"{CurrencyAmount} {Currency.ToString().ToLowerInvariant()}";
+        public string CurrencyAmountForDatagrid => $"{CurrencyAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}";
+        public string CouponAmountForDatagrid => 
+            InvestOperationType == InvestOperationType.BuyBonds 
+                ? $"{CouponAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}" 
+                : "";
 
         private int _assetAmount;
         public int AssetAmount
@@ -136,6 +151,7 @@ namespace Keeper2018
         }
 
         private string _comment;
+
         public string Comment
         {
             get => _comment;
@@ -160,6 +176,7 @@ namespace Keeper2018
             AccountModel = source.AccountModel;
             TrustAccount = source.TrustAccount;
             CurrencyAmount = source.CurrencyAmount;
+            CouponAmount = source.CouponAmount;
             Currency = source.Currency;
             AssetAmount = source.AssetAmount;
             Asset = source.Asset;

@@ -82,12 +82,13 @@ namespace KeeperDomain
             trans.TrustAccountId = int.Parse(substrings[4]);
 
             trans.CurrencyAmount = decimal.Parse(substrings[5], new CultureInfo("en-US"));
-            trans.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[6]);
+            trans.CouponAmount = decimal.Parse(substrings[6], new CultureInfo("en-US"));
+            trans.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]);
 
-            trans.AssetAmount = int.Parse(substrings[7]);
-            trans.AssetId = int.Parse(substrings[8]);
+            trans.AssetAmount = int.Parse(substrings[8]);
+            trans.AssetId = int.Parse(substrings[9]);
 
-            trans.Comment = substrings[9];
+            trans.Comment = substrings[10];
             return trans;
         }
 

@@ -138,6 +138,7 @@ namespace Keeper2018
                 AccountId = transaction.AccountModel?.Id ?? 0,
                 TrustAccountId = transaction.TrustAccount?.Id ?? 0,
                 CurrencyAmount = transaction.CurrencyAmount,
+                CouponAmount = transaction.CouponAmount,
                 Currency = transaction.Currency,
                 AssetAmount = transaction.AssetAmount,
                 AssetId = transaction.Asset?.Id ?? 0,

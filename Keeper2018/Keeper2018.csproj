@@ -242,6 +242,12 @@
       <DependentUpon>OneInvestTranView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\InvestTrans\OneInvestTranViewModel.cs" />
+    <Compile Include="Forms\Investments\Statistics\TrustAccountLine.cs" />
+    <Compile Include="Forms\Investments\Statistics\TrustAccountLineProvider.cs" />
+    <Compile Include="Forms\Investments\Statistics\TrustAccountStateView.xaml.cs">
+      <DependentUpon>TrustAccountStateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Investments\Statistics\TrustAccountStateViewModel.cs" />
     <Compile Include="Forms\Investments\TrustAccountsView.xaml.cs">
       <DependentUpon>TrustAccountsView.xaml</DependentUpon>
     </Compile>
@@ -715,6 +721,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Investments\InvestTrans\OneInvestTranView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Investments\Statistics\TrustAccountStateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

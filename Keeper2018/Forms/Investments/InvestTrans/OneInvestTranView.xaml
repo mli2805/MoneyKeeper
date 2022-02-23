@@ -36,7 +36,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="5,0, 5, 15" Visibility="{Binding CouponVisibility}">
             <TextBlock Text="НКД по облигациям"/>
-            <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CouponCurrencyAmount}" TextAlignment="Right"/>
+            <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CouponAmount}" TextAlignment="Right"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
                       SelectedValue="{Binding TranInWork.Currency, Mode=TwoWay}" Width="60"/>
         </StackPanel>

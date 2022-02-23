@@ -35,12 +35,6 @@ namespace Keeper2018
             builder.RegisterType<OpenDepositsViewModel>().SingleInstance();
             builder.RegisterType<PayCardsViewModel>().SingleInstance();
 
-            builder.RegisterType<InvestmentAssetsViewModel>().SingleInstance();
-            builder.RegisterType<AssetRatesViewModel>().SingleInstance();
-            builder.RegisterType<TrustAccountsViewModel>().SingleInstance();
-            builder.RegisterType<InvestmentTransactionsViewModel>().SingleInstance();
-            builder.RegisterType<OneInvestTranViewModel>();
-
             builder.RegisterType<CurrencyRatesViewModel>().SingleInstance();
             builder.RegisterType<InputMyUsdViewModel>().SingleInstance();
             builder.RegisterType<GoldCoinsViewModel>().SingleInstance();
@@ -80,7 +74,12 @@ namespace Keeper2018
             builder.RegisterType<DepoPlusCurrencyProvider>().SingleInstance();
             builder.RegisterType<DepoCurrResultViewModel>().SingleInstance();
 
-
+            builder.RegisterType<InvestmentAssetsViewModel>().SingleInstance();
+            builder.RegisterType<AssetRatesViewModel>().SingleInstance();
+            builder.RegisterType<TrustAccountsViewModel>().SingleInstance();
+            builder.RegisterType<InvestmentTransactionsViewModel>().SingleInstance();
+            builder.RegisterType<OneInvestTranViewModel>();
+            builder.RegisterType<TrustAccountStateViewModel>();
         }
     }
 }

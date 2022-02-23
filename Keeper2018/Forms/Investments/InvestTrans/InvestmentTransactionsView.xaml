@@ -30,7 +30,6 @@
     <DockPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DockPanel.Dock="Right">
             <DockPanel>
-
                 <StackPanel Width="220" Margin="5" DockPanel.Dock="Top">
                     <Button Content="Пополнить трастовый счет" Margin="5" cal:Message.Attach="InvestOperation('TopUpTrustAccount')"/>
                     <Button Content="Купить облигации с НКД" Margin="5" cal:Message.Attach="InvestOperation('BuyBonds')"/>
@@ -58,12 +57,13 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn  Header="Id" Width="30" Binding="{Binding Id}"/>
                     <DataGridTextColumn  Header="Дата" Width="70" Binding="{Binding Timestamp, StringFormat='dd/MM/yyyy'}"/>
-                    <DataGridTextColumn  Header="Тип" Width="160" Binding="{Binding TypeForDatagrid}"/>
+                    <DataGridTextColumn  Header="Тип" Width="200" Binding="{Binding TypeForDatagrid}"/>
                     <DataGridTextColumn  Header="Счет" Width="150" Binding="{Binding AccountForDataGrid}"/>
                     <DataGridTextColumn  Header="Трастовый" Width="80" Binding="{Binding TrustAccount.Number}"/>
-                    <DataGridTextColumn  Header="Сумма" Width="80" Binding="{Binding CurrencyAmountForDatagrid}"/>
+                    <DataGridTextColumn  Header="Сумма" Width="90" Binding="{Binding CurrencyAmountForDatagrid}"/>
+                    <DataGridTextColumn  Header="НКД" Width="80" Binding="{Binding CouponAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Колво" Width="50" Binding="{Binding AssetAmountForDatagrid}"/>
-                    <DataGridTextColumn  Header="Бумаги" Width="200" Binding="{Binding AssetForDatagrid}"/>
+                    <DataGridTextColumn  Header="Бумаги" Width="260" Binding="{Binding AssetForDatagrid}"/>
                     <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
                 </DataGrid.Columns>
             </DataGrid>

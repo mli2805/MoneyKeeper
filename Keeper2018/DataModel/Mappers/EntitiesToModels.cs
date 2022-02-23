@@ -125,6 +125,7 @@ namespace Keeper2018
                 AccountModel = transaction.AccountId != 0 ? dataModel.AcMoDict[transaction.AccountId] : null,
                 TrustAccount = dataModel.TrustAccounts.FirstOrDefault(t => t.Id == transaction.TrustAccountId),
                 CurrencyAmount = transaction.CurrencyAmount,
+                CouponAmount = transaction.CouponAmount,
                 Currency = transaction.Currency,
                 AssetAmount = transaction.AssetAmount,
                 Asset = dataModel.InvestmentAssets.FirstOrDefault(a => a.Id == transaction.AssetId),

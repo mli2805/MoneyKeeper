@@ -9,7 +9,6 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
         private readonly ComboTreesProvider _comboTreesProvider;
-        private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
         public Visibility AccountVisibility { get; set; } = Visibility.Collapsed;
         public Visibility AssetVisibility { get; set; } = Visibility.Collapsed;
@@ -49,13 +48,11 @@ namespace Keeper2018
 
         public InvestTranModel TranInWork { get; set; } = new InvestTranModel();
 
-        public OneInvestTranViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider,
-            BalanceDuringTransactionHinter balanceDuringTransactionHinter)
+        public OneInvestTranViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider)
         {
             _dataModel = dataModel;
             _comboTreesProvider = comboTreesProvider;
             _comboTreesProvider.Initialize();
-            _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             TrustAccounts = dataModel.TrustAccounts;
             Assets = dataModel.InvestmentAssets;
         }

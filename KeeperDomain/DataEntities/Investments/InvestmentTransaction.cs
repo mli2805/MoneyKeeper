@@ -14,6 +14,7 @@ namespace KeeperDomain
         public int TrustAccountId { get; set; }
 
         public decimal CurrencyAmount { get; set; }
+        public decimal CouponAmount { get; set; }
         public CurrencyCode Currency { get; set; }
 
         public int AssetAmount { get; set; }
@@ -25,7 +26,8 @@ namespace KeeperDomain
         {
             return Id + " ; " + InvestOperationType + " ; " + Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " + 
                    AccountId + " ; " + TrustAccountId + " ; " +
-                   CurrencyAmount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
+                   CurrencyAmount.ToString(new CultureInfo("en-US")) + " ; " + 
+                   CouponAmount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AssetAmount.ToString(new CultureInfo("en-US")) + " ; " + AssetId + " ; " + 
                    Comment;
         }
