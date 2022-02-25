@@ -19,9 +19,9 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + Ticker + " ; " + Title + " ; " + AssetType + " ; " + 
+            return Id + " ; " + Ticker.Trim() + " ; " + Title.Trim() + " ; " + AssetType + " ; " + 
                    BondCoupon.ToString(new CultureInfo("en-US")) + " ; " + 
-                   BondExpirationDate.ToString("dd/MM/yyyy") + " ; " + Comment;
+                   BondExpirationDate.ToString("dd/MM/yyyy") + " ; " + Comment.Trim();
         }
     }
 }

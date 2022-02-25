@@ -34,7 +34,7 @@
                     <Button Content="Пополнить трастовый счет" Margin="5" cal:Message.Attach="InvestOperation('TopUpTrustAccount')"/>
                     <Button Content="Купить облигации с НКД" Margin="5" cal:Message.Attach="InvestOperation('BuyBonds')"/>
                     <Button Content="Купить акции" Margin="5"  cal:Message.Attach="InvestOperation('BuyStocks')"/>
-                    <Button Content="Оплатить комиссию за покупку" Margin="5" cal:Message.Attach="InvestOperation('PayPurchaseFee')"/>
+                    <Button Content="Оплатить комиссию за покупку" Margin="5" cal:Message.Attach="InvestOperation('PayBuySellFee')"/>
                     <Button Content="Оплатить базовую комиссию" Margin="5" cal:Message.Attach="InvestOperation('PayBaseCommission')"/>
                     <Button Content="Продать облигации" Margin="5" cal:Message.Attach="InvestOperation('SellBonds')"/>
                     <Button Content="Продать акции" Margin="5" cal:Message.Attach="InvestOperation('SellStocks')"/>
@@ -64,7 +64,7 @@
                     <DataGridTextColumn  Header="НКД" Width="80" Binding="{Binding CouponAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Колво" Width="50" Binding="{Binding AssetAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Бумаги" Width="260" Binding="{Binding AssetForDatagrid}"/>
-                    <DataGridTextColumn  Header="Комиссия" Width="60" Binding="{Binding PurchaseFeeForDataGrid}"/>
+                    <DataGridTextColumn  Header="Комиссия" Width="70" Binding="{Binding BuySellFeeForDataGrid}"/>
                     <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
                 </DataGrid.Columns>
             </DataGrid>

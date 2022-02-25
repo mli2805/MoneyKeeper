@@ -12,7 +12,7 @@ namespace Keeper2018
             {
                 case InvestOperationType.TopUpTrustAccount:
                 case InvestOperationType.PayBaseCommission:
-                case InvestOperationType.PayPurchaseFee:
+                case InvestOperationType.PayBuySellFee:
                 case InvestOperationType.PayWithdrawalTax:
                     Build(selector, "Откуда", ButtonCollections.InvestAccounts,
                         comboTreesProvider.AccNamesForInvestmentExpense, tran.AccountModel?.Id ?? 695);

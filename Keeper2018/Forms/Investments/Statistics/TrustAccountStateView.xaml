@@ -40,12 +40,34 @@
                                     Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy'}" />
                 <DataGridTextColumn Header=" Операция" Width="250" Binding="{Binding Title}" />
                 <DataGridTextColumn Header="  " Width="120" Binding="{Binding AmountIn}" />
-                <DataGridTextColumn Header="  " Width="120" Binding="{Binding AmountOut}" />
-                <DataGridTextColumn Header=" Остаток после" Width="250" Binding="{Binding BalanceAfterStr}" />
+                <DataGridTextColumn Header="  " Width="240" Binding="{Binding AmountOut}" />
+                <DataGridTextColumn Header=" Остаток после" Width="120" Binding="{Binding BalanceAfterStr}" />
             </DataGrid.Columns>
         </DataGrid>
+        <Grid DockPanel.Dock="Top" Margin="15,5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Счет пополнен на"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding TopUp, StringFormat={}{0:# 0,00}}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Приобретено бумаг"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Buy, StringFormat={}{0:# 0,00}}"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Зачислено доходов"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Enroll}"/>
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="Выведено со счета"/>
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Withdraw}"/>
+            <TextBlock Grid.Row="0" Grid.Column="4" Text="Доступный остаток"/>
+            <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Balance}"/>
+        </Grid>
         <StackPanel Margin="5">
-            <TextBlock></TextBlock>
         </StackPanel>
     </DockPanel>
 </Window>

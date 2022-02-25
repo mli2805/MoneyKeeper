@@ -7,7 +7,7 @@
         BuyBonds,
         BuyStocks,
 
-        PayPurchaseFee,
+        PayBuySellFee,
         PayBaseCommission,
 
         SellBonds,
@@ -28,7 +28,7 @@
                 case InvestOperationType.TopUpTrustAccount: return "Пополнить трастовый счет";
                 case InvestOperationType.BuyBonds: return "Купить облигации";
                 case InvestOperationType.BuyStocks: return "Купить акции";
-                case InvestOperationType.PayPurchaseFee: return "Оплатить комиссию за покупку";
+                case InvestOperationType.PayBuySellFee: return "Оплатить комиссию за операцию";
                 case InvestOperationType.PayBaseCommission: return "Оплатить базовую комиссию";
                 case InvestOperationType.SellBonds: return "Продать облигации";
                 case InvestOperationType.SellStocks: return "Продать акции";

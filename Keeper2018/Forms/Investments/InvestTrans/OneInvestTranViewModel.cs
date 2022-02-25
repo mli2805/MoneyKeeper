@@ -14,6 +14,7 @@ namespace Keeper2018
         public Visibility AssetVisibility { get; set; } = Visibility.Collapsed;
         public Visibility CouponVisibility { get; set; } = Visibility.Collapsed;
         public Visibility AssetAmountVisibility { get; set; } = Visibility.Collapsed;
+        public Visibility BuySellFeeVisibility { get; set; } = Visibility.Collapsed;
 
         private AccNameSelectorVm _myAccNameSelectorVm;
         public AccNameSelectorVm MyAccNameSelectorVm
@@ -79,6 +80,7 @@ namespace Keeper2018
                     CurrencyAmountText = "Сумма";
                     AssetVisibility = Visibility.Visible;
                     AssetAmountVisibility = Visibility.Visible;
+                    BuySellFeeVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = null;
                     TrustAccountLabel = "С трастового счета";
                     break;
@@ -87,6 +89,7 @@ namespace Keeper2018
                     CouponVisibility = Visibility.Visible;
                     AssetVisibility = Visibility.Visible;
                     AssetAmountVisibility = Visibility.Visible;
+                    BuySellFeeVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = null;
                     TrustAccountLabel = "С трастового счета"; break;
                 case InvestOperationType.PayBaseCommission:

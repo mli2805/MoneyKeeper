@@ -5,7 +5,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public static class PurchaseFeeCalculator
+    public static class BuySellFeeCalculator
     {
         public static Tuple<decimal, CurrencyCode> EvaluatePurchaseFee(this InvestTranModel tran)
         {
@@ -118,6 +118,8 @@ namespace Keeper2018
             }
         }
 
+        public decimal FullAmount => CurrencyAmount + CouponAmount;
+
         private CurrencyCode _currency;
         public CurrencyCode Currency
         {
@@ -132,6 +134,7 @@ namespace Keeper2018
         }
 
         public string CurrencyAmountForDatagrid => $"{CurrencyAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}";
+        public string FullAmountForDatagrid => $"{CurrencyAmount:#,0.00} + {CouponAmount:#,0.00} = {CurrencyAmount+CouponAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}";
         public string CouponAmountForDatagrid =>
             InvestOperationType == InvestOperationType.BuyBonds
                 ? $"{CouponAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}"
@@ -179,17 +182,52 @@ namespace Keeper2018
             }
         }
 
-        public decimal PurchaseFee { get; set; }
-        public CurrencyCode PurchaseFeeCurrency { get; set; }
-        public bool IsPurchaseFeePaid { get; set; }
-
-        public string PurchaseFeeForDataGrid => PurchaseFeeToDataGrid();
-
-        private string PurchaseFeeToDataGrid()
+        private decimal _buySellFee;
+        public decimal BuySellFee
         {
-            if (PurchaseFee == 0) return "";
+            get => _buySellFee;
+            set
+            {
+                if (value == _buySellFee) return;
+                _buySellFee = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(BuySellFeeForDataGrid));
+            }
+        }
 
-            return $"{PurchaseFee} {PurchaseFeeCurrency.ToString().ToLower()}";
+        private CurrencyCode _buySellFeeCurrency = CurrencyCode.BYN;
+        public CurrencyCode BuySellFeeCurrency
+        {
+            get => _buySellFeeCurrency;
+            set
+            {
+                if (value == _buySellFeeCurrency) return;
+                _buySellFeeCurrency = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(BuySellFeeForDataGrid));
+            }
+        }
+
+        private bool _isBuySellFeePaid;
+        public bool IsBuySellFeePaid
+        {
+            get => _isBuySellFeePaid;
+            set
+            {
+                if (value == _isBuySellFeePaid) return;
+                _isBuySellFeePaid = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(BuySellFeeForDataGrid));
+            }
+        }
+
+        public string BuySellFeeForDataGrid => BuySellFeeToDataGrid();
+
+        private string BuySellFeeToDataGrid()
+        {
+            if (BuySellFee == 0) return "";
+
+            return $"{BuySellFee} {BuySellFeeCurrency.ToString().ToLower()}";
         }
 
         private string _comment;
@@ -221,6 +259,9 @@ namespace Keeper2018
             Currency = source.Currency;
             AssetAmount = source.AssetAmount;
             Asset = source.Asset;
+            BuySellFee = source.BuySellFee;
+            BuySellFeeCurrency = source.BuySellFeeCurrency;
+            IsBuySellFeePaid = source.IsBuySellFeePaid;
             Comment = source.Comment;
         }
     }

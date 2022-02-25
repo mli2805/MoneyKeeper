@@ -13,7 +13,7 @@ namespace Keeper2018
             {
                 case InvestOperationType.BuyBonds:
                     line.BalanceAfter = balanceBefore - (tran.CurrencyAmount + tran.CouponAmount);
-                    line.AmountOut = $"{tran.CurrencyAmount + tran.CouponAmount:#,0.00} {tran.Currency.ToString().ToLowerInvariant()}";
+                    line.AmountOut = tran.FullAmountForDatagrid;
                     break;
                 case InvestOperationType.BuyStocks:
                     line.BalanceAfter = balanceBefore - tran.CurrencyAmount;

@@ -50,6 +50,18 @@
                 <TextBlock Text="Количество"/>
                 <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.AssetAmount}" TextAlignment="Right"/>
             </StackPanel>
+
+            <GroupBox Margin="0,0,0,15" Visibility="{Binding BuySellFeeVisibility}">
+                <GroupBox.Header>
+                    <CheckBox Content="Комиссия за операцию" IsChecked="{Binding TranInWork.IsBuySellFeePaid}"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Horizontal" Height="32" HorizontalAlignment="Right">
+                    <TextBox Margin="5" Width="50" Text="{Binding TranInWork.BuySellFee}"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
+                              SelectedValue="{Binding TranInWork.BuySellFeeCurrency, Mode=TwoWay}" 
+                              Margin="5" Width="60"/>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
 
         <keeper2018:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="0,5" />
