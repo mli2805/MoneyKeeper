@@ -144,13 +144,24 @@
                             <cal:ActionMessage MethodName="ShowTrustAccountsForm"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                </MenuItem>  <MenuItem Background="White" BorderBrush="White">
+                </MenuItem> 
+                <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
                         <TextBlock Text="Транзакции"/>
                     </MenuItem.Header>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ShowInvestmentTransactionsForm"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
+                        <TextBlock Text="Анализ"/>
+                    </MenuItem.Header>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ShowInvestmentAnalysisForm"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>

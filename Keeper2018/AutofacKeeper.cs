@@ -80,6 +80,7 @@ namespace Keeper2018
             builder.RegisterType<InvestmentTransactionsViewModel>().SingleInstance();
             builder.RegisterType<OneInvestTranViewModel>();
             builder.RegisterType<TrustAccountStateViewModel>();
+            builder.RegisterType<InvestmentAnalysisViewModel>();
         }
     }
 }

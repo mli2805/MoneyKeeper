@@ -27,6 +27,7 @@ namespace Keeper2018
         private readonly AssetRatesViewModel _assetRatesViewModel;
         private readonly TrustAccountsViewModel _trustAccountsViewModel;
         private readonly InvestmentTransactionsViewModel _investmentTransactionsViewModel;
+        private readonly InvestmentAnalysisViewModel _investmentAnalysisViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
@@ -38,7 +39,8 @@ namespace Keeper2018
             OpenDepositsViewModel openDepositsViewModel,
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel,
             InvestmentAssetsViewModel investmentAssetsViewModel, AssetRatesViewModel assetRatesViewModel,
-            TrustAccountsViewModel trustAccountsViewModel, InvestmentTransactionsViewModel investmentTransactionsViewModel)
+            TrustAccountsViewModel trustAccountsViewModel, InvestmentTransactionsViewModel investmentTransactionsViewModel,
+            InvestmentAnalysisViewModel investmentAnalysisViewModel)
         {
             _windowManager = windowManager;
             _keeperDataModel = keeperDataModel;
@@ -60,6 +62,7 @@ namespace Keeper2018
             _assetRatesViewModel = assetRatesViewModel;
             _trustAccountsViewModel = trustAccountsViewModel;
             _investmentTransactionsViewModel = investmentTransactionsViewModel;
+            _investmentAnalysisViewModel = investmentAnalysisViewModel;
         }
 
         // for short-cuts
@@ -132,7 +135,7 @@ namespace Keeper2018
             _bankOffersViewModel.Initialize();
             _windowManager.ShowDialog(_bankOffersViewModel);
         }
-      
+
         public void ShowBalancesAndSaldosChart()
         {
             var vm = new BalancesAndSaldosViewModel();
@@ -204,6 +207,12 @@ namespace Keeper2018
         {
             _investmentTransactionsViewModel.Initialize();
             _windowManager.ShowDialog(_investmentTransactionsViewModel);
+        }
+
+        public void ShowInvestmentAnalysisForm()
+        {
+            _investmentAnalysisViewModel.Initialize();
+            _windowManager.ShowDialog(_investmentAnalysisViewModel);
         }
         #endregion
 
