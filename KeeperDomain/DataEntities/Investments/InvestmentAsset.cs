@@ -12,7 +12,7 @@ namespace KeeperDomain
         public string Title { get; set; }
         public AssetType AssetType { get; set; }
 
-        public double BondCoupon { get; set; }
+        public double BondCoupon { get; set; } // if fixed and known
         public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;
 
         public string Comment { get; set; }

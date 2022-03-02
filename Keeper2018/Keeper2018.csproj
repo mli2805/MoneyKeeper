@@ -242,20 +242,27 @@
       <DependentUpon>InvestmentAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\Analysis\InvestmentAnalysisViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\Analysis\InvestmentAssetEvaluation.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountBalanceExt.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountBalanceOnDate.cs" />
     <Compile Include="Forms\Investments\InvestTrans\OneInvestTranView.xaml.cs">
       <DependentUpon>OneInvestTranView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\InvestTrans\OneInvestTranViewModel.cs" />
-    <Compile Include="Forms\Investments\Statistics\TrustAccountLine.cs" />
-    <Compile Include="Forms\Investments\Statistics\TrustAccountLineProvider.cs" />
-    <Compile Include="Forms\Investments\Statistics\TrustAccountStateView.xaml.cs">
+    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountAnalysisView.xaml.cs">
+      <DependentUpon>TrustAccountAnalysisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountAnalysisViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountLine.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountLineProvider.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountStateView.xaml.cs">
       <DependentUpon>TrustAccountStateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\Statistics\TrustAccountStateViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustAccountsView.xaml.cs">
+    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountStateViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\TrustAccountsView.xaml.cs">
       <DependentUpon>TrustAccountsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\TrustAccountsViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccount\TrustAccountsViewModel.cs" />
     <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />
@@ -732,11 +739,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\Statistics\TrustAccountStateView.xaml">
+    <Page Include="Forms\Investments\TrustAccount\Analysis\TrustAccountAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\TrustAccountsView.xaml">
+    <Page Include="Forms\Investments\TrustAccount\Statistics\TrustAccountStateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Investments\TrustAccount\TrustAccountsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

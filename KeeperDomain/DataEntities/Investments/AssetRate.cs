@@ -9,7 +9,7 @@ namespace KeeperDomain
         public int Id { get; set; }
         public int TickerId { get; set; } = 1;
         public DateTime Date { get; set; } = DateTime.Today;
-        public double Value { get; set; }
+        public decimal Value { get; set; }
         public int Unit { get; set; } = 1;
         public CurrencyCode Currency { get; set; } = CurrencyCode.USD;
 

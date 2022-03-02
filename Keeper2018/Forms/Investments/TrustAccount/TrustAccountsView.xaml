@@ -32,7 +32,7 @@
     <Grid>
         <DataGrid ItemsSource="{Binding TrustAccounts}" 
                   SelectedItem="{Binding SelectedAccount}" AutoGenerateColumns="False"
-                  cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowTrustAccountState()]">
+                  >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Название" Width="180" Binding="{Binding Title}" />
@@ -46,7 +46,16 @@
                 <DataGridTextColumn Header="AccountId" Width="70" Binding="{Binding AccountId}" />
                 <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
             </DataGrid.Columns>
-
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Статистика" 
+                              cal:Message.Attach="[Event Click] = [Action ShowTrustAccountState]"
+                              BorderBrush="{x:Null}" Background="White" />
+                    <MenuItem Header="Анализ"
+                              cal:Message.Attach="[Event Click] = [Action ShowTrustAccountAnalysis]"
+                              BorderBrush="{x:Null}" Background="White" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
 
     </Grid>

@@ -11,17 +11,19 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private readonly IWindowManager _windowManager;
         private readonly TrustAccountStateViewModel _trustAccountStateViewModel;
+        private readonly TrustAccountAnalysisViewModel _trustAccountAnalysisViewModel;
 
         public ObservableCollection<TrustAccount> TrustAccounts { get; set; }
         public TrustAccount SelectedAccount { get; set; }
 
 
         public TrustAccountsViewModel(KeeperDataModel dataModel, IWindowManager windowManager, 
-            TrustAccountStateViewModel trustAccountStateViewModel)
+            TrustAccountStateViewModel trustAccountStateViewModel, TrustAccountAnalysisViewModel trustAccountAnalysisViewModel)
         {
             _dataModel = dataModel;
             _windowManager = windowManager;
             _trustAccountStateViewModel = trustAccountStateViewModel;
+            _trustAccountAnalysisViewModel = trustAccountAnalysisViewModel;
         }
 
         public void Initialize()
@@ -38,6 +40,12 @@ namespace Keeper2018
         {
             _trustAccountStateViewModel.Evaluate(SelectedAccount);
             _windowManager.ShowDialog(_trustAccountStateViewModel);
+        }
+
+        public void ShowTrustAccountAnalysis()
+        {
+            _trustAccountAnalysisViewModel.Initialize(SelectedAccount);
+            _windowManager.ShowDialog(_trustAccountAnalysisViewModel);
         }
 
         public void DeleteSelected()

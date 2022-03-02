@@ -53,7 +53,7 @@ namespace KeeperDomain
             rate.TickerId = int.Parse(substrings[1]);
             rate.Date = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             rate.Unit = int.Parse(substrings[3]);
-            rate.Value = double.Parse(substrings[4], new CultureInfo("en-US"));
+            rate.Value = decimal.Parse(substrings[4], new CultureInfo("en-US"));
             rate.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]);
             return rate;
         }
