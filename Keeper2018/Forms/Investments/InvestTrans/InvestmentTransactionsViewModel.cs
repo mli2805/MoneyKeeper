@@ -28,6 +28,7 @@ namespace Keeper2018
         public void Initialize()
         {
             Transactions = new ObservableCollection<InvestTranModel>(_dataModel.InvestTranModels);
+            SelectedTransaction = Transactions.Last();
         }
 
         protected override void OnViewLoaded(object view)

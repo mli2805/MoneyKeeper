@@ -1,39 +1,11 @@
 ﻿using System;
+using System.Windows.Media;
 using System.Globalization;
 using Caliburn.Micro;
 using KeeperDomain;
 
 namespace Keeper2018
 {
-    public static class BuySellFeeCalculator
-    {
-        public static Tuple<decimal, CurrencyCode> EvaluatePurchaseFee(this InvestTranModel tran)
-        {
-            decimal purchaseFee = 0;
-            switch (tran.TrustAccount.StockMarket)
-            {
-                case Market.Russia:
-                    {
-                        if (tran.InvestOperationType == InvestOperationType.BuyStocks)
-                            purchaseFee = Math.Max((decimal)0.0015 * tran.CurrencyAmount, 8);
-                        if (tran.InvestOperationType == InvestOperationType.BuyBonds)
-                            purchaseFee = Math.Max((decimal)0.0010 * tran.CurrencyAmount, 8);
-                        break;
-                    }
-                case Market.Usa:
-                    {
-                        if (tran.CurrencyAmount / tran.AssetAmount <= 3)
-                            purchaseFee = Math.Max((decimal)0.07 * tran.AssetAmount, 18);
-                        else
-                            purchaseFee = Math.Max((decimal)0.14 * tran.AssetAmount, 18);
-                        break;
-                    }
-            }
-
-            return new Tuple<decimal, CurrencyCode>(purchaseFee, CurrencyCode.BYN);
-        }
-    }
-
     public class InvestTranModel : PropertyChangedBase
     {
         public int Id { get; set; }
@@ -64,6 +36,8 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        public string TranForCombo => $"{Timestamp:d} {CurrencyAmount} {Currency.ToString().ToLower()}";
 
         private AccountModel _accountModel;
         public AccountModel AccountModel
@@ -208,14 +182,14 @@ namespace Keeper2018
             }
         }
 
-        private bool _isBuySellFeePaid;
-        public bool IsBuySellFeePaid
+        private int _feePaymentOperationId;
+        public int FeePaymentOperationId
         {
-            get => _isBuySellFeePaid;
+            get => _feePaymentOperationId;
             set
             {
-                if (value == _isBuySellFeePaid) return;
-                _isBuySellFeePaid = value;
+                if (value == _feePaymentOperationId) return;
+                _feePaymentOperationId = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(nameof(BuySellFeeForDataGrid));
             }
@@ -226,11 +200,13 @@ namespace Keeper2018
         private string BuySellFeeToDataGrid()
         {
             if (BuySellFee == 0) return "";
+            var paid = FeePaymentOperationId != 0 ? "оплач. " : "";
 
-            return $"{BuySellFee} {BuySellFeeCurrency.ToString().ToLower()}";
+            return $"{paid}{BuySellFee} {BuySellFeeCurrency.ToString().ToLower()}";
         }
 
         private string _comment;
+
         public string Comment
         {
             get => _comment;
@@ -242,6 +218,21 @@ namespace Keeper2018
             }
         }
 
+        public Brush TransactionFontColor => InvestOperationType.FontColor();
+    
+        #region ' _isSelected '
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (value.Equals(_isSelected)) return;
+                _isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
+            }
+        }
+        #endregion
         public InvestTranModel ShallowCopy()
         {
             return (InvestTranModel)MemberwiseClone();
@@ -261,7 +252,7 @@ namespace Keeper2018
             Asset = source.Asset;
             BuySellFee = source.BuySellFee;
             BuySellFeeCurrency = source.BuySellFeeCurrency;
-            IsBuySellFeePaid = source.IsBuySellFeePaid;
+            FeePaymentOperationId = source.FeePaymentOperationId;
             Comment = source.Comment;
         }
     }

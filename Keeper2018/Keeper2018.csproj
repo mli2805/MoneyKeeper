@@ -223,8 +223,10 @@
     </ApplicationDefinition>
     <Compile Include="DataModel\DataModelExt\AccountModelExt.cs" />
     <Compile Include="DataModel\DataModelExt\DepoPartIdProvider.cs" />
+    <Compile Include="DataModel\EntityModels\Invest\InvestOperationType.cs" />
+    <Compile Include="DataModel\EntityModels\Invest\BuySellFeeCalculator.cs" />
     <Compile Include="DataModel\EntityModels\DepoCondsModel.cs" />
-    <Compile Include="DataModel\EntityModels\InvestTranModel.cs" />
+    <Compile Include="DataModel\EntityModels\Invest\InvestTranModel.cs" />
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />

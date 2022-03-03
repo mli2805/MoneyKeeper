@@ -91,7 +91,7 @@ namespace KeeperDomain
 
             trans.PurchaseFee = decimal.Parse(substrings[10], new CultureInfo("en-US"));
             trans.PurchaseFeeCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[11]);
-            trans.IsPurchaseFeePaid = Convert.ToBoolean(substrings[12]);
+            trans.FeePaymentOperationId = int.Parse(substrings[12]);
 
             trans.Comment = substrings[13];
             return trans;

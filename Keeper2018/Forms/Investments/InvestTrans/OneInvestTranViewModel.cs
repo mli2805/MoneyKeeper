@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -49,6 +50,8 @@ namespace Keeper2018
 
         public InvestTranModel TranInWork { get; set; } = new InvestTranModel();
 
+        public List<InvestTranModel> FeePayments { get; set; }
+
         public OneInvestTranViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider)
         {
             _dataModel = dataModel;
@@ -66,6 +69,9 @@ namespace Keeper2018
         public void Initialize(InvestTranModel tran)
         {
             TranInWork = tran;
+            FeePayments = _dataModel.InvestTranModels
+                .Where(t => t.InvestOperationType == InvestOperationType.PayBuySellFee
+                        && t.TrustAccount == TranInWork.TrustAccount).ToList();
 
             switch (tran.InvestOperationType)
             {
@@ -91,8 +97,17 @@ namespace Keeper2018
                     AssetAmountVisibility = Visibility.Visible;
                     BuySellFeeVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = null;
-                    TrustAccountLabel = "С трастового счета"; break;
+                    TrustAccountLabel = "С трастового счета"; 
+                    break;
                 case InvestOperationType.PayBaseCommission:
+                    AccountVisibility = Visibility.Visible;
+                    MyAccNameSelectorVm = new AccNameSelectorVm();
+                    MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    CurrencyAmountText = "Сумма";
+                    TrustAccountLabel = "По трастовому счету";
+                    TranInWork.Currency = CurrencyCode.BYN;
+                    break;
+                case InvestOperationType.PayBuySellFee:
                     AccountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
                     MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
@@ -121,6 +136,9 @@ namespace Keeper2018
             if (e.PropertyName == "TrustAccount")
             {
                 TranInWork.Currency = TranInWork.TrustAccount.Currency;
+                FeePayments = _dataModel.InvestTranModels
+                    .Where(t => t.InvestOperationType == InvestOperationType.PayBuySellFee
+                                && t.TrustAccount == TranInWork.TrustAccount).ToList();
             }
         }
 

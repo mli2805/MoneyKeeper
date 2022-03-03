@@ -12,9 +12,15 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header=" Тикер" Width="120" Binding="{Binding InvestmentAssetTicker}" />
                 <DataGridTextColumn Header=" Количество " Width="120" Binding="{Binding Quantity}" />
+                <DataGridTextColumn Header=" Цена " Width="120" Binding="{Binding PriceOfOne}" />
                 <DataGridTextColumn Header=" Стоимость " Width="120" Binding="{Binding Price}" />
+
+                <DataGridTextColumn Header=" Комиссии" Width="120" Binding="{Binding FeeForDataGrid}" />
+                
                 <DataGridTextColumn Header=" Оплачен купон" Width="120" Binding="{Binding PaidCoupon}" />
                 <DataGridTextColumn Header=" Получен купон/дивы" Width="120" Binding="{Binding ReceivedCoupon}" />
+
+                <DataGridTextColumn Header=" Текущая цена" Width="120" Binding="{Binding CurrentPriceOfOne}" />
                 <DataGridTextColumn Header=" Текущая стоимость" Width="120" Binding="{Binding CurrentPrice}" />
             </DataGrid.Columns>
         </DataGrid>

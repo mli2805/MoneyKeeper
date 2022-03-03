@@ -22,7 +22,7 @@ namespace KeeperDomain
 
         public decimal PurchaseFee { get; set; }
         public CurrencyCode PurchaseFeeCurrency { get; set; } = CurrencyCode.BYN;
-        public bool IsPurchaseFeePaid { get; set; }
+        public int FeePaymentOperationId { get; set; }
 
         public string Comment { get; set; }
 
@@ -33,7 +33,7 @@ namespace KeeperDomain
                    CurrencyAmount.ToString(new CultureInfo("en-US")) + " ; " + 
                    CouponAmount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AssetAmount.ToString(new CultureInfo("en-US")) + " ; " + AssetId + " ; " +
-                   PurchaseFee.ToString(new CultureInfo("en-US")) + " ; " + PurchaseFeeCurrency + " ; " + IsPurchaseFeePaid + " ; " + 
+                   PurchaseFee.ToString(new CultureInfo("en-US")) + " ; " + PurchaseFeeCurrency + " ; " + FeePaymentOperationId + " ; " + 
                    Comment;
         }
     }

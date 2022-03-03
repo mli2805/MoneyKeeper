@@ -144,7 +144,7 @@ namespace Keeper2018
                 AssetId = transaction.Asset?.Id ?? 0,
                 PurchaseFee = transaction.BuySellFee,
                 PurchaseFeeCurrency = transaction.BuySellFeeCurrency,
-                IsPurchaseFeePaid = transaction.IsBuySellFeePaid,
+                FeePaymentOperationId = transaction.FeePaymentOperationId,
                 Comment = transaction.Comment,
             };
         }

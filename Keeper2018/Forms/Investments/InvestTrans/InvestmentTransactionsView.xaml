@@ -8,7 +8,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Height="450" SizeToContent="Width" WindowStartupLocation="CenterOwner" 
+        Height="455" SizeToContent="Width" WindowStartupLocation="CenterOwner" 
         d:DataContext="{d:DesignInstance keeper2018:InvestmentTransactionsViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Space">
@@ -54,6 +54,32 @@
                       SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
                       cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                       IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" Margin="5">
+                <i:Interaction.Behaviors>
+                    <keeper2018:ScrollToBottomOnAddBehavior />
+                    <keeper2018:ScrollToBottomOnLoadBehavior />
+                </i:Interaction.Behaviors>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#B6E6FF" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.ItemContainerStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn  Header="Id" Width="30" Binding="{Binding Id}"/>
                     <DataGridTextColumn  Header="Дата" Width="70" Binding="{Binding Timestamp, StringFormat='dd/MM/yyyy'}"/>
@@ -64,7 +90,7 @@
                     <DataGridTextColumn  Header="НКД" Width="80" Binding="{Binding CouponAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Колво" Width="50" Binding="{Binding AssetAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Бумаги" Width="260" Binding="{Binding AssetForDatagrid}"/>
-                    <DataGridTextColumn  Header="Комиссия" Width="70" Binding="{Binding BuySellFeeForDataGrid}"/>
+                    <DataGridTextColumn  Header="Комиссия" Width="90" Binding="{Binding BuySellFeeForDataGrid}"/>
                     <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
                 </DataGrid.Columns>
             </DataGrid>
