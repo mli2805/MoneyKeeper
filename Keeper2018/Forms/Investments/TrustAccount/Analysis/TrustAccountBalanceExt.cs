@@ -17,12 +17,12 @@ namespace Keeper2018
         public static decimal GetTwoBalances(this KeeperDataModel dataModel, TrustAccount trustAccount,
             DateTime lastDayOfPreviousPeriod, DateTime lastDayOfCurrentPeriod)
         {
-            var balanceEmpty= new TrustAccountBalanceOnDate() { Date = DateTime.MinValue };
-            var balanceBefore = dataModel.BuildUpTrustAccountBalance(trustAccount, 
+            var balanceEmpty = new TrustAccountBalanceOnDate() { Date = DateTime.MinValue };
+            var balanceBefore = dataModel.BuildUpTrustAccountBalance(trustAccount,
                 DateTime.MinValue, balanceEmpty, lastDayOfPreviousPeriod);
             var balanceNow = dataModel.BuildUpTrustAccountBalance(trustAccount,
                 lastDayOfPreviousPeriod, balanceBefore, lastDayOfCurrentPeriod);
-           
+
             return 0;
         }
 
@@ -41,14 +41,15 @@ namespace Keeper2018
                 {
                     case InvestOperationType.TopUpTrustAccount:
                         result.Cash += tran.CurrencyAmount;
+                        result.TopUp += tran.CurrencyAmount;
                         break;
                     case InvestOperationType.BuyBonds:
                     case InvestOperationType.BuyStocks:
-                        BuyAsset(result, tran);
+                        BuyAsset(result, tran, dataModel);
                         break;
                     case InvestOperationType.EnrollCouponOrDividends:
                         result.Cash += tran.CurrencyAmount;
-                        result.Assets.First(t=>t.InvestmentAssetId == tran.Asset.Id).ReceivedCoupon += tran.CurrencyAmount;
+                        result.Assets.First(t => t.InvestmentAssetId == tran.Asset.Id).ReceivedCoupon += tran.CurrencyAmount;
                         break;
                     case InvestOperationType.SellBonds:
                     case InvestOperationType.SellStocks:
@@ -56,9 +57,19 @@ namespace Keeper2018
                         break;
                     case InvestOperationType.WithdrawFromTrustAccount:
                         result.Cash -= tran.CurrencyAmount;
+                        result.Withdraw -= tran.CurrencyAmount;
                         break;
 
                     case InvestOperationType.PayBaseCommission:
+                        if (tran.TrustAccount.Currency == CurrencyCode.RUB)
+                        {
+                            var rate = dataModel.GetRate(tran.Timestamp, CurrencyCode.RUB);
+                            result.BaseFee += tran.CurrencyAmount * (decimal)(rate.Unit / rate.Value);
+                        }
+                        else
+                            result.BaseFee +=
+                                dataModel.AmountInUsd(tran.Timestamp, CurrencyCode.BYN, tran.CurrencyAmount);
+                        break;
                     case InvestOperationType.PayBuySellFee:
                     case InvestOperationType.PayWithdrawalTax:
                         break;
@@ -77,19 +88,36 @@ namespace Keeper2018
             asset2.ReceivedCoupon += tran.CouponAmount;
         }
 
-        private static void BuyAsset(TrustAccountBalanceOnDate result, InvestTranModel tran)
+        private static void BuyAsset(TrustAccountBalanceOnDate result, InvestTranModel tran, KeeperDataModel dataModel)
         {
             result.Cash -= tran.CurrencyAmount + tran.CouponAmount;
             var asset = result.Assets.FirstOrDefault(t => t.InvestmentAssetId == tran.Asset.Id);
-            if (asset != null)
+            if (asset == null)
             {
-                asset.Quantity += tran.AssetAmount;
-                asset.Price += tran.CurrencyAmount;
-                asset.PaidCoupon += tran.CouponAmount;
+                asset = new InvestmentAssetEvaluation(tran);
+                result.Assets.Add(asset);
+            }
+
+            asset.Quantity += tran.AssetAmount;
+            asset.Price += tran.CurrencyAmount;
+            asset.PaidCoupon += tran.CouponAmount;
+            if (tran.FeePaymentOperationId != 0)
+            {
+                asset.BuySellFee += tran.BuySellFee;
+                asset.BuySellFeeCurrency = tran.BuySellFeeCurrency;
+                if (tran.BuySellFeeCurrency == CurrencyCode.USD)
+                    asset.BuySellFeeInTrustCurrency += tran.BuySellFee;
+                else
+                {
+                    var feeTran = dataModel.InvestTranModels.First(t => t.Id == tran.FeePaymentOperationId);
+                    asset.BuySellFeeInTrustCurrency += tran.TrustAccount.Currency == CurrencyCode.USD
+                        ? dataModel.AmountInUsd(feeTran.Timestamp.Date, tran.BuySellFeeCurrency, tran.BuySellFee)
+                        : (decimal)dataModel.GetRubBynRate(feeTran.Timestamp) * tran.BuySellFee;
+                }
             }
             else
             {
-                result.Assets.Add(new InvestmentAssetEvaluation(tran));
+                result.NotPaidFees += tran.BuySellFee;
             }
         }
     }

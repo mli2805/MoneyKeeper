@@ -63,6 +63,7 @@
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="Transparent" />
+                                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                                 <Setter Property="Foreground" Value="{Binding TransactionFontColor}" />
                                 <Setter Property="BorderThickness" Value="0" />
                             </Trigger>

@@ -6,6 +6,13 @@ namespace Keeper2018
 {
     public static class RateProvider
     {
+        public static double GetRubBynRate(this KeeperDataModel dataModel, DateTime dt)
+        {
+            var ratesLine = dataModel.GetRatesLine(dt);
+            if (ratesLine == null) return 0;
+            return ratesLine.NbRates.Rur.Unit / ratesLine.NbRates.Rur.Value;
+        }
+
         public static OneRate GetRate(this KeeperDataModel dataModel, DateTime dt, CurrencyCode currency, bool isForUsd = false)
         {
             var ratesLine = dataModel.GetRatesLine(dt);
