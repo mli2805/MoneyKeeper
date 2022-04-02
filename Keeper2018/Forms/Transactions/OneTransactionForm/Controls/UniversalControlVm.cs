@@ -163,7 +163,6 @@ namespace Keeper2018
                 ButtonAllInVisibility = tran.Operation == OperationType.Доход ? Visibility.Collapsed : Visibility.Visible,
             };
             MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
-            // Task.Factory.StartNew(GetMyAccountBalanceInOtherThread);
             MyAccountBalance = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
@@ -218,6 +217,9 @@ namespace Keeper2018
         {
             var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Add(tag);
+
+            if (TranInWork.Operation == OperationType.Перенос || TranInWork.Operation == OperationType.Обмен)
+                return;
 
             var associatedTag = FindAssociated(tag, TranInWork.Operation);
             if (associatedTag != null && !TranInWork.Tags.Contains(associatedTag))
