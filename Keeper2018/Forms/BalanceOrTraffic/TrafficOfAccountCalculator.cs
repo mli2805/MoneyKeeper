@@ -138,9 +138,6 @@ namespace Keeper2018
                     if (_isDeposit)
                     {
                         DepositReportModel.Traffic.Add(_dataModel.ReportLine(_balanceWithTurnover.Balance(), tran, true, 1, DepositOperationType.Contribution));
-                        // ReSharper disable once PossibleInvalidOperationException
-                        DepositReportModel.Contribution.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
-                        DepositReportModel.ContributionUsd += _dataModel.AmountInUsd(tran.Timestamp, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
                     }
                     // ReSharper disable once PossibleInvalidOperationException
                     _balanceWithTurnover.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);

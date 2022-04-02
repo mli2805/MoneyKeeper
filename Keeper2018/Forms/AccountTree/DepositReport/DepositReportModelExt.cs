@@ -112,6 +112,7 @@ namespace Keeper2018
             model.RateForecast = new OneRate();
             model.RateForecast.Unit = model.RateNow.Unit;
             var k = (model.RateNow.Value - model.RateStart.Value) / (DateTime.Today - model.Deposit.StartDate).Days;
+            if (model.DepositOffer.MainCurrency == CurrencyCode.RUB && k < 0) k = 0;
             model.RateForecast.Value = model.RateStart.Value + k * (model.Deposit.FinishDate - model.Deposit.StartDate).Days;
 
             model.RateStr1 =
