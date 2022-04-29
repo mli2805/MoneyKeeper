@@ -24,7 +24,11 @@
             <cal:ActionMessage MethodName="DeleteSelected"/>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
-    <Grid>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+            <DatePicker DockPanel.Dock="Right" Margin="5" SelectedDate="{Binding SelectedDate}"/>
+            <Button Name="AddForDate" Content="Добавить строки с моими активами на дату:" Margin="5"/>
+        </DockPanel>
         <DataGrid ItemsSource="{Binding Rates}" SelectedItem="{Binding SelectedRate}"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -73,5 +77,5 @@
                                          SelectedValueBinding="{Binding Currency}"/>
             </DataGrid.Columns>
         </DataGrid>
-    </Grid>
+    </DockPanel>
 </Window>
