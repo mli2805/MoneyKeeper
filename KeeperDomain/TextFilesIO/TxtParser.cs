@@ -63,9 +63,9 @@ namespace KeeperDomain
             var trustAccount = new TrustAccount();
             var substrings = s.Split(';');
             trustAccount.Id = int.Parse(substrings[0]);
-            trustAccount.Title = substrings[1];
+            trustAccount.Title = substrings[1].Trim();
             trustAccount.StockMarket = (Market)Enum.Parse(typeof(Market), substrings[2]);
-            trustAccount.Number = substrings[3]; 
+            trustAccount.Number = substrings[3].Trim(); 
             trustAccount.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]);
             trustAccount.AccountId = int.Parse(substrings[5]);
             trustAccount.Comment = substrings[6];

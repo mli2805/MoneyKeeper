@@ -59,11 +59,12 @@ namespace Keeper2018
             IsFirstLaunch = false;
         }
 
-        public void ReInitializeOnlyAccountLists()
-        {
-            _comboTreesProvider.Initialize();
-            _filterModel.Initialize();
-        }
+        // ради быстродействия на старом компе. но тогда не показывает транзакции введенные через траст
+        // public void ReInitializeOnlyAccountLists()
+        // {
+        //     _comboTreesProvider.Initialize();
+        //     _filterModel.Initialize();
+        // }
 
         public void ButtonFilter()
         {

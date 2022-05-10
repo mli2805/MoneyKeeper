@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Autofac;
@@ -17,7 +18,7 @@ namespace Keeper2018
         public ObservableCollection<InvestTranModel> Transactions { get; set; }
         public InvestTranModel SelectedTransaction { get; set; }
 
-        public InvestmentTransactionsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel, 
+        public InvestmentTransactionsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel,
             IWindowManager windowManager)
         {
             _globalScope = globalScope;
@@ -75,7 +76,7 @@ namespace Keeper2018
 
         }
 
-        // Adds specific invest operation
+        // Buttons to add specific invest operation
         public void InvestOperation(InvestOperationType investOperationType)
         {
             var vm = _globalScope.Resolve<OneInvestTranViewModel>();
@@ -89,7 +90,101 @@ namespace Keeper2018
             vm.Initialize(tranInWork);
             bool? result = _windowManager.ShowDialog(vm);
             if (result == true)
+            {
                 Transactions.Add(tranInWork);
+
+                if (ToOperationType(tranInWork.InvestOperationType, out OperationType operationType))
+                {
+                    var tran = InvestTranModelToTransactionModel(tranInWork, operationType);
+                    _dataModel.Transactions.Add(tran.Id, tran);
+                }
+            }
+        }
+
+        private TransactionModel InvestTranModelToTransactionModel(InvestTranModel tranInWork, OperationType operationType)
+        {
+            var tran = new TransactionModel();
+            tran.Id = _dataModel.Transactions.Keys.Max() + 1;
+
+            var lastInDate =
+                _dataModel.Transactions.Values.LastOrDefault(t =>
+                    t.Timestamp.Date == tranInWork.Timestamp.Date);
+            tran.Timestamp = lastInDate == null ? tranInWork.Timestamp.AddMinutes(1) : lastInDate.Timestamp.AddMinutes(1);
+
+            tran.Operation = operationType;
+
+            if (operationType == OperationType.Расход) // комиссии
+            {
+                tran.PaymentWay = PaymentWay.КартаДругое;
+                tran.MyAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
+                tran.Tags = new List<AccountModel>()
+                {
+                    _dataModel.AcMoDict[694], // Альфа
+                    _dataModel.AcMoDict[tranInWork.InvestOperationType == InvestOperationType.PayBaseCommission ? 896 : 897]
+                };
+            }
+            else if (operationType == OperationType.Доход) // дивиденды
+            {
+                tran.MyAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
+                tran.Tags = new List<AccountModel>()
+                {
+                    tranInWork.AccountModel, // Альфа
+                    _dataModel.AcMoDict[209] // дивиденды
+                };
+            }
+            else if (operationType == OperationType.Перенос)  // пополнение-вывод
+            {
+                if (tranInWork.InvestOperationType == InvestOperationType.TopUpTrustAccount)
+                {
+                    tran.MyAccount = tranInWork.AccountModel;
+                    tran.MySecondAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
+                }
+                else //  InvestOperationType.WithdrawFromTrustAccount
+                {
+                    tran.MyAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
+                    tran.MySecondAccount = tranInWork.AccountModel;
+                }
+                tran.Tags = new List<AccountModel>()
+                {
+                    _dataModel.AcMoDict[694], // Альфа
+                };
+            }
+
+            tran.Amount = tranInWork.CurrencyAmount;
+            tran.Currency = tranInWork.Currency;
+
+            tran.Comment = tranInWork.InvestOperationType == InvestOperationType.PayBaseCommission
+                ? (tranInWork.TrustAccount.Id == 1
+                      ? "по долларовому счету"
+                      : "по рублевому счету")
+                  + tranInWork.Comment
+                : tranInWork.Comment;
+
+            return tran;
+        }
+
+        private bool ToOperationType(InvestOperationType investOperationType, out OperationType operationType)
+        {
+            switch (investOperationType)
+            {
+                case InvestOperationType.PayBaseCommission:
+                case InvestOperationType.PayBuySellFee:
+                    operationType = OperationType.Расход;
+                    return true;
+
+                case InvestOperationType.EnrollCouponOrDividends:
+                    operationType = OperationType.Доход;
+                    return true;
+
+                case InvestOperationType.TopUpTrustAccount:
+                case InvestOperationType.WithdrawFromTrustAccount:
+                    operationType = OperationType.Перенос;
+                    return true;
+
+                default:
+                    operationType = OperationType.Перенос;
+                    return false;
+            }
         }
 
         public void Close()

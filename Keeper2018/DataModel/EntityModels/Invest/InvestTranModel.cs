@@ -205,7 +205,7 @@ namespace Keeper2018
             return $"{paid}{BuySellFee} {BuySellFeeCurrency.ToString().ToLower()}";
         }
 
-        private string _comment;
+        private string _comment = "";
 
         public string Comment
         {

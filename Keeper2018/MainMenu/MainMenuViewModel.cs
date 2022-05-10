@@ -97,10 +97,10 @@ namespace Keeper2018
         {
             try
             {
-                if (_transactionsViewModel.IsFirstLaunch)
+                // if (_transactionsViewModel.IsFirstLaunch)
                     _transactionsViewModel.Initialize();
-                else
-                    _transactionsViewModel.ReInitializeOnlyAccountLists();
+                // else
+                    // _transactionsViewModel.ReInitializeOnlyAccountLists();
 
                 _windowManager.ShowDialog(_transactionsViewModel);
             }
@@ -207,6 +207,8 @@ namespace Keeper2018
         {
             _investmentTransactionsViewModel.Initialize();
             _windowManager.ShowDialog(_investmentTransactionsViewModel);
+            _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
+            Save();
         }
 
         public void ShowInvestmentAnalysisForm()

@@ -124,7 +124,13 @@ namespace Keeper2018
                     TrustAccountLabel = "На трастовый счет";
                     AssetLabel = "По бумаге";
                     break;
-
+                case InvestOperationType.WithdrawFromTrustAccount:
+                    AccountVisibility = Visibility.Visible;
+                    MyAccNameSelectorVm = new AccNameSelectorVm();
+                    MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    CurrencyAmountText = "Сумма";
+                    TrustAccountLabel = "С трастового счета";
+                    break;
             }
             MyDatePickerVm.SelectedDate = TranInWork.Timestamp;
 
@@ -135,7 +141,10 @@ namespace Keeper2018
         {
             if (e.PropertyName == "TrustAccount")
             {
-                TranInWork.Currency = TranInWork.TrustAccount.Currency;
+                TranInWork.Currency = TranInWork.InvestOperationType == InvestOperationType.PayBaseCommission
+                                        || TranInWork.InvestOperationType == InvestOperationType.PayBuySellFee 
+                    ? CurrencyCode.BYN 
+                    : TranInWork.TrustAccount.Currency;
                 FeePayments = _dataModel.InvestTranModels
                     .Where(t => t.InvestOperationType == InvestOperationType.PayBuySellFee
                                 && t.TrustAccount == TranInWork.TrustAccount).ToList();
