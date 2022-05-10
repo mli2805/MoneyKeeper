@@ -13,6 +13,9 @@
         <ei:KeyTrigger Key="T">
             <cal:ActionMessage MethodName="ToggleMode"/>
         </ei:KeyTrigger>
+    <ei:KeyTrigger Key="C">
+            <cal:ActionMessage MethodName="ToggleCurrency"/>
+        </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <DockPanel Visibility="{Binding TableVisibility}">
@@ -32,7 +35,7 @@
                 </ListView.View>
             </ListView>
         </DockPanel>
-        <oxy:PlotView Model="{Binding ChartModel}" Visibility="{Binding ChartVisibility}"/>
+        <oxy:PlotView Model="{Binding FuelPricePlotModel}" Visibility="{Binding ChartVisibility}"/>
     </Grid>
 
 </Window>

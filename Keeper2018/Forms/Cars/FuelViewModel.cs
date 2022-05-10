@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
@@ -17,7 +18,7 @@ namespace Keeper2018
         public List<FuellingModel> Rows { get; set; }
         public string Total => $"Итого {Rows.Sum(f => f.Volume)} литров";
 
-        public PlotModel ChartModel { get; set; }
+        public PlotModel FuelPricePlotModel { get; set; }
 
         private Visibility _tableVisibility = Visibility.Collapsed;
         public Visibility TableVisibility
@@ -50,7 +51,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Автомобильное топливо;  T - Toggle mode";
+            DisplayName = "Автомобильное топливо;  T - Toggle mode;   C - Toggle currency";
         }
 
         public void Initialize()
@@ -59,11 +60,16 @@ namespace Keeper2018
             InitializeChartModel();
         }
 
+        private LinearAxis _linearAxisRb;
+        private LinearAxis _linearAxisUsd;
+        private LineSeries _dieselSeries;
+        private LineSeries _dieselSeriesUsd;
+        private ScatterSeries _arcticSeries;
         private void InitializeChartModel()
         {
-            ChartModel = new PlotModel();
+            FuelPricePlotModel = new PlotModel();
 
-            ChartModel.Axes.Add(new DateTimeAxis()
+            FuelPricePlotModel.Axes.Add(new DateTimeAxis()
             {
                 Position = AxisPosition.Bottom,
                 IntervalLength = 75,
@@ -72,27 +78,59 @@ namespace Keeper2018
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dash,
             });
-            ChartModel.Axes.Add(new LinearAxis()
+            _linearAxisRb = new LinearAxis
             {
-                Position = AxisPosition.Left,
+                Key = "RB",
+                Position = AxisPosition.Right,
+                TitleColor = OxyColors.BlueViolet,
+                TextColor = OxyColors.BlueViolet,
+                AxislineColor = OxyColors.BlueViolet,
                 MajorGridlineStyle = LineStyle.Automatic,
-                MinorGridlineStyle = LineStyle.Automatic,
-            });
+                MajorGridlineColor = OxyColors.BlueViolet,
+                // MajorStep = 0.3,
+                IsAxisVisible = false,
+            };
+            FuelPricePlotModel.Axes.Add(_linearAxisRb);
+            _linearAxisUsd = new LinearAxis()
+            {
+                Key = "USD",
+                Position = AxisPosition.Left,
+                TitleColor = OxyColors.Green,
+                TextColor = OxyColors.Green,
+                AxislineColor = OxyColors.Green,
+                MajorGridlineStyle = LineStyle.Automatic,
+                MajorGridlineColor = OxyColors.Green,
+                // MajorStep = 0.18,
+            };
+            FuelPricePlotModel.Axes.Add(_linearAxisUsd);
 
-            var dieselSeries = new LineSeries()
-            { Title = "Дт Евро5", Color = OxyColors.BlueViolet };
+            _dieselSeries = new LineSeries { Title = "Дт Евро5", Color = OxyColors.BlueViolet, IsVisible = false };
+            _dieselSeriesUsd = new LineSeries { Title = "Дт Евро5 (usd)", Color = OxyColors.Green };
+            _dieselSeries.YAxisKey = "RB";
+            _dieselSeriesUsd.YAxisKey = "USD";
+
             foreach (var fuelling in Rows.Where(f => f.FuelType == FuelType.ДтЕвро5))
             {
-                dieselSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
+                _dieselSeries.Points.Add(
+                    new DataPoint(
+                        DateTimeAxis.ToDouble(fuelling.Timestamp.Date),
+                        fuelling.Timestamp.Date < new DateTime(2016, 7, 1) 
+                            ? (double)fuelling.OneLitrePrice / 10000 
+                            : (double)fuelling.OneLitrePrice));
+                _dieselSeriesUsd.Points.Add(new DataPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
             }
-            ChartModel.Series.Add(dieselSeries);
 
-            var arkticSeries = new ScatterSeries() {Title = "Дт Арктика", MarkerType  = MarkerType.Circle, MarkerFill = OxyColors.Red };
+            FuelPricePlotModel.Series.Add(_dieselSeries);
+            FuelPricePlotModel.Series.Add(_dieselSeriesUsd);
+          
+
+            _arcticSeries = new ScatterSeries() {Title = "Дт Арктика (usd)", MarkerType  = MarkerType.Circle, MarkerFill = OxyColors.Red };
+            _arcticSeries.YAxisKey = "USD";
             foreach (var fuelling in Rows.Where(f => f.FuelType == FuelType.ДтЕвро5Арктика))
             {
-                arkticSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
+                _arcticSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(fuelling.Timestamp.Date), (double)fuelling.OneLitreInUsd));
             }
-            ChartModel.Series.Add(arkticSeries);
+            FuelPricePlotModel.Series.Add(_arcticSeries);
         }
     
         public void ToggleMode()
@@ -106,9 +144,41 @@ namespace Keeper2018
             {
                 TableVisibility = Visibility.Visible;
                 ChartVisibility = Visibility.Collapsed;
-
             }
         }
 
+        private int _currencyInt;
+        public void ToggleCurrency()
+        {
+            switch (_currencyInt)
+            {
+                case 0: 
+                    _currencyInt = 1;
+                    _linearAxisRb.IsAxisVisible = true;
+                    _linearAxisUsd.IsAxisVisible = false;
+                    _dieselSeries.IsVisible = true;
+                    _dieselSeriesUsd.IsVisible = false;
+                    _arcticSeries.IsVisible = false;
+                    break;
+                 case 1: 
+                    _currencyInt = 2;
+                    _linearAxisRb.IsAxisVisible = true;
+                    _linearAxisUsd.IsAxisVisible = true;
+                    _dieselSeries.IsVisible = true;
+                    _dieselSeriesUsd.IsVisible = true;
+                    _arcticSeries.IsVisible = true;
+                    break;
+                 case 2: 
+                    _currencyInt = 0;
+                    _linearAxisRb.IsAxisVisible = false;
+                    _linearAxisUsd.IsAxisVisible = true;
+                    _dieselSeries.IsVisible = false;
+                    _dieselSeriesUsd.IsVisible = true;
+                    _arcticSeries.IsVisible = true;
+                    break;
+            }
+            FuelPricePlotModel.InvalidatePlot(true);
+
+        }
     }
 }
