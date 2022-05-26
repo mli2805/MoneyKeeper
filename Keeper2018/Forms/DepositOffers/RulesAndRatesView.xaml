@@ -39,9 +39,9 @@
               IsChecked="{Binding Conditions.IsCapitalized, Mode=TwoWay}"/>
             <StackPanel Orientation="Horizontal">
                 <CheckBox Name="HasAdditionalProcent" Content="доп процент в конце срока" Margin="5"
-                         IsChecked="{Binding Conditions.HasAdditionalProcent, Mode=TwoWay}"/>
+                         IsChecked="{Binding Conditions.HasAdditionalPercent, Mode=TwoWay}"/>
                 <TextBox Name="AdditionalProcent" Margin="5" Width="100"
-                        Text="{Binding Conditions.AdditionalProcent, Mode=TwoWay}"/>
+                        Text="{Binding Conditions.AdditionalPercent, Mode=TwoWay}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="5">

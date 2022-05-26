@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
 {
+    [Serializable]
     public class DepoCondsModel
     {
         public int Id { get; set; }
@@ -20,35 +20,11 @@ namespace Keeper2018
 
         public bool IsRateFixed { get; set; }
 
-        public bool HasAdditionalProcent { get; set; }
-        public double AdditionalProcent { get; set; }
+        public bool HasAdditionalPercent { get; set; }
+        public double AdditionalPercent { get; set; }
 
         public List<DepositRateLine> RateLines { get; set; } = new List<DepositRateLine>();
 
-
         public string Comment { get; set; }
-      
-        public DepoCondsModel DeepCopy()
-        {
-            var deepCopy = new DepoCondsModel()
-            {
-                Id = Id,
-                DepositOfferId = DepositOfferId,
-                DateFrom = DateFrom,
-            
-                IsFactDays = IsFactDays,
-                EveryStartDay = EveryStartDay,
-                EveryFirstDayOfMonth = EveryFirstDayOfMonth,
-                EveryLastDayOfMonth = EveryLastDayOfMonth,
-                IsCapitalized = IsCapitalized,
-                IsRateFixed = IsRateFixed,
-                HasAdditionalProcent = HasAdditionalProcent,
-                AdditionalProcent = AdditionalProcent,
-            
-                Comment = Comment,
-            };
-            deepCopy.RateLines = new List<DepositRateLine>(RateLines.Select(l => (DepositRateLine) l.Clone()));
-            return deepCopy;
-        }
     }
 }

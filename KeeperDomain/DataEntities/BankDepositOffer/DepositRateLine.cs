@@ -4,7 +4,7 @@ using System.Globalization;
 namespace KeeperDomain
 {
     [Serializable]
-    public class DepositRateLine : ICloneable
+    public class DepositRateLine
     {
         public int Id { get; set; } //PK
 
@@ -15,9 +15,9 @@ namespace KeeperDomain
         public decimal AmountTo { get; set; }
         public decimal Rate { get; set; }
 
-        public object Clone()
+        public DepositRateLine DeepCopy()
         {
-            return MemberwiseClone();
+            return (DepositRateLine) MemberwiseClone();
         }
 
         public string Dump()

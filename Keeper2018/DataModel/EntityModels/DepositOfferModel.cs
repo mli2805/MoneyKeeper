@@ -37,7 +37,7 @@ namespace Keeper2018
             };
             foreach (var pair in CondsMap)
             {
-                result.CondsMap.Add(pair.Key, pair.Value.DeepCopy());
+                result.CondsMap.Add(pair.Key, pair.Value.DeepCopyBin());
             }
             return result;
         }

@@ -78,8 +78,8 @@ namespace Keeper2018
                 EveryLastDayOfMonth = depoCondsModel.EveryLastDayOfMonth,
                 IsCapitalized = depoCondsModel.IsCapitalized,
                 IsRateFixed = depoCondsModel.IsRateFixed,
-                HasAdditionalProcent = depoCondsModel.HasAdditionalProcent,
-                AdditionalProcent = depoCondsModel.AdditionalProcent,
+                HasAdditionalProcent = depoCondsModel.HasAdditionalPercent,
+                AdditionalProcent = depoCondsModel.AdditionalPercent,
             
                 Comment = depoCondsModel.Comment,
             };
