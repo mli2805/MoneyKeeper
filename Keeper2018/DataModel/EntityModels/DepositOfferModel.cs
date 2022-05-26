@@ -23,7 +23,7 @@ namespace Keeper2018
             return $"{Bank.Header} {Title} {MainCurrency}";
         }
 
-        public DepositOfferModel DeepCopy()
+        public DepositOfferModel DeepCopyExceptBank()
         {
             var result = new DepositOfferModel
             {

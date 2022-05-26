@@ -66,7 +66,7 @@ namespace Keeper2018
 
         public void EditSelectedOffer()
         {
-            var offerModel = SelectedDepositOffer.DeepCopy();
+            var offerModel = SelectedDepositOffer.DeepCopyExceptBank();
             _oneBankOfferViewModel.Initialize(offerModel);
             _windowManager.ShowDialog(_oneBankOfferViewModel);
             if (_oneBankOfferViewModel.IsCancelled) return;

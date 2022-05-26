@@ -15,11 +15,6 @@ namespace KeeperDomain
         public decimal AmountTo { get; set; }
         public decimal Rate { get; set; }
 
-        public DepositRateLine DeepCopy()
-        {
-            return (DepositRateLine) MemberwiseClone();
-        }
-
         public string Dump()
         {
             return Id  + " ; " + DepositOfferConditionsId  + " ; " + 
