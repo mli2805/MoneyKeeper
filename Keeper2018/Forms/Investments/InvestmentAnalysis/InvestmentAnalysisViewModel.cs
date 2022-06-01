@@ -6,12 +6,10 @@ namespace Keeper2018
     public class InvestmentAnalysisViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        private readonly InvestmentAnalysis _investmentAnalysis;
 
-        public InvestmentAnalysisViewModel(KeeperDataModel dataModel, InvestmentAnalysis investmentAnalysis)
+        public InvestmentAnalysisViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
-            _investmentAnalysis = investmentAnalysis;
         }
 
         public void Initialize()
@@ -20,7 +18,7 @@ namespace Keeper2018
                 new DateTime(2022, 6, 1).AddMilliseconds(-1));
             foreach (var asset in _dataModel.InvestmentAssets)
             {
-                 _investmentAnalysis.Analyze(asset, period);
+                 _dataModel.Analyze(asset, period);
             }
 
 

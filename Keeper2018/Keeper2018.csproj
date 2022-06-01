@@ -241,12 +241,17 @@
     </Compile>
     <Compile Include="Forms\Deposits\OpenDepositsViewModel.cs" />
     <Compile Include="Forms\Investments\AnalysisTools\InvestmentAnalysis.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\InvestmentAssetState.cs" />
+    <Compile Include="Forms\Investments\Assets\AssetAnalysisView.xaml.cs">
+      <DependentUpon>AssetAnalysisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Investments\Assets\AssetAnalysisViewModel.cs" />
     <Compile Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisView.xaml.cs">
       <DependentUpon>InvestmentAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisViewModel.cs" />
     <Compile Include="Forms\Investments\TrustAcountAnalysis\InvestmentAssetOnDate.cs" />
-    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceExt.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\TrustAccountBalanceExt.cs" />
     <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceOnDate.cs" />
     <Compile Include="Forms\Investments\InvestmentTransactions\OneInvestTranView.xaml.cs">
       <DependentUpon>OneInvestTranView.xaml</DependentUpon>
@@ -586,7 +591,7 @@
     <Compile Include="Forms\Transactions\Actions\TranSelectExecutor.cs" />
     <Compile Include="Forms\Transactions\TranModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Utils\DateTimeExtansions.cs" />
+    <Compile Include="Utils\DateTimeExtensions.cs" />
     <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
@@ -731,6 +736,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Gsk\GskView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Investments\Assets\AssetAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

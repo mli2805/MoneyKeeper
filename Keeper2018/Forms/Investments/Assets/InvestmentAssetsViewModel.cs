@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Autofac;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -9,16 +10,20 @@ namespace Keeper2018
 {
     public class InvestmentAssetsViewModel : Screen
     {
+        private readonly ILifetimeScope _globalScope;
         private readonly KeeperDataModel _dataModel;
+        private readonly IWindowManager _windowManager;
 
         public ObservableCollection<InvestmentAsset> Assets { get; set; }
         public InvestmentAsset SelectedAsset { get; set; }
 
         public List<AssetType> AssetTypes { get; set; }
 
-        public InvestmentAssetsViewModel(KeeperDataModel dataModel)
+        public InvestmentAssetsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel, IWindowManager windowManager)
         {
+            _globalScope = globalScope;
             _dataModel = dataModel;
+            _windowManager = windowManager;
             AssetTypes = Enum.GetValues(typeof(AssetType)).OfType<AssetType>().ToList();
         }
 
@@ -32,7 +37,14 @@ namespace Keeper2018
             DisplayName = "Инвестиционные активы";
         }
 
-       
+        public void ShowAssetAnalysis()
+        {
+            var vm = _globalScope.Resolve<AssetAnalysisViewModel>();
+            vm.Initialize(SelectedAsset);
+            _windowManager.ShowWindow(vm);
+        }
+
+
         public void DeleteSelected()
         {
             if (SelectedAsset != null)

@@ -59,7 +59,13 @@
 
                 <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
             </DataGrid.Columns>
-
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Анализ"
+                              cal:Message.Attach="[Event Click] = [Action ShowAssetAnalysis]"
+                              BorderBrush="{x:Null}" Background="White" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
     </Grid>
 </Window>
