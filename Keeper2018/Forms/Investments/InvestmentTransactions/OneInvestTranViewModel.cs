@@ -46,7 +46,7 @@ namespace Keeper2018
         public string TrustAccountLabel { get; set; }
         public List<TrustAccount> TrustAccounts { get; set; }
         public string AssetLabel { get; set; }
-        public List<InvestmentAsset> Assets { get; set; }
+        public List<InvestmentAssetModel> Assets { get; set; }
 
         public InvestTranModel TranInWork { get; set; } = new InvestTranModel();
 

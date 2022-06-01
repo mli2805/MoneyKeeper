@@ -130,8 +130,8 @@ namespace Keeper2018
         public string AssetAmountForDatagrid =>
             AssetAmount == 0 ? "" : AssetAmount.ToString(CultureInfo.CurrentCulture);
 
-        private InvestmentAsset _asset;
-        public InvestmentAsset Asset
+        private InvestmentAssetModel _asset;
+        public InvestmentAssetModel Asset
         {
             get => _asset;
             set

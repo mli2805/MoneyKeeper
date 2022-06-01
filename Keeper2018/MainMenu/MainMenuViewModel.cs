@@ -185,28 +185,28 @@ namespace Keeper2018
         }
 
         #region Investments
+        public void ShowTrustAccountsForm()
+        {
+            _trustAccountsViewModel.Initialize();
+            _windowManager.ShowWindow(_trustAccountsViewModel);
+        }
+
         public void ShowInvestmentAssetsForm()
         {
             _investmentAssetsViewModel.Initialize();
-            _windowManager.ShowDialog(_investmentAssetsViewModel);
+            _windowManager.ShowWindow(_investmentAssetsViewModel);
         }
 
         public void ShowAssetRatesForm()
         {
             _assetRatesViewModel.Initialize();
-            _windowManager.ShowDialog(_assetRatesViewModel);
-        }
-
-        public void ShowTrustAccountsForm()
-        {
-            _trustAccountsViewModel.Initialize();
-            _windowManager.ShowDialog(_trustAccountsViewModel);
+            _windowManager.ShowWindow(_assetRatesViewModel);
         }
 
         public void ShowInvestmentTransactionsForm()
         {
             _investmentTransactionsViewModel.Initialize();
-            _windowManager.ShowDialog(_investmentTransactionsViewModel);
+            _windowManager.ShowWindow(_investmentTransactionsViewModel);
             _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
             Save();
         }
@@ -214,7 +214,7 @@ namespace Keeper2018
         public void ShowInvestmentAnalysisForm()
         {
             _investmentAnalysisViewModel.Initialize();
-            _windowManager.ShowDialog(_investmentAnalysisViewModel);
+            _windowManager.ShowWindow(_investmentAnalysisViewModel);
         }
         #endregion
 

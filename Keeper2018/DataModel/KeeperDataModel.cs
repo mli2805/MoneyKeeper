@@ -12,7 +12,7 @@ namespace Keeper2018
         public List<MinfinMetalRate> MetalRates { get; set; }
 
         public List<TrustAccount> TrustAccounts { get; set; }
-        public List<InvestmentAsset> InvestmentAssets { get; set; }
+        public List<InvestmentAssetModel> InvestmentAssets { get; set; }
         public List<AssetRate> AssetRates { get; set; }
         public List<InvestTranModel> InvestTranModels { get; set; }
 

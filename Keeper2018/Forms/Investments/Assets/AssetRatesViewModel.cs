@@ -13,7 +13,7 @@ namespace Keeper2018
 
         public ObservableCollection<AssetRate> Rates { get; set; }
         public AssetRate SelectedRate { get; set; }
-        public List<InvestmentAsset> Assets { get; set; }
+        public List<InvestmentAssetModel> Assets { get; set; }
 
         public DateTime SelectedDate { get; set; } = DateTime.Today;
 

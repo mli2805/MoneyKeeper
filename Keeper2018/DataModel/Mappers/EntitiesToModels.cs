@@ -115,6 +115,21 @@ namespace Keeper2018
             };
         }
 
+        public static InvestmentAssetModel Map(this InvestmentAsset asset, KeeperDataModel dataModel)
+        {
+            return new InvestmentAssetModel()
+            {
+                Id = asset.Id,
+                TrustAccount = asset.Id == 0 ? null : dataModel.TrustAccounts.FirstOrDefault(t => t.Id == asset.TrustAccountId),
+                Ticker = asset.Ticker,
+                Title = asset.Title,
+                AssetType = asset.AssetType,
+                CouponRate = asset.CouponRate,
+                BondExpirationDate = asset.BondExpirationDate,
+                Comment = asset.Comment,
+            };
+        }
+
         public static InvestTranModel Map(this InvestmentTransaction transaction, KeeperDataModel dataModel)
         {
             return new InvestTranModel()

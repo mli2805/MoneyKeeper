@@ -69,13 +69,11 @@ namespace Keeper2018
 
             _keeperDataModel.FillInAccountTreeAndDict(bin);
             
-            _keeperDataModel.InvestmentAssets = bin.InvestmentAssets;
             _keeperDataModel.AssetRates = bin.AssetRates;
             if (bin.TrustAccounts == null)
                 bin.TrustAccounts = new List<TrustAccount>();
             _keeperDataModel.TrustAccounts = bin.TrustAccounts;
-            if (bin.InvestmentTransactions == null)
-                bin.InvestmentTransactions = new List<InvestmentTransaction>();
+            _keeperDataModel.InvestmentAssets = bin.InvestmentAssets.Select(a => a.Map(_keeperDataModel)).ToList();
             _keeperDataModel.InvestTranModels = 
                 bin.InvestmentTransactions.Select(t=>t.Map(_keeperDataModel)).ToList();
 

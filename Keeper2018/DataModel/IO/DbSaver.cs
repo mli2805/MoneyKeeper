@@ -90,9 +90,9 @@ namespace Keeper2018
                 Rates = _keeperDataModel.Rates.Values.ToList(),
                 MetalRates = _keeperDataModel.MetalRates,
 
-                InvestmentAssets = _keeperDataModel.InvestmentAssets,
-                AssetRates = _keeperDataModel.AssetRates,
                 TrustAccounts = _keeperDataModel.TrustAccounts,
+                InvestmentAssets = _keeperDataModel.InvestmentAssets.Select(a=>a.Map()).ToList(),
+                AssetRates = _keeperDataModel.AssetRates,
                 InvestmentTransactions = _keeperDataModel.InvestTranModels.Select(t=>t.Map()).ToList(),
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),

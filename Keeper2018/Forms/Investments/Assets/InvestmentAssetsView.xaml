@@ -29,9 +29,9 @@
                   SelectedItem="{Binding SelectedAsset}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="TAId" Width="40" Binding="{Binding TrustAccountId}" />
                 <DataGridTextColumn Header="Тикер" Width="80" Binding="{Binding Ticker}" />
                 <DataGridTextColumn Header="Актив" Width="200" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Рынок" Width="50" Binding="{Binding TrustAccount.StockMarket}" />
 
                 <DataGridComboBoxColumn  Header="Тип" Width="60" 
                                          ItemsSource="{Binding Source={StaticResource GetEnumValues}}"

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using KeeperDomain;
 
 namespace Keeper2018
 {
     public class InvestmentAssetState
     {
-        public InvestmentAsset Asset { get; set; }
+        public InvestmentAssetModel Asset { get; set; }
 
         public int Quantity { get; set; }
         public decimal Price { get; set; } // price + coupon
@@ -19,7 +18,7 @@ namespace Keeper2018
         {
         }
 
-        public InvestmentAssetState(InvestmentAsset asset)
+        public InvestmentAssetState(InvestmentAssetModel asset)
         {
             Asset = asset;
         }

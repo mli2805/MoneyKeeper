@@ -54,7 +54,7 @@ namespace Keeper2018
             return result;
         }
 
-        public static InvestmentAssetOnPeriod Analyze(this KeeperDataModel dataModel, InvestmentAsset asset, Period period)
+        public static InvestmentAssetOnPeriod Analyze(this KeeperDataModel dataModel, InvestmentAssetModel asset, Period period)
         {
             var result = new InvestmentAssetOnPeriod();
 

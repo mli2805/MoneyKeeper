@@ -128,6 +128,21 @@ namespace Keeper2018
             };
         }
 
+        public static InvestmentAsset Map(this InvestmentAssetModel asset)
+        {
+            return new InvestmentAsset()
+            {
+                Id = asset.Id,
+                TrustAccountId = asset.TrustAccount?.Id ?? 0,
+                Ticker = asset.Ticker,
+                Title = asset.Title,
+                AssetType = asset.AssetType,
+                CouponRate = asset.CouponRate,
+                BondExpirationDate = asset.BondExpirationDate,
+                Comment = asset.Comment,
+            };
+        }
+
         public static InvestmentTransaction  Map(this InvestTranModel transaction)
         {
             return new InvestmentTransaction()

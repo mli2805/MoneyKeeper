@@ -1,13 +1,12 @@
 ﻿using System;
 using Caliburn.Micro;
-using KeeperDomain;
 
 namespace Keeper2018
 {
     public class AssetAnalysisViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        private InvestmentAsset _asset;
+        private InvestmentAssetModel _asset;
 
         public InvestmentAssetOnPeriod Model { get; set; }
 
@@ -16,7 +15,7 @@ namespace Keeper2018
             _dataModel = dataModel;
         }
 
-        public void Initialize(InvestmentAsset asset)
+        public void Initialize(InvestmentAssetModel asset)
         {
             _asset = asset;
             var period = new DateTime(2022, 5, 1).GetFullMonthForDate();
