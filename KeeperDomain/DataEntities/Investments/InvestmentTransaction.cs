@@ -34,7 +34,7 @@ namespace KeeperDomain
                    CouponAmount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AssetAmount.ToString(new CultureInfo("en-US")) + " ; " + AssetId + " ; " +
                    PurchaseFee.ToString(new CultureInfo("en-US")) + " ; " + PurchaseFeeCurrency + " ; " + FeePaymentOperationId + " ; " + 
-                   Comment;
+                   Comment.Trim();
         }
     }
 }

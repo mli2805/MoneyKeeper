@@ -117,6 +117,16 @@
                 </MenuItem.Header>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
+                        <TextBlock Text="Трастовые счета"/>
+                    </MenuItem.Header>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ShowTrustAccountsForm"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Background="White" BorderBrush="White">
+                    <MenuItem.Header>
                         <TextBlock Text="Инвестиционные активы"/>
                     </MenuItem.Header>
                     <i:Interaction.Triggers>
@@ -135,16 +145,6 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>  
-                <MenuItem Background="White" BorderBrush="White">
-                    <MenuItem.Header>
-                        <TextBlock Text="Трастовые счета"/>
-                    </MenuItem.Header>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ShowTrustAccountsForm"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem> 
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
                         <TextBlock Text="Транзакции"/>

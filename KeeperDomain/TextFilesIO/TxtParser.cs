@@ -35,12 +35,13 @@ namespace KeeperDomain
             var ticker = new InvestmentAsset();
             var substrings = s.Split(';');
             ticker.Id = int.Parse(substrings[0]);
-            ticker.Ticker = substrings[1].Trim();
-            ticker.Title = substrings[2].Trim();
-            ticker.AssetType = (AssetType)Enum.Parse(typeof(AssetType), substrings[3]);
-            ticker.CouponRate = double.Parse(substrings[4], new CultureInfo("en-US"));
-            ticker.BondExpirationDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            ticker.Comment = substrings[6];
+            ticker.TrustAccountId = int.Parse(substrings[1]);
+            ticker.Ticker = substrings[2].Trim();
+            ticker.Title = substrings[3].Trim();
+            ticker.AssetType = (AssetType)Enum.Parse(typeof(AssetType), substrings[4]);
+            ticker.CouponRate = double.Parse(substrings[5], new CultureInfo("en-US"));
+            ticker.BondExpirationDate = DateTime.ParseExact(substrings[6].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            ticker.Comment = substrings[7].Trim();
 
             return ticker;
         }
@@ -67,8 +68,8 @@ namespace KeeperDomain
             trustAccount.StockMarket = (Market)Enum.Parse(typeof(Market), substrings[2]);
             trustAccount.Number = substrings[3].Trim(); 
             trustAccount.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]);
-            trustAccount.AccountId = int.Parse(substrings[5]);
-            trustAccount.Comment = substrings[6];
+            trustAccount.AccountId = int.Parse(substrings[5].Trim());
+            trustAccount.Comment = substrings[6].Trim();
             return trustAccount;
         }
 
@@ -93,7 +94,7 @@ namespace KeeperDomain
             trans.PurchaseFeeCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[11]);
             trans.FeePaymentOperationId = int.Parse(substrings[12]);
 
-            trans.Comment = substrings[13];
+            trans.Comment = substrings[13].Trim();
             return trans;
         }
 

@@ -8,6 +8,7 @@ namespace KeeperDomain
     {
         public int Id { get; set; }
 
+        public int TrustAccountId { get; set; }
         public string Ticker { get; set; }
         public string Title { get; set; }
         public AssetType AssetType { get; set; }
@@ -19,7 +20,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + Ticker.Trim() + " ; " + Title.Trim() + " ; " + AssetType + " ; " + 
+            return Id + " ; " + TrustAccountId + " ; " + Ticker.Trim() + " ; " + Title.Trim() + " ; " + AssetType + " ; " + 
                    CouponRate.ToString(new CultureInfo("en-US")) + " ; " + 
                    BondExpirationDate.ToString("dd/MM/yyyy") + " ; " + Comment.Trim();
         }
