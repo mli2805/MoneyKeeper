@@ -240,27 +240,28 @@
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Deposits\OpenDepositsViewModel.cs" />
-    <Compile Include="Forms\Investments\Analysis\InvestmentAnalysisView.xaml.cs">
+    <Compile Include="Forms\Investments\AnalysisTools\InvestmentAnalysis.cs" />
+    <Compile Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisView.xaml.cs">
       <DependentUpon>InvestmentAnalysisView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\Analysis\InvestmentAnalysisViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustAccount\Analysis\InvestmentAssetEvaluation.cs" />
-    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountBalanceExt.cs" />
-    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountBalanceOnDate.cs" />
-    <Compile Include="Forms\Investments\InvestTrans\OneInvestTranView.xaml.cs">
+    <Compile Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAcountAnalysis\InvestmentAssetEvaluation.cs" />
+    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceExt.cs" />
+    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceOnDate.cs" />
+    <Compile Include="Forms\Investments\InvestmentTransactions\OneInvestTranView.xaml.cs">
       <DependentUpon>OneInvestTranView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\InvestTrans\OneInvestTranViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountAnalysisView.xaml.cs">
+    <Compile Include="Forms\Investments\InvestmentTransactions\OneInvestTranViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountAnalysisView.xaml.cs">
       <DependentUpon>TrustAccountAnalysisView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\TrustAccount\Analysis\TrustAccountAnalysisViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountLine.cs" />
-    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountLineProvider.cs" />
-    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountStateView.xaml.cs">
+    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountAnalysisViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustAccountLine.cs" />
+    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustAccountLineProvider.cs" />
+    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustAccountStateView.xaml.cs">
       <DependentUpon>TrustAccountStateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\TrustAccount\Statistics\TrustAccountStateViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustAccountStateViewModel.cs" />
     <Compile Include="Forms\Investments\TrustAccount\TrustAccountsView.xaml.cs">
       <DependentUpon>TrustAccountsView.xaml</DependentUpon>
     </Compile>
@@ -496,18 +497,18 @@
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
     <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
-    <Compile Include="Forms\Investments\InvestTrans\InvestmentTransactionsView.xaml.cs">
+    <Compile Include="Forms\Investments\InvestmentTransactions\InvestmentTransactionsView.xaml.cs">
       <DependentUpon>InvestmentTransactionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\InvestTrans\InvestmentTransactionsViewModel.cs" />
-    <Compile Include="Forms\Investments\InvestmentAssetsView.xaml.cs">
+    <Compile Include="Forms\Investments\InvestmentTransactions\InvestmentTransactionsViewModel.cs" />
+    <Compile Include="Forms\Investments\Assets\InvestmentAssetsView.xaml.cs">
       <DependentUpon>InvestmentAssetsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\InvestmentAssetsViewModel.cs" />
-    <Compile Include="Forms\Investments\AssetRatesView.xaml.cs">
+    <Compile Include="Forms\Investments\Assets\InvestmentAssetsViewModel.cs" />
+    <Compile Include="Forms\Investments\Assets\AssetRatesView.xaml.cs">
       <DependentUpon>AssetRatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Investments\AssetRatesViewModel.cs" />
+    <Compile Include="Forms\Investments\Assets\AssetRatesViewModel.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameExt.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameSelectionControlInitializer.cs" />
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameButtonVm.cs" />
@@ -733,19 +734,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\Analysis\InvestmentAnalysisView.xaml">
+    <Page Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\InvestTrans\OneInvestTranView.xaml">
+    <Page Include="Forms\Investments\InvestmentTransactions\OneInvestTranView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\TrustAccount\Analysis\TrustAccountAnalysisView.xaml">
+    <Page Include="Forms\Investments\TrustAcountAnalysis\TrustAccountAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\TrustAccount\Statistics\TrustAccountStateView.xaml">
+    <Page Include="Forms\Investments\TrustAccountStatistics\TrustAccountStateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -809,15 +810,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\Investments\InvestTrans\InvestmentTransactionsView.xaml">
+    <Page Include="Forms\Investments\InvestmentTransactions\InvestmentTransactionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\InvestmentAssetsView.xaml">
+    <Page Include="Forms\Investments\Assets\InvestmentAssetsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Investments\AssetRatesView.xaml">
+    <Page Include="Forms\Investments\Assets\AssetRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

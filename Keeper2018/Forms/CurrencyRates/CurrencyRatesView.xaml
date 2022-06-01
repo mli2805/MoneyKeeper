@@ -26,7 +26,8 @@
             <Button Name="ProbabilityChart" Margin="5" Width="80" Content="Probability" DockPanel.Dock="Left"/>
             <Button Name="MonthlyChart" Margin="5" Width="80" Content="Monthly" DockPanel.Dock="Left"/>
             <Button Name="Close" Margin="5" Width="80" Content="Close" DockPanel.Dock="Right"/>
-            <Button Name="Download" Margin="5" Width="80" Content="Download"
+            <Button Name="DlMonth" Margin="5" Width="40" Content="DLMonth" DockPanel.Dock="Right"/>
+            <Button Name="Download" Margin="5" Width="40" Content="Download"
                     DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"
                     ToolTip="Загрузить НБРБ и ЦБРФ курсы"/>
             <Button Name="GoldView" Margin="5" Width="80" Content="Gold" DockPanel.Dock="Right" />
@@ -41,7 +42,8 @@
             <TextBlock Text="{Binding LastDayOfYear.RurUsdStr}" Margin="32,0,0,0" />
             <TextBlock Text="{Binding LastDayOfYear.BasketStrWithoutProc}" Margin="65,0,0,0" />
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True"
+        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" 
+                  AutoGenerateColumns="False" IsReadOnly="True"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action Input]" SelectionMode="Single">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />

@@ -9,24 +9,6 @@ namespace Keeper2018
 {
     public static class CbrRatesDownloader
     {
-//        public static async Task<double> GetRateForDate(DateTime date)
-//        {
-//            try
-//            {
-//                string uri = "http://www.cbr.ru/currency_base/daily/?date_req=" + $"{date:dd.MM.yyyy}";
-//                var response = await MyRequest.GetAsync(uri);
-//
-//                var index = response.IndexOf("USD", StringComparison.CurrentCulture);
-//                var rateStr = response.Substring(index + 50, 27);
-//                return double.TryParse(rateStr, NumberStyles.Any, new CultureInfo("ru-RU"), out double rate) ? rate : 0;
-//
-//            }
-//            catch (Exception e)
-//            {
-//                return 0;
-//            }
-//        }
-
         public static async Task<double> GetRateForDateFromXml(DateTime date)
         {
             try

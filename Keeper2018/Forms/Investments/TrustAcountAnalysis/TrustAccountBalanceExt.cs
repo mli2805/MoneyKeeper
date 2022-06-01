@@ -14,17 +14,17 @@ namespace Keeper2018
                 DateTime.MinValue, balanceEmpty, upToDate);
         }
 
-        public static decimal GetTwoBalances(this KeeperDataModel dataModel, TrustAccount trustAccount,
-            DateTime lastDayOfPreviousPeriod, DateTime lastDayOfCurrentPeriod)
-        {
-            var balanceEmpty = new TrustAccountBalanceOnDate() { Date = DateTime.MinValue };
-            var balanceBefore = dataModel.BuildUpTrustAccountBalance(trustAccount,
-                DateTime.MinValue, balanceEmpty, lastDayOfPreviousPeriod);
-            var balanceNow = dataModel.BuildUpTrustAccountBalance(trustAccount,
-                lastDayOfPreviousPeriod, balanceBefore, lastDayOfCurrentPeriod);
-
-            return 0;
-        }
+        // public static decimal GetTwoBalances(this KeeperDataModel dataModel, TrustAccount trustAccount,
+        //     DateTime lastDayOfPreviousPeriod, DateTime lastDayOfCurrentPeriod)
+        // {
+        //     var balanceEmpty = new TrustAccountBalanceOnDate() { Date = DateTime.MinValue };
+        //     var balanceBefore = dataModel.BuildUpTrustAccountBalance(trustAccount,
+        //         DateTime.MinValue, balanceEmpty, lastDayOfPreviousPeriod);
+        //     var balanceNow = dataModel.BuildUpTrustAccountBalance(trustAccount,
+        //         lastDayOfPreviousPeriod, balanceBefore, lastDayOfCurrentPeriod);
+        //
+        //     return 0;
+        // }
 
         private static TrustAccountBalanceOnDate BuildUpTrustAccountBalance(this KeeperDataModel dataModel,
             TrustAccount trustAccount,

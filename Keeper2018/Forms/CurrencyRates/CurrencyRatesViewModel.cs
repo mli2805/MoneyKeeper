@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -157,11 +158,11 @@ namespace Keeper2018
                 {
                     var currencyRates = await DownloadRates(date);
                     if (currencyRates == null) break;
-                    if (currencyRates.CbrRate.Usd.Value.Equals(0))
-                    {
-                        currencyRates.CbrRate.Usd.Value =
-                            currencyRates.NbRates.Usd.Value / currencyRates.NbRates.Rur.Value * currencyRates.NbRates.Rur.Unit;
-                    }
+                    // if (currencyRates.CbrRate.Usd.Value.Equals(0))
+                    // {
+                    //     currencyRates.CbrRate.Usd.Value =
+                    //         currencyRates.NbRates.Usd.Value / currencyRates.NbRates.Rur.Value * currencyRates.NbRates.Rur.Unit;
+                    // }
 
                     currencyRates.Id = Rows.Last().Id + 1;
                     _rates.Add(currencyRates.Date, currencyRates);
@@ -173,7 +174,7 @@ namespace Keeper2018
                     {
                         var eurUsd = Math.Round(currencyRates.NbRates.Euro.Value / currencyRates.NbRates.Usd.Value, 3);
                         _rates[previousDate].MyEurUsdRate.Value = eurUsd;
-                        var previousRow = Rows.First(r=>r.Date == previousDate);
+                        var previousRow = Rows.First(r => r.Date == previousDate);
                         previousRow.TodayRates.MyEurUsdRate.Value = eurUsd;
                         previousRow.EuroUsdStr = eurUsd.ToString("0.###", new CultureInfo("ru-RU"));
                     }
@@ -186,13 +187,40 @@ namespace Keeper2018
             IsDownloadEnabled = true;
         }
 
+
+        public async void DlMonth()
+        {
+            var result = new List<string>();
+            using (new WaitCursor())
+            {
+                var date = new DateTime(2022, 5, 28);
+                double prevRate = 0;
+                while (date <= DateTime.Today)
+                {
+                    var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(date);
+                    if (usd2Rur == 0)
+                        usd2Rur = prevRate;
+                    else 
+                        prevRate = usd2Rur;
+
+                    var dd = _rates[date];
+                    dd.CbrRate.Usd.Value = usd2Rur;
+
+                    result.Add($"{date:D} - {usd2Rur:##0.####}");
+                    date = date.AddDays(1);
+                }
+
+            }
+            File.WriteAllLines(@"c:\temp\cbrf.txt", result);
+        }
+
         private async Task<CurrencyRates> DownloadRates(DateTime date)
         {
             var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
             if (nbRbRates == null) return null;
-            var currencyRates = new CurrencyRates() {Date = date, NbRates = nbRbRates};
+            var currencyRates = new CurrencyRates() { Date = date, NbRates = nbRbRates };
             var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(date);
-            currencyRates.CbrRate.Usd = new OneRate() {Unit = 1, Value = usd2Rur};
+            currencyRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
             return currencyRates;
         }
 

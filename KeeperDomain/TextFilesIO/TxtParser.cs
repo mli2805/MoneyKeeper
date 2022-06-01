@@ -38,7 +38,7 @@ namespace KeeperDomain
             ticker.Ticker = substrings[1].Trim();
             ticker.Title = substrings[2].Trim();
             ticker.AssetType = (AssetType)Enum.Parse(typeof(AssetType), substrings[3]);
-            ticker.BondCoupon = double.Parse(substrings[4], new CultureInfo("en-US"));
+            ticker.CouponRate = double.Parse(substrings[4], new CultureInfo("en-US"));
             ticker.BondExpirationDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             ticker.Comment = substrings[6];
 

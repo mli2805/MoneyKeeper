@@ -36,7 +36,7 @@
                                          ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
                                          SelectedValueBinding="{Binding AssetType}"/>
 
-                <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding BondCoupon}" />
+                <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding CouponRate}" />
 
                 <DataGridTemplateColumn Header="Дата окончания" Width="100" >
                     <DataGridTemplateColumn.CellEditingTemplate>
