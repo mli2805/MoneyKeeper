@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -14,6 +15,11 @@ namespace Keeper2018
 
         public void Analyze(InvestmentAsset asset, Period period)
         {
+            // цена и колво (и курсы если не долларовый) на начало периода
+            // а также средняя цена единицы актива
+            // ( с учетом покупок и продаж до начала периода, а также комиссии за операции)
+            // и справочно транзакции до начала периода
+
             var trs = _dataModel.InvestTranModels
                 .Where(t => t.Asset.Ticker == asset.Ticker)
                 .ToList();
@@ -40,11 +46,9 @@ namespace Keeper2018
                 }
             }
 
-            // цена и колво (и курсы если не долларовый) на начало периода
-            // а также средняя цена единицы актива
-            // ( с учетом покупок и продаж до начала периода, а также комиссии за операции)
-            // и справочно транзакции до начала периода
+            Console.WriteLine($@"{amountBefore}  {sumBefore}");
 
+          
 
             // транзакции в течении периода
 

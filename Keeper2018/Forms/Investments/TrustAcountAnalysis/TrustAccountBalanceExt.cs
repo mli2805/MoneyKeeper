@@ -94,7 +94,7 @@ namespace Keeper2018
             var asset = result.Assets.FirstOrDefault(t => t.InvestmentAssetId == tran.Asset.Id);
             if (asset == null)
             {
-                asset = new InvestmentAssetEvaluation(tran);
+                asset = new InvestmentAssetOnDate(tran);
                 result.Assets.Add(asset);
             }
 

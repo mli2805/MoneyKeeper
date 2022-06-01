@@ -245,7 +245,7 @@
       <DependentUpon>InvestmentAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustAcountAnalysis\InvestmentAssetEvaluation.cs" />
+    <Compile Include="Forms\Investments\TrustAcountAnalysis\InvestmentAssetOnDate.cs" />
     <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceExt.cs" />
     <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceOnDate.cs" />
     <Compile Include="Forms\Investments\InvestmentTransactions\OneInvestTranView.xaml.cs">

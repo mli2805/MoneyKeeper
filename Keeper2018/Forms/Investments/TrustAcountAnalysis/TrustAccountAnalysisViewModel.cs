@@ -11,7 +11,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private TrustAccount _trustAccount;
 
-        public List<InvestmentAssetEvaluation> Rows { get; set; } = new List<InvestmentAssetEvaluation>();
+        public List<InvestmentAssetOnDate> Rows { get; set; } = new List<InvestmentAssetOnDate>();
         public decimal AllCurrentActives { get; set; }
         public decimal Cash { get; set; }
         public decimal AllPaidFees { get; set; }
@@ -22,7 +22,7 @@ namespace Keeper2018
         public string FinResult { get; set; }
         public string FinPercent { get; set; }
 
-        public InvestmentAssetEvaluation Total { get; set; }
+        public InvestmentAssetOnDate Total { get; set; }
         public string Expense { get; set; }
         public string Fees { get; set; }
         public string Externals { get; set; }
@@ -62,7 +62,7 @@ namespace Keeper2018
 
         private void EvaluateTotals(TrustAccountBalanceOnDate bal)
         {
-            Total = new InvestmentAssetEvaluation() { InvestmentCurrency = _trustAccount.Currency };
+            Total = new InvestmentAssetOnDate() { InvestmentCurrency = _trustAccount.Currency };
 
             Total.Price = Rows.Sum(r => r.Price);
 

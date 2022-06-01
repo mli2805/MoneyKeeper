@@ -12,7 +12,7 @@ namespace Keeper2018
         public decimal Withdraw { get; set; }
         public decimal Cash { get; set; }
         public decimal NotPaidFees { get; set; }
-        public List<InvestmentAssetEvaluation> Assets { get; } = new List<InvestmentAssetEvaluation>();
+        public List<InvestmentAssetOnDate> Assets { get; } = new List<InvestmentAssetOnDate>();
 
         public TrustAccountBalanceOnDate()
         {
@@ -22,7 +22,7 @@ namespace Keeper2018
         {
             Date = source.Date;
             Cash = source.Cash;
-            Assets = new List<InvestmentAssetEvaluation>(source.Assets.Select(a=>a.ShallowCopy()));
+            Assets = new List<InvestmentAssetOnDate>(source.Assets.Select(a=>a.ShallowCopy()));
         }
     }
 }

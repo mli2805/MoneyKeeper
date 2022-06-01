@@ -2,7 +2,7 @@
 
 namespace Keeper2018
 {
-    public class InvestmentAssetEvaluation
+    public class InvestmentAssetOnDate
     {
         public int InvestmentAssetId { get; }
         public string InvestmentAssetTicker { get; }
@@ -28,20 +28,20 @@ namespace Keeper2018
         public decimal FinPercent => FinResult / Price * 100;
         public string FinPercentStr => $"{FinPercent:N}%";
 
-        public InvestmentAssetEvaluation()
+        public InvestmentAssetOnDate()
         {
         }
 
-        public InvestmentAssetEvaluation(InvestTranModel tran)
+        public InvestmentAssetOnDate(InvestTranModel tran)
         {
             InvestmentAssetId = tran.Asset.Id;
             InvestmentAssetTicker = tran.Asset.Ticker;
             InvestmentCurrency = tran.Currency;
         }
 
-        public InvestmentAssetEvaluation ShallowCopy()
+        public InvestmentAssetOnDate ShallowCopy()
         {
-            return (InvestmentAssetEvaluation)MemberwiseClone();
+            return (InvestmentAssetOnDate)MemberwiseClone();
         }
     }
 }
