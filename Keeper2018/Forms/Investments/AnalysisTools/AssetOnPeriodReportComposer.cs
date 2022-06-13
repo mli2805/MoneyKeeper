@@ -4,18 +4,67 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
+    public static class BeforeColumnComposer
+    {
+        public static IEnumerable<string> CreateBeforeColumn(this AssetState assetState)
+        {
+            yield return assetState.Caption;
+            yield return "";
+
+            yield return $"Количество: {assetState.Quantity} шт.";
+            yield return $" по цене: {assetState.AveragePriceStr}";
+            yield return $"Стоимость: {assetState.PriceStr}";
+            yield return "";
+
+            yield return $"Оплачены комиссии {assetState.OperationFeesStr}";
+            yield return "  т.е. увеличены:";
+            var fullPrice = assetState.PriceInUsd + assetState.OperationFeesInUsd;
+            var averagePrice = assetState.Quantity == 0 ? 0 : fullPrice / assetState.Quantity;
+            yield return $" средняя цена: {averagePrice:N} usd";
+            yield return $" и полная стоимость: {fullPrice:N} usd";
+        }
+
+        public static IEnumerable<string> CreateOnStartColumn(this AssetOnPeriodData assetOnPeriodData)
+        {
+            var assetStateBefore = assetOnPeriodData.Before;
+            var assetState = assetOnPeriodData.OnStart;
+            yield return assetState.Caption;
+            yield return "";
+
+            yield return $"Количество: {assetState.Quantity} шт.";
+            yield return $" по цене: {assetState.AveragePriceStr}";
+            yield return $"Стоимость: {assetState.PriceStr}";
+            yield return "";
+
+            var fullPrice = assetStateBefore.PriceInUsd + assetState.OperationFeesInUsd - assetState.ReceivedCouponInUsd;
+            var averagePrice = assetState.Quantity == 0 ? 0 : fullPrice / assetState.Quantity;
+            if (assetState.ReceivedCouponInUsd > 0)
+            {
+                yield return $"Получен купон (дивы): {assetState.ReceivedCouponStr}";
+                yield return "  можно сказать уменьшены:";
+                yield return $" средняя цена: {averagePrice:N} usd";
+                yield return $" и стоимость покупки: {fullPrice:N} usd";
+                yield return "";
+            }
+         
+
+            yield return assetState.Caption;
+            var profitInUsd = assetState.PriceInUsd - fullPrice;
+            var word = profitInUsd > 0 ? "прибыль составляла: " : "убыток составлял";
+            yield return $"{word} {profitInUsd:N} usd";
+        }
+    }
+
     public static class AssetOnPeriodReportComposer
     {
         public static AssetOnPeriodReportModel CreateReport(this AssetOnPeriodData assetOnPeriodData)
         {
             return new AssetOnPeriodReportModel()
             {
-                BeforeState = CreateState(assetOnPeriodData.Before).ToList(),
-                BeforeFeesAndCoupons = CreatePartB(assetOnPeriodData.Before, 0),
+                BeforeState = assetOnPeriodData.Before.CreateBeforeColumn().ToList(),
 
-                OnStartState = CreateState(assetOnPeriodData.OnStart).ToList(),
-                OnStartFeesAndCoupons = CreatePartB(assetOnPeriodData.Before, 1),
-                OnStartAnalysis = CreateAnalysis(assetOnPeriodData.Before, assetOnPeriodData.OnStart),
+                OnStartState = assetOnPeriodData.CreateOnStartColumn().ToList(),
+
 
                 InBetweenTrans = CreateTraffic(assetOnPeriodData.InBetween).ToList(),
                 InBetweenFeesAndCoupons = CreatePartB(assetOnPeriodData.InBetween, 2),
@@ -59,6 +108,15 @@ namespace Keeper2018
                         break;
                     }
                 case 1:
+                    {
+                        if (assetState.ReceivedCoupon != 0)
+                        {
+                            result.Add($"Получен купон (дивы): {assetState.ReceivedCouponStr}");
+                            var fullPrice = assetState.PriceInUsd + assetState.OperationFeesInUsd - assetState.ReceivedCouponInUsd;
+                            result.AddRange(CreatePartPlus(fullPrice, assetState.Quantity));
+                        }
+                        break;
+                    }
                 case 3:
                     {
                         if (assetState.OperationFees != 0)
@@ -89,7 +147,7 @@ namespace Keeper2018
         {
             yield return "";
             yield return "Таким отбразом:";
-            var averagePrice = fullPrice / quantity;
+            var averagePrice = quantity == 0 ? 0 : fullPrice / quantity;
             yield return $" средняя цена: {averagePrice:N} usd";
             yield return $"Полная стоимость: {fullPrice:N} usd";
         }
@@ -100,7 +158,8 @@ namespace Keeper2018
             result.Content.Add(bState.Caption);
 
             var profit = bState.Price - aState.Price;
-            result.ProfitInUsd = bState.PriceInUsd - aState.PriceInUsd;
+            result.ProfitInUsd = (bState.PriceInUsd + bState.ReceivedCouponInUsd)
+                - (aState.PriceInUsd + aState.OperationFeesInUsd);
             var word = result.ProfitInUsd > 0 ? "прибыль составляла: " : "убыток составлял";
 
             var currency = bState.Asset.TrustAccount.Currency;

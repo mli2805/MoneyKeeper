@@ -20,7 +20,7 @@ namespace Keeper2018
             result.Before = dataModel.GetAssetOnDate(state, periodBefore, @"Ранее");
 
             // переоцениваем на начало периода
-            result.OnStart = dataModel.RecalculateOnDate(state, lastDayBefore, $"На {period.StartDate.AddSeconds(-1)}");
+            result.OnStart = dataModel.RecalculateOnDate(result.Before, lastDayBefore, $"На {period.StartDate.AddSeconds(-1)}");
 
             // только транзакции в течении периода
             var emptyState = new AssetState(asset);
@@ -97,7 +97,10 @@ namespace Keeper2018
         {
             var result = state.Clone(caption);
 
-            var assetRate = dataModel.AssetRates.Last(r => r.TickerId == state.Asset.Id && r.Date <= date);
+            var assetRate = dataModel.AssetRates.LastOrDefault(r => r.TickerId == state.Asset.Id && r.Date <= date);
+            if (assetRate == null)
+                return result;
+
             result.Price = assetRate.Value * state.Quantity;
 
             if (assetRate.Currency != CurrencyCode.USD)

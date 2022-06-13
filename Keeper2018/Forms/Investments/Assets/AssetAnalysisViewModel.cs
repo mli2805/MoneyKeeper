@@ -8,8 +8,19 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private InvestmentAssetModel _asset;
 
-        public AssetOnPeriodData AssetOnPeriodData { get; set; }
-        public AssetOnPeriodReportModel ReportModel { get; set; }
+        private Period _activePeriod;
+        private AssetOnPeriodReportModel _reportModel;
+
+        public AssetOnPeriodReportModel ReportModel
+        {
+            get => _reportModel;
+            set
+            {
+                if (Equals(value, _reportModel)) return;
+                _reportModel = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public AssetAnalysisViewModel(KeeperDataModel dataModel)
         {
@@ -19,14 +30,46 @@ namespace Keeper2018
         public void Initialize(InvestmentAssetModel asset)
         {
             _asset = asset;
-            var period = new DateTime(2022, 5, 1).GetFullMonthForDate();
-            AssetOnPeriodData = _dataModel.Analyze(asset, period);
-            ReportModel = AssetOnPeriodData.CreateReport();
+            _activePeriod = DateTime.Today.GetFullMonthForDate();
+            ReportModel = _dataModel.Analyze(_asset, _activePeriod).CreateReport();
         }
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = _asset.Title + "  " + AssetOnPeriodData.Period.ToStringD();
+            DisplayName = _asset.Title + "  " + _activePeriod.ToStringD();
         }
+
+
+        public void ShowPreviousMonth()
+        {
+            _activePeriod = _activePeriod.StartDate.AddMonths(-1).GetFullMonthForDate();
+            ReportModel = _dataModel.Analyze(_asset, _activePeriod).CreateReport();
+        }
+
+        public void ShowNextMonth()
+        {
+            _activePeriod = _activePeriod.StartDate.AddMonths(1).GetFullMonthForDate();
+            ReportModel = _dataModel.Analyze(_asset, _activePeriod).CreateReport();
+        }
+
+        public void ShowPreviousQuarter()
+        {
+            ReportModel = _dataModel.Analyze(_asset, _activePeriod).CreateReport();
+        }
+
+        public void ShowNextQuarter()
+        {
+            ReportModel = _dataModel.Analyze(_asset, _activePeriod).CreateReport();
+        }
+        public void ShowNextYear()
+        {
+            ReportModel = _dataModel.Analyze(_asset, _activePeriod).CreateReport();
+        }
+
+        public void ShowPreviousYear()
+        {
+            ReportModel = _dataModel.Analyze(_asset, _activePeriod).CreateReport();
+        }
+
     }
 }

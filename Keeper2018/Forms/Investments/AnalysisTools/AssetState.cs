@@ -18,8 +18,8 @@ namespace Keeper2018
             ? $"{Price:N} usd"
             : $"{Price:N} {Asset.TrustAccount.Currency.ToString().ToLower()} ({PriceInUsd:N} usd)";
 
-        public decimal AveragePrice => Price / Quantity;
-        public decimal AveragePriceInUsd => PriceInUsd / Quantity;
+        public decimal AveragePrice => Quantity == 0 ? 0 : Price / Quantity;
+        public decimal AveragePriceInUsd => Quantity == 0 ? 0 : PriceInUsd / Quantity;
         public string AveragePriceStr => Asset.TrustAccount.Currency == CurrencyCode.USD
             ? $"{AveragePrice:N} usd"
             : $"{AveragePrice:N} {Asset.TrustAccount.Currency.ToString().ToLower()} ({AveragePriceInUsd:N} usd)";

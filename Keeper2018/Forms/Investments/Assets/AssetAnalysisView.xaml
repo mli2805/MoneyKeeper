@@ -3,12 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignData AssetAnalysisViewModel}">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Right">
+            <cal:ActionMessage MethodName="ShowNextMonth"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Control" Key="Right">
+            <cal:ActionMessage MethodName="ShowNextYear"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="Left">
+            <cal:ActionMessage MethodName="ShowPreviousMonth"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Control" Key="Left">
+            <cal:ActionMessage MethodName="ShowPreviousYear"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Shift" Key="Left">
+            <cal:ActionMessage MethodName="ShowPreviousQuarter"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Modifiers="Shift" Key="Right">
+            <cal:ActionMessage MethodName="ShowNextQuarter"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
         <Border DockPanel.Dock="Bottom" Margin="3" BorderThickness="1" BorderBrush="Gray">
-            <TextBlock Margin="0,0, 5, 2" Text="Some tip" TextAlignment="Right" Foreground="Gray"/>
-
+            <TextBlock Text=" стрелки - месяц ;   +Shift - квартал ;   +Ctrl - год ;   Esc - выход  "
+                       Margin="2" Foreground="DarkGray" HorizontalAlignment="Right"/>
         </Border>
         <Border Margin="3" BorderThickness="1" BorderBrush="Gray">
             <Grid Margin="2">
@@ -23,19 +46,14 @@
                     <RowDefinition Height="150"/>
                     <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
-                <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding ReportModel.BeforeState}" BorderThickness="0, 0, 1, 0" />
-                <ListBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding ReportModel.OnStartState}" BorderThickness="0, 0, 1, 0"/>
+                <ListBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" ItemsSource="{Binding ReportModel.BeforeState}" BorderThickness="0, 0, 1, 0" />
+                <ListBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding ReportModel.OnStartState}" BorderThickness="0, 0, 1, 0"/>
                 <ListBox Grid.Row="0" Grid.Column="2" ItemsSource="{Binding ReportModel.InBetweenTrans}" BorderThickness="0, 0, 1, 0"/>
                 <ListBox Grid.Row="0" Grid.Column="3" ItemsSource="{Binding ReportModel.AtEndState}" BorderThickness="0"/>
 
-                <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ReportModel.BeforeFeesAndCoupons}" BorderThickness="0, 0, 1, 0"/>
-                <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ReportModel.OnStartFeesAndCoupons}" BorderThickness="0, 0, 1, 0"/>
                 <ListBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding ReportModel.InBetweenFeesAndCoupons}" BorderThickness="0, 0, 1, 0"/>
                 <ListBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding ReportModel.AtEndFeesAndCoupons}" BorderThickness="0"/>
 
-                <ListBox Grid.Row="2" Grid.Column="0"  BorderThickness="0, 0, 1, 0"/>
-                <ListBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding ReportModel.OnStartAnalysis.Content}" 
-                         BorderThickness="0, 0, 1, 0" Foreground="{Binding ReportModel.OnStartAnalysis.Brush}"/>
                 <ListBox Grid.Row="2" Grid.Column="2"  BorderThickness="0, 0, 1, 0"/>
                 <ListBox Grid.Row="2" Grid.Column="3" ItemsSource="{Binding ReportModel.AtEndAnalysis.Content}" 
                          BorderThickness="0" Foreground="{Binding ReportModel.AtEndAnalysis.Brush}"/>
