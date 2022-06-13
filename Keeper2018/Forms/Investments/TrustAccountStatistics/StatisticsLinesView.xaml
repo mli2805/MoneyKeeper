@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Keeper2018.StatisticsLinesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             >
+    <DataGrid DockPanel.Dock="Top" Margin="5"
+                  ItemsSource="{Binding Rows}" 
+                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+        <DataGrid.CellStyle>
+            <Style TargetType="DataGridCell">
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="Transparent" />
+                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                        <Setter Property="Foreground" Value="{Binding TransBrush}" />
+                        <Setter Property="BorderThickness" Value="0" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.CellStyle>
+        <DataGrid.ItemContainerStyle>
+            <Style TargetType="{x:Type DataGridRow}">
+                <Setter Property="Background" Value="White" />
+                <Setter Property="Foreground" Value="{Binding TransBrush}" />
+                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#B6E6FF" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.ItemContainerStyle>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header=" Дата" Width="80"
+                                    Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy'}" />
+            <DataGridTextColumn Header=" Операция" Width="350" Binding="{Binding Title}" />
+            <DataGridTextColumn Header=" Поступило " Width="120" Binding="{Binding AmountIn}" />
+            <DataGridTextColumn Header=" Списано " Width="240" Binding="{Binding AmountOut}" />
+            <DataGridTextColumn Header=" Комиссии " Width="120" Binding="{Binding BynFee}" />
+            <DataGridTextColumn Header=" Остаток после" Width="120" Binding="{Binding BalanceAfterStr}" />
+            <DataGridTextColumn Header=" Комментарий" Width="400" Binding="{Binding Tran.Comment}" />
+        </DataGrid.Columns>
+    </DataGrid>
+
+</UserControl>

@@ -19,7 +19,8 @@ namespace Keeper2018
 
         public List<AssetType> AssetTypes { get; set; }
 
-        public InvestmentAssetsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel, IWindowManager windowManager)
+        public InvestmentAssetsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel,
+            IWindowManager windowManager)
         {
             _globalScope = globalScope;
             _dataModel = dataModel;
@@ -44,6 +45,12 @@ namespace Keeper2018
             _windowManager.ShowWindow(vm);
         }
 
+        public void ShowAssetStatistics()
+        {
+            var vm = _globalScope.Resolve<AssetStatisticsViewModel>();
+            vm.Initialize(SelectedAsset);
+            _windowManager.ShowWindow(vm);
+        }
 
         public void DeleteSelected()
         {

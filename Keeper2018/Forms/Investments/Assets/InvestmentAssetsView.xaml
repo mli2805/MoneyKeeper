@@ -62,7 +62,10 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Анализ"
+                    <MenuItem Header="Статистика"
+                              cal:Message.Attach="[Event Click] = [Action ShowAssetStatistics]"
+                              BorderBrush="{x:Null}" Background="White" />
+               <MenuItem Header="Анализ"
                               cal:Message.Attach="[Event Click] = [Action ShowAssetAnalysis]"
                               BorderBrush="{x:Null}" Background="White" />
                 </ContextMenu>

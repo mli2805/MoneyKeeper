@@ -28,6 +28,11 @@ namespace Keeper2018
             return $"{StartDate} - {FinishMoment}";
         }
 
+        public string ToStringD()
+        {
+            return $"{StartDate:d} - {FinishMoment:d}";
+        }
+
     }
 
 

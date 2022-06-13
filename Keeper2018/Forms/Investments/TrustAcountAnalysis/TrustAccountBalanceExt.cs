@@ -49,6 +49,7 @@ namespace Keeper2018
                         break;
                     case InvestOperationType.EnrollCouponOrDividends:
                         result.Cash += tran.CurrencyAmount;
+                        result.ReceivedCoupon += tran.CurrencyAmount;
                         result.Assets.First(t => t.InvestmentAssetId == tran.Asset.Id).ReceivedCoupon += tran.CurrencyAmount;
                         break;
                     case InvestOperationType.SellBonds:
@@ -57,7 +58,7 @@ namespace Keeper2018
                         break;
                     case InvestOperationType.WithdrawFromTrustAccount:
                         result.Cash -= tran.CurrencyAmount;
-                        result.Withdraw -= tran.CurrencyAmount;
+                        result.Withdraw += tran.CurrencyAmount;
                         break;
 
                     case InvestOperationType.PayBaseCommission:

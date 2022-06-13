@@ -25,7 +25,9 @@ namespace Keeper2018
         public InvestmentAssetOnDate Total { get; set; }
         public string Expense { get; set; }
         public string Fees { get; set; }
-        public string Externals { get; set; }
+        public string TransferredToTrust { get; set; }
+        public string RealExternals { get; set; }
+        public string FreeCash { get; set; }
         public string AllCurrentActivesStr { get; set; }
 
         public TrustAccountAnalysisViewModel(KeeperDataModel dataModel)
@@ -81,9 +83,14 @@ namespace Keeper2018
             Fees = $"{Total.BuySellFeeInTrustCurrency:N} + {bal.BaseFee:N} = {AllPaidFees:N}";
             var fullExpense = Total.Price + Total.PaidCoupon + AllPaidFees;
 
-            var externals = bal.TopUp + AllPaidFees - bal.Withdraw;
-            Externals = $"{bal.TopUp:N} + {AllPaidFees:N} - {bal.Withdraw:N} = {externals:N}";
-            AllCurrentActivesStr = $"{Cash:N} + {AllCurrentActives:N} = {AllCurrentActives + Cash:N}";
+            var transferred = bal.TopUp - bal.Withdraw;
+            TransferredToTrust = $"{bal.TopUp:N} - {bal.Withdraw:N} = {transferred:N}";
+
+            var externals = bal.TopUp + AllPaidFees - bal.ReceivedCoupon - bal.Withdraw;
+            RealExternals = $"{bal.TopUp:N} + {AllPaidFees:N} - {bal.ReceivedCoupon:N} - {bal.Withdraw:N} = {externals:N}";
+
+            FreeCash = $"{Cash:N}";
+            AllCurrentActivesStr = $"{AllCurrentActives:N} + {Cash:N} = {AllCurrentActives + Cash:N}";
 
             var result = AllCurrentActives + Cash - externals;
             FinResult = $"{AllCurrentActives + Cash:N} - {externals:N} = {result:N}";

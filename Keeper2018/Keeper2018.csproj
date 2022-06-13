@@ -241,18 +241,29 @@
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Deposits\OpenDepositsViewModel.cs" />
-    <Compile Include="Forms\Investments\AnalysisTools\InvestmentAnalysis.cs" />
-    <Compile Include="Forms\Investments\AnalysisTools\InvestmentAssetState.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\AssetOnPeriodReportComposer.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\AssetOnPeriodDataProvider.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\AssetOnPeriodReportModel.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\AssetOnPeriodData.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\AssetState.cs" />
     <Compile Include="Forms\Investments\Assets\AssetAnalysisView.xaml.cs">
       <DependentUpon>AssetAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\Assets\AssetAnalysisViewModel.cs" />
+    <Compile Include="Forms\Investments\Assets\AssetStatisticsView.xaml.cs">
+      <DependentUpon>AssetStatisticsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Investments\Assets\AssetStatisticsViewModel.cs" />
     <Compile Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisView.xaml.cs">
       <DependentUpon>InvestmentAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisViewModel.cs" />
+    <Compile Include="Forms\Investments\TrustAccountStatistics\StatisticsLinesView.xaml.cs">
+      <DependentUpon>StatisticsLinesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Investments\TrustAccountStatistics\StatisticsLinesViewModel.cs" />
     <Compile Include="Forms\Investments\TrustAcountAnalysis\InvestmentAssetOnDate.cs" />
-    <Compile Include="Forms\Investments\AnalysisTools\TrustAccountBalanceExt.cs" />
+    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceExt.cs" />
     <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceOnDate.cs" />
     <Compile Include="Forms\Investments\InvestmentTransactions\OneInvestTranView.xaml.cs">
       <DependentUpon>OneInvestTranView.xaml</DependentUpon>
@@ -262,8 +273,8 @@
       <DependentUpon>TrustAccountAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountAnalysisViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustAccountLine.cs" />
-    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustAccountLineProvider.cs" />
+    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustStatisticsLine.cs" />
+    <Compile Include="Forms\Investments\TrustAccountStatistics\TrustStatisticsLineProvider.cs" />
     <Compile Include="Forms\Investments\TrustAccountStatistics\TrustAccountStateView.xaml.cs">
       <DependentUpon>TrustAccountStateView.xaml</DependentUpon>
     </Compile>
@@ -744,11 +755,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Investments\Assets\AssetStatisticsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\Investments\InvestmentAnalysis\InvestmentAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Investments\InvestmentTransactions\OneInvestTranView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Investments\TrustAccountStatistics\StatisticsLinesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

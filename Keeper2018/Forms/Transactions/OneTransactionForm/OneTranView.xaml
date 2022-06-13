@@ -17,10 +17,14 @@
             <ColumnDefinition Width="22"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <keeper2018:ExpenseControl Margin="20,0,10,0" DataContext="{Binding MyExpenseControlVm}" Visibility="{Binding Visibility}"/>
-            <keeper2018:IncomeControl Margin="20,0,10,0" DataContext="{Binding MyIncomeControlVm}" Visibility="{Binding Visibility}"/>
-            <keeper2018:TransferControl Margin="20,0,10,0" DataContext="{Binding MyTransferControlVm}" Visibility="{Binding Visibility}"/>
-            <keeper2018:ExchangeControl Margin="20,0,10,0" DataContext="{Binding MyExchangeControlVm}" Visibility="{Binding Visibility}"/>
+            <keeper2018:ExpenseControl Margin="20,0,10,0" DataContext="{Binding MyExpenseControlVm}" 
+                                       Visibility="{Binding Visibility}"/>
+            <keeper2018:IncomeControl Margin="20,0,10,0" DataContext="{Binding MyIncomeControlVm}" 
+                                      Visibility="{Binding Visibility}"/>
+            <keeper2018:TransferControl Margin="20,0,10,0" DataContext="{Binding MyTransferControlVm}" 
+                                        Visibility="{Binding Visibility}"/>
+            <keeper2018:ExchangeControl Margin="20,0,10,0" DataContext="{Binding MyExchangeControlVm}" 
+                                        Visibility="{Binding Visibility}"/>
 
 
             <Label Content="Примечание" HorizontalAlignment="Left" Margin="20,10,0,0" Height="24"/>

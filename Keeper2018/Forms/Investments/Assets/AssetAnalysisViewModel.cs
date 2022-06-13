@@ -8,7 +8,8 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private InvestmentAssetModel _asset;
 
-        public InvestmentAssetOnPeriod Model { get; set; }
+        public AssetOnPeriodData AssetOnPeriodData { get; set; }
+        public AssetOnPeriodReportModel ReportModel { get; set; }
 
         public AssetAnalysisViewModel(KeeperDataModel dataModel)
         {
@@ -19,12 +20,13 @@ namespace Keeper2018
         {
             _asset = asset;
             var period = new DateTime(2022, 5, 1).GetFullMonthForDate();
-            Model = _dataModel.Analyze(asset, period);
+            AssetOnPeriodData = _dataModel.Analyze(asset, period);
+            ReportModel = AssetOnPeriodData.CreateReport();
         }
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = _asset.Title;
+            DisplayName = _asset.Title + "  " + AssetOnPeriodData.Period.ToStringD();
         }
     }
 }

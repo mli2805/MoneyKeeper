@@ -92,7 +92,7 @@
                     <DataGridTextColumn  Header="Колво" Width="50" Binding="{Binding AssetAmountForDatagrid}"/>
                     <DataGridTextColumn  Header="Бумаги" Width="260" Binding="{Binding AssetForDatagrid}"/>
                     <DataGridTextColumn  Header="Комиссия" Width="90" Binding="{Binding BuySellFeeForDataGrid}"/>
-                    <DataGridTextColumn  Header="Коментарий" Width="170" Binding="{Binding Comment}"/>
+                    <DataGridTextColumn  Header="Комментарий" Width="170" Binding="{Binding Comment}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

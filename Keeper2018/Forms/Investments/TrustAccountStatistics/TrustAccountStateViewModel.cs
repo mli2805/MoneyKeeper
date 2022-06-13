@@ -10,7 +10,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private TrustAccount _trustAccount;
 
-        public List<TrustAccountLine> Rows { get; private set; }
+        public StatisticsLinesViewModel StatisticsLinesViewModel { get; set; } = new StatisticsLinesViewModel();
 
         public string TopUp { get; set; }
         public string Buy { get; set; }
@@ -33,13 +33,13 @@ namespace Keeper2018
         {
             _trustAccount = trustAccount;
 
-            Rows = new List<TrustAccountLine>();
+            StatisticsLinesViewModel.Rows = new List<TrustStatisticsLine>();
             decimal balanceBefore = 0;
 
             foreach (var tr in _dataModel.InvestTranModels.Where(t => t.TrustAccount.Id == trustAccount.Id))
             {
-                var line = tr.Create(balanceBefore);
-                Rows.Add(line);
+                var line = tr.Create(balanceBefore, true);
+                StatisticsLinesViewModel.Rows.Add(line);
                 balanceBefore = line.BalanceAfter;
             }
 

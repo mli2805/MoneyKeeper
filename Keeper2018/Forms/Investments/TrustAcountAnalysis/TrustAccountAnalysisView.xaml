@@ -14,25 +14,33 @@
             <Border DockPanel.Dock="Left" Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <StackPanel Margin="5,0">
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Вложено (Пополнение + комиссии - вывод): " Width="340" />
-                        <TextBlock Text="{Binding Externals}" Width="260" TextAlignment="Right"/>
+                        <TextBlock Text="Передано в ДУ (термин альфы) (Пополнение - вывод ): " Width="400" />
+                        <TextBlock Text="{Binding TransferredToTrust}" Width="260" TextAlignment="Right"/>
+                    </StackPanel>
+                     <StackPanel Orientation="Horizontal" Margin="5">
+                        <TextBlock Text="Реально вложено (Пополнение + комиссии - получ дивы - вывод): " Width="400" />
+                        <TextBlock Text="{Binding RealExternals}" Width="260" TextAlignment="Right"/>
+                    </StackPanel>
+                     <StackPanel Orientation="Horizontal" Margin="5">
+                        <TextBlock Text="Свободные средства: " Width="400" />
+                        <TextBlock Text="{Binding FreeCash}" Width="260" TextAlignment="Right"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock  Text="Приобретено активов (стоимость + НКД):" Width="340"/>
+                        <TextBlock  Text="Приобретено активов (стоимость + НКД):" Width="400"/>
                         <TextBlock Text="{Binding Expense}" Width="260" TextAlignment="Right"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Текущее (Кэш, включая дивы + тек стоимость активов): " Width="340" />
+                        <TextBlock Text="Текущее состояние (тек стоимость активов + кэш, включая дивы): " Width="400" />
                         <TextBlock Text="{Binding AllCurrentActivesStr}" Width="260" TextAlignment="Right"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Результат: " Width="340" />
+                        <TextBlock Text="Результат: " Width="400" />
                         <TextBlock Text="{Binding FinResult}"  Width="260" TextAlignment="Right"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="К вложенным / к потраченным: " Width="440" />
-                        <TextBlock Text="{Binding FinPercent}"  Width="260"/>
+                        <TextBlock Text="К вложенным / к потраченным: " Width="400" />
+                        <TextBlock Text="{Binding FinPercent}"  Width="260" TextAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
