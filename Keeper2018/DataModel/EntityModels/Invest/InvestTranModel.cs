@@ -111,6 +111,7 @@ namespace Keeper2018
         public string FullAmountForDatagrid => $"{CurrencyAmount:#,0.00} + {CouponAmount:#,0.00} = {CurrencyAmount+CouponAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}";
         public string CouponAmountForDatagrid =>
             InvestOperationType == InvestOperationType.BuyBonds
+            || InvestOperationType == InvestOperationType.SellBonds
                 ? $"{CouponAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}"
                 : "";
 
@@ -150,6 +151,8 @@ namespace Keeper2018
             {
                 case InvestOperationType.BuyBonds:
                 case InvestOperationType.BuyStocks:
+                case InvestOperationType.SellBonds:
+                case InvestOperationType.SellStocks:
                 case InvestOperationType.EnrollCouponOrDividends:
                     return $"{Asset.Ticker}::{Asset.Title}";
                 default: return "";

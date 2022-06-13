@@ -115,6 +115,21 @@ namespace Keeper2018
                     TrustAccountLabel = "По трастовому счету";
                     TranInWork.Currency = CurrencyCode.BYN;
                     break;
+                case InvestOperationType.SellBonds:
+                    AssetVisibility = Visibility.Visible;
+                    CouponVisibility = Visibility.Visible;
+                    AssetAmountVisibility = Visibility.Visible;
+                    BuySellFeeVisibility = Visibility.Visible;
+                    MyAccNameSelectorVm = null;
+                    TrustAccountLabel = "На трастовый счет"; 
+                    break;
+                case InvestOperationType.SellStocks:
+                    AssetVisibility = Visibility.Visible;
+                    AssetAmountVisibility = Visibility.Visible;
+                    BuySellFeeVisibility = Visibility.Visible;
+                    MyAccNameSelectorVm = null;
+                    TrustAccountLabel = "На трастовый счет";
+                    break;
                 case InvestOperationType.EnrollCouponOrDividends:
                     AccountVisibility = Visibility.Visible;
                     AssetVisibility = Visibility.Visible;

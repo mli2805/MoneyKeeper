@@ -19,6 +19,14 @@ namespace Keeper2018
                     line.AmountOut = tran.CurrencyAmountForDatagrid;
                     line.BynFee = tran.BuySellFeeForDataGrid;
                     break;
+               case InvestOperationType.SellBonds:
+                    line.AmountOut = tran.FullAmountForDatagrid;
+                    line.BynFee = tran.BuySellFeeForDataGrid;
+                    break;
+                case InvestOperationType.SellStocks:
+                    line.AmountOut = tran.CurrencyAmountForDatagrid;
+                    line.BynFee = tran.BuySellFeeForDataGrid;
+                    break;
                 case InvestOperationType.EnrollCouponOrDividends:
                 case InvestOperationType.TopUpTrustAccount:
                     line.AmountIn = tran.CurrencyAmountForDatagrid;
@@ -75,10 +83,13 @@ namespace Keeper2018
         {
             var result = $"{tran.InvestOperationType.GetRussian()}";
             if (tran.InvestOperationType == InvestOperationType.BuyBonds
-                || tran.InvestOperationType == InvestOperationType.BuyStocks)
+                || tran.InvestOperationType == InvestOperationType.BuyStocks
+                || tran.InvestOperationType == InvestOperationType.SellBonds
+                || tran.InvestOperationType == InvestOperationType.SellStocks)
             {
                 result += $" {tran.Asset.Ticker} {tran.AssetAmount} шт по {tran.CurrencyAmount / tran.AssetAmount:N}";
-                if (tran.InvestOperationType == InvestOperationType.BuyBonds)
+                if (tran.InvestOperationType == InvestOperationType.BuyBonds
+                    || tran.InvestOperationType == InvestOperationType.SellBonds)
                     result += $" + {tran.CouponAmount / tran.AssetAmount:N}";
             } 
             else if (tran.InvestOperationType == InvestOperationType.EnrollCouponOrDividends)
