@@ -49,7 +49,8 @@ namespace Keeper2018
             var isInUsd = result.Asset.TrustAccount.Currency == CurrencyCode.USD;
 
             var trans = dataModel.InvestTranModels
-                .Where(t => t.Asset.Ticker == result.Asset.Ticker && period.Includes(t.Timestamp))
+                .Where(t => t.Asset.Ticker == result.Asset.Ticker 
+                            && period.Includes(t.Timestamp))
                 .ToList();
             result.Trans.AddRange(trans);
 

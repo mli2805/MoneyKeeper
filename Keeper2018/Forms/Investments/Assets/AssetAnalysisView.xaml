@@ -7,7 +7,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignData AssetAnalysisViewModel}">
+        SizeToContent="Width" Height="500" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignData AssetAnalysisViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Right">
             <cal:ActionMessage MethodName="ShowNextMonth"/>
@@ -36,27 +36,16 @@
         <Border Margin="3" BorderThickness="1" BorderBrush="Gray">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250"/>
-                    <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="250"/>
-                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="350"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="120"/>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition Height="100"/>
-                </Grid.RowDefinitions>
-                <ListBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" ItemsSource="{Binding ReportModel.BeforeState}" BorderThickness="0, 0, 1, 0" />
-                <ListBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding ReportModel.OnStartState}" BorderThickness="0, 0, 1, 0"/>
-                <ListBox Grid.Row="0" Grid.Column="2" ItemsSource="{Binding ReportModel.InBetweenTrans}" BorderThickness="0, 0, 1, 0"/>
-                <ListBox Grid.Row="0" Grid.Column="3" ItemsSource="{Binding ReportModel.AtEndState}" BorderThickness="0"/>
-
-                <ListBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding ReportModel.InBetweenFeesAndCoupons}" BorderThickness="0, 0, 1, 0"/>
-                <ListBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding ReportModel.AtEndFeesAndCoupons}" BorderThickness="0"/>
-
-                <ListBox Grid.Row="2" Grid.Column="2"  BorderThickness="0, 0, 1, 0"/>
-                <ListBox Grid.Row="2" Grid.Column="3" ItemsSource="{Binding ReportModel.AtEndAnalysis.Content}" 
-                         BorderThickness="0" Foreground="{Binding ReportModel.AtEndAnalysis.Brush}"/>
+               
+                <ListBox Grid.Column="0" ItemsSource="{Binding ReportModel.BeforeState}" BorderThickness="0, 0, 1, 0" />
+                <ListBox Grid.Column="1" ItemsSource="{Binding ReportModel.OnStartState}" BorderThickness="0, 0, 1, 0"/>
+                <ListBox Grid.Column="2" ItemsSource="{Binding ReportModel.InBetweenTrans}" BorderThickness="0, 0, 1, 0"/>
+                <ListBox Grid.Column="3" ItemsSource="{Binding ReportModel.AtEndState}" BorderThickness="0"/>
             </Grid>
         </Border>
    

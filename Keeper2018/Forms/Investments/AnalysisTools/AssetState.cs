@@ -46,6 +46,8 @@ namespace Keeper2018
         {
             var clone = (AssetState)MemberwiseClone();
             clone.Caption = newCaption;
+            clone.Trans = new List<InvestTranModel>();
+            clone.Trans.AddRange(Trans);
             return clone;
         }
     }
