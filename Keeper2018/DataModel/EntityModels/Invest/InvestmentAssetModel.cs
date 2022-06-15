@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -13,7 +14,13 @@ namespace Keeper2018
         public AssetType AssetType { get; set; }
 
         public double CouponRate { get; set; } // if fixed and known
-        public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue; // if Bond not Stack
+
+        // if Bond not Stack
+        public decimal Nominal { get; set; }
+        public string NominalStr => Nominal == 0 ? "" : Nominal.ToString(new CultureInfo("en-US"));
+        public int BondCouponPeriodDays { get; set; }
+        public CouponPeriod BondCouponPeriod { get; set; } = new CouponPeriod();
+        public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;
 
         public string Comment { get; set; }
     }

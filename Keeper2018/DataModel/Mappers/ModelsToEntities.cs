@@ -137,6 +137,8 @@ namespace Keeper2018
                 Ticker = asset.Ticker,
                 Title = asset.Title,
                 AssetType = asset.AssetType,
+                Nominal = asset.Nominal,
+                BondCouponPeriodDays = asset.BondCouponPeriodDays,
                 CouponRate = asset.CouponRate,
                 BondExpirationDate = asset.BondExpirationDate,
                 Comment = asset.Comment,

@@ -13,6 +13,9 @@ namespace KeeperDomain
         public string Title { get; set; }
         public AssetType AssetType { get; set; }
 
+        public decimal Nominal { get; set; }
+        public int BondCouponPeriodDays { get; set; }
+        public CouponPeriod BondCouponPeriod { get; set; } = new CouponPeriod();
         public double CouponRate { get; set; } // if fixed and known
         public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue; // if Bond not Stack
 
@@ -20,7 +23,8 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + TrustAccountId + " ; " + Ticker.Trim() + " ; " + Title.Trim() + " ; " + AssetType + " ; " + 
+            return Id + " ; " + TrustAccountId + " ; " + Ticker.Trim() + " ; " + Title.Trim() + " ; " + AssetType + " ; " +
+                   Nominal + " ; " + BondCouponPeriod + " ; " +
                    CouponRate.ToString(new CultureInfo("en-US")) + " ; " + 
                    BondExpirationDate.ToString("dd/MM/yyyy") + " ; " + Comment.Trim();
         }

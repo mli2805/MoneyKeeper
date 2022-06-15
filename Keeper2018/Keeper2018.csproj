@@ -224,6 +224,7 @@
     <Compile Include="DataModel\DataModelExt\AccountModelExt.cs" />
     <Compile Include="DataModel\DataModelExt\DepoPartIdProvider.cs" />
     <Compile Include="DataModel\EntityModels\Invest\InvestmentAssetModel.cs" />
+    <Compile Include="DataModel\EntityModels\Invest\InvestmentAssetModelExt.cs" />
     <Compile Include="DataModel\EntityModels\Invest\InvestOperationType.cs" />
     <Compile Include="DataModel\EntityModels\Invest\BuySellFeeCalculator.cs" />
     <Compile Include="DataModel\EntityModels\DepoCondsModel.cs" />
