@@ -11,8 +11,8 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5" Height="32">
             <TextBlock Text="Банк" Margin="5,5,5,5" Width="100"/>
-            <ComboBox Margin="5" ItemsSource="{Binding Banks}" 
-                      SelectedItem="{Binding ModelInWork.Bank}" Width="240"/>
+            <ComboBox Margin="5" ItemsSource="{Binding BankNames}" 
+                      SelectedItem="{Binding SelectedBankName, Mode=TwoWay}" Width="240"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5" Height="30">
             <TextBlock Text="Название" Margin="5,5,5,5" Width="100"/>

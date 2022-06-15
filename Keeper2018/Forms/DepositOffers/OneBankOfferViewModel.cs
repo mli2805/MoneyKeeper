@@ -14,6 +14,9 @@ namespace Keeper2018
         private readonly IWindowManager _windowManager;
         private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
         public List<AccountModel> Banks { get; set; }
+        public List<string> BankNames { get; set; }
+        public string SelectedBankName { get; set; }
+
         public List<CurrencyCode> Currencies { get; set; }
         public DepositOfferModel ModelInWork { get; set; }
 
@@ -34,6 +37,8 @@ namespace Keeper2018
         public void Initialize(DepositOfferModel model)
         {
             Banks = _keeperDataModel.AcMoDict[220].Children;
+            BankNames = Banks.Select(b=>b.Name).ToList();
+            SelectedBankName = BankNames.First(n=>n == model.Bank.Name);
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             ModelInWork = model;
             ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
@@ -108,6 +113,7 @@ namespace Keeper2018
 
         public void Save()
         {
+            ModelInWork.Bank = Banks.First(b => b.Name == SelectedBankName);
             IsCancelled = false;
             TryClose();
         }
