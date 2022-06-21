@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9831E8DF-7981-4D51-ABF2-22346AC51837}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper2018", "Keeper2018\Keeper2018.csproj", "{F6A562A7-C323-4E40-918D-466FDDA29909}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeeperDomain", "KeeperDomain\KeeperDomain.csproj", "{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractKomBankRates", "ExtractKomBankRates\ExtractKomBankRates.csproj", "{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +30,10 @@ Global
 		{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
