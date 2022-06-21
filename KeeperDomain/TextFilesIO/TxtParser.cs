@@ -14,7 +14,6 @@ namespace KeeperDomain
             rate.NbRates = NbRbRatesFromString(substrings[2]);
             rate.CbrRate.Usd = OneRateFromString(substrings[3]);
             rate.MyUsdRate = OneRateFromString(substrings[4]);
-            rate.MyEurUsdRate = OneRateFromString(substrings[5]);
             return rate;
         }
 
@@ -107,6 +106,7 @@ namespace KeeperDomain
             rate.Usd = OneRateFromString(substrings[0]);
             rate.Euro = OneRateFromString(substrings[1]);
             rate.Rur = OneRateFromString(substrings[2]);
+            rate.EuroUsdCross = double.Parse(substrings[3]);
             return rate;
         }
 

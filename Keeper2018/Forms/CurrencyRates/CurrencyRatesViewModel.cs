@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -158,26 +157,11 @@ namespace Keeper2018
                 {
                     var currencyRates = await DownloadRates(date);
                     if (currencyRates == null) break;
-                    // if (currencyRates.CbrRate.Usd.Value.Equals(0))
-                    // {
-                    //     currencyRates.CbrRate.Usd.Value =
-                    //         currencyRates.NbRates.Usd.Value / currencyRates.NbRates.Rur.Value * currencyRates.NbRates.Rur.Unit;
-                    // }
 
                     currencyRates.Id = Rows.Last().Id + 1;
                     _rates.Add(currencyRates.Date, currencyRates);
                     var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);
                     Rows.Add(line);
-
-                    var previousDate = date.AddDays(-1);
-                    if (_rates[previousDate].MyEurUsdRate.Value.Equals(0))
-                    {
-                        var eurUsd = Math.Round(currencyRates.NbRates.Euro.Value / currencyRates.NbRates.Usd.Value, 3);
-                        _rates[previousDate].MyEurUsdRate.Value = eurUsd;
-                        var previousRow = Rows.First(r => r.Date == previousDate);
-                        previousRow.TodayRates.MyEurUsdRate.Value = eurUsd;
-                        previousRow.EuroUsdStr = eurUsd.ToString("0.###", new CultureInfo("ru-RU"));
-                    }
 
                     if (date.Date.Day == 31 && date.Date.Month == 12)
                         annual = line;
@@ -200,7 +184,7 @@ namespace Keeper2018
                     var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(date);
                     if (usd2Rur == 0)
                         usd2Rur = prevRate;
-                    else 
+                    else
                         prevRate = usd2Rur;
 
                     var dd = _rates[date];

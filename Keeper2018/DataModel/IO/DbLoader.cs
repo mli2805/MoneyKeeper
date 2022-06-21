@@ -62,6 +62,13 @@ namespace Keeper2018
 
         private void Map(KeeperBin bin)
         {
+            foreach (var rate in bin.Rates)
+            {
+                rate.NbRates.EuroUsdCross = Math.Round(rate.NbRates.Euro.Value / rate.NbRates.Usd.Value, 3);
+            }
+
+
+
             _keeperDataModel.Rates = new Dictionary<DateTime, CurrencyRates>();
             foreach (var rate in bin.Rates)
                 _keeperDataModel.Rates.Add(rate.Date, rate);

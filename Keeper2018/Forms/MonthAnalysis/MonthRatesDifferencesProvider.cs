@@ -24,9 +24,8 @@ namespace Keeper2018
             var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}  ({belkaPercent:0.0}%)";
             result.Add(belka, belkaBrush);
 
-            // my rate is more acceptable for this purpose
-            var euroStart = ratesLine.MyEurUsdRate.Value;
-            var euroFinish = ratesLineFinish.MyEurUsdRate.Value;
+            var euroStart = ratesLine.NbRates.EuroUsdCross;
+            var euroFinish = ratesLineFinish.NbRates.EuroUsdCross;
             double euroPercent = (euroFinish - euroStart) / euroFinish * 100;
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;

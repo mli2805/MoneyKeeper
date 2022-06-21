@@ -14,13 +14,8 @@
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
             <TextBlock Width="140" Text="Мой курс доллара" Margin="5" />
             <TextBox Width="80" Margin="5" Text="{Binding MyUsdRate, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>   <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
-            <TextBlock Width="140"  Text="Евро" Margin="5" />
-            <TextBox Width="80" Margin="5" Text="{Binding EurUsd, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>   <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
-            <TextBlock Width="140"  Text="Российских за доллар" Margin="5" />
-            <TextBox Width="80" Margin="5" Text="{Binding RubUsd, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>  
+        </StackPanel>   
+        
         <StackPanel DockPanel.Dock="Bottom" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="Save" Content="OK" IsDefault="True" Height="25" Width="100" Margin="5"/>
             <Button Name="Cancel" Content="Cancel" IsCancel="True" Height="25" Width="100" Margin="5"/>

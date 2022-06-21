@@ -85,7 +85,7 @@ namespace Keeper2018
             UsdStr = TodayRates.NbRates.Usd.Value.ToString(Template, new CultureInfo("ru-RU"));
             MyUsdStr = TodayRates.MyUsdRate.Value.Equals(0) ? "" : TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroBynStr = TodayRates.NbRates.Euro.Value.ToString(Template, new CultureInfo("ru-RU"));
-            EuroUsdStr = TodayRates.MyEurUsdRate.Value.Equals(0) ? "" : TodayRates.MyEurUsdRate.Value.ToString("0.###", new CultureInfo("ru-RU"));
+            EuroUsdStr = TodayRates.NbRates.EuroUsdCross.ToString("0.###", new CultureInfo("ru-RU"));
             RurStr = TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
 
             UsdBrush = YesterdayNbRbRates == null || YesterdayNbRbRates.Usd.Value.Equals(TodayRates.NbRates.Usd.Value)
@@ -108,11 +108,9 @@ namespace Keeper2018
             RurUsdStr = TodayRates.CbrRate.Usd.Value.Equals(0) ? "" : TodayRates.CbrRate.Usd.Value.ToString("#,#.##", new CultureInfo("ru-RU"));
         }
 
-        public void Input(double myusd, double euro, double rubusd)
+        public void Input(double myusd)
         {
             MyUsdStr = myusd.ToString(Template, new CultureInfo("ru-RU"));
-            EuroUsdStr = euro.ToString(Template, new CultureInfo("ru-RU"));
-            RurUsdStr = rubusd.ToString("#,#.##", new CultureInfo("ru-RU"));
         }
 
         private void SetBasketStr()
