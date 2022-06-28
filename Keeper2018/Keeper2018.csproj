@@ -233,6 +233,10 @@
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
     <Compile Include="DataModel\EntityModels\Car\FuellingModel.cs" />
+    <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml.cs">
+      <DependentUpon>DepositInterestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsModel.cs" />
     <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsView.xaml.cs">
       <DependentUpon>GoldCoinsView.xaml</DependentUpon>
@@ -644,6 +648,10 @@
     </Compile>
     <Compile Include="Forms\Transactions\TransactionsViewModel.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
+    <Page Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\AccountTree\DepositReport\DepositReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

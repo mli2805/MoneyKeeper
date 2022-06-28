@@ -10,6 +10,7 @@ namespace Keeper2018
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
         private readonly ExpensesOnAccountViewModel _expensesOnAccountViewModel;
+        private readonly DepositInterestViewModel _depositInterestViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
         private readonly BalanceVerificationViewModel _balanceVerificationViewModel;
         public IWindowManager WindowManager { get; }
@@ -21,12 +22,13 @@ namespace Keeper2018
         public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
-            ExpensesOnAccountViewModel expensesOnAccountViewModel,
+            ExpensesOnAccountViewModel expensesOnAccountViewModel, DepositInterestViewModel depositInterestViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
             _expensesOnAccountViewModel = expensesOnAccountViewModel;
+            _depositInterestViewModel = depositInterestViewModel;
             _depositReportViewModel = depositReportViewModel;
             _balanceVerificationViewModel = balanceVerificationViewModel;
             WindowManager = windowManager;
@@ -104,6 +106,13 @@ namespace Keeper2018
             KeeperDataModel.RemoveSelectedAccount();
         }
 
+
+        public void EnrollDepositInterest()
+        {
+            if (_depositInterestViewModel.Initialize(ShellPartsBinder.SelectedAccountModel))
+                WindowManager.ShowDialog(_depositInterestViewModel);
+        }
+        
         public void ShowDepositReport()
         {
             _depositReportViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);

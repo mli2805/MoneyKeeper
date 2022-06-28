@@ -48,6 +48,13 @@ namespace Keeper2018
                         _comboTreesProvider.MyAccNamesForExchange, 162);
             }
         }
+
+        public AccNameSelectorVm ForMyNextAccount()
+        {
+            return Build("", null,
+                _comboTreesProvider.MyAccNamesForTransfer, 912);
+        }
+
         public AccNameSelectorVm ForTags(TransactionModel tran)
         {
             switch (tran.Operation)
@@ -87,9 +94,11 @@ namespace Keeper2018
             return new AccNameSelectorVm
             {
                 ControlTitle = controlTitle,
-                Buttons = frequentAccountButtonNames.Select(
-                    button => new AccNameButtonVm(button.Key,
-                        availableAccNames.FindThroughTheForestById(button.Value))).ToList(),
+                Buttons = frequentAccountButtonNames == null 
+                    ? new List<AccNameButtonVm>() 
+                    : frequentAccountButtonNames.Select(
+                        button => new AccNameButtonVm(button.Key,
+                            availableAccNames.FindThroughTheForestById(button.Value))).ToList(),
                 AvailableAccNames = availableAccNames,
                 MyAccName = availableAccNames.FindThroughTheForestById(activeAccountId),
             };
