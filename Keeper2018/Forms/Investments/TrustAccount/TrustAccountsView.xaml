@@ -28,6 +28,9 @@
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="DeleteSelected"/>
         </ei:KeyTrigger>
+      <ei:KeyTrigger Key="Escape">
+            <cal:ActionMessage MethodName="Close"/>
+        </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <DataGrid ItemsSource="{Binding TrustAccounts}" 

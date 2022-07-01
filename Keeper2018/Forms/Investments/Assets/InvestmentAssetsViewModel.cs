@@ -60,6 +60,12 @@ namespace Keeper2018
 
         public override void CanClose(Action<bool> callback)
         {
+            foreach (var investmentAssetModel in Assets)
+            {
+                if (investmentAssetModel.TrustAccount == null)
+                    investmentAssetModel.TrustAccount =
+                        _dataModel.TrustAccounts.First(ta => ta.StockMarket == investmentAssetModel.StockMarket);
+            }
             _dataModel.InvestmentAssets = Assets.ToList();
             base.CanClose(callback);
         }

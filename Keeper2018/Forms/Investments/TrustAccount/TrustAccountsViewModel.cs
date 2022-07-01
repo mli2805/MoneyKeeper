@@ -54,6 +54,11 @@ namespace Keeper2018
                 TrustAccounts.Remove(SelectedAccount);
         }
 
+        public void Close()
+        {
+            TryClose();
+        }
+
         public override void CanClose(Action<bool> callback)
         {
             _dataModel.TrustAccounts = TrustAccounts.ToList();
