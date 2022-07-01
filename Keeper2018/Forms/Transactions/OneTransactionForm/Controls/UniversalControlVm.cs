@@ -98,8 +98,6 @@ namespace Keeper2018
         }
 
         private string _myAccountBalance;
-        private PaymentWay _selectedPaymentWay;
-
         public string MyAccountBalance
         {
             get => _myAccountBalance;
@@ -118,6 +116,7 @@ namespace Keeper2018
 
         public List<PaymentWay> PaymentWays { get; set; }
 
+        private PaymentWay _selectedPaymentWay;
         public PaymentWay SelectedPaymentWay
         {
             get => _selectedPaymentWay;
@@ -162,7 +161,7 @@ namespace Keeper2018
                 Currency = TranInWork.Currency,
                 ButtonAllInVisibility = tran.Operation == OperationType.Доход ? Visibility.Collapsed : Visibility.Visible,
             };
-            MyAmountInputControlVm.PropertyChanged += MyAmountInputcControlVm_PropertyChanged;
+            MyAmountInputControlVm.PropertyChanged += MyAmountInputControlVm_PropertyChanged;
             MyAccountBalance = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
 
             MyAmountInReturnInputControlVm = new AmountInputControlVm
@@ -268,7 +267,7 @@ namespace Keeper2018
             TranInWork.Timestamp = selectedDate.Date.AddMinutes(minute);
         }
 
-        private void MyAmountInputcControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MyAmountInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputControlVm.Amount;
             if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputControlVm.Currency;
@@ -313,7 +312,6 @@ namespace Keeper2018
             switch (e.PropertyName)
             {
                 case "MyAccount":
-                    // Task.Factory.StartNew(GetMyAccountBalanceInOtherThread);
                     MyAccountBalance = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
                     break;
                 case "MySecondAccount":
@@ -327,7 +325,6 @@ namespace Keeper2018
                 case "Timestamp":
                     NotifyOfPropertyChange(nameof(AmountInUsd));
                     NotifyOfPropertyChange(nameof(AmountInReturnInUsd));
-                    // Task.Factory.StartNew(GetMyAccountBalanceInOtherThread);
                     MyAccountBalance = _balanceDuringTransactionHinter.GetMyAccountBalance(TranInWork);
                     NotifyOfPropertyChange(nameof(MySecondAccountBalance));
                     NotifyOfPropertyChange(nameof(ExchangeRate));

@@ -16,11 +16,32 @@ namespace Keeper2018
 
         public string BankTitle { get; set; }
         public string DepositTitle { get; set; }
+
+        private decimal _depositBalance;
+        private decimal _myNextAccountBalance;
+        public string MyNextAccountBalanceStr =>
+           $"{_myNextAccountBalance:#,0.00} {DepositCurrency} -> {_myNextAccountBalance + Amount:#,0.00} {DepositCurrency}";
+        public string DepositBalanceStr => $"{_depositBalance:#,0.00} {DepositCurrency} -> {_depositBalance + Amount:#,0.00} {DepositCurrency}";
+
         public string DepositCurrency { get; set; }
-        public decimal Amount { get; set; }
+
+        private decimal _amount;
+        public decimal Amount
+        {
+            get => _amount;
+            set
+            {
+                if (value == _amount) return;
+                _amount = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(DepositBalanceStr));
+            }
+        }
+
         public AccNameSelectorVm MyNextAccNameSelectorVm { get; set; }
 
         private bool _isTransferred;
+
         public bool IsTransferred
         {
             get => _isTransferred;
@@ -32,6 +53,7 @@ namespace Keeper2018
             }
         }
 
+        private DateTime _transactionTimestamp;
         public DatePickerWithTrianglesVm MyDatePickerVm { get; set; }
         public string Comment { get; set; } = "";
 
@@ -62,16 +84,55 @@ namespace Keeper2018
             _comboTreesProvider.Initialize();
             Amount = 0;
             MyNextAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyNextAccount();
+            MyNextAccNameSelectorVm.PropertyChanged += MyNextAccNameSelectorVm_PropertyChanged;
+
             MyDatePickerVm = new DatePickerWithTrianglesVm() { SelectedDate = DateTime.Today };
+            _transactionTimestamp = DateTime.Today.AddDays(1).AddMilliseconds(-1);
+            MyDatePickerVm.PropertyChanged += MyDatePickerVm_PropertyChanged;
+
+            _depositBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
+                _accountModel, _depositOffer.MainCurrency, _transactionTimestamp));
 
             return true;
+        }
+
+        private void MyNextAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MyAccName")
+            {
+                var nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
+                _myNextAccountBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
+                    nextAccountModel, _depositOffer.MainCurrency, _transactionTimestamp));
+                NotifyOfPropertyChange(nameof(MyNextAccountBalanceStr));
+            }
+        }
+
+        private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var selectedDate = MyDatePickerVm.SelectedDate;
+            var dayTransactions = _keeperDataModel.Transactions.Values.Where(t => t.Timestamp.Date == selectedDate.Date).ToList();
+
+            int minute = 1;
+            if (dayTransactions.Any())
+                minute = dayTransactions.Max(t => t.Timestamp.Minute) + 1;
+
+            _transactionTimestamp = selectedDate.Date.AddMinutes(minute);
+
+            _depositBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
+                _accountModel, _depositOffer.MainCurrency, _transactionTimestamp));
+            var nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
+            _myNextAccountBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
+                nextAccountModel, _depositOffer.MainCurrency, _transactionTimestamp));
+
+            NotifyOfPropertyChange(nameof(DepositBalanceStr));
+            NotifyOfPropertyChange(nameof(MyNextAccountBalanceStr));
         }
 
         public void Save()
         {
             var id = _keeperDataModel.Transactions.Keys.Max() + 1;
             var thisDateTrans = _keeperDataModel.Transactions.Values
-                .Where(t => t.Timestamp.Date == MyDatePickerVm.SelectedDate).OrderBy(l=>l.Timestamp).LastOrDefault();
+                .Where(t => t.Timestamp.Date == MyDatePickerVm.SelectedDate).OrderBy(l => l.Timestamp).LastOrDefault();
             var timestamp = thisDateTrans?.Timestamp ?? MyDatePickerVm.SelectedDate;
             var tranModel1 = new TransactionModel()
             {
