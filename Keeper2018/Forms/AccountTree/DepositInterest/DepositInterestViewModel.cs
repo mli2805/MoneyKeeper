@@ -60,6 +60,7 @@ namespace Keeper2018
             DepositTitle = accountModel.Name;
             DepositCurrency = _depositOffer.MainCurrency.ToString().ToUpper();
             _comboTreesProvider.Initialize();
+            Amount = 0;
             MyNextAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyNextAccount();
             MyDatePickerVm = new DatePickerWithTrianglesVm() { SelectedDate = DateTime.Today };
 
@@ -69,7 +70,9 @@ namespace Keeper2018
         public void Save()
         {
             var id = _keeperDataModel.Transactions.Keys.Max() + 1;
-            var timestamp = _keeperDataModel.Transactions.Values.Where(t => t.Timestamp.Date == MyDatePickerVm.SelectedDate).Max(d => d.Timestamp);
+            var thisDateTrans = _keeperDataModel.Transactions.Values
+                .Where(t => t.Timestamp.Date == MyDatePickerVm.SelectedDate).OrderBy(l=>l.Timestamp).LastOrDefault();
+            var timestamp = thisDateTrans?.Timestamp ?? MyDatePickerVm.SelectedDate;
             var tranModel1 = new TransactionModel()
             {
                 Id = id,
@@ -78,7 +81,7 @@ namespace Keeper2018
                 MyAccount = _accountModel,
                 Amount = Amount,
                 Currency = _depositOffer.MainCurrency,
-                Tags = new List<AccountModel>() { _depositOffer.Bank },
+                Tags = new List<AccountModel>() { _depositOffer.Bank, _keeperDataModel.AcMoDict[208] },
                 Comment = Comment,
             };
             _keeperDataModel.Transactions.Add(tranModel1.Id, tranModel1);

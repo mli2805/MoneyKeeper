@@ -47,7 +47,7 @@
             <TextBox Margin="5" Width="350" Height="22" Text="{Binding Comment}" HorizontalAlignment="Left"/>
 
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0, 20, 0 ,10" Height="32">
-                <Button Name="Save" Margin="5" Width="200" Content="Сохранить как две операции" IsDefault="True"/>
+                <Button Name="Save" Margin="5" Width="100" Content="Сохранить" IsDefault="True"/>
                 <Button Name="Cancel" Margin="5" Width="100" Content="Отмена" IsCancel="True"/>
             </StackPanel>
         </StackPanel>
