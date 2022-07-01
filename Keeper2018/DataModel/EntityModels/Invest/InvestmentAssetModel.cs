@@ -11,6 +11,7 @@ namespace Keeper2018
         public TrustAccount TrustAccount { get; set; }
         public string Ticker { get; set; }
         public string Title { get; set; }
+        public StockMarket StockMarket { get; set; }
         public AssetType AssetType { get; set; }
 
         public double CouponRate { get; set; } // if fixed and known

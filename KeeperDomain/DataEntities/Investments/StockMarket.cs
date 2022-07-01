@@ -1,6 +1,6 @@
 ﻿namespace KeeperDomain
 {
-    public enum Market
+    public enum StockMarket
     {
         Russia, // московская биржа
         Usa,    // NYSE NASDAQ AMEX TSE

@@ -18,6 +18,11 @@
                 <x:Type TypeName="keeperDomain:AssetType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues2">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="keeperDomain:StockMarket"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
@@ -31,7 +36,9 @@
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Тикер" Width="80" Binding="{Binding Ticker}" />
                 <DataGridTextColumn Header="Актив" Width="200" Binding="{Binding Title}" />
-                <DataGridTextColumn Header="Рынок" Width="50" Binding="{Binding TrustAccount.StockMarket}" />
+                <DataGridComboBoxColumn Header="Рынок" Width="50" 
+                                        ItemsSource ="{Binding Source={StaticResource GetEnumValues2}}"
+                                        SelectedValueBinding="{Binding StockMarket}" />
 
                 <DataGridComboBoxColumn  Header="Тип" Width="60" 
                                          ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
@@ -67,7 +74,7 @@
                     <MenuItem Header="Статистика"
                               cal:Message.Attach="[Event Click] = [Action ShowAssetStatistics]"
                               BorderBrush="{x:Null}" Background="White" />
-               <MenuItem Header="Анализ"
+                    <MenuItem Header="Анализ"
                               cal:Message.Attach="[Event Click] = [Action ShowAssetAnalysis]"
                               BorderBrush="{x:Null}" Background="White" />
                 </ContextMenu>

@@ -10,7 +10,7 @@ namespace Keeper2018
             decimal purchaseFee = 0;
             switch (tran.TrustAccount.StockMarket)
             {
-                case Market.Russia:
+                case StockMarket.Russia:
                 {
                     if (tran.InvestOperationType == InvestOperationType.BuyStocks)
                         purchaseFee = Math.Max((decimal)0.0015 * tran.CurrencyAmount, 8);
@@ -18,7 +18,7 @@ namespace Keeper2018
                         purchaseFee = Math.Max((decimal)0.0010 * tran.CurrencyAmount, 8);
                     break;
                 }
-                case Market.Usa:
+                case StockMarket.Usa:
                 {
                     if (tran.CurrencyAmount / tran.AssetAmount <= 3)
                         purchaseFee = Math.Max((decimal)0.07 * tran.AssetAmount, 18);

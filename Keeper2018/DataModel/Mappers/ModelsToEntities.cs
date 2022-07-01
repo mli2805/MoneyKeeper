@@ -136,6 +136,7 @@ namespace Keeper2018
                 TrustAccountId = asset.TrustAccount?.Id ?? 0,
                 Ticker = asset.Ticker,
                 Title = asset.Title,
+                StockMarket = asset.StockMarket,
                 AssetType = asset.AssetType,
                 Nominal = asset.Nominal,
                 BondCouponPeriodDays = asset.BondCouponPeriodDays,

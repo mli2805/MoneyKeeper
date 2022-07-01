@@ -10,11 +10,13 @@
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance keeper2018:OneInvestTranViewModel}">
     <Window.Resources>
-        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="keeperDomain:CurrencyCode"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        <ResourceDictionary>
+            <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter" />
+            <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="keeperDomain:CurrencyCode"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider> </ResourceDictionary>
     </Window.Resources>
     <StackPanel Margin="5" Width="300">
         <StackPanel Visibility="{Binding AccountVisibility}">
@@ -29,14 +31,16 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,15">
             <TextBlock Text="{Binding CurrencyAmountText}"/>
-            <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CurrencyAmount}" TextAlignment="Right"/>
+            <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CurrencyAmount, 
+                UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" TextAlignment="Right"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
                       SelectedValue="{Binding TranInWork.Currency, Mode=TwoWay}" Width="60"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="5,0, 5, 15" Visibility="{Binding CouponVisibility}">
             <TextBlock Text="НКД по облигациям"/>
-            <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CouponAmount}" TextAlignment="Right"/>
+            <TextBox Margin="5,0" Width="80" Text="{Binding TranInWork.CouponAmount,
+                UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" TextAlignment="Right"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
                       SelectedValue="{Binding TranInWork.Currency, Mode=TwoWay}" Width="60"/>
         </StackPanel>

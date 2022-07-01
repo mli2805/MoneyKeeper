@@ -20,7 +20,7 @@
         </ObjectDataProvider>
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetMarketEnumValues">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="keeperDomain:Market"/>
+                <x:Type TypeName="keeperDomain:StockMarket"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>

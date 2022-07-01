@@ -123,6 +123,7 @@ namespace Keeper2018
                 TrustAccount = asset.Id == 0 ? null : dataModel.TrustAccounts.FirstOrDefault(t => t.Id == asset.TrustAccountId),
                 Ticker = asset.Ticker,
                 Title = asset.Title,
+                StockMarket = asset.StockMarket,
                 AssetType = asset.AssetType,
                 Nominal = asset.Nominal,
                 BondCouponPeriodDays = asset.BondCouponPeriodDays,
