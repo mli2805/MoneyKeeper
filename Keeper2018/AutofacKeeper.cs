@@ -36,6 +36,8 @@ namespace Keeper2018
             builder.RegisterType<PayCardsViewModel>().SingleInstance();
             builder.RegisterType<DepositInterestViewModel>().SingleInstance();
 
+            builder.RegisterType<ExchangeRatesViewModel>().SingleInstance();
+            builder.RegisterType<RatesViewModel>().SingleInstance();
             builder.RegisterType<CurrencyRatesViewModel>().SingleInstance();
             builder.RegisterType<InputMyUsdViewModel>().SingleInstance();
             builder.RegisterType<GoldCoinsViewModel>().SingleInstance();

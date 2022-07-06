@@ -13,6 +13,7 @@ namespace KeeperDomain.Exchange
     /// I have 800 usd, I can buy 800*56 = 44800 rub
     /// 
     ///  /// </summary>
+    [Serializable]
     public class ExchangeRates
     {
         public int Id;
@@ -41,7 +42,7 @@ namespace KeeperDomain.Exchange
         public double EurToRub;
         public double RubToEur;
 
-        public string ToDump()
+        public string Dump()
         {
             return Id + " ; " + Date.ToString("dd/MM/yyyy") + " ; " +
                    UsdToByn.ToString(new CultureInfo("en-Us")) + " ; " +
@@ -62,5 +63,7 @@ namespace KeeperDomain.Exchange
         {
             return (ExchangeRates)this.MemberwiseClone();
         }
+
+      
     }
 }

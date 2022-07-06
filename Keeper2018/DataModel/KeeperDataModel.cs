@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using KeeperDomain;
+using KeeperDomain.Exchange;
 
 namespace Keeper2018
 {
     public class KeeperDataModel : PropertyChangedBase
     {
         public Dictionary<DateTime, CurrencyRates> Rates { get; set; }
+        public Dictionary<DateTime, ExchangeRates> ExchangeRates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
 
         public List<TrustAccount> TrustAccounts { get; set; }

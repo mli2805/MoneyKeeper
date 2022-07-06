@@ -12,6 +12,7 @@ namespace Keeper2018
         private readonly DbSaver _dbSaver;
         private readonly ShellPartsBinder _shellPartsBinder;
         private readonly CurrencyRatesViewModel _currencyRatesViewModel;
+        private readonly RatesViewModel _ratesViewModel;
         private readonly MonthAnalysisViewModel _monthAnalysisViewModel;
         private readonly TransactionsViewModel _transactionsViewModel;
         private readonly BankOffersViewModel _bankOffersViewModel;
@@ -31,7 +32,7 @@ namespace Keeper2018
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
-            TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel,
+            TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel, RatesViewModel ratesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
              SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
@@ -47,6 +48,7 @@ namespace Keeper2018
             _dbSaver = dbSaver;
             _shellPartsBinder = shellPartsBinder;
             _currencyRatesViewModel = currencyRatesViewModel;
+            _ratesViewModel = ratesViewModel;
             _monthAnalysisViewModel = monthAnalysisViewModel;
             _transactionsViewModel = transactionsViewModel;
             _bankOffersViewModel = bankOffersViewModel;
@@ -98,9 +100,9 @@ namespace Keeper2018
             try
             {
                 // if (_transactionsViewModel.IsFirstLaunch)
-                    _transactionsViewModel.Initialize();
+                _transactionsViewModel.Initialize();
                 // else
-                    // _transactionsViewModel.ReInitializeOnlyAccountLists();
+                // _transactionsViewModel.ReInitializeOnlyAccountLists();
 
                 _windowManager.ShowDialog(_transactionsViewModel);
             }
@@ -120,6 +122,14 @@ namespace Keeper2018
         public void ShowOfficialRatesForm()
         {
             _windowManager.ShowDialog(_currencyRatesViewModel);
+            _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
+            Save();
+        }
+
+        public void ShowRatesForm()
+        {
+            _ratesViewModel.Initialize();
+            _windowManager.ShowDialog(_ratesViewModel);
             _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
             Save();
         }

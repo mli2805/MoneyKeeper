@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KeeperDomain.Exchange;
 
 namespace KeeperDomain
 {
@@ -7,6 +8,7 @@ namespace KeeperDomain
     public class KeeperBin
     {
         public List<CurrencyRates> Rates { get; set; }
+        public List<ExchangeRates> ExchangeRates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
 
         public List<TrustAccount> TrustAccounts { get; set; }

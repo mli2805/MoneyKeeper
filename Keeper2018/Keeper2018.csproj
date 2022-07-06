@@ -237,6 +237,17 @@
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\ExchangeRatesSelector.cs" />
+    <Compile Include="Forms\CurrencyRates2\ExchangeRatesView.xaml.cs">
+      <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CurrencyRates2\ExchangeRatesViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Parser.cs" />
+    <Compile Include="Forms\CurrencyRates2\RatesView.xaml.cs">
+      <DependentUpon>RatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CurrencyRates2\RatesViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates\Download\ExchangeRatesFetcher.cs" />
     <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsModel.cs" />
     <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsView.xaml.cs">
       <DependentUpon>GoldCoinsView.xaml</DependentUpon>
@@ -711,6 +722,14 @@
     <Page Include="Forms\Charts\Expenses\PeriodChoiceControl\PeriodChoiceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\CurrencyRates2\ExchangeRatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\CurrencyRates2\RatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\CurrencyRates\Charts\MonthlyChartView.xaml">
       <SubType>Designer</SubType>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using KeeperDomain.Exchange;
 
 namespace KeeperDomain
 {
@@ -14,6 +15,27 @@ namespace KeeperDomain
             rate.NbRates = NbRbRatesFromString(substrings[2]);
             rate.CbrRate.Usd = OneRateFromString(substrings[3]);
             rate.MyUsdRate = OneRateFromString(substrings[4]);
+            return rate;
+        }
+
+        public static ExchangeRates ExchangeRatesFromString(this string s)
+        {
+            var rate = new ExchangeRates();
+            var substrings = s.Split(';');
+            rate.Id = int.Parse(substrings[0]);
+            rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            rate.UsdToByn = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.BynToUsd = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.EurToByn = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.BynToEur = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.RubToByn = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.BynToRub = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.EurToUsd = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.UsdToEur = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.UsdToRub = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.RubToUsd = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.EurToRub = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.RubToEur = double.Parse(substrings[2], new CultureInfo("en-US"));
             return rate;
         }
 
@@ -37,12 +59,13 @@ namespace KeeperDomain
             ticker.TrustAccountId = int.Parse(substrings[1]);
             ticker.Ticker = substrings[2].Trim();
             ticker.Title = substrings[3].Trim();
-            ticker.AssetType = (AssetType)Enum.Parse(typeof(AssetType), substrings[4]);
-            ticker.Nominal = decimal.Parse(substrings[5], new CultureInfo("en-US"));
-            ticker.BondCouponPeriod = CouponPeriod.Parse(substrings[6]);
-            ticker.CouponRate = double.Parse(substrings[7], new CultureInfo("en-US"));
-            ticker.BondExpirationDate = DateTime.ParseExact(substrings[8].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            ticker.Comment = substrings[9].Trim();
+            ticker.StockMarket = (StockMarket)Enum.Parse(typeof(StockMarket), substrings[4]);
+            ticker.AssetType = (AssetType)Enum.Parse(typeof(AssetType), substrings[5]);
+            ticker.Nominal = decimal.Parse(substrings[6], new CultureInfo("en-US"));
+            ticker.BondCouponPeriod = CouponPeriod.Parse(substrings[7]);
+            ticker.CouponRate = double.Parse(substrings[8], new CultureInfo("en-US"));
+            ticker.BondExpirationDate = DateTime.ParseExact(substrings[9].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            ticker.Comment = substrings[10].Trim();
 
             return ticker;
         }
@@ -67,7 +90,7 @@ namespace KeeperDomain
             trustAccount.Id = int.Parse(substrings[0]);
             trustAccount.Title = substrings[1].Trim();
             trustAccount.StockMarket = (StockMarket)Enum.Parse(typeof(StockMarket), substrings[2]);
-            trustAccount.Number = substrings[3].Trim(); 
+            trustAccount.Number = substrings[3].Trim();
             trustAccount.Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]);
             trustAccount.AccountId = int.Parse(substrings[5].Trim());
             trustAccount.Comment = substrings[6].Trim();

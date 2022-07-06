@@ -1,0 +1,22 @@
+﻿<Window x:Class="Keeper2018.RatesView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom">
+            <Button Name="Close" Content="Close" Margin="5" Width="100" HorizontalAlignment="Right"/>
+        </StackPanel>
+        <TabControl>
+            <TabItem Header="Официальные курсы">
+            </TabItem>
+            <TabItem Header="Обменные курсы">
+                <keeper2018:ExchangeRatesView DataContext="{Binding ExchangeRatesViewModel}"/>
+
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

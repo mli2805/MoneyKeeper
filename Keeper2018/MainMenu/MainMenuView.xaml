@@ -48,6 +48,9 @@
         <Button Name="ShowOfficialRatesForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates">
             <Image Source="../../Resources/exchange3.png" Width="24" Height="24" />
         </Button>
+        <Button Name="ShowRatesForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates">
+            <Image Source="../../Resources/exchange3.png" Width="24" Height="24" />
+        </Button>
         <Button Name="ShowMonthAnalysisForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Month analysis">
             <Image Source="../../Resources/month_analysis.png" Width="24" Height="24" />
         </Button>

@@ -38,7 +38,7 @@ foreach (var line in bnb)
 
 }
 
-File.WriteAllLines(@"c:\temp\ExchangeRates.txt", bnbD.Select(l => l.ToDump()));
+File.WriteAllLines(@"c:\temp\ExchangeRates.txt", bnbD.Select(l => l.Dump()));
 
 
 

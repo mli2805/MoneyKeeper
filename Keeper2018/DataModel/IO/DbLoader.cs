@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using KeeperDomain;
+using KeeperDomain.Exchange;
 
 namespace Keeper2018
 {
@@ -62,16 +63,14 @@ namespace Keeper2018
 
         private void Map(KeeperBin bin)
         {
-            foreach (var rate in bin.Rates)
-            {
-                rate.NbRates.EuroUsdCross = Math.Round(rate.NbRates.Euro.Value / rate.NbRates.Usd.Value, 3);
-            }
-
-
-
             _keeperDataModel.Rates = new Dictionary<DateTime, CurrencyRates>();
             foreach (var rate in bin.Rates)
                 _keeperDataModel.Rates.Add(rate.Date, rate);
+
+            _keeperDataModel.ExchangeRates = new Dictionary<DateTime, ExchangeRates>();
+            foreach (var exchangeRate in bin.ExchangeRates)
+                _keeperDataModel.ExchangeRates.Add(exchangeRate.Date, exchangeRate);
+
             _keeperDataModel.MetalRates = bin.MetalRates;
 
             _keeperDataModel.FillInAccountTreeAndDict(bin);

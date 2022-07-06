@@ -7,15 +7,21 @@
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance keeper2018:InputMyUsdViewModel}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <TextBlock Margin="5" Text="{Binding CurrentLine.Date, StringFormat='{}{0:dd-MM-yyyy}'}" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
             <TextBlock Width="140" Text="Мой курс доллара" Margin="5" />
-            <TextBox Width="80" Margin="5" Text="{Binding MyUsdRate, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>   
-        
+            <TextBox Width="80" Margin="5" Text="{Binding MyUsdRate, 
+                UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}"/>
+        </StackPanel>
+
         <StackPanel DockPanel.Dock="Bottom" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="Save" Content="OK" IsDefault="True" Height="25" Width="100" Margin="5"/>
             <Button Name="Cancel" Content="Cancel" IsCancel="True" Height="25" Width="100" Margin="5"/>
