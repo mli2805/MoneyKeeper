@@ -4,15 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:keeper2018="clr-namespace:Keeper2018"
              cal:Bind.ModelWithoutContext="{Binding .}"
-             mc:Ignorable="d" d:DataContext="{d:DesignData ExchangeRatesViewModel }">
+             mc:Ignorable="d" 
+             Height="600"
+             d:DataContext="{d:DesignData ExchangeRatesViewModel }">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Name="Update" Content="Обновить" Margin="15, 5" Width="100" />
             <TextBlock Text="Должен быть доступен сервис 192.168.96.19/bali;  Будут взяты курсы БНБ примерно в 12:00" Margin="5"/>
         </StackPanel>
         <ListView ItemsSource="{Binding Rows}">
-
-        </ListView>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="110" DisplayMemberBinding="{Binding Path=Date, StringFormat=dd-MM-yyyy}">Дата</GridViewColumn>
+                    <GridViewColumn Width="110" DisplayMemberBinding="{Binding Path=BynUsd}">Byn/Usd</GridViewColumn>
+                    <GridViewColumn Width="110" DisplayMemberBinding="{Binding Path=BynEur}">Byn/Euro</GridViewColumn>
+                    <GridViewColumn Width="110" DisplayMemberBinding="{Binding Path=BynRub}">Byn/Rub</GridViewColumn>
+                    <GridViewColumn Width="110" DisplayMemberBinding="{Binding Path=UsdEur}">Usd/Euro</GridViewColumn>
+                    <GridViewColumn Width="110" DisplayMemberBinding="{Binding Path=UsdRub}">Usd/Rub</GridViewColumn>
+                    <GridViewColumn Width="110" DisplayMemberBinding="{Binding Path=EurRub}">Euro/Rub</GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <i:Interaction.Behaviors>
+                <keeper2018:ScrollListViewToBottomOnAddBehavior />
+                <keeper2018:ScrollListViewToBottomOnLoadBehavior />
+            </i:Interaction.Behaviors> </ListView>
     </DockPanel>
 </UserControl>

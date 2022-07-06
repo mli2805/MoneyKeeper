@@ -21,11 +21,11 @@ namespace Keeper2018
 
         public async void Update()
         {
-            var newRates = await ExchangeRatesFetcher.Get(5);
+            // var newRates = await ExchangeRatesFetcher.Get(5);
 
-            // var bnb = ExchangeRatesSelector.GetAllBnb();
-            // var bnbD = ExchangeRatesSelector.SelectMiddayRates(bnb);
-            //
+            var bnb = ExchangeRatesSelector.GetAllBnb();
+            var newRates = ExchangeRatesSelector.SelectMiddayRates(bnb);
+            
 
             foreach (var newRate in newRates)
             {

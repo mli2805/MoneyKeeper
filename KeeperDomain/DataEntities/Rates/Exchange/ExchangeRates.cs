@@ -16,32 +16,44 @@ namespace KeeperDomain.Exchange
     [Serializable]
     public class ExchangeRates
     {
-        public int Id;
-        public DateTime Date;
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
 
 
         // на табло 2.5 - 2.6
-        public double UsdToByn; // 2.5
-        public double BynToUsd; // 2.6
+        public double UsdToByn { get; set; } // 2.5
+        public double BynToUsd { get; set; } // 2.6
 
-        public double EurToByn;
-        public double BynToEur;
+        public string BynUsd => $"{UsdToByn} - {BynToUsd}";
+
+        public double EurToByn { get; set; }
+        public double BynToEur { get; set; }
+
+        public string BynEur => $"{EurToByn} - {BynToEur}";
 
         // хранить не за 100, а за 1 (для унификации)
-        public double RubToByn;
-        public double BynToRub;
+        public double RubToByn { get; set; }
+        public double BynToRub { get; set; }
 
+        public string BynRub => $"{RubToByn} - {BynToRub}";
+      
         // 1.05 - 1.10
-        public double EurToUsd; // 1.05
-        public double UsdToEur; // 1.10
+        public double EurToUsd { get; set; } // 1.05
+        public double UsdToEur { get; set; } // 1.10
 
+        public string UsdEur => $"{EurToUsd} - {UsdToEur}";
+      
         // 56 - 72.5
-        public double UsdToRub; // 56
-        public double RubToUsd; // 72.5
+        public double UsdToRub { get; set; } // 56
+        public double RubToUsd { get; set; } // 72.5
 
-        public double EurToRub;
-        public double RubToEur;
+        public string UsdRub => $"{UsdToRub} - {RubToUsd}";
+        
+        public double EurToRub { get; set; }
+        public double RubToEur { get; set; }
 
+        public string EurRub => $"{EurToRub} - {RubToUsd}";
+        
         public string Dump()
         {
             return Id + " ; " + Date.ToString("dd/MM/yyyy") + " ; " +
@@ -61,7 +73,7 @@ namespace KeeperDomain.Exchange
 
         public ExchangeRates Clone()
         {
-            return (ExchangeRates)this.MemberwiseClone();
+            return (ExchangeRates)MemberwiseClone();
         }
 
       

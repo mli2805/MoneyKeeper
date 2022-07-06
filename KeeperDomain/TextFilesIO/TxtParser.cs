@@ -25,17 +25,17 @@ namespace KeeperDomain
             rate.Id = int.Parse(substrings[0]);
             rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             rate.UsdToByn = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.BynToUsd = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.EurToByn = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.BynToEur = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.RubToByn = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.BynToRub = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.EurToUsd = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.UsdToEur = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.UsdToRub = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.RubToUsd = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.EurToRub = double.Parse(substrings[2], new CultureInfo("en-US"));
-            rate.RubToEur = double.Parse(substrings[2], new CultureInfo("en-US"));
+            rate.BynToUsd = double.Parse(substrings[3], new CultureInfo("en-US"));
+            rate.EurToByn = double.Parse(substrings[4], new CultureInfo("en-US"));
+            rate.BynToEur = double.Parse(substrings[5], new CultureInfo("en-US"));
+            rate.RubToByn = double.Parse(substrings[6], new CultureInfo("en-US"));
+            rate.BynToRub = double.Parse(substrings[7], new CultureInfo("en-US"));
+            rate.EurToUsd = double.Parse(substrings[8], new CultureInfo("en-US"));
+            rate.UsdToEur = double.Parse(substrings[9], new CultureInfo("en-US"));
+            rate.UsdToRub = double.Parse(substrings[10], new CultureInfo("en-US"));
+            rate.RubToUsd = double.Parse(substrings[11], new CultureInfo("en-US"));
+            rate.EurToRub = double.Parse(substrings[12], new CultureInfo("en-US"));
+            rate.RubToEur = double.Parse(substrings[13], new CultureInfo("en-US"));
             return rate;
         }
 
