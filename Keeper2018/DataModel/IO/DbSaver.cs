@@ -85,10 +85,15 @@ namespace Keeper2018
                 .Select(ac => ac.Deposit)
                 .ToList();
 
+            var exchangeRates = _keeperDataModel.ExchangeRates.Values.OrderBy(r=>r.Date).ToList();
+            int i = 0;
+            exchangeRates.ForEach(r=>r.Id=++i);
+
             var bin = new KeeperBin
             {
                 Rates = _keeperDataModel.Rates.Values.ToList(),
-                ExchangeRates = _keeperDataModel.ExchangeRates.Values.ToList(),
+                // ExchangeRates = _keeperDataModel.ExchangeRates.Values.ToList(),
+                ExchangeRates = exchangeRates,
                 MetalRates = _keeperDataModel.MetalRates,
 
                 TrustAccounts = _keeperDataModel.TrustAccounts,

@@ -255,7 +255,7 @@
       <DependentUpon>RatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates2\RatesViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Download\ExchangeRatesFetcher.cs" />
+    <Compile Include="Forms\CurrencyRates2\Download\ExchangeRatesFetcher.cs" />
     <Compile Include="Forms\CurrencyRates2\Gold\GoldCoinsModel.cs" />
     <Compile Include="Forms\Deposits\OpenDepositsView.xaml.cs">
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
@@ -638,10 +638,10 @@
       <DependentUpon>BasketDiagramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates\Charts\BasketDiagramViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Download\CbrRatesDownloader.cs" />
-    <Compile Include="Forms\CurrencyRates\Download\MyRequest.cs" />
-    <Compile Include="Forms\CurrencyRates\Download\NbRbRatesDownloader.cs" />
-    <Compile Include="Forms\CurrencyRates\Download\NbRbSiteRate.cs" />
+    <Compile Include="Forms\CurrencyRates2\Download\CbrRatesDownloader.cs" />
+    <Compile Include="Forms\CurrencyRates2\Download\MyRequest.cs" />
+    <Compile Include="Forms\CurrencyRates2\Download\NbRbRatesDownloader.cs" />
+    <Compile Include="Forms\CurrencyRates2\Download\NbRbSiteRate.cs" />
     <Compile Include="Forms\CurrencyRates\CurrencyRatesView.xaml.cs">
       <DependentUpon>CurrencyRatesView.xaml</DependentUpon>
     </Compile>

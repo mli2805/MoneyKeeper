@@ -34,8 +34,8 @@ namespace Keeper2018
 
             var newRates = await ExchangeRatesFetcher.Get(days);
 
-            var middayRatesRates = 
-                ExchangeRatesSelector.SelectMiddayRates(newRates.OrderBy(l=>l.Date).ToList(), Rows.Last().Date.AddDays(1));
+            var middayRatesRates =
+                ExchangeRatesSelector.SelectMiddayRates(newRates.OrderBy(l => l.Date).ToList(), Rows.Last().Date.AddDays(1));
             var lastId = Rows.Last().Id;
 
             foreach (var newRate in middayRatesRates)
@@ -48,5 +48,6 @@ namespace Keeper2018
                 }
             }
         }
+
     }
 }
