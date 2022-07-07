@@ -21,6 +21,7 @@ namespace Keeper2018
         private Dictionary<DateTime, CurrencyRates> _rates;
         public ObservableCollection<CurrencyRatesModel> Rows { get; set; } = new ObservableCollection<CurrencyRatesModel>();
 
+        private CurrencyRatesModel _selectedRow;
         public CurrencyRatesModel SelectedRow
         {
             get => _selectedRow;
@@ -35,8 +36,6 @@ namespace Keeper2018
         public CurrencyRatesModel LastDayOfYear { get; set; }
 
         private bool _isDownloadEnabled;
-        private CurrencyRatesModel _selectedRow;
-
         public bool IsDownloadEnabled
         {
             get => _isDownloadEnabled;

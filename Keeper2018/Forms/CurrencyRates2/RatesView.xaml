@@ -5,21 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Width="900" Height="700" WindowStartupLocation="CenterScreen">
+        Width="984" Height="700" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom">
             <Button Name="Close" Content="Close" Margin="5" Width="100" HorizontalAlignment="Right"/>
         </StackPanel>
         <TabControl>
-            <TabItem Header="Официальные курсы">
-            </TabItem>
-            <TabItem Header="Обменные курсы">
+            <TabItem Header="Обменные курсы" Width="150">
                 <keeper2018:ExchangeRatesView DataContext="{Binding ExchangeRatesViewModel}"/>
-
             </TabItem>
-         <TabItem Header="Золото">
+            <TabItem Header="Официальные курсы" Width="150">
+                <keeper2018:OfficialRatesView DataContext="{Binding OfficialRatesViewModel}"/>
+            </TabItem>
+            <TabItem Header="Золото" Width="150">
                 <keeper2018:GoldRatesView DataContext="{Binding GoldRatesViewModel}"/>
-
             </TabItem>
         </TabControl>
     </DockPanel>

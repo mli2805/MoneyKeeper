@@ -32,7 +32,7 @@
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="S">
             <cal:ActionMessage MethodName="ActionMethod">
-                <cal:Parameter Value="Save"/>
+                <cal:Parameter Value="SaveAllDb"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="E">
@@ -171,7 +171,7 @@
             </MenuItem>
         </Menu>
 
-        <Button Name="Save" Margin="25,0,0,0" Background="White" BorderBrush="White" ToolTip="Save">
+        <Button Name="SaveAllDb" Margin="25,0,0,0" Background="White" BorderBrush="White" ToolTip="SaveAllDb">
             <Image Source="../../Resources/save.png" Width="24" Height="24" />
         </Button>
         <Button Name="ShowSettingsForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Settings">

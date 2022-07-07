@@ -1,37 +1,18 @@
-﻿<Window x:Class="Keeper2018.CurrencyRatesView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:keeper2018="clr-namespace:Keeper2018"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:cal="http://www.caliburnproject.org"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-        mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance keeper2018:CurrencyRatesViewModel}"
-        Width="987" WindowStartupLocation="CenterScreen" FontSize="13.5">
-
-    <i:Interaction.Triggers>
-        <ei:KeyTrigger Key="D" Modifiers="Control">
-            <cal:ActionMessage MethodName="RemoveLine"/>
-        </ei:KeyTrigger>
-    </i:Interaction.Triggers>
-    <DockPanel Margin="5">
-        <DockPanel DockPanel.Dock="Bottom" Margin="5">
-            <Button Name="LongTermChart" Margin="5" Width="80" Content="Long term" DockPanel.Dock="Left"/>
-            <Button Name="UsdFourYearsChart" Margin="5" Width="90" Content="Usd 4Years 1" DockPanel.Dock="Left"/>
-            <Button Name="UsdFiveYearsChart" Margin="5" Width="90" Content="Usd 4Years 2" DockPanel.Dock="Left"/>
-            <Button Name="RusBelChart" Margin="5" Width="80" Content="Rus - Bel" DockPanel.Dock="Left"/>
-            <Button Name="BasketChart" Margin="5" Width="80" Content="Basket" DockPanel.Dock="Left"/>
-            <Button Name="ProbabilityChart" Margin="5" Width="80" Content="Probability" DockPanel.Dock="Left"/>
-            <Button Name="MonthlyChart" Margin="5" Width="80" Content="Monthly" DockPanel.Dock="Left"/>
-            <Button Name="Close" Margin="5" Width="80" Content="Close" DockPanel.Dock="Right"/>
-            <Button Name="DlMonth" Margin="5" Width="40" Content="DLMonth" DockPanel.Dock="Right"/>
-            <Button Name="Download" Margin="5" Width="40" Content="Download"
-                    DockPanel.Dock="Right" IsEnabled="{Binding IsDownloadEnabled}"
-                    ToolTip="Загрузить НБРБ и ЦБРФ курсы"/>
-            <TextBlock/>
-        </DockPanel>
+﻿<UserControl x:Class="Keeper2018.OfficialRatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:keeper2018="clr-namespace:Keeper2018"
+             cal:Bind.ModelWithoutContext="{Binding .}"
+             mc:Ignorable="d" 
+             FontSize="13.5">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button Margin="15, 5" Width="220" Name="Download" Content="Обновить курсы НБРБ и ЦБРФ" IsEnabled="{Binding IsDownloadEnabled}"/>
+        </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
             <TextBlock Text="{Binding LastDayOfYear.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
             <TextBlock Text="{Binding LastDayOfYear.UsdStr}" Margin="31,0,0,0" />
@@ -43,7 +24,7 @@
         </StackPanel>
         <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" 
                   AutoGenerateColumns="False" IsReadOnly="True"
-                  cal:Message.Attach="[Event MouseDoubleClick] = [Action Input]" SelectionMode="Single">
+                  SelectionMode="Single">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />
@@ -130,7 +111,6 @@
             </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Ввести мои курсы" cal:Message.Attach="Input"/>
                     <MenuItem Header="Удалить курсы за день" cal:Message.Attach="RemoveLine"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
@@ -149,4 +129,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
-</Window>
+</UserControl>

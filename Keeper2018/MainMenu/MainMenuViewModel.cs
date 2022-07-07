@@ -85,7 +85,7 @@ namespace Keeper2018
                     ShowDepositOffersForm();
                     break;
                 case MainMenuAction.Save:
-                    Save();
+                    SaveAllDb();
                     break;
                 case MainMenuAction.ShowSettingsForm:
                     ShowSettingsForm();
@@ -99,11 +99,7 @@ namespace Keeper2018
         {
             try
             {
-                // if (_transactionsViewModel.IsFirstLaunch)
                 _transactionsViewModel.Initialize();
-                // else
-                // _transactionsViewModel.ReInitializeOnlyAccountLists();
-
                 _windowManager.ShowDialog(_transactionsViewModel);
             }
             catch (Exception e)
@@ -115,7 +111,7 @@ namespace Keeper2018
             if (_transactionsViewModel.Model.IsCollectionChanged)
             {
                 _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
-                Save();
+                SaveAllDb();
             }
         }
 
@@ -123,15 +119,15 @@ namespace Keeper2018
         {
             _windowManager.ShowDialog(_currencyRatesViewModel);
             _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
-            Save();
+            SaveAllDb();
         }
 
         public void ShowRatesForm()
         {
-            _ratesViewModel.Initialize();
+            // initialized on application start (ShellViewModel.OnViewLoaded);
             _windowManager.ShowDialog(_ratesViewModel);
             _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
-            Save();
+            SaveAllDb();
         }
 
         public void ShowMonthAnalysisForm()
@@ -218,7 +214,7 @@ namespace Keeper2018
             _investmentTransactionsViewModel.Initialize();
             _windowManager.ShowWindow(_investmentTransactionsViewModel);
             _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
-            Save();
+            SaveAllDb();
         }
 
         public void ShowInvestmentAnalysisForm()
@@ -229,7 +225,7 @@ namespace Keeper2018
         #endregion
 
 
-        public async void Save()
+        public async void SaveAllDb()
         {
             await _dbSaver.Save();
         }

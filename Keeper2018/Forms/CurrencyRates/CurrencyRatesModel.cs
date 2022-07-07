@@ -85,7 +85,7 @@ namespace Keeper2018
             UsdStr = TodayRates.NbRates.Usd.Value.ToString(Template, new CultureInfo("ru-RU"));
             MyUsdStr = TodayRates.MyUsdRate.Value.Equals(0) ? "" : TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroBynStr = TodayRates.NbRates.Euro.Value.ToString(Template, new CultureInfo("ru-RU"));
-            EuroUsdStr = TodayRates.NbRates.EuroUsdCross.ToString("0.###", new CultureInfo("ru-RU"));
+            EuroUsdStr = TodayRates.NbRates.EuroUsdCross.ToString("0.####", new CultureInfo("ru-RU"));
             RurStr = TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
 
             UsdBrush = YesterdayNbRbRates == null || YesterdayNbRbRates.Usd.Value.Equals(TodayRates.NbRates.Usd.Value)

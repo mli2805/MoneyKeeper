@@ -129,7 +129,7 @@ namespace KeeperDomain
             rate.Usd = OneRateFromString(substrings[0]);
             rate.Euro = OneRateFromString(substrings[1]);
             rate.Rur = OneRateFromString(substrings[2]);
-            rate.EuroUsdCross = double.Parse(substrings[3]);
+            // rate.EuroUsdCross = double.Parse(substrings[3]);
             return rate;
         }
 
