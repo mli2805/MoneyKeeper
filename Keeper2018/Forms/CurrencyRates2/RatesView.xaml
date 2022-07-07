@@ -17,6 +17,10 @@
                 <keeper2018:ExchangeRatesView DataContext="{Binding ExchangeRatesViewModel}"/>
 
             </TabItem>
+         <TabItem Header="Золото">
+                <keeper2018:GoldRatesView DataContext="{Binding GoldRatesViewModel}"/>
+
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>

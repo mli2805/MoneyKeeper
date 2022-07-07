@@ -1,12 +1,12 @@
-﻿<Window x:Class="Keeper2018.GoldCoinsView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
-        mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        >
-    <DockPanel>
+﻿<UserControl x:Class="Keeper2018.GoldRatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+             mc:Ignorable="d" 
+             >
+      <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="10">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <TextBlock Text="Ввести дату и цену золота 900-й пробы и нажать " VerticalAlignment="Center"/>
@@ -100,5 +100,4 @@
         </DataGrid.Columns>
     </DataGrid>
     </DockPanel>
-
-</Window>
+</UserControl>

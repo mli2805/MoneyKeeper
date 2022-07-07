@@ -237,23 +237,22 @@
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates2\ExchangeRatesSelector.cs" />
-    <Compile Include="Forms\CurrencyRates2\ExchangeRatesView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesSelector.cs" />
+    <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesView.xaml.cs">
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates2\ExchangeRatesViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates2\KomBankRatesLine.cs" />
-    <Compile Include="Forms\CurrencyRates2\Parser.cs" />
+    <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Exchange\KomBankRatesLine.cs" />
+    <Compile Include="Forms\CurrencyRates2\Gold\GoldRatesView.xaml.cs">
+      <DependentUpon>GoldRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CurrencyRates2\Gold\GoldRatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\RatesView.xaml.cs">
       <DependentUpon>RatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates2\RatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\Download\ExchangeRatesFetcher.cs" />
-    <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsView.xaml.cs">
-      <DependentUpon>GoldCoinsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\CurrencyRates\Gold\GoldCoinsViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Gold\GoldCoinsModel.cs" />
     <Compile Include="Forms\Deposits\OpenDepositsView.xaml.cs">
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
     </Compile>
@@ -724,7 +723,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\CurrencyRates2\ExchangeRatesView.xaml">
+    <Page Include="Forms\CurrencyRates2\Exchange\ExchangeRatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\CurrencyRates2\Gold\GoldRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -745,10 +748,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\CurrencyRates\Gold\GoldCoinsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1050,9 +1049,7 @@
       <Name>KeeperDomain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\CurrencyRates\IO\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\deposits.png" />
   </ItemGroup>

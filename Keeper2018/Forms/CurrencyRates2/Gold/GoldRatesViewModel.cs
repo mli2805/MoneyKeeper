@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class GoldCoinsViewModel : Screen
+    public class GoldRatesViewModel : PropertyChangedBase
     {
         private readonly KeeperDataModel _keeperDataModel;
         private List<GoldCoinsModel> _rows;
@@ -22,7 +21,7 @@ namespace Keeper2018
             }
         }
 
-        public GoldCoinsViewModel(KeeperDataModel keeperDataModel)
+        public GoldRatesViewModel(KeeperDataModel keeperDataModel)
         {
             _keeperDataModel = keeperDataModel;
         }
@@ -41,21 +40,11 @@ namespace Keeper2018
                 .ToList();
         }
 
-        protected override void OnViewLoaded(object view)
-        {
-            DisplayName = "Золотые монеты";
-        }
-
+       
         public void Recount()
         {
             Save();
             Initialize();
-        }
-
-        public override void CanClose(Action<bool> callback)
-        {
-            Save();
-            base.CanClose(callback);
         }
 
         private void Save()

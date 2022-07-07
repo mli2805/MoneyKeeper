@@ -5,11 +5,11 @@ using System.Windows.Documents;
 namespace Keeper2018
 {
     /// <summary>
-    /// Interaction logic for GoldCoinsView.xaml
+    /// Interaction logic for GoldRatesView.xaml
     /// </summary>
-    public partial class GoldCoinsView
+    public partial class GoldRatesView
     {
-        public GoldCoinsView()
+        public GoldRatesView()
         {
             InitializeComponent();
         }
