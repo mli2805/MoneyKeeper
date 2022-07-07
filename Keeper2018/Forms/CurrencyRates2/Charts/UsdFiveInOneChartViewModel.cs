@@ -40,7 +40,7 @@ namespace Keeper2018
         {
             var minus = year - _firstYear;
             var result = new LineSeries() { Title = year.ToString() };
-            foreach (var ratesLine in _keeperDataModel.Rates.Values.Where(r => r.Date.Year == year))
+            foreach (var ratesLine in _keeperDataModel.OfficialRates.Values.Where(r => r.Date.Year == year))
             {
                 var rate = ratesLine.NbRates.Usd.Value;
                 result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(ratesLine.Date.AddYears(-minus)), rate));

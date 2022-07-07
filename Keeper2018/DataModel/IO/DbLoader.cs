@@ -63,9 +63,9 @@ namespace Keeper2018
 
         private void Map(KeeperBin bin)
         {
-            _keeperDataModel.Rates = new Dictionary<DateTime, CurrencyRates>();
-            foreach (var rate in bin.Rates)
-                _keeperDataModel.Rates.Add(rate.Date, rate);
+            _keeperDataModel.OfficialRates = new Dictionary<DateTime, OfficialRates>();
+            foreach (var rate in bin.OfficialRates)
+                _keeperDataModel.OfficialRates.Add(rate.Date, rate);
 
             _keeperDataModel.ExchangeRates = new Dictionary<DateTime, ExchangeRates>();
             foreach (var exchangeRate in bin.ExchangeRates)

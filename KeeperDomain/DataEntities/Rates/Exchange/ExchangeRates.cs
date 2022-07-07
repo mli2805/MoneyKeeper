@@ -52,7 +52,7 @@ namespace KeeperDomain.Exchange
         public double EurToRub { get; set; }
         public double RubToEur { get; set; }
 
-        public string EurRub => $"{EurToRub} - {RubToUsd}";
+        public string EurRub => $"{EurToRub} - {RubToEur}";
         
         public string Dump()
         {

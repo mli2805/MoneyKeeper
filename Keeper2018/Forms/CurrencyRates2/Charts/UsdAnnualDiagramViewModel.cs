@@ -53,7 +53,7 @@ namespace Keeper2018
         private LineSeries OneYearOfUsd(int year)
         {
             var result = new LineSeries() { Title = year.ToString() };
-            foreach (var officialRates in _keeperDataModel.Rates.Values.Where(r => r.Date.Year == year))
+            foreach (var officialRates in _keeperDataModel.OfficialRates.Values.Where(r => r.Date.Year == year))
             {
                 var rate = officialRates.Date < new DateTime(2016, 7, 1)
                     ? officialRates.NbRates.Usd.Value / 10000

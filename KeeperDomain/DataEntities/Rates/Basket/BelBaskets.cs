@@ -13,12 +13,12 @@ namespace KeeperDomain.Basket
             new BasketWeights() {Usd = 0.3, Euro = 0.2, Rur = 0.5},
         };
 
-        public static double Calculate(CurrencyRates currencyRates)
+        public static double Calculate(OfficialRates officialRates)
         {
-            var basket = Math.Pow(currencyRates.NbRates.Usd.Value/currencyRates.NbRates.Usd.Unit, Baskets.Last().Usd) *
-                            Math.Pow(currencyRates.NbRates.Euro.Value/currencyRates.NbRates.Euro.Unit, Baskets.Last().Euro) *
-                            Math.Pow(currencyRates.NbRates.Rur.Value/currencyRates.NbRates.Rur.Unit, Baskets.Last().Rur);
-            return currencyRates.Date < new DateTime(2016,7,1) ? Math.Round(basket, 1) : Math.Round(basket, 4);
+            var basket = Math.Pow(officialRates.NbRates.Usd.Value/officialRates.NbRates.Usd.Unit, Baskets.Last().Usd) *
+                            Math.Pow(officialRates.NbRates.Euro.Value/officialRates.NbRates.Euro.Unit, Baskets.Last().Euro) *
+                            Math.Pow(officialRates.NbRates.Rur.Value/officialRates.NbRates.Rur.Unit, Baskets.Last().Rur);
+            return officialRates.Date < new DateTime(2016,7,1) ? Math.Round(basket, 1) : Math.Round(basket, 4);
         }
     }
 }

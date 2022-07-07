@@ -6,9 +6,9 @@ namespace KeeperDomain
 {
     public static class TxtParser
     {
-        public static CurrencyRates CurrencyRateFromString(this string s)
+        public static OfficialRates CurrencyRateFromString(this string s)
         {
-            var rate = new CurrencyRates();
+            var rate = new OfficialRates();
             var substrings = s.Split(';');
             rate.Id = int.Parse(substrings[0]);
             rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);

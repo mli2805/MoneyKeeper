@@ -9,7 +9,7 @@ namespace Keeper2018
 {
     public class KeeperDataModel : PropertyChangedBase
     {
-        public Dictionary<DateTime, CurrencyRates> Rates { get; set; }
+        public Dictionary<DateTime, OfficialRates> OfficialRates { get; set; }
         public Dictionary<DateTime, ExchangeRates> ExchangeRates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
 

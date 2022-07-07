@@ -45,10 +45,10 @@ namespace Keeper2018
             return null;
         }
 
-        public static CurrencyRates GetRatesLine(this KeeperDataModel dataModel, DateTime date)
+        public static OfficialRates GetRatesLine(this KeeperDataModel dataModel, DateTime date)
         {
-            CurrencyRates rateLine;
-            while (!dataModel.Rates.TryGetValue(date.Date, out rateLine))
+            OfficialRates rateLine;
+            while (!dataModel.OfficialRates.TryGetValue(date.Date, out rateLine))
             {
                 date = date.AddDays(-1);
             }

@@ -8,7 +8,7 @@ namespace KeeperDomain
     // dotnet ef database update --project KeeperDomain --startup-project Keeper2018
     public class KeeperContext : DbContext
     {
-        public DbSet<CurrencyRates> Rates { get; set; }
+        public DbSet<OfficialRates> Rates { get; set; }
         public DbSet<MinfinMetalRate> MetalRates { get; set; }
 
         public DbSet<Account> Accounts { get; set; }

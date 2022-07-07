@@ -54,7 +54,7 @@ namespace Keeper2018
         {
             OfficialRatesModel annual = null;
             OfficialRatesModel previous = null;
-            foreach (var record in _keeperDataModel.Rates)
+            foreach (var record in _keeperDataModel.OfficialRates)
             {
                 var current = new OfficialRatesModel(record.Value, previous, annual);
                 if (Application.Current.Dispatcher != null)
@@ -83,7 +83,7 @@ namespace Keeper2018
                     if (currencyRates == null) break;
 
                     currencyRates.Id = Rows.Last().Id + 1;
-                    _keeperDataModel.Rates.Add(currencyRates.Date, currencyRates);
+                    _keeperDataModel.OfficialRates.Add(currencyRates.Date, currencyRates);
                     var line = new OfficialRatesModel(currencyRates, Rows.Last(), annual);
                     Rows.Add(line);
 
@@ -95,11 +95,11 @@ namespace Keeper2018
             IsDownloadEnabled = true;
         }
 
-        private async Task<CurrencyRates> DownloadRbAndRfRates(DateTime date)
+        private async Task<OfficialRates> DownloadRbAndRfRates(DateTime date)
         {
             var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
             if (nbRbRates == null) return null;
-            var currencyRates = new CurrencyRates() { Date = date, NbRates = nbRbRates };
+            var currencyRates = new OfficialRates() { Date = date, NbRates = nbRbRates };
             var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(date);
             currencyRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
             return currencyRates;
@@ -108,7 +108,7 @@ namespace Keeper2018
 
         public void RemoveLine()
         {
-            _keeperDataModel.Rates.Remove(SelectedRow.Date);
+            _keeperDataModel.OfficialRates.Remove(SelectedRow.Date);
             Rows.Remove(SelectedRow);
         }
 

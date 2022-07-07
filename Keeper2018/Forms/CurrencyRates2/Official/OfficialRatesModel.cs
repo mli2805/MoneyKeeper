@@ -11,7 +11,7 @@ namespace Keeper2018
     {
         public int Id;
         public DateTime Date { get; set; }
-        public CurrencyRates TodayRates { get; set; }
+        public OfficialRates TodayRates { get; set; }
         private NbRbRates YesterdayNbRbRates { get; set; }
 
         public readonly double Basket;
@@ -63,7 +63,7 @@ namespace Keeper2018
 
         private string Template => Date >= new DateTime(2016, 7, 1) ? "#,#.0000" : "#,#.####";
 
-        public OfficialRatesModel(CurrencyRates record, OfficialRatesModel previous, OfficialRatesModel annual)
+        public OfficialRatesModel(OfficialRates record, OfficialRatesModel previous, OfficialRatesModel annual)
         {
             Id = record.Id;
             Date = record.Date;

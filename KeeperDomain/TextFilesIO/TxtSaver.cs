@@ -18,8 +18,8 @@ namespace KeeperDomain
         {
             try
             {
-                var currencyRates = bin.Rates.Select(l => l.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"), currencyRates);
+                var currencyRates = bin.OfficialRates.Select(l => l.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("OfficialRates.txt"), currencyRates);
                 var exchangeRates = bin.ExchangeRates.Select(l => l.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("ExchangeRates.txt"), exchangeRates);
                 var metalRates = bin.MetalRates.Select(l => l.Dump());

@@ -172,49 +172,49 @@ namespace Keeper2018
             }
         }
 
-        private NormalizedRates GetNormalizedRates(CurrencyRates currencyRates, ExchangeRates exchangeRates)
+        private NormalizedRates GetNormalizedRates(OfficialRates officialRates, ExchangeRates exchangeRates)
         {
             var result = new NormalizedRates();
-            if (currencyRates.Date >= dt20160701)
+            if (officialRates.Date >= dt20160701)
             {
-                result.UsdNb = currencyRates.NbRates.Usd.Value * 10000000;
-                result.EurNb = currencyRates.NbRates.Euro.Value * 10000000;
-                result.RubNb = currencyRates.NbRates.Rur.Value / currencyRates.NbRates.Rur.Unit * 10000000;
+                result.UsdNb = officialRates.NbRates.Usd.Value * 10000000;
+                result.EurNb = officialRates.NbRates.Euro.Value * 10000000;
+                result.RubNb = officialRates.NbRates.Rur.Value / officialRates.NbRates.Rur.Unit * 10000000;
                 result.UsdMy = exchangeRates != null ? exchangeRates.BynToUsd * 10000000 : 0;
-                result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
-                result.Basket = BelBaskets.Calculate(currencyRates);
+                result.RubUsd = officialRates.CbrRate.Usd.Value * 1000;
+                result.Basket = BelBaskets.Calculate(officialRates);
             }
-            else if (currencyRates.Date >= dt20000101)
+            else if (officialRates.Date >= dt20000101)
             {
-                result.UsdNb = currencyRates.NbRates.Usd.Value * 1000;
-                result.EurNb = currencyRates.NbRates.Euro.Value * 1000;
-                result.RubNb = currencyRates.NbRates.Rur.Value * 1000;
+                result.UsdNb = officialRates.NbRates.Usd.Value * 1000;
+                result.EurNb = officialRates.NbRates.Euro.Value * 1000;
+                result.RubNb = officialRates.NbRates.Rur.Value * 1000;
                 result.UsdMy = exchangeRates != null ? exchangeRates.BynToUsd * 1000 : 0;
-                result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
-                result.Basket = BelBaskets.Calculate(currencyRates) / 10000;
+                result.RubUsd = officialRates.CbrRate.Usd.Value * 1000;
+                result.Basket = BelBaskets.Calculate(officialRates) / 10000;
             }
-            else if (currencyRates.Date >= dt19990111) // euro and basket start
+            else if (officialRates.Date >= dt19990111) // euro and basket start
             {
-                result.UsdNb = currencyRates.NbRates.Usd.Value;
-                result.EurNb = currencyRates.NbRates.Euro.Value;
-                result.RubNb = currencyRates.NbRates.Rur.Value;
+                result.UsdNb = officialRates.NbRates.Usd.Value;
+                result.EurNb = officialRates.NbRates.Euro.Value;
+                result.RubNb = officialRates.NbRates.Rur.Value;
                 result.UsdMy = exchangeRates?.BynToUsd ?? 0;
-                result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
-                result.Basket = BelBaskets.Calculate(currencyRates) / 10000000;
+                result.RubUsd = officialRates.CbrRate.Usd.Value * 1000;
+                result.Basket = BelBaskets.Calculate(officialRates) / 10000000;
             }
-            else if (currencyRates.Date >= dt19980101) // russian denomination
+            else if (officialRates.Date >= dt19980101) // russian denomination
             {
-                result.UsdNb = currencyRates.NbRates.Usd.Value;
-                result.RubNb = currencyRates.NbRates.Rur.Value;
+                result.UsdNb = officialRates.NbRates.Usd.Value;
+                result.RubNb = officialRates.NbRates.Rur.Value;
                 result.UsdMy = exchangeRates?.BynToUsd ?? 0;
-                result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
+                result.RubUsd = officialRates.CbrRate.Usd.Value * 1000;
             }
             else
             {
-                result.UsdNb = currencyRates.NbRates.Usd.Value;
-                result.RubNb = currencyRates.NbRates.Rur.Value;
+                result.UsdNb = officialRates.NbRates.Usd.Value;
+                result.RubNb = officialRates.NbRates.Rur.Value;
                 result.UsdMy = exchangeRates?.BynToUsd ?? 0;
-                result.RubUsd = currencyRates.CbrRate.Usd.Value;
+                result.RubUsd = officialRates.CbrRate.Usd.Value;
             }
             return result;
         }

@@ -60,7 +60,7 @@ namespace Keeper2018
             BelSeries.Points.Clear();
             RusSeries.Points.Clear();
             RubBynSeries.Points.Clear();
-            foreach (var line in _keeperDataModel.Rates.Values.Where(r => r.Date >= startDate))
+            foreach (var line in _keeperDataModel.OfficialRates.Values.Where(r => r.Date >= startDate))
             {
                 BelSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.NbRates.Usd.Value * 30));
                 RusSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.CbrRate.Usd.Value));

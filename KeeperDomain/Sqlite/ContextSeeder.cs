@@ -11,7 +11,7 @@ namespace KeeperDomain
             {
                 using (var dbContext = new KeeperContext())
                 {
-                    await dbContext.Rates.AddRangeAsync(bin.Rates);
+                    await dbContext.Rates.AddRangeAsync(bin.OfficialRates);
 
                     await dbContext.Accounts.AddRangeAsync(bin.AccountPlaneList);
                     await dbContext.Deposits.AddRangeAsync(bin.Deposits);

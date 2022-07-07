@@ -84,8 +84,8 @@ namespace KeeperDomain
         {
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("ExchangeRates.txt"));
             bin.ExchangeRates = content.Select(s => s.ExchangeRatesFromString()).ToList();
-            content = File.ReadAllLines(PathFactory.GetBackupFilePath("CurrencyRates.txt"));
-            bin.Rates = content.Select(s => s.CurrencyRateFromString()).ToList();
+            content = File.ReadAllLines(PathFactory.GetBackupFilePath("OfficialRates.txt"));
+            bin.OfficialRates = content.Select(s => s.CurrencyRateFromString()).ToList();
         }
 
         private static void LoadInvestments(KeeperBin bin)

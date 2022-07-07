@@ -7,7 +7,7 @@ namespace KeeperDomain
     [Serializable]
     public class KeeperBin
     {
-        public List<CurrencyRates> Rates { get; set; }
+        public List<OfficialRates> OfficialRates { get; set; }
         public List<ExchangeRates> ExchangeRates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
 
