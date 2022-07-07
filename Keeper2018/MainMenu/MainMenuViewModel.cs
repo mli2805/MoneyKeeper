@@ -11,7 +11,6 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
         private readonly DbSaver _dbSaver;
         private readonly ShellPartsBinder _shellPartsBinder;
-        private readonly CurrencyRatesViewModel _currencyRatesViewModel;
         private readonly RatesViewModel _ratesViewModel;
         private readonly MonthAnalysisViewModel _monthAnalysisViewModel;
         private readonly TransactionsViewModel _transactionsViewModel;
@@ -32,7 +31,7 @@ namespace Keeper2018
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
-            TransactionsViewModel transactionsViewModel, CurrencyRatesViewModel currencyRatesViewModel, RatesViewModel ratesViewModel,
+            TransactionsViewModel transactionsViewModel, RatesViewModel ratesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
              SettingsViewModel settingsViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
@@ -47,7 +46,6 @@ namespace Keeper2018
             _keeperDataModel = keeperDataModel;
             _dbSaver = dbSaver;
             _shellPartsBinder = shellPartsBinder;
-            _currencyRatesViewModel = currencyRatesViewModel;
             _ratesViewModel = ratesViewModel;
             _monthAnalysisViewModel = monthAnalysisViewModel;
             _transactionsViewModel = transactionsViewModel;
@@ -76,7 +74,7 @@ namespace Keeper2018
                     ShowTransactionsForm();
                     break;
                 case MainMenuAction.ShowOfficialRatesForm:
-                    ShowOfficialRatesForm();
+                    ShowRatesForm();
                     break;
                 case MainMenuAction.ShowMonthAnalysisForm:
                     ShowMonthAnalysisForm();
@@ -113,13 +111,6 @@ namespace Keeper2018
                 _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
                 SaveAllDb();
             }
-        }
-
-        public void ShowOfficialRatesForm()
-        {
-            _windowManager.ShowDialog(_currencyRatesViewModel);
-            _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
-            SaveAllDb();
         }
 
         public void ShowRatesForm()

@@ -478,10 +478,6 @@
       <DependentUpon>ListOfLinesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\InputMyUsdView.xaml.cs">
-      <DependentUpon>InputMyUsdView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\CurrencyRates\InputMyUsdViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Enum\BalanceOrTraffic.cs" />
     <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml.cs">
       <DependentUpon>LongTermChartView.xaml</DependentUpon>
@@ -642,10 +638,6 @@
     <Compile Include="Forms\CurrencyRates2\Download\MyRequest.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\NbRbRatesDownloader.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\NbRbSiteRate.cs" />
-    <Compile Include="Forms\CurrencyRates\CurrencyRatesView.xaml.cs">
-      <DependentUpon>CurrencyRatesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\CurrencyRates\CurrencyRatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Charts\UsdAnnualDiagramView.xaml.cs">
       <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
@@ -831,10 +823,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\InputMyUsdView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -948,10 +936,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\CurrencyRates2\Charts\BasketDiagramView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\CurrencyRates\CurrencyRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

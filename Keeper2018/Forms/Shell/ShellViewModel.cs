@@ -14,13 +14,12 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
         private readonly DbLoader _dbLoader;
         private readonly DbSaver _dbSaver;
-        private readonly CurrencyRatesViewModel _currencyRatesViewModel;
         private readonly RatesViewModel _ratesViewModel;
         public ShellPartsBinder ShellPartsBinder { get; }
         private bool _dbLoaded;
 
         public ShellViewModel(KeeperDataModel keeperDataModel, ShellPartsBinder shellPartsBinder, 
-            DbLoader dbLoader, DbSaver dbSaver, CurrencyRatesViewModel currencyRatesViewModel, RatesViewModel ratesViewModel,
+            DbLoader dbLoader, DbSaver dbSaver, RatesViewModel ratesViewModel,
             MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, 
             BalanceOrTrafficViewModel balanceOrTrafficViewModel, TwoSelectorsViewModel twoSelectorsViewModel)
         {
@@ -32,7 +31,6 @@ namespace Keeper2018
             _keeperDataModel = keeperDataModel;
             _dbLoader = dbLoader;
             _dbSaver = dbSaver;
-            _currencyRatesViewModel = currencyRatesViewModel;
             _ratesViewModel = ratesViewModel;
             ShellPartsBinder = shellPartsBinder;
         }
@@ -47,7 +45,6 @@ namespace Keeper2018
                 return;
             }
 
-            _currencyRatesViewModel.Initialize();
             await _ratesViewModel.Initialize();
 
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");

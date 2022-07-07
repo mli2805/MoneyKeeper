@@ -40,8 +40,6 @@ namespace Keeper2018
             builder.RegisterType<ExchangeRatesViewModel>().SingleInstance();
             builder.RegisterType<GoldRatesViewModel>().SingleInstance();
             builder.RegisterType<RatesViewModel>().SingleInstance();
-            builder.RegisterType<CurrencyRatesViewModel>().SingleInstance();
-            builder.RegisterType<InputMyUsdViewModel>().SingleInstance();
 
             builder.RegisterType<MonthAnalysisViewModel>().SingleInstance();
             builder.RegisterType<MonthAnalyser>().SingleInstance();
