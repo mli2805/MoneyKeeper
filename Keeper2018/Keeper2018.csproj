@@ -421,24 +421,24 @@
     <Compile Include="Forms\Charts\Expenses\Domain\YearMonth.cs" />
     <Compile Include="Forms\Charts\Expenses\PeriodChoiceControl\PointsPeriodConvertor.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\TraExtension.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\NormalizedRates.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\MonthlyChartView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\NormalizedRates.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\MonthlyChartView.xaml.cs">
       <DependentUpon>MonthlyChartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\MonthlyChartViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\NbUsdProbabilitiesView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Charts\MonthlyChartViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\NbUsdProbabilitiesView.xaml.cs">
       <DependentUpon>NbUsdProbabilitiesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\NbUsdProbabilitiesViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\RusBelChartView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Charts\NbUsdProbabilitiesViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\RusBelChartView.xaml.cs">
       <DependentUpon>RusBelChartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\RusBelChartViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Charts\RusBelChartViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\UsdFiveInOneChartView.xaml.cs">
       <DependentUpon>UsdFiveInOneChartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\UsdFiveInOneChartViewModel.cs" />
     <Compile Include="Forms\DoubleSelector\DateSelectControl.xaml.cs">
       <DependentUpon>DateSelectControl.xaml</DependentUpon>
     </Compile>
@@ -477,13 +477,13 @@
     <Compile Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesView.xaml.cs">
       <DependentUpon>ListOfLinesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartViewModel.cs" />
     <Compile Include="Forms\CurrencyRates\InputMyUsdView.xaml.cs">
       <DependentUpon>InputMyUsdView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates\InputMyUsdViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Enum\BalanceOrTraffic.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml.cs">
       <DependentUpon>LongTermChartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\PayCards\PayCardsView.xaml.cs">
@@ -628,16 +628,16 @@
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
-    <Compile Include="Forms\CurrencyRates\CurrencyRatesModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Official\CurrencyRatesModel.cs" />
     <Compile Include="Forms\Shell\IShell.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\MainMenuViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\BasketDiagramView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Charts\BasketDiagramView.xaml.cs">
       <DependentUpon>BasketDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\BasketDiagramViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\BasketDiagramViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\CbrRatesDownloader.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\MyRequest.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\NbRbRatesDownloader.cs" />
@@ -646,10 +646,10 @@
       <DependentUpon>CurrencyRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates\CurrencyRatesViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates\Charts\UsdAnnualDiagramView.xaml.cs">
+    <Compile Include="Forms\CurrencyRates2\Charts\UsdAnnualDiagramView.xaml.cs">
       <DependentUpon>UsdAnnualDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates\Charts\UsdAnnualDiagramViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\UsdAnnualDiagramViewModel.cs" />
     <Compile Include="Forms\Behaviors\ScrollToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollToBottomOnLoadBehavior.cs" />
     <Compile Include="Forms\Shell\ShellViewModel.cs" />
@@ -743,19 +743,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\MonthlyChartView.xaml">
+    <Page Include="Forms\CurrencyRates2\Charts\MonthlyChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\NbUsdProbabilitiesView.xaml">
+    <Page Include="Forms\CurrencyRates2\Charts\NbUsdProbabilitiesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\RusBelChartView.xaml">
+    <Page Include="Forms\CurrencyRates2\Charts\RusBelChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\UsdFiveInOneChartView.xaml">
+    <Page Include="Forms\CurrencyRates2\Charts\UsdFiveInOneChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -835,7 +835,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\LongTermChart\LongTermChartView.xaml">
+    <Page Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -947,7 +947,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\BasketDiagramView.xaml">
+    <Page Include="Forms\CurrencyRates2\Charts\BasketDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -955,7 +955,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates\Charts\UsdAnnualDiagramView.xaml">
+    <Page Include="Forms\CurrencyRates2\Charts\UsdAnnualDiagramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

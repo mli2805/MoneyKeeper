@@ -198,7 +198,7 @@ namespace Keeper2018
                 result.UsdNb = currencyRates.NbRates.Usd.Value;
                 result.EurNb = currencyRates.NbRates.Euro.Value;
                 result.RubNb = currencyRates.NbRates.Rur.Value;
-                result.UsdMy = exchangeRates != null ? exchangeRates.BynToUsd : 0;
+                result.UsdMy = exchangeRates?.BynToUsd ?? 0;
                 result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
                 result.Basket = BelBaskets.Calculate(currencyRates) / 10000000;
             }
@@ -206,14 +206,14 @@ namespace Keeper2018
             {
                 result.UsdNb = currencyRates.NbRates.Usd.Value;
                 result.RubNb = currencyRates.NbRates.Rur.Value;
-                result.UsdMy = exchangeRates != null ? exchangeRates.BynToUsd : 0;
+                result.UsdMy = exchangeRates?.BynToUsd ?? 0;
                 result.RubUsd = currencyRates.CbrRate.Usd.Value * 1000;
             }
             else
             {
                 result.UsdNb = currencyRates.NbRates.Usd.Value;
                 result.RubNb = currencyRates.NbRates.Rur.Value;
-                result.UsdMy = exchangeRates != null ? exchangeRates.BynToUsd : 0;
+                result.UsdMy = exchangeRates?.BynToUsd ?? 0;
                 result.RubUsd = currencyRates.CbrRate.Usd.Value;
             }
             return result;

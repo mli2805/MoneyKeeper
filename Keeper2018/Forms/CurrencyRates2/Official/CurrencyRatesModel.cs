@@ -22,17 +22,17 @@ namespace Keeper2018
 
         public string UsdStr { get; set; }
 
-        private string _myUsdStr;
-        public string MyUsdStr
-        {
-            get => _myUsdStr;
-            set
-            {
-                if (value == _myUsdStr) return;
-                _myUsdStr = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        // private string _myUsdStr;
+        // public string MyUsdStr
+        // {
+        //     get => _myUsdStr;
+        //     set
+        //     {
+        //         if (value == _myUsdStr) return;
+        //         _myUsdStr = value;
+        //         NotifyOfPropertyChange();
+        //     }
+        // }
 
         public Brush UsdBrush { get; set; }
         public string EuroBynStr { get; set; }
@@ -83,7 +83,7 @@ namespace Keeper2018
             YesterdayNbRbRates = previous?.TodayRates.NbRates;
 
             UsdStr = TodayRates.NbRates.Usd.Value.ToString(Template, new CultureInfo("ru-RU"));
-            MyUsdStr = TodayRates.MyUsdRate.Value.Equals(0) ? "" : TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
+            // MyUsdStr = TodayRates.MyUsdRate.Value.Equals(0) ? "" : TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroBynStr = TodayRates.NbRates.Euro.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroUsdStr = TodayRates.NbRates.EuroUsdCross.ToString("0.####", new CultureInfo("ru-RU"));
             RurStr = TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
@@ -108,10 +108,10 @@ namespace Keeper2018
             RurUsdStr = TodayRates.CbrRate.Usd.Value.Equals(0) ? "" : TodayRates.CbrRate.Usd.Value.ToString("#,#.##", new CultureInfo("ru-RU"));
         }
 
-        public void Input(double myusd)
-        {
-            MyUsdStr = myusd.ToString(Template, new CultureInfo("ru-RU"));
-        }
+        // public void Input(double myusd)
+        // {
+        //     MyUsdStr = myusd.ToString(Template, new CultureInfo("ru-RU"));
+        // }
 
         private void SetBasketStr()
         {

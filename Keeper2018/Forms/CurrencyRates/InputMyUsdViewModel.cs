@@ -34,7 +34,7 @@ namespace Keeper2018
             var rateLine = _dataModel.Rates[CurrentLine.Date];
             rateLine.MyUsdRate.Value = MyUsdRate;
 
-            CurrentLine.Input(MyUsdRate);
+            // CurrentLine.Input(MyUsdRate);
             TryClose();
         }
 
