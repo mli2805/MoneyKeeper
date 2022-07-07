@@ -116,7 +116,7 @@ namespace Keeper2018
             }
         }
 
-        public void Build(List<CurrencyRatesModel> rates, KeeperDataModel keeperDataModel)
+        public void Build(List<OfficialRatesModel> rates, KeeperDataModel keeperDataModel)
         {
             PrepareSeries(rates, keeperDataModel);
             LongTermModel = new PlotModel() { LegendPosition = LegendPosition.LeftTop };
@@ -140,7 +140,7 @@ namespace Keeper2018
             LongTermModel.Axes.Add(new LinearAxis() { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.DashDashDotDot });
         }
 
-        private void PrepareSeries(List<CurrencyRatesModel> rates, KeeperDataModel keeperDataModel)
+        private void PrepareSeries(List<OfficialRatesModel> rates, KeeperDataModel keeperDataModel)
         {
             UsdNbSeries = new LineSeries() { Title = "USD (по НБ РБ)", Color = OxyColors.Green, IsVisible = false };
             UsdMySeries = new LineSeries() { Title = "USD (мой)", Color = OxyColors.LimeGreen, IsVisible = true };

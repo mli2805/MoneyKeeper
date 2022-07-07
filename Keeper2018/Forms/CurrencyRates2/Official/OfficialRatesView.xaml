@@ -30,59 +30,59 @@
                 <keeper2018:ScrollToBottomOnLoadBehavior />
             </i:Interaction.Behaviors>
             <DataGrid.Resources>
-                <DataTemplate x:Key="UsdTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="UsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding UsdStr}" Width="65" 
                                    HorizontalAlignment="Center" Foreground="{Binding UsdBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="UsdAnnualTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="UsdAnnualTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding UsdAnnualStr}" Width="110" Foreground="{Binding UsdAnnualBrush}" FontSize="12"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="EuroTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="EuroTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding EuroBynStr}" Width="65"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="EuroUsdTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="EuroUsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding EuroUsdStr}" Width="60" FontSize="12" 
                                    Foreground="Black" />
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="RurTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="RurTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding RurStr}" Width="65"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="RurUsdTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="RurUsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding RurUsdStr}" Width="45" FontSize="12"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding BasketAfterBreakStr}" Width="75" 
                                    Foreground="{Binding BasketBreakBrush}" FontSize="12"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding BasketStr}" Width="120" 
                                    HorizontalAlignment="Center" Foreground="{Binding BasketBrush}"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:CurrencyRatesModel">
+                <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding BasketAnnualStr}" Width="55" 
                                    Foreground="{Binding BasketAnnualBrush}" FontSize="12"/>

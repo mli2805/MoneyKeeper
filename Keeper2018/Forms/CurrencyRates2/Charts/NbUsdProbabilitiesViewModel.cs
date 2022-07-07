@@ -11,7 +11,7 @@ namespace Keeper2018
     public class NbUsdProbabilitiesViewModel : Screen
     {
         private string _caption;
-        private List<CurrencyRatesModel> _rates;
+        private List<OfficialRatesModel> _rates;
         public PlotModel MyPlotModel { get; set; } = new PlotModel();
 
         protected override void OnViewLoaded(object view)
@@ -19,7 +19,7 @@ namespace Keeper2018
             DisplayName = _caption;
         }
 
-        public void Initialize(string caption, List<CurrencyRatesModel> rates)
+        public void Initialize(string caption, List<OfficialRatesModel> rates)
         {
             _caption = caption;
             _rates = rates;
@@ -50,7 +50,7 @@ namespace Keeper2018
         }
 
         private readonly DateTime _denomDay = new DateTime(2016, 7, 1);
-        private double Compare(CurrencyRatesModel day, CurrencyRatesModel prevDay)
+        private double Compare(OfficialRatesModel day, OfficialRatesModel prevDay)
         {
             var dayRate = day.Date >= _denomDay
                 ? day.TodayRates.NbRates.Usd.Value

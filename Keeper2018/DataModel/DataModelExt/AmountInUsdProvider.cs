@@ -44,15 +44,16 @@ namespace Keeper2018
             rate = 1;
             if (currency == CurrencyCode.USD) return amount;
             var rateLine = dataModel.GetRatesLine(date);
+            var exchangeRatesLine = dataModel.GetExchangeRatesLine(date);
             switch (currency)
             {
                 case CurrencyCode.BYR:
-                    rate = (decimal)rateLine.MyUsdRate.Value;
+                    rate = (decimal)exchangeRatesLine.BynToUsd;
                     if (date == new DateTime(2016, 7, 1))
                         rate = rate * 10000;
                     return amount / rate;
                 case CurrencyCode.BYN:
-                    rate = (decimal)rateLine.MyUsdRate.Value;
+                    rate = (decimal)exchangeRatesLine.BynToUsd;
                     return amount / rate;
                 case CurrencyCode.EUR:
                     rate = (decimal)rateLine.NbRates.Euro.Value / (decimal)rateLine.NbRates.Usd.Value;
@@ -62,7 +63,7 @@ namespace Keeper2018
                     return amount * rate;
                 case CurrencyCode.GLD:
                     var line = dataModel.MetalRates.LastOrDefault(m => m.Date <= date);
-                    rate = (decimal)((line?.Price ?? 0)  / rateLine.MyUsdRate.Value);
+                    rate = (decimal)((line?.Price ?? 0)  / exchangeRatesLine.BynToUsd);
                     return amount * rate;
             }
 

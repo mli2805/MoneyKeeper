@@ -9,11 +9,11 @@ namespace Keeper2018
         public static ListOfLines GetRatesDifference(this KeeperDataModel dataModel, DateTime startDate, DateTime finishMoment)
         {
             var result = new ListOfLines();
-            var ratesLine = dataModel.GetRatesLine(startDate);
-            double belkaStart = ratesLine.MyUsdRate.Value;
+            var exchangeRatesLine = dataModel.GetExchangeRatesLine(startDate);
+            double belkaStart = exchangeRatesLine.BynToUsd;
 
-            var ratesLineFinish = dataModel.GetRatesLine(finishMoment);
-            double belkaFinish = ratesLineFinish.MyUsdRate.Value;
+            var exchangeRatesLineFinish = dataModel.GetExchangeRatesLine(finishMoment);
+            double belkaFinish = exchangeRatesLineFinish.BynToUsd;
             double belkaPercent = (belkaStart - belkaFinish) / belkaFinish * 100;
 
             var belkaName = finishMoment < new DateTime(2016, 7, 1) ? "Byr" : "Byn";
@@ -24,16 +24,16 @@ namespace Keeper2018
             var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}  ({belkaPercent:0.0}%)";
             result.Add(belka, belkaBrush);
 
-            var euroStart = ratesLine.NbRates.EuroUsdCross;
-            var euroFinish = ratesLineFinish.NbRates.EuroUsdCross;
+            var euroStart = exchangeRatesLine.EurToUsd;
+            var euroFinish = exchangeRatesLineFinish.EurToUsd;
             double euroPercent = (euroFinish - euroStart) / euroFinish * 100;
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
             var euro = $"      Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}  ({euroPercent:0.0}%)";
             result.Add(euro, euroBrush);
 
-            var rubStart = ratesLine.CbrRate.Usd.Value;
-            var rubFinish = ratesLineFinish.CbrRate.Usd.Value;
+            var rubStart = exchangeRatesLine.RubToUsd;
+            var rubFinish = exchangeRatesLineFinish.RubToUsd;
             var rubPercent = (rubStart - rubFinish) / rubFinish * 100;
             var rubWord = rubFinish < rubStart ? "вырос" : "упал";
             var rubBrush = rubFinish < rubStart ? Brushes.Blue : Brushes.Red;
@@ -43,8 +43,8 @@ namespace Keeper2018
             var gldStartByn = dataModel.MetalRates.LastOrDefault(m => m.Date <= startDate)?.Price ?? 0;
             var gldFinishByn = dataModel.MetalRates.LastOrDefault(m => m.Date <= finishMoment)?.Price ?? 0;
 
-            var gldStart = gldStartByn / ratesLine.MyUsdRate.Value;
-            var gldFinish = gldFinishByn / ratesLineFinish.MyUsdRate.Value;
+            var gldStart = gldStartByn / exchangeRatesLine.BynToUsd;
+            var gldFinish = gldFinishByn / exchangeRatesLineFinish.BynToUsd;
             var gldPercent = (gldFinish - gldStart) / gldFinish * 100;
             var gldWord = gldFinish > gldStart ? "выросло" : "упало";
             var gldBrush = gldFinish > gldStart ? Brushes.Blue : Brushes.Red;

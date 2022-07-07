@@ -7,7 +7,7 @@ using KeeperDomain.Basket;
 
 namespace Keeper2018
 {
-    public class CurrencyRatesModel : PropertyChangedBase
+    public class OfficialRatesModel : PropertyChangedBase
     {
         public int Id;
         public DateTime Date { get; set; }
@@ -21,18 +21,6 @@ namespace Keeper2018
         private double _procBasketBreak, _procBasketAnnual;
 
         public string UsdStr { get; set; }
-
-        // private string _myUsdStr;
-        // public string MyUsdStr
-        // {
-        //     get => _myUsdStr;
-        //     set
-        //     {
-        //         if (value == _myUsdStr) return;
-        //         _myUsdStr = value;
-        //         NotifyOfPropertyChange();
-        //     }
-        // }
 
         public Brush UsdBrush { get; set; }
         public string EuroBynStr { get; set; }
@@ -75,7 +63,7 @@ namespace Keeper2018
 
         private string Template => Date >= new DateTime(2016, 7, 1) ? "#,#.0000" : "#,#.####";
 
-        public CurrencyRatesModel(CurrencyRates record, CurrencyRatesModel previous, CurrencyRatesModel annual)
+        public OfficialRatesModel(CurrencyRates record, OfficialRatesModel previous, OfficialRatesModel annual)
         {
             Id = record.Id;
             Date = record.Date;
@@ -83,7 +71,6 @@ namespace Keeper2018
             YesterdayNbRbRates = previous?.TodayRates.NbRates;
 
             UsdStr = TodayRates.NbRates.Usd.Value.ToString(Template, new CultureInfo("ru-RU"));
-            // MyUsdStr = TodayRates.MyUsdRate.Value.Equals(0) ? "" : TodayRates.MyUsdRate.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroBynStr = TodayRates.NbRates.Euro.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroUsdStr = TodayRates.NbRates.EuroUsdCross.ToString("0.####", new CultureInfo("ru-RU"));
             RurStr = TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
@@ -108,11 +95,6 @@ namespace Keeper2018
             RurUsdStr = TodayRates.CbrRate.Usd.Value.Equals(0) ? "" : TodayRates.CbrRate.Usd.Value.ToString("#,#.##", new CultureInfo("ru-RU"));
         }
 
-        // public void Input(double myusd)
-        // {
-        //     MyUsdStr = myusd.ToString(Template, new CultureInfo("ru-RU"));
-        // }
-
         private void SetBasketStr()
         {
             BasketDelta = Basket - _yesterdayBasket;
@@ -128,7 +110,7 @@ namespace Keeper2018
                     ? Brushes.LimeGreen : Brushes.Red;
         }
 
-        private void SetBasketBreakStr(CurrencyRatesModel previous)
+        private void SetBasketBreakStr(OfficialRatesModel previous)
         {
             if (previous == null) return;
             if (BasketDelta * previous.BasketDelta >= 0) // no break
@@ -144,7 +126,7 @@ namespace Keeper2018
             }
         }
 
-        private void SetUsdAnnualStr(CurrencyRatesModel annual)
+        private void SetUsdAnnualStr(OfficialRatesModel annual)
         {
             if (annual == null) return;
 
@@ -160,7 +142,7 @@ namespace Keeper2018
             UsdAnnualBrush = proc < 0 ? Brushes.LimeGreen : Brushes.Red;
         }
 
-        private void SetBasketAnnualStr(CurrencyRatesModel annual)
+        private void SetBasketAnnualStr(OfficialRatesModel annual)
         {
             if (annual == null || annual.Basket.Equals(0)) return;
 

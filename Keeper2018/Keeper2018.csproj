@@ -242,7 +242,7 @@
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates2\Exchange\KomBankRatesLine.cs" />
+    <Compile Include="Forms\CurrencyRates2\Download\KomBankRatesLine.cs" />
     <Compile Include="Forms\CurrencyRates2\Gold\GoldRatesView.xaml.cs">
       <DependentUpon>GoldRatesView.xaml</DependentUpon>
     </Compile>
@@ -624,7 +624,7 @@
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
-    <Compile Include="Forms\CurrencyRates2\Official\CurrencyRatesModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\Official\OfficialRatesModel.cs" />
     <Compile Include="Forms\Shell\IShell.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>

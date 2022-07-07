@@ -14,7 +14,7 @@ namespace KeeperDomain
             rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             rate.NbRates = NbRbRatesFromString(substrings[2]);
             rate.CbrRate.Usd = OneRateFromString(substrings[3]);
-            rate.MyUsdRate = OneRateFromString(substrings[4]);
+            // rate.MyUsdRate = OneRateFromString(substrings[4]);
             return rate;
         }
 

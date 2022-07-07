@@ -11,10 +11,10 @@ namespace Keeper2018
     public class OfficialRatesViewModel : PropertyChangedBase
     {
         private readonly KeeperDataModel _keeperDataModel;
-        public ObservableCollection<CurrencyRatesModel> Rows { get; set; } = new ObservableCollection<CurrencyRatesModel>();
+        public ObservableCollection<OfficialRatesModel> Rows { get; set; } = new ObservableCollection<OfficialRatesModel>();
     
-        private CurrencyRatesModel _selectedRow;
-        public CurrencyRatesModel SelectedRow
+        private OfficialRatesModel _selectedRow;
+        public OfficialRatesModel SelectedRow
         {
             get => _selectedRow;
             set
@@ -25,7 +25,7 @@ namespace Keeper2018
             }
         }  
         
-        public CurrencyRatesModel LastDayOfYear { get; set; }
+        public OfficialRatesModel LastDayOfYear { get; set; }
 
         private bool _isDownloadEnabled;
         public bool IsDownloadEnabled
@@ -52,11 +52,11 @@ namespace Keeper2018
 
         private void Init()
         {
-            CurrencyRatesModel annual = null;
-            CurrencyRatesModel previous = null;
+            OfficialRatesModel annual = null;
+            OfficialRatesModel previous = null;
             foreach (var record in _keeperDataModel.Rates)
             {
-                var current = new CurrencyRatesModel(record.Value, previous, annual);
+                var current = new OfficialRatesModel(record.Value, previous, annual);
                 if (Application.Current.Dispatcher != null)
                     Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
 
@@ -84,7 +84,7 @@ namespace Keeper2018
 
                     currencyRates.Id = Rows.Last().Id + 1;
                     _keeperDataModel.Rates.Add(currencyRates.Date, currencyRates);
-                    var line = new CurrencyRatesModel(currencyRates, Rows.Last(), annual);
+                    var line = new OfficialRatesModel(currencyRates, Rows.Last(), annual);
                     Rows.Add(line);
 
                     if (date.Date.Day == 31 && date.Date.Month == 12)

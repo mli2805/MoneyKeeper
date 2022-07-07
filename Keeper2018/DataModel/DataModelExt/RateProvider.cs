@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using KeeperDomain;
+using KeeperDomain.Exchange;
 
 namespace Keeper2018
 {
@@ -17,6 +18,7 @@ namespace Keeper2018
         {
             var ratesLine = dataModel.GetRatesLine(dt);
             if (ratesLine == null) return null;
+            var exchangeRatesLine = dataModel.GetExchangeRatesLine(dt);
             OneRate result;
             switch (currency)
             {
@@ -37,7 +39,7 @@ namespace Keeper2018
                     var line = dataModel.MetalRates.LastOrDefault(m => m.Date <= dt);
                     result = new OneRate() { Value = line?.Price ?? 0 };
                     if (isForUsd)
-                        result.Value = result.Value / ratesLine.MyUsdRate.Value;
+                        result.Value = result.Value / exchangeRatesLine.BynToUsd;
                     return result;
             }
             return null;
@@ -46,11 +48,21 @@ namespace Keeper2018
         public static CurrencyRates GetRatesLine(this KeeperDataModel dataModel, DateTime date)
         {
             CurrencyRates rateLine;
-            while (!dataModel.Rates.TryGetValue(date.Date, out rateLine) || (rateLine.MyUsdRate.Value) <= 0.001)
+            while (!dataModel.Rates.TryGetValue(date.Date, out rateLine))
             {
                 date = date.AddDays(-1);
             }
             return rateLine;
+        }
+
+        public static ExchangeRates GetExchangeRatesLine(this KeeperDataModel keeperDataModel, DateTime date)
+        {
+            while (!keeperDataModel.ExchangeRates.ContainsKey(date.Date))
+            {
+                date = date.AddDays(-1);
+            }
+
+            return keeperDataModel.ExchangeRates[date.Date];
         }
     }
 }

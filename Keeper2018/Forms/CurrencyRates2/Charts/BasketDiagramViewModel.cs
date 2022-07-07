@@ -13,7 +13,7 @@ namespace Keeper2018
         private string _caption;
         private readonly DateTime _startDate = new DateTime(2012, 7, 1);
         private readonly DateTime _startDateD = DateTime.Now.AddMonths(-6);
-        private List<CurrencyRatesModel> _rates;
+        private List<OfficialRatesModel> _rates;
 
         public PlotModel BasketPlotModel { get; set; }
         public PlotModel BasketDeltaPlotModel { get; set; }
@@ -23,7 +23,7 @@ namespace Keeper2018
             DisplayName = _caption + "  ;  T - Transform";
         }
 
-        public void Initalize(string caption, List<CurrencyRatesModel> rates)
+        public void Initalize(string caption, List<OfficialRatesModel> rates)
         {
             _caption = caption;
 
