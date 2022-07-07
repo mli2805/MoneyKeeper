@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain.Exchange;
 
@@ -21,16 +23,29 @@ namespace Keeper2018
 
         public async void Update()
         {
-            // var newRates = await ExchangeRatesFetcher.Get(5);
+            var last = Rows.Last();
+            _keeperDataModel.ExchangeRates.Remove(last.Date);
+            Rows.Remove(last);
 
-            var bnb = ExchangeRatesSelector.GetAllBnb();
-            var newRates = ExchangeRatesSelector.SelectMiddayRates(bnb);
-            
+            var lastDate = Rows.Last().Date;
 
-            foreach (var newRate in newRates)
+            var days = (DateTime.Now - lastDate).Days;
+            if (days == 0) return;
+
+            var newRates = await ExchangeRatesFetcher.Get(days);
+
+            var middayRatesRates = 
+                ExchangeRatesSelector.SelectMiddayRates(newRates.OrderBy(l=>l.Date).ToList(), Rows.Last().Date.AddDays(1));
+            var lastId = Rows.Last().Id;
+
+            foreach (var newRate in middayRatesRates)
             {
-                Rows.Add(newRate);
-                _keeperDataModel.ExchangeRates.Add(newRate.Date, newRate);
+                if (!_keeperDataModel.ExchangeRates.ContainsKey(newRate.Date))
+                {
+                    newRate.Id = ++lastId;
+                    Rows.Add(newRate);
+                    _keeperDataModel.ExchangeRates.Add(newRate.Date, newRate);
+                }
             }
         }
     }

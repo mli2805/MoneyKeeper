@@ -24,11 +24,11 @@ namespace Keeper2018
             return bnb;
         }
 
-        public static List<ExchangeRates> SelectMiddayRates(List<ExchangeRates> bnb)
+        public static List<ExchangeRates> SelectMiddayRates(List<ExchangeRates> bnb, DateTime date)
         {
             var id = 0;
             var prev = bnb[0];
-            var date = new DateTime(2021, 2, 16, 12, 0, 0);
+            date = date.Date.AddHours(12);
 
             var bnbD = new List<ExchangeRates>();
             foreach (var line in bnb)

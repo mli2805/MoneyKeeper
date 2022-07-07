@@ -242,6 +242,7 @@
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\CurrencyRates2\ExchangeRatesViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\KomBankRatesLine.cs" />
     <Compile Include="Forms\CurrencyRates2\Parser.cs" />
     <Compile Include="Forms\CurrencyRates2\RatesView.xaml.cs">
       <DependentUpon>RatesView.xaml</DependentUpon>

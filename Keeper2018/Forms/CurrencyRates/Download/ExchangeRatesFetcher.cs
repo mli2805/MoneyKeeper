@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using KeeperDomain.Exchange;
@@ -17,8 +18,8 @@ namespace Keeper2018
             try
             {
                 var response = await MyRequest.GetAsync(uri);
-                var result = (List<ExchangeRates>)JsonConvert.DeserializeObject(response, typeof(List<ExchangeRates>));
-                return result;
+                var lines = (List<KomBankRatesLine>)JsonConvert.DeserializeObject(response, typeof(List<KomBankRatesLine>));
+                return lines.Select(l => l.ToExchangeRates()).ToList();
             }
             catch (Exception e)
             {
