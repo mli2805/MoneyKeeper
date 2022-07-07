@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using OxyPlot;
@@ -11,7 +10,7 @@ namespace Keeper2018
     public class UsdFiveInOneChartViewModel : Screen
     {
         private string _caption;
-        private List<CurrencyRatesModel> _rates;
+        private KeeperDataModel _keeperDataModel;
         private int _firstYear = 2017;
         public PlotModel MyPlotModel { get; set; } = new PlotModel();
 
@@ -20,10 +19,10 @@ namespace Keeper2018
             DisplayName = "курс доллара по НБ РБ  ( " + _caption + ")";
         }
 
-        public void Initialize(string caption, List<CurrencyRatesModel> rates)
+        public void Initialize(string caption, KeeperDataModel keeperDataModel)
         {
-            _rates = rates;
             _caption = caption;
+            _keeperDataModel = keeperDataModel;
 
             for (int i = _firstYear; i <= DateTime.Now.Year; i++)
             {
@@ -41,10 +40,10 @@ namespace Keeper2018
         {
             var minus = year - _firstYear;
             var result = new LineSeries() { Title = year.ToString() };
-            foreach (var nbRbRateOnScreen in _rates.Where(r => r.Date.Year == year))
+            foreach (var ratesLine in _keeperDataModel.Rates.Values.Where(r => r.Date.Year == year))
             {
-                var rate = nbRbRateOnScreen.TodayRates.NbRates.Usd.Value;
-                result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nbRbRateOnScreen.Date.AddYears(-minus)), rate));
+                var rate = ratesLine.NbRates.Usd.Value;
+                result.Points.Add(new DataPoint(DateTimeAxis.ToDouble(ratesLine.Date.AddYears(-minus)), rate));
             }
             return result;
         }

@@ -15,11 +15,11 @@ namespace Keeper2018
             DisplayName = _caption;
         }
 
-        public void Initalize(string caption, List<CurrencyRatesModel> rates)
+        public void Initalize(string caption, List<CurrencyRatesModel> rates, KeeperDataModel keeperDataModel)
         {
             _caption = caption;
             Model = new LongTermChartModel();
-            Model.Build(rates);
+            Model.Build(rates, keeperDataModel);
         }
 
 

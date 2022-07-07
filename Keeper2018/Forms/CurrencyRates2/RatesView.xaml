@@ -5,11 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Width="984" Height="700" WindowStartupLocation="CenterScreen">
+        Width="924" Height="700" WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom">
-            <Button Name="Close" Content="Close" Margin="5" Width="100" HorizontalAlignment="Right"/>
-        </StackPanel>
+        <DockPanel DockPanel.Dock="Bottom" Margin="5,15, 5, 7" Height="32">
+            <Button Name="Close" Content="Close" Margin="5" Width="100" DockPanel.Dock="Right"/>
+
+            <Button Name="LongTermChart" Margin="5" Width="80" Content="Long term" DockPanel.Dock="Left"/>
+            <Button Name="UsdFourYearsChart" Margin="5" Width="90" Content="Usd 4Years 1" DockPanel.Dock="Left"/>
+            <Button Name="UsdFiveYearsChart" Margin="5" Width="90" Content="Usd 4Years 2" DockPanel.Dock="Left"/>
+            <Button Name="RusBelChart" Margin="5" Width="80" Content="Rus - Bel" DockPanel.Dock="Left"/>
+            <Button Name="BasketChart" Margin="5" Width="80" Content="Basket" DockPanel.Dock="Left"/>
+            <Button Name="ProbabilityChart" Margin="5" Width="80" Content="Probability" DockPanel.Dock="Left"/>
+            <Button Name="MonthlyChart" Margin="5" Width="80" Content="Monthly" DockPanel.Dock="Left"/>
+            <StackPanel></StackPanel>
+        </DockPanel>
         <TabControl>
             <TabItem Header="Обменные курсы" Width="150">
                 <keeper2018:ExchangeRatesView DataContext="{Binding ExchangeRatesViewModel}"/>

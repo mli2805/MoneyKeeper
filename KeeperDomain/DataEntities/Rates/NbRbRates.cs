@@ -11,13 +11,10 @@ namespace KeeperDomain
         public OneRate Euro { get; set; } = new OneRate();
         public OneRate Rur { get; set; } = new OneRate();
 
-        // public double EuroUsdCross { get; set; }
         public double EuroUsdCross => Usd.Value !=0 ? Euro.Value / Usd.Value : 0;
-
 
         public string Dump()
         {
-            // return Usd.Dump() + " | " + Euro.Dump() + " | " + Rur.Dump() + " | " + EuroUsdCross;
             return Usd.Dump() + " | " + Euro.Dump() + " | " + Rur.Dump();
         }
 

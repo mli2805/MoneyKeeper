@@ -91,28 +91,28 @@ namespace Keeper2018
         public void LongTermChart()
         {
             var longTermChartViewModel = new LongTermChartViewModel();
-            longTermChartViewModel.Initalize(OxyplotKey, Rows.ToList());
+            longTermChartViewModel.Initalize(OxyplotKey, Rows.ToList(), _keeperDataModel);
             _windowManager.ShowWindow(longTermChartViewModel);
         }
 
         public void UsdFourYearsChart()
         {
             var usdAnnualDiagramViewModel = new UsdAnnualDiagramViewModel();
-            usdAnnualDiagramViewModel.Initialize(OxyplotKey, Rows.ToList());
+            usdAnnualDiagramViewModel.Initialize(OxyplotKey, _keeperDataModel);
             _windowManager.ShowWindow(usdAnnualDiagramViewModel);
         }
 
         public void UsdFiveYearsChart()
         {
             var vm = new UsdFiveInOneChartViewModel();
-            vm.Initialize(OxyplotKey, Rows.ToList());
+            vm.Initialize(OxyplotKey, _keeperDataModel);
             _windowManager.ShowWindow(vm);
         }
 
         public void RusBelChart()
         {
             var vm = new RusBelChartViewModel();
-            vm.Initialize(OxyplotKey, Rows.ToList());
+            vm.Initialize(OxyplotKey, _keeperDataModel);
             _windowManager.ShowWindow(vm);
         }
 
@@ -133,7 +133,7 @@ namespace Keeper2018
         public void MonthlyChart()
         {
             var monthlyChartViewModel = new MonthlyChartViewModel();
-            monthlyChartViewModel.Initialize(OxyplotKey, Rows.ToList());
+            monthlyChartViewModel.Initialize(OxyplotKey, _keeperDataModel);
             _windowManager.ShowWindow(monthlyChartViewModel);
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using OxyPlot;
@@ -11,7 +10,7 @@ namespace Keeper2018
     public class RusBelChartViewModel : Screen
     {
         private string _caption;
-        private List<CurrencyRatesModel> _rates;
+        private KeeperDataModel _keeperDataModel;
 
         public LineSeries RusSeries { get; set; } = new LineSeries() { Title = "RUS", Color = OxyColors.Red};
         public LineSeries BelSeries { get; set; } = new LineSeries() { Title = "BEL", Color = OxyColors.Green};
@@ -36,10 +35,11 @@ namespace Keeper2018
             DisplayName = _caption;
         }
 
-        public void Initialize(string caption, List<CurrencyRatesModel> rates)
+        public void Initialize(string caption, KeeperDataModel keeperDataModel)
         {
             _caption = caption;
-            _rates = rates;
+            _keeperDataModel = keeperDataModel;
+
             CreateSeries(new DateTime(2016,7,1));
             MyPlotModel.Series.Add(RusSeries);
             MyPlotModel.Series.Add(BelSeries);
@@ -60,11 +60,11 @@ namespace Keeper2018
             BelSeries.Points.Clear();
             RusSeries.Points.Clear();
             RubBynSeries.Points.Clear();
-            foreach (var line in _rates.Where(r => r.Date >= startDate))
+            foreach (var line in _keeperDataModel.Rates.Values.Where(r => r.Date >= startDate))
             {
-                BelSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.TodayRates.NbRates.Usd.Value * 30));
-                RusSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.TodayRates.CbrRate.Usd.Value));
-                RubBynSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.TodayRates.NbRates.Rur.Value * 20));
+                BelSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.NbRates.Usd.Value * 30));
+                RusSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.CbrRate.Usd.Value));
+                RubBynSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(line.Date), line.NbRates.Rur.Value * 20));
             }
         }
 
