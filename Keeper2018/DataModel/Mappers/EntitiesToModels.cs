@@ -127,6 +127,7 @@ namespace Keeper2018
                 AssetType = asset.AssetType,
                 Nominal = asset.Nominal,
                 BondCouponPeriodDays = asset.BondCouponPeriodDays,
+                BondCouponPeriod = asset.BondCouponPeriod,
                 CouponRate = asset.CouponRate,
                 BondExpirationDate = asset.BondExpirationDate,
                 Comment = asset.Comment,

@@ -15,13 +15,18 @@ namespace Keeper2018
         public AssetType AssetType { get; set; }
 
         public double CouponRate { get; set; } // if fixed and known
+        public string CouponRateStr => AssetType == AssetType.Bond ? CouponRate.ToString("F1") : "";
 
         // if Bond not Stack
         public decimal Nominal { get; set; }
-        public string NominalStr => Nominal == 0 ? "" : Nominal.ToString(new CultureInfo("en-US"));
+        public string NominalStr => Nominal == 0 
+            ? "" 
+            : Nominal.ToString(new CultureInfo("en-US")) + " руб";
+
         public int BondCouponPeriodDays { get; set; }
         public CouponPeriod BondCouponPeriod { get; set; } = new CouponPeriod();
         public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;
+        public string BondExpirationDateStr => AssetType == AssetType.Bond ? BondExpirationDate.ToLongDateString() : "";
 
         public string Comment { get; set; }
     }

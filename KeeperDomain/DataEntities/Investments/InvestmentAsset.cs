@@ -26,7 +26,7 @@ namespace KeeperDomain
         {
             return Id + " ; " + TrustAccountId + " ; " + Ticker.Trim() + " ; " + Title.Trim() + " ; " + 
                    StockMarket + " ; " + AssetType + " ; " +
-                   Nominal + " ; " + BondCouponPeriod + " ; " +
+                   Nominal + " ; " + BondCouponPeriod.Dump() + " ; " +
                    CouponRate.ToString(new CultureInfo("en-US")) + " ; " + 
                    BondExpirationDate.ToString("dd/MM/yyyy") + " ; " + Comment.Trim();
         }

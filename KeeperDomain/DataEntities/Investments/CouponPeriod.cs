@@ -10,7 +10,7 @@ namespace KeeperDomain
         public bool IsDays { get; set; }
         public int Value { get; set; }
 
-        public override string ToString()
+        public string Dump()
         {
             string word;
             if (IsYears)
@@ -23,31 +23,19 @@ namespace KeeperDomain
             return $"{Value}-{word}";
         }
 
-        /// <summary>
-        /// if ( CouponPeriod.TryParse("182-days", out CouponPeriod cp) )
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="couponPeriod"></param>
-        /// <returns></returns>
-        public static bool TryParse(string str, out CouponPeriod couponPeriod)
+        public override string ToString()
         {
-            couponPeriod = new CouponPeriod();
-            try
-            {
-                var ss = str.Split('-');
-                if (ss.Length != 2) return false;
+            if (Value == 0) return "";
 
-                if (ss[1] == "years") couponPeriod.IsYears = true;
-                else if (ss[1] == "months") couponPeriod.IsMonths = true;
-                else couponPeriod.IsDays = true;
+            string word;
+            if (IsYears)
+                word = Value.YearsNumber();
+            else if (IsMonths)
+                word = Value.MonthsNumber();
+            else
+                word = Value.DaysNumber();
 
-                couponPeriod.Value = int.Parse(ss[0]);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            return $"{Value} {word}";
         }
 
         public static CouponPeriod Parse(string str)

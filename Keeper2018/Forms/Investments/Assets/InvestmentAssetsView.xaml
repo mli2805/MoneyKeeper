@@ -46,7 +46,7 @@
 
                 <DataGridTextColumn Header="Номинал" Width="50" Binding="{Binding Nominal}" />
                 <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding CouponRate}" />
-                <DataGridTextColumn Header="раз в дней" Width="50" Binding="{Binding BondCouponPeriodDays}" />
+                <DataGridTextColumn Header="Период" Width="65" Binding="{Binding BondCouponPeriodDays}" />
 
                 <DataGridTemplateColumn Header="Дата окончания" Width="100" >
                     <DataGridTemplateColumn.CellEditingTemplate>

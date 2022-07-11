@@ -83,7 +83,6 @@ namespace Keeper2018
             _keeperDataModel.InvestTranModels = 
                 bin.InvestmentTransactions.Select(t=>t.Map(_keeperDataModel)).ToList();
 
-
             _keeperDataModel.Transactions = new Dictionary<int, TransactionModel>();
             foreach (var transaction in bin.Transactions)
                 _keeperDataModel.Transactions.Add(transaction.Id, transaction.Map(_keeperDataModel.AcMoDict));
