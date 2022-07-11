@@ -36,10 +36,10 @@
         <Border Margin="3" BorderThickness="1" BorderBrush="Gray">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="350"/>
-                    <ColumnDefinition Width="350"/>
-                    <ColumnDefinition Width="350"/>
-                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="320"/>
                 </Grid.ColumnDefinitions>
                
                 <ListBox Grid.Column="0" ItemsSource="{Binding ReportModel.BeforeState}" BorderThickness="0, 0, 1, 0" />

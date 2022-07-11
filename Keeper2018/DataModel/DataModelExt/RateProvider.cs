@@ -22,24 +22,44 @@ namespace Keeper2018
             OneRate result;
             switch (currency)
             {
-                case CurrencyCode.BYN: return ratesLine.NbRates.Usd.Clone();
-                case CurrencyCode.BYR: return ratesLine.NbRates.Usd.Clone();
+                case CurrencyCode.BYN: 
+                case CurrencyCode.BYR: 
+                    return new OneRate() { Value = exchangeRatesLine.BynToUsd, Unit = 1 };
                 case CurrencyCode.EUR:
-                    result = ratesLine.NbRates.Euro.Clone();
                     if (isForUsd)
-                        result.Value = result.Value / ratesLine.NbRates.Usd.Value;
-                    return result;
+                    {
+                        result = new OneRate() { Value = exchangeRatesLine.EurToUsd, Unit = 1 };
+                        if (result.Value == 0)
+                            result.Value = ratesLine.NbRates.EuroUsdCross;
+                        return result;
+                    }
+                    else
+                    {
+                        result = new OneRate() { Value = exchangeRatesLine.EurToByn, Unit = 1 };
+                        if (result.Value == 0)
+                            result.Value = ratesLine.NbRates.EuroUsdCross * exchangeRatesLine.BynToUsd;
+                        return result;
+                    }
                 case CurrencyCode.RUB:
-                    result = ratesLine.NbRates.Rur.Clone();
                     if (isForUsd)
-                        result.Value = ratesLine.NbRates.Usd.Value / (result.Value / result.Unit);
-                    return result;
-
+                    {
+                        result = new OneRate() { Value = exchangeRatesLine.RubToUsd, Unit = 1 };
+                        if (result.Value == 0)
+                            result = ratesLine.CbrRate.Usd;
+                        return result;
+                    }
+                    else
+                    {
+                        result = new OneRate() { Value = exchangeRatesLine.RubToByn, Unit = 100 };
+                        if (result.Value == 0)
+                            result.Value = ratesLine.NbRates.Rur.Value ;
+                        return result;
+                    }
                 case CurrencyCode.GLD:
                     var line = dataModel.MetalRates.LastOrDefault(m => m.Date <= dt);
                     result = new OneRate() { Value = line?.Price ?? 0 };
                     if (isForUsd)
-                        result.Value = result.Value / exchangeRatesLine.BynToUsd;
+                        result.Value /= exchangeRatesLine.BynToUsd;
                     return result;
             }
             return null;

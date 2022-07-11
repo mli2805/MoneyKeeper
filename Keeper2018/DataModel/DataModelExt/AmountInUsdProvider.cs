@@ -59,8 +59,10 @@ namespace Keeper2018
                     rate = (decimal)rateLine.NbRates.Euro.Value / (decimal)rateLine.NbRates.Usd.Value;
                     return amount * rate;
                 case CurrencyCode.RUB:
-                    rate = (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value;
-                    return amount * rate;
+                    rate = (decimal)exchangeRatesLine.RubToUsd;
+                    return rate == 0 
+                        ? amount * (decimal)rateLine.NbRates.Rur.Value / rateLine.NbRates.Rur.Unit / (decimal)rateLine.NbRates.Usd.Value
+                        : amount / rate;
                 case CurrencyCode.GLD:
                     var line = dataModel.MetalRates.LastOrDefault(m => m.Date <= date);
                     rate = (decimal)((line?.Price ?? 0)  / exchangeRatesLine.BynToUsd);

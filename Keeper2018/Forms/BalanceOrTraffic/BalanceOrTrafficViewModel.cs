@@ -42,8 +42,6 @@ namespace Keeper2018
 
         private List<KeyValuePair<DateTime, string>> _report;
         private ObservableCollection<string> _lines;
-        private string _total;
-
         public ObservableCollection<string> Lines
         {
             get => _lines;
@@ -65,8 +63,9 @@ namespace Keeper2018
                 _selectedLine = value;
             }
         }
-
         public string SelectedRowTooltip => SelectedLine;
+
+        private string _total;
         public string Total
         {
             get => _total;

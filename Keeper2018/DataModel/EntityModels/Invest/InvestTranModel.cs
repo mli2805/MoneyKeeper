@@ -107,6 +107,8 @@ namespace Keeper2018
             }
         }
 
+        public decimal Rate; // to convert sum into $, filled in and used in analysis
+
         public string CurrencyAmountForDatagrid => $"{CurrencyAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}";
         public string FullAmountForDatagrid => $"{CurrencyAmount:#,0.00} + {CouponAmount:#,0.00} = {CurrencyAmount+CouponAmount:#,0.00} {Currency.ToString().ToLowerInvariant()}";
         public string CouponAmountForDatagrid =>

@@ -100,7 +100,7 @@ namespace Keeper2018
             {
                 model.RateStart = dataModel.GetRate(model.Deposit.StartDate, model.DepositOffer.MainCurrency);
                 if (model.Deposit.StartDate < new DateTime(2016, 7, 1))
-                    model.RateStart.Value = model.RateStart.Value / 10000;
+                    model.RateStart.Value /= 10000;
                 model.RateNow = dataModel.GetRate(DateTime.Today, model.DepositOffer.MainCurrency);
             }
             else
@@ -115,8 +115,9 @@ namespace Keeper2018
             if (model.DepositOffer.MainCurrency == CurrencyCode.RUB && k < 0) k = 0;
             model.RateForecast.Value = model.RateStart.Value + k * (model.Deposit.FinishDate - model.Deposit.StartDate).Days;
 
-            model.RateStr1 =
-                $"Курс по НБ:  {model.RateStart.Value:0.0000} => {model.RateNow.Value:0.0000} => {model.RateForecast.Value:0.0000}";
+            model.RateStr1 = model.DepositOffer.MainCurrency == CurrencyCode.RUB
+                ? $"Курс $:  {model.RateStart.Value:0.0#} => {model.RateNow.Value:0.0#} => {model.RateForecast.Value:0.0#}"
+                : $"Курс $:  {model.RateStart.Value:0.0000} => {model.RateNow.Value:0.0000} => {model.RateForecast.Value:0.0000}";
 
             var nowDeltaRate = model.RateNow.Value - model.RateStart.Value;
             var nowProcent = nowDeltaRate / model.RateStart.Value * 100;

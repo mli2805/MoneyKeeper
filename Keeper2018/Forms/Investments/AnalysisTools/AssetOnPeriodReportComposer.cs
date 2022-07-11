@@ -4,119 +4,119 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public static class BeforeColumnComposer
+    public static class AssetOnPeriodReportComposer
     {
-        public static IEnumerable<string> CreateBeforeColumn(this AssetState assetState)
+        public static List<string> CreateBeforeColumn(this AssetState assetState)
         {
-            yield return assetState.Caption;
-            yield return "";
+            List<string> result = new List<string>();
+            result.Add(assetState.Caption);
+            result.Add("");
 
             foreach (var tran in assetState.Trans
-                         .Where(t => t.InvestOperationType == InvestOperationType.BuyBonds
-                                               || t.InvestOperationType == InvestOperationType.BuyStocks
-                                               || t.InvestOperationType == InvestOperationType.SellBonds
-                                               || t.InvestOperationType == InvestOperationType.SellStocks))
-                yield return tran.ToAssetAnalysis();
-            yield return "";
+                         .Where(t => t.InvestOperationType.IsBuySell()))
+                result.AddRange(tran.ToAssetAnalysis());
+            result.Add("");
 
-            yield return $"Количество: {assetState.Quantity} шт.";
-            yield return $" средняя цена: {assetState.AveragePriceStr}";
-            yield return $" cтоимость: {assetState.PriceStr}";
-            yield return "";
+            result.Add($"Количество: {assetState.Quantity} шт.");
+            result.Add($" средняя цена: {assetState.AveragePriceStr}");
+            result.Add($" cтоимость: {assetState.PriceStr}");
+            result.Add("");
 
-            yield return "С учетом оплаченных";
-            yield return $" комиссий {assetState.OperationFeesStr}";
-            yield return "получились:";
+            result.Add("С учетом оплаченных");
+            result.Add($" комиссий {assetState.OperationFeesStr}");
+            result.Add("получились:");
             var fullPrice = assetState.PriceInUsd + assetState.OperationFeesInUsd;
             var averagePrice = assetState.Quantity == 0 ? 0 : fullPrice / assetState.Quantity;
-            yield return $" средняя цена: {averagePrice:N} usd";
-            yield return $" и стоимость: {fullPrice:N} usd";
+            result.Add($" средняя цена: {averagePrice:N} usd");
+            result.Add($" и стоимость: {fullPrice:N} usd");
+            return result;
         }
 
         public static IEnumerable<string> CreateOnStartColumn(this AssetOnPeriodData assetOnPeriodData)
         {
+            List<string> result = new List<string>();
             var assetStateBefore = assetOnPeriodData.Before;
             var assetState = assetOnPeriodData.OnStart;
-            yield return assetState.Caption;
-            yield return "";
+            result.Add(assetState.Caption);
+            result.Add("");
 
-            yield return $"Количество: {assetState.Quantity} шт.";
-            yield return $" по цене: {assetState.AveragePriceStr}";
-            yield return $"Стоимость: {assetState.PriceStr}";
-            yield return "";
+            result.Add($"Количество: {assetState.Quantity} шт.");
+            result.Add($" по цене: {assetState.AveragePriceStr}");
+            result.Add($"Стоимость: {assetState.PriceStr}");
+            result.Add("");
 
             var fullPrice = assetStateBefore.PriceInUsd + assetState.OperationFeesInUsd - assetState.ReceivedCouponInUsd;
             var averagePrice = assetState.Quantity == 0 ? 0 : fullPrice / assetState.Quantity;
             if (assetState.ReceivedCouponInUsd > 0)
             {
-                yield return $"Получен купон (дивы): {assetState.ReceivedCouponStr}";
-                yield return "  можно сказать уменьшены:";
-                yield return $" средняя цена: {averagePrice:N} usd";
-                yield return $" и стоимость покупки: {fullPrice:N} usd";
-                yield return "";
+                result.Add($"Получен купон (дивы): {assetState.ReceivedCouponStr}");
+                result.Add("  можно сказать уменьшены:");
+                result.Add($" средняя цена: {averagePrice:N} usd");
+                result.Add($" и стоимость покупки: {fullPrice:N} usd");
+                result.Add("");
             }
 
 
-            yield return assetState.Caption;
+            result.Add(assetState.Caption);
             var profitInUsd = assetState.PriceInUsd - fullPrice;
             var word = profitInUsd > 0 ? "прибыль составляла: " : "убыток составлял";
-            yield return $"{word} {profitInUsd:N} usd";
+            result.Add($"{word} {profitInUsd:N} usd");
+            return result;
         }
 
         public static IEnumerable<string> CreateInBetweenColumn(this AssetState assetState)
         {
-            yield return assetState.Caption;
-            yield return "";
+            List<string> result = new List<string>();
+            result.Add(assetState.Caption);
+            result.Add("");
 
             foreach (var tran in assetState.Trans
                          .Where(t => t.InvestOperationType == InvestOperationType.BuyBonds
                                                || t.InvestOperationType == InvestOperationType.BuyStocks
                                                || t.InvestOperationType == InvestOperationType.SellBonds
                                                || t.InvestOperationType == InvestOperationType.SellStocks))
-                yield return tran.ToAssetAnalysis();
-            yield return "";
+                result.AddRange(tran.ToAssetAnalysis());
+            result.Add("");
 
             if (assetState.OperationFees != 0)
-                yield return $"Оплачены комиссии {assetState.OperationFeesStr}";
+                result.Add($"Оплачены комиссии {assetState.OperationFeesStr}");
             if (assetState.ReceivedCoupon != 0)
-                yield return $"Получен купон (дивы): {assetState.ReceivedCouponStr}";
-
+                result.Add($"Получен купон (дивы): {assetState.ReceivedCouponStr}");
+            return result;
         }
 
         public static IEnumerable<string> CreateAtEndColumn(this AssetOnPeriodData assetOnPeriodData)
         {
+            List<string> result = new List<string>();
             var assetStateBefore = assetOnPeriodData.OnStart;
             var assetState = assetOnPeriodData.AtEnd;
-            yield return assetState.Caption;
-            yield return "";
+            result.Add(assetState.Caption);
+            result.Add("");
 
-            yield return $"Количество: {assetState.Quantity} шт.";
-            yield return $" по цене: {assetState.AveragePriceStr}";
-            yield return $"Стоимость: {assetState.PriceStr}";
-            yield return "";
+            result.Add($"Количество: {assetState.Quantity} шт.");
+            result.Add($" по цене: {assetState.AveragePriceStr}");
+            result.Add($"Стоимость: {assetState.PriceStr}");
+            result.Add("");
 
             var fullPrice = assetStateBefore.PriceInUsd + assetState.OperationFeesInUsd - assetState.ReceivedCouponInUsd;
             var averagePrice = assetState.Quantity == 0 ? 0 : fullPrice / assetState.Quantity;
             if (assetState.ReceivedCouponInUsd > 0)
             {
-                yield return "С учетом оплаченных";
-                yield return $" комиссий {assetState.OperationFeesStr}";
-                yield return $"и зачисленных купон (дивы): {assetState.ReceivedCouponStr}";
-                yield return "  получились:";
-                yield return $" средняя цена: {averagePrice:N} usd";
-                yield return $" и стоимость покупки: {fullPrice:N} usd";
-                yield return "";
+                result.Add("С учетом оплаченных");
+                result.Add($" комиссий {assetState.OperationFeesStr}");
+                result.Add($"и зачисленных купон (дивы): {assetState.ReceivedCouponStr}");
+                result.Add("  получились:");
+                result.Add($" средняя цена: {averagePrice:N} usd");
+                result.Add($" и стоимость покупки: {fullPrice:N} usd");
+                result.Add("");
             }
 
-            yield return "здесь будет вычисляться прибыль/убыток";
-            yield return "";
-
-
+            result.Add("здесь будет вычисляться прибыль/убыток");
+            result.Add("");
+            return result;
         }
 
-
-
-        private static string ToAssetAnalysis(this InvestTranModel tranModel)
+        private static IEnumerable<string> ToAssetAnalysis(this InvestTranModel tranModel)
         {
             string word;
             if (tranModel.InvestOperationType == InvestOperationType.BuyStocks
@@ -140,13 +140,17 @@ namespace Keeper2018
                 oneAssetPrice = $"{tranModel.CurrencyAmount / tranModel.AssetAmount:N}";
             }
 
-            var figures = $"{tranModel.AssetAmount} * {oneAssetPrice} = {sum:N}";
-            return $"{tranModel.Timestamp:dd-MMM-yy} {word} {figures} {tranModel.Currency.ToString().ToLower()}";
+            var inCurrency = $"{tranModel.AssetAmount} * {oneAssetPrice} = {sum:N} {tranModel.Currency.ToString().ToLower()}";
+            if (tranModel.Asset.TrustAccount.Currency == CurrencyCode.USD)
+                yield return $"{tranModel.Timestamp:dd-MMM-yy} {word} {inCurrency}";
+            else
+            {
+                var inUsd = $" ({sum / tranModel.Rate:N} usd)";
+                yield return $"{tranModel.Timestamp:dd-MMM-yy} {word}";
+                yield return $"         {inCurrency} {inUsd}";
+            }
         }
-    }
 
-    public static class AssetOnPeriodReportComposer
-    {
         public static AssetOnPeriodReportModel CreateReport(this AssetOnPeriodData assetOnPeriodData)
         {
             return new AssetOnPeriodReportModel()
@@ -160,6 +164,6 @@ namespace Keeper2018
                 AtEndState = assetOnPeriodData.CreateAtEndColumn().ToList(),
             };
         }
-        
+
     }
 }

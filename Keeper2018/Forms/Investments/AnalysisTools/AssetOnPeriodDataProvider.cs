@@ -59,6 +59,7 @@ namespace Keeper2018
                 decimal rate = 1;
                 if (!isInUsd)
                     rate = (decimal)dataModel.GetRate(investTranModel.Timestamp.Date, investTranModel.Currency, true).Value;
+                investTranModel.Rate = rate;
 
                 var feeCurrencyRate = (decimal)dataModel
                     .GetRate(investTranModel.Timestamp.Date, investTranModel.BuySellFeeCurrency, true).Value;
@@ -88,6 +89,7 @@ namespace Keeper2018
                         result.ReceivedCouponInUsd += investTranModel.CurrencyAmount / rate;
                         break;
                 }
+
             }
 
             return result;

@@ -12,7 +12,7 @@ namespace Keeper2018
             decimal amountInUsd = 0;
             foreach (var pair in balance.Currencies)
             {
-                amountInUsd = amountInUsd + (pair.Key == CurrencyCode.USD
+                amountInUsd += (pair.Key == CurrencyCode.USD
                     ? pair.Value
                     : dataModel.AmountInUsd(date, pair.Key, pair.Value));
             }
@@ -30,7 +30,7 @@ namespace Keeper2018
 
             var result = $"{valueStr} {currency.ToString().ToLower()}";
             if (currency != CurrencyCode.USD)
-                result = result + $"  ( ${dataModel.AmountInUsd(date, currency, value):#,0.00} )";
+                result += $"  ( ${dataModel.AmountInUsd(date, currency, value):#,0.00} )";
             return result;
         }
 
@@ -45,7 +45,7 @@ namespace Keeper2018
             {
                 if (pair.Key == CurrencyCode.USD)
                 {
-                    amountInUsd = amountInUsd + pair.Value;
+                    amountInUsd += pair.Value;
                     result.Add($"{offset}{pair.Value:#,0.00} usd");
                 }
                 else
