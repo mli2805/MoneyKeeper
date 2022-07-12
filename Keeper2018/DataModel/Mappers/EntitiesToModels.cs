@@ -129,6 +129,7 @@ namespace Keeper2018
                 BondCouponPeriodDays = asset.BondCouponPeriodDays,
                 BondCouponPeriod = asset.BondCouponPeriod,
                 CouponRate = asset.CouponRate,
+                PreviousCouponDate = asset.PreviousCouponDate,
                 BondExpirationDate = asset.BondExpirationDate,
                 Comment = asset.Comment,
             };

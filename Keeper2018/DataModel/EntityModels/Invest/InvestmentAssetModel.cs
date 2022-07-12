@@ -25,6 +25,7 @@ namespace Keeper2018
 
         public int BondCouponPeriodDays { get; set; }
         public CouponPeriod BondCouponPeriod { get; set; } = new CouponPeriod();
+        public DateTime PreviousCouponDate { get; set; }
         public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;
         public string BondExpirationDateStr => AssetType == AssetType.Bond ? BondExpirationDate.ToLongDateString() : "";
 

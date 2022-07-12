@@ -46,6 +46,26 @@
 
                 <DataGridTextColumn Header="Номинал" Width="50" Binding="{Binding Nominal}" />
                 <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding CouponRate}" />
+
+                <DataGridTemplateColumn Header="Предыд выплата" Width="100" >
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding PreviousCouponDate,
+                                                 StringFormat=dd/MM/yyyy,
+                                       Mode=TwoWay,
+                                       UpdateSourceTrigger=PropertyChanged}"
+                                        d:DataContext="{d:DesignInstance keeperDomain:InvestmentAsset}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PreviousCouponDate,
+                                                 StringFormat=dd/MM/yyyy}"
+                                       d:DataContext="{d:DesignInstance keeperDomain:InvestmentAsset}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTextColumn Header="Период" Width="65" Binding="{Binding BondCouponPeriodDays}" />
 
                 <DataGridTemplateColumn Header="Дата окончания" Width="100" >

@@ -14,11 +14,16 @@ namespace KeeperDomain
         public StockMarket StockMarket { get; set; }
         public AssetType AssetType { get; set; }
 
+        #region Bonds special properties
+
         public decimal Nominal { get; set; }
         public int BondCouponPeriodDays { get; set; }
         public CouponPeriod BondCouponPeriod { get; set; } = new CouponPeriod();
         public double CouponRate { get; set; } // if fixed and known
-        public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue; // if Bond not Stack
+        public DateTime PreviousCouponDate { get; set; }
+        public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;
+
+        #endregion
 
         public string Comment { get; set; } = string.Empty;
 
@@ -27,7 +32,7 @@ namespace KeeperDomain
             return Id + " ; " + TrustAccountId + " ; " + Ticker.Trim() + " ; " + Title.Trim() + " ; " + 
                    StockMarket + " ; " + AssetType + " ; " +
                    Nominal + " ; " + BondCouponPeriod.Dump() + " ; " +
-                   CouponRate.ToString(new CultureInfo("en-US")) + " ; " + 
+                   CouponRate.ToString(new CultureInfo("en-US")) + " ; " + PreviousCouponDate.ToString("dd/MM/yyyy") + " ; " + 
                    BondExpirationDate.ToString("dd/MM/yyyy") + " ; " + Comment.Trim();
         }
     }
