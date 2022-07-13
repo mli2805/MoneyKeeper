@@ -21,6 +21,7 @@ namespace Keeper2018
                         prev.Date = date.Date;
                     var item = prev.Clone();
                     item.Id = ++id;
+                    item.Date = item.Date.Date; // очистить часы минуты
                     bnbD.Add(item);
                     date = date.AddDays(1);
                 }

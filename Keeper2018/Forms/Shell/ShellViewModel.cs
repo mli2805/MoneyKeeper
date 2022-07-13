@@ -49,7 +49,13 @@ namespace Keeper2018
 
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
-            ShellPartsBinder.SelectedAccountModel = account; 
+            ShellPartsBinder.SelectedAccountModel = account;
+
+            // на время разработки формы анализа инвест ассетов
+            var vm = new AssetAnalysisViewModel(_keeperDataModel);
+            vm.Initialize(_keeperDataModel.InvestmentAssets.First(a=>a.Ticker == "ОФЗ26238"));
+            new WindowManager().ShowWindow(vm);
+            // ------------------------------------------------
         }
 
      

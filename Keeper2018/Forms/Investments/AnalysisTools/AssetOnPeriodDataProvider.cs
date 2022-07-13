@@ -8,7 +8,7 @@ namespace Keeper2018
     {
         public static AssetOnPeriodData Analyze(this KeeperDataModel dataModel, InvestmentAssetModel asset, Period period)
         {
-            var result = new AssetOnPeriodData(){Period = period};
+            var result = new AssetOnPeriodData() { Period = period };
 
             // цена и колво (и курсы если не долларовый) на дату последней операции до начала периода
             // а также средняя цена единицы актива
@@ -22,14 +22,19 @@ namespace Keeper2018
             // переоцениваем на начало периода
             result.OnStart = dataModel.RecalculateOnDate(result.Before, lastDayBefore, $"На {period.StartDate.AddSeconds(-1)}");
 
+            var finish = period.StartDate.Date <= DateTime.Today && period.FinishMoment.Date > DateTime.Today
+                ? DateTime.Today
+                : period.FinishMoment;
+
             // только транзакции в течении периода
             var emptyState = new AssetState(asset);
-            result.InBetween = dataModel.GetAssetOnDate(emptyState, period, period.ToStringD());
+            //result.InBetween = dataModel.GetAssetOnDate(emptyState, period, period.ToStringD());
+            result.InBetween = dataModel.GetAssetOnDate(emptyState, period, $"{period.StartDate.Date:d} - {finish:d}");
 
             // цена и колво (и курсы если не долларовый) на дату последней операции внутри периода
             // переоцениваем на конец периода
             var temp = dataModel.GetAssetOnDate(result.OnStart, period, "");
-            result.AtEnd = dataModel.RecalculateOnDate(temp, period.FinishMoment.Date, $"На {period.FinishMoment}");
+            result.AtEnd = dataModel.RecalculateOnDate(temp, period.FinishMoment.Date, $"На {finish:d}");
 
             // накопленный купонный доход
             // выплаченный купонный доход или дивиденды
@@ -49,7 +54,7 @@ namespace Keeper2018
             var isInUsd = result.Asset.TrustAccount.Currency == CurrencyCode.USD;
 
             var trans = dataModel.InvestTranModels
-                .Where(t => t.Asset.Ticker == result.Asset.Ticker 
+                .Where(t => t.Asset.Ticker == result.Asset.Ticker
                             && period.Includes(t.Timestamp))
                 .ToList();
             result.Trans.AddRange(trans);
@@ -69,6 +74,7 @@ namespace Keeper2018
                     case InvestOperationType.BuyBonds:
                     case InvestOperationType.BuyStocks:
                         result.Quantity += investTranModel.AssetAmount;
+                        result.PriceWithoutCoupon += investTranModel.CurrencyAmount;
                         result.Price += investTranModel.CurrencyAmount + investTranModel.CouponAmount;
                         result.PriceInUsd += (investTranModel.CurrencyAmount + investTranModel.CouponAmount) / rate;
 
@@ -78,9 +84,10 @@ namespace Keeper2018
                     case InvestOperationType.SellBonds:
                     case InvestOperationType.SellStocks:
                         result.Quantity -= investTranModel.AssetAmount;
+                        result.PriceWithoutCoupon -= investTranModel.CurrencyAmount;
                         result.Price -= investTranModel.CurrencyAmount + investTranModel.CouponAmount;
                         result.PriceInUsd -= (investTranModel.CurrencyAmount + investTranModel.CouponAmount) / rate;
-                    
+
                         result.OperationFees += investTranModel.BuySellFee;
                         result.OperationFeesInUsd += investTranModel.BuySellFee / feeCurrencyRate;
                         break;
@@ -92,6 +99,9 @@ namespace Keeper2018
 
             }
 
+            if (!isInUsd)
+                result.CurrentCurrencyRate =
+                    (decimal)dataModel.GetRate(period.FinishMoment.Date, result.Asset.TrustAccount.Currency, true).Value;
             return result;
         }
 
@@ -99,17 +109,20 @@ namespace Keeper2018
             AssetState state, DateTime date, string caption)
         {
             var result = state.Clone(caption);
+            var asset = state.Asset;
 
-            var assetRate = dataModel.AssetRates.LastOrDefault(r => r.TickerId == state.Asset.Id && r.Date <= date);
-            if (assetRate == null)
-                return result;
+            result.CurrentAssetRate = dataModel.AssetRates.LastOrDefault(r => r.TickerId == asset.Id && r.Date <= date)?.Value ?? 0;
+            var days = (date - asset.PreviousCouponDate).Days;
+            result.AccumulatedCouponIncome = asset.Nominal * (decimal)asset.CouponRate / 100 * days / 365;
 
-            result.Price = assetRate.Value * state.Quantity;
+            result.Price = (result.CurrentAssetRate + result.AccumulatedCouponIncome) * state.Quantity;
 
-            if (assetRate.Currency != CurrencyCode.USD)
+            if (asset.TrustAccount.Currency == CurrencyCode.RUB)
             {
-                var usdRate = dataModel.GetRate(date, assetRate.Currency, true);
-                result.PriceInUsd = assetRate.Value / (decimal)usdRate.Value * state.Quantity;
+                var rubToUsd = dataModel.GetExchangeRatesLine(date).RubToUsd;
+                result.CurrentCurrencyRate = (decimal)rubToUsd;
+                result.CurrentCurrencyRateStr = $"   курс: {rubToUsd} rub купить 1 usd";
+                result.PriceInUsd = result.Price / (decimal)rubToUsd;
             }
             else result.PriceInUsd = result.Price;
 

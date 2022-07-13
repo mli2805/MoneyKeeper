@@ -133,6 +133,7 @@ namespace Keeper2018
                 case InvestOperationType.EnrollCouponOrDividends:
                     AccountVisibility = Visibility.Visible;
                     AssetVisibility = Visibility.Visible;
+                    AssetAmountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
                     MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
                     CurrencyAmountText = "Сумма";

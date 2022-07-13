@@ -10,6 +10,7 @@ namespace Keeper2018
         public string Caption { get; set; }
 
         public int Quantity { get; set; }
+        public decimal PriceWithoutCoupon { get; set; } // price
         public decimal Price { get; set; } // price + coupon
 
         public decimal PriceInUsd { get; set; } // price + coupon
@@ -34,6 +35,11 @@ namespace Keeper2018
         public decimal OperationFees { get; set; }
         public decimal OperationFeesInUsd { get; set; }
         public string OperationFeesStr => $"{OperationFees:N} byn ({OperationFeesInUsd:N} usd)";
+
+        public decimal CurrentCurrencyRate;
+        public string CurrentCurrencyRateStr;
+        public decimal CurrentAssetRate;
+        public decimal AccumulatedCouponIncome;
 
         public List<InvestTranModel> Trans { get; set; } = new List<InvestTranModel>();
 
