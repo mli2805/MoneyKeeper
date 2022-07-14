@@ -18,9 +18,9 @@ namespace Keeper2018
         public ShellPartsBinder ShellPartsBinder { get; }
         private bool _dbLoaded;
 
-        public ShellViewModel(KeeperDataModel keeperDataModel, ShellPartsBinder shellPartsBinder, 
+        public ShellViewModel(KeeperDataModel keeperDataModel, ShellPartsBinder shellPartsBinder,
             DbLoader dbLoader, DbSaver dbSaver, RatesViewModel ratesViewModel,
-            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel, 
+            MainMenuViewModel mainMenuViewModel, AccountTreeViewModel accountTreeViewModel,
             BalanceOrTrafficViewModel balanceOrTrafficViewModel, TwoSelectorsViewModel twoSelectorsViewModel)
         {
             MainMenuViewModel = mainMenuViewModel;
@@ -50,15 +50,8 @@ namespace Keeper2018
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountModel = account;
-
-            // на время разработки формы анализа инвест ассетов
-            var vm = new AssetAnalysisViewModel(_keeperDataModel);
-            vm.Initialize(_keeperDataModel.InvestmentAssets.First(a=>a.Ticker == "ОФЗ26238"));
-            new WindowManager().ShowWindow(vm);
-            // ------------------------------------------------
         }
 
-     
         public override async void CanClose(Action<bool> callback)
         {
             if (_dbLoaded)
