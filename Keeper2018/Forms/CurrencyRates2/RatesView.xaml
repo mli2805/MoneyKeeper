@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Width="924" Height="700" WindowStartupLocation="CenterScreen">
+        Width="1032" Height="700" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="5,15, 5, 7" Height="32">
             <Button Name="Close" Content="Close" Margin="5" Width="100" DockPanel.Dock="Right"/>

@@ -5,5 +5,6 @@
         public double Usd { get; set; }
         public double Euro { get; set; }
         public double Rur { get; set; }
+        public double Cny { get; set; }
     }
 }

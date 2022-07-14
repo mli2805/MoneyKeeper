@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
+using Newtonsoft.Json;
 
 namespace Keeper2018
 {
@@ -12,7 +15,7 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _keeperDataModel;
         public ObservableCollection<OfficialRatesModel> Rows { get; set; } = new ObservableCollection<OfficialRatesModel>();
-    
+
         private OfficialRatesModel _selectedRow;
         public OfficialRatesModel SelectedRow
         {
@@ -23,8 +26,8 @@ namespace Keeper2018
                 _selectedRow = value;
                 NotifyOfPropertyChange();
             }
-        }  
-        
+        }
+
         public OfficialRatesModel LastDayOfYear { get; set; }
 
         private bool _isDownloadEnabled;
@@ -38,7 +41,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
-        
+
         public OfficialRatesViewModel(KeeperDataModel keeperDataModel)
         {
             _keeperDataModel = keeperDataModel;

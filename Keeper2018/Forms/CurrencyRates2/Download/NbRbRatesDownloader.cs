@@ -17,7 +17,7 @@ namespace Keeper2018
                 string uri = "https://www.nbrb.by/API/ExRates/Rates?onDate=" + $"{date:yyyy-M-d}" + "&Periodicity=0";
                 var response = await MyRequest.GetAsync(uri);
                 var nbList = (List<NbRbSiteRate>)JsonConvert.DeserializeObject(response, typeof(List<NbRbSiteRate>));
-                if (nbList.Count == 0) return null; 
+                if (nbList.Count == 0) return null;
                 var result = new NbRbRates();
                 var usdRate = nbList.First(c => c.Cur_Abbreviation == "USD");
                 result.Usd.Value = usdRate.Cur_OfficialRate;
@@ -28,6 +28,9 @@ namespace Keeper2018
                 var rubRate = nbList.First(c => c.Cur_Abbreviation == "RUB");
                 result.Rur.Value = rubRate.Cur_OfficialRate;
                 result.Rur.Unit = rubRate.Cur_Scale;
+                var cnyRate = nbList.First(c => c.Cur_Abbreviation == "CNY");
+                result.Cny.Value = cnyRate.Cur_OfficialRate;
+                result.Cny.Unit = cnyRate.Cur_Scale;
                 return result;
             }
             catch (Exception e)

@@ -11,6 +11,7 @@ namespace KeeperDomain.Basket
             new BasketWeights() {Usd = 1.0 / 3, Euro = 1.0 / 3, Rur = 1.0 / 3},
             new BasketWeights() {Usd = 0.3, Euro = 0.3, Rur = 0.4},
             new BasketWeights() {Usd = 0.3, Euro = 0.2, Rur = 0.5},
+            new BasketWeights() {Usd = 0.3, Euro = 0.1, Rur = 0.5, Cny = 0.1},
         };
 
         public static double Calculate(OfficialRates officialRates)

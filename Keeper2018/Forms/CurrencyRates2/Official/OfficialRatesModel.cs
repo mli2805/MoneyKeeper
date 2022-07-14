@@ -36,6 +36,7 @@ namespace Keeper2018
             }
         }
 
+        public string RurUnitStr { get; set; }
         public string RurStr { get; set; }
 
         public string RurUsdStr
@@ -48,6 +49,9 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        public string CnyUnitStr { get; set; }
+        public string CnyStr { get; set; }
 
         public string BasketStr { get; set; }
 
@@ -74,6 +78,9 @@ namespace Keeper2018
             EuroBynStr = TodayRates.NbRates.Euro.Value.ToString(Template, new CultureInfo("ru-RU"));
             EuroUsdStr = TodayRates.NbRates.EuroUsdCross.ToString("0.####", new CultureInfo("ru-RU"));
             RurStr = TodayRates.NbRates.Rur.Value.ToString(Template, new CultureInfo("ru-RU"));
+            RurUnitStr = RurStr == "" ? "" : TodayRates.NbRates.Rur.Unit.ToString();
+            CnyStr = TodayRates.NbRates.Cny.Value.ToString(Template, new CultureInfo("ru-RU"));
+            CnyUnitStr = CnyStr == "" ? "" : TodayRates.NbRates.Cny.Unit.ToString();
 
             UsdBrush = YesterdayNbRbRates == null || YesterdayNbRbRates.Usd.Value.Equals(TodayRates.NbRates.Usd.Value)
                 ? Brushes.Black

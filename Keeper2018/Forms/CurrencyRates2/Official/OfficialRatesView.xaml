@@ -12,14 +12,17 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Margin="15, 5" Width="220" Name="Download" Content="Обновить курсы НБРБ и ЦБРФ" IsEnabled="{Binding IsDownloadEnabled}"/>
+
+            <Button Content="yuan" Margin="5" Width="100" Name="DownloadYuan"></Button>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
             <TextBlock Text="{Binding LastDayOfYear.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
             <TextBlock Text="{Binding LastDayOfYear.UsdStr}" Margin="31,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.EuroBynStr}" Margin="230,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.EuroUsdStr}" Margin="45,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.EuroBynStr}" Margin="168,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.EuroUsdStr}" Margin="36,0,0,0" />
             <TextBlock Text="{Binding LastDayOfYear.RurStr}" Margin="45,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.RurUsdStr}" Margin="25,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.RurUsdStr}" Margin="30,0,0,0" />
+            <TextBlock Text="{Binding LastDayOfYear.CnyStr}" Margin="62,0,0,0" />
             <TextBlock Text="{Binding LastDayOfYear.BasketStrWithoutProc}" Margin="65,0,0,0" />
         </StackPanel>
         <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" 
@@ -58,13 +61,21 @@
                 </DataTemplate>
                 <DataTemplate x:Key="RurTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding RurStr}" Width="65"/>
+                        <TextBlock Text="{Binding RurUnitStr}" Width="20" FontSize="8"/>
+                        <TextBlock Text="{Binding RurStr}" Width="60"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="RurUsdTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding RurUsdStr}" Width="45" FontSize="12"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+              <DataTemplate x:Key="CnyTemplate" DataType="keeper2018:OfficialRatesModel">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding CnyUnitStr}" Width="15" FontSize="8"/>
+                        <TextBlock Text="{Binding CnyStr}" Width="60"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
@@ -115,6 +126,7 @@
                 <DataGridTemplateColumn Header="НБРБ кросс" CellTemplate="{StaticResource EuroUsdTemplate}"/>
                 <DataGridTemplateColumn Header="НБРБ Rub" CellTemplate="{StaticResource RurTemplate}"/>
                 <DataGridTemplateColumn Header="ЦБРФ" CellTemplate="{StaticResource RurUsdTemplate}"/>
+                <DataGridTemplateColumn Header="НБРБ юань" CellTemplate="{StaticResource CnyTemplate}"/>
                 <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketTemplate}" />
                 <DataGridTemplateColumn Header="After break" CellTemplate="{StaticResource BasketAfterBreakTemplate}"/>
                 <DataGridTemplateColumn Header="к 31 дек" CellTemplate="{StaticResource BasketAnnualTemplate}"/>

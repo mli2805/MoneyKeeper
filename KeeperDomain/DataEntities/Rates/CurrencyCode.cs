@@ -10,6 +10,6 @@ namespace KeeperDomain
         BYN = 5,
         EGP = 6,
         GLD = 7, // 1г золота 900й пробы
-        YUA = 8, // yuan
+        CNY = 8, // yuan
     };
 }
