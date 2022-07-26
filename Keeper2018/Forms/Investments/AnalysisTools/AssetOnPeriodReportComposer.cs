@@ -6,7 +6,7 @@ namespace Keeper2018
 {
     public static class AssetOnPeriodReportComposer
     {
-        public static List<string> CreateBeforeColumn(this AssetState assetState)
+        private static List<string> CreateBeforeColumn(this AssetState assetState)
         {
             List<string> result = new List<string>();
             result.Add(assetState.Caption);
@@ -32,7 +32,7 @@ namespace Keeper2018
             return result;
         }
 
-        public static IEnumerable<string> CreateOnStartColumn(this AssetOnPeriodData assetOnPeriodData)
+        private static IEnumerable<string> CreateOnStartColumn(this AssetOnPeriodData assetOnPeriodData)
         {
             List<string> result = new List<string>();
             var assetStateBefore = assetOnPeriodData.Before;
@@ -68,7 +68,7 @@ namespace Keeper2018
             return result;
         }
 
-        public static IEnumerable<string> CreateInBetweenColumn(this AssetOnPeriodData assetOnPeriodData)
+        private static IEnumerable<string> CreateInBetweenColumn(this AssetOnPeriodData assetOnPeriodData)
         {
             List<string> result = new List<string>();
             var assetState = assetOnPeriodData.InBetween;
@@ -93,7 +93,7 @@ namespace Keeper2018
             return result;
         }
 
-        public static IEnumerable<string> CreateAtEndColumn(this AssetOnPeriodData assetOnPeriodData)
+        private static IEnumerable<string> CreateAtEndColumn(this AssetOnPeriodData assetOnPeriodData)
         {
             List<string> result = new List<string>();
             var currentState = assetOnPeriodData.AtEnd;
@@ -116,16 +116,24 @@ namespace Keeper2018
                 result.AddRange(FillPeriodChanges(assetOnPeriodData.OnStart, currentState));
                 var profitOverPeriod = currentState.PriceInUsd - assetOnPeriodData.OnStart.PriceInUsd
                                                                - assetOnPeriodData.InBetween.OperationFeesInUsd + assetOnPeriodData.InBetween.ReceivedCouponInUsd;
-                var word = profitOverPeriod > 0 ? "прибыль: " : "убыток:";
-                result.Add($"{word} {profitOverPeriod:N} usd  ({profitOverPeriod / assetOnPeriodData.OnStart.PriceInUsd * 100:F1}%)");
+                var resultStr = $"Результат в usd: {currentState.PriceInUsd:F} - {assetOnPeriodData.OnStart.PriceInUsd:F}";
+                if (assetOnPeriodData.InBetween.OperationFeesInUsd > 0)
+                    resultStr += $" - {assetOnPeriodData.InBetween.OperationFeesInUsd:F}";
+                if (assetOnPeriodData.InBetween.ReceivedCouponInUsd > 0)
+                    resultStr += $" + {assetOnPeriodData.InBetween.ReceivedCouponInUsd:F}";
+                result.Add(resultStr);
+                result.Add($"                        = {profitOverPeriod:N} usd  ({profitOverPeriod / assetOnPeriodData.OnStart.PriceInUsd * 100:F1}%)");
                 result.Add("");
 
                 result.Add("С момента приобретения");
                 result.AddRange(FillAllChanges(assetOnPeriodData.Before, currentState));
                 var fullPriceBefore = assetOnPeriodData.Before.PriceInUsd + assetOnPeriodData.Before.OperationFeesInUsd;
                 var profitTotal = currentState.PriceInUsd + currentState.ReceivedCouponInUsd - fullPriceBefore;
-                var word2 = profitTotal > 0 ? "прибыль: " : "убыток:";
-                result.Add($"{word2} {profitTotal:N} usd ({profitTotal / assetOnPeriodData.Before.PriceInUsd * 100:F1}%)");
+                var totalStr = $"Результат в usd: {currentState.PriceInUsd:F} - {assetOnPeriodData.Before.PriceInUsd:F} - {currentState.OperationFeesInUsd:F}";
+                if (currentState.ReceivedCouponInUsd > 0)
+                    totalStr += $" + {currentState.ReceivedCouponInUsd:F}";
+                result.Add(totalStr);
+                result.Add($"                        = {profitTotal:N} usd ({profitTotal / assetOnPeriodData.Before.PriceInUsd * 100:F1}%)");
                 result.Add("");
             }
 
@@ -145,6 +153,8 @@ namespace Keeper2018
             }
 
             result.Add($"   цена пакета {ChangesOverPeriod(fromState.Price, currentState.Price, true)}");
+            if (currentState.Asset.TrustAccount.Currency != CurrencyCode.USD)
+                result.Add($"   цена пакета в usd {ChangesOverPeriod(fromState.PriceInUsd, currentState.PriceInUsd, true)}");
             return result;
         }
 
@@ -161,6 +171,8 @@ namespace Keeper2018
             }
 
             result.Add($"   цена пакета {ChangesOverPeriod(fromState.Price, currentState.Price, true)}");
+            if (currentState.Asset.TrustAccount.Currency != CurrencyCode.USD)
+                result.Add($"   цена пакета в usd {ChangesOverPeriod(fromState.PriceInUsd, currentState.PriceInUsd, true)}");
             return result;
         }
 
@@ -173,7 +185,6 @@ namespace Keeper2018
 
         private static IEnumerable<string> ToAssetAnalysis(this InvestTranModel tranModel)
         {
-
             string rate = tranModel.Currency != CurrencyCode.USD
                 ? $"(курс: {tranModel.Rate:F} rub купить 1 usd)"
                 : "";
@@ -211,7 +222,10 @@ namespace Keeper2018
             var inCurrency = $"{oneAssetPrice:N} * {tranModel.AssetAmount} шт = {sum:N} {tranModel.Currency.ToString().ToLower()}";
 
             if (tranModel.Asset.TrustAccount.Currency == CurrencyCode.USD)
-                yield return $"{tranModel.Timestamp:dd-MMM-yy} {word} {inCurrency}";
+            {
+                yield return $"{tranModel.Timestamp:dd-MMM-yy} {word}";
+                yield return $"    {inCurrency}";
+            }
             else
             {
                 var inUsd = $" ({sum / tranModel.Rate:N} usd)";
@@ -229,11 +243,8 @@ namespace Keeper2018
             return new AssetOnPeriodReportModel()
             {
                 BeforeState = assetOnPeriodData.Before.CreateBeforeColumn().ToList(),
-
                 OnStartState = assetOnPeriodData.CreateOnStartColumn().ToList(),
-
                 InBetweenTrans = assetOnPeriodData.CreateInBetweenColumn().ToList(),
-
                 AtEndState = assetOnPeriodData.CreateAtEndColumn().ToList(),
             };
         }
