@@ -266,6 +266,7 @@
     <Compile Include="Forms\Investments\AnalysisTools\AssetOnPeriodReportModel.cs" />
     <Compile Include="Forms\Investments\AnalysisTools\AssetOnPeriodData.cs" />
     <Compile Include="Forms\Investments\AnalysisTools\AssetState.cs" />
+    <Compile Include="Forms\Investments\AnalysisTools\TranToAssetAnalysis.cs" />
     <Compile Include="Forms\Investments\Assets\AssetAnalysisView.xaml.cs">
       <DependentUpon>AssetAnalysisView.xaml</DependentUpon>
     </Compile>
