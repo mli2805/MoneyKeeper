@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -11,7 +10,8 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private TrustAccount _trustAccount;
 
-        public List<InvestmentAssetOnDate> Rows { get; set; } = new List<InvestmentAssetOnDate>();
+        public AssetsTableViewModel OpenAssetsViewModel { get; set; } = new AssetsTableViewModel();
+
         public decimal AllCurrentActives { get; set; }
         public decimal Cash { get; set; }
         public decimal AllPaidFees { get; set; }
@@ -22,7 +22,6 @@ namespace Keeper2018
         public string FinResult { get; set; }
         public string FinPercent { get; set; }
 
-        public InvestmentAssetOnDate Total { get; set; }
         public string Expense { get; set; }
         public string Fees { get; set; }
         public string TransferredToTrust { get; set; }
@@ -44,48 +43,23 @@ namespace Keeper2018
         {
             _trustAccount = trustAccount;
             var bal = _dataModel.GetTrustAccountBalance(trustAccount, date);
-            foreach (var asset in bal.Assets.Where(p=>p.Quantity > 0))
-            {
-                asset.CurrentPriceOfOne = _dataModel.AssetRates.Last(r => r.TickerId == asset.InvestmentAssetId).Value;
-                asset.CurrentPrice = asset.CurrentPriceOfOne * asset.Quantity;
-                var investmentAssetModel = _dataModel.InvestmentAssets.First(a => a.Id == asset.InvestmentAssetId);
-                asset.AccumulatedCouponOfOne = investmentAssetModel.GetAccumulatedCoupon(date);
-                asset.AccumulatedCoupon = asset.AccumulatedCouponOfOne * asset.Quantity;
-                asset.FinResult = asset.CurrentPrice - asset.Price - asset.PaidCoupon + asset.ReceivedCoupon;
-            }
+            OpenAssetsViewModel.Initialize(bal, _dataModel, _trustAccount, date);
 
-            Rows.Clear();
-            Rows.AddRange(bal.Assets.Where(p=>p.Quantity > 0));
             Cash = bal.Cash;
             NotPaidFees = bal.NotPaidFees;
             BaseFee = bal.BaseFee;
             OperationsFee = bal.Assets.Sum(a => a.BuySellFeeInTrustCurrency);
             AllCurrentActives = bal.Assets.Sum(a => a.CurrentPrice);
 
-            EvaluateTotals(bal);
+            EvaluateTotals(bal, OpenAssetsViewModel.Total);
         }
 
-        private void EvaluateTotals(TrustAccountBalanceOnDate bal)
+        private void EvaluateTotals(TrustAccountBalanceOnDate bal, InvestmentAssetOnDate total)
         {
-            Total = new InvestmentAssetOnDate() { InvestmentCurrency = _trustAccount.Currency };
-
-            Total.Price = Rows.Sum(r => r.Price);
-
-            Total.BuySellFee = Rows.Sum(r => r.BuySellFee);
-            Total.BuySellFeeCurrency = CurrencyCode.BYN;
-            Total.BuySellFeeInTrustCurrency = Rows.Sum(r => r.BuySellFeeInTrustCurrency);
-
-            Total.PaidCoupon = Rows.Sum(r => r.PaidCoupon);
-            Total.ReceivedCoupon = Rows.Sum(r => r.ReceivedCoupon);
-            Total.AccumulatedCoupon = Rows.Sum(r => r.AccumulatedCoupon);
-
-            Total.CurrentPrice = Rows.Sum(r => r.CurrentPrice);
-            Total.FinResult = Rows.Sum(r => r.FinResult);
-
             AllPaidFees = OperationsFee + bal.BaseFee;
-            Expense = $"{Total.Price:N} + {Total.PaidCoupon:N} = {Total.Price + Total.PaidCoupon:N}";
-            Fees = $"{Total.BuySellFeeInTrustCurrency:N} + {bal.BaseFee:N} = {AllPaidFees:N}";
-            var fullExpense = Total.Price + Total.PaidCoupon + AllPaidFees;
+            Expense = $"{total.Price:N} + {total.PaidCoupon:N} = {total.Price + total.PaidCoupon:N}";
+            Fees = $"{total.BuySellFeeInTrustCurrency:N} + {bal.BaseFee:N} = {AllPaidFees:N}";
+            var fullExpense = total.Price + total.PaidCoupon + AllPaidFees;
 
             var transferred = bal.TopUp - bal.Withdraw;
             TransferredToTrust = $"{bal.TopUp:N} - {bal.Withdraw:N} = {transferred:N}";
@@ -100,5 +74,7 @@ namespace Keeper2018
             FinResult = $"{AllCurrentActives + Cash:N} - {externals:N} = {result:N}";
             FinPercent = $" {result / externals * 100:N}%  /  {result / fullExpense * 100:N}%";
         }
+
+      
     }
 }
