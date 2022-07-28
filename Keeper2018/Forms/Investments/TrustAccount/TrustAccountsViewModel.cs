@@ -44,7 +44,7 @@ namespace Keeper2018
 
         public void ShowTrustAccountAnalysis()
         {
-            _trustAccountAnalysisViewModel.Initialize(SelectedAccount);
+            _trustAccountAnalysisViewModel.Initialize(SelectedAccount, DateTime.Today);
             _windowManager.ShowDialog(_trustAccountAnalysisViewModel);
         }
 

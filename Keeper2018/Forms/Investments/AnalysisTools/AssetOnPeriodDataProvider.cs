@@ -112,8 +112,7 @@ namespace Keeper2018
             var asset = state.Asset;
 
             result.CurrentAssetRate = dataModel.AssetRates.LastOrDefault(r => r.TickerId == asset.Id && r.Date <= date)?.Value ?? 0;
-            var days = (date - asset.PreviousCouponDate).Days;
-            result.AccumulatedCouponIncome = asset.Nominal * (decimal)asset.CouponRate / 100 * days / 365;
+            result.AccumulatedCouponIncome = asset.GetAccumulatedCoupon(date);
 
             result.Price = (result.CurrentAssetRate + result.AccumulatedCouponIncome) * state.Quantity;
 
@@ -127,6 +126,15 @@ namespace Keeper2018
             else result.PriceInUsd = result.Price;
 
             return result;
+        }
+    }
+
+    public static class InvestmentAssetExt
+    {
+        public static decimal GetAccumulatedCoupon(this InvestmentAssetModel asset, DateTime date)
+        {
+            var days = (date - asset.PreviousCouponDate).Days;
+            return asset.Nominal * (decimal)asset.CouponRate / 100 * days / 365;
         }
     }
 }

@@ -12,94 +12,72 @@
     <DockPanel Margin="0,0,0,10">
         <DockPanel DockPanel.Dock="Bottom">
             <Border DockPanel.Dock="Left" Margin="5" BorderBrush="Gray" BorderThickness="1">
-                <StackPanel Margin="5,0">
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Передано в ДУ (термин альфы) (Пополнение - вывод ): " Width="400" />
-                        <TextBlock Text="{Binding TransferredToTrust}" Width="260" TextAlignment="Right"/>
+                <StackPanel Margin="5,0" Orientation="Horizontal">
+                    <StackPanel Width="400">
+                        <TextBlock Margin="0,5" Text="Передано в ДУ (термин альфы) (Пополнение - вывод ): "  />
+                        <TextBlock Margin="0,5" Text="Реально вложено (Пополнение + комиссии - получ дивы - вывод): "/>
+                        <TextBlock Margin="0,5" Text="Свободные средства: "/>
+                        <TextBlock Margin="0,5" Text="Приобретено активов (стоимость + НКД):"/>
+                        <TextBlock Margin="0,5" Text="Текущее состояние (тек стоимость активов + кэш, включая дивы): "/>
+                        <TextBlock Margin="0,5" Text="Результат: "/>
+                        <TextBlock Margin="0,5" Text="К вложенным / к потраченным: "/>
                     </StackPanel>
-                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Реально вложено (Пополнение + комиссии - получ дивы - вывод): " Width="400" />
-                        <TextBlock Text="{Binding RealExternals}" Width="260" TextAlignment="Right"/>
-                    </StackPanel>
-                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Свободные средства: " Width="400" />
-                        <TextBlock Text="{Binding FreeCash}" Width="260" TextAlignment="Right"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock  Text="Приобретено активов (стоимость + НКД):" Width="400"/>
-                        <TextBlock Text="{Binding Expense}" Width="260" TextAlignment="Right"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Текущее состояние (тек стоимость активов + кэш, включая дивы): " Width="400" />
-                        <TextBlock Text="{Binding AllCurrentActivesStr}" Width="260" TextAlignment="Right"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Результат: " Width="400" />
-                        <TextBlock Text="{Binding FinResult}"  Width="260" TextAlignment="Right"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="К вложенным / к потраченным: " Width="400" />
-                        <TextBlock Text="{Binding FinPercent}"  Width="260" TextAlignment="Right"/>
+                    <StackPanel Width="330">
+                        <TextBlock Margin="0,5" Text="{Binding TransferredToTrust}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding RealExternals}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding FreeCash}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding Expense}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding AllCurrentActivesStr}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding FinResult}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding FinPercent}" TextAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
             <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
-                        <TextBlock  Text="Свободный кэш:" Width="175"/>
-                        <TextBlock Text="{Binding Cash, StringFormat=N}" Width="80" TextAlignment="Right"/>
+                <StackPanel Margin="5,0" Orientation="Horizontal">
+                    <StackPanel Width="175">
+                        <TextBlock Margin="0,5" Text="Свободный кэш:"/>
+                        <TextBlock Margin="0,5" Text="Оплаченные комиссии:"/>
+                        <TextBlock Margin="0,5" Text="за каждую операцию:" Width="145"/>
+                        <TextBlock Margin="0,5" Text="базовая комиссия:" Width="145"/>
+                        <TextBlock Margin="0,5" Text="Неоплаченные комиссии:"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
-                        <TextBlock Text="Оплаченные комиссии:" Width="175" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding AllPaidFees, StringFormat=N}" Width="80" TextAlignment="Right"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="25,3,5,0">
-                        <TextBlock Text="за каждую операцию:" Width="145"/>
-                        <TextBlock Text="{Binding Total.BuySellFeeInTrustCurrency, StringFormat=N}" Width="60" TextAlignment="Right"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="25,3,5,0">
-                        <TextBlock Text="базовая комиссия:" Width="145"/>
-                        <TextBlock Text="{Binding BaseFee, StringFormat=N}" Width="60" TextAlignment="Right"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Неоплаченные комиссии:" Width="175"/>
-                        <TextBlock Text="{Binding NotPaidFees, StringFormat=N}" Width="80" TextAlignment="Right"/>
+                    <StackPanel>
+                        <TextBlock Margin="0,5" Text="{Binding Cash, StringFormat=N}" Width="80" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding AllPaidFees, StringFormat=N}" Width="80" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding Total.BuySellFeeInTrustCurrency, StringFormat=N}" Width="60" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding BaseFee, StringFormat=N}" Width="60" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding NotPaidFees, StringFormat=N}" Width="80" TextAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
-
             </Border>
         </DockPanel>
         <Border DockPanel.Dock="Top" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <DockPanel>
-                <Grid DockPanel.Dock="Bottom" Margin="10,0, 0 , 5">
+                 <Grid DockPanel.Dock="Bottom" Margin="5,0, 0 , 5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="90"/>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderTicker, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderQuantity, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderPriceOfOne, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderPrice, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderCoupon, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderFee, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderCurrentPriceOfOne, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderCurrentPrice, Path=ActualWidth}"/>
+                        <ColumnDefinition Width="{Binding ElementName=HeaderFinResult, Path=ActualWidth}"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="3" Text="{Binding Total.Price, StringFormat=N}" TextAlignment="Right"/>
-                    <TextBlock Grid.Column="4" Text="{Binding Total.PaidCoupon, StringFormat=N}" TextAlignment="Right"/>
-                    <TextBlock Grid.Column="5" Text="{Binding Total.ReceivedCoupon, StringFormat=N}" TextAlignment="Right"/>
-                    <TextBlock Grid.Column="6" Text="{Binding Total.FeeForDataGrid}" TextAlignment="Right"/>
-                    <TextBlock Grid.Column="8" Text="{Binding Total.CurrentPrice, StringFormat=N}" TextAlignment="Right"/>
-                    <TextBlock Grid.Column="9" Text="{Binding Total.FinResult, StringFormat=N}" TextAlignment="Right"/>
+                    <TextBlock Grid.Column="4" Text="{Binding Total.ReceivedCoupon, StringFormat=N}" TextAlignment="Right"/>
+                    <TextBlock Grid.Column="5" Text="{Binding Total.FeeForDataGrid}" TextAlignment="Right"/>
+                    <TextBlock Grid.Column="7" Text="{Binding Total.CurrentPrice, StringFormat=N}" TextAlignment="Right"/>
+                    <TextBlock Grid.Column="8" Text="{Binding Total.FinResultStr}" TextAlignment="Right"/>
                 </Grid>
-                <DataGrid DockPanel.Dock="Top" Margin="5" 
+               <DataGrid DockPanel.Dock="Top" Margin="5" 
                        ItemsSource="{Binding Rows}"
                        AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header=" Тикер" Width="90" Binding="{Binding InvestmentAssetTicker}" />
-                        <DataGridTextColumn Header=" Колво " Width="50" Binding="{Binding Quantity}">
+                        <DataGridTextColumn x:Name="HeaderTicker" Header=" Тикер" Width="90" Binding="{Binding InvestmentAssetTicker}" />
+                        <DataGridTextColumn x:Name="HeaderQuantity" Header=" Колво " Width="50" Binding="{Binding Quantity}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -107,7 +85,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header=" Цена " Width="80" Binding="{Binding PriceOfOne, StringFormat=N}">
+                        <DataGridTextColumn x:Name="HeaderPriceOfOne" Header=" Цена с НКД " Width="80" Binding="{Binding PriceOfOne, StringFormat={}{0:0,0.00###}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -115,7 +93,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header=" Стоимость " Width="100" Binding="{Binding Price, StringFormat=N}">
+                        <DataGridTextColumn x:Name="HeaderPrice" Header=" Оплачено " Width="200" Binding="{Binding PriceStr}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -123,9 +101,8 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-
-
-                        <DataGridTextColumn Header=" - НКД" Width="70" Binding="{Binding PaidCoupon, StringFormat=N}">
+                      
+                        <DataGridTextColumn x:Name="HeaderCoupon" Header="Получ купон/дивы" Width="100" Binding="{Binding ReceivedCoupon, StringFormat=N}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -133,7 +110,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="Купон/дивы" Width="70" Binding="{Binding ReceivedCoupon, StringFormat=N}">
+                        <DataGridTextColumn x:Name="HeaderFee" Header=" Оплач. комиссии" Width="150" Binding="{Binding FeeForDataGrid}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -141,8 +118,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-
-                        <DataGridTextColumn Header=" Оплач. комиссии" Width="150" Binding="{Binding FeeForDataGrid}">
+                        <DataGridTextColumn x:Name="HeaderCurrentPriceOfOne" Header=" Тек цена" Width="160" Binding="{Binding CurrentPriceOfOneStr}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -150,8 +126,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-
-                        <DataGridTextColumn Header=" Тек цена" Width="80" Binding="{Binding CurrentPriceOfOne, StringFormat=N}">
+                        <DataGridTextColumn x:Name="HeaderCurrentPrice" Header=" Тек стоимость" Width="200" Binding="{Binding CurrentPriceStr, StringFormat=N}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -159,24 +134,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header=" Тек стоимость" Width="100" Binding="{Binding CurrentPrice, StringFormat=N}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="HorizontalAlignment" Value="Right" />
-                                    <Setter Property="Margin" Value="0,0,5,0" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-
-                        <DataGridTextColumn Header=" Результат" Width="100" Binding="{Binding FinResult, StringFormat=N}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="HorizontalAlignment" Value="Right" />
-                                    <Setter Property="Margin" Value="0,0,5,0" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header=" " Width="70" Binding="{Binding FinPercentStr}">
+                        <DataGridTextColumn x:Name="HeaderFinResult" Header=" Результат" Width="170" Binding="{Binding FinResultStr}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
@@ -186,6 +144,7 @@
                         </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+               
             </DockPanel>
         </Border>
     </DockPanel>

@@ -40,19 +40,22 @@ namespace Keeper2018
             DisplayName = $"{_trustAccount.Title}";
         }
 
-        public void Initialize(TrustAccount trustAccount)
+        public void Initialize(TrustAccount trustAccount, DateTime date)
         {
             _trustAccount = trustAccount;
-            var bal = _dataModel.GetTrustAccountBalance(trustAccount, DateTime.Today);
-            foreach (var asset in bal.Assets)
+            var bal = _dataModel.GetTrustAccountBalance(trustAccount, date);
+            foreach (var asset in bal.Assets.Where(p=>p.Quantity > 0))
             {
                 asset.CurrentPriceOfOne = _dataModel.AssetRates.Last(r => r.TickerId == asset.InvestmentAssetId).Value;
                 asset.CurrentPrice = asset.CurrentPriceOfOne * asset.Quantity;
+                var investmentAssetModel = _dataModel.InvestmentAssets.First(a => a.Id == asset.InvestmentAssetId);
+                asset.AccumulatedCouponOfOne = investmentAssetModel.GetAccumulatedCoupon(date);
+                asset.AccumulatedCoupon = asset.AccumulatedCouponOfOne * asset.Quantity;
                 asset.FinResult = asset.CurrentPrice - asset.Price - asset.PaidCoupon + asset.ReceivedCoupon;
             }
 
             Rows.Clear();
-            Rows.AddRange(bal.Assets);
+            Rows.AddRange(bal.Assets.Where(p=>p.Quantity > 0));
             Cash = bal.Cash;
             NotPaidFees = bal.NotPaidFees;
             BaseFee = bal.BaseFee;
@@ -74,6 +77,7 @@ namespace Keeper2018
 
             Total.PaidCoupon = Rows.Sum(r => r.PaidCoupon);
             Total.ReceivedCoupon = Rows.Sum(r => r.ReceivedCoupon);
+            Total.AccumulatedCoupon = Rows.Sum(r => r.AccumulatedCoupon);
 
             Total.CurrentPrice = Rows.Sum(r => r.CurrentPrice);
             Total.FinResult = Rows.Sum(r => r.FinResult);
