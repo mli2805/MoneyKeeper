@@ -237,7 +237,6 @@
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestViewModel.cs" />
-    <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesSelector.cs" />
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesView.xaml.cs">
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>

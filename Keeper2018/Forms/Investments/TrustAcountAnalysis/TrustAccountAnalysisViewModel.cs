@@ -11,6 +11,7 @@ namespace Keeper2018
         private TrustAccount _trustAccount;
 
         public AssetsTableViewModel OpenAssetsViewModel { get; set; } = new AssetsTableViewModel();
+        public AssetsTableViewModel ClosedAssetsViewModel { get; set; } = new AssetsTableViewModel();
 
         public decimal AllCurrentActives { get; set; }
         public decimal Cash { get; set; }
@@ -43,13 +44,14 @@ namespace Keeper2018
         {
             _trustAccount = trustAccount;
             var bal = _dataModel.GetTrustAccountBalance(trustAccount, date);
-            OpenAssetsViewModel.Initialize(bal, _dataModel, _trustAccount, date);
+            OpenAssetsViewModel.Initialize(bal, _dataModel, _trustAccount, date, true);
+            ClosedAssetsViewModel.Initialize(bal, _dataModel, _trustAccount, date, false);
 
             Cash = bal.Cash;
             NotPaidFees = bal.NotPaidFees;
             BaseFee = bal.BaseFee;
             OperationsFee = bal.Assets.Sum(a => a.BuySellFeeInTrustCurrency);
-            AllCurrentActives = bal.Assets.Sum(a => a.CurrentPrice);
+            AllCurrentActives = bal.Assets.Sum(a => a.CurrentPrice) + bal.Assets.Sum(a=>a.AccumulatedCoupon);
 
             EvaluateTotals(bal, OpenAssetsViewModel.Total);
         }
@@ -57,7 +59,7 @@ namespace Keeper2018
         private void EvaluateTotals(TrustAccountBalanceOnDate bal, InvestmentAssetOnDate total)
         {
             AllPaidFees = OperationsFee + bal.BaseFee;
-            Expense = $"{total.Price:N} + {total.PaidCoupon:N} = {total.Price + total.PaidCoupon:N}";
+            Expense = $"{total.Price - total.PaidCoupon:N} + {total.PaidCoupon:N} = {total.Price:N}";
             Fees = $"{total.BuySellFeeInTrustCurrency:N} + {bal.BaseFee:N} = {AllPaidFees:N}";
             var fullExpense = total.Price + total.PaidCoupon + AllPaidFees;
 

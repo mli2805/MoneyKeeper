@@ -6,11 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Title="TrustAccountAnalysisView" Height="450" 
-        SizeToContent="Width" WindowStartupLocation="CenterOwner"
+        Title="TrustAccountAnalysisView"  
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignData TrustAccountAnalysisViewModel}">
 
-    <DockPanel Margin="0,0,0,10">
+    <DockPanel Margin="0,0,0,10" Background="White">
         <DockPanel DockPanel.Dock="Bottom">
             <Border DockPanel.Dock="Left" Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <StackPanel Margin="5,0" Orientation="Horizontal">
@@ -18,7 +18,7 @@
                         <TextBlock Margin="0,5" Text="Передано в ДУ (термин альфы) (Пополнение - вывод ): "  />
                         <TextBlock Margin="0,5" Text="Реально вложено (Пополнение + комиссии - получ дивы - вывод): "/>
                         <TextBlock Margin="0,5" Text="Свободные средства: "/>
-                        <TextBlock Margin="0,5" Text="Приобретено активов (стоимость + НКД):"/>
+                        <TextBlock Margin="0,5" Text="Имеющиеся в наличии активы приобретены за (стоимость + НКД):"/>
                         <TextBlock Margin="0,5" Text="Текущее состояние (тек стоимость активов + кэш, включая дивы): "/>
                         <TextBlock Margin="0,5" Text="Результат: "/>
                         <TextBlock Margin="0,5" Text="К вложенным / к потраченным: "/>
@@ -53,6 +53,7 @@
                 </StackPanel>
             </Border>
         </DockPanel>
-       <keeper2018:AssetsTableView DataContext="{Binding OpenAssetsViewModel}"/>
+       <keeper2018:AssetsTableView DockPanel.Dock="Top" DataContext="{Binding OpenAssetsViewModel}"/>
+       <keeper2018:AssetsTableView DockPanel.Dock="Top" DataContext="{Binding ClosedAssetsViewModel}"/>
     </DockPanel>
 </Window>

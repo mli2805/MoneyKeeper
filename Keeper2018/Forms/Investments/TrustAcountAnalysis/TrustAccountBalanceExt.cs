@@ -78,8 +78,8 @@ namespace Keeper2018
             var asset = result.Assets.First(t => t.InvestmentAssetId == tran.Asset.Id);
 
             asset.Quantity -= tran.AssetAmount;
-            asset.Price -= tran.CurrencyAmount;
-            asset.ReceivedCoupon += tran.CouponAmount;
+            asset.SoldPrice += tran.CurrencyAmount;
+            asset.SoldCoupon += tran.CouponAmount;
 
             result.OperationFee(asset, tran, dataModel);
         }

@@ -10,7 +10,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Height="450" SizeToContent="Width" WindowStartupLocation="CenterOwner"
+        Height="450" SizeToContent="Width" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance keeper2018:TrustAccountsViewModel}">
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
