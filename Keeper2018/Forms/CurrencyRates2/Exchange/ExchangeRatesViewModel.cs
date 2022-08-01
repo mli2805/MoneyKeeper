@@ -27,18 +27,16 @@ namespace Keeper2018
             _keeperDataModel.ExchangeRates.Remove(last.Date);
             Rows.Remove(last);
 
-            var lastDate = Rows.Last().Date;
-
-            var days = (DateTime.Now - lastDate).Days;
+            var days = (DateTime.Now - Rows.Last().Date).Days;
             if (days == 0) return;
 
-            var newRates = await ExchangeRatesFetcher.Get(days);
+            var newRates = await ExchangeRatesFetcher.Get("Alfa", days);
+            var middayRates =
+                ExchangeRatesFetcher.SelectMiddayRates(newRates.OrderBy(l => l.Date).ToList(), Rows.Last().Date.AddDays(1));
 
-            var middayRatesRates =
-                ExchangeRatesSelector.SelectMiddayRates(newRates.OrderBy(l => l.Date).ToList(), Rows.Last().Date.AddDays(1));
             var lastId = Rows.Last().Id;
 
-            foreach (var newRate in middayRatesRates)
+            foreach (var newRate in middayRates)
             {
                 if (!_keeperDataModel.ExchangeRates.ContainsKey(newRate.Date))
                 {

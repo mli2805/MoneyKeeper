@@ -12,13 +12,13 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" >
             <StackPanel Margin="15,0,0,5">
-                <Label Content="* До 16 февраля 2021 года использован `мой курс` и как курс покупки и как курс продажи доллара. Далее использованы курсы БНБ"/>
+                <Label Content="* До 16 февраля 2021 года использован `мой курс` и как курс покупки и как курс продажи доллара. До 28 июля 2022 использованы курсы БНБ. Далее курсы Альфы"/>
             </StackPanel>
             <Border Margin="10, 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="3">
                 <StackPanel Orientation="Horizontal">
                     <Button Name="Update" Content="Обновить" Margin="15, 5" Width="100" />
                     <TextBlock Margin="5" VerticalAlignment="Center"
-                               Text="Должен быть доступен сервис 192.168.96.19/bali;  Будут взяты курсы БНБ примерно в 12:00"/>
+                               Text="Должен быть доступен сервис 192.168.96.19/bali;  Будут взяты курсы Альфы примерно в 12:00"/>
                 </StackPanel>
             </Border>
         </StackPanel>

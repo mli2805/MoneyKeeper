@@ -12,8 +12,6 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Margin="15, 5" Width="220" Name="Download" Content="Обновить курсы НБРБ и ЦБРФ" IsEnabled="{Binding IsDownloadEnabled}"/>
-
-            <Button Content="yuan" Margin="5" Width="100" Name="DownloadYuan"></Button>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
             <TextBlock Text="{Binding LastDayOfYear.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
