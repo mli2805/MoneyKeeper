@@ -43,15 +43,16 @@ namespace Keeper2018
         public void Initialize(TrustAccount trustAccount, DateTime date)
         {
             _trustAccount = trustAccount;
-            var bal = _dataModel.GetTrustAccountBalance(trustAccount, date);
-            OpenAssetsViewModel.Initialize(bal, _dataModel, _trustAccount, date, true);
-            ClosedAssetsViewModel.Initialize(bal, _dataModel, _trustAccount, date, false);
+            var bal = _dataModel.GetBalancesOfEachAssetOfAccount(trustAccount, date);
+            OpenAssetsViewModel.Initialize(bal.Assets.Where(a => a.Quantity > 0).ToList(), _dataModel, _trustAccount, date);
+            if (bal.Assets.Any(a => a.Quantity == 0))
+                ClosedAssetsViewModel.Initialize(bal.Assets.Where(a => a.Quantity == 0).ToList(), _dataModel, _trustAccount, date);
 
             Cash = bal.Cash;
             NotPaidFees = bal.NotPaidFees;
             BaseFee = bal.BaseFee;
             OperationsFee = bal.Assets.Sum(a => a.BuySellFeeInTrustCurrency);
-            AllCurrentActives = bal.Assets.Sum(a => a.CurrentPrice) + bal.Assets.Sum(a=>a.AccumulatedCoupon);
+            AllCurrentActives = bal.Assets.Sum(a => a.CurrentPrice) + bal.Assets.Sum(a => a.AccumulatedCoupon);
 
             EvaluateTotals(bal, OpenAssetsViewModel.Total);
         }
@@ -66,8 +67,8 @@ namespace Keeper2018
             var transferred = bal.TopUp - bal.Withdraw;
             TransferredToTrust = $"{bal.TopUp:N} - {bal.Withdraw:N} = {transferred:N}";
 
-            var externals = bal.TopUp + AllPaidFees - bal.ReceivedCoupon - bal.Withdraw;
-            RealExternals = $"{bal.TopUp:N} + {AllPaidFees:N} - {bal.ReceivedCoupon:N} - {bal.Withdraw:N} = {externals:N}";
+            var externals = bal.TopUp + AllPaidFees - bal.Withdraw;
+            RealExternals = $"{bal.TopUp:N} + {AllPaidFees:N} - {bal.Withdraw:N} = {externals:N}";
 
             FreeCash = $"{Cash:N}";
             AllCurrentActivesStr = $"{AllCurrentActives:N} + {Cash:N} = {AllCurrentActives + Cash:N}";
@@ -77,6 +78,6 @@ namespace Keeper2018
             FinPercent = $" {result / externals * 100:N}%  /  {result / fullExpense * 100:N}%";
         }
 
-      
+
     }
 }

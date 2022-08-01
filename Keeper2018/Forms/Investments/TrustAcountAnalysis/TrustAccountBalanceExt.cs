@@ -6,7 +6,7 @@ namespace Keeper2018
 {
     public static class TrustAccountBalanceExt
     {
-        public static TrustAccountBalanceOnDate GetTrustAccountBalance(this KeeperDataModel dataModel,
+        public static TrustAccountBalanceOnDate GetBalancesOfEachAssetOfAccount(this KeeperDataModel dataModel,
             TrustAccount trustAccount, DateTime upToDate)
         {
             var result = new TrustAccountBalanceOnDate() { Date = DateTime.MinValue };

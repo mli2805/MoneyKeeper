@@ -1,4 +1,5 @@
-﻿using KeeperDomain;
+﻿using System.Windows;
+using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -27,13 +28,15 @@ namespace Keeper2018
 
         public decimal CurrentPriceOfOne { get; set; }
         public decimal AccumulatedCouponOfOne { get; set; }
-        public string CurrentPriceOfOneStr => AccumulatedCouponOfOne > 0
+        public string CurrentPriceOfOneStr => CurrentPriceOfOne == 0 ? "" :
+            AccumulatedCouponOfOne > 0
             ? $"{CurrentPriceOfOne:0,0.00##} + {AccumulatedCouponOfOne:0.00} = {CurrentPriceOfOne + AccumulatedCouponOfOne:N}"
             : $"{CurrentPriceOfOne:N}";
 
         public decimal CurrentPrice { get; set; }
         public decimal AccumulatedCoupon { get; set; }
-        public string CurrentPriceStr => AccumulatedCoupon > 0
+        public string CurrentPriceStr => CurrentPrice == 0 ? "" :
+            AccumulatedCoupon > 0
             ? $"{CurrentPrice:0,0.00} + {AccumulatedCoupon:0.00} = {CurrentPrice + AccumulatedCoupon:N}"
             : $"{CurrentPrice:N}";
 

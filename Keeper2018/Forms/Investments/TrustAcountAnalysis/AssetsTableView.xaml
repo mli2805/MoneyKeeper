@@ -81,7 +81,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="HeaderCurrentPrice" Header=" Тек стоимость" Width="200" Binding="{Binding CurrentPriceStr, StringFormat=N}">
+                        <DataGridTextColumn x:Name="HeaderCurrentPrice" Header=" Тек стоимость" Width="200" Binding="{Binding CurrentPriceStr}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="HorizontalAlignment" Value="Right" />
