@@ -286,9 +286,9 @@
       <DependentUpon>AssetsTableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\TrustAcountAnalysis\AssetsTableViewModel.cs" />
-    <Compile Include="Forms\Investments\TrustAcountAnalysis\InvestmentAssetOnDate.cs" />
-    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceExt.cs" />
-    <Compile Include="Forms\Investments\TrustAcountAnalysis\TrustAccountBalanceOnDate.cs" />
+    <Compile Include="Forms\Investments\Data\InvestmentAssetOnDate.cs" />
+    <Compile Include="Forms\Investments\Data\TrustAccountBalanceExt.cs" />
+    <Compile Include="Forms\Investments\Data\TrustAccountBalanceOnDate.cs" />
     <Compile Include="Forms\Investments\InvestmentTransactions\OneInvestTranView.xaml.cs">
       <DependentUpon>OneInvestTranView.xaml</DependentUpon>
     </Compile>

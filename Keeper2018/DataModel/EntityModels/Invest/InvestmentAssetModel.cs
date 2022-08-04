@@ -29,6 +29,6 @@ namespace Keeper2018
         public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;
         public string BondExpirationDateStr => AssetType == AssetType.Bond ? BondExpirationDate.ToLongDateString() : "";
 
-        public string Comment { get; set; }
+        public string Comment { get; set; } = string.Empty;
     }
 }

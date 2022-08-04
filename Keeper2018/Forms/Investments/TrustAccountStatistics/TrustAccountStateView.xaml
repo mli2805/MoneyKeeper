@@ -16,15 +16,15 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Счет пополнен на"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding TopUp, StringFormat={}{0:# 0,00}}"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Приобретено бумаг"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Buy, StringFormat={}{0:# 0,00}}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Вложено в бумаги"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BuySellDiff}"/>
             <TextBlock Grid.Row="0" Grid.Column="2" Text="Зачислено доходов"/>
             <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Enroll}"/>
             <TextBlock Grid.Row="0" Grid.Column="3" Text="Выведено со счета"/>

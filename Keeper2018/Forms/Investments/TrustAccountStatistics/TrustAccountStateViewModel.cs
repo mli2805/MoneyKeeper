@@ -14,6 +14,8 @@ namespace Keeper2018
 
         public string TopUp { get; set; }
         public string Buy { get; set; }
+        public string Sell { get; set; }
+        public string BuySellDiff { get; set; }
         public string Enroll { get; set; }
         public string Withdraw { get; set; }
         public string Balance { get; set; }
@@ -51,6 +53,10 @@ namespace Keeper2018
                 .Where(t => t.TrustAccount.Id == trustAccount.Id &&
                             (t.InvestOperationType == InvestOperationType.BuyBonds || t.InvestOperationType == InvestOperationType.BuyStocks))
                 .Sum(r => r.FullAmount);
+            var sell = _dataModel.InvestTranModels
+                 .Where(t => t.TrustAccount.Id == trustAccount.Id &&
+                             (t.InvestOperationType == InvestOperationType.SellBonds || t.InvestOperationType == InvestOperationType.SellStocks))
+                 .Sum(r => r.FullAmount);
             var enroll = _dataModel.InvestTranModels
                 .Where(t => t.TrustAccount.Id == trustAccount.Id &&
                             t.InvestOperationType == InvestOperationType.EnrollCouponOrDividends)
@@ -61,10 +67,10 @@ namespace Keeper2018
                 .Sum(r => r.CurrencyAmount);
 
             TopUp = $"{topUp:#,0.00}";
-            Buy = $"{buy:#,0.00}";
+            BuySellDiff = $"{buy:#,0.00} - {sell:#,0.00} = {buy - sell:#,0.00}";
             Enroll = $"{enroll:#,0.00}";
             Withdraw = $"{withdraw:#,0.00}";
-            Balance = $"{topUp - buy + enroll - withdraw:#,0.00}";
+            Balance = $"{topUp - buy + sell + enroll - withdraw:#,0.00}";
         }
     }
 }

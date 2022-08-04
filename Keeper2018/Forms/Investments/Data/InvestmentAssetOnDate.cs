@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using KeeperDomain;
+﻿using KeeperDomain;
 
 namespace Keeper2018
 {

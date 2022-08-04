@@ -64,6 +64,10 @@ namespace Keeper2018
         {
             switch (tran.InvestOperationType)
             {
+                case InvestOperationType.SellStocks:
+                    return tran.CurrencyAmount;
+                case InvestOperationType.SellBonds:
+                    return tran.CurrencyAmount + tran.CouponAmount;
                 case InvestOperationType.BuyBonds:
                     return - (tran.CurrencyAmount + tran.CouponAmount);
                 case InvestOperationType.BuyStocks:

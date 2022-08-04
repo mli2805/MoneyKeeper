@@ -28,14 +28,18 @@
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="DeleteSelected"/>
         </ei:KeyTrigger>
-      <ei:KeyTrigger Key="Escape">
+        <ei:KeyTrigger Key="Escape">
             <cal:ActionMessage MethodName="Close"/>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
-    <Grid>
+    <DockPanel>
+        <DockPanel Dock="Bottom">
+            <ListBox Margin="5" DockPanel.Dock="Left" ItemsSource="{Binding BasicFeeExplanation}"/>
+            <ListBox Margin="5" ItemsSource="{Binding Comments}"/>
+        </DockPanel>
         <DataGrid ItemsSource="{Binding TrustAccounts}" 
                   SelectedItem="{Binding SelectedAccount}" AutoGenerateColumns="False"
-                  >
+        >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Название" Width="180" Binding="{Binding Title}" />
@@ -51,7 +55,7 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Статистика" 
+                    <MenuItem Header="Выписка" 
                               cal:Message.Attach="[Event Click] = [Action ShowTrustAccountState]"
                               BorderBrush="{x:Null}" Background="White" />
                     <MenuItem Header="Анализ"
@@ -61,5 +65,5 @@
             </DataGrid.ContextMenu>
         </DataGrid>
 
-    </Grid>
+    </DockPanel>
 </Window>
