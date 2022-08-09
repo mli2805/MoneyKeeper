@@ -34,8 +34,10 @@
                     <Button Content="Пополнить трастовый счет" Margin="5" cal:Message.Attach="InvestOperation('TopUpTrustAccount')"/>
                     <Button Content="Купить облигации с НКД" Margin="5" cal:Message.Attach="InvestOperation('BuyBonds')"/>
                     <Button Content="Купить акции" Margin="5"  cal:Message.Attach="InvestOperation('BuyStocks')"/>
-                    <Button Content="Оплатить комиссию за покупку" Margin="5" cal:Message.Attach="InvestOperation('PayBuySellFee')"/>
-                    <Button Content="Оплатить базовую комиссию" Margin="5" cal:Message.Attach="InvestOperation('PayBaseCommission')"/>
+                    <Button Content="Оплатить комиссию за покупку" Margin="5" cal:Message.Attach="InvestOperation('PayBuySellFee')" 
+                            ToolTip="Перенесется в операции автоматически"/>
+                    <Button Content="Оплатить базовую комиссию" Margin="5" cal:Message.Attach="InvestOperation('PayBaseCommission')"
+                            ToolTip="Перенесется в операции автоматически"/>
                     <Button Content="Продать облигации" Margin="5" cal:Message.Attach="InvestOperation('SellBonds')"/>
                     <Button Content="Продать акции" Margin="5" cal:Message.Attach="InvestOperation('SellStocks')"/>
                     <Button Content="Зачислить купон или дивиденды" Margin="5" cal:Message.Attach="InvestOperation('EnrollCouponOrDividends')"/>
