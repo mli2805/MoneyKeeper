@@ -27,6 +27,12 @@ namespace Keeper2018
             return dataModel.AmountInUsd(date, currency, amount, out decimal _);
         }
 
+        public static decimal GetAmountInUsd(this TransactionModel transactionModel, KeeperDataModel dataModel)
+        {
+            return dataModel.AmountInUsd(transactionModel.Timestamp, transactionModel.Currency, transactionModel.Amount,
+                out decimal _);
+        }
+
         public static string AmountInUsdWithRate(this KeeperDataModel dataModel, DateTime date,
             CurrencyCode? currency, decimal amount, out decimal rate)
         {

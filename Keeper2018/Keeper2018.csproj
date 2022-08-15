@@ -237,6 +237,10 @@
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestViewModel.cs" />
+    <Compile Include="Forms\Cars\OwnershipCostView.xaml.cs">
+      <DependentUpon>OwnershipCostView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Cars\OwnershipCostViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesView.xaml.cs">
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>
@@ -704,6 +708,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Cars\FuelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Cars\OwnershipCostView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

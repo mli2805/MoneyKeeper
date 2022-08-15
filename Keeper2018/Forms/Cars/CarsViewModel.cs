@@ -13,6 +13,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private readonly IWindowManager _windowManager;
         private readonly FuelViewModel _fuelViewModel;
+        private readonly OwnershipCostViewModel _ownershipCostViewModel;
 
         public List<CarModel> Cars { get; set; }
 
@@ -33,11 +34,13 @@ namespace Keeper2018
         public Visibility IsLastCarVisibility => SelectedCar.Id == Cars.Last().Id
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public CarsViewModel(KeeperDataModel dataModel, IWindowManager windowManager, FuelViewModel fuelViewModel)
+        public CarsViewModel(KeeperDataModel dataModel, IWindowManager windowManager, 
+            FuelViewModel fuelViewModel, OwnershipCostViewModel ownershipCostViewModel)
         {
             _dataModel = dataModel;
             _windowManager = windowManager;
             _fuelViewModel = fuelViewModel;
+            _ownershipCostViewModel = ownershipCostViewModel;
         }
 
         public void Initialize()
@@ -81,6 +84,12 @@ namespace Keeper2018
             {
                 MessageBox.Show(e.Message);
             }
+        }
+
+        public void ShowOwnershipCostChart()
+        {
+            _ownershipCostViewModel.Initialize(_selectedCar);
+            _windowManager.ShowDialog(_ownershipCostViewModel);
         }
 
         public override void CanClose(Action<bool> callback)
