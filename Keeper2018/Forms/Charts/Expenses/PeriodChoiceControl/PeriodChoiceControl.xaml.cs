@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Keeper2018.Properties;
+using KeeperDomain;
 
 namespace Keeper2018
 {

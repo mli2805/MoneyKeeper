@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
     public static class DateTimeExtensions
     {

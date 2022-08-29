@@ -627,8 +627,6 @@
     <Compile Include="Forms\Transactions\Actions\TranSelectExecutor.cs" />
     <Compile Include="Forms\Transactions\TranModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Utils\DateTimeExtensions.cs" />
-    <Compile Include="Utils\Period.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />

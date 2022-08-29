@@ -12,6 +12,9 @@ namespace Keeper2018
         public bool IsNotRevocable { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
+        public bool IsTimeless { get; set; }
+        public Duration DepositTerm { get; set; }
+
         // Conditions of offer could be changed (especially rates, initial sum while Title remains the same)
         // only for newly opened deposits
         // Conditions are applied from some date - key in dictionary

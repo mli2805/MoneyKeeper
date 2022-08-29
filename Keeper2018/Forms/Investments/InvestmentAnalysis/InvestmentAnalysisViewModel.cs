@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {

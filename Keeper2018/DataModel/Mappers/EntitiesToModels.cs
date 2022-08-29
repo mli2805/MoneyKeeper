@@ -27,6 +27,8 @@ namespace Keeper2018
                 Title = depositOffer.Title,
                 IsNotRevocable = depositOffer.IsNotRevocable,
                 MainCurrency = depositOffer.MainCurrency,
+                IsTimeless = depositOffer.IsTimeless,
+                DepositTerm = depositOffer.DepositTerm,
                 Comment = depositOffer.Comment,
             };
         }

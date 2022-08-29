@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Keeper2018
+namespace KeeperDomain
 {
     public class Period
     {
