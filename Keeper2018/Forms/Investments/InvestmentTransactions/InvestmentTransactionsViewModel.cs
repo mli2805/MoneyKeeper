@@ -116,7 +116,7 @@ namespace Keeper2018
             if (operationType == OperationType.Расход) // комиссии
             {
                 tran.PaymentWay = PaymentWay.КартаДругое;
-                tran.MyAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
+                tran.MyAccount = _dataModel.AcMoDict[tranInWork.AccountModel.Id];
                 tran.Tags = new List<AccountModel>()
                 {
                     _dataModel.AcMoDict[694], // Альфа
@@ -155,8 +155,8 @@ namespace Keeper2018
 
             tran.Comment = tranInWork.InvestOperationType == InvestOperationType.PayBaseCommission
                 ? (tranInWork.TrustAccount.Id == 1
-                      ? "по долларовому счету"
-                      : "по рублевому счету")
+                      ? "по долларовому счету "
+                      : "по рублевому счету ")
                   + tranInWork.Comment
                 : tranInWork.Comment;
 

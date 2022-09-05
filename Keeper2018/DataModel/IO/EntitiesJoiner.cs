@@ -29,6 +29,12 @@ namespace Keeper2018
             var result = bin.DepositOffers.Select(o => o.Map(acMoDict)).ToList();
             foreach (var depoOffer in result)
             {
+                // if (depoOffer.DepositTerm == null)
+                // {
+                //     depoOffer.IsTimeless = true;
+                //     depoOffer.DepositTerm = new Duration(0, Durations.Days);
+                // }
+
                 foreach (var depoCondition in bin.DepoNewConds.Where(c => c.DepositOfferId == depoOffer.Id))
                 {
                     var depoCondsModel = depoCondition.Map();

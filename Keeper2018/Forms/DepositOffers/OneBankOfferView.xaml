@@ -23,6 +23,15 @@
             <TextBlock Text="Основная валюта вклада" Margin="5,5,5,5" Width="180"/>
             <ComboBox Margin="5" ItemsSource="{Binding Currencies}" SelectedItem="{Binding ModelInWork.MainCurrency}" Width="160"/>
         </StackPanel>
+        <GroupBox Header="Срок депозита" Margin="5, 0">
+            <StackPanel Margin="5">
+                <CheckBox Content="Бессрочный (тек счета)" Margin="5"/>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBox Width="100" Margin="0,5"/>
+                    <ComboBox Width="120" Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
         <StackPanel Margin="5,0,5,5">
             <TextBlock Text="Комментарий" Margin="5" Width="100" HorizontalAlignment="Left"/>
             <TextBox Margin="5" Text="{Binding ModelInWork.Comment}" 
