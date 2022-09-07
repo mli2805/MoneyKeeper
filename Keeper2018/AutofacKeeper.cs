@@ -78,6 +78,7 @@ namespace Keeper2018
             builder.RegisterType<DepoCurrResultViewModel>().SingleInstance();
 
             builder.RegisterType<InvestmentAssetsViewModel>().SingleInstance();
+            builder.RegisterType<OneAssetViewModel>().SingleInstance();
             builder.RegisterType<AssetRatesViewModel>().SingleInstance();
             builder.RegisterType<TrustAccountsViewModel>().SingleInstance();
             builder.RegisterType<InvestmentTransactionsViewModel>().SingleInstance();

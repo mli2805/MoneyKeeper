@@ -17,8 +17,8 @@ namespace KeeperDomain
         #region Bonds special properties
 
         public decimal Nominal { get; set; }
-        public int BondCouponPeriodDays { get; set; }
-        public CouponPeriod BondCouponPeriod { get; set; } = new CouponPeriod();
+        //public int BondCouponPeriodDays { get; set; }
+        public CalendarPeriod BondCouponPeriod { get; set; } = new CalendarPeriod();
         public double CouponRate { get; set; } // if fixed and known
         public DateTime PreviousCouponDate { get; set; }
         public DateTime BondExpirationDate { get; set; } = DateTime.MaxValue;

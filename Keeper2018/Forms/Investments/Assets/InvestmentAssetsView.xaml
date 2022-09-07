@@ -7,24 +7,13 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:keeper2018="clr-namespace:Keeper2018"
-        xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Height="450" SizeToContent="Width" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance keeper2018:InvestmentAssetsViewModel}">
-    <Window.Resources>
-        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="keeperDomain:AssetType"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="GetEnumValues2">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="keeperDomain:StockMarket"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </Window.Resources>
     <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="Insert">
+            <cal:ActionMessage MethodName="AddNewAsset"/>
+        </ei:KeyTrigger>
         <ei:KeyTrigger Key="Delete" Modifiers="Control">
             <cal:ActionMessage MethodName="DeleteSelected"/>
         </ei:KeyTrigger>
@@ -36,57 +25,13 @@
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Тикер" Width="80" Binding="{Binding Ticker}" />
                 <DataGridTextColumn Header="Актив" Width="200" Binding="{Binding Title}" />
-                <DataGridComboBoxColumn Header="Рынок" Width="50" 
-                                        ItemsSource ="{Binding Source={StaticResource GetEnumValues2}}"
-                                        SelectedValueBinding="{Binding StockMarket}" />
-
-                <DataGridComboBoxColumn  Header="Тип" Width="60" 
-                                         ItemsSource="{Binding Source={StaticResource GetEnumValues}}"
-                                         SelectedValueBinding="{Binding AssetType}"/>
-
-                <DataGridTextColumn Header="Номинал" Width="50" Binding="{Binding Nominal}" />
-                <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding CouponRate}" />
-
-                <DataGridTemplateColumn Header="Предыд выплата" Width="100" >
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <DatePicker SelectedDate="{Binding PreviousCouponDate,
-                                                 StringFormat=dd/MM/yyyy,
-                                       Mode=TwoWay,
-                                       UpdateSourceTrigger=PropertyChanged}"
-                                        d:DataContext="{d:DesignInstance keeperDomain:InvestmentAsset}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding PreviousCouponDate,
-                                                 StringFormat=dd/MM/yyyy}"
-                                       d:DataContext="{d:DesignInstance keeperDomain:InvestmentAsset}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTextColumn Header="Период" Width="65" Binding="{Binding BondCouponPeriodDays}" />
-
-                <DataGridTemplateColumn Header="Дата окончания" Width="100" >
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <DatePicker SelectedDate="{Binding BondExpirationDate,
-                                                 StringFormat=dd/MM/yyyy,
-                                       Mode=TwoWay,
-                                       UpdateSourceTrigger=PropertyChanged}"
-                                        d:DataContext="{d:DesignInstance keeperDomain:InvestmentAsset}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding BondExpirationDate,
-                                                 StringFormat=dd/MM/yyyy}"
-                                       d:DataContext="{d:DesignInstance keeperDomain:InvestmentAsset}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
+                <DataGridTextColumn Header="Рынок" Width="50" Binding ="{Binding StockMarket}" />
+                <DataGridTextColumn  Header="Тип" Width="60" Binding="{Binding AssetType}"/>
+                <DataGridTextColumn Header="Номинал" Width="60" Binding="{Binding NominalStr}" />
+                <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding CouponRateStr}" />
+                <DataGridTextColumn Header="Предыд выплата" Width="100" Binding="{Binding PreviousCouponDateStr}" />
+                <DataGridTextColumn Header="Период" Width="65" Binding="{Binding BondCouponPeriodStr}" />
+                <DataGridTextColumn Header="Дата окончания" Width="100" Binding="{Binding BondExpirationDateStr}" />
                 <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
@@ -97,6 +42,11 @@
                     <MenuItem Header="Анализ"
                               cal:Message.Attach="[Event Click] = [Action ShowAssetAnalysis]"
                               BorderBrush="{x:Null}" Background="White" />
+                    <Separator/>
+                    <MenuItem Header="Добавить"
+                              cal:Message.Attach="[Event Click] = [Action AddNewAsset]"
+                              BorderBrush="{x:Null}" Background="White" />
+
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

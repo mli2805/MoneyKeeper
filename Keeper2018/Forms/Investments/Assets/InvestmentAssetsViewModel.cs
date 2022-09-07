@@ -52,6 +52,17 @@ namespace Keeper2018
             _windowManager.ShowWindow(vm);
         }
 
+        public void AddNewAsset()
+        {
+            var vm = _globalScope.Resolve<OneAssetViewModel>();
+            vm.Initialize(Assets.Last().Id + 1);
+            if (_windowManager.ShowDialog(vm) == true)
+            {
+                Assets.Add(vm.AssetInWork);
+            }
+
+        }
+
         public void DeleteSelected()
         {
             if (SelectedAsset != null)

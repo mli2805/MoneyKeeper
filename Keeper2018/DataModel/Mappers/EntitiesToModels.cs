@@ -128,7 +128,7 @@ namespace Keeper2018
                 StockMarket = asset.StockMarket,
                 AssetType = asset.AssetType,
                 Nominal = asset.Nominal,
-                BondCouponPeriodDays = asset.BondCouponPeriodDays,
+                //BondCouponPeriodDays = asset.BondCouponPeriodDays,
                 BondCouponPeriod = asset.BondCouponPeriod,
                 CouponRate = asset.CouponRate,
                 PreviousCouponDate = asset.PreviousCouponDate,

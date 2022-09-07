@@ -1,0 +1,58 @@
+﻿<Window x:Class="Keeper2018.OneAssetView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignData OneAssetViewModel}">
+    <StackPanel Margin="5">
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Width="120" Text="Тикер" Margin="0,5, 0,0"/>
+            <TextBox Width="50" Text="{Binding AssetInWork.Ticker}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Width="120" Text="Название" Margin="0,5, 0,0"/>
+            <TextBox Width="200" Text="{Binding AssetInWork.Title}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Width="120" Text="Рынок бумаг"/>
+            <ComboBox Width="200" ItemsSource="{Binding StockMarkets}" SelectedItem="{Binding AssetInWork.StockMarket}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Width="120" Text="Тип бумаги"/>
+            <ComboBox Width="200" ItemsSource="{Binding AssetTypes}" SelectedItem="{Binding AssetInWork.AssetType}"/>
+        </StackPanel>
+        <StackPanel Visibility="{Binding AssetInWork.BondPropertiesVisibility}">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Width="120" Text="Номинал" Margin="0,5, 0,0"/>
+                <TextBox Width="50" Text="{Binding AssetInWork.Nominal}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Width="120" Text="Купон ставка, %" Margin="0,5, 0,0"/>
+                <TextBox Width="50" Text="{Binding AssetInWork.CouponRate}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Width="120" Text="Предыд выплата"/>
+                <DatePicker SelectedDate="{Binding AssetInWork.PreviousCouponDate}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Width="120" Text="Купонный период" Margin="0,5"/>
+                <TextBox Width="50" Text="{Binding AssetInWork.BondCouponPeriod.Value}" Margin="0,5, 5 ,5"/>
+                <ComboBox Width="140" ItemsSource="{Binding PeriodUnits}" SelectedItem="{Binding AssetInWork.BondCouponPeriod.Unit}" Margin="5" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Width="120" Text="Дата погашения"/>
+                <DatePicker SelectedDate="{Binding AssetInWork.BondExpirationDate}"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Width="120" Text="Комментарий" Margin="0,5, 0,0"/>
+            <TextBox Width="200"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5, 15, 5,5">
+            <Button Content="Сохранить" Width="120" Margin="5" Name="Save"/>
+            <Button Content="Отмена" Width="120" Margin="5" Name="Cancel" IsCancel="True"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
