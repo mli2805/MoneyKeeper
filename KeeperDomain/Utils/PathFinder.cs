@@ -11,15 +11,7 @@ namespace KeeperDomain
         public static string GetKeeper2018BasePath()
         {
 //           return Path.Combine(GetDropboxPath(), @"Keeper2018");
-            return Path.Combine(GetGoogleDrivePath2021(), @"Keeper2018");
-        }
-
-        private static string GetGoogleDrivePath2021()
-        {
-            string machineName = Environment.MachineName.ToLower();
-            return machineName == "opx-lmarholin3" 
-                ? @"d:\Google Drive" 
-                : @"c:\Users\Leanid\Google Drive\";
+            return Path.Combine(@"d:\Google Drive", @"Keeper2018");
         }
 
         /// <summary>
