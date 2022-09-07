@@ -20,6 +20,8 @@ namespace Keeper2018
         public decimal AllCurrentActives { get; set; }
         public decimal FinResult { get; set; }
 
+        public decimal Balance => Cash + AllCurrentActives;
+
         public List<InvestmentAssetOnDate> Assets { get; } = new List<InvestmentAssetOnDate>();
     }
 }

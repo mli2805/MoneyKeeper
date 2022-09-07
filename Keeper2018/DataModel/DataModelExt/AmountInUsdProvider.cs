@@ -15,7 +15,7 @@ namespace Keeper2018
             decimal amount, out decimal amountInUsd)
         {
             amountInUsd = amount;
-            var shortLine = $"{amount} {currency.ToString().ToLower()}";
+            var shortLine = $"{amount:N} {currency.ToString().ToLower()}";
             if (currency == CurrencyCode.USD) return shortLine;
 
             amountInUsd = dataModel.AmountInUsd(date, currency, amount);

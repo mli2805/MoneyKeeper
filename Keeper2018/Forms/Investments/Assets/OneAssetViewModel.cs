@@ -9,6 +9,7 @@ namespace Keeper2018
     public class OneAssetViewModel : Screen
     {
         private readonly KeeperDataModel _keeperDataModel;
+        private string _aim;
         public List<PeriodUnit> PeriodUnits { get; set; }
         public List<StockMarket> StockMarkets { get; set; }
         public List<AssetType> AssetTypes { get; set; }
@@ -25,15 +26,15 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "";
+            DisplayName = _aim;
         }
 
         public void Initialize(int id)
         {
+            _aim = "Добавить бумагу";
             AssetInWork = new InvestmentAssetModel()
             {
                 Id = id,
-                TrustAccount = _keeperDataModel.TrustAccounts.First(),
                 StockMarket = StockMarket.Russia,
                 AssetType = AssetType.Stock,
 
@@ -43,8 +44,15 @@ namespace Keeper2018
             };
         }
 
+        public void Initialize(InvestmentAssetModel assetModel)
+        {
+            _aim = "Изменить бумагу";
+            AssetInWork = assetModel.Clone();
+        }
+
         public void Save()
         {
+            AssetInWork.TrustAccount = _keeperDataModel.TrustAccounts.First(t => t.StockMarket == AssetInWork.StockMarket);
             TryClose(true);
         }
 

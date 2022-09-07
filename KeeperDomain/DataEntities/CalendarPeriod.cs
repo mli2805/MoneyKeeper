@@ -26,5 +26,10 @@ namespace KeeperDomain
             couponPeriod.Value = int.Parse(ss[0]);
             return couponPeriod;
         }
+
+        public CalendarPeriod Clone()
+        {
+            return (CalendarPeriod)MemberwiseClone();
+        }
     }
 }

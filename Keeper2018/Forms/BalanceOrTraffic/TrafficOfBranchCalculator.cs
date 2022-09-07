@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -99,8 +100,29 @@ namespace Keeper2018
                 result.AddList(_dataModel.BalanceReport(_period.FinishMoment, child, false));
             }
 
+            result.AddList(ReportInvestmentAssets());
+
             return result;
         }
 
+        private ListOfLines ReportInvestmentAssets()
+        {
+            var result = new ListOfLines();
+            result.Add("");
+            result.Add("   Акции 2");
+
+            decimal total = 0;
+            foreach (var trustAccount in _dataModel.TrustAccounts)
+            {
+                var bal = _dataModel.GetBalancesOfEachAssetOfAccount(trustAccount, _period.FinishMoment);
+                var line = _dataModel.AmountInUsdString(_period.FinishMoment, trustAccount.Currency, bal.Balance, out decimal usd);
+                result.Add($"   {line}");
+                total += usd;
+            }
+
+            result.Add($"   Итого {total:N} usd", FontWeights.SemiBold);
+
+            return result;
+        }
     }
 }

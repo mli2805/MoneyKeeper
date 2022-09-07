@@ -8,7 +8,6 @@ namespace Keeper2018
 {
     public class InvestmentAssetModel : PropertyChangedBase
     {
-        private AssetType _assetType;
         public int Id { get; set; }
 
         public TrustAccount TrustAccount { get; set; }
@@ -16,6 +15,7 @@ namespace Keeper2018
         public string Title { get; set; }
         public StockMarket StockMarket { get; set; }
 
+        private AssetType _assetType;
         public AssetType AssetType
         {
             get => _assetType;
@@ -33,7 +33,7 @@ namespace Keeper2018
         public Visibility BondPropertiesVisibility => AssetType == AssetType.Bond ? Visibility.Visible : Visibility.Collapsed;
 
         public double CouponRate { get; set; } // if fixed and known
-        public string CouponRateStr => AssetType == AssetType.Bond ? CouponRate.ToString("F1") : "";
+        public string CouponRateStr => AssetType == AssetType.Bond ? CouponRate.ToString("F1") + " %" : "";
 
         // if Bond not Stack
         public decimal Nominal { get; set; }
@@ -41,7 +41,6 @@ namespace Keeper2018
             ? "" 
             : Nominal.ToString(new CultureInfo("en-US")) + " руб";
 
-        //public int BondCouponPeriodDays { get; set; }
         public CalendarPeriod BondCouponPeriod { get; set; } = new CalendarPeriod();
         public string BondCouponPeriodStr => AssetType == AssetType.Bond ? BondCouponPeriod.Dump() : "";
         public DateTime PreviousCouponDate { get; set; }
@@ -50,5 +49,28 @@ namespace Keeper2018
         public string BondExpirationDateStr => AssetType == AssetType.Bond ? BondExpirationDate.ToLongDateString() : "";
 
         public string Comment { get; set; } = string.Empty;
+
+        public InvestmentAssetModel Clone()
+        {
+            var clone = (InvestmentAssetModel)MemberwiseClone();
+            clone.BondCouponPeriod = BondCouponPeriod.Clone();
+            return clone;
+        }
+
+        public void CopyFrom(InvestmentAssetModel from)
+        {
+            Id = from.Id;
+            TrustAccount = from.TrustAccount;
+            Ticker = from.Ticker;
+            Title = from.Title;
+            StockMarket = from.StockMarket;
+            AssetType = from.AssetType;
+            CouponRate = from.CouponRate;
+            Nominal = from.Nominal;
+            BondCouponPeriod = from.BondCouponPeriod.Clone();
+            PreviousCouponDate = from.PreviousCouponDate;
+            BondExpirationDate = from.BondExpirationDate;
+            Comment = from.Comment;
+        }
     }
 }

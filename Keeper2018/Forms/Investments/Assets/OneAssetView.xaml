@@ -9,28 +9,28 @@
     <StackPanel Margin="5">
         <StackPanel Orientation="Horizontal" Margin="5">
             <TextBlock Width="120" Text="Тикер" Margin="0,5, 0,0"/>
-            <TextBox Width="50" Text="{Binding AssetInWork.Ticker}"/>
+            <TextBox Width="101" Text="{Binding AssetInWork.Ticker}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5">
             <TextBlock Width="120" Text="Название" Margin="0,5, 0,0"/>
-            <TextBox Width="200" Text="{Binding AssetInWork.Title}"/>
+            <TextBox Width="300" Text="{Binding AssetInWork.Title}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5">
             <TextBlock Width="120" Text="Рынок бумаг"/>
-            <ComboBox Width="200" ItemsSource="{Binding StockMarkets}" SelectedItem="{Binding AssetInWork.StockMarket}"/>
+            <ComboBox Width="101" ItemsSource="{Binding StockMarkets}" SelectedItem="{Binding AssetInWork.StockMarket}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5">
             <TextBlock Width="120" Text="Тип бумаги"/>
-            <ComboBox Width="200" ItemsSource="{Binding AssetTypes}" SelectedItem="{Binding AssetInWork.AssetType}"/>
+            <ComboBox Width="101" ItemsSource="{Binding AssetTypes}" SelectedItem="{Binding AssetInWork.AssetType}"/>
         </StackPanel>
         <StackPanel Visibility="{Binding AssetInWork.BondPropertiesVisibility}">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Width="120" Text="Номинал" Margin="0,5, 0,0"/>
-                <TextBox Width="50" Text="{Binding AssetInWork.Nominal}"/>
+                <TextBox Width="101" Text="{Binding AssetInWork.Nominal}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Width="120" Text="Купон ставка, %" Margin="0,5, 0,0"/>
-                <TextBox Width="50" Text="{Binding AssetInWork.CouponRate}"/>
+                <TextBox Width="101" Text="{Binding AssetInWork.CouponRate}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Width="120" Text="Предыд выплата"/>
@@ -38,8 +38,8 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Width="120" Text="Купонный период" Margin="0,5"/>
-                <TextBox Width="50" Text="{Binding AssetInWork.BondCouponPeriod.Value}" Margin="0,5, 5 ,5"/>
-                <ComboBox Width="140" ItemsSource="{Binding PeriodUnits}" SelectedItem="{Binding AssetInWork.BondCouponPeriod.Unit}" Margin="5" />
+                <TextBox Width="30" Text="{Binding AssetInWork.BondCouponPeriod.Value}" Margin="0,5, 0 ,5"/>
+                <ComboBox Width="66" ItemsSource="{Binding PeriodUnits}" SelectedItem="{Binding AssetInWork.BondCouponPeriod.Unit}" Margin="5" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Width="120" Text="Дата погашения"/>
@@ -48,7 +48,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5">
             <TextBlock Width="120" Text="Комментарий" Margin="0,5, 0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="300" Text="{Binding AssetInWork.Comment}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5, 15, 5,5">
             <Button Content="Сохранить" Width="120" Margin="5" Name="Save"/>

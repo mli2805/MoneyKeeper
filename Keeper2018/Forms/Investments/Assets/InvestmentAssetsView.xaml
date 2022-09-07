@@ -10,6 +10,12 @@
         mc:Ignorable="d"
         Height="450" SizeToContent="Width" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance keeper2018:InvestmentAssetsViewModel}">
+    <Window.Resources>
+        <Style x:Key="RightAligned" TargetType="DataGridCell">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0,0,5, 0"/>
+        </Style>
+    </Window.Resources>
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Insert">
             <cal:ActionMessage MethodName="AddNewAsset"/>
@@ -19,23 +25,27 @@
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <DataGrid ItemsSource="{Binding Assets}" 
+        <DataGrid ItemsSource="{Binding Assets}" IsReadOnly="True"
+                  cal:Message.Attach="[Event MouseDoubleClick] = [Action EditAsset]"
                   SelectedItem="{Binding SelectedAsset}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="30" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Тикер" Width="80" Binding="{Binding Ticker}" />
                 <DataGridTextColumn Header="Актив" Width="200" Binding="{Binding Title}" />
                 <DataGridTextColumn Header="Рынок" Width="50" Binding ="{Binding StockMarket}" />
-                <DataGridTextColumn  Header="Тип" Width="60" Binding="{Binding AssetType}"/>
+                <DataGridTextColumn Header="Тип" Width="60" Binding="{Binding AssetType}"/>
                 <DataGridTextColumn Header="Номинал" Width="60" Binding="{Binding NominalStr}" />
-                <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding CouponRateStr}" />
-                <DataGridTextColumn Header="Предыд выплата" Width="100" Binding="{Binding PreviousCouponDateStr}" />
-                <DataGridTextColumn Header="Период" Width="65" Binding="{Binding BondCouponPeriodStr}" />
-                <DataGridTextColumn Header="Дата окончания" Width="100" Binding="{Binding BondExpirationDateStr}" />
-                <DataGridTextColumn Header="Коментарий" Width="400" Binding="{Binding Comment}" />
+                <DataGridTextColumn Header="Купон" Width="50" Binding="{Binding CouponRateStr}" CellStyle="{StaticResource RightAligned}"/>
+                <DataGridTextColumn Header="Предыд выплата" Width="110" Binding="{Binding PreviousCouponDateStr}" CellStyle="{StaticResource RightAligned}"/>
+                <DataGridTextColumn Header="Период" Width="65" Binding="{Binding BondCouponPeriodStr}" CellStyle="{StaticResource RightAligned}"/>
+                <DataGridTextColumn Header="Дата окончания" Width="110" Binding="{Binding BondExpirationDateStr}" CellStyle="{StaticResource RightAligned}"/>
+                <DataGridTextColumn Header="Комментарий" Width="400" Binding="{Binding Comment}" />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Изменить"
+                              cal:Message.Attach="[Event Click] = [Action EditAsset]"
+                              BorderBrush="{x:Null}" Background="White" />
                     <MenuItem Header="Статистика"
                               cal:Message.Attach="[Event Click] = [Action ShowAssetStatistics]"
                               BorderBrush="{x:Null}" Background="White" />

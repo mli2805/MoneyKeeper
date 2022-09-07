@@ -21,7 +21,7 @@ namespace Keeper2018
             {
                 if (asset.Quantity > 0)
                 {
-                    asset.CurrentPriceOfOne = dataModel.AssetRates.Last(r => r.TickerId == asset.InvestmentAssetId).Value;
+                    asset.CurrentPriceOfOne = dataModel.AssetRates.Last(r => r.TickerId == asset.InvestmentAssetId && r.Date <= upToDate).Value;
                     asset.CurrentPrice = asset.CurrentPriceOfOne * asset.Quantity;
                     var investmentAssetModel = dataModel.InvestmentAssets.First(a => a.Id == asset.InvestmentAssetId);
                     asset.AccumulatedCouponOfOne = investmentAssetModel.GetAccumulatedCoupon(upToDate);
