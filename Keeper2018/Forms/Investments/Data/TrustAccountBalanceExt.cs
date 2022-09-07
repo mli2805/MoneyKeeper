@@ -17,7 +17,35 @@ namespace Keeper2018
                 result.ApplyTran(dataModel, tran);
             }
 
+            foreach (var asset in result.Assets)
+            {
+                if (asset.Quantity > 0)
+                {
+                    asset.CurrentPriceOfOne = dataModel.AssetRates.Last(r => r.TickerId == asset.InvestmentAssetId).Value;
+                    asset.CurrentPrice = asset.CurrentPriceOfOne * asset.Quantity;
+                    var investmentAssetModel = dataModel.InvestmentAssets.First(a => a.Id == asset.InvestmentAssetId);
+                    asset.AccumulatedCouponOfOne = investmentAssetModel.GetAccumulatedCoupon(upToDate);
+                    asset.AccumulatedCoupon = asset.AccumulatedCouponOfOne * asset.Quantity;
+                }
+               
+                var current = asset.CurrentPrice + asset.AccumulatedCoupon;
+                var paid = asset.Price + asset.PaidCoupon;
+                var sold = asset.SoldPrice + asset.SoldCoupon;
+                asset.FinResult = current + sold - paid + asset.ReceivedCoupon - asset.BuySellFeeInTrustCurrency;
+            }
+
+            result.SetTotals();
+
             return result;
+        }
+
+        private static void SetTotals(this TrustAccountBalanceOnDate result)
+        {
+            result.OperationsFee = result.Assets.Sum(a => a.BuySellFeeInTrustCurrency);
+            result.AllPaidFees = result.OperationsFee + result.BaseFee;
+            result.Externals = result.TopUp + result.AllPaidFees - result.Withdraw;
+            result.AllCurrentActives = result.Assets.Sum(a => a.CurrentPrice) + result.Assets.Sum(a => a.AccumulatedCoupon);
+            result.FinResult = result.AllCurrentActives + result.Cash - result.Externals;
         }
 
         private static void ApplyTran(this TrustAccountBalanceOnDate result, KeeperDataModel dataModel, InvestTranModel tran)

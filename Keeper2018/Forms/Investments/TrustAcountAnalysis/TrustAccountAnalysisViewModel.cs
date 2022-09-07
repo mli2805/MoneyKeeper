@@ -13,22 +13,18 @@ namespace Keeper2018
         public AssetsTableViewModel OpenAssetsViewModel { get; set; } = new AssetsTableViewModel();
         public AssetsTableViewModel ClosedAssetsViewModel { get; set; } = new AssetsTableViewModel();
 
-        public decimal AllCurrentActives { get; set; }
-        public decimal Cash { get; set; }
-        public decimal AllPaidFees { get; set; }
-        public decimal BaseFee { get; set; }
-        public decimal OperationsFee { get; set; }
-        public decimal NotPaidFees { get; set; }
-
-        public string FinResult { get; set; }
-        public string FinPercent { get; set; }
-
-        public string Expense { get; set; }
-        public string Fees { get; set; }
-        public string TransferredToTrust { get; set; }
-        public string RealExternals { get; set; }
-        public string FreeCash { get; set; }
+        public string TransferredToTrustStr { get; set; }
+        public string RealExternalsStr { get; set; }
         public string AllCurrentActivesStr { get; set; }
+        public string FinResultStr { get; set; }
+        public string FinPercentStr { get; set; }
+
+
+        public string CashStr { get; set; }
+        public string OperationsFeeStr { get; set; }
+        public string BaseFeeStr { get; set; }
+        public string NotPaidFeesStr { get; set; }
+        public string AllPaidFeesStr { get; set; }
 
         public TrustAccountAnalysisViewModel(KeeperDataModel dataModel)
         {
@@ -44,40 +40,27 @@ namespace Keeper2018
         {
             _trustAccount = trustAccount;
             var bal = _dataModel.GetBalancesOfEachAssetOfAccount(trustAccount, date);
-            OpenAssetsViewModel.Initialize(bal.Assets.Where(a => a.Quantity > 0).ToList(), _dataModel, _trustAccount, date);
+
+            OpenAssetsViewModel.Initialize(bal.Assets.Where(a => a.Quantity > 0).ToList(), _trustAccount);
             if (bal.Assets.Any(a => a.Quantity == 0))
-                ClosedAssetsViewModel.Initialize(bal.Assets.Where(a => a.Quantity == 0).ToList(), _dataModel, _trustAccount, date);
+                ClosedAssetsViewModel.Initialize(bal.Assets.Where(a => a.Quantity == 0).ToList(), _trustAccount);
 
-            Cash = bal.Cash;
-            NotPaidFees = bal.NotPaidFees;
-            BaseFee = bal.BaseFee;
-            OperationsFee = bal.Assets.Sum(a => a.BuySellFeeInTrustCurrency);
-            AllCurrentActives = bal.Assets.Sum(a => a.CurrentPrice) + bal.Assets.Sum(a => a.AccumulatedCoupon);
-
-            EvaluateTotals(bal, OpenAssetsViewModel.Total);
+            EvaluateTotals(bal);
         }
 
-        private void EvaluateTotals(TrustAccountBalanceOnDate bal, InvestmentAssetOnDate total)
+        private void EvaluateTotals(TrustAccountBalanceOnDate bal)
         {
-            AllPaidFees = OperationsFee + bal.BaseFee;
-            Expense = $"{total.Price - total.PaidCoupon:N} + {total.PaidCoupon:N} = {total.Price:N}";
-            Fees = $"{total.BuySellFeeInTrustCurrency:N} + {bal.BaseFee:N} = {AllPaidFees:N}";
-            var fullExpense = total.Price + total.PaidCoupon + AllPaidFees;
+            TransferredToTrustStr = $"{bal.TopUp:N} - {bal.Withdraw:N} = {bal.TopUp - bal.Withdraw:N}";
+            RealExternalsStr = $"{bal.TopUp:N} + {bal.AllPaidFees:N} - {bal.Withdraw:N} = {bal.Externals:N}";
+            AllCurrentActivesStr = $"{bal.AllCurrentActives:N} + {bal.Cash:N} = {bal.AllCurrentActives + bal.Cash:N}";
+            FinResultStr = $"{bal.AllCurrentActives + bal.Cash:N} - {bal.Externals:N} = {bal.FinResult:N}";
+            FinPercentStr = $" {bal.FinResult / bal.Externals * 100:N}%";
 
-            var transferred = bal.TopUp - bal.Withdraw;
-            TransferredToTrust = $"{bal.TopUp:N} - {bal.Withdraw:N} = {transferred:N}";
-
-            var externals = bal.TopUp + AllPaidFees - bal.Withdraw;
-            RealExternals = $"{bal.TopUp:N} + {AllPaidFees:N} - {bal.Withdraw:N} = {externals:N}";
-
-            FreeCash = $"{Cash:N}";
-            AllCurrentActivesStr = $"{AllCurrentActives:N} + {Cash:N} = {AllCurrentActives + Cash:N}";
-
-            var result = AllCurrentActives + Cash - externals;
-            FinResult = $"{AllCurrentActives + Cash:N} - {externals:N} = {result:N}";
-            FinPercent = $" {result / externals * 100:N}%  /  {result / fullExpense * 100:N}%";
+            CashStr = $"{bal.Cash:N}";
+            AllPaidFeesStr = $"{bal.OperationsFee:N} + {bal.BaseFee:N} = {bal.AllPaidFees:N}";
+            OperationsFeeStr = $"{bal.OperationsFee:N}";
+            BaseFeeStr = $"{bal.BaseFee:N}";
+            NotPaidFeesStr = $"{bal.NotPaidFees:N}";
         }
-
-
     }
 }

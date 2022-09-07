@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using KeeperDomain;
 
@@ -10,24 +9,8 @@ namespace Keeper2018
         public List<InvestmentAssetOnDate> Rows { get; set; } = new List<InvestmentAssetOnDate>();
         public InvestmentAssetOnDate Total { get; set; }
 
-        public void Initialize(List<InvestmentAssetOnDate> assets, KeeperDataModel dataModel, TrustAccount trustAccount, DateTime date)
+        public void Initialize(List<InvestmentAssetOnDate> assets, TrustAccount trustAccount)
         {
-            foreach (var asset in assets)
-            {
-                if (asset.Quantity > 0)
-                {
-                    asset.CurrentPriceOfOne = dataModel.AssetRates.Last(r => r.TickerId == asset.InvestmentAssetId).Value;
-                    asset.CurrentPrice = asset.CurrentPriceOfOne * asset.Quantity;
-                    var investmentAssetModel = dataModel.InvestmentAssets.First(a => a.Id == asset.InvestmentAssetId);
-                    asset.AccumulatedCouponOfOne = investmentAssetModel.GetAccumulatedCoupon(date);
-                    asset.AccumulatedCoupon = asset.AccumulatedCouponOfOne * asset.Quantity;
-                }
-               
-                var current = asset.CurrentPrice + asset.AccumulatedCoupon;
-                var paid = asset.Price + asset.PaidCoupon;
-                var sold = asset.SoldPrice + asset.SoldCoupon;
-                asset.FinResult = current + sold - paid + asset.ReceivedCoupon - asset.BuySellFeeInTrustCurrency;
-            }
             Rows.Clear();
             Rows.AddRange(assets);
             SummarizeTable(trustAccount);

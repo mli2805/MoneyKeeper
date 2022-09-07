@@ -19,14 +19,14 @@
                         <TextBlock Margin="0,5" Text="Реально вложено (Пополнение + комиссии - вывод): "/>
                         <TextBlock Margin="0,5" Text="Текущее состояние (тек стоимость активов + кэш, включая дивы): "/>
                         <TextBlock Margin="0,5" Text="Результат: "/>
-                        <TextBlock Margin="0,5" Text="К вложенным / к потраченным: "/>
+                        <TextBlock Margin="0,5" Text="К переданным в ДУ + комиссии: "/>
                     </StackPanel>
                     <StackPanel Width="330">
-                        <TextBlock Margin="0,5" Text="{Binding TransferredToTrust}" TextAlignment="Right"/>
-                        <TextBlock Margin="0,5" Text="{Binding RealExternals}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding TransferredToTrustStr}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding RealExternalsStr}" TextAlignment="Right"/>
                         <TextBlock Margin="0,5" Text="{Binding AllCurrentActivesStr}" TextAlignment="Right"/>
-                        <TextBlock Margin="0,5" Text="{Binding FinResult}" TextAlignment="Right"/>
-                        <TextBlock Margin="0,5" Text="{Binding FinPercent}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding FinResultStr}" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding FinPercentStr}" TextAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -40,11 +40,11 @@
                         <TextBlock Margin="0,5" Text="Неоплаченные комиссии:"/>
                     </StackPanel>
                     <StackPanel>
-                        <TextBlock Margin="0,5" Text="{Binding Cash, StringFormat=N}" Width="80" TextAlignment="Right"/>
-                        <TextBlock Margin="0,5" Text="{Binding AllPaidFees, StringFormat=N}" Width="80" TextAlignment="Right"/>
-                        <TextBlock Margin="0,5" Text="{Binding OperationsFee, StringFormat=N}" Width="60" TextAlignment="Right"/>
-                        <TextBlock Margin="0,5" Text="{Binding BaseFee, StringFormat=N}" Width="60" TextAlignment="Right"/>
-                        <TextBlock Margin="0,5" Text="{Binding NotPaidFees, StringFormat=N}" Width="80" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding CashStr}" Width="180" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding AllPaidFeesStr}" Width="180" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding OperationsFeeStr}" Width="160" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding BaseFeeStr}" Width="160" TextAlignment="Right"/>
+                        <TextBlock Margin="0,5" Text="{Binding NotPaidFeesStr}" Width="180" TextAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
