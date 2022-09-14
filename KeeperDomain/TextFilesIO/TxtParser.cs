@@ -222,10 +222,14 @@ namespace KeeperDomain
                 Title = substrings[2].Trim(),
                 IsNotRevocable = bool.Parse(substrings[3].Trim()),
                 MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]),
-                IsTimeless = bool.Parse(substrings[5].Trim()),
-                DepositTerm = new Duration(int.Parse(substrings[6]), (Durations)Enum.Parse(typeof(Durations), substrings[7])),
+                DepositTerm = DurationFromStrings(substrings[5], substrings[6], substrings[7]),
                 Comment = substrings[8].Trim()
             };
+        }
+
+        private static Duration DurationFromStrings(string a, string b, string c)
+        {
+            return Convert.ToBoolean(a) ? new Duration() : new Duration(int.Parse(b), (Durations)Enum.Parse(typeof(Durations), c));
         }
 
         public static DepoNewConds DepoNewCondsFromString(this string str)

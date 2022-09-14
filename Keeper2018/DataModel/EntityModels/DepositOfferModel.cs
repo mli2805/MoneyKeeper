@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Caliburn.Micro;
 using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class DepositOfferModel
+    public class DepositOfferModel : PropertyChangedBase
     {
         public int Id { get; set; }
         public AccountModel Bank { get; set; }
@@ -12,9 +13,9 @@ namespace Keeper2018
         public bool IsNotRevocable { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
-        public bool IsTimeless { get; set; }
-        public Duration DepositTerm { get; set; }
+        public DurationModel DepositTerm { get; set; }
 
+       
         // Conditions of offer could be changed (especially rates, initial sum while Title remains the same)
         // only for newly opened deposits
         // Conditions are applied from some date - key in dictionary
@@ -35,6 +36,7 @@ namespace Keeper2018
                 Title = Title,
                 IsNotRevocable = IsNotRevocable,
                 MainCurrency = MainCurrency,
+                DepositTerm = DepositTerm.Clone(),
                 CondsMap = new Dictionary<DateTime, DepoCondsModel>(),
                 Comment = Comment
             };

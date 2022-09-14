@@ -60,10 +60,14 @@ namespace Keeper2018
                 Title = depositOfferModel.Title,
                 IsNotRevocable = depositOfferModel.IsNotRevocable,
                 MainCurrency = depositOfferModel.MainCurrency,
-                IsTimeless = depositOfferModel.IsTimeless,
-                DepositTerm = depositOfferModel.DepositTerm,
+                DepositTerm = depositOfferModel.DepositTerm.Map(),
                 Comment = depositOfferModel.Comment,
             };
+        }
+
+        private static Duration Map(this DurationModel durationModel)
+        {
+            return durationModel.IsPerpetual ? new Duration() : new Duration(durationModel.Value, durationModel.Scale);
         }
 
         public static DepoNewConds Map(this  DepoCondsModel depoCondsModel)

@@ -53,6 +53,7 @@ namespace Keeper2018
                 Id = Rows.Max(l => l.Id) + 1, 
                 Bank = SelectedDepositOffer.Bank, 
                 MainCurrency = CurrencyCode.BYN,
+                DepositTerm = new DurationModel(1, Durations.Years),
             };
 
             _oneBankOfferViewModel.Initialize(offerModel);

@@ -25,10 +25,10 @@
         </StackPanel>
         <GroupBox Header="Срок депозита" Margin="5, 0">
             <StackPanel Margin="5">
-                <CheckBox Content="Бессрочный (тек счета)" Margin="5"/>
-                <StackPanel Orientation="Horizontal" Margin="5">
-                    <TextBox Width="100" Margin="0,5"/>
-                    <ComboBox Width="120" Margin="5"/>
+                <CheckBox Content="Бессрочный (тек счета)" IsChecked="{Binding ModelInWork.DepositTerm.IsPerpetual}" Margin="5"/>
+                <StackPanel Orientation="Horizontal" Margin="5" Visibility="{Binding ModelInWork.DepositTerm.ValueVisibility}">
+                    <TextBox Width="100" Text="{Binding ModelInWork.DepositTerm.Value}" Margin="0,5"/>
+                    <ComboBox Width="120" ItemsSource="{Binding Durations}" SelectedItem="{Binding ModelInWork.DepositTerm.Scale}" Margin="5"/>
                 </StackPanel>
             </StackPanel>
         </GroupBox>
