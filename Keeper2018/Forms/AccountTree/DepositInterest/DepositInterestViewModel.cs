@@ -9,6 +9,7 @@ namespace Keeper2018
     public class DepositInterestViewModel : Screen
     {
         private readonly KeeperDataModel _keeperDataModel;
+        private readonly IWindowManager _windowManager;
         private readonly ComboTreesProvider _comboTreesProvider;
         private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
         private AccountModel _accountModel;
@@ -57,10 +58,12 @@ namespace Keeper2018
         public DatePickerWithTrianglesVm MyDatePickerVm { get; set; }
         public string Comment { get; set; } = "";
 
-        public DepositInterestViewModel(KeeperDataModel keeperDataModel, ComboTreesProvider comboTreesProvider,
+        public DepositInterestViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager,
+            ComboTreesProvider comboTreesProvider,
             AccNameSelectionControlInitializer accNameSelectionControlInitializer)
         {
             _keeperDataModel = keeperDataModel;
+            _windowManager = windowManager;
             _comboTreesProvider = comboTreesProvider;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
         }
@@ -130,6 +133,18 @@ namespace Keeper2018
 
         public void Save()
         {
+            AccountModel nextAccountModel = null;
+            if (IsTransferred)
+            {
+                nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
+                if (_accountModel.Id == nextAccountModel.Id)
+                {
+                    var vm = new MyMessageBoxViewModel(MessageType.Error, "Перечисление на самого себя!");
+                    _windowManager.ShowDialog(vm);
+                    return;
+                }
+            }
+
             var id = _keeperDataModel.Transactions.Keys.Max() + 1;
             var thisDateTrans = _keeperDataModel.Transactions.Values
                 .Where(t => t.Timestamp.Date == MyDatePickerVm.SelectedDate).OrderBy(l => l.Timestamp).LastOrDefault();
@@ -149,7 +164,6 @@ namespace Keeper2018
 
             if (IsTransferred)
             {
-                var nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
                 var tranModel2 = new TransactionModel()
                 {
                     Id = id + 1,
