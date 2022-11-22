@@ -9,6 +9,7 @@ namespace KeeperDomain
         public int BankId { get; set; }
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
+        public RateType RateType { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
         public Duration DepositTerm { get; set; }
@@ -17,7 +18,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + BankId + " ; " + Title + " ; " + IsNotRevocable + " ; " + MainCurrency + " ; " + 
+            return Id + " ; " + BankId + " ; " + Title + " ; " + IsNotRevocable + " ; " + RateType + " ; " + MainCurrency + " ; " + 
                    (DepositTerm?.Dump() ?? new Duration().Dump()) + " ; " + Comment;
         }
     }

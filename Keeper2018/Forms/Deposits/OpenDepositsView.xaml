@@ -5,14 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
-    <DataGrid ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="Банк" Width="60" Binding="{Binding BankName}" />
-            <DataGridTextColumn Header="  Депозит" Width="400" Binding="{Binding DepoName}" />
-            <DataGridTextColumn Header=" c" Width="100" Binding="{Binding StartDate, StringFormat='dd\/MM\/yyyy'}" />
-            <DataGridTextColumn Header=" по" Width="100" 
-                  Binding="{Binding FinishDate, StringFormat='dd\/MM\/yyyy ddd', ConverterCulture=ru-RU}" />
-            <DataGridTextColumn Header="  Остаток" Width="120" Binding="{Binding Balance}" />
-        </DataGrid.Columns>
-    </DataGrid>
+
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+
+        </DockPanel>
+        <DataGrid ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Банк" Width="60" Binding="{Binding BankName}" />
+                <DataGridTextColumn Header="  Депозит" Width="400" Binding="{Binding DepoName}" />
+                <DataGridTextColumn Header="  Тип ставки" Width="100" Binding="{Binding RateTypeStr}" />
+                <DataGridTextColumn Header=" c" Width="100" Binding="{Binding StartDate, StringFormat='dd\/MM\/yyyy'}" />
+                <DataGridTextColumn Header=" по" Width="100"
+                                    Binding="{Binding FinishDate, StringFormat='dd\/MM\/yyyy ddd', ConverterCulture=ru-RU}" />
+                <DataGridTextColumn Header="  Остаток" Width="120" Binding="{Binding Balance}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </Window>

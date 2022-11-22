@@ -221,9 +221,10 @@ namespace KeeperDomain
                 BankId = int.Parse(substrings[1]),
                 Title = substrings[2].Trim(),
                 IsNotRevocable = bool.Parse(substrings[3].Trim()),
-                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[4]),
-                DepositTerm = DurationFromStrings(substrings[5], substrings[6], substrings[7]),
-                Comment = substrings[8].Trim()
+                RateType = (RateType)Enum.Parse(typeof(RateType), substrings[4]),
+                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]),
+                DepositTerm = DurationFromStrings(substrings[6], substrings[7], substrings[8]),
+                Comment = substrings[9].Trim()
             };
         }
 
@@ -246,11 +247,10 @@ namespace KeeperDomain
                 EveryFirstDayOfMonth = bool.Parse(substrings[5]),
                 EveryLastDayOfMonth = bool.Parse(substrings[6]),
                 IsCapitalized = bool.Parse(substrings[7]),
-                IsRateFixed = bool.Parse(substrings[8]),
-                HasAdditionalProcent = bool.Parse(substrings[9]),
-                AdditionalProcent = double.Parse(substrings[10]),
+                HasAdditionalProcent = bool.Parse(substrings[8]),
+                AdditionalProcent = double.Parse(substrings[9]),
 
-                Comment = substrings[11].Trim()
+                Comment = substrings[10].Trim()
             };
 
             return result;

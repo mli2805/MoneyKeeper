@@ -92,7 +92,6 @@ namespace Keeper2018
             var bin = new KeeperBin
             {
                 OfficialRates = _keeperDataModel.OfficialRates.Values.ToList(),
-                // ExchangeRates = _keeperDataModel.ExchangeRates.Values.ToList(),
                 ExchangeRates = exchangeRates,
                 MetalRates = _keeperDataModel.MetalRates,
 

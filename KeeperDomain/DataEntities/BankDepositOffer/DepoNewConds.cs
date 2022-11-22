@@ -3,6 +3,13 @@ using System.Globalization;
 
 namespace KeeperDomain
 {
+    public enum RateType
+    {
+        Floating,
+        Linked,
+        Fixed,
+    }
+
     [Serializable]
     public class DepoNewConds
     {
@@ -17,8 +24,6 @@ namespace KeeperDomain
         public bool EveryLastDayOfMonth { get; set; }
         public bool IsCapitalized { get; set; }
 
-        public bool IsRateFixed { get; set; }
-
         public bool HasAdditionalProcent { get; set; }
         public double AdditionalProcent { get; set; }
 
@@ -29,7 +34,7 @@ namespace KeeperDomain
         {
             return Id + " ; " + DepositOfferId + " ; " + $"{DateFrom:dd/MM/yyyy}"  + " ; " + 
                    IsFactDays + " ; " + EveryStartDay + " ; " + EveryFirstDayOfMonth + " ; " + 
-                   EveryLastDayOfMonth + " ; " + IsCapitalized + " ; " + IsRateFixed +" ; " + 
+                   EveryLastDayOfMonth + " ; " + IsCapitalized + " ; " + 
                    HasAdditionalProcent + " ; " + AdditionalProcent.ToString(new CultureInfo("en-US")) + " ; " + 
                    Comment;
         }

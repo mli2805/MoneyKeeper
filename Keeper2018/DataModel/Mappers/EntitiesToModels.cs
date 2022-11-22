@@ -26,6 +26,7 @@ namespace Keeper2018
                 Bank = acMoDict[depositOffer.BankId],
                 Title = depositOffer.Title,
                 IsNotRevocable = depositOffer.IsNotRevocable,
+                RateType = depositOffer.RateType,
                 MainCurrency = depositOffer.MainCurrency,
                 DepositTerm = depositOffer.DepositTerm.Map(),
                 Comment = depositOffer.Comment,
@@ -50,7 +51,6 @@ namespace Keeper2018
                 EveryFirstDayOfMonth = depoConds.EveryFirstDayOfMonth,
                 EveryLastDayOfMonth = depoConds.EveryLastDayOfMonth,
                 IsCapitalized = depoConds.IsCapitalized,
-                IsRateFixed = depoConds.IsRateFixed,
                 HasAdditionalPercent = depoConds.HasAdditionalProcent,
                 AdditionalPercent = depoConds.AdditionalProcent,
             

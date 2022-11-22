@@ -12,6 +12,8 @@ namespace Keeper2018
         public string BankName { get; set; }
         public string DepoName { get; set; }
 
+        public string RateTypeStr { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
 
@@ -51,6 +53,7 @@ namespace Keeper2018
                 Id = accountModel.Id,
                 BankName = depoOffer.Bank.Name,
                 DepoName = accountModel.Name,
+                RateTypeStr = depoOffer.RateType.ToString(),
                 StartDate = accountModel.Deposit.StartDate,
                 FinishDate = accountModel.Deposit.FinishDate,
                 Balance = calc.EvaluateBalance(),

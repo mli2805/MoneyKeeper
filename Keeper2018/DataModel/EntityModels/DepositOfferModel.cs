@@ -11,6 +11,8 @@ namespace Keeper2018
         public AccountModel Bank { get; set; }
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
+        public string NotRevocableStr => IsNotRevocable ? "безотзыв" : "отзывной";
+        public RateType RateType { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
         public DurationModel DepositTerm { get; set; }
@@ -35,6 +37,7 @@ namespace Keeper2018
                 Bank = Bank,
                 Title = Title,
                 IsNotRevocable = IsNotRevocable,
+                RateType = RateType,
                 MainCurrency = MainCurrency,
                 DepositTerm = DepositTerm.Clone(),
                 CondsMap = new Dictionary<DateTime, DepoCondsModel>(),

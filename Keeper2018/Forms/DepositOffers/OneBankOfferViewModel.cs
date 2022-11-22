@@ -18,6 +18,7 @@ namespace Keeper2018
         public string SelectedBankName { get; set; }
 
         public List<CurrencyCode> Currencies { get; set; }
+        public List<RateType> RateTypes { get; set; }
         public List<Durations> Durations { get; set; }
         public DepositOfferModel ModelInWork { get; set; }
 
@@ -41,6 +42,7 @@ namespace Keeper2018
             BankNames = Banks.Select(b=>b.Name).ToList();
             SelectedBankName = BankNames.First(n=>n == model.Bank.Name);
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
+            RateTypes = Enum.GetValues(typeof(RateType)).OfType<RateType>().ToList();
             Durations = Enum.GetValues(typeof(Durations)).OfType<Durations>().ToList();
             ModelInWork = model;
             ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();

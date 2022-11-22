@@ -59,6 +59,7 @@ namespace Keeper2018
                 BankId = depositOfferModel.Bank.Id,
                 Title = depositOfferModel.Title,
                 IsNotRevocable = depositOfferModel.IsNotRevocable,
+                RateType = depositOfferModel.RateType,
                 MainCurrency = depositOfferModel.MainCurrency,
                 DepositTerm = depositOfferModel.DepositTerm.Map(),
                 Comment = depositOfferModel.Comment,
@@ -83,7 +84,6 @@ namespace Keeper2018
                 EveryFirstDayOfMonth = depoCondsModel.EveryFirstDayOfMonth,
                 EveryLastDayOfMonth = depoCondsModel.EveryLastDayOfMonth,
                 IsCapitalized = depoCondsModel.IsCapitalized,
-                IsRateFixed = depoCondsModel.IsRateFixed,
                 HasAdditionalProcent = depoCondsModel.HasAdditionalPercent,
                 AdditionalProcent = depoCondsModel.AdditionalPercent,
             

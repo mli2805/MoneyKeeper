@@ -27,8 +27,6 @@
         <StackPanel DockPanel.Dock="Bottom" Margin="5">
             <CheckBox Name="IsFactDays" Content="исходя из фактического количества дней в году" Margin="5"
               IsChecked="{Binding Conditions.IsFactDays, Mode=TwoWay}"/>
-            <CheckBox Name="IsRateFixed" Content="процентная ставка фиксированная" Margin="5"
-              IsChecked="{Binding Conditions.IsRateFixed, Mode=TwoWay}"/>
             <CheckBox Name="EveryFirstDayOfMonth" Content="каждое первое число месяца" Margin="5"
               IsChecked="{Binding Conditions.EveryFirstDayOfMonth, Mode=TwoWay}"/>
             <CheckBox Name="EveryLastDayOfMonth" Content="каждый последний день месяца" Margin="5"

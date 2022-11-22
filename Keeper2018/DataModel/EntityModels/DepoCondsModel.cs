@@ -19,6 +19,7 @@ namespace Keeper2018
         public bool IsCapitalized { get; set; }
 
         public bool IsRateFixed { get; set; }
+        public RateType RateType { get; set; }
 
         public bool HasAdditionalPercent { get; set; }
         public double AdditionalPercent { get; set; }
