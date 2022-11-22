@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -7,12 +8,58 @@ namespace Keeper2018
 {
     public class DepositOfferModel : PropertyChangedBase
     {
+        private RateType _rateType;
+        private bool _isAddLimited;
+        private string _rateFormula;
         public int Id { get; set; }
         public AccountModel Bank { get; set; }
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
         public string NotRevocableStr => IsNotRevocable ? "безотзыв" : "отзывной";
-        public RateType RateType { get; set; }
+
+        public RateType RateType
+        {
+            get => _rateType;
+            set
+            {
+                if (value == _rateType) return;
+                _rateType = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(RateFormulaVisibility));
+            }
+        }
+
+        public Visibility RateFormulaVisibility =>
+            RateType == RateType.Linked ? Visibility.Visible : Visibility.Collapsed;
+
+        public string RateFormula
+        {
+            get => _rateFormula;
+            set
+            {
+                if (value == _rateFormula) return;
+                _rateFormula = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsAddLimited
+        {
+            get => _isAddLimited;
+            set
+            {
+                if (value == _isAddLimited) return;
+                _isAddLimited = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(AddLimitStr));
+            }
+        }
+
+        public int AddLimitInDays { get; set; }
+
+        public string AddLimitStr => IsAddLimited
+            ? $"первые {AddLimitInDays} дней"
+            : "без ограничений";
         public CurrencyCode MainCurrency { get; set; }
 
         public DurationModel DepositTerm { get; set; }
@@ -38,6 +85,9 @@ namespace Keeper2018
                 Title = Title,
                 IsNotRevocable = IsNotRevocable,
                 RateType = RateType,
+                RateFormula = RateFormula,
+                IsAddLimited = IsAddLimited,
+                AddLimitInDays = AddLimitInDays,
                 MainCurrency = MainCurrency,
                 DepositTerm = DepositTerm.Clone(),
                 CondsMap = new Dictionary<DateTime, DepoCondsModel>(),

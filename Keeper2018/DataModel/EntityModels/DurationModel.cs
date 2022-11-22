@@ -37,6 +37,11 @@ namespace Keeper2018
             IsPerpetual = false;
         }
 
+        public override string ToString()
+        {
+            return IsPerpetual ? "" : $"{Value} {Scale}";
+        }
+
         public DurationModel Clone()
         {
             return (DurationModel)MemberwiseClone();

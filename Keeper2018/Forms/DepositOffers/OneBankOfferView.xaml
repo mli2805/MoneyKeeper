@@ -21,8 +21,29 @@
         <CheckBox Content="Безотзывный" Margin="10,5" IsChecked="{Binding ModelInWork.IsNotRevocable}"></CheckBox>
         <StackPanel Orientation="Horizontal" Margin="5" Height="30">
             <TextBlock Text="Тип ставки по вкладу" Margin="5,5,5,5" Width="180"/>
-            <ComboBox Margin="5" ItemsSource="{Binding RateTypes}" SelectedItem="{Binding ModelInWork.RateType}" Width="160"/>
+            <ComboBox Margin="5" ItemsSource="{Binding RateTypes}" 
+                      SelectedItem="{Binding ModelInWork.RateType}" Width="160"/>
         </StackPanel>
+        <TextBox Margin="190,0,5,5" Text="{Binding ModelInWork.RateFormula}" 
+                 Visibility="{Binding ModelInWork.RateFormulaVisibility}" Width="160"/>
+        <GroupBox Margin=" 5">
+            <GroupBox.Header>
+                <CheckBox Margin="5,0,0,0" IsChecked="{Binding ModelInWork.IsAddLimited}" 
+                          Content="Доп взносы разрешены только"/>
+            </GroupBox.Header>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="первые" Margin="50,5,5,5" />
+                    <TextBox Width="60" Margin="5" IsEnabled="{Binding ModelInWork.IsAddLimited}"
+                             Text="{Binding ModelInWork.AddLimitInDays}" />
+                    <TextBlock Text="дней" Margin="5" />
+                </StackPanel>
+                <TextBlock Text="Если птичка не стоит - взносы разрешены все время"/>
+                <TextBlock Text="Если птичка и 0 дней - доп взносы запрещены изначально"/>
+                <TextBlock Text="* Хотя по оферу доп взносы разрешены"/>
+                <TextBlock Text="      они могут быть запрещены по конкретному вкладу"/>
+            </StackPanel>
+        </GroupBox>
         <StackPanel Orientation="Horizontal" Margin="5" Height="30">
             <TextBlock Text="Основная валюта вклада" Margin="5,5,5,5" Width="180"/>
             <ComboBox Margin="5" ItemsSource="{Binding Currencies}" SelectedItem="{Binding ModelInWork.MainCurrency}" Width="160"/>

@@ -31,9 +31,6 @@ namespace Keeper2018
             {
                 foreach (var depoCondition in bin.DepoNewConds.Where(c => c.DepositOfferId == depoOffer.Id))
                 {
-                    // temp
-                    // depoOffer.RateType = depoCondition.IsRateFixed ? RateType.Fixed : RateType.Floating;
-
                     var depoCondsModel = depoCondition.Map();
 
                     depoCondsModel.RateLines = bin.DepositRateLines

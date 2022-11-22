@@ -9,7 +9,9 @@
         mc:Ignorable="d"
         SizeToContent="Width" Height="700" WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance keeper2018:BankOffersViewModel}">
-    <ListView ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedDepositOffer, Mode= TwoWay}" SelectionMode="Single">
+    <ListView ItemsSource="{Binding Rows}" 
+              SelectedItem="{Binding SelectedDepositOffer, Mode= TwoWay}" SelectionMode="Single"
+              cal:Message.Attach="[Event MouseDoubleClick] = [Action EditSelectedOffer]">
         <ListView.ItemContainerStyle>
             <Style TargetType="{x:Type ListViewItem}">
                 <Setter Property="BorderBrush" Value="LightGray" />
@@ -21,8 +23,11 @@
                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="35" />
                 <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Header}" Width="95" />
                 <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}" Width="250" />
+                <GridViewColumn Header="Срок" DisplayMemberBinding="{Binding DepositTerm}" Width="80" />
                 <GridViewColumn Header="Отзывной" DisplayMemberBinding="{Binding NotRevocableStr}" Width="80" />
                 <GridViewColumn Header="Ставка" DisplayMemberBinding="{Binding RateType}" Width="80" />
+                <GridViewColumn Header="Формула" DisplayMemberBinding="{Binding RateFormula}" Width="80" />
+                <GridViewColumn Header="Доп взносы" DisplayMemberBinding="{Binding AddLimitStr}" Width="120" />
                 <GridViewColumn Header="Валюта" DisplayMemberBinding="{Binding MainCurrency}" Width="50" />
                 <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="300" />
             </GridView>

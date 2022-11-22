@@ -222,9 +222,12 @@ namespace KeeperDomain
                 Title = substrings[2].Trim(),
                 IsNotRevocable = bool.Parse(substrings[3].Trim()),
                 RateType = (RateType)Enum.Parse(typeof(RateType), substrings[4]),
-                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[5]),
-                DepositTerm = DurationFromStrings(substrings[6], substrings[7], substrings[8]),
-                Comment = substrings[9].Trim()
+                RateFormula = substrings[5].Trim(),
+                IsAddLimited = bool.Parse(substrings[6].Trim()),
+                AddLimitInDays = int.Parse(substrings[7]),
+                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[8]),
+                DepositTerm = DurationFromStrings(substrings[9], substrings[10], substrings[11]),
+                Comment = substrings[12].Trim()
             };
         }
 
