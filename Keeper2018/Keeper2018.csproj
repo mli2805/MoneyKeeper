@@ -260,6 +260,7 @@
     <Compile Include="Forms\CurrencyRates2\RatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\ExchangeRatesFetcher.cs" />
     <Compile Include="Forms\CurrencyRates2\Gold\GoldCoinsModel.cs" />
+    <Compile Include="Forms\Deposits\DepositVm.cs" />
     <Compile Include="Forms\Deposits\OpenDepositsView.xaml.cs">
       <DependentUpon>OpenDepositsView.xaml</DependentUpon>
     </Compile>

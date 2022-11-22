@@ -6,23 +6,13 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class DepositVm
-    {
-        public int Id { get; set; }
-        public string BankName { get; set; }
-        public string DepoName { get; set; }
-
-        public string RateTypeStr { get; set; }
-
-        public DateTime StartDate { get; set; }
-        public DateTime FinishDate { get; set; }
-
-        public Balance Balance { get; set; }
-    }
     public class OpenDepositsViewModel : Screen
     {
         private readonly KeeperDataModel _keeperDataModel;
-        public List<DepositVm> Rows { get; set; }
+        public List<DepositVm> Rows { get; private set; }
+
+        public List<string> Footer { get; private set; }
+        public List<string> Footer2 { get; private set; }
 
         public OpenDepositsViewModel(KeeperDataModel keeperDataModel)
         {
@@ -40,6 +30,23 @@ namespace Keeper2018
                 .Where(a => !a.Children.Any() && a.Is(166) && !a.Is(235))
                 .OrderBy(d=>d.Deposit.FinishDate)
                 .Select(Convert).ToList();
+
+            Footer = new List<string>();
+            int totalCount = 0;
+            decimal total = 0;
+            foreach (var currency in Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>())
+            {
+                var dcs = Rows.Where(r => r.MainCurrency == currency).ToList();
+                var sum = dcs.Sum(d=>d.Balance.Currencies[currency]);
+                if (sum > 0)
+                {
+                    totalCount += dcs.Count;
+                    total += _keeperDataModel.AmountInUsd(DateTime.Now, currency, sum);
+                    Footer.Add($"{dcs.Count} депо;  {sum:N} {currency.ToString().ToLower()}");
+                }
+            }
+
+            Footer2 = new List<string> { $"Всего {totalCount} депо;   {total:N} usd" };
         }
 
         private DepositVm Convert(AccountModel accountModel)
@@ -52,8 +59,10 @@ namespace Keeper2018
             {
                 Id = accountModel.Id,
                 BankName = depoOffer.Bank.Name,
+                MainCurrency = depoOffer.MainCurrency,
                 DepoName = accountModel.Name,
                 RateTypeStr = depoOffer.RateType.ToString(),
+                AdditionsStr = depoOffer.AddLimitStr, // TODO брать из конкретного вклада, с учетом даты открытия и запретов банка
                 StartDate = accountModel.Deposit.StartDate,
                 FinishDate = accountModel.Deposit.FinishDate,
                 Balance = calc.EvaluateBalance(),

@@ -3,19 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" d:DataContext="{d:DesignInstance keeper2018:OpenDepositsViewModel}">
 
     <DockPanel>
-        <DockPanel DockPanel.Dock="Bottom">
-
+        <DockPanel DockPanel.Dock="Bottom" Margin="5">
+            <ListBox DockPanel.Dock="Right" Width="166" ItemsSource="{Binding Footer}" BorderThickness="0"/>
+            <ListBox DockPanel.Dock="Bottom"  ItemsSource="{Binding Footer2}" BorderThickness="0" FontWeight="Bold"/>
+            <StackPanel></StackPanel>
         </DockPanel>
         <DataGrid ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Банк" Width="60" Binding="{Binding BankName}" />
-                <DataGridTextColumn Header="  Депозит" Width="400" Binding="{Binding DepoName}" />
-                <DataGridTextColumn Header="  Тип ставки" Width="100" Binding="{Binding RateTypeStr}" />
-                <DataGridTextColumn Header=" c" Width="100" Binding="{Binding StartDate, StringFormat='dd\/MM\/yyyy'}" />
+                <DataGridTextColumn Header="  Депозит" Width="450" Binding="{Binding DepoName}" />
+                <DataGridTextColumn Header="  Тип ставки" Width="80" Binding="{Binding RateTypeStr}" />
+                <DataGridTextColumn Header=" c" Width="80" Binding="{Binding StartDate, StringFormat='dd\/MM\/yyyy'}" />
                 <DataGridTextColumn Header=" по" Width="100"
                                     Binding="{Binding FinishDate, StringFormat='dd\/MM\/yyyy ddd', ConverterCulture=ru-RU}" />
                 <DataGridTextColumn Header="  Остаток" Width="120" Binding="{Binding Balance}" />

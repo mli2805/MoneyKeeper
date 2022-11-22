@@ -172,7 +172,7 @@ namespace Keeper2018
         public void ShowDepositsForm()
         {
             _openDepositsViewModel.Initialize();
-            _windowManager.ShowDialog(_openDepositsViewModel);
+            _windowManager.ShowWindow(_openDepositsViewModel);
         }
 
         public void ShowPayCardsForm()

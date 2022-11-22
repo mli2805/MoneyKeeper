@@ -51,7 +51,7 @@ namespace Keeper2018
             {
                 var currency = Currencies.First(c => c.Value != 0).Key;
                 var value = Currencies.First(c => c.Value != 0).Value;
-                var amountStr = currency == CurrencyCode.BYR ? value.ToString("0,0") : value.ToString("0.00");
+                var amountStr = currency == CurrencyCode.BYR ? value.ToString("0,0") : value.ToString("0,0.00");
                 return $"{amountStr} {currency.ToString().ToLower()}";
             }
             return "more than 1 currency";
