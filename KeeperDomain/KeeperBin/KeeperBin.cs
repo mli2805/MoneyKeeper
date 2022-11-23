@@ -10,6 +10,7 @@ namespace KeeperDomain
         public List<OfficialRates> OfficialRates { get; set; }
         public List<ExchangeRates> ExchangeRates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
+        public List<RefinancingRate> RefinancingRates { get; set; }
 
         public List<TrustAccount> TrustAccounts { get; set; }
         public List<InvestmentAsset> InvestmentAssets { get; set; }

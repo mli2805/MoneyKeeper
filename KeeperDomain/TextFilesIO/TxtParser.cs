@@ -50,6 +50,16 @@ namespace KeeperDomain
             return rate;
         }
 
+        public static RefinancingRate RefinancingRateFromString(this string s)
+        {
+            var rate = new RefinancingRate();
+            var substrings = s.Split(';');
+            rate.Id = int.Parse(substrings[0]);
+            rate.Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            rate.Value = double.Parse(substrings[2], new CultureInfo("en-US"));
+            return rate;
+        }
+
         public static InvestmentAsset InvestmentAssetFromString(this string s)
         {
             var ticker = new InvestmentAsset();

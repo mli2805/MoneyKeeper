@@ -13,9 +13,8 @@ namespace KeeperDomain
             try
             {
                 var keeperBin = new KeeperBin();
-                LoadCurrencyRates(keeperBin);
+                LoadRates(keeperBin);
                 LoadInvestments(keeperBin);
-                LoadMetalRates(keeperBin);
                 LoadAccounts(keeperBin);
                 LoadDepoParts(keeperBin);
                 LoadTransactions(keeperBin);
@@ -80,12 +79,18 @@ namespace KeeperDomain
         }
 
 
-        private static void LoadCurrencyRates(KeeperBin bin)
+        private static void LoadRates(KeeperBin bin)
         {
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("ExchangeRates.txt"));
             bin.ExchangeRates = content.Select(s => s.ExchangeRatesFromString()).ToList();
             content = File.ReadAllLines(PathFactory.GetBackupFilePath("OfficialRates.txt"));
             bin.OfficialRates = content.Select(s => s.CurrencyRateFromString()).ToList();
+
+            content = File.ReadAllLines(PathFactory.GetBackupFilePath("MetalRates.txt"));
+            bin.MetalRates = content.Select(s => s.MetalRateFromString()).ToList();
+
+            content = File.ReadAllLines(PathFactory.GetBackupFilePath("RefinancingRates.txt"));
+            bin.RefinancingRates = content.Select(s => s.RefinancingRateFromString()).ToList();
         }
 
         private static void LoadInvestments(KeeperBin bin)
@@ -100,10 +105,5 @@ namespace KeeperDomain
             bin.InvestmentTransactions = investmentTransactions.Select(s => s.InvestmentTransactionFromString()).ToList();
         }
 
-        private static void LoadMetalRates(KeeperBin bin)
-        {
-            var content = File.ReadAllLines(PathFactory.GetBackupFilePath("MetalRates.txt"));
-            bin.MetalRates = content.Select(s => s.MetalRateFromString()).ToList();
-        }
     }
 }

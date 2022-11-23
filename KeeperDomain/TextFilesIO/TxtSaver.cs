@@ -24,6 +24,8 @@ namespace KeeperDomain
                 File.WriteAllLines(PathFactory.GetBackupFilePath("ExchangeRates.txt"), exchangeRates);
                 var metalRates = bin.MetalRates.Select(l => l.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("MetalRates.txt"), metalRates);
+                var refinancingRates = bin.RefinancingRates.Select(l => l.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("RefinancingRates.txt"), refinancingRates);
 
                 var investmentAssets = bin.InvestmentAssets.Select(l => l.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("InvestmentAssets.txt"), investmentAssets);

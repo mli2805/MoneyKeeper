@@ -72,6 +72,7 @@ namespace Keeper2018
                 _keeperDataModel.ExchangeRates.Add(exchangeRate.Date, exchangeRate);
 
             _keeperDataModel.MetalRates = bin.MetalRates;
+            _keeperDataModel.RefinancingRates = bin.RefinancingRates;
 
             _keeperDataModel.FillInAccountTreeAndDict(bin);
 

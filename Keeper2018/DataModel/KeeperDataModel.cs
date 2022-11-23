@@ -12,6 +12,7 @@ namespace Keeper2018
         public Dictionary<DateTime, OfficialRates> OfficialRates { get; set; }
         public Dictionary<DateTime, ExchangeRates> ExchangeRates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
+        public List<RefinancingRate> RefinancingRates { get; set; } = new List<RefinancingRate>();
 
         public List<TrustAccount> TrustAccounts { get; set; }
         public List<InvestmentAssetModel> InvestmentAssets { get; set; }

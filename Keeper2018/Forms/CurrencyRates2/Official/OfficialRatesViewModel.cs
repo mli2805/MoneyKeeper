@@ -97,7 +97,7 @@ namespace Keeper2018
 
         private async Task<OfficialRates> DownloadRbAndRfRates(DateTime date)
         {
-            var nbRbRates = await NbRbRatesDownloader.GetRatesForDate(date);
+            var nbRbRates = await NbRbRatesDownloader.GetRatesForDateAsync(date);
             if (nbRbRates == null) return null;
             var currencyRates = new OfficialRates() { Date = date, NbRates = nbRbRates };
             var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(date);

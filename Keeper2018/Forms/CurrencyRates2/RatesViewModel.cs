@@ -11,10 +11,11 @@ namespace Keeper2018
         public OfficialRatesViewModel OfficialRatesViewModel { get; }
         public ExchangeRatesViewModel ExchangeRatesViewModel { get; }
         public GoldRatesViewModel GoldRatesViewModel { get; }
+        public FinanceRatesViewModel FinanceRatesViewModel { get; }
 
 
         public RatesViewModel(OfficialRatesViewModel officialRatesViewModel,
-            ExchangeRatesViewModel exchangeRatesViewModel, GoldRatesViewModel goldRatesViewModel,
+            ExchangeRatesViewModel exchangeRatesViewModel, GoldRatesViewModel goldRatesViewModel, FinanceRatesViewModel financeRatesViewModel,
             KeeperDataModel keeperDataModel, IWindowManager windowManager)
         {
             _keeperDataModel = keeperDataModel;
@@ -22,6 +23,7 @@ namespace Keeper2018
             OfficialRatesViewModel = officialRatesViewModel;
             ExchangeRatesViewModel = exchangeRatesViewModel;
             GoldRatesViewModel = goldRatesViewModel;
+            FinanceRatesViewModel = financeRatesViewModel;
         }
 
         public async Task Initialize()
@@ -29,6 +31,7 @@ namespace Keeper2018
             await OfficialRatesViewModel.Initialize();
             ExchangeRatesViewModel.Initialize();
             GoldRatesViewModel.Initialize();
+            FinanceRatesViewModel.Initialize();
         }
 
         protected override void OnViewLoaded(object view)

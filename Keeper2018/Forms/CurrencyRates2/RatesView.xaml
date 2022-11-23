@@ -20,14 +20,17 @@
             <StackPanel></StackPanel>
         </DockPanel>
         <TabControl>
-            <TabItem Header="Обменные курсы" Width="150">
+            <TabItem Header="Обменные курсы банков РБ" Width="200">
                 <keeper2018:ExchangeRatesView DataContext="{Binding ExchangeRatesViewModel}"/>
             </TabItem>
-            <TabItem Header="Официальные курсы" Width="150">
+            <TabItem Header="Официальные курсы НБ РБ" Width="200">
                 <keeper2018:OfficialRatesView DataContext="{Binding OfficialRatesViewModel}"/>
             </TabItem>
-            <TabItem Header="Золото" Width="150">
+            <TabItem Header="Золото, закупока минфина" Width="200">
                 <keeper2018:GoldRatesView DataContext="{Binding GoldRatesViewModel}"/>
+            </TabItem>
+            <TabItem Header="Ставка рефинансирования НБ РБ" Width="200">
+                <keeper2018:FinanceRatesView DataContext="{Binding FinanceRatesViewModel}"/>
             </TabItem>
         </TabControl>
     </DockPanel>

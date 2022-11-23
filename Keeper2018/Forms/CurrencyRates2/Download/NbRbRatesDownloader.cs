@@ -10,7 +10,7 @@ namespace Keeper2018
 {
     public static class NbRbRatesDownloader
     {
-        public static async Task<NbRbRates> GetRatesForDate(DateTime date)
+        public static async Task<NbRbRates> GetRatesForDateAsync(DateTime date)
         {
             try
             {
@@ -32,6 +32,23 @@ namespace Keeper2018
                 result.Cny.Value = cnyRate.Cur_OfficialRate;
                 result.Cny.Unit = cnyRate.Cur_Scale;
                 return result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return null;
+            }
+        }
+
+        public static async Task<List<RefinancingRate>> GetRefinanceRatesAsync()
+        {
+            try
+            {
+                string uri = "https://www.nbrb.by/api/refinancingrate";
+                var response = await MyRequest.GetAsync(uri);
+                var rrList = (List<RefinancingRate>)JsonConvert.DeserializeObject(response, typeof(List<RefinancingRate>));
+                if (rrList.Count == 0) return null;
+                return rrList;
             }
             catch (Exception e)
             {

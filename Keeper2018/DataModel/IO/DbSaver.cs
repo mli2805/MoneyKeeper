@@ -94,6 +94,7 @@ namespace Keeper2018
                 OfficialRates = _keeperDataModel.OfficialRates.Values.ToList(),
                 ExchangeRates = exchangeRates,
                 MetalRates = _keeperDataModel.MetalRates,
+                RefinancingRates = _keeperDataModel.RefinancingRates,
 
                 TrustAccounts = _keeperDataModel.TrustAccounts,
                 InvestmentAssets = _keeperDataModel.InvestmentAssets.Select(a=>a.Map()).ToList(),
