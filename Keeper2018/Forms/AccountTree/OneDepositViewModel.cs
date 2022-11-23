@@ -90,6 +90,7 @@ namespace Keeper2018
             }
         }
 
+     
         protected override void OnViewLoaded(object view)
         {
             DisplayName = _isInAddMode ? "Добавить" : "Изменить";

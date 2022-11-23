@@ -28,7 +28,7 @@ namespace Keeper2018
         {
             Rows = _keeperDataModel.AcMoDict.Values
                 .Where(a => !a.Children.Any() && a.Is(166) && !a.Is(235))
-                .OrderBy(d=>d.Deposit.FinishDate)
+                .OrderBy(d => d.Deposit.FinishDate)
                 .Select(Convert).ToList();
 
             Footer = new List<string>();
@@ -37,7 +37,7 @@ namespace Keeper2018
             foreach (var currency in Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>())
             {
                 var dcs = Rows.Where(r => r.MainCurrency == currency).ToList();
-                var sum = dcs.Sum(d=>d.Balance.Currencies[currency]);
+                var sum = dcs.Sum(d => d.Balance.Currencies[currency]);
                 if (sum > 0)
                 {
                     totalCount += dcs.Count;
@@ -53,8 +53,9 @@ namespace Keeper2018
         {
             var depoOffer = _keeperDataModel.DepositOffers
                 .First(o => o.Id == accountModel.Deposit.DepositOfferId);
-            var calc = new TrafficOfAccountCalculator(_keeperDataModel, accountModel, 
+            var calc = new TrafficOfAccountCalculator(_keeperDataModel, accountModel,
                 new Period(accountModel.Deposit.StartDate, DateTime.Today));
+            var isAddOpen = IsAddOpen(accountModel.Deposit, depoOffer, out var addLimitStr);
             return new DepositVm()
             {
                 Id = accountModel.Id,
@@ -62,11 +63,46 @@ namespace Keeper2018
                 MainCurrency = depoOffer.MainCurrency,
                 DepoName = accountModel.Name,
                 RateTypeStr = depoOffer.RateType.ToString(),
-                AdditionsStr = depoOffer.AddLimitStr, // TODO брать из конкретного вклада, с учетом даты открытия и запретов банка
+                AdditionsStr = addLimitStr,
+                IsAddOpen = isAddOpen,
                 StartDate = accountModel.Deposit.StartDate,
                 FinishDate = accountModel.Deposit.FinishDate,
                 Balance = calc.EvaluateBalance(),
             };
         }
+
+        private bool IsAddOpen(Deposit deposit, DepositOfferModel depositOffer, out string addLimitString)
+        {
+            if (deposit.IsAdditionsBanned) // по условия можно, но банк закрыл досрочно
+            {
+                addLimitString = "банк закрыл досрочно";
+                return false;
+            }
+
+            if (!depositOffer.IsAddLimited)  // допы не ограничены (карточка, тек счет)
+            {
+                addLimitString = "без ограничений";
+                return true;
+            }
+
+            if (depositOffer.AddLimitInDays == 0) // допы не были предусмотренны вообще
+            {
+                addLimitString = "не предусмотрены";
+                return false;
+            }
+
+            // допы ограничены по сроку
+            var addLimit = deposit.StartDate.AddDays(depositOffer.AddLimitInDays);
+            if (addLimit > DateTime.Today)  // срок еще не вышел
+            {
+                addLimitString = $"отрыты до {addLimit:dd/MM/yyyy}";
+                return true;
+            }
+
+            // срок истек
+            addLimitString = $"закрыты с {addLimit:dd/MM/yyyy}";
+            return false;
+        }
+
     }
 }

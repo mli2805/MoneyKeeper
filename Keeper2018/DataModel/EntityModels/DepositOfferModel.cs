@@ -58,7 +58,9 @@ namespace Keeper2018
         public int AddLimitInDays { get; set; }
 
         public string AddLimitStr => IsAddLimited
-            ? $"первые {AddLimitInDays} дней"
+            ? AddLimitInDays == 0
+                ? "не предусмотрены" 
+                : $"первые {AddLimitInDays} дней"
             : "без ограничений";
         public CurrencyCode MainCurrency { get; set; }
 

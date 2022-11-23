@@ -14,10 +14,32 @@
             <StackPanel></StackPanel>
         </DockPanel>
         <DataGrid ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
-            <DataGrid.Columns>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle> <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="{Binding BackgroundBrush}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#B6E6FF" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle> <DataGrid.Columns>
                 <DataGridTextColumn Header="Банк" Width="60" Binding="{Binding BankName}" />
                 <DataGridTextColumn Header="  Депозит" Width="450" Binding="{Binding DepoName}" />
+                <DataGridTextColumn Header="Валюта" Width="50" Binding="{Binding MainCurrency}" />
                 <DataGridTextColumn Header="  Тип ставки" Width="80" Binding="{Binding RateTypeStr}" />
+                <DataGridTextColumn Header="  Допы" Width="140" Binding="{Binding AdditionsStr}" />
                 <DataGridTextColumn Header=" c" Width="80" Binding="{Binding StartDate, StringFormat='dd\/MM\/yyyy'}" />
                 <DataGridTextColumn Header=" по" Width="100"
                                     Binding="{Binding FinishDate, StringFormat='dd\/MM\/yyyy ddd', ConverterCulture=ru-RU}" />

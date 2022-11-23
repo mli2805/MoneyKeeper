@@ -168,8 +168,9 @@ namespace KeeperDomain
             deposit.Serial = substrings[3].Trim();
             deposit.StartDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
             deposit.FinishDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            deposit.ShortName = substrings[6].Trim();
-            deposit.Comment = substrings[7].Replace("|", "\r\n");
+            deposit.IsAdditionsBanned = bool.Parse(substrings[6].Trim());
+            deposit.ShortName = substrings[7].Trim();
+            deposit.Comment = substrings[8].Replace("|", "\r\n");
             return deposit;
         }
 

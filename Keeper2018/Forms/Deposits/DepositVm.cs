@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -6,6 +7,7 @@ namespace Keeper2018
     public class DepositVm
     {
         public int Id { get; set; }
+        public bool IsSelected { get; set; }
         public string BankName { get; set; }
         public string DepoName { get; set; }
 
@@ -14,6 +16,13 @@ namespace Keeper2018
         public string RateTypeStr { get; set; }
         public string RateFormula { get; set; }
         public string AdditionsStr { get; set; }
+        public bool IsAddOpen { get; set; }
+
+        public Brush BackgroundBrush => FinishDate < DateTime.Today
+            ? Brushes.LightPink
+            : IsAddOpen
+                ? Brushes.PaleGreen
+                : Brushes.LightGray;
 
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }

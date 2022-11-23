@@ -39,7 +39,15 @@ namespace Keeper2018
 
         public override string ToString()
         {
-            return IsPerpetual ? "" : $"{Value} {Scale}";
+            if (IsPerpetual) return "не ограничен";
+            switch (Scale)
+            {
+                case Durations.Years: return $"{Value} {Value.YearsNumber()}";
+                case Durations.Months: return $"{Value} {Value.MonthsNumber()}";
+                case Durations.Days: return $"{Value} {Value.DaysNumber()}";
+
+                default: return base.ToString();
+            }
         }
 
         public DurationModel Clone()
