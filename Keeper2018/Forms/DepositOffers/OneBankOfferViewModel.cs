@@ -39,8 +39,8 @@ namespace Keeper2018
         public void Initialize(DepositOfferModel model)
         {
             Banks = _keeperDataModel.AcMoDict[220].Children;
-            BankNames = Banks.Select(b=>b.Name).ToList();
-            SelectedBankName = BankNames.First(n=>n == model.Bank.Name);
+            BankNames = Banks.Select(b => b.Name).ToList();
+            SelectedBankName = BankNames.First(n => n == model.Bank.Name);
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
             RateTypes = Enum.GetValues(typeof(RateType)).OfType<RateType>().ToList();
             Durations = Enum.GetValues(typeof(Durations)).OfType<Durations>().ToList();
@@ -71,7 +71,7 @@ namespace Keeper2018
                 DepositOfferId = ModelInWork.Id,
                 DateFrom = date,
             };
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depoCondsModel, GetMaxDepoRateLineId());
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, depoCondsModel, ModelInWork.RateType, GetMaxDepoRateLineId());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
             ModelInWork.CondsMap.Add(depoCondsModel.DateFrom, depoCondsModel);
             ConditionDates = ModelInWork.CondsMap.Keys.Select(d => d.ToString(_dateTemplate)).ToList();
@@ -83,7 +83,7 @@ namespace Keeper2018
             var lastInDb = _keeperDataModel.GetDepoRateLinesMaxId();
             var lastIdHere = ModelInWork.CondsMap.Any()
                 ? ModelInWork.CondsMap.Values.ToList()
-                    .SelectMany(c => c.RateLines).Max(r => r.Id) 
+                    .SelectMany(c => c.RateLines).Max(r => r.Id)
                 : 0;
             return Math.Max(lastInDb, lastIdHere);
         }
@@ -92,7 +92,7 @@ namespace Keeper2018
         {
             if (SelectedDate == null) return;
             var date = DateTime.ParseExact(SelectedDate, _dateTemplate, new DateTimeFormatInfo());
-            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.CondsMap[date], GetMaxDepoRateLineId());
+            _rulesAndRatesViewModel.Initialize(ModelInWork.Title, ModelInWork.CondsMap[date], ModelInWork.RateType, GetMaxDepoRateLineId());
             _windowManager.ShowDialog(_rulesAndRatesViewModel);
             if (date == ModelInWork.CondsMap[date].DateFrom) return;
 

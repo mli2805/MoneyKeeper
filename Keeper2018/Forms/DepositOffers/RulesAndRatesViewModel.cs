@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -14,11 +15,14 @@ namespace Keeper2018
         public DateTime NewDate { get; set; } = DateTime.Today;
         private int _maxDepoRateLineId;
 
-        public void Initialize(string title, DepoCondsModel conditions, int maxDepoRateLineId)
+        public Visibility FormulaVisibility { get; set; }
+
+        public void Initialize(string title, DepoCondsModel conditions, RateType rateType, int maxDepoRateLineId)
         {
             Title = title;
             Conditions = conditions;
             _maxDepoRateLineId = maxDepoRateLineId;
+            FormulaVisibility = rateType == RateType.Linked ? Visibility.Visible : Visibility.Collapsed;
             Rows = new ObservableCollection<DepositRateLine>();
             foreach (var rateLine in conditions.RateLines)
             {

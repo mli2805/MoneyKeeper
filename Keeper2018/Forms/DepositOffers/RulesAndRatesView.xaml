@@ -41,6 +41,13 @@
                 <TextBox Name="AdditionalProcent" Margin="5" Width="100"
                         Text="{Binding Conditions.AdditionalPercent, Mode=TwoWay}"/>
             </StackPanel>
+            <StackPanel Visibility="{Binding FormulaVisibility}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5" Text="Формула вычисления процентов" />
+                    <TextBox Margin="5" Text="{Binding Conditions.RateFormula, Mode=TwoWay}" Width="180" />
+                </StackPanel>
+                <TextBlock Text="   Таблицу %% надо заполнять - на нее вычисления завязаны"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="5">
             <Button Name="AddLine" Margin="5" Width="150" HorizontalAlignment="Left" Content="Добавить строку" />

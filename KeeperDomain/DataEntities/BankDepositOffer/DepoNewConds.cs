@@ -17,7 +17,7 @@ namespace KeeperDomain
         public int DepositOfferId { get; set; } 
         public DateTime DateFrom { get; set; }
 
-
+        public string RateFormula { get; set; }
         public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
         public bool EveryStartDay { get; set; }
         public bool EveryFirstDayOfMonth { get; set; } 
@@ -32,7 +32,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + DepositOfferId + " ; " + $"{DateFrom:dd/MM/yyyy}"  + " ; " + 
+            return Id + " ; " + DepositOfferId + " ; " + $"{DateFrom:dd/MM/yyyy}"  + " ; " + RateFormula  + " ; " + 
                    IsFactDays + " ; " + EveryStartDay + " ; " + EveryFirstDayOfMonth + " ; " + 
                    EveryLastDayOfMonth + " ; " + IsCapitalized + " ; " + 
                    HasAdditionalProcent + " ; " + AdditionalProcent.ToString(new CultureInfo("en-US")) + " ; " + 

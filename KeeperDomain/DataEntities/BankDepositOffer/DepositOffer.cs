@@ -10,7 +10,6 @@ namespace KeeperDomain
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
         public RateType RateType { get; set; }
-        public string RateFormula { get; set; }
         public bool IsAddLimited { get; set; }
         public int AddLimitInDays { get; set; }
         public CurrencyCode MainCurrency { get; set; }
@@ -22,7 +21,7 @@ namespace KeeperDomain
         public string Dump()
         {
             return Id + " ; " + BankId + " ; " + Title + " ; " + IsNotRevocable + " ; " + 
-                   RateType + " ; " + RateFormula + " ; " + IsAddLimited + " ; " + AddLimitInDays + " ; " + 
+                   RateType + " ; " + IsAddLimited + " ; " + AddLimitInDays + " ; " + 
                    MainCurrency + " ; " + (DepositTerm?.Dump() ?? new Duration().Dump()) + " ; " + Comment;
         }
     }

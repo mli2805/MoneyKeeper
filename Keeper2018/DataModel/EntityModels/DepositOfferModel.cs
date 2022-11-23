@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -10,7 +9,6 @@ namespace Keeper2018
     {
         private RateType _rateType;
         private bool _isAddLimited;
-        private string _rateFormula;
         public int Id { get; set; }
         public AccountModel Bank { get; set; }
         public string Title { get; set; }
@@ -24,21 +22,6 @@ namespace Keeper2018
             {
                 if (value == _rateType) return;
                 _rateType = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(nameof(RateFormulaVisibility));
-            }
-        }
-
-        public Visibility RateFormulaVisibility =>
-            RateType == RateType.Linked ? Visibility.Visible : Visibility.Collapsed;
-
-        public string RateFormula
-        {
-            get => _rateFormula;
-            set
-            {
-                if (value == _rateFormula) return;
-                _rateFormula = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -87,7 +70,6 @@ namespace Keeper2018
                 Title = Title,
                 IsNotRevocable = IsNotRevocable,
                 RateType = RateType,
-                RateFormula = RateFormula,
                 IsAddLimited = IsAddLimited,
                 AddLimitInDays = AddLimitInDays,
                 MainCurrency = MainCurrency,

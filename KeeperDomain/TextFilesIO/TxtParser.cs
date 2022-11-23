@@ -233,12 +233,11 @@ namespace KeeperDomain
                 Title = substrings[2].Trim(),
                 IsNotRevocable = bool.Parse(substrings[3].Trim()),
                 RateType = (RateType)Enum.Parse(typeof(RateType), substrings[4]),
-                RateFormula = substrings[5].Trim(),
-                IsAddLimited = bool.Parse(substrings[6].Trim()),
-                AddLimitInDays = int.Parse(substrings[7]),
-                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[8]),
-                DepositTerm = DurationFromStrings(substrings[9], substrings[10], substrings[11]),
-                Comment = substrings[12].Trim()
+                IsAddLimited = bool.Parse(substrings[5].Trim()),
+                AddLimitInDays = int.Parse(substrings[6]),
+                MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]),
+                DepositTerm = DurationFromStrings(substrings[8], substrings[9], substrings[10]),
+                Comment = substrings[11].Trim()
             };
         }
 
@@ -256,15 +255,16 @@ namespace KeeperDomain
                 DepositOfferId = int.Parse(substrings[1]),
                 DateFrom = DateTime.ParseExact(substrings[2].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture),
 
-                IsFactDays = bool.Parse(substrings[3]),
-                EveryStartDay = bool.Parse(substrings[4]),
-                EveryFirstDayOfMonth = bool.Parse(substrings[5]),
-                EveryLastDayOfMonth = bool.Parse(substrings[6]),
-                IsCapitalized = bool.Parse(substrings[7]),
-                HasAdditionalProcent = bool.Parse(substrings[8]),
-                AdditionalProcent = double.Parse(substrings[9]),
+                RateFormula = substrings[3].Trim(),
+                IsFactDays = bool.Parse(substrings[4]),
+                EveryStartDay = bool.Parse(substrings[5]),
+                EveryFirstDayOfMonth = bool.Parse(substrings[6]),
+                EveryLastDayOfMonth = bool.Parse(substrings[7]),
+                IsCapitalized = bool.Parse(substrings[8]),
+                HasAdditionalProcent = bool.Parse(substrings[9]),
+                AdditionalProcent = double.Parse(substrings[10]),
 
-                Comment = substrings[10].Trim()
+                Comment = substrings[11].Trim()
             };
 
             return result;

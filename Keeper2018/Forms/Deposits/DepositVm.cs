@@ -13,8 +13,13 @@ namespace Keeper2018
 
         public CurrencyCode MainCurrency { get; set; }
 
-        public string RateTypeStr { get; set; }
+        public RateType RateType { get; set; }
         public string RateFormula { get; set; }
+
+        public string RateTypeStr =>
+            RateType == RateType.Fixed ? "фикс" : RateType == RateType.Floating ? "плав" : RateFormula;
+
+        public decimal Rate { get; set; }
         public string AdditionsStr { get; set; }
         public bool IsAddOpen { get; set; }
 

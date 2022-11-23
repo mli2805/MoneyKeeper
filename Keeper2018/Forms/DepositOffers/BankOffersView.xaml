@@ -26,7 +26,6 @@
                 <GridViewColumn Header="Срок" DisplayMemberBinding="{Binding DepositTerm}" Width="80" />
                 <GridViewColumn Header="Отзывной" DisplayMemberBinding="{Binding NotRevocableStr}" Width="80" />
                 <GridViewColumn Header="Ставка" DisplayMemberBinding="{Binding RateType}" Width="80" />
-                <GridViewColumn Header="Формула" DisplayMemberBinding="{Binding RateFormula}" Width="80" />
                 <GridViewColumn Header="Доп взносы" DisplayMemberBinding="{Binding AddLimitStr}" Width="120" />
                 <GridViewColumn Header="Валюта" DisplayMemberBinding="{Binding MainCurrency}" Width="50" />
                 <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="300" />

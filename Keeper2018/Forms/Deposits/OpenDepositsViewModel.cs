@@ -56,13 +56,16 @@ namespace Keeper2018
             var calc = new TrafficOfAccountCalculator(_keeperDataModel, accountModel,
                 new Period(accountModel.Deposit.StartDate, DateTime.Today));
             var isAddOpen = IsAddOpen(accountModel.Deposit, depoOffer, out var addLimitStr);
+            var rate = depoOffer.GetCurrentRate(accountModel.Deposit.StartDate, out string formula);
             return new DepositVm()
             {
                 Id = accountModel.Id,
                 BankName = depoOffer.Bank.Name,
                 MainCurrency = depoOffer.MainCurrency,
                 DepoName = accountModel.Name,
-                RateTypeStr = depoOffer.RateType.ToString(),
+                RateType = depoOffer.RateType,
+                Rate = rate,
+                RateFormula = formula,
                 AdditionsStr = addLimitStr,
                 IsAddOpen = isAddOpen,
                 StartDate = accountModel.Deposit.StartDate,
@@ -104,5 +107,21 @@ namespace Keeper2018
             return false;
         }
 
+    }
+
+    public static class DepositOfferModelExt
+    {
+        public static decimal GetCurrentRate(this DepositOfferModel depositOfferModel, DateTime openingDate, out string rateFormula)
+        {
+            var key = depositOfferModel.CondsMap.Keys.First();
+            foreach (var condsMapKey in depositOfferModel.CondsMap.Keys.TakeWhile(condsMapKey => condsMapKey <= openingDate))
+            {
+                key = condsMapKey;
+            }
+            var conditions = depositOfferModel.CondsMap[key];
+
+            rateFormula = depositOfferModel.RateType != RateType.Linked ? "" : conditions.RateFormula;
+            return conditions.RateLines.Last().Rate;
+        }
     }
 }

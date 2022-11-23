@@ -24,8 +24,6 @@
             <ComboBox Margin="5" ItemsSource="{Binding RateTypes}" 
                       SelectedItem="{Binding ModelInWork.RateType}" Width="160"/>
         </StackPanel>
-        <TextBox Margin="190,0,5,5" Text="{Binding ModelInWork.RateFormula}" 
-                 Visibility="{Binding ModelInWork.RateFormulaVisibility}" Width="160"/>
         <GroupBox Margin=" 5">
             <GroupBox.Header>
                 <CheckBox Margin="5,0,0,0" IsChecked="{Binding ModelInWork.IsAddLimited}" 

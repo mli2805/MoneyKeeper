@@ -27,7 +27,6 @@ namespace Keeper2018
                 Title = depositOffer.Title,
                 IsNotRevocable = depositOffer.IsNotRevocable,
                 RateType = depositOffer.RateType,
-                RateFormula = depositOffer.RateFormula,
                 IsAddLimited = depositOffer.IsAddLimited,
                 AddLimitInDays = depositOffer.AddLimitInDays,
                 MainCurrency = depositOffer.MainCurrency,
@@ -49,6 +48,7 @@ namespace Keeper2018
                 DepositOfferId = depoConds.DepositOfferId,
                 DateFrom = depoConds.DateFrom,
             
+                RateFormula = depoConds.RateFormula,
                 IsFactDays = depoConds.IsFactDays,
                 EveryStartDay = depoConds.EveryStartDay,
                 EveryFirstDayOfMonth = depoConds.EveryFirstDayOfMonth,

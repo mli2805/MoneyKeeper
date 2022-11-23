@@ -8,12 +8,15 @@
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" d:DataContext="{d:DesignInstance keeper2018:OpenDepositsViewModel}">
 
     <DockPanel>
-        <DockPanel DockPanel.Dock="Bottom" Margin="5">
-            <ListBox DockPanel.Dock="Right" Width="166" ItemsSource="{Binding Footer}" BorderThickness="0"/>
-            <ListBox DockPanel.Dock="Bottom"  ItemsSource="{Binding Footer2}" BorderThickness="0" FontWeight="Bold"/>
+        <DockPanel DockPanel.Dock="Bottom" Margin="5" Background="Azure">
+            <ListBox DockPanel.Dock="Right" Width="166" ItemsSource="{Binding Footer}" 
+                     BorderThickness="0" Background="Transparent"/>
+            <ListBox DockPanel.Dock="Bottom"  ItemsSource="{Binding Footer2}" 
+                     BorderThickness="0" FontWeight="Bold" Background="Transparent"/>
             <StackPanel></StackPanel>
         </DockPanel>
-        <DataGrid ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+        <DataGrid Margin="0,5,5,5" ItemsSource="{Binding Rows}" 
+                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
@@ -38,7 +41,8 @@
                 <DataGridTextColumn Header="Банк" Width="60" Binding="{Binding BankName}" />
                 <DataGridTextColumn Header="  Депозит" Width="450" Binding="{Binding DepoName}" />
                 <DataGridTextColumn Header="Валюта" Width="50" Binding="{Binding MainCurrency}" />
-                <DataGridTextColumn Header="  Тип ставки" Width="80" Binding="{Binding RateTypeStr}" />
+                <DataGridTextColumn Header="  Тип ставки" Width="100" Binding="{Binding RateTypeStr}" />
+                <DataGridTextColumn Header="Ставка" Width="50" Binding="{Binding Rate}" />
                 <DataGridTextColumn Header="  Допы" Width="140" Binding="{Binding AdditionsStr}" />
                 <DataGridTextColumn Header=" c" Width="80" Binding="{Binding StartDate, StringFormat='dd\/MM\/yyyy'}" />
                 <DataGridTextColumn Header=" по" Width="100"
