@@ -9,8 +9,8 @@
     <DockPanel>
         <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False" IsReadOnly="True" DockPanel.Dock="Top">
             <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="Моя" Width="40" Binding="{Binding IsMine, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Название" Width="200" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header=" " Width="20" Binding="{Binding CardOwner}"/>
                 <DataGridTextColumn Header="Номер" Width="160" Binding="{Binding CardNumber}"/>
                 <DataGridTextColumn Header="Банк" Width="75" Binding="{Binding BankAccount.Header}"/>
                 <DataGridTextColumn Header="Остаток" Width="75" Binding="{Binding Amount}"/>
@@ -18,9 +18,14 @@
                 <DataGridTextColumn Header="Старт" Width="75" Binding="{Binding StartDate, StringFormat='dd/MM/yy'}"/>
                 <DataGridTextColumn Header="Финиш" Width="75" Binding="{Binding FinishDate, StringFormat='dd/MM/yy'}"/>
                 <DataGridTextColumn Header="Платежная система" Width="135" Binding="{Binding PaymentSystem}"/>
+                <DataGridCheckBoxColumn Header="Вирт" Width="40" Binding="{Binding IsVirtual, Mode=OneWay}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBlock Height="22" Margin="5" Text="{Binding Total}"/>
+        <StackPanel>
+            <TextBlock Height="22" Margin="5,5,5, 0" Text="{Binding Total}" />
+            <TextBlock Height="22" Margin="5,-5,5, 0" Text="{Binding TotalMine}" />
+            <TextBlock Height="22" Margin="5,-5,5, 5" Text="{Binding TotalVirtual}" />
+        </StackPanel>
         <Button Content="Close" Width="120" Height="22" Margin="5,10,22,10" HorizontalAlignment="Right" IsCancel="True" IsDefault="True"/>
     </DockPanel>
 </Window>

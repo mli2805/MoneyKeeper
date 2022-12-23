@@ -192,9 +192,10 @@ namespace KeeperDomain
             card.DepositId = int.Parse(substrings[1]);
             card.CardNumber = substrings[2].Trim();
             card.CardHolder = substrings[3].Trim();
-            card.CardOwner = int.Parse(substrings[4]);
+            card.IsMine = Convert.ToBoolean(substrings[4]);
             card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[5]);
-            card.IsPayPass = Convert.ToBoolean(substrings[6]);
+            card.IsVirtual = Convert.ToBoolean(substrings[6]);
+            card.IsPayPass = Convert.ToBoolean(substrings[7]);
             return card;
         }
 

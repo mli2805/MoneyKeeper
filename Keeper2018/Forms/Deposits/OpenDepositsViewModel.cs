@@ -54,7 +54,7 @@ namespace Keeper2018
             var depoOffer = _keeperDataModel.DepositOffers
                 .First(o => o.Id == accountModel.Deposit.DepositOfferId);
             var calc = new TrafficOfAccountCalculator(_keeperDataModel, accountModel,
-                new Period(accountModel.Deposit.StartDate, DateTime.Today));
+                new Period(accountModel.Deposit.StartDate, DateTime.Now));
             var isAddOpen = IsAddOpen(accountModel.Deposit, depoOffer, out var addLimitStr);
             var rate = depoOffer.GetCurrentRate(accountModel.Deposit.StartDate, out string formula);
             return new DepositVm()
@@ -98,7 +98,7 @@ namespace Keeper2018
             var addLimit = deposit.StartDate.AddDays(depositOffer.AddLimitInDays);
             if (addLimit > DateTime.Today)  // срок еще не вышел
             {
-                addLimitString = $"отрыты до {addLimit:dd/MM/yyyy}";
+                addLimitString = $"открыты до {addLimit:dd/MM/yyyy}";
                 return true;
             }
 

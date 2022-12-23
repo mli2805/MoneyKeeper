@@ -11,15 +11,17 @@ namespace KeeperDomain
         public string CardNumber { get; set; }
         public string CardHolder { get; set; }
 
-        public int CardOwner { get; set; } // 0 - mine, 1 - julia
+      //  public int CardOwner { get; set; }
+        public bool IsMine { get; set; } // 0 - mine, 1 - julia
 
         public PaymentSystem PaymentSystem { get; set; }
-        public bool IsPayPass { get; set; }
+        public bool IsVirtual { get; set; }
+        public bool IsPayPass { get; set; } // if not virtual
 
         public string Dump()
         {
-            return  Id + " ; " + DepositId + " ; " + CardNumber + " ; " + CardHolder + " ; " + CardOwner + " ; " + 
-                    PaymentSystem + " ; " + IsPayPass;
+            return  Id + " ; " + DepositId + " ; " + CardNumber + " ; " + CardHolder + " ; " + IsMine + " ; " + 
+                    PaymentSystem + " ; " + IsVirtual + " ; " + IsPayPass;
         }
 
     }

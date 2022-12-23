@@ -27,7 +27,9 @@ namespace Keeper2018
             {
                 CardInWork.CardNumber = _accountModel.Deposit.Card.CardNumber;
                 CardInWork.CardHolder = _accountModel.Deposit.Card.CardHolder;
+                CardInWork.IsMine = _accountModel.Deposit.Card.IsMine;
                 CardInWork.PaymentSystem = _accountModel.Deposit.Card.PaymentSystem;
+                CardInWork.IsVirtual = _accountModel.Deposit.Card.IsVirtual;
                 CardInWork.IsPayPass = _accountModel.Deposit.Card.IsPayPass;
             }
         }

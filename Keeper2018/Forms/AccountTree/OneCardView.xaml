@@ -14,7 +14,10 @@
             <TextBlock Margin="5" Width="70" Text="Card holder"/>
             <TextBox  Margin="5" Width="240" Text="{Binding CardInWork.CardHolder}" />
         </StackPanel>
+        <CheckBox Margin="90, -5 ,10, 10" Content="Моя" IsChecked="{Binding CardInWork.IsMine}"/>
+
         <ComboBox Margin="10,5" ItemsSource="{Binding PaymentSystems}" SelectedItem="{Binding CardInWork.PaymentSystem}"/>
+        <CheckBox Margin="10,5" Content="Виртуальная" IsChecked="{Binding CardInWork.IsVirtual}"/>
         <CheckBox Margin="10,5" Content="Бесконтактная" IsChecked="{Binding CardInWork.IsPayPass}"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5,10">

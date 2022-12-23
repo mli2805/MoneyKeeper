@@ -15,5 +15,8 @@ namespace KeeperDomain
         MasterCard_Platinum, 
         
         Белкарт,
+        Мир,
+        UnionPay
+
     }
 }

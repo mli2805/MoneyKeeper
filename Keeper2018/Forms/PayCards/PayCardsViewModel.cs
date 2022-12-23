@@ -12,6 +12,8 @@ namespace Keeper2018.PayCards
 
         public List<PayCardVm> Rows { get; set; } = new List<PayCardVm>();
         public string Total { get; set; }
+        public string TotalMine { get; set; }
+        public string TotalVirtual { get; set; }
 
         public PayCardsViewModel(KeeperDataModel dataModel)
         {
@@ -27,7 +29,9 @@ namespace Keeper2018.PayCards
                 .OrderBy(d=>d.Deposit.FinishDate)
                 .Select(GetVm));
 
-            Total = $"Всего {Rows.Count} ({Rows.Count(r => r.CardOwner == 0)} + {Rows.Count(r => r.CardOwner == 1)})";
+            Total = $"Всего {Rows.Count}";
+            TotalMine = $"мои {Rows.Count(r => r.IsMine)} / не мои {Rows.Count(r => !r.IsMine)}";
+            TotalVirtual = $"пластик {Rows.Count(r => !r.IsVirtual)} / виртуалки {Rows.Count(r => r.IsVirtual)}";
         }
 
         private PayCardVm GetVm(AccountModel account)
@@ -40,8 +44,9 @@ namespace Keeper2018.PayCards
             {
                 CardNumber = account.Deposit.Card.CardNumber,
                 CardHolder = account.Deposit.Card.CardHolder,
-                CardOwner = account.Deposit.Card.CardOwner,
+                IsMine = account.Deposit.Card.IsMine,
                 PaymentSystem = account.Deposit.Card.PaymentSystem,
+                IsVirtual = account.Deposit.Card.IsVirtual,
                 IsPayPass = account.Deposit.Card.IsPayPass,
 
                 AgreementNumber = account.Deposit.Serial,
