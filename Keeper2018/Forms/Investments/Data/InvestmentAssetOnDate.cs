@@ -9,9 +9,9 @@ namespace Keeper2018
         public CurrencyCode InvestmentCurrency { get; set; }
         public int Quantity { get; set; }
         public decimal PriceOfOne => Quantity != 0 ? Price / Quantity : 0;
-        public decimal Price { get; set; } // добавляем сумму при покупку
+        public decimal Price { get; set; } // добавляем сумму при покупке
         public decimal PaidCoupon { get; set; } // купон заплачен при покупке
-        public string PriceStr => PaidCoupon > 0 
+        public string PriceStr => PaidCoupon > 0
             ? $"{Price:N} + {PaidCoupon:N} = {Price + PaidCoupon:N}"
             : $"{Price:N}";
         public decimal SoldPrice { get; set; } // добавляем сумму при продаже
@@ -21,7 +21,7 @@ namespace Keeper2018
             ? $"{SoldPrice:N} + {SoldCoupon:N} = {SoldPrice + SoldCoupon:N}"
             : $"{SoldPrice:N}";
 
-      
+
         public decimal ReceivedCoupon { get; set; } // купон зачисленный отдельно
 
 
@@ -47,7 +47,7 @@ namespace Keeper2018
             $"({BuySellFee} {BuySellFeeCurrency.ToString().ToLower()})";
 
         public decimal FinResult { get; set; }
-        public string FinResultStr => $"{FinResult:N}  ({FinResult / Price * 100:N}%)";
+        public string FinResultStr => Price != 0 ? $"{FinResult:N}  ({FinResult / Price * 100:N}%)" : "00000";
 
         public InvestmentAssetOnDate()
         {
