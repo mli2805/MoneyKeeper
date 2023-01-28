@@ -5,16 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" d:DataContext="{d:DesignInstance keeper2018:OpenDepositsViewModel}">
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" 
+        d:DataContext="{d:DesignInstance keeper2018:OpenDepositsViewModel}">
 
     <DockPanel>
-        <DockPanel DockPanel.Dock="Bottom" Margin="5" Background="Azure">
-            <ListBox DockPanel.Dock="Right" Width="166" ItemsSource="{Binding Footer}" 
-                     BorderThickness="0" Background="Transparent"/>
-            <ListBox DockPanel.Dock="Bottom"  ItemsSource="{Binding Footer2}" 
-                     BorderThickness="0" FontWeight="Bold" Background="Transparent"/>
-            <StackPanel></StackPanel>
-        </DockPanel>
+
+        <DataGrid DockPanel.Dock="Bottom" Margin="5" ItemsSource="{Binding Totals}"
+                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type TextBlock}" x:Key="CellRightAlign">
+                    <Setter Property="HorizontalAlignment" Value="Right" />
+                    <Setter Property="Margin" Value="0,0,5,0" />
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="{Binding Fs}" />
+                </Style>
+            </DataGrid.ItemContainerStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="" Width="70" />
+                <DataGridTextColumn Header="" Width="60" Binding="{Binding Depo.PiecesStr}" 
+                                    ElementStyle="{StaticResource CellRightAlign}" />
+
+                <DataGridTextColumn Header="Депо" Width="100" Binding="{Binding Depo.SumStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+                <DataGridTextColumn Header="" Width="100" Binding="{Binding Depo.SumUsdStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+                <DataGridTextColumn Header="" Width="60" Binding="{Binding Depo.PercentStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+
+                <DataGridTextColumn Header="" Width="104" />
+                <DataGridTextColumn Header="Депо и шкаф" Width="100" Binding="{Binding DepoAndMatras.SumStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+                <DataGridTextColumn Header="" Width="100" Binding="{Binding DepoAndMatras.SumUsdStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+                <DataGridTextColumn Header="" Width="60"  Binding="{Binding DepoAndMatras.PercentStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+
+
+                <DataGridTextColumn Header="" Width="130" />
+                <DataGridTextColumn Header="Все" Width="100" Binding="{Binding AllMine.SumStr}"   
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+                <DataGridTextColumn Header="" Width="100" Binding="{Binding AllMine.SumUsdStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+                <DataGridTextColumn Header="" Width="60"  Binding="{Binding AllMine.PercentStr}"  
+                                    ElementStyle="{StaticResource CellRightAlign}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
         <DataGrid Margin="0,5,5,5" ItemsSource="{Binding Rows}" 
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <DataGrid.CellStyle>
@@ -27,7 +66,8 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </DataGrid.CellStyle> <DataGrid.ItemContainerStyle>
+            </DataGrid.CellStyle>
+            <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="{Binding BackgroundBrush}" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
@@ -37,7 +77,8 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </DataGrid.ItemContainerStyle> <DataGrid.Columns>
+            </DataGrid.ItemContainerStyle>
+            <DataGrid.Columns>
                 <DataGridTextColumn Header="Банк" Width="60" Binding="{Binding BankName}" />
                 <DataGridTextColumn Header="  Депозит" Width="450" Binding="{Binding DepoName}" />
                 <DataGridTextColumn Header="Валюта" Width="50" Binding="{Binding MainCurrency}" />

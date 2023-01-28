@@ -40,7 +40,8 @@
                 </DataTemplate>
                 <DataTemplate x:Key="UsdAnnualTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding UsdAnnualStr}" Width="110" Foreground="{Binding UsdAnnualBrush}" FontSize="12"/>
+                        <TextBlock Text="{Binding UsdAnnualStr}" Width="110" 
+                                   Foreground="{Binding UsdAnnualBrush}" FontSize="12"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>

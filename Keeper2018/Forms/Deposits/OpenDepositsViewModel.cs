@@ -11,8 +11,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
         public List<DepositVm> Rows { get; private set; }
 
-        public List<string> Footer { get; private set; }
-        public List<string> Footer2 { get; private set; }
+        public List<DepoTotalVm> Totals { get; private set; }
 
         public OpenDepositsViewModel(KeeperDataModel keeperDataModel)
         {
@@ -31,23 +30,110 @@ namespace Keeper2018
                 .OrderBy(d => d.Deposit.FinishDate)
                 .Select(Convert).ToList();
 
-            Footer = new List<string>();
+            EvaluateDepoTotals();
+            EvaluateDepoAndMatras();
+            EvaluateAllMine();
+            foreach (var l in Totals.Where(t => t.AllMine.SumUsd == 0).ToList())
+                Totals.Remove(l);
+        }
+
+        private void EvaluateDepoAndMatras()
+        {
+            var matras = _keeperDataModel.AcMoDict[167]; // шкаф
+            var calc = new TrafficOfBranchCalculator(_keeperDataModel, matras,
+                new Period() { FinishMoment = DateTime.Now });
+            var balance = calc.Evaluate();
+
+            decimal total = 0;
+            foreach (var pair in balance.Currencies)
+            {
+                var line = Totals.First(l => l.Currency == pair.Key && !l.IsAggregateLine);
+                line.DepoAndMatras.Currency = pair.Key;
+                var sum = line.Depo.Sum + pair.Value;
+                line.DepoAndMatras.Sum = sum;
+                var inUsd = line.Currency == CurrencyCode.USD ? sum : _keeperDataModel.AmountInUsd(DateTime.Now, pair.Key, sum);
+                total += inUsd;
+                line.DepoAndMatras.SumUsd = inUsd;
+            }
+
+            var notInMatras = Totals.Where(t => t.DepoAndMatras.SumUsd == 0 && !t.IsAggregateLine).ToList();
+            foreach (var line in notInMatras)
+            {
+                line.DepoAndMatras = line.Depo.Clone();
+                total += line.Depo.SumUsd;
+            }
+
+            var full = Totals.First(l => l.IsAggregateLine);
+            full.DepoAndMatras.SumUsd = total;
+            full.DepoAndMatras.Currency = CurrencyCode.USD;
+
+            foreach (var line in Totals.Where(t=>t.DepoAndMatras.Sum > 0))
+                line.DepoAndMatras.Percent = line.DepoAndMatras.SumUsd / total;
+        }
+
+        private void EvaluateAllMine()
+        {
+            var allMine = _keeperDataModel.AcMoDict[158]; // мои
+            var calc = new TrafficOfBranchCalculator(_keeperDataModel, allMine,
+                new Period() { FinishMoment = DateTime.Now });
+            var balance = calc.Evaluate();
+
+            decimal total = 0;
+            foreach (var pair in balance.Currencies)
+            {
+                var line = Totals.First(l => !l.IsAggregateLine && l.Currency == pair.Key);
+                line.AllMine.Currency = pair.Key;
+                line.AllMine.Sum = pair.Value;
+                var inUsd = _keeperDataModel.AmountInUsd(DateTime.Now, pair.Key, pair.Value);
+                total += inUsd;
+                line.AllMine.SumUsd = inUsd;
+            }
+
+            var full = Totals.First(l => l.IsAggregateLine);
+            full.AllMine.SumUsd = total;
+            full.AllMine.Currency = CurrencyCode.USD;
+
+            foreach (var line in Totals.Where(t=>t.AllMine.Sum > 0))
+                line.AllMine.Percent = line.AllMine.SumUsd / total;
+        }
+
+        private void EvaluateDepoTotals()
+        {
+            Totals = new List<DepoTotalVm>();
+
             int totalCount = 0;
             decimal total = 0;
             foreach (var currency in Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>())
             {
+                var line = new DepoTotalVm() { Currency = currency };
+
                 var dcs = Rows.Where(r => r.MainCurrency == currency).ToList();
                 var sum = dcs.Sum(d => d.Balance.Currencies[currency]);
                 if (sum > 0)
                 {
                     totalCount += dcs.Count;
-                    total += _keeperDataModel.AmountInUsd(DateTime.Now, currency, sum);
-                    Footer.Add($"{dcs.Count} депо;  {sum:N} {currency.ToString().ToLower()}");
-                }
-            }
+                    var amountInUsd = _keeperDataModel.AmountInUsd(DateTime.Now, currency, sum);
+                    total += amountInUsd;
 
-            Footer2 = new List<string> { $"Всего {totalCount} депо;   {total:N} usd" };
+                    line.Depo.Pieces = dcs.Count;
+                    line.Depo.Sum = sum;
+                    line.Depo.SumUsd = amountInUsd;
+                    line.Depo.Currency = currency;
+                }
+
+                Totals.Add(line);
+            }
+            var full = new DepoTotalVm() { Currency = CurrencyCode.USD, IsAggregateLine = true };
+            full.Depo.Pieces = totalCount;
+            full.Depo.SumUsd = total;
+            full.Depo.Currency = CurrencyCode.USD;
+
+            foreach (var line in Totals.Where(l => l.Depo.Sum > 0))
+                line.Depo.Percent = line.Depo.SumUsd / full.Depo.SumUsd;
+
+            Totals.Add(full);
         }
+
 
         private DepositVm Convert(AccountModel accountModel)
         {
@@ -107,21 +193,5 @@ namespace Keeper2018
             return false;
         }
 
-    }
-
-    public static class DepositOfferModelExt
-    {
-        public static decimal GetCurrentRate(this DepositOfferModel depositOfferModel, DateTime openingDate, out string rateFormula)
-        {
-            var key = depositOfferModel.CondsMap.Keys.First();
-            foreach (var condsMapKey in depositOfferModel.CondsMap.Keys.TakeWhile(condsMapKey => condsMapKey <= openingDate))
-            {
-                key = condsMapKey;
-            }
-            var conditions = depositOfferModel.CondsMap[key];
-
-            rateFormula = depositOfferModel.RateType != RateType.Linked ? "" : conditions.RateFormula;
-            return conditions.RateLines.Last().Rate;
-        }
     }
 }
