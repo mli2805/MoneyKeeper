@@ -9,6 +9,8 @@ namespace Keeper2018
         public static ListOfLines GetRatesDifference(this KeeperDataModel dataModel, DateTime startDate, DateTime finishMoment)
         {
             var result = new ListOfLines();
+            var rateLine = dataModel.GetRatesLine(startDate);
+            var rateLineFinish = dataModel.GetRatesLine(finishMoment);
             var exchangeRatesLine = dataModel.GetExchangeRatesLine(startDate);
             double belkaStart = exchangeRatesLine.BynToUsd;
 
@@ -24,8 +26,8 @@ namespace Keeper2018
             var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}  ({belkaPercent:0.0}%)";
             result.Add(belka, belkaBrush);
 
-            var euroStart = exchangeRatesLine.EurToUsd;
-            var euroFinish = exchangeRatesLineFinish.EurToUsd;
+            var euroStart = rateLine.NbRates.EuroUsdCross;
+            var euroFinish = rateLineFinish.NbRates.EuroUsdCross;
             double euroPercent = (euroFinish - euroStart) / euroFinish * 100;
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
