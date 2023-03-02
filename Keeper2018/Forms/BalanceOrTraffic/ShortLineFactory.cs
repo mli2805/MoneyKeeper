@@ -1,4 +1,6 @@
-﻿namespace Keeper2018
+﻿using System.Linq;
+
+namespace Keeper2018
 {
     public static class ShortLineFactory
     {
@@ -6,8 +8,10 @@
         {
             var amount = isInReturn ? tran.AmountInReturn : tran.Amount;
             var currency = isInReturn ? tran.CurrencyInReturn : tran.Currency;
-            var shortLine = $"{tran.Timestamp.Date.ToShortDateString()}  {dataModel.AmountInUsdString(tran.Timestamp, currency, amount * sign)}";
-            return $"  {shortLine}   {tran.Comment}";
+            var shortLine = $@"{tran.Timestamp.Date.ToShortDateString()}  {
+                dataModel.AmountInUsdString(tran.Timestamp, currency, amount * sign)}";
+            var pp = tran.Tags.Any(t=>t.Id == 208) ? "%%" : "";
+            return $"  {shortLine}   {pp} {tran.Comment}";
         }
 
         public static string ShortLine(this KeeperDataModel dataModel, TransactionModel tran, bool isInReturn, int sign, out decimal inUsd)

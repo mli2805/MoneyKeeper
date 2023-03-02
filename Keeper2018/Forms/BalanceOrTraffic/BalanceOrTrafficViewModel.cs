@@ -89,7 +89,7 @@ namespace Keeper2018
 
         private void ShellPartsBinder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (ShellPartsBinder.SelectedAccountModel == null) return;
+            if (ShellPartsBinder.SelectedAccountModel == null || e.PropertyName != "SelectedAccountModel") return;
             Lines.Clear();
             AccountName = ShellPartsBinder.SelectedAccountModel.Name;
             var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));

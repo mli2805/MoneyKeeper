@@ -31,7 +31,7 @@ namespace Keeper2018
         public BorderedListViewModel ForecastViewModel { get; set; } = new BorderedListViewModel();
         public decimal IncomeForecast;
         public decimal ExpenseForecast;
-        public List<string> IncomeForecastList = new List<string>();
+        public readonly List<string> IncomeForecastList = new List<string>();
 
         public void FillResultList(bool isCurrentPeriod)
         {

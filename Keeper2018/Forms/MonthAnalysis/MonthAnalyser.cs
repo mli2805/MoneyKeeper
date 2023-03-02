@@ -137,7 +137,7 @@ namespace Keeper2018
             var salaryAccountId = 204;
             if (realIncomes.FirstOrDefault(t => t.Tags.Select(tt=>tt.Id).Contains(salaryAccountId)) == null)
             {
-                var salaryInUsdValue = 1500;
+                var salaryInUsdValue = 2000;
                 _monthAnalysisModel.IncomeForecastList.Add($"зарплата {salaryInUsdValue} usd");
                 _monthAnalysisModel.IncomeForecast += salaryInUsdValue;
             }
