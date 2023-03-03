@@ -67,20 +67,12 @@ namespace Keeper2018
             _windowManager.ShowWindow(_fuelViewModel);
         }
 
-        public void ShowCarReportByTags()
-        {
-            ShowCarReport(true);
-        }
-
-        public void ShowCarReportUnited()
-        {
-            ShowCarReport(false);
-        }
-
-        private void ShowCarReport(bool isByTags)
+        public bool IsByTags { get; set; }
+        public bool IsBynInReport { get; set; }
+        public void ShowCarReport()
         {
             if (SelectedCar.Id < 3) return;
-            var document = _dataModel.CreateCarReport(SelectedCar.Id, isByTags);
+            var document = _dataModel.CreateCarReport(SelectedCar.Id, IsByTags, IsBynInReport);
 
             try
             {

@@ -7,6 +7,7 @@ namespace Keeper2018
         public DateTime Date;
         public string AmountInCurrency;
         public decimal AmountInUsd;
+        public int Mileage;
         public string Comment;
     }
 }

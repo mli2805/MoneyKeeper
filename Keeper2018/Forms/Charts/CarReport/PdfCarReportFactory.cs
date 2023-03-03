@@ -7,12 +7,14 @@ namespace Keeper2018
 {
     public static partial class PdfCarReportFactory
     {
-        public static PdfDocument CreateCarReport(this KeeperDataModel dataModel, int carId, bool isByTags)
+        public static PdfDocument CreateCarReport(this KeeperDataModel dataModel,
+            int carId, bool isByTags, bool isBynInReport)
         {
             var car = dataModel.Cars.First(c => c.Id == carId);
             var carReportData = dataModel.ExtractCarReportData(car, isByTags);
 
             Document doc = new Document();
+            doc.DefaultPageSetup.LeftMargin = Unit.FromCentimeter(1.0);
 
             Section firstPageSection = doc.AddSection();
             firstPageSection.PageSetup.TopMargin = 40;
@@ -28,7 +30,7 @@ namespace Keeper2018
             Section tablesSection = doc.AddSection();
             tablesSection.PageSetup.TopMargin = 20;
             tablesSection.PageSetup.BottomMargin = 10;
-            tablesSection.DrawTagTables(carReportData, isByTags);
+            tablesSection.DrawTagTables(carReportData, isByTags, isBynInReport);
 
             PdfDocumentRenderer pdfDocumentRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfDocumentRenderer.Document = doc;

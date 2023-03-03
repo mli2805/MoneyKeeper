@@ -114,21 +114,18 @@
             </DockPanel>
         </Border>
 
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical" Margin="5" HorizontalAlignment="Right">
-            <Button Content="Добавить авто" Width="170" Margin="0,5" Name="AddNewCar"/>
-            <Border BorderBrush="Gray" BorderThickness="1">
-                <StackPanel>
-                    <TextBlock Text="Авто отчет" TextAlignment="Center" Margin="5" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="По тэгам" Width="73" Margin="5" Name="ShowCarReportByTags" />
-                        <Button Content="Единый" Width="73" Margin="5" Name="ShowCarReportUnited" />
-                    </StackPanel>
-                </StackPanel></Border>
-            <Button Content="Закрыть" Width="170" Margin="0, 5" Name="Close"/>
+        <Button DockPanel.Dock="Bottom" Content="Закрыть" Width="120" Margin=" 5" Name="Close" HorizontalAlignment="Right"/>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical" Margin="5,5,5,50" HorizontalAlignment="Right">
+            <CheckBox IsChecked="{Binding IsByTags}" Margin="5" Width="120">
+                    <TextBlock Text="Ремонты по категориям" TextWrapping="Wrap"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding IsBynInReport}" Margin="5" Width="120">
+                    <TextBlock Text="Показывать суммы в рублях" TextWrapping="Wrap"/>
+            </CheckBox>
+            <Button Content="Авто отчет" Width="120" Margin="0,5" Name="ShowCarReport" />
         </StackPanel>
         <StackPanel Margin="5,20" HorizontalAlignment="Right">
             <Button Content="Заправка" Width="120" Margin="5" Name="Fuelling"/>
-
         </StackPanel>
     </DockPanel>
 </Window>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -78,7 +79,7 @@ namespace Keeper2018
                 rowsRepair.AddRange(dataModel.GetTableForOneTag(tagR2));
 
                 result.Tags.Add(
-                    new CarReportTable("Обслуживание и ремонт", "Expendables and repair",
+                    new CarReportTable("обслуживание и ремонт", "expendables and repair",
                     rowsRepair.OrderBy(r => r.Date).ToList()));
             }
 
@@ -99,6 +100,18 @@ namespace Keeper2018
                     AmountInCurrency = balanceForTag.ToString(),
                     Comment = transaction.Comment
                 };
+
+                if (Regex.IsMatch(transaction.Comment, @"\d{6} км, \w*"))
+                {
+                    var substring = transaction.Comment.Substring(0, 6);
+                    if (int.TryParse(substring, out int mileage))
+                    {
+                        row.Mileage = mileage;
+                        row.Comment = transaction.Comment.Substring(11);
+                    }
+                    
+                }
+
                 var moneyPair = balanceForTag.Currencies.First();
                 row.AmountInUsd = moneyPair.Key == CurrencyCode.USD
                     ? moneyPair.Value
