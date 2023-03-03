@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public class CarReportData
     {
-        public List<PdfReportTable> Tags = new List<PdfReportTable>();
+        public List<CarReportTable> Tags = new List<CarReportTable>();
         public DateTime StartDate;
         public DateTime FinishDate;
     }

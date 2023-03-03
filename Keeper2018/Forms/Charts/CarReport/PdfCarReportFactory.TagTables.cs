@@ -1,36 +1,29 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using KeeperDomain;
+﻿using System.Linq;
 using MigraDoc.DocumentObjectModel;
 
 namespace Keeper2018
 {
-    public static class PdfReporter
+    public static partial class PdfCarReportFactory
     {
-        public static List<PdfReportTableRow> GetTableForTag(this KeeperDataModel dataModel, AccountModel tag)
+        private static void DrawTagTables(this Section section, CarReportData carReportData, bool isByTags)
         {
-            var rows = new List<PdfReportTableRow>();
-            foreach (var transaction in dataModel.Transactions.Values.OrderBy(t=>t.Timestamp))
+            section.DrawOneTagTable(carReportData.Tags[0]);
+            section.DrawOneTagTable(carReportData.Tags[1]);
+            section.AddPageBreak();
+            if (isByTags)
             {
-                var balanceForTag = transaction.BalanceForTag(dataModel, tag.Id);
-                if (balanceForTag == null) continue;
-                var row = new PdfReportTableRow
-                {
-                    Date = transaction.Timestamp,
-                    AmountInCurrency = balanceForTag.ToString(),
-                    Comment = transaction.Comment
-                };
-                var moneyPair = balanceForTag.Currencies.First();
-                row.AmountInUsd = moneyPair.Key == CurrencyCode.USD
-                    ? moneyPair.Value
-                    : dataModel.AmountInUsd(transaction.Timestamp, moneyPair.Key, moneyPair.Value);
-
-                rows.Add(row);
+                section.DrawOneTagTable(carReportData.Tags[2]);
+                section.DrawOneTagTable(carReportData.Tags[3]);
+                section.AddPageBreak();
+                section.DrawOneTagTable(carReportData.Tags[4]);
             }
-            return rows;
+            else
+            {
+                section.DrawOneTagTable(carReportData.Tags[4]);
+            }
         }
 
-        public static void DrawTableFromTag(this Section section, PdfReportTable tag)
+        private static void DrawOneTagTable(this Section section, CarReportTable tag)
         {
             var caption = section.AddParagraph(tag.Russian);
             caption.Format.SpaceBefore = Unit.FromCentimeter(0.1);

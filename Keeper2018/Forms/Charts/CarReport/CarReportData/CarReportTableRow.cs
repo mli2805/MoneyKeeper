@@ -2,7 +2,7 @@
 
 namespace Keeper2018
 {
-    public class PdfReportTableRow
+    public class CarReportTableRow
     {
         public DateTime Date;
         public string AmountInCurrency;

@@ -34,7 +34,7 @@ namespace Keeper2018
         public Visibility IsLastCarVisibility => SelectedCar.Id == Cars.Last().Id
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public CarsViewModel(KeeperDataModel dataModel, IWindowManager windowManager, 
+        public CarsViewModel(KeeperDataModel dataModel, IWindowManager windowManager,
             FuelViewModel fuelViewModel, OwnershipCostViewModel ownershipCostViewModel)
         {
             _dataModel = dataModel;
@@ -66,12 +66,21 @@ namespace Keeper2018
             _fuelViewModel.Initialize();
             _windowManager.ShowWindow(_fuelViewModel);
         }
-     
-        public void ShowCarReport()
+
+        public void ShowCarReportByTags()
+        {
+            ShowCarReport(true);
+        }
+
+        public void ShowCarReportUnited()
+        {
+            ShowCarReport(false);
+        }
+
+        private void ShowCarReport(bool isByTags)
         {
             if (SelectedCar.Id < 3) return;
-            var provider = new CarReportProvider(_dataModel);
-            var document = provider.CreateCarReport(SelectedCar.Id);
+            var document = _dataModel.CreateCarReport(SelectedCar.Id, isByTags);
 
             try
             {
@@ -97,7 +106,7 @@ namespace Keeper2018
             Save();
             base.CanClose(callback);
         }
-        
+
         public void Close()
         {
             TryClose();

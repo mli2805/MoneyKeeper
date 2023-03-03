@@ -241,6 +241,9 @@
       <DependentUpon>OwnershipCostView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Cars\OwnershipCostViewModel.cs" />
+    <Compile Include="Forms\Charts\CarReport\CarReportData\CarReportDataProvider.cs" />
+    <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.ChartAndAggregate.cs" />
+    <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.Totals.cs" />
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesView.xaml.cs">
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>
@@ -410,11 +413,11 @@
       <DependentUpon>BalancesAndSaldosView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Charts\BalanceAndSaldo\BalancesAndSaldosViewModel.cs" />
-    <Compile Include="Forms\Charts\CarReport\CarReportData.cs" />
-    <Compile Include="Forms\Charts\CarReport\CarReportProvider.cs" />
-    <Compile Include="Forms\Charts\CarReport\BasePdfReport\PdfReportTable.cs" />
-    <Compile Include="Forms\Charts\CarReport\BasePdfReport\PdfReporter.cs" />
-    <Compile Include="Forms\Charts\CarReport\BasePdfReport\PdfReportTableRow.cs" />
+    <Compile Include="Forms\Charts\CarReport\CarReportData\CarReportData.cs" />
+    <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.cs" />
+    <Compile Include="Forms\Charts\CarReport\CarReportData\CarReportTable.cs" />
+    <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.TagTables.cs" />
+    <Compile Include="Forms\Charts\CarReport\CarReportData\CarReportTableRow.cs" />
     <Compile Include="Forms\Charts\DepositPlusCurrency\DepoCurrencyData.cs" />
     <Compile Include="Forms\Charts\DepositPlusCurrency\DepoCurrResultView.xaml.cs">
       <DependentUpon>DepoCurrResultView.xaml</DependentUpon>

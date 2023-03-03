@@ -2,13 +2,13 @@
 
 namespace Keeper2018
 {
-    public class PdfReportTable
+    public class CarReportTable
     {
         public string Russian;
         public string English;
-        public List<PdfReportTableRow> Table;
+        public List<CarReportTableRow> Table;
 
-        public PdfReportTable(string russian, string english, List<PdfReportTableRow> table)
+        public CarReportTable(string russian, string english, List<CarReportTableRow> table)
         {
             Russian = russian;
             English = english;
