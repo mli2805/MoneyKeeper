@@ -22,6 +22,10 @@ namespace KeeperDomain
         public bool EveryStartDay { get; set; }
         public bool EveryFirstDayOfMonth { get; set; } 
         public bool EveryLastDayOfMonth { get; set; }
+
+        public bool EveryNDays { get; set; }
+        public int NDays { get; set; }
+
         public bool IsCapitalized { get; set; }
 
         public bool HasAdditionalProcent { get; set; }
@@ -34,7 +38,8 @@ namespace KeeperDomain
         {
             return Id + " ; " + DepositOfferId + " ; " + $"{DateFrom:dd/MM/yyyy}"  + " ; " + RateFormula  + " ; " + 
                    IsFactDays + " ; " + EveryStartDay + " ; " + EveryFirstDayOfMonth + " ; " + 
-                   EveryLastDayOfMonth + " ; " + IsCapitalized + " ; " + 
+                   EveryLastDayOfMonth + " ; " + EveryNDays + " ; " + NDays + " ; " + 
+                   IsCapitalized + " ; " + 
                    HasAdditionalProcent + " ; " + AdditionalProcent.ToString(new CultureInfo("en-US")) + " ; " + 
                    Comment;
         }

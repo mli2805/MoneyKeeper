@@ -261,11 +261,15 @@ namespace KeeperDomain
                 EveryStartDay = bool.Parse(substrings[5]),
                 EveryFirstDayOfMonth = bool.Parse(substrings[6]),
                 EveryLastDayOfMonth = bool.Parse(substrings[7]),
-                IsCapitalized = bool.Parse(substrings[8]),
-                HasAdditionalProcent = bool.Parse(substrings[9]),
-                AdditionalProcent = double.Parse(substrings[10]),
 
-                Comment = substrings[11].Trim()
+                EveryNDays = bool.Parse(substrings[8]),
+                NDays = int.Parse(substrings[9]),
+
+                IsCapitalized = bool.Parse(substrings[10]),
+                HasAdditionalProcent = bool.Parse(substrings[11]),
+                AdditionalProcent = double.Parse(substrings[12]),
+
+                Comment = substrings[13].Trim()
             };
 
             return result;

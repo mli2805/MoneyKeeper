@@ -86,6 +86,8 @@ namespace Keeper2018
                 EveryStartDay = depoCondsModel.EveryStartDay,
                 EveryFirstDayOfMonth = depoCondsModel.EveryFirstDayOfMonth,
                 EveryLastDayOfMonth = depoCondsModel.EveryLastDayOfMonth,
+                EveryNDays = depoCondsModel.EveryNDays,
+                NDays = depoCondsModel.NDays,
                 IsCapitalized = depoCondsModel.IsCapitalized,
                 HasAdditionalProcent = depoCondsModel.HasAdditionalPercent,
                 AdditionalProcent = depoCondsModel.AdditionalPercent,

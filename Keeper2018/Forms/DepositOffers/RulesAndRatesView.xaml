@@ -33,8 +33,16 @@
               IsChecked="{Binding Conditions.EveryLastDayOfMonth, Mode=TwoWay}"/>
             <CheckBox Name="EveryStartDay" Content="каждое число открытия" Margin="5"
               IsChecked="{Binding Conditions.EveryStartDay, Mode=TwoWay}"/>
+            <CheckBox Name="EveryNDay" Margin="5"
+              IsChecked="{Binding Conditions.EveryNDays, Mode=TwoWay}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="каждые" Margin="0,0,5,0"/>
+                    <TextBox Text="{Binding Conditions.NDays}" Margin="5, 0" Width="30"/>
+                    <TextBlock Text="дней" Margin="5, 0,0,0"/>
+                </StackPanel>
+            </CheckBox>
             <CheckBox Name="IsCapitalized" Content="проценты капитализируются" Margin="5"
-              IsChecked="{Binding Conditions.IsCapitalized, Mode=TwoWay}"/>
+                      IsChecked="{Binding Conditions.IsCapitalized, Mode=TwoWay}"/>
             <StackPanel Orientation="Horizontal">
                 <CheckBox Name="HasAdditionalProcent" Content="доп процент в конце срока" Margin="5"
                          IsChecked="{Binding Conditions.HasAdditionalPercent, Mode=TwoWay}"/>

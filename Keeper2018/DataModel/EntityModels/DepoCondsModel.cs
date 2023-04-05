@@ -16,6 +16,10 @@ namespace Keeper2018
         public bool EveryStartDay { get; set; } 
         public bool EveryFirstDayOfMonth { get; set; }
         public bool EveryLastDayOfMonth { get; set; }
+        
+        public bool EveryNDays { get; set; }
+        public int NDays { get; set; }
+
         public bool IsCapitalized { get; set; }
 
 

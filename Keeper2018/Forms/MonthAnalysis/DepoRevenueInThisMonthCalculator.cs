@@ -10,7 +10,9 @@ namespace Keeper2018
         {
             var deposit = depo.Deposit;
             var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
-            var conditionses = depositOffer.CondsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditions = depositOffer.CondsMap
+                .OrderBy(k => k.Key)
+                .LastOrDefault(e => e.Key <= deposit.StartDate).Value;
             var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
                 t.Value.MyAccount.Id == depo.Id && t.Value.Operation == OperationType.Доход).Value;
             var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
@@ -19,7 +21,8 @@ namespace Keeper2018
             var depositBalance = new Balance();
             decimal revenue = 0;
             var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
-                .Where(t => t.MyAccount.Id == depo.Id || (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
+                .Where(t => t.MyAccount.Id == depo.Id || 
+                            (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
             var date = deposit.StartDate;
             while (date <= thisMonthRevenueDate)
             {
@@ -30,8 +33,8 @@ namespace Keeper2018
 
                 if (date >= lastReceivedRevenueDate)
                 {
-                    var k = GetKoeff(date, conditionses.IsFactDays);
-                    revenue += k * DayRevenue(depositBalance, conditionses, date);
+                    var k = GetCoef(date, conditions.IsFactDays);
+                    revenue += k * DayRevenue(depositBalance, conditions, date);
                 }
 
                 date = date.AddDays(1);
@@ -39,7 +42,7 @@ namespace Keeper2018
             return revenue;
         }
 
-        private static int GetKoeff(DateTime date, bool isFactDays)
+        private static int GetCoef(DateTime date, bool isFactDays)
         {
             if (isFactDays) return 1;
             if (date.Day == 31) return 0;
