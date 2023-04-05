@@ -135,17 +135,27 @@ namespace Keeper2018
             var realIncomes = _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                               && t.Timestamp >= startDate && t.Timestamp <= finishMoment).ToList();
             var salaryAccountId = 204;
-            if (realIncomes.FirstOrDefault(t => t.Tags.Select(tt=>tt.Id).Contains(salaryAccountId)) == null)
+            var iitAccountId = 443;
+            var optixsoftAccountId = 172;
+            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
+                && t.Tags.Select(tt => tt.Id).Contains(iitAccountId)))
             {
-                var salaryInUsdValue = 2000;
-                _monthAnalysisModel.IncomeForecastList.Add($"зарплата {salaryInUsdValue} usd");
+                var salaryInUsdValue = 800;
+                _monthAnalysisModel.IncomeForecastList.Add($"зарплата ИИТ {salaryInUsdValue} usd");
+                _monthAnalysisModel.IncomeForecast += salaryInUsdValue;
+            }
+            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
+                           && t.Tags.Select(tt => tt.Id).Contains(optixsoftAccountId)))
+            {
+                var salaryInUsdValue = 1200;
+                _monthAnalysisModel.IncomeForecastList.Add($"зарплата OptixSoft {salaryInUsdValue} usd");
                 _monthAnalysisModel.IncomeForecast += salaryInUsdValue;
             }
 
             var depos = _dataModel.AcMoDict[166];
             foreach (var depo in depos.Children.Where(c => c.IsDeposit))
-                if (realIncomes.FirstOrDefault(t => t.MyAccount.Id == depo.Id 
-                                                    && t.Tags.Select(tt=>tt.Id).Contains(208)) == null)
+                if (realIncomes.FirstOrDefault(t => t.MyAccount.Id == depo.Id
+                                                    && t.Tags.Select(tt => tt.Id).Contains(208)) == null)
                     ForeseeDepoIncome(depo);
         }
 
