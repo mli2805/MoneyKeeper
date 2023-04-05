@@ -12,7 +12,7 @@ namespace KeeperDomain
             return new DateTime(yy, mm, dd, 0, 0, 0, 0);
         }
 
-        public static DateTime GetStartOfMonthForDate(this DateTime day)
+        public static DateTime GetStartOfMonth(this DateTime day)
         {
             var yy = day.Year;
             var mm = day.Month;
@@ -27,7 +27,7 @@ namespace KeeperDomain
             return new DateTime(yy, mm, dd, 23, 59, 59, 999);
         }
 
-        public static DateTime GetEndOfMonthForDate(this DateTime day)
+        public static DateTime GetEndOfMonth(this DateTime day)
         {
             var yy = day.Year;
             var mm = day.Month;
@@ -41,12 +41,12 @@ namespace KeeperDomain
 
         public static Period GetFullMonthForDate(this DateTime day)
         {
-            return new Period(GetStartOfMonthForDate(day), GetStartOfMonthForDate(day).AddMonths(1).AddSeconds(-1));
+            return new Period(GetStartOfMonth(day), GetStartOfMonth(day).AddMonths(1).AddSeconds(-1));
         }
 
         public static Period GetPassedPartOfMonthWithFullThisDate(this DateTime day)
         {
-            return new Period(GetStartOfMonthForDate(day), DateTime.Today.GetEndOfDate());
+            return new Period(GetStartOfMonth(day), DateTime.Today.GetEndOfDate());
         }
 
         public static bool IsMonthTheSame(this DateTime day, DateTime otherDay)
@@ -58,7 +58,6 @@ namespace KeeperDomain
         {
             return lastDateTime.Year * 12 + lastDateTime.Month - (firstDateTime.Year * 12 + firstDateTime.Month) + 1;
         }
-
     }
 
 }

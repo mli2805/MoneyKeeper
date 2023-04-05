@@ -78,8 +78,9 @@ namespace Keeper2018
             decimal rantierTotal = 0;
             decimal depoTotal = 0;
             decimal restTotal = 0;
-            foreach (var tran in _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
-                                                                  && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
+            foreach (var tran in _dataModel.Transactions.Values
+                         .Where(t => t.Operation == OperationType.Доход 
+                                     && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
                 var amStr = _dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
 
@@ -152,24 +153,27 @@ namespace Keeper2018
                 _monthAnalysisModel.IncomeForecast += salaryInUsdValue;
             }
 
-            var depos = _dataModel.AcMoDict[166];
-            foreach (var depo in depos.Children.Where(c => c.IsDeposit))
-                if (realIncomes.FirstOrDefault(t => t.MyAccount.Id == depo.Id
-                                                    && t.Tags.Select(tt => tt.Id).Contains(208)) == null)
+            var depoMainFolder = _dataModel.AcMoDict[166];
+            foreach (var depo in depoMainFolder.Children.Where(c => c.IsDeposit))
                     ForeseeDepoIncome(depo);
         }
 
         private void ForeseeDepoIncome(AccountModel depo)
         {
-            var depositOffer = _dataModel.DepositOffers.First(o => o.Id == depo.Deposit.DepositOfferId);
+            var depoMainCurrency = _dataModel.DepositOffers
+                .First(o => o.Id == depo.Deposit.DepositOfferId).MainCurrency;
+            var currency = depoMainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : depoMainCurrency;
 
-            var revenue = depo.GetRevenueInThisMonth(_dataModel);
-            var currency = depositOffer.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : depositOffer.MainCurrency;
-            _monthAnalysisModel.IncomeForecastList.
-                Add($"%%:  {depo.Deposit.ShortName}  {revenue:#,0.00} {currency.ToString().ToLower()}");
-            _monthAnalysisModel.IncomeForecast += depositOffer.MainCurrency == CurrencyCode.USD
-                ? revenue
-                : _dataModel.AmountInUsd(DateTime.Today, depositOffer.MainCurrency, revenue);
+            var revenues = depo.GetRevenuesInThisMonth(_dataModel);
+            foreach (var tuple in revenues)
+            {
+                _monthAnalysisModel.IncomeForecastList.
+                    Add($"{depo.Deposit.ShortName}  {tuple.Item2:#,0.00} {currency.ToString().ToLower()} {tuple.Item1:dd MMM}");
+                _monthAnalysisModel.IncomeForecast += currency == CurrencyCode.USD
+                    ? tuple.Item2
+                    : _dataModel.AmountInUsd(DateTime.Today, depoMainCurrency, tuple.Item2);
+            }
+           
         }
 
         private void InsertLinesIntoIncomeList(List<string> lines, decimal total, string word)

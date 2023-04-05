@@ -27,7 +27,7 @@ namespace Keeper2018
         public void Initialize()
         {
             _monthAnalyser.Initialize();
-            Model = _monthAnalyser.Produce(DateTime.Today.GetStartOfMonthForDate());
+            Model = _monthAnalyser.Produce(DateTime.Today.GetStartOfMonth());
         }
 
         public void ShowPreviousMonth()

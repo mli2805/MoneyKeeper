@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using KeeperDomain;
 
@@ -21,7 +22,7 @@ namespace Keeper2018
             var depositBalance = new Balance();
             decimal revenue = 0;
             var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
-                .Where(t => t.MyAccount.Id == depo.Id || 
+                .Where(t => t.MyAccount.Id == depo.Id ||
                             (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
             var date = deposit.StartDate;
             while (date <= thisMonthRevenueDate)
@@ -40,6 +41,56 @@ namespace Keeper2018
                 date = date.AddDays(1);
             }
             return revenue;
+        }
+
+        public static IEnumerable<Tuple<DateTime, decimal>>
+            GetRevenuesInThisMonth(this AccountModel depo, KeeperDataModel dataModel)
+        {
+            var deposit = depo.Deposit;
+            var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
+            var conditions = depositOffer.CondsMap
+                .OrderBy(k => k.Key)
+                .LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
+                t.Value.MyAccount.Id == depo.Id && t.Value.Operation == OperationType.Доход).Value;
+            var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
+
+            var revenueDates = GetNotPaidRevenueDates(conditions, lastReceivedRevenueDate);
+
+            var depositBalance = new Balance();
+            decimal revenue = 0;
+            var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
+                .Where(t => t.MyAccount.Id == depo.Id ||
+                            (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
+            var date = deposit.StartDate;
+            var enumerator = revenueDates.GetEnumerator();
+            if (enumerator.MoveNext()) // first time should be true
+                while (date <= DateTime.Today.GetEndOfMonth())
+                {
+                    foreach (var transaction in depoTraffic.Where(t => t.Timestamp.Date == date.Date))
+                    {
+                        depo.ApplyTransaction(transaction, depositBalance);
+                    }
+
+                    if (date >= lastReceivedRevenueDate)
+                    {
+                        var k = GetCoef(date, conditions.IsFactDays);
+                        revenue += k * DayRevenue(depositBalance, conditions, date);
+                    }
+
+                    if (date.Date == enumerator.Current.Date)
+                    {
+                        yield return new Tuple<DateTime, decimal>(date, revenue);
+                        revenue = 0;
+                        if (!enumerator.MoveNext())
+                        {
+                            enumerator.Dispose();
+                            break;
+                        }
+                    }
+
+                    date = date.AddDays(1);
+                }
         }
 
         private static int GetCoef(DateTime date, bool isFactDays)
@@ -72,7 +123,8 @@ namespace Keeper2018
                 case OperationType.Обмен:
                     if (tran.MyAccount.Id == depo.Id) balanceBefore.Sub(tran.Currency, tran.Amount);
                     // ReSharper disable once PossibleInvalidOperationException
-                    if (tran.MySecondAccount.Id == depo.Id) balanceBefore.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
+                    if (tran.MySecondAccount.Id == depo.Id)
+                        balanceBefore.Add((CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);
                     return;
                 default: return;
             }
@@ -80,7 +132,7 @@ namespace Keeper2018
 
         private static decimal DayRevenue(Balance depoBalance, DepoCondsModel conditions, DateTime date)
         {
-            var currentAmount = depoBalance.Currencies.FirstOrDefault(c=>!c.Value.Equals(0)).Value;
+            var currentAmount = depoBalance.Currencies.FirstOrDefault(c => !c.Value.Equals(0)).Value;
             var rateLines =
                 conditions.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
                     OrderBy(o => o.DateFrom).ToArray();
@@ -92,24 +144,46 @@ namespace Keeper2018
             }
             if (i == rateLines.Length) i--;
 
-            return currentAmount * rateLines[i].Rate / 100 * 1 / 365;
+            return currentAmount * rateLines[i].Rate / 100 / (DateTime.IsLeapYear(date.Year) ? 366 : 365);
         }
 
         private static DateTime RevenueDate(DepositOfferModel depositOffer, Deposit deposit)
         {
-            var conditionses = depositOffer.CondsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditions = depositOffer.CondsMap
+                .OrderBy(k => k.Key)
+                .LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+
             var thisMonth = DateTime.Today.Month;
             var thisYear = DateTime.Today.Year;
 
-            if (conditionses.EveryFirstDayOfMonth)
+            if (conditions.EveryFirstDayOfMonth)
                 return new DateTime(thisYear, thisMonth, 1);
-            if (conditionses.EveryLastDayOfMonth)
-                return DateTime.Today.GetEndOfMonthForDate();
+            if (conditions.EveryLastDayOfMonth)
+                return DateTime.Today.GetEndOfMonth();
             var maxDay = DateTime.DaysInMonth(thisYear, thisMonth);
 
-            return deposit.StartDate.Day <= maxDay 
+            return deposit.StartDate.Day <= maxDay
                 ? new DateTime(thisYear, thisMonth, deposit.StartDate.Day)
                 : new DateTime(thisYear, thisMonth, maxDay);
+        }
+
+        private static IEnumerable<DateTime> GetNotPaidRevenueDates(DepoCondsModel conditions, DateTime lastReceivedRevenueDate)
+        {
+            while (lastReceivedRevenueDate < DateTime.Today.GetEndOfMonth())
+            {
+                if (conditions.EveryFirstDayOfMonth)
+                    lastReceivedRevenueDate = lastReceivedRevenueDate.AddMonths(1).GetStartOfMonth();
+                if (conditions.EveryLastDayOfMonth)
+                    lastReceivedRevenueDate = lastReceivedRevenueDate.AddMonths(1).GetEndOfMonth();
+                if (conditions.EveryStartDay)
+                    lastReceivedRevenueDate = lastReceivedRevenueDate.AddMonths(1);
+                if (conditions.EveryNDays)
+                    lastReceivedRevenueDate = lastReceivedRevenueDate.AddDays(conditions.NDays);
+
+                if (lastReceivedRevenueDate <= DateTime.Today.GetEndOfMonth())
+                    yield return lastReceivedRevenueDate;
+
+            }
         }
     }
 }
