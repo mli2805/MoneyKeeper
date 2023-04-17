@@ -90,7 +90,7 @@ namespace Keeper2018
             }
         }
 
-     
+
         protected override void OnViewLoaded(object view)
         {
             DisplayName = _isInAddMode ? "Добавить" : "Изменить";
@@ -127,11 +127,14 @@ namespace Keeper2018
 
         public void CompileAccountName()
         {
-            decimal rate;
-            var conditionses = SelectedDepositOffer.CondsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
+            decimal rate = 0;
+
+            if (SelectedDepositOffer.CondsMap.Count > 0)
             {
-                var line = conditionses.Value.RateLines.Last();
-                rate = line.Rate;
+                var conditions = SelectedDepositOffer
+                    .CondsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
+                var line = conditions.Value.RateLines.LastOrDefault();
+                rate = line?.Rate ?? 0;
             }
 
             var startDate = DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
@@ -144,7 +147,7 @@ namespace Keeper2018
             var vm = new RulesAndRatesViewModel();
             vm.Initialize("",
                 SelectedDepositOffer.CondsMap.OrderBy(k => k.Key)
-                    .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value, 
+                    .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value,
                 SelectedDepositOffer.RateType, _dataModel.GetDepoRateLinesMaxId());
             _windowManager.ShowDialog(vm);
         }

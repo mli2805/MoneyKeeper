@@ -117,6 +117,11 @@ namespace Keeper2018
 
         public void Save()
         {
+            if (ModelInWork.CondsMap.Count == 0)
+            {
+                AddConditions();
+                return;
+            }
             ModelInWork.Bank = Banks.First(b => b.Name == SelectedBankName);
             IsCancelled = false;
             TryClose();
