@@ -6,6 +6,7 @@
              xmlns:keeper2018="clr-namespace:Keeper2018"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              cal:Bind.ModelWithoutContext="{Binding .}"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance keeper2018:FinanceRatesViewModel}">
@@ -13,7 +14,12 @@
         <DockPanel DockPanel.Dock="Bottom">
             <Button Name="Download" Margin="5" Width="280" Content="Загрузить последние с сайта НБ РБ" HorizontalAlignment="Left"/>
         </DockPanel>
-        <DataGrid Height="500" ItemsSource="{Binding Rows}" AutoGenerateColumns="False" Margin="5" IsReadOnly="True">
+        <DataGrid Height="500" ItemsSource="{Binding Rows}" 
+                  AutoGenerateColumns="False" Margin="5" IsReadOnly="True">
+            <i:Interaction.Behaviors>
+                <keeper2018:ScrollToBottomOnAddBehavior />
+                <keeper2018:ScrollToBottomOnLoadBehavior />
+            </i:Interaction.Behaviors>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="30">
                     <DataGridTextColumn.ElementStyle>
