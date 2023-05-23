@@ -28,6 +28,7 @@ namespace Keeper2018
         private readonly TrustAccountsViewModel _trustAccountsViewModel;
         private readonly InvestmentTransactionsViewModel _investmentTransactionsViewModel;
         private readonly InvestmentAnalysisViewModel _investmentAnalysisViewModel;
+        private readonly ButtonCollectionBuilderViewModel _buttonCollectionBuilderViewModel;
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
@@ -40,7 +41,7 @@ namespace Keeper2018
             PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel,
             InvestmentAssetsViewModel investmentAssetsViewModel, AssetRatesViewModel assetRatesViewModel,
             TrustAccountsViewModel trustAccountsViewModel, InvestmentTransactionsViewModel investmentTransactionsViewModel,
-            InvestmentAnalysisViewModel investmentAnalysisViewModel)
+            InvestmentAnalysisViewModel investmentAnalysisViewModel, ButtonCollectionBuilderViewModel buttonCollectionBuilderViewModel)
         {
             _windowManager = windowManager;
             _keeperDataModel = keeperDataModel;
@@ -63,6 +64,7 @@ namespace Keeper2018
             _trustAccountsViewModel = trustAccountsViewModel;
             _investmentTransactionsViewModel = investmentTransactionsViewModel;
             _investmentAnalysisViewModel = investmentAnalysisViewModel;
+            _buttonCollectionBuilderViewModel = buttonCollectionBuilderViewModel;
         }
 
         // for short-cuts
@@ -224,6 +226,12 @@ namespace Keeper2018
         public void ShowSettingsForm()
         {
             _windowManager.ShowDialog(_settingsViewModel);
+        }
+
+        public void ShowButtonCollectionBuilder()
+        {
+            _buttonCollectionBuilderViewModel.Initialize();
+            _windowManager.ShowDialog(_buttonCollectionBuilderViewModel);
         }
     }
 }

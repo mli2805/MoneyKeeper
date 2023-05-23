@@ -12,8 +12,10 @@
              Visibility="{Binding Visibility}">
     <DockPanel Margin="0,0,0,10">
         <keeper2018:ComboBoxTreeView DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Background="White" 
-                      VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="False"
-                      ItemsSource="{Binding AvailableAccNames}" SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
+                      VerticalAlignment="Top" Height="25" ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}"
+                      IsBranchSelectionEnabled="False"
+                      ItemsSource="{Binding AvailableAccNames}" 
+                      SelectedItem="{Binding MyAccName, Mode=TwoWay}" />
 
         <StackPanel Orientation="Horizontal" Height="25" VerticalAlignment="Top" Margin="0,0,0,0">
             <Label Content="{Binding ControlTitle}" Margin="0,0,20,0" VerticalAlignment="Top"/>

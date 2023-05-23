@@ -514,6 +514,10 @@
       <DependentUpon>SalaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Salary\SalaryViewModel.cs" />
+    <Compile Include="Forms\Settings\ButtonCollectionBuilderView.xaml.cs">
+      <DependentUpon>ButtonCollectionBuilderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings\ButtonCollectionBuilderViewModel.cs" />
     <Compile Include="Forms\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -868,6 +872,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Salary\SalaryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Settings\ButtonCollectionBuilderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
