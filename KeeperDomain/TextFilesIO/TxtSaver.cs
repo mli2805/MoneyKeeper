@@ -49,6 +49,9 @@ namespace KeeperDomain
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Deposits.txt"), deposits);
                 var cards = bin.PayCards.OrderBy(d => d.Id).Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("PayCards.txt"), cards);
+                var buttonCollections = bin.ButtonCollections
+                    .OrderBy(c=>c.Id).Select(m => m.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("ButtonCollections.txt"), buttonCollections);
 
                 var transactions = bin.Transactions
                     .OrderBy(t => t.Timestamp).

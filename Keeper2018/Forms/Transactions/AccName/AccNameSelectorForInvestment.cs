@@ -6,7 +6,8 @@ namespace Keeper2018
 {
     public static class AccNameSelectorForInvestment
     {
-        public static void InitializeForInvestments(this AccNameSelectorVm selector, InvestTranModel tran, ComboTreesProvider comboTreesProvider)
+        public static void InitializeForInvestments(this AccNameSelectorVm selector, InvestTranModel tran,
+            ComboTreesProvider comboTreesProvider)
         {
             switch (tran.InvestOperationType)
             {

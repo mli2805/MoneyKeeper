@@ -92,7 +92,9 @@ namespace Keeper2018
 
             _keeperDataModel.Cars = bin.JoinCarParts();
             _keeperDataModel.DepositOffers = bin.JoinDepoParts(_keeperDataModel.AcMoDict);
-        }
 
+            _keeperDataModel.ButtonCollections = bin.ButtonCollections
+                .Select(b=>b.Map(_keeperDataModel.AcMoDict)).ToList();
+        }
     }
 }

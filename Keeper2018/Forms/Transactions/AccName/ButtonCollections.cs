@@ -4,6 +4,44 @@ namespace Keeper2018
 {
     public static class ButtonCollections
     {
+        #region Seed
+        public static List<ButtonCollectionModel> ConvertOldCollections(this KeeperDataModel dataModel)
+        {
+            var result = new List<ButtonCollectionModel>()
+            {
+                dataModel.Create(1, "Счета для доходов", ForIncome), 
+                dataModel.Create(2, "Счета для расходов", ForExpense),
+                dataModel.Create(3, "Тэги для доходов", ForIncomeTags),
+                dataModel.Create(4, "Тэги для расходов", ForExpenseTags),
+                dataModel.Create(5, "Тэги для чеков", ForReceiptTags),
+                dataModel.Create(6, "Счета для переносов", ButtonsForTransfer), 
+                dataModel.Create(7, "Счета для обмена", ForExchange),
+
+                dataModel.Create(8, "Тэги доходов для назначения ассоциации со счетами внешних контрагентов", IncomesForExternal),
+                dataModel.Create(9, "Тэги расходов для назначения ассоциации со счетами внешних контрагентов", ExpensesForExternal),
+                dataModel.Create(10, "Внешние счета для назначения ассоциации с доходами", ExternalForIncome),
+                dataModel.Create(11, "Внешние счета для назначения ассоциации с расходами", ExternalForExpense),
+                
+                dataModel.Create(12, "Инвестиционные счета для инвест операций", InvestAccounts),
+
+            };
+
+           return result;
+        }
+
+        private static ButtonCollectionModel Create(this KeeperDataModel dataModel,
+            int id, string name, Dictionary<string, int> buttons)
+        {
+            var collection = new ButtonCollectionModel() { Id = id, Name = name, };
+            foreach (var pair in buttons)
+            {
+                collection.AccountModels.Add( dataModel.AcMoDict[pair.Value]);
+            }
+            return collection;
+        }
+        #endregion
+
+        #region обычные транзакции
         public static readonly Dictionary<string, int> ForExpense =
             new Dictionary<string, int>
             {
@@ -80,7 +118,9 @@ namespace Keeper2018
             };
 
         public static readonly Dictionary<string, int> ForExchangeTags = new Dictionary<string, int>();
+        #endregion
 
+        #region контрагент - тэг
         public static readonly Dictionary<string, int> IncomesForExternal =
             new Dictionary<string, int> { ["з.п"] = 204, ["юфр"] = 314, ["%%"] = 208, ["бэк"] = 701 };
 
@@ -96,13 +136,16 @@ namespace Keeper2018
                 ["гад"] = 751,
                 ["др"] = 256,
             };
+        #endregion
 
+        #region Ассоциации тэг - контрагент
         public static readonly Dictionary<string, int> ExternalForIncome =
             new Dictionary<string, int> { ["фсзн"] = 177, ["род"] = 225, };
-
         public static readonly Dictionary<string, int> ExternalForExpense =
             new Dictionary<string, int> { ["нал"] = 520, ["рикз"] = 668, ["род"] = 225, };
+        #endregion
 
+      
         public static readonly Dictionary<string, int> InvestAccounts = 
             new Dictionary<string, int> { ["usd"] = 829, ["rub"] = 892, ["byn"] = 695, ["alb"] = 696, };
     }

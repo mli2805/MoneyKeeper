@@ -162,9 +162,10 @@ namespace KeeperDomain
             account.OwnerId = int.Parse(substrings[2]);
             account.IsExpanded = Convert.ToBoolean(substrings[3]);
             account.AssociatedIncomeId = int.Parse(substrings[4]);
-            account.AssociatiedExpenseId = int.Parse(substrings[5]);
-            account.AssociatiedExternalId = int.Parse(substrings[6]);
-            account.Comment = substrings[7].Trim();
+            account.AssociatedExpenseId = int.Parse(substrings[5]);
+            account.AssociatedExternalId = int.Parse(substrings[6]);
+            account.ButtonName = substrings[7].Trim();
+            account.Comment = substrings[8].Trim();
             return account;
         }
 
@@ -197,6 +198,19 @@ namespace KeeperDomain
             card.IsVirtual = Convert.ToBoolean(substrings[6]);
             card.IsPayPass = Convert.ToBoolean(substrings[7]);
             return card;
+        }
+
+        public static ButtonCollection ButtonCollectionFromString(this string s)
+        {
+            var buttonCollection = new ButtonCollection();
+            var substrings = s.Split(';');
+            buttonCollection.Id = int.Parse(substrings[0]);
+            buttonCollection.Name = substrings[1];
+            for (int i = 2; i < substrings.Length; i++)
+            {
+                buttonCollection.AccountIds.Add(int.Parse(substrings[i]));
+            }
+            return buttonCollection;
         }
 
         public static Transaction TransactionFromString(this string s)

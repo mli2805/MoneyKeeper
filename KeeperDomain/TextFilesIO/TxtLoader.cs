@@ -76,6 +76,8 @@ namespace KeeperDomain
             bin.Deposits = deposits.Select(d => d.DepositFromString()).ToList();
             var cards = File.ReadAllLines(PathFactory.GetBackupFilePath("PayCards.txt"));
             bin.PayCards = cards.Select(p => p.CardFromString()).ToList();
+            var buttonCollections = File.ReadAllLines(PathFactory.GetBackupFilePath("ButtonCollections.txt"));
+            bin.ButtonCollections = buttonCollections.Select(p => p.ButtonCollectionFromString()).ToList();
         }
 
 

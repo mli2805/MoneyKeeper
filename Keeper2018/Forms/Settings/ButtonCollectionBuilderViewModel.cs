@@ -5,26 +5,55 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class ButtonItem
-    {
-        public string Name { get; set; }
-        public string ShortName { get; set; }
-        public int AccountId { get; set; }
-    }
+
     public class ButtonCollectionBuilderViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
         private readonly ComboTreesProvider _comboTreesProvider;
 
-        public List<string> Collections { get; set; }
-        public string SelectedCollection { get; set; }
+        public List<ButtonCollectionModel> Collections { get; set; }
+
+        private ButtonCollectionModel _selectedCollection;
+        public ButtonCollectionModel SelectedCollection
+        {
+            get => _selectedCollection;
+            set
+            {
+                if (Equals(value, _selectedCollection)) return;
+                _selectedCollection = value;
+                Buttons = SelectedCollection.AccountModels;
+                SelectedButton = Buttons.FirstOrDefault();
+                NotifyOfPropertyChange();
+            }
+        }
 
         public List<AccName> AccNames { get; set; }
         public AccName SelectedAccName { get; set; }
         public string ShortName { get; set; }
 
-        public List<ButtonItem> Buttons { get; set; }
-        public ButtonItem SelectedButton { get; set; }
+        private List<AccountModel> _buttons;
+        public List<AccountModel> Buttons
+        {
+            get => _buttons;
+            set
+            {
+                if (Equals(value, _buttons)) return;
+                _buttons = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private AccountModel _selectedButton;
+        public AccountModel SelectedButton
+        {
+            get => _selectedButton;
+            set
+            {
+                if (Equals(value, _selectedButton)) return;
+                _selectedButton = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public ButtonCollectionBuilderViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider)
         {
@@ -41,18 +70,17 @@ namespace Keeper2018
         {
             _comboTreesProvider.Initialize();
 
-            Collections = new List<string>()
-            {
-                "Счета для получения средств",
-                "Счета для расходования средств",
-
-            };
+            Collections = _dataModel.ButtonCollections;
             SelectedCollection = Collections.First();
+
+            Buttons = SelectedCollection.AccountModels;
+            SelectedButton = Buttons.FirstOrDefault();
 
             AccNames = ForMyAccount(OperationType.Доход);
             SelectedAccName = AccNames.First();
         }
 
+      
         private List<AccName> ForMyAccount(OperationType operationType)
         {
             switch (operationType)
@@ -69,6 +97,7 @@ namespace Keeper2018
             }
         }
 
-        public void AddButtonToCollection(){}
+      
+        public void AddButtonToCollection() { }
     }
 }

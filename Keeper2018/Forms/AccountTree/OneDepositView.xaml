@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="160" />
             <RowDefinition Height="250" />
-            <RowDefinition Height="130" />
+            <RowDefinition Height="165" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
@@ -93,6 +93,7 @@
                 <RowDefinition Height="35" />
                 <RowDefinition Height="45" />
                 <RowDefinition Height="35" />
+                <RowDefinition Height="35" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90" />
@@ -115,6 +116,10 @@
                        HorizontalAlignment="Right" />
             <TextBox Grid.Row="4" Grid.Column="1" Margin="5" HorizontalAlignment="Stretch"
                      BorderBrush="#555555" Text="{Binding DepositInWork.ShortName, Mode=TwoWay}" />
+          <TextBlock Grid.Row="5" Grid.Column="0" Margin="5" Text="Кнопка" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" />
+            <TextBox Grid.Row="5" Grid.Column="1" Margin="5" HorizontalAlignment="Left" Width="50"
+                     BorderBrush="#555555" Text="{Binding AccountModel.ButtonName, Mode=TwoWay}" />
         </Grid>
         <Grid Grid.Row="3">
             <Grid.RowDefinitions>

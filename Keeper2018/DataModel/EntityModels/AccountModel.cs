@@ -27,6 +27,7 @@ namespace Keeper2018
         public int AssociatedExpenseId { get; set; } // for external
         public int AssociatedExternalId { get; set; } // for tag
 
+        public string ButtonName { get; set; } // face of shortcut button (if exists)
 
         public override string ToString() => (string)Header;
         public int CompareTo(object obj)

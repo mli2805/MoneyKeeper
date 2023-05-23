@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -46,8 +47,9 @@ namespace Keeper2018
                 Header = (string)model.Header,
                 IsExpanded = model.IsExpanded,
                 AssociatedIncomeId = model.AssociatedIncomeId,
-                AssociatiedExpenseId = model.AssociatedExpenseId,
-                AssociatiedExternalId = model.AssociatedExternalId,
+                AssociatedExpenseId = model.AssociatedExpenseId,
+                AssociatedExternalId = model.AssociatedExternalId,
+                ButtonName = model.ButtonName,
             };
         }
 
@@ -180,5 +182,14 @@ namespace Keeper2018
             };
         }
 
+        public static ButtonCollection Map(this ButtonCollectionModel model)
+        {
+            return new ButtonCollection()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                AccountIds = model.AccountModels.Select(m=>m.Id).ToList(),
+            };
+        }
     }
 }

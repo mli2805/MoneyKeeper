@@ -13,8 +13,9 @@ namespace Keeper2018
                 Id = account.Id,
                 IsExpanded = account.IsExpanded,
                 AssociatedIncomeId = account.AssociatedIncomeId,
-                AssociatedExpenseId = account.AssociatiedExpenseId,
-                AssociatedExternalId = account.AssociatiedExternalId,
+                AssociatedExpenseId = account.AssociatedExpenseId,
+                AssociatedExternalId = account.AssociatedExternalId,
+                ButtonName = account.ButtonName,
             };
         }
 
@@ -166,5 +167,17 @@ namespace Keeper2018
                 Comment = transaction.Comment,
             };
         }
+
+        public static ButtonCollectionModel Map(this ButtonCollection buttonCollection, Dictionary<int, AccountModel> acMoDict)
+        {
+            return new ButtonCollectionModel()
+            {
+                Id = buttonCollection.Id,
+                Name = buttonCollection.Name,
+                AccountModels = buttonCollection.AccountIds.Select(i=>acMoDict[i]).ToList(),
+            };
+        }
+
+      
     }
 }

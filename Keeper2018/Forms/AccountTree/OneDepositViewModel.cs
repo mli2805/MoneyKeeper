@@ -10,7 +10,7 @@ namespace Keeper2018
     public class OneDepositViewModel : Screen
     {
         private bool _isInAddMode;
-        private AccountModel _accountModel;
+        public AccountModel AccountModel { get; set; }
         public Deposit DepositInWork { get; set; }
         public string ParentName { get; set; }
 
@@ -70,7 +70,7 @@ namespace Keeper2018
         {
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
-            _accountModel = accountModel;
+            AccountModel = accountModel;
             DepositOffers = _dataModel.DepositOffers;
             DepositInWork = accountModel.Deposit;
             DepositInWork.MyAccountId = accountModel.Id;
@@ -86,7 +86,7 @@ namespace Keeper2018
             else
             {
                 _selectedDepositOffer = DepositOffers.First(o => o.Id == DepositInWork.DepositOfferId);
-                Junction = _accountModel.Name;
+                Junction = AccountModel.Name;
             }
         }
 
@@ -99,7 +99,7 @@ namespace Keeper2018
         public void PayCard()
         {
             var vm = new OneCardViewModel();
-            vm.InitializeForm(_accountModel, DepositInWork.Card == null);
+            vm.InitializeForm(AccountModel, DepositInWork.Card == null);
             _windowManager.ShowDialog(vm);
             if (vm.IsSavePressed)
             {
@@ -114,7 +114,7 @@ namespace Keeper2018
             IsSavePressed = true;
             if (string.IsNullOrEmpty(Junction))
                 CompileAccountName();
-            _accountModel.Header = Junction;
+            AccountModel.Header = Junction;
             DepositInWork.DepositOfferId = SelectedDepositOffer.Id;
             TryClose();
         }

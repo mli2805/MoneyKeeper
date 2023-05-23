@@ -14,7 +14,13 @@
 
         <ListView Margin="5" Height="200" ItemsSource="{Binding Buttons}"
                   SelectedItem="{Binding SelectedButton}">
-
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path=Header}">account</GridViewColumn>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Path=ButtonName}">short</GridViewColumn>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Path=Id}">id</GridViewColumn>
+                </GridView>
+            </ListView.View>
         </ListView>
 
         <TextBlock Text="Выберите:" Margin="5"/>
@@ -30,9 +36,9 @@
             </StackPanel>
             <StackPanel Width="150">
                 <TextBlock Text="Краткое наименование:" Margin="7,4"/>
-                <TextBox Height="22" Margin="7,8,7,0" Text="{Binding ShortName}"/>
+                <TextBox Height="22" Margin="7,9,7,0" Text="{Binding ShortName}"/>
             </StackPanel>
-            <Button Name="AddButtonToCollection" Height="22" Width="120" Margin="5,25, 0,0" Content="Добавить"/>
+            <Button Name="AddButtonToCollection" Height="22" Width="120" Margin="5,26, 0,0" Content="Добавить"/>
         </StackPanel>
 
     </StackPanel>

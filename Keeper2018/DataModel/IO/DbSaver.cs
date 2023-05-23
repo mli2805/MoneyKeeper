@@ -125,6 +125,9 @@ namespace Keeper2018
                     bin.DepoNewConds.Add(pair.Value.Map());
                 }
             }
+
+            bin.ButtonCollections = _keeperDataModel.ButtonCollections.Select(c => c.Map()).ToList();
+
             return bin;
         }
 

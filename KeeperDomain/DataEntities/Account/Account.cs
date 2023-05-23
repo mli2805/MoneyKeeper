@@ -11,8 +11,10 @@ namespace KeeperDomain
         public bool IsExpanded;
 
         public int AssociatedIncomeId { get; set; } // for external
-        public int AssociatiedExpenseId { get; set; } // for external
-        public int AssociatiedExternalId { get; set; } // for tag
+        public int AssociatedExpenseId { get; set; } // for external
+        public int AssociatedExternalId { get; set; } // for tag
+
+        public string ButtonName { get; set; } // face of shortcut button (if exists)
 
         public string Comment { get; set; }
 
@@ -20,7 +22,8 @@ namespace KeeperDomain
         {
             var shiftedName = new string(' ', level * 2) + Header;
             return Id + " ; " + shiftedName + " ; " + OwnerId + " ; " + IsExpanded + " ; " + 
-                   AssociatedIncomeId + " ; " + AssociatiedExpenseId + " ; " + AssociatiedExternalId + " ; " + 
+                   AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + 
+                   ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");
         }
 
