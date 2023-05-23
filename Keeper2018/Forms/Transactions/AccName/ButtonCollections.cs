@@ -13,7 +13,7 @@ namespace Keeper2018
                 ["ярк"] = 947,
                 ["юяр"] = 946,
                 ["джо"] = 781,
-                ["каш"] = 776,
+                ["123"] = 884,
                 ["шоп"] = 878,
             };
 
@@ -28,12 +28,12 @@ namespace Keeper2018
                 ["маг"] = 252,
                 ["еда"] = 257,
                 ["лек"] = 199,
-                ["стр"] = 589,
+                ["оде"] = 197,
                 ["др"] = 256,
             };
 
         public static readonly Dictionary<string, int> ForReceiptTags =
-            new Dictionary<string, int> { ["еда"] = 257, ["c/x"] = 446, ["др"] = 256, ["др-д"] = 362, };
+            new Dictionary<string, int> { ["еда"] = 257, ["оде"] = 197, ["c/x"] = 446, ["др"] = 256, ["др-д"] = 362, };
 
         public static readonly Dictionary<string, int> ForIncome =
             new Dictionary<string, int>
@@ -61,7 +61,7 @@ namespace Keeper2018
                 ["шкф"] = 167,
                 ["ярк"] = 947,
                 ["юяр"] = 946,
-                ["каш"] = 776,
+                ["123"] = 884,
                 ["шоп"] = 878,
             };
 
@@ -72,11 +72,11 @@ namespace Keeper2018
             {
                 ["мк"] = 162,
                 ["джо"] = 781,
-                ["биб$"] = 690,
-                ["газ"] = 675,
-                ["газ$"] = 504,
+                ["биб$"] = 864,
+                ["бнб"] = 841,
+                ["бнб$"] = 842,
                 ["ярк"] = 947,
-                ["при$"] = 733,
+                ["при$"] = 948,
             };
 
         public static readonly Dictionary<string, int> ForExchangeTags = new Dictionary<string, int>();
@@ -85,7 +85,17 @@ namespace Keeper2018
             new Dictionary<string, int> { ["з.п"] = 204, ["юфр"] = 314, ["%%"] = 208, ["бэк"] = 701 };
 
         public static readonly Dictionary<string, int> ExpensesForExternal =
-            new Dictionary<string, int> { ["еда"] = 257, ["обе"] = 193, ["с/х"] = 446, ["дпр"] = 362, ["лек"] = 199, ["леч"] = 354, ["гад"] = 751, ["др"] = 256, };
+            new Dictionary<string, int>
+            {
+                ["еда"] = 257, 
+                ["обе"] = 193,
+                ["с/х"] = 446,
+                ["дпр"] = 362,
+                ["лек"] = 199,
+                ["леч"] = 354,
+                ["гад"] = 751,
+                ["др"] = 256,
+            };
 
         public static readonly Dictionary<string, int> ExternalForIncome =
             new Dictionary<string, int> { ["фсзн"] = 177, ["род"] = 225, };
