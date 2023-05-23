@@ -80,7 +80,6 @@ namespace KeeperDomain
             bin.ButtonCollections = buttonCollections.Select(p => p.ButtonCollectionFromString()).ToList();
         }
 
-
         private static void LoadRates(KeeperBin bin)
         {
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("ExchangeRates.txt"));

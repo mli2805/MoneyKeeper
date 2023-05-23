@@ -177,7 +177,5 @@ namespace Keeper2018
                 AccountModels = buttonCollection.AccountIds.Select(i=>acMoDict[i]).ToList(),
             };
         }
-
-      
     }
 }

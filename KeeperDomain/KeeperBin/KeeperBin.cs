@@ -33,6 +33,5 @@ namespace KeeperDomain
         public List<DepoNewConds> DepoNewConds { get; set; }
 
         public List<ButtonCollection> ButtonCollections { get; set; }
-
     }
 }
