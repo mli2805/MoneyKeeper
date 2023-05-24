@@ -10,7 +10,7 @@
              d:DesignWidth="300">
     <Grid>
         <StackPanel Background="#FFFFF8F8">
-            <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="2,0,2,0"/>
+            <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" Margin="2,0,2,0"/>
             <Grid>
                 <ComboBox ItemsSource="{Binding PaymentWays}" SelectedItem="{Binding SelectedPaymentWay, Mode=TwoWay}" 
                           Width="190" HorizontalAlignment="Left" Margin="70,0,0,0" Height="22"/>

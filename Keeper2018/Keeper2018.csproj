@@ -570,16 +570,16 @@
     </Compile>
     <Compile Include="Forms\Investments\Assets\AssetRatesViewModel.cs" />
     <Compile Include="Forms\Transactions\AccName\AccNameExt.cs" />
-    <Compile Include="Forms\Transactions\AccName\AccNameSelectionControlInitializer.cs" />
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameButtonVm.cs" />
-    <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelector.xaml.cs">
-      <DependentUpon>AccNameSelector.xaml</DependentUpon>
+    <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorView.xaml.cs">
+      <DependentUpon>AccNameSelectorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorVm.cs" />
-    <Compile Include="Forms\Transactions\AccName\AccNameSelectorForAssociations.cs" />
-    <Compile Include="Forms\Transactions\AccName\AccNameSelectorForInvestment.cs" />
+    <Compile Include="Forms\Transactions\AccNameSelectorInitialization\AccNameSelector.cs" />
+    <Compile Include="Forms\Transactions\AccNameSelectorInitialization\AccNameSelectorForAssociations.cs" />
+    <Compile Include="Forms\Transactions\AccNameSelectorInitialization\AccNameSelectorForInvestment.cs" />
+    <Compile Include="Forms\Transactions\AccNameSelectorInitialization\AccNameSelectorForTransactions.cs" />
     <Compile Include="Forms\Transactions\AccName\AssociationEnum.cs" />
-    <Compile Include="Forms\Transactions\AccName\ButtonCollections.cs" />
     <Compile Include="Forms\Transactions\AccName\ComboTreesProvider.cs" />
     <Compile Include="Forms\Transactions\Actions\AskReceiptDeletionView.xaml.cs">
       <DependentUpon>AskReceiptDeletionView.xaml</DependentUpon>
@@ -920,7 +920,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Transactions\AccNameSelectionControl\AccNameSelector.xaml">
+    <Page Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -6,6 +6,7 @@ namespace Keeper2018
     public class OneAccountViewModel : Screen
     {
         private readonly ComboTreesProvider _comboTreesProvider;
+        private readonly AccNameSelector _accNameSelectorForAssociations;
         private bool _isInAddMode;
         private string _oldName;
         public AccountModel AccountInWork { get; set; }
@@ -41,9 +42,10 @@ namespace Keeper2018
 
         public bool IsSavePressed { get; set; }
 
-        public OneAccountViewModel(ComboTreesProvider comboTreesProvider)
+        public OneAccountViewModel(ComboTreesProvider comboTreesProvider, AccNameSelector accNameSelectorForAssociations)
         {
             _comboTreesProvider = comboTreesProvider;
+            _accNameSelectorForAssociations = accNameSelectorForAssociations;
         }
 
         public void Initialize(AccountModel accountInWork, bool isInAddMode)
@@ -73,22 +75,20 @@ namespace Keeper2018
                 MyAccNameSelectorVm.Visibility = Visibility.Visible;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Visible;
-                MyAccNameSelectorVm
+                MyAccNameSelectorVm = _accNameSelectorForAssociations
                     .InitializeForAssociation(AccountInWork.Is(185)
-                                        ? AssociationEnum.ExternalForIncome
-                                        : AssociationEnum.ExternalForExpense,
-                                    AccountInWork.AssociatedExternalId, 
-                                    _comboTreesProvider);
+                        ? AssociationEnum.ExternalForIncome
+                        : AssociationEnum.ExternalForExpense, AccountInWork.AssociatedExternalId);
             }
             else
             {
                 MyAccNameSelectorVm.Visibility = Visibility.Visible;
                 MyAccNameSelectorVm2.Visibility = Visibility.Visible;
                 TextVisibility = Visibility.Visible;
-                MyAccNameSelectorVm
-                    .InitializeForAssociation(AssociationEnum.IncomeForExternal, AccountInWork.AssociatedIncomeId, _comboTreesProvider);
-                MyAccNameSelectorVm2
-                    .InitializeForAssociation(AssociationEnum.ExpenseForExternal, AccountInWork.AssociatedExpenseId, _comboTreesProvider);
+                MyAccNameSelectorVm = _accNameSelectorForAssociations
+                    .InitializeForAssociation(AssociationEnum.IncomeForExternal, AccountInWork.AssociatedIncomeId);
+                MyAccNameSelectorVm2 = _accNameSelectorForAssociations
+                    .InitializeForAssociation(AssociationEnum.ExpenseForExternal, AccountInWork.AssociatedExpenseId);
             }
         }
 

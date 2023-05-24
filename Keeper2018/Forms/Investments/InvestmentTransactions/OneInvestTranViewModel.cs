@@ -9,7 +9,7 @@ namespace Keeper2018
     public class OneInvestTranViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        private readonly ComboTreesProvider _comboTreesProvider;
+        private readonly AccNameSelector _accNameSelectorForInvestment;
 
         public Visibility AccountVisibility { get; set; } = Visibility.Collapsed;
         public Visibility AssetVisibility { get; set; } = Visibility.Collapsed;
@@ -52,11 +52,12 @@ namespace Keeper2018
 
         public List<InvestTranModel> FeePayments { get; set; }
 
-        public OneInvestTranViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider)
+        public OneInvestTranViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider,
+            AccNameSelector accNameSelectorForInvestment)
         {
             _dataModel = dataModel;
-            _comboTreesProvider = comboTreesProvider;
-            _comboTreesProvider.Initialize();
+            _accNameSelectorForInvestment = accNameSelectorForInvestment;
+            comboTreesProvider.Initialize();
             TrustAccounts = dataModel.TrustAccounts;
             Assets = dataModel.InvestmentAssets;
         }
@@ -78,7 +79,7 @@ namespace Keeper2018
                 case InvestOperationType.TopUpTrustAccount:
                     AccountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
-                    MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    MyAccNameSelectorVm = _accNameSelectorForInvestment.InitializeForInvestments(tran);
                     CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "На трастовый счет";
                     break;
@@ -102,7 +103,7 @@ namespace Keeper2018
                 case InvestOperationType.PayBaseCommission:
                     AccountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
-                    MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    MyAccNameSelectorVm = _accNameSelectorForInvestment.InitializeForInvestments(tran);
                     CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "По трастовому счету";
                     TranInWork.Currency = CurrencyCode.BYN;
@@ -110,7 +111,7 @@ namespace Keeper2018
                 case InvestOperationType.PayBuySellFee:
                     AccountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
-                    MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    MyAccNameSelectorVm = _accNameSelectorForInvestment.InitializeForInvestments(tran);
                     CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "По трастовому счету";
                     TranInWork.Currency = CurrencyCode.BYN;
@@ -135,7 +136,7 @@ namespace Keeper2018
                     AssetVisibility = Visibility.Visible;
                     AssetAmountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
-                    MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    MyAccNameSelectorVm = _accNameSelectorForInvestment.InitializeForInvestments(tran);
                     CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "На трастовый счет";
                     AssetLabel = "По бумаге";
@@ -143,7 +144,7 @@ namespace Keeper2018
                 case InvestOperationType.WithdrawFromTrustAccount:
                     AccountVisibility = Visibility.Visible;
                     MyAccNameSelectorVm = new AccNameSelectorVm();
-                    MyAccNameSelectorVm.InitializeForInvestments(tran, _comboTreesProvider);
+                    MyAccNameSelectorVm = _accNameSelectorForInvestment.InitializeForInvestments(tran);
                     CurrencyAmountText = "Сумма";
                     TrustAccountLabel = "С трастового счета";
                     break;

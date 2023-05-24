@@ -50,7 +50,7 @@ namespace Keeper2018
             builder.RegisterType<RulesAndRatesViewModel>().SingleInstance();
 
             builder.RegisterType<ComboTreesProvider>().SingleInstance();
-            builder.RegisterType<AccNameSelectionControlInitializer>().SingleInstance();
+            builder.RegisterType<AccNameSelector>().SingleInstance();
             builder.RegisterType<BalanceDuringTransactionHinter>().SingleInstance();
             builder.RegisterType<UniversalControlVm>();
             builder.RegisterType<ReceiptViewModel>().SingleInstance();

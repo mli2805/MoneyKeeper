@@ -20,7 +20,7 @@
     </Window.Resources>
     <StackPanel Margin="5" Width="300">
         <StackPanel Visibility="{Binding AccountVisibility}">
-            <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}"/>
+            <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}"/>
         </StackPanel>
 
         <StackPanel>

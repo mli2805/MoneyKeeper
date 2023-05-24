@@ -23,7 +23,7 @@ namespace Keeper2018
         }
 
         private readonly KeeperDataModel _dataModel;
-        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
+        private readonly AccNameSelector _accNameSelectionControlInitializer;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
 
@@ -129,7 +129,7 @@ namespace Keeper2018
         }
 
         public UniversalControlVm(KeeperDataModel dataModel, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
-                 AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+                 AccNameSelector accNameSelectionControlInitializer)
         {
             _dataModel = dataModel;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;

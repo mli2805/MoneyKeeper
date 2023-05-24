@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Keeper2018
 {
@@ -22,6 +23,7 @@ namespace Keeper2018
 
         public List<AccName> AccNamesForInvestmentExpense { get; set; }
         public List<AccName> AccNamesForInvestmentIncome { get; set; }
+        public List<AccName> AccNamesForInvestment { get; set; }
 
         public ComboTreesProvider(KeeperDataModel dataModel)
         {
@@ -86,6 +88,12 @@ namespace Keeper2018
             AccNamesForInvestmentIncome = new List<AccName>
             {
                 new AccName().PopulateFromAccount(_dataModel.AcMoDict[220], null)
+            };
+
+            AccNamesForInvestment = new List<AccName>
+            {
+                AccNamesForInvestmentIncome.First(),
+                AccNamesForInvestmentExpense.First()
             };
         }
 

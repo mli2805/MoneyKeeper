@@ -8,6 +8,7 @@ namespace Keeper2018
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ButtonName { get; set; }
         public AccName Parent { get; set; }
         public List<AccName> Children { get; private set; } = new List<AccName>();
 
@@ -19,7 +20,7 @@ namespace Keeper2018
         /// <returns></returns>
         public AccName PopulateFromAccount(AccountModel account, List<int> cutBranches)
         {
-            var result = new AccName { Id = account.Id, Name = account.Name };
+            var result = new AccName { Id = account.Id, Name = account.Name, ButtonName = account.ButtonName };
 
             foreach (var child in account.Children)
             {

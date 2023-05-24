@@ -10,7 +10,7 @@ namespace Keeper2018
     public class FilterModel : PropertyChangedBase
     {
         private readonly KeeperDataModel _dataModel;
-        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
+        private readonly AccNameSelector _accNameSelectionControlInitializer;
         public List<OperationTypesFilter> OperationTypes { get; set; } = InitOperationTypesFilter();
         private OperationTypesFilter _myOperationType;
         public OperationTypesFilter MyOperationType
@@ -245,7 +245,7 @@ namespace Keeper2018
             }
         }
 
-        public FilterModel(KeeperDataModel dataModel, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+        public FilterModel(KeeperDataModel dataModel, AccNameSelector accNameSelectionControlInitializer)
         {
             _dataModel = dataModel;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;

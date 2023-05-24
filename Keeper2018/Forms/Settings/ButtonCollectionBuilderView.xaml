@@ -4,23 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Height="450" Width="600" 
+        Height="450" Width="600" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance keeper2018:ButtonCollectionBuilderViewModel}">
     <StackPanel>
         <TextBlock Text="Коллекция кнопок:" Margin="5"/>
         <ComboBox Margin="5"  ItemsSource="{Binding Collections}" 
                           SelectedItem="{Binding SelectedCollection, Mode=TwoWay}"/>
 
-        <ListView Margin="5" Height="200" ItemsSource="{Binding Buttons}"
-                  SelectedItem="{Binding SelectedButton}">
+        <ListView Margin="5" Height="250" ItemsSource="{Binding Buttons}"
+                  SelectedItem="{Binding SelectedButton}" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path=Header}">account</GridViewColumn>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Path=ButtonName}">short</GridViewColumn>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Path=Id}">id</GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button cal:Message.Attach="MoveLineUp" Content="Up" Width="50"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Удалить" cal:Message.Attach="RemoveButtonFromCollection"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
 
         <TextBlock Text="Выберите:" Margin="5"/>
@@ -36,7 +49,8 @@
             </StackPanel>
             <StackPanel Width="150">
                 <TextBlock Text="Краткое наименование:" Margin="7,4"/>
-                <TextBox Height="22" Margin="7,9,7,0" Text="{Binding ShortName}"/>
+                <TextBox Height="22" Margin="7,9,7,0" 
+                         Text="{Binding SelectedAccName.ButtonName}"/>
             </StackPanel>
             <Button Name="AddButtonToCollection" Height="22" Width="120" Margin="5,26, 0,0" Content="Добавить"/>
         </StackPanel>

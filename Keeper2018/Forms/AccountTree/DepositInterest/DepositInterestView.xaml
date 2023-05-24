@@ -41,7 +41,7 @@
                         <TextBlock Text="( Будет сохранено как вторая операция )" TextWrapping="Wrap" Width="150" Margin="5"
                                    HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Left"/>
                         <StackPanel>
-                            <keeper2018:AccNameSelector DataContext="{Binding MyNextAccNameSelectorVm}"
+                            <keeper2018:AccNameSelectorView DataContext="{Binding MyNextAccNameSelectorVm}"
                                                         Margin="5, -20, 5, 0" Width="350" HorizontalAlignment="Right" />
                             <Label Content="{Binding MyNextAccountBalanceStr}" Height="30" HorizontalAlignment="Left"
                                    Margin="50,-10,15,0" Foreground="Gray" FontSize="12" />

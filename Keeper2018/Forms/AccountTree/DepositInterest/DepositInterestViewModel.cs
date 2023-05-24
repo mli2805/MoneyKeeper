@@ -11,7 +11,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly ComboTreesProvider _comboTreesProvider;
-        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
+        private readonly AccNameSelector _accNameSelectionControlInitializer;
         private AccountModel _accountModel;
         private DepositOfferModel _depositOffer;
 
@@ -60,7 +60,7 @@ namespace Keeper2018
 
         public DepositInterestViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager,
             ComboTreesProvider comboTreesProvider,
-            AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+            AccNameSelector accNameSelectionControlInitializer)
         {
             _keeperDataModel = keeperDataModel;
             _windowManager = windowManager;

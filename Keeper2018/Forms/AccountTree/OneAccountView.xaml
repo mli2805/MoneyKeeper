@@ -21,9 +21,9 @@
             <TextBox Margin="5" Width="50" Text="{Binding AccountInWork.ButtonName, Mode= TwoWay}"/>
         </StackPanel>
 
-        <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" 
+        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" 
                                         Margin="7,0" Visibility="{Binding Visibility}"/>
-        <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm2}" 
+        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm2}" 
                                         Margin="7,0" Visibility="{Binding Visibility}"/>
         <TextBlock Margin="10, 0, 10, 10" TextWrapping="Wrap" TextAlignment="Center" 
                    Visibility="{Binding TextVisibility }"

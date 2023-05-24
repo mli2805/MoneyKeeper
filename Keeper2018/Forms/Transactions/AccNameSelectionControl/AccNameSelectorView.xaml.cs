@@ -4,11 +4,11 @@ using System.Windows.Controls;
 namespace Keeper2018
 {
     /// <summary>
-    /// Interaction logic for AccNameSelector.xaml
+    /// Interaction logic for AccNameSelectorView.xaml
     /// </summary>
-    public partial class AccNameSelector
+    public partial class AccNameSelectorView
     {
-        public AccNameSelector()
+        public AccNameSelectorView()
         {
             InitializeComponent();
         }

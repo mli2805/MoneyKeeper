@@ -9,7 +9,7 @@ namespace Keeper2018
     public class ReceiptViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        private readonly AccNameSelectionControlInitializer _accNameSelectionControlInitializer;
+        private readonly AccNameSelector _accNameSelectionControlInitializer;
         public int Top { get; set; }
         private int _left;
         public int Left
@@ -105,7 +105,7 @@ namespace Keeper2018
 
         public AccNameSelectorVm MyAccNameSelectorVm { get; set; }
 
-        public ReceiptViewModel(KeeperDataModel dataModel, AccNameSelectionControlInitializer accNameSelectionControlInitializer)
+        public ReceiptViewModel(KeeperDataModel dataModel, AccNameSelector accNameSelectionControlInitializer)
         {
             _dataModel = dataModel;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;

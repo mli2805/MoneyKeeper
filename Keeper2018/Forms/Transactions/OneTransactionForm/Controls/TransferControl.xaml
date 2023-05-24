@@ -10,13 +10,13 @@
              d:DesignWidth="300">
     <Grid>
         <StackPanel Background="#FFF7F7F7">
-            <keeper2018:AccNameSelector DataContext="{Binding MyAccNameSelectorVm}" Margin="2,0,2,0"/>
+            <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" Margin="2,0,2,0"/>
             <Label Content="{Binding MyAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
 
             <keeper2018:AmountInputControl DataContext="{Binding MyAmountInputControlVm}" Margin="5,10,0,0"/>
             <Label Content="{Binding AmountInUsd}" HorizontalAlignment="Left" Height="30" Width="176" Margin="85,0,0,0" Foreground="Black"/>
 
-            <keeper2018:AccNameSelector DataContext="{Binding MySecondAccNameSelectorVm}" Margin="2,10,2,0"/>
+            <keeper2018:AccNameSelectorView DataContext="{Binding MySecondAccNameSelectorVm}" Margin="2,10,2,0"/>
             <Label Content="{Binding MySecondAccountBalance}" Height="30" HorizontalAlignment="Right" Margin="0,5,15,0"/>
 
             <keeper2018:TagPicker DataContext="{Binding MyTagPickerVm}" Margin="2,0,2,0"/>
