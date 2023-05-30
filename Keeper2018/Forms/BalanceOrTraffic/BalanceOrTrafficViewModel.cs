@@ -91,7 +91,7 @@ namespace Keeper2018
         {
             if (ShellPartsBinder.SelectedAccountModel == null) return;
 
-            if (e.PropertyName == "SelectedAccountModel" 
+            if (e.PropertyName == "SelectedAccountModel" || e.PropertyName == "JustToForceBalanceRecalculation"
                 || e.PropertyName == "TranslatedPeriod" || e.PropertyName == "TranslatedDate")
             {
                 Lines.Clear();

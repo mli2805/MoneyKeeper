@@ -11,6 +11,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly ComboTreesProvider _comboTreesProvider;
+        private readonly ShellPartsBinder _shellPartsBinder;
         private readonly AccNameSelector _accNameSelectionControlInitializer;
         private AccountModel _accountModel;
         private DepositOfferModel _depositOffer;
@@ -59,12 +60,13 @@ namespace Keeper2018
         public string Comment { get; set; } = "";
 
         public DepositInterestViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager,
-            ComboTreesProvider comboTreesProvider,
+            ComboTreesProvider comboTreesProvider, ShellPartsBinder shellPartsBinder,
             AccNameSelector accNameSelectionControlInitializer)
         {
             _keeperDataModel = keeperDataModel;
             _windowManager = windowManager;
             _comboTreesProvider = comboTreesProvider;
+            _shellPartsBinder = shellPartsBinder;
             _accNameSelectionControlInitializer = accNameSelectionControlInitializer;
         }
 
@@ -179,6 +181,8 @@ namespace Keeper2018
                 _keeperDataModel.Transactions.Add(tranModel2.Id, tranModel2);
             }
 
+            _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
+      
             TryClose();
         }
 
