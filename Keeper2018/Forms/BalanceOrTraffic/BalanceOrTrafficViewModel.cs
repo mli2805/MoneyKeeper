@@ -89,13 +89,18 @@ namespace Keeper2018
 
         private void ShellPartsBinder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (ShellPartsBinder.SelectedAccountModel == null || e.PropertyName != "SelectedAccountModel") return;
-            Lines.Clear();
-            AccountName = ShellPartsBinder.SelectedAccountModel.Name;
-            var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));
+            if (ShellPartsBinder.SelectedAccountModel == null) return;
 
-            if (isTag) ShowTag();
-            else ShowAccount(ShellPartsBinder.BalanceOrTraffic);
+            if (e.PropertyName == "SelectedAccountModel" 
+                || e.PropertyName == "TranslatedPeriod" || e.PropertyName == "TranslatedDate")
+            {
+                Lines.Clear();
+                AccountName = ShellPartsBinder.SelectedAccountModel.Name;
+                var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));
+
+                if (isTag) ShowTag();
+                else ShowAccount(ShellPartsBinder.BalanceOrTraffic);
+            }
         }
 
         private void ShowAccount(BalanceOrTraffic mode)
