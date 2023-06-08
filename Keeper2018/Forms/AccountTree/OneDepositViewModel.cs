@@ -133,7 +133,7 @@ namespace Keeper2018
             {
                 var conditions = SelectedDepositOffer
                     .CondsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
-                var line = conditions.Value.RateLines.LastOrDefault();
+                var line = conditions.Value?.RateLines?.LastOrDefault();
                 rate = line?.Rate ?? 0;
             }
 
