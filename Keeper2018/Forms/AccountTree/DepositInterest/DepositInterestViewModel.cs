@@ -17,6 +17,10 @@ namespace Keeper2018
         private DepositOfferModel _depositOffer;
 
         public string BankTitle { get; set; }
+
+        public bool IsPercent { get; set; }
+        public bool IsMoneyBack { get; set; }
+
         public string DepositTitle { get; set; }
 
         private decimal _depositBalance;
@@ -73,7 +77,7 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Начислены проценты";
+            DisplayName = "Начислены проценты/кэшбек";
         }
 
         public bool Initialize(AccountModel accountModel)
@@ -85,6 +89,8 @@ namespace Keeper2018
             var depo = accountModel.Deposit;
             _depositOffer = _keeperDataModel.DepositOffers.First(o => o.Id == depo.DepositOfferId);
             BankTitle = _depositOffer.Bank.Name;
+            IsMoneyBack = _accountModel.IsCard;
+            IsPercent = !IsMoneyBack;
             DepositTitle = accountModel.Name;
             DepositCurrency = _depositOffer.MainCurrency.ToString().ToUpper();
             _comboTreesProvider.Initialize();
@@ -150,7 +156,9 @@ namespace Keeper2018
 
             var id = _keeperDataModel.Transactions.Keys.Max() + 1;
             var thisDateTrans = _keeperDataModel.Transactions.Values
-                .Where(t => t.Timestamp.Date == MyDatePickerVm.SelectedDate).OrderBy(l => l.Timestamp).LastOrDefault();
+                .Where(t => t.Timestamp.Date == MyDatePickerVm.SelectedDate)
+                .OrderBy(l => l.Timestamp)
+                .LastOrDefault();
             var timestamp = thisDateTrans?.Timestamp ?? MyDatePickerVm.SelectedDate;
             var tranModel1 = new TransactionModel()
             {
@@ -160,9 +168,10 @@ namespace Keeper2018
                 MyAccount = _accountModel,
                 Amount = Amount,
                 Currency = _depositOffer.MainCurrency,
-                Tags = new List<AccountModel>() { _depositOffer.Bank, _keeperDataModel.AcMoDict[208] },
+                Tags = new List<AccountModel>() { _depositOffer.Bank,  },
                 Comment = Comment,
             };
+            tranModel1.Tags.Add(IsPercent ? _keeperDataModel.AcMoDict[208] : _keeperDataModel.AcMoDict[701]);
             _keeperDataModel.Transactions.Add(tranModel1.Id, tranModel1);
 
             if (IsTransferred)

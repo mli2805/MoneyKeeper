@@ -11,52 +11,65 @@
             <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Left">
-            <TextBlock Width="150" Text="Банк" Margin="5"/>
-            <TextBlock Width="150" Text="начислил проценты:" Margin="35, 5,5,5"/>
-            <TextBlock Width="150" Text="по депозиту" Margin="5"/>
-            <TextBlock Width="150" Text="сумма процентов" Margin="5,43, 5,5"/>
-            <TextBlock Width="150" Text="Комментарий" Margin="5, 165 ,5,5" />
-        </StackPanel>
-        <StackPanel Width="370">
+    <StackPanel DockPanel.Dock="Top">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Width="150" Text="Банк " Margin="35, 5,5,0" HorizontalAlignment="Left"/>
             <TextBlock Text="{Binding BankTitle}" Margin="5" />
-            <TextBlock Text="{Binding DepositTitle}" Margin="5, 32, 5,5" />
-            <Label Content="{Binding DepositBalanceStr}" Height="30" HorizontalAlignment="Left" 
-                   Margin="20,-5,15,0" Foreground="Gray" FontSize="12"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBox Margin="5" Width="120" Height="22" HorizontalAlignment="Left" TextAlignment="Right"
-                         Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" />
-                <TextBlock Text="{Binding DepositCurrency}" Margin="5, 7,5,5"/>
-            </StackPanel>
-         
-            <GroupBox Width="540" Margin="-175, 5,5,5" HorizontalAlignment="Left">
-                <GroupBox.Header>
-                    <ItemsControl>
-                        <CheckBox Margin="5" Content="и перевел их на счет" IsChecked="{Binding IsTransferred}"/>
-                    </ItemsControl>
-                </GroupBox.Header>
-                <ContentControl IsEnabled="{Binding IsTransferred}">
-                    <DockPanel>
-                        <TextBlock Text="( Будет сохранено как вторая операция )" TextWrapping="Wrap" Width="150" Margin="5"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Left"/>
-                        <StackPanel>
-                            <keeper2018:AccNameSelectorView DataContext="{Binding MyNextAccNameSelectorVm}"
-                                                        Margin="5, -20, 5, 0" Width="350" HorizontalAlignment="Right" />
-                            <Label Content="{Binding MyNextAccountBalanceStr}" Height="30" HorizontalAlignment="Left"
-                                   Margin="50,-10,15,0" Foreground="Gray" FontSize="12" />
-                            </StackPanel>
-                    </DockPanel>
-                 </ContentControl>
-            </GroupBox>
-            <keeper2018:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="5,10,5,5" />
-            <TextBox Margin="5" Width="350" Height="22" Text="{Binding Comment}" HorizontalAlignment="Left"/>
-
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0, 20, 0 ,10" Height="32">
-                <Button Name="Save" Margin="5" Width="100" Content="Сохранить" IsDefault="True"/>
-                <Button Name="Cancel" Margin="5" Width="100" Content="Отмена" IsCancel="True"/>
-            </StackPanel>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock Width="150" Text="начислил:" Margin="35, 2,0,0"/>
+            <TextBlock Text="проценты" Margin="5, 2,0,0"/>
+            <RadioButton Margin="5, 5,0,0" IsChecked="{Binding IsPercent}"/>
+            <RadioButton Margin="5, 5,0,0" IsChecked="{Binding IsMoneyBack}"/>
+            <TextBlock Text="кэшбек" Margin="5, 2,5,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Width="150" Text="по депозиту" Margin="40,2,5,5"/>
+            <TextBlock Text="{Binding DepositTitle}" Margin="0, 2, 5,5" />
+        </StackPanel>
+        <Label Content="{Binding DepositBalanceStr}" Height="30" HorizontalAlignment="Left" 
+                   Margin="220,-5,15,0" Foreground="Gray" FontSize="12"/>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Width="150" Text="сумма " Margin="35,5, 5,0"/>
+            <TextBox Margin="5,5,5,0" Width="120" Height="22" HorizontalAlignment="Left" TextAlignment="Right"
+                         Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, 
+                            Converter={StaticResource DoubleToStringConverter}}" />
+            <TextBlock Text="{Binding DepositCurrency}" Margin="5, 7,5,0"/>
         </StackPanel>
 
-    </DockPanel>
+        <GroupBox Margin="25, 5,5,5" HorizontalAlignment="Stretch">
+            <GroupBox.Header>
+                <ItemsControl>
+                    <CheckBox Margin="5" Content="и перевел их на счет" IsChecked="{Binding IsTransferred}"/>
+                </ItemsControl>
+            </GroupBox.Header>
+            <ContentControl IsEnabled="{Binding IsTransferred}">
+                <DockPanel>
+                    <TextBlock Text="( Будет сохранено как вторая операция )" TextWrapping="Wrap" Width="150" Margin="5"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                    <StackPanel>
+                        <keeper2018:AccNameSelectorView DataContext="{Binding MyNextAccNameSelectorVm}"
+                                                            Margin="5, -20, 5, 0" Width="350" HorizontalAlignment="Right" />
+                        <Label Content="{Binding MyNextAccountBalanceStr}" Height="30" HorizontalAlignment="Left"
+                                   Margin="50,-10,15,0" Foreground="Gray" FontSize="12" />
+                    </StackPanel>
+                </DockPanel>
+            </ContentControl>
+        </GroupBox>
+
+        <keeper2018:DatePickerWithTriangles DataContext="{Binding MyDatePickerVm}" Margin="195,10,5,5" />
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Width="150" Text="Комментарий" Margin="35, 5 ,5,0" />
+            <TextBox Margin="5" Width="350" Height="22" Text="{Binding Comment}" HorizontalAlignment="Left"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="190, 20, 0 ,10" Height="32">
+            <Button Name="Save" Margin="5" Width="100" Content="Сохранить" IsDefault="True"/>
+            <Button Name="Cancel" Margin="5" Width="100" Content="Отмена" IsCancel="True"/>
+        </StackPanel>
+    </StackPanel>
+
+
+
 </Window>
