@@ -37,6 +37,7 @@ namespace Keeper2018
                 _amount = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(nameof(DepositBalanceStr));
+                NotifyOfPropertyChange(nameof(MyNextAccountBalanceStr));
             }
         }
 
