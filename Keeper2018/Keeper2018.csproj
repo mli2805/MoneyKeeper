@@ -268,6 +268,7 @@
     <Compile Include="Forms\CurrencyRates2\RatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\ExchangeRatesFetcher.cs" />
     <Compile Include="Forms\CurrencyRates2\Gold\GoldCoinsModel.cs" />
+    <Compile Include="Forms\DepositOffers\RateFormula.cs" />
     <Compile Include="Forms\Deposits\DepositOfferModelExt.cs" />
     <Compile Include="Forms\Deposits\DepositVm.cs" />
     <Compile Include="Forms\Deposits\DepoTotalVm.cs" />

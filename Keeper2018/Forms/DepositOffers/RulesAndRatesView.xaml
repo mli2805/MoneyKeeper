@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Height="720" SizeToContent="Width" WindowStartupLocation="CenterScreen" 
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" 
         d:DataContext="{d:DesignInstance keeper2018:RulesAndRatesViewModel}">
     <Window.Resources>
         <ResourceDictionary>
@@ -49,13 +49,22 @@
                 <TextBox Name="AdditionalProcent" Margin="5" Width="100"
                         Text="{Binding Conditions.AdditionalPercent, Mode=TwoWay}"/>
             </StackPanel>
-            <StackPanel Visibility="{Binding FormulaVisibility}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="Формула вычисления процентов" />
-                    <TextBox Margin="5" Text="{Binding Conditions.RateFormula, Mode=TwoWay}" Width="180" />
+            <GroupBox Header="Формула вычисления процентов" Visibility="{Binding FormulaVisibility}">
+                <StackPanel >
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <TextBlock Margin="5" Text="СР " />
+                        <ComboBox Width="40" Height="20" ItemsSource="{Binding Operations}"
+                                  SelectedItem="{Binding SelectedOperation}"/>
+                        <TextBox Margin="5" Text="{Binding FormulaK, Mode=TwoWay}" Width="53" />
+                        <TextBlock Margin="40,5, 0, 5" Text="сохранено как " Foreground="Gray"/>
+                        <TextBlock Margin="5" Text="{Binding Conditions.RateFormula, Mode=TwoWay}" 
+                                       Width="100" Foreground="Gray" />
+                    </StackPanel>
+
+                    <TextBlock Text="   Таблицу %% надо заполнять - на нее вычисления завязаны"/>
                 </StackPanel>
-                <TextBlock Text="   Таблицу %% надо заполнять - на нее вычисления завязаны"/>
-            </StackPanel>
+            </GroupBox>
+
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="5">
             <Button Name="AddLine" Margin="5" Width="150" HorizontalAlignment="Left" Content="Добавить строку" />
@@ -64,7 +73,7 @@
                 <DatePicker Margin="5" HorizontalAlignment="Right" SelectedDate="{Binding NewDate}" Width="96" />
             </StackPanel>
         </StackPanel>
-        <DataGrid x:Name="RatesGrid" Margin="5,5,5,0" Padding="5" 
+        <DataGrid x:Name="RatesGrid" Margin="5,5,5,0" Padding="5" Height="300"
               ItemsSource="{Binding Rows}" AutoGenerateColumns="False" 
               ColumnHeaderStyle="{StaticResource HeaderTextStyle}"
               Foreground="Black" HorizontalGridLinesBrush="#FFC5C3C3" VerticalGridLinesBrush="#FFC5C3C3" VerticalScrollBarVisibility="Visible">

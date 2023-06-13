@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -17,12 +18,25 @@ namespace Keeper2018
 
         public Visibility FormulaVisibility { get; set; }
 
+        public List<string> Operations { get; set; } = new List<string>() { "*", "+", "/", "-" };
+        public string SelectedOperation { get; set; }
+        public double FormulaK { get; set; }
+
         public void Initialize(string title, DepoCondsModel conditions, RateType rateType, int maxDepoRateLineId)
         {
             Title = title;
             Conditions = conditions;
             _maxDepoRateLineId = maxDepoRateLineId;
+
             FormulaVisibility = rateType == RateType.Linked ? Visibility.Visible : Visibility.Collapsed;
+            if (rateType == RateType.Linked)
+            {
+                RateFormula.TryParse(conditions.RateFormula, out string op, out double k);
+                SelectedOperation = Operations.First(o => o == op);
+                FormulaK = k;
+            }
+           
+
             Rows = new ObservableCollection<DepositRateLine>();
             foreach (var rateLine in conditions.RateLines)
             {
@@ -38,6 +52,7 @@ namespace Keeper2018
                     AmountTo = 999999999999,
                     Rate = 0
                 });
+
         }
 
         protected override void OnViewLoaded(object view)
