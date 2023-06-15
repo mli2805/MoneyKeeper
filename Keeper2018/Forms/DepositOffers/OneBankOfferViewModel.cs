@@ -29,7 +29,8 @@ namespace Keeper2018
 
         public bool IsCancelled { get; set; }
 
-        public OneBankOfferViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, RulesAndRatesViewModel rulesAndRatesViewModel)
+        public OneBankOfferViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, 
+            RulesAndRatesViewModel rulesAndRatesViewModel)
         {
             _keeperDataModel = keeperDataModel;
             _windowManager = windowManager;

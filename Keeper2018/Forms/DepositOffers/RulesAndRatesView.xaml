@@ -21,9 +21,26 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
             <TextBlock Text="Ставки и правила для депозитов открытых с даты: " Margin="5,8,5,5"/>
-            <DatePicker Margin="5" HorizontalAlignment="Right" SelectedDate="{Binding Conditions.DateFrom}" Width="96" />
+            <DatePicker Margin="5" HorizontalAlignment="Right" 
+                        SelectedDate="{Binding Conditions.DateFrom}" Width="96" />
         </StackPanel>
-        <Button Name="Close" DockPanel.Dock="Bottom" Margin="5,10" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
+        <GroupBox DockPanel.Dock="Top" Header="Формула вычисления процентов" Margin="5"
+                  Visibility="{Binding FormulaVisibility}">
+            <StackPanel >
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5" Text="СР " />
+                    <ComboBox Width="40" Height="20" ItemsSource="{Binding Operations}"
+                              SelectedItem="{Binding SelectedOperation}"/>
+                    <TextBox Margin="5" Text="{Binding FormulaK, Mode=TwoWay}" Width="34" />
+                    <TextBlock Margin="5" Text="сохранено как " Foreground="Gray"/>
+                    <TextBlock Margin="5" Text="{Binding SaveFormulaAs, Mode=OneWay}" 
+                               Foreground="Gray" />
+                    <Button Content="Пересчитать таблицу" Name="RecalculateRates" Margin="5" Width="130" Height="20"/>
+                </StackPanel>
+
+                <TextBlock Text="   Таблицу %% надо заполнять - на нее вычисления завязаны"/>
+            </StackPanel>
+        </GroupBox>  <Button Name="Close" DockPanel.Dock="Bottom" Margin="5,10" Width="140" HorizontalAlignment="Center" Content="Закрыть" />
         <StackPanel DockPanel.Dock="Bottom" Margin="5">
             <CheckBox Name="IsFactDays" Content="исходя из фактического количества дней в году" Margin="5"
               IsChecked="{Binding Conditions.IsFactDays, Mode=TwoWay}"/>
@@ -44,26 +61,12 @@
             <CheckBox Name="IsCapitalized" Content="проценты капитализируются" Margin="5"
                       IsChecked="{Binding Conditions.IsCapitalized, Mode=TwoWay}"/>
             <StackPanel Orientation="Horizontal">
-                <CheckBox Name="HasAdditionalProcent" Content="доп процент в конце срока" Margin="5"
+                <CheckBox Content="доп процент в конце срока" Margin="5"
                          IsChecked="{Binding Conditions.HasAdditionalPercent, Mode=TwoWay}"/>
-                <TextBox Name="AdditionalProcent" Margin="5" Width="100"
+                <TextBox Margin="5" Width="100"
                         Text="{Binding Conditions.AdditionalPercent, Mode=TwoWay}"/>
             </StackPanel>
-            <GroupBox Header="Формула вычисления процентов" Visibility="{Binding FormulaVisibility}">
-                <StackPanel >
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Margin="5" Text="СР " />
-                        <ComboBox Width="40" Height="20" ItemsSource="{Binding Operations}"
-                                  SelectedItem="{Binding SelectedOperation}"/>
-                        <TextBox Margin="5" Text="{Binding FormulaK, Mode=TwoWay}" Width="53" />
-                        <TextBlock Margin="40,5, 0, 5" Text="сохранено как " Foreground="Gray"/>
-                        <TextBlock Margin="5" Text="{Binding Conditions.RateFormula, Mode=TwoWay}" 
-                                       Width="100" Foreground="Gray" />
-                    </StackPanel>
-
-                    <TextBlock Text="   Таблицу %% надо заполнять - на нее вычисления завязаны"/>
-                </StackPanel>
-            </GroupBox>
+          
 
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="5">

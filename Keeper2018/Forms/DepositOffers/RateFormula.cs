@@ -16,6 +16,7 @@ namespace Keeper2018
         {
             operation = "*";
             k = -1;
+            if (string.IsNullOrEmpty(str)) return false;
             var ss = str.Split(' ').Where(s=>!string.IsNullOrEmpty(s)).ToArray();
             if (ss.Length != 3) return false;
 

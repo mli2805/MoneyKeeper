@@ -10,6 +10,8 @@ namespace Keeper2018
 {
     public class RulesAndRatesViewModel : Screen
     {
+        private readonly KeeperDataModel _dataModel;
+        private readonly IWindowManager _windowManager;
         public string Title;
         public DepoCondsModel Conditions { get; set; }
         public ObservableCollection<DepositRateLine> Rows { get; set; }
@@ -19,8 +21,42 @@ namespace Keeper2018
         public Visibility FormulaVisibility { get; set; }
 
         public List<string> Operations { get; set; } = new List<string>() { "*", "+", "/", "-" };
-        public string SelectedOperation { get; set; }
-        public double FormulaK { get; set; }
+
+        private string _selectedOperation;
+        public string SelectedOperation
+        {
+            get => _selectedOperation;
+            set
+            {
+                if (value == _selectedOperation) return;
+                _selectedOperation = value;
+                Conditions.RateFormula = $"СР {SelectedOperation} {FormulaK}";
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(SaveFormulaAs));
+            }
+        }
+
+        private double _formulaK;
+        public double FormulaK
+        {
+            get => _formulaK;
+            set
+            {
+                if (value.Equals(_formulaK)) return;
+                _formulaK = value;
+                Conditions.RateFormula = $"СР {SelectedOperation} {FormulaK}";
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(SaveFormulaAs));
+            }
+        }
+
+        public string SaveFormulaAs => Conditions.RateFormula;
+
+        public RulesAndRatesViewModel(KeeperDataModel dataModel, IWindowManager windowManager)
+        {
+            _dataModel = dataModel;
+            _windowManager = windowManager;
+        }
 
         public void Initialize(string title, DepoCondsModel conditions, RateType rateType, int maxDepoRateLineId)
         {
@@ -31,11 +67,11 @@ namespace Keeper2018
             FormulaVisibility = rateType == RateType.Linked ? Visibility.Visible : Visibility.Collapsed;
             if (rateType == RateType.Linked)
             {
+                if (Conditions.RateFormula == null) Conditions.RateFormula = "СР * -1";
                 RateFormula.TryParse(conditions.RateFormula, out string op, out double k);
                 SelectedOperation = Operations.First(o => o == op);
                 FormulaK = k;
             }
-           
 
             Rows = new ObservableCollection<DepositRateLine>();
             foreach (var rateLine in conditions.RateLines)
@@ -43,16 +79,21 @@ namespace Keeper2018
                 Rows.Add(rateLine);
             }
             if (Rows.Count == 0)
-                Rows.Add(new DepositRateLine()
-                {
-                    Id = maxDepoRateLineId + 1,
-                    DepositOfferConditionsId = Conditions.Id,
-                    DateFrom = DateTime.Today,
-                    AmountFrom = 0,
-                    AmountTo = 999999999999,
-                    Rate = 0
-                });
+                Rows.Add(CreateRateLine(maxDepoRateLineId + 1, 
+                    rateType == RateType.Linked ? (decimal)RateFormula.Calculate(Conditions.RateFormula, 1) : 0));
+        }
 
+        private DepositRateLine CreateRateLine(int id, decimal rate)
+        {
+            return new DepositRateLine()
+            {
+                Id = id,
+                DepositOfferConditionsId = Conditions.Id,
+                DateFrom = DateTime.Today,
+                AmountFrom = 0,
+                AmountTo = 999999999999,
+                Rate = rate,
+            };
         }
 
         protected override void OnViewLoaded(object view)
@@ -98,8 +139,29 @@ namespace Keeper2018
             }
         }
 
+        // Button visible only if rate is LINKED
+        public void RecalculateRates()
+        {
+            var table = Rows.ToList();
+            Rows.Clear();
+
+            foreach (var depositRateLine in table)
+            {
+                var l = _dataModel.RefinancingRates.Last(r => r.Date.Date <= depositRateLine.DateFrom.Date);
+                depositRateLine.Rate = (decimal)RateFormula.Calculate(Conditions.RateFormula, l.Value);
+                Rows.Add(depositRateLine);
+            }
+        }
+
         public override void CanClose(Action<bool> callback)
         {
+            if (Rows.Count == 0)
+            {
+                var vm = new MyMessageBoxViewModel(MessageType.Error, "Таблица не должна быть пустая");
+                _windowManager.ShowDialog(vm);
+                return;
+            }
+
             Conditions.RateLines = Rows.ToList();
             base.CanClose(callback);
         }

@@ -28,6 +28,7 @@ namespace Keeper2018
 
         private readonly KeeperDataModel _dataModel;
         private readonly IWindowManager _windowManager;
+        private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
         public bool IsSavePressed { get; set; }
 
         private List<DepositOfferModel> _depositOffers;
@@ -60,10 +61,12 @@ namespace Keeper2018
 
         public string IsNotRevocable => _selectedDepositOffer.IsNotRevocable ? "Безотзывный" : "Отзывный";
 
-        public OneDepositViewModel(KeeperDataModel dataModel, IWindowManager windowManager)
+        public OneDepositViewModel(KeeperDataModel dataModel, IWindowManager windowManager, 
+            RulesAndRatesViewModel rulesAndRatesViewModel)
         {
             _dataModel = dataModel;
             _windowManager = windowManager;
+            _rulesAndRatesViewModel = rulesAndRatesViewModel;
         }
 
         public void InitializeForm(AccountModel accountModel, bool isInAddMode)
@@ -144,12 +147,11 @@ namespace Keeper2018
 
         public void FillDepositRatesTable()
         {
-            var vm = new RulesAndRatesViewModel();
-            vm.Initialize("",
+            _rulesAndRatesViewModel.Initialize("",
                 SelectedDepositOffer.CondsMap.OrderBy(k => k.Key)
                     .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value,
                 SelectedDepositOffer.RateType, _dataModel.GetDepoRateLinesMaxId());
-            _windowManager.ShowDialog(vm);
+            _windowManager.ShowDialog(_rulesAndRatesViewModel);
         }
     }
 }

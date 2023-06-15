@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Width="1032" Height="700" WindowStartupLocation="CenterScreen">
+        Width="1032" Height="700" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignData RatesViewModel}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="5,15, 5, 7" Height="32">
             <Button Name="Close" Content="Close" Margin="5" Width="100" DockPanel.Dock="Right"/>
@@ -30,7 +30,7 @@
                 <keeper2018:GoldRatesView DataContext="{Binding GoldRatesViewModel}"/>
             </TabItem>
             <TabItem Header="Ставка рефинансирования НБ РБ" Width="200">
-                <keeper2018:FinanceRatesView DataContext="{Binding FinanceRatesViewModel}"/>
+                <keeper2018:RefinancingRatesView DataContext="{Binding RefinancingRatesViewModel}"/>
             </TabItem>
         </TabControl>
     </DockPanel>

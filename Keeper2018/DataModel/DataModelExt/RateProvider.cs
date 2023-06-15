@@ -5,6 +5,14 @@ using KeeperDomain.Exchange;
 
 namespace Keeper2018
 {
+    public static class RefinancingRateProvider
+    {
+        public static double GetRefinancingRate(this KeeperDataModel dataModel, DateTime dt)
+        {
+            return dataModel.RefinancingRates.Last(r => r.Date < dt).Value;
+        }
+    }
+
     public static class RateProvider
     {
         public static double GetRubBynRate(this KeeperDataModel dataModel, DateTime dt)

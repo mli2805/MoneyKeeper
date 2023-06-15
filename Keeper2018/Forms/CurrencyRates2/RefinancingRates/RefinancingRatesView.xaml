@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Keeper2018.FinanceRatesView"
+﻿<UserControl x:Class="Keeper2018.RefinancingRatesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              cal:Bind.ModelWithoutContext="{Binding .}"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance keeper2018:FinanceRatesViewModel}">
+             d:DataContext="{d:DesignInstance keeper2018:RefinancingRatesViewModel}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom">
             <Button Name="Download" Margin="5" Width="280" Content="Загрузить последние с сайта НБ РБ" HorizontalAlignment="Left"/>

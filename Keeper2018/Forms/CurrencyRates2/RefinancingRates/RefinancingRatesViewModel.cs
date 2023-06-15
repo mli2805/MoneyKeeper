@@ -5,12 +5,12 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class FinanceRatesViewModel : PropertyChangedBase
+    public class RefinancingRatesViewModel : PropertyChangedBase
     {
         private readonly KeeperDataModel _keeperDataModel;
         public ObservableCollection<RefinancingRate> Rows { get; set; }
 
-        public FinanceRatesViewModel(KeeperDataModel keeperDataModel)
+        public RefinancingRatesViewModel(KeeperDataModel keeperDataModel)
         {
             _keeperDataModel = keeperDataModel;
         }

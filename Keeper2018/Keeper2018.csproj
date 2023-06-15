@@ -250,10 +250,10 @@
     </Compile>
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\KomBankRatesLine.cs" />
-    <Compile Include="Forms\CurrencyRates2\FinanceRates\FinanceRatesView.xaml.cs">
-      <DependentUpon>FinanceRatesView.xaml</DependentUpon>
+    <Compile Include="Forms\CurrencyRates2\RefinancingRates\RefinancingRatesView.xaml.cs">
+      <DependentUpon>RefinancingRatesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CurrencyRates2\FinanceRates\FinanceRatesViewModel.cs" />
+    <Compile Include="Forms\CurrencyRates2\RefinancingRates\RefinancingRatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Gold\GoldRatesView.xaml.cs">
       <DependentUpon>GoldRatesView.xaml</DependentUpon>
     </Compile>
@@ -753,7 +753,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CurrencyRates2\FinanceRates\FinanceRatesView.xaml">
+    <Page Include="Forms\CurrencyRates2\RefinancingRates\RefinancingRatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
