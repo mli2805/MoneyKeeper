@@ -79,7 +79,7 @@ namespace Keeper2018
                 Rows.Add(rateLine);
             }
             if (Rows.Count == 0)
-                Rows.Add(CreateRateLine(maxDepoRateLineId + 1, 
+                Rows.Add(CreateRateLine(maxDepoRateLineId + 1,
                     rateType == RateType.Linked ? (decimal)RateFormula.Calculate(Conditions.RateFormula, 1) : 0));
         }
 
@@ -139,8 +139,16 @@ namespace Keeper2018
             }
         }
 
-        // Button visible only if rate is LINKED
+        // a) Button visible only if rate is LINKED
+        // b) пока реализовано только для ставки связанной с Ставкой рефинансирования
+        // c) чтобы не заводить новые строки с новыми Id - не удаляем существующие строки, а пересчитываем ставку
         public void RecalculateRates()
+        {
+           UpdateTable();
+        }
+
+        // эта функция нужна только если введены неправильные ставки
+        public void RecalculateExistingLines()
         {
             var table = Rows.ToList();
             Rows.Clear();
@@ -151,6 +159,15 @@ namespace Keeper2018
                 depositRateLine.Rate = (decimal)RateFormula.Calculate(Conditions.RateFormula, l.Value);
                 Rows.Add(depositRateLine);
             }
+        }
+
+        // таблицы ставок должны обновляться централизовано, после ввода новой ставки рефинансирования
+        // единственный случай когда нужна кнопка здесь - когда заводим новый депозит/новые условия
+        private void UpdateTable()
+        {
+            _maxDepoRateLineId = _dataModel.UpdateRateLinesInConditions(Conditions, _maxDepoRateLineId);
+            Rows.Clear();
+            Conditions.RateLines.ForEach(Rows.Add);
         }
 
         public override void CanClose(Action<bool> callback)

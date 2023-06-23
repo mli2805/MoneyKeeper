@@ -13,6 +13,8 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom">
             <Button Name="Download" Margin="5" Width="280" Content="Загрузить последние с сайта НБ РБ" HorizontalAlignment="Left"/>
+            <Button Name="UpdateRates" Margin="5" Width="380" 
+                    Content="Обновить ставки по депозитам привязанным к СР НБ РБ" HorizontalAlignment="Left"/>
         </DockPanel>
         <DataGrid Height="500" ItemsSource="{Binding Rows}" 
                   AutoGenerateColumns="False" Margin="5" IsReadOnly="True">

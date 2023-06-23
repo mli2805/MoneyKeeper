@@ -250,6 +250,7 @@
     </Compile>
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesViewModel.cs" />
     <Compile Include="Forms\CurrencyRates2\Download\KomBankRatesLine.cs" />
+    <Compile Include="Forms\CurrencyRates2\RefinancingRates\RefinancingRatesExt.cs" />
     <Compile Include="Forms\CurrencyRates2\RefinancingRates\RefinancingRatesView.xaml.cs">
       <DependentUpon>RefinancingRatesView.xaml</DependentUpon>
     </Compile>

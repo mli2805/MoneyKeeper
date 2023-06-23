@@ -28,7 +28,7 @@ namespace Keeper2018
             if (rates.Count > _keeperDataModel.RefinancingRates.Count)
             {
                 var lastId = 0;
-                foreach (var refinancingRate in rates.OrderBy(r=>r.Date))
+                foreach (var refinancingRate in rates.OrderBy(r => r.Date))
                 {
                     var dr = _keeperDataModel.RefinancingRates.FirstOrDefault(r => r.Date == refinancingRate.Date);
                     if (dr != null)
@@ -42,5 +42,11 @@ namespace Keeper2018
                 }
             }
         }
+
+        public void UpdateRates()
+        {
+            _keeperDataModel.UpdateDepoRatesLinkedToCp();
+        }
+
     }
 }
