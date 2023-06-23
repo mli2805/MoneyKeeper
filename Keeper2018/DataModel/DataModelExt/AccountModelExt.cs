@@ -16,5 +16,23 @@ namespace Keeper2018
         {
             return keeperDataModel.AcMoDict.FirstOrDefault(p => p.Value.Name == accountTitle).Value;
         }
+
+        public static IOrderedEnumerable<AccountModel> GetActiveCardsOrderedByFinishDate(this KeeperDataModel dataModel)
+        {
+            // 161 - папка Карточки
+
+            return dataModel.AcMoDict.Values
+                .Where(a => a.Is(161) && a.Deposit?.Card != null)
+                .OrderBy(d => d.Deposit.FinishDate);
+        }
+
+        public static IOrderedEnumerable<AccountModel> GetOpenDepositsOrderedByFinishDate(this KeeperDataModel dataModel)
+        {
+            // 166 - папка Депозиты
+            return dataModel.AcMoDict.Values
+                .Where(a => !a.Children.Any() && a.Is(166))
+                .OrderBy(d => d.Deposit.FinishDate);
+        }
+
     }
 }

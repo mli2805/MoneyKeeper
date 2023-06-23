@@ -22,12 +22,7 @@ namespace Keeper2018.PayCards
 
         public void Initialize()
         {
-            Rows.Clear();
-            Rows.AddRange(_dataModel.AcMoDict.Values
-                .Where(a => !a.Is(393) && !a.Is(235) // закрытые
-                                       && a.IsDeposit && a.Deposit.Card != null)
-                .OrderBy(d=>d.Deposit.FinishDate)
-                .Select(GetVm));
+            Rows= _dataModel.GetActiveCardsOrderedByFinishDate().Select(GetVm).ToList();
 
             Total = $"Всего {Rows.Count}";
             TotalMine = $"мои {Rows.Count(r => r.IsMine)} / не мои {Rows.Count(r => !r.IsMine)}";

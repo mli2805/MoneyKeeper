@@ -9,7 +9,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" Height="800" Width="1000" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
         WindowStartupLocation="CenterScreen" FocusManager.FocusedElement="{Binding ElementName=MainDatagrid}"
-        TextOptions.TextFormattingMode="Display">
+        TextOptions.TextFormattingMode="Display" d:DataContext="{d:DesignData TransactionsViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Space">
             <cal:ActionMessage MethodName="ActionsMethod">

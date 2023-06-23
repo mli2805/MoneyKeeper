@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -49,7 +50,22 @@ namespace Keeper2018
 
         public DurationModel DepositTerm { get; set; }
 
-       
+
+        public Brush BackgroundColor { get; set; }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (value == _isSelected) return;
+                _isSelected = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+
         // Conditions of offer could be changed (especially rates, initial sum while Title remains the same)
         // only for newly opened deposits
         // Conditions are applied from some date - key in dictionary

@@ -9,38 +9,63 @@
         mc:Ignorable="d"
         SizeToContent="Width" Height="700" WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance keeper2018:BankOffersViewModel}">
-    <ListView ItemsSource="{Binding Rows}" 
-              SelectedItem="{Binding SelectedDepositOffer, Mode= TwoWay}" SelectionMode="Single"
-              cal:Message.Attach="[Event MouseDoubleClick] = [Action EditSelectedOffer]">
-        <ListView.ItemContainerStyle>
-            <Style TargetType="{x:Type ListViewItem}">
-                <Setter Property="BorderBrush" Value="LightGray" />
-                <Setter Property="BorderThickness" Value="0,0,0,1" />
-            </Style>
-        </ListView.ItemContainerStyle> 
-        <ListView.View>
-            <GridView>
-                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="35" />
-                <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Header}" Width="95" />
-                <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}" Width="250" />
-                <GridViewColumn Header="Срок" DisplayMemberBinding="{Binding DepositTerm}" Width="80" />
-                <GridViewColumn Header="Отзывной" DisplayMemberBinding="{Binding NotRevocableStr}" Width="80" />
-                <GridViewColumn Header="Ставка" DisplayMemberBinding="{Binding RateType}" Width="80" />
-                <GridViewColumn Header="Доп взносы" DisplayMemberBinding="{Binding AddLimitStr}" Width="120" />
-                <GridViewColumn Header="Валюта" DisplayMemberBinding="{Binding MainCurrency}" Width="50" />
-                <GridViewColumn Header="Примечание" DisplayMemberBinding="{Binding Comment}" Width="300" />
-            </GridView>
-        </ListView.View>
-        <i:Interaction.Behaviors>
-            <keeper2018:ScrollListViewToBottomOnAddBehavior />
-            <keeper2018:ScrollListViewToBottomOnLoadBehavior />
-        </i:Interaction.Behaviors>
-        <ListView.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Добавить" cal:Message.Attach="AddOffer"/>
-                <MenuItem Header="Изменить" cal:Message.Attach="EditSelectedOffer"/>
-                <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedOffer"/>
-            </ContextMenu>
-        </ListView.ContextMenu>
-    </ListView>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right" Height="30">
+            <TextBlock Width="200" TextAlignment="Center" Margin="5" Background="{Binding DepositBrush}" Text="Действующие депозиты"/>
+            <TextBlock Width="200" TextAlignment="Center" Margin="5" Background="{Binding CardBrush}" Text="Действующие карточки"/>
+            <TextBlock Width="200" TextAlignment="Center" Margin="5" Background="{Binding TrustBrush}" Text="Трастовые счета"/>
+            <TextBlock Width="200" TextAlignment="Center" Margin="5" Background="{Binding ClosedBrush}" Text="Уже закрыт"/>
+            <TextBlock Width="200" TextAlignment="Center" Margin="5" Background="#f0f0f0" Text="Счет открыт мимо оферты"/>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding Rows}" Margin="5,5,5,15"
+                  SelectedItem="{Binding SelectedDepositOffer, Mode= TwoWay}"
+                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" 
+                  IsSynchronizedWithCurrentItem="True">
+            <i:Interaction.Behaviors>
+                <keeper2018:ScrollToBottomOnAddBehavior />
+                <keeper2018:ScrollToBottomOnLoadBehavior />
+            </i:Interaction.Behaviors>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" cal:Message.Attach="AddOffer" />
+                    <MenuItem Header="Изменить" cal:Message.Attach="EditSelectedOffer" />
+                    <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedOffer" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="{Binding BackgroundColor}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#96b6FF" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="35" />
+                <DataGridTextColumn Header="Банк" Binding="{Binding Bank.Header}" Width="95" />
+                <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="250" />
+                <DataGridTextColumn Header="Срок" Binding="{Binding DepositTerm}" Width="100" />
+                <DataGridTextColumn Header="Отзывной" Binding="{Binding NotRevocableStr}" Width="80" />
+                <DataGridTextColumn Header="Ставка" Binding="{Binding RateType}" Width="80" />
+                <DataGridTextColumn Header="Доп взносы" Binding="{Binding AddLimitStr}" Width="120" />
+                <DataGridTextColumn Header="Валюта" Binding="{Binding MainCurrency}" Width="50" />
+                <DataGridTextColumn Header="Примечание" Binding="{Binding Comment}" Width="300" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </DockPanel>
 </Window>

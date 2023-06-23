@@ -8,14 +8,14 @@ namespace Keeper2018
 {
     public class OpenDepositsViewModel : Screen
     {
-        private readonly KeeperDataModel _keeperDataModel;
+        private readonly KeeperDataModel _dataModel;
         public List<DepositVm> Rows { get; private set; }
 
         public List<DepoTotalVm> Totals { get; private set; }
 
-        public OpenDepositsViewModel(KeeperDataModel keeperDataModel)
+        public OpenDepositsViewModel(KeeperDataModel dataModel)
         {
-            _keeperDataModel = keeperDataModel;
+            _dataModel = dataModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -25,10 +25,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Rows = _keeperDataModel.AcMoDict.Values
-                .Where(a => !a.Children.Any() && a.Is(166) && !a.Is(235))
-                .OrderBy(d => d.Deposit.FinishDate)
-                .Select(Convert).ToList();
+            Rows = _dataModel.GetOpenDepositsOrderedByFinishDate().Select(Convert).ToList();
 
             EvaluateDepoTotals();
             EvaluateDepoAndMatras();
@@ -39,8 +36,8 @@ namespace Keeper2018
 
         private void EvaluateDepoAndMatras()
         {
-            var matras = _keeperDataModel.AcMoDict[167]; // шкаф
-            var calc = new TrafficOfBranchCalculator(_keeperDataModel, matras,
+            var matras = _dataModel.AcMoDict[167]; // шкаф
+            var calc = new TrafficOfBranchCalculator(_dataModel, matras,
                 new Period() { FinishMoment = DateTime.Now });
             var balance = calc.Evaluate();
 
@@ -51,7 +48,7 @@ namespace Keeper2018
                 line.DepoAndMatras.Currency = pair.Key;
                 var sum = line.Depo.Sum + pair.Value;
                 line.DepoAndMatras.Sum = sum;
-                var inUsd = line.Currency == CurrencyCode.USD ? sum : _keeperDataModel.AmountInUsd(DateTime.Now, pair.Key, sum);
+                var inUsd = line.Currency == CurrencyCode.USD ? sum : _dataModel.AmountInUsd(DateTime.Now, pair.Key, sum);
                 total += inUsd;
                 line.DepoAndMatras.SumUsd = inUsd;
             }
@@ -73,8 +70,8 @@ namespace Keeper2018
 
         private void EvaluateAllMine()
         {
-            var allMine = _keeperDataModel.AcMoDict[158]; // мои
-            var calc = new TrafficOfBranchCalculator(_keeperDataModel, allMine,
+            var allMine = _dataModel.AcMoDict[158]; // мои
+            var calc = new TrafficOfBranchCalculator(_dataModel, allMine,
                 new Period() { FinishMoment = DateTime.Now });
             var balance = calc.Evaluate();
 
@@ -84,7 +81,7 @@ namespace Keeper2018
                 var line = Totals.First(l => !l.IsAggregateLine && l.Currency == pair.Key);
                 line.AllMine.Currency = pair.Key;
                 line.AllMine.Sum = pair.Value;
-                var inUsd = _keeperDataModel.AmountInUsd(DateTime.Now, pair.Key, pair.Value);
+                var inUsd = _dataModel.AmountInUsd(DateTime.Now, pair.Key, pair.Value);
                 total += inUsd;
                 line.AllMine.SumUsd = inUsd;
             }
@@ -112,7 +109,7 @@ namespace Keeper2018
                 if (sum > 0)
                 {
                     totalCount += dcs.Count;
-                    var amountInUsd = _keeperDataModel.AmountInUsd(DateTime.Now, currency, sum);
+                    var amountInUsd = _dataModel.AmountInUsd(DateTime.Now, currency, sum);
                     total += amountInUsd;
 
                     line.Depo.Pieces = dcs.Count;
@@ -137,9 +134,9 @@ namespace Keeper2018
 
         private DepositVm Convert(AccountModel accountModel)
         {
-            var depoOffer = _keeperDataModel.DepositOffers
+            var depoOffer = _dataModel.DepositOffers
                 .First(o => o.Id == accountModel.Deposit.DepositOfferId);
-            var calc = new TrafficOfAccountCalculator(_keeperDataModel, accountModel,
+            var calc = new TrafficOfAccountCalculator(_dataModel, accountModel,
                 new Period(accountModel.Deposit.StartDate, DateTime.Now));
             var isAddOpen = IsAddOpen(accountModel.Deposit, depoOffer, out var addLimitStr);
             var rate = depoOffer.GetCurrentRate(accountModel.Deposit.StartDate, out string formula);
