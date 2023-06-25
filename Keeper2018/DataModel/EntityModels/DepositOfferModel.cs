@@ -8,14 +8,13 @@ namespace Keeper2018
 {
     public class DepositOfferModel : PropertyChangedBase
     {
-        private RateType _rateType;
-        private bool _isAddLimited;
         public int Id { get; set; }
         public AccountModel Bank { get; set; }
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
         public string NotRevocableStr => IsNotRevocable ? "безотзыв" : "отзывной";
 
+        private RateType _rateType;
         public RateType RateType
         {
             get => _rateType;
@@ -27,6 +26,7 @@ namespace Keeper2018
             }
         }
 
+        private bool _isAddLimited;
         public bool IsAddLimited
         {
             get => _isAddLimited;
@@ -91,7 +91,8 @@ namespace Keeper2018
                 MainCurrency = MainCurrency,
                 DepositTerm = DepositTerm.Clone(),
                 CondsMap = new Dictionary<DateTime, DepoCondsModel>(),
-                Comment = Comment
+                Comment = Comment,
+                BackgroundColor = BackgroundColor,
             };
             foreach (var pair in CondsMap)
             {
