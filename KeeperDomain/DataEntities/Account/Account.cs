@@ -10,6 +10,8 @@ namespace KeeperDomain
         public int OwnerId { get; set; }
         public bool IsExpanded;
 
+        public int BankId { get; set; } // 0 if not in bank
+
         public int AssociatedIncomeId { get; set; } // for external
         public int AssociatedExpenseId { get; set; } // for external
         public int AssociatedExternalId { get; set; } // for tag
@@ -21,7 +23,7 @@ namespace KeeperDomain
         public string Dump(int level)
         {
             var shiftedName = new string(' ', level * 2) + Header;
-            return Id + " ; " + shiftedName + " ; " + OwnerId + " ; " + IsExpanded + " ; " + 
+            return Id + " ; " + shiftedName + " ; " + OwnerId + " ; " + IsExpanded + " ; " + BankId + " ; " + 
                    AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + 
                    ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");

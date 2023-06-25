@@ -44,6 +44,7 @@ namespace Keeper2018
             {
                 Id = model.Id,
                 OwnerId = model.Owner?.Id ?? 0,
+                BankId = model.Bank?.Id ?? 0,
                 Header = (string)model.Header,
                 IsExpanded = model.IsExpanded,
                 AssociatedIncomeId = model.AssociatedIncomeId,

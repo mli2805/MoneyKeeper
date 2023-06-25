@@ -9,7 +9,8 @@
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
     <DockPanel PreviewMouseUp="OnMouseUp" MouseUp="OnMouseUp" MinWidth="300">
-        <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding KeeperDataModel.AccountsTree}" FontSize="13" Padding="0,0,5,0">
+        <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding KeeperDataModel.AccountsTree}" 
+                  FontSize="13" Padding="0,0,5,0">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <EventSetter Event="DragOver" Handler="treeView_DragOver"/>
@@ -19,7 +20,6 @@
             </TreeView.ItemContainerStyle>
             <TreeView.ContextMenu>
                 <ContextMenu>
-
                     <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledAddIntoAccount}">
                         <MenuItem.Icon>

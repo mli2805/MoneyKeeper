@@ -44,10 +44,10 @@ namespace Keeper2018
                             && SelectedAccountModel.IsMyAccount && !SelectedAccountModel.IsDeposit 
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility AddDepositVisibility => SelectedAccountModel.IsMyAccount 
-            ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility AddDepositVisibility => SelectedAccountModel.IsMyAccountsInBanksFolder 
+        ? Visibility.Visible : Visibility.Collapsed;
 
-        public bool IsEnabledAddIntoAccount => !_isSelectedAccountUsedInTransaction;
+        public bool IsEnabledAddIntoAccount => !_isSelectedAccountUsedInTransaction && !SelectedAccountModel.IsFolderOfClosed;
         public bool IsEnabledDeleteAccount => !SelectedAccountModel.IsFolder && !_isSelectedAccountUsedInTransaction;
 
 

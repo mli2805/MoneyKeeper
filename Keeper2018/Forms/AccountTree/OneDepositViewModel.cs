@@ -96,7 +96,8 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = _isInAddMode ? "Добавить" : "Изменить";
+            var cap = _isInAddMode ? "Добавить" : "Изменить";
+            DisplayName = $"{cap} (id = {AccountModel.Id})";
         }
 
         public void PayCard()

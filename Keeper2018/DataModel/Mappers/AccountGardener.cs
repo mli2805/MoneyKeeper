@@ -32,6 +32,9 @@ namespace Keeper2018
                     ownerModel.Items.Add(accountModel);
                     accountModel.Owner = ownerModel;
                 }
+
+                if (account.BankId != 0)
+                    accountModel.Bank = dataModel.AcMoDict[account.BankId];
             }
         }
 

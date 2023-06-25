@@ -234,6 +234,7 @@
     <Compile Include="DataModel\EntityModels\AccountModel.cs" />
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
     <Compile Include="DataModel\EntityModels\Car\FuellingModel.cs" />
+    <Compile Include="DataModel\Mappers\AccountGardener.cs" />
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml.cs">
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
@@ -546,7 +547,6 @@
     </Compile>
     <Compile Include="Forms\AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
-    <Compile Include="DataModel\DataModelExt\AccountGardener.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ITreeViewItemModel.cs" />

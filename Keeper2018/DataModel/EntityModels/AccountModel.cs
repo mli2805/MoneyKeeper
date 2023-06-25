@@ -11,6 +11,7 @@ namespace Keeper2018
         public int Id { get; set; }
 
         public AccountModel Owner { get; set; } // property Parent is occupied in TreeViewItem
+        public AccountModel Bank { get; set; } // null if not in bank
 
         // Items are in TreeViewItem
         public List<AccountModel> Children => Items.Cast<AccountModel>().ToList();
@@ -63,6 +64,8 @@ namespace Keeper2018
 
         public bool IsTag => Is(185) || Is(189);
         public bool IsMyAccount => Is(158); // in XAML
+        public bool IsMyAccountsInBanksFolder => Is(159);
+        public bool IsFolderOfClosed => Is(393);
     }
 
 }

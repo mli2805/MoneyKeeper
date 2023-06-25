@@ -42,6 +42,8 @@ namespace Keeper2018
 
         public bool IsSavePressed { get; set; }
 
+        public string TextIn { get; set; }
+
         public OneAccountViewModel(ComboTreesProvider comboTreesProvider, AccNameSelector accNameSelectorForAssociations)
         {
             _comboTreesProvider = comboTreesProvider;
@@ -55,6 +57,7 @@ namespace Keeper2018
             _isInAddMode = isInAddMode;
 
             ParentFolder = AccountInWork.Owner == null ? "Корневой счет" : AccountInWork.Owner.Name;
+            TextIn = AccountInWork.IsMyAccountsInBanksFolder ? "В банке" : "В папке";
             _oldName = accountInWork.Name;
 
             InitializeAccNameSelectors();
@@ -94,7 +97,8 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = _isInAddMode ? "Добавить" : "Изменить";
+            var cap = _isInAddMode ? "Добавить" : "Изменить";
+            DisplayName = $"{cap} (id = {AccountInWork.Id})";
         }
 
         public void Save()
