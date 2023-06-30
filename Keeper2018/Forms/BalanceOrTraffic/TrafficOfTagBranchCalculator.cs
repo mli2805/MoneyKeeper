@@ -8,7 +8,7 @@ namespace Keeper2018
     public class TrafficOfTagBranchCalculator : ITraffic
     {
         private readonly KeeperDataModel _dataModel;
-        private readonly AccountModel _tag;
+        private readonly AccountItemModel _tag;
         private readonly Period _period;
 
         private readonly BalanceWithTurnoverOfBranch _balanceWithTurnovers = new BalanceWithTurnoverOfBranch();
@@ -16,7 +16,7 @@ namespace Keeper2018
         public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##;- #,0.##} usd ( знак относительно меня)";
      //   public string Total => "";
 
-        public TrafficOfTagBranchCalculator(KeeperDataModel dataModel, AccountModel tag, Period period)
+        public TrafficOfTagBranchCalculator(KeeperDataModel dataModel, AccountItemModel tag, Period period)
         {
             _dataModel = dataModel;
             _tag = tag;
@@ -29,14 +29,14 @@ namespace Keeper2018
             {
                 foreach (var tag in tran.Tags)
                 {
-                    var myTag = tag.IsC(_tag);
+                    var myTag = (AccountItemModel)tag.IsC(_tag);
                     if (myTag != null)
                         RegisterTran(tran, myTag);
                 }
             }
         }
 
-        private void RegisterTran(TransactionModel tran, AccountModel myTag)
+        private void RegisterTran(TransactionModel tran, AccountItemModel myTag)
         {
                 decimal inUsd;
             switch (tran.Operation)

@@ -7,20 +7,20 @@ namespace Keeper2018
 {
     public class BalanceWithTurnoverOfBranch
     {
-        public readonly Dictionary<AccountModel, BalanceWithTurnover> ChildAccounts = new Dictionary<AccountModel, BalanceWithTurnover>();
+        public readonly Dictionary<AccountItemModel, BalanceWithTurnover> ChildAccounts = new Dictionary<AccountItemModel, BalanceWithTurnover>();
 
-        public void Add(AccountModel accountModel, CurrencyCode currency, decimal amount)
+        public void Add(AccountItemModel accountItemModel, CurrencyCode currency, decimal amount)
         {
-            if (!ChildAccounts.ContainsKey(accountModel))
-                ChildAccounts.Add(accountModel, new BalanceWithTurnover());
-            ChildAccounts[accountModel].Add(currency, amount);
+            if (!ChildAccounts.ContainsKey(accountItemModel))
+                ChildAccounts.Add(accountItemModel, new BalanceWithTurnover());
+            ChildAccounts[accountItemModel].Add(currency, amount);
         }
 
-        public void Sub(AccountModel accountModel, CurrencyCode currency, decimal amount)
+        public void Sub(AccountItemModel accountItemModel, CurrencyCode currency, decimal amount)
         {
-            if (!ChildAccounts.ContainsKey(accountModel))
-                ChildAccounts.Add(accountModel, new BalanceWithTurnover());
-            ChildAccounts[accountModel].Sub(currency, amount);
+            if (!ChildAccounts.ContainsKey(accountItemModel))
+                ChildAccounts.Add(accountItemModel, new BalanceWithTurnover());
+            ChildAccounts[accountItemModel].Sub(currency, amount);
         }
 
         public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)

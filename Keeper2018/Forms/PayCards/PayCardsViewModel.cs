@@ -29,7 +29,7 @@ namespace Keeper2018.PayCards
             TotalVirtual = $"пластик {Rows.Count(r => !r.IsVirtual)} / виртуалки {Rows.Count(r => r.IsVirtual)}";
         }
 
-        private PayCardVm GetVm(AccountModel account)
+        private PayCardVm GetVm(AccountItemModel account)
         {
             var depositOffer = _dataModel.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
             var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));

@@ -7,7 +7,7 @@ namespace Keeper2018
     {
         #region Data
 
-        public int Id;
+        public int Id { get; set; }
         readonly ObservableCollection<TreeViewItemModel> _children;
 
         bool _isExpanded;
@@ -76,5 +76,26 @@ namespace Keeper2018
 
 
         #endregion
+
+        public bool Is(TreeViewItemModel treeViewItemModel)
+        {
+            if (Equals(treeViewItemModel)) return true;
+            return Parent != null && Parent.Is(treeViewItemModel);
+        }
+
+        public bool Is(int accountId)
+        {
+            if (accountId == Id) return true;
+            return Parent != null && Parent.Is(accountId);
+        }
+
+        public TreeViewItemModel IsC(TreeViewItemModel treeViewItemModel)
+        {
+            if (Equals(treeViewItemModel)) return this;
+            if (Parent == null) return null;
+            if (Parent.Equals(treeViewItemModel)) return this;
+            return Parent.IsC(treeViewItemModel);
+        }
+
     }
 }

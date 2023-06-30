@@ -30,28 +30,7 @@ namespace Keeper2018
 
             Map((KeeperBin)loadResult.Payload);
 
-            Transform();
-            
             return true;
-        }
-
-        private void Transform()
-        {
-            foreach (var accountModel in _keeperDataModel.AccountsTree)
-            {
-                _keeperDataModel.AccountItems.Add(Transform(accountModel, null));
-            }
-        }
-
-        private AccountItemModel Transform(AccountModel accountModel, AccountItemModel parent)
-        {
-            var item = new AccountItemModel(accountModel.Id, accountModel.Name, parent);
-            item.Img = accountModel.Name.StartsWith("Б") ? "../../Resources/gsk.png" : "../../Resources/paycard.png";
-            foreach (var accountModelChild in accountModel.Children)
-            {
-                item.AddChild(Transform(accountModelChild, item));
-            }
-            return item;
         }
 
         private async Task<LibResult> LoadFromBinOrTxt()
@@ -115,7 +94,7 @@ namespace Keeper2018
             _keeperDataModel.DepositOffers = bin.JoinDepoParts(_keeperDataModel.AcMoDict);
 
             _keeperDataModel.ButtonCollections = bin.ButtonCollections
-                .Select(b=>b.Map(_keeperDataModel.AcMoDict)).ToList();
+                .Select(b => b.Map(_keeperDataModel.AcMoDict)).ToList();
         }
     }
 }

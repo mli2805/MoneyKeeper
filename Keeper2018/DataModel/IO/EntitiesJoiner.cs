@@ -24,7 +24,7 @@ namespace Keeper2018
             return result;
         }
 
-        public static List<DepositOfferModel> JoinDepoParts(this KeeperBin bin, Dictionary<int, AccountModel> acMoDict)
+        public static List<DepositOfferModel> JoinDepoParts(this KeeperBin bin, Dictionary<int, AccountItemModel> acMoDict)
         {
             var result = bin.DepositOffers.Select(o => o.Map(acMoDict)).ToList();
             foreach (var depoOffer in result)

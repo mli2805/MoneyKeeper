@@ -9,7 +9,7 @@ namespace Keeper2018
     public class DepositOfferModel : PropertyChangedBase
     {
         public int Id { get; set; }
-        public AccountModel Bank { get; set; }
+        public AccountItemModel Bank { get; set; }
         public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
         public string NotRevocableStr => IsNotRevocable ? "безотзыв" : "отзывной";
@@ -74,7 +74,7 @@ namespace Keeper2018
 
         public override string ToString()
         {
-            return $"{Bank.Header} {Title} {MainCurrency}";
+            return $"{Bank.Name} {Title} {MainCurrency}";
         }
 
         public DepositOfferModel DeepCopyExceptBank()

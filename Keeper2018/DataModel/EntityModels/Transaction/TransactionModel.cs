@@ -25,8 +25,8 @@ namespace Keeper2018
         public OperationType Operation { get; set; }
         public PaymentWay PaymentWay { get; set; }
 
-        private AccountModel _myAccount;
-        public AccountModel MyAccount
+        private AccountItemModel _myAccount;
+        public AccountItemModel MyAccount
         {
             get => _myAccount;
             set
@@ -37,8 +37,8 @@ namespace Keeper2018
             }
         }
 
-        private AccountModel _mySecondAccount;
-        public AccountModel MySecondAccount
+        private AccountItemModel _mySecondAccount;
+        public AccountItemModel MySecondAccount
         {
             get => _mySecondAccount;
             set
@@ -98,7 +98,7 @@ namespace Keeper2018
             }
         }
 
-        public List<AccountModel> Tags { get; set; }
+        public List<AccountItemModel> Tags { get; set; }
         public string Comment { get; set; }
     }
 }

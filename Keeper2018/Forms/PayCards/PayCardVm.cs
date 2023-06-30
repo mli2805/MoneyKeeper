@@ -19,7 +19,7 @@ namespace Keeper2018.PayCards
         public DateTime FinishDate { get; set; }
         public string Comment { get; set; }
 
-        public AccountModel BankAccount { get; set; }
+        public AccountItemModel BankAccount { get; set; }
         public CurrencyCode MainCurrency { get; set; }
 
         public string Name { get; set; }

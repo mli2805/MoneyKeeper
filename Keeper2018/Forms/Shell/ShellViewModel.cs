@@ -49,7 +49,7 @@ namespace Keeper2018
 
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
-            ShellPartsBinder.SelectedAccountModel = account;
+            ShellPartsBinder.SelectedAccountItemModel = account;
         }
 
         public override async void CanClose(Action<bool> callback)

@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public static class DepoByRevocabilitySeparator
     {
-        public static AccountGroups SeparateByRevocability(this KeeperDataModel dataModel, AccountModel folder)
+        public static AccountGroups SeparateByRevocability(this KeeperDataModel dataModel, AccountItemModel folder)
         {
             var revocable = new AccountGroup("Отзывные");
             var notRevocable = new AccountGroup("Безотзывные");
@@ -27,15 +27,15 @@ namespace Keeper2018
         }
 
 
-        private static List<AccountModel> GetFoldersTerminalLeaves(AccountModel folder)
+        private static List<AccountItemModel> GetFoldersTerminalLeaves(AccountItemModel folder)
         {
-            var result = new List<AccountModel>();
+            var result = new List<AccountItemModel>();
             foreach (var child in folder.Children)
             {
                 if (child.Children.Any())
-                    result.AddRange(GetFoldersTerminalLeaves(child));
+                    result.AddRange(GetFoldersTerminalLeaves((AccountItemModel)child));
                 else
-                    result.Add(child);
+                    result.Add((AccountItemModel)child);
             }
             return result;
         }

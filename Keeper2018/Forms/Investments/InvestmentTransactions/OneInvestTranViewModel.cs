@@ -171,7 +171,7 @@ namespace Keeper2018
         public void Save()
         {
             TranInWork.Timestamp = MyDatePickerVm.SelectedDate;
-            TranInWork.AccountModel = MyAccNameSelectorVm == null ? null : _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
+            TranInWork.AccountItemModel = MyAccNameSelectorVm == null ? null : _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
             TryClose(true);
         }
 

@@ -17,8 +17,8 @@ namespace Keeper2018
                     if (id == 185 || id == 189) break;
                     if (tagGroupsIds.Contains(id)) return id;
                     var cat = dataModel.AcMoDict[id];
-                    if (cat.Owner == null) break;
-                    id = cat.Owner.Id;
+                    if (cat.Parent == null) break;
+                    id = cat.Parent.Id;
                 }
             }
             // never comes here, every expense transaction should have expense category

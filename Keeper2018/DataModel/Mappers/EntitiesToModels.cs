@@ -6,9 +6,9 @@ namespace Keeper2018
 {
     public static class EntitiesToModels
     {
-        public static AccountModel Map(this Account account)
+        public static AccountItemModel Map(this Account account)
         {
-            return new AccountModel(account.Header)
+            return new AccountItemModel(account.Id, account.Header, null)
             {
                 Id = account.Id,
                 IsExpanded = account.IsExpanded,
@@ -19,7 +19,7 @@ namespace Keeper2018
             };
         }
 
-        public static DepositOfferModel Map(this DepositOffer depositOffer, Dictionary<int, AccountModel> acMoDict)
+        public static DepositOfferModel Map(this DepositOffer depositOffer, Dictionary<int, AccountItemModel> acMoDict)
         {
             return new DepositOfferModel
             {
@@ -48,7 +48,7 @@ namespace Keeper2018
                 Id = depoConds.Id,
                 DepositOfferId = depoConds.DepositOfferId,
                 DateFrom = depoConds.DateFrom,
-            
+
                 RateFormula = depoConds.RateFormula,
                 IsFactDays = depoConds.IsFactDays,
                 EveryStartDay = depoConds.EveryStartDay,
@@ -59,12 +59,12 @@ namespace Keeper2018
                 IsCapitalized = depoConds.IsCapitalized,
                 HasAdditionalPercent = depoConds.HasAdditionalProcent,
                 AdditionalPercent = depoConds.AdditionalProcent,
-            
+
                 Comment = depoConds.Comment,
             };
         }
-      
-        public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountModel> acMoDict)
+
+        public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountItemModel> acMoDict)
         {
             return new TransactionModel()
             {
@@ -84,15 +84,15 @@ namespace Keeper2018
             };
         }
 
-        private static List<AccountModel> MapTags(this string tagStr, Dictionary<int, AccountModel> acMoDict)
+        private static List<AccountItemModel> MapTags(this string tagStr, Dictionary<int, AccountItemModel> acMoDict)
         {
-            var tags = new List<AccountModel>();
+            var tags = new List<AccountItemModel>();
             if (tagStr == "" || tagStr == " ") return tags;
 
             var substrings = tagStr.Split('|');
             tags.AddRange(substrings
                 .Select(substring => int.Parse(substring.Trim()))
-                .Select(i=>acMoDict[i]));
+                .Select(i => acMoDict[i]));
 
             return tags;
         }
@@ -154,7 +154,7 @@ namespace Keeper2018
                 Id = transaction.Id,
                 InvestOperationType = transaction.InvestOperationType,
                 Timestamp = transaction.Timestamp,
-                AccountModel = transaction.AccountId != 0 ? dataModel.AcMoDict[transaction.AccountId] : null,
+                AccountItemModel = transaction.AccountId != 0 ? dataModel.AcMoDict[transaction.AccountId] : null,
                 TrustAccount = dataModel.TrustAccounts.FirstOrDefault(t => t.Id == transaction.TrustAccountId),
                 CurrencyAmount = transaction.CurrencyAmount,
                 CouponAmount = transaction.CouponAmount,
@@ -168,13 +168,13 @@ namespace Keeper2018
             };
         }
 
-        public static ButtonCollectionModel Map(this ButtonCollection buttonCollection, Dictionary<int, AccountModel> acMoDict)
+        public static ButtonCollectionModel Map(this ButtonCollection buttonCollection, Dictionary<int, AccountItemModel> acMoDict)
         {
             return new ButtonCollectionModel()
             {
                 Id = buttonCollection.Id,
                 Name = buttonCollection.Name,
-                AccountModels = buttonCollection.AccountIds.Select(i=>acMoDict[i]).ToList(),
+                AccountModels = buttonCollection.AccountIds.Select(i => acMoDict[i]).ToList(),
             };
         }
     }

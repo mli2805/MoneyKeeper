@@ -10,7 +10,7 @@ namespace Keeper2018
     public class OneDepositViewModel : Screen
     {
         private bool _isInAddMode;
-        public AccountModel AccountModel { get; set; }
+        public AccountItemModel AccountItemModel { get; set; }
         public Deposit DepositInWork { get; set; }
         public string ParentName { get; set; }
 
@@ -69,15 +69,15 @@ namespace Keeper2018
             _rulesAndRatesViewModel = rulesAndRatesViewModel;
         }
 
-        public void InitializeForm(AccountModel accountModel, bool isInAddMode)
+        public void InitializeForm(AccountItemModel accountItemModel, bool isInAddMode)
         {
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
-            AccountModel = accountModel;
+            AccountItemModel = accountItemModel;
             DepositOffers = _dataModel.DepositOffers;
-            DepositInWork = accountModel.Deposit;
-            DepositInWork.MyAccountId = accountModel.Id;
-            ParentName = accountModel.Owner.Name;
+            DepositInWork = accountItemModel.Deposit;
+            DepositInWork.MyAccountId = accountItemModel.Id;
+            ParentName = accountItemModel.Parent.Name;
 
             if (isInAddMode)
             {
@@ -89,7 +89,7 @@ namespace Keeper2018
             else
             {
                 _selectedDepositOffer = DepositOffers.First(o => o.Id == DepositInWork.DepositOfferId);
-                Junction = AccountModel.Name;
+                Junction = AccountItemModel.Name;
             }
         }
 
@@ -97,13 +97,13 @@ namespace Keeper2018
         protected override void OnViewLoaded(object view)
         {
             var cap = _isInAddMode ? "Добавить" : "Изменить";
-            DisplayName = $"{cap} (id = {AccountModel.Id})";
+            DisplayName = $"{cap} (id = {AccountItemModel.Id})";
         }
 
         public void PayCard()
         {
             var vm = new OneCardViewModel();
-            vm.InitializeForm(AccountModel, DepositInWork.Card == null);
+            vm.InitializeForm(AccountItemModel, DepositInWork.Card == null);
             _windowManager.ShowDialog(vm);
             if (vm.IsSavePressed)
             {
@@ -118,7 +118,7 @@ namespace Keeper2018
             IsSavePressed = true;
             if (string.IsNullOrEmpty(Junction))
                 CompileAccountName();
-            AccountModel.Header = Junction;
+            AccountItemModel.Name = Junction;
             DepositInWork.DepositOfferId = SelectedDepositOffer.Id;
             TryClose();
         }
@@ -143,7 +143,7 @@ namespace Keeper2018
 
             var startDate = DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
             var finishDate = DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
-            Junction = $"{SelectedDepositOffer.Bank.Header} {SelectedDepositOffer.Title} {startDate} - {finishDate} {rate:0.#}%";
+            Junction = $"{SelectedDepositOffer.Bank.Name} {SelectedDepositOffer.Title} {startDate} - {finishDate} {rate:0.#}%";
         }
 
         public void FillDepositRatesTable()

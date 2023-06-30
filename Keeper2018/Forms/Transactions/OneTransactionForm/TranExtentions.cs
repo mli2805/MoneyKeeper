@@ -24,7 +24,7 @@ namespace Keeper2018
             };
             if (tran.Tags != null)
             {
-                result.Tags = new List<AccountModel>();
+                result.Tags = new List<AccountItemModel>();
                 foreach (var tag in tran.Tags)
                 {
                     result.Tags.Add(tag);
@@ -50,7 +50,7 @@ namespace Keeper2018
             destinationTran.Tags?.Clear();
             if (tran.Tags != null)
             {
-                if (destinationTran.Tags == null) destinationTran.Tags = new List<AccountModel>();
+                if (destinationTran.Tags == null) destinationTran.Tags = new List<AccountItemModel>();
                 foreach (var tag in tran.Tags)
                 {
                     destinationTran.Tags.Add(tag);
@@ -60,7 +60,7 @@ namespace Keeper2018
         }
 
         // возвращает подробную категорию
-        private static AccountModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
+        private static AccountItemModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
         {
             var rootId = isIncome ? 185 : 189;
             var category = tran.Tags.FirstOrDefault(t => t.Is(rootId));
@@ -73,7 +73,7 @@ namespace Keeper2018
 
         }
 
-        public static AccountModel GetExternalAccount(this TransactionModel tran)
+        public static AccountItemModel GetExternalAccount(this TransactionModel tran)
         {
             var externalAccount = tran.Tags.FirstOrDefault(a => a.Is(157));
             if (externalAccount == null)

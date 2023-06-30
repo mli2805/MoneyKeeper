@@ -32,28 +32,28 @@ namespace Keeper2018.ExpensesOnAccount
             DisplayName = _caption;
         }
 
-        public void Initialize(AccountModel accountModel, Period period)
+        public void Initialize(AccountItemModel accountItemModel, Period period)
         {
-            _caption = $"{accountModel.Name}";
+            _caption = $"{accountItemModel.Name}";
             _transactions = new List<TranLine>();
 
-            Expenses = InitializeCollection(accountModel, period, OperationType.Расход)
+            Expenses = InitializeCollection(accountItemModel, period, OperationType.Расход)
                 .Collection.OrderByDescending(c => c.Total).ToList();
             ExpensesTotalStr = $"{Expenses.Sum(l => l.Total):#,0.##}";
 
-            Incomes = InitializeCollection(accountModel, period, OperationType.Доход)
+            Incomes = InitializeCollection(accountItemModel, period, OperationType.Доход)
                 .Collection.OrderByDescending(c => c.Total).ToList();
             IncomesTotalStr = $"{Incomes.Sum(l => l.Total):#,0.##}";
 
             PeriodStr = $"{period}  (Период может быть выбран на главной форме)";
         }
 
-        private CategoriesCollection InitializeCollection(AccountModel accountModel, Period period, OperationType operationType)
+        private CategoriesCollection InitializeCollection(AccountItemModel accountItemModel, Period period, OperationType operationType)
         {
             var categoriesCollection = new CategoriesCollection();
 
             var trans = _dataModel.Transactions.Values.OrderBy(t => t.Timestamp)
-                .Where(t => t.MyAccount.Id == accountModel.Id
+                .Where(t => t.MyAccount.Id == accountItemModel.Id
                             && t.Operation == operationType
                             && period.Includes(t.Timestamp)).ToArray();
 

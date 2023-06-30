@@ -11,9 +11,9 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
         private MonthAnalysisModel _monthAnalysisModel;
-        private AccountModel _myAccountsRoot;
-        private AccountModel _incomesRoot;
-        private AccountModel _expensesRoot;
+        private AccountItemModel _myAccountsItemRoot;
+        private AccountItemModel _incomesRoot;
+        private AccountItemModel _expensesRoot;
 
         public MonthAnalyser(KeeperDataModel dataModel)
         {
@@ -22,7 +22,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            _myAccountsRoot = _dataModel.AccountsTree.First(a => a.Name == "Мои");
+            _myAccountsItemRoot = _dataModel.AccountsTree.First(a => a.Name == "Мои");
             _incomesRoot = _dataModel.AccountsTree.First(a => a.Name == "Все доходы");
             _expensesRoot = _dataModel.AccountsTree.First(a => a.Name == "Все расходы");
         }
@@ -57,7 +57,7 @@ namespace Keeper2018
 
         private void FillBeforeViewModel(DateTime startDate)
         {
-            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _myAccountsRoot,
+            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _myAccountsItemRoot,
                                         new Period(new DateTime(2001, 12, 31), startDate.AddSeconds(-1)));
             trafficCalculator.EvaluateAccount();
             _monthAnalysisModel.BeforeViewModel.List.Add("Входящий остаток на начало месяца", FontWeights.Bold);
@@ -154,11 +154,11 @@ namespace Keeper2018
             }
 
             var depoMainFolder = _dataModel.AcMoDict[166];
-            foreach (var depo in depoMainFolder.Children.Where(c => c.IsDeposit))
-                    ForeseeDepoIncome(depo);
+            foreach (var depo in depoMainFolder.Children.Where(c => ((AccountItemModel)c).IsDeposit))
+                    ForeseeDepoIncome((AccountItemModel)depo);
         }
 
-        private void ForeseeDepoIncome(AccountModel depo)
+        private void ForeseeDepoIncome(AccountItemModel depo)
         {
             var depoMainCurrency = _dataModel.DepositOffers
                 .First(o => o.Id == depo.Deposit.DepositOfferId).MainCurrency;
@@ -224,7 +224,7 @@ namespace Keeper2018
             {
                 foreach (var tag in tran.Tags)
                 {
-                    var expenseArticle = tag.IsC(_expensesRoot);
+                    var expenseArticle = (AccountItemModel)tag.IsC(_expensesRoot);
                     if (expenseArticle == null) continue;
                     var amountInUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                     articles.Add(expenseArticle, CurrencyCode.USD, amountInUsd);
@@ -269,7 +269,7 @@ namespace Keeper2018
 
         private void FillAfterList(DateTime finishMoment)
         {
-            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _myAccountsRoot,
+            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _myAccountsItemRoot,
                                         new Period(new DateTime(2001, 12, 31), finishMoment));
             trafficCalculator.EvaluateAccount();
             var text = _monthAnalysisModel.IsCurrentPeriod ? "сегодня" : "конец месяца";

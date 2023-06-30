@@ -6,7 +6,7 @@ namespace Keeper2018
 {
     static class TranCalcExtentions
     {
-        public static decimal AmountForAccount(this TransactionModel tran, AccountModel account, CurrencyCode? currency, DateTime upToDateTime)
+        public static decimal AmountForAccount(this TransactionModel tran, AccountItemModel account, CurrencyCode? currency, DateTime upToDateTime)
         {
             return tran.Timestamp <= upToDateTime ? AmountForAccount(tran, account, currency) : 0;
         }
@@ -36,7 +36,7 @@ namespace Keeper2018
         // }
 
 
-        public static decimal AmountForAccount(this TransactionModel tran, AccountModel account, CurrencyCode? currency)
+        public static decimal AmountForAccount(this TransactionModel tran, AccountItemModel account, CurrencyCode? currency)
         {
             var isAccount = tran.MyAccount.Is(account);
             var isSecondAccount = tran.MySecondAccount != null && tran.MySecondAccount.Is(account);

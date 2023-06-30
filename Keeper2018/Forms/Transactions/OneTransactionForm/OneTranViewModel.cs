@@ -41,7 +41,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
-        public List<Tuple<decimal, AccountModel, string>> ReceiptList { get; set; }
+        public List<Tuple<decimal, AccountItemModel, string>> ReceiptList { get; set; }
         public TransactionModel FuellingTran { get; set; }
         public FuellingModel FuellingModel { get; set; }
 
@@ -174,7 +174,7 @@ namespace Keeper2018
         {
             var externalAccount = TranInWork.GetExternalAccount();
             if (externalAccount == null) return false;
-            TranInWork.Tags = new List<AccountModel>() { externalAccount };
+            TranInWork.Tags = new List<AccountItemModel>() { externalAccount };
             InitControls();
             return true;
         }
@@ -236,7 +236,7 @@ namespace Keeper2018
                 Timestamp = vm.Timestamp,
                 Amount = vm.Amount,
                 Currency = vm.Currency,
-                Tags = new List<AccountModel>() { account, azs, },
+                Tags = new List<AccountItemModel>() { (AccountItemModel)account, azs, },
                 Comment = $"{vm.Volume} л {vm.FuelType} ({vm.Comment})",
             };
         }

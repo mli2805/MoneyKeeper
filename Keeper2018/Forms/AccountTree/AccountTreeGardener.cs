@@ -9,15 +9,9 @@ namespace Keeper2018
         CanDelete, IsRoot, HasChildren, HasRelatedTransactions
     }
 
-    public static class AccountItemModelExt
-    {
-      
-
-    }
-
     public static class AccountTreeGardener
     {
-        public static AccountModel GetSelectedAccountModel(this KeeperDataModel dataModel)
+        public static AccountItemModel GetSelectedAccountModel(this KeeperDataModel dataModel)
         {
             foreach (var root in dataModel.AccountsTree)
             {
@@ -27,12 +21,12 @@ namespace Keeper2018
             return null;
         }
 
-        private static AccountModel GetSelectedAccountModelInBranch(AccountModel branch)
+        private static AccountItemModel GetSelectedAccountModelInBranch(AccountItemModel branch)
         {
             if (branch.IsSelected) return branch;
             foreach (var child in branch.Children)
             {
-                var selected = GetSelectedAccountModelInBranch(child);
+                var selected = GetSelectedAccountModelInBranch((AccountItemModel)child);
                 if (selected != null) return selected;
             }
             return null;
@@ -73,24 +67,24 @@ namespace Keeper2018
             }
         }
 
-        private static AccountCantBeDeletedReasons CheckIfAccountCanBeDeleted(this KeeperDataModel dataModel, AccountModel account)
+        private static AccountCantBeDeletedReasons CheckIfAccountCanBeDeleted(this KeeperDataModel dataModel, AccountItemModel account)
         {
-            if (account.Owner == null) return AccountCantBeDeletedReasons.IsRoot;
+            if (account.Parent == null) return AccountCantBeDeletedReasons.IsRoot;
             if (account.Children.Any()) return AccountCantBeDeletedReasons.HasChildren;
             if (dataModel.Transactions.Values.Any(t =>
-                t.MyAccount.Id == account.Id || 
+                t.MyAccount.Id == account.Id ||
                 (t.MySecondAccount != null && t.MySecondAccount.Id == account.Id) ||
-                t.Tags != null && t.Tags.Select(tag=>tag.Id).Contains(account.Id)))
+                t.Tags != null && t.Tags.Select(tag => tag.Id).Contains(account.Id)))
                 return AccountCantBeDeletedReasons.HasRelatedTransactions;
             return AccountCantBeDeletedReasons.CanDelete;
         }
 
-        private static void RemoveAccountLowLevel(this KeeperDataModel dataModel, AccountModel accountModel)
+        private static void RemoveAccountLowLevel(this KeeperDataModel dataModel, AccountItemModel accountItemModel)
         {
-            var owner = accountModel.Owner;
-            accountModel.Owner = null;
-            owner.Items.Remove(accountModel);
-            dataModel.AcMoDict.Remove(accountModel.Id);
+            var owner = accountItemModel.Parent;
+            accountItemModel.Parent = null;
+            owner.Children.Remove(accountItemModel);
+            dataModel.AcMoDict.Remove(accountItemModel.Id);
         }
     }
 }

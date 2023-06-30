@@ -18,14 +18,14 @@ namespace Keeper2018
         /// <param name="account">корневой account, с которого начать</param>
         /// <param name="cutBranches">список ветвей, которые обрубить</param>
         /// <returns></returns>
-        public AccName PopulateFromAccount(AccountModel account, List<int> cutBranches)
+        public AccName PopulateFromAccount(AccountItemModel account, List<int> cutBranches)
         {
             var result = new AccName { Id = account.Id, Name = account.Name, ButtonName = account.ButtonName };
 
             foreach (var child in account.Children)
             {
                 if (cutBranches != null && cutBranches.Any(b=>b == child.Id)) continue;
-                var resultChild =  PopulateFromAccount(child, cutBranches);
+                var resultChild =  PopulateFromAccount((AccountItemModel)child, cutBranches);
                 resultChild.Parent = result;
                 result.Children.Add(resultChild);
             }

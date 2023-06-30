@@ -39,20 +39,20 @@ namespace Keeper2018
 
         public string TranForCombo => $"{Timestamp:d} {CurrencyAmount} {Currency.ToString().ToLower()}";
 
-        private AccountModel _accountModel;
-        public AccountModel AccountModel
+        private AccountItemModel _accountItemModel;
+        public AccountItemModel AccountItemModel
         {
-            get => _accountModel;
+            get => _accountItemModel;
             set
             {
-                if (Equals(value, _accountModel)) return;
-                _accountModel = value;
+                if (Equals(value, _accountItemModel)) return;
+                _accountItemModel = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(nameof(AccountForDataGrid));
             }
         }
 
-        public string AccountForDataGrid => AccountModel?.Name ?? "";
+        public string AccountForDataGrid => AccountItemModel?.Name ?? "";
 
         private TrustAccount _trustAccount;
         public TrustAccount TrustAccount
@@ -248,7 +248,7 @@ namespace Keeper2018
             Id = source.Id;
             InvestOperationType = source.InvestOperationType;
             Timestamp = source.Timestamp;
-            AccountModel = source.AccountModel;
+            AccountItemModel = source.AccountItemModel;
             TrustAccount = source.TrustAccount;
             CurrencyAmount = source.CurrencyAmount;
             CouponAmount = source.CouponAmount;

@@ -8,7 +8,7 @@ namespace Keeper2018
     public class AccountGroup
     {
         public string Title;
-        public List<AccountModel> Accounts = new List<AccountModel>();
+        public List<AccountItemModel> Accounts = new List<AccountItemModel>();
         public BalanceWithDetails BalanceWithDetails;
         public decimal Procent;
 
@@ -32,7 +32,7 @@ namespace Keeper2018
                 accountGroup.Procent = accountGroup.BalanceWithDetails.TotalInUsd * 100 / TotalInUsd;
         }
 
-        private BalanceWithDetails EvaluateOneGroupBalance(List<AccountModel> group, KeeperDataModel dataModel)
+        private BalanceWithDetails EvaluateOneGroupBalance(List<AccountItemModel> group, KeeperDataModel dataModel)
         {
             var groupBalance = new Balance();
             foreach (var accountModel in group)

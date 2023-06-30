@@ -7,7 +7,7 @@ namespace Keeper2018
 {
     public static class DepoRevenueInThisMonthCalculator
     {
-        public static decimal GetRevenueInThisMonth(this AccountModel depo, KeeperDataModel dataModel)
+        public static decimal GetRevenueInThisMonth(this AccountItemModel depo, KeeperDataModel dataModel)
         {
             var deposit = depo.Deposit;
             var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
@@ -44,7 +44,7 @@ namespace Keeper2018
         }
 
         public static IEnumerable<Tuple<DateTime, decimal>>
-            GetRevenuesInThisMonth(this AccountModel depo, KeeperDataModel dataModel)
+            GetRevenuesInThisMonth(this AccountItemModel depo, KeeperDataModel dataModel)
         {
             var deposit = depo.Deposit;
             var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
@@ -110,7 +110,7 @@ namespace Keeper2018
             return 1;
         }
 
-        private static void ApplyTransaction(this AccountModel depo, TransactionModel tran, Balance balanceBefore)
+        private static void ApplyTransaction(this AccountItemModel depo, TransactionModel tran, Balance balanceBefore)
         {
             switch (tran.Operation)
             {

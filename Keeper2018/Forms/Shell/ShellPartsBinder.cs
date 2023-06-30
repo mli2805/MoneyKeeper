@@ -11,15 +11,15 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
 
         private bool _isSelectedAccountUsedInTransaction;
-        private AccountModel _selectedAccountModel;
-        public AccountModel SelectedAccountModel
+        private AccountItemModel _selectedAccountItemModel;
+        public AccountItemModel SelectedAccountItemModel
         {
-            get => _selectedAccountModel;
+            get => _selectedAccountItemModel;
             set
             {
-                if (Equals(value, _selectedAccountModel)) return;
-                _selectedAccountModel = value;
-                _isSelectedAccountUsedInTransaction = UsedInTransaction(_selectedAccountModel.Id);
+                if (Equals(value, _selectedAccountItemModel)) return;
+                _selectedAccountItemModel = value;
+                _isSelectedAccountUsedInTransaction = UsedInTransaction(_selectedAccountItemModel.Id);
                 NotifyOfPropertyChange();
 
                 NotifyOfPropertyChange(nameof(IsEnabledAddIntoAccount));
@@ -34,21 +34,21 @@ namespace Keeper2018
             }
         }
 
-        public Visibility DepositMenuVisibility => SelectedAccountModel.IsDeposit ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility CardMenuVisibility => SelectedAccountModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyLeafMenuVisibility => SelectedAccountModel.IsLeaf && SelectedAccountModel.IsMyAccount 
+        public Visibility DepositMenuVisibility => SelectedAccountItemModel.IsDeposit ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility CardMenuVisibility => SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility MyLeafMenuVisibility => SelectedAccountItemModel.IsLeaf && SelectedAccountItemModel.IsMyAccount 
             ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyFolderMenuVisibility => SelectedAccountModel.IsFolder && SelectedAccountModel.IsMyAccount 
+        public Visibility MyFolderMenuVisibility => SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount 
             ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyLeafNotDepositMenuVisibility => SelectedAccountModel.IsLeaf 
-                            && SelectedAccountModel.IsMyAccount && !SelectedAccountModel.IsDeposit 
+        public Visibility MyLeafNotDepositMenuVisibility => SelectedAccountItemModel.IsLeaf 
+                            && SelectedAccountItemModel.IsMyAccount && !SelectedAccountItemModel.IsDeposit 
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility AddDepositVisibility => SelectedAccountModel.IsMyAccountsInBanksFolder 
+        public Visibility AddDepositVisibility => SelectedAccountItemModel.IsMyAccountsInBanksFolder 
         ? Visibility.Visible : Visibility.Collapsed;
 
-        public bool IsEnabledAddIntoAccount => !_isSelectedAccountUsedInTransaction && !SelectedAccountModel.IsFolderOfClosed;
-        public bool IsEnabledDeleteAccount => !SelectedAccountModel.IsFolder && !_isSelectedAccountUsedInTransaction;
+        public bool IsEnabledAddIntoAccount => !_isSelectedAccountUsedInTransaction && !SelectedAccountItemModel.IsFolderOfClosed;
+        public bool IsEnabledDeleteAccount => !SelectedAccountItemModel.IsFolder && !_isSelectedAccountUsedInTransaction;
 
 
         private BalanceOrTraffic _balanceOrTraffic;

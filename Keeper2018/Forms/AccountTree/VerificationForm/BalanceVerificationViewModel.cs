@@ -25,14 +25,14 @@ namespace Keeper2018
 
         private TransactionModel[] _trans;
         private int _transIndex;
-        public void Initialize(AccountModel accountModel)
+        public void Initialize(AccountItemModel accountItemModel)
         {
             Lines = new List<VerificationLine>();
             _total = 0;
             _trans = _dataModel.Transactions.Values
                 .OrderBy(t => t.Timestamp)
-                .Where(t => t.MyAccount.Id == accountModel.Id || 
-                            (t.MySecondAccount != null && t.MySecondAccount.Id == accountModel.Id))
+                .Where(t => t.MyAccount.Id == accountItemModel.Id || 
+                            (t.MySecondAccount != null && t.MySecondAccount.Id == accountItemModel.Id))
                 .ToArray();
             _transIndex = 0;
             while (true)
@@ -42,8 +42,8 @@ namespace Keeper2018
                 {
                     case OperationType.Доход: RegisterIncome(t); break;
                     case OperationType.Расход: RegisterExpense(t); break;
-                    case OperationType.Перенос: RegisterTransfer(t, accountModel); break;
-                    case OperationType.Обмен: RegisterExcange(t, accountModel); break;
+                    case OperationType.Перенос: RegisterTransfer(t, accountItemModel); break;
+                    case OperationType.Обмен: RegisterExcange(t, accountItemModel); break;
                 }
 
                 _transIndex++;
@@ -54,7 +54,7 @@ namespace Keeper2018
             SelectedLine = Lines.FirstOrDefault();
             if (SelectedLine == null) return;
 
-            _caption = $"{accountModel.Name}  {_total:#,0.##}";
+            _caption = $"{accountItemModel.Name}  {_total:#,0.##}";
         }
 
         private void RegisterIncome(TransactionModel tr)
@@ -108,28 +108,28 @@ namespace Keeper2018
             };
         }
 
-        private void RegisterTransfer(TransactionModel tr, AccountModel accountModel)
+        private void RegisterTransfer(TransactionModel tr, AccountItemModel accountItemModel)
         {
-            var amount = tr.MyAccount.Id == accountModel.Id ? -tr.Amount : tr.Amount;
+            var amount = tr.MyAccount.Id == accountItemModel.Id ? -tr.Amount : tr.Amount;
             Lines.Insert(0, new VerificationLine()
             {
                 Amount = amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = (tr.MyAccount.Id == accountModel.Id ? tr.MySecondAccount : tr.MyAccount).Name,
+                Counterparty = (tr.MyAccount.Id == accountItemModel.Id ? tr.MySecondAccount : tr.MyAccount).Name,
                 OperationType = OperationType.Перенос,
                 Text = tr.Comment,
             });
             _total = _total + amount;
         }
 
-        private void RegisterExcange(TransactionModel tr, AccountModel accountModel)
+        private void RegisterExcange(TransactionModel tr, AccountItemModel accountItemModel)
         {
-            var amount = tr.MyAccount.Id == accountModel.Id ? tr.Amount * -1 : tr.AmountInReturn;
+            var amount = tr.MyAccount.Id == accountItemModel.Id ? tr.Amount * -1 : tr.AmountInReturn;
             Lines.Insert(0, new VerificationLine()
             {
                 Amount = amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = (tr.MyAccount.Id == accountModel.Id ? tr.MySecondAccount : tr.MyAccount).Name,
+                Counterparty = (tr.MyAccount.Id == accountItemModel.Id ? tr.MySecondAccount : tr.MyAccount).Name,
                 OperationType = OperationType.Обмен,
                 Text = tr.Comment,
             });

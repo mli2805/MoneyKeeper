@@ -9,32 +9,32 @@ namespace Keeper2018
     {
         public static void FillInAccountTreeAndDict(this KeeperDataModel dataModel, KeeperBin bin)
         {
-            dataModel.AccountsTree = new ObservableCollection<AccountModel>();
-            dataModel.AcMoDict = new Dictionary<int, AccountModel>();
+            dataModel.AccountsTree = new ObservableCollection<AccountItemModel>();
+            dataModel.AcMoDict = new Dictionary<int, AccountItemModel>();
             foreach (var account in bin.AccountPlaneList)
             {
-                var accountModel = account.Map();
-                dataModel.AcMoDict.Add(accountModel.Id, accountModel);
+                var accountItemModel = account.Map();
+                dataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
 
-                accountModel.Deposit = bin.Deposits.FirstOrDefault(d => d.MyAccountId == accountModel.Id);
-                if (accountModel.Deposit != null)
+                accountItemModel.Deposit = bin.Deposits.FirstOrDefault(d => d.MyAccountId == accountItemModel.Id);
+                if (accountItemModel.Deposit != null)
                 {
-                    accountModel.Deposit.Card = bin.PayCards.FirstOrDefault(c => c.DepositId == accountModel.Deposit.Id);
-                    if (accountModel.Deposit.Card != null)
-                        accountModel.Deposit.Card.DepositId = accountModel.Deposit.Id;
+                    accountItemModel.Deposit.Card = bin.PayCards.FirstOrDefault(c => c.DepositId == accountItemModel.Deposit.Id);
+                    if (accountItemModel.Deposit.Card != null)
+                        accountItemModel.Deposit.Card.DepositId = accountItemModel.Deposit.Id;
                 }
 
                 if (account.OwnerId == 0)
-                    dataModel.AccountsTree.Add(accountModel);
+                    dataModel.AccountsTree.Add(accountItemModel);
                 else
                 {
-                    var ownerModel = dataModel.AcMoDict[account.OwnerId];
-                    ownerModel.Items.Add(accountModel);
-                    accountModel.Owner = ownerModel;
+                    var parentItemModel = dataModel.AcMoDict[account.OwnerId];
+                    parentItemModel.Children.Add(accountItemModel);
+                    accountItemModel.Parent = parentItemModel;
                 }
 
                 if (account.BankId != 0)
-                    accountModel.Bank = dataModel.AcMoDict[account.BankId];
+                    accountItemModel.Bank = dataModel.AcMoDict[account.BankId];
             }
         }
 
@@ -43,12 +43,12 @@ namespace Keeper2018
             return dataModel.AccountsTree.SelectMany(FlattenBranch);
         }
 
-        private static IEnumerable<Account> FlattenBranch(AccountModel accountModel)
+        private static IEnumerable<Account> FlattenBranch(AccountItemModel accountItemModel)
         {
-            var result = new List<Account> { accountModel.Map() };
-            foreach (var child in accountModel.Children)
+            var result = new List<Account> { accountItemModel.Map() };
+            foreach (var child in accountItemModel.Children)
             {
-                result.AddRange(FlattenBranch(child));
+                result.AddRange(FlattenBranch((AccountItemModel)child));
             }
             return result;
         }

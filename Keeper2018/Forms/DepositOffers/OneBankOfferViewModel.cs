@@ -13,7 +13,7 @@ namespace Keeper2018
         private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
-        public List<AccountModel> Banks { get; set; }
+        public List<AccountItemModel> Banks { get; set; }
         public List<string> BankNames { get; set; }
         public string SelectedBankName { get; set; }
 
@@ -39,7 +39,7 @@ namespace Keeper2018
 
         public void Initialize(DepositOfferModel model)
         {
-            Banks = _keeperDataModel.AcMoDict[220].Children;
+            Banks = _keeperDataModel.AcMoDict[220].Children.Select(c=>(AccountItemModel)c).ToList();
             BankNames = Banks.Select(b => b.Name).ToList();
             SelectedBankName = BankNames.First(n => n == model.Bank.Name);
             Currencies = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();

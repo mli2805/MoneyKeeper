@@ -50,7 +50,7 @@ namespace Keeper2018
             }
         }
 
-        public List<Tuple<decimal, AccountModel, string>> ResultList { get; set; }
+        public List<Tuple<decimal, AccountItemModel, string>> ResultList { get; set; }
 
         private decimal _partialAmount;
         public decimal PartialAmount
@@ -112,9 +112,9 @@ namespace Keeper2018
             CurrencyList = Enum.GetValues(typeof(CurrencyCode)).OfType<CurrencyCode>().ToList();
         }
 
-        public void Initialize(decimal totalAmount, CurrencyCode currency, AccountModel initialArticle)
+        public void Initialize(decimal totalAmount, CurrencyCode currency, AccountItemModel initialArticle)
         {
-            ResultList = new List<Tuple<decimal, AccountModel, string>>();
+            ResultList = new List<Tuple<decimal, AccountItemModel, string>>();
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForReceipt(initialArticle.Id);
 
             Currency = currency;
@@ -158,7 +158,7 @@ namespace Keeper2018
         public void OnceMore()
         {
             var partialArticle = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
-            ResultList.Add(new Tuple<decimal, AccountModel, string>(PartialAmount, partialArticle, PartialComment));
+            ResultList.Add(new Tuple<decimal, AccountItemModel, string>(PartialAmount, partialArticle, PartialComment));
             ChangeAllProperties();
         }
 

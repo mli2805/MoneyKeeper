@@ -18,14 +18,14 @@ namespace Keeper2018
             _dataModel = dataModel;
         }
 
-        public void Initialize(AccountModel accountModel)
+        public void Initialize(AccountItemModel accountItemModel)
         {
-            DisplayName = accountModel.Name;
-            var accountGroups = _dataModel.SeparateByRevocability(accountModel);
+            DisplayName = accountItemModel.Name;
+            var accountGroups = _dataModel.SeparateByRevocability(accountItemModel);
             accountGroups.Evaluate(_dataModel);
             ByRevocability = accountGroups.ToStringList();
 
-            var calc = new TrafficOfBranchCalculator(_dataModel, accountModel,
+            var calc = new TrafficOfBranchCalculator(_dataModel, accountItemModel,
                 new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
             var balance = calc.Evaluate();
             var balanceWithDetails = balance.EvaluateDetails(_dataModel, DateTime.Today.AddDays(1));

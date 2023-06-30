@@ -12,7 +12,7 @@
                 <DataGridCheckBoxColumn Header="Моя" Width="40" Binding="{Binding IsMine, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Название" Width="200" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Номер" Width="160" Binding="{Binding CardNumber}"/>
-                <DataGridTextColumn Header="Банк" Width="75" Binding="{Binding BankAccount.Header}"/>
+                <DataGridTextColumn Header="Банк" Width="75" Binding="{Binding BankAccount.Name}"/>
                 <DataGridTextColumn Header="Остаток" Width="75" Binding="{Binding Amount}"/>
                 <DataGridTextColumn Header="Валюта" Width="75" Binding="{Binding MainCurrency}"/>
                 <DataGridTextColumn Header="Старт" Width="75" Binding="{Binding StartDate, StringFormat='dd/MM/yy'}"/>

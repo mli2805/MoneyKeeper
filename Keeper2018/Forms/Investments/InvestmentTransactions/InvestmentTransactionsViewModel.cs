@@ -116,8 +116,8 @@ namespace Keeper2018
             if (operationType == OperationType.Расход) // комиссии
             {
                 tran.PaymentWay = PaymentWay.КартаДругое;
-                tran.MyAccount = _dataModel.AcMoDict[tranInWork.AccountModel.Id];
-                tran.Tags = new List<AccountModel>()
+                tran.MyAccount = _dataModel.AcMoDict[tranInWork.AccountItemModel.Id];
+                tran.Tags = new List<AccountItemModel>()
                 {
                     _dataModel.AcMoDict[694], // Альфа
                     _dataModel.AcMoDict[tranInWork.InvestOperationType == InvestOperationType.PayBaseCommission ? 896 : 897]
@@ -126,9 +126,9 @@ namespace Keeper2018
             else if (operationType == OperationType.Доход) // дивиденды
             {
                 tran.MyAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
-                tran.Tags = new List<AccountModel>()
+                tran.Tags = new List<AccountItemModel>()
                 {
-                    tranInWork.AccountModel, // Альфа
+                    tranInWork.AccountItemModel, // Альфа
                     _dataModel.AcMoDict[209] // дивиденды
                 };
             }
@@ -136,15 +136,15 @@ namespace Keeper2018
             {
                 if (tranInWork.InvestOperationType == InvestOperationType.TopUpTrustAccount)
                 {
-                    tran.MyAccount = tranInWork.AccountModel;
+                    tran.MyAccount = tranInWork.AccountItemModel;
                     tran.MySecondAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
                 }
                 else //  InvestOperationType.WithdrawFromTrustAccount
                 {
                     tran.MyAccount = _dataModel.AcMoDict[tranInWork.TrustAccount.AccountId];
-                    tran.MySecondAccount = tranInWork.AccountModel;
+                    tran.MySecondAccount = tranInWork.AccountItemModel;
                 }
-                tran.Tags = new List<AccountModel>()
+                tran.Tags = new List<AccountItemModel>()
                 {
                     _dataModel.AcMoDict[694], // Альфа
                 };

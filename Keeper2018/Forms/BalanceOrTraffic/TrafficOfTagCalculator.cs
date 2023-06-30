@@ -8,7 +8,7 @@ namespace Keeper2018
     public class TrafficOfTagCalculator : ITraffic
     {
         private readonly KeeperDataModel _dataModel;
-        private readonly AccountModel _accountModel;
+        private readonly AccountItemModel _accountItemModel;
         private readonly Period _period;
         private readonly BalanceWithTurnover _balanceWithTurnover = new BalanceWithTurnover();
         private readonly SortedDictionary<DateTime, string> _shortTrans = new SortedDictionary<DateTime, string>();
@@ -16,10 +16,10 @@ namespace Keeper2018
         private readonly TrafficPair _trafficInUsd = new TrafficPair();
         public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##;- #,0.##} usd ( знак относительно меня)";
 
-        public TrafficOfTagCalculator(KeeperDataModel dataModel, AccountModel accountModel, Period period)
+        public TrafficOfTagCalculator(KeeperDataModel dataModel, AccountItemModel accountItemModel, Period period)
         {
             _dataModel = dataModel;
-            _accountModel = accountModel;
+            _accountItemModel = accountItemModel;
             _period = period;
         }
 
@@ -27,7 +27,7 @@ namespace Keeper2018
         {
             foreach (var tran in _dataModel.Transactions.Values.Where(t => _period.Includes(t.Timestamp)))
             {
-                if (!tran.Tags.Select(t=>t.Id).Contains(_accountModel.Id)) continue;
+                if (!tran.Tags.Select(t=>t.Id).Contains(_accountItemModel.Id)) continue;
 
                 decimal inUsd;
                 switch (tran.Operation)

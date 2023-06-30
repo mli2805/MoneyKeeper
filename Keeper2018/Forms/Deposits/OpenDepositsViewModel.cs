@@ -132,27 +132,27 @@ namespace Keeper2018
         }
 
 
-        private DepositVm Convert(AccountModel accountModel)
+        private DepositVm Convert(AccountItemModel accountItemModel)
         {
             var depoOffer = _dataModel.DepositOffers
-                .First(o => o.Id == accountModel.Deposit.DepositOfferId);
-            var calc = new TrafficOfAccountCalculator(_dataModel, accountModel,
-                new Period(accountModel.Deposit.StartDate, DateTime.Now));
-            var isAddOpen = IsAddOpen(accountModel.Deposit, depoOffer, out var addLimitStr);
-            var rate = depoOffer.GetCurrentRate(accountModel.Deposit.StartDate, out string formula);
+                .First(o => o.Id == accountItemModel.Deposit.DepositOfferId);
+            var calc = new TrafficOfAccountCalculator(_dataModel, accountItemModel,
+                new Period(accountItemModel.Deposit.StartDate, DateTime.Now));
+            var isAddOpen = IsAddOpen(accountItemModel.Deposit, depoOffer, out var addLimitStr);
+            var rate = depoOffer.GetCurrentRate(accountItemModel.Deposit.StartDate, out string formula);
             return new DepositVm()
             {
-                Id = accountModel.Id,
+                Id = accountItemModel.Id,
                 BankName = depoOffer.Bank.Name,
                 MainCurrency = depoOffer.MainCurrency,
-                DepoName = accountModel.Name,
+                DepoName = accountItemModel.Name,
                 RateType = depoOffer.RateType,
                 Rate = rate,
                 RateFormula = formula,
                 AdditionsStr = addLimitStr,
                 IsAddOpen = isAddOpen,
-                StartDate = accountModel.Deposit.StartDate,
-                FinishDate = accountModel.Deposit.FinishDate,
+                StartDate = accountItemModel.Deposit.StartDate,
+                FinishDate = accountItemModel.Deposit.FinishDate,
                 Balance = calc.EvaluateBalance(),
             };
         }

@@ -13,7 +13,7 @@ namespace Keeper2018
         private readonly ComboTreesProvider _comboTreesProvider;
         private readonly ShellPartsBinder _shellPartsBinder;
         private readonly AccNameSelector _accNameSelectionControlInitializer;
-        private AccountModel _accountModel;
+        private AccountItemModel _accountItemModel;
         private DepositOfferModel _depositOffer;
 
         public string BankTitle { get; set; }
@@ -80,18 +80,18 @@ namespace Keeper2018
             DisplayName = "Начислены проценты/кэшбек";
         }
 
-        public bool Initialize(AccountModel accountModel)
+        public bool Initialize(AccountItemModel accountItemModel)
         {
-            if (!accountModel.IsDeposit)
+            if (!accountItemModel.IsDeposit)
                 return false;
 
-            _accountModel = accountModel;
-            var depo = accountModel.Deposit;
+            _accountItemModel = accountItemModel;
+            var depo = accountItemModel.Deposit;
             _depositOffer = _keeperDataModel.DepositOffers.First(o => o.Id == depo.DepositOfferId);
             BankTitle = _depositOffer.Bank.Name;
-            IsMoneyBack = _accountModel.IsCard;
+            IsMoneyBack = _accountItemModel.IsCard;
             IsPercent = !IsMoneyBack;
-            DepositTitle = accountModel.Name;
+            DepositTitle = accountItemModel.Name;
             DepositCurrency = _depositOffer.MainCurrency.ToString().ToUpper();
             _comboTreesProvider.Initialize();
             Amount = 0;
@@ -103,7 +103,7 @@ namespace Keeper2018
             MyDatePickerVm.PropertyChanged += MyDatePickerVm_PropertyChanged;
 
             _depositBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
-                _accountModel, _depositOffer.MainCurrency, _transactionTimestamp));
+                _accountItemModel, _depositOffer.MainCurrency, _transactionTimestamp));
 
             return true;
         }
@@ -131,7 +131,7 @@ namespace Keeper2018
             _transactionTimestamp = selectedDate.Date.AddMinutes(minute);
 
             _depositBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
-                _accountModel, _depositOffer.MainCurrency, _transactionTimestamp));
+                _accountItemModel, _depositOffer.MainCurrency, _transactionTimestamp));
             var nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
             _myNextAccountBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
                 nextAccountModel, _depositOffer.MainCurrency, _transactionTimestamp));
@@ -142,11 +142,11 @@ namespace Keeper2018
 
         public void Save()
         {
-            AccountModel nextAccountModel = null;
+            AccountItemModel nextAccountItemModel = null;
             if (IsTransferred)
             {
-                nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
-                if (_accountModel.Id == nextAccountModel.Id)
+                nextAccountItemModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
+                if (_accountItemModel.Id == nextAccountItemModel.Id)
                 {
                     var vm = new MyMessageBoxViewModel(MessageType.Error, "Перечисление на самого себя!");
                     _windowManager.ShowDialog(vm);
@@ -165,10 +165,10 @@ namespace Keeper2018
                 Id = id,
                 Timestamp = timestamp.AddMinutes(1),
                 Operation = OperationType.Доход,
-                MyAccount = _accountModel,
+                MyAccount = _accountItemModel,
                 Amount = Amount,
                 Currency = _depositOffer.MainCurrency,
-                Tags = new List<AccountModel>() { _depositOffer.Bank,  },
+                Tags = new List<AccountItemModel>() { _depositOffer.Bank,  },
                 Comment = Comment,
             };
             tranModel1.Tags.Add(IsPercent ? _keeperDataModel.AcMoDict[208] : _keeperDataModel.AcMoDict[701]);
@@ -181,11 +181,11 @@ namespace Keeper2018
                     Id = id + 1,
                     Timestamp = timestamp.AddMinutes(2),
                     Operation = OperationType.Перенос,
-                    MyAccount = _accountModel,
-                    MySecondAccount = nextAccountModel,
+                    MyAccount = _accountItemModel,
+                    MySecondAccount = nextAccountItemModel,
                     Amount = Amount,
                     Currency = _depositOffer.MainCurrency,
-                    Tags = new List<AccountModel>(),
+                    Tags = new List<AccountItemModel>(),
                     Comment = "",
                 };
                 _keeperDataModel.Transactions.Add(tranModel2.Id, tranModel2);

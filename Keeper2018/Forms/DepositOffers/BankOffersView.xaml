@@ -56,7 +56,7 @@
             </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="35" />
-                <DataGridTextColumn Header="Банк" Binding="{Binding Bank.Header}" Width="95" />
+                <DataGridTextColumn Header="Банк" Binding="{Binding Bank.Name}" Width="95" />
                 <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="250" />
                 <DataGridTextColumn Header="Срок" Binding="{Binding DepositTerm}" Width="100" />
                 <DataGridTextColumn Header="Отзывной" Binding="{Binding NotRevocableStr}" Width="80" />

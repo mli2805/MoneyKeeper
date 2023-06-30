@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using Caliburn.Micro;
 using Keeper2018.ExpensesOnAccount;
 using KeeperDomain;
@@ -43,37 +41,33 @@ namespace Keeper2018
 
         public void AddAccount()
         {
-            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountModel.Id))
+            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountItemModel.Id))
             {
                 WindowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
                     "Этот счет используется в проводках!"));
                 return;
             }
-            var accountModel = new AccountModel("")
-            {
-                Id = KeeperDataModel.AcMoDict.Keys.Max() + 1,
-                Owner = ShellPartsBinder.SelectedAccountModel
-            };
+            var accountModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
+                    "", ShellPartsBinder.SelectedAccountItemModel);
             _oneAccountViewModel.Initialize(accountModel, true);
             WindowManager.ShowDialog(_oneAccountViewModel);
             if (!_oneAccountViewModel.IsSavePressed) return;
 
-            ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
+            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void AddAccountDeposit()
         {
-            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountModel.Id))
+            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountItemModel.Id))
             {
                 WindowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
                     "Этот счет используется в проводках!"));
                 return;
             }
-            var accountModel = new AccountModel("")
+            var accountModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
+                "", ShellPartsBinder.SelectedAccountItemModel)
             {
-                Id = KeeperDataModel.AcMoDict.Keys.Max() + 1,
-                Owner = ShellPartsBinder.SelectedAccountModel,
                 Deposit = new Deposit()
             };
             _oneDepositViewModel.InitializeForm(accountModel, true);
@@ -85,21 +79,21 @@ namespace Keeper2018
                 .Max(d => d.Id) + 1;
             if (accountModel.Deposit.Card != null)
                 accountModel.Deposit.Card.DepositId = accountModel.Deposit.Id;
-            ShellPartsBinder.SelectedAccountModel.Items.Add(accountModel);
+            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void ChangeAccount()
         {
-            if (ShellPartsBinder.SelectedAccountModel.IsDeposit)
+            if (ShellPartsBinder.SelectedAccountItemModel.IsDeposit)
             {
-                var accountModel = ShellPartsBinder.SelectedAccountModel;
+                var accountModel = ShellPartsBinder.SelectedAccountItemModel;
                 _oneDepositViewModel.InitializeForm(accountModel, false);
                 WindowManager.ShowDialog(_oneDepositViewModel);
             }
             else
             {
-                var accountModel = ShellPartsBinder.SelectedAccountModel;
+                var accountModel = ShellPartsBinder.SelectedAccountItemModel;
                 _oneAccountViewModel.Initialize(accountModel, false);
                 WindowManager.ShowDialog(_oneAccountViewModel);
             }
@@ -112,52 +106,52 @@ namespace Keeper2018
 
         public void EnrollDepositInterest()
         {
-            if (_depositInterestViewModel.Initialize(ShellPartsBinder.SelectedAccountModel))
+            if (_depositInterestViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel))
                 WindowManager.ShowDialog(_depositInterestViewModel);
         }
 
         public void ShowDepositReport()
         {
-            _depositReportViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+            _depositReportViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel);
             WindowManager.ShowDialog(_depositReportViewModel);
         }
 
         public void ShowVerificationForm()
         {
-            _balanceVerificationViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+            _balanceVerificationViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel);
             WindowManager.ShowDialog(_balanceVerificationViewModel);
         }
 
         public void ShowFolderSummaryForm()
         {
             var folderSummaryViewModel = new FolderSummaryViewModel(KeeperDataModel);
-            folderSummaryViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+            folderSummaryViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel);
             WindowManager.ShowWindow(folderSummaryViewModel);
         }
 
         public void ShowPaymentWaysForm()
         {
             var paymentWaysViewModel = new PaymentWaysViewModel(KeeperDataModel);
-            paymentWaysViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);
+            paymentWaysViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel);
             WindowManager.ShowWindow(paymentWaysViewModel);
         }
 
         public void ShowExpensesOnAccount()
         {
-            _expensesOnAccountViewModel.Initialize(ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
+            _expensesOnAccountViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod);
             WindowManager.ShowDialog(_expensesOnAccountViewModel);
         }
 
         public void ConvertToDeposit()
         {
-            if (ShellPartsBinder.SelectedAccountModel.IsDeposit) return;
-            ShellPartsBinder.SelectedAccountModel.Deposit =
+            if (ShellPartsBinder.SelectedAccountItemModel.IsDeposit) return;
+            ShellPartsBinder.SelectedAccountItemModel.Deposit =
                 new Deposit
                 {
-                    MyAccountId = ShellPartsBinder.SelectedAccountModel.Id,
+                    MyAccountId = ShellPartsBinder.SelectedAccountItemModel.Id,
 
                 };
-            _oneDepositViewModel.InitializeForm(ShellPartsBinder.SelectedAccountModel, true);
+            _oneDepositViewModel.InitializeForm(ShellPartsBinder.SelectedAccountItemModel, true);
             WindowManager.ShowDialog(_oneDepositViewModel);
         }
     }

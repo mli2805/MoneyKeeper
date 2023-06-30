@@ -15,17 +15,17 @@ namespace Keeper2018
                 case InvestOperationType.PayWithdrawalTax:
                     return Build("Откуда", 
                         _dataModel.ButtonCollections.First(c => c.Id == 3).ToButtonsDictionary(),
-                        _comboTreesProvider.AccNamesForInvestmentExpense, tran.AccountModel?.Id ?? 695);
+                        _comboTreesProvider.AccNamesForInvestmentExpense, tran.AccountItemModel?.Id ?? 695);
 
                 case InvestOperationType.EnrollCouponOrDividends:
                     return Build("Откуда", 
                         _dataModel.ButtonCollections.First(c => c.Id == 3).ToButtonsDictionary(),
-                        _comboTreesProvider.AccNamesForInvestmentIncome, tran.AccountModel?.Id ?? 696);
+                        _comboTreesProvider.AccNamesForInvestmentIncome, tran.AccountItemModel?.Id ?? 696);
                 default:
                 case InvestOperationType.WithdrawFromTrustAccount:
                     return Build("Куда", 
                         _dataModel.ButtonCollections.First(c => c.Id == 3).ToButtonsDictionary(),
-                        _comboTreesProvider.AccNamesForInvestmentExpense, tran.AccountModel?.Id ?? 829);
+                        _comboTreesProvider.AccNamesForInvestmentExpense, tran.AccountItemModel?.Id ?? 829);
             }
         }
     }

@@ -89,14 +89,14 @@ namespace Keeper2018
 
         private void ShellPartsBinder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (ShellPartsBinder.SelectedAccountModel == null) return;
+            if (ShellPartsBinder.SelectedAccountItemModel == null) return;
 
-            if (e.PropertyName == "SelectedAccountModel" || e.PropertyName == "JustToForceBalanceRecalculation"
+            if (e.PropertyName == "SelectedAccountItemModel" || e.PropertyName == "JustToForceBalanceRecalculation"
                 || e.PropertyName == "TranslatedPeriod" || e.PropertyName == "TranslatedDate")
             {
                 Lines.Clear();
-                AccountName = ShellPartsBinder.SelectedAccountModel.Name;
-                var isTag = !ShellPartsBinder.SelectedAccountModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));
+                AccountName = ShellPartsBinder.SelectedAccountItemModel.Name;
+                var isTag = !ShellPartsBinder.SelectedAccountItemModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));
 
                 if (isTag) ShowTag();
                 else ShowAccount(ShellPartsBinder.BalanceOrTraffic);
@@ -105,11 +105,11 @@ namespace Keeper2018
 
         private void ShowAccount(BalanceOrTraffic mode)
         {
-            var isLeaf = !ShellPartsBinder.SelectedAccountModel.Children.Any();
+            var isLeaf = !ShellPartsBinder.SelectedAccountItemModel.Children.Any();
 
             var trafficCalculator = isLeaf
-                ? (ITraffic)new TrafficOfAccountCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod)
-                : new TrafficOfBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
+                ? (ITraffic)new TrafficOfAccountCalculator(_dataModel, ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod)
+                : new TrafficOfBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod);
 
             trafficCalculator.EvaluateAccount();
 
@@ -120,11 +120,11 @@ namespace Keeper2018
 
         private void ShowTag()
         {
-            var isLeaf = !ShellPartsBinder.SelectedAccountModel.Children.Any();
+            var isLeaf = !ShellPartsBinder.SelectedAccountItemModel.Children.Any();
 
             var trafficCalculator = isLeaf
-                ? (ITraffic) new TrafficOfTagCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod):
-                new TrafficOfTagBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountModel, ShellPartsBinder.SelectedPeriod);
+                ? (ITraffic) new TrafficOfTagCalculator(_dataModel, ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod):
+                new TrafficOfTagBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod);
 
             trafficCalculator.EvaluateAccount();
 

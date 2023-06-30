@@ -8,7 +8,7 @@ namespace Keeper2018
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<AccountModel> AccountModels { get; set; } = new List<AccountModel>();
+        public List<AccountItemModel> AccountModels { get; set; } = new List<AccountItemModel>();
 
         public override string ToString()
         {

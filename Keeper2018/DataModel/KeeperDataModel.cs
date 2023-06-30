@@ -9,6 +9,7 @@ namespace Keeper2018
 {
     public class KeeperDataModel : PropertyChangedBase
     {
+        private ObservableCollection<AccountItemModel> _accountsTree = new ObservableCollection<AccountItemModel>();
         public Dictionary<DateTime, OfficialRates> OfficialRates { get; set; }
         public Dictionary<DateTime, ExchangeRates> ExchangeRates { get; set; }
         public List<MinfinMetalRate> MetalRates { get; set; }
@@ -22,10 +23,7 @@ namespace Keeper2018
         public Dictionary<int, TransactionModel> Transactions { get; set; }
 
 
-        public Dictionary<int, AccountModel> AcMoDict;
-
-        private ObservableCollection<AccountModel> _accountsTree;
-        public ObservableCollection<AccountModel> AccountsTree
+        public ObservableCollection<AccountItemModel> AccountsTree
         {
             get => _accountsTree;
             set
@@ -36,9 +34,8 @@ namespace Keeper2018
             }
         }
 
-        public ObservableCollection<AccountItemModel> AccountItems { get; } =
-            new ObservableCollection<AccountItemModel>();
-
+        public Dictionary<int, AccountItemModel> AcMoDict { get; set; } =
+            new Dictionary<int, AccountItemModel>();
 
         public List<DepositOfferModel> DepositOffers { get; set; }
         public List<CarModel> Cars { get; set; }

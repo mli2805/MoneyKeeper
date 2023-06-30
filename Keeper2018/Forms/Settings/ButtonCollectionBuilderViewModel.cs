@@ -22,7 +22,7 @@ namespace Keeper2018
             {
                 if (Equals(value, _selectedCollection)) return;
                 _selectedCollection = value;
-                Buttons = new ObservableCollection<AccountModel>(SelectedCollection.AccountModels);
+                Buttons = new ObservableCollection<AccountItemModel>(SelectedCollection.AccountModels);
                 SelectedButton = Buttons.FirstOrDefault();
                 AccNames = ForMyAccount(_selectedCollection, out AccName selectedAccName);
                 SelectedAccName = selectedAccName;
@@ -56,8 +56,8 @@ namespace Keeper2018
         }
 
 
-        private ObservableCollection<AccountModel> _buttons;
-        public ObservableCollection<AccountModel> Buttons
+        private ObservableCollection<AccountItemModel> _buttons;
+        public ObservableCollection<AccountItemModel> Buttons
         {
             get => _buttons;
             set
@@ -68,8 +68,8 @@ namespace Keeper2018
             }
         }
 
-        private AccountModel _selectedButton;
-        public AccountModel SelectedButton
+        private AccountItemModel _selectedButton;
+        public AccountItemModel SelectedButton
         {
             get => _selectedButton;
             set
@@ -98,7 +98,7 @@ namespace Keeper2018
             Collections = _dataModel.ButtonCollections;
             SelectedCollection = Collections.First();
 
-            Buttons = new ObservableCollection<AccountModel>(SelectedCollection.AccountModels);
+            Buttons = new ObservableCollection<AccountItemModel>(SelectedCollection.AccountModels);
             SelectedButton = Buttons.FirstOrDefault();
 
             _accNames = ForMyAccount(SelectedCollection, out _selectedAccName);
@@ -174,7 +174,7 @@ namespace Keeper2018
             var indexOf = array.IndexOf(SelectedButton);
 
 
-            var newCollection = new ObservableCollection<AccountModel>();
+            var newCollection = new ObservableCollection<AccountItemModel>();
             for (int i = 0; i < indexOf - 1; i++)
             {
                 newCollection.Add(array[i]);

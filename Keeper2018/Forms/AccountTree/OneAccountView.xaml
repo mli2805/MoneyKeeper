@@ -13,12 +13,12 @@
             <TextBlock Margin="5" Text="{Binding TextIn}"  HorizontalAlignment="Left"/>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" Height="30" Margin="5">
-            <TextBox DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding AccountInWork.Header, Mode= TwoWay}"/>
+            <TextBox DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding AccountItemInWork.Name, Mode= TwoWay}"/>
             <TextBlock Margin="5" Text="Название" HorizontalAlignment="Left"/>
         </DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="5, 0, 5,10">
             <TextBlock Margin="5" Text="Название кнопки" HorizontalAlignment="Left"/>
-            <TextBox Margin="5" Width="50" Text="{Binding AccountInWork.ButtonName, Mode= TwoWay}"/>
+            <TextBox Margin="5" Width="50" Text="{Binding AccountItemInWork.ButtonName, Mode= TwoWay}"/>
         </StackPanel>
 
         <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" 

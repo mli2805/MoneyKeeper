@@ -128,7 +128,7 @@ namespace Keeper2018
             myPlotModel.Series.Add(irregularSeries);
         }
 
-        private void BuildFor(AccountModel accountModelFolder, List<SalaryLineModel> result)
+        private void BuildFor(AccountItemModel accountModelFolder, List<SalaryLineModel> result)
         {
             result.Clear();
             var lines = _dataModel.Transactions
@@ -186,7 +186,7 @@ namespace Keeper2018
             return result;
         }
 
-        private string GetEmployer(List<AccountModel> tags)
+        private string GetEmployer(List<AccountItemModel> tags)
         {
             foreach (var tag in tags)
             {

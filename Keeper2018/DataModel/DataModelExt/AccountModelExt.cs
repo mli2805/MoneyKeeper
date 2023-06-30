@@ -12,12 +12,12 @@ namespace Keeper2018
                 t.Tags != null && t.Tags.Select(tag => tag.Id).Contains(accountId));
         }
 
-        public static AccountModel AccountByTitle(this KeeperDataModel keeperDataModel, string accountTitle)
+        public static AccountItemModel AccountByTitle(this KeeperDataModel keeperDataModel, string accountTitle)
         {
             return keeperDataModel.AcMoDict.FirstOrDefault(p => p.Value.Name == accountTitle).Value;
         }
 
-        public static IOrderedEnumerable<AccountModel> GetActiveCardsOrderedByFinishDate(this KeeperDataModel dataModel)
+        public static IOrderedEnumerable<AccountItemModel> GetActiveCardsOrderedByFinishDate(this KeeperDataModel dataModel)
         {
             // 161 - папка Карточки
 
@@ -26,7 +26,7 @@ namespace Keeper2018
                 .OrderBy(d => d.Deposit.FinishDate);
         }
 
-        public static IOrderedEnumerable<AccountModel> GetOpenDepositsOrderedByFinishDate(this KeeperDataModel dataModel)
+        public static IOrderedEnumerable<AccountItemModel> GetOpenDepositsOrderedByFinishDate(this KeeperDataModel dataModel)
         {
             // 166 - папка Депозиты
             return dataModel.AcMoDict.Values

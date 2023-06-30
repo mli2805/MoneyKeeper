@@ -55,7 +55,7 @@ namespace Keeper2018
                 for (int i = 0; i < TagRussianNames.Length; i++)
                 {
                     // get Tag by name
-                    var tag = carAccount.Children.First(c => c.Name.Contains(TagRussianNames[i]));
+                    var tag = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNames[i]));
                     // get rows for Tag
                     var rows = dataModel.GetTableForOneTag(tag);
                     result.Tags.Add(new CarReportTable(TagRussianNames[i], TagEnglishNames[i], rows));
@@ -65,17 +65,17 @@ namespace Keeper2018
                 for (int i = 0; i < TagRussianNamesOther.Length; i++)
                 {
                     // get Tag by name
-                    var tag = carAccount.Children.First(c => c.Name.Contains(TagRussianNamesOther[i]));
+                    var tag = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesOther[i]));
                     // get rows for Tag
                     var rowsOther = dataModel.GetTableForOneTag(tag);
                     result.Tags.Add(new CarReportTable(TagRussianNamesOther[i], TagEnglishNamesOther[i], rowsOther));
                 }
 
-                var tagR0 = carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[0]));
+                var tagR0 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[0]));
                 var rowsRepair = dataModel.GetTableForOneTag(tagR0);
-                var tagR1 = carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[1]));
+                var tagR1 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[1]));
                 rowsRepair.AddRange(dataModel.GetTableForOneTag(tagR1));
-                var tagR2 = carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[2]));
+                var tagR2 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[2]));
                 rowsRepair.AddRange(dataModel.GetTableForOneTag(tagR2));
 
                 result.Tags.Add(
@@ -87,7 +87,7 @@ namespace Keeper2018
             return result;
         }
 
-        private static List<CarReportTableRow> GetTableForOneTag(this KeeperDataModel dataModel, AccountModel tag)
+        private static List<CarReportTableRow> GetTableForOneTag(this KeeperDataModel dataModel, AccountItemModel tag)
         {
             var rows = new List<CarReportTableRow>();
             foreach (var transaction in dataModel.Transactions.Values.OrderBy(t => t.Timestamp))

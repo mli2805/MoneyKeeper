@@ -14,10 +14,10 @@ namespace Keeper2018
             _dataModel = dataModel;
         }
 
-        public void Initialize(AccountModel accountModel)
+        public void Initialize(AccountItemModel accountItemModel)
         {
             var accountCalculator = 
-                new TrafficOfAccountCalculator(_dataModel, accountModel, 
+                new TrafficOfAccountCalculator(_dataModel, accountItemModel, 
                     new Period(new DateTime(2001, 12, 31), DateTime.Today.GetEndOfDate()));
             accountCalculator.EvaluateAccount();
             Model = accountCalculator.DepositReportModel;

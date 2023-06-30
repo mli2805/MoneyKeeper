@@ -229,13 +229,13 @@ namespace Keeper2018
             MyTagPickerVm.TagInWork = null;
         }
 
-        private AccountModel FindAssociated(AccountModel accountModel, OperationType opType)
+        private AccountItemModel FindAssociated(AccountItemModel accountItemModel, OperationType opType)
         {
-            var associatedId = accountModel.IsTag
-                    ? accountModel.AssociatedExternalId
+            var associatedId = accountItemModel.IsTag
+                    ? accountItemModel.AssociatedExternalId
                     : opType == OperationType.Доход
-                        ? accountModel.AssociatedIncomeId
-                        : accountModel.AssociatedExpenseId;
+                        ? accountItemModel.AssociatedIncomeId
+                        : accountItemModel.AssociatedExpenseId;
             return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
         }
 

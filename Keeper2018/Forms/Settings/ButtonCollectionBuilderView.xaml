@@ -17,7 +17,7 @@
                   SelectedItem="{Binding SelectedButton}" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path=Header}">account</GridViewColumn>
+                    <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path=Name}">account</GridViewColumn>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Path=ButtonName}">short</GridViewColumn>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Path=Id}">id</GridViewColumn>
                     <GridViewColumn>

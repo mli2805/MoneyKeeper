@@ -9,28 +9,28 @@ namespace Keeper2018
     public class OneCardViewModel : Screen
     {
         private bool _isInAddMode;
-        private AccountModel _accountModel;
+        private AccountItemModel _accountItemModel;
         public PayCard CardInWork { get; set; } = new PayCard();
 
         public List<PaymentSystem> PaymentSystems { get; set; }
         public bool IsSavePressed { get; set; }
 
-        public void InitializeForm(AccountModel accountModel, bool isInAddMode)
+        public void InitializeForm(AccountItemModel accountItemModel, bool isInAddMode)
         {
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
-            _accountModel = accountModel;
+            _accountItemModel = accountItemModel;
             PaymentSystems = Enum.GetValues(typeof(PaymentSystem)).OfType<PaymentSystem>().ToList();
 
-            CardInWork.DepositId = _accountModel.Deposit.Id;
+            CardInWork.DepositId = _accountItemModel.Deposit.Id;
             if (!isInAddMode)
             {
-                CardInWork.CardNumber = _accountModel.Deposit.Card.CardNumber;
-                CardInWork.CardHolder = _accountModel.Deposit.Card.CardHolder;
-                CardInWork.IsMine = _accountModel.Deposit.Card.IsMine;
-                CardInWork.PaymentSystem = _accountModel.Deposit.Card.PaymentSystem;
-                CardInWork.IsVirtual = _accountModel.Deposit.Card.IsVirtual;
-                CardInWork.IsPayPass = _accountModel.Deposit.Card.IsPayPass;
+                CardInWork.CardNumber = _accountItemModel.Deposit.Card.CardNumber;
+                CardInWork.CardHolder = _accountItemModel.Deposit.Card.CardHolder;
+                CardInWork.IsMine = _accountItemModel.Deposit.Card.IsMine;
+                CardInWork.PaymentSystem = _accountItemModel.Deposit.Card.PaymentSystem;
+                CardInWork.IsVirtual = _accountItemModel.Deposit.Card.IsVirtual;
+                CardInWork.IsPayPass = _accountItemModel.Deposit.Card.IsPayPass;
             }
         }
 

@@ -9,16 +9,16 @@ namespace Keeper2018
     public class TrafficOfBranchCalculator : ITraffic
     {
         private readonly KeeperDataModel _dataModel;
-        private readonly AccountModel _accountModel;
+        private readonly AccountItemModel _accountItemModel;
         private readonly Period _period;
         private readonly BalanceWithTurnoverOfBranch _balanceWithTurnovers = new BalanceWithTurnoverOfBranch();
         public decimal TotalAmount;
         public string Total => TotalAmount.ToString("0.## usd");
 
-        public TrafficOfBranchCalculator(KeeperDataModel dataModel, AccountModel accountModel, Period period)
+        public TrafficOfBranchCalculator(KeeperDataModel dataModel, AccountItemModel accountItemModel, Period period)
         {
             _dataModel = dataModel;
-            _accountModel = accountModel;
+            _accountItemModel = accountItemModel;
             _period = period;
         }
 
@@ -42,36 +42,36 @@ namespace Keeper2018
             {
                 case OperationType.Доход:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var myAcc = (AccountItemModel)tran.MyAccount.IsC(_accountItemModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Add(myAcc, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Расход:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var myAcc = (AccountItemModel)tran.MyAccount.IsC(_accountItemModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Перенос:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var myAcc = (AccountItemModel)tran.MyAccount.IsC(_accountItemModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
 
-                        var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
+                        var myAcc2 = (AccountItemModel)tran.MySecondAccount.IsC(_accountItemModel);
                         if (myAcc2 != null)
                             _balanceWithTurnovers.Add(myAcc2, tran.Currency, tran.Amount);
                     }
                     break;
                 case OperationType.Обмен:
                     {
-                        var myAcc = tran.MyAccount.IsC(_accountModel);
+                        var myAcc = (AccountItemModel)tran.MyAccount.IsC(_accountItemModel);
                         if (myAcc != null)
                             _balanceWithTurnovers.Sub(myAcc, tran.Currency, tran.Amount);
 
-                        var myAcc2 = tran.MySecondAccount.IsC(_accountModel);
+                        var myAcc2 = (AccountItemModel)tran.MySecondAccount.IsC(_accountItemModel);
                         if (myAcc2 != null)
                             // ReSharper disable once PossibleInvalidOperationException
                             _balanceWithTurnovers.Add(myAcc2, (CurrencyCode)tran.CurrencyInReturn, tran.AmountInReturn);

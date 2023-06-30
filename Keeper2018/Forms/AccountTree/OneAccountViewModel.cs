@@ -9,7 +9,7 @@ namespace Keeper2018
         private readonly AccNameSelector _accNameSelectorForAssociations;
         private bool _isInAddMode;
         private string _oldName;
-        public AccountModel AccountInWork { get; set; }
+        public AccountItemModel AccountItemInWork { get; set; }
         public string ParentFolder { get; set; }
 
         private AccNameSelectorVm _myAccNameSelectorVm = new AccNameSelectorVm();
@@ -50,14 +50,14 @@ namespace Keeper2018
             _accNameSelectorForAssociations = accNameSelectorForAssociations;
         }
 
-        public void Initialize(AccountModel accountInWork, bool isInAddMode)
+        public void Initialize(AccountItemModel accountInWork, bool isInAddMode)
         {
             IsSavePressed = false;
-            AccountInWork = accountInWork;
+            AccountItemInWork = accountInWork;
             _isInAddMode = isInAddMode;
 
-            ParentFolder = AccountInWork.Owner == null ? "Корневой счет" : AccountInWork.Owner.Name;
-            TextIn = AccountInWork.IsMyAccountsInBanksFolder ? "В банке" : "В папке";
+            ParentFolder = AccountItemInWork.Parent == null ? "Корневой счет" : AccountItemInWork.Parent.Name;
+            TextIn = AccountItemInWork.IsMyAccountsInBanksFolder ? "В банке" : "В папке";
             _oldName = accountInWork.Name;
 
             InitializeAccNameSelectors();
@@ -67,21 +67,21 @@ namespace Keeper2018
         {
             _comboTreesProvider.Initialize();
 
-            if (AccountInWork.IsMyAccount)
+            if (AccountItemInWork.IsMyAccount)
             {
                 MyAccNameSelectorVm.Visibility = Visibility.Collapsed;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Collapsed;
             }
-            else if (AccountInWork.IsTag)
+            else if (AccountItemInWork.IsTag)
             {
                 MyAccNameSelectorVm.Visibility = Visibility.Visible;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Visible;
                 MyAccNameSelectorVm = _accNameSelectorForAssociations
-                    .InitializeForAssociation(AccountInWork.Is(185)
+                    .InitializeForAssociation(AccountItemInWork.Is(185)
                         ? AssociationEnum.ExternalForIncome
-                        : AssociationEnum.ExternalForExpense, AccountInWork.AssociatedExternalId);
+                        : AssociationEnum.ExternalForExpense, AccountItemInWork.AssociatedExternalId);
             }
             else
             {
@@ -89,16 +89,16 @@ namespace Keeper2018
                 MyAccNameSelectorVm2.Visibility = Visibility.Visible;
                 TextVisibility = Visibility.Visible;
                 MyAccNameSelectorVm = _accNameSelectorForAssociations
-                    .InitializeForAssociation(AssociationEnum.IncomeForExternal, AccountInWork.AssociatedIncomeId);
+                    .InitializeForAssociation(AssociationEnum.IncomeForExternal, AccountItemInWork.AssociatedIncomeId);
                 MyAccNameSelectorVm2 = _accNameSelectorForAssociations
-                    .InitializeForAssociation(AssociationEnum.ExpenseForExternal, AccountInWork.AssociatedExpenseId);
+                    .InitializeForAssociation(AssociationEnum.ExpenseForExternal, AccountItemInWork.AssociatedExpenseId);
             }
         }
 
         protected override void OnViewLoaded(object view)
         {
             var cap = _isInAddMode ? "Добавить" : "Изменить";
-            DisplayName = $"{cap} (id = {AccountInWork.Id})";
+            DisplayName = $"{cap} (id = {AccountItemInWork.Id})";
         }
 
         public void Save()
@@ -110,17 +110,17 @@ namespace Keeper2018
 
         private void ApplyAssociation()
         {
-            if (AccountInWork.IsMyAccount)
+            if (AccountItemInWork.IsMyAccount)
             {
             }
-            else if (AccountInWork.IsTag)
+            else if (AccountItemInWork.IsTag)
             {
-                AccountInWork.AssociatedExternalId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
+                AccountItemInWork.AssociatedExternalId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
             }
             else
             {
-                AccountInWork.AssociatedIncomeId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
-                AccountInWork.AssociatedExpenseId = MyAccNameSelectorVm2.MyAccName?.Id ?? 0;
+                AccountItemInWork.AssociatedIncomeId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
+                AccountItemInWork.AssociatedExpenseId = MyAccNameSelectorVm2.MyAccName?.Id ?? 0;
             }
         }
 
@@ -128,7 +128,7 @@ namespace Keeper2018
         {
             if (!_isInAddMode)
             {
-                AccountInWork.Header = _oldName;
+                AccountItemInWork.Name = _oldName;
             }
             TryClose();
         }

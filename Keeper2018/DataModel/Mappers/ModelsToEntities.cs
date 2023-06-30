@@ -26,7 +26,7 @@ namespace Keeper2018
             };
         }
 
-        private static string MapTags(this List<AccountModel> tags)
+        private static string MapTags(this List<AccountItemModel> tags)
         {
             if (tags == null || tags.Count == 0) return " ";
             string result = "";
@@ -38,14 +38,14 @@ namespace Keeper2018
             return result;
         }
 
-        public static Account Map(this AccountModel model)
+        public static Account Map(this AccountItemModel model)
         {
             return new Account()
             {
                 Id = model.Id,
-                OwnerId = model.Owner?.Id ?? 0,
+                OwnerId = model.Parent?.Id ?? 0,
                 BankId = model.Bank?.Id ?? 0,
-                Header = (string)model.Header,
+                Header = model.Name,
                 IsExpanded = model.IsExpanded,
                 AssociatedIncomeId = model.AssociatedIncomeId,
                 AssociatedExpenseId = model.AssociatedExpenseId,
@@ -76,14 +76,14 @@ namespace Keeper2018
             return durationModel.IsPerpetual ? new Duration() : new Duration(durationModel.Value, durationModel.Scale);
         }
 
-        public static DepoNewConds Map(this  DepoCondsModel depoCondsModel)
+        public static DepoNewConds Map(this DepoCondsModel depoCondsModel)
         {
             return new DepoNewConds()
             {
                 Id = depoCondsModel.Id,
                 DepositOfferId = depoCondsModel.DepositOfferId,
                 DateFrom = depoCondsModel.DateFrom,
-            
+
                 RateFormula = depoCondsModel.RateFormula,
                 IsFactDays = depoCondsModel.IsFactDays,
                 EveryStartDay = depoCondsModel.EveryStartDay,
@@ -94,7 +94,7 @@ namespace Keeper2018
                 IsCapitalized = depoCondsModel.IsCapitalized,
                 HasAdditionalProcent = depoCondsModel.HasAdditionalPercent,
                 AdditionalProcent = depoCondsModel.AdditionalPercent,
-            
+
                 Comment = depoCondsModel.Comment,
             };
         }
@@ -162,14 +162,14 @@ namespace Keeper2018
             };
         }
 
-        public static InvestmentTransaction  Map(this InvestTranModel transaction)
+        public static InvestmentTransaction Map(this InvestTranModel transaction)
         {
             return new InvestmentTransaction()
             {
                 Id = transaction.Id,
                 InvestOperationType = transaction.InvestOperationType,
                 Timestamp = transaction.Timestamp,
-                AccountId = transaction.AccountModel?.Id ?? 0,
+                AccountId = transaction.AccountItemModel?.Id ?? 0,
                 TrustAccountId = transaction.TrustAccount?.Id ?? 0,
                 CurrencyAmount = transaction.CurrencyAmount,
                 CouponAmount = transaction.CouponAmount,
@@ -189,7 +189,7 @@ namespace Keeper2018
             {
                 Id = model.Id,
                 Name = model.Name,
-                AccountIds = model.AccountModels.Select(m=>m.Id).ToList(),
+                AccountIds = model.AccountModels.Select(m => m.Id).ToList(),
             };
         }
     }

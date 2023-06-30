@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -45,7 +43,7 @@ namespace Keeper2018
         {
             // Verify that this is a valid drop and then store the drop target
             TreeViewItem item = GetNearestContainer(e.OriginalSource as UIElement);
-            e.Effects = CheckDropTarget(_draggedItem, ((TreeViewItemModel)item.Header)) 
+            e.Effects = CheckDropTarget(_draggedItem, ((TreeViewItemModel)item.Header))
                 ? DragDropEffects.Move : DragDropEffects.None;
             e.Handled = true;
         }
@@ -151,8 +149,9 @@ namespace Keeper2018
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            ((AccountTreeViewModel)DataContext).ShellPartsBinder.SelectedAccountModel =
-                ((AccountTreeViewModel)DataContext).KeeperDataModel.GetSelectedAccountModel();
+            var vm = (AccountTreeViewModel)DataContext;
+            vm.ShellPartsBinder.SelectedAccountItemModel =
+                vm.KeeperDataModel.AcMoDict.Values.FirstOrDefault(a => a.IsSelected);
         }
 
         private void MoveIntoFolder(TreeViewItemModel source, TreeViewItemModel destination)
