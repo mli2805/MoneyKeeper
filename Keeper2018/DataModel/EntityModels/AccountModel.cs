@@ -7,7 +7,17 @@ namespace Keeper2018
 {
     public class AccountModel : TreeViewItem
     {
-        public int Id { get; set; }
+        private int _id;
+
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                Uid = value.ToString();
+            }
+        }
 
         public AccountModel Owner { get; set; } // property Parent is occupied in TreeViewItem
         public AccountModel Bank { get; set; } // null if not in bank

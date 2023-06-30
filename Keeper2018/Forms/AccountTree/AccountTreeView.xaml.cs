@@ -28,7 +28,7 @@ namespace Keeper2018
             if ((finalDropEffect == DragDropEffects.Move) && (_target != null))
             {
                 // A Move drop was accepted
-                if (!_draggedItem.Header.ToString().Equals(_target.Header.ToString()) && Keyboard.IsKeyDown(Key.LeftCtrl))
+                if (!_draggedItem.Uid.Equals(_target.Uid) && Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
                     DoAction(_draggedItem, _target);
                     // CopyItem(_draggedItem, _target);
@@ -76,7 +76,7 @@ namespace Keeper2018
                 return false; // Root could not be moved!
 
             //Check whether the target item is meeting your condition
-            return !sourceItem.Header.ToString().Equals(targetItem.Header.ToString());
+            return !sourceItem.Uid.Equals(targetItem.Uid);
         }
 
         //------------------------------------------------------------------------------
