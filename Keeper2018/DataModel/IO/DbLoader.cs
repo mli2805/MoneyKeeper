@@ -45,7 +45,7 @@ namespace Keeper2018
 
         private AccountItemModel Transform(AccountModel accountModel, AccountItemModel parent)
         {
-            var item = new AccountItemModel(accountModel.Name, parent);
+            var item = new AccountItemModel(accountModel.Id, accountModel.Name, parent);
             item.Img = accountModel.Name.StartsWith("Б") ? "../../Resources/gsk.png" : "../../Resources/paycard.png";
             foreach (var accountModelChild in accountModel.Children)
             {

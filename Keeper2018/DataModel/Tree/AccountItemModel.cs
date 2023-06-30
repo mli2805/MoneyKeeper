@@ -4,7 +4,7 @@
     {
         public string Img { get; set; }
 
-        public AccountItemModel(string name, TreeViewItemModel parent) : base(name, parent)
+        public AccountItemModel(int id, string name, TreeViewItemModel parent) : base(id, name, parent)
         {
         }
 

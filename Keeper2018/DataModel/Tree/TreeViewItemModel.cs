@@ -19,8 +19,9 @@ namespace Keeper2018
 
         #region Constructors
 
-        protected TreeViewItemModel(string name, TreeViewItemModel parent)
+        protected TreeViewItemModel(int id, string name, TreeViewItemModel parent)
         {
+            Id = id;
             _name = name;
             _parent = parent;
 

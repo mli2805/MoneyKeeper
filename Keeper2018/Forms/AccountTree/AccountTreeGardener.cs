@@ -9,6 +9,12 @@ namespace Keeper2018
         CanDelete, IsRoot, HasChildren, HasRelatedTransactions
     }
 
+    public static class AccountItemModelExt
+    {
+      
+
+    }
+
     public static class AccountTreeGardener
     {
         public static AccountModel GetSelectedAccountModel(this KeeperDataModel dataModel)

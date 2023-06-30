@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,7 +45,8 @@ namespace Keeper2018
         {
             // Verify that this is a valid drop and then store the drop target
             TreeViewItem item = GetNearestContainer(e.OriginalSource as UIElement);
-            e.Effects = CheckDropTarget(_draggedItem, T(item)) ? DragDropEffects.Move : DragDropEffects.None;
+            e.Effects = CheckDropTarget(_draggedItem, ((TreeViewItemModel)item.Header)) 
+                ? DragDropEffects.Move : DragDropEffects.None;
             e.Handled = true;
         }
 
@@ -56,7 +58,7 @@ namespace Keeper2018
             // Verify that this is a valid drop and then store the drop target
             TreeViewItem targetItem = GetNearestContainer(e.OriginalSource as UIElement);
             if (targetItem == null || _draggedItem == null) return;
-            _target = T(targetItem);
+            _target = ((TreeViewItemModel)targetItem.Header);
             e.Effects = DragDropEffects.Move;
         }
 
@@ -70,13 +72,6 @@ namespace Keeper2018
                 container = element as TreeViewItem;
             }
             return container;
-        }
-
-        private TreeViewItemModel T(TreeViewItem element)
-        {
-            var name = element.Name;
-            var k = (List<AccountItemModel>)MyTreeView.DataContext;
-            return k.First();// поиск по дереву по имени 
         }
 
         private bool CheckDropTarget(TreeViewItemModel sourceItem, TreeViewItemModel targetItem)
@@ -126,7 +121,7 @@ namespace Keeper2018
         {
             var destinationParent = (destination).Parent;
 
-            var tempAccount = new AccountItemModel("temporary", null);
+            var tempAccount = new AccountItemModel(-1, "temporary", null);
             for (int i = destinationParent.Children.Count - 1; i >= 0; i--)
             {
                 var item = destinationParent.Children[i];
