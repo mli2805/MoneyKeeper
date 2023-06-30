@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class AccountModel : TreeViewItem, IComparable
+    public class AccountModel : TreeViewItem
     {
         public int Id { get; set; }
 
@@ -31,10 +30,7 @@ namespace Keeper2018
         public string ButtonName { get; set; } // face of shortcut button (if exists)
 
         public override string ToString() => (string)Header;
-        public int CompareTo(object obj)
-        {
-            return string.Compare(Name, ((AccountModel)obj).Name, StringComparison.Ordinal);
-        }
+       
 
         public AccountModel(string headerText)
         {
