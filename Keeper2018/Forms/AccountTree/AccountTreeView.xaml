@@ -4,13 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:Keeper2018"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignData AccountTreeViewModel}"
              cal:Bind.ModelWithoutContext="{Binding .}"
              >
     <DockPanel PreviewMouseUp="OnMouseUp" MouseUp="OnMouseUp" MinWidth="300">
-        <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding KeeperDataModel.AccountsTree}" 
+        <TreeView Name="MyTreeView" AllowDrop="True" ItemsSource="{Binding KeeperDataModel.AccountItems}" 
                   FontSize="13" Padding="0,0,5,0">
+            
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <EventSetter Event="DragOver" Handler="treeView_DragOver"/>
@@ -18,6 +20,20 @@
                     <EventSetter Event="MouseMove" Handler="treeView_MouseMove"/>
                 </Style>
             </TreeView.ItemContainerStyle>
+
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:AccountItemModel}"
+                                          ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" Margin="2">
+                        <Image Source="{Binding Img}"
+                               Width="20"
+                               Height="20"
+                               SnapsToDevicePixels="True"/>
+                        <TextBlock Text="{Binding Path=Name}" Margin="5,0"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 

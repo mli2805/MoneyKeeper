@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -10,7 +12,7 @@ namespace Keeper2018
     /// </summary>
     public partial class AccountTreeView
     {
-        TreeViewItem _draggedItem, _target;
+        TreeViewItemModel _draggedItem, _target;
         public AccountTreeView()
         {
             InitializeComponent();
@@ -19,7 +21,7 @@ namespace Keeper2018
         private void treeView_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed) return;
-            _draggedItem = (TreeViewItem)MyTreeView.SelectedItem;
+            _draggedItem = (TreeViewItemModel)MyTreeView.SelectedItem;
             if (_draggedItem == null) return;
             DragDropEffects finalDropEffect = DragDrop.DoDragDrop(MyTreeView, MyTreeView.SelectedValue,
                 DragDropEffects.Move);
@@ -28,7 +30,7 @@ namespace Keeper2018
             if ((finalDropEffect == DragDropEffects.Move) && (_target != null))
             {
                 // A Move drop was accepted
-                if (!_draggedItem.Header.ToString().Equals(_target.Header.ToString()) && Keyboard.IsKeyDown(Key.LeftCtrl))
+                if (!_draggedItem.Name.Equals(_target.Name) && Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
                     DoAction(_draggedItem, _target);
                     // CopyItem(_draggedItem, _target);
@@ -42,7 +44,7 @@ namespace Keeper2018
         {
             // Verify that this is a valid drop and then store the drop target
             TreeViewItem item = GetNearestContainer(e.OriginalSource as UIElement);
-            e.Effects = CheckDropTarget(_draggedItem, item) ? DragDropEffects.Move : DragDropEffects.None;
+            e.Effects = CheckDropTarget(_draggedItem, T(item)) ? DragDropEffects.Move : DragDropEffects.None;
             e.Handled = true;
         }
 
@@ -54,7 +56,7 @@ namespace Keeper2018
             // Verify that this is a valid drop and then store the drop target
             TreeViewItem targetItem = GetNearestContainer(e.OriginalSource as UIElement);
             if (targetItem == null || _draggedItem == null) return;
-            _target = targetItem;
+            _target = T(targetItem);
             e.Effects = DragDropEffects.Move;
         }
 
@@ -70,21 +72,28 @@ namespace Keeper2018
             return container;
         }
 
-        private bool CheckDropTarget(TreeViewItem sourceItem, TreeViewItem targetItem)
+        private TreeViewItemModel T(TreeViewItem element)
         {
-            if (((AccountModel)sourceItem).Owner == null)
+            var name = element.Name;
+            var k = (List<AccountItemModel>)MyTreeView.DataContext;
+            return k.First();// поиск по дереву по имени 
+        }
+
+        private bool CheckDropTarget(TreeViewItemModel sourceItem, TreeViewItemModel targetItem)
+        {
+            if ((sourceItem).Parent == null)
                 return false; // Root could not be moved!
 
             //Check whether the target item is meeting your condition
-            return !sourceItem.Header.ToString().Equals(targetItem.Header.ToString());
+            return !sourceItem.Name.Equals(targetItem.Name);
         }
 
         //------------------------------------------------------------------------------
 
-        private void DoAction(TreeViewItem source, TreeViewItem destination)
+        private void DoAction(TreeViewItemModel source, TreeViewItemModel destination)
         {
             var vm = ((AccountTreeViewModel)DataContext).AskDragAccountActionViewModel;
-            vm.Init(source.Header.ToString(), destination.Header.ToString());
+            vm.Init(source.Name, destination.Name);
             ((AccountTreeViewModel)DataContext).WindowManager.ShowDialog(vm);
 
             switch (vm.Answer)
@@ -103,45 +112,45 @@ namespace Keeper2018
             }
         }
 
-        private void MoveAccount(TreeViewItem source, TreeViewItem destination, Place place)
+        private void MoveAccount(TreeViewItemModel source, TreeViewItemModel destination, Place place)
         {
-            var sourceParent = ((AccountModel)source).Owner;
-            var destinationParent = ((AccountModel)destination).Owner;
+            var sourceParent = (source).Parent;
+            var destinationParent = (destination).Parent;
 
-            sourceParent.Items.Remove(source);
-            ((AccountModel)source).Owner = destinationParent;
+            sourceParent.Children.Remove(source);
+            (source).Parent = destinationParent;
             PlaceIntoDestinationFolder(source, destination, place);
         }
 
-        private void PlaceIntoDestinationFolder(TreeViewItem source, TreeViewItem destination, Place place)
+        private void PlaceIntoDestinationFolder(TreeViewItemModel source, TreeViewItemModel destination, Place place)
         {
-            var destinationParent = ((AccountModel)destination).Owner;
+            var destinationParent = (destination).Parent;
 
-            var tempAccount = new AccountModel("temporary");
-            for (int i = destinationParent.Items.Count - 1; i >= 0; i--)
+            var tempAccount = new AccountItemModel("temporary", null);
+            for (int i = destinationParent.Children.Count - 1; i >= 0; i--)
             {
-                var item = destinationParent.Items[i];
-                destinationParent.Items.RemoveAt(i);
+                var item = destinationParent.Children[i];
+                destinationParent.Children.RemoveAt(i);
 
-                if (((AccountModel)item).Id == ((AccountModel)destination).Id && place == Place.After)
-                    tempAccount.Items.Add(source);
+                if ((item).Id == destination.Id && place == Place.After)
+                    tempAccount.Children.Add(source);
 
-                tempAccount.Items.Add(item);
+                tempAccount.Children.Add(item);
 
-                if (((AccountModel)item).Id == ((AccountModel)destination).Id && place == Place.Before)
-                    tempAccount.Items.Add(source);
+                if (item.Id == (destination).Id && place == Place.Before)
+                    tempAccount.Children.Add(source);
             }
 
             Comeback(tempAccount, destinationParent);
         }
 
-        private static void Comeback(AccountModel tempAccountModel, AccountModel sourceParent)
+        private static void Comeback(TreeViewItemModel tempAccountModel, TreeViewItemModel sourceParent)
         {
-            for (int i = tempAccountModel.Items.Count - 1; i >= 0; i--)
+            for (int i = tempAccountModel.Children.Count - 1; i >= 0; i--)
             {
-                var item = tempAccountModel.Items[i];
-                tempAccountModel.Items.RemoveAt(i);
-                sourceParent.Items.Add(item);
+                var item = tempAccountModel.Children[i];
+                tempAccountModel.Children.RemoveAt(i);
+                sourceParent.Children.Add(item);
             }
         }
 
@@ -151,11 +160,11 @@ namespace Keeper2018
                 ((AccountTreeViewModel)DataContext).KeeperDataModel.GetSelectedAccountModel();
         }
 
-        private void MoveIntoFolder(TreeViewItem source, TreeViewItem destination)
+        private void MoveIntoFolder(TreeViewItemModel source, TreeViewItemModel destination)
         {
-            ((AccountModel)source).Owner.Items.Remove(source);
-            destination.Items.Add(source);
-            ((AccountModel)source).Owner = (AccountModel)destination;
+            (source).Parent.Children.Remove(source);
+            destination.Children.Add(source);
+            (source).Parent = destination;
         }
 
     }

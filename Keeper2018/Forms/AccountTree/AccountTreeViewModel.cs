@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Caliburn.Micro;
 using Keeper2018.ExpensesOnAccount;
 using KeeperDomain;
@@ -19,6 +21,7 @@ namespace Keeper2018
 
         public KeeperDataModel KeeperDataModel { get; set; }
 
+      
         public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
@@ -112,7 +115,7 @@ namespace Keeper2018
             if (_depositInterestViewModel.Initialize(ShellPartsBinder.SelectedAccountModel))
                 WindowManager.ShowDialog(_depositInterestViewModel);
         }
-        
+
         public void ShowDepositReport()
         {
             _depositReportViewModel.Initialize(ShellPartsBinder.SelectedAccountModel);

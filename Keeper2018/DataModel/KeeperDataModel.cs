@@ -36,6 +36,10 @@ namespace Keeper2018
             }
         }
 
+        public ObservableCollection<AccountItemModel> AccountItems { get; } =
+            new ObservableCollection<AccountItemModel>();
+
+
         public List<DepositOfferModel> DepositOffers { get; set; }
         public List<CarModel> Cars { get; set; }
         public List<FuellingModel> FuellingVms { get; set; }

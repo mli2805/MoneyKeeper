@@ -235,6 +235,8 @@
     <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
     <Compile Include="DataModel\EntityModels\Car\FuellingModel.cs" />
     <Compile Include="DataModel\Mappers\AccountGardener.cs" />
+    <Compile Include="DataModel\Tree\AccountItemModel.cs" />
+    <Compile Include="DataModel\Tree\TreeViewItemModel.cs" />
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml.cs">
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
