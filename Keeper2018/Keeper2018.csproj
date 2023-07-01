@@ -1036,7 +1036,7 @@
     <Resource Include="Resources\nbrb.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\transactions.png" />
+    <Resource Include="Resources\mainmenu\transactions.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\edit16.ico" />
@@ -1044,17 +1044,14 @@
     <Resource Include="Resources\plus16.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\bank_offer.png" />
+    <Resource Include="Resources\mainmenu\bank_offer.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\association.png" />
+    <Resource Include="Resources\mainmenu\month_analysis.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\month_analysis.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\save.png" />
-    <Resource Include="Resources\settings.png" />
+    <Resource Include="Resources\mainmenu\save.png" />
+    <Resource Include="Resources\mainmenu\settings.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\keeper2018.ico" />
@@ -1063,25 +1060,25 @@
     <Resource Include="keeper2018.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\chart.png" />
+    <Resource Include="Resources\mainmenu\chart.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\exchange3.png" />
+    <Resource Include="Resources\mainmenu\exchange3.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="docs\AccountIds.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\car.png" />
+    <Resource Include="Resources\mainmenu\car.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\paycard.png" />
+    <Resource Include="Resources\mainmenu\paycard.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\gsk.png" />
+    <Resource Include="Resources\mainmenu\gsk.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\salary1.png" />
+    <Resource Include="Resources\mainmenu\salary1.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeeperDomain\KeeperDomain.csproj">
@@ -1089,12 +1086,39 @@
       <Name>KeeperDomain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Resources\deposits.png" />
+    <Resource Include="Resources\tree16\yellow_folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\stock.png" />
+    <Resource Include="Resources\mainmenu\deposits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mainmenu\stock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\wallet2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\counterparty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\minus3.png" />
+    <Resource Include="Resources\tree16\plus3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\paycard4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\hand_point_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\account4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\deposit6.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

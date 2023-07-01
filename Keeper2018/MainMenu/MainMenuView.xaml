@@ -43,22 +43,22 @@
     </i:Interaction.Triggers>
     <DockPanel Height="30">
         <Button Name="ShowTransactionsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions">
-            <Image Source="../../Resources/transactions.png" Width="24" Height="24" />
+            <Image Source="../../Resources/mainmenu/transactions.png" Width="24" Height="24" />
         </Button>
         <Button Name="ShowRatesForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates">
-            <Image Source="../../Resources/exchange3.png" Width="24" Height="24" />
+            <Image Source="../../Resources/mainmenu/exchange3.png" Width="24" Height="24" />
         </Button>
         <Button Name="ShowMonthAnalysisForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Month analysis">
-            <Image Source="../../Resources/month_analysis.png" Width="24" Height="24" />
+            <Image Source="../../Resources/mainmenu/month_analysis.png" Width="24" Height="24" />
         </Button>
         <Button Name="ShowDepositOffersForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Bank offers">
-            <Image Source="../../Resources/bank_offer.png" Width="24" Height="24" />
+            <Image Source="../../Resources/mainmenu/bank_offer.png" Width="24" Height="24" />
         </Button>
 
         <Menu Margin="15,0,0,0" Background="White" BorderBrush="White">
             <MenuItem Background="White" BorderBrush="White">
                 <MenuItem.Header>
-                    <Image Source="../../Resources/chart.png"/>
+                    <Image Source="../../Resources/mainmenu/chart.png"/>
                 </MenuItem.Header>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
@@ -95,25 +95,25 @@
      
 
         <Button Name="ShowSalaryForm" Margin="1,0,5,0" Background="White" BorderBrush="White" ToolTip="Salary">
-            <Image Source="../../Resources/salary1.png" Width="24" Height="24" />
+            <Image Source="../../Resources/mainmenu/salary1.png" Width="24" Height="24" />
         </Button>
         <Button Name="ShowGskForm" Margin="2,0,0,0" Background="White" BorderBrush="White" ToolTip="ЖСК">
-            <Image Source="../../Resources/gsk.png" Width="24" Height="24" />
+            <Image Source="../../Resources/mainmenu/gsk.png" Width="24" Height="24" />
         </Button>
         <Button Name="ShowCarForm" Margin="6,0,0,0" Background="White" BorderBrush="White" ToolTip="Cars">
-            <Image Source="../../Resources/car.png" Width="32" Height="32"  />
+            <Image Source="../../Resources/mainmenu/car.png" Width="32" Height="32"  />
         </Button>
         <Button Name="ShowDepositsForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Deposits">
-            <Image Source="../../Resources/deposits.png" Width="24" Height="24"  />
+            <Image Source="../../Resources/mainmenu/deposits.png" Width="24" Height="24"  />
         </Button>
         <Button Name="ShowPayCardsForm" Margin="6,-3,0,0" Background="White" BorderBrush="White" ToolTip="Cards" Opacity="0.7">
-            <Image Source="../../Resources/paycard.png" Width="32" Height="32"  />
+            <Image Source="../../Resources/mainmenu/paycard.png" Width="32" Height="32"  />
         </Button>
 
         <Menu Margin="-1,0,0,0" Background="White" BorderBrush="White">
             <MenuItem Background="White" BorderBrush="White">
                 <MenuItem.Header>
-                    <Image Source="../../Resources/stock.png" Width="24" Height="28" />
+                    <Image Source="../../Resources/mainmenu/stock.png" Width="24" Height="28" />
                 </MenuItem.Header>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
@@ -169,13 +169,13 @@
         </Menu>
 
         <Button Name="SaveAllDb" Margin="25,0,0,0" Background="White" BorderBrush="White" ToolTip="SaveAllDb">
-            <Image Source="../../Resources/save.png" Width="24" Height="24" />
+            <Image Source="../../Resources/mainmenu/save.png" Width="24" Height="24" />
         </Button>
        
         <Menu Margin="-1,0,0,0" Background="White" BorderBrush="White">
             <MenuItem Background="White" BorderBrush="White">
                 <MenuItem.Header>
-                    <Image Source="../../Resources/settings.png" Width="24" Height="28" />
+                    <Image Source="../../Resources/mainmenu/settings.png" Width="24" Height="28" />
                 </MenuItem.Header>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>

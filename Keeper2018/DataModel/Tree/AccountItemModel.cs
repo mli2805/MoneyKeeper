@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public class AccountItemModel : TreeViewItemModel
     {
-        public string Img => Name.StartsWith("Б") ? "../../Resources/gsk.png" : "../../Resources/paycard.png";
+        public string Img => GetIconPath();
 
         public AccountItemModel Bank { get; set; } // null if not in bank
         public Deposit Deposit { get; set; }
@@ -31,8 +31,35 @@ namespace Keeper2018
         }
 
         public bool IsTag => Is(185) || Is(189);
-        public bool IsMyAccount => Is(158); // in XAML
-        public bool IsMyAccountsInBanksFolder => Is(159);
+        public bool IsIncomeTag => Is(185);
+        public bool IsExpenseTag => Is(189);
+        public bool IsMyAccount => Is(158);
+        public bool IsMyAccountInBank => Is(159);
+        public bool IsDebt => Is(866);
         public bool IsFolderOfClosed => Is(393);
+
+        private string GetIconPath()
+        {
+            if (IsFolder)
+                return "../../Resources/tree16/yellow_folder.png";
+            if (IsFolderOfClosed)
+                return "../../Resources/tree16/cross.png";
+            if (IsCard)
+                return "../../Resources/tree16/paycard4.png";
+            if (IsDeposit)
+                return "../../Resources/tree16/deposit6.png";
+            if (IsDebt)
+                return "../../Resources/tree16/hand_point_left.png";
+            if (IsMyAccountInBank)
+                return "../../Resources/tree16/account4.png";
+            if (IsMyAccount)
+                return "../../Resources/tree16/wallet2.png";
+            if (IsIncomeTag)
+                return "../../Resources/tree16/plus3.png";
+            if (IsExpenseTag)
+                return "../../Resources/tree16/minus3.png";
+
+            return "../../Resources/tree16/counterparty.png";
+        }
     }
 }
