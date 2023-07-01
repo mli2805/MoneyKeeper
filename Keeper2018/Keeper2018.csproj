@@ -1120,6 +1120,12 @@
   <ItemGroup>
     <Resource Include="Resources\tree16\deposit6.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\trust.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tree16\deposit7.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

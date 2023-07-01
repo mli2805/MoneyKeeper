@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:keeper2018="clr-namespace:Keeper2018" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        Width="1037" Height="777" WindowStartupLocation="CenterScreen" 
+        Width="1087" Height="777" WindowStartupLocation="CenterScreen" 
         d:DataContext="{d:DesignInstance keeper2018:ShellViewModel}">
     <DockPanel>
         <keeper2018:MainMenuView DockPanel.Dock="Top" DataContext="{Binding MainMenuViewModel}"/>

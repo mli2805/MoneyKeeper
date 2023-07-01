@@ -30,13 +30,15 @@ namespace Keeper2018
         {
         }
 
-        public bool IsTag => Is(185) || Is(189);
         public bool IsIncomeTag => Is(185);
         public bool IsExpenseTag => Is(189);
-        public bool IsMyAccount => Is(158);
-        public bool IsMyAccountInBank => Is(159);
-        public bool IsDebt => Is(866);
+        public bool IsTag => Is(185) || Is(189);
+
         public bool IsFolderOfClosed => Is(393);
+        public bool IsDebt => Is(866);
+        public bool IsTrustAccount => Is(902);
+        public bool IsMyAccountInBank => Is(159);
+        public bool IsMyAccount => Is(158);
 
         private string GetIconPath()
         {
@@ -47,9 +49,11 @@ namespace Keeper2018
             if (IsCard)
                 return "../../Resources/tree16/paycard4.png";
             if (IsDeposit)
-                return "../../Resources/tree16/deposit6.png";
+                return "../../Resources/tree16/deposit7.png";
             if (IsDebt)
                 return "../../Resources/tree16/hand_point_left.png";
+            if (IsTrustAccount)
+                return "../../Resources/tree16/trust.png";
             if (IsMyAccountInBank)
                 return "../../Resources/tree16/account4.png";
             if (IsMyAccount)
