@@ -48,7 +48,7 @@ namespace Keeper2018
         ? Visibility.Visible : Visibility.Collapsed;
 
         public bool IsEnabledAddIntoAccount => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.IsFolderOfClosed;
-        public bool IsEnabledDeleteAccount => !SelectedAccountItemModel.IsFolder && !_isSelectedAccountUsedInTransaction;
+        public bool IsEnabledDeleteAccount => !SelectedAccountItemModel.Children.Any() && !_isSelectedAccountUsedInTransaction;
 
 
         private BalanceOrTraffic _balanceOrTraffic;
