@@ -38,28 +38,34 @@
 
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
+                    <MenuItem Header="Добавить папку" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
+                              Background="White" >
+                        <MenuItem.Icon>
+                            <Image Source="/Keeper2018;component/Resources/accountmenu16/add_folder.png" Width="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                   <MenuItem Header="Добавить" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledAddIntoAccount}">
                         <MenuItem.Icon>
-                            <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
+                            <Image Source="/Keeper2018;component/Resources/accountmenu16/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Добавить депозит" cal:Message.Attach="AddAccountDeposit" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledAddIntoAccount}"
                               Visibility="{Binding ShellPartsBinder.AddDepositVisibility}">
                         <MenuItem.Icon>
-                            <Image Source="/Keeper2018;component/Resources/plus16.ico" Width="16"/>
+                            <Image Source="/Keeper2018;component/Resources/accountmenu16/plus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Удалить" cal:Message.Attach="RemoveSelectedAccount" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledDeleteAccount}">
                         <MenuItem.Icon>
-                            <Image Source="/Keeper2018;component/Resources/minus16.ico" Width="16"/>
+                            <Image Source="/Keeper2018;component/Resources/accountmenu16/minus16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Изменить" cal:Message.Attach="ChangeAccount" BorderBrush="{x:Null}" Background="White">
                         <MenuItem.Icon>
-                            <Image Source="/Keeper2018;component/Resources/edit16.ico" Width="16"/>
+                            <Image Source="/Keeper2018;component/Resources/accountmenu16/edit16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Зачислить проценты/кэшбек" cal:Message.Attach="EnrollDepositInterest" BorderBrush="{x:Null}" 

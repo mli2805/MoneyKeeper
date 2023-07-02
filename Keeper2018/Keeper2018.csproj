@@ -1039,9 +1039,9 @@
     <Resource Include="Resources\mainmenu\transactions.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\edit16.ico" />
-    <Resource Include="Resources\minus16.ico" />
-    <Resource Include="Resources\plus16.ico" />
+    <Resource Include="Resources\accountmenu16\edit16.ico" />
+    <Resource Include="Resources\accountmenu16\minus16.ico" />
+    <Resource Include="Resources\accountmenu16\plus16.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\mainmenu\bank_offer.png" />
@@ -1125,6 +1125,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\tree16\deposit7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\accountmenu16\add_folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
