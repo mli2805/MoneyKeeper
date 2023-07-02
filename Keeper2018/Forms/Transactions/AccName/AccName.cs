@@ -10,6 +10,7 @@ namespace Keeper2018
         public string Name { get; set; }
         public string ButtonName { get; set; }
         public AccName Parent { get; set; }
+        public bool IsFolder;
         public List<AccName> Children { get; private set; } = new List<AccName>();
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace Keeper2018
         /// <returns></returns>
         public AccName PopulateFromAccount(AccountItemModel account, List<int> cutBranches)
         {
-            var result = new AccName { Id = account.Id, Name = account.Name, ButtonName = account.ButtonName };
+            var result = new AccName { Id = account.Id, Name = account.Name, /*ButtonName = account.ButtonName,*/ IsFolder = account.IsFolder };
 
             foreach (var child in account.Children)
             {

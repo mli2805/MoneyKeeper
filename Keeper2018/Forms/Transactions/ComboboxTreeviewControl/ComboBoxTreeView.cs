@@ -19,15 +19,15 @@ namespace Keeper2018
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ComboBoxTreeView), new FrameworkPropertyMetadata(typeof(ComboBoxTreeView)));
         }
 
-//        protected override void OnMouseWheel(MouseWheelEventArgs e)
-//        {
-//            don't call the method of the base class
-//        }
+        //        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        //        {
+        //            don't call the method of the base class
+        //        }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            
+
             _treeView = (ExtendedTreeView)GetTemplateChild("treeView");
             if (_treeView != null) _treeView.OnHierarchyMouseUp += OnTreeViewHierarchyMouseUp;
             _contentPresenter = (ContentPresenter)GetTemplateChild("ContentPresenter");
@@ -41,7 +41,9 @@ namespace Keeper2018
             var item = (ITreeViewItemModel)_treeView.SelectedItem;
             if (item == null) return;
 
-            if  (!IsBranchSelectionEnabled  &&  item.GetChildren().Any()) return; //if branch (not a leaf) is chosen - changes are not accepted
+            //if branch (not a leaf) is chosen - changes are not accepted
+            //if  (!IsBranchSelectionEnabled  &&  item.GetChildren().Any() ) return;
+            if (!IsBranchSelectionEnabled && ((AccName)item).IsFolder) return;
 
             SelectedItem = _treeView.SelectedItem;
             SetSelectedItemToHeader();
@@ -58,8 +60,10 @@ namespace Keeper2018
         /// </summary>
         private void OnTreeViewHierarchyMouseUp(object sender, MouseEventArgs e)
         {
-            var item = (ITreeViewItemModel) _treeView.SelectedItem;
-            if (IsBranchSelectionEnabled || !item.GetChildren().Any()) // if branch (not a leaf) is chosen don't close combobox
+            var item = (ITreeViewItemModel)_treeView.SelectedItem;
+            // if branch (not a leaf) is chosen don't close combobox
+            // if (IsBranchSelectionEnabled || !item.GetChildren().Any())
+            if (IsBranchSelectionEnabled || !((AccName)item).IsFolder)
                 IsDropDownOpen = false;
         }
 
@@ -83,12 +87,12 @@ namespace Keeper2018
 
         public bool IsBranchSelectionEnabled
         {
-            get { return (bool) GetValue(IsBranchSelectionEnabledProperty); }
-            set { SetValue(IsBranchSelectionEnabledProperty,value); }
+            get { return (bool)GetValue(IsBranchSelectionEnabledProperty); }
+            set { SetValue(IsBranchSelectionEnabledProperty, value); }
         }
 
         public static readonly DependencyProperty IsBranchSelectionEnabledProperty =
-            DependencyProperty.Register("IsBranchSelectionEnabled", typeof (bool), typeof (ComboBoxTreeView));
+            DependencyProperty.Register("IsBranchSelectionEnabled", typeof(bool), typeof(ComboBoxTreeView));
 
         /// <summary>
         /// Selected hierarchy of the treeview

@@ -57,7 +57,9 @@ namespace Keeper2018
             _isInAddMode = isInAddMode;
 
             ParentFolder = AccountItemInWork.Parent == null ? "Корневой счет" : AccountItemInWork.Parent.Name;
-            TextIn = AccountItemInWork.IsMyAccountInBank ? "В банке" : "В папке";
+            TextIn = (AccountItemInWork.Parent?.Parent?.Id ?? 0) == 161 // Счета и карты  
+                ? "В банке" : "В папке";
+
             _oldName = accountInWork.Name;
 
             InitializeAccNameSelectors();

@@ -240,6 +240,10 @@
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestViewModel.cs" />
+    <Compile Include="Forms\AccountTree\One\OneFolderView.xaml.cs">
+      <DependentUpon>OneFolderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\One\OneFolderViewModel.cs" />
     <Compile Include="Forms\Cars\OwnershipCostView.xaml.cs">
       <DependentUpon>OwnershipCostView.xaml</DependentUpon>
     </Compile>
@@ -351,10 +355,10 @@
       <DependentUpon>FolderSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\FolderSummarizing\FolderSummaryViewModel.cs" />
-    <Compile Include="Forms\AccountTree\OneCardView.xaml.cs">
+    <Compile Include="Forms\AccountTree\One\OneCardView.xaml.cs">
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\OneCardViewModel.cs" />
+    <Compile Include="Forms\AccountTree\One\OneCardViewModel.cs" />
     <Compile Include="Forms\AccountTree\PaymentWays\ExpenseTran.cs" />
     <Compile Include="Forms\AccountTree\PaymentWays\PaymentWaysView.xaml.cs">
       <DependentUpon>PaymentWaysView.xaml</DependentUpon>
@@ -373,14 +377,14 @@
       <DependentUpon>DepositReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportViewModel.cs" />
-    <Compile Include="Forms\AccountTree\OneAccountView.xaml.cs">
+    <Compile Include="Forms\AccountTree\One\OneAccountView.xaml.cs">
       <DependentUpon>OneAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\OneAccountViewModel.cs" />
-    <Compile Include="Forms\AccountTree\OneDepositView.xaml.cs">
+    <Compile Include="Forms\AccountTree\One\OneAccountViewModel.cs" />
+    <Compile Include="Forms\AccountTree\One\OneDepositView.xaml.cs">
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\OneDepositViewModel.cs" />
+    <Compile Include="Forms\AccountTree\One\OneDepositViewModel.cs" />
     <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationView.xaml.cs">
       <DependentUpon>BalanceVerificationView.xaml</DependentUpon>
     </Compile>
@@ -548,9 +552,9 @@
     </Compile>
     <Compile Include="Forms\AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
-    <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ComboBoxTreeView.cs" />
-    <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ExtendedTreeView.cs" />
-    <Compile Include="DataModel\EntityModels\Transaction\ComboboxTreeview\ITreeViewItemModel.cs" />
+    <Compile Include="Forms\Transactions\ComboboxTreeviewControl\ComboBoxTreeView.cs" />
+    <Compile Include="Forms\Transactions\ComboboxTreeviewControl\ExtendedTreeView.cs" />
+    <Compile Include="Forms\Transactions\ComboboxTreeviewControl\ITreeViewItemModel.cs" />
     <Compile Include="Forms\DepositOffers\BankOffersView.xaml.cs">
       <DependentUpon>BankOffersView.xaml</DependentUpon>
     </Compile>
@@ -699,15 +703,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AccountTree\OneAccountView.xaml">
+    <Page Include="Forms\AccountTree\One\OneAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AccountTree\OneCardView.xaml">
+    <Page Include="Forms\AccountTree\One\OneCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AccountTree\OneDepositView.xaml">
+    <Page Include="Forms\AccountTree\One\OneDepositView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\One\OneFolderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1129,6 +1137,7 @@
   <ItemGroup>
     <Resource Include="Resources\accountmenu16\add_folder.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

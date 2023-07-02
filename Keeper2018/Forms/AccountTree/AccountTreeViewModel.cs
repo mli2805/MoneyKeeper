@@ -19,7 +19,7 @@ namespace Keeper2018
 
         public KeeperDataModel KeeperDataModel { get; set; }
 
-      
+
         public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
@@ -41,7 +41,16 @@ namespace Keeper2018
 
         public void AddFolder()
         {
+            var accountItemModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
+                "", ShellPartsBinder.SelectedAccountItemModel);
+            accountItemModel.IsFolder = true;
+            var oneFolderVm = new OneFolderViewModel();
+            oneFolderVm.Initialize(accountItemModel, true);
+            WindowManager.ShowDialog(oneFolderVm);
+            if (!oneFolderVm.IsSavePressed) return;
 
+            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountItemModel);
+            KeeperDataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
         }
 
         public void AddAccount()
@@ -52,14 +61,14 @@ namespace Keeper2018
                     "Этот счет используется в проводках!"));
                 return;
             }
-            var accountModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
+            var accountItemModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
                     "", ShellPartsBinder.SelectedAccountItemModel);
-            _oneAccountViewModel.Initialize(accountModel, true);
+            _oneAccountViewModel.Initialize(accountItemModel, true);
             WindowManager.ShowDialog(_oneAccountViewModel);
             if (!_oneAccountViewModel.IsSavePressed) return;
 
-            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
-            KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
+            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountItemModel);
+            KeeperDataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
         }
 
         public void AddAccountDeposit()
@@ -90,16 +99,21 @@ namespace Keeper2018
 
         public void ChangeAccount()
         {
-            if (ShellPartsBinder.SelectedAccountItemModel.IsDeposit)
+            var accountItemModel = ShellPartsBinder.SelectedAccountItemModel;
+            if (accountItemModel.IsFolder)
             {
-                var accountModel = ShellPartsBinder.SelectedAccountItemModel;
-                _oneDepositViewModel.InitializeForm(accountModel, false);
+                var vm = new OneFolderViewModel();
+                vm.Initialize(accountItemModel, false);
+                WindowManager.ShowDialog(vm);
+            }
+            else if (accountItemModel.IsDeposit)
+            {
+                _oneDepositViewModel.InitializeForm(accountItemModel, false);
                 WindowManager.ShowDialog(_oneDepositViewModel);
             }
             else
             {
-                var accountModel = ShellPartsBinder.SelectedAccountItemModel;
-                _oneAccountViewModel.Initialize(accountModel, false);
+                _oneAccountViewModel.Initialize(accountItemModel, false);
                 WindowManager.ShowDialog(_oneAccountViewModel);
             }
         }

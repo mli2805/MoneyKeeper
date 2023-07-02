@@ -47,7 +47,7 @@ namespace Keeper2018
         public Visibility AddDepositVisibility => SelectedAccountItemModel.IsMyAccountInBank 
         ? Visibility.Visible : Visibility.Collapsed;
 
-        public bool IsEnabledAddIntoAccount => !_isSelectedAccountUsedInTransaction && !SelectedAccountItemModel.IsFolderOfClosed;
+        public bool IsEnabledAddIntoAccount => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.IsFolderOfClosed;
         public bool IsEnabledDeleteAccount => !SelectedAccountItemModel.IsFolder && !_isSelectedAccountUsedInTransaction;
 
 

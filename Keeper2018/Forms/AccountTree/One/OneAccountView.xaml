@@ -8,15 +8,15 @@
         SizeToContent="Height" Width="400" WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance keeper2018:OneAccountViewModel}">
     <StackPanel>
-        <DockPanel DockPanel.Dock="Top" Height="30" Margin="5,10,5,0">
+        <DockPanel Height="30" Margin="5,10,5,0">
             <TextBlock DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding ParentFolder}"/>
             <TextBlock Margin="5" Text="{Binding TextIn}"  HorizontalAlignment="Left"/>
         </DockPanel>
-        <DockPanel DockPanel.Dock="Top" Height="30" Margin="5">
+        <DockPanel Height="30" Margin="5">
             <TextBox DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding AccountItemInWork.Name, Mode= TwoWay}"/>
             <TextBlock Margin="5" Text="Название" HorizontalAlignment="Left"/>
         </DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="5, 0, 5,10">
+        <StackPanel Orientation="Horizontal" Height="30" Margin="5, 0, 5,10">
             <TextBlock Margin="5" Text="Название кнопки" HorizontalAlignment="Left"/>
             <TextBox Margin="5" Width="50" Text="{Binding AccountItemInWork.ButtonName, Mode= TwoWay}"/>
         </StackPanel>
@@ -29,7 +29,7 @@
                    Visibility="{Binding TextVisibility }"
                    Text="Можно оставить пустой комбик, тогда при вводе соответстующей проводки надо будет выбрать тэг вручную"/>
 
-        <StackPanel DockPanel.Dock="Bottom" Height="40" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Height="40" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="Save" Content="Принять" Height="22" Width="100" Margin="5" IsDefault="True"/>
             <Button Name="Cancel" Content="Отклонить" Height="22" Width="100" Margin="5" IsCancel="True"/>
         </StackPanel>
