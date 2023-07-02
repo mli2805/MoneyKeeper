@@ -6,8 +6,10 @@ namespace KeeperDomain
     public class Account
     {
         public int Id { get; set; }
-        public string Header { get; set; }
-        public int OwnerId { get; set; }
+        public string Name { get; set; }
+        public int ParentId { get; set; }
+
+        public bool IsFolder;
         public bool IsExpanded;
 
         public int BankId { get; set; } // 0 if not in bank
@@ -22,8 +24,8 @@ namespace KeeperDomain
 
         public string Dump(int level)
         {
-            var shiftedName = new string(' ', level * 2) + Header;
-            return Id + " ; " + shiftedName + " ; " + OwnerId + " ; " + IsExpanded + " ; " + BankId + " ; " + 
+            var shiftedName = new string(' ', level * 2) + Name;
+            return Id + " ; " + shiftedName + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + BankId + " ; " + 
                    AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + 
                    ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");

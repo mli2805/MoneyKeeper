@@ -158,15 +158,16 @@ namespace KeeperDomain
             var account = new Account();
             var substrings = s.Split(';');
             account.Id = int.Parse(substrings[0]);
-            account.Header = substrings[1].Trim();
-            account.OwnerId = int.Parse(substrings[2]);
-            account.IsExpanded = Convert.ToBoolean(substrings[3]);
-            account.BankId = int.Parse(substrings[4]);
-            account.AssociatedIncomeId = int.Parse(substrings[5]);
-            account.AssociatedExpenseId = int.Parse(substrings[6]);
-            account.AssociatedExternalId = int.Parse(substrings[7]);
-            account.ButtonName = substrings[8].Trim();
-            account.Comment = substrings[9].Trim();
+            account.Name = substrings[1].Trim();
+            account.ParentId = int.Parse(substrings[2]);
+            account.IsFolder = Convert.ToBoolean(substrings[3]);
+            account.IsExpanded = Convert.ToBoolean(substrings[4]);
+            account.BankId = int.Parse(substrings[5]);
+            account.AssociatedIncomeId = int.Parse(substrings[6]);
+            account.AssociatedExpenseId = int.Parse(substrings[7]);
+            account.AssociatedExternalId = int.Parse(substrings[8]);
+            account.ButtonName = substrings[9].Trim();
+            account.Comment = substrings[10].Trim();
             return account;
         }
 

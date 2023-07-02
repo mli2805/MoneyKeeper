@@ -43,9 +43,10 @@ namespace Keeper2018
             return new Account()
             {
                 Id = model.Id,
-                OwnerId = model.Parent?.Id ?? 0,
+                ParentId = model.Parent?.Id ?? 0,
                 BankId = model.Bank?.Id ?? 0,
-                Header = model.Name,
+                Name = model.Name,
+                IsFolder = model.IsFolder,
                 IsExpanded = model.IsExpanded,
                 AssociatedIncomeId = model.AssociatedIncomeId,
                 AssociatedExpenseId = model.AssociatedExpenseId,

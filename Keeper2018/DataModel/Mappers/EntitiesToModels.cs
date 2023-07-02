@@ -8,9 +8,10 @@ namespace Keeper2018
     {
         public static AccountItemModel Map(this Account account)
         {
-            return new AccountItemModel(account.Id, account.Header, null)
+            return new AccountItemModel(account.Id, account.Name, null)
             {
                 Id = account.Id,
+                IsFolder = account.IsFolder,
                 IsExpanded = account.IsExpanded,
                 AssociatedIncomeId = account.AssociatedIncomeId,
                 AssociatedExpenseId = account.AssociatedExpenseId,

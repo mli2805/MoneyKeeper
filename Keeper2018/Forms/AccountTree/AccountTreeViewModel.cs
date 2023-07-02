@@ -39,6 +39,11 @@ namespace Keeper2018
             KeeperDataModel = keeperDataModel;
         }
 
+        public void AddFolder()
+        {
+
+        }
+
         public void AddAccount()
         {
             if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountItemModel.Id))

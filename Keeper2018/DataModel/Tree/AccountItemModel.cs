@@ -6,12 +6,13 @@ namespace Keeper2018
     public class AccountItemModel : TreeViewItemModel
     {
         public string Img => GetIconPath();
+        public bool IsFolder { get; set; }
 
         public AccountItemModel Bank { get; set; } // null if not in bank
         public Deposit Deposit { get; set; }
 
         public bool IsDeposit => Deposit != null;
-        public bool IsFolder => Children.Any(); // in XAML
+       // public bool IsFolder => Children.Any(); // in XAML
         public bool IsLeaf => !Children.Any(); // in XAML
         public bool IsCard => Deposit?.Card != null; // in XAML
 

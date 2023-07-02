@@ -92,9 +92,9 @@ namespace KeeperDomain
             var level = 0;
             foreach (var account in bin.AccountPlaneList)
             {
-                if (account.OwnerId != previousParents.Peek())
+                if (account.ParentId != previousParents.Peek())
                 {
-                    if (account.OwnerId == previousAccountId)
+                    if (account.ParentId == previousAccountId)
                     {
                         level++;
                         previousParents.Push(previousAccountId);

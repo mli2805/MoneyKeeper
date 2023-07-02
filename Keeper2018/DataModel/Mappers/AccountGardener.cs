@@ -24,11 +24,11 @@ namespace Keeper2018
                         accountItemModel.Deposit.Card.DepositId = accountItemModel.Deposit.Id;
                 }
 
-                if (account.OwnerId == 0)
+                if (account.ParentId == 0)
                     dataModel.AccountsTree.Add(accountItemModel);
                 else
                 {
-                    var parentItemModel = dataModel.AcMoDict[account.OwnerId];
+                    var parentItemModel = dataModel.AcMoDict[account.ParentId];
                     parentItemModel.Children.Add(accountItemModel);
                     accountItemModel.Parent = parentItemModel;
                 }

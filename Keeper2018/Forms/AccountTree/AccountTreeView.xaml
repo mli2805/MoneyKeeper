@@ -38,8 +38,8 @@
 
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить папку" cal:Message.Attach="AddAccount" BorderBrush="{x:Null}" 
-                              Background="White" >
+                    <MenuItem Header="Добавить папку" cal:Message.Attach="AddFolder" BorderBrush="{x:Null}" 
+                              Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledAddIntoAccount}">
                         <MenuItem.Icon>
                             <Image Source="/Keeper2018;component/Resources/accountmenu16/add_folder.png" Width="16"/>
                         </MenuItem.Icon>
