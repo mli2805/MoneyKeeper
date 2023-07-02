@@ -37,17 +37,17 @@ namespace Keeper2018.PayCards
             calc.DepositReportModel.Balance.Currencies.TryGetValue(depositOffer.MainCurrency, out var amount);
             return new PayCardVm()
             {
-                CardNumber = account.Deposit.Card.CardNumber,
-                CardHolder = account.Deposit.Card.CardHolder,
-                IsMine = account.Deposit.Card.IsMine,
-                PaymentSystem = account.Deposit.Card.PaymentSystem,
-                IsVirtual = account.Deposit.Card.IsVirtual,
-                IsPayPass = account.Deposit.Card.IsPayPass,
+                CardNumber = account.PayCard.CardNumber,
+                CardHolder = account.PayCard.CardHolder,
+                IsMine = account.PayCard.IsMine,
+                PaymentSystem = account.PayCard.PaymentSystem,
+                IsVirtual = account.PayCard.IsVirtual,
+                IsPayPass = account.PayCard.IsPayPass,
 
-                AgreementNumber = account.Deposit.Serial,
-                StartDate = account.Deposit.StartDate,
-                FinishDate = account.Deposit.FinishDate,
-                Comment = account.Deposit.Comment,
+                AgreementNumber = account.PayCard.Serial,
+                StartDate = account.PayCard.StartDate,
+                FinishDate = account.PayCard.FinishDate,
+                Comment = account.PayCard.Comment,
 
                 BankAccount = _dataModel.AcMoDict.Values.First(a => a.Id == depositOffer.Bank.Id),
                 MainCurrency = depositOffer.MainCurrency,

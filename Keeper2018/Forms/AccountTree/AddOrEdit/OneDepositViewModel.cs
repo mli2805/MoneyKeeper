@@ -93,23 +93,22 @@ namespace Keeper2018
             }
         }
 
-
         protected override void OnViewLoaded(object view)
         {
-            var cap = _isInAddMode ? "Добавить" : "Изменить";
+            var cap = _isInAddMode ? "Добавить депозит" : "Изменить депозит";
             DisplayName = $"{cap} (id = {AccountItemModel.Id})";
         }
 
         public void PayCard()
         {
             var vm = new OneCardViewModel();
-            vm.InitializeForm(AccountItemModel, DepositInWork.Card == null);
+            vm.InitializeForm(AccountItemModel, AccountItemModel.PayCard == null);
             _windowManager.ShowDialog(vm);
             if (vm.IsSavePressed)
             {
-                DepositInWork.Card = vm.CardInWork;
-                DepositInWork.Card.Id = _dataModel.AcMoDict.Values
-                    .Where(a => a.IsDeposit && a.Deposit.Card != null).Max(a => a.Deposit.Card.Id) + 1;
+                //DepositInWork.Card = vm.CardInWork;
+                //DepositInWork.Card.Id = _dataModel.AcMoDict.Values
+                //    .Where(a => a.IsDeposit && a.Deposit.Card != null).Max(a => a.Deposit.Card.Id) + 1;
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using KeeperDomain;
+﻿using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -10,11 +9,10 @@ namespace Keeper2018
 
         public AccountItemModel Bank { get; set; } // null if not in bank
         public Deposit Deposit { get; set; }
+        public PayCard PayCard { get; set; }
 
         public bool IsDeposit => Deposit != null;
-       // public bool IsFolder => Children.Any(); // in XAML
-        public bool IsLeaf => !Children.Any(); // in XAML
-        public bool IsCard => Deposit?.Card != null; // in XAML
+        public bool IsCard => PayCard != null; // in XAML
 
         // my accounts do not use associations
         public int AssociatedIncomeId { get; set; } // for external
@@ -36,9 +34,11 @@ namespace Keeper2018
         public bool IsTag => Is(185) || Is(189);
 
         public bool IsFolderOfClosed => Is(393);
+        public bool IsFolderOfDeposits => Is(166);
+        public bool IsFolderOfMyBankAccounts => Is(159);
+
         public bool IsDebt => Is(866);
-        public bool IsTrustAccount => Is(902);
-        public bool IsMyAccountInBank => Is(159);
+        public bool IsFolderOfTrustAccounts => Is(902);
         public bool IsMyAccount => Is(158);
 
         private string GetIconPath()
@@ -53,9 +53,9 @@ namespace Keeper2018
                 return "../../Resources/tree16/deposit7.png";
             if (IsDebt)
                 return "../../Resources/tree16/hand_point_left.png";
-            if (IsTrustAccount)
+            if (IsFolderOfTrustAccounts)
                 return "../../Resources/tree16/trust.png";
-            if (IsMyAccountInBank)
+            if (IsFolderOfMyBankAccounts)
                 return "../../Resources/tree16/account4.png";
             if (IsMyAccount)
                 return "../../Resources/tree16/wallet2.png";

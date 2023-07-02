@@ -84,6 +84,10 @@ namespace Keeper2018
                 .Where(a => a.Deposit != null)
                 .Select(ac => ac.Deposit)
                 .ToList();
+            var cards = _keeperDataModel.AcMoDict.Values
+                .Where(a => a.PayCard != null)
+                .Select(ac => ac.PayCard)
+                .ToList();
 
             var exchangeRates = _keeperDataModel.ExchangeRates.Values.OrderBy(r=>r.Date).ToList();
             int i = 0;
@@ -103,7 +107,7 @@ namespace Keeper2018
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),
                 Deposits = deposits,
-                PayCards = deposits.Where(d => d.Card != null).Select(c => c.Card).ToList(),
+                PayCards = cards,
 
                 Transactions = _keeperDataModel.Transactions.Values.Select(t => t.Map()).ToList(),
 

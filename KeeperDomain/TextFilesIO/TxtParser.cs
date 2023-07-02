@@ -192,13 +192,21 @@ namespace KeeperDomain
             var card = new PayCard();
             var substrings = s.Split(';');
             card.Id = int.Parse(substrings[0]);
-            card.DepositId = int.Parse(substrings[1]);
-            card.CardNumber = substrings[2].Trim();
-            card.CardHolder = substrings[3].Trim();
-            card.IsMine = Convert.ToBoolean(substrings[4]);
-            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[5]);
-            card.IsVirtual = Convert.ToBoolean(substrings[6]);
-            card.IsPayPass = Convert.ToBoolean(substrings[7]);
+            card.MyAccountId = int.Parse(substrings[1]);
+            card.DepositId = int.Parse(substrings[2]);
+            card.Serial = substrings[3].Trim();
+            card.StartDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            card.FinishDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+
+            card.CardNumber = substrings[6].Trim();
+            card.CardHolder = substrings[7].Trim();
+            card.IsMine = Convert.ToBoolean(substrings[8]);
+            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[9]);
+            card.IsVirtual = Convert.ToBoolean(substrings[10]);
+            card.IsPayPass = Convert.ToBoolean(substrings[11]);
+
+            card.ShortName = substrings[12].Trim();
+            card.Comment = substrings[13].Replace("|", "\r\n");
             return card;
         }
 

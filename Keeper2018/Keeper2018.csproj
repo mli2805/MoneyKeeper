@@ -221,8 +221,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataModel\DataModelExt\AccountModelExt.cs" />
-    <Compile Include="DataModel\DataModelExt\DepoPartIdProvider.cs" />
+    <Compile Include="DataModel\Extensions\AccountModelExt.cs" />
+    <Compile Include="DataModel\Extensions\DepoPartIdProvider.cs" />
     <Compile Include="DataModel\EntityModels\ButtonCollectionModel.cs" />
     <Compile Include="DataModel\EntityModels\DurationModel.cs" />
     <Compile Include="DataModel\EntityModels\Invest\InvestmentAssetModel.cs" />
@@ -231,19 +231,19 @@
     <Compile Include="DataModel\EntityModels\DepoCondsModel.cs" />
     <Compile Include="DataModel\EntityModels\Invest\InvestTranModel.cs" />
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
-    <Compile Include="DataModel\DataModelExt\FuellingProvider.cs" />
+    <Compile Include="DataModel\Extensions\FuellingProvider.cs" />
     <Compile Include="DataModel\EntityModels\Car\FuellingModel.cs" />
     <Compile Include="DataModel\Mappers\AccountGardener.cs" />
-    <Compile Include="DataModel\Tree\AccountItemModel.cs" />
-    <Compile Include="DataModel\Tree\TreeViewItemModel.cs" />
+    <Compile Include="DataModel\EntityModels\Tree\AccountItemModel.cs" />
+    <Compile Include="DataModel\EntityModels\Tree\TreeViewItemModel.cs" />
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml.cs">
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestViewModel.cs" />
-    <Compile Include="Forms\AccountTree\One\OneFolderView.xaml.cs">
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneFolderView.xaml.cs">
       <DependentUpon>OneFolderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\One\OneFolderViewModel.cs" />
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneFolderViewModel.cs" />
     <Compile Include="Forms\Cars\OwnershipCostView.xaml.cs">
       <DependentUpon>OwnershipCostView.xaml</DependentUpon>
     </Compile>
@@ -337,9 +337,9 @@
     <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />
-    <Compile Include="DataModel\DataModelExt\AmountInUsdProvider.cs" />
-    <Compile Include="DataModel\DataModelExt\BalanceCalculator.cs" />
-    <Compile Include="DataModel\DataModelExt\DepoByRevocabilitySeparator.cs" />
+    <Compile Include="DataModel\Extensions\AmountInUsdProvider.cs" />
+    <Compile Include="DataModel\Extensions\BalanceCalculator.cs" />
+    <Compile Include="DataModel\Extensions\DepoByRevocabilitySeparator.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthRatesDifferencesProvider.cs" />
     <Compile Include="DataModel\Mappers\ModelsToEntities.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
@@ -355,10 +355,10 @@
       <DependentUpon>FolderSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\FolderSummarizing\FolderSummaryViewModel.cs" />
-    <Compile Include="Forms\AccountTree\One\OneCardView.xaml.cs">
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneCardView.xaml.cs">
       <DependentUpon>OneCardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\One\OneCardViewModel.cs" />
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneCardViewModel.cs" />
     <Compile Include="Forms\AccountTree\PaymentWays\ExpenseTran.cs" />
     <Compile Include="Forms\AccountTree\PaymentWays\PaymentWaysView.xaml.cs">
       <DependentUpon>PaymentWaysView.xaml</DependentUpon>
@@ -369,7 +369,7 @@
     <Compile Include="DataModel\EntityModels\Car\CarModel.cs" />
     <Compile Include="DataModel\IO\DbLoader.cs" />
     <Compile Include="DataModel\Mappers\EntitiesToModels.cs" />
-    <Compile Include="DataModel\DataModelExt\RateProvider.cs" />
+    <Compile Include="DataModel\Extensions\RateProvider.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\TransactionModel.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModel.cs" />
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportModelExt.cs" />
@@ -377,14 +377,14 @@
       <DependentUpon>DepositReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\DepositReport\DepositReportViewModel.cs" />
-    <Compile Include="Forms\AccountTree\One\OneAccountView.xaml.cs">
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneAccountView.xaml.cs">
       <DependentUpon>OneAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\One\OneAccountViewModel.cs" />
-    <Compile Include="Forms\AccountTree\One\OneDepositView.xaml.cs">
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneAccountViewModel.cs" />
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneDepositView.xaml.cs">
       <DependentUpon>OneDepositView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AccountTree\One\OneDepositViewModel.cs" />
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneDepositViewModel.cs" />
     <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationView.xaml.cs">
       <DependentUpon>BalanceVerificationView.xaml</DependentUpon>
     </Compile>
@@ -703,19 +703,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AccountTree\One\OneAccountView.xaml">
+    <Page Include="Forms\AccountTree\AddOrEdit\OneAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AccountTree\One\OneCardView.xaml">
+    <Page Include="Forms\AccountTree\AddOrEdit\OneCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AccountTree\One\OneDepositView.xaml">
+    <Page Include="Forms\AccountTree\AddOrEdit\OneDepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AccountTree\One\OneFolderView.xaml">
+    <Page Include="Forms\AccountTree\AddOrEdit\OneFolderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

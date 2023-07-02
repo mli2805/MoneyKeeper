@@ -22,37 +22,50 @@ namespace Keeper2018
                 _isSelectedAccountUsedInTransaction = UsedInTransaction(_selectedAccountItemModel.Id);
                 NotifyOfPropertyChange();
 
-                NotifyOfPropertyChange(nameof(IsEnabledAddIntoAccount));
-                NotifyOfPropertyChange(nameof(IsEnabledDeleteAccount));
+                NotifyOfPropertyChange(nameof(IsEnabledToAdd));
+                NotifyOfPropertyChange(nameof(IsEnabledToDelete));
 
                 NotifyOfPropertyChange(nameof(DepositMenuVisibility));
                 NotifyOfPropertyChange(nameof(CardMenuVisibility));
                 NotifyOfPropertyChange(nameof(MyLeafMenuVisibility));
                 NotifyOfPropertyChange(nameof(MyFolderMenuVisibility));
                 NotifyOfPropertyChange(nameof(MyLeafNotDepositMenuVisibility));
+
+                NotifyOfPropertyChange(nameof(AddAccountVisibility));
+                NotifyOfPropertyChange(nameof(AddAccountInBankVisibility));
                 NotifyOfPropertyChange(nameof(AddDepositVisibility));
+                NotifyOfPropertyChange(nameof(AddCardVisibility));
             }
         }
 
         public Visibility DepositMenuVisibility => SelectedAccountItemModel.IsDeposit ? Visibility.Visible : Visibility.Collapsed;
         public Visibility CardMenuVisibility => SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyLeafMenuVisibility => SelectedAccountItemModel.IsLeaf && SelectedAccountItemModel.IsMyAccount 
+        public Visibility MyLeafMenuVisibility => !SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount
             ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyFolderMenuVisibility => SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount 
+        public Visibility MyFolderMenuVisibility => SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount
             ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyLeafNotDepositMenuVisibility => SelectedAccountItemModel.IsLeaf 
-                            && SelectedAccountItemModel.IsMyAccount && !SelectedAccountItemModel.IsDeposit 
+        public Visibility MyLeafNotDepositMenuVisibility => !SelectedAccountItemModel.IsFolder
+                            && SelectedAccountItemModel.IsMyAccount && !SelectedAccountItemModel.IsDeposit
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility AddDepositVisibility => SelectedAccountItemModel.IsMyAccountInBank 
-        ? Visibility.Visible : Visibility.Collapsed;
 
-        public bool IsEnabledAddIntoAccount => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.IsFolderOfClosed;
-        public bool IsEnabledDeleteAccount => !SelectedAccountItemModel.Children.Any() && !_isSelectedAccountUsedInTransaction;
+        public Visibility AddAccountVisibility => !SelectedAccountItemModel.IsFolderOfMyBankAccounts
+            ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility AddAccountInBankVisibility => 
+            SelectedAccountItemModel.IsFolderOfMyBankAccounts && !SelectedAccountItemModel.IsFolderOfDeposits
+                  ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility AddDepositVisibility => SelectedAccountItemModel.IsFolderOfDeposits
+                  ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility AddCardVisibility => 
+            SelectedAccountItemModel.IsFolderOfMyBankAccounts && !SelectedAccountItemModel.IsFolderOfDeposits
+                  ? Visibility.Visible : Visibility.Collapsed;
+
+        public bool IsEnabledToAdd => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.IsFolderOfClosed;
+        public bool IsEnabledToDelete => !SelectedAccountItemModel.Children.Any() && !_isSelectedAccountUsedInTransaction;
 
 
         private BalanceOrTraffic _balanceOrTraffic;
-        public BalanceOrTraffic BalanceOrTraffic    
+        public BalanceOrTraffic BalanceOrTraffic
         {
             get => _balanceOrTraffic;
             set

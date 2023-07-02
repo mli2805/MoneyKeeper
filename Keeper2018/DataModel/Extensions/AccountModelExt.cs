@@ -22,7 +22,7 @@ namespace Keeper2018
             // 161 - папка Карточки
 
             return dataModel.AcMoDict.Values
-                .Where(a => a.Is(161) && a.Deposit?.Card != null)
+                .Where(a => a.Is(161) && a.PayCard != null)
                 .OrderBy(d => d.Deposit.FinishDate);
         }
 

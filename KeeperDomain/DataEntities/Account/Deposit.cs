@@ -15,7 +15,7 @@ namespace KeeperDomain
         public string ShortName { get; set; }
         public string Comment { get; set; }
 
-        public PayCard Card;
+       // public PayCard Card;
 
         public string Dump()
         {

@@ -55,12 +55,6 @@ namespace Keeper2018
 
         public void AddAccount()
         {
-            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountItemModel.Id))
-            {
-                WindowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
-                    "Этот счет используется в проводках!"));
-                return;
-            }
             var accountItemModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
                     "", ShellPartsBinder.SelectedAccountItemModel);
             _oneAccountViewModel.Initialize(accountItemModel, true);
@@ -71,14 +65,13 @@ namespace Keeper2018
             KeeperDataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
         }
 
-        public void AddAccountDeposit()
+        public void AddCard()
         {
-            if (KeeperDataModel.AccountUsedInTransaction(ShellPartsBinder.SelectedAccountItemModel.Id))
-            {
-                WindowManager.ShowDialog(new MyMessageBoxViewModel(MessageType.Error,
-                    "Этот счет используется в проводках!"));
-                return;
-            }
+
+        }
+
+        public void AddDeposit()
+        {
             var accountModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
                 "", ShellPartsBinder.SelectedAccountItemModel)
             {
@@ -91,8 +84,8 @@ namespace Keeper2018
             accountModel.Deposit.Id = KeeperDataModel.AcMoDict.Values
                 .Where(a => a.IsDeposit)
                 .Max(d => d.Id) + 1;
-            if (accountModel.Deposit.Card != null)
-                accountModel.Deposit.Card.DepositId = accountModel.Deposit.Id;
+            if (accountModel.PayCard != null)
+                accountModel.PayCard.DepositId = accountModel.Deposit.Id;
             ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }

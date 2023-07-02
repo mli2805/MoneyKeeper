@@ -17,12 +17,13 @@ namespace Keeper2018
                 dataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
 
                 accountItemModel.Deposit = bin.Deposits.FirstOrDefault(d => d.MyAccountId == accountItemModel.Id);
-                if (accountItemModel.Deposit != null)
-                {
-                    accountItemModel.Deposit.Card = bin.PayCards.FirstOrDefault(c => c.DepositId == accountItemModel.Deposit.Id);
-                    if (accountItemModel.Deposit.Card != null)
-                        accountItemModel.Deposit.Card.DepositId = accountItemModel.Deposit.Id;
-                }
+                //if (accountItemModel.Deposit != null)
+                //{
+                //    accountItemModel.Deposit.Card = bin.PayCards.FirstOrDefault(c => c.DepositId == accountItemModel.Deposit.Id);
+                //    if (accountItemModel.Deposit.Card != null)
+                //        accountItemModel.Deposit.Card.DepositId = accountItemModel.Deposit.Id;
+                //}
+                accountItemModel.PayCard = bin.PayCards.FirstOrDefault(c=>c.MyAccountId == accountItemModel.Id);
 
                 if (account.ParentId == 0)
                     dataModel.AccountsTree.Add(accountItemModel);
