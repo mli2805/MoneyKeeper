@@ -9,6 +9,7 @@ namespace Keeper2018
     {
         private readonly OneAccountViewModel _oneAccountViewModel;
         private readonly OneDepositViewModel _oneDepositViewModel;
+        private readonly OneCardViewModel _oneCardViewModel;
         private readonly ExpensesOnAccountViewModel _expensesOnAccountViewModel;
         private readonly DepositInterestViewModel _depositInterestViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
@@ -22,12 +23,13 @@ namespace Keeper2018
 
         public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
-            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel,
+            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, OneCardViewModel oneCardViewModel,
             ExpensesOnAccountViewModel expensesOnAccountViewModel, DepositInterestViewModel depositInterestViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneDepositViewModel = oneDepositViewModel;
+            _oneCardViewModel = oneCardViewModel;
             _expensesOnAccountViewModel = expensesOnAccountViewModel;
             _depositInterestViewModel = depositInterestViewModel;
             _depositReportViewModel = depositReportViewModel;
@@ -77,15 +79,15 @@ namespace Keeper2018
             {
                 Deposit = new Deposit()
             };
-            _oneDepositViewModel.InitializeForm(accountModel, true);
+            _oneDepositViewModel.Initialize(accountModel, true);
             WindowManager.ShowDialog(_oneDepositViewModel);
             if (!_oneDepositViewModel.IsSavePressed) return;
 
             accountModel.Deposit.Id = KeeperDataModel.AcMoDict.Values
                 .Where(a => a.IsDeposit)
                 .Max(d => d.Id) + 1;
-            if (accountModel.PayCard != null)
-                accountModel.PayCard.DepositId = accountModel.Deposit.Id;
+            //if (accountModel.PayCard != null)
+            //    accountModel.PayCard.DepositId = accountModel.Deposit.Id;
             ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
             KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
@@ -99,9 +101,14 @@ namespace Keeper2018
                 vm.Initialize(accountItemModel, false);
                 WindowManager.ShowDialog(vm);
             }
+            else if (accountItemModel.IsCard)
+            {
+                _oneCardViewModel.Initialize(accountItemModel, false);
+                WindowManager.ShowDialog(_oneCardViewModel);
+            }
             else if (accountItemModel.IsDeposit)
             {
-                _oneDepositViewModel.InitializeForm(accountItemModel, false);
+                _oneDepositViewModel.Initialize(accountItemModel, false);
                 WindowManager.ShowDialog(_oneDepositViewModel);
             }
             else
@@ -163,7 +170,7 @@ namespace Keeper2018
                     MyAccountId = ShellPartsBinder.SelectedAccountItemModel.Id,
 
                 };
-            _oneDepositViewModel.InitializeForm(ShellPartsBinder.SelectedAccountItemModel, true);
+            _oneDepositViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel, true);
             WindowManager.ShowDialog(_oneDepositViewModel);
         }
     }

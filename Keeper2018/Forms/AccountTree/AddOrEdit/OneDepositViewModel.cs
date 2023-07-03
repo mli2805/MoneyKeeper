@@ -69,7 +69,7 @@ namespace Keeper2018
             _rulesAndRatesViewModel = rulesAndRatesViewModel;
         }
 
-        public void InitializeForm(AccountItemModel accountItemModel, bool isInAddMode)
+        public void Initialize(AccountItemModel accountItemModel, bool isInAddMode)
         {
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
@@ -102,7 +102,7 @@ namespace Keeper2018
         public void PayCard()
         {
             var vm = new OneCardViewModel();
-            vm.InitializeForm(AccountItemModel, AccountItemModel.PayCard == null);
+            vm.Initialize(AccountItemModel, AccountItemModel.PayCard == null);
             _windowManager.ShowDialog(vm);
             if (vm.IsSavePressed)
             {

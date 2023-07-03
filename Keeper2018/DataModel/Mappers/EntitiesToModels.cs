@@ -17,6 +17,7 @@ namespace Keeper2018
                 AssociatedExpenseId = account.AssociatedExpenseId,
                 AssociatedExternalId = account.AssociatedExternalId,
                 ButtonName = account.ButtonName,
+                Comment = account.Comment,
             };
         }
 

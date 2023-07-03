@@ -7,7 +7,6 @@ namespace KeeperDomain
     {
         public int Id { get; set; }
         public int MyAccountId { get; set; }
-        public int DepositId { get; set; }
 
         public string Serial { get; set; }
         public DateTime StartDate { get; set; }
@@ -27,7 +26,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return  Id + " ; " + MyAccountId + " ; " + DepositId + " ; "+ Serial +" ; " + 
+            return  Id + " ; " + MyAccountId + " ; " + Serial +" ; " + 
                     $"{StartDate.Date:dd/MM/yyyy}" + " ; " + $"{FinishDate.Date:dd/MM/yyyy}" + " ; " + 
                     CardNumber + " ; " + CardHolder + " ; " + IsMine + " ; " + 
                     PaymentSystem + " ; " + IsVirtual + " ; " + IsPayPass + " ; " + 

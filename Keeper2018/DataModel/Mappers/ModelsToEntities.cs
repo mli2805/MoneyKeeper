@@ -52,6 +52,7 @@ namespace Keeper2018
                 AssociatedExpenseId = model.AssociatedExpenseId,
                 AssociatedExternalId = model.AssociatedExternalId,
                 ButtonName = model.ButtonName,
+                Comment = model.Comment,
             };
         }
 

@@ -233,7 +233,7 @@
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
     <Compile Include="DataModel\Extensions\FuellingProvider.cs" />
     <Compile Include="DataModel\EntityModels\Car\FuellingModel.cs" />
-    <Compile Include="DataModel\Mappers\AccountGardener.cs" />
+    <Compile Include="DataModel\Mappers\AccountTreeMapper.cs" />
     <Compile Include="DataModel\EntityModels\Tree\AccountItemModel.cs" />
     <Compile Include="DataModel\EntityModels\Tree\TreeViewItemModel.cs" />
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml.cs">
@@ -539,7 +539,7 @@
       <DependentUpon>DbLoadingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shell\DbLoadingViewModel.cs" />
-    <Compile Include="Forms\AccountTree\AccountTreeGardener.cs" />
+    <Compile Include="Forms\AccountTree\AccountTreeExt.cs" />
     <Compile Include="DataModel\KeeperDataModel.cs" />
     <Compile Include="Forms\AccountTree\Place.cs" />
     <Compile Include="Forms\AccountTree\AccountTreeViewModel.cs" />

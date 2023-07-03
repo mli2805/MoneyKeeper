@@ -5,26 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        SizeToContent="Height" Width="400" WindowStartupLocation="CenterOwner"
+        SizeToContent="Height" Width="412" WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance keeper2018:OneAccountViewModel}">
     <StackPanel>
-        <DockPanel Height="30" Margin="5,10,5,0">
-            <TextBlock DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding ParentFolder}"/>
-            <TextBlock Margin="5" Text="{Binding TextIn}"  HorizontalAlignment="Left"/>
-        </DockPanel>
-        <DockPanel Height="30" Margin="5">
-            <TextBox DockPanel.Dock="Right" Margin="5" Width="300" Text="{Binding AccountItemInWork.Name, Mode= TwoWay}"/>
-            <TextBlock Margin="5" Text="Название" HorizontalAlignment="Left"/>
-        </DockPanel>
-        <StackPanel Orientation="Horizontal" Height="30" Margin="5, 0, 5,10">
-            <TextBlock Margin="5" Text="Название кнопки" HorizontalAlignment="Left"/>
-            <TextBox Margin="5" Width="50" Text="{Binding AccountItemInWork.ButtonName, Mode= TwoWay}"/>
+        <StackPanel Orientation="Horizontal" Margin="5,10,5,0">
+            <TextBlock Margin="5,5,5,5" Width="70" Text="{Binding TextIn}"/>
+            <TextBlock Margin="5" Width="295" Text="{Binding ParentFolder}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="5,10,5,5" Width="70" Text="Название"/>
+            <TextBox DockPanel.Dock="Right" Margin="5" Width="295" Height="25" BorderBrush="#555555" 
+                     Text="{Binding AccountItemInWork.Name, Mode= TwoWay}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5, 0, 5,10">
+            <TextBlock Margin="5" Width="70" Text="Кнопка" HorizontalAlignment="Left"/>
+            <TextBox Margin="5" Width="50" Height="25" BorderBrush="#555555"
+                     Text="{Binding AccountItemInWork.ButtonName, Mode= TwoWay}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="5" Width="70" Text="Примечание"/>
+            <TextBox Margin="5" Width="295" Height="70" BorderBrush="#555555" 
+                     Text="{Binding AccountItemInWork.Comment}"
+                     TextWrapping="Wrap" AcceptsReturn="True"/>
         </StackPanel>
 
-        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" 
-                                        Margin="7,0" Visibility="{Binding Visibility}"/>
-        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm2}" 
-                                        Margin="7,0" Visibility="{Binding Visibility}"/>
+        <Rectangle Height="1" Margin="3,5,3,14" Stroke="LightGray" StrokeThickness="1,0" />
+        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" Width="376" HorizontalAlignment="Left"
+                                            Margin="9,0" Visibility="{Binding Visibility}"/>
+        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm2}" Width="326" HorizontalAlignment="Left"
+                                        Margin="9,0" Visibility="{Binding Visibility}"/>
         <TextBlock Margin="10, 0, 10, 10" TextWrapping="Wrap" TextAlignment="Center" 
                    Visibility="{Binding TextVisibility }"
                    Text="Можно оставить пустой комбик, тогда при вводе соответстующей проводки надо будет выбрать тэг вручную"/>

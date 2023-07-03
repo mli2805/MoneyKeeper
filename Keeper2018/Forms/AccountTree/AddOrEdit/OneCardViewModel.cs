@@ -30,7 +30,7 @@ namespace Keeper2018
         public List<PaymentSystem> PaymentSystems { get; set; }
         public bool IsSavePressed { get; set; }
 
-        public void InitializeForm(AccountItemModel accountItemModel, bool isInAddMode)
+        public void Initialize(AccountItemModel accountItemModel, bool isInAddMode)
         {
             IsSavePressed = false;
             _isInAddMode = isInAddMode;
