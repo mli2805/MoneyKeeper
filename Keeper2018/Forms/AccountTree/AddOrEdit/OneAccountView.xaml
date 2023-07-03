@@ -17,7 +17,7 @@
             <TextBox DockPanel.Dock="Right" Margin="5" Width="295" Height="25" BorderBrush="#555555" 
                      Text="{Binding AccountItemInWork.Name, Mode= TwoWay}"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="5, 0, 5,10">
+        <StackPanel Orientation="Horizontal" Margin="5, 0, 5,0">
             <TextBlock Margin="5" Width="70" Text="Кнопка" HorizontalAlignment="Left"/>
             <TextBox Margin="5" Width="50" Height="25" BorderBrush="#555555"
                      Text="{Binding AccountItemInWork.ButtonName, Mode= TwoWay}"/>
@@ -29,7 +29,8 @@
                      TextWrapping="Wrap" AcceptsReturn="True"/>
         </StackPanel>
 
-        <Rectangle Height="1" Margin="3,5,3,14" Stroke="LightGray" StrokeThickness="1,0" />
+        <Rectangle Height="1" Margin="3,5,3,14" Stroke="LightGray" StrokeThickness="1,0"
+                   Visibility="{Binding TextVisibility }"/>
         <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" Width="376" HorizontalAlignment="Left"
                                             Margin="9,0" Visibility="{Binding Visibility}"/>
         <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm2}" Width="326" HorizontalAlignment="Left"

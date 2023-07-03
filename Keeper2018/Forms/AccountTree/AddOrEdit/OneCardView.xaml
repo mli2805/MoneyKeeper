@@ -43,7 +43,7 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
                 <RowDefinition Height="10" />
                 <RowDefinition Height="35" />
                 <RowDefinition Height="45" />
@@ -55,7 +55,7 @@
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="120" />
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Height="1" Margin="3,5,3,4" 
+            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="3,5,3,4" 
                        Stroke="LightGray" StrokeThickness="1,0" />
             <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" Text="В папке" VerticalAlignment="Center"
                        HorizontalAlignment="Right" />
@@ -80,7 +80,7 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
                 <RowDefinition Height="10" />
                 <RowDefinition Height="35" />
             </Grid.RowDefinitions>
@@ -89,7 +89,7 @@
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="120" />
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Height="1" Margin="3,0,3,9" 
+            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="3,0,3,9" 
                        Stroke="LightGray" StrokeThickness="1,0" />
             <Button Name="SaveCard" Grid.Row="2" Grid.Column="1" Margin="5,1,5,9" HorizontalAlignment="Stretch"
                     Content="Ok" />
