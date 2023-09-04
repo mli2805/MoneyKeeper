@@ -67,13 +67,13 @@ namespace Keeper2018
                 OperationType = OperationType.Доход,
                 Text = tr.Comment,
             });
-            _total = _total + tr.Amount;
+            _total += tr.Amount;
         }
 
         private void RegisterExpense(TransactionModel tr)
         {
             var line = RegisterOneExpense(tr);
-            _total = _total - tr.Amount;
+            _total -= tr.Amount;
 
             if (tr.Receipt == 0)
             {
@@ -88,8 +88,8 @@ namespace Keeper2018
                        _trans[_transIndex + 1].Receipt == receiptId)
                 {
                     _transIndex++;
-                    _total = _total - _trans[_transIndex].Amount;
-                    line.Amount = line.Amount  - _trans[_transIndex].Amount;
+                    _total -= _trans[_transIndex].Amount;
+                    line.Amount -= _trans[_transIndex].Amount;
                     line.Text = line.Text + " ; " + _trans[_transIndex].Comment;
                 }
                 Lines.Insert(0, line);
@@ -119,7 +119,7 @@ namespace Keeper2018
                 OperationType = OperationType.Перенос,
                 Text = tr.Comment,
             });
-            _total = _total + amount;
+            _total += amount;
         }
 
         private void RegisterExcange(TransactionModel tr, AccountItemModel accountItemModel)
@@ -133,7 +133,7 @@ namespace Keeper2018
                 OperationType = OperationType.Обмен,
                 Text = tr.Comment,
             });
-            _total = _total + amount;
+            _total += amount;
         }
 
         public void CheckLine()

@@ -32,7 +32,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5">
             <TextBlock Margin="5" Width="70" Text="Примечание"/>
-            <TextBox Margin="5" Width="225" Height="70" BorderBrush="#555555" Text="{Binding CardInWork.Comment}"
+            <TextBox Margin="5" Width="225" Height="100" BorderBrush="#555555" Text="{Binding CardInWork.Comment}"
                      TextWrapping="Wrap" AcceptsReturn="True"/>
         </StackPanel>
 
@@ -53,7 +53,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="120" />
-                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="112" />
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="3,5,3,4" 
                        Stroke="LightGray" StrokeThickness="1,0" />
@@ -87,7 +87,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="120" />
-                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="112" />
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="3,0,3,9" 
                        Stroke="LightGray" StrokeThickness="1,0" />
