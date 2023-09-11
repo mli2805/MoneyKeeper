@@ -51,7 +51,8 @@ namespace Keeper2018
             foreach (var depositOfferModel in _dataModel.DepositOffers)
             {
                 var account = _dataModel.AcMoDict.Values.FirstOrDefault(a =>
-                    a.Deposit != null && a.Deposit.DepositOfferId == depositOfferModel.Id);
+                    (a.IsDeposit && a.Deposit.DepositOfferId == depositOfferModel.Id)
+                    || (a.IsCard && a.PayCard.DepositOfferId == depositOfferModel.Id));
 
                 if (account != null)
                 {
