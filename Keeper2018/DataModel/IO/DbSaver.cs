@@ -80,6 +80,15 @@ namespace Keeper2018
 
         private KeeperBin MapBack()
         {
+            foreach (var item in _keeperDataModel.AcMoDict.Values)
+            {
+                if (item.IsDeposit && item.IsCard)
+                {
+                    item.PayCard.DepositOfferId = item.Deposit.DepositOfferId;
+                   item.Deposit = null;
+                }
+            }
+
             var deposits = _keeperDataModel.AcMoDict.Values
                 .Where(a => a.Deposit != null)
                 .Select(ac => ac.Deposit)

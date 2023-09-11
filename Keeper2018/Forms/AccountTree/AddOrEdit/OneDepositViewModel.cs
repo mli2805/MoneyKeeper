@@ -32,7 +32,6 @@ namespace Keeper2018
         public bool IsSavePressed { get; set; }
 
         private List<DepositOfferModel> _depositOffers;
-
         public List<DepositOfferModel> DepositOffers
         {
             get => _depositOffers;
@@ -45,7 +44,6 @@ namespace Keeper2018
         }
 
         private DepositOfferModel _selectedDepositOffer;
-
         public DepositOfferModel SelectedDepositOffer
         {
             get => _selectedDepositOffer;
@@ -81,7 +79,7 @@ namespace Keeper2018
 
             if (isInAddMode)
             {
-                SelectedDepositOffer = DepositOffers.First();
+                SelectedDepositOffer = DepositOffers.Last();
                 DepositInWork.StartDate = DateTime.Today;
                 DepositInWork.FinishDate = DateTime.Today.AddMonths(1);
                 Junction = "";
@@ -97,19 +95,6 @@ namespace Keeper2018
         {
             var cap = _isInAddMode ? "Добавить депозит" : "Изменить депозит";
             DisplayName = $"{cap} (id = {AccountItemModel.Id})";
-        }
-
-        public void PayCard()
-        {
-            var vm = new OneCardViewModel();
-            vm.Initialize(AccountItemModel, AccountItemModel.PayCard == null);
-            _windowManager.ShowDialog(vm);
-            if (vm.IsSavePressed)
-            {
-                //DepositInWork.Card = vm.CardInWork;
-                //DepositInWork.Card.Id = _dataModel.AcMoDict.Values
-                //    .Where(a => a.IsDeposit && a.Deposit.Card != null).Max(a => a.Deposit.Card.Id) + 1;
-            }
         }
 
         public void SaveDeposit()

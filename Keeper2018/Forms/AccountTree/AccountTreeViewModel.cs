@@ -69,7 +69,20 @@ namespace Keeper2018
 
         public void AddCard()
         {
+            var accountModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
+                "", ShellPartsBinder.SelectedAccountItemModel)
+            {
+                PayCard = new PayCard()
+            };
+            _oneCardViewModel.Initialize(accountModel, true);
+            WindowManager.ShowDialog(_oneCardViewModel);
+            if (!_oneCardViewModel.IsSavePressed) return;
 
+            accountModel.PayCard.Id =
+                KeeperDataModel.AcMoDict.Values.Where(a => a.IsCard).Select(p => p.PayCard).Max(c => c.Id) + 1;
+            accountModel.PayCard.MyAccountId = accountModel.Id;
+            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
+            KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void AddDeposit()

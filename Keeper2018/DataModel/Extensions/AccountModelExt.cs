@@ -23,7 +23,7 @@ namespace Keeper2018
 
             return dataModel.AcMoDict.Values
                 .Where(a => a.Is(161) && a.PayCard != null)
-                .OrderBy(d => d.Deposit.FinishDate);
+                .OrderBy(d => d.PayCard.FinishDate);
         }
 
         public static IOrderedEnumerable<AccountItemModel> GetOpenDepositsOrderedByFinishDate(this KeeperDataModel dataModel)

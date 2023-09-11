@@ -23,10 +23,24 @@ namespace Keeper2018
         {
             _accountItemModel = accountItemModel;
             _period = period;
-            _isDeposit = _accountItemModel.Deposit != null;
+            _isDeposit = _accountItemModel.IsDeposit;
+
             _dataModel = dataModel;
 
             DepositReportModel = new DepositReportModel(dataModel);
+        }
+
+        public bool TryGetValue(CurrencyCode mainCurrency, out decimal result)
+        {
+            if (_balanceWithTurnover.Currencies.TryGetValue(mainCurrency, out TrafficPair trafficPair))
+            {
+                result = trafficPair.Plus - trafficPair.Minus;
+                return true;
+            }
+
+            result = 0;
+            return false;
+
         }
 
         public void EvaluateAccount()

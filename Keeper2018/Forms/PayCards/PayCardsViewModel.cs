@@ -31,10 +31,10 @@ namespace Keeper2018.PayCards
 
         private PayCardVm GetVm(AccountItemModel account)
         {
-            var depositOffer = _dataModel.DepositOffers.First(o => o.Id == account.Deposit.DepositOfferId);
+            var depositOffer = _dataModel.DepositOffers.First(o => o.Id == account.PayCard.DepositOfferId);
             var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));
             calc.EvaluateAccount();
-            calc.DepositReportModel.Balance.Currencies.TryGetValue(depositOffer.MainCurrency, out var amount);
+            calc.TryGetValue(depositOffer.MainCurrency, out var amount);
             return new PayCardVm()
             {
                 CardNumber = account.PayCard.CardNumber,
