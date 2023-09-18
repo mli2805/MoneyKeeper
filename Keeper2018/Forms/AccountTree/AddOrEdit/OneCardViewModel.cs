@@ -68,7 +68,7 @@ namespace Keeper2018
             }
             else
             {
-                _selectedDepositOffer = DepositOffers.First(o => o.Id == CardInWork.DepositOfferId);
+                _selectedDepositOffer = DepositOffers.FirstOrDefault(o => o.Id == CardInWork.DepositOfferId);
                 AccountName = AccountItemModel.Name;
             }
         }
