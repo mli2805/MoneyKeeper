@@ -513,6 +513,7 @@
     <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml.cs">
       <DependentUpon>LongTermChartView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PayCards\PayCardFilterVm.cs" />
     <Compile Include="Forms\PayCards\PayCardsView.xaml.cs">
       <DependentUpon>PayCardsView.xaml</DependentUpon>
     </Compile>

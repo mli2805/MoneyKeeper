@@ -1,4 +1,4 @@
-﻿namespace Keeper2018.PayCards
+﻿namespace Keeper2018
 {
     /// <summary>
     /// Interaction logic for PayCardsView.xaml

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
-using Keeper2018.PayCards;
 
 namespace Keeper2018
 {

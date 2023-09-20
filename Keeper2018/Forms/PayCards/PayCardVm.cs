@@ -1,13 +1,12 @@
 ﻿using System;
 using KeeperDomain;
 
-namespace Keeper2018.PayCards
+namespace Keeper2018
 {
     public class PayCardVm
     {
         public string CardNumber { get; set; }
         public string CardHolder { get; set; }
-       // public int CardOwner { get; set; }
         public bool IsMine { get; set; } // 0 - mine, 1 - julia
 
         public PaymentSystem PaymentSystem { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
 
-namespace Keeper2018.PayCards
+namespace Keeper2018
 {
     public class PayCardsViewModel : Screen
     {
@@ -15,9 +15,22 @@ namespace Keeper2018.PayCards
         public string TotalMine { get; set; }
         public string TotalVirtual { get; set; }
 
+        public PayCardFilterVm Filter { get; set; } = new PayCardFilterVm();
+
         public PayCardsViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
+            Filter.PropertyChanged += Filter_PropertyChanged;
+        }
+
+        protected override void OnViewLoaded(object view)
+        {
+            DisplayName = "Платежные карты";
+        }
+
+        private void Filter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+                Console.WriteLine();
         }
 
         public void Initialize()
