@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Title="PayCardsView" SizeToContent="WidthAndHeight" d:DataContext="{d:DesignInstance keeper2018:PayCardsViewModel}">
+        Height="820" Width="1142"
+        Title="PayCardsView" d:DataContext="{d:DesignInstance keeper2018:PayCardsViewModel}">
     <DockPanel>
         <StackPanel DockPanel.Dock="Right"  Width="150">
             <StackPanel>
@@ -18,21 +19,34 @@
                 </GroupBox>
 
                 <GroupBox Header="Валюта" Margin="10">
-                   <ComboBox Margin="5" ItemsSource="{Binding Filter.Currencies}"
+                    <ComboBox Margin="5" ItemsSource="{Binding Filter.Currencies}"
                              SelectedItem="{Binding Filter.SelectedCurrency}"/>
                 </GroupBox>
 
                 <GroupBox Header="Остаток" Margin="10, 0">
                     <StackPanel Margin="0,5" Orientation="Horizontal">
                         <TextBlock>Не менее</TextBlock>
-                        <TextBox Margin="5, 0" Width="60" Text="{Binding Filter.BalanceStr}"/>
+                        <TextBox Margin="5, 0" Width="60" Text="{Binding Filter.BalanceStr, 
+                            ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </GroupBox>
+
+                <Button Margin="10, 30, 10, 0" Height="40" Name="ShowAll">Всё</Button>
+                <Button Margin="10, 10, 10, 0" Height="40" Name="ShowAllByn5">Все белки</Button>
+                <Button Margin="10, 10, 10, 0" Height="40" Name="ShowMineByn5">Мои белки</Button>
             </StackPanel>
 
 
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False" IsReadOnly="True" DockPanel.Dock="Top">
+
+        <DockPanel Height="80" DockPanel.Dock="Bottom">
+            <ListBox Margin="5" Width="470" BorderThickness="0" ItemsSource="{Binding Totals}"/>
+            <ListBox  Margin="5" BorderThickness="0" ItemsSource="{Binding Balance}"/>
+            <Button Content="Close" Width="120" Height="22" Margin="5,10,22,10" HorizontalAlignment="Right" IsCancel="True" IsDefault="True"/>
+        </DockPanel>
+
+
+        <DataGrid  ItemsSource="{Binding Rows}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="Моя" Width="40" Binding="{Binding IsMine, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Название" Width="200" Binding="{Binding Name}"/>
@@ -47,11 +61,6 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel>
-            <TextBlock Height="22" Margin="5,5,5, 0" Text="{Binding Total}" />
-            <TextBlock Height="22" Margin="5,-5,5, 0" Text="{Binding TotalMine}" />
-            <TextBlock Height="22" Margin="5,-5,5, 5" Text="{Binding TotalVirtual}" />
-        </StackPanel>
-        <Button Content="Close" Width="120" Height="22" Margin="5,10,22,10" HorizontalAlignment="Right" IsCancel="True" IsDefault="True"/>
+
     </DockPanel>
 </Window>

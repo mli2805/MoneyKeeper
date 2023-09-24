@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
@@ -10,10 +10,9 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
 
-        public List<PayCardVm> Rows { get; set; } = new List<PayCardVm>();
-        public string Total { get; set; }
-        public string TotalMine { get; set; }
-        public string TotalVirtual { get; set; }
+        public ObservableCollection<PayCardVm> Rows { get; set; } = new ObservableCollection<PayCardVm>();
+        public ObservableCollection<string> Totals { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> Balance { get; set; } = new ObservableCollection<string>();
 
         public PayCardFilterVm Filter { get; set; } = new PayCardFilterVm();
 
@@ -30,22 +29,36 @@ namespace Keeper2018
 
         private void Filter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-                Console.WriteLine();
+            if (e.PropertyName == "BalanceStr") return;
+
+            RefreshTables();
         }
 
         public void Initialize()
         {
-            Rows= _dataModel.GetActiveCardsOrderedByFinishDate().Select(GetVm).ToList();
+            RefreshTables();
+        }
 
-            Total = $"Всего {Rows.Count}";
-            TotalMine = $"мои {Rows.Count(r => r.IsMine)} / не мои {Rows.Count(r => !r.IsMine)}";
-            TotalVirtual = $"пластик {Rows.Count(r => !r.IsVirtual)} / виртуалки {Rows.Count(r => r.IsVirtual)}";
+        private void RefreshTables()
+        {
+            Rows.Clear();
+            Totals.Clear();
+            Balance.Clear();
+
+            _dataModel.GetActiveCardsOrderedByFinishDate().Select(GetVm).Where(Filter.Allow).ToList().ForEach(c => Rows.Add(c));
+
+            Totals.Add($"Всего {Rows.Count}");
+            Totals.Add($"мои {Rows.Count(r => r.IsMine)} / не мои {Rows.Count(r => !r.IsMine)}");
+            Totals.Add($"пластик {Rows.Count(r => !r.IsVirtual)} / виртуалки {Rows.Count(r => r.IsVirtual)}");
+
+            if (Filter.SelectedCurrency != "все")
+                Balance.Add($"{Rows.Sum(r=>r.Amount)} {Rows.First().MainCurrency.ToString().ToLower()}");
         }
 
         private PayCardVm GetVm(AccountItemModel account)
         {
             var depositOffer = _dataModel.DepositOffers.First(o => o.Id == account.PayCard.DepositOfferId);
-            var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001,12,31), DateTime.Today.AddDays(1)));
+            var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
             calc.EvaluateAccount();
             calc.TryGetValue(depositOffer.MainCurrency, out var amount);
             return new PayCardVm()
@@ -68,6 +81,21 @@ namespace Keeper2018
                 Name = account.Name,
                 Amount = amount,
             };
+        }
+
+        public void ShowAll()
+        {
+            Filter.ClearAll();
+        }
+
+        public void ShowAllByn5()
+        {
+            Filter.ShowAllByn5();
+        }
+
+        public void ShowMineByn5()
+        {
+            Filter.ShowMineByn5();
         }
     }
 }
