@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +11,7 @@ namespace Keeper2018
     public class OfficialRatesViewModel : PropertyChangedBase
     {
         private readonly KeeperDataModel _keeperDataModel;
-        public ObservableCollection<OfficialRatesModel> Rows { get; set; } = new ObservableCollection<OfficialRatesModel>();
+        public RangeObservableCollection<OfficialRatesModel> Rows { get; set; } = new RangeObservableCollection<OfficialRatesModel>();
 
         private OfficialRatesModel _selectedRow;
         public OfficialRatesModel SelectedRow
@@ -26,6 +26,7 @@ namespace Keeper2018
         }
 
         public OfficialRatesModel LastDayOfYear { get; set; }
+        public OfficialRatesModel DayYearAgo { get; set; }
 
         private bool _isDownloadEnabled;
         public bool IsDownloadEnabled
@@ -52,22 +53,36 @@ namespace Keeper2018
 
         private void Init()
         {
-            OfficialRatesModel annual = null;
-            OfficialRatesModel previous = null;
+            OfficialRatesModel endOfLastYear = null;
+            OfficialRatesModel yearAgo = null;
+            OfficialRatesModel yesterday = null;
+
+            List<OfficialRatesModel> data = new List<OfficialRatesModel>();
+
             foreach (var record in _keeperDataModel.OfficialRates)
             {
-                var current = new OfficialRatesModel(record.Value, previous, annual);
-                if (Application.Current.Dispatcher != null)
-                    Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
+                yearAgo = data.LastOrDefault(d =>
+                    d.Date.Day == record.Value.Date.Day && d.Date.Month == record.Value.Date.Month);
+                var today = new OfficialRatesModel(record.Value, yesterday, endOfLastYear, yearAgo); // вычисления дельт
+                data.Add(today);
 
-                if (!current.BasketDelta.Equals(0))
-                    previous = current;
-                if (current.Date.Day == 31 && current.Date.Month == 12)
-                    annual = current;
+                // if (Application.Current.Dispatcher != null)
+                //     Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
+
+                // if (!today.BasketDelta.Equals(0))
+                    yesterday = today;
+
+                if (today.Date.Day == 31 && today.Date.Month == 12)
+                    endOfLastYear = today;
             }
 
             if (Application.Current.Dispatcher != null)
-                Application.Current.Dispatcher.Invoke(() => LastDayOfYear = annual);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Rows.AddRange(data);
+                    LastDayOfYear = endOfLastYear;
+                    DayYearAgo = yearAgo;
+                });
         }
 
         public async void Download()
@@ -76,7 +91,7 @@ namespace Keeper2018
             using (new WaitCursor())
             {
                 var date = Rows.Last().Date.AddDays(1);
-                var annual = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
+                var endOfLastYear = Rows.Last(r => r.Date.Day == 31 && r.Date.Month == 12);
                 while (date <= DateTime.Today.Date.AddDays(1))
                 {
                     var currencyRates = await DownloadRbAndRfRates(date);
@@ -84,11 +99,13 @@ namespace Keeper2018
 
                     currencyRates.Id = Rows.Last().Id + 1;
                     _keeperDataModel.OfficialRates.Add(currencyRates.Date, currencyRates);
-                    var line = new OfficialRatesModel(currencyRates, Rows.Last(), annual);
+                    var yearAgo = Rows
+                        .Last(r => r.Date.Day == currencyRates.Date.Day && r.Date.Month == currencyRates.Date.Month);
+                    var line = new OfficialRatesModel(currencyRates, Rows.Last(), endOfLastYear, yearAgo);
                     Rows.Add(line);
 
                     if (date.Date.Day == 31 && date.Date.Month == 12)
-                        annual = line;
+                        endOfLastYear = line;
                     date = date.AddDays(1);
                 }
             }

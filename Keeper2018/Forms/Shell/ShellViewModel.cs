@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -45,7 +46,7 @@ namespace Keeper2018
                 return;
             }
 
-            await _ratesViewModel.Initialize();
+            await Task.Factory.StartNew(() => _ratesViewModel.Initialize());
 
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;

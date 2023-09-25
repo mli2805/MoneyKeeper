@@ -13,19 +13,30 @@
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Margin="15, 5" Width="220" Name="Download" Content="Обновить курсы НБРБ и ЦБРФ" IsEnabled="{Binding IsDownloadEnabled}"/>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
-            <TextBlock Text="{Binding LastDayOfYear.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.UsdStr}" Margin="31,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.EuroBynStr}" Margin="168,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.EuroUsdStr}" Margin="36,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.RurStr}" Margin="45,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.RurUsdStr}" Margin="30,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.CnyStr}" Margin="62,0,0,0" />
-            <TextBlock Text="{Binding LastDayOfYear.BasketStrWithoutProc}" Margin="65,0,0,0" />
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5, 5,5, 0" >
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.UsdStr}" Margin="228,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.EuroBynStr}" Margin="98,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.EuroUsdStr}" Margin="36,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.RurStr}" Margin="65,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.RurUsdStr}" Margin="30,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.CnyStr}" Margin="76,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.BasketStrWithoutProc}" Margin="245,0,0,0" />
         </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5, 5, 5, 5">
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.UsdStr}" Margin="104,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.EuroBynStr}" Margin="222,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.EuroUsdStr}" Margin="36,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.RurStr}" Margin="65,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.RurUsdStr}" Margin="30,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.CnyStr}" Margin="76,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.BasketStrWithoutProc}" Margin="180,0,0,0" />
+        </StackPanel>
+
         <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}" 
                   AutoGenerateColumns="False" IsReadOnly="True"
-                  SelectionMode="Single">
+                  SelectionMode="Single" Margin="0,0,0,5">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />
@@ -40,8 +51,15 @@
                 </DataTemplate>
                 <DataTemplate x:Key="UsdAnnualTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding UsdAnnualStr}" Width="110" 
-                                   Foreground="{Binding UsdAnnualBrush}" FontSize="12"/>
+                        <TextBlock Text="{Binding UsdToEndOfYear.Str}" Width="110" 
+                                   Foreground="{Binding UsdToEndOfYear.Brush}" FontSize="12"/>
+                        <TextBlock Text="   "/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="UsdY2YTemplate" DataType="keeper2018:OfficialRatesModel">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding UsdY2Y.Str}" Width="110" 
+                                   Foreground="{Binding UsdY2Y.Brush}" FontSize="12"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
@@ -71,22 +89,17 @@
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-              <DataTemplate x:Key="CnyTemplate" DataType="keeper2018:OfficialRatesModel">
+                <DataTemplate x:Key="CnyTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding CnyUnitStr}" Width="15" FontSize="8"/>
                         <TextBlock Text="{Binding CnyStr}" Width="60"/>
                         <TextBlock Text="   "/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate x:Key="BasketAfterBreakTemplate" DataType="keeper2018:OfficialRatesModel">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding BasketAfterBreakStr}" Width="75" 
-                                   Foreground="{Binding BasketBreakBrush}" FontSize="12"/>
-                        <TextBlock Text="   "/>
-                    </StackPanel>
-                </DataTemplate>
+
                 <DataTemplate x:Key="BasketTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding BasketNumberStr}" Width="15" FontSize="8"/>
                         <TextBlock Text="{Binding BasketStr}" Width="120" 
                                    HorizontalAlignment="Center" Foreground="{Binding BasketBrush}"/>
                         <TextBlock Text="   "/>
@@ -94,8 +107,15 @@
                 </DataTemplate>
                 <DataTemplate x:Key="BasketAnnualTemplate" DataType="keeper2018:OfficialRatesModel">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding BasketAnnualStr}" Width="55" 
-                                   Foreground="{Binding BasketAnnualBrush}" FontSize="12"/>
+                        <TextBlock Text="{Binding BasketToEndOfYear.Str}" Width="55" 
+                                   Foreground="{Binding BasketToEndOfYear.Brush}" FontSize="12"/>
+                        <TextBlock Text="  "/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="BasketY2YTemplate" DataType="keeper2018:OfficialRatesModel">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding BasketY2Y.Str}" Width="55" 
+                                   Foreground="{Binding BasketY2Y.Brush}" FontSize="12"/>
                         <TextBlock Text="  "/>
                     </StackPanel>
                 </DataTemplate>
@@ -120,15 +140,16 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="80"/>
                 <DataGridTemplateColumn Header="НБРБ USD" CellTemplate="{StaticResource UsdTemplate}"/>
-                <DataGridTemplateColumn Header="НБРБ USD, к 31 дек" CellTemplate="{StaticResource UsdAnnualTemplate}"/>
+                <DataGridTemplateColumn Header=" к 31 дек" CellTemplate="{StaticResource UsdAnnualTemplate}"/>
+                <DataGridTemplateColumn Header=" год к году" CellTemplate="{StaticResource UsdY2YTemplate}"/>
                 <DataGridTemplateColumn Header="НБРБ Eur" CellTemplate="{StaticResource EuroTemplate}"/>
                 <DataGridTemplateColumn Header="НБРБ кросс" CellTemplate="{StaticResource EuroUsdTemplate}"/>
                 <DataGridTemplateColumn Header="НБРБ Rub" CellTemplate="{StaticResource RurTemplate}"/>
                 <DataGridTemplateColumn Header="ЦБРФ" CellTemplate="{StaticResource RurUsdTemplate}"/>
                 <DataGridTemplateColumn Header="НБРБ юань" CellTemplate="{StaticResource CnyTemplate}"/>
                 <DataGridTemplateColumn Header="Basket" CellTemplate="{StaticResource BasketTemplate}" />
-                <DataGridTemplateColumn Header="After break" CellTemplate="{StaticResource BasketAfterBreakTemplate}"/>
                 <DataGridTemplateColumn Header="к 31 дек" CellTemplate="{StaticResource BasketAnnualTemplate}"/>
+                <DataGridTemplateColumn Header="год к году" CellTemplate="{StaticResource BasketY2YTemplate}"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

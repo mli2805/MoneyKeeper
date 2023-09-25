@@ -7,6 +7,17 @@ using KeeperDomain.Basket;
 
 namespace Keeper2018
 {
+    public class StringWithBrush
+    {
+        public string Str { get; set; }
+        public Brush Brush { get; set; }
+
+        public StringWithBrush(string str, Brush brush)
+        {
+            Str = str;
+            Brush = brush;
+        }
+    }
     public class OfficialRatesModel : PropertyChangedBase
     {
         public int Id;
@@ -18,13 +29,17 @@ namespace Keeper2018
         private readonly double _yesterdayBasket;
         public double BasketDelta { get; set; }
         public double ProcBasketDelta;
-        private double _procBasketBreak, _procBasketAnnual;
+
 
         public string UsdStr { get; set; }
-
         public Brush UsdBrush { get; set; }
+
+        public StringWithBrush UsdToEndOfYear { get; set; }
+        public StringWithBrush UsdY2Y { get; set; }
+
         public string EuroBynStr { get; set; }
 
+        private string _euroUsdStr;
         public string EuroUsdStr
         {
             get => _euroUsdStr;
@@ -39,6 +54,7 @@ namespace Keeper2018
         public string RurUnitStr { get; set; }
         public string RurStr { get; set; }
 
+        private string _rurUsdStr;
         public string RurUsdStr
         {
             get => _rurUsdStr;
@@ -53,21 +69,22 @@ namespace Keeper2018
         public string CnyUnitStr { get; set; }
         public string CnyStr { get; set; }
 
+        public string BasketNumberStr { get; set; }
         public string BasketStr { get; set; }
-
         public Brush BasketBrush { get; set; }
 
-        public string BasketAfterBreakStr { get; set; }
-        public Brush BasketBreakBrush { get; set; }
-        public string BasketAnnualStr { get; set; }
-        public Brush BasketAnnualBrush { get; set; }
+        // private double _procBasketBreak;
+        // public string BasketAfterBreakStr { get; set; }
+        // public Brush BasketBreakBrush { get; set; }
 
-        public string UsdAnnualStr { get; set; }
-        public Brush UsdAnnualBrush { get; set; }
+        public StringWithBrush BasketToEndOfYear { get; set; } // To last day of previous year
+        public StringWithBrush BasketY2Y { get; set; } // To this day year ago
+
 
         private string Template => Date >= new DateTime(2016, 7, 1) ? "#,#.0000" : "#,#.####";
 
-        public OfficialRatesModel(OfficialRates record, OfficialRatesModel previous, OfficialRatesModel annual)
+        public OfficialRatesModel(OfficialRates record,
+            OfficialRatesModel previous, OfficialRatesModel endOfLastYear, OfficialRatesModel yearAgo)
         {
             Id = record.Id;
             Date = record.Date;
@@ -87,7 +104,8 @@ namespace Keeper2018
                 : YesterdayNbRbRates.Usd.Value > TodayRates.NbRates.Usd.Value
                     ? Brushes.LimeGreen : Brushes.Red;
 
-            Basket = BelBaskets.Calculate(record);
+            Basket = BelBaskets.CalculateByLastRules(record, out int basketRulesNumber);
+            BasketNumberStr = basketRulesNumber.ToString();
 
             _yesterdayBasket = previous == null
                 ? 0
@@ -96,10 +114,22 @@ namespace Keeper2018
                     : previous.Basket;
 
             SetBasketStr();
-            SetBasketBreakStr(previous);
-            SetUsdAnnualStr(annual);
-            SetBasketAnnualStr(annual);
-            RurUsdStr = TodayRates.CbrRate.Usd.Value.Equals(0) ? "" : TodayRates.CbrRate.Usd.Value.ToString("#,#.##", new CultureInfo("ru-RU"));
+            // SetBasketBreakStr(previous);
+
+            if (endOfLastYear != null)
+            {
+                UsdToEndOfYear = SetUsdChanges(endOfLastYear.TodayRates.NbRates.Usd.Value);
+                BasketToEndOfYear = SetBasketChanges(endOfLastYear.Basket);
+            }
+
+            if (yearAgo != null)
+            {
+                UsdY2Y = SetUsdChanges(yearAgo.TodayRates.NbRates.Usd.Value);
+                BasketY2Y = SetBasketChanges(yearAgo.Basket);
+            }
+
+            RurUsdStr = TodayRates.CbrRate.Usd.Value.Equals(0)
+                ? "" : TodayRates.CbrRate.Usd.Value.ToString("#,#.##", new CultureInfo("ru-RU"));
         }
 
         private void SetBasketStr()
@@ -117,52 +147,52 @@ namespace Keeper2018
                     ? Brushes.LimeGreen : Brushes.Red;
         }
 
-        private void SetBasketBreakStr(OfficialRatesModel previous)
+        // private void SetBasketBreakStr(OfficialRatesModel previous)
+        // {
+        //     if (previous == null) return;
+        //     if (BasketDelta * previous.BasketDelta >= 0) // no break
+        //     {
+        //         _procBasketBreak = previous._procBasketBreak + ProcBasketDelta;
+        //         BasketAfterBreakStr = $"{_procBasketBreak:+0.##;-0.##;0}%";
+        //         BasketBreakBrush = _procBasketBreak < 0 ? Brushes.LimeGreen : Brushes.Red;
+        //     }
+        //     else
+        //     {
+        //         _procBasketBreak = ProcBasketDelta;
+        //         BasketAfterBreakStr = "";
+        //     }
+        // }
+
+        private StringWithBrush SetUsdChanges(double usdRateToCompare)
         {
-            if (previous == null) return;
-            if (BasketDelta * previous.BasketDelta >= 0) // no break
-            {
-                _procBasketBreak = previous._procBasketBreak + ProcBasketDelta;
-                BasketAfterBreakStr = $"{_procBasketBreak:+0.##;-0.##;0}%";
-                BasketBreakBrush = _procBasketBreak < 0 ? Brushes.LimeGreen : Brushes.Red;
-            }
-            else
-            {
-                _procBasketBreak = ProcBasketDelta;
-                BasketAfterBreakStr = "";
-            }
+            var denominatedRate = Date.Year == 2000
+                ? usdRateToCompare / 1000
+                : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1)
+                    ? usdRateToCompare / 10000
+                    : usdRateToCompare;
+
+            var delta = TodayRates.NbRates.Usd.Value - denominatedRate;
+            var proc = delta / denominatedRate * 100;
+            return new StringWithBrush(
+                $"{delta.ToString("#,0.####", new CultureInfo("ru-RU"))} ({proc:+0.##;-0.##;0}%)",
+                    proc < 0 ? Brushes.LimeGreen : Brushes.Red);
         }
 
-        private void SetUsdAnnualStr(OfficialRatesModel annual)
+        private StringWithBrush SetBasketChanges(double basketToCompare)
         {
-            if (annual == null) return;
+            if (basketToCompare.Equals(0)) return new StringWithBrush(string.Empty, Brushes.Transparent);
 
-            var lastYear = Date.Year == 2000
-                ? annual.TodayRates.NbRates.Usd.Value / 1000
+            var denominatedBasket = Date.Year == 2000
+                ? basketToCompare / 1000
                 : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1)
-                    ? annual.TodayRates.NbRates.Usd.Value / 10000
-                    : annual.TodayRates.NbRates.Usd.Value;
+                    ? basketToCompare / 10000
+                    : basketToCompare;
 
-            var delta = TodayRates.NbRates.Usd.Value - lastYear;
-            var proc = delta / lastYear * 100;
-            UsdAnnualStr = $"{delta.ToString("#,0.####", new CultureInfo("ru-RU"))} ({proc:+0.##;-0.##;0}%)";
-            UsdAnnualBrush = proc < 0 ? Brushes.LimeGreen : Brushes.Red;
-        }
-
-        private void SetBasketAnnualStr(OfficialRatesModel annual)
-        {
-            if (annual == null || annual.Basket.Equals(0)) return;
-
-            var lastYear = Date.Year == 2000
-                ? annual.Basket / 1000
-                : Date > new DateTime(2016, 06, 30) && Date < new DateTime(2017, 1, 1)
-                    ? annual.Basket / 10000
-                    : annual.Basket;
-
-            var delta = Basket - lastYear;
-            _procBasketAnnual = delta / lastYear * 100;
-            BasketAnnualStr = $"{_procBasketAnnual:+0.##;-0.##;0}%";
-            BasketAnnualBrush = _procBasketAnnual < 0 ? Brushes.LimeGreen : Brushes.Red;
+            var delta = Basket - denominatedBasket;
+            var percent = delta / denominatedBasket * 100;
+            return new StringWithBrush(
+                $"{percent:+0.##;-0.##;0}%",
+                percent < 0 ? Brushes.LimeGreen : percent.Equals(0) ? Brushes.Gray : Brushes.Red);
         }
 
         public string BasketStrWithoutProc
@@ -176,8 +206,6 @@ namespace Keeper2018
 
         #region ' _isSelected '
         private bool _isSelected;
-        private string _euroUsdStr;
-        private string _rurUsdStr;
 
         public bool IsSelected
         {

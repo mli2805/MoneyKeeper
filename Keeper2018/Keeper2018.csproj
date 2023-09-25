@@ -695,6 +695,7 @@
       <DependentUpon>TransactionsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\TransactionsViewModel.cs" />
+    <Compile Include="Tricks\RangeObservableCollection.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
     <Page Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml">
       <SubType>Designer</SubType>
