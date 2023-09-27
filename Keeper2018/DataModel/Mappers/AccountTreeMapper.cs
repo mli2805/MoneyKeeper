@@ -28,9 +28,6 @@ namespace Keeper2018
                     parentItemModel.Children.Add(accountItemModel);
                     accountItemModel.Parent = parentItemModel;
                 }
-
-                if (account.BankId != 0)
-                    accountItemModel.Bank = dataModel.AcMoDict[account.BankId];
             }
         }
 

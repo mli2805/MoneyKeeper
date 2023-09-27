@@ -7,7 +7,6 @@ namespace Keeper2018
         public string Img => GetIconPath();
         public bool IsFolder { get; set; }
 
-        public AccountItemModel Bank { get; set; } // null if not in bank
         public Deposit Deposit { get; set; }
         public PayCard PayCard { get; set; }
 
