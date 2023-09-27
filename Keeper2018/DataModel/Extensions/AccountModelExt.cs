@@ -19,7 +19,7 @@ namespace Keeper2018
 
         public static IOrderedEnumerable<AccountItemModel> GetActiveCardsOrderedByFinishDate(this KeeperDataModel dataModel)
         {
-            // 161 - папка Карточки
+            // 161 - папка Счета и карты
 
             return dataModel.AcMoDict.Values
                 .Where(a => a.Is(161) && a.PayCard != null)

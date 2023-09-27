@@ -14,12 +14,11 @@ namespace Keeper2018
         public ObservableCollection<string> Totals { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Balance { get; set; } = new ObservableCollection<string>();
 
-        public PayCardFilterVm Filter { get; set; } = new PayCardFilterVm();
+        public PayCardFilterVm Filter { get; set; }
 
         public PayCardsViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
-            Filter.PropertyChanged += Filter_PropertyChanged;
         }
 
         protected override void OnViewLoaded(object view)
@@ -36,6 +35,8 @@ namespace Keeper2018
 
         public void Initialize()
         {
+            Filter  = new PayCardFilterVm();
+            Filter.PropertyChanged += Filter_PropertyChanged;
             RefreshTables();
         }
 
