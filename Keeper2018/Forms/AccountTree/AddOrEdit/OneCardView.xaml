@@ -4,102 +4,114 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Width="348" SizeToContent="Height" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignData OneCardViewModel}">
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignData OneCardViewModel}">
     <StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock Margin="5, 10,5,5" Width="70" Text="Офер (депо)"  />
-            <ComboBox Margin="5" Width="225" Height="25" HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding DepositOffers}"
-                      SelectedItem="{Binding SelectedDepositOffer}" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock Margin="5, 10,5,5" Width="70" Text="Card number" />
-            <TextBox  Margin="5" Width="225" Height="25" BorderBrush="#555555" 
-                      Text="{Binding CardInWork.CardNumber}" VerticalContentAlignment="Center"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock Margin="5, 10,5,5" Width="70" Text="Card holder"/>
-            <TextBox  Margin="5" Width="225" Height="25" BorderBrush="#555555" 
-                      Text="{Binding CardInWork.CardHolder}" VerticalContentAlignment="Center"/>
-        </StackPanel>
-        <CheckBox Margin="90, -5 ,10, 10" Content="Моя" IsChecked="{Binding CardInWork.IsMine}"/>
 
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock Margin="5, 10,5,5" Width="70" Text="Договор №"/>
-            <TextBox Margin="5" Width="225" Height="25" BorderBrush="#555555" 
-                     Text="{Binding CardInWork.Serial}" VerticalContentAlignment="Center"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock Margin="5, 10,5,5" Width="70" Text="Период"/>
-            <DatePicker Margin="5" Width="105" FirstDayOfWeek="Monday"
-            SelectedDate="{Binding CardInWork.StartDate}" />
-            <DatePicker Margin="5" Width="105"  FirstDayOfWeek="Monday"
-            SelectedDate="{Binding CardInWork.FinishDate}" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock Margin="5" Width="70" Text="Примечание"/>
-            <TextBox Margin="5" Width="225" Height="100" BorderBrush="#555555" Text="{Binding CardInWork.Comment}"
-                     TextWrapping="Wrap" AcceptsReturn="True"/>
-        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5, 10,5,5" Width="75" Text="Офер (депо)"  />
+                    <ComboBox Margin="5" Width="225" Height="25" HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding DepositOffers}"
+                          SelectedItem="{Binding SelectedDepositOffer}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5" Width="75" Text="Примечание к оферу" TextWrapping="Wrap"/>
+                    <TextBlock Margin="5" Width="225" Height="100"  Text="{Binding SelectedDepositOffer.Comment}"
+                         TextWrapping="Wrap" />
+                </StackPanel>
+            </StackPanel>
 
-        <ComboBox Margin="11,5" Width="305" Height="25" HorizontalAlignment="Left" 
-                  ItemsSource="{Binding PaymentSystems}" SelectedItem="{Binding CardInWork.PaymentSystem}"/>
-        <CheckBox Margin="10,5" Content="Виртуальная" IsChecked="{Binding CardInWork.IsVirtual}"/>
-        <CheckBox Margin="10,5" Content="Бесконтактная" IsChecked="{Binding CardInWork.IsPayPass}"/>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
+                    <TextBlock Margin="5, 5,5,5" Width="70" Text="Номер карточки" TextWrapping="WrapWithOverflow"/>
+                    <TextBox  Margin="5, 0" Width="225" Height="25" BorderBrush="#555555" 
+                          Text="{Binding CardInWork.CardNumber}" VerticalContentAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5, 10,5,5" Width="70" Text="Держатель"/>
+                    <TextBox  Margin="5" Width="225" Height="25" BorderBrush="#555555" 
+                          Text="{Binding CardInWork.CardHolder}" VerticalContentAlignment="Center"/>
+                </StackPanel>
+                <CheckBox Margin="90, -5 ,10, 10" Content="Моя" IsChecked="{Binding CardInWork.IsMine}"/>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="35" />
-                <RowDefinition Height="45" />
-                <RowDefinition Height="32" />
-                <RowDefinition Height="32" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="120" />
-                <ColumnDefinition Width="112" />
-            </Grid.ColumnDefinitions>
-            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="3,5,3,4" 
-                       Stroke="LightGray" StrokeThickness="1,0" />
-            <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" Text="В папке" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" />
-            <TextBlock Grid.Row="2" Grid.Column="1" Margin="10,5,5,5" Text="{Binding ParentName}" VerticalAlignment="Center"
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5, 10,5,5" Width="70" Text="Период"/>
+                    <DatePicker Margin="5" Width="105" FirstDayOfWeek="Monday"
+                            SelectedDate="{Binding CardInWork.StartDate}" />
+                    <DatePicker Margin="5" Width="105"  FirstDayOfWeek="Monday"
+                            SelectedDate="{Binding CardInWork.FinishDate}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5, 10,5,5" Width="70" Text="Платежная система" TextWrapping="Wrap"/>
+                    <ComboBox Margin="5" Width="220" Height="25" HorizontalAlignment="Stretch"
+                              ItemsSource="{Binding PaymentSystems}" SelectedItem="{Binding CardInWork.PaymentSystem}" />
+
+                </StackPanel>
+                <StackPanel Margin="78, 5, 0,0">
+                    <CheckBox Margin="10,5" Content="Виртуальная" IsChecked="{Binding CardInWork.IsVirtual}" />
+                    <CheckBox Margin="10,5" Content="Бесконтактная" IsChecked="{Binding CardInWork.IsPayPass}" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel >
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5, 10,5,5" Width="70" Text="Договор №"/>
+                    <TextBox Margin="5" Width="225" Height="25" BorderBrush="#555555" 
+                             Text="{Binding CardInWork.Serial}" VerticalContentAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Margin="5" Width="70" Text="Примечание"/>
+                    <TextBox Margin="5" Width="225" Height="100" BorderBrush="#555555" Text="{Binding CardInWork.Comment}"
+                             TextWrapping="Wrap" AcceptsReturn="True"/>
+                </StackPanel>
+
+                <Rectangle Margin="3,15,3,15" Height="1"
+                           Stroke="LightGray" StrokeThickness="1,0" />
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="45" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="112" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" Text="В папке" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Margin="10,5,5,5" Text="{Binding ParentName}" VerticalAlignment="Center"
                        HorizontalAlignment="Left" />
-            <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" Text="Счет" VerticalAlignment="Center"
+                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" Text="Счет" VerticalAlignment="Center"
                        HorizontalAlignment="Right" />
-            <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" HorizontalAlignment="Stretch"
+                    <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" HorizontalAlignment="Stretch"
                      TextWrapping="Wrap" BorderBrush="#555555" Text="{Binding AccountName, Mode=TwoWay}" />
-           
-            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="Кратко" VerticalAlignment="Center"
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="Кратко" VerticalAlignment="Center"
                        HorizontalAlignment="Right" />
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="5" HorizontalAlignment="Stretch"
+                    <TextBox Grid.Row="4" Grid.Column="1" Margin="5" HorizontalAlignment="Stretch"
                      BorderBrush="#555555" Text="{Binding CardInWork.ShortName, Mode=TwoWay}" />
-            <TextBlock Grid.Row="5" Grid.Column="0" Margin="5" Text="Кнопка" VerticalAlignment="Center"
+                    <TextBlock Grid.Row="5" Grid.Column="0" Margin="5" Text="Кнопка" VerticalAlignment="Center"
                        HorizontalAlignment="Right" />
-            <TextBox Grid.Row="5" Grid.Column="1" Margin="5" HorizontalAlignment="Left" Width="50"
+                    <TextBox Grid.Row="5" Grid.Column="1" Margin="5" HorizontalAlignment="Left" Width="50"
                      BorderBrush="#555555" Text="{Binding AccountItemModel.ButtonName, Mode=TwoWay}" />
-        </Grid>
+                </Grid>
+            </StackPanel>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="35" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="120" />
-                <ColumnDefinition Width="112" />
-            </Grid.ColumnDefinitions>
-            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="3,0,3,9" 
-                       Stroke="LightGray" StrokeThickness="1,0" />
-            <Button Name="SaveCard" Grid.Row="2" Grid.Column="1" Margin="5,1,5,9" HorizontalAlignment="Stretch"
-                    Content="Ok" />
-            <Button Name="Cancel" Grid.Row="2" Grid.Column="2" Margin="5,1,5,9" HorizontalAlignment="Stretch"
-                    Content="Cancel" IsCancel="True" />
+        </StackPanel>
 
-        </Grid>
+        <Rectangle Height="1" Stroke="LightGray" StrokeThickness="1,0" Margin="5,0"></Rectangle>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,10">
+            <Button Name="SaveCard" Height="25" Margin="5" Width="120" Content="Ok" />
+            <Button Name="Cancel" Height="25" Margin="5" Width="120" Content="Cancel" IsCancel="True" />
+        </StackPanel>
     </StackPanel>
 </Window>
