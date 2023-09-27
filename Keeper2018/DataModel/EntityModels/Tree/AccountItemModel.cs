@@ -24,6 +24,8 @@ namespace Keeper2018
 
         public override string ToString() => Name;
 
+        public string GetToolTip => IsCard ? PayCard.CardNumber : "";
+
 
 
         public AccountItemModel(int id, string name, TreeViewItemModel parent) : base(id, name, parent)
