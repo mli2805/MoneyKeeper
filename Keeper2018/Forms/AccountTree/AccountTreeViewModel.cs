@@ -173,18 +173,5 @@ namespace Keeper2018
             _expensesOnAccountViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod);
             WindowManager.ShowDialog(_expensesOnAccountViewModel);
         }
-
-        public void ConvertToDeposit()
-        {
-            if (ShellPartsBinder.SelectedAccountItemModel.IsDeposit) return;
-            ShellPartsBinder.SelectedAccountItemModel.Deposit =
-                new Deposit
-                {
-                    MyAccountId = ShellPartsBinder.SelectedAccountItemModel.Id,
-
-                };
-            _oneDepositViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel, true);
-            WindowManager.ShowDialog(_oneDepositViewModel);
-        }
     }
 }

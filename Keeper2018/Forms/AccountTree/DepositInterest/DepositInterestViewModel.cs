@@ -82,12 +82,9 @@ namespace Keeper2018
 
         public bool Initialize(AccountItemModel accountItemModel)
         {
-            if (!accountItemModel.IsDeposit)
-                return false;
-
             _accountItemModel = accountItemModel;
-            var depo = accountItemModel.Deposit;
-            _depositOffer = _keeperDataModel.DepositOffers.First(o => o.Id == depo.DepositOfferId);
+            var depositOfferId = accountItemModel.IsDeposit ? accountItemModel.Deposit.DepositOfferId : accountItemModel.PayCard.DepositOfferId;
+            _depositOffer = _keeperDataModel.DepositOffers.First(o => o.Id == depositOfferId);
             BankTitle = _depositOffer.Bank.Name;
             IsMoneyBack = _accountItemModel.IsCard;
             IsPercent = !IsMoneyBack;
