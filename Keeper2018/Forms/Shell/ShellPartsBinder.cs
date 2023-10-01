@@ -25,11 +25,11 @@ namespace Keeper2018
                 NotifyOfPropertyChange(nameof(IsEnabledToAdd));
                 NotifyOfPropertyChange(nameof(IsEnabledToDelete));
 
+                NotifyOfPropertyChange(nameof(DepositOrCardMenuVisibility));
                 NotifyOfPropertyChange(nameof(DepositMenuVisibility));
                 NotifyOfPropertyChange(nameof(CardMenuVisibility));
                 NotifyOfPropertyChange(nameof(MyLeafMenuVisibility));
                 NotifyOfPropertyChange(nameof(MyFolderMenuVisibility));
-                NotifyOfPropertyChange(nameof(MyLeafNotDepositMenuVisibility));
 
                 NotifyOfPropertyChange(nameof(AddAccountVisibility));
                 NotifyOfPropertyChange(nameof(AddAccountInBankVisibility));
@@ -38,16 +38,13 @@ namespace Keeper2018
             }
         }
 
+        public Visibility DepositOrCardMenuVisibility => SelectedAccountItemModel.IsDeposit || SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
         public Visibility DepositMenuVisibility => SelectedAccountItemModel.IsDeposit ? Visibility.Visible : Visibility.Collapsed;
         public Visibility CardMenuVisibility => SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
         public Visibility MyLeafMenuVisibility => !SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount
             ? Visibility.Visible : Visibility.Collapsed;
         public Visibility MyFolderMenuVisibility => SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount
             ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyLeafNotDepositMenuVisibility => !SelectedAccountItemModel.IsFolder
-                            && SelectedAccountItemModel.IsMyAccount && !SelectedAccountItemModel.IsDeposit
-            ? Visibility.Visible : Visibility.Collapsed;
-
 
         public Visibility AddAccountVisibility => !SelectedAccountItemModel.IsFolderOfMyBankAccounts
             ? Visibility.Visible : Visibility.Collapsed;
