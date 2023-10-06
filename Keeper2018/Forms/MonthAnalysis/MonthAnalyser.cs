@@ -46,7 +46,7 @@ namespace Keeper2018
                 FillIncomeForecastList(startDate, finishMoment);
             FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
-            var startMoment = startDate.AddDays(-1);
+            var startMoment = startDate.AddMilliseconds(-1);
             _monthAnalysisModel.RatesChanges = _dataModel.GetRatesDifference(startMoment, finishMoment);
             _monthAnalysisModel.FillResultList(isCurrentPeriod);
             if (isCurrentPeriod)
@@ -86,34 +86,41 @@ namespace Keeper2018
 
                 foreach (var tag in tran.Tags)
                 {
-                    if (tag.Is(185))
+                    if (tag.Is(185)) // доходы
                     {
-                        if (tag.Is(186))
+                        if (tag.Is(186)) // зарплата
                         {
-                            salaryList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran)} {tran.Timestamp:dd MMM}");
-                            salaryTotal = salaryTotal + amountInUsd;
+                            salaryList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran, true)} {tran.Timestamp:dd MMM}");
+                            salaryTotal += amountInUsd;
                         }
-                        else if (tag.Is(188))
+                        else if (tag.Is(188)) // рента
                         {
-                            if (tag.Id == 208)
+                            if (tag.Id == 208) // %% по вкладу (по карточкам тоже)
                             {
-                                depoList.Add($"{amStr} {tran.MyAccount.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
-                                depoTotal = depoTotal + amountInUsd;
+                                var depo = tran.MyAccount.Deposit?.ShortName ??
+                                           tran.MyAccount.PayCard?.ShortName ?? tran.MyAccount.Name;
+                                depoList.Add($"{amStr} {depo} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                depoTotal += amountInUsd;
                             }
-                            else
+                            else if (tag.Id == 701) // manyback
+                            {
+                                rantierList.Add($"{amStr} {tran.MyAccount.PayCard?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                rantierTotal += amountInUsd;
+                            }
+                            else // остальная рента
                             {
                                 rantierList.Add($"{amStr} {tran.MyAccount.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
-                                rantierTotal = rantierTotal + amountInUsd;
+                                rantierTotal += amountInUsd;
                             }
                         }
-                        else
+                        else  // остальные типы доходов
                         {
-                            restList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran)} {tran.Timestamp:dd MMM}");
-                            restTotal = restTotal + amountInUsd;
+                            restList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran, false)} {tran.Timestamp:dd MMM}");
+                            restTotal += amountInUsd;
                         }
                     }
                 }
-                total = total + amountInUsd;
+                total += amountInUsd;
             }
 
             if (salaryList.Count > 0)
@@ -190,23 +197,16 @@ namespace Keeper2018
             _monthAnalysisModel.IncomeViewModel.List.Add($"   Итого {word} {total:#,0.00} usd", Brushes.Blue);
         }
 
-        private string BuildCommentForIncomeTransaction(TransactionModel tran)
+        private string BuildCommentForIncomeTransaction(TransactionModel tran, bool isSalary)
         {
-            var comment = "";
-            if (!string.IsNullOrEmpty(tran.Comment))
-                comment = tran.Comment;
-            else
-            {
-                foreach (var tag in tran.Tags)
-                {
-                    if (tag.Is(_incomesRoot))
-                    {
-                        comment = tag.Name;
-                        break;
-                    }
-                }
-            }
+            var comment = tran.Tags.First(t => t.Is(157)).Name;
 
+            if (!isSalary)
+                comment += ";  " + tran.Tags.First(t => t.Is(_incomesRoot)).Name;
+
+            if (!string.IsNullOrEmpty(tran.Comment))
+                comment += ";  " + tran.Comment;
+            
             return comment;
         }
 

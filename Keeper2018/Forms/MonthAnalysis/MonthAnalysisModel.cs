@@ -46,7 +46,8 @@ namespace Keeper2018
             ExchangeDifference = After - (Before + Income - Expense);
             var exchangeForeground = ExchangeDifference > 0 ? Brushes.Blue : Brushes.Red;
             FinResultViewModel.List.Add("Курсовые разницы", exchangeForeground);
-            FinResultViewModel.List.Add("  с последнего дня месяца", exchangeForeground);
+            var till =  isCurrentPeriod ? $"" : $"по {StartDate.AddMonths(1).AddMilliseconds(-1):dd/MM HH:mm}";
+            FinResultViewModel.List.Add($"  с {StartDate.AddMilliseconds(-1):dd/MM HH:mm} - {till}", exchangeForeground);
             FinResultViewModel.List.AddList(RatesChanges);
             FinResultViewModel.List.Add("");
             FinResultViewModel.List.Add($"{After:N} - ({Before:N} + {Income:N} - {Expense:N})", exchangeForeground);
