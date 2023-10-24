@@ -6,7 +6,7 @@ namespace KeeperDomain
     public class PayCard
     {
         public int Id { get; set; }
-        public int MyAccountId { get; set; }
+        public int MyAccountId { get; set; } //вместо этого будет BankAccountId
         public int DepositOfferId { get; set; }
 
         public string Serial { get; set; }
@@ -16,7 +16,7 @@ namespace KeeperDomain
         public string CardNumber { get; set; }
         public string CardHolder { get; set; }
 
-        public bool IsMine { get; set; } // 0 - mine, 1 - julia
+        public bool IsMine { get; set; } // убрать когда заработает внутри BankAccount
 
         public PaymentSystem PaymentSystem { get; set; }
         public bool IsVirtual { get; set; }

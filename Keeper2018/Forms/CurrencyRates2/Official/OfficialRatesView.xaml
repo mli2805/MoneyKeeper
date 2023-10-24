@@ -12,6 +12,7 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Margin="15, 5" Width="220" Name="Download" Content="Обновить курсы НБРБ и ЦБРФ" IsEnabled="{Binding IsDownloadEnabled}"/>
+            <Button Margin="15, 5" Width="220" Name="UpdateCbRf" Content="Заполнить пробелы ЦБРФ"/>
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5, 5,5, 0" >
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.Date, StringFormat='{}{0:dd/MM/yyyy}'}" Margin="8,0,0,0" />
@@ -20,7 +21,7 @@
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.EuroUsdStr}" Margin="36,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.RurStr}" Margin="65,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.RurUsdStr}" Margin="30,0,0,0" />
-            <TextBlock FontSize="13" Text="{Binding DayYearAgo.CnyStr}" Margin="76,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.CnyStr}" Margin="54,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.BasketStrWithoutProc}" Margin="245,0,0,0" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5, 5, 5, 5">
@@ -30,7 +31,7 @@
             <TextBlock FontSize="13" Text="{Binding LastDayOfYear.EuroUsdStr}" Margin="36,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding LastDayOfYear.RurStr}" Margin="65,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding LastDayOfYear.RurUsdStr}" Margin="30,0,0,0" />
-            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.CnyStr}" Margin="76,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding LastDayOfYear.CnyStr}" Margin="48,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding LastDayOfYear.BasketStrWithoutProc}" Margin="180,0,0,0" />
         </StackPanel>
 

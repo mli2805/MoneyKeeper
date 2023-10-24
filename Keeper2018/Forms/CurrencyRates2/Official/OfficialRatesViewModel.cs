@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,7 +71,7 @@ namespace Keeper2018
                 //     Application.Current.Dispatcher.Invoke(() => Rows.Add(current));
 
                 // if (!today.BasketDelta.Equals(0))
-                    yesterday = today;
+                yesterday = today;
 
                 if (today.Date.Day == 31 && today.Date.Month == 12)
                     endOfLastYear = today;
@@ -118,8 +119,43 @@ namespace Keeper2018
             if (nbRbRates == null) return null;
             var currencyRates = new OfficialRates() { Date = date, NbRates = nbRbRates };
             var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(date);
-            currencyRates.CbrRate.Usd = new OneRate() { Unit = 1, Value = usd2Rur };
+            currencyRates.CbrRate.Usd = usd2Rur ?? new OneRate() { Unit = 1, Value = 0 };
             return currencyRates;
+        }
+
+        public async void UpdateCbRf()
+        {
+            var lastRfDate = _keeperDataModel.OfficialRates.Values.OrderBy(v => v.Date)
+                .Last(o => !o.CbrRate.Usd.Value.Equals(0)).Date;
+
+            var from = DateTime.Today.AddMonths(-2);
+            var prevRurUsdRate = _keeperDataModel.OfficialRates[from].CbrRate.Usd;
+            var checkDate = from.AddDays(1);
+
+            using (new WaitCursor())
+            {
+                while (checkDate < lastRfDate)
+                {
+                    if (_keeperDataModel.OfficialRates[checkDate].CbrRate.Usd.Value.Equals(0))
+                    {
+                        // перепроверяем, вдруг есть курс для этой даты, по каким-то причинам не был получен ранее
+                        var usd2Rur = await CbrRatesDownloader.GetRateForDateFromXml(checkDate);
+                        _keeperDataModel.OfficialRates[checkDate].CbrRate.Usd = usd2Rur ?? prevRurUsdRate.Clone();
+
+                        // чтобы сразу на экране обновилось
+                        var line = Rows.FirstOrDefault(r => r.Date == checkDate);
+                        if (line != null)
+                            line.RurUsdStr = _keeperDataModel.OfficialRates[checkDate].CbrRate.Usd.Value
+                                .ToString("#,#.##", new CultureInfo("ru-RU"));
+                    }
+                    else
+                    {
+                        prevRurUsdRate = _keeperDataModel.OfficialRates[checkDate].CbrRate.Usd.Clone();
+                    }
+
+                    checkDate = checkDate.AddDays(1);
+                }
+            }
         }
 
 
