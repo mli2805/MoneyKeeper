@@ -135,11 +135,11 @@ namespace Keeper2018
         private DepositVm Convert(AccountItemModel accountItemModel)
         {
             var depoOffer = _dataModel.DepositOffers
-                .First(o => o.Id == accountItemModel.Deposit.DepositOfferId);
+                .First(o => o.Id == accountItemModel.BankAccount.DepositOfferId);
             var calc = new TrafficOfAccountCalculator(_dataModel, accountItemModel,
-                new Period(accountItemModel.Deposit.StartDate, DateTime.Now));
-            var isAddOpen = IsAddOpen(accountItemModel.Deposit, depoOffer, out var addLimitStr);
-            var rate = depoOffer.GetCurrentRate(accountItemModel.Deposit.StartDate, out string formula);
+                new Period(accountItemModel.BankAccount.StartDate, DateTime.Now));
+            var isAddOpen = IsAddOpen(accountItemModel.BankAccount, depoOffer, out var addLimitStr);
+            var rate = depoOffer.GetCurrentRate(accountItemModel.BankAccount.StartDate, out string formula);
             return new DepositVm()
             {
                 Id = accountItemModel.Id,
@@ -151,15 +151,15 @@ namespace Keeper2018
                 RateFormula = formula,
                 AdditionsStr = addLimitStr,
                 IsAddOpen = isAddOpen,
-                StartDate = accountItemModel.Deposit.StartDate,
-                FinishDate = accountItemModel.Deposit.FinishDate,
+                StartDate = accountItemModel.BankAccount.StartDate,
+                FinishDate = accountItemModel.BankAccount.FinishDate,
                 Balance = calc.EvaluateBalance(),
             };
         }
 
-        private bool IsAddOpen(Deposit deposit, DepositOfferModel depositOffer, out string addLimitString)
+        private bool IsAddOpen(BankAccountModel bankAccountModel, DepositOfferModel depositOffer, out string addLimitString)
         {
-            if (deposit.IsAdditionsBanned) // по условия можно, но банк закрыл досрочно
+            if (bankAccountModel.Deposit.IsAdditionsBanned) // по условия можно, но банк закрыл досрочно
             {
                 addLimitString = "банк закрыл досрочно";
                 return false;
@@ -178,7 +178,7 @@ namespace Keeper2018
             }
 
             // допы ограничены по сроку
-            var addLimit = deposit.StartDate.AddDays(depositOffer.AddLimitInDays);
+            var addLimit = bankAccountModel.StartDate.AddDays(depositOffer.AddLimitInDays);
             if (addLimit > DateTime.Today)  // срок еще не вышел
             {
                 addLimitString = $"открыты до {addLimit:dd/MM/yyyy}";

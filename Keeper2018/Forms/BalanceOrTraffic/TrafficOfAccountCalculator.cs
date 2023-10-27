@@ -49,7 +49,7 @@ namespace Keeper2018
 
             if (_isDeposit)
             {
-                DepositReportModel.Deposit = _accountItemModel.Deposit;
+                DepositReportModel.BankAccount = _accountItemModel.BankAccount;
                 DepositReportModel.Balance = _balanceWithTurnover.Balance();
                 DepositReportModel.AmountInUsd = AmountInUsd;
                 DepositReportModel.DepositName = _accountItemModel.Name;

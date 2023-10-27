@@ -69,13 +69,13 @@ namespace Keeper2018
         {
             _comboTreesProvider.Initialize();
 
-            if (AccountItemInWork.IsMyAccount)
+            if (AccountItemInWork.IsMyAccount())
             {
                 MyAccNameSelectorVm.Visibility = Visibility.Collapsed;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Collapsed;
             }
-            else if (AccountItemInWork.IsTag)
+            else if (AccountItemInWork.IsTag())
             {
                 MyAccNameSelectorVm.Visibility = Visibility.Visible;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
@@ -112,10 +112,10 @@ namespace Keeper2018
 
         private void ApplyAssociation()
         {
-            if (AccountItemInWork.IsMyAccount)
+            if (AccountItemInWork.IsMyAccount())
             {
             }
-            else if (AccountItemInWork.IsTag)
+            else if (AccountItemInWork.IsTag())
             {
                 AccountItemInWork.AssociatedExternalId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
             }

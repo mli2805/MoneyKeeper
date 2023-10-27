@@ -58,30 +58,37 @@ namespace Keeper2018
 
         private PayCardVm GetVm(AccountItemModel account)
         {
-            var depositOffer = _dataModel.DepositOffers.First(o => o.Id == account.PayCard.DepositOfferId);
-            var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
-            calc.EvaluateAccount();
-            calc.TryGetValue(depositOffer.MainCurrency, out var amount);
-            return new PayCardVm()
+            try
             {
-                CardNumber = account.PayCard.CardNumber,
-                CardHolder = account.PayCard.CardHolder,
-                IsMine = account.PayCard.IsMine,
-                PaymentSystem = account.PayCard.PaymentSystem,
-                IsVirtual = account.PayCard.IsVirtual,
-                IsPayPass = account.PayCard.IsPayPass,
+                var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
+                calc.EvaluateAccount();
+                calc.TryGetValue(account.BankAccount.MainCurrency, out var amount);
+                return new PayCardVm()
+                {
+                    CardNumber = account.BankAccount.PayCard.CardNumber,
+                    CardHolder = account.BankAccount.PayCard.CardHolder,
+                    IsMine = account.BankAccount.IsMine,
+                    PaymentSystem = account.BankAccount.PayCard.PaymentSystem,
+                    IsVirtual = account.BankAccount.PayCard.IsVirtual,
+                    IsPayPass = account.BankAccount.PayCard.IsPayPass,
 
-                AgreementNumber = account.PayCard.Serial,
-                StartDate = account.PayCard.StartDate,
-                FinishDate = account.PayCard.FinishDate,
-                Comment = account.PayCard.Comment,
+                    AgreementNumber = account.BankAccount.AgreementNumber,
+                    StartDate = account.BankAccount.StartDate,
+                    FinishDate = account.BankAccount.FinishDate,
+                    // Comment = account.BankAccount.PayCard.Comment,
 
-                BankAccount = _dataModel.AcMoDict.Values.First(a => a.Id == depositOffer.Bank.Id),
-                MainCurrency = depositOffer.MainCurrency,
+                    BankAccount = _dataModel.AcMoDict.Values.First(a => a.Id == account.BankAccount.BankId),
+                    MainCurrency = account.BankAccount.MainCurrency,
 
-                Name = account.Name,
-                Amount = amount,
-            };
+                    Name = account.Name,
+                    Amount = amount,
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public void ShowAll()

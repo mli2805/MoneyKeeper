@@ -25,6 +25,7 @@ namespace Keeper2018
             builder.RegisterType<AccountTreeViewModel>().SingleInstance();
             builder.RegisterType<AskDragAccountActionViewModel>().SingleInstance();
             builder.RegisterType<OneAccountViewModel>().SingleInstance();
+            builder.RegisterType<OneBankAccountViewModel>().SingleInstance();
             builder.RegisterType<OneDepositViewModel>().SingleInstance();
             builder.RegisterType<OneCardViewModel>().SingleInstance();
             builder.RegisterType<DepositReportViewModel>().SingleInstance();

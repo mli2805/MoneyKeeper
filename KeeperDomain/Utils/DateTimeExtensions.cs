@@ -29,6 +29,8 @@ namespace KeeperDomain
 
         public static DateTime GetEndOfMonth(this DateTime day)
         {
+            if (day == DateTime.MaxValue) return day;
+
             var yy = day.Year;
             var mm = day.Month;
             return new DateTime(yy, mm, 1, 0, 0, 0, 0).AddMonths(1).AddSeconds(-1);

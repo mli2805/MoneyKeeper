@@ -9,22 +9,21 @@ namespace Keeper2018
     {
         public static decimal GetRevenueInThisMonth(this AccountItemModel depo, KeeperDataModel dataModel)
         {
-            var deposit = depo.Deposit;
-            var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
+            var depositOffer = dataModel.DepositOffers.First(o => o.Id == depo.BankAccount.DepositOfferId);
             var conditions = depositOffer.CondsMap
                 .OrderBy(k => k.Key)
-                .LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+                .LastOrDefault(e => e.Key <= depo.BankAccount.StartDate).Value;
             var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
                 t.Value.MyAccount.Id == depo.Id && t.Value.Operation == OperationType.Доход).Value;
-            var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
-            var thisMonthRevenueDate = RevenueDate(depositOffer, deposit);
+            var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? depo.BankAccount.StartDate;
+            var thisMonthRevenueDate = RevenueDate(depositOffer, depo.BankAccount);
 
             var depositBalance = new Balance();
             decimal revenue = 0;
             var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
                 .Where(t => t.MyAccount.Id == depo.Id ||
                             (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
-            var date = deposit.StartDate;
+            var date = depo.BankAccount.StartDate;
             while (date <= thisMonthRevenueDate)
             {
                 foreach (var transaction in depoTraffic.Where(t => t.Timestamp.Date == date.Date))
@@ -46,14 +45,13 @@ namespace Keeper2018
         public static IEnumerable<Tuple<DateTime, decimal>>
             GetRevenuesInThisMonth(this AccountItemModel depo, KeeperDataModel dataModel)
         {
-            var deposit = depo.Deposit;
-            var depositOffer = dataModel.DepositOffers.First(o => o.Id == deposit.DepositOfferId);
+            var depositOffer = dataModel.DepositOffers.First(o => o.Id == depo.BankAccount.DepositOfferId);
             var conditions = depositOffer.CondsMap
                 .OrderBy(k => k.Key)
-                .LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+                .LastOrDefault(e => e.Key <= depo.BankAccount.StartDate).Value;
             var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
                 t.Value.MyAccount.Id == depo.Id && t.Value.Operation == OperationType.Доход).Value;
-            var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? deposit.StartDate;
+            var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? depo.BankAccount.StartDate;
 
             var revenueDates = GetNotPaidRevenueDates(conditions, lastReceivedRevenueDate);
 
@@ -62,7 +60,7 @@ namespace Keeper2018
             var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
                 .Where(t => t.MyAccount.Id == depo.Id ||
                             (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
-            var date = deposit.StartDate;
+            var date = depo.BankAccount.StartDate;
             var enumerator = revenueDates.GetEnumerator();
             if (enumerator.MoveNext()) // first time should be true
                 while (date <= DateTime.Today.GetEndOfMonth())
@@ -147,11 +145,11 @@ namespace Keeper2018
             return currentAmount * rateLines[i].Rate / 100 / (DateTime.IsLeapYear(date.Year) ? 366 : 365);
         }
 
-        private static DateTime RevenueDate(DepositOfferModel depositOffer, Deposit deposit)
+        private static DateTime RevenueDate(DepositOfferModel depositOffer, BankAccountModel bankAccountModel)
         {
             var conditions = depositOffer.CondsMap
                 .OrderBy(k => k.Key)
-                .LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+                .LastOrDefault(e => e.Key <= bankAccountModel.StartDate).Value;
 
             var thisMonth = DateTime.Today.Month;
             var thisYear = DateTime.Today.Year;
@@ -162,8 +160,8 @@ namespace Keeper2018
                 return DateTime.Today.GetEndOfMonth();
             var maxDay = DateTime.DaysInMonth(thisYear, thisMonth);
 
-            return deposit.StartDate.Day <= maxDay
-                ? new DateTime(thisYear, thisMonth, deposit.StartDate.Day)
+            return bankAccountModel.StartDate.Day <= maxDay
+                ? new DateTime(thisYear, thisMonth, bankAccountModel.StartDate.Day)
                 : new DateTime(thisYear, thisMonth, maxDay);
         }
 

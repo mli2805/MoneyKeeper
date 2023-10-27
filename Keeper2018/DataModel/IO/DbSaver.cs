@@ -80,27 +80,36 @@ namespace Keeper2018
 
         private KeeperBin MapBack()
         {
-            foreach (var item in _keeperDataModel.AcMoDict.Values)
-            {
-                if (item.IsDeposit && item.IsCard)
-                {
-                    item.PayCard.DepositOfferId = item.Deposit.DepositOfferId;
-                   item.Deposit = null;
-                }
-            }
+            // временно для переноса
+            //--------------------------
+            // foreach (var item in _keeperDataModel.AcMoDict.Values)
+            // {
+            //     if (item.IsCard)
+            //         item.Comment = item.BankAccount.PayCard.Comment;
+            //     if (item.IsDeposit)
+            //         item.Comment = item.BankAccount.Deposit.Comment;
+            //     if (item.IsBankAccount)
+            //         item.ShortName = item.BankAccount.ShortName;
+            // }
+            //--------------------------
 
+
+            var bankAccounts = _keeperDataModel.AcMoDict.Values
+                .Where(a => a.IsBankAccount)
+                .Select(ac => ac.BankAccount.Map())
+                .ToList();
             var deposits = _keeperDataModel.AcMoDict.Values
-                .Where(a => a.Deposit != null)
-                .Select(ac => ac.Deposit)
+                .Where(a => a.IsDeposit)
+                .Select(ac => ac.BankAccount.Deposit)
                 .ToList();
             var cards = _keeperDataModel.AcMoDict.Values
-                .Where(a => a.PayCard != null)
-                .Select(ac => ac.PayCard)
+                .Where(a => a.IsCard)
+                .Select(ac => ac.BankAccount.PayCard)
                 .ToList();
 
-            var exchangeRates = _keeperDataModel.ExchangeRates.Values.OrderBy(r=>r.Date).ToList();
+            var exchangeRates = _keeperDataModel.ExchangeRates.Values.OrderBy(r => r.Date).ToList();
             int i = 0;
-            exchangeRates.ForEach(r=>r.Id=++i);
+            exchangeRates.ForEach(r => r.Id = ++i);
 
             var bin = new KeeperBin
             {
@@ -110,11 +119,12 @@ namespace Keeper2018
                 RefinancingRates = _keeperDataModel.RefinancingRates,
 
                 TrustAccounts = _keeperDataModel.TrustAccounts,
-                InvestmentAssets = _keeperDataModel.InvestmentAssets.Select(a=>a.Map()).ToList(),
+                InvestmentAssets = _keeperDataModel.InvestmentAssets.Select(a => a.Map()).ToList(),
                 AssetRates = _keeperDataModel.AssetRates,
-                InvestmentTransactions = _keeperDataModel.InvestTranModels.Select(t=>t.Map()).ToList(),
+                InvestmentTransactions = _keeperDataModel.InvestTranModels.Select(t => t.Map()).ToList(),
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),
+                BankAccounts = bankAccounts,
                 Deposits = deposits,
                 PayCards = cards,
 

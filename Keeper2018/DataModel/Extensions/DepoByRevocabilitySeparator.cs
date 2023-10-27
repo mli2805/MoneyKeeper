@@ -13,7 +13,7 @@ namespace Keeper2018
             {
                 if (leaf.IsDeposit)
                 {
-                    var depositOffer = dataModel.DepositOffers.FirstOrDefault(o => o.Id == leaf.Deposit.DepositOfferId);
+                    var depositOffer = dataModel.DepositOffers.FirstOrDefault(o => o.Id == leaf.BankAccount.DepositOfferId);
                     if (depositOffer != null && depositOffer.IsNotRevocable)
                     {
                         notRevocable.Accounts.Add(leaf);

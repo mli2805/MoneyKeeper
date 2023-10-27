@@ -22,6 +22,7 @@ namespace Keeper2018
                 _isSelectedAccountUsedInTransaction = UsedInTransaction(_selectedAccountItemModel.Id);
                 NotifyOfPropertyChange();
 
+                NotifyOfPropertyChange(nameof(IsEnabledToAddFolder));
                 NotifyOfPropertyChange(nameof(IsEnabledToAdd));
                 NotifyOfPropertyChange(nameof(IsEnabledToDelete));
 
@@ -38,26 +39,27 @@ namespace Keeper2018
             }
         }
 
-        public Visibility DepositOrCardMenuVisibility => SelectedAccountItemModel.IsDeposit || SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility DepositOrCardMenuVisibility => 
+            SelectedAccountItemModel.IsDeposit || SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
         public Visibility DepositMenuVisibility => SelectedAccountItemModel.IsDeposit ? Visibility.Visible : Visibility.Collapsed;
         public Visibility CardMenuVisibility => SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyLeafMenuVisibility => !SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount
+        public Visibility MyLeafMenuVisibility => !SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount()
             ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility MyFolderMenuVisibility => SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount
+        public Visibility MyFolderMenuVisibility => SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount()
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility AddAccountVisibility => !SelectedAccountItemModel.IsFolderOfMyBankAccounts
+        public Visibility AddAccountVisibility => !SelectedAccountItemModel.Is(Folder.BankAccounts)
             ? Visibility.Visible : Visibility.Collapsed;
         public Visibility AddAccountInBankVisibility => 
-            SelectedAccountItemModel.IsFolderOfMyBankAccounts && !SelectedAccountItemModel.IsFolderOfDeposits
+            SelectedAccountItemModel.IsInside(Folder.PayCards) || SelectedAccountItemModel.IsInside(Folder.Trusts)
                   ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility AddDepositVisibility => SelectedAccountItemModel.IsFolderOfDeposits
+        public Visibility AddDepositVisibility => SelectedAccountItemModel.Is(Folder.Deposits)
                   ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility AddCardVisibility => 
-            SelectedAccountItemModel.IsFolderOfMyBankAccounts && !SelectedAccountItemModel.IsFolderOfDeposits
+        public Visibility AddCardVisibility => SelectedAccountItemModel.IsInside(Folder.PayCards)
                   ? Visibility.Visible : Visibility.Collapsed;
 
-        public bool IsEnabledToAdd => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.IsFolderOfClosed;
+        public bool IsEnabledToAddFolder => SelectedAccountItemModel.IsFolder;
+        public bool IsEnabledToAdd => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.Is(Folder.Closed);
         public bool IsEnabledToDelete => !SelectedAccountItemModel.Children.Any() && !_isSelectedAccountUsedInTransaction;
 
 

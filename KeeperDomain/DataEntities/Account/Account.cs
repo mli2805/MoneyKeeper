@@ -16,6 +16,7 @@ namespace KeeperDomain
         public int AssociatedExpenseId { get; set; } // for external
         public int AssociatedExternalId { get; set; } // for tag
 
+        public string ShortName { get; set; }
         public string ButtonName { get; set; } // face of shortcut button (if exists)
 
         public string Comment { get; set; }

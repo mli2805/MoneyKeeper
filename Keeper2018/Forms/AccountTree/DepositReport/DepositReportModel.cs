@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Media;
 using KeeperDomain;
 
@@ -11,19 +10,11 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         public DepositReportModel(KeeperDataModel dataModel) { _dataModel = dataModel; }
 
-        public bool IsInUsd;
-        public Deposit Deposit
-        {
-            get => _deposit;
-            set
-            {
-                _deposit = value;
-                DepositOffer = _dataModel.DepositOffers.First(o => o.Id == _deposit.DepositOfferId);
-                IsInUsd = DepositOffer.MainCurrency == CurrencyCode.USD;
-            }
-        }
 
-        public DepositOfferModel DepositOffer { get; private set; }
+        public BankAccountModel BankAccount { get; set; }
+        public bool IsInUsd => BankAccount.MainCurrency == CurrencyCode.USD;
+
+
         public Balance Balance { get; set; } = new Balance();
         public decimal AmountInUsd { get; set; }
 
@@ -58,13 +49,12 @@ namespace Keeper2018
         public OneRate RateStart;
         public OneRate RateNow;
         public OneRate RateForecast;
-        private Deposit _deposit;
         public string RateStr1 { get; set; }
         public string RateStr2 { get; set; }
         public decimal MoreRevenue { get; set; }  // forecast
         public decimal MoreRevenueUsd { get; set; }  // forecast
         public decimal BalanceAtEndUsd { get; set; }
-        public string MoreRevenueStr1 => $"Ожидается процентов {MoreRevenue:0.00} {DepositOffer.MainCurrency.ToString().ToLower()}";
+        public string MoreRevenueStr1 => $"Ожидается процентов {MoreRevenue:0.00} {BankAccount.MainCurrency.ToString().ToLower()}";
         public string MoreRevenueStr2 => IsInUsd ? "" : $"( по среднему курсу {((RateNow.Value + RateForecast.Value) / 2):0.0000} = ${MoreRevenueUsd:0.00} )";
         public string BalanceAtEnd1 => $"Остаток на конец {Balance}";
         public string BalanceAtEnd2 => IsInUsd ? "" : $"( по курсу {RateForecast.Value:0.0000} = ${BalanceAtEndUsd:0.00} )";

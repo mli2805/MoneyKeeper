@@ -21,7 +21,7 @@
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.EuroUsdStr}" Margin="36,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.RurStr}" Margin="65,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.RurUsdStr}" Margin="30,0,0,0" />
-            <TextBlock FontSize="13" Text="{Binding DayYearAgo.CnyStr}" Margin="54,0,0,0" />
+            <TextBlock FontSize="13" Text="{Binding DayYearAgo.CnyStr}" Margin="48,0,0,0" />
             <TextBlock FontSize="13" Text="{Binding DayYearAgo.BasketStrWithoutProc}" Margin="245,0,0,0" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5, 5, 5, 5">

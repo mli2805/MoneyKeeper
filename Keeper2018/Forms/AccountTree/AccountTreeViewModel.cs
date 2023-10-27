@@ -8,8 +8,7 @@ namespace Keeper2018
     public class AccountTreeViewModel : PropertyChangedBase
     {
         private readonly OneAccountViewModel _oneAccountViewModel;
-        private readonly OneDepositViewModel _oneDepositViewModel;
-        private readonly OneCardViewModel _oneCardViewModel;
+        private readonly OneBankAccountViewModel _oneBankAccountViewModel;
         private readonly ExpensesOnAccountViewModel _expensesOnAccountViewModel;
         private readonly DepositInterestViewModel _depositInterestViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
@@ -23,13 +22,12 @@ namespace Keeper2018
 
         public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
-            OneAccountViewModel oneAccountViewModel, OneDepositViewModel oneDepositViewModel, OneCardViewModel oneCardViewModel,
+            OneAccountViewModel oneAccountViewModel, OneBankAccountViewModel oneBankAccountViewModel,
             ExpensesOnAccountViewModel expensesOnAccountViewModel, DepositInterestViewModel depositInterestViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
-            _oneDepositViewModel = oneDepositViewModel;
-            _oneCardViewModel = oneCardViewModel;
+            _oneBankAccountViewModel = oneBankAccountViewModel;
             _expensesOnAccountViewModel = expensesOnAccountViewModel;
             _depositInterestViewModel = depositInterestViewModel;
             _depositReportViewModel = depositReportViewModel;
@@ -55,54 +53,33 @@ namespace Keeper2018
             KeeperDataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
         }
 
-        public void AddAccount()
+        public void AddAccount(int param)
         {
             var accountItemModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
                     "", ShellPartsBinder.SelectedAccountItemModel);
-            _oneAccountViewModel.Initialize(accountItemModel, true);
-            WindowManager.ShowDialog(_oneAccountViewModel);
-            if (!_oneAccountViewModel.IsSavePressed) return;
+
+            // if ((accountItemModel.Parent?.Parent?.Id ?? 0) == 161)
+            if (param == 1) // контрагент или тэг
+            {
+                _oneAccountViewModel.Initialize(accountItemModel, true);
+                WindowManager.ShowDialog(_oneAccountViewModel);
+                if (!_oneAccountViewModel.IsSavePressed) return;
+            }
+            else // 2 - счет в банке; 3 - депозит; 4 - карточка 
+            {
+                accountItemModel.BankAccount = new BankAccountModel { Id = accountItemModel.Id, };
+                if (param == 3)
+                    accountItemModel.BankAccount.Deposit = new Deposit() { Id = accountItemModel.Id };
+                if (param == 4)
+                    accountItemModel.BankAccount.PayCard = new PayCard() { Id = accountItemModel.Id };
+
+                _oneBankAccountViewModel.Initialize(accountItemModel, true, param == 4);
+                WindowManager.ShowDialog(_oneBankAccountViewModel);
+                if (!_oneBankAccountViewModel.IsSavePressed) return;
+            }
 
             ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountItemModel);
             KeeperDataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
-        }
-
-        public void AddCard()
-        {
-            var accountModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
-                "", ShellPartsBinder.SelectedAccountItemModel)
-            {
-                PayCard = new PayCard()
-            };
-            _oneCardViewModel.Initialize(accountModel, true);
-            WindowManager.ShowDialog(_oneCardViewModel);
-            if (!_oneCardViewModel.IsSavePressed) return;
-
-            accountModel.PayCard.Id =
-                KeeperDataModel.AcMoDict.Values.Where(a => a.IsCard).Select(p => p.PayCard).Max(c => c.Id) + 1;
-            accountModel.PayCard.MyAccountId = accountModel.Id;
-            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
-            KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
-        }
-
-        public void AddDeposit()
-        {
-            var accountModel = new AccountItemModel(KeeperDataModel.AcMoDict.Keys.Max() + 1,
-                "", ShellPartsBinder.SelectedAccountItemModel)
-            {
-                Deposit = new Deposit()
-            };
-            _oneDepositViewModel.Initialize(accountModel, true);
-            WindowManager.ShowDialog(_oneDepositViewModel);
-            if (!_oneDepositViewModel.IsSavePressed) return;
-
-            accountModel.Deposit.Id = KeeperDataModel.AcMoDict.Values
-                .Where(a => a.IsDeposit)
-                .Max(d => d.Id) + 1;
-            //if (accountModel.PayCard != null)
-            //    accountModel.PayCard.DepositId = accountModel.Deposit.Id;
-            ShellPartsBinder.SelectedAccountItemModel.Children.Add(accountModel);
-            KeeperDataModel.AcMoDict.Add(accountModel.Id, accountModel);
         }
 
         public void ChangeAccount()
@@ -116,13 +93,18 @@ namespace Keeper2018
             }
             else if (accountItemModel.IsCard)
             {
-                _oneCardViewModel.Initialize(accountItemModel, false);
-                WindowManager.ShowDialog(_oneCardViewModel);
+                _oneBankAccountViewModel.Initialize(accountItemModel, false, true);
+                WindowManager.ShowDialog(_oneBankAccountViewModel);
             }
             else if (accountItemModel.IsDeposit)
             {
-                _oneDepositViewModel.Initialize(accountItemModel, false);
-                WindowManager.ShowDialog(_oneDepositViewModel);
+                _oneBankAccountViewModel.Initialize(accountItemModel, false, false);
+                WindowManager.ShowDialog(_oneBankAccountViewModel);
+            }
+            else if (accountItemModel.IsBankAccount)
+            {
+                _oneBankAccountViewModel.Initialize(accountItemModel, false, false);
+                WindowManager.ShowDialog(_oneBankAccountViewModel);
             }
             else
             {

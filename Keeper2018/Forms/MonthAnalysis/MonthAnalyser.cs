@@ -97,19 +97,19 @@ namespace Keeper2018
                         {
                             if (tag.Id == 208) // %% по вкладу (по карточкам тоже)
                             {
-                                var depo = tran.MyAccount.Deposit?.ShortName ??
-                                           tran.MyAccount.PayCard?.ShortName ?? tran.MyAccount.Name;
+                                var depo = tran.MyAccount.BankAccount?.ShortName ??
+                                           tran.MyAccount.BankAccount?.ShortName ?? tran.MyAccount.Name;
                                 depoList.Add($"{amStr} {depo} {tran.Comment} {tran.Timestamp:dd MMM}");
                                 depoTotal += amountInUsd;
                             }
                             else if (tag.Id == 701) // manyback
                             {
-                                rantierList.Add($"{amStr} {tran.MyAccount.PayCard?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                rantierList.Add($"{amStr} {tran.MyAccount.BankAccount?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
                                 rantierTotal += amountInUsd;
                             }
                             else // остальная рента
                             {
-                                rantierList.Add($"{amStr} {tran.MyAccount.Deposit?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                                rantierList.Add($"{amStr} {tran.MyAccount.BankAccount?.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
                                 rantierTotal += amountInUsd;
                             }
                         }
@@ -168,14 +168,14 @@ namespace Keeper2018
         private void ForeseeDepoIncome(AccountItemModel depo)
         {
             var depoMainCurrency = _dataModel.DepositOffers
-                .First(o => o.Id == depo.Deposit.DepositOfferId).MainCurrency;
+                .First(o => o.Id == depo.BankAccount.DepositOfferId).MainCurrency;
             var currency = depoMainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : depoMainCurrency;
 
             var revenues = depo.GetRevenuesInThisMonth(_dataModel);
             foreach (var tuple in revenues)
             {
                 _monthAnalysisModel.IncomeForecastList.
-                    Add($"{depo.Deposit.ShortName}  {tuple.Item2:#,0.00} {currency.ToString().ToLower()} {tuple.Item1:dd MMM}");
+                    Add($"{depo.BankAccount.ShortName}  {tuple.Item2:#,0.00} {currency.ToString().ToLower()} {tuple.Item1:dd MMM}");
                 _monthAnalysisModel.IncomeForecast += currency == CurrencyCode.USD
                     ? tuple.Item2
                     : _dataModel.AmountInUsd(DateTime.Today, depoMainCurrency, tuple.Item2);

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -47,6 +48,22 @@ namespace Keeper2018
                 case Durations.Days: return $"{Value} {Value.DaysNumber()}";
 
                 default: return base.ToString();
+            }
+        }
+
+        public DateTime AddTo(DateTime start)
+        {
+            if (IsPerpetual) return DateTime.MaxValue;
+            switch (Scale)
+            {
+                case Durations.Years: return start.AddYears(Value);
+                case Durations.Months: return start.AddMonths(Value);
+                case Durations.Days: return start.AddDays(Value);
+                case Durations.Hours: return start.AddHours(Value);
+                case Durations.Minutes: return start.AddMinutes(Value);
+                case Durations.Seconds: return start.AddSeconds(Value);
+
+                default: return start; // impossible
             }
         }
 

@@ -14,8 +14,9 @@ namespace Keeper2018
         private readonly ShellPartsBinder _shellPartsBinder;
         private readonly AccNameSelector _accNameSelectionControlInitializer;
         private AccountItemModel _accountItemModel;
-        private DepositOfferModel _depositOffer;
+        // private DepositOfferModel _depositOffer;
 
+        private AccountItemModel _bank;
         public string BankTitle { get; set; }
 
         public bool IsPercent { get; set; }
@@ -83,13 +84,12 @@ namespace Keeper2018
         public bool Initialize(AccountItemModel accountItemModel)
         {
             _accountItemModel = accountItemModel;
-            var depositOfferId = accountItemModel.IsDeposit ? accountItemModel.Deposit.DepositOfferId : accountItemModel.PayCard.DepositOfferId;
-            _depositOffer = _keeperDataModel.DepositOffers.First(o => o.Id == depositOfferId);
-            BankTitle = _depositOffer.Bank.Name;
+            _bank = _keeperDataModel.AcMoDict[accountItemModel.BankAccount.BankId];
+            BankTitle = _bank.Name;
             IsMoneyBack = _accountItemModel.IsCard;
             IsPercent = !IsMoneyBack;
             DepositTitle = accountItemModel.Name;
-            DepositCurrency = _depositOffer.MainCurrency.ToString().ToUpper();
+            DepositCurrency = accountItemModel.BankAccount.MainCurrency.ToString().ToUpper();
             _comboTreesProvider.Initialize();
             Amount = 0;
             MyNextAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyNextAccount();
@@ -100,7 +100,7 @@ namespace Keeper2018
             MyDatePickerVm.PropertyChanged += MyDatePickerVm_PropertyChanged;
 
             _depositBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
-                _accountItemModel, _depositOffer.MainCurrency, _transactionTimestamp));
+                _accountItemModel, accountItemModel.BankAccount.MainCurrency, _transactionTimestamp));
 
             return true;
         }
@@ -111,7 +111,7 @@ namespace Keeper2018
             {
                 var nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
                 _myNextAccountBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
-                    nextAccountModel, _depositOffer.MainCurrency, _transactionTimestamp));
+                    nextAccountModel, _accountItemModel.BankAccount.MainCurrency, _transactionTimestamp));
                 NotifyOfPropertyChange(nameof(MyNextAccountBalanceStr));
             }
         }
@@ -128,10 +128,10 @@ namespace Keeper2018
             _transactionTimestamp = selectedDate.Date.AddMinutes(minute);
 
             _depositBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
-                _accountItemModel, _depositOffer.MainCurrency, _transactionTimestamp));
+                _accountItemModel, _accountItemModel.BankAccount.MainCurrency, _transactionTimestamp));
             var nextAccountModel = _keeperDataModel.AcMoDict[MyNextAccNameSelectorVm.MyAccName.Id];
             _myNextAccountBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
-                nextAccountModel, _depositOffer.MainCurrency, _transactionTimestamp));
+                nextAccountModel, _accountItemModel.BankAccount.MainCurrency, _transactionTimestamp));
 
             NotifyOfPropertyChange(nameof(DepositBalanceStr));
             NotifyOfPropertyChange(nameof(MyNextAccountBalanceStr));
@@ -164,8 +164,8 @@ namespace Keeper2018
                 Operation = OperationType.Доход,
                 MyAccount = _accountItemModel,
                 Amount = Amount,
-                Currency = _depositOffer.MainCurrency,
-                Tags = new List<AccountItemModel>() { _depositOffer.Bank,  },
+                Currency = _accountItemModel.BankAccount.MainCurrency,
+                Tags = new List<AccountItemModel>() { _bank,  },
                 Comment = Comment,
             };
             tranModel1.Tags.Add(IsPercent ? _keeperDataModel.AcMoDict[208] : _keeperDataModel.AcMoDict[701]);
@@ -181,7 +181,7 @@ namespace Keeper2018
                     MyAccount = _accountItemModel,
                     MySecondAccount = nextAccountItemModel,
                     Amount = Amount,
-                    Currency = _depositOffer.MainCurrency,
+                    Currency = _accountItemModel.BankAccount.MainCurrency,
                     Tags = new List<AccountItemModel>(),
                     Comment = "",
                 };

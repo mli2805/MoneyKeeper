@@ -11,7 +11,7 @@ namespace Keeper2018
     {
         private bool _isInAddMode;
         public AccountItemModel AccountItemModel { get; set; }
-        public Deposit DepositInWork { get; set; }
+        public BankAccountModel BankAccountInWork { get; set; }
         public string ParentName { get; set; }
 
         private string _junction;
@@ -27,8 +27,6 @@ namespace Keeper2018
         }
 
         private readonly KeeperDataModel _dataModel;
-        private readonly IWindowManager _windowManager;
-        private readonly RulesAndRatesViewModel _rulesAndRatesViewModel;
         public bool IsSavePressed { get; set; }
 
         private List<DepositOfferModel> _depositOffers;
@@ -51,7 +49,11 @@ namespace Keeper2018
             {
                 if (Equals(value, _selectedDepositOffer) || value == null) return;
                 _selectedDepositOffer = value;
-                DepositInWork.DepositOfferId = _selectedDepositOffer.Id;
+                BankAccountInWork.BankId = _selectedDepositOffer.Bank.Id;
+                BankAccountInWork.DepositOfferId =_selectedDepositOffer.Id;
+                BankAccountInWork.MainCurrency = _selectedDepositOffer.MainCurrency;
+                BankAccountInWork.StartDate = DateTime.Today;
+                BankAccountInWork.FinishDate = _selectedDepositOffer.DepositTerm.AddTo(BankAccountInWork.StartDate).GetEndOfMonth();
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(IsNotRevocable);
             }
@@ -59,12 +61,9 @@ namespace Keeper2018
 
         public string IsNotRevocable => _selectedDepositOffer.IsNotRevocable ? "Безотзывный" : "Отзывный";
 
-        public OneDepositViewModel(KeeperDataModel dataModel, IWindowManager windowManager, 
-            RulesAndRatesViewModel rulesAndRatesViewModel)
+        public OneDepositViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
-            _windowManager = windowManager;
-            _rulesAndRatesViewModel = rulesAndRatesViewModel;
         }
 
         public void Initialize(AccountItemModel accountItemModel, bool isInAddMode)
@@ -73,20 +72,17 @@ namespace Keeper2018
             _isInAddMode = isInAddMode;
             AccountItemModel = accountItemModel;
             DepositOffers = _dataModel.DepositOffers;
-            DepositInWork = accountItemModel.Deposit;
-            DepositInWork.MyAccountId = accountItemModel.Id;
+            BankAccountInWork = accountItemModel.BankAccount;
             ParentName = accountItemModel.Parent.Name;
 
             if (isInAddMode)
             {
                 SelectedDepositOffer = DepositOffers.Last();
-                DepositInWork.StartDate = DateTime.Today;
-                DepositInWork.FinishDate = DateTime.Today.AddMonths(1);
                 Junction = "";
             }
             else
             {
-                _selectedDepositOffer = DepositOffers.First(o => o.Id == DepositInWork.DepositOfferId);
+                _selectedDepositOffer = DepositOffers.First(o => o.Id == BankAccountInWork.DepositOfferId);
                 Junction = AccountItemModel.Name;
             }
         }
@@ -103,7 +99,7 @@ namespace Keeper2018
             if (string.IsNullOrEmpty(Junction))
                 CompileAccountName();
             AccountItemModel.Name = Junction;
-            DepositInWork.DepositOfferId = SelectedDepositOffer.Id;
+            BankAccountInWork.DepositOfferId = SelectedDepositOffer.Id;
             TryClose();
         }
 
@@ -120,23 +116,23 @@ namespace Keeper2018
             if (SelectedDepositOffer.CondsMap.Count > 0)
             {
                 var conditions = SelectedDepositOffer
-                    .CondsMap.LastOrDefault(p => p.Key <= DepositInWork.StartDate);
+                    .CondsMap.LastOrDefault(p => p.Key <= BankAccountInWork.StartDate);
                 var line = conditions.Value?.RateLines?.LastOrDefault();
                 rate = line?.Rate ?? 0;
             }
 
-            var startDate = DepositInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
-            var finishDate = DepositInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
+            var startDate = BankAccountInWork.StartDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
+            var finishDate = BankAccountInWork.FinishDate.ToString("d/MM/yyyy", CultureInfo.InvariantCulture);
             Junction = $"{SelectedDepositOffer.Bank.Name} {SelectedDepositOffer.Title} {startDate} - {finishDate} {rate:0.#}%";
         }
 
-        public void FillDepositRatesTable()
-        {
-            _rulesAndRatesViewModel.Initialize("",
-                SelectedDepositOffer.CondsMap.OrderBy(k => k.Key)
-                    .LastOrDefault(p => p.Key <= DepositInWork.StartDate).Value,
-                SelectedDepositOffer.RateType, _dataModel.GetDepoRateLinesMaxId());
-            _windowManager.ShowDialog(_rulesAndRatesViewModel);
-        }
+        // public void FillDepositRatesTable()
+        // {
+        //     _rulesAndRatesViewModel.Initialize("",
+        //         SelectedDepositOffer.CondsMap.OrderBy(k => k.Key)
+        //             .LastOrDefault(p => p.Key <= BankAccountInWork.StartDate).Value,
+        //         SelectedDepositOffer.RateType, _dataModel.GetDepoRateLinesMaxId());
+        //     _windowManager.ShowDialog(_rulesAndRatesViewModel);
+        // }
     }
 }

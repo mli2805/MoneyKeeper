@@ -221,6 +221,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataModel\EntityModels\Tree\BankAccountModel.cs" />
+    <Compile Include="DataModel\EntityModels\Tree\Folder.cs" />
     <Compile Include="DataModel\Extensions\AccountModelExt.cs" />
     <Compile Include="DataModel\Extensions\DepoPartIdProvider.cs" />
     <Compile Include="DataModel\EntityModels\ButtonCollectionModel.cs" />
@@ -236,6 +238,10 @@
     <Compile Include="DataModel\Mappers\AccountTreeMapper.cs" />
     <Compile Include="DataModel\EntityModels\Tree\AccountItemModel.cs" />
     <Compile Include="DataModel\EntityModels\Tree\TreeViewItemModel.cs" />
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneBankAccountView.xaml.cs">
+      <DependentUpon>OneBankAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\AddOrEdit\OneBankAccountViewModel.cs" />
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml.cs">
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
@@ -697,6 +703,10 @@
     <Compile Include="Forms\Transactions\TransactionsViewModel.cs" />
     <Compile Include="Tricks\RangeObservableCollection.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
+    <Page Include="Forms\AccountTree\AddOrEdit\OneBankAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -16,9 +16,13 @@ namespace Keeper2018
                 var accountItemModel = account.Map();
                 dataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
 
-                accountItemModel.Deposit = bin.Deposits.FirstOrDefault(d => d.MyAccountId == accountItemModel.Id);
+                accountItemModel.BankAccount = bin.BankAccounts.FirstOrDefault(b => b.Id == accountItemModel.Id)?.Map();
+                if (accountItemModel.BankAccount != null)
+                {
+                    accountItemModel.BankAccount.Deposit = bin.Deposits.FirstOrDefault(d => d.Id == accountItemModel.Id);
               
-                accountItemModel.PayCard = bin.PayCards.FirstOrDefault(c=>c.MyAccountId == accountItemModel.Id);
+                    accountItemModel.BankAccount.PayCard = bin.PayCards.FirstOrDefault(c=>c.Id == accountItemModel.Id);
+                }
 
                 if (account.ParentId == 0)
                     dataModel.AccountsTree.Add(accountItemModel);

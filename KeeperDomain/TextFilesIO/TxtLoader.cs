@@ -72,6 +72,8 @@ namespace KeeperDomain
         {
             var content = File.ReadAllLines(PathFactory.GetBackupFilePath("Accounts.txt"));
             bin.AccountPlaneList = content.Select(l => l.AccountFromString()).ToList();
+            var bankAccounts = File.ReadAllLines(PathFactory.GetBackupFilePath("BankAccounts.txt"));
+            bin.BankAccounts = bankAccounts.Select(d => d.BankAccountFromString()).ToList();
             var deposits = File.ReadAllLines(PathFactory.GetBackupFilePath("Deposits.txt"));
             bin.Deposits = deposits.Select(d => d.DepositFromString()).ToList();
             var cards = File.ReadAllLines(PathFactory.GetBackupFilePath("PayCards.txt"));

@@ -51,8 +51,8 @@ namespace Keeper2018
             foreach (var depositOfferModel in _dataModel.DepositOffers)
             {
                 var account = _dataModel.AcMoDict.Values.FirstOrDefault(a =>
-                    (a.IsDeposit && a.Deposit.DepositOfferId == depositOfferModel.Id)
-                    || (a.IsCard && a.PayCard.DepositOfferId == depositOfferModel.Id));
+                    (a.IsDeposit && a.BankAccount.DepositOfferId == depositOfferModel.Id)
+                    || (a.IsCard && a.BankAccount.DepositOfferId == depositOfferModel.Id));
 
                 if (account != null)
                 {
@@ -116,7 +116,7 @@ namespace Keeper2018
 
         public void RemoveSelectedOffer()
         {
-            if (_dataModel.AcMoDict.Values.Any(a => a.IsDeposit && a.Deposit.DepositOfferId == SelectedDepositOffer.Id))
+            if (_dataModel.AcMoDict.Values.Any(a => a.IsDeposit && a.BankAccount.DepositOfferId == SelectedDepositOffer.Id))
             {
                 var strs = new List<string> { "Существует как минимум один депозит открытый по этой оферте.", "", "Сначала удалите депозиты." };
                 var vm = new MyMessageBoxViewModel(MessageType.Error, strs);

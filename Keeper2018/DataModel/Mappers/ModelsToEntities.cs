@@ -50,10 +50,28 @@ namespace Keeper2018
                 AssociatedIncomeId = model.AssociatedIncomeId,
                 AssociatedExpenseId = model.AssociatedExpenseId,
                 AssociatedExternalId = model.AssociatedExternalId,
+                ShortName = model.ShortName,
                 ButtonName = model.ButtonName,
                 Comment = model.Comment,
             };
         }
+
+        public static BankAccount Map(this BankAccountModel model)
+        {
+            return new BankAccount()
+            {
+                Id = model.Id,
+                BankId = model.BankId,
+                DepositOfferId = model.DepositOfferId,
+                MainCurrency = model.MainCurrency,
+                AgreementNumber = model.AgreementNumber,
+                ReplenishDetails = model.ReplenishDetails,
+                StartDate = model.StartDate,
+                FinishDate = model.FinishDate,
+                IsMine = model.IsMine,
+            };
+        }
+
 
         public static DepositOffer Map(this DepositOfferModel depositOfferModel)
         {

@@ -170,19 +170,33 @@ namespace KeeperDomain
             return account;
         }
 
+        public static BankAccount BankAccountFromString(this string s)
+        {
+            var bankAccount = new BankAccount();
+            var substrings = s.Split(';');
+            bankAccount.Id = int.Parse(substrings[0]);
+
+            bankAccount.BankId = int.Parse(substrings[1]);
+            bankAccount.DepositOfferId = int.Parse(substrings[2]);
+            bankAccount.MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[3]);
+
+            bankAccount.AgreementNumber = substrings[4].Trim();
+            bankAccount.ReplenishDetails = substrings[5].Trim();
+
+            bankAccount.StartDate = DateTime.ParseExact(substrings[6].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            bankAccount.FinishDate = DateTime.ParseExact(substrings[7].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            
+            bankAccount.IsMine = Convert.ToBoolean(substrings[8]);
+
+            return bankAccount;
+        }
+
         public static Deposit DepositFromString(this string s)
         {
             var deposit = new Deposit();
             var substrings = s.Split(';');
             deposit.Id = int.Parse(substrings[0].Trim());
-            deposit.MyAccountId = int.Parse(substrings[1]);
-            deposit.DepositOfferId = int.Parse(substrings[2]);
-            deposit.Serial = substrings[3].Trim();
-            deposit.StartDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            deposit.FinishDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            deposit.IsAdditionsBanned = bool.Parse(substrings[6].Trim());
-            deposit.ShortName = substrings[7].Trim();
-            deposit.Comment = substrings[8].Replace("|", "\r\n");
+            deposit.IsAdditionsBanned = bool.Parse(substrings[1].Trim());
             return deposit;
         }
 
@@ -191,21 +205,13 @@ namespace KeeperDomain
             var card = new PayCard();
             var substrings = s.Split(';');
             card.Id = int.Parse(substrings[0]);
-            card.MyAccountId = int.Parse(substrings[1]);
-            card.DepositOfferId = int.Parse(substrings[2]);
-            card.Serial = substrings[3].Trim();
-            card.StartDate = DateTime.ParseExact(substrings[4].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            card.FinishDate = DateTime.ParseExact(substrings[5].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+         
+            card.CardNumber = substrings[1].Trim();
+            card.CardHolder = substrings[2].Trim();
+            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[3]);
+            card.IsVirtual = Convert.ToBoolean(substrings[4]);
+            card.IsPayPass = Convert.ToBoolean(substrings[5]);
 
-            card.CardNumber = substrings[6].Trim();
-            card.CardHolder = substrings[7].Trim();
-            card.IsMine = Convert.ToBoolean(substrings[8]);
-            card.PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), substrings[9]);
-            card.IsVirtual = Convert.ToBoolean(substrings[10]);
-            card.IsPayPass = Convert.ToBoolean(substrings[11]);
-
-            card.ShortName = substrings[12].Trim();
-            card.Comment = substrings[13].Replace("|", "\r\n");
             return card;
         }
 

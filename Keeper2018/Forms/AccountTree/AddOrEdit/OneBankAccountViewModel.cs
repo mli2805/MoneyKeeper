@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class OneCardViewModel : Screen
+    public class OneBankAccountViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
         private bool _isInAddMode;
@@ -26,6 +27,7 @@ namespace Keeper2018
                 _selectedBankName = value;
                 BankAccountInWork.BankId = Banks.First(b => b.Name == _selectedBankName).Id;
                 DepositOffers = _dataModel.DepositOffers.Where(o => o.Bank.Name == _selectedBankName).ToList();
+                SelectedDepositOffer = DepositOffers.FirstOrDefault();
 
                 NotifyOfPropertyChange();
             }
@@ -64,17 +66,20 @@ namespace Keeper2018
         public string ParentName { get; set; }
         public string AccountName { get; set; }
 
-        public List<PaymentSystem> PaymentSystems { get; set; }
         public bool IsSavePressed { get; set; }
 
-        public OneCardViewModel(KeeperDataModel dataModel)
+        public List<PaymentSystem> PaymentSystems { get; set; }
+        public Visibility PayCardSectionVisibility { get; set; }
+
+        public OneBankAccountViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
         }
 
-        public void Initialize(AccountItemModel accountItemModel, bool isInAddMode)
+        public void Initialize(AccountItemModel accountItemModel, bool isInAddMode, bool isCard)
         {
             IsSavePressed = false;
+            PayCardSectionVisibility = isCard ? Visibility.Visible : Visibility.Collapsed;
             _isInAddMode = isInAddMode;
 
             var folder = accountItemModel.Parent.Name;
@@ -86,13 +91,13 @@ namespace Keeper2018
             AccountItemModel = accountItemModel;
             DepositOffers = _dataModel.DepositOffers;
             BankAccountInWork = AccountItemModel.BankAccount;
-            PaymentSystems = Enum.GetValues(typeof(PaymentSystem)).OfType<PaymentSystem>().ToList();
             ParentName = accountItemModel.Parent.Name;
 
             if (isInAddMode)
             {
-                BankAccountInWork.PayCard.CardHolder = "LEANID MARHOLIN";
                 BankAccountInWork.IsMine = true;
+                if (isCard)
+                    BankAccountInWork.PayCard.CardHolder = "LEANID MARHOLIN";
 
                 SelectedBankName = BankNames.FirstOrDefault(b=>b == folder) ?? BankNames.First();
                 DepositOffers = _dataModel.DepositOffers.Where(o => o.Bank.Name == SelectedBankName).ToList();
@@ -111,16 +116,15 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            var cap = _isInAddMode ? "Добавить карточку" : "Изменить карточку";
+            var cap = _isInAddMode ? "Добавить счет в банке" : "Изменить счет в банке";
             DisplayName = $"{cap} (id = {AccountItemModel.Id})";
         }
 
-        public void SaveCard()
+        public void Save()
         {
             IsSavePressed = true;
 
-            AccountItemModel.Name = string.IsNullOrEmpty(AccountName) ? "Безымянная" : AccountName;
-            BankAccountInWork.DepositOfferId = SelectedDepositOffer.Id;
+            AccountItemModel.Name = string.IsNullOrEmpty(AccountName) ? "Без имени" : AccountName;
             TryClose();
         }
 

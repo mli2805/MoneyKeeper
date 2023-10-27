@@ -22,8 +22,8 @@ namespace Keeper2018
             // 161 - папка Счета и карты
 
             return dataModel.AcMoDict.Values
-                .Where(a => a.Is(161) && a.PayCard != null)
-                .OrderBy(d => d.PayCard.FinishDate);
+                .Where(a => a.Is(161) && a.IsCard)
+                .OrderBy(d => d.BankAccount.FinishDate);
         }
 
         public static IOrderedEnumerable<AccountItemModel> GetOpenDepositsOrderedByFinishDate(this KeeperDataModel dataModel)
@@ -31,7 +31,7 @@ namespace Keeper2018
             // 166 - папка Депозиты
             return dataModel.AcMoDict.Values
                 .Where(a => !a.Children.Any() && a.Is(166))
-                .OrderBy(d => d.Deposit.FinishDate);
+                .OrderBy(d => d.BankAccount.FinishDate);
         }
 
     }

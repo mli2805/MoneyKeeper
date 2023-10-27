@@ -190,7 +190,7 @@ namespace Keeper2018
         {
             foreach (var tag in tags)
             {
-                if (tag.IsTag)
+                if (tag.IsTag())
                     continue;
                 return tag.Name;
             }

@@ -34,35 +34,36 @@ namespace Keeper2018
         public static void Foresee(this DepositReportModel model, KeeperDataModel dataModel)
         {
             ForeseeRate(model, dataModel);
-            ForeseeRevenue(model);
+            ForeseeRevenue(model, dataModel);
 
             model.BalanceAtEndUsd = model.IsInUsd
                 ? model.Balance.Currencies[CurrencyCode.USD]
-                : model.Balance.Currencies[model.DepositOffer.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : model.DepositOffer.MainCurrency] 
+                : model.Balance.Currencies[model.BankAccount.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : model.BankAccount.MainCurrency] 
                   / (decimal)model.RateForecast.Value;
             model.ForecastUsd = model.BalanceAtEndUsd + model.MoreRevenueUsd - model.ContributionUsd + model.ConsumptionUsd;
 
             var procent = model.ForecastUsd / model.ContributionUsd * 100;
-            var yearProcent = procent / (model.Deposit.FinishDate - model.Deposit.StartDate).Days * 365;
+            var yearProcent = procent / (model.BankAccount.FinishDate - model.BankAccount.StartDate).Days * 365;
             model.Forecast2 = $"( {procent:0.00}%  ({yearProcent:0.00}% годовых )";
         }
 
-        private static void ForeseeRevenue(DepositReportModel model)
+        private static void ForeseeRevenue(DepositReportModel model, KeeperDataModel dataModel)
         {
             var lastRevenue = model.Traffic.LastOrDefault(t => t.Type == DepositOperationType.Revenue);
-            var lastRevenueDate = lastRevenue?.Date ?? model.Deposit.StartDate.AddDays(-1);
+            var lastRevenueDate = lastRevenue?.Date ?? model.BankAccount.StartDate.AddDays(-1);
 
-            model.MoreRevenue = GetRevenueUptoDepoFinish(model.Deposit, model.DepositOffer, lastRevenueDate,
-                model.Balance.Currencies[model.DepositOffer.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : model.DepositOffer.MainCurrency]);
+            var depositOffer = dataModel.DepositOffers.First(o => o.Id == model.BankAccount.DepositOfferId);
+            model.MoreRevenue = GetRevenueUptoDepoFinish(model.BankAccount, depositOffer, lastRevenueDate,
+                model.Balance.Currencies[model.BankAccount.MainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : model.BankAccount.MainCurrency]);
             model.MoreRevenueUsd = model.IsInUsd
                 ? model.MoreRevenue
                 : model.MoreRevenue / (decimal)((model.RateNow.Value + model.RateForecast.Value) / 2);
         }
 
         private static decimal GetRevenueUptoDepoFinish
-            (Deposit deposit, DepositOfferModel depositOffer, DateTime lastReceivedRevenueDate, decimal currentAmount)
+            (BankAccountModel bankAccount, DepositOfferModel depositOffer, DateTime lastReceivedRevenueDate, decimal currentAmount)
         {
-            var conditionses = depositOffer.CondsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= deposit.StartDate).Value;
+            var conditionses = depositOffer.CondsMap.OrderBy(k => k.Key).LastOrDefault(e => e.Key <= bankAccount.StartDate).Value;
 
             var rateLines =
                 conditionses.RateLines.Where(l => l.AmountFrom <= currentAmount && l.AmountTo >= currentAmount).
@@ -80,7 +81,7 @@ namespace Keeper2018
             var startPeriod = lastReceivedRevenueDate;
             for (int j = i; j < rateLines.Length; j++)
             {
-                var endOfPeriod = deposit.FinishDate;
+                var endOfPeriod = bankAccount.FinishDate;
                 if (rateLines.Length > j + 1 && rateLines[j + 1].DateFrom < endOfPeriod)
                     endOfPeriod = rateLines[j + 1].DateFrom;
 
@@ -95,27 +96,27 @@ namespace Keeper2018
         {
             if (model.IsInUsd) return;
 
-            if (model.DepositOffer.MainCurrency == CurrencyCode.BYN ||
-                model.DepositOffer.MainCurrency == CurrencyCode.BYR)
+            if (model.BankAccount.MainCurrency == CurrencyCode.BYN ||
+                model.BankAccount.MainCurrency == CurrencyCode.BYR)
             {
-                model.RateStart = dataModel.GetRate(model.Deposit.StartDate, model.DepositOffer.MainCurrency);
-                if (model.Deposit.StartDate < new DateTime(2016, 7, 1))
+                model.RateStart = dataModel.GetRate(model.BankAccount.StartDate, model.BankAccount.MainCurrency);
+                if (model.BankAccount.StartDate < new DateTime(2016, 7, 1))
                     model.RateStart.Value /= 10000;
-                model.RateNow = dataModel.GetRate(DateTime.Today, model.DepositOffer.MainCurrency);
+                model.RateNow = dataModel.GetRate(DateTime.Today, model.BankAccount.MainCurrency);
             }
             else
             {
-                model.RateStart = dataModel.GetRate(model.Deposit.StartDate, model.DepositOffer.MainCurrency, true);
-                model.RateNow = dataModel.GetRate(DateTime.Today, model.DepositOffer.MainCurrency, true);
+                model.RateStart = dataModel.GetRate(model.BankAccount.StartDate, model.BankAccount.MainCurrency, true);
+                model.RateNow = dataModel.GetRate(DateTime.Today, model.BankAccount.MainCurrency, true);
             }
 
             model.RateForecast = new OneRate();
             model.RateForecast.Unit = model.RateNow.Unit;
-            var k = (model.RateNow.Value - model.RateStart.Value) / (DateTime.Today - model.Deposit.StartDate).Days;
-            if (model.DepositOffer.MainCurrency == CurrencyCode.RUB && k < 0) k = 0;
-            model.RateForecast.Value = model.RateStart.Value + k * (model.Deposit.FinishDate - model.Deposit.StartDate).Days;
+            var k = (model.RateNow.Value - model.RateStart.Value) / (DateTime.Today - model.BankAccount.StartDate).Days;
+            if (model.BankAccount.MainCurrency == CurrencyCode.RUB && k < 0) k = 0;
+            model.RateForecast.Value = model.RateStart.Value + k * (model.BankAccount.FinishDate - model.BankAccount.StartDate).Days;
 
-            model.RateStr1 = model.DepositOffer.MainCurrency == CurrencyCode.RUB
+            model.RateStr1 = model.BankAccount.MainCurrency == CurrencyCode.RUB
                 ? $"Курс $:  {model.RateStart.Value:0.0#} => {model.RateNow.Value:0.0#} => {model.RateForecast.Value:0.0#}"
                 : $"Курс $:  {model.RateStart.Value:0.0000} => {model.RateNow.Value:0.0000} => {model.RateForecast.Value:0.0000}";
 
@@ -125,7 +126,7 @@ namespace Keeper2018
             var deltaRate = model.RateForecast.Value - model.RateStart.Value;
             var procent = deltaRate / model.RateStart.Value * 100;
 
-            var yearProcent = procent / (model.Deposit.FinishDate - model.Deposit.StartDate).Days * 365;
+            var yearProcent = procent / (model.BankAccount.FinishDate - model.BankAccount.StartDate).Days * 365;
             model.RateStr2 = $"( уже {nowProcent:0.00}%;  к концу {procent:0.00}%  ( {yearProcent:0.00}% годовых )";
         }
     }

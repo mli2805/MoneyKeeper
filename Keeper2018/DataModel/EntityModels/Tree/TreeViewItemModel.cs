@@ -89,6 +89,12 @@ namespace Keeper2018
             return Parent != null && Parent.Is(accountId);
         }
 
+        public bool IsInside(int accountId)
+        {
+            if (accountId == Id) return false;
+            return Parent != null && Parent.Is(accountId);
+        }
+
         public TreeViewItemModel IsC(TreeViewItemModel treeViewItemModel)
         {
             if (Equals(treeViewItemModel)) return this;
