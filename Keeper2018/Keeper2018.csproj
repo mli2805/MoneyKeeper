@@ -361,10 +361,6 @@
       <DependentUpon>FolderSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\FolderSummarizing\FolderSummaryViewModel.cs" />
-    <Compile Include="Forms\AccountTree\AddOrEdit\OneCardView.xaml.cs">
-      <DependentUpon>OneCardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AccountTree\AddOrEdit\OneCardViewModel.cs" />
     <Compile Include="Forms\AccountTree\PaymentWays\ExpenseTran.cs" />
     <Compile Include="Forms\AccountTree\PaymentWays\PaymentWaysView.xaml.cs">
       <DependentUpon>PaymentWaysView.xaml</DependentUpon>
@@ -387,10 +383,6 @@
       <DependentUpon>OneAccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\AddOrEdit\OneAccountViewModel.cs" />
-    <Compile Include="Forms\AccountTree\AddOrEdit\OneDepositView.xaml.cs">
-      <DependentUpon>OneDepositView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AccountTree\AddOrEdit\OneDepositViewModel.cs" />
     <Compile Include="Forms\AccountTree\VerificationForm\BalanceVerificationView.xaml.cs">
       <DependentUpon>BalanceVerificationView.xaml</DependentUpon>
     </Compile>
@@ -724,14 +716,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\AccountTree\AddOrEdit\OneAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\AccountTree\AddOrEdit\OneCardView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\AccountTree\AddOrEdit\OneDepositView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
