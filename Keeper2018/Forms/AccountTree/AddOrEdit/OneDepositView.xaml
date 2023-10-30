@@ -110,7 +110,7 @@
             <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="Кратко" VerticalAlignment="Center"
                        HorizontalAlignment="Right" />
             <TextBox Grid.Row="4" Grid.Column="1" Margin="5" HorizontalAlignment="Stretch"
-                     BorderBrush="#555555" Text="{Binding BankAccountInWork.ShortName, Mode=TwoWay}" />
+                     BorderBrush="#555555" Text="{Binding AccountItemModel.ShortName, Mode=TwoWay}" />
             <TextBlock Grid.Row="5" Grid.Column="0" Margin="5" Text="Кнопка" VerticalAlignment="Center"
                        HorizontalAlignment="Right" />
             <TextBox Grid.Row="5" Grid.Column="1" Margin="5" HorizontalAlignment="Left" Width="50"

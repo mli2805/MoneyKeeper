@@ -27,8 +27,6 @@ namespace Keeper2018
                 _selectedBankName = value;
                 BankAccountInWork.BankId = Banks.First(b => b.Name == _selectedBankName).Id;
                 DepositOffers = _dataModel.DepositOffers.Where(o => o.Bank.Name == _selectedBankName).ToList();
-                SelectedDepositOffer = DepositOffers.FirstOrDefault();
-
                 NotifyOfPropertyChange();
             }
         }
@@ -89,7 +87,6 @@ namespace Keeper2018
 
 
             AccountItemModel = accountItemModel;
-            DepositOffers = _dataModel.DepositOffers;
             BankAccountInWork = AccountItemModel.BankAccount;
             ParentName = accountItemModel.Parent.Name;
 

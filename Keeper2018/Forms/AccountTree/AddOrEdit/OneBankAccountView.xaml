@@ -85,7 +85,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="5" Width="70" Text="Кратко" VerticalAlignment="Center" HorizontalAlignment="Right" />
                     <TextBox Margin="5" Width="120" Height="25" HorizontalAlignment="Stretch" BorderBrush="#555555" 
-                     Text="{Binding BankAccountInWork.ShortName, Mode=TwoWay}" />
+                     Text="{Binding AccountItemModel.ShortName, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="5" Width="70" Text="Кнопка" VerticalAlignment="Center" HorizontalAlignment="Right" />

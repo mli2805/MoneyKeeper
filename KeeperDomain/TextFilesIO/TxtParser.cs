@@ -165,8 +165,9 @@ namespace KeeperDomain
             account.AssociatedIncomeId = int.Parse(substrings[5]);
             account.AssociatedExpenseId = int.Parse(substrings[6]);
             account.AssociatedExternalId = int.Parse(substrings[7]);
-            account.ButtonName = substrings[8].Trim();
-            account.Comment = substrings[9].Trim();
+            account.ShortName = substrings[8].Trim();
+            account.ButtonName = substrings[9].Trim();
+            account.Comment = substrings[10].Trim();
             return account;
         }
 

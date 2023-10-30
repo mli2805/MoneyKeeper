@@ -80,24 +80,10 @@ namespace Keeper2018
 
         private KeeperBin MapBack()
         {
-            // временно для переноса
-            //--------------------------
-            // foreach (var item in _keeperDataModel.AcMoDict.Values)
-            // {
-            //     if (item.IsCard)
-            //         item.Comment = item.BankAccount.PayCard.Comment;
-            //     if (item.IsDeposit)
-            //         item.Comment = item.BankAccount.Deposit.Comment;
-            //     if (item.IsBankAccount)
-            //         item.ShortName = item.BankAccount.ShortName;
-            // }
-            //--------------------------
-
-
             var bankAccounts = _keeperDataModel.AcMoDict.Values
-                .Where(a => a.IsBankAccount)
-                .Select(ac => ac.BankAccount.Map())
-                .ToList();
+                 .Where(a => a.IsBankAccount)
+                 .Select(ac => ac.BankAccount.Map())
+                 .ToList();
             var deposits = _keeperDataModel.AcMoDict.Values
                 .Where(a => a.IsDeposit)
                 .Select(ac => ac.BankAccount.Deposit)
@@ -106,6 +92,21 @@ namespace Keeper2018
                 .Where(a => a.IsCard)
                 .Select(ac => ac.BankAccount.PayCard)
                 .ToList();
+
+
+            //var content = File.ReadAllLines(@"c:\temp\db1\deposits.txt");
+            //foreach (var line in content)
+            //{
+            //    var ss = line.Split(';');
+            //    var id = int.Parse(ss[1]);
+            //    var shortName = ss[7].Trim();
+            //    if (!string.IsNullOrEmpty(shortName) && _keeperDataModel.AcMoDict.ContainsKey(id))
+            //    {
+            //        var accountItemModel = _keeperDataModel.AcMoDict[id];
+            //        accountItemModel.ShortName = shortName;
+            //    }
+            //}
+
 
             var exchangeRates = _keeperDataModel.ExchangeRates.Values.OrderBy(r => r.Date).ToList();
             int i = 0;

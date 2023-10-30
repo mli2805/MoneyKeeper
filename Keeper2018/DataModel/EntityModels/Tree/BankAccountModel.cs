@@ -46,7 +46,7 @@ namespace Keeper2018
         public Visibility FinishVisibility => Deposit != null || PayCard != null ? Visibility.Visible : Visibility.Hidden;
 
         public bool IsMine { get; set; } 
-        public string ShortName { get; set; }
+        //public string ShortName { get; set; }
 
         public Deposit Deposit { get; set; }
         public PayCard PayCard { get; set; }

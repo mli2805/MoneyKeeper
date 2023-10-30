@@ -26,7 +26,7 @@ namespace KeeperDomain
             var shiftedName = new string(' ', level * 2) + Name;
             return Id + " ; " + shiftedName + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
                    AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + 
-                   ButtonName + " ; " + 
+                   ShortName + " ; " + ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");
         }
 
