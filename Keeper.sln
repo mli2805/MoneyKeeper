@@ -14,7 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keeper2018", "Keeper2018\Ke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeeperDomain", "KeeperDomain\KeeperDomain.csproj", "{461A62B3-B52F-41ED-AAB8-E4E7378D79C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractKomBankRates", "ExtractKomBankRates\ExtractKomBankRates.csproj", "{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtractKomBankRates", "ExtractKomBankRates\ExtractKomBankRates.csproj", "{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeeperTests", "KeeperTests\KeeperTests.csproj", "{98807532-F415-42DA-98EA-6E56267EA277}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,10 @@ Global
 		{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F3A2FA2-C633-4279-85BB-0C59D56F8FC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98807532-F415-42DA-98EA-6E56267EA277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98807532-F415-42DA-98EA-6E56267EA277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98807532-F415-42DA-98EA-6E56267EA277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98807532-F415-42DA-98EA-6E56267EA277}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

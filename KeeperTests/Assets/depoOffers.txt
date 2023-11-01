@@ -1,0 +1,171 @@
+1 ; 339 ; Сберегательная ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; карточка
+2 ; 401 ; Сберегательная ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; карточка
+3 ; 241 ; Сберегательная ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; карточка
+4 ; 242 ; Старт! ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+5 ; 378 ; Бонус ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+6 ; 378 ; Скарбонка ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+7 ; 241 ; Сберегательный ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; вклад, после 3 мес стал "до востребования"
+8 ; 330 ; Давно забытый ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; для автоматической конвертации уже закрытых депозитов, для которых правильные параметры не важны, позднее может быть заменен на правильный вид вклада
+9 ; 378 ; Скарбонка2 ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+10 ; 401 ; На 10 лет ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+11 ; 242 ; ЛР2.0 90-180 дней ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+12 ; 242 ; ЛР2.0 181-370 дней ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+13 ; 242 ; ЛР2.0 371-740 дней ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+14 ; 242 ; ЛР2.0 741-2000 дней ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+15 ; 378 ; Скарбонка3 ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+16 ; 378 ; Лови момент ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+17 ; 242 ; ЛР2.0 90-180 дней ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+18 ; 378 ; Скарбонка4 ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+19 ; 242 ; ЛР2 181-370 дней ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+20 ; 242 ; ЛР2 371-740 дней ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+21 ; 242 ; ЛР2 741-2000 дней ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+22 ; 400 ; Пора сюрпризов ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; после месяца до востребования, но сниж процентов
+23 ; 241 ; Гарант 90 дней ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+24 ; 378 ; СкарбонкаUSD ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+25 ; 395 ; Накопительный ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+26 ; 477 ; Рублю ergo sum ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+27 ; 241 ; промеж счет для процентов ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+28 ; 477 ; Рублю2 ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+29 ; 401 ; На 35 дней ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+30 ; 401 ; 2х2 ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+31 ; 401 ; Годовой ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+32 ; 347 ; Чародей+ ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+33 ; 339 ; Валютная шкатулка ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+34 ; 477 ; Верное решение 6 мес ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; После 3 мес - до востребования
+35 ; 242 ; Старт RUR ; False ; Fixed ; False ; 0 ; RUB ; False ; 0 ; Years ; 
+36 ; 246 ; 5 звезд ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+37 ; 339 ; Валютная шкатулка ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; 
+38 ; 401 ; Сберегательная ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+39 ; 401 ; Сберегательная ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; 
+40 ; 401 ; На 35 дней под 35% ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+41 ; 401 ; 2х2 под 33% ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+42 ; 401 ; Годовой 34% ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+43 ; 401 ; На 36 месяцев ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; 
+44 ; 401 ; На 35 дней под 30% ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+45 ; 401 ; Годовой 29% ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+46 ; 401 ; На 35 дней под 29% ; False ; Fixed ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+47 ; 401 ; Годовой 30% ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+48 ; 401 ; Деньги на вырост ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+49 ; 401 ; Деньги на вырост ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; 
+50 ; 401 ; Годовой+ ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+51 ; 347 ; Все по плану 18 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+52 ; 347 ; Все по плану 24 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+53 ; 347 ; Стабильный 36 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+54 ; 401 ; Online2.0 30 дн ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+55 ; 401 ; Online2.1 3 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+56 ; 339 ; Отзывной 3-36 мес ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; 
+57 ; 339 ; Отзывной 6-36 мес ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; 
+58 ; 401 ; Online2.2 7 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+59 ; 401 ; На год ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; через 90 дней до востреб, но -0,5% от действ ставок
+60 ; 401 ; На год ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; через 90 дней до востреб, но -0,5% от действ ставок
+61 ; 401 ; На 20 лет ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; через 1800 дн (5 лет) до востреб
+62 ; 401 ; На 20 лет ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; через 1800 дн (5 лет) до востреб
+63 ; 401 ; На 2 года ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; через 180 дн до востреб
+64 ; 401 ; На 5 лет ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; через 370 дн до востреб
+65 ; 339 ; Отзывной 6-36 мес ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+66 ; 339 ; Отзывной 12-36 мес ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+67 ; 339 ; Отзывной 3-36 мес ; False ; Floating ; False ; 0 ; BYR ; False ; 0 ; Years ; 
+68 ; 401 ; Online2.3 45 дней ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+69 ; 347 ; Капитальный 12 мес ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; СР+2%
+70 ; 347 ; Капитальный 18 мес ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; СР+2%
+71 ; 347 ; Капитальный 24 мес ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; СР+2%
+72 ; 347 ; Капитальный 24 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; фикс, %% на карту
+73 ; 347 ; Капитальный 36 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; фикс, автоматически пролонгируется! %% на карту
+74 ; 347 ; Оптимальный 3 мес ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; СР-3%
+75 ; 347 ; Оптимальный 6 мес ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; СР-3%
+76 ; 347 ; Оптимальный 12 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; фикс, автоматически пролонгируется! %% на карту
+77 ; 347 ; Оптимальный 18 мес ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; фикс, автоматически пролонгируется! %% на карту
+78 ; 339 ; Активный 6%% ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; расходные до неснижаемого остатка 3 500 рур
+79 ; 339 ; Активный 11% ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; расходные до неснижаемого остатка 100 бин
+80 ; 339 ; Активный ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; расходные до неснижаемого остатка 50 usd
+81 ; 339 ; Активный ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; расходные до неснижаемого остатка 50 eur
+82 ; 339 ; Активный 6,5% ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; расходные до неснижаемого остатка 3 500 рур
+83 ; 339 ; Активный 12% ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; расходные до неснижаемого остатка 100 бин
+84 ; 669 ; Формула успеха ; True ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; безотзывн
+85 ; 669 ; Формула успеха ; True ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; безотзывн
+86 ; 339 ; Срочный безотзывный на год ; True ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+87 ; 378 ; Верный курс ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 395 дней
+88 ; 246 ; Пять звезд Скала ; True ; Fixed ; False ; 0 ; BYN ; False ; 13 ; Months ; 
+89 ; 246 ; Бумеранг ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; карточка
+90 ; 246 ; Пять звезд Скала 3 мес ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; безотзывный
+91 ; 347 ; Капитальный ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+92 ; 378 ; Доходный 395 дней ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; допвзносы первые 25 дней
+93 ; 378 ; Доходный 732 дня ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; допвзносы первые 360 дней
+94 ; 378 ; Доходный 3 года ; True ; Fixed ; True ; 720 ; BYN ; False ; 3 ; Years ; допвзносы первые 720 дней
+95 ; 347 ; Карточка в BYN ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+96 ; 347 ; Карточка в USD ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+97 ; 669 ; On-line решение ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+98 ; 669 ; Карточка в долларах ; False ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+99 ; 669 ; Карточка в бел ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+100 ; 696 ; Зарплатная ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+101 ; 401 ; расчетная в российских ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; 
+102 ; 246 ; для карточки ; True ; Floating ; False ; 0 ; USD ; False ; 0 ; Years ; 
+103 ; 339 ; карточка в российских ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; 
+104 ; 339 ; карточка в долларах ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+105 ; 339 ; карточка в евро ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; 
+106 ; 246 ; виртуальная карточка в евро ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; открывается в м-банке бесплатная
+107 ; 246 ; Выше.net 13 мес ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+108 ; 347 ; карточка в Евро ; False ; Floating ; False ; 0 ; EUR ; False ; 0 ; Years ; бесплатная
+109 ; 347 ; карточка в RUB ; False ; Floating ; False ; 0 ; RUB ; False ; 0 ; Years ; бесплатная
+110 ; 401 ; Кашалот ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; бесплатная, кэшбэк 1%
+111 ; 401 ; ON-вклад v.1.15 13 мес ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+112 ; 401 ; Марафон 13 мес ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; первый мес 12,6% со второго 12,88%, но открывать в отделении
+113 ; 339 ; Джокер ; False ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; кэшбэк по любим категории 5% до 31/12/2019 потом 3%, по остальным 1%
+114 ; 242 ; карточка в BYN ; False ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+115 ; 242 ; карточка в USD ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+116 ; 379 ; Шоппер ; False ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+117 ; 339 ; Личный выбор 35 дней ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; ради курса сдачи - средний между продажа\покупка по картам, ставка 8,7 минус подоходный налог
+118 ; 378 ; Форсаж ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; карточка
+119 ; 378 ; ВТБ-Enter 3 года ; True ; Fixed ; True ; 720 ; BYN ; False ; 3 ; Years ; 
+120 ; 378 ; ВТБ-Enter 732 дня ; True ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+121 ; 802 ; Вирт карта BYN ; False ; Fixed ; False ; 0 ; BYN ; False ; 2 ; Years ; 
+122 ; 802 ; Вирт карта USD ; False ; Fixed ; False ; 0 ; USD ; False ; 2 ; Years ; 
+123 ; 802 ; Вирт карта EUR ; False ; Fixed ; False ; 0 ; EUR ; False ; 2 ; Years ; 
+124 ; 401 ; БГПБ расчетная в USD ; False ; Fixed ; False ; 0 ; USD ; False ; 0 ; Years ; 
+125 ; 401 ; БГПБ расчетная в EUR ; False ; Fixed ; False ; 0 ; EUR ; False ; 0 ; Years ; 
+126 ; 669 ; A1 Virtual card ; False ; Fixed ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+131 ; 347 ; Новая (кредитная) ; False ; Floating ; False ; 0 ; BYN ; False ; 0 ; Years ; 
+132 ; 339 ; Личный выбор 2 года в долларах ; True ; Fixed ; False ; 0 ; USD ; False ; 2 ; Years ; 
+133 ; 477 ; Виртуальная карта ; False ; Floating ; False ; 0 ; BYN ; True ; 0 ; Years ; 
+134 ; 243 ; Автокарта ; False ; Floating ; False ; 0 ; BYN ; True ; 0 ; Years ; 
+135 ; 243 ; Шоппер-МТБ ; False ; Floating ; False ; 0 ; BYN ; True ; 0 ; Years ; 2,5% продукты и супермаркеты, 3% одежда и обувь. Мин сумма операции 10 бин, макс сумма 1000 бин. Суммарный манибэк не более 30 руб. + 7% от годового манибэка. Обслуживание 1,99 в мес. Информирование отключено.
+136 ; 339 ; Личный выбор (5 лет) ; True ; Fixed ; False ; 0 ; USD ; False ; 5 ; Years ; 
+137 ; 477 ; Виртуальная 1-2-3 в RUB ; False ; Fixed ; False ; 0 ; RUB ; False ; 3 ; Years ; 
+138 ; 339 ; Виртуальная карта ; False ; Fixed ; False ; 0 ; EUR ; True ; 0 ; Years ; 
+139 ; 339 ; Личный выбор (3 года, EUR) ; True ; Fixed ; False ; 0 ; EUR ; False ; 3 ; Years ; 
+140 ; 242 ; Плюс к стабильности 1830 дней ; True ; Linked ; True ; 1460 ; BYN ; False ; 1830 ; Days ; 
+141 ; 477 ; Виртуальная MC 1-2-3 ; False ; Floating ; False ; 0 ; BYN ; False ; 3 ; Years ; 
+143 ; 696 ; Трастовый счет в USD ; False ; Fixed ; False ; 0 ; USD ; True ; 0 ; Years ; 
+144 ; 696 ; Трастовый счет в RUB ; False ; Fixed ; False ; 0 ; RUB ; True ; 0 ; Years ; 
+145 ; 347 ; Цифровая Mastercard ; False ; Floating ; False ; 0 ; USD ; True ; 0 ; Years ; 
+146 ; 401 ; На 3 месяца безотзывный-лояльный ; True ; Fixed ; False ; 0 ; USD ; False ; 3 ; Months ; 
+147 ; 400 ; Виртуалка ; False ; Floating ; False ; 0 ; BYN ; True ; 0 ; Years ; Открывают при регистарции в инетбанке
+148 ; 378 ; ВТБ-Enter 5 лет ; True ; Fixed ; True ; 1440 ; EUR ; False ; 5 ; Years ; 
+149 ; 378 ; ВТБ-Enter 3 года ; True ; Fixed ; True ; 720 ; EUR ; False ; 3 ; Years ; 
+150 ; 378 ; ВТБ-Enter 5 лет ; True ; Fixed ; True ; 1440 ; USD ; False ; 5 ; Years ; 
+151 ; 378 ; ВТБ-Enter 3 года ; True ; Fixed ; True ; 720 ; USD ; False ; 3 ; Years ; 
+152 ; 378 ; ВТБ-Enter 732 дня ; True ; Fixed ; True ; 360 ; USD ; False ; 732 ; Days ; 
+153 ; 378 ; ВТБ-Enter 732 дня ; True ; Fixed ; True ; 360 ; RUB ; False ; 732 ; Days ; 
+154 ; 378 ; ВТБ-Enter 395 дней ; True ; Fixed ; True ; 25 ; RUB ; False ; 395 ; Days ; 
+155 ; 401 ; На 25 месяцев безотзывный-лояльный ; True ; Fixed ; True ; 365 ; USD ; False ; 25 ; Months ; 
+156 ; 378 ; ВТБ-Enter 190 дней ; True ; Fixed ; True ; 0 ; RUB ; False ; 190 ; Days ; 
+157 ; 696 ; Альфа-Вклад безотзыв 15 мес ; True ; Fixed ; False ; 0 ; USD ; False ; 15 ; Months ; 
+158 ; 696 ; Альфа-Вклад безотзыв 25 мес ; True ; Fixed ; False ; 0 ; USD ; False ; 25 ; Months ; 
+159 ; 378 ; ВТБ-Enter 3 года ; True ; Fixed ; True ; 720 ; RUB ; False ; 3 ; Years ; 
+160 ; 339 ; Личный выбор byn 5 лет ; True ; Linked ; True ; 1794 ; BYN ; False ; 5 ; Years ; допы 4 года и 11 месяцев, налоги в последний год
+161 ; 242 ; Копилка ; False ; Linked ; False ; 0 ; BYN ; False ; 1075 ; Days ; 
+162 ; 242 ; Плюс к стабильности 1110 дней ; True ; Linked ; True ; 740 ; BYN ; False ; 1110 ; Days ; 
+163 ; 242 ; Плюс к стабильности 735 дней ; True ; Linked ; True ; 365 ; BYN ; False ; 735 ; Days ; 
+164 ; 477 ; Виртуальная 1-2-3 в USD ; False ; Floating ; False ; 0 ; USD ; False ; 33 ; Months ; 
+165 ; 246 ; Яркая ; False ; Floating ; False ; 0 ; BYN ; False ; 4 ; Years ; кэшбэк 1%
+166 ; 246 ; Виртуальная в USD ; False ; Floating ; False ; 0 ; USD ; False ; 4 ; Years ; 
+167 ; 696 ; Цифровая в USD ; False ; Floating ; False ; 0 ; USD ; False ; 5 ; Years ; открывал к существующему счету
+168 ; 400 ; Виртуальная Белкарт-Мир ; False ; Floating ; False ; 0 ; BYN ; False ; 60 ; Months ; 
+169 ; 400 ; Visa Virtuon ; False ; Floating ; False ; 0 ; RUB ; False ; 60 ; Months ; 
+170 ; 400 ; Visa Virtuon ; False ; Floating ; False ; 0 ; USD ; False ; 60 ; Months ; 
+171 ; 477 ; Виртуальная 1-2-3 в EUR ; False ; Fixed ; False ; 0 ; EUR ; False ; 29 ; Months ; 
+172 ; 669 ; Виртуальная Белкарт ; False ; Fixed ; False ; 0 ; BYN ; False ; 3 ; Years ; в связке с приложением Белкарт кэшбэк 5% на оплаты NFC на лето 2023 года
+173 ; 971 ; Статускарта ; False ; Fixed ; False ; 0 ; BYN ; False ; 5 ; Years ; кэшбэк 1.5% на все, но надо 300 рублей оплатить, иначе не выплачивается. карта бесплатная
+174 ; 985 ; Комбо карта ; False ; Fixed ; False ; 0 ; BYN ; False ; 5 ; Years ; 1 год бесплатно, потом 1 руб в месяц
+175 ; 696 ; Цифровая в BYN ; False ; Floating ; False ; 0 ; BYN ; False ; 5 ; Years ; Юля открывала к существующему счету
+176 ; 242 ;  ; False ; Floating ; False ; 0 ; BYN ; False ; 1 ; Years ; 

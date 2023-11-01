@@ -1,0 +1,35 @@
+695 ; 5446 5038 2355 1076 ; LEANID MARHOLIN ; MasterCard_Standard ; False ; True
+774 ; 5127 2272 3986 2523 ; LEANID MARHOLIN ; MasterCard_Standard ; False ; True
+775 ; 4214 8700 0101 6930 ; LEANID MARHOLIN ; Visa_Classic ; False ; True
+776 ; 4641 3200 0817 2123 ; LEANID MARHOLIN ; Visa_Classic ; False ; True
+781 ; 4344 8580 7000 6232 ; LEANID MARHOLIN ; Visa_Classic ; False ; True
+783 ; 4320 3700 2141 3028 ; LEANID MARHOLIN ; Visa_Classic ; False ; True
+796 ; 4454 5321 1887 7229 ; DEBIT01115424 ; Visa_Electron ; False ; True
+804 ; 4475 1520 0514 6318 ; LEANID MARHOLIN ; Visa_Electron ; True ; False
+805 ; 5445 7810 0184 0302 ; LEANID MARHOLIN ; MasterCard_Standard ; True ; False
+808 ; 4286 2100 2650 8830 ; LEANID MARHOLIN ; Visa_Classic ; False ; True
+809 ; 5299 2299 2189 6316 ; LEANID MARHOLIN ; MasterCard_Standard ; False ; True
+857 ; 4916 9896 9271 2077 ; MARHOLINA YULIA ; Visa_Electron ; True ; False
+861 ; 4214 8700 9216 0167 ; new credit ; Visa_Electron ; False ; True
+864 ; 4344 8434 4042 3283 ; UNIVERSAL CARD ; Visa_Classic ; False ; True
+865 ; 5592 6800 4092 2154 ; LEANID MARHOLIN ; MasterCard_Standard ; True ; False
+873 ; 5351 0411 3312 2497 ; INSTANT AUTOCARD ; MasterCard_Standard ; False ; True
+878 ; 4649 9012 2753 4714 ; YULIYA MARHOLINA ; Visa_Gold ; False ; True
+880 ; 5265 5200 0236 2107 ; MARHOLIN LEANID ; MasterCard_Standard ; True ; False
+884 ; 5265 5200 0206 5932 ; MARHOLIN LEANID ; MasterCard_Standard ; True ; False
+905 ; 5127 2272 6319 2094 ; MARHOLIN LEANID ; MasterCard_Standard ; True ; False
+908 ; 5435 5311 2531 1421 ; MARHOLIN LEANID ; MasterCard_Standard ; True ; False
+923 ; 5445 7810 0233 9403 ;  ; MasterCard_Standard ; True ; False
+944 ; 5265 5200 0252 5349 ; LEANID MARHOLIN ; MasterCard_Standard ; True ; False
+946 ; 4916 9896 2145 1433 ; YULIYA MARHOLINA ; Visa_Classic ; False ; True
+947 ; 4916 9896 2126 1180 ; LEANID MARHOLIN ; Visa_Classic ; False ; True
+948 ; 4916 9896 9951 1779 ; LEANID MARHOLIN ; Visa_Classic ; True ; False
+956 ;  ; MARHOLINA JULIYA ; Белкарт ; True ; False
+957 ; 4496 5501 4361 2676 ; MARHOLINA JULIYA ; Visa_Electron ; True ; False
+958 ; 4496 5501 4743 5470 ; MARHOLIN JULIYA ; Visa_Electron ; True ; False
+963 ; 5265 5200 0273 1608 ; LEANID MARHOLIN ; MasterCard_Standard ; True ; False
+970 ; 9112 5000 0002 9715 ; MARHOLIN LEANID ; Белкарт ; True ; False
+972 ; 5210 5820 0224 1166 ; LEANID MARHOLIN ; MasterCard_World ; False ; True
+984 ; 9112 3950 4000 7114 ; LEANID MARHOLIN ; Белкарт ; False ; True
+986 ; 9112 5000 0003 6793 ; LEANID MARHOLIN ; Белкарт ; True ; False
+987 ; 7501 ; YULIYA MARHOLINA ; MasterCard_Standard ; True ; False

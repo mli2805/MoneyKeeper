@@ -25,7 +25,8 @@ namespace Keeper2018
 
         private async void Load()
         {
-            LoadResult = await TxtLoader.LoadAllFromNewTxt();
+            await Task.Delay(0);
+            LoadResult = TxtLoader.LoadAllFromNewTxt(PathFactory.GetBackupPath());
             if (!LoadResult.IsSuccess)
             {
                 MessageBox.Show(LoadResult.Exception.Message);

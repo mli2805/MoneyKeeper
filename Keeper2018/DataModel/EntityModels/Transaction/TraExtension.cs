@@ -45,5 +45,11 @@ namespace Keeper2018
             return "контрагент не найден";
         }
 
+        public static bool Uses(this TransactionModel tr, AccountItemModel account)
+        {
+            if (tr.MyAccount.Id == account.Id) return true;
+            return tr.MySecondAccount != null && tr.MySecondAccount.Id == account.Id;
+        }
+
     }
 }
