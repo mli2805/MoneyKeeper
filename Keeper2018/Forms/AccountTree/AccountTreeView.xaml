@@ -84,7 +84,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Зачислить проценты/кэшбек" cal:Message.Attach="EnrollDepositInterest" BorderBrush="{x:Null}" 
-                              Background="White" Visibility="{Binding ShellPartsBinder.DepositOrCardMenuVisibility}"/>
+                              Background="White" Visibility="{Binding ShellPartsBinder.BankAccountVisibility}"/>
                     <Separator/>
                     <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 
                               Background="White" Visibility="{Binding ShellPartsBinder.DepositMenuVisibility}">

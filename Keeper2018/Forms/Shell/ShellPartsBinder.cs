@@ -26,6 +26,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange(nameof(IsEnabledToAdd));
                 NotifyOfPropertyChange(nameof(IsEnabledToDelete));
 
+                NotifyOfPropertyChange(nameof(BankAccountVisibility));
                 NotifyOfPropertyChange(nameof(DepositOrCardMenuVisibility));
                 NotifyOfPropertyChange(nameof(DepositMenuVisibility));
                 NotifyOfPropertyChange(nameof(CardMenuVisibility));
@@ -39,6 +40,7 @@ namespace Keeper2018
             }
         }
 
+        public Visibility BankAccountVisibility => SelectedAccountItemModel.IsBankAccount ? Visibility.Visible : Visibility.Collapsed;
         public Visibility DepositOrCardMenuVisibility => 
             SelectedAccountItemModel.IsDeposit || SelectedAccountItemModel.IsCard ? Visibility.Visible : Visibility.Collapsed;
         public Visibility DepositMenuVisibility => SelectedAccountItemModel.IsDeposit ? Visibility.Visible : Visibility.Collapsed;
