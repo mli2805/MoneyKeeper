@@ -233,6 +233,7 @@
     <Compile Include="DataModel\EntityModels\Invest\BuySellFeeCalculator.cs" />
     <Compile Include="DataModel\EntityModels\DepoCondsModel.cs" />
     <Compile Include="DataModel\EntityModels\Invest\InvestTranModel.cs" />
+    <Compile Include="DataModel\Extensions\MemoExt.cs" />
     <Compile Include="DataModel\IO\EntitiesJoiner.cs" />
     <Compile Include="DataModel\Extensions\FuellingProvider.cs" />
     <Compile Include="DataModel\EntityModels\Car\FuellingModel.cs" />
@@ -524,14 +525,14 @@
       <DependentUpon>SalaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Salary\SalaryViewModel.cs" />
-    <Compile Include="Forms\Settings\AccountLowLimitView.xaml.cs">
-      <DependentUpon>AccountLowLimitView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\AccountLowLimitViewModel.cs" />
     <Compile Include="Forms\Settings\ButtonCollectionBuilderView.xaml.cs">
       <DependentUpon>ButtonCollectionBuilderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings\ButtonCollectionBuilderViewModel.cs" />
+    <Compile Include="Forms\Settings\CardBalanceMemoView.xaml.cs">
+      <DependentUpon>CardBalanceMemoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings\CardBalanceMemoViewModel.cs" />
     <Compile Include="Forms\Settings\DateMemoSetterView.xaml.cs">
       <DependentUpon>DateMemoSetterView.xaml</DependentUpon>
     </Compile>
@@ -893,11 +894,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Settings\AccountLowLimitView.xaml">
+    <Page Include="Forms\Settings\ButtonCollectionBuilderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Settings\ButtonCollectionBuilderView.xaml">
+    <Page Include="Forms\Settings\CardBalanceMemoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1151,7 +1152,12 @@
   <ItemGroup>
     <Resource Include="Resources\accountmenu16\add_folder.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\mainmenu\yellow-bell.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mainmenu\white-bell.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

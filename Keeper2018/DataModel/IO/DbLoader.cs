@@ -29,6 +29,7 @@ namespace Keeper2018
             if (!loadResult.IsSuccess) return false;
 
             Map((KeeperBin)loadResult.Payload);
+            _keeperDataModel.RememberAll();
 
             return true;
         }
@@ -77,8 +78,7 @@ namespace Keeper2018
             _keeperDataModel.FillInAccountTreeAndDict(bin);
 
             _keeperDataModel.AssetRates = bin.AssetRates;
-            // if (bin.TrustAccounts == null)
-            //     bin.TrustAccounts = new List<TrustAccount>();
+          
             _keeperDataModel.TrustAccounts = bin.TrustAccounts;
             _keeperDataModel.InvestmentAssets = bin.InvestmentAssets.Select(a => a.Map(_keeperDataModel)).ToList();
             _keeperDataModel.InvestTranModels =
@@ -92,6 +92,10 @@ namespace Keeper2018
 
             _keeperDataModel.Cars = bin.JoinCarParts();
             _keeperDataModel.DepositOffers = bin.JoinDepoParts(_keeperDataModel.AcMoDict);
+
+            if (bin.CardBalanceMemos == null)
+                bin.CardBalanceMemos = new List<CardBalanceMemo>();
+            _keeperDataModel.CardBalanceMemoModels = bin.CardBalanceMemos.Select(m=>m.Map(_keeperDataModel.AcMoDict[m.AccountId])).ToList();
 
             _keeperDataModel.ButtonCollections = bin.ButtonCollections
                 .Select(b => b.Map(_keeperDataModel.AcMoDict)).ToList();

@@ -65,6 +65,7 @@ namespace Keeper2018
             builder.RegisterType<TranModel>().SingleInstance();
             builder.RegisterType<TransactionsViewModel>().SingleInstance();
 
+            builder.RegisterType<CardBalanceMemoViewModel>().SingleInstance();
             builder.RegisterType<SettingsViewModel>().SingleInstance();
             builder.RegisterType<ButtonCollectionBuilderViewModel>().SingleInstance();
             builder.RegisterType<OwnershipCostViewModel>().SingleInstance();

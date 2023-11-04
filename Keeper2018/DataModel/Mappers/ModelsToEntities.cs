@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using KeeperDomain;
 
 namespace Keeper2018
 {
     public static class ModelsToEntities
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(
+            cfg => cfg.AddProfile<MappingModelsToEntitiesProfile>()).CreateMapper();
+      
         public static Transaction Map(this TransactionModel transactionModel)
         {
             return new Transaction()
@@ -159,6 +163,13 @@ namespace Keeper2018
                 Volume = fuellingModel.Volume,
                 FuelType = fuellingModel.FuelType,
             };
+        }
+
+        public static CardBalanceMemo Map(this CardBalanceMemoModel cardBalanceMemoModel)
+        {
+            var entity = Mapper.Map<CardBalanceMemo>(cardBalanceMemoModel);
+            entity.AccountId = cardBalanceMemoModel.Account.Id;
+            return entity;
         }
 
         public static InvestmentAsset Map(this InvestmentAssetModel asset)

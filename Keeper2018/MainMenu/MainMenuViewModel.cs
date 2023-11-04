@@ -29,6 +29,23 @@ namespace Keeper2018
         private readonly InvestmentAnalysisViewModel _investmentAnalysisViewModel;
         private readonly ButtonCollectionBuilderViewModel _buttonCollectionBuilderViewModel;
 
+        
+        private string _bellPath;
+        public string BellPath
+        {
+            get => _bellPath;
+            set
+            {
+                if (value == _bellPath) return;
+                _bellPath = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public void SetBellPath(bool hasAlarm)
+        {
+            BellPath = hasAlarm ? "../../Resources/mainmenu/yellow-bell.png" : "../../Resources/mainmenu/white-bell.png";
+        }
+
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, RatesViewModel ratesViewModel,
@@ -224,6 +241,7 @@ namespace Keeper2018
 
         public void ShowSettingsForm()
         {
+            _settingsViewModel.Initialize();
             _windowManager.ShowDialog(_settingsViewModel);
         }
 

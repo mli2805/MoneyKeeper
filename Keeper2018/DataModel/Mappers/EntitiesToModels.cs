@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using KeeperDomain;
 
 namespace Keeper2018
 {
     public static class EntitiesToModels
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(
+            cfg => cfg.AddProfile<MappingEntitiesToModelsProfile>()).CreateMapper();
+
         public static AccountItemModel Map(this Account account)
         {
             return new AccountItemModel(account.Id, account.Name, null)
@@ -75,6 +79,13 @@ namespace Keeper2018
                 .Select(i => acMoDict[i]));
 
             return tags;
+        }
+
+        public static CardBalanceMemoModel Map(this CardBalanceMemo entity, AccountItemModel account)
+        {
+            var model = Mapper.Map<CardBalanceMemoModel>(entity);
+            model.Account = account;
+            return model;
         }
 
         public static InvestmentAssetModel Map(this InvestmentAsset asset, KeeperDataModel dataModel)

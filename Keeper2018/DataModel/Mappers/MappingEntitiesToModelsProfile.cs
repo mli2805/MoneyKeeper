@@ -29,7 +29,7 @@ namespace Keeper2018
 
             CreateMap<DepoCondsModel, DepoNewConds>();
 
-            CreateMap<CardBalanceMemo, CardBalanceMemoModel>();
+            CreateMap<CardBalanceMemoModel, CardBalanceMemo>();
         }
     }
 }

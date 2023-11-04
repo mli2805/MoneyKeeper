@@ -126,6 +126,7 @@ namespace Keeper2018
                 YearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => Mapper.Map<YearMileage>(y)).ToList(),
 
                 Fuellings = _keeperDataModel.FuellingVms.Select(f => f.Map()).ToList(),
+                CardBalanceMemos = _keeperDataModel.CardBalanceMemoModels.Select(m=>m.Map()).ToList(),
             };
 
             bin.DepositRateLines = new List<DepositRateLine>();

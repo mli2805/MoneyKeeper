@@ -3,16 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" Height="450" Width="800">
-    <TabControl>
+    <TabControl SelectedIndex="2">
         <TabItem Header="Общие настойки"/>
         <TabItem Header="Напоминания об оплатах">
-            <keeper2018:DateMemoSetterView></keeper2018:DateMemoSetterView>
+            <ContentControl x:Name="DateMemoSetterViewModel"/>
         </TabItem>
         <TabItem Header="Нижние пределы по картам">
-            <keeper2018:AccountLowLimitView></keeper2018:AccountLowLimitView>
+            <ContentControl x:Name="CardBalanceMemoViewModel"/>
         </TabItem>
     </TabControl>
 </Window>

@@ -51,6 +51,7 @@ namespace Keeper2018
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountItemModel = account;
+            MainMenuViewModel.SetBellPath(_keeperDataModel.HasAlarm());
         }
 
         public override async void CanClose(Action<bool> callback)
