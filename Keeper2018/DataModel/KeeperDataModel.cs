@@ -41,6 +41,8 @@ namespace Keeper2018
         public List<CarModel> Cars { get; set; }
         public List<FuellingModel> FuellingVms { get; set; }
 
+        public List<CardBalanceMemoModel> CardBalanceMemoModels { get; set; }
+
         public List<ButtonCollectionModel> ButtonCollections { get; set; }
     }
 }

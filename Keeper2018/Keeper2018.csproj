@@ -221,6 +221,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataModel\EntityModels\Memos\CardBalanceMemoModel.cs" />
     <Compile Include="DataModel\EntityModels\Tree\BankAccountModel.cs" />
     <Compile Include="DataModel\EntityModels\Tree\Folder.cs" />
     <Compile Include="DataModel\Extensions\AccountModelExt.cs" />
