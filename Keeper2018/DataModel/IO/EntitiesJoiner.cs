@@ -1,24 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using KeeperDomain;
 
 namespace Keeper2018
 {
     public static class EntitiesJoiner
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(
+            cfg => cfg.AddProfile<MappingEntitiesToModelsProfile>()).CreateMapper();
+       
         public static List<CarModel> JoinCarParts(this KeeperBin bin)
         {
-            var result = bin.Cars.Select(c => c.Map()).ToList();
+            var result = bin.Cars.Select(c => Mapper.Map<CarModel>(c)).ToList();
             foreach (var car in result)
             {
                 var arr = bin.YearMileages.Where(l => l.CarId == car.Id).ToArray();
                 var prev = car.PurchaseMileage;
-                foreach (var t in arr)
+                foreach (var y in arr)
                 {
-                    var cc = t.Map();
-                    cc.Mileage = t.Odometer - prev;
+                    var cc = Mapper.Map<YearMileageModel>(y);
+                    cc.Mileage = y.Odometer - prev;
                     car.YearsMileage.Add(cc);
-                    prev = t.Odometer;
+                    prev = y.Odometer;
                 }
             }
             return result;
@@ -31,7 +35,7 @@ namespace Keeper2018
             {
                 foreach (var depoCondition in bin.DepoNewConds.Where(c => c.DepositOfferId == depoOffer.Id))
                 {
-                    var depoCondsModel = depoCondition.Map();
+                    var depoCondsModel = Mapper.Map<DepoCondsModel>(depoCondition);
 
                     depoCondsModel.RateLines = bin.DepositRateLines
                         .Where(l => l.DepositOfferConditionsId == depoCondition.Id)

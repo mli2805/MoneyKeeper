@@ -56,21 +56,21 @@ namespace Keeper2018
             };
         }
 
-        public static BankAccount Map(this BankAccountModel model)
-        {
-            return new BankAccount()
-            {
-                Id = model.Id,
-                BankId = model.BankId,
-                DepositOfferId = model.DepositOfferId,
-                MainCurrency = model.MainCurrency,
-                AgreementNumber = model.AgreementNumber,
-                ReplenishDetails = model.ReplenishDetails,
-                StartDate = model.StartDate,
-                FinishDate = model.FinishDate,
-                IsMine = model.IsMine,
-            };
-        }
+        // public static BankAccount Map(this BankAccountModel model)
+        // {
+        //     return new BankAccount()
+        //     {
+        //         Id = model.Id,
+        //         BankId = model.BankId,
+        //         DepositOfferId = model.DepositOfferId,
+        //         MainCurrency = model.MainCurrency,
+        //         AgreementNumber = model.AgreementNumber,
+        //         ReplenishDetails = model.ReplenishDetails,
+        //         StartDate = model.StartDate,
+        //         FinishDate = model.FinishDate,
+        //         IsMine = model.IsMine,
+        //     };
+        // }
 
 
         public static DepositOffer Map(this DepositOfferModel depositOfferModel)
@@ -95,59 +95,59 @@ namespace Keeper2018
             return durationModel.IsPerpetual ? new Duration() : new Duration(durationModel.Value, durationModel.Scale);
         }
 
-        public static DepoNewConds Map(this DepoCondsModel depoCondsModel)
-        {
-            return new DepoNewConds()
-            {
-                Id = depoCondsModel.Id,
-                DepositOfferId = depoCondsModel.DepositOfferId,
-                DateFrom = depoCondsModel.DateFrom,
+        // public static DepoNewConds Map(this DepoCondsModel depoCondsModel)
+        // {
+        //     return new DepoNewConds()
+        //     {
+        //         Id = depoCondsModel.Id,
+        //         DepositOfferId = depoCondsModel.DepositOfferId,
+        //         DateFrom = depoCondsModel.DateFrom,
+        //
+        //         RateFormula = depoCondsModel.RateFormula,
+        //         IsFactDays = depoCondsModel.IsFactDays,
+        //         EveryStartDay = depoCondsModel.EveryStartDay,
+        //         EveryFirstDayOfMonth = depoCondsModel.EveryFirstDayOfMonth,
+        //         EveryLastDayOfMonth = depoCondsModel.EveryLastDayOfMonth,
+        //         EveryNDays = depoCondsModel.EveryNDays,
+        //         NDays = depoCondsModel.NDays,
+        //         IsCapitalized = depoCondsModel.IsCapitalized,
+        //         HasAdditionalProcent = depoCondsModel.HasAdditionalPercent,
+        //         AdditionalProcent = depoCondsModel.AdditionalPercent,
+        //
+        //         Comment = depoCondsModel.Comment,
+        //     };
+        // }
 
-                RateFormula = depoCondsModel.RateFormula,
-                IsFactDays = depoCondsModel.IsFactDays,
-                EveryStartDay = depoCondsModel.EveryStartDay,
-                EveryFirstDayOfMonth = depoCondsModel.EveryFirstDayOfMonth,
-                EveryLastDayOfMonth = depoCondsModel.EveryLastDayOfMonth,
-                EveryNDays = depoCondsModel.EveryNDays,
-                NDays = depoCondsModel.NDays,
-                IsCapitalized = depoCondsModel.IsCapitalized,
-                HasAdditionalProcent = depoCondsModel.HasAdditionalPercent,
-                AdditionalProcent = depoCondsModel.AdditionalPercent,
 
-                Comment = depoCondsModel.Comment,
-            };
-        }
-
-
-        public static Car Map(this CarModel carModel)
-        {
-            return new Car()
-            {
-                Id = carModel.Id,
-                CarAccountId = carModel.CarAccountId,
-                Title = carModel.Title,
-                IssueYear = carModel.IssueYear,
-                Vin = carModel.Vin,
-                StateRegNumber = carModel.StateRegNumber,
-                PurchaseDate = carModel.PurchaseDate,
-                PurchaseMileage = carModel.PurchaseMileage,
-                SaleDate = carModel.SaleDate,
-                SaleMileage = carModel.SaleMileage,
-                SupposedSalePrice = carModel.SupposedSalePrice,
-            };
-        }
-
-        public static YearMileage Map(this YearMileageModel yearMileageModel)
-        {
-            return new YearMileage()
-            {
-                Id = yearMileageModel.Id,
-                CarId = yearMileageModel.CarId,
-                YearNumber = yearMileageModel.YearNumber,
-                Year = yearMileageModel.Year,
-                Odometer = yearMileageModel.Odometer
-            };
-        }
+        // public static Car Map(this CarModel carModel)
+        // {
+        //     return new Car()
+        //     {
+        //         Id = carModel.Id,
+        //         CarAccountId = carModel.CarAccountId,
+        //         Title = carModel.Title,
+        //         IssueYear = carModel.IssueYear,
+        //         Vin = carModel.Vin,
+        //         StateRegNumber = carModel.StateRegNumber,
+        //         PurchaseDate = carModel.PurchaseDate,
+        //         PurchaseMileage = carModel.PurchaseMileage,
+        //         SaleDate = carModel.SaleDate,
+        //         SaleMileage = carModel.SaleMileage,
+        //         SupposedSalePrice = carModel.SupposedSalePrice,
+        //     };
+        // }
+        //
+        // public static YearMileage Map(this YearMileageModel yearMileageModel)
+        // {
+        //     return new YearMileage()
+        //     {
+        //         Id = yearMileageModel.Id,
+        //         CarId = yearMileageModel.CarId,
+        //         YearNumber = yearMileageModel.YearNumber,
+        //         Year = yearMileageModel.Year,
+        //         Odometer = yearMileageModel.Odometer
+        //     };
+        // }
 
         public static Fuelling Map(this FuellingModel fuellingModel)
         {

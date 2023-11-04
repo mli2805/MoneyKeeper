@@ -41,12 +41,11 @@ namespace Keeper2018
                 _finishDate = value;
                 NotifyOfPropertyChange();
             }
-        } // max для расч счетов
+        } // max для расчётных счетов
 
         public Visibility FinishVisibility => Deposit != null || PayCard != null ? Visibility.Visible : Visibility.Hidden;
 
         public bool IsMine { get; set; } 
-        //public string ShortName { get; set; }
 
         public Deposit Deposit { get; set; }
         public PayCard PayCard { get; set; }

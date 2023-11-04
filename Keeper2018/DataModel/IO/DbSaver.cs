@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
 using Caliburn.Micro;
 using KeeperDomain;
 
@@ -10,6 +11,9 @@ namespace Keeper2018
 {
     public class DbSaver
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(
+            cfg => cfg.AddProfile<MappingModelsToEntitiesProfile>()).CreateMapper();
+      
         private readonly KeeperDataModel _keeperDataModel;
         private readonly IWindowManager _windowManager;
         private readonly ShellPartsBinder _shellPartsBinder;
@@ -82,7 +86,7 @@ namespace Keeper2018
         {
             var bankAccounts = _keeperDataModel.AcMoDict.Values
                  .Where(a => a.IsBankAccount)
-                 .Select(ac => ac.BankAccount.Map())
+                 .Select(ac => Mapper.Map<BankAccount>(ac.BankAccount))
                  .ToList();
             var deposits = _keeperDataModel.AcMoDict.Values
                 .Where(a => a.IsDeposit)
@@ -118,8 +122,8 @@ namespace Keeper2018
 
                 DepositOffers = _keeperDataModel.DepositOffers.Select(o => o.Map()).ToList(),
 
-                Cars = _keeperDataModel.Cars.Select(c => c.Map()).ToList(),
-                YearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => y.Map()).ToList(),
+                Cars = _keeperDataModel.Cars.Select(c => Mapper.Map<Car>(c)).ToList(),
+                YearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => Mapper.Map<YearMileage>(y)).ToList(),
 
                 Fuellings = _keeperDataModel.FuellingVms.Select(f => f.Map()).ToList(),
             };
@@ -131,7 +135,7 @@ namespace Keeper2018
                 foreach (var pair in depositOffer.CondsMap)
                 {
                     bin.DepositRateLines.AddRange(pair.Value.RateLines);
-                    bin.DepoNewConds.Add(pair.Value.Map());
+                    bin.DepoNewConds.Add(Mapper.Map<DepoNewConds>(pair.Value));
                 }
             }
 

@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using AutoMapper;
 using KeeperDomain;
 
 namespace Keeper2018
 {
     public static class AccountTreeMapper
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(
+            cfg => cfg.AddProfile<MappingEntitiesToModelsProfile>()).CreateMapper();
+
         public static void FillInAccountTreeAndDict(this KeeperDataModel dataModel, KeeperBin bin)
         {
             dataModel.AccountsTree = new ObservableCollection<AccountItemModel>();
@@ -16,9 +20,11 @@ namespace Keeper2018
                 var accountItemModel = account.Map();
                 dataModel.AcMoDict.Add(accountItemModel.Id, accountItemModel);
 
-                accountItemModel.BankAccount = bin.BankAccounts.FirstOrDefault(b => b.Id == accountItemModel.Id)?.Map();
-                if (accountItemModel.BankAccount != null)
+                var bankAccount = bin.BankAccounts.FirstOrDefault(b => b.Id == accountItemModel.Id);
+                if (bankAccount != null)
                 {
+                    accountItemModel.BankAccount = Mapper.Map<BankAccountModel>(bankAccount);
+
                     accountItemModel.BankAccount.Deposit = bin.Deposits.FirstOrDefault(d => d.Id == accountItemModel.Id);
               
                     accountItemModel.BankAccount.PayCard = bin.PayCards.FirstOrDefault(c=>c.Id == accountItemModel.Id);

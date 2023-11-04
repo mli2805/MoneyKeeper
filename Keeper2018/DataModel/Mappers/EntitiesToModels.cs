@@ -22,22 +22,6 @@ namespace Keeper2018
             };
         }
 
-        public static BankAccountModel Map(this BankAccount bankAccount)
-        {
-            return new BankAccountModel()
-            {
-                Id = bankAccount.Id,
-                BankId = bankAccount.BankId,
-                DepositOfferId = bankAccount.DepositOfferId,
-                MainCurrency = bankAccount.MainCurrency,
-                AgreementNumber = bankAccount.AgreementNumber,
-                ReplenishDetails = bankAccount.ReplenishDetails,
-                StartDate = bankAccount.StartDate,
-                FinishDate = bankAccount.FinishDate,
-                IsMine = bankAccount.IsMine,
-            };
-        }
-
         public static DepositOfferModel Map(this DepositOffer depositOffer, Dictionary<int, AccountItemModel> acMoDict)
         {
             return new DepositOfferModel
@@ -58,29 +42,6 @@ namespace Keeper2018
         private static DurationModel Map(this Duration duration)
         {
             return duration.IsPerpetual ? new DurationModel() : new DurationModel(duration.Value, duration.Scale);
-        }
-
-        public static DepoCondsModel Map(this DepoNewConds depoConds)
-        {
-            return new DepoCondsModel()
-            {
-                Id = depoConds.Id,
-                DepositOfferId = depoConds.DepositOfferId,
-                DateFrom = depoConds.DateFrom,
-
-                RateFormula = depoConds.RateFormula,
-                IsFactDays = depoConds.IsFactDays,
-                EveryStartDay = depoConds.EveryStartDay,
-                EveryFirstDayOfMonth = depoConds.EveryFirstDayOfMonth,
-                EveryLastDayOfMonth = depoConds.EveryLastDayOfMonth,
-                EveryNDays = depoConds.EveryNDays,
-                NDays = depoConds.NDays,
-                IsCapitalized = depoConds.IsCapitalized,
-                HasAdditionalPercent = depoConds.HasAdditionalProcent,
-                AdditionalPercent = depoConds.AdditionalProcent,
-
-                Comment = depoConds.Comment,
-            };
         }
 
         public static TransactionModel Map(this Transaction transaction, Dictionary<int, AccountItemModel> acMoDict)
@@ -114,36 +75,6 @@ namespace Keeper2018
                 .Select(i => acMoDict[i]));
 
             return tags;
-        }
-
-        public static CarModel Map(this Car car)
-        {
-            return new CarModel()
-            {
-                Id = car.Id,
-                CarAccountId = car.CarAccountId,
-                Title = car.Title,
-                IssueYear = car.IssueYear,
-                Vin = car.Vin,
-                StateRegNumber = car.StateRegNumber,
-                PurchaseDate = car.PurchaseDate,
-                PurchaseMileage = car.PurchaseMileage,
-                SaleDate = car.SaleDate,
-                SaleMileage = car.SaleMileage,
-                SupposedSalePrice = car.SupposedSalePrice,
-            };
-        }
-
-        public static YearMileageModel Map(this YearMileage yearMileage)
-        {
-            return new YearMileageModel()
-            {
-                Id = yearMileage.Id,
-                CarId = yearMileage.CarId,
-                YearNumber = yearMileage.YearNumber,
-                Year = yearMileage.Year,
-                Odometer = yearMileage.Odometer,
-            };
         }
 
         public static InvestmentAssetModel Map(this InvestmentAsset asset, KeeperDataModel dataModel)
