@@ -186,15 +186,15 @@ namespace Keeper2018
         private void InsertLinesIntoIncomeList(List<string> lines, decimal total, string word)
         {
             _monthAnalysisModel.IncomeViewModel.List.Add("");
-            _monthAnalysisModel.IncomeViewModel.List.Add($"   {word}:", Brushes.Blue);
-            _monthAnalysisModel.IncomeViewModel.List.Add("");
+            // _monthAnalysisModel.IncomeViewModel.List.Add($"   {word}:", Brushes.Blue);
+            // _monthAnalysisModel.IncomeViewModel.List.Add("");
             foreach (var line in lines)
             {
                 _monthAnalysisModel.IncomeViewModel.List.Add($"   {line}", Brushes.Blue);
             }
 
-            _monthAnalysisModel.IncomeViewModel.List.Add("");
-            _monthAnalysisModel.IncomeViewModel.List.Add($"   Итого {word} {total:#,0.00} usd", Brushes.Blue);
+            // _monthAnalysisModel.IncomeViewModel.List.Add("");
+            _monthAnalysisModel.IncomeViewModel.List.Add($"          Итого {word} {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
         }
 
         private string BuildCommentForIncomeTransaction(TransactionModel tran, bool isSalary)
