@@ -32,27 +32,21 @@ namespace KeeperDomain
                 var assetRates = bin.AssetRates.Select(l => l.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("AssetRates.txt"), assetRates);
 
-                if (bin.TrustAccounts != null)
-                {
-                    var trustAccounts = bin.TrustAccounts.Select(l => l.Dump());
-                    File.WriteAllLines(PathFactory.GetBackupFilePath("TrustAccounts.txt"), trustAccounts);
-                }
-                if (bin.InvestmentTransactions != null)
-                {
-                    var investmentTransactions = bin.InvestmentTransactions.Select(l => l.Dump());
-                    File.WriteAllLines(PathFactory.GetBackupFilePath("InvestmentTransactions.txt"), investmentTransactions);
-                }
+                var trustAccounts = bin.TrustAccounts.Select(l => l.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("TrustAccounts.txt"), trustAccounts);
+                var investmentTransactions = bin.InvestmentTransactions.Select(l => l.Dump());
+                File.WriteAllLines(PathFactory.GetBackupFilePath("InvestmentTransactions.txt"), investmentTransactions);
 
                 var accounts = bin.DumpWithOffsets();
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Accounts.txt"), accounts);
                 var bankAccounts = bin.BankAccounts.OrderBy(d => d.Id).Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("BankAccounts.txt"), bankAccounts);
-                 var deposits = bin.Deposits.OrderBy(d => d.Id).Select(m => m.Dump());
+                var deposits = bin.Deposits.OrderBy(d => d.Id).Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Deposits.txt"), deposits);
                 var cards = bin.PayCards.OrderBy(d => d.Id).Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("PayCards.txt"), cards);
                 var buttonCollections = bin.ButtonCollections
-                    .OrderBy(c=>c.Id).Select(m => m.Dump());
+                    .OrderBy(c => c.Id).Select(m => m.Dump());
                 File.WriteAllLines(PathFactory.GetBackupFilePath("ButtonCollections.txt"), buttonCollections);
 
                 var transactions = bin.Transactions
@@ -63,18 +57,14 @@ namespace KeeperDomain
                 var fuelling = bin.Fuellings.Select(f => f.Dump()).ToList();
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Fuellings.txt"), fuelling);
 
-                var depoOffers = bin.DepositOffers.Select(o => o.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("depoOffers.txt"), depoOffers);
-                var depoRateLines = bin.DepositRateLines.Select(o => o.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("depoRateLines.txt"), depoRateLines);
-                var depoNewConds = bin.DepoNewConds.Select(o => o.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("depoConds.txt"), depoNewConds);
+                WriteFileLines(bin.DepositOffers, "DepoOffers.txt");
+                WriteFileLines(bin.DepositRateLines, "DepoRateLines.txt");
+                WriteFileLines(bin.DepoNewConds, "DepoConds.txt");
 
+                WriteFileLines(bin.Cars, "Cars.txt");
+                WriteFileLines(bin.YearMileages, "CarYearMileages.txt");
 
-                var cars = bin.Cars.Select(o => o.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("Cars.txt"), cars);
-                var yearMileages = bin.YearMileages.Select(o => o.Dump());
-                File.WriteAllLines(PathFactory.GetBackupFilePath("CarYearMileages.txt"), yearMileages);
+                WriteFileLines(bin.CardBalanceMemos, "MemosCardBalance.txt");
 
                 return new LibResult();
             }
@@ -82,6 +72,12 @@ namespace KeeperDomain
             {
                 return new LibResult(e);
             }
+        }
+
+        private static void WriteFileLines<T>(List<T> collection, string filename) where T : IDumpable
+        {
+            var content = collection.Select(l => l.Dump());
+            File.WriteAllLines(PathFactory.GetBackupFilePath(filename), content);
         }
 
         private static List<string> DumpWithOffsets(this KeeperBin bin)

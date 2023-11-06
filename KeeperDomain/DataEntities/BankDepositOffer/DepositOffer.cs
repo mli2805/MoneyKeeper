@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class DepositOffer
+    public class DepositOffer : IDumpable
     {
         public int Id { get; set; } //PK
         public string Title { get; set; }

@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class BankAccount
+    public class BankAccount : IDumpable
     {
         public int Id { get; set; } // совпадает с ID Account'a
 

@@ -14,7 +14,7 @@ namespace KeeperDomain.Exchange
     /// 
     ///  /// </summary>
     [Serializable]
-    public class ExchangeRates
+    public class ExchangeRates : IDumpable
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }

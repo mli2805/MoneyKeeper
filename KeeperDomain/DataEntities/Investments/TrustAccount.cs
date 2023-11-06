@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class TrustAccount
+    public class TrustAccount : IDumpable
     {
         public int Id { get; set; }
         public string Title { get; set; }

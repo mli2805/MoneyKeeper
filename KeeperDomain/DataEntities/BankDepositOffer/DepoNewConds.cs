@@ -11,7 +11,7 @@ namespace KeeperDomain
     }
 
     [Serializable]
-    public class DepoNewConds
+    public class DepoNewConds : IDumpable
     {
         public int Id { get; set; } //PK
         public int DepositOfferId { get; set; } 

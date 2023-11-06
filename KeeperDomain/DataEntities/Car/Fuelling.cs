@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class Fuelling
+    public class Fuelling : IDumpable
     {
         public int Id { get; set; } //PK
         public int TransactionId { get; set; }

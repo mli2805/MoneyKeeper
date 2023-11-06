@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace KeeperDomain
 {
     [Serializable]
-    public class ButtonCollection
+    public class ButtonCollection : IDumpable
     {
         public int Id { get; set; }
         public string Name { get; set; }

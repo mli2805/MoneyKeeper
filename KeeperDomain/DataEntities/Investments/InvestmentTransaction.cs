@@ -4,7 +4,7 @@ using System.Globalization;
 namespace KeeperDomain
 {
     [Serializable]
-    public class InvestmentTransaction
+    public class InvestmentTransaction : IDumpable
     {
         public int Id { get; set; }
         public InvestOperationType InvestOperationType { get; set; }

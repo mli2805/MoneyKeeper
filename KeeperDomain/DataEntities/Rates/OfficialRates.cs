@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class OfficialRates
+    public class OfficialRates : IDumpable
     {
         public int Id { get; set; } //PK
         public DateTime Date { get; set; }

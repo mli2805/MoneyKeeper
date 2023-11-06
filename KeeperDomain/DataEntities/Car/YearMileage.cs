@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class YearMileage
+    public class YearMileage : IDumpable
     {
         public int Id { get; set; } //PK
         public int CarId { get; set; }

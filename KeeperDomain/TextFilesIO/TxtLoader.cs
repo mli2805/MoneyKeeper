@@ -38,9 +38,11 @@ namespace KeeperDomain
                     DepositOffers = ReadFileLines("depoOffers.txt", TxtParser.DepositOfferFromString),
                    
                     Transactions = ReadFileLines("Transactions.txt", TxtParser.TransactionFromString),
+                    Fuellings = ReadFileLines("Fuellings.txt", TxtParser.FuellingFromString),
                     Cars = ReadFileLines("Cars.txt", TxtParser.CarFromString),
                     YearMileages = ReadFileLines("CarYearMileages.txt", TxtParser.YearMileageFromString),
-                    Fuellings = ReadFileLines("Fuellings.txt", TxtParser.FuellingFromString),
+
+                    CardBalanceMemos = ReadFileLines<CardBalanceMemo>("MemosCardBalance.txt"),
                 };
 
                 return new LibResult(true, keeperBin);
@@ -54,6 +56,13 @@ namespace KeeperDomain
         private static List<T> ReadFileLines<T>(string filename, Func<string, T> func)
         {
             return File.ReadAllLines(Path.Combine(_backupFolder, filename)).Select(func).ToList();
+        }
+
+        // теперь если парсинг перенести в каждый класс, то можно вызывать этот ReadFileLines
+        // см пример с CardBalanceMemo
+        private static List<T> ReadFileLines<T>(string filename) where T : IParsable<T>, new()
+        {
+            return File.ReadAllLines(Path.Combine(_backupFolder, filename)).Select(l => new T().FromString(l)).ToList();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Globalization;
 namespace KeeperDomain
 {
     [Serializable]
-    public class DepositRateLine
+    public class DepositRateLine : IDumpable
     {
         public int Id { get; set; } //PK
 

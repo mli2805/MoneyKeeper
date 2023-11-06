@@ -4,7 +4,7 @@ using System.Globalization;
 namespace KeeperDomain
 {
     [Serializable]
-    public class Transaction
+    public class Transaction : IDumpable
     {
         public int Id { get; set; } //PK
         public DateTime Timestamp { get; set; }
@@ -31,18 +31,6 @@ namespace KeeperDomain
                    AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + CurrencyInReturn + " ; " +
                    Tags + " ; " + Comment;
         }
-
-        // private string Dump(List<int> tags)
-        // {
-        //     if (tags == null || tags.Count == 0) return " ";
-        //     string result = "";
-        //     foreach (var t in tags)
-        //     {
-        //         result = result + t + " | ";
-        //     }
-        //     result = result.Substring(0, result.Length - 3);
-        //     return result;
-        // }
-
+        
     }
 }

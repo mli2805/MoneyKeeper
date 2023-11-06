@@ -4,6 +4,16 @@ using KeeperDomain.Exchange;
 
 namespace KeeperDomain
 {
+    interface IDumpable
+    {
+        string Dump();
+    }
+
+    interface IParsable<T>
+    {
+        T FromString(string s);
+    }
+
     [Serializable]
     public class KeeperBin
     {

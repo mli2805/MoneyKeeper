@@ -9,7 +9,7 @@ namespace KeeperDomain
     }
 
     [Serializable]
-    public class MinfinMetalRate
+    public class MinfinMetalRate : IDumpable
     {
         public int Id { get; set; } //PK
         public DateTime Date { get; set; }

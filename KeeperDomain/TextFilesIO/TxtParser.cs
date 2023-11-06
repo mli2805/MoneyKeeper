@@ -216,6 +216,17 @@ namespace KeeperDomain
             return card;
         }
 
+        // парсер в самом классе
+        // public static CardBalanceMemo CardBalanceMemoFromString(this string s)
+        // {
+        //     var memo = new CardBalanceMemo();
+        //     var substrings = s.Split(';');
+        //     memo.Id = int.Parse(substrings[0]);
+        //     memo.AccountId = int.Parse(substrings[1]);
+        //     memo.BalanceThreshold = Convert.ToDecimal(substrings[2], new CultureInfo("en-US"));
+        //     return memo;
+        // }
+
         public static ButtonCollection ButtonCollectionFromString(this string s)
         {
             var buttonCollection = new ButtonCollection();
