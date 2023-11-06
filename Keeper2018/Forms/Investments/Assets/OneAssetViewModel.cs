@@ -14,7 +14,7 @@ namespace Keeper2018
         public List<StockMarket> StockMarkets { get; set; }
         public List<AssetType> AssetTypes { get; set; }
 
-        public InvestmentAssetModel AssetInWork { get; set; }
+        public TrustAssetModel AssetInWork { get; set; }
 
         public OneAssetViewModel(KeeperDataModel keeperDataModel)
         {
@@ -32,7 +32,7 @@ namespace Keeper2018
         public void Initialize(int id)
         {
             _aim = "Добавить бумагу";
-            AssetInWork = new InvestmentAssetModel()
+            AssetInWork = new TrustAssetModel()
             {
                 Id = id,
                 StockMarket = StockMarket.Russia,
@@ -44,7 +44,7 @@ namespace Keeper2018
             };
         }
 
-        public void Initialize(InvestmentAssetModel assetModel)
+        public void Initialize(TrustAssetModel assetModel)
         {
             _aim = "Изменить бумагу";
             AssetInWork = assetModel.Clone();

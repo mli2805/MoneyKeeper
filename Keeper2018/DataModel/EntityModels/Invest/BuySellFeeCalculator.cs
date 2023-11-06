@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public static class BuySellFeeCalculator
     {
-        public static Tuple<decimal, CurrencyCode> EvaluatePurchaseFee(this InvestTranModel tran)
+        public static Tuple<decimal, CurrencyCode> EvaluatePurchaseFee(this TrustTranModel tran)
         {
             decimal purchaseFee = 0;
             switch (tran.TrustAccount.StockMarket)

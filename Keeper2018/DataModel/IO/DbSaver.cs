@@ -109,9 +109,9 @@ namespace Keeper2018
                 RefinancingRates = _keeperDataModel.RefinancingRates,
 
                 TrustAccounts = _keeperDataModel.TrustAccounts,
-                InvestmentAssets = _keeperDataModel.InvestmentAssets.Select(a => a.Map()).ToList(),
-                AssetRates = _keeperDataModel.AssetRates,
-                InvestmentTransactions = _keeperDataModel.InvestTranModels.Select(t => t.Map()).ToList(),
+                TrustAssets = _keeperDataModel.InvestmentAssets.Select(a => a.Map()).ToList(),
+                TrustAssetRates = _keeperDataModel.AssetRates,
+                TrustTransactions = _keeperDataModel.InvestTranModels.Select(t => t.Map()).ToList(),
 
                 AccountPlaneList = _keeperDataModel.FlattenAccountTree().ToList(),
                 BankAccounts = bankAccounts,
@@ -123,20 +123,20 @@ namespace Keeper2018
                 DepositOffers = _keeperDataModel.DepositOffers.Select(o => o.Map()).ToList(),
 
                 Cars = _keeperDataModel.Cars.Select(c => Mapper.Map<Car>(c)).ToList(),
-                YearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => Mapper.Map<YearMileage>(y)).ToList(),
+                CarYearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => Mapper.Map<CarYearMileage>(y)).ToList(),
 
                 Fuellings = _keeperDataModel.FuellingVms.Select(f => f.Map()).ToList(),
                 CardBalanceMemos = _keeperDataModel.CardBalanceMemoModels.Select(m=>m.Map()).ToList(),
             };
 
             bin.DepositRateLines = new List<DepositRateLine>();
-            bin.DepoNewConds = new List<DepoNewConds>();
+            bin.DepositConditions = new List<DepositConditions>();
             foreach (var depositOffer in _keeperDataModel.DepositOffers)
             {
                 foreach (var pair in depositOffer.CondsMap)
                 {
                     bin.DepositRateLines.AddRange(pair.Value.RateLines);
-                    bin.DepoNewConds.Add(Mapper.Map<DepoNewConds>(pair.Value));
+                    bin.DepositConditions.Add(Mapper.Map<DepositConditions>(pair.Value));
                 }
             }
 

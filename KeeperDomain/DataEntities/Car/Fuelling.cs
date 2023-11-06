@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class Fuelling : IDumpable
+    public class Fuelling : IDumpable, IParsable<Fuelling>
     {
         public int Id { get; set; } //PK
         public int TransactionId { get; set; }
@@ -15,11 +15,19 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " +
-                   TransactionId + " ; " +
-                   CarAccountId + " ; " +
-                   Volume + " ; " +
-                   FuelType;
+            return Id + " ; " + TransactionId + " ; " + CarAccountId + " ; " +
+                   Volume + " ; " + FuelType;
+        }
+
+        public Fuelling FromString(string s)
+        {
+            var substrings = s.Split(';');
+            Id = int.Parse(substrings[0].Trim());
+            TransactionId = int.Parse(substrings[1].Trim());
+            CarAccountId = int.Parse(substrings[2].Trim());
+            Volume = double.Parse(substrings[3].Trim());
+            FuelType = (FuelType)Enum.Parse(typeof(FuelType), substrings[4]);
+            return this;
         }
     }
 }

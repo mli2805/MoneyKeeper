@@ -53,7 +53,7 @@ namespace Keeper2018
         {
         }
 
-        public InvestmentAssetOnDate(InvestTranModel tran)
+        public InvestmentAssetOnDate(TrustTranModel tran)
         {
             InvestmentAssetId = tran.Asset.Id;
             InvestmentAssetTicker = tran.Asset.Ticker;

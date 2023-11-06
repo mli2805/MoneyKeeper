@@ -20,11 +20,11 @@ namespace KeeperDomain
                     await dbContext.Transactions.AddRangeAsync(bin.Transactions);
 
                     await dbContext.Cars.AddRangeAsync(bin.Cars);
-                    await dbContext.YearMileages.AddRangeAsync(bin.YearMileages);
+                    await dbContext.YearMileages.AddRangeAsync(bin.CarYearMileages);
                     await dbContext.Fuellings.AddRangeAsync(bin.Fuellings);
 
                     await dbContext.DepositOffers.AddRangeAsync(bin.DepositOffers);
-                    await dbContext.DepositConditions.AddRangeAsync(bin.DepoNewConds);
+                    await dbContext.DepositConditions.AddRangeAsync(bin.DepositConditions);
                     await dbContext.DepositRateLines.AddRangeAsync(bin.DepositRateLines);
 
                     await dbContext.SaveChangesAsync();

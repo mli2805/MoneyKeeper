@@ -14,8 +14,8 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private readonly IWindowManager _windowManager;
 
-        public ObservableCollection<InvestmentAssetModel> Assets { get; set; }
-        public InvestmentAssetModel SelectedAsset { get; set; }
+        public ObservableCollection<TrustAssetModel> Assets { get; set; }
+        public TrustAssetModel SelectedAsset { get; set; }
 
         public List<AssetType> AssetTypes { get; set; }
 
@@ -30,7 +30,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Assets = new ObservableCollection<InvestmentAssetModel>(_dataModel.InvestmentAssets.OrderBy(l => l.Id));
+            Assets = new ObservableCollection<TrustAssetModel>(_dataModel.InvestmentAssets.OrderBy(l => l.Id));
         }
 
         protected override void OnViewLoaded(object view)

@@ -99,9 +99,9 @@ namespace Keeper2018
             return durationModel.IsPerpetual ? new Duration() : new Duration(durationModel.Value, durationModel.Scale);
         }
 
-        // public static DepoNewConds Map(this DepoCondsModel depoCondsModel)
+        // public static DepositConditions Map(this DepoCondsModel depoCondsModel)
         // {
-        //     return new DepoNewConds()
+        //     return new DepositConditions()
         //     {
         //         Id = depoCondsModel.Id,
         //         DepositOfferId = depoCondsModel.DepositOfferId,
@@ -115,8 +115,8 @@ namespace Keeper2018
         //         EveryNDays = depoCondsModel.EveryNDays,
         //         NDays = depoCondsModel.NDays,
         //         IsCapitalized = depoCondsModel.IsCapitalized,
-        //         HasAdditionalProcent = depoCondsModel.HasAdditionalPercent,
-        //         AdditionalProcent = depoCondsModel.AdditionalPercent,
+        //         HasAdditionalPercent = depoCondsModel.HasAdditionalPercent,
+        //         AdditionalPercent = depoCondsModel.AdditionalPercent,
         //
         //         Comment = depoCondsModel.Comment,
         //     };
@@ -141,9 +141,9 @@ namespace Keeper2018
         //     };
         // }
         //
-        // public static YearMileage Map(this YearMileageModel yearMileageModel)
+        // public static CarYearMileage Map(this YearMileageModel yearMileageModel)
         // {
-        //     return new YearMileage()
+        //     return new CarYearMileage()
         //     {
         //         Id = yearMileageModel.Id,
         //         CarId = yearMileageModel.CarId,
@@ -172,9 +172,9 @@ namespace Keeper2018
             return entity;
         }
 
-        public static InvestmentAsset Map(this InvestmentAssetModel asset)
+        public static TrustAsset Map(this TrustAssetModel asset)
         {
-            return new InvestmentAsset()
+            return new TrustAsset()
             {
                 Id = asset.Id,
                 TrustAccountId = asset.TrustAccount?.Id ?? 0,
@@ -192,9 +192,9 @@ namespace Keeper2018
             };
         }
 
-        public static InvestmentTransaction Map(this InvestTranModel transaction)
+        public static TrustTransaction Map(this TrustTranModel transaction)
         {
-            return new InvestmentTransaction()
+            return new TrustTransaction()
             {
                 Id = transaction.Id,
                 InvestOperationType = transaction.InvestOperationType,

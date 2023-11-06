@@ -88,9 +88,9 @@ namespace Keeper2018
             return model;
         }
 
-        public static InvestmentAssetModel Map(this InvestmentAsset asset, KeeperDataModel dataModel)
+        public static TrustAssetModel Map(this TrustAsset asset, KeeperDataModel dataModel)
         {
-            return new InvestmentAssetModel()
+            return new TrustAssetModel()
             {
                 Id = asset.Id,
                 TrustAccount = asset.Id == 0 ? null : dataModel.TrustAccounts.FirstOrDefault(t => t.Id == asset.TrustAccountId),
@@ -108,9 +108,9 @@ namespace Keeper2018
             };
         }
 
-        public static InvestTranModel Map(this InvestmentTransaction transaction, KeeperDataModel dataModel)
+        public static TrustTranModel Map(this TrustTransaction transaction, KeeperDataModel dataModel)
         {
-            return new InvestTranModel()
+            return new TrustTranModel()
             {
                 Id = transaction.Id,
                 InvestOperationType = transaction.InvestOperationType,

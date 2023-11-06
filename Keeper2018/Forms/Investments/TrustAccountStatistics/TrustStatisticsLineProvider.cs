@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public static class TrustStatisticsLineProvider
     {
-        public static TrustStatisticsLine Create(this InvestTranModel tran, decimal balanceBefore, bool isForWholeTrustAccount)
+        public static TrustStatisticsLine Create(this TrustTranModel tran, decimal balanceBefore, bool isForWholeTrustAccount)
         {
             var line = new TrustStatisticsLine { Tran = tran, Title = tran.GetTransTitle(), IsForWholeTrustAccount = isForWholeTrustAccount };
 
@@ -45,7 +45,7 @@ namespace Keeper2018
             return line;
         }
 
-        private static decimal GetQuantityChange(this InvestTranModel tran)
+        private static decimal GetQuantityChange(this TrustTranModel tran)
         {
             switch (tran.InvestOperationType)
             {
@@ -60,7 +60,7 @@ namespace Keeper2018
             }
         }
 
-        private static decimal GetBalanceChange(this InvestTranModel tran)
+        private static decimal GetBalanceChange(this TrustTranModel tran)
         {
             switch (tran.InvestOperationType)
             {
@@ -83,7 +83,7 @@ namespace Keeper2018
             }
         }
 
-        private static string GetTransTitle(this InvestTranModel tran)
+        private static string GetTransTitle(this TrustTranModel tran)
         {
             var result = $"{tran.InvestOperationType.GetRussian()}";
             if (tran.InvestOperationType == InvestOperationType.BuyBonds
@@ -103,7 +103,7 @@ namespace Keeper2018
             return result;
         }
 
-        private static Brush GetTransBrush(this InvestTranModel tran)
+        private static Brush GetTransBrush(this TrustTranModel tran)
         {
             switch (tran.InvestOperationType)
             {

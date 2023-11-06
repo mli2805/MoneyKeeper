@@ -10,9 +10,9 @@ namespace Keeper2018
             CreateMap<BankAccount, BankAccountModel>();
 
             CreateMap<Car, CarModel>();
-            CreateMap<YearMileage, YearMileageModel>();
+            CreateMap<CarYearMileage, YearMileageModel>();
 
-            CreateMap<DepoNewConds, DepoCondsModel>();
+            CreateMap<DepositConditions, DepoCondsModel>();
 
             CreateMap<CardBalanceMemo, CardBalanceMemoModel>();
         }
@@ -25,9 +25,9 @@ namespace Keeper2018
             CreateMap<BankAccountModel, BankAccount>();
 
             CreateMap<CarModel, Car>();
-            CreateMap<YearMileageModel, YearMileage>();
+            CreateMap<YearMileageModel, CarYearMileage>();
 
-            CreateMap<DepoCondsModel, DepoNewConds>();
+            CreateMap<DepoCondsModel, DepositConditions>();
 
             CreateMap<CardBalanceMemoModel, CardBalanceMemo>();
         }

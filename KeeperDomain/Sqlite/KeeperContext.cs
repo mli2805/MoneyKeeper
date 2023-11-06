@@ -9,7 +9,7 @@ namespace KeeperDomain
     public class KeeperContext : DbContext
     {
         public DbSet<OfficialRates> Rates { get; set; }
-        public DbSet<MinfinMetalRate> MetalRates { get; set; }
+        public DbSet<MetalRate> MetalRates { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
@@ -18,11 +18,11 @@ namespace KeeperDomain
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<DepositRateLine> DepositRateLines { get; set; }
-        public DbSet<DepoNewConds> DepositConditions { get; set; }
+        public DbSet<DepositConditions> DepositConditions { get; set; }
         public DbSet<DepositOffer> DepositOffers { get; set; }
 
         public DbSet<Car> Cars { get; set; }
-        public DbSet<YearMileage> YearMileages { get; set; }
+        public DbSet<CarYearMileage> YearMileages { get; set; }
         public DbSet<Fuelling> Fuellings { get; set; }
 
 

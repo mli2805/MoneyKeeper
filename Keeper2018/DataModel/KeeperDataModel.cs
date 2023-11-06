@@ -12,13 +12,13 @@ namespace Keeper2018
         private ObservableCollection<AccountItemModel> _accountsTree = new ObservableCollection<AccountItemModel>();
         public Dictionary<DateTime, OfficialRates> OfficialRates { get; set; }
         public Dictionary<DateTime, ExchangeRates> ExchangeRates { get; set; }
-        public List<MinfinMetalRate> MetalRates { get; set; }
+        public List<MetalRate> MetalRates { get; set; }
         public List<RefinancingRate> RefinancingRates { get; set; } = new List<RefinancingRate>();
 
         public List<TrustAccount> TrustAccounts { get; set; }
-        public List<InvestmentAssetModel> InvestmentAssets { get; set; }
-        public List<AssetRate> AssetRates { get; set; }
-        public List<InvestTranModel> InvestTranModels { get; set; }
+        public List<TrustAssetModel> InvestmentAssets { get; set; }
+        public List<TrustAssetRate> AssetRates { get; set; }
+        public List<TrustTranModel> InvestTranModels { get; set; }
 
         public Dictionary<int, TransactionModel> Transactions { get; set; }
 

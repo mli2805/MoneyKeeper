@@ -48,7 +48,7 @@ namespace Keeper2018
             result.FinResult = result.AllCurrentActives + result.Cash - result.Externals;
         }
 
-        private static void ApplyTran(this TrustAccountBalanceOnDate result, KeeperDataModel dataModel, InvestTranModel tran)
+        private static void ApplyTran(this TrustAccountBalanceOnDate result, KeeperDataModel dataModel, TrustTranModel tran)
         {
             switch (tran.InvestOperationType)
             {
@@ -78,7 +78,7 @@ namespace Keeper2018
             }
         }
 
-        private static void PayBaseCommission(this TrustAccountBalanceOnDate result, KeeperDataModel dataModel, InvestTranModel tran)
+        private static void PayBaseCommission(this TrustAccountBalanceOnDate result, KeeperDataModel dataModel, TrustTranModel tran)
         {
             if (tran.TrustAccount.Currency == CurrencyCode.RUB)
             {
@@ -89,18 +89,18 @@ namespace Keeper2018
                 result.BaseFee +=
                     dataModel.AmountInUsd(tran.Timestamp, CurrencyCode.BYN, tran.CurrencyAmount);
         }
-        private static void WithdrawFromTrustAccount(this TrustAccountBalanceOnDate result, InvestTranModel tran)
+        private static void WithdrawFromTrustAccount(this TrustAccountBalanceOnDate result, TrustTranModel tran)
         {
             result.Cash -= tran.CurrencyAmount;
             result.Withdraw += tran.CurrencyAmount;
         }
-        private static void TopUpTrustAccount(this TrustAccountBalanceOnDate result, InvestTranModel tran)
+        private static void TopUpTrustAccount(this TrustAccountBalanceOnDate result, TrustTranModel tran)
         {
             result.Cash += tran.CurrencyAmount;
             result.TopUp += tran.CurrencyAmount;
         }
 
-        private static void SellAsset(this TrustAccountBalanceOnDate result, InvestTranModel tran, KeeperDataModel dataModel)
+        private static void SellAsset(this TrustAccountBalanceOnDate result, TrustTranModel tran, KeeperDataModel dataModel)
         {
             result.Cash += tran.CurrencyAmount + tran.CouponAmount;
             var asset = result.Assets.First(t => t.InvestmentAssetId == tran.Asset.Id);
@@ -112,7 +112,7 @@ namespace Keeper2018
             result.OperationFee(asset, tran, dataModel);
         }
 
-        private static void BuyAsset(this TrustAccountBalanceOnDate result, InvestTranModel tran, KeeperDataModel dataModel)
+        private static void BuyAsset(this TrustAccountBalanceOnDate result, TrustTranModel tran, KeeperDataModel dataModel)
         {
             result.Cash -= tran.CurrencyAmount + tran.CouponAmount;
             var asset = result.Assets.FirstOrDefault(t => t.InvestmentAssetId == tran.Asset.Id);
@@ -129,7 +129,7 @@ namespace Keeper2018
             result.OperationFee(asset, tran, dataModel);
         }
 
-        private static void OperationFee(this TrustAccountBalanceOnDate result, InvestmentAssetOnDate asset, InvestTranModel tran, KeeperDataModel dataModel)
+        private static void OperationFee(this TrustAccountBalanceOnDate result, InvestmentAssetOnDate asset, TrustTranModel tran, KeeperDataModel dataModel)
         {
             if (tran.FeePaymentOperationId != 0)
             {
@@ -151,7 +151,7 @@ namespace Keeper2018
             }
         }
 
-        private static void EnrollCouponOrDividends(this TrustAccountBalanceOnDate result, InvestTranModel tran)
+        private static void EnrollCouponOrDividends(this TrustAccountBalanceOnDate result, TrustTranModel tran)
         {
             result.Cash += tran.CurrencyAmount;
             result.ReceivedCoupon += tran.CurrencyAmount;

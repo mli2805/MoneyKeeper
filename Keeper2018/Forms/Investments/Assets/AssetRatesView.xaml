@@ -57,14 +57,14 @@
                                                  StringFormat=dd/MM/yyyy,
                                        Mode=TwoWay,
                                        UpdateSourceTrigger=PropertyChanged}"
-                                        d:DataContext="{d:DesignInstance keeperDomain:AssetRate}" />
+                                        d:DataContext="{d:DesignInstance keeperDomain:TrustAssetRate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Date,
                                                  StringFormat=dd/MM/yyyy}"
-                                       d:DataContext="{d:DesignInstance keeperDomain:AssetRate}" />
+                                       d:DataContext="{d:DesignInstance keeperDomain:TrustAssetRate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

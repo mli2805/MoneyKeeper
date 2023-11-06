@@ -46,11 +46,11 @@ namespace Keeper2018
         public string TrustAccountLabel { get; set; }
         public List<TrustAccount> TrustAccounts { get; set; }
         public string AssetLabel { get; set; }
-        public List<InvestmentAssetModel> Assets { get; set; }
+        public List<TrustAssetModel> Assets { get; set; }
 
-        public InvestTranModel TranInWork { get; set; } = new InvestTranModel();
+        public TrustTranModel TranInWork { get; set; } = new TrustTranModel();
 
-        public List<InvestTranModel> FeePayments { get; set; }
+        public List<TrustTranModel> FeePayments { get; set; }
 
         public OneInvestTranViewModel(KeeperDataModel dataModel, ComboTreesProvider comboTreesProvider,
             AccNameSelector accNameSelectorForInvestment)
@@ -67,7 +67,7 @@ namespace Keeper2018
             DisplayName = TranInWork.InvestOperationType.GetRussian();
         }
 
-        public void Initialize(InvestTranModel tran)
+        public void Initialize(TrustTranModel tran)
         {
             TranInWork = tran;
             FeePayments = _dataModel.InvestTranModels

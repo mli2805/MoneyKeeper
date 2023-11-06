@@ -11,9 +11,9 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
 
-        public ObservableCollection<AssetRate> Rates { get; set; }
-        public AssetRate SelectedRate { get; set; }
-        public List<InvestmentAssetModel> Assets { get; set; }
+        public ObservableCollection<TrustAssetRate> Rates { get; set; }
+        public TrustAssetRate SelectedRate { get; set; }
+        public List<TrustAssetModel> Assets { get; set; }
 
         public DateTime SelectedDate { get; set; } = DateTime.Today;
 
@@ -25,7 +25,7 @@ namespace Keeper2018
         public void Initialize()
         {
             Assets = _dataModel.InvestmentAssets;
-            Rates = new ObservableCollection<AssetRate>(_dataModel.AssetRates);
+            Rates = new ObservableCollection<TrustAssetRate>(_dataModel.AssetRates);
             SelectedRate = Rates.Last();
         }
 
@@ -46,7 +46,7 @@ namespace Keeper2018
             foreach (var asset in Assets.Where(a=>a.Ticker != "CASH"))
             {
                 var prev = Rates.FirstOrDefault(r => r.TickerId == asset.Id);
-                Rates.Add(new AssetRate()
+                Rates.Add(new TrustAssetRate()
                 {
                     Id = ++lastId, 
                     TickerId = asset.Id, 

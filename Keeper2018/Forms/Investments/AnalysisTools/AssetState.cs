@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public class AssetState
     {
-        public InvestmentAssetModel Asset { get; set; }
+        public TrustAssetModel Asset { get; set; }
 
         public string Caption { get; set; }
 
@@ -41,9 +41,9 @@ namespace Keeper2018
         public decimal CurrentAssetRate;
         public decimal AccumulatedCouponIncome;
 
-        public List<InvestTranModel> Trans { get; set; } = new List<InvestTranModel>();
+        public List<TrustTranModel> Trans { get; set; } = new List<TrustTranModel>();
 
-        public AssetState(InvestmentAssetModel asset)
+        public AssetState(TrustAssetModel asset)
         {
             Asset = asset;
         }
@@ -52,7 +52,7 @@ namespace Keeper2018
         {
             var clone = (AssetState)MemberwiseClone();
             clone.Caption = newCaption;
-            clone.Trans = new List<InvestTranModel>();
+            clone.Trans = new List<TrustTranModel>();
             clone.Trans.AddRange(Trans);
             return clone;
         }

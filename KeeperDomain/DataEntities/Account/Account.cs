@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class Account
+    public class Account : IParsable<Account>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -30,5 +30,21 @@ namespace KeeperDomain
                    (Comment?.Replace("\r\n", "|") ?? "");
         }
 
+        public Account FromString(string s)
+        {
+            var substrings = s.Split(';');
+            Id = int.Parse(substrings[0]);
+            Name = substrings[1].Trim();
+            ParentId = int.Parse(substrings[2]);
+            IsFolder = Convert.ToBoolean(substrings[3]);
+            IsExpanded = Convert.ToBoolean(substrings[4]);
+            AssociatedIncomeId = int.Parse(substrings[5]);
+            AssociatedExpenseId = int.Parse(substrings[6]);
+            AssociatedExternalId = int.Parse(substrings[7]);
+            ShortName = substrings[8].Trim();
+            ButtonName = substrings[9].Trim();
+            Comment = substrings[10].Trim();
+            return this;
+        }
     }
 }

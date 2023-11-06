@@ -6,7 +6,7 @@ namespace Keeper2018
 {
     public static class AssetOnPeriodDataProvider
     {
-        public static AssetOnPeriodData Analyze(this KeeperDataModel dataModel, InvestmentAssetModel asset, Period period)
+        public static AssetOnPeriodData Analyze(this KeeperDataModel dataModel, TrustAssetModel asset, Period period)
         {
             var result = new AssetOnPeriodData() { Period = period };
 
@@ -131,7 +131,7 @@ namespace Keeper2018
 
     public static class InvestmentAssetExt
     {
-        public static decimal GetAccumulatedCoupon(this InvestmentAssetModel asset, DateTime date)
+        public static decimal GetAccumulatedCoupon(this TrustAssetModel asset, DateTime date)
         {
             var days = (date - asset.PreviousCouponDate).Days;
             return asset.Nominal * (decimal)asset.CouponRate / 100 * days / 365;

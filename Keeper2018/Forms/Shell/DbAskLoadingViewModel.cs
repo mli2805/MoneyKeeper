@@ -13,7 +13,11 @@ namespace Keeper2018
             Message = message;
         }
 
-      
+        protected override void OnViewLoaded(object view)
+        {
+            DisplayName = "Загрузить";
+        }
+
         public void LoadFromNew()
         {
             Result = true;

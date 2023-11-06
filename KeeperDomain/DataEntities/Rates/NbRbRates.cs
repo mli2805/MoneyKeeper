@@ -4,7 +4,7 @@ namespace KeeperDomain
 {
    
     [Serializable]
-    public class NbRbRates
+    public class NbRbRates : IDumpable, IParsable<NbRbRates>
     {
         public int Id { get; set; } //PK
         public OneRate Usd { get; set; } = new OneRate();
@@ -19,5 +19,14 @@ namespace KeeperDomain
             return Usd.Dump() + " | " + Euro.Dump() + " | " + Rur.Dump() + " | " + Cny.Dump();
         }
 
+        public NbRbRates FromString(string s)
+        {
+            var substrings = s.Split('|');
+            Usd = new OneRate().FromString(substrings[0]);
+            Euro = new OneRate().FromString(substrings[1]);
+            Rur = new OneRate().FromString(substrings[2]);
+            Cny = new OneRate().FromString(substrings[3]);
+            return this;
+        }
     }
 }

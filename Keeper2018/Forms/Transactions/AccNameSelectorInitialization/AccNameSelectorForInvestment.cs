@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public partial class AccNameSelector
     {
-        public AccNameSelectorVm InitializeForInvestments(InvestTranModel tran)
+        public AccNameSelectorVm InitializeForInvestments(TrustTranModel tran)
         {
             switch (tran.InvestOperationType)
             {

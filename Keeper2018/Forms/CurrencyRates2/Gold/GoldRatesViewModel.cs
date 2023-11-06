@@ -49,7 +49,7 @@ namespace Keeper2018
 
         private void Save()
         {
-            _keeperDataModel.MetalRates = Rows.Select(l => new MinfinMetalRate()
+            _keeperDataModel.MetalRates = Rows.Select(l => new MetalRate()
             {
                 Id = l.Id,
                 Date = l.Date,

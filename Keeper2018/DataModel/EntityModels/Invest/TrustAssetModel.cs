@@ -6,7 +6,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class InvestmentAssetModel : PropertyChangedBase
+    public class TrustAssetModel : PropertyChangedBase
     {
         public int Id { get; set; }
 
@@ -50,14 +50,14 @@ namespace Keeper2018
 
         public string Comment { get; set; } = string.Empty;
 
-        public InvestmentAssetModel Clone()
+        public TrustAssetModel Clone()
         {
-            var clone = (InvestmentAssetModel)MemberwiseClone();
+            var clone = (TrustAssetModel)MemberwiseClone();
             clone.BondCouponPeriod = BondCouponPeriod.Clone();
             return clone;
         }
 
-        public void CopyFrom(InvestmentAssetModel from)
+        public void CopyFrom(TrustAssetModel from)
         {
             Id = from.Id;
             TrustAccount = from.TrustAccount;

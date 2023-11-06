@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using KeeperDomain.Exchange;
 
 namespace KeeperDomain
 {
@@ -17,30 +18,30 @@ namespace KeeperDomain
             {
                 var keeperBin = new KeeperBin
                 {
-                    ExchangeRates = ReadFileLines("ExchangeRates.txt", TxtParser.ExchangeRatesFromString),
-                    OfficialRates = ReadFileLines("OfficialRates.txt", TxtParser.CurrencyRateFromString),
-                    MetalRates = ReadFileLines("MetalRates.txt", TxtParser.MetalRateFromString),
-                    RefinancingRates = ReadFileLines("RefinancingRates.txt", TxtParser.RefinancingRateFromString),
-                   
-                    InvestmentAssets = ReadFileLines("InvestmentAssets.txt", TxtParser.InvestmentAssetFromString),
-                    AssetRates = ReadFileLines("AssetRates.txt", TxtParser.AssetRateFromString),
-                    TrustAccounts = ReadFileLines("TrustAccounts.txt", TxtParser.TrustAccountFromString),
-                    InvestmentTransactions = ReadFileLines("InvestmentTransactions.txt", TxtParser.InvestmentTransactionFromString),
-                   
-                    AccountPlaneList = ReadFileLines("Accounts.txt", TxtParser.AccountFromString),
-                    BankAccounts = ReadFileLines("BankAccounts.txt", TxtParser.BankAccountFromString),
-                    Deposits = ReadFileLines("Deposits.txt", TxtParser.DepositFromString),
-                    PayCards = ReadFileLines("PayCards.txt", TxtParser.CardFromString),
-                    ButtonCollections = ReadFileLines("ButtonCollections.txt", TxtParser.ButtonCollectionFromString),
-                   
-                    DepositRateLines = ReadFileLines("depoRateLines.txt", TxtParser.NewDepoRateLineFromString),
-                    DepoNewConds = ReadFileLines("depoConds.txt", TxtParser.DepoNewCondsFromString),
-                    DepositOffers = ReadFileLines("depoOffers.txt", TxtParser.DepositOfferFromString),
-                   
-                    Transactions = ReadFileLines("Transactions.txt", TxtParser.TransactionFromString),
-                    Fuellings = ReadFileLines("Fuellings.txt", TxtParser.FuellingFromString),
-                    Cars = ReadFileLines("Cars.txt", TxtParser.CarFromString),
-                    YearMileages = ReadFileLines("CarYearMileages.txt", TxtParser.YearMileageFromString),
+                    ExchangeRates = ReadFileLines<ExchangeRates>(),
+                    OfficialRates = ReadFileLines<OfficialRates>(),
+                    MetalRates = ReadFileLines<MetalRate>(),
+                    RefinancingRates = ReadFileLines<RefinancingRate>(),
+
+                    TrustAssets = ReadFileLines<TrustAsset>(),
+                    TrustAssetRates = ReadFileLines<TrustAssetRate>(),
+                    TrustAccounts = ReadFileLines<TrustAccount>(),
+                    TrustTransactions = ReadFileLines<TrustTransaction>(),
+
+                    AccountPlaneList = ReadFileLines<Account>(),
+                    BankAccounts = ReadFileLines<BankAccount>(),
+                    Deposits = ReadFileLines<Deposit>(),
+                    PayCards = ReadFileLines<PayCard>(),
+                    ButtonCollections = ReadFileLines<ButtonCollection>(),
+
+                    DepositRateLines = ReadFileLines<DepositRateLine>(),
+                    DepositConditions = ReadFileLines<DepositConditions>(),
+                    DepositOffers = ReadFileLines<DepositOffer>(),
+
+                    Transactions = ReadFileLines<Transaction>(),
+                    Fuellings = ReadFileLines<Fuelling>(),
+                    Cars = ReadFileLines<Car>(),
+                    CarYearMileages = ReadFileLines<CarYearMileage>(),
 
                     CardBalanceMemos = ReadFileLines<CardBalanceMemo>("MemosCardBalance.txt"),
                 };
@@ -53,15 +54,10 @@ namespace KeeperDomain
             }
         }
 
-        private static List<T> ReadFileLines<T>(string filename, Func<string, T> func)
+        private static List<T> ReadFileLines<T>(string filename = "") where T : IParsable<T>, new()
         {
-            return File.ReadAllLines(Path.Combine(_backupFolder, filename)).Select(func).ToList();
-        }
-
-        // теперь если парсинг перенести в каждый класс, то можно вызывать этот ReadFileLines
-        // см пример с CardBalanceMemo
-        private static List<T> ReadFileLines<T>(string filename) where T : IParsable<T>, new()
-        {
+            if (filename == "")
+                filename = typeof(T).Name + "s.txt";
             return File.ReadAllLines(Path.Combine(_backupFolder, filename)).Select(l => new T().FromString(l)).ToList();
         }
     }

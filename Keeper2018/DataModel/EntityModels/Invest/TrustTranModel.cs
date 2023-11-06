@@ -6,7 +6,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class InvestTranModel : PropertyChangedBase
+    public class TrustTranModel : PropertyChangedBase
     {
         public int Id { get; set; }
 
@@ -133,8 +133,8 @@ namespace Keeper2018
         public string AssetAmountForDatagrid =>
             AssetAmount == 0 ? "" : AssetAmount.ToString(CultureInfo.CurrentCulture);
 
-        private InvestmentAssetModel _asset;
-        public InvestmentAssetModel Asset
+        private TrustAssetModel _asset;
+        public TrustAssetModel Asset
         {
             get => _asset;
             set
@@ -238,12 +238,12 @@ namespace Keeper2018
             }
         }
         #endregion
-        public InvestTranModel ShallowCopy()
+        public TrustTranModel ShallowCopy()
         {
-            return (InvestTranModel)MemberwiseClone();
+            return (TrustTranModel)MemberwiseClone();
         }
 
-        public void CopyFieldsFrom(InvestTranModel source)
+        public void CopyFieldsFrom(TrustTranModel source)
         {
             Id = source.Id;
             InvestOperationType = source.InvestOperationType;

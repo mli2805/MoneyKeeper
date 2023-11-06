@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public class TrustStatisticsLine : PropertyChangedBase
     {
-        public InvestTranModel Tran { get; set; }
+        public TrustTranModel Tran { get; set; }
 
         public string Title { get; set; }
         public string AmountIn { get; set; }

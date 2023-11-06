@@ -14,7 +14,7 @@ namespace KeeperDomain.Exchange
     /// 
     ///  /// </summary>
     [Serializable]
-    public class ExchangeRates : IDumpable
+    public class ExchangeRates : IDumpable, IParsable<ExchangeRates>
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -76,6 +76,25 @@ namespace KeeperDomain.Exchange
             return (ExchangeRates)MemberwiseClone();
         }
 
-      
+
+        public ExchangeRates FromString(string s)
+        {
+            var substrings = s.Split(';');
+            Id = int.Parse(substrings[0]);
+            Date = DateTime.ParseExact(substrings[1].Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            UsdToByn = double.Parse(substrings[2], new CultureInfo("en-US"));
+            BynToUsd = double.Parse(substrings[3], new CultureInfo("en-US"));
+            EurToByn = double.Parse(substrings[4], new CultureInfo("en-US"));
+            BynToEur = double.Parse(substrings[5], new CultureInfo("en-US"));
+            RubToByn = double.Parse(substrings[6], new CultureInfo("en-US"));
+            BynToRub = double.Parse(substrings[7], new CultureInfo("en-US"));
+            EurToUsd = double.Parse(substrings[8], new CultureInfo("en-US"));
+            UsdToEur = double.Parse(substrings[9], new CultureInfo("en-US"));
+            UsdToRub = double.Parse(substrings[10], new CultureInfo("en-US"));
+            RubToUsd = double.Parse(substrings[11], new CultureInfo("en-US"));
+            EurToRub = double.Parse(substrings[12], new CultureInfo("en-US"));
+            RubToEur = double.Parse(substrings[13], new CultureInfo("en-US"));
+            return this;
+        }
     }
 }

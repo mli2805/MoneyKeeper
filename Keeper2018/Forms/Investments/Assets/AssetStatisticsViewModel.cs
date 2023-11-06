@@ -7,7 +7,7 @@ namespace Keeper2018
     public class AssetStatisticsViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        private InvestmentAssetModel _investmentAssetModel;
+        private TrustAssetModel _trustAssetModel;
         public StatisticsLinesViewModel StatisticsLinesViewModel { get; set; } = new StatisticsLinesViewModel();
 
         public AssetStatisticsViewModel(KeeperDataModel dataModel)
@@ -20,14 +20,14 @@ namespace Keeper2018
             DisplayName = "Статистика по активу";
         }
 
-        public void Initialize(InvestmentAssetModel assetModel)
+        public void Initialize(TrustAssetModel assetModel)
         {
-            _investmentAssetModel = assetModel;
+            _trustAssetModel = assetModel;
 
             StatisticsLinesViewModel.Rows = new List<TrustStatisticsLine>();
             decimal balanceBefore = 0;
 
-            foreach (var tr in _dataModel.InvestTranModels.Where(t => t.Asset.Id == _investmentAssetModel.Id))
+            foreach (var tr in _dataModel.InvestTranModels.Where(t => t.Asset.Id == _trustAssetModel.Id))
             {
                 var line = tr.Create(balanceBefore, false);
                 StatisticsLinesViewModel.Rows.Add(line);

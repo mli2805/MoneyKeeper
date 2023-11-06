@@ -5,7 +5,7 @@ namespace Keeper2018
 {
     public static class TranToAssetAnalysis
     {
-        public static IEnumerable<string> ToAssetAnalysis(this InvestTranModel tranModel)
+        public static IEnumerable<string> ToAssetAnalysis(this TrustTranModel tranModel)
         {
             string word = tranModel.WordsForOperationType();
 
@@ -48,7 +48,7 @@ namespace Keeper2018
             yield return "";
         }
 
-        private static string WordsForOperationType(this InvestTranModel tranModel)
+        private static string WordsForOperationType(this TrustTranModel tranModel)
         {
             switch (tranModel.InvestOperationType)
             {

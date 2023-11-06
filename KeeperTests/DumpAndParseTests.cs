@@ -20,7 +20,7 @@ namespace KeeperTests
             };
 
             var str = account.Dump(3);
-            var account2 = str.AccountFromString();
+            var account2 = new Account().FromString(str);
             Assert.IsNotNull(account2);
             Assert.AreEqual(5, account2.Id);
         }

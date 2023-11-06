@@ -15,8 +15,8 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private readonly IWindowManager _windowManager;
 
-        public ObservableCollection<InvestTranModel> Transactions { get; set; }
-        public InvestTranModel SelectedTransaction { get; set; }
+        public ObservableCollection<TrustTranModel> Transactions { get; set; }
+        public TrustTranModel SelectedTransaction { get; set; }
 
         public InvestmentTransactionsViewModel(ILifetimeScope globalScope, KeeperDataModel dataModel,
             IWindowManager windowManager)
@@ -28,7 +28,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Transactions = new ObservableCollection<InvestTranModel>(_dataModel.InvestTranModels);
+            Transactions = new ObservableCollection<TrustTranModel>(_dataModel.InvestTranModels);
             SelectedTransaction = Transactions.Last();
         }
 
@@ -80,7 +80,7 @@ namespace Keeper2018
         public void InvestOperation(InvestOperationType investOperationType)
         {
             var vm = _globalScope.Resolve<OneInvestTranViewModel>();
-            var tranInWork = new InvestTranModel()
+            var tranInWork = new TrustTranModel()
             {
                 Id = Transactions.Any() ? Transactions.Max(t => t.Id) + 1 : 1,
                 InvestOperationType = investOperationType,
@@ -101,7 +101,7 @@ namespace Keeper2018
             }
         }
 
-        private TransactionModel InvestTranModelToTransactionModel(InvestTranModel tranInWork, OperationType operationType)
+        private TransactionModel InvestTranModelToTransactionModel(TrustTranModel tranInWork, OperationType operationType)
         {
             var tran = new TransactionModel();
             tran.Id = _dataModel.Transactions.Keys.Max() + 1;

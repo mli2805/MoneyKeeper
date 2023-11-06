@@ -7,7 +7,7 @@ namespace Keeper2018
     public class AssetAnalysisViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
-        private InvestmentAssetModel _asset;
+        private TrustAssetModel _asset;
 
         private Period _activePeriod;
         private AssetOnPeriodReportModel _reportModel;
@@ -28,7 +28,7 @@ namespace Keeper2018
             _dataModel = dataModel;
         }
 
-        public void Initialize(InvestmentAssetModel asset)
+        public void Initialize(TrustAssetModel asset)
         {
             _asset = asset;
             _activePeriod = DateTime.Today.GetFullMonthForDate();

@@ -15,7 +15,7 @@ namespace Keeper2018
             var result = bin.Cars.Select(c => Mapper.Map<CarModel>(c)).ToList();
             foreach (var car in result)
             {
-                var arr = bin.YearMileages.Where(l => l.CarId == car.Id).ToArray();
+                var arr = bin.CarYearMileages.Where(l => l.CarId == car.Id).ToArray();
                 var prev = car.PurchaseMileage;
                 foreach (var y in arr)
                 {
@@ -33,7 +33,7 @@ namespace Keeper2018
             var result = bin.DepositOffers.Select(o => o.Map(acMoDict)).ToList();
             foreach (var depoOffer in result)
             {
-                foreach (var depoCondition in bin.DepoNewConds.Where(c => c.DepositOfferId == depoOffer.Id))
+                foreach (var depoCondition in bin.DepositConditions.Where(c => c.DepositOfferId == depoOffer.Id))
                 {
                     var depoCondsModel = Mapper.Map<DepoCondsModel>(depoCondition);
 
