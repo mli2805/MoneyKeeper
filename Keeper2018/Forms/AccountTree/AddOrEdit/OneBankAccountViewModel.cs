@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using KeeperDomain;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Keeper2018
 {
@@ -89,6 +90,7 @@ namespace Keeper2018
             AccountItemModel = accountItemModel;
             BankAccountInWork = AccountItemModel.BankAccount;
             ParentName = accountItemModel.Parent.Name;
+            PaymentSystems = Enum.GetValues(typeof(PaymentSystem)).Cast<PaymentSystem>().ToList();
 
             if (isInAddMode)
             {
