@@ -31,7 +31,7 @@ namespace Keeper2018
             builder.RegisterType<BalanceVerificationViewModel>().SingleInstance();
             builder.RegisterType<FolderSummaryViewModel>().SingleInstance();
             builder.RegisterType<OpenDepositsViewModel>().SingleInstance();
-            builder.RegisterType<PayCardsViewModel>().SingleInstance();
+            builder.RegisterType<CardsAndAccountsViewModel>().SingleInstance();
             builder.RegisterType<DepositInterestViewModel>().SingleInstance();
 
             builder.RegisterType<OfficialRatesViewModel>().SingleInstance();

@@ -20,7 +20,7 @@ namespace Keeper2018
         private readonly DepoCurrResultViewModel _depoCurrResultViewModel;
         private readonly GskViewModel _gskViewModel;
         private readonly OpenDepositsViewModel _openDepositsViewModel;
-        private readonly PayCardsViewModel _payCardsViewModel;
+        private readonly CardsAndAccountsViewModel _cardsAndAccountsViewModel;
         private readonly SalaryViewModel _salaryViewModel;
         private readonly InvestmentAssetsViewModel _investmentAssetsViewModel;
         private readonly AssetRatesViewModel _assetRatesViewModel;
@@ -54,7 +54,7 @@ namespace Keeper2018
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             OpenDepositsViewModel openDepositsViewModel,
-            PayCardsViewModel payCardsViewModel, SalaryViewModel salaryViewModel,
+            CardsAndAccountsViewModel cardsAndAccountsViewModel, SalaryViewModel salaryViewModel,
             InvestmentAssetsViewModel investmentAssetsViewModel, AssetRatesViewModel assetRatesViewModel,
             TrustAccountsViewModel trustAccountsViewModel, InvestmentTransactionsViewModel investmentTransactionsViewModel,
             InvestmentAnalysisViewModel investmentAnalysisViewModel, ButtonCollectionBuilderViewModel buttonCollectionBuilderViewModel)
@@ -73,7 +73,7 @@ namespace Keeper2018
             _depoCurrResultViewModel = depoCurrResultViewModel;
             _gskViewModel = gskViewModel;
             _openDepositsViewModel = openDepositsViewModel;
-            _payCardsViewModel = payCardsViewModel;
+            _cardsAndAccountsViewModel = cardsAndAccountsViewModel;
             _salaryViewModel = salaryViewModel;
             _investmentAssetsViewModel = investmentAssetsViewModel;
             _assetRatesViewModel = assetRatesViewModel;
@@ -195,8 +195,8 @@ namespace Keeper2018
 
         public void ShowPayCardsForm()
         {
-            _payCardsViewModel.Initialize();
-            _windowManager.ShowDialog(_payCardsViewModel);
+            _cardsAndAccountsViewModel.Initialize();
+            _windowManager.ShowDialog(_cardsAndAccountsViewModel);
         }
 
         #region Investments

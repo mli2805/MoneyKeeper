@@ -2,11 +2,50 @@
 using System.ComponentModel;
 using System.Linq;
 using Caliburn.Micro;
+using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class PayCardFilterVm : PropertyChangedBase, IDataErrorInfo
+    public class CardsAndAccountsFilter : PropertyChangedBase, IDataErrorInfo
     {
+        #region Account or Card
+
+        private bool _accountsAndCards;
+        private bool _accountsOnly;
+        private bool _cardsOnly = true;
+
+        public bool AccountsAndCards    
+        {
+            get => _accountsAndCards;
+            set
+            {
+                _accountsAndCards = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool AccountsOnly    
+        {
+            get => _accountsOnly;
+            set
+            {
+                _accountsOnly = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool CardsOnly
+        {
+            get => _cardsOnly;
+            set
+            {
+                _cardsOnly = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        #endregion
+
         #region owner
         private bool _ownerAll = true;
         private bool _ownerMine;
@@ -58,6 +97,7 @@ namespace Keeper2018
         }
 
         private string _balanceStr = "0";
+      
         public string BalanceStr
         {
             get => _balanceStr;
@@ -71,19 +111,22 @@ namespace Keeper2018
 
         public double Balance { get; set; }
 
-        public PayCardFilterVm()
+        public CardsAndAccountsFilter()
         {
             SelectedCurrency = Currencies.First();
         }
 
-        public bool Allow(PayCardVm accountItemModel)
+        public bool Allow(CardOrAccountVm cardOrAccountVm)
         {
-            if (_ownerYuliya && accountItemModel.IsMine) return false;
-            if (_ownerMine && !accountItemModel.IsMine) return false;
+            if (_cardsOnly && cardOrAccountVm.PaymentSystem == PaymentSystem.CurrentAccount) return false;
+            if (_accountsOnly && cardOrAccountVm.PaymentSystem != PaymentSystem.CurrentAccount) return false;
 
-            if (_selectedCurrency != "все" && _selectedCurrency != accountItemModel.MainCurrency.ToString().ToLower()) return false;
+            if (_ownerYuliya && cardOrAccountVm.IsMine) return false;
+            if (_ownerMine && !cardOrAccountVm.IsMine) return false;
 
-            if ((double)accountItemModel.Amount < Balance) return false;
+            if (_selectedCurrency != "все" && _selectedCurrency != cardOrAccountVm.MainCurrency.ToString().ToLower()) return false;
+
+            if ((double)cardOrAccountVm.Amount < Balance) return false;
 
             return true;
         }
@@ -114,6 +157,7 @@ namespace Keeper2018
             BalanceStr = "0";
             SelectedCurrency = "все";
             OwnerAll = true;
+            AccountsAndCards = true;
         }
 
         public void ShowAllByn5()
@@ -121,6 +165,7 @@ namespace Keeper2018
             BalanceStr = "5.01";
             SelectedCurrency = "byn";
             OwnerAll = true;
+            AccountsAndCards = true;
         }
         
         public void ShowMineByn5()
@@ -128,6 +173,7 @@ namespace Keeper2018
             BalanceStr = "5.01";
             SelectedCurrency = "byn";
             OwnerMine = true;
+            AccountsAndCards = true;
         }
     }
 }

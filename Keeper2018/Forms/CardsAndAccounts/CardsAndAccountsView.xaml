@@ -1,15 +1,23 @@
-﻿<Window x:Class="Keeper2018.PayCardsView"
+﻿<Window x:Class="Keeper2018.CardsAndAccountsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Height="820" Width="1142"
-        Title="PayCardsView" d:DataContext="{d:DesignInstance keeper2018:PayCardsViewModel}">
+        Height="920" Width="1142"
+        Title="CardsAndAccountsView" d:DataContext="{d:DesignInstance keeper2018:CardsAndAccountsViewModel}">
     <DockPanel>
         <StackPanel DockPanel.Dock="Right"  Width="150">
             <StackPanel>
+                <GroupBox Header="" Margin="10, 0, 10, 10">
+                    <StackPanel Margin="0,5,0,0">
+                        <RadioButton Margin="0,2" GroupName="Group1" IsChecked="{Binding Filter.AccountsAndCards}">Всё</RadioButton>
+                        <RadioButton Margin="0,2" GroupName="Group1" IsChecked="{Binding Filter.CardsOnly}">Карты</RadioButton>
+                        <RadioButton Margin="0,2" GroupName="Group1" IsChecked="{Binding Filter.AccountsOnly}">Счета</RadioButton>
+                    </StackPanel>
+                </GroupBox>
+
                 <GroupBox Header="Владелец" Margin="10, 0">
                     <StackPanel Margin="0,5,0,0">
                         <RadioButton Margin="0,2" GroupName="Owner" IsChecked="{Binding Filter.OwnerAll}">Все</RadioButton>
@@ -51,12 +59,12 @@
                 <DataGridCheckBoxColumn Header="Моя" Width="40" Binding="{Binding IsMine, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Название" Width="200" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Номер" Width="160" Binding="{Binding CardNumber}"/>
-                <DataGridTextColumn Header="Банк" Width="75" Binding="{Binding BankAccount.Name}"/>
+                <DataGridTextColumn Header="Банк" Width="75" Binding="{Binding AccountItemOfBank.Name}"/>
                 <DataGridTextColumn Header="Остаток" Width="75" Binding="{Binding Amount}"/>
                 <DataGridTextColumn Header="Валюта" Width="75" Binding="{Binding MainCurrency}"/>
                 <DataGridTextColumn Header="Старт" Width="75" Binding="{Binding StartDate, StringFormat='dd/MM/yy'}"/>
                 <DataGridTextColumn Header="Финиш" Width="75" Binding="{Binding FinishDate, StringFormat='dd/MM/yy'}"/>
-                <DataGridTextColumn Header="Платежная система" Width="135" Binding="{Binding PaymentSystem}"/>
+                <DataGridTextColumn Header="Платежная система" Width="135" Binding="{Binding PaymentSystemStr}"/>
                 <DataGridCheckBoxColumn Header="Вирт" Width="40" Binding="{Binding IsVirtual, Mode=OneWay}"/>
             </DataGrid.Columns>
         </DataGrid>

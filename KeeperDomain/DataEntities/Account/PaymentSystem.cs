@@ -16,7 +16,9 @@ namespace KeeperDomain
         
         Белкарт,
         Мир,
-        UnionPay
+        UnionPay,
+
+        CurrentAccount = 127,
 
     }
 }

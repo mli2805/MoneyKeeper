@@ -6,24 +6,24 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class PayCardsViewModel : Screen
+    public class CardsAndAccountsViewModel : Screen
     {
         private readonly KeeperDataModel _dataModel;
 
-        public ObservableCollection<PayCardVm> Rows { get; set; } = new ObservableCollection<PayCardVm>();
+        public ObservableCollection<CardOrAccountVm> Rows { get; set; } = new ObservableCollection<CardOrAccountVm>();
         public ObservableCollection<string> Totals { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Balance { get; set; } = new ObservableCollection<string>();
 
-        public PayCardFilterVm Filter { get; set; }
+        public CardsAndAccountsFilter Filter { get; set; }
 
-        public PayCardsViewModel(KeeperDataModel dataModel)
+        public CardsAndAccountsViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
         }
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Платежные карты";
+            DisplayName = "Платежные карты и счета";
         }
 
         private void Filter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -35,7 +35,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Filter  = new PayCardFilterVm();
+            Filter  = new CardsAndAccountsFilter();
             Filter.PropertyChanged += Filter_PropertyChanged;
             RefreshTables();
         }
@@ -46,7 +46,7 @@ namespace Keeper2018
             Totals.Clear();
             Balance.Clear();
 
-            _dataModel.GetActiveCardsOrderedByFinishDate().Select(GetVm).Where(Filter.Allow).ToList().ForEach(c => Rows.Add(c));
+            _dataModel.GetCardsAndAccountsOrderedByFinishDate().Select(GetVm).Where(Filter.Allow).ToList().ForEach(c => Rows.Add(c));
 
             Totals.Add($"Всего {Rows.Count}");
             Totals.Add($"мои {Rows.Count(r => r.IsMine)} / не мои {Rows.Count(r => !r.IsMine)}");
@@ -56,33 +56,38 @@ namespace Keeper2018
                 Balance.Add($"{Rows.Sum(r=>r.Amount)} {Rows.First().MainCurrency.ToString().ToLower()}");
         }
 
-        private PayCardVm GetVm(AccountItemModel account)
+        private CardOrAccountVm GetVm(AccountItemModel account)
         {
             try
             {
-                var calc = new TrafficOfAccountCalculator(_dataModel, account, new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
+                var calc = new TrafficOfAccountCalculator(_dataModel, account, 
+                    new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
                 calc.EvaluateAccount();
                 calc.TryGetValue(account.BankAccount.MainCurrency, out var amount);
-                return new PayCardVm()
+                var lineVm = new CardOrAccountVm()
                 {
-                    CardNumber = account.BankAccount.PayCard.CardNumber,
-                    CardHolder = account.BankAccount.PayCard.CardHolder,
                     IsMine = account.BankAccount.IsMine,
-                    PaymentSystem = account.BankAccount.PayCard.PaymentSystem,
-                    IsVirtual = account.BankAccount.PayCard.IsVirtual,
-                    IsPayPass = account.BankAccount.PayCard.IsPayPass,
 
                     AgreementNumber = account.BankAccount.AgreementNumber,
                     StartDate = account.BankAccount.StartDate,
                     FinishDate = account.BankAccount.FinishDate,
-                    // Comment = account.BankAccount.PayCard.Comment,
 
-                    BankAccount = _dataModel.AcMoDict.Values.First(a => a.Id == account.BankAccount.BankId),
+                    AccountItemOfBank = _dataModel.AcMoDict.Values.First(a => a.Id == account.BankAccount.BankId),
                     MainCurrency = account.BankAccount.MainCurrency,
 
                     Name = account.Name,
                     Amount = amount,
                 };
+
+                if (account.IsCard)
+                {
+                    lineVm.CardNumber = account.BankAccount.PayCard.CardNumber;
+                    lineVm.CardHolder = account.BankAccount.PayCard.CardHolder;
+                    lineVm.PaymentSystem = account.BankAccount.PayCard.PaymentSystem;
+                    lineVm.IsVirtual = account.BankAccount.PayCard.IsVirtual;
+                    lineVm.IsPayPass = account.BankAccount.PayCard.IsPayPass;
+                }
+                return lineVm;
             }
             catch (Exception e)
             {

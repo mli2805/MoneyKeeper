@@ -514,12 +514,12 @@
     <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml.cs">
       <DependentUpon>LongTermChartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PayCards\PayCardFilterVm.cs" />
-    <Compile Include="Forms\PayCards\PayCardsView.xaml.cs">
-      <DependentUpon>PayCardsView.xaml</DependentUpon>
+    <Compile Include="Forms\CardsAndAccounts\CardsAndAccountsFilter.cs" />
+    <Compile Include="Forms\CardsAndAccounts\CardsAndAccountsView.xaml.cs">
+      <DependentUpon>CardsAndAccountsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PayCards\PayCardsViewModel.cs" />
-    <Compile Include="Forms\PayCards\PayCardVm.cs" />
+    <Compile Include="Forms\CardsAndAccounts\CardsAndAccountsViewModel.cs" />
+    <Compile Include="Forms\CardsAndAccounts\CardOrAccountVm.cs" />
     <Compile Include="Forms\Salary\SalaryLineModel.cs" />
     <Compile Include="Forms\Salary\SalaryView.xaml.cs">
       <DependentUpon>SalaryView.xaml</DependentUpon>
@@ -886,7 +886,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\PayCards\PayCardsView.xaml">
+    <Page Include="Forms\CardsAndAccounts\CardsAndAccountsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
