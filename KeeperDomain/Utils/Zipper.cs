@@ -6,7 +6,7 @@ namespace KeeperDomain
 {
     public static class Zipper
     {
-        public static bool ZipAllFiles()
+        public static LibResult ZipTxtFiles()
         {
             var archiveName = $"DB{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.zip";
             var zipFileToCreate = Path.Combine(PathFactory.GetBackupFilePath(archiveName));
@@ -20,11 +20,11 @@ namespace KeeperDomain
                     zip.CreateEntryFromFile(filename, Path.GetFileName(filename), CompressionLevel.Optimal);
                 }
                 zip.Dispose();
-                return true;
+                return new LibResult(true, null);
             }
-            catch
+            catch (Exception e)
             {
-                return false;
+                return new LibResult(e, "ZipTxtFiles");
             }
         }
     }

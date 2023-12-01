@@ -30,6 +30,16 @@
                 <cal:Parameter Value="ShowMonthAnalysisForm"/>
             </cal:ActionMessage>
         </ei:KeyTrigger>
+        <ei:KeyTrigger Key="D">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowDepositsForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>        
+        <ei:KeyTrigger Key="P">
+            <cal:ActionMessage MethodName="ActionMethod">
+                <cal:Parameter Value="ShowCardsAndAccountsForm"/>
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
         <ei:KeyTrigger Key="S">
             <cal:ActionMessage MethodName="ActionMethod">
                 <cal:Parameter Value="SaveAllDb"/>
@@ -42,24 +52,24 @@
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <DockPanel Height="30">
-        <Button Name="ShowTransactionsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions">
+        <Button Name="ShowTransactionsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions (O)">
             <Image Source="../../Resources/mainmenu/transactions.png" Width="24" Height="24" />
         </Button>
-        <Button Name="ShowRatesForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates">
+        <Button Name="ShowRatesForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates (C)">
             <StackPanel Width="24">
                 <Image Source="../../Resources/mainmenu/loading.png" Width="16" Height="16" Margin="0,2,0,0" 
                        Opacity="1" Visibility="{Binding ExchangeWaitIconVisibility}" />
                 <Image Source="../../Resources/mainmenu/exchange3.png" Width="24" Height="24" Visibility="{Binding ExchangeIconVisibility}" />
             </StackPanel>
         </Button>
-        <Button Name="ShowMonthAnalysisForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Month analysis">
+        <Button Name="ShowMonthAnalysisForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Month analysis (A)">
             <Image Source="../../Resources/mainmenu/month_analysis.png" Width="24" Height="24" />
         </Button>
-        <Button Name="ShowDepositOffersForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Bank offers">
+        <Button Name="ShowDepositOffersForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Bank offers (B)">
             <Image Source="../../Resources/mainmenu/bank_offer.png" Width="24" Height="24" />
         </Button>
 
-        <Menu Margin="15,0,0,0" Background="White" BorderBrush="White">
+        <Menu Margin="15,0,0,0" Background="White" BorderBrush="White" ToolTip="Charts">
             <MenuItem Background="White" BorderBrush="White">
                 <MenuItem.Header>
                     <Image Source="../../Resources/mainmenu/chart.png"/>
@@ -107,14 +117,14 @@
         <Button Name="ShowCarForm" Margin="6,0,0,0" Background="White" BorderBrush="White" ToolTip="Cars">
             <Image Source="../../Resources/mainmenu/car.png" Width="32" Height="32"  />
         </Button>
-        <Button Name="ShowDepositsForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Deposits">
+        <Button Name="ShowDepositsForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Deposits (D)">
             <Image Source="../../Resources/mainmenu/deposits.png" Width="24" Height="24"  />
         </Button>
-        <Button Name="ShowPayCardsForm" Margin="6,-3,0,0" Background="White" BorderBrush="White" ToolTip="Cards" Opacity="0.7">
+        <Button Name="ShowPayCardsForm" Margin="6,-3,0,0" Background="White" BorderBrush="White" ToolTip="Cards-n-Accounts (P)" Opacity="0.7">
             <Image Source="../../Resources/mainmenu/paycard.png" Width="32" Height="32"  />
         </Button>
 
-        <Menu Margin="-1,0,0,0" Background="White" BorderBrush="White">
+        <Menu Margin="-1,0,0,0" Background="White" BorderBrush="White" ToolTip="Trust">
             <MenuItem Background="White" BorderBrush="White">
                 <MenuItem.Header>
                     <Image Source="../../Resources/mainmenu/stock.png" Width="24" Height="28" />

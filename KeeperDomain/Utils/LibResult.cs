@@ -7,6 +7,7 @@ namespace KeeperDomain
         public readonly bool IsSuccess;
         public readonly object Payload;
         public readonly Exception Exception;
+        public readonly string Where;
 
         public LibResult()
         {
@@ -19,9 +20,10 @@ namespace KeeperDomain
             Payload = payload;
         }
 
-        public LibResult(Exception exception)
+        public LibResult(Exception exception, string where = null)
         {
             Exception = exception;
+            Where = where;
         }
     }
 }

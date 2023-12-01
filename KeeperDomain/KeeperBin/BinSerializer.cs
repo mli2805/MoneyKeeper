@@ -16,7 +16,7 @@ namespace KeeperDomain
             File.Copy(filename, backupFilename, true);
         }
 
-        public static async Task<LibResult> Serialize(KeeperBin bin)
+        public static Task<LibResult> Serialize(KeeperBin bin)
         {
             var path = PathFactory.GetDbFullPath();
             MadeDbxBackup(path);
@@ -27,30 +27,28 @@ namespace KeeperDomain
                     var binaryFormatter = new BinaryFormatter();
                     binaryFormatter.Serialize(fStream, bin);
                 }
-                await Task.Delay(1);
-                return new LibResult();
+                return Task.FromResult(new LibResult());
             }
             catch (Exception e)
             {
-                return new LibResult(e);
+                return Task.FromResult(new LibResult(e, "Bin.Serialize"));
             }
         }
 
-        public static async Task<LibResult> Deserialize(string path)
+        public static Task<LibResult> Deserialize(string path)
         {
             try
             {
-                await Task.Delay(1);
                 using (Stream fStream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
                     var binaryFormatter = new BinaryFormatter();
                     var keeperBin = binaryFormatter.Deserialize(fStream);
-                    return new LibResult(true, keeperBin);
+                    return Task.FromResult(new LibResult(true, keeperBin));
                 }
             }
             catch (Exception e)
             {
-                return new LibResult(e);
+                return Task.FromResult(new LibResult(e));
             }
         }
     }

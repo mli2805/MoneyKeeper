@@ -70,7 +70,7 @@ namespace Keeper2018
         {
             if (_dbLoaded)
             {
-                if (!await _dbSaver.Save()) return;
+                if (!await _dbSaver.SaveWithUi()) return;
             }
 
             base.CanClose(callback);

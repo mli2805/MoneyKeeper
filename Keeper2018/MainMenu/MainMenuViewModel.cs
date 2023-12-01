@@ -78,7 +78,7 @@ namespace Keeper2018
 
         #region Exchange icon
         private Visibility _exchangeWaitIconVisibility = Visibility.Visible;
-        public Visibility ExchangeWaitIconVisibility    
+        public Visibility ExchangeWaitIconVisibility
         {
             get => _exchangeWaitIconVisibility;
             set
@@ -90,7 +90,7 @@ namespace Keeper2018
         }
 
         private Visibility _exchangeIconVisibility = Visibility.Collapsed;
-       
+
         public Visibility ExchangeIconVisibility
         {
             get => _exchangeIconVisibility;
@@ -164,11 +164,19 @@ namespace Keeper2018
                 case MainMenuAction.ShowDepositOffersForm:
                     ShowDepositOffersForm();
                     break;
-                case MainMenuAction.Save:
-                    SaveAllDb();
+
+                case MainMenuAction.ShowDepositsForm:
+                    ShowDepositsForm();
                     break;
+                case MainMenuAction.ShowCardsAndAccountsForm:
+                    ShowPayCardsForm();
+                    break;
+
                 case MainMenuAction.ShowSettingsForm:
                     ShowSettingsForm();
+                    break;
+                case MainMenuAction.SaveAllDb:
+                    SaveAllDb();
                     break;
                 case MainMenuAction.Experiment:
                     break;
@@ -298,9 +306,9 @@ namespace Keeper2018
         #endregion
 
 
-        public async void SaveAllDb()
+        public void SaveAllDb()
         {
-            await _dbSaver.Save();
+            _ = _dbSaver.SaveWithUi();
         }
 
         public void ShowRemindersForm()

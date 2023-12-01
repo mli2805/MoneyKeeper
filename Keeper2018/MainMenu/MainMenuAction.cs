@@ -2,13 +2,16 @@
 {
     public enum MainMenuAction
     {
-        ShowOfficialRatesForm = 100,
-        ShowTransactionsForm = 200,
-        ShowMonthAnalysisForm = 300,
-        ShowDepositOffersForm = 400,
-        ShowTagAssociationsForm = 500,
-        Save = 600,
-        ShowSettingsForm = 700,
-        Experiment = 9999,
+        ShowOfficialRatesForm,
+        ShowTransactionsForm,
+        ShowMonthAnalysisForm,
+        ShowDepositOffersForm,
+
+        ShowDepositsForm,
+        ShowCardsAndAccountsForm,
+
+        ShowSettingsForm,
+        SaveAllDb,
+        Experiment,
     }
 }

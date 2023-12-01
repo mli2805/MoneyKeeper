@@ -9,12 +9,12 @@ namespace KeeperDomain
 {
     public static class TxtSaver
     {
-        public static async Task<LibResult> SaveAllToNewTxtAsync(this KeeperBin bin)
+        public static async Task<LibResult> SaveTxtFilesAsync(this KeeperBin bin)
         {
-            return await Task.Factory.StartNew(bin.SaveAllToNewTxt);
+            return await Task.Factory.StartNew(bin.SaveTxtFiles);
         }
 
-        private static LibResult SaveAllToNewTxt(this KeeperBin bin)
+        private static LibResult SaveTxtFiles(this KeeperBin bin)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace KeeperDomain
             }
             catch (Exception e)
             {
-                return new LibResult(e);
+                return new LibResult(e, "SaveTxtFiles");
             }
         }
 
@@ -71,7 +71,6 @@ namespace KeeperDomain
         private static List<string> DumpWithOffsets(this KeeperBin bin)
         {
             var result = new List<string>();
-
             Stack<int> previousParents = new Stack<int>();
             previousParents.Push(0);
             var previousAccountId = 0;
@@ -112,9 +111,9 @@ namespace KeeperDomain
             }
         }
 
-        public static async Task<bool> ZipTxtDbAsync()
+        public static async Task<LibResult> ZipTxtDbAsync()
         {
-            return await Task.Factory.StartNew(Zipper.ZipAllFiles);
+            return await Task.Factory.StartNew(Zipper.ZipTxtFiles);
         }
 
         public static LibResult DeleteTxtFiles()
@@ -130,7 +129,7 @@ namespace KeeperDomain
             }
             catch (Exception e)
             {
-                return new LibResult(e);
+                return new LibResult(e, "DeleteTxtFiles");
             }
         }
     }
