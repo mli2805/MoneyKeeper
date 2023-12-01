@@ -29,7 +29,6 @@ namespace Keeper2018
             if (!loadResult.IsSuccess) return false;
 
             Map((KeeperBin)loadResult.Payload);
-            _keeperDataModel.RememberAll();
 
             return true;
         }
@@ -95,7 +94,8 @@ namespace Keeper2018
 
             if (bin.CardBalanceMemos == null)
                 bin.CardBalanceMemos = new List<CardBalanceMemo>();
-            _keeperDataModel.CardBalanceMemoModels = bin.CardBalanceMemos.Select(m=>m.Map(_keeperDataModel.AcMoDict[m.AccountId])).ToList();
+            _keeperDataModel.CardBalanceMemoModels = 
+                bin.CardBalanceMemos.Select(m=>m.Map(_keeperDataModel.AcMoDict[m.AccountId])).ToList();
 
             _keeperDataModel.ButtonCollections = bin.ButtonCollections
                 .Select(b => b.Map(_keeperDataModel.AcMoDict)).ToList();

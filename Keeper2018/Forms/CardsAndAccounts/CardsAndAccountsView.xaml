@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
-        Height="920" Width="1142"
-        Title="CardsAndAccountsView" d:DataContext="{d:DesignInstance keeper2018:CardsAndAccountsViewModel}">
+        Height="920" Width="1142" WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance keeper2018:CardsAndAccountsViewModel}">
     <DockPanel>
         <StackPanel DockPanel.Dock="Right"  Width="150">
             <StackPanel>

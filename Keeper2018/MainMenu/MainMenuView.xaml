@@ -43,14 +43,23 @@
     </i:Interaction.Triggers>
     <DockPanel Height="30">
         <Button Name="ShowRemindersForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Reminders">
-            <Image Source="{Binding BellPath}" Width="28" Height="28" />
+            <StackPanel Width="28">
+                <Image Source="../../Resources/mainmenu/loading.png" Width="16" Height="16" 
+                       Opacity="1" Visibility="{Binding ReminderWaitIconVisibility}" />
+                <Image Source="{Binding BellPath}" Width="28" Height="28" Visibility="{Binding ReminderIconVisibility}" />
+
+            </StackPanel>
         </Button>
 
         <Button Name="ShowTransactionsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions">
             <Image Source="../../Resources/mainmenu/transactions.png" Width="24" Height="24" />
         </Button>
-        <Button Name="ShowRatesForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates">
-            <Image Source="../../Resources/mainmenu/exchange3.png" Width="24" Height="24" />
+        <Button Name="ShowRatesForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates">
+            <StackPanel Width="24">
+                <Image Source="../../Resources/mainmenu/loading.png" Width="16" Height="16" 
+                       Opacity="1" Visibility="{Binding ExchangeWaitIconVisibility}" />
+                <Image Source="../../Resources/mainmenu/exchange3.png" Width="24" Height="24" Visibility="{Binding ExchangeIconVisibility}" />
+            </StackPanel>
         </Button>
         <Button Name="ShowMonthAnalysisForm" Margin="5,0,0,0" Background="White" BorderBrush="White" ToolTip="Month analysis">
             <Image Source="../../Resources/mainmenu/month_analysis.png" Width="24" Height="24" />
@@ -96,7 +105,7 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-     
+
 
         <Button Name="ShowSalaryForm" Margin="1,0,5,0" Background="White" BorderBrush="White" ToolTip="Salary">
             <Image Source="../../Resources/mainmenu/salary1.png" Width="24" Height="24" />
@@ -148,7 +157,7 @@
                             <cal:ActionMessage MethodName="ShowAssetRatesForm"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                </MenuItem>  
+                </MenuItem>
                 <MenuItem Background="White" BorderBrush="White">
                     <MenuItem.Header>
                         <TextBlock Text="Транзакции"/>
@@ -172,11 +181,11 @@
             </MenuItem>
         </Menu>
 
-     
+
         <Button Name="SaveAllDb" Margin="25,0,0,0" Background="White" BorderBrush="White" ToolTip="SaveAllDb">
             <Image Source="../../Resources/mainmenu/save.png" Width="24" Height="24" />
         </Button>
-       
+
         <Menu Margin="-1,0,0,0" Background="White" BorderBrush="White">
             <MenuItem Background="White" BorderBrush="White">
                 <MenuItem.Header>
@@ -204,7 +213,7 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-      
+
 
         <TextBlock></TextBlock>
     </DockPanel>

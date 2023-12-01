@@ -46,11 +46,23 @@ namespace Keeper2018
                 return;
             }
 
-            await Task.Factory.StartNew(() => _ratesViewModel.Initialize());
+            await Task.Factory.StartNew(RatesInitializationLongOperation);
+            await Task.Factory.StartNew(MemosInitializationLongOperation);
 
             var account = _keeperDataModel.AccountsTree.First(r => r.Name == "Мои");
             account.IsSelected = true;
             ShellPartsBinder.SelectedAccountItemModel = account;
+        }
+
+        private async Task RatesInitializationLongOperation()
+        {
+            await _ratesViewModel.Initialize();
+            MainMenuViewModel.SetExchangeIcon();
+        }
+
+        private async Task MemosInitializationLongOperation()
+        {
+            await _keeperDataModel.RememberAll();
             MainMenuViewModel.SetBellPath(_keeperDataModel.HasAlarm());
         }
 

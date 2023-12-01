@@ -29,7 +29,31 @@ namespace Keeper2018
         private readonly InvestmentAnalysisViewModel _investmentAnalysisViewModel;
         private readonly ButtonCollectionBuilderViewModel _buttonCollectionBuilderViewModel;
 
-        
+        #region Reminder icon
+        private Visibility _reminderIconVisibility = Visibility.Collapsed;
+        public Visibility ReminderIconVisibility
+        {
+            get => _reminderIconVisibility;
+            set
+            {
+                if (value == _reminderIconVisibility) return;
+                _reminderIconVisibility = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private Visibility _reminderWaitIconVisibility = Visibility.Visible;
+        public Visibility ReminderWaitIconVisibility
+        {
+            get => _reminderWaitIconVisibility;
+            set
+            {
+                if (value == _reminderWaitIconVisibility) return;
+                _reminderWaitIconVisibility = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private string _bellPath;
         public string BellPath
         {
@@ -41,10 +65,48 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
         public void SetBellPath(bool hasAlarm)
         {
             BellPath = hasAlarm ? "../../Resources/mainmenu/yellow-bell.png" : "../../Resources/mainmenu/white-bell.png";
+            ReminderWaitIconVisibility = Visibility.Collapsed;
+            ReminderIconVisibility = Visibility.Visible;
         }
+        #endregion
+
+        #region Exchange icon
+        private Visibility _exchangeWaitIconVisibility = Visibility.Visible;
+        public Visibility ExchangeWaitIconVisibility    
+        {
+            get => _exchangeWaitIconVisibility;
+            set
+            {
+                if (value == _exchangeWaitIconVisibility) return;
+                _exchangeWaitIconVisibility = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private Visibility _exchangeIconVisibility = Visibility.Collapsed;
+       
+        public Visibility ExchangeIconVisibility
+        {
+            get => _exchangeIconVisibility;
+            set
+            {
+                if (value == _exchangeIconVisibility) return;
+                _exchangeIconVisibility = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public void SetExchangeIcon()
+        {
+            ExchangeWaitIconVisibility = Visibility.Collapsed;
+            ExchangeIconVisibility = Visibility.Visible;
+        }
+        #endregion
+
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -10,9 +11,10 @@ namespace Keeper2018
         {
             return keeperDataModel.CardBalanceMemoModels.Any(c => c.BalanceThreshold > c.CurrentBalance);
         }
-        public static void RememberAll(this KeeperDataModel keeperDataModel)
+        public static Task RememberAll(this KeeperDataModel keeperDataModel)
         {
             keeperDataModel.CardBalanceMemoModels.ForEach(m=> CheckCardThreshold(keeperDataModel, m));
+            return Task.CompletedTask;
         }
 
         private static void CheckCardThreshold(KeeperDataModel keeperDataModel, CardBalanceMemoModel memo)
