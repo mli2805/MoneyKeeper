@@ -5,13 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" Height="450" Width="800">
-    <TabControl SelectedIndex="2">
+    <TabControl SelectedIndex="0">
         <TabItem Header="Общие настойки"/>
-        <TabItem Header="Напоминания об оплатах">
-            <ContentControl x:Name="DateMemoSetterViewModel"/>
-        </TabItem>
-        <TabItem Header="Нижние пределы по картам">
-            <ContentControl x:Name="CardBalanceMemoViewModel"/>
-        </TabItem>
     </TabControl>
 </Window>

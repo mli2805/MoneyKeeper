@@ -15,6 +15,7 @@ namespace Keeper2018
         private readonly TransactionsViewModel _transactionsViewModel;
         private readonly BankOffersViewModel _bankOffersViewModel;
         private readonly SettingsViewModel _settingsViewModel;
+        private readonly MemosViewModel _memosViewModel;
         private readonly CarsViewModel _carsViewModel;
         private readonly ExpenseByCategoriesViewModel _expenseByCategoriesViewModel;
         private readonly DepoCurrResultViewModel _depoCurrResultViewModel;
@@ -66,8 +67,9 @@ namespace Keeper2018
             }
         }
 
-        public void SetBellPath(bool hasAlarm)
+        public void SetBellPath()
         {
+            var hasAlarm = _keeperDataModel.HasAlarm();
             BellPath = hasAlarm ? "../../Resources/mainmenu/yellow-bell.png" : "../../Resources/mainmenu/white-bell.png";
             ReminderWaitIconVisibility = Visibility.Collapsed;
             ReminderIconVisibility = Visibility.Visible;
@@ -107,12 +109,11 @@ namespace Keeper2018
         }
         #endregion
 
-
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
             TransactionsViewModel transactionsViewModel, RatesViewModel ratesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
-             SettingsViewModel settingsViewModel,
+             SettingsViewModel settingsViewModel, MemosViewModel memosViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
             DepoCurrResultViewModel depoCurrResultViewModel, GskViewModel gskViewModel,
             OpenDepositsViewModel openDepositsViewModel,
@@ -130,6 +131,7 @@ namespace Keeper2018
             _transactionsViewModel = transactionsViewModel;
             _bankOffersViewModel = bankOffersViewModel;
             _settingsViewModel = settingsViewModel;
+            _memosViewModel = memosViewModel;
             _carsViewModel = carsViewModel;
             _expenseByCategoriesViewModel = expenseByCategoriesViewModel;
             _depoCurrResultViewModel = depoCurrResultViewModel;
@@ -299,6 +301,12 @@ namespace Keeper2018
         public async void SaveAllDb()
         {
             await _dbSaver.Save();
+        }
+
+        public void ShowRemindersForm()
+        {
+            _memosViewModel.Initialize();
+            _windowManager.ShowDialog(_memosViewModel);
         }
 
         public void ShowSettingsForm()

@@ -343,6 +343,10 @@
       <DependentUpon>TrustAccountsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\TrustAccount\TrustAccountsViewModel.cs" />
+    <Compile Include="Forms\Memos\MemosView.xaml.cs">
+      <DependentUpon>MemosView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Memos\MemosViewModel.cs" />
     <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />
@@ -529,14 +533,14 @@
       <DependentUpon>ButtonCollectionBuilderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings\ButtonCollectionBuilderViewModel.cs" />
-    <Compile Include="Forms\Settings\CardBalanceMemoView.xaml.cs">
+    <Compile Include="Forms\Memos\CardBalanceMemoView.xaml.cs">
       <DependentUpon>CardBalanceMemoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Settings\CardBalanceMemoViewModel.cs" />
-    <Compile Include="Forms\Settings\DateMemoSetterView.xaml.cs">
+    <Compile Include="Forms\Memos\CardBalanceMemoViewModel.cs" />
+    <Compile Include="Forms\Memos\DateMemoSetterView.xaml.cs">
       <DependentUpon>DateMemoSetterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Settings\DateMemoSetterViewModel.cs" />
+    <Compile Include="Forms\Memos\DateMemoSetterViewModel.cs" />
     <Compile Include="Forms\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -874,6 +878,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Memos\MemosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\MonthAnalysis\MonthAnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -898,11 +906,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Settings\CardBalanceMemoView.xaml">
+    <Page Include="Forms\Memos\CardBalanceMemoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Settings\DateMemoSetterView.xaml">
+    <Page Include="Forms\Memos\DateMemoSetterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1161,6 +1169,7 @@
   <ItemGroup>
     <Resource Include="Resources\mainmenu\loading.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -63,7 +63,7 @@ namespace Keeper2018
         private async Task MemosInitializationLongOperation()
         {
             await _keeperDataModel.RememberAll();
-            MainMenuViewModel.SetBellPath(_keeperDataModel.HasAlarm());
+            MainMenuViewModel.SetBellPath();
         }
 
         public override async void CanClose(Action<bool> callback)
