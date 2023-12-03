@@ -199,6 +199,9 @@ namespace Keeper2018
             if (_transactionsViewModel.Model.IsCollectionChanged)
             {
                 _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
+                _keeperDataModel.CardBalanceMemoModels
+                    .ForEach(m=> _keeperDataModel.CheckCardThreshold(m));
+                SetBellPath();
                 SaveAllDb();
             }
         }
@@ -319,7 +322,6 @@ namespace Keeper2018
 
         public void ShowSettingsForm()
         {
-            _settingsViewModel.Initialize();
             _windowManager.ShowDialog(_settingsViewModel);
         }
 

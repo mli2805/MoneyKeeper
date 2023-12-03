@@ -17,7 +17,7 @@ namespace Keeper2018
             return Task.CompletedTask;
         }
 
-        private static void CheckCardThreshold(KeeperDataModel keeperDataModel, CardBalanceMemoModel memo)
+        public static void CheckCardThreshold(this KeeperDataModel keeperDataModel, CardBalanceMemoModel memo)
         {
             var accountCalculator = 
                 new TrafficOfAccountCalculator(keeperDataModel, memo.Account, 

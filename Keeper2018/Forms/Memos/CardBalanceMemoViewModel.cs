@@ -16,9 +16,9 @@ namespace Keeper2018
         public void Initialize()
         {
             Rows.Clear();
+            _keeperDataModel.CardBalanceMemoModels
+                .ForEach(m=> _keeperDataModel.CheckCardThreshold(m));
             _keeperDataModel.CardBalanceMemoModels.ForEach(m => Rows.Add(m));
-
-
         }
 
     }
