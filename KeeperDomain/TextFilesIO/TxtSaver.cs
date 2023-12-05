@@ -28,7 +28,7 @@ namespace KeeperDomain
                 WriteFileLines(bin.TrustAccounts);
                 WriteFileLines(bin.TrustTransactions);
 
-                var accounts = bin.DumpWithOffsets();
+                var accounts = bin.AccountPlaneList.DumpWithOffsets();
                 File.WriteAllLines(PathFactory.GetBackupFilePath("Accounts.txt"), accounts);
 
                 WriteFileLines(bin.BankAccounts);
@@ -62,20 +62,20 @@ namespace KeeperDomain
 
         private static void WriteFileLines<T>(List<T> collection, string filename = "") where T : IDumpable
         {
-            if (filename == "") 
+            if (filename == "")
                 filename = typeof(T).Name + "s.txt";
             var content = collection.Select(l => l.Dump());
             File.WriteAllLines(PathFactory.GetBackupFilePath(filename), content);
         }
 
-        private static List<string> DumpWithOffsets(this KeeperBin bin)
+        private static List<string> DumpWithOffsets(this List<Account> accountPlainList)
         {
             var result = new List<string>();
             Stack<int> previousParents = new Stack<int>();
             previousParents.Push(0);
             var previousAccountId = 0;
             var level = 0;
-            foreach (var account in bin.AccountPlaneList)
+            foreach (var account in accountPlainList)
             {
                 if (account.ParentId != previousParents.Peek())
                 {
@@ -90,7 +90,9 @@ namespace KeeperDomain
                         previousParents.Pop();
                     }
                 }
-                result.Add(account.Dump(level));
+
+                var dump = account.Dump();
+                result.Add(dump.Insert(dump.IndexOf(';') + 1, new string(' ', level * 2)));
                 previousAccountId = account.Id;
             }
             return result;

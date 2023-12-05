@@ -19,7 +19,7 @@ namespace KeeperTests
                 Comment = "Test Account 5 Comment",
             };
 
-            var str = account.Dump(3);
+            var str = account.Dump();
             var account2 = new Account().FromString(str);
             Assert.IsNotNull(account2);
             Assert.AreEqual(5, account2.Id);

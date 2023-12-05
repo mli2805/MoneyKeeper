@@ -3,7 +3,7 @@
 namespace KeeperDomain
 {
     [Serializable]
-    public class Account : IParsable<Account>
+    public class Account : IDumpable, IParsable<Account>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,10 +21,9 @@ namespace KeeperDomain
 
         public string Comment { get; set; }
 
-        public string Dump(int level)
+        public string Dump()
         {
-            var shiftedName = new string(' ', level * 2) + Name;
-            return Id + " ; " + shiftedName + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
+            return Id + " ; " + Name + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
                    AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + 
                    ShortName + " ; " + ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");
