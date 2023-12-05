@@ -50,18 +50,18 @@ namespace Keeper2018
         public Visibility MyFolderMenuVisibility => SelectedAccountItemModel.IsFolder && SelectedAccountItemModel.IsMyAccount()
             ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility AddAccountVisibility => !SelectedAccountItemModel.Is(Folder.BankAccounts)
+        public Visibility AddAccountVisibility => !SelectedAccountItemModel.Is(NickNames.BankAccounts)
             ? Visibility.Visible : Visibility.Collapsed;
         public Visibility AddAccountInBankVisibility => 
-            SelectedAccountItemModel.IsInside(Folder.PayCards) || SelectedAccountItemModel.IsInside(Folder.Trusts)
+            SelectedAccountItemModel.IsInside(NickNames.PayCards) || SelectedAccountItemModel.IsInside(NickNames.Trusts)
                   ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility AddDepositVisibility => SelectedAccountItemModel.Is(Folder.Deposits)
+        public Visibility AddDepositVisibility => SelectedAccountItemModel.Is(NickNames.Deposits)
                   ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility AddCardVisibility => SelectedAccountItemModel.IsInside(Folder.PayCards)
+        public Visibility AddCardVisibility => SelectedAccountItemModel.IsInside(NickNames.PayCards)
                   ? Visibility.Visible : Visibility.Collapsed;
 
         public bool IsEnabledToAddFolder => SelectedAccountItemModel.IsFolder;
-        public bool IsEnabledToAdd => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.Is(Folder.Closed);
+        public bool IsEnabledToAdd => SelectedAccountItemModel.IsFolder && !SelectedAccountItemModel.Is(NickNames.Closed);
         public bool IsEnabledToDelete => !SelectedAccountItemModel.Children.Any() && !_isSelectedAccountUsedInTransaction;
 
 

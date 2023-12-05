@@ -7,27 +7,17 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class MonthAnalyser
+    public class MonthAnalyzer
     {
         private readonly KeeperDataModel _dataModel;
         private MonthAnalysisModel _monthAnalysisModel;
-        private AccountItemModel _myAccountsItemRoot;
-        private AccountItemModel _incomesRoot;
-        private AccountItemModel _expensesRoot;
 
-        public MonthAnalyser(KeeperDataModel dataModel)
+        public MonthAnalyzer(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
         }
 
-        public void Initialize()
-        {
-            _myAccountsItemRoot = _dataModel.AccountsTree.First(a => a.Name == "Мои");
-            _incomesRoot = _dataModel.AccountsTree.First(a => a.Name == "Все доходы");
-            _expensesRoot = _dataModel.AccountsTree.First(a => a.Name == "Все расходы");
-        }
-
-        public MonthAnalysisModel Produce(DateTime startDate)
+        public MonthAnalysisModel AnalyzeFrom(DateTime startDate)
         {
             var isCurrentPeriod = DateTime.Today.Year == startDate.Date.Year &&
                                   DateTime.Today.Month == startDate.Date.Month;
@@ -39,14 +29,14 @@ namespace Keeper2018
                 IsCurrentPeriod = isCurrentPeriod,
             };
 
-            FillBeforeViewModel(startDate);
+            var startMoment = startDate.AddSeconds(-1);
+            FillBeforeViewModel(startMoment);
             var finishMoment = isCurrentPeriod ? DateTime.Today.GetEndOfDate() : startDate.AddMonths(1).AddSeconds(-1);
             FillIncomeList(startDate, finishMoment);
             if (isCurrentPeriod)
                 FillIncomeForecastList(startDate, finishMoment);
             FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
-            var startMoment = startDate.AddMilliseconds(-1);
             _monthAnalysisModel.RatesChanges = _dataModel.GetRatesDifference(startMoment, finishMoment);
             _monthAnalysisModel.FillResultList(isCurrentPeriod);
             if (isCurrentPeriod)
@@ -55,10 +45,10 @@ namespace Keeper2018
             return _monthAnalysisModel;
         }
 
-        private void FillBeforeViewModel(DateTime startDate)
+        private void FillBeforeViewModel(DateTime startMoment)
         {
-            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _myAccountsItemRoot,
-                                        new Period(new DateTime(2001, 12, 31), startDate.AddSeconds(-1)));
+            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _dataModel.MineRoot(),
+                                        new Period(new DateTime(2001, 12, 31), startMoment));
             trafficCalculator.EvaluateAccount();
             _monthAnalysisModel.BeforeViewModel.List.Add("Входящий остаток на начало месяца", FontWeights.Bold);
             _monthAnalysisModel.BeforeViewModel.List.AddList(trafficCalculator.ReportForMonthAnalysis());
@@ -202,7 +192,7 @@ namespace Keeper2018
             var comment = tran.Tags.First(t => t.Is(157)).Name;
 
             if (!isSalary)
-                comment += ";  " + tran.Tags.First(t => t.Is(_incomesRoot)).Name;
+                comment += ";  " + tran.Tags.First(t => t.Is(_dataModel.IncomeRoot())).Name;
 
             if (!string.IsNullOrEmpty(tran.Comment))
                 comment += ";  " + tran.Comment;
@@ -224,7 +214,7 @@ namespace Keeper2018
             {
                 foreach (var tag in tran.Tags)
                 {
-                    var expenseArticle = (AccountItemModel)tag.IsC(_expensesRoot);
+                    var expenseArticle = (AccountItemModel)tag.IsC(_dataModel.ExpenseRoot());
                     if (expenseArticle == null) continue;
                     var amountInUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                     articles.Add(expenseArticle, CurrencyCode.USD, amountInUsd);
@@ -269,7 +259,7 @@ namespace Keeper2018
 
         private void FillAfterList(DateTime finishMoment)
         {
-            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _myAccountsItemRoot,
+            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _dataModel.MineRoot(),
                                         new Period(new DateTime(2001, 12, 31), finishMoment));
             trafficCalculator.EvaluateAccount();
             var text = _monthAnalysisModel.IsCurrentPeriod ? "сегодня" : "конец месяца";

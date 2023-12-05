@@ -41,7 +41,7 @@ namespace Keeper2018
             builder.RegisterType<RatesViewModel>().SingleInstance();
 
             builder.RegisterType<MonthAnalysisViewModel>().SingleInstance();
-            builder.RegisterType<MonthAnalyser>().SingleInstance();
+            builder.RegisterType<MonthAnalyzer>().SingleInstance();
 
             builder.RegisterType<BankOffersViewModel>().SingleInstance();
             builder.RegisterType<OneBankOfferViewModel>().SingleInstance();

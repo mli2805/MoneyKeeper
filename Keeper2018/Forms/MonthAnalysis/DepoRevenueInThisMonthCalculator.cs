@@ -7,41 +7,6 @@ namespace Keeper2018
 {
     public static class DepoRevenueInThisMonthCalculator
     {
-        public static decimal GetRevenueInThisMonth(this AccountItemModel depo, KeeperDataModel dataModel)
-        {
-            var depositOffer = dataModel.DepositOffers.First(o => o.Id == depo.BankAccount.DepositOfferId);
-            var conditions = depositOffer.CondsMap
-                .OrderBy(k => k.Key)
-                .LastOrDefault(e => e.Key <= depo.BankAccount.StartDate).Value;
-            var lastRevenueTran = dataModel.Transactions.LastOrDefault(t =>
-                t.Value.MyAccount.Id == depo.Id && t.Value.Operation == OperationType.Доход).Value;
-            var lastReceivedRevenueDate = lastRevenueTran?.Timestamp ?? depo.BankAccount.StartDate;
-            var thisMonthRevenueDate = RevenueDate(depositOffer, depo.BankAccount);
-
-            var depositBalance = new Balance();
-            decimal revenue = 0;
-            var depoTraffic = dataModel.Transactions.Values.OrderBy(o => o.Timestamp)
-                .Where(t => t.MyAccount.Id == depo.Id ||
-                            (t.MySecondAccount != null && t.MySecondAccount.Id == depo.Id)).ToList();
-            var date = depo.BankAccount.StartDate;
-            while (date <= thisMonthRevenueDate)
-            {
-                foreach (var transaction in depoTraffic.Where(t => t.Timestamp.Date == date.Date))
-                {
-                    depo.ApplyTransaction(transaction, depositBalance);
-                }
-
-                if (date >= lastReceivedRevenueDate)
-                {
-                    var k = GetCoef(date, conditions.IsFactDays);
-                    revenue += k * DayRevenue(depositBalance, conditions, date);
-                }
-
-                date = date.AddDays(1);
-            }
-            return revenue;
-        }
-
         public static IEnumerable<Tuple<DateTime, decimal>>
             GetRevenuesInThisMonth(this AccountItemModel depo, KeeperDataModel dataModel)
         {
@@ -143,26 +108,6 @@ namespace Keeper2018
             if (i == rateLines.Length) i--;
 
             return currentAmount * rateLines[i].Rate / 100 / (DateTime.IsLeapYear(date.Year) ? 366 : 365);
-        }
-
-        private static DateTime RevenueDate(DepositOfferModel depositOffer, BankAccountModel bankAccountModel)
-        {
-            var conditions = depositOffer.CondsMap
-                .OrderBy(k => k.Key)
-                .LastOrDefault(e => e.Key <= bankAccountModel.StartDate).Value;
-
-            var thisMonth = DateTime.Today.Month;
-            var thisYear = DateTime.Today.Year;
-
-            if (conditions.EveryFirstDayOfMonth)
-                return new DateTime(thisYear, thisMonth, 1);
-            if (conditions.EveryLastDayOfMonth)
-                return DateTime.Today.GetEndOfMonth();
-            var maxDay = DateTime.DaysInMonth(thisYear, thisMonth);
-
-            return bankAccountModel.StartDate.Day <= maxDay
-                ? new DateTime(thisYear, thisMonth, bankAccountModel.StartDate.Day)
-                : new DateTime(thisYear, thisMonth, maxDay);
         }
 
         private static IEnumerable<DateTime> GetNotPaidRevenueDates(DepoCondsModel conditions, DateTime lastReceivedRevenueDate)

@@ -1,6 +1,6 @@
 ﻿namespace Keeper2018
 {
-    public static class Folder
+    public static class NickNames
     {
         public static int MyAccounts = 158;
         public static int BankAccounts = 159;
@@ -17,5 +17,21 @@
         public static bool IsTag(this AccountItemModel account) { return account.Is(IncomeTags) || account.Is(ExpenseTags); }
 
         public static bool IsMyAccount(this AccountItemModel account) { return account.Is(MyAccounts); }
+
+        public static AccountItemModel MineRoot(this KeeperDataModel dataModel)
+        {
+            return dataModel.AcMoDict[158];
+        }
+
+        public static AccountItemModel IncomeRoot(this KeeperDataModel dataModel)
+        {
+            return dataModel.AcMoDict[185];
+        }
+
+        public static AccountItemModel ExpenseRoot(this KeeperDataModel dataModel)
+        {
+            return dataModel.AcMoDict[189];
+        }
     }
+   
 }

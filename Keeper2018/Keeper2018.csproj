@@ -223,7 +223,7 @@
     </ApplicationDefinition>
     <Compile Include="DataModel\EntityModels\Memos\CardBalanceMemoModel.cs" />
     <Compile Include="DataModel\EntityModels\Tree\BankAccountModel.cs" />
-    <Compile Include="DataModel\EntityModels\Tree\Folder.cs" />
+    <Compile Include="DataModel\EntityModels\Tree\NickNames.cs" />
     <Compile Include="DataModel\Extensions\AccountModelExt.cs" />
     <Compile Include="DataModel\Extensions\DepoPartIdProvider.cs" />
     <Compile Include="DataModel\EntityModels\ButtonCollectionModel.cs" />
@@ -353,7 +353,7 @@
     <Compile Include="DataModel\Extensions\AmountInUsdProvider.cs" />
     <Compile Include="DataModel\Extensions\BalanceCalculator.cs" />
     <Compile Include="DataModel\Extensions\DepoByRevocabilitySeparator.cs" />
-    <Compile Include="Forms\MonthAnalysis\MonthRatesDifferencesProvider.cs" />
+    <Compile Include="Forms\MonthAnalysis\RatesDifferencesProvider.cs" />
     <Compile Include="DataModel\Mappers\ModelsToEntities.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
     <Compile Include="DataModel\EntityModels\DepositOfferModel.cs" />
@@ -504,7 +504,7 @@
     <Compile Include="Forms\ListOfLinesControls\BorderedList\BorderedListViewModel.cs" />
     <Compile Include="Forms\ListOfLinesControls\ListOfLines.cs" />
     <Compile Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesViewModel.cs" />
-    <Compile Include="Forms\MonthAnalysis\MonthAnalyser.cs" />
+    <Compile Include="Forms\MonthAnalysis\MonthAnalyzer.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisModel.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisView.xaml.cs">
       <DependentUpon>MonthAnalysisView.xaml</DependentUpon>

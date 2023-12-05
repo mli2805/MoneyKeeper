@@ -5,16 +5,11 @@ namespace Keeper2018
 {
     public class DepoPlusCurrencyProvider
     {
-        private readonly MonthAnalyser _monthAnalyser;
+        private readonly MonthAnalyzer _monthAnalyser;
 
-        public DepoPlusCurrencyProvider(MonthAnalyser monthAnalyser)
+        public DepoPlusCurrencyProvider(MonthAnalyzer monthAnalyser)
         {
             _monthAnalyser = monthAnalyser;
-        }
-
-        public void Initialize()
-        {
-            _monthAnalyser.Initialize();
         }
 
         public IEnumerable<DepoCurrencyData> Evaluate(int fromYear)
@@ -22,7 +17,7 @@ namespace Keeper2018
             var start = new DateTime(fromYear, 1, 1);
             while (start < DateTime.Today)
             {
-                var mam = _monthAnalyser.Produce(start);
+                var mam = _monthAnalyser.AnalyzeFrom(start);
                 yield return new DepoCurrencyData()
                 {
                     StartDate = start,

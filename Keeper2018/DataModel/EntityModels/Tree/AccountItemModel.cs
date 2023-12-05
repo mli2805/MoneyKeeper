@@ -33,23 +33,23 @@
         {
             if (IsFolder)
                 return "../../Resources/tree16/yellow_folder.png";
-            if (Is(Folder.Closed))
+            if (Is(NickNames.Closed))
                 return "../../Resources/tree16/cross.png";
             if (IsCard)
                 return "../../Resources/tree16/paycard4.png";
             if (IsDeposit)
                 return "../../Resources/tree16/deposit7.png";
-            if (Is(Folder.Debts))
+            if (Is(NickNames.Debts))
                 return "../../Resources/tree16/hand_point_left.png";
-            if (Is(Folder.Trusts))
+            if (Is(NickNames.Trusts))
                 return "../../Resources/tree16/trust.png";
-            if (Is(Folder.BankAccounts))
+            if (Is(NickNames.BankAccounts))
                 return "../../Resources/tree16/account4.png";
-            if (Is(Folder.MyAccounts))
+            if (Is(NickNames.MyAccounts))
                 return "../../Resources/tree16/wallet2.png";
-            if (Is(Folder.IncomeTags))
+            if (Is(NickNames.IncomeTags))
                 return "../../Resources/tree16/plus3.png";
-            if (Is(Folder.ExpenseTags))
+            if (Is(NickNames.ExpenseTags))
                 return "../../Resources/tree16/minus3.png";
 
             return "../../Resources/tree16/counterparty.png";

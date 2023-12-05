@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace Keeper2018
 {
-    public static class MonthRatesDifferencesProvider
+    public static class RatesDifferencesProvider
     {
         public static ListOfLines GetRatesDifference(this KeeperDataModel dataModel, DateTime startDate, DateTime finishMoment)
         {
