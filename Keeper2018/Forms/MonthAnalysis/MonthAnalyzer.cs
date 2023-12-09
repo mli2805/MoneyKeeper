@@ -12,29 +12,45 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private MonthAnalysisModel _monthAnalysisModel;
 
+        private bool _isYearAnalysisMode;
+
         public MonthAnalyzer(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
         }
 
-        public MonthAnalysisModel AnalyzeFrom(DateTime startDate)
+        private bool IsCurrentPeriod(DateTime startDate)
         {
-            var isCurrentPeriod = DateTime.Today.Year == startDate.Date.Year &&
-                                  DateTime.Today.Month == startDate.Date.Month;
+            return _isYearAnalysisMode 
+                ? DateTime.Today.Year == startDate.Date.Year 
+                : DateTime.Today.Year == startDate.Date.Year &&
+                  DateTime.Today.Month == startDate.Date.Month;
+        }
+
+        public MonthAnalysisModel AnalyzeFrom(DateTime startDate, bool isYearAnalysisMode = false)
+        {
+            _isYearAnalysisMode = isYearAnalysisMode;
+            var isCurrentPeriod = IsCurrentPeriod(startDate);
+            var caption = _isYearAnalysisMode ? $"{startDate.Year} год" : startDate.ToString("MMMM yyyy");
 
             _monthAnalysisModel = new MonthAnalysisModel()
             {
+                IsYearAnalysisMode = isYearAnalysisMode,
                 StartDate = startDate,
-                MonthAnalysisViewCaption = startDate.ToString("MMMM yyyy") + (isCurrentPeriod ? " - текущий период!" : ""),
+                MonthAnalysisViewCaption = caption + (isCurrentPeriod ? " - текущий период!" : ""),
                 IsCurrentPeriod = isCurrentPeriod,
             };
 
             var startMoment = startDate.AddSeconds(-1);
             FillBeforeViewModel(startMoment);
-            var finishMoment = isCurrentPeriod ? DateTime.Today.GetEndOfDate() : startDate.AddMonths(1).AddSeconds(-1);
+            var finishMoment = isCurrentPeriod 
+                ? DateTime.Today.GetEndOfDate() 
+                : _isYearAnalysisMode ? startDate.GetEndOfYear() : startDate.GetEndOfMonth();
+
             FillIncomeList(startDate, finishMoment);
             if (isCurrentPeriod)
-                FillIncomeForecastList(startDate, finishMoment);
+                // не важно режим года или месяца - доходы предвидятся только на текущий месяц
+                FillIncomeForecastList(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1), finishMoment);
             FillExpenseList(startDate, finishMoment);
             FillAfterList(finishMoment);
             _monthAnalysisModel.RatesChanges = _dataModel.GetRatesDifference(startMoment, finishMoment);
@@ -69,7 +85,7 @@ namespace Keeper2018
             decimal depoTotal = 0;
             decimal restTotal = 0;
             foreach (var tran in _dataModel.Transactions.Values
-                         .Where(t => t.Operation == OperationType.Доход 
+                         .Where(t => t.Operation == OperationType.Доход
                                      && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
             {
                 var amStr = _dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
@@ -128,10 +144,10 @@ namespace Keeper2018
             _monthAnalysisModel.Income = total;
         }
 
-        private void FillIncomeForecastList(DateTime startDate, DateTime finishMoment)
+        private void FillIncomeForecastList(DateTime fromDate, DateTime finishMoment)
         {
             var realIncomes = _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
-                                              && t.Timestamp >= startDate && t.Timestamp <= finishMoment).ToList();
+                                              && t.Timestamp >= fromDate && t.Timestamp <= finishMoment).ToList();
             var salaryAccountId = 204;
             var iitAccountId = 443;
             var optixsoftAccountId = 172;
@@ -152,7 +168,7 @@ namespace Keeper2018
 
             var depoMainFolder = _dataModel.AcMoDict[166];
             foreach (var depo in depoMainFolder.Children.Where(c => ((AccountItemModel)c).IsDeposit))
-                    ForeseeDepoIncome((AccountItemModel)depo);
+                ForeseeDepoIncome((AccountItemModel)depo);
         }
 
         private void ForeseeDepoIncome(AccountItemModel depo)
@@ -170,20 +186,20 @@ namespace Keeper2018
                     ? tuple.Item2
                     : _dataModel.AmountInUsd(DateTime.Today, depoMainCurrency, tuple.Item2);
             }
-           
+
         }
 
         private void InsertLinesIntoIncomeList(List<string> lines, decimal total, string word)
         {
             _monthAnalysisModel.IncomeViewModel.List.Add("");
-            // _monthAnalysisModel.IncomeViewModel.List.Add($"   {word}:", Brushes.Blue);
-            // _monthAnalysisModel.IncomeViewModel.List.Add("");
-            foreach (var line in lines)
+            if (!_monthAnalysisModel.IsYearAnalysisMode)
             {
-                _monthAnalysisModel.IncomeViewModel.List.Add($"   {line}", Brushes.Blue);
+                foreach (var line in lines)
+                {
+                    _monthAnalysisModel.IncomeViewModel.List.Add($"   {line}", Brushes.Blue);
+                }
             }
-
-            // _monthAnalysisModel.IncomeViewModel.List.Add("");
+            
             _monthAnalysisModel.IncomeViewModel.List.Add($"          Итого {word} {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
         }
 
@@ -196,7 +212,7 @@ namespace Keeper2018
 
             if (!string.IsNullOrEmpty(tran.Comment))
                 comment += ";  " + tran.Comment;
-            
+
             return comment;
         }
 
@@ -220,7 +236,7 @@ namespace Keeper2018
                     articles.Add(expenseArticle, CurrencyCode.USD, amountInUsd);
                     total += amountInUsd;
 
-                    if (Math.Abs(amountInUsd) <= 70) continue;
+                    if (Math.Abs(amountInUsd) < (_monthAnalysisModel.IsYearAnalysisMode ? 800 : 70)) continue;
 
                     var line = $"   {tran.Amount:#,0.00} {tran.Currency.ToString().ToLower()} ( {amountInUsd:#,0.00} usd )  {tran.Timestamp:dd MMM}";
                     if (tran.Comment.Length > 30)

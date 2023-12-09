@@ -12,6 +12,7 @@ namespace Keeper2018
     {
         public string MonthAnalysisViewCaption { get; set; }
         public DateTime StartDate { get; set; }
+        public bool IsYearAnalysisMode { get; set; }
         public bool IsCurrentPeriod { get; set; }
         public Visibility ForecastListVisibility => IsCurrentPeriod ? Visibility.Visible : Visibility.Collapsed;
 
@@ -46,8 +47,9 @@ namespace Keeper2018
             ExchangeDifference = After - (Before + Income - Expense);
             var exchangeForeground = ExchangeDifference > 0 ? Brushes.Blue : Brushes.Red;
             FinResultViewModel.List.Add("Курсовые разницы", exchangeForeground);
-            var till =  isCurrentPeriod ? $"" : $"по {StartDate.AddMonths(1).AddMilliseconds(-1):dd/MM HH:mm}";
-            FinResultViewModel.List.Add($"  с {StartDate.AddMilliseconds(-1):dd/MM HH:mm} - {till}", exchangeForeground);
+            var dateFormat = IsYearAnalysisMode ? "dd/MM/yyyy" : "dd/MM";
+            var till =  isCurrentPeriod ? $"" : $"по {StartDate.AddMonths(1).AddMilliseconds(-1).ToString(dateFormat)}";
+            FinResultViewModel.List.Add($"  с {StartDate.AddMilliseconds(-1).ToString(dateFormat)} - {till}", exchangeForeground);
             FinResultViewModel.List.AddList(RatesChanges);
             FinResultViewModel.List.Add("");
             FinResultViewModel.List.Add($"{After:N} - ({Before:N} + {Income:N} - {Expense:N})", exchangeForeground);
@@ -66,9 +68,14 @@ namespace Keeper2018
 
         public void FillForecast(DateTime finishMoment, decimal bynRate)
         {
-            var dayExpense = (Expense - LargeExpense) / finishMoment.Day;
+            var days = IsYearAnalysisMode ? finishMoment.DayOfYear : finishMoment.Day;
+            var dayExpense = (Expense - LargeExpense) / days;
             var daysInMonth = finishMoment.GetDaysInMonth();
-            ExpenseForecast = dayExpense * daysInMonth + LargeExpense;
+
+            ExpenseForecast = IsYearAnalysisMode
+                ? dayExpense * (daysInMonth - DateTime.Today.Day) + Expense
+                : dayExpense * daysInMonth + LargeExpense;
+
             var result = Income + IncomeForecast - ExpenseForecast + ExchangeDifference;
             var resultBrush = result > 0 ? Brushes.Blue : Brushes.Red;
 

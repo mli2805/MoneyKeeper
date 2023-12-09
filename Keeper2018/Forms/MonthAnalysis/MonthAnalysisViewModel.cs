@@ -29,33 +29,49 @@ namespace Keeper2018
             Model = _monthAnalyzer.AnalyzeFrom(DateTime.Today.GetStartOfMonth());
         }
 
-        public void ShowPreviousMonth()
+       
+        public void LeftArrow()
         {
-            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddMonths(-1));
+            var newStart = Model.IsYearAnalysisMode ? Model.StartDate.AddYears(-1) : Model.StartDate.AddMonths(-1);
+            Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
         }
 
-        public void ShowNextMonth()
+        public void RightArrow()
         {
-            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddMonths(1));
+            var newStart = Model.IsYearAnalysisMode ? Model.StartDate.AddYears(1) : Model.StartDate.AddMonths(1);
+            Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
         }
 
-        public void ShowPreviousQuarter()
+        public void ShiftLeftArrow()
         {
-            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddMonths(-3));
+            var newStart = Model.IsYearAnalysisMode ? Model.StartDate.AddYears(-1) : Model.StartDate.AddMonths(-3);
+            Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
         }
 
-        public void ShowNextQuarter()
+        public void ShiftRightArrow()
         {
-            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddMonths(3));
-        }
-        public void ShowNextYear()
-        {
-            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddMonths(12));
+            var newStart = Model.IsYearAnalysisMode ? Model.StartDate.AddYears(1) : Model.StartDate.AddMonths(3);
+            Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
         }
 
-        public void ShowPreviousYear()
+        // в режиме годы стрелки с любыми модификаторами двигают на 1 год
+        // в режиме месяцы на 1 - 3 - 12 месяцев
+
+        public void ControlRightArrow()
         {
-            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddMonths(-12));
+            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddYears(1), Model.IsYearAnalysisMode);
+        }
+
+        public void ControlLeftArrow()
+        {
+            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddYears(-1), Model.IsYearAnalysisMode);
+        }
+
+        public void ToggleYearMonth()
+        {
+            var newMode = !Model.IsYearAnalysisMode;
+            var newStart = newMode ? new DateTime(Model.StartDate.Year, 1, 1) : Model.StartDate;
+            Model = _monthAnalyzer.AnalyzeFrom(newStart, newMode);
         }
 
     }

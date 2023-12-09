@@ -20,7 +20,7 @@ namespace Keeper2018
                 case DiagramIntervalMode.Years:
                     intervalCount = initialPeriod.Item2.Year - initialPeriod.Item1.Year + 1; break;
                 case DiagramIntervalMode.Months:
-                    intervalCount = initialPeriod.Item2.MonthsBeetween(initialPeriod.Item1); break;
+                    intervalCount = initialPeriod.Item2.MonthsBetween(initialPeriod.Item1); break;
                 case DiagramIntervalMode.Days:
                     intervalCount = (initialPeriod.Item2 - initialPeriod.Item1).Days + 1; break;
                 //case DiagramIntervalMode.WholePeriod:

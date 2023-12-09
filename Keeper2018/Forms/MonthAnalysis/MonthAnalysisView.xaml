@@ -15,22 +15,25 @@
         d:DataContext="{d:DesignInstance keeper2018:MonthAnalysisViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="Right">
-            <cal:ActionMessage MethodName="ShowNextMonth"/>
+            <cal:ActionMessage MethodName="RightArrow"/>
         </ei:KeyTrigger>
         <ei:KeyTrigger Modifiers="Control" Key="Right">
-            <cal:ActionMessage MethodName="ShowNextYear"/>
+            <cal:ActionMessage MethodName="ControlRightArrow"/>
         </ei:KeyTrigger>
         <ei:KeyTrigger Key="Left">
-            <cal:ActionMessage MethodName="ShowPreviousMonth"/>
+            <cal:ActionMessage MethodName="LeftArrow"/>
         </ei:KeyTrigger>
         <ei:KeyTrigger Modifiers="Control" Key="Left">
-            <cal:ActionMessage MethodName="ShowPreviousYear"/>
+            <cal:ActionMessage MethodName="ControlLeftArrow"/>
         </ei:KeyTrigger>
         <ei:KeyTrigger Modifiers="Shift" Key="Left">
-            <cal:ActionMessage MethodName="ShowPreviousQuarter"/>
+            <cal:ActionMessage MethodName="ShiftLeftArrow"/>
         </ei:KeyTrigger>
         <ei:KeyTrigger Modifiers="Shift" Key="Right">
             <cal:ActionMessage MethodName="ShowNextQuarter"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="T">
+            <cal:ActionMessage MethodName="ToggleYearMonth"/>
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <DockPanel>
