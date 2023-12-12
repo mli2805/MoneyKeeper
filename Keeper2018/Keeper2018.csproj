@@ -353,6 +353,7 @@
     <Compile Include="DataModel\Extensions\AmountInUsdProvider.cs" />
     <Compile Include="DataModel\Extensions\BalanceCalculator.cs" />
     <Compile Include="DataModel\Extensions\DepoByRevocabilitySeparator.cs" />
+    <Compile Include="Forms\MonthAnalysis\IncomeAnalyzerExt.cs" />
     <Compile Include="Forms\MonthAnalysis\RatesDifferencesProvider.cs" />
     <Compile Include="DataModel\Mappers\ModelsToEntities.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />

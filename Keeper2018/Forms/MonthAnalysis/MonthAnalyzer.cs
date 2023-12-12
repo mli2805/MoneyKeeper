@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using Keeper2018.BorderedList;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -73,75 +73,11 @@ namespace Keeper2018
 
         private void FillIncomeList(DateTime startDate, DateTime finishMoment)
         {
-            _monthAnalysisModel.IncomeViewModel.List.Add("Доходы", FontWeights.Bold, Brushes.Blue);
+            var income = _dataModel.CollectIncomeList(startDate, finishMoment, _isYearAnalysisMode);
 
-            var salaryList = new List<string>();
-            var rantierList = new List<string>();
-            var depoList = new List<string>();
-            var restList = new List<string>();
-            decimal total = 0;
-            decimal salaryTotal = 0;
-            decimal rantierTotal = 0;
-            decimal depoTotal = 0;
-            decimal restTotal = 0;
-            foreach (var tran in _dataModel.Transactions.Values
-                         .Where(t => t.Operation == OperationType.Доход
-                                     && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
-            {
-                var amStr = _dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
-
-                foreach (var tag in tran.Tags)
-                {
-                    if (tag.Is(185)) // доходы
-                    {
-                        if (tag.Is(186)) // зарплата
-                        {
-                            salaryList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran, true)} {tran.Timestamp:dd MMM}");
-                            salaryTotal += amountInUsd;
-                        }
-                        else if (tag.Is(188)) // рента
-                        {
-                            if (tag.Id == 208) // %% по вкладу (по карточкам тоже)
-                            {
-                                var depo = tran.MyAccount.ShortName ??
-                                           tran.MyAccount.ShortName ?? tran.MyAccount.Name;
-                                depoList.Add($"{amStr} {depo} {tran.Comment} {tran.Timestamp:dd MMM}");
-                                depoTotal += amountInUsd;
-                            }
-                            else if (tag.Id == 701) // manyback
-                            {
-                                rantierList.Add($"{amStr} {tran.MyAccount.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
-                                rantierTotal += amountInUsd;
-                            }
-                            else // остальная рента
-                            {
-                                rantierList.Add($"{amStr} {tran.MyAccount.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
-                                rantierTotal += amountInUsd;
-                            }
-                        }
-                        else  // остальные типы доходов
-                        {
-                            restList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran, false)} {tran.Timestamp:dd MMM}");
-                            restTotal += amountInUsd;
-                        }
-                    }
-                }
-                total += amountInUsd;
-            }
-
-            if (salaryList.Count > 0)
-                InsertLinesIntoIncomeList(salaryList, salaryTotal, "зарплата");
-            if (depoList.Count > 0)
-                InsertLinesIntoIncomeList(depoList, depoTotal, "депозиты");
-            if (rantierList.Count > 0)
-                InsertLinesIntoIncomeList(rantierList, rantierTotal, "прочие с капитала");
-            if (restList.Count > 0)
-                InsertLinesIntoIncomeList(restList, restTotal, "прочее");
-
-            _monthAnalysisModel.IncomeViewModel.List.Add("");
-            _monthAnalysisModel.IncomeViewModel.List.Add($"Итого {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
-            _monthAnalysisModel.DepoIncome = depoTotal;
-            _monthAnalysisModel.Income = total;
+            _monthAnalysisModel.IncomeViewModel = new BorderedListViewModel(income.Item1);
+            _monthAnalysisModel.Income = income.Item2;
+            _monthAnalysisModel.DepoIncome = income.Item3;
         }
 
         private void FillIncomeForecastList(DateTime fromDate, DateTime finishMoment)
@@ -187,33 +123,6 @@ namespace Keeper2018
                     : _dataModel.AmountInUsd(DateTime.Today, depoMainCurrency, tuple.Item2);
             }
 
-        }
-
-        private void InsertLinesIntoIncomeList(List<string> lines, decimal total, string word)
-        {
-            _monthAnalysisModel.IncomeViewModel.List.Add("");
-            if (!_monthAnalysisModel.IsYearAnalysisMode)
-            {
-                foreach (var line in lines)
-                {
-                    _monthAnalysisModel.IncomeViewModel.List.Add($"   {line}", Brushes.Blue);
-                }
-            }
-            
-            _monthAnalysisModel.IncomeViewModel.List.Add($"          Итого {word} {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
-        }
-
-        private string BuildCommentForIncomeTransaction(TransactionModel tran, bool isSalary)
-        {
-            var comment = tran.Tags.First(t => t.Is(157)).Name;
-
-            if (!isSalary)
-                comment += ";  " + tran.Tags.First(t => t.Is(_dataModel.IncomeRoot())).Name;
-
-            if (!string.IsNullOrEmpty(tran.Comment))
-                comment += ";  " + tran.Comment;
-
-            return comment;
         }
 
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)

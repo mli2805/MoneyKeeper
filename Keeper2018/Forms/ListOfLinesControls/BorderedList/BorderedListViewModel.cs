@@ -8,5 +8,10 @@
         {
             List = new ListOfLines(maxWidth);
         }
+
+        public BorderedListViewModel(ListOfLines list)
+        {
+            List = list;
+        }
     }
 }
