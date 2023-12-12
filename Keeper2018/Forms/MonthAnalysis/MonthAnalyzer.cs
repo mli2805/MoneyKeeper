@@ -127,59 +127,11 @@ namespace Keeper2018
 
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)
         {
-            _monthAnalysisModel.ExpenseViewModel.List.Add("Расходы", FontWeights.Bold, Brushes.Red);
-            _monthAnalysisModel.ExpenseViewModel.List.Add("");
+            var expense = _dataModel.CollectExpenseList(startDate, finishMoment, _isYearAnalysisMode);
 
-            var articles = new BalanceWithTurnoverOfBranch();
-            var largeExpenses = new ListOfLines();
-            decimal total = 0;
-            decimal largeTotal = 0;
-            foreach (var tran in _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Расход
-                                               && t.Timestamp >= startDate && t.Timestamp <= finishMoment))
-            {
-                foreach (var tag in tran.Tags)
-                {
-                    var expenseArticle = (AccountItemModel)tag.IsC(_dataModel.ExpenseRoot());
-                    if (expenseArticle == null) continue;
-                    var amountInUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
-                    articles.Add(expenseArticle, CurrencyCode.USD, amountInUsd);
-                    total += amountInUsd;
-
-                    if (Math.Abs(amountInUsd) < (_monthAnalysisModel.IsYearAnalysisMode ? 800 : 70)) continue;
-
-                    var line = $"   {tran.Amount:#,0.00} {tran.Currency.ToString().ToLower()} ( {amountInUsd:#,0.00} usd )  {tran.Timestamp:dd MMM}";
-                    if (tran.Comment.Length > 30)
-                    {
-                        largeExpenses.Add(line, Brushes.Red);
-                        var comment = tran.Comment.Length > 70 ? tran.Comment.Substring(0, 70) : tran.Comment;
-                        largeExpenses.Add($"        {comment}", Brushes.Red);
-                    }
-                    else
-                        largeExpenses.Add($"{line}  {tran.Comment}", Brushes.Red);
-
-                    largeTotal += amountInUsd;
-                }
-            }
-
-            foreach (var pair in articles.ChildAccounts)
-            {
-                _monthAnalysisModel.ExpenseViewModel.List.Add($"{pair.Value.Currencies[CurrencyCode.USD].Plus:#,0.00} usd - {pair.Key.Name}", Brushes.Red);
-            }
-
-            if (largeExpenses.Lines.Count > 0)
-            {
-                _monthAnalysisModel.ExpenseViewModel.List.Add("");
-                _monthAnalysisModel.ExpenseViewModel.List.Add("   В том числе крупные:", Brushes.Red);
-                _monthAnalysisModel.ExpenseViewModel.List.Add("");
-                _monthAnalysisModel.ExpenseViewModel.List.AddList(largeExpenses);
-                _monthAnalysisModel.ExpenseViewModel.List.Add("");
-                _monthAnalysisModel.ExpenseViewModel.List.Add($"   Итого крупные {largeTotal:#,0.00} usd", FontWeights.SemiBold, Brushes.Red);
-            }
-
-            _monthAnalysisModel.ExpenseViewModel.List.Add("");
-            _monthAnalysisModel.ExpenseViewModel.List.Add($"Итого {total:#,0.00} usd", FontWeights.Bold, Brushes.Red);
-            _monthAnalysisModel.Expense = total;
-            _monthAnalysisModel.LargeExpense = largeTotal;
+            _monthAnalysisModel.ExpenseViewModel = new BorderedListViewModel(expense.Item1);
+            _monthAnalysisModel.Expense = expense.Item2;
+            _monthAnalysisModel.LargeExpense = expense.Item3;
         }
 
         private void FillAfterList(DateTime finishMoment)

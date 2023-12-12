@@ -53,7 +53,7 @@ namespace Keeper2018
                         salaryList.Add($"{amStr} {BuildCommentForIncomeTransaction(tran, true)} {tran.Timestamp:dd MMM}");
                     salaryTotal += amountInUsd;
                 }
-                else if (tag.Id == 208) // %% по вкладу (по карточкам тоже)
+                else if (tag.Id == 208 || tag.Id == 209) // %% по вкладу (по карточкам тоже) или дивиденды (траст)
                 {
                     if (isYearAnalysisMode)
                     {
@@ -150,15 +150,24 @@ namespace Keeper2018
 
         private static string BuildCommentForIncomeTransaction(TransactionModel tran, bool isSalary)
         {
-            var comment = tran.Tags.First(t => t.Is(157)).Name;
+            try
+            {
+                var comment = tran.Tags.First(t => t.Is(157)).Name;
 
-            if (!isSalary)
-                comment += ";  " + tran.Tags.First(t => t.Is(NickNames.IncomeTags)).Name;
+                if (!isSalary)
+                    comment += ";  " + tran.Tags.First(t => t.Is(NickNames.IncomeTags)).Name;
 
-            if (!string.IsNullOrEmpty(tran.Comment))
-                comment += ";  " + tran.Comment;
+                if (!string.IsNullOrEmpty(tran.Comment))
+                    comment += ";  " + tran.Comment;
+          
+                return comment;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
 
-            return comment;
         }
     }
 }

@@ -32,6 +32,7 @@ namespace Keeper2018
        
         public void LeftArrow()
         {
+            if (Model.StartDate.Date == new DateTime(2002,1,1)) return;
             var newStart = Model.IsYearAnalysisMode ? Model.StartDate.AddYears(-1) : Model.StartDate.AddMonths(-1);
             Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
         }
@@ -44,7 +45,10 @@ namespace Keeper2018
 
         public void ShiftLeftArrow()
         {
+            if (Model.StartDate.Date == new DateTime(2002,1,1)) return;
             var newStart = Model.IsYearAnalysisMode ? Model.StartDate.AddYears(-1) : Model.StartDate.AddMonths(-3);
+            if (newStart < new DateTime(2002, 1, 1))
+                newStart = new DateTime(2002, 1, 1);
             Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
         }
 
@@ -64,7 +68,9 @@ namespace Keeper2018
 
         public void ControlLeftArrow()
         {
-            Model = _monthAnalyzer.AnalyzeFrom(Model.StartDate.AddYears(-1), Model.IsYearAnalysisMode);
+            if (Model.StartDate.Date == new DateTime(2002,1,1)) return;
+            var newStart = (Model.StartDate.Year == 2002) ? new DateTime(2002, 1, 1) : Model.StartDate.AddYears(-1);
+            Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
         }
 
         public void ToggleYearMonth()
