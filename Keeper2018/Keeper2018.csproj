@@ -355,6 +355,7 @@
     <Compile Include="DataModel\Extensions\DepoByRevocabilitySeparator.cs" />
     <Compile Include="Forms\MonthAnalysis\ExpanseAnalyzerExt.cs" />
     <Compile Include="Forms\MonthAnalysis\IncomeAnalyzerExt.cs" />
+    <Compile Include="Forms\MonthAnalysis\IncomeForecasterExt.cs" />
     <Compile Include="Forms\MonthAnalysis\RatesDifferencesProvider.cs" />
     <Compile Include="DataModel\Mappers\ModelsToEntities.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />

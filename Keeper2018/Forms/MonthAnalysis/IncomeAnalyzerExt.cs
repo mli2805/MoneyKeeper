@@ -25,7 +25,9 @@ namespace Keeper2018
             var depoByCurrency = new Dictionary<CurrencyCode, decimal>();
             var depoList = new List<string>();
 
+            var cards = new Dictionary<AccountItemModel, decimal>();
             var moneyBackList = new List<string>();
+
             var rantierList = new List<string>();
             var restList = new List<string>();
             decimal total = 0;
@@ -72,7 +74,15 @@ namespace Keeper2018
                 }
                 else if (tag.Id == 701) // manyback
                 {
-                    moneyBackList.Add($"{amStr} {tran.MyAccount.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
+                    if (isYearAnalysisMode)
+                    {
+                        var card = tran.MyAccount;
+                        if (cards.ContainsKey(card))
+                            cards[card] += amountInUsd;
+                        else cards.Add(card, amountInUsd);
+                    }
+                    else
+                        moneyBackList.Add($"{amStr} {tran.MyAccount.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}");
                     moneyBackTotal += amountInUsd;
                 }
                 else if (tag.Is(188)) // остальная рента
@@ -93,15 +103,16 @@ namespace Keeper2018
             {
                 InsertYearSalary(list, employers);
                 InsertYearDepositIncome(list, depoByCurrency);
+                InsertYearMoneyback(list, cards);
             }
             else
             {
                 InsertLinesIntoIncomeList(list, true, salaryList, salaryTotal, "зарплата");
                 InsertLinesIntoIncomeList(list, true, depoList, depoTotal, "депозиты");
+                InsertLinesIntoIncomeList(list, true, moneyBackList, moneyBackTotal, "манибэк");
             }
 
 
-            InsertLinesIntoIncomeList(list, !isYearAnalysisMode, moneyBackList, moneyBackTotal, "манибэк");
             InsertLinesIntoIncomeList(list, !isYearAnalysisMode, rantierList, rantierTotal, "прочие с капитала");
             InsertLinesIntoIncomeList(list, !isYearAnalysisMode, restList, restTotal, "прочее");
 
@@ -130,6 +141,19 @@ namespace Keeper2018
                 list.Add($"   депозиты в {pair.Key} - {pair.Value:#,0.00} usd", Brushes.Blue);
             }
             list.Add($"          Итого депозиты {depoByCurrency.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
+        }
+
+        private static void InsertYearMoneyback(ListOfLines list, Dictionary<AccountItemModel, decimal> cards)
+        {
+            if (cards.Count == 0) return;
+            list.Add("");
+            foreach (var pair in cards)
+            {
+                var cardName = string.IsNullOrEmpty(pair.Key.ShortName) ? pair.Key.Name : pair.Key.ShortName;
+                list.Add($"   {pair.Value:#,0.00} usd  {cardName}", Brushes.Blue);
+
+            }
+            list.Add($"          Итого манибэк {cards.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
         }
 
         private static void InsertLinesIntoIncomeList(ListOfLines list, bool isDetailed, List<string> lines, decimal total, string word)

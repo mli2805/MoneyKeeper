@@ -12,16 +12,17 @@ namespace Keeper2018
     {
         public string MonthAnalysisViewCaption { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime FinishMoment { get; set; }
         public bool IsYearAnalysisMode { get; set; }
         public bool IsCurrentPeriod { get; set; }
         public Visibility ForecastListVisibility => IsCurrentPeriod ? Visibility.Visible : Visibility.Collapsed;
 
         public BorderedListViewModel BeforeViewModel { get; set; } = new BorderedListViewModel();
         public decimal Before;
-        public BorderedListViewModel IncomeViewModel { get; set; } = new BorderedListViewModel(60);
+        public BorderedListViewModel IncomeViewModel { get; set; }
         public decimal DepoIncome;
         public decimal Income;
-        public BorderedListViewModel ExpenseViewModel { get; set; } = new BorderedListViewModel(60);
+        public BorderedListViewModel ExpenseViewModel { get; set; }
         public decimal Expense;
         public decimal LargeExpense;
         public BorderedListViewModel AfterViewModel { get; set; } = new BorderedListViewModel();
@@ -32,7 +33,7 @@ namespace Keeper2018
         public BorderedListViewModel ForecastViewModel { get; set; } = new BorderedListViewModel();
         public decimal IncomeForecast;
         public decimal ExpenseForecast;
-        public readonly List<string> IncomeForecastList = new List<string>();
+        public List<string> IncomeForecastList;
 
         public void FillResultList(bool isCurrentPeriod)
         {
@@ -48,7 +49,7 @@ namespace Keeper2018
             var exchangeForeground = ExchangeDifference > 0 ? Brushes.Blue : Brushes.Red;
             FinResultViewModel.List.Add("Курсовые разницы", exchangeForeground);
             var dateFormat = IsYearAnalysisMode ? "dd/MM/yyyy" : "dd/MM";
-            var till =  isCurrentPeriod ? $"" : $"по {StartDate.AddMonths(1).AddMilliseconds(-1).ToString(dateFormat)}";
+            var till =  $"по {FinishMoment.ToString(dateFormat)}";
             FinResultViewModel.List.Add($"  с {StartDate.AddMilliseconds(-1).ToString(dateFormat)} - {till}", exchangeForeground);
             FinResultViewModel.List.AddList(RatesChanges);
             FinResultViewModel.List.Add("");

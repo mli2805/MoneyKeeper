@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 using Keeper2018.BorderedList;
 using KeeperDomain;
 
@@ -21,8 +19,8 @@ namespace Keeper2018
 
         private bool IsCurrentPeriod(DateTime startDate)
         {
-            return _isYearAnalysisMode 
-                ? DateTime.Today.Year == startDate.Date.Year 
+            return _isYearAnalysisMode
+                ? DateTime.Today.Year == startDate.Date.Year
                 : DateTime.Today.Year == startDate.Date.Year &&
                   DateTime.Today.Month == startDate.Date.Month;
         }
@@ -31,7 +29,7 @@ namespace Keeper2018
         {
             _isYearAnalysisMode = isYearAnalysisMode;
             var isCurrentPeriod = IsCurrentPeriod(startDate);
-            var caption = _isYearAnalysisMode ? $"{startDate.Year} год" : startDate.ToString("MMMM yyyy");
+            var caption = isYearAnalysisMode ? $"{startDate.Year} год" : startDate.ToString("MMMM yyyy");
 
             _monthAnalysisModel = new MonthAnalysisModel()
             {
@@ -43,9 +41,10 @@ namespace Keeper2018
 
             var startMoment = startDate.AddSeconds(-1);
             FillBeforeViewModel(startMoment);
-            var finishMoment = isCurrentPeriod 
-                ? DateTime.Today.GetEndOfDate() 
-                : _isYearAnalysisMode ? startDate.GetEndOfYear() : startDate.GetEndOfMonth();
+            var finishMoment = isCurrentPeriod
+                ? DateTime.Today.GetEndOfDate()
+                : isYearAnalysisMode ? startDate.GetEndOfYear() : startDate.GetEndOfMonth();
+            _monthAnalysisModel.FinishMoment = finishMoment;
 
             FillIncomeList(startDate, finishMoment);
             if (isCurrentPeriod)
@@ -66,7 +65,8 @@ namespace Keeper2018
             var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _dataModel.MineRoot(),
                                         new Period(new DateTime(2001, 12, 31), startMoment));
             trafficCalculator.EvaluateAccount();
-            _monthAnalysisModel.BeforeViewModel.List.Add("Входящий остаток на начало месяца", FontWeights.Bold);
+            var word = _isYearAnalysisMode ? "года" : "месяца";
+            _monthAnalysisModel.BeforeViewModel.List.Add("Входящий остаток на начало " + word, FontWeights.Bold);
             _monthAnalysisModel.BeforeViewModel.List.AddList(trafficCalculator.ReportForMonthAnalysis());
             _monthAnalysisModel.Before = trafficCalculator.TotalAmount;
         }
@@ -82,47 +82,10 @@ namespace Keeper2018
 
         private void FillIncomeForecastList(DateTime fromDate, DateTime finishMoment)
         {
-            var realIncomes = _dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
-                                              && t.Timestamp >= fromDate && t.Timestamp <= finishMoment).ToList();
-            var salaryAccountId = 204;
-            var iitAccountId = 443;
-            var optixsoftAccountId = 172;
-            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
-                && t.Tags.Select(tt => tt.Id).Contains(iitAccountId)))
-            {
-                var salaryInUsdValue = 800;
-                _monthAnalysisModel.IncomeForecastList.Add($"зарплата ИИТ {salaryInUsdValue} usd");
-                _monthAnalysisModel.IncomeForecast += salaryInUsdValue;
-            }
-            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
-                           && t.Tags.Select(tt => tt.Id).Contains(optixsoftAccountId)))
-            {
-                var salaryInUsdValue = 1200;
-                _monthAnalysisModel.IncomeForecastList.Add($"зарплата OptixSoft {salaryInUsdValue} usd");
-                _monthAnalysisModel.IncomeForecast += salaryInUsdValue;
-            }
+            var forecast = _dataModel.ForecastIncome(fromDate, finishMoment);
 
-            var depoMainFolder = _dataModel.AcMoDict[166];
-            foreach (var depo in depoMainFolder.Children.Where(c => ((AccountItemModel)c).IsDeposit))
-                ForeseeDepoIncome((AccountItemModel)depo);
-        }
-
-        private void ForeseeDepoIncome(AccountItemModel depo)
-        {
-            var depoMainCurrency = _dataModel.DepositOffers
-                .First(o => o.Id == depo.BankAccount.DepositOfferId).MainCurrency;
-            var currency = depoMainCurrency == CurrencyCode.BYR ? CurrencyCode.BYN : depoMainCurrency;
-
-            var revenues = depo.GetRevenuesInThisMonth(_dataModel);
-            foreach (var tuple in revenues)
-            {
-                _monthAnalysisModel.IncomeForecastList.
-                    Add($"{depo.ShortName}  {tuple.Item2:#,0.00} {currency.ToString().ToLower()} {tuple.Item1:dd MMM}");
-                _monthAnalysisModel.IncomeForecast += currency == CurrencyCode.USD
-                    ? tuple.Item2
-                    : _dataModel.AmountInUsd(DateTime.Today, depoMainCurrency, tuple.Item2);
-            }
-
+            _monthAnalysisModel.IncomeForecastList = forecast.Item1;
+            _monthAnalysisModel.IncomeForecast = forecast.Item2;
         }
 
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)
@@ -139,7 +102,8 @@ namespace Keeper2018
             var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _dataModel.MineRoot(),
                                         new Period(new DateTime(2001, 12, 31), finishMoment));
             trafficCalculator.EvaluateAccount();
-            var text = _monthAnalysisModel.IsCurrentPeriod ? "сегодня" : "конец месяца";
+            var word = _isYearAnalysisMode ? "года" : "месяца";
+            var text = _monthAnalysisModel.IsCurrentPeriod ? "сегодня" : "конец " + word;
             _monthAnalysisModel.AfterViewModel.List.Add($"Исходящий остаток на {text}", FontWeights.Bold);
             _monthAnalysisModel.AfterViewModel.List.AddList(trafficCalculator.ReportForMonthAnalysis());
             _monthAnalysisModel.After = trafficCalculator.TotalAmount;
