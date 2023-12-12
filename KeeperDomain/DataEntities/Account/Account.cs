@@ -23,7 +23,7 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id + " ; " + Name + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
+            return Id.ToString().PadLeft(4) + " ; " + Name + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
                    AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + 
                    ShortName + " ; " + ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");

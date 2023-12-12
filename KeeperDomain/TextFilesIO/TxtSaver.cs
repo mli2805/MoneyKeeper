@@ -77,7 +77,7 @@ namespace KeeperDomain
             var level = 0;
             foreach (var account in accountPlainList)
             {
-                if (account.ParentId != previousParents.Peek())
+                while (account.ParentId != previousParents.Peek())
                 {
                     if (account.ParentId == previousAccountId)
                     {
