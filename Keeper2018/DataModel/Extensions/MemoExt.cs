@@ -23,7 +23,7 @@ namespace Keeper2018
                 new TrafficOfAccountCalculator(keeperDataModel, memo.Account, 
                     new Period(new DateTime(2001, 12, 31), DateTime.Today.GetEndOfDate()));
             var balance = accountCalculator.EvaluateBalance();
-            memo.CurrentBalance = balance.Currencies[CurrencyCode.BYN];
+            memo.CurrentBalance = balance.Currencies.ContainsKey(CurrencyCode.BYN) ? balance.Currencies[CurrencyCode.BYN] : 0;
 
         }
     }
