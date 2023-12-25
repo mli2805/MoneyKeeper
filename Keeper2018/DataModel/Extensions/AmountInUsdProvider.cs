@@ -12,14 +12,14 @@ namespace Keeper2018
         }
 
         public static string AmountInUsdString(this KeeperDataModel dataModel, DateTime date, CurrencyCode? currency,
-            decimal amount, out decimal amountInUsd)
+            decimal amount, out decimal amountInUsd, bool flag = true)
         {
             amountInUsd = amount;
             var shortLine = $"{amount:N} {currency.ToString().ToLower()}";
             if (currency == CurrencyCode.USD) return shortLine;
 
             amountInUsd = dataModel.AmountInUsd(date, currency, amount);
-            return shortLine + $" ( {amountInUsd:#,0.00} usd )";
+            return shortLine + (flag ? $" ( {amountInUsd:#,0.00} usd )" :  $" ({amountInUsd:#,0.00} usd)");
         }
 
         public static decimal AmountInUsd(this KeeperDataModel dataModel, DateTime date, CurrencyCode? currency, decimal amount)

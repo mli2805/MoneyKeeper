@@ -353,7 +353,7 @@
     <Compile Include="DataModel\Extensions\AmountInUsdProvider.cs" />
     <Compile Include="DataModel\Extensions\BalanceCalculator.cs" />
     <Compile Include="DataModel\Extensions\DepoByRevocabilitySeparator.cs" />
-    <Compile Include="Forms\MonthAnalysis\ExpanseAnalyzerExt.cs" />
+    <Compile Include="Forms\MonthAnalysis\ExpenseAnalyzerExt.cs" />
     <Compile Include="Forms\MonthAnalysis\IncomeAnalyzerExt.cs" />
     <Compile Include="Forms\MonthAnalysis\IncomeForecasterExt.cs" />
     <Compile Include="Forms\MonthAnalysis\RatesDifferencesProvider.cs" />
@@ -506,16 +506,12 @@
     </Compile>
     <Compile Include="Forms\ListOfLinesControls\BorderedList\BorderedListViewModel.cs" />
     <Compile Include="Forms\ListOfLinesControls\ListOfLines.cs" />
-    <Compile Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesViewModel.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalyzer.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisModel.cs" />
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisView.xaml.cs">
       <DependentUpon>MonthAnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\MonthAnalysis\MonthAnalysisViewModel.cs" />
-    <Compile Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesView.xaml.cs">
-      <DependentUpon>ListOfLinesView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartViewModel.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Enum\BalanceOrTraffic.cs" />
     <Compile Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml.cs">
@@ -576,11 +572,11 @@
       <DependentUpon>BankOffersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\DepositOffers\BankOffersViewModel.cs" />
-    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MessageType.cs" />
-    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MessageTypeExt.cs" />
+    <Compile Include="Forms\MyMessageBox\MessageType.cs" />
+    <Compile Include="Forms\MyMessageBox\MessageTypeExt.cs" />
     <Compile Include="Forms\ListOfLinesControls\ListLine.cs" />
-    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml.cs" />
-    <Compile Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxViewModel.cs" />
+    <Compile Include="Forms\MyMessageBox\MyMessageBoxView.xaml.cs" />
+    <Compile Include="Forms\MyMessageBox\MyMessageBoxViewModel.cs" />
     <Compile Include="Forms\Investments\InvestmentTransactions\InvestmentTransactionsView.xaml.cs">
       <DependentUpon>InvestmentTransactionsView.xaml</DependentUpon>
     </Compile>
@@ -889,10 +885,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\ListOfLinesControls\ListOfLines\ListOfLinesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Forms\CurrencyRates2\Charts\LongTermChart\LongTermChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -941,7 +933,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\ListOfLinesControls\MyMessageBox\MyMessageBoxView.xaml">
+    <Page Include="Forms\MyMessageBox\MyMessageBoxView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

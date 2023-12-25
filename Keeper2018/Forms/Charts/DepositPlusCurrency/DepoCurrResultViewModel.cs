@@ -103,7 +103,7 @@ namespace Keeper2018
 
         private void Initialize()
         {
-            var points = _depoPlusCurrencyProvider.Evaluate(2002).ToList();
+            var points = _depoPlusCurrencyProvider.Evaluate().ToList();
             InitializeMonthlyDepoCurrPlotModel(points);
             InitializeMonthlySaldoPlotModel(points);
             InitializeAnnualSaldoPlotModel(points);

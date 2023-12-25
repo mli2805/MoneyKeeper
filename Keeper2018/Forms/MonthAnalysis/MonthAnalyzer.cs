@@ -77,7 +77,7 @@ namespace Keeper2018
 
             _monthAnalysisModel.IncomeViewModel = new BorderedListViewModel(income.Item1);
             _monthAnalysisModel.Income = income.Item2;
-            _monthAnalysisModel.DepoIncome = income.Item3;
+            _monthAnalysisModel.SteadyIncome = income.Item4;
         }
 
         private void FillIncomeForecastList(DateTime fromDate, DateTime finishMoment)
@@ -90,7 +90,9 @@ namespace Keeper2018
 
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)
         {
-            var expense = _dataModel.CollectExpenseList(startDate, finishMoment, _isYearAnalysisMode);
+            var expense = _dataModel
+                .CollectExpenseList(startDate, finishMoment, _isYearAnalysisMode,
+                  _monthAnalysisModel.Income, _monthAnalysisModel.SteadyIncome);
 
             _monthAnalysisModel.ExpenseViewModel = new BorderedListViewModel(expense.Item1);
             _monthAnalysisModel.Expense = expense.Item2;

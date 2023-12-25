@@ -9,10 +9,10 @@ namespace Keeper2018
 {
     public static class IncomeAnalyzerExt
     {
-        public static Tuple<ListOfLines, decimal, decimal> CollectIncomeList(this KeeperDataModel dataModel,
+        public static Tuple<ListOfLines, decimal, decimal, decimal> CollectIncomeList(this KeeperDataModel dataModel,
             DateTime startDate, DateTime finishMoment, bool isYearAnalysisMode)
         {
-            var list = new ListOfLines(60);
+            var list = new ListOfLines(50);
             list.Add("Доходы", FontWeights.Bold, Brushes.Blue);
 
             var incomeTrans = dataModel.Transactions.Values
@@ -39,7 +39,7 @@ namespace Keeper2018
 
             foreach (var tran in incomeTrans)
             {
-                var amStr = dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd);
+                var amStr = dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd, false);
                 var tag = tran.Tags.First(t => t.Is(185)); // один тэг тип доходов, другой контрагент
 
                 if (tag.Is(186)) // зарплата
@@ -119,41 +119,44 @@ namespace Keeper2018
             list.Add("");
             list.Add($"Итого {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
 
-            return new Tuple<ListOfLines, decimal, decimal>(list, total, depoTotal);
+            return new Tuple<ListOfLines, decimal, decimal, decimal>(list, total, depoTotal, salaryTotal + depoTotal + moneyBackTotal);
         }
 
         private static void InsertYearSalary(ListOfLines list, Dictionary<AccountItemModel, decimal> employers)
         {
             list.Add("");
-            foreach (var pair in employers)
+            foreach (var pair in employers.OrderByDescending(p=>p.Value))
             {
-                list.Add($"   {pair.Value:#,0.00} usd  {pair.Key.Name}", Brushes.Blue);
+                var sum = $"{pair.Value:#,0.00} usd".PadLeft(14);
+                list.Add($" {sum}  {pair.Key.Name}", Brushes.Blue);
             }
-            list.Add($"          Итого зарплата {employers.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
+            list.Add($"   Итого зарплата {employers.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
         }
 
         private static void InsertYearDepositIncome(ListOfLines list, Dictionary<CurrencyCode, decimal> depoByCurrency)
         {
             if (depoByCurrency.Count == 0) return;
             list.Add("");
-            foreach (var pair in depoByCurrency)
+            foreach (var pair in depoByCurrency.OrderByDescending(p=>p.Value))
             {
-                list.Add($"   депозиты в {pair.Key} - {pair.Value:#,0.00} usd", Brushes.Blue);
+                var sum = $"{pair.Value:#,0.00} usd".PadLeft(12);
+                list.Add($" {sum} - депозиты в {pair.Key}", Brushes.Blue);
             }
-            list.Add($"          Итого депозиты {depoByCurrency.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
+            list.Add($"   Итого депозиты {depoByCurrency.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
         }
 
         private static void InsertYearMoneyback(ListOfLines list, Dictionary<AccountItemModel, decimal> cards)
         {
             if (cards.Count == 0) return;
             list.Add("");
-            foreach (var pair in cards)
+            foreach (var pair in cards.OrderByDescending(p=>p.Value))
             {
+                var sum = $"{pair.Value:#,0.00} usd".PadLeft(11);
                 var cardName = string.IsNullOrEmpty(pair.Key.ShortName) ? pair.Key.Name : pair.Key.ShortName;
-                list.Add($"   {pair.Value:#,0.00} usd  {cardName}", Brushes.Blue);
+                list.Add($" {sum}  {cardName}", Brushes.Blue);
 
             }
-            list.Add($"          Итого манибэк {cards.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
+            list.Add($"   Итого манибэк {cards.Values.Sum():#,0.00} usd", FontWeights.Bold, Brushes.Blue);
         }
 
         private static void InsertLinesIntoIncomeList(ListOfLines list, bool isDetailed, List<string> lines, decimal total, string word)
@@ -164,11 +167,11 @@ namespace Keeper2018
             {
                 foreach (var line in lines)
                 {
-                    list.Add($"   {line}", Brushes.Blue);
+                    list.Add($" {line}", Brushes.Blue);
                 }
             }
 
-            list.Add($"          Итого {word} {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
+            list.Add($"   Итого {word} {total:#,0.00} usd", FontWeights.Bold, Brushes.Blue);
         }
 
 

@@ -52,7 +52,7 @@ namespace Keeper2018
                 {
                     var inUsd = dataModel.AmountInUsd(date, pair.Key, pair.Value);
                     amountInUsd = amountInUsd + inUsd;
-                    result.Add($"{offset}{pair.Value:#,0.00} {pair.Key.ToString().ToLower()} (= {inUsd:#,0.00} usd)");
+                    result.Add($"{offset}{pair.Value:#,0.00} {pair.Key.ToString().ToLower()} ({inUsd:#,0.00} usd)");
                 }
             }
             result.Add($"{offset}Итого {amountInUsd:#,0.00} usd", fontWeight);

@@ -20,8 +20,8 @@ namespace Keeper2018
         public BorderedListViewModel BeforeViewModel { get; set; } = new BorderedListViewModel();
         public decimal Before;
         public BorderedListViewModel IncomeViewModel { get; set; }
-        public decimal DepoIncome;
         public decimal Income;
+        public decimal SteadyIncome; // salary + deposit + money-back
         public BorderedListViewModel ExpenseViewModel { get; set; }
         public decimal Expense;
         public decimal LargeExpense;
@@ -50,11 +50,12 @@ namespace Keeper2018
             FinResultViewModel.List.Add("Курсовые разницы", exchangeForeground);
             var dateFormat = IsYearAnalysisMode ? "dd/MM/yyyy" : "dd/MM";
             var till =  $"по {FinishMoment.ToString(dateFormat)}";
-            FinResultViewModel.List.Add($"  с {StartDate.AddMilliseconds(-1).ToString(dateFormat)} - {till}", exchangeForeground);
+            FinResultViewModel.List.Add($" с {StartDate.AddMilliseconds(-1).ToString(dateFormat)} - {till}", exchangeForeground);
             FinResultViewModel.List.AddList(RatesChanges);
             FinResultViewModel.List.Add("");
-            FinResultViewModel.List.Add($"{After:N} - ({Before:N} + {Income:N} - {Expense:N})", exchangeForeground);
-            FinResultViewModel.List.Add($"       = {ExchangeDifference:N} usd", FontWeights.Bold, exchangeForeground);
+            FinResultViewModel.List.Add($"{After:N} - ", exchangeForeground);
+            FinResultViewModel.List.Add($"  - ({Before:N} + {Income:N} - {Expense:N})", exchangeForeground);
+            FinResultViewModel.List.Add($"     = {ExchangeDifference:N} usd", FontWeights.Bold, exchangeForeground);
             FinResultViewModel.List.Add("");
             FinResultViewModel.List.Add("");
 

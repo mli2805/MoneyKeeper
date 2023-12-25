@@ -29,7 +29,7 @@ namespace Keeper2018
             var belkaBrush = belkaFinish < belkaStart ? Brushes.Blue : Brushes.Red;
             var template = finishMoment < denomDate ? "#,0" : "#,0.0000";
 
-            var belka = $"      {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}  ({belkaPercent:0.0}%)";
+            var belka = $"  {belkaName} {belkaWord}: {belkaStart.ToString(template)} - {belkaFinish.ToString(template)}  ({belkaPercent:0.0}%)";
             result.Add(belka, belkaBrush);
 
             var euroStart = rateLine.NbRates.EuroUsdCross;
@@ -37,7 +37,7 @@ namespace Keeper2018
             double euroPercent = (euroFinish - euroStart) / euroFinish * 100;
             var euroWord = euroFinish > euroStart ? "вырос" : "упал";
             var euroBrush = euroFinish > euroStart ? Brushes.Blue : Brushes.Red;
-            var euro = $"      Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}  ({euroPercent:0.0}%)";
+            var euro = $"  Euro {euroWord}: {euroStart:0.000} - {euroFinish:0.000}  ({euroPercent:0.0}%)";
             result.Add(euro, euroBrush);
 
             var rubStart = exchangeRatesLine.RubToUsd != 0 ? exchangeRatesLine.RubToUsd : rateLine.CbrRate.Usd.Value;
@@ -45,7 +45,7 @@ namespace Keeper2018
             var rubPercent = (rubStart - rubFinish) / rubFinish * 100;
             var rubWord = rubFinish < rubStart ? "вырос" : "упал";
             var rubBrush = rubFinish < rubStart ? Brushes.Blue : Brushes.Red;
-            var rub = $"      Rur {rubWord}: {rubStart:0.0} - {rubFinish:0.0}  ({rubPercent:0.0}%)";
+            var rub = $"  Rur {rubWord}: {rubStart:0.0} - {rubFinish:0.0}  ({rubPercent:0.0}%)";
             result.Add(rub, rubBrush);
 
             var gldStartByn = dataModel.MetalRates.LastOrDefault(m => m.Date <= startDate)?.Price ?? 0;
@@ -58,7 +58,7 @@ namespace Keeper2018
                 var gldPercent = (gldFinish - gldStart) / gldFinish * 100;
                 var gldWord = gldFinish > gldStart ? "выросло" : "упало";
                 var gldBrush = gldFinish > gldStart ? Brushes.Blue : Brushes.Red;
-                var gld = $"      Gold {gldWord}: {gldStart:0.0} - {gldFinish:0.0}  ({gldPercent:0.0}%)";
+                var gld = $"  Gold {gldWord}: {gldStart:0.0} - {gldFinish:0.0}  ({gldPercent:0.0}%)";
                 result.Add(gld, gldBrush);
             }
             

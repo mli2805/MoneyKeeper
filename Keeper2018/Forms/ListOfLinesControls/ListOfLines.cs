@@ -13,7 +13,49 @@ namespace Keeper2018
 
         public ListOfLines(int maxWidth) { _maxWidth = maxWidth; }
 
-        private List<string> SplitLine(string str)
+       
+        public void Add(string str, FontWeight fontWeight, Brush foreground, int fontSize = 12)
+        {
+            var ss = TruncateLine(str);
+            foreach (var line in ss)
+                Lines.Add(new ListLine(line, fontWeight, foreground, fontSize, fontSize + 7));
+        }
+
+        public void Add(string str, FontWeight fontWeight, int fontSize = 12)
+        {
+            var ss = TruncateLine(str);
+            foreach (var line in ss)
+                Lines.Add(new ListLine(line, fontWeight, Brushes.Black, fontSize, fontSize + 7 ));
+        }
+
+        public void Add(string str, Brush foreground, int fontSize = 12)
+        {
+            var ss = TruncateLine(str);
+            foreach (var line in ss)
+                Lines.Add(new ListLine(line, FontWeights.Normal, foreground, fontSize, fontSize + 7 ));
+        }
+
+        public void Add(string str, int fontSize = 12)
+        {
+            var ss = TruncateLine(str);
+            foreach (var line in ss)
+                Lines.Add(new ListLine(line, FontWeights.Normal, Brushes.Black, fontSize, fontSize + 7));
+        }
+
+        public void AddRange(IEnumerable<ListLine> lines)
+        {
+            foreach (var line in lines)
+            {
+                Lines.Add(line);
+            }
+        }
+
+        public void AddList(ListOfLines list)
+        {
+            foreach (var listLine in list.Lines) { Lines.Add(listLine); }
+        }
+
+        private List<string> TruncateLine(string str)
         {
             var result = new List<string>();
             while (str.Length > _maxWidth)
@@ -28,42 +70,5 @@ namespace Keeper2018
             return result;
         }
 
-        public void Add(string str, FontWeight fontWeight, Brush foreground, int fontSize = 12)
-        {
-            var ss = SplitLine(str);
-            foreach (var line in ss)
-                Lines.Add(new ListLine(line) { FontWeight = fontWeight, Foreground = foreground, FontSize = fontSize, TextLineHeight = fontSize + 7 });
-        }
-
-        public void Add(string str, FontWeight fontWeight, int fontSize = 12)
-        {
-            var ss = SplitLine(str);
-            foreach (var line in ss)
-                Lines.Add(new ListLine(line) { FontWeight = fontWeight, Foreground = Brushes.Black, FontSize = fontSize, TextLineHeight = fontSize + 7 });
-        }
-
-        public void Add(string str, Brush foreground, int fontSize = 12)
-        {
-            var ss = SplitLine(str);
-            foreach (var line in ss)
-                Lines.Add(new ListLine(line) { FontWeight = FontWeights.Normal, Foreground = foreground, FontSize = fontSize, TextLineHeight = fontSize + 7 });
-        }
-
-        public void Add(string str, int fontSize = 12)
-        {
-            var ss = SplitLine(str);
-            foreach (var line in ss)
-                Lines.Add(new ListLine(line) { FontWeight = FontWeights.Normal, Foreground = Brushes.Black, FontSize = fontSize, TextLineHeight = fontSize + 7 });
-        }
-
-        public void AddRange(List<string> strs)
-        {
-            foreach (var str in strs) { Add(str); }
-        }
-
-        public void AddList(ListOfLines list)
-        {
-            foreach (var listLine in list.Lines) { Lines.Add(listLine); }
-        }
     }
 }
