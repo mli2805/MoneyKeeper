@@ -11,6 +11,16 @@
         WindowStartupLocation="CenterScreen" FocusManager.FocusedElement="{Binding ElementName=MainDatagrid}"
         TextOptions.TextFormattingMode="Display" d:DataContext="{d:DesignData TransactionsViewModel}">
     <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="C">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="Calculator" />
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="F">
+            <cal:ActionMessage MethodName="ActionsMethod">
+                <cal:Parameter Value="Filter" />
+            </cal:ActionMessage>
+        </ei:KeyTrigger>
         <ei:KeyTrigger Key="Space">
             <cal:ActionMessage MethodName="ActionsMethod">
                 <cal:Parameter Value="Edit" />
@@ -39,17 +49,34 @@
     </i:Interaction.Triggers>
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
-            <DatePicker Height="25" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0"
-                        SelectedDate="{Binding Model.AskedDate}" />
-            <Button Height="20" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0"
+            <TabPanel>
+                <Border BorderThickness="1" BorderBrush="LightSlateGray">
+                    <StackPanel Orientation="Horizontal" Margin="4,2">
+                        <DatePicker Width="100" Height="24" SelectedDate="{Binding Model.AskedDate}"
+                                    VerticalAlignment="Center" BorderBrush="Black"/>
+                        <Button Margin="5,0,0,0" Style="{StaticResource MyButtonStyle}" ToolTip="Go"
+                                 cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]">
+                            <Image Source="../../Resources/misc/goto.png" Width="16" Height="16"  Margin="2,0"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </TabPanel>
+
+            <Button Height="24" Margin="5,0,0,0" ToolTip="Go to the end"
                     Style="{StaticResource MyButtonStyle}"
-                    Content="Go" cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]" />
-            <Button Height="20" Width="60" HorizontalAlignment="Left" Margin="5,0,0,0"
-                    Style="{StaticResource MyButtonStyle}"
-                    Content="GoToEnd" cal:Message.Attach="[Event Click] = [Action ActionsMethod(12)]" />
-            <Button Height="25" Width="60" HorizontalAlignment="Left" Margin="100,0,0,0"
-                    Style="{StaticResource MyButtonStyle}"
-                    Content="Filter" Name="ButtonFilter" />
+                    cal:Message.Attach="[Event Click] = [Action ActionsMethod(12)]">
+                            <Image Source="../../Resources/misc/to_end.png" Width="16" Height="16" Margin="2,0"/>
+            </Button>
+
+            <Button Name="ButtonFilter" Margin="100,0,0,0" ToolTip="Filter"
+                    Style="{StaticResource MyButtonStyle}">
+                <Image Source="../../Resources/misc/filter.png" Width="26" Height="24" Margin="2,0" />
+            </Button>
+            <Button Name="Calculator" Margin="15,0,15,0" ToolTip="Calculator"
+                    Style="{StaticResource MyButtonStyle}">
+                <Image Source="../../Resources/mainmenu/calculator.png" Width="24" Height="24" Margin="2,0" />
+            </Button>
+
             <Button Height="25" Width="100" HorizontalAlignment="Right" Margin="0,0,5,0"
                     Style="{StaticResource MyButtonStyle}"
                     Content="Close" IsCancel="True" />

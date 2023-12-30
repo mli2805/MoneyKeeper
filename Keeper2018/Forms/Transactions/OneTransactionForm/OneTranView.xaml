@@ -31,11 +31,18 @@
             <TextBox Name="Comment" HorizontalAlignment="Stretch" Margin="20,0,10,0" MaxWidth="460" VerticalScrollBarVisibility="Auto"
                  Text="{Binding TranInWork.Comment,  UpdateSourceTrigger=PropertyChanged}" Height="54" TextWrapping="WrapWithOverflow"/>
 
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="25" Margin="0,20,20,10">
-                <Button Name="Save" Margin="0,0,15,0" Padding="5,0" Content="Сохранить" Background="Transparent" IsDefault="True"/>
-                <Button Name="OneMore" Margin="0,0,15,0" Padding="5,0" Content="И ещё одну" Background="Transparent" IsDefault="True"/>
-                <Button Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent" IsCancel="True"/>
-            </StackPanel>
+            <DockPanel Height="25" Margin="20,20,20,10">
+                <Button DockPanel.Dock="Right" Name="Cancel" Padding="7,0" Content="Отменить" Background="Transparent" IsCancel="True"/>
+                <Button DockPanel.Dock="Right" Name="OneMore" Margin="0,0,15,0" Padding="5,0" 
+                        Content="И ещё одну" Background="Transparent" IsDefault="True"/>
+                <Button DockPanel.Dock="Right" Name="Save" Margin="0,0,15,0" Padding="5,0" 
+                        Content="Сохранить" Background="Transparent" IsDefault="True"/>
+                <Button DockPanel.Dock="Left" Name="Calculator" Margin="15,-1,15,0" BorderThickness="0"  
+                        Background="Transparent">
+                    <Image Source="../../../Resources/mainmenu/calculator.png" Width="24" Height="24" />
+                </Button>
+                <TextBlock></TextBlock>
+            </DockPanel>
         </StackPanel>
 
         <Button Grid.Column="1" Name="Receipt" VerticalAlignment="Top" Height="20" Width="100" Margin="-170,100,0,0" Background="White" 

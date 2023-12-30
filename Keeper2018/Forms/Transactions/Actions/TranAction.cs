@@ -2,6 +2,8 @@
 {
     public enum TranAction
     {
+        Calculator = 0,
+
         Edit = 1,
         MoveUp,
         MoveDown,

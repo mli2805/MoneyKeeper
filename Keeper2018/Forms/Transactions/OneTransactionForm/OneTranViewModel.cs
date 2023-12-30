@@ -138,6 +138,11 @@ namespace Keeper2018
             return true;
         }
 
+        public void Calculator()
+        {
+            System.Diagnostics.Process.Start("calc");
+        }
+
         public void Save()
         {
             if (!IsValid()) return;

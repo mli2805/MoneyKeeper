@@ -96,10 +96,21 @@ namespace Keeper2018
             }
         }
 
+        public void Calculator()
+        {
+            System.Diagnostics.Process.Start("calc");
+        }
+        
         public void ActionsMethod(TranAction action)
         {
             switch (action)
             {
+                case TranAction.Calculator:
+                    Calculator();
+                    return;
+              case TranAction.Filter:
+                    ButtonFilter();
+                    return;
                 case TranAction.Edit:
                     _tranEditExecutor.EditSelected();
                     return;

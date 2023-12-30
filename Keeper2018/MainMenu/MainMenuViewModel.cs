@@ -314,6 +314,11 @@ namespace Keeper2018
             _ = _dbSaver.SaveWithUi();
         }
 
+        public void Calculator()
+        {
+            System.Diagnostics.Process.Start("calc");
+        }
+
         public void ShowRemindersForm()
         {
             _memosViewModel.Initialize();

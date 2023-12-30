@@ -1164,7 +1164,18 @@
   <ItemGroup>
     <Resource Include="Resources\mainmenu\loading.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\mainmenu\calculator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\misc\filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\misc\goto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\misc\to_end.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
