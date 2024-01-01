@@ -347,15 +347,20 @@
       <DependentUpon>MemosView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Memos\MemosViewModel.cs" />
-    <Compile Include="Forms\MonthAnalysis\DepoRevenueInThisMonthCalculator.cs" />
+    <Compile Include="Forms\MonthAnalysis\IncomeForecast\DepoRevenueInThisMonthCalculator.cs" />
     <Compile Include="DataModel\EntityModels\Transaction\OperationTypeExtantions.cs" />
     <Compile Include="DataModel\IO\DbSaver.cs" />
     <Compile Include="DataModel\Extensions\AmountInUsdProvider.cs" />
     <Compile Include="DataModel\Extensions\BalanceCalculator.cs" />
     <Compile Include="DataModel\Extensions\DepoByRevocabilitySeparator.cs" />
     <Compile Include="Forms\MonthAnalysis\ExpenseAnalyzerExt.cs" />
-    <Compile Include="Forms\MonthAnalysis\IncomeAnalyzerExt.cs" />
-    <Compile Include="Forms\MonthAnalysis\IncomeForecasterExt.cs" />
+    <Compile Include="Forms\MonthAnalysis\Income\IIncomeForPeriod.cs" />
+    <Compile Include="Forms\MonthAnalysis\Income\IncomeAnalyzer.cs" />
+    <Compile Include="Forms\MonthAnalysis\Income\IncomeCategories.cs" />
+    <Compile Include="Forms\MonthAnalysis\Income\IncomeMonthAnalyzer.cs" />
+    <Compile Include="Forms\MonthAnalysis\IncomeForecast\IncomeForecaster.cs" />
+    <Compile Include="Forms\MonthAnalysis\Income\MonthIncome.cs" />
+    <Compile Include="Forms\MonthAnalysis\Income\YearIncome.cs" />
     <Compile Include="Forms\MonthAnalysis\RatesDifferencesProvider.cs" />
     <Compile Include="DataModel\Mappers\ModelsToEntities.cs" />
     <Compile Include="Forms\AccountTree\FolderSummarizing\AccountModelGroups.cs" />
@@ -1048,6 +1053,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="Forms\MonthAnalysis\Income\IncomeYearAnalyzer.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -1176,6 +1182,7 @@
   <ItemGroup>
     <Resource Include="Resources\misc\to_end.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

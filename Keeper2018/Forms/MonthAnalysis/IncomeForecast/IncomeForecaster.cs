@@ -5,7 +5,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public static class IncomeForecasterExt
+    public static class IncomeForecaster
     {
         public static Tuple<List<string>, decimal> ForecastIncome(this KeeperDataModel dataModel, DateTime fromDate, DateTime finishMoment)
         {

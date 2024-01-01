@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -41,12 +42,15 @@ namespace Keeper2018
             trafficCalculator.EvaluateAccount();
             var after = trafficCalculator.TotalAmount;
 
-            var income = _dataModel
-                .CollectIncomeList(startMoment, startMoment.GetEndOfMonth(), false);
-            var expense = _dataModel
-                .CollectExpenseList(startMoment, startMoment.GetEndOfMonth(), false, income.Item2, income.Item4);
+            var result = _dataModel.SortMonthIncome(startMoment, startMoment.GetEndOfMonth());
+            var depoTotal = result.BranchTotal(IncomeCategories.депозиты);
 
-            return new Tuple<decimal, decimal>(income.Item3, after - (before + income.Item2 - expense.Item2) );
+            var total = result.Dict.Sum(v=>v.Value.Sum(c=>c.Item2));
+
+            var expense = _dataModel
+                .CollectExpenseList(startMoment, startMoment.GetEndOfMonth(), false, total);
+
+            return new Tuple<decimal, decimal>(depoTotal, after - (before + total - expense.Item2) );
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Keeper2018
                 : isYearAnalysisMode ? startDate.GetEndOfYear() : startDate.GetEndOfMonth();
             _monthAnalysisModel.FinishMoment = finishMoment;
 
-            FillIncomeList(startDate, finishMoment);
+            _monthAnalysisModel.CollectIncome(_dataModel, startDate, finishMoment, _isYearAnalysisMode);
             if (isCurrentPeriod)
                 // не важно режим года или месяца - доходы предвидятся только на текущий месяц
                 FillIncomeForecastList(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1), finishMoment);
@@ -71,15 +71,6 @@ namespace Keeper2018
             _monthAnalysisModel.Before = trafficCalculator.TotalAmount;
         }
 
-        private void FillIncomeList(DateTime startDate, DateTime finishMoment)
-        {
-            var income = _dataModel.CollectIncomeList(startDate, finishMoment, _isYearAnalysisMode);
-
-            _monthAnalysisModel.IncomeViewModel = new BorderedListViewModel(income.Item1);
-            _monthAnalysisModel.Income = income.Item2;
-            _monthAnalysisModel.SteadyIncome = income.Item4;
-        }
-
         private void FillIncomeForecastList(DateTime fromDate, DateTime finishMoment)
         {
             var forecast = _dataModel.ForecastIncome(fromDate, finishMoment);
@@ -91,8 +82,7 @@ namespace Keeper2018
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)
         {
             var expense = _dataModel
-                .CollectExpenseList(startDate, finishMoment, _isYearAnalysisMode,
-                  _monthAnalysisModel.Income, _monthAnalysisModel.SteadyIncome);
+                .CollectExpenseList(startDate, finishMoment, _isYearAnalysisMode, _monthAnalysisModel.Income);
 
             _monthAnalysisModel.ExpenseViewModel = new BorderedListViewModel(expense.Item1);
             _monthAnalysisModel.Expense = expense.Item2;

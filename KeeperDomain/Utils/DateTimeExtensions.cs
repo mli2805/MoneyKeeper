@@ -19,6 +19,12 @@ namespace KeeperDomain
             return new DateTime(yy, mm, 1, 0, 0, 0, 0);
         }
 
+        public static DateTime GetStartOfYear(this DateTime day)
+        {
+            var yy = day.Year;
+            return new DateTime(yy, 1, 1, 0, 0, 0, 0);
+        }
+
         public static DateTime GetEndOfDate(this DateTime day)
         {
             var yy = day.Year;

@@ -29,6 +29,16 @@ namespace Keeper2018
             Model = _monthAnalyzer.AnalyzeFrom(DateTime.Today.GetStartOfMonth());
         }
 
+        public void ToTheBeginning()
+        {
+            Model = _monthAnalyzer.AnalyzeFrom(new DateTime(2002,1,1), Model.IsYearAnalysisMode);
+        }
+
+        public void ToCurrentMoment()
+        {
+            var newStart = Model.IsYearAnalysisMode ? DateTime.Today.GetStartOfMonth() : DateTime.Today.GetStartOfYear();
+            Model = _monthAnalyzer.AnalyzeFrom(newStart, Model.IsYearAnalysisMode);
+        }
        
         public void LeftArrow()
         {

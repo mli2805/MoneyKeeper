@@ -11,16 +11,15 @@ namespace Keeper2018
     public static class ExpenseAnalyzerExt
     {
         public static Tuple<ListOfLines, decimal, decimal> CollectExpenseList(this KeeperDataModel dataModel,
-            DateTime startDate, DateTime finishMoment, bool isYearAnalysisMode, decimal totalIncome, decimal steadyIncome)
+            DateTime startDate, DateTime finishMoment, bool isYearAnalysisMode, decimal totalIncome)
         {
             var list = new ListOfLines(55);
             list.Add("Расходы", FontWeights.Bold, Brushes.Red);
-            list.Add("");
 
             SortTransactions(dataModel, startDate, finishMoment, isYearAnalysisMode,
                 out var byCategories, out var largeExpenses);
 
-            list.AddRange(EvaluatePercents(byCategories, totalIncome, steadyIncome, isYearAnalysisMode));
+            list.AddRange(EvaluatePercents(byCategories, totalIncome, isYearAnalysisMode));
             list.AddRange(AddLargeExpenseLines(largeExpenses));
 
             list.Add("");
@@ -62,21 +61,22 @@ namespace Keeper2018
         }
 
         private static IEnumerable<ListLine> EvaluatePercents(
-            Dictionary<AccountItemModel, decimal> byCategories, decimal totalIncome, decimal steadyIncome, bool isYearAnalysisMode)
+            Dictionary<AccountItemModel, decimal> byCategories, decimal totalIncome, bool isYearAnalysisMode)
         {
-            decimal totalExpense = byCategories.Values.Sum();
+            if (byCategories.Count == 0) yield break;
+            yield return new ListLine("");
             foreach (var pair in byCategories.OrderByDescending(p => p.Value))
             {
-                var percentStr = pair.Value.ToPercent(totalExpense);
-                var fromSalaryStr = pair.Value.ToPercent(steadyIncome);
                 var fromIncomeStr = pair.Value.ToPercent(totalIncome);
 
                 var amount = $"{pair.Value:#,0.00} usd".PadLeft(isYearAnalysisMode ? 14 : 12);
-                yield return new ListLine($"{amount} {percentStr}  {fromSalaryStr}  {fromIncomeStr} - {pair.Key.Name}",
+                yield return new ListLine($"{amount} {fromIncomeStr} - {pair.Key.Name}",
                     Brushes.Red, 12, 19);
             }
 
-            yield return new ListLine("   %% от всех расходов, от steadyIncome, от всех доходов", FontWeights.Normal, Brushes.Red, 10);
+            var line = new ListLine("     %% вычисляется от всех доходов за период", FontWeights.Normal, Brushes.Black, 11);
+            line.FontFamily = new FontFamily("Arial");
+            yield return line;
         }
 
         private static string ToPercent(this decimal value, decimal total)

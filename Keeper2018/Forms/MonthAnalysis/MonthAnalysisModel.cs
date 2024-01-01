@@ -21,7 +21,6 @@ namespace Keeper2018
         public decimal Before;
         public BorderedListViewModel IncomeViewModel { get; set; }
         public decimal Income;
-        public decimal SteadyIncome; // salary + deposit + money-back
         public BorderedListViewModel ExpenseViewModel { get; set; }
         public decimal Expense;
         public decimal LargeExpense;
