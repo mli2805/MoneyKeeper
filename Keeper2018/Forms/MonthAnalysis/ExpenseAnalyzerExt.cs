@@ -67,7 +67,7 @@ namespace Keeper2018
             yield return new ListLine("");
             foreach (var pair in byCategories.OrderByDescending(p => p.Value))
             {
-                var fromIncomeStr = pair.Value.ToPercent(totalIncome);
+                var fromIncomeStr = totalIncome != 0 ? pair.Value.ToPercent(totalIncome) : "";
 
                 var amount = $"{pair.Value:#,0.00} usd".PadLeft(isYearAnalysisMode ? 14 : 12);
                 yield return new ListLine($"{amount} {fromIncomeStr} - {pair.Key.Name}",
