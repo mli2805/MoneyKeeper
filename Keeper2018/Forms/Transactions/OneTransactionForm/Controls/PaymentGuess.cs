@@ -5,19 +5,19 @@ namespace Keeper2018
 {
     public static class PaymentGuess
     {
-        private static List<int> ERIP = new List<int>
+        private static readonly List<int> Erip = new List<int>
         {
             192, 363, 752, 285,  // коммунальные квартира и дача и кварт1, кредит
             270, 736, 183, // велком, школьная столовая, государство
         };
 
-        private static List<int> Terminal = new List<int> 
+        private static readonly List<int> Terminal = new List<int> 
         { 
             179, 180, 303, 763,     // магазины, рынки, страховщики, бассейн
             353, 255, 254, 253,     // медицина, аптеки(прочее),прочие харчевни, столовая водоканала, 
         };
 
-        private static List<int> CardOther = new List<int>
+        private static readonly List<int> CardOther = new List<int>
         {
             264, 272,  //  минтранс, АЗС(новые)
             220, 831   // банки, eCommerce
@@ -47,7 +47,7 @@ namespace Keeper2018
                         if (tag.Is(grou))
                             return PaymentWay.КартаДругое;
                     }
-                    foreach (var grou in ERIP)
+                    foreach (var grou in Erip)
                     {
                         if (tag.Is(grou))
                             return PaymentWay.КартаЕрип;

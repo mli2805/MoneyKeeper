@@ -27,8 +27,8 @@ namespace Keeper2018
         private bool _isWithIrregulars;
         private bool _isAggregated;
 
-        private List<SalaryLineModel> OnlySalary = new List<SalaryLineModel>();
-        private List<SalaryLineModel> SalaryAndIrregulars = new List<SalaryLineModel>();
+        private readonly List<SalaryLineModel> _onlySalary = new List<SalaryLineModel>();
+        private readonly List<SalaryLineModel> _salaryAndIrregulars = new List<SalaryLineModel>();
 
         private PlotModel _myPlotModel;
 
@@ -80,12 +80,12 @@ namespace Keeper2018
         public void Initialize()
         {
             var mySalaryFolder = _dataModel.AcMoDict[772];
-            BuildFor(mySalaryFolder, OnlySalary);
+            BuildFor(mySalaryFolder, _onlySalary);
 
             var myEmployersFolder = _dataModel.AcMoDict[171];
-            BuildFor(myEmployersFolder, SalaryAndIrregulars);
+            BuildFor(myEmployersFolder, _salaryAndIrregulars);
 
-            Rows = SalaryAndIrregulars;
+            Rows = _salaryAndIrregulars;
             _isWithIrregulars = true;
             _isAggregated = false;
 
@@ -113,8 +113,8 @@ namespace Keeper2018
 
         private void CreateColumnSeries(PlotModel myPlotModel)
         {
-            var aggr = Aggregate(OnlySalary);
-            var aggr2 = Aggregate(SalaryAndIrregulars);
+            var aggr = Aggregate(_onlySalary);
+            var aggr2 = Aggregate(_salaryAndIrregulars);
 
             var salarySeries = new ColumnSeries() { Title = "Salary", FillColor = OxyColors.Blue, IsStacked = true, };
             var irregularSeries = new ColumnSeries() { Title = "Irregular", FillColor = OxyColors.Gray, IsStacked = true, };
@@ -199,7 +199,7 @@ namespace Keeper2018
 
         public void ToggleView()
         {
-            Rows = _isWithIrregulars ? OnlySalary : SalaryAndIrregulars;
+            Rows = _isWithIrregulars ? _onlySalary : _salaryAndIrregulars;
             _isWithIrregulars = !_isWithIrregulars;
             ToggleButtonCaption = _isWithIrregulars ? "Only salary" : "Add irregulars";
         }
@@ -208,8 +208,8 @@ namespace Keeper2018
         {
             Rows = _isAggregated
                 ? _isWithIrregulars
-                    ? SalaryAndIrregulars
-                    : OnlySalary
+                    ? _salaryAndIrregulars
+                    : _onlySalary
                 : Aggregate(Rows);
             _isAggregated = !_isAggregated;
             AggregateButtonCaption = _isAggregated ? "In details" : "Aggregate";

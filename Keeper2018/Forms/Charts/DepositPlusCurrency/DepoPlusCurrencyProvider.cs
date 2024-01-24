@@ -43,7 +43,7 @@ namespace Keeper2018
             var after = trafficCalculator.TotalAmount;
 
             var result = _dataModel.SortMonthIncome(startMoment, startMoment.GetEndOfMonth());
-            var depoTotal = result.BranchTotal(IncomeCategories.депозиты);
+            var depoTotal = result.BranchTotal(IncomeCategories.Депозиты);
 
             var total = result.Dict.Sum(v=>v.Value.Sum(c=>c.Item2));
 

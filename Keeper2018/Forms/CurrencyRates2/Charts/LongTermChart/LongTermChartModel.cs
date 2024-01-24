@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Ignore Spelling: Usd
+
+using System;
 using System.Collections.Generic;
 using KeeperDomain;
 using KeeperDomain.Basket;
@@ -11,10 +13,10 @@ namespace Keeper2018
 {
     public class LongTermChartModel
     {
-        private DateTime dt20160701 = new DateTime(2016, 07, 01); // 10000000;
-        private DateTime dt20000101 = new DateTime(2000, 01, 01); // 1000;
-        private DateTime dt19990111 = new DateTime(1999, 01, 11); // EURO
-        private DateTime dt19980101 = new DateTime(1998, 01, 01); // 1000 RUB
+        private readonly DateTime _dt20160701 = new DateTime(2016, 07, 01); // 10000000;
+        private readonly DateTime _dt20000101 = new DateTime(2000, 01, 01); // 1000;
+        private readonly DateTime _dt19990111 = new DateTime(1999, 01, 11); // EURO
+        private readonly DateTime _dt19980101 = new DateTime(1998, 01, 01); // 1000 RUB
 
         public PlotModel LongTermModel { get; set; }
         public LineSeries UsdNbSeries { get; set; }
@@ -152,8 +154,8 @@ namespace Keeper2018
 
             foreach (var currencyRatesModel in rates)
             {
-                var exchangeRates = keeperDataModel.ExchangeRates.ContainsKey(currencyRatesModel.Date) 
-                    ? keeperDataModel.ExchangeRates[currencyRatesModel.Date]
+                var exchangeRates = keeperDataModel.ExchangeRates.TryGetValue(currencyRatesModel.Date, out var rate) 
+                    ? rate
                     : null;
                 var normalizedRates = GetNormalizedRates(currencyRatesModel.TodayRates, exchangeRates);
 
@@ -163,7 +165,7 @@ namespace Keeper2018
                     UsdMySeries.Points.Add(new DataPoint(day, normalizedRates.UsdMy));
                 RubNbSeries.Points.Add(new DataPoint(day, normalizedRates.RubNb));
                 RubUsdSeries.Points.Add(new DataPoint(day, normalizedRates.RubUsd));
-                if (currencyRatesModel.Date >= dt19990111)
+                if (currencyRatesModel.Date >= _dt19990111)
                 {
                     EurNbSeries.Points.Add(new DataPoint(day, normalizedRates.EurNb));
                     EurUsdSeries.Points.Add(new DataPoint(day, normalizedRates.EurUsd));
@@ -175,7 +177,7 @@ namespace Keeper2018
         private NormalizedRates GetNormalizedRates(OfficialRates officialRates, ExchangeRates exchangeRates)
         {
             var result = new NormalizedRates();
-            if (officialRates.Date >= dt20160701)
+            if (officialRates.Date >= _dt20160701)
             {
                 result.UsdNb = officialRates.NbRates.Usd.Value * 10000000;
                 result.EurNb = officialRates.NbRates.Euro.Value * 10000000;
@@ -184,7 +186,7 @@ namespace Keeper2018
                 result.RubUsd = officialRates.CbrRate.Usd.Value * 1000;
                 result.Basket = BelBaskets.Calculate(officialRates);
             }
-            else if (officialRates.Date >= dt20000101)
+            else if (officialRates.Date >= _dt20000101)
             {
                 result.UsdNb = officialRates.NbRates.Usd.Value * 1000;
                 result.EurNb = officialRates.NbRates.Euro.Value * 1000;
@@ -193,7 +195,7 @@ namespace Keeper2018
                 result.RubUsd = officialRates.CbrRate.Usd.Value * 1000;
                 result.Basket = BelBaskets.Calculate(officialRates) / 10000;
             }
-            else if (officialRates.Date >= dt19990111) // euro and basket start
+            else if (officialRates.Date >= _dt19990111) // euro and basket start
             {
                 result.UsdNb = officialRates.NbRates.Usd.Value;
                 result.EurNb = officialRates.NbRates.Euro.Value;
@@ -202,7 +204,7 @@ namespace Keeper2018
                 result.RubUsd = officialRates.CbrRate.Usd.Value * 1000;
                 result.Basket = BelBaskets.Calculate(officialRates) / 10000000;
             }
-            else if (officialRates.Date >= dt19980101) // russian denomination
+            else if (officialRates.Date >= _dt19980101) // russian denomination
             {
                 result.UsdNb = officialRates.NbRates.Usd.Value;
                 result.RubNb = officialRates.NbRates.Rur.Value;

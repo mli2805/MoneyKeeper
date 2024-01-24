@@ -30,22 +30,22 @@ namespace Keeper2018
 
                 if (tag.Is(186) || tag.Is(212)) // зарплата (+иррациональные)
                 {
-                    result.Add(IncomeCategories.зарплата,
+                    result.Add(IncomeCategories.Зарплата,
                         $"{amStr} {BuildCommentForIncomeTransaction(tran, true)} {tran.Timestamp:dd MMM}", amountInUsd);
                 }
                 else if (tag.Id == 208 || tag.Id == 209) // %% по вкладу (по карточкам тоже) или дивиденды (траст)
                 {
                     var depo = tran.MyAccount.ShortName ?? tran.MyAccount.Name;
-                    result.Add(IncomeCategories.депозиты, $"{amStr} {depo} {tran.Comment} {tran.Timestamp:dd MMM}", amountInUsd);
+                    result.Add(IncomeCategories.Депозиты, $"{amStr} {depo} {tran.Comment} {tran.Timestamp:dd MMM}", amountInUsd);
                 }
                 else if (tag.Id == 701) // manyback
                 {
-                    result.Add(IncomeCategories.манибэк, 
+                    result.Add(IncomeCategories.Манибэк, 
                         $"{amStr} {tran.MyAccount.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}", amountInUsd);
                 }
                 else  // остальные типы доходов
                 {
-                    result.Add(IncomeCategories.прочее, 
+                    result.Add(IncomeCategories.Прочее, 
                         $"{amStr} {BuildCommentForIncomeTransaction(tran, false)} {tran.Timestamp:dd MMM}", amountInUsd);
                 }
             }

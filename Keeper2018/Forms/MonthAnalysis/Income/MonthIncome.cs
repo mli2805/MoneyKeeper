@@ -18,7 +18,7 @@ namespace Keeper2018
 
         public decimal BranchTotal(IncomeCategories branch)
         {
-            return Dict.ContainsKey(branch) ? Dict[branch].Sum(c => c.Item2) : 0;
+            return Dict.TryGetValue(branch, out var value) ? value.Sum(c => c.Item2) : 0;
         }
 
         public void Fill(ListOfLines list)
