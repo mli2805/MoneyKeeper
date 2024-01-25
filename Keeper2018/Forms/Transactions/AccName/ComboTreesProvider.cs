@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Ignore Spelling: Acc
+
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keeper2018

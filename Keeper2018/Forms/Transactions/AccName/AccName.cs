@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Ignore Spelling: Acc
+
+using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 
@@ -21,7 +23,7 @@ namespace Keeper2018
         /// <returns></returns>
         public AccName PopulateFromAccount(AccountItemModel account, List<int> cutBranches)
         {
-            var result = new AccName { Id = account.Id, Name = account.Name, /*ButtonName = account.ButtonName,*/ IsFolder = account.IsFolder };
+            var result = new AccName { Id = account.Id, Name = account.Name, ButtonName = account.ButtonName, IsFolder = account.IsFolder };
 
             foreach (var child in account.Children)
             {
