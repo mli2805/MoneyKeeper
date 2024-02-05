@@ -15,20 +15,35 @@ namespace Keeper2018
             var realIncomes = dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                                                         && t.Timestamp >= fromDate && t.Timestamp <= finishMoment).ToList();
             var salaryAccountId = 204;
+            var prepaymentAccountId = 1008;
             var iitAccountId = 443;
             var optixsoftAccountId = 172;
             if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
                                       && t.Tags.Select(tt => tt.Id).Contains(iitAccountId)))
             {
-                var salaryInUsdValue = 800;
+                var salaryInUsdValue = 700;
                 list.Add($"зарплата ИИТ {salaryInUsdValue} usd");
                 total += salaryInUsdValue;
             }
             if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
                                       && t.Tags.Select(tt => tt.Id).Contains(optixsoftAccountId)))
             {
-                var salaryInUsdValue = 1200;
+                var salaryInUsdValue = 1100;
                 list.Add($"зарплата OptixSoft {salaryInUsdValue} usd");
+                total += salaryInUsdValue;
+            }
+            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(prepaymentAccountId)
+                                                 && t.Tags.Select(tt => tt.Id).Contains(iitAccountId)))
+            {
+                var salaryInUsdValue = 100;
+                list.Add($"аванс ИИТ {salaryInUsdValue} usd");
+                total += salaryInUsdValue;
+            }
+            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(prepaymentAccountId)
+                                      && t.Tags.Select(tt => tt.Id).Contains(optixsoftAccountId)))
+            {
+                var salaryInUsdValue = 100;
+                list.Add($"аванс OptixSoft {salaryInUsdValue} usd");
                 total += salaryInUsdValue;
             }
 

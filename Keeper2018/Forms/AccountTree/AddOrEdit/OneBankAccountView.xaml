@@ -77,7 +77,7 @@
                Stroke="LightGray" StrokeThickness="1,0" />
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Width="70" Text="Название" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <Button Margin="5" Width="70" Height="22" Name="BuildDepoName">Название</Button>
                     <TextBox Margin="5" Width="225" Height="40" HorizontalAlignment="Stretch" TextWrapping="Wrap" BorderBrush="#555555" 
                      Text="{Binding AccountName, Mode=TwoWay}" />
                 </StackPanel>

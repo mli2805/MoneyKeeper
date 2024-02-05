@@ -14,6 +14,10 @@ namespace KeeperDomain
         public bool IsVirtual { get; set; }
         public bool IsPayPass { get; set; } // if not virtual
 
+        public PayCard Clone()
+        {
+            return (PayCard)MemberwiseClone();
+        }
 
         public string Dump()
         {

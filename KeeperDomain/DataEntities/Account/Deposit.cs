@@ -9,6 +9,11 @@ namespace KeeperDomain
 
         public bool IsAdditionsBanned { get; set; }
 
+        public Deposit Clone()
+        {
+            return (Deposit)MemberwiseClone();
+        }
+
         public string Dump()
         {
             return Id + " ; " + IsAdditionsBanned;

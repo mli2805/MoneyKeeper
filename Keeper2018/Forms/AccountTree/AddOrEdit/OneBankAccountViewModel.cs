@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
@@ -11,6 +12,8 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
         private bool _isInAddMode;
+        private bool _isCard;
+
         public AccountItemModel AccountItemModel { get; set; }
         public BankAccountModel BankAccountInWork { get; set; }
 
@@ -27,6 +30,7 @@ namespace Keeper2018
                 _selectedBankName = value;
                 BankAccountInWork.BankId = Banks.First(b => b.Name == _selectedBankName).Id;
                 DepositOffers = _dataModel.DepositOffers.Where(o => o.Bank.Name == _selectedBankName).ToList();
+                SelectedDepositOffer = DepositOffers.LastOrDefault();
                 NotifyOfPropertyChange();
             }
         }
@@ -56,13 +60,25 @@ namespace Keeper2018
                 BankAccountInWork.DepositOfferId =_selectedDepositOffer.Id;
                 BankAccountInWork.MainCurrency = _selectedDepositOffer.MainCurrency;
                 BankAccountInWork.StartDate = DateTime.Today;
-                BankAccountInWork.FinishDate = _selectedDepositOffer.DepositTerm.AddTo(BankAccountInWork.StartDate).GetEndOfMonth();
+                var finish = _selectedDepositOffer.DepositTerm.AddTo(BankAccountInWork.StartDate);
+                BankAccountInWork.FinishDate = _isCard ? finish.GetEndOfMonth() : finish;
                 NotifyOfPropertyChange();
             }
         }
 
         public string ParentName { get; set; }
-        public string AccountName { get; set; }
+
+        private string _accountName;
+        public string AccountName   
+        {
+            get => _accountName;
+            set
+            {
+                if (value == _accountName) return;
+                _accountName = value;
+                NotifyOfPropertyChange(() => AccountName);
+            }
+        }
 
         public bool IsSavePressed { get; set; }
 
@@ -76,6 +92,8 @@ namespace Keeper2018
 
         public void Initialize(AccountItemModel accountItemModel, bool isInAddMode, bool isCard)
         {
+            _isCard = isCard;
+            AccountName = "";
             IsSavePressed = false;
             PayCardSectionVisibility = isCard ? Visibility.Visible : Visibility.Collapsed;
             _isInAddMode = isInAddMode;
@@ -85,9 +103,8 @@ namespace Keeper2018
             Banks = _dataModel.AcMoDict[220].Children.Select(c=>(AccountItemModel)c).ToList();
             BankNames = Banks.Select(b => b.Name).ToList();
 
-
             AccountItemModel = accountItemModel;
-            BankAccountInWork = AccountItemModel.BankAccount;
+            BankAccountInWork = AccountItemModel.BankAccount.Clone();
             ParentName = accountItemModel.Parent.Name;
             PaymentSystems = Enum.GetValues(typeof(PaymentSystem)).Cast<PaymentSystem>().ToList();
 
@@ -97,7 +114,7 @@ namespace Keeper2018
                 if (isCard)
                     BankAccountInWork.PayCard.CardHolder = "LEANID MARHOLIN";
 
-                SelectedBankName = BankNames.FirstOrDefault(b=>b == folder) ?? BankNames.First();
+                _selectedBankName = BankNames.FirstOrDefault(b=>b == folder) ?? BankNames.First();
                 DepositOffers = _dataModel.DepositOffers.Where(o => o.Bank.Name == SelectedBankName).ToList();
                 SelectedDepositOffer = DepositOffers.LastOrDefault();
             }
@@ -106,7 +123,7 @@ namespace Keeper2018
                 AccountName = AccountItemModel.Name;
 
                 var bank = _dataModel.AcMoDict[accountItemModel.BankAccount.BankId];
-                SelectedBankName = bank.Name;
+                _selectedBankName = bank.Name;
                 DepositOffers = _dataModel.DepositOffers.Where(o => o.Bank.Name == SelectedBankName).ToList();
                 _selectedDepositOffer = DepositOffers.FirstOrDefault(o => o.Id == BankAccountInWork.DepositOfferId);
             }
@@ -118,9 +135,17 @@ namespace Keeper2018
             DisplayName = $"{cap} (id = {AccountItemModel.Id})";
         }
 
+        public void BuildDepoName()
+        {
+            AccountName = SelectedBankName + " " + SelectedDepositOffer.Title 
+                          + " " + BankAccountInWork.FinishDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+        }
+
         public void Save()
         {
             IsSavePressed = true;
+
+            AccountItemModel.BankAccount = BankAccountInWork.Clone();
 
             AccountItemModel.Name = string.IsNullOrEmpty(AccountName) ? "Без имени" : AccountName;
             TryClose();

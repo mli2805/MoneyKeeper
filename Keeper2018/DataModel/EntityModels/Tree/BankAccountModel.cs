@@ -49,7 +49,13 @@ namespace Keeper2018
 
         public Deposit Deposit { get; set; }
         public PayCard PayCard { get; set; }
-      
 
+        public BankAccountModel Clone()
+        {
+            var clone = (BankAccountModel)MemberwiseClone();
+            clone.Deposit = Deposit?.Clone();
+            clone.PayCard = PayCard?.Clone();
+            return clone;
+        }
     }
 }
