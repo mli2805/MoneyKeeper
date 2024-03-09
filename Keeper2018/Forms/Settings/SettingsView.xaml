@@ -6,6 +6,10 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" Height="450" Width="800">
     <TabControl SelectedIndex="0">
+        <TabItem Header="Пороги крупных покупок">
+            <ContentControl x:Name="LargeExpenseThresholdViewModel"/>
+        </TabItem>
         <TabItem Header="Общие настойки"/>
+
     </TabControl>
 </Window>

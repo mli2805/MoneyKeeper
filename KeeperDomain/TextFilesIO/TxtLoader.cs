@@ -44,6 +44,8 @@ namespace KeeperDomain
                     CarYearMileages = ReadFileLines<CarYearMileage>(),
 
                     CardBalanceMemos = ReadFileLines<CardBalanceMemo>("MemosCardBalance.txt"),
+                    SalaryChanges = ReadFileLines<SalaryChange>(),
+                    LargeExpenseThresholds = ReadFileLines<LargeExpenseThreshold>(),
                 };
 
                 return new LibResult(true, keeperBin);

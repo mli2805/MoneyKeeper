@@ -6,34 +6,106 @@
         xmlns:keeper2018="clr-namespace:Keeper2018"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:keeperDomain="clr-namespace:KeeperDomain;assembly=KeeperDomain"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cal="http://www.caliburnproject.org"
         Height="700" Width="1800" WindowState="Maximized"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:SalaryViewModel}">
+    <i:Interaction.Triggers>
+        <ei:KeyTrigger Key="O">
+            <cal:ActionMessage MethodName="ShowSalaryChanges"/>
+        </ei:KeyTrigger>
+        <ei:KeyTrigger Key="T">
+            <cal:ActionMessage MethodName="ShowTable"/>
+        </ei:KeyTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-            <Button Name="ToggleView" Content="{Binding ToggleButtonCaption}" Width="120" Margin="5"></Button>
-            <Button Name="AggregateButton" Content="{Binding AggregateButtonCaption}" Width="120" Margin="5"></Button>
-            <Button Name="Close" IsCancel="True" IsDefault="True" Content="Закрыть" Width="120" Margin="5"></Button>
-        </StackPanel>
+        <Button Name="Close" IsCancel="True" IsDefault="True" Content="Закрыть" Width="1"/>
+        <DockPanel DockPanel.Dock="Right" Visibility="{Binding TableVisibility}">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
+                <Button Name="ToggleView" Content="{Binding ToggleButtonCaption}" Width="120" Margin="5"/>
+                <Button Name="AggregateButton" Content="{Binding AggregateButtonCaption}" Width="120" Margin="5"/>
+            </StackPanel>
 
-        <DataGrid DockPanel.Dock="Right" ItemsSource="{Binding Rows}" AutoGenerateColumns="False">
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                    <Setter Property="Background" Value="{Binding Background}"></Setter>
-                </Style>
-            </DataGrid.ItemContainerStyle>
-            <i:Interaction.Behaviors>
-                <keeper2018:ScrollToBottomOnLoadBehavior />
-            </i:Interaction.Behaviors>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header=" Date" Width="80" Binding="{Binding DateStr}" />
-                <DataGridTextColumn Header=" Employer" Width="90" Binding="{Binding Employer}" />
-                <DataGridTextColumn Header="  Amount" Width="150" Binding="{Binding Amount}" />
-                <DataGridTextColumn Header="  Comment" Width="250" Binding="{Binding Comment}" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <oxy:PlotView Model="{Binding MyPlotModel}" Background="Beige" />
+            <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False">
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                        <Setter Property="Background" Value="{Binding Background}"></Setter>
+                    </Style>
+                </DataGrid.ItemContainerStyle>
+                <i:Interaction.Behaviors>
+                    <keeper2018:ScrollToBottomOnLoadBehavior />
+                </i:Interaction.Behaviors>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header=" Date" Width="80" Binding="{Binding DateStr}" />
+                    <DataGridTextColumn Header=" Employer" Width="90" Binding="{Binding Employer}" />
+                    <DataGridTextColumn Header="  Amount" Width="150" Binding="{Binding Amount}" />
+                    <DataGridTextColumn Header="  Comment" Width="250" Binding="{Binding Comment}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <Grid>
+            <oxy:PlotView  Model="{Binding MyPlotModel}" Background="Beige" />
+            <DataGrid  Margin="60, 30, 0,0" Width="620" BorderThickness="0"
+                HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Opacity="1" Background="Beige"
+                ItemsSource="{Binding SalaryChanges}" AutoGenerateColumns="False" CanUserSortColumns="False"
+                Visibility="{Binding SalaryChangesVisibility}">
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" Value="Beige"/>
+                    </Style>
+                    <Style TargetType="{x:Type DataGridRowHeader}">
+                        <Setter Property="Background" Value="Beige"/>
+                    </Style>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="Beige"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="1"/>
+                    <DataGridComboBoxColumn Header="Наниматель" Width="80" SelectedValueBinding="{Binding EmployerId}"
+                                            DisplayMemberPath="Name" SelectedValuePath="Id">
+                        <DataGridComboBoxColumn.ElementStyle>
+                            <Style TargetType="{x:Type ComboBox}">
+                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Employers, 
+                                    RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                            </Style>
+                        </DataGridComboBoxColumn.ElementStyle>
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="{x:Type ComboBox}">
+                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Employers, 
+                                    RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                    </DataGridComboBoxColumn>
 
+                    <DataGridTextColumn Header="Оклад" Width="80" Binding="{Binding Amount}" />
+
+                    <DataGridTemplateColumn Header="Впервые получено" Width="120" >
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <DatePicker SelectedDate="{Binding FirstReceived,
+                                  StringFormat=dd/MM/yyyy,
+                        Mode=TwoWay,
+                        UpdateSourceTrigger=PropertyChanged}"
+                                        d:DataContext="{d:DesignInstance keeperDomain:SalaryChange}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FirstReceived,
+                                  StringFormat=MMMM yyyy}"
+                                       d:DataContext="{d:DesignInstance keeperDomain:SalaryChange}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Примечание" Width="320" Binding="{Binding Comment}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </DockPanel>
-
 </Window>

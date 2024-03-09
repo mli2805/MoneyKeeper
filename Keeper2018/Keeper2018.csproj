@@ -545,6 +545,10 @@
       <DependentUpon>DateMemoSetterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Memos\DateMemoSetterViewModel.cs" />
+    <Compile Include="Forms\Settings\LargeExpenseThresholdView.xaml.cs">
+      <DependentUpon>LargeExpenseThresholdView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings\LargeExpenseThresholdViewModel.cs" />
     <Compile Include="Forms\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -911,6 +915,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Memos\DateMemoSetterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Settings\LargeExpenseThresholdView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

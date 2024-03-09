@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
+using KeeperDomain;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -56,6 +58,7 @@ namespace Keeper2018
         } // "Only salary";
 
         private string _aggregateButtonCaption = "Aggregate";
+
         public string AggregateButtonCaption
         {
             get => _aggregateButtonCaption;
@@ -67,6 +70,34 @@ namespace Keeper2018
             }
         } // "In details"
 
+        private Visibility _tableVisibility;
+        public Visibility TableVisibility
+        {
+            get => _tableVisibility;
+            set
+            {
+                if (value == _tableVisibility) return;
+                _tableVisibility = value;
+                NotifyOfPropertyChange(() => TableVisibility);
+            }
+        }
+
+        public List<SalaryChange> SalaryChanges { get; set; }
+        public List<AccountItemModel> Employers { get; set; }
+
+        private Visibility _salaryChangesVisibility = Visibility.Collapsed;
+        public Visibility SalaryChangesVisibility   
+        {
+            get => _salaryChangesVisibility;
+            set
+            {
+                if (value == _salaryChangesVisibility) return;
+                _salaryChangesVisibility = value;
+                NotifyOfPropertyChange(() => SalaryChangesVisibility);
+            }
+        }
+
+
         public SalaryViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
@@ -74,11 +105,14 @@ namespace Keeper2018
 
         protected override void OnViewLoaded(object view)
         {
-            DisplayName = "Salary";
+            DisplayName = "Salary  (O - оклады, T - таблица)";
         }
 
         public void Initialize()
         {
+            SalaryChanges = _dataModel.SalaryChanges;
+            Employers = _dataModel.AcMoDict[171].Children.Cast<AccountItemModel>().ToList();
+
             var mySalaryFolder = _dataModel.AcMoDict[772];
             BuildFor(mySalaryFolder, _onlySalary);
 
@@ -202,6 +236,18 @@ namespace Keeper2018
             Rows = _isWithIrregulars ? _onlySalary : _salaryAndIrregulars;
             _isWithIrregulars = !_isWithIrregulars;
             ToggleButtonCaption = _isWithIrregulars ? "Only salary" : "Add irregulars";
+        }
+
+        public void ShowSalaryChanges()
+        {
+            SalaryChangesVisibility = SalaryChangesVisibility == Visibility.Visible 
+                ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public void ShowTable()
+        {
+            TableVisibility = TableVisibility == Visibility.Visible
+                ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public void AggregateButton()

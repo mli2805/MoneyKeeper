@@ -144,6 +144,8 @@ namespace Keeper2018
                 }
 
                 bin.ButtonCollections = _keeperDataModel.ButtonCollections.Select(c => c.Map()).ToList();
+                bin.SalaryChanges = _keeperDataModel.SalaryChanges;
+                bin.LargeExpenseThresholds = _keeperDataModel.LargeExpenseThresholds;
 
                 return Task.FromResult(new LibResult(true, bin));
             }

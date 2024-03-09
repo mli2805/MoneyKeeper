@@ -44,6 +44,8 @@ namespace KeeperDomain
         public List<DepositConditions> DepositConditions { get; set; }
 
         public List<CardBalanceMemo> CardBalanceMemos { get; set; }
+        public List<SalaryChange> SalaryChanges { get; set; }
+        public List<LargeExpenseThreshold> LargeExpenseThresholds { get; set; }
 
     }
 }

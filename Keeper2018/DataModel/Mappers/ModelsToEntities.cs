@@ -99,60 +99,7 @@ namespace Keeper2018
             return durationModel.IsPerpetual ? new Duration() : new Duration(durationModel.Value, durationModel.Scale);
         }
 
-        // public static DepositConditions Map(this DepoCondsModel depoCondsModel)
-        // {
-        //     return new DepositConditions()
-        //     {
-        //         Id = depoCondsModel.Id,
-        //         DepositOfferId = depoCondsModel.DepositOfferId,
-        //         DateFrom = depoCondsModel.DateFrom,
-        //
-        //         RateFormula = depoCondsModel.RateFormula,
-        //         IsFactDays = depoCondsModel.IsFactDays,
-        //         EveryStartDay = depoCondsModel.EveryStartDay,
-        //         EveryFirstDayOfMonth = depoCondsModel.EveryFirstDayOfMonth,
-        //         EveryLastDayOfMonth = depoCondsModel.EveryLastDayOfMonth,
-        //         EveryNDays = depoCondsModel.EveryNDays,
-        //         NDays = depoCondsModel.NDays,
-        //         IsCapitalized = depoCondsModel.IsCapitalized,
-        //         HasAdditionalPercent = depoCondsModel.HasAdditionalPercent,
-        //         AdditionalPercent = depoCondsModel.AdditionalPercent,
-        //
-        //         Comment = depoCondsModel.Comment,
-        //     };
-        // }
-
-
-        // public static Car Map(this CarModel carModel)
-        // {
-        //     return new Car()
-        //     {
-        //         Id = carModel.Id,
-        //         CarAccountId = carModel.CarAccountId,
-        //         Title = carModel.Title,
-        //         IssueYear = carModel.IssueYear,
-        //         Vin = carModel.Vin,
-        //         StateRegNumber = carModel.StateRegNumber,
-        //         PurchaseDate = carModel.PurchaseDate,
-        //         PurchaseMileage = carModel.PurchaseMileage,
-        //         SaleDate = carModel.SaleDate,
-        //         SaleMileage = carModel.SaleMileage,
-        //         SupposedSalePrice = carModel.SupposedSalePrice,
-        //     };
-        // }
-        //
-        // public static CarYearMileage Map(this YearMileageModel yearMileageModel)
-        // {
-        //     return new CarYearMileage()
-        //     {
-        //         Id = yearMileageModel.Id,
-        //         CarId = yearMileageModel.CarId,
-        //         YearNumber = yearMileageModel.YearNumber,
-        //         Year = yearMileageModel.Year,
-        //         Odometer = yearMileageModel.Odometer
-        //     };
-        // }
-
+       
         public static Fuelling Map(this FuellingModel fuellingModel)
         {
             return new Fuelling()
@@ -222,5 +169,6 @@ namespace Keeper2018
                 AccountIds = model.AccountModels.Select(m => m.Id).ToList(),
             };
         }
+
     }
 }

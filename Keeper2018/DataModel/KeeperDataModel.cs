@@ -44,5 +44,7 @@ namespace Keeper2018
         public List<CardBalanceMemoModel> CardBalanceMemoModels { get; set; }
 
         public List<ButtonCollectionModel> ButtonCollections { get; set; }
+        public List<SalaryChange> SalaryChanges { get; set; }
+        public List<LargeExpenseThreshold> LargeExpenseThresholds { get; set; }
     }
 }

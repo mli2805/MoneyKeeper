@@ -51,6 +51,8 @@ namespace KeeperDomain
                 WriteFileLines(bin.CarYearMileages);
 
                 WriteFileLines(bin.CardBalanceMemos, "MemosCardBalance.txt");
+                WriteFileLines(bin.SalaryChanges);
+                WriteFileLines(bin.LargeExpenseThresholds);
 
                 return new LibResult();
             }

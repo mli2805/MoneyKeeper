@@ -8,6 +8,12 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
+    /// <summary>
+    /// реальное ведение расходов в программе началось с 1 мая 2010 г
+    /// до этой даты нет отдельных покупок, есть расходы по категории за месяц
+    /// соответственно LargeExpenses до 1.05.2010 не имеют смысла
+    /// </summary>
+
     public static class ExpenseAnalyzerExt
     {
         public static Tuple<ListOfLines, decimal, decimal> CollectExpenseList(this KeeperDataModel dataModel,
@@ -41,6 +47,7 @@ namespace Keeper2018
 
             byCategories = new Dictionary<AccountItemModel, decimal>();
             largeExpenses = new List<Tuple<AccountItemModel, decimal, TransactionModel>>();
+            var largeExpenseThreshold = dataModel.GetLargeExpenseThreshold(startDate, isYearAnalysisMode);
 
             foreach (var tran in expenseTrans)
             {
@@ -54,10 +61,18 @@ namespace Keeper2018
                         byCategories[expenseArticle] += amountInUsd;
                     else byCategories.Add(expenseArticle, amountInUsd);
 
-                    if (Math.Abs(amountInUsd) >= (isYearAnalysisMode ? 800 : 70))
+                    if (Math.Abs(amountInUsd) >= largeExpenseThreshold)
                         largeExpenses.Add(new Tuple<AccountItemModel, decimal, TransactionModel>(expenseArticle, amountInUsd, tran));
                 }
             }
+        }
+
+        // in USD, table starts from 1.05.2010
+        private static decimal GetLargeExpenseThreshold(this KeeperDataModel dataModel, DateTime transactionDate, bool isYearAnalysisMode)
+        {
+            var line = dataModel.LargeExpenseThresholds.LastOrDefault(l => l.FromDate < transactionDate);
+            if (line == null) return decimal.MaxValue;
+            return isYearAnalysisMode ? line.AmountForYearAnalysis : line.Amount;
         }
 
         private static IEnumerable<ListLine> EvaluatePercents(
@@ -126,7 +141,7 @@ namespace Keeper2018
             {
                 if (res.Length + part.Length + 1 > limit)
                 {
-                    yield return line == 1 ? res.TrimEnd() : new string(' ',5) + res.TrimEnd();
+                    yield return line == 1 ? res.TrimEnd() : new string(' ', 5) + res.TrimEnd();
                     line++;
                     res = "";
                 }
@@ -135,7 +150,7 @@ namespace Keeper2018
 
             }
             if (res != "")
-                yield return  line == 1 ? res.TrimEnd() : new string(' ',5) + res.TrimEnd();
+                yield return line == 1 ? res.TrimEnd() : new string(' ', 5) + res.TrimEnd();
         }
     }
 }

@@ -77,7 +77,7 @@ namespace Keeper2018
             _keeperDataModel.FillInAccountTreeAndDict(bin);
 
             _keeperDataModel.AssetRates = bin.TrustAssetRates;
-          
+
             _keeperDataModel.TrustAccounts = bin.TrustAccounts;
             _keeperDataModel.InvestmentAssets = bin.TrustAssets.Select(a => a.Map(_keeperDataModel)).ToList();
             _keeperDataModel.InvestTranModels =
@@ -94,11 +94,13 @@ namespace Keeper2018
 
             if (bin.CardBalanceMemos == null)
                 bin.CardBalanceMemos = new List<CardBalanceMemo>();
-            _keeperDataModel.CardBalanceMemoModels = 
-                bin.CardBalanceMemos.Select(m=>m.Map(_keeperDataModel.AcMoDict[m.AccountId])).ToList();
+            _keeperDataModel.CardBalanceMemoModels =
+                bin.CardBalanceMemos.Select(m => m.Map(_keeperDataModel.AcMoDict[m.AccountId])).ToList();
 
             _keeperDataModel.ButtonCollections = bin.ButtonCollections
                 .Select(b => b.Map(_keeperDataModel.AcMoDict)).ToList();
+            _keeperDataModel.SalaryChanges = bin.SalaryChanges;
+            _keeperDataModel.LargeExpenseThresholds = bin.LargeExpenseThresholds;
         }
     }
 }
