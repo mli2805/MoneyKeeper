@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -11,7 +12,7 @@ namespace Keeper2018
         private readonly AccountItemModel _accountItemModel;
         private readonly Period _period;
         private readonly BalanceWithTurnover _balanceWithTurnover = new BalanceWithTurnover();
-        private readonly SortedDictionary<DateTime, string> _shortTrans = new SortedDictionary<DateTime, string>();
+        private readonly SortedDictionary<DateTime, Tuple<string, Brush>> _coloredTrans = new SortedDictionary<DateTime, Tuple<string, Brush>>();
 
         private readonly TrafficPair _trafficInUsd = new TrafficPair();
         public string Total => $"{_trafficInUsd.Plus:#,0.##} - {Math.Abs(_trafficInUsd.Minus):#,0.##} = {_trafficInUsd.Plus + _trafficInUsd.Minus:#,0.##;- #,0.##} usd ( знак относительно меня)";
@@ -33,12 +34,12 @@ namespace Keeper2018
                 switch (tran.Operation)
                 {
                     case OperationType.Доход:
-                        _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, false, 1, out inUsd));
+                        _coloredTrans.Add(tran.Timestamp, _dataModel.ColoredLine(tran, false, 1, out inUsd));
                         _trafficInUsd.Plus = _trafficInUsd.Plus + inUsd;
                         _balanceWithTurnover.Add(tran.Currency, tran.Amount);
                         break;
                     case OperationType.Расход:
-                        _shortTrans.Add(tran.Timestamp, _dataModel.ShortLine(tran, false, -1, out inUsd));
+                        _coloredTrans.Add(tran.Timestamp, _dataModel.ColoredLine(tran, false, -1, out inUsd));
                         _trafficInUsd.Minus = _trafficInUsd.Minus + inUsd;
                         _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                         break;
@@ -47,7 +48,7 @@ namespace Keeper2018
                         _balanceWithTurnover.Sub(tran.Currency, tran.Amount);
                         break;
                     case OperationType.Обмен:
-                        _shortTrans.Add(tran.Timestamp, _dataModel.ShortLineOneAccountExchange(tran));
+                        _coloredTrans.Add(tran.Timestamp, _dataModel.ColoredLineOneAccountExchange(tran));
                         // я меняю в банке    15000 дол     на    31000 бел
                         //                 Amount/Currency      AmountInReturn/CurrencyInReturn
                         // для меня 15000 дол идут в минус 31000 бел идет в плюс 
@@ -65,15 +66,15 @@ namespace Keeper2018
             }
         }
 
-        public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)
+        public IEnumerable<KeyValuePair<DateTime, ListLine>> ColoredReport(BalanceOrTraffic mode)
         {
-            foreach (var line in _balanceWithTurnover.Report(mode))
+            foreach (var line in _balanceWithTurnover.ColoredReport(mode))
             {
                 yield return line;
             }
-            foreach (var pair in _shortTrans.Reverse())
+            foreach (var pair in _coloredTrans.Reverse())
             {
-                yield return pair;
+                yield return new KeyValuePair<DateTime, ListLine>(pair.Key, new ListLine(pair.Value.Item1, pair.Value.Item2));
             }
         }
     }

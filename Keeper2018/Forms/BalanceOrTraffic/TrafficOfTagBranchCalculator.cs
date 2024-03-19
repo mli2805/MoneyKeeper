@@ -68,9 +68,9 @@ namespace Keeper2018
             }
         }
 
-        public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)
+        public IEnumerable<KeyValuePair<DateTime, ListLine>> ColoredReport(BalanceOrTraffic mode)
         {
-            return _balanceWithTurnovers.Report(mode);
+            return _balanceWithTurnovers.ColoredReport(mode);
         }
     }
 }

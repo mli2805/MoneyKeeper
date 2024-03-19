@@ -40,30 +40,22 @@ namespace Keeper2018
 
         public string PopupContent { get; set; } = "PopupContent";
 
-        private List<KeyValuePair<DateTime, string>> _report;
-        private ObservableCollection<string> _lines;
-        public ObservableCollection<string> Lines
-        {
-            get => _lines;
-            set
-            {
-                if (Equals(value, _lines)) return;
-                _lines = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        private List<KeyValuePair<DateTime, ListLine>> _report;
 
-        private string _selectedLine;
-        public string SelectedLine
+        public RangeObservableCollection<ListLine> ColoredLines { get; set; }
+
+        private ListLine _selectedColoredLine;
+        public ListLine SelectedColoredLine 
         {
-            get => _selectedLine;
+            get => _selectedColoredLine;
             set
             {
                 IsPopupOpen = false;
-                _selectedLine = value;
+                if (Equals(value, _selectedColoredLine)) return;
+                _selectedColoredLine = value;
+                NotifyOfPropertyChange();
             }
         }
-        public string SelectedRowTooltip => SelectedLine;
 
         private string _total;
         public string Total
@@ -84,7 +76,7 @@ namespace Keeper2018
             _balanceDuringTransactionHinter = balanceDuringTransactionHinter;
             ShellPartsBinder = shellPartsBinder;
             ShellPartsBinder.PropertyChanged += ShellPartsBinder_PropertyChanged;
-            Lines = new ObservableCollection<string>();
+            ColoredLines = new RangeObservableCollection<ListLine>();
         }
 
         private void ShellPartsBinder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -94,7 +86,8 @@ namespace Keeper2018
             if (e.PropertyName == "SelectedAccountItemModel" || e.PropertyName == "JustToForceBalanceRecalculation"
                 || e.PropertyName == "TranslatedPeriod" || e.PropertyName == "TranslatedDate")
             {
-                Lines.Clear();
+                //Lines.Clear();
+                ColoredLines.Clear();
                 AccountName = ShellPartsBinder.SelectedAccountItemModel.Name;
                 var isTag = !ShellPartsBinder.SelectedAccountItemModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));
 
@@ -113,8 +106,9 @@ namespace Keeper2018
 
             trafficCalculator.EvaluateAccount();
 
-            _report = trafficCalculator.Report(mode).ToList();
-            foreach (var pair in _report) Lines.Add(pair.Value);
+            _report = trafficCalculator.ColoredReport(mode).ToList();
+            ColoredLines.AddRange(trafficCalculator.ColoredReport(mode).Select(p=>p.Value));
+
             Total = trafficCalculator.Total;
         }
 
@@ -128,8 +122,9 @@ namespace Keeper2018
 
             trafficCalculator.EvaluateAccount();
 
-            _report = trafficCalculator.Report(BalanceOrTraffic.Traffic).ToList();
-            foreach (var pair in _report) Lines.Add(pair.Value);
+            _report = trafficCalculator.ColoredReport(BalanceOrTraffic.Balance).ToList();
+            ColoredLines.AddRange(trafficCalculator.ColoredReport(BalanceOrTraffic.Balance).Select(p=>p.Value));
+
             Total = trafficCalculator.Total;
         }
 
@@ -137,7 +132,7 @@ namespace Keeper2018
         {
             IsPopupOpen = false;
 
-            var pair = _report.FirstOrDefault(p => p.Value == SelectedLine);
+            var pair = _report.FirstOrDefault(p => p.Value.Line == SelectedColoredLine.Line);
             if (pair.Key == DateTime.MinValue) return;
 
             var transaction = _dataModel.Transactions.Values.FirstOrDefault(t=>t.Timestamp == pair.Key);

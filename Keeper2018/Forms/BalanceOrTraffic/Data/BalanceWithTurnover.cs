@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -32,6 +33,26 @@ namespace Keeper2018
                 {
                     var plusMinus = $"{Currencies[pair.Key].Plus:#,0.##} - {Currencies[pair.Key].Minus:#,0.##}";
                     yield return new KeyValuePair<DateTime, string>(new DateTime(), $"{ pair.Key}: {plusMinus} = {total:#,0.##}");
+                }
+            }
+        }
+        public IEnumerable<KeyValuePair<DateTime, ListLine>> ColoredReport(BalanceOrTraffic mode)
+        {
+            foreach (var pair in Currencies)
+            {
+                var total = Currencies[pair.Key].Plus - Currencies[pair.Key].Minus;
+                if (total == 0 && mode == BalanceOrTraffic.Balance) continue;
+
+                if (mode == BalanceOrTraffic.Balance)
+                    yield return new KeyValuePair<DateTime, ListLine>(
+                        new DateTime(), 
+                        new ListLine($"{ pair.Key}: {total:#,0.##}", Brushes.Black));
+                else
+                {
+                    var plusMinus = $"{Currencies[pair.Key].Plus:#,0.##} - {Currencies[pair.Key].Minus:#,0.##}";
+                    yield return new KeyValuePair<DateTime, ListLine>(
+                        new DateTime(), 
+                        new ListLine($"{pair.Key}: {plusMinus} = {total:#,0.##}", Brushes.Black));
                 }
             }
         }

@@ -13,6 +13,8 @@ namespace Keeper2018
         private readonly Period _period;
         private readonly BalanceWithTurnoverOfBranch _balanceWithTurnovers = new BalanceWithTurnoverOfBranch();
         public decimal TotalAmount;
+       
+
         public string Total => TotalAmount.ToString("0.## usd");
 
         public TrafficOfBranchCalculator(KeeperDataModel dataModel, AccountItemModel accountItemModel, Period period)
@@ -80,9 +82,9 @@ namespace Keeper2018
             }
         }
 
-        public IEnumerable<KeyValuePair<DateTime, string>> Report(BalanceOrTraffic mode)
+        public IEnumerable<KeyValuePair<DateTime, ListLine>> ColoredReport(BalanceOrTraffic mode)
         {
-            return _balanceWithTurnovers.Report(mode);
+            return _balanceWithTurnovers.ColoredReport(mode);
         }
 
         public ListOfLines ReportForMonthAnalysis()

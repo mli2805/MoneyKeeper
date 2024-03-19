@@ -411,7 +411,7 @@
     <Compile Include="Forms\BalanceOrTraffic\Data\ReportLine.cs" />
     <Compile Include="Forms\BalanceOrTraffic\ReportLineFactory.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\ITraffic.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\ShortLineFactory.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\ColoredLineFactory.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithTurnoverOfBranch.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithTurnover.cs" />
     <Compile Include="Forms\BalanceOrTraffic\TrafficOfBranchCalculator.cs" />

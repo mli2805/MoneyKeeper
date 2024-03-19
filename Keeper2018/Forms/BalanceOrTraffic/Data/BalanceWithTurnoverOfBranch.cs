@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -40,6 +41,28 @@ namespace Keeper2018
                     foreach (var pair in subReport)
                     {
                         yield return pair;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<KeyValuePair<DateTime, ListLine>> ColoredReport(BalanceOrTraffic mode)
+        {
+            var sum = Summarize();
+            foreach (var tuple in sum.ColoredReport(mode))
+            {
+                yield return tuple;
+            }
+
+            foreach (var child in ChildAccounts)
+            {
+                var subReport = child.Value.ColoredReport(mode).ToList();
+                if (subReport.Any())
+                {
+                    yield return new KeyValuePair<DateTime, ListLine>(new DateTime(), new ListLine($"     {child.Key.Name}", Brushes.Black));
+                    foreach (var tuple in subReport)
+                    {
+                        yield return tuple;
                     }
                 }
             }
