@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Media;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -12,7 +11,7 @@ namespace Keeper2018
         private readonly Period _period;
         private readonly KeeperDataModel _dataModel;
         private readonly BalanceWithTurnover _balanceWithTurnover = new BalanceWithTurnover();
-        private readonly SortedDictionary<DateTime, Tuple<string, Brush>> _coloredTrans = new SortedDictionary<DateTime, Tuple<string, Brush>>();
+        private readonly SortedDictionary<DateTime, ListLine> _coloredTrans = new SortedDictionary<DateTime, ListLine>();
 
         private readonly bool _isDeposit;
         public DepositReportModel DepositReportModel { get; set; }
@@ -170,7 +169,7 @@ namespace Keeper2018
             }
             foreach (var pair in _coloredTrans.Reverse())
             {
-                yield return new KeyValuePair<DateTime, ListLine>(pair.Key, new ListLine(pair.Value.Item1, pair.Value.Item2));
+                yield return pair;
             }
         }
 

@@ -22,7 +22,10 @@
                     <DataTemplate x:Key="LineTemplate" DataType="{x:Type keeper2018:ListLine}">
                         <TextBlock Text="{Binding Line}" Foreground="{Binding Foreground}"></TextBlock>
                     </DataTemplate>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+                                     Color="#B6E6FF"/>
                 </DataGrid.Resources>
+               
                 <DataGrid.Columns>
                     <DataGridTemplateColumn CellTemplate="{StaticResource LineTemplate}" Width="*">
                         <DataGridTemplateColumn.Header>
