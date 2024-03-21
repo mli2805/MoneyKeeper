@@ -4,9 +4,9 @@ namespace Keeper2018
 {
     public class TranFilter
     {
-        private TranWrappedForDatagrid _wrappedTran;
+        private TranWrappedForDataGrid _wrappedTran;
         private FilterModel _filterModel;
-        public bool Filter(TranWrappedForDatagrid wrappedTran, FilterModel filterModel)
+        public bool Filter(TranWrappedForDataGrid wrappedTran, FilterModel filterModel)
         {
             _wrappedTran = wrappedTran;
             if (filterModel == null) return true;

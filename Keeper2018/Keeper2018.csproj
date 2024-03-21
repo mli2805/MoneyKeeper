@@ -676,7 +676,7 @@
     <Compile Include="Forms\Transactions\TranModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
-    <Compile Include="Forms\Transactions\TranWrappedForDatagrid.cs" />
+    <Compile Include="Forms\Transactions\TranWrappedForDataGrid.cs" />
     <Compile Include="MainMenu\MainMenuAction.cs" />
     <Compile Include="Forms\CurrencyRates2\Official\OfficialRatesModel.cs" />
     <Compile Include="Forms\Shell\IShell.cs" />

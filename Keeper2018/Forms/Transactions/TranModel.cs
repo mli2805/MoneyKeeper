@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
@@ -9,8 +10,8 @@ namespace Keeper2018
 {
     public class TranModel : PropertyChangedBase
     {
-        private ObservableCollection<TranWrappedForDatagrid> _rows;
-        public ObservableCollection<TranWrappedForDatagrid> Rows
+        private ObservableCollection<TranWrappedForDataGrid> _rows;
+        public ObservableCollection<TranWrappedForDataGrid> Rows
         {
             get => _rows;
             set
@@ -22,14 +23,14 @@ namespace Keeper2018
         }
         public ICollectionView SortedRows { get; set; }
 
-        private TranWrappedForDatagrid _selectedTranWrappedForDatagrid;
-        public TranWrappedForDatagrid SelectedTranWrappedForDatagrid
+        private TranWrappedForDataGrid _selectedTranWrappedForDataGrid;
+        public TranWrappedForDataGrid SelectedTranWrappedForDataGrid
         {
-            get => _selectedTranWrappedForDatagrid;
+            get => _selectedTranWrappedForDataGrid;
             set
             {
-                if (Equals(value, _selectedTranWrappedForDatagrid)) return;
-                _selectedTranWrappedForDatagrid = value;
+                if (Equals(value, _selectedTranWrappedForDataGrid)) return;
+                _selectedTranWrappedForDataGrid = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -50,34 +51,43 @@ namespace Keeper2018
 
         public void Initialize()
         {
+            Debug.WriteLine($"{_dataModel.Transactions.Count} transactions");
+
             _tranFilter = new TranFilter();
 
-            Rows = new ObservableCollection<TranWrappedForDatagrid>(
-                _dataModel.Transactions.Values.Select(t => new TranWrappedForDatagrid(t)));
+            Rows = new ObservableCollection<TranWrappedForDataGrid>(
+                _dataModel.Transactions.Values.Select(t => new TranWrappedForDataGrid(t)));
             Rows.CollectionChanged += Rows_CollectionChanged;
+
+            //Debug.WriteLine($"{Rows.Count(r => r.IsSelected)} selected transactions");
+            foreach (var tranWrappedForDataGrid in Rows)
+            {
+                tranWrappedForDataGrid.IsSelected = false;
+            }
+            //Debug.WriteLine($"and now {Rows.Count(r => r.IsSelected)} selected transactions");
 
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
             SortedRows.Filter += Filter;
             SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
-            // SortedRows.CurrentChanged += SortedRows_CurrentChanged;
+            //SortedRows.CurrentChanged += SortedRows_CurrentChanged;
 
             SortedRows.MoveCurrentToLast();
-            SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)SortedRows.CurrentItem;
-            SelectedTranWrappedForDatagrid.IsSelected = true;
+            SelectedTranWrappedForDataGrid = (TranWrappedForDataGrid)SortedRows.CurrentItem;
+            SelectedTranWrappedForDataGrid.IsSelected = true;
 
             IsCollectionChanged = false;
         }
 
-        // private void SortedRows_CurrentChanged(object sender, EventArgs e)
-        // {
-        //     var wrapped = (TranWrappedForDatagrid)((ICollectionView) sender).CurrentItem;
-        //     if (wrapped != null)
-        //         Console.WriteLine($@"current tran is {wrapped.Tran.Timestamp}");
-        // }
+        //private void SortedRows_CurrentChanged(object sender, EventArgs e)
+        //{
+        //    var wrapped = (TranWrappedForDataGrid)((ICollectionView)sender).CurrentItem;
+        //    if (wrapped != null)
+        //        Console.WriteLine($@"current tran is {wrapped.Tran.Timestamp}");
+        //}
 
         private bool Filter(object o)
         {
-            var t = (TranWrappedForDatagrid)o;
+            var t = (TranWrappedForDataGrid)o;
             return _tranFilter.Filter(t, _filterModel);
         }
         private void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

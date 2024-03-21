@@ -8,7 +8,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" Height="800" Width="1000" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
-        WindowStartupLocation="CenterScreen" FocusManager.FocusedElement="{Binding ElementName=MainDatagrid}"
+        WindowStartupLocation="CenterScreen" FocusManager.FocusedElement="{Binding ElementName=MainDataGrid}"
         TextOptions.TextFormattingMode="Display" d:DataContext="{d:DesignData TransactionsViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="C">
@@ -81,8 +81,8 @@
                     Style="{StaticResource MyButtonStyle}"
                     Content="Close" IsCancel="True" />
         </DockPanel>
-        <DataGrid Name="MainDatagrid" ItemsSource="{Binding Model.Rows}" 
-                  SelectedItem="{Binding Model.SelectedTranWrappedForDatagrid, Mode=TwoWay}"
+        <DataGrid Name="MainDataGrid" ItemsSource="{Binding Model.Rows}" 
+                  SelectedItem="{Binding Model.SelectedTranWrappedForDataGrid, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" IsSynchronizedWithCurrentItem="True"
                   SelectionChanged="OnSelectionChanged">
@@ -135,9 +135,9 @@
                 <DataGridTextColumn Header=" Timestamp" Width="100"
                                     Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy HH:mm'}" />
                 <DataGridTextColumn Header="R" Width="10" Binding="{Binding Tran.Receipt}" />
-                <DataGridTextColumn Header="  Account" Width="250*" Binding="{Binding AccountForDatagrid}" />
-                <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDatagrid}" />
-                <DataGridTextColumn Header="  Tags" Width="200*" Binding="{Binding TagsForDatagrid}" />
+                <DataGridTextColumn Header="  Account" Width="250*" Binding="{Binding AccountForDataGrid}" />
+                <DataGridTextColumn Header="  Amount" Width="120*" Binding="{Binding AmountForDataGrid}" />
+                <DataGridTextColumn Header="  Tags" Width="200*" Binding="{Binding TagsForDataGrid}" />
                 <DataGridTextColumn Header="  Comment" Width="250*" Binding="{Binding Tran.Comment}" />
             </DataGrid.Columns>
         </DataGrid>

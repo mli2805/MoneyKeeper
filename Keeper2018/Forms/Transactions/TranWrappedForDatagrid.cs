@@ -5,7 +5,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class TranWrappedForDatagrid : PropertyChangedBase
+    public class TranWrappedForDataGrid : PropertyChangedBase
     {
         private TransactionModel _tran;
         public TransactionModel Tran
@@ -18,26 +18,26 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(nameof(DayBackgroundColor));
                 NotifyOfPropertyChange(nameof(TransactionFontColor));
-                NotifyOfPropertyChange(nameof(AccountForDatagrid));
-                NotifyOfPropertyChange(nameof(AmountForDatagrid));
-                NotifyOfPropertyChange(nameof(TagsForDatagrid));
+                NotifyOfPropertyChange(nameof(AccountForDataGrid));
+                NotifyOfPropertyChange(nameof(AmountForDataGrid));
+                NotifyOfPropertyChange(nameof(TagsForDataGrid));
             }
         }
 
-        public TranWrappedForDatagrid(TransactionModel tran)
+        public TranWrappedForDataGrid(TransactionModel tran)
         {
             Tran = tran;
         }
 
-        public string AccountForDatagrid => GetAccountForDatagrid();
-        public string AmountForDatagrid => GetAmountForDatagrid();
-        public string TagsForDatagrid => GetTagsForDatagrid();
+        public string AccountForDataGrid => GetAccountForDataGrid();
+        public string AmountForDataGrid => GetAmountForDataGrid();
+        public string TagsForDataGrid => GetTagsForDataGrid();
 
-        private string GetAccountForDatagrid()
+        private string GetAccountForDataGrid()
         {
             return IsOneAccountTransaction() ? Tran.MyAccount.Name : $"{Tran.MyAccount.Name} ->\n  {Tran.MySecondAccount.Name}";
         }
-        private string GetAmountForDatagrid()
+        private string GetAmountForDataGrid()
         {
             return IsOneAmountTransaction()
                 ? ShowAmount(Tran.Amount, Tran.Currency)
@@ -49,7 +49,7 @@ namespace Keeper2018
                 ? $" {amount:#,0} {currency.ToString().ToLower()}"
                 : $" {amount:#,0.00} {currency.ToString().ToLower()}";
         }
-        private string GetTagsForDatagrid()
+        private string GetTagsForDataGrid()
         {
             string result = "";
             if (Tran.Tags.Count > 0) result = Tran.Tags[0].ToString();
@@ -89,7 +89,7 @@ namespace Keeper2018
         private bool _isSelected;
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 if (value.Equals(_isSelected)) return;

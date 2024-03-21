@@ -37,8 +37,8 @@ namespace KeeperDomain
                 WriteFileLines(bin.ButtonCollections);
 
                 var transactions = bin.Transactions
-                    .OrderBy(t => t.Timestamp).
-                    Select(l => l.Dump());
+                    .OrderBy(t => t.Timestamp)
+                    .Select(l => l.Dump());
                 WriteTransactionsContent(PathFactory.GetBackupFilePath("Transactions.txt"), transactions);
 
                 WriteFileLines(bin.Fuellings);

@@ -59,13 +59,6 @@ namespace Keeper2018
             IsFirstLaunch = false;
         }
 
-        // ради быстродействия на старом компе. но тогда не показывает транзакции введенные через траст
-        // public void ReInitializeOnlyAccountLists()
-        // {
-        //     _comboTreesProvider.Initialize();
-        //     _filterModel.Initialize();
-        // }
-
         public void ButtonFilter()
         {
             var wm = new WindowManager();
@@ -79,12 +72,12 @@ namespace Keeper2018
 
         private void FilterModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (Model.SelectedTranWrappedForDatagrid != null)
-                Model.SelectedTranWrappedForDatagrid.IsSelected = false;
+            if (Model.SelectedTranWrappedForDataGrid != null)
+                Model.SelectedTranWrappedForDataGrid.IsSelected = false;
 
             Model.SortedRows.Refresh();
             Model.SortedRows.MoveCurrentToLast();
-            Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
+            Model.SelectedTranWrappedForDataGrid = (TranWrappedForDataGrid)Model.SortedRows.CurrentItem;
         }
 
         private void FilterViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -92,7 +85,7 @@ namespace Keeper2018
             if (e.PropertyName == "IsActive" && _filterViewModel.IsActive == false)
             {
                 Model.SortedRows.MoveCurrentToLast();
-                Model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)Model.SortedRows.CurrentItem;
+                Model.SelectedTranWrappedForDataGrid = (TranWrappedForDataGrid)Model.SortedRows.CurrentItem;
             }
         }
 

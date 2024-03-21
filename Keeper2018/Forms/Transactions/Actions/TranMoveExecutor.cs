@@ -74,7 +74,7 @@ namespace Keeper2018
 
         private void GetSelected(Destination destination)
         {
-            var selected = _model.SelectedTranWrappedForDatagrid.Tran;
+            var selected = _model.SelectedTranWrappedForDataGrid.Tran;
             if (selected.Receipt != 0)
             {
                 _selectedTransactions = _model.Rows.Where(t =>

@@ -16,19 +16,19 @@ namespace Keeper2018
             var askedTran = _model.Rows.FirstOrDefault(t => t.Tran.Timestamp >= _model.AskedDate);
             if (askedTran != null)
             {
-                _model.SelectedTranWrappedForDatagrid.IsSelected = false;
+                _model.SelectedTranWrappedForDataGrid.IsSelected = false;
 
                 _model.SortedRows.MoveCurrentTo(askedTran);
-                _model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)_model.SortedRows.CurrentItem;
+                _model.SelectedTranWrappedForDataGrid = (TranWrappedForDataGrid)_model.SortedRows.CurrentItem;
             }
         }
 
         public void SelectLast()
         {
-            _model.SelectedTranWrappedForDatagrid.IsSelected = false;
+            _model.SelectedTranWrappedForDataGrid.IsSelected = false;
 
             _model.SortedRows.MoveCurrentToLast();
-            _model.SelectedTranWrappedForDatagrid = (TranWrappedForDatagrid)_model.SortedRows.CurrentItem;
+            _model.SelectedTranWrappedForDataGrid = (TranWrappedForDataGrid)_model.SortedRows.CurrentItem;
         }
     }
 }

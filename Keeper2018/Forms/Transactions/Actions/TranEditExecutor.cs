@@ -27,7 +27,7 @@ namespace Keeper2018
 
         public void EditSelected()
         {
-            var selectedTran = _model.SelectedTranWrappedForDatagrid.Tran;
+            var selectedTran = _model.SelectedTranWrappedForDataGrid.Tran;
 
             _oneTranViewModel.Init(selectedTran, false);
             bool? result = _windowManager.ShowDialog(_oneTranViewModel);
@@ -87,9 +87,9 @@ namespace Keeper2018
                 _dataModel.Transactions[wrapped.Tran.Id].Timestamp = wrapped.Tran.Timestamp;
             }
 
-            var tranWrappedForDatagrid = new TranWrappedForDatagrid(tran);
+            var tranWrappedForDatagrid = new TranWrappedForDataGrid(tran);
             _model.Rows.Add(tranWrappedForDatagrid);
-            _model.SelectedTranWrappedForDatagrid = tranWrappedForDatagrid;
+            _model.SelectedTranWrappedForDataGrid = tranWrappedForDatagrid;
 
             _dataModel.Transactions.Add(tran.Id, tran);
         }
@@ -112,7 +112,7 @@ namespace Keeper2018
 
         private TransactionModel PrepareTranForAdding()
         {
-            var tranForAdding = _model.SelectedTranWrappedForDatagrid.Tran.Clone();
+            var tranForAdding = _model.SelectedTranWrappedForDataGrid.Tran.Clone();
             tranForAdding.Timestamp = tranForAdding.Timestamp.AddMinutes(1);
             tranForAdding.Amount = 0;
             tranForAdding.AmountInReturn = 0;
@@ -122,7 +122,7 @@ namespace Keeper2018
 
         public void DeleteSelected()
         {
-            if (_model.SelectedTranWrappedForDatagrid.Tran.Receipt != 0)
+            if (_model.SelectedTranWrappedForDataGrid.Tran.Receipt != 0)
             {
                 _windowManager.ShowDialog(_askReceiptDeletionViewModel);
                 if (_askReceiptDeletionViewModel.Result == 0)
@@ -139,8 +139,8 @@ namespace Keeper2018
 
         private void DeleteOneTransaction()
         {
-            var trId = _model.SelectedTranWrappedForDatagrid.Tran.Id;
-            var wrappedTrans = new List<TranWrappedForDatagrid>() { _model.SelectedTranWrappedForDatagrid };
+            var trId = _model.SelectedTranWrappedForDataGrid.Tran.Id;
+            var wrappedTrans = new List<TranWrappedForDataGrid>() { _model.SelectedTranWrappedForDataGrid };
             Delete(wrappedTrans);
             var fuellingModel = _dataModel.FuellingVms.FirstOrDefault(f => f.Transaction.Id == trId);
             if (fuellingModel != null)
@@ -150,13 +150,13 @@ namespace Keeper2018
         private void DeleteWholeReceipt()
         {
             var wrappedTrans = _model.Rows.Where(t =>
-                t.Tran.Timestamp.Date == _model.SelectedTranWrappedForDatagrid.Tran.Timestamp.Date
-                && t.Tran.Receipt == _model.SelectedTranWrappedForDatagrid.Tran.Receipt).ToList();
+                t.Tran.Timestamp.Date == _model.SelectedTranWrappedForDataGrid.Tran.Timestamp.Date
+                && t.Tran.Receipt == _model.SelectedTranWrappedForDataGrid.Tran.Receipt).ToList();
 
             Delete(wrappedTrans);
         }
 
-        private void Delete(List<TranWrappedForDatagrid> wrappedTrans)
+        private void Delete(List<TranWrappedForDataGrid> wrappedTrans)
         {
             int n = _model.Rows.IndexOf(wrappedTrans.First());
             foreach (var wrappedTran in wrappedTrans)
@@ -167,7 +167,7 @@ namespace Keeper2018
 
             if (n >= _model.Rows.Count)
                 n = _model.Rows.Count - 1;
-            _model.SelectedTranWrappedForDatagrid = _model.Rows.ElementAt(n);
+            _model.SelectedTranWrappedForDataGrid = _model.Rows.ElementAt(n);
         }
     }
 }
