@@ -674,6 +674,14 @@
     <Compile Include="Forms\Transactions\Actions\TranMoveExecutor.cs" />
     <Compile Include="Forms\Transactions\Actions\TranSelectExecutor.cs" />
     <Compile Include="Forms\Transactions\TranModel.cs" />
+    <Compile Include="Forms\Transacts\Actions\TransactsEditExecutor.cs" />
+    <Compile Include="Forms\Transacts\Actions\TransactsGotoExecutor.cs" />
+    <Compile Include="Forms\Transacts\Actions\TransactsMoveExecutor.cs" />
+    <Compile Include="Forms\Transacts\TransactsModel.cs" />
+    <Compile Include="Forms\Transacts\TransactsView.xaml.cs">
+      <DependentUpon>TransactsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transacts\TransactsViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Forms\Shell\ShellPartsBinder.cs" />
     <Compile Include="Forms\Transactions\TranWrappedForDataGrid.cs" />
@@ -1017,6 +1025,10 @@
     <Page Include="Forms\Transactions\TagPickingControl\TagPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transacts\TransactsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainMenu\MainMenuView.xaml">
       <SubType>Designer</SubType>

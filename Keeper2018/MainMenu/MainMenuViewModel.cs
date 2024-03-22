@@ -13,6 +13,7 @@ namespace Keeper2018
         private readonly RatesViewModel _ratesViewModel;
         private readonly MonthAnalysisViewModel _monthAnalysisViewModel;
         private readonly TransactionsViewModel _transactionsViewModel;
+        private readonly TransactsViewModel _transactsViewModel;
         private readonly BankOffersViewModel _bankOffersViewModel;
         private readonly SettingsViewModel _settingsViewModel;
         private readonly MemosViewModel _memosViewModel;
@@ -111,7 +112,9 @@ namespace Keeper2018
 
         public MainMenuViewModel(IWindowManager windowManager, KeeperDataModel keeperDataModel,
             DbSaver dbSaver, ShellPartsBinder shellPartsBinder,
-            TransactionsViewModel transactionsViewModel, RatesViewModel ratesViewModel,
+            TransactionsViewModel transactionsViewModel, 
+            TransactsViewModel transactsViewModel,
+            RatesViewModel ratesViewModel,
             MonthAnalysisViewModel monthAnalysisViewModel, BankOffersViewModel bankOffersViewModel,
              SettingsViewModel settingsViewModel, MemosViewModel memosViewModel,
             CarsViewModel carsViewModel, ExpenseByCategoriesViewModel expenseByCategoriesViewModel,
@@ -129,6 +132,7 @@ namespace Keeper2018
             _ratesViewModel = ratesViewModel;
             _monthAnalysisViewModel = monthAnalysisViewModel;
             _transactionsViewModel = transactionsViewModel;
+            _transactsViewModel = transactsViewModel;
             _bankOffersViewModel = bankOffersViewModel;
             _settingsViewModel = settingsViewModel;
             _memosViewModel = memosViewModel;
@@ -204,6 +208,12 @@ namespace Keeper2018
                 SetBellPath();
                 SaveAllDb();
             }
+        }
+
+        public void ShowTransactsForm()
+        {
+            _transactsViewModel.Initialize();
+            _windowManager.ShowDialog(_transactsViewModel);
         }
 
         public void ShowRatesForm()

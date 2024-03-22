@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class TranModel : PropertyChangedBase
+    public class TransactsModel : PropertyChangedBase
     {
+        private readonly KeeperDataModel _dataModel;
+        private readonly FilterModel _filterModel;
+        private TranFilter _tranFilter;
+
         public ObservableCollection<TranWrappedForDataGrid> Rows { get; set; }
-       
-        public ICollectionView SortedRows { get; set; }
 
         private TranWrappedForDataGrid _selectedTranWrappedForDataGrid;
         public TranWrappedForDataGrid SelectedTranWrappedForDataGrid
@@ -22,19 +23,16 @@ namespace Keeper2018
             {
                 if (Equals(value, _selectedTranWrappedForDataGrid)) return;
                 _selectedTranWrappedForDataGrid = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => SelectedTranWrappedForDataGrid);
             }
         }
 
+        public ICollectionView SortedRows { get; set; }
+
         public DateTime AskedDate { get; set; } = DateTime.Now;
         public bool IsCollectionChanged { get; set; }
-
-        private readonly KeeperDataModel _dataModel;
-        private readonly FilterModel _filterModel;
-        private TranFilter _tranFilter;
-
-
-        public TranModel(KeeperDataModel dataModel, FilterModel filterModel)
+      
+        public TransactsModel(KeeperDataModel dataModel, FilterModel filterModel)
         {
             _dataModel = dataModel;
             _filterModel = filterModel;
@@ -42,14 +40,13 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Debug.WriteLine($"{_dataModel.Transactions.Count} transactions");
-
             _tranFilter = new TranFilter();
-
+           
             Rows = new ObservableCollection<TranWrappedForDataGrid>(
-                _dataModel.Transactions.Values.Select(t => new TranWrappedForDataGrid(t)));
+                _dataModel.Transactions.Values.Select(t=>new TranWrappedForDataGrid(t)));
+            SelectedTranWrappedForDataGrid = Rows.Last();
             Rows.CollectionChanged += Rows_CollectionChanged;
-          
+
             SortedRows = CollectionViewSource.GetDefaultView(Rows);
             SortedRows.Filter += Filter;
             SortedRows.SortDescriptions.Add(new SortDescription("Tran.Timestamp", ListSortDirection.Ascending));
@@ -57,8 +54,6 @@ namespace Keeper2018
             SortedRows.MoveCurrentToLast();
             SelectedTranWrappedForDataGrid = (TranWrappedForDataGrid)SortedRows.CurrentItem;
             SelectedTranWrappedForDataGrid.IsSelected = true;
-
-            IsCollectionChanged = false;
         }
 
         private bool Filter(object o)
@@ -66,10 +61,10 @@ namespace Keeper2018
             var t = (TranWrappedForDataGrid)o;
             return _tranFilter.Filter(t, _filterModel);
         }
+
         private void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsCollectionChanged = true;
         }
-
     }
 }

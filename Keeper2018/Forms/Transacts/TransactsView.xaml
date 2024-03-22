@@ -1,14 +1,15 @@
-﻿<Window x:Class="Keeper2018.TransactionsView"
+﻿<Window x:Class="Keeper2018.TransactsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:keeper2018="clr-namespace:Keeper2018"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
         xmlns:cal="http://www.caliburnproject.org"
-        mc:Ignorable="d" Height="800" Width="1000" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
-        TextOptions.TextFormattingMode="Display" d:DataContext="{d:DesignData TransactionsViewModel}">
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        mc:Ignorable="d"
+        Height="800" Width="1000" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
+        d:DataContext="{d:DesignData TransactsViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="C">
             <cal:ActionMessage MethodName="ActionsMethod">
@@ -45,7 +46,7 @@
                 <cal:Parameter Value="Delete" />
             </cal:ActionMessage>
         </ei:KeyTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers> 
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
             <TabPanel>
@@ -54,7 +55,7 @@
                         <DatePicker Width="100" Height="24" SelectedDate="{Binding Model.AskedDate}"
                                     VerticalAlignment="Center" BorderBrush="Black"/>
                         <Button Margin="5,0,0,0" Style="{StaticResource MyButtonStyle}" ToolTip="Go"
-                                 cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]">
+                                cal:Message.Attach="[Event Click] = [Action ActionsMethod(11)]">
                             <Image Source="../../Resources/misc/goto.png" Width="16" Height="16"  Margin="2,0"/>
                         </Button>
                     </StackPanel>
@@ -64,7 +65,7 @@
             <Button Height="24" Margin="5,0,0,0" ToolTip="Go to the end"
                     Style="{StaticResource MyButtonStyle}"
                     cal:Message.Attach="[Event Click] = [Action ActionsMethod(12)]">
-                            <Image Source="../../Resources/misc/to_end.png" Width="16" Height="16" Margin="2,0"/>
+                <Image Source="../../Resources/misc/to_end.png" Width="16" Height="16" Margin="2,0"/>
             </Button>
 
             <Button Name="ButtonFilter" Margin="100,0,0,0" ToolTip="Filter"
@@ -80,15 +81,15 @@
                     Style="{StaticResource MyButtonStyle}"
                     Content="Close" IsCancel="True" />
         </DockPanel>
-        <DataGrid Name="MainDataGrid" ItemsSource="{Binding Model.Rows}" 
+        <DataGrid ItemsSource="{Binding Model.Rows}"
                   SelectedItem="{Binding Model.SelectedTranWrappedForDataGrid, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
-                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" 
+                  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single"
                   SelectionChanged="OnSelectionChanged">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />
-            </i:Interaction.Behaviors>
+            </i:Interaction.Behaviors> 
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Изменить (Space)" cal:Message.Attach="[Event Click] = [Action ActionsMethod(1)]"
@@ -129,7 +130,7 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </DataGrid.ItemContainerStyle>
+            </DataGrid.ItemContainerStyle>  
             <DataGrid.Columns>
                 <DataGridTextColumn Header=" Timestamp" Width="100"
                                     Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy HH:mm'}" />

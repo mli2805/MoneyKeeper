@@ -55,6 +55,9 @@
         <Button Name="ShowTransactionsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions (O)">
             <Image Source="../../Resources/mainmenu/transactions.png" Width="24" Height="24" />
         </Button>
+        <!--<Button Name="ShowTransactsForm" Margin="10,0,0,0" Background="White" BorderBrush="White" ToolTip="Transactions (O)">
+            <Image Source="../../Resources/mainmenu/transactions.png" Width="24" Height="24" />
+        </Button>-->
         <Button Name="ShowRatesForm" Margin="8,0,0,0" Background="White" BorderBrush="White" ToolTip="Currency rates (C)">
             <StackPanel Width="24">
                 <Image Source="../../Resources/mainmenu/loading.png" Width="16" Height="16" Margin="0,2,0,0" 

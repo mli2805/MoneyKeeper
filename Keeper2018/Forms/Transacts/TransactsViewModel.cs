@@ -4,15 +4,8 @@ using Caliburn.Micro;
 
 namespace Keeper2018
 {
-    public class TransactionsViewModel : Screen
+    public class TransactsViewModel : Screen
     {
-        private readonly FilterModel _filterModel;
-        private readonly FilterViewModel _filterViewModel;
-        private readonly TranEditExecutor _tranEditExecutor;
-        private readonly TranMoveExecutor _tranMoveExecutor;
-        private readonly TranSelectExecutor _tranSelectExecutor;
-        private readonly ComboTreesProvider _comboTreesProvider;
-
         private int _left;
         public int Left
         {
@@ -27,20 +20,28 @@ namespace Keeper2018
         public int Top { get; set; }
 
         public int FilterViewWidth = 225;
-        public TranModel Model { get; set; }
-        //public bool IsFirstLaunch = true; раньше, если не первая то упрощённая инициализация ради быстродействия
 
-        public TransactionsViewModel(TranModel model, FilterModel filterModel, FilterViewModel filterViewModel,
-            TranEditExecutor tranEditExecutor, TranMoveExecutor tranMoveExecutor, TranSelectExecutor tranSelectExecutor,
-            ComboTreesProvider comboTreesProvider)
+
+        private readonly ComboTreesProvider _comboTreesProvider;
+        private readonly TransactsEditExecutor _transactsEditExecutor;
+        private readonly TransactsMoveExecutor _transactsMoveExecutor;
+        private readonly TransactsGotoExecutor _transactsGotoExecutor;
+        private readonly FilterModel _filterModel;
+        private readonly FilterViewModel _filterViewModel;
+      
+        public TransactsModel Model { get; set; }
+        public TransactsViewModel(TransactsModel model, ComboTreesProvider comboTreesProvider,
+            TransactsEditExecutor transactsEditExecutor, TransactsMoveExecutor transactsMoveExecutor, TransactsGotoExecutor transactsGotoExecutor,
+            FilterModel filterModel, FilterViewModel filterViewModel)
         {
             Model = model;
+            _comboTreesProvider = comboTreesProvider;
+            _transactsEditExecutor = transactsEditExecutor;
+            _transactsMoveExecutor = transactsMoveExecutor;
+            _transactsGotoExecutor = transactsGotoExecutor;
             _filterModel = filterModel;
             _filterViewModel = filterViewModel;
-            _tranEditExecutor = tranEditExecutor;
-            _tranMoveExecutor = tranMoveExecutor;
-            _tranSelectExecutor = tranSelectExecutor;
-            _comboTreesProvider = comboTreesProvider;
+
             Top = 100;
             Left = 400;
         }
@@ -55,8 +56,8 @@ namespace Keeper2018
         {
             _comboTreesProvider.Initialize();
             _filterModel.Initialize();
+           
             Model.Initialize();
-            //IsFirstLaunch = false;
         }
 
         public void ButtonFilter()
@@ -93,7 +94,7 @@ namespace Keeper2018
         {
             System.Diagnostics.Process.Start("calc");
         }
-        
+
         public void ActionsMethod(TranAction action)
         {
             switch (action)
@@ -101,30 +102,30 @@ namespace Keeper2018
                 case TranAction.Calculator:
                     Calculator();
                     return;
-              case TranAction.Filter:
+                case TranAction.Filter:
                     ButtonFilter();
                     return;
                 case TranAction.Edit:
-                    _tranEditExecutor.EditSelected();
+                    _transactsEditExecutor.EditSelected();
                     return;
                 case TranAction.MoveUp:
-                    _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Up);
+                    _transactsMoveExecutor.MoveSelected(TransactsMoveExecutor.Destination.Up);
                     return;
                 case TranAction.MoveDown:
-                    _tranMoveExecutor.MoveSelected(TranMoveExecutor.Destination.Down);
+                    (_transactsMoveExecutor).MoveSelected(TransactsMoveExecutor.Destination.Down);
                     return;
                 case TranAction.AddAfterSelected:
-                    _tranEditExecutor.AddAfterSelected();
+                    _transactsEditExecutor.AddAfterSelected();
                     return;
                 case TranAction.Delete:
-                    _tranEditExecutor.DeleteSelected();
+                    _transactsEditExecutor.DeleteSelected();
                     return;
 
                 case TranAction.GoToDate:
-                    _tranSelectExecutor.SelectFirstOfDate();
+                    _transactsGotoExecutor.SelectFirstOfDate();
                     return;
                 case TranAction.GoToEnd:
-                    _tranSelectExecutor.SelectLast();
+                    _transactsGotoExecutor.SelectLast();
                     return;
             }
         }
