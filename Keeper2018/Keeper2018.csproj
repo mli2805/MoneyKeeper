@@ -225,6 +225,7 @@
     <Compile Include="DataModel\EntityModels\Tree\BankAccountModel.cs" />
     <Compile Include="DataModel\EntityModels\Tree\NickNames.cs" />
     <Compile Include="DataModel\Extensions\AccountModelExt.cs" />
+    <Compile Include="DataModel\Extensions\BalanceExt.cs" />
     <Compile Include="DataModel\Extensions\DepoPartIdProvider.cs" />
     <Compile Include="DataModel\EntityModels\ButtonCollectionModel.cs" />
     <Compile Include="DataModel\EntityModels\DurationModel.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Forms\Charts\CarReport\CarReportData\CarReportDataProvider.cs" />
     <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.ChartAndAggregate.cs" />
     <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.Totals.cs" />
+    <Compile Include="Forms\Charts\DepositPlusCurrency\DepositCurrencySaldoCalculator.cs" />
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesView.xaml.cs">
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>
@@ -449,7 +451,6 @@
       <DependentUpon>DepoCurrResultView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Charts\DepositPlusCurrency\DepoCurrResultViewModel.cs" />
-    <Compile Include="Forms\Charts\DepositPlusCurrency\DepoPlusCurrencyProvider.cs" />
     <Compile Include="Forms\Charts\Expenses\Domain\CategoriesDataElement.cs" />
     <Compile Include="Forms\Charts\Expenses\CategoriesDataExtractor.cs" />
     <Compile Include="Forms\Charts\Expenses\Domain\ClassifiedTran.cs" />

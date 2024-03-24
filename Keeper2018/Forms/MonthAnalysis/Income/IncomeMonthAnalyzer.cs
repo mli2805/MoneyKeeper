@@ -3,22 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using KeeperDomain;
 
 namespace Keeper2018
 {
     public static class IncomeMonthAnalyzer
     {
-        // временно, чарт депозиты-вал разницы получаетс данные не сам, а через анализ месяца
-        public static MonthIncome SortMonthIncome(this KeeperDataModel dataModel, DateTime startDate, DateTime finishMoment)
-        {
-            var incomeTrans = dataModel.Transactions.Values
-                .Where(t => t.Operation == OperationType.Доход
-                            && t.Timestamp >= startDate && t.Timestamp <= finishMoment);
-
-            return (MonthIncome)dataModel.SortMonthIncome(incomeTrans);
-        }
-
         public static IIncomeForPeriod SortMonthIncome(this KeeperDataModel dataModel, IEnumerable<TransactionModel> incomeTrans)
         {
             var result = new MonthIncome();

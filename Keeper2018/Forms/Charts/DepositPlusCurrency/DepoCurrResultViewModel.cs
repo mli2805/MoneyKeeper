@@ -85,11 +85,11 @@ namespace Keeper2018
         }
         #endregion
 
-        private readonly DepoPlusCurrencyProvider _depoPlusCurrencyProvider;
+        private readonly DepositCurrencySaldoCalculator _depositCurrencySaldoCalculator;
 
-        public DepoCurrResultViewModel(DepoPlusCurrencyProvider depoPlusCurrencyProvider)
+        public DepoCurrResultViewModel(DepositCurrencySaldoCalculator depositCurrencySaldoCalculator)
         {
-            _depoPlusCurrencyProvider = depoPlusCurrencyProvider;
+            _depositCurrencySaldoCalculator = depositCurrencySaldoCalculator;
         }
 
         protected override void OnViewLoaded(object view)
@@ -103,7 +103,7 @@ namespace Keeper2018
 
         private void Initialize()
         {
-            var points = _depoPlusCurrencyProvider.Evaluate().ToList();
+            var points = _depositCurrencySaldoCalculator.Evaluate().ToList();
             InitializeMonthlyDepoCurrPlotModel(points);
             InitializeMonthlySaldoPlotModel(points);
             InitializeAnnualSaldoPlotModel(points);
