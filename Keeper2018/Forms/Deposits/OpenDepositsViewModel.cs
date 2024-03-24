@@ -105,7 +105,7 @@ namespace Keeper2018
                 var line = new DepoTotalVm() { Currency = currency };
 
                 var dcs = Rows.Where(r => r.MainCurrency == currency).ToList();
-                var sum = dcs.Sum(d => d.Balance.Currencies[currency]);
+                var sum = dcs.Sum(d => d.Balance.SafeGetCurrency(currency));
                 if (sum > 0)
                 {
                     totalCount += dcs.Count;

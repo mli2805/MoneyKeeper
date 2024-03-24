@@ -24,6 +24,15 @@ namespace Keeper2018
             }
         }
 
+        /// <summary>
+        /// returns 0 if there is no such currency in dictionary
+        /// </summary>
+        /// <param name="currency"></param>
+        public decimal SafeGetCurrency(CurrencyCode currency)
+        {
+            return Currencies.TryGetValue(currency, out var amount) ? amount : 0;
+        }
+
         public void Add(CurrencyCode currency, decimal amount)
         {
             if (Currencies.ContainsKey(currency)) Currencies[currency] = Currencies[currency] + amount; else Currencies.Add(currency, amount);
