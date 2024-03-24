@@ -44,7 +44,7 @@
                             <Image Source="/Keeper2018;component/Resources/accountmenu16/add_folder.png" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                   <MenuItem Header="Добавить" cal:Message.Attach="AddAccount(1)" BorderBrush="{x:Null}" 
+                    <MenuItem Header="Добавить" cal:Message.Attach="AddAccount(1)" BorderBrush="{x:Null}" 
                               Background="White" IsEnabled="{Binding ShellPartsBinder.IsEnabledToAdd}"
                               Visibility="{Binding ShellPartsBinder.AddAccountVisibility}">
                         <MenuItem.Icon>
@@ -83,7 +83,10 @@
                             <Image Source="/Keeper2018;component/Resources/accountmenu16/edit16.ico" Width="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <Separator/>
                     <MenuItem Header="Зачислить проценты/кэшбек" cal:Message.Attach="EnrollDepositInterest" BorderBrush="{x:Null}" 
+                              Background="White" Visibility="{Binding ShellPartsBinder.BankAccountVisibility}"/>
+                    <MenuItem Header="Списать комиссию" cal:Message.Attach="TakeCardFee" BorderBrush="{x:Null}" 
                               Background="White" Visibility="{Binding ShellPartsBinder.BankAccountVisibility}"/>
                     <Separator/>
                     <MenuItem Header="Отчет по депозиту" cal:Message.Attach="ShowDepositReport" BorderBrush="{x:Null}" 

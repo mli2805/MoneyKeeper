@@ -245,6 +245,10 @@
       <DependentUpon>OneBankAccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\AddOrEdit\OneBankAccountViewModel.cs" />
+    <Compile Include="Forms\AccountTree\CardFee\CardFeeView.xaml.cs">
+      <DependentUpon>CardFeeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AccountTree\CardFee\CardFeeViewModel.cs" />
     <Compile Include="Forms\AccountTree\DepositInterest\DepositInterestView.xaml.cs">
       <DependentUpon>DepositInterestView.xaml</DependentUpon>
     </Compile>
@@ -719,6 +723,10 @@
     <Compile Include="Tricks\RangeObservableCollection.cs" />
     <Compile Include="Tricks\WaitCursor.cs" />
     <Page Include="Forms\AccountTree\AddOrEdit\OneBankAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\AccountTree\CardFee\CardFeeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

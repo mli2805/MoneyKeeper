@@ -14,7 +14,6 @@ namespace Keeper2018
         private readonly ShellPartsBinder _shellPartsBinder;
         private readonly AccNameSelector _accNameSelectionControlInitializer;
         private AccountItemModel _accountItemModel;
-        // private DepositOfferModel _depositOffer;
 
         private AccountItemModel _bank;
         public string BankTitle { get; set; }
@@ -81,7 +80,7 @@ namespace Keeper2018
             DisplayName = "Начислены проценты/кэшбек";
         }
 
-        public bool Initialize(AccountItemModel accountItemModel)
+        public void Initialize(AccountItemModel accountItemModel)
         {
             _accountItemModel = accountItemModel;
             _bank = _keeperDataModel.AcMoDict[accountItemModel.BankAccount.BankId];
@@ -101,8 +100,6 @@ namespace Keeper2018
 
             _depositBalance = _keeperDataModel.Transactions.Values.Sum(t => t.AmountForAccount(
                 _accountItemModel, accountItemModel.BankAccount.MainCurrency, _transactionTimestamp));
-
-            return true;
         }
 
         private void MyNextAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -168,7 +165,7 @@ namespace Keeper2018
                 Tags = new List<AccountItemModel>() { _bank,  },
                 Comment = Comment,
             };
-            tranModel1.Tags.Add(IsPercent ? _keeperDataModel.AcMoDict[208] : _keeperDataModel.AcMoDict[701]);
+            tranModel1.Tags.Add(IsPercent ? _keeperDataModel.PercentsTag() : _keeperDataModel.MoneyBackTag());
             _keeperDataModel.Transactions.Add(tranModel1.Id, tranModel1);
 
             if (IsTransferred)

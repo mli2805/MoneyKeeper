@@ -11,7 +11,7 @@
             <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
-    <StackPanel DockPanel.Dock="Top">
+    <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Width="150" Text="Банк " Margin="35, 5,5,0" HorizontalAlignment="Left"/>
             <TextBlock Text="{Binding BankTitle}" Margin="5" />

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Caliburn.Micro;
+using Keeper2018.CardFee;
 using Keeper2018.ExpensesOnAccount;
 
 namespace Keeper2018
@@ -33,6 +34,7 @@ namespace Keeper2018
             builder.RegisterType<OpenDepositsViewModel>().SingleInstance();
             builder.RegisterType<CardsAndAccountsViewModel>().SingleInstance();
             builder.RegisterType<DepositInterestViewModel>().SingleInstance();
+            builder.RegisterType<CardFeeViewModel>().SingleInstance();
 
             builder.RegisterType<OfficialRatesViewModel>().SingleInstance();
             builder.RegisterType<ExchangeRatesViewModel>().SingleInstance();

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
+using Keeper2018.CardFee;
 using Keeper2018.ExpensesOnAccount;
 using KeeperDomain;
 
@@ -11,6 +12,7 @@ namespace Keeper2018
         private readonly OneBankAccountViewModel _oneBankAccountViewModel;
         private readonly ExpensesOnAccountViewModel _expensesOnAccountViewModel;
         private readonly DepositInterestViewModel _depositInterestViewModel;
+        private readonly CardFeeViewModel _cardFeeViewModel;
         private readonly DepositReportViewModel _depositReportViewModel;
         private readonly BalanceVerificationViewModel _balanceVerificationViewModel;
         public IWindowManager WindowManager { get; }
@@ -23,13 +25,15 @@ namespace Keeper2018
         public AccountTreeViewModel(KeeperDataModel keeperDataModel, IWindowManager windowManager, ShellPartsBinder shellPartsBinder,
             AskDragAccountActionViewModel askDragAccountActionViewModel,
             OneAccountViewModel oneAccountViewModel, OneBankAccountViewModel oneBankAccountViewModel,
-            ExpensesOnAccountViewModel expensesOnAccountViewModel, DepositInterestViewModel depositInterestViewModel,
+            ExpensesOnAccountViewModel expensesOnAccountViewModel,
+            DepositInterestViewModel depositInterestViewModel, CardFeeViewModel cardFeeViewModel,
             DepositReportViewModel depositReportViewModel, BalanceVerificationViewModel balanceVerificationViewModel)
         {
             _oneAccountViewModel = oneAccountViewModel;
             _oneBankAccountViewModel = oneBankAccountViewModel;
             _expensesOnAccountViewModel = expensesOnAccountViewModel;
             _depositInterestViewModel = depositInterestViewModel;
+            _cardFeeViewModel = cardFeeViewModel;
             _depositReportViewModel = depositReportViewModel;
             _balanceVerificationViewModel = balanceVerificationViewModel;
             WindowManager = windowManager;
@@ -120,8 +124,14 @@ namespace Keeper2018
 
         public void EnrollDepositInterest()
         {
-            if (_depositInterestViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel))
-                WindowManager.ShowDialog(_depositInterestViewModel);
+            _depositInterestViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel);
+            WindowManager.ShowDialog(_depositInterestViewModel);
+        }
+
+        public void TakeCardFee()
+        {
+            _cardFeeViewModel.Initialize(ShellPartsBinder.SelectedAccountItemModel);
+            WindowManager.ShowDialog(_cardFeeViewModel);
         }
 
         public void ShowDepositReport()
