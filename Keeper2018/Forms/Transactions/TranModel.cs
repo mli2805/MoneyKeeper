@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
+using Serilog;
 
 namespace Keeper2018
 {
@@ -42,7 +42,7 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Debug.WriteLine($"{_dataModel.Transactions.Count} transactions");
+            Log.Debug($"{_dataModel.Transactions.Count} transactions");
 
             _tranFilter = new TranFilter();
 

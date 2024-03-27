@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using Serilog;
 
 namespace Keeper2018
 {
@@ -70,7 +71,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e, "IncomeMonthAnalyzer::BuildCommentForIncomeTransaction");
                 throw;
             }
         }

@@ -23,9 +23,9 @@ namespace Keeper2018
             Task.Factory.StartNew(Load, _cancellationToken);
         }
 
-        private async void Load()
+        private async Task Load()
         {
-            await Task.Delay(0);
+            // await Task.Delay(0);
             LoadResult = TxtLoader.LoadAllFromNewTxt(PathFactory.GetBackupPath());
             if (!LoadResult.IsSuccess)
             {

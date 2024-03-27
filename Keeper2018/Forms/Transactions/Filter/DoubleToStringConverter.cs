@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Serilog;
 
 namespace Keeper2018
 {
@@ -45,7 +45,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Log.Error(e, "DoubleToStringConverter::ConvertBack");
             }
 
             return result ?? DependencyProperty.UnsetValue;

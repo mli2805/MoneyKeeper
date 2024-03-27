@@ -1,5 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using Serilog;
 
 namespace Keeper2018
 {
@@ -20,7 +20,7 @@ namespace Keeper2018
             model.BtnToMargin = new Thickness(model.BtnToMargin.Left + delta, 0, -4, 0);
             model.CenterPartWidth += delta;
 
-            Console.WriteLine($@"CenterPartWidth = {model.CenterPartWidth}  CentralPartMargin = {model.CenterPartMargin.Left}");
+            Log.Debug($@"CenterPartWidth = {model.CenterPartWidth}  CentralPartMargin = {model.CenterPartMargin.Left}");
         }
 
     }

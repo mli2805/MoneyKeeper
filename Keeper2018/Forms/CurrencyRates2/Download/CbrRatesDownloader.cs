@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml;
 using KeeperDomain;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Keeper2018
 {
@@ -41,7 +41,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Log.Error(e, "CbrRatesDownloader::GetRateForDateFromXml");
                 return null;
             }
         }

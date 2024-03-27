@@ -4,13 +4,6 @@ namespace KeeperDomain
 {
     public static class PathFactory
     {
-        // export from old Keeper
-        public static string GetOldTxtFullPath(string filename)
-        {
-            var keeperInDropboxFullPath = PathFinder.GetKeeper2018BasePath();
-            var dbPath = keeperInDropboxFullPath + @"\OldKeeperTxt";
-            return Path.Combine(dbPath, filename);
-        }
 
         public static string GetBackupFilePath(string filename)
         {
@@ -36,6 +29,12 @@ namespace KeeperDomain
         {
             var keeperInDropboxFullPath = PathFinder.GetKeeper2018BasePath();
             return Path.Combine(keeperInDropboxFullPath, @"Db\KeeperDb.bin");
+        }
+
+        public static string GetLogsPath()
+        {
+            var keeperInDropboxFullPath = PathFinder.GetKeeper2018BasePath();
+            return Path.Combine(keeperInDropboxFullPath, "logs");
         }
 
     }

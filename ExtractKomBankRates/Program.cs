@@ -2,8 +2,9 @@
 
 using ExtractKomBankRates;
 using KeeperDomain.Exchange;
+using Serilog;
 
-Console.WriteLine("Hello, World!");
+Log.Information("Hello, World!");
 
 var lines = File.ReadAllLines(@"c:\temp\KomBankRates.csv");
 
@@ -15,7 +16,7 @@ foreach (var line in lines.Skip(1))
         bnb.Add(er);
 }
 
-Console.WriteLine(bnb.Count);
+Log.Information(bnb.Count.ToString());
 
 var id = 0;
 var prev = bnb[0];

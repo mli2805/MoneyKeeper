@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
+using Serilog;
 
 namespace Keeper2018
 {
@@ -91,7 +92,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e, "CardsAndAccountsViewModel::GetVm");
                 throw;
             }
         }
