@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
-using Serilog;
 
 namespace Keeper2018
 {
@@ -42,8 +41,6 @@ namespace Keeper2018
 
         public void Initialize()
         {
-            Log.Debug($"{_dataModel.Transactions.Count} transactions");
-
             _tranFilter = new TranFilter();
 
             Rows = new ObservableCollection<TranWrappedForDataGrid>(

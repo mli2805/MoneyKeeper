@@ -10,6 +10,7 @@ namespace Keeper2018
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
+            //builder.RegisterType<LogFile>().SingleInstance();
 
             builder.RegisterType<KeeperDataModel>().SingleInstance();
             builder.RegisterType<DbLoader>().SingleInstance();

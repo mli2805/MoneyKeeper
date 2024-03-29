@@ -2,6 +2,7 @@
 {
     public static class NickNames
     {
+        public static readonly int External = 157; // Counterparty
         public static readonly int MyAccounts = 158;
         public static readonly int BankAccounts = 159;
         public static readonly int PayCards = 161;

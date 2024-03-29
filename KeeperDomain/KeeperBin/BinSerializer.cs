@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
-using Serilog;
 
 namespace KeeperDomain
 {
@@ -32,7 +31,7 @@ namespace KeeperDomain
             }
             catch (Exception e)
             {
-                Log.Error(e, "DB BinSerializer.Serialize");
+                LogHelper.AppendLine(e, "DB BinSerializer.Serialize");
                 return Task.FromResult(new LibResult(e, "Bin.Serialize"));
             }
         }
@@ -50,7 +49,7 @@ namespace KeeperDomain
             }
             catch (Exception e)
             {
-                Log.Error(e, "DB BinSerializer.Deserialize");
+                LogHelper.AppendLine(e, "DB BinSerializer.Deserialize");
                 return Task.FromResult(new LibResult(e));
             }
         }

@@ -13,6 +13,8 @@ namespace KeeperDomain
         public int Receipt { get; set; }
         public int MyAccount { get; set; }
         public int MySecondAccount { get; set; }
+        public int Counterparty { get; set; }
+        public int Category { get; set; }
         public decimal Amount { get; set; }
         public decimal AmountInReturn { get; set; }
         public CurrencyCode Currency { get; set; }
@@ -26,6 +28,7 @@ namespace KeeperDomain
                    Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
                    Operation + " ; " + PaymentWay + " ; " + Receipt + " ; " +
                    MyAccount + " ; " + MySecondAccount + " ; " +
+                   Counterparty + " ; " + Category + " ; " +
                    Amount.ToString(new CultureInfo("en-US")) + " ; " + Currency + " ; " +
                    AmountInReturn.ToString(new CultureInfo("en-US")) + " ; " + CurrencyInReturn + " ; " +
                    Tags + " ; " + Comment;
@@ -41,14 +44,16 @@ namespace KeeperDomain
             Receipt = int.Parse(substrings[4].Trim());
             MyAccount = int.Parse(substrings[5].Trim());
             MySecondAccount = int.Parse(substrings[6].Trim());
-            Amount = Convert.ToDecimal(substrings[7], new CultureInfo("en-US"));
-            Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[8]);
-            AmountInReturn = Convert.ToDecimal(substrings[9], new CultureInfo("en-US"));
-            CurrencyInReturn = substrings[10].Trim() != ""
-                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[10])
+            Counterparty = int.Parse(substrings[7].Trim());
+            Category = int.Parse(substrings[8].Trim());
+            Amount = Convert.ToDecimal(substrings[9], new CultureInfo("en-US"));
+            Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[10]);
+            AmountInReturn = Convert.ToDecimal(substrings[11], new CultureInfo("en-US"));
+            CurrencyInReturn = substrings[12].Trim() != ""
+                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[12])
                 : CurrencyCode.USD;
-            Tags = substrings[11].Trim();
-            Comment = substrings[12].Trim();
+            Tags = substrings[13].Trim();
+            Comment = substrings[14].Trim();
             return this;
         }
     }

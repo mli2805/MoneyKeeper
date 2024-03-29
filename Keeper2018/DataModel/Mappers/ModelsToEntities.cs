@@ -21,6 +21,8 @@ namespace Keeper2018
                 PaymentWay = transactionModel.PaymentWay,
                 MyAccount = transactionModel.MyAccount.Id,
                 MySecondAccount = transactionModel.MySecondAccount?.Id ?? -1,
+                Counterparty = transactionModel.Counterparty?.Id ?? -1,
+                Category = transactionModel.Category?.Id ?? -1,
                 Amount = transactionModel.Amount,
                 AmountInReturn = transactionModel.AmountInReturn,
                 Currency = transactionModel.Currency,

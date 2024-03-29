@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using KeeperDomain;
-using Serilog;
 
 namespace Keeper2018
 {
@@ -59,30 +57,19 @@ namespace Keeper2018
             Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
 
+            var logFile = new LogFile();
+            logFile.AssignFile(Path.Combine(PathFactory.GetLogsPath(), "keeper.log"));
+            builder.RegisterInstance(logFile);
+            LogHelper.LogFile = logFile;
+            
             _container = builder.Build();
 
+            logFile.EmptyLine('-');
+            logFile.AppendLine("AppBootstrapper::OnStartup");
+
             DisplayRootViewFor<IShell>();
-
-            ConfigureLogger();
-            Log.Information(Environment.NewLine + Environment.NewLine + new string('-', 80));
-            Log.Information("AppBootstrapper::OnStartup");
         }
 
-        private void ConfigureLogger()
-        {
-            var template = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}";
-            var loggerConfiguration = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.File(Path.Combine(PathFactory.GetLogsPath(), ".log"),
-                    outputTemplate: template, rollingInterval: RollingInterval.Day,
-                    flushToDiskInterval: TimeSpan.FromSeconds(1));
-
-            if (Debugger.IsAttached)
-            {
-                loggerConfiguration.WriteTo.Console();
-            }
-
-            Log.Logger = loggerConfiguration.CreateLogger();
-        }
+      
     }
 }

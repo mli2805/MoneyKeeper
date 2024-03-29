@@ -3,12 +3,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
-using Serilog;
 
 namespace Keeper2018
 {
     public class CardsAndAccountsViewModel : Screen
     {
+        private readonly LogFile _logFile;
         private readonly KeeperDataModel _dataModel;
 
         public ObservableCollection<CardOrAccountVm> Rows { get; set; } = new ObservableCollection<CardOrAccountVm>();
@@ -17,8 +17,9 @@ namespace Keeper2018
 
         public CardsAndAccountsFilter Filter { get; set; }
 
-        public CardsAndAccountsViewModel(KeeperDataModel dataModel)
+        public CardsAndAccountsViewModel(LogFile logFile, KeeperDataModel dataModel)
         {
+            _logFile = logFile;
             _dataModel = dataModel;
         }
 
@@ -92,7 +93,7 @@ namespace Keeper2018
             }
             catch (Exception e)
             {
-                Log.Error(e, "CardsAndAccountsViewModel::GetVm");
+                _logFile.AppendLine(e.Message + "  CardsAndAccountsViewModel::GetVm");
                 throw;
             }
         }

@@ -49,6 +49,30 @@ namespace Keeper2018
             }
         }
 
+        private AccountItemModel _counterparty;
+        public AccountItemModel Counterparty
+        {
+            get => _counterparty;
+            set
+            {
+                if (Equals(value, _counterparty)) return;
+                _counterparty = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private AccountItemModel _category;
+        public AccountItemModel Category
+        {
+            get => _category;
+            set
+            {
+                if (Equals(value, _category)) return;
+                _category = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private decimal _amount;
         public decimal Amount
         {
@@ -62,7 +86,6 @@ namespace Keeper2018
         }
 
         private decimal _amountInReturn;
-
         public decimal AmountInReturn
         {
             get => _amountInReturn;
@@ -87,6 +110,7 @@ namespace Keeper2018
         }
 
         private CurrencyCode? _currencyInReturn;
+       
         public CurrencyCode? CurrencyInReturn
         {
             get => _currencyInReturn;

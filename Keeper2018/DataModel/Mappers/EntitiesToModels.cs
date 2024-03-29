@@ -59,6 +59,8 @@ namespace Keeper2018
                 PaymentWay = transaction.PaymentWay,
                 MyAccount = acMoDict[transaction.MyAccount],
                 MySecondAccount = transaction.MySecondAccount == -1 ? null : acMoDict[transaction.MySecondAccount],
+                Counterparty = transaction.Counterparty <= 0 ? null : acMoDict[transaction.Counterparty],
+                Category = transaction.Category <= 0 ? null : acMoDict[transaction.Category],
                 Amount = transaction.Amount,
                 AmountInReturn = transaction.AmountInReturn,
                 Currency = transaction.Currency,

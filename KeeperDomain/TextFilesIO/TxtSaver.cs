@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Serilog;
 
 namespace KeeperDomain
 {
@@ -55,7 +54,6 @@ namespace KeeperDomain
                 WriteFileLines(bin.SalaryChanges);
                 WriteFileLines(bin.LargeExpenseThresholds);
 
-                Log.Information("Text files are successfully saved");
                 return new LibResult();
             }
             catch (Exception e)

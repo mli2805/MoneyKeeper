@@ -112,6 +112,12 @@ namespace Keeper2018
             Total = trafficCalculator.Total;
         }
 
+        private void ShowCategory()
+        {
+            var isLeaf = !ShellPartsBinder.SelectedAccountItemModel.Children.Any();
+
+        }
+
         private void ShowTag()
         {
             var isLeaf = !ShellPartsBinder.SelectedAccountItemModel.Children.Any();

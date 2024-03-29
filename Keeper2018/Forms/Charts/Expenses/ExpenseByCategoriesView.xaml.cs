@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using Serilog;
 
 namespace Keeper2018
 {
@@ -18,8 +17,6 @@ namespace Keeper2018
 
         private void ExpenseByCategoriesView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            Log.Debug($@"{e.Key} - pressed");
-
             if (e.Key == Key.LeftCtrl)
                 _isLeftCtrlPressed = true;
             if (e.Key == Key.RightCtrl)
@@ -47,8 +44,6 @@ namespace Keeper2018
 
         private void ExpenseByCategoriesView_OnPreviewKeyUp(object sender, KeyEventArgs e)
         {
-            Log.Debug($@"{e.Key} - released");
-
             if (e.Key == Key.LeftCtrl)
                 _isLeftCtrlPressed = false;
             if (e.Key == Key.RightCtrl)
