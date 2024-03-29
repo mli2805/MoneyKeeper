@@ -114,33 +114,49 @@ namespace Keeper2018
 
             foreach (var tran in _keeperDataModel.Transactions.Values)
             {
+                if (tran.Operation == OperationType.Обмен)
+                {
+                    var counterparty = tran.Tags.FirstOrDefault(t => t.IsInside(NickNames.External));
+                    if (counterparty != null)
+                    {
+                        tran.Tags.Remove(counterparty);
+                        tran.Counterparty = counterparty;
+                    }
+                    else
+                    {
+                        counterparty = _keeperDataModel.AcMoDict[839];
+                        tran.Counterparty = counterparty;
+                        _logFile.AppendLine($"{tran.Timestamp}  {tran.Amount} => {tran.AmountInReturn} {tran.Comment}");
+                    }
+                  
+                }
+
                 if (tran.Operation == OperationType.Доход
                     || tran.Operation == OperationType.Расход)
                 {
                     var counterparty = tran.Tags.Single(t => t.IsInside(NickNames.External));
-                    var category = tran.Tags.Single(t => !t.IsInside(NickNames.External));
                     tran.Tags.Remove(counterparty);
-                    tran.Tags.Remove(category);
 
+                    var category = tran.Tags.Single(t => !t.IsInside(NickNames.External));
+                    tran.Tags.Remove(category);
                     tran.Counterparty = counterparty;
 
                     if (_transformation.TryGetValue(category.Id, out var tuple))
                     {
                         tran.Category = _keeperDataModel.AcMoDict[tuple.Item1];
-                        var logTag = "";
+                        //var logTag = "";
                         if (tuple.Item2 != -1)
                         {
                             tran.Tags.Add(_keeperDataModel.AcMoDict[tuple.Item2]);
-                            logTag = $" + {tran.Tags[0].Name}";
+                            //logTag = $" + {tran.Tags[0].Name}";
                         }
 
-                        _logFile.AppendLine($"{tran.Timestamp}  {category.Name} => {tran.Category.Name}{logTag}");
+                        //_logFile.AppendLine($"{tran.Timestamp}  {category.Name} => {tran.Category.Name}{logTag}");
                     }
                     else
                     {
                         tran.Category = category;
                     }
-
                 }
             }
         }

@@ -89,10 +89,16 @@ namespace Keeper2018
                 //Lines.Clear();
                 ColoredLines.Clear();
                 AccountName = ShellPartsBinder.SelectedAccountItemModel.Name;
-                var isTag = !ShellPartsBinder.SelectedAccountItemModel.Is(_dataModel.AccountsTree.First(a => a.Name == "Мои"));
+                var isMine = ShellPartsBinder.SelectedAccountItemModel.IsMyAccount();
 
-                if (isTag) ShowTag();
-                else ShowAccount(ShellPartsBinder.BalanceOrTraffic);
+                if (isMine)
+                {
+                    ShowAccount(ShellPartsBinder.BalanceOrTraffic);
+                }
+                else
+                {
+                    ShowTag();
+                }
             }
         }
 
@@ -102,7 +108,7 @@ namespace Keeper2018
 
             var trafficCalculator = isLeaf
                 ? (ITraffic)new TrafficOfAccountCalculator(_dataModel, ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod)
-                : new TrafficOfBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod);
+                : new TrafficOfAccountBranchCalculator(_dataModel, ShellPartsBinder.SelectedAccountItemModel, ShellPartsBinder.SelectedPeriod);
 
             trafficCalculator.EvaluateAccount();
 
@@ -110,12 +116,6 @@ namespace Keeper2018
             ColoredLines.AddRange(trafficCalculator.ColoredReport(mode).Select(p=>p.Value));
 
             Total = trafficCalculator.Total;
-        }
-
-        private void ShowCategory()
-        {
-            var isLeaf = !ShellPartsBinder.SelectedAccountItemModel.Children.Any();
-
         }
 
         private void ShowTag()

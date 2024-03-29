@@ -6,7 +6,7 @@ using KeeperDomain;
 
 namespace Keeper2018
 {
-    public class TrafficOfBranchCalculator : ITraffic
+    public class TrafficOfAccountBranchCalculator : ITraffic
     {
         private readonly KeeperDataModel _dataModel;
         private readonly AccountItemModel _accountItemModel;
@@ -17,7 +17,7 @@ namespace Keeper2018
 
         public string Total => TotalAmount.ToString("0.## usd");
 
-        public TrafficOfBranchCalculator(KeeperDataModel dataModel, AccountItemModel accountItemModel, Period period)
+        public TrafficOfAccountBranchCalculator(KeeperDataModel dataModel, AccountItemModel accountItemModel, Period period)
         {
             _dataModel = dataModel;
             _accountItemModel = accountItemModel;

@@ -24,6 +24,16 @@
             return dataModel.AcMoDict[158];
         }
 
+        public static bool IsCategory(this AccountItemModel account) // one of Income or Expense
+        {
+            return account.Is(185) || account.Is(189);
+        }
+
+        public static bool IsCounterparty(this AccountItemModel account)
+        {
+            return account.Is(157);
+        }
+
         public static AccountItemModel IncomeRoot(this KeeperDataModel dataModel)
         {
             return dataModel.AcMoDict[185];

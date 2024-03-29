@@ -62,7 +62,7 @@ namespace Keeper2018
 
         private void FillBeforeViewModel(DateTime startMoment)
         {
-            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _dataModel.MineRoot(),
+            var trafficCalculator = new TrafficOfAccountBranchCalculator(_dataModel, _dataModel.MineRoot(),
                                         new Period(new DateTime(2001, 12, 31), startMoment));
             trafficCalculator.EvaluateAccount();
             var word = _isYearAnalysisMode ? "года" : "месяца";
@@ -91,7 +91,7 @@ namespace Keeper2018
 
         private void FillAfterList(DateTime finishMoment)
         {
-            var trafficCalculator = new TrafficOfBranchCalculator(_dataModel, _dataModel.MineRoot(),
+            var trafficCalculator = new TrafficOfAccountBranchCalculator(_dataModel, _dataModel.MineRoot(),
                                         new Period(new DateTime(2001, 12, 31), finishMoment));
             trafficCalculator.EvaluateAccount();
             var word = _isYearAnalysisMode ? "года" : "месяца";

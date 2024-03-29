@@ -258,7 +258,6 @@
       <DependentUpon>OneFolderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\AccountTree\AddOrEdit\OneFolderViewModel.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\CategoryCalculator.cs" />
     <Compile Include="Forms\Cars\OwnershipCostView.xaml.cs">
       <DependentUpon>OwnershipCostView.xaml</DependentUpon>
     </Compile>
@@ -421,11 +420,11 @@
     <Compile Include="Forms\BalanceOrTraffic\ColoredLineFactory.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithTurnoverOfBranch.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\BalanceWithTurnover.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\TrafficOfBranchCalculator.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\TrafficOfAccountCalculator.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Calculators\TrafficOfAccountBranchCalculator.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Calculators\TrafficOfAccountCalculator.cs" />
     <Compile Include="Forms\BalanceOrTraffic\Data\TrafficPair.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagBranchCalculator.cs" />
-    <Compile Include="Forms\BalanceOrTraffic\TrafficOfTagCalculator.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Calculators\TrafficOfTagBranchCalculator.cs" />
+    <Compile Include="Forms\BalanceOrTraffic\Calculators\TrafficOfTagCalculator.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnAddBehavior.cs" />
     <Compile Include="Forms\Behaviors\ScrollListViewToBottomOnLoadBehavior.cs" />
     <Compile Include="Forms\Cars\CarsView.xaml.cs">

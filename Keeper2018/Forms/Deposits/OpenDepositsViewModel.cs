@@ -37,7 +37,7 @@ namespace Keeper2018
         private void EvaluateDepoAndMatras()
         {
             var matras = _dataModel.AcMoDict[167]; // шкаф
-            var calc = new TrafficOfBranchCalculator(_dataModel, matras,
+            var calc = new TrafficOfAccountBranchCalculator(_dataModel, matras,
                 new Period() { FinishMoment = DateTime.Now });
             var balance = calc.Evaluate();
 
@@ -71,7 +71,7 @@ namespace Keeper2018
         private void EvaluateAllMine()
         {
             var allMine = _dataModel.AcMoDict[158]; // мои
-            var calc = new TrafficOfBranchCalculator(_dataModel, allMine,
+            var calc = new TrafficOfAccountBranchCalculator(_dataModel, allMine,
                 new Period() { FinishMoment = DateTime.Now });
             var balance = calc.Evaluate();
 

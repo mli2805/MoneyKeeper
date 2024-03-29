@@ -25,7 +25,7 @@ namespace Keeper2018
             accountGroups.Evaluate(_dataModel);
             ByRevocability = accountGroups.ToStringList();
 
-            var calc = new TrafficOfBranchCalculator(_dataModel, accountItemModel,
+            var calc = new TrafficOfAccountBranchCalculator(_dataModel, accountItemModel,
                 new Period(new DateTime(2001, 12, 31), DateTime.Today.AddDays(1)));
             var balance = calc.Evaluate();
             var balanceWithDetails = balance.EvaluateDetails(_dataModel, DateTime.Today.AddDays(1));
