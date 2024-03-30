@@ -87,9 +87,9 @@ namespace Keeper2018
 
             _keeperDataModel.Transactions = new Dictionary<int, TransactionModel>();
             foreach (var transaction in bin.Transactions)
-                _keeperDataModel.Transactions.Add(transaction.Id, transaction.Map(_keeperDataModel.AcMoDict));
-
-            //TransactionTransformation2024();
+                _keeperDataModel.Transactions.Add(transaction.Id, transaction.Map(_keeperDataModel.AcMoDict)); 
+            
+            //MoveCounterpartyAndCategory();
 
             _keeperDataModel.FuellingJoinTransaction(bin.Fuellings);
 
@@ -107,6 +107,47 @@ namespace Keeper2018
             _keeperDataModel.LargeExpenseThresholds = bin.LargeExpenseThresholds;
         }
 
+        private void MoveCounterpartyAndCategory()
+        {
+            foreach (var tran in _keeperDataModel.Transactions.Values)
+            {
+                if (tran.Operation == OperationType.Обмен)
+                {
+                    var counterparty = tran.Tags.FirstOrDefault(t => t.IsInside(NickNames.External));
+                    if (counterparty != null)
+                    {
+                        tran.Tags.Remove(counterparty);
+                        tran.Counterparty = counterparty;
+                    }
+                    else
+                    {
+                        counterparty = _keeperDataModel.AcMoDict[839];
+                        tran.Counterparty = counterparty;
+                        _logFile.AppendLine($"{tran.Timestamp}  {tran.Amount} => {tran.AmountInReturn} {tran.Comment}");
+                    }
+                }
+
+                if (tran.Operation == OperationType.Доход
+                    || tran.Operation == OperationType.Расход)
+                {
+                    var counterparty = tran.Tags.Single(t => t.IsInside(NickNames.External));
+                    tran.Tags.Remove(counterparty);
+                    tran.Counterparty = counterparty;
+
+                    var category = tran.Tags.Single(t => !t.IsInside(NickNames.External));
+                    tran.Tags.Remove(category);
+                    tran.Category = category;
+                }
+            }
+        }
+
+
+        // хреново получилось 
+        // скажем покупки недвижимости - слепились в одну категорию, чтобы разделить надо еще делать фильтр по Кат + Тэг
+        // а у тэга Квартира2 все расходы слепились (покупка, ремонт, коммуналка ...)
+
+        // вынос контрагента в отдельное поле без вопросов
+        // по Категории надо думать
         private void TransactionTransformation2024()
         {
             _logFile.AppendLine("TransactionTransformation2024");
@@ -166,7 +207,7 @@ namespace Keeper2018
         private void FillTransform()
         {
             FillAuto();
-            FillKommun();
+            Fill2();
         }
 
         private void FillAuto()
@@ -199,8 +240,9 @@ namespace Keeper2018
             };
         }
 
-        private void FillKommun()
+        private void Fill2()
         {
+            // kommunal
             _transformation[418] = new Tuple<int, int>(1023, 1043);
             _transformation[419] = new Tuple<int, int>(1036, 1043);
             _transformation[420] = new Tuple<int, int>(1016, 1043);
@@ -218,6 +260,23 @@ namespace Keeper2018
             _transformation[519] = new Tuple<int, int>(1040, 1019);
             _transformation[599] = new Tuple<int, int>(1023, 1019);
             _transformation[981] = new Tuple<int, int>(1041, 1019);
+
+            // покупка и другое с недвиж
+            _transformation[389] = new Tuple<int, int>(1048, 1019);
+            _transformation[685] = new Tuple<int, int>(1048, 1057);
+            _transformation[285] = new Tuple<int, int>(1048, 1018);
+
+            _transformation[753] = new Tuple<int, int>(1051, 1043);
+            _transformation[292] = new Tuple<int, int>(1051, 1018);
+
+            _transformation[755] = new Tuple<int, int>(1050, 1043);
+            _transformation[203] = new Tuple<int, int>(1050, 1018);
+            _transformation[764] = new Tuple<int, int>(1050, 1019);
+
+            _transformation[754] = new Tuple<int, int>(1049, 1043);
+            _transformation[200] = new Tuple<int, int>(1049, 1018);
+            _transformation[769] = new Tuple<int, int>(1049, 1019);
+
         }
     }
 }

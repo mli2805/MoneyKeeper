@@ -172,6 +172,12 @@ namespace Keeper2018
                 PopupValues.Add($" ({_balanceDuringTransactionHinter.GetExchangeRate(tranModel)})");
             }
 
+            PopupLabels.Add("Counterparty: ");
+            PopupValues.Add(tranModel.Counterparty.Name);
+            PopupLabels.Add("Catogory: ");
+            PopupValues.Add(tranModel.Category.Name);
+
+
             PopupLabels.Add("Amount: ");
             var amount = _dataModel.AmountInUsdWithRate(tranModel.Timestamp, 
                 tranModel.Currency, tranModel.Amount, out decimal rate);
