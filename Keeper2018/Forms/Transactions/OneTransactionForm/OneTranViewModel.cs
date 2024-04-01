@@ -116,7 +116,7 @@ namespace Keeper2018
 
         private bool IsValid()
         {
-            if (ReceiptList == null && TranInWork.HasntGotCategoryTagThoughItShould()) return false;
+            //if (ReceiptList == null && TranInWork.HasntGotCategoryTagThoughItShould()) return false;
             if (TranInWork.Operation == OperationType.Доход || TranInWork.Operation == OperationType.Расход)
             {
                 TranInWork.MySecondAccount = null;
@@ -175,18 +175,19 @@ namespace Keeper2018
             MyExchangeControlVm.Visibility = opType == OperationType.Обмен ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private bool LeaveOneExternalAccountInTags()
-        {
-            var externalAccount = TranInWork.GetExternalAccount();
-            if (externalAccount == null) return false;
-            TranInWork.Tags = new List<AccountItemModel>() { externalAccount };
-            InitControls();
-            return true;
-        }
+        //private bool LeaveOneExternalAccountInTags()
+        //{
+        //    var externalAccount = TranInWork.GetExternalAccount();
+        //    if (externalAccount == null) return false;
+        //    TranInWork.Tags = new List<AccountItemModel>() { externalAccount };
+        //    InitControls();
+        //    return true;
+        //}
 
         public void Receipt()
         {
-            if (!LeaveOneExternalAccountInTags()) return;
+            //if (!LeaveOneExternalAccountInTags()) return;
+            InitControls();
 
             Left = Left - 180;
             _receiptViewModel.Initialize(TranInWork.Amount, TranInWork.Currency, _dataModel.AcMoDict[256]);

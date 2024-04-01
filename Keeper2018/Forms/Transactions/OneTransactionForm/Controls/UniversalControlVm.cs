@@ -40,6 +40,32 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+
+        private AccNameSelectorVm _counterpartySelectorVm;
+        public AccNameSelectorVm CounterpartySelectorVm
+        {
+            get => _counterpartySelectorVm;
+            set
+            {
+                if (Equals(value, _counterpartySelectorVm)) return;
+                _counterpartySelectorVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private AccNameSelectorVm _categorySelectorVm;
+        public AccNameSelectorVm CategorySelectorVm
+        {
+            get => _categorySelectorVm;
+            set
+            {
+                if (Equals(value, _categorySelectorVm)) return;
+                _categorySelectorVm = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+
         private AccNameSelectorVm _mySecondAccNameSelectorVm;
         public AccNameSelectorVm MySecondAccNameSelectorVm
         {
@@ -117,6 +143,7 @@ namespace Keeper2018
         public List<PaymentWay> PaymentWays { get; set; }
 
         private PaymentWay _selectedPaymentWay;
+
         public PaymentWay SelectedPaymentWay
         {
             get => _selectedPaymentWay;
@@ -150,6 +177,12 @@ namespace Keeper2018
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
 
+            CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+            CounterpartySelectorVm.PropertyChanged += CounterpartySelectorVm_PropertyChanged;
+
+            CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
+            CategorySelectorVm.PropertyChanged += CategorySelectorVm_PropertyChanged;
+
             MySecondAccNameSelectorVm = _accNameSelectionControlInitializer.ForMySecondAccount(TranInWork);
             MySecondAccNameSelectorVm.PropertyChanged += MySecondAccNameSelectorVm_PropertyChanged;
 
@@ -175,7 +208,7 @@ namespace Keeper2018
             MyAmountInReturnInputControlVm.PropertyChanged += MyAmountInReturnInputControlVm_PropertyChanged;
 
 
-            MyTagPickerVm = new TagPickerVm { TagSelectorVm = _accNameSelectionControlInitializer.ForTags(TranInWork) };
+            MyTagPickerVm = new TagPickerVm { TagSelectorVm = _accNameSelectionControlInitializer.ForAdditionalTags(TranInWork) };
             foreach (var tag in tran.Tags)
             {
                 var alreadyChosenTag = MyTagPickerVm.TagSelectorVm.AvailableAccNames.FindThroughTheForestById(tag.Id);
@@ -209,7 +242,7 @@ namespace Keeper2018
                 else ReactOnAssociationAdd();
             }
 
-            SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
+            //SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
         }
 
         private void ReactOnUsersAdd()
@@ -291,6 +324,23 @@ namespace Keeper2018
                 TranInWork.MyAccount = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
                 MyAmountInputControlVm.Currency =
                     _dataModel.Transactions.Values.LastOrDefault(t => t.MyAccount.Id == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
+            }
+        }
+
+        private void CounterpartySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MyAccName")
+            {
+                TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
+                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
+            }
+        }
+        private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MyAccName")
+            {
+                TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
                 SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
             }
         }

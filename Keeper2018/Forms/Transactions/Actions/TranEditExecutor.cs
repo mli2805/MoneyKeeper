@@ -104,7 +104,7 @@ namespace Keeper2018
                 var tran = oneTran.Clone();
                 tran.Receipt = receiptId;
                 tran.Amount = tuple.Item1;
-                tran.Tags.Add(tuple.Item2);
+                tran.Category = tuple.Item2;
                 tran.Comment = tuple.Item3;
                 AddOneTran(tran);
             }

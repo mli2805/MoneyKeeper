@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -11,8 +12,8 @@ namespace Keeper2018
             270, 736, 183, // велком, школьная столовая, государство
         };
 
-        private static readonly List<int> Terminal = new List<int> 
-        { 
+        private static readonly List<int> Terminal = new List<int>
+        {
             179, 180, 303, 763,     // магазины, рынки, страховщики, бассейн
             353, 255, 254, 253,     // медицина, аптеки(прочее),прочие харчевни, столовая водоканала, 
         };
@@ -21,42 +22,37 @@ namespace Keeper2018
         {
             264, 272,  //  минтранс, АЗС(новые)
             220, 831   // банки, eCommerce
-        }; 
-        
+        };
 
         public static PaymentWay GuessPaymentWay(TransactionModel tran)
         {
             if (tran.Operation != OperationType.Расход)
                 return PaymentWay.НеЗадано;
-            if (tran.MyAccount.Is(160) // наличные
-                || tran.MyAccount.Is(386) // Яна
-                || tran.MyAccount.Is(387) // Глеб
-                || tran.MyAccount.Is(388)) // Борис
+
+            if (tran.MyAccount.Is(160)) // наличные
                 return PaymentWay.Наличные;
+
+            // если карточка то предполагаем по Контрагенту и Категории
             if (tran.MyAccount.Is(161) || tran.MyAccount.Is(830)) // карты и закрытые карты
             {
-                foreach (var tag in tran.Tags)
-                {
-                    foreach (var grou in Terminal)
-                    {
-                        if (tag.Is(grou))
-                            return PaymentWay.КартаТерминал;
-                    }
-                    foreach (var grou in CardOther)
-                    {
-                        if (tag.Is(grou))
-                            return PaymentWay.КартаДругое;
-                    }
-                    foreach (var grou in Erip)
-                    {
-                        if (tag.Is(grou))
-                            return PaymentWay.КартаЕрип;
-                    }
-                }
+                if (Terminal.Any(grou => tran.Counterparty.Is(grou)))
+                    return PaymentWay.КартаТерминал;
+                if (CardOther.Any(grou => tran.Counterparty.Is(grou)))
+                    return PaymentWay.КартаДругое;
+                if (Erip.Any(grou => tran.Counterparty.Is(grou)))
+                    return PaymentWay.КартаЕрип;
+
+                if (Terminal.Any(grou => tran.Category.Is(grou)))
+                    return PaymentWay.КартаТерминал;
+                if (CardOther.Any(grou => tran.Category.Is(grou)))
+                    return PaymentWay.КартаДругое;
+                if (Erip.Any(grou => tran.Category.Is(grou)))
+                    return PaymentWay.КартаЕрип;
+
                 return PaymentWay.НеЗадано;
             }
             return PaymentWay.НеЗадано;
-        } 
-       
+        }
+
     }
 }

@@ -27,6 +27,11 @@ namespace Keeper2018
         public List<AccName> AccNamesForInvestmentIncome { get; set; }
         public List<AccName> AccNamesForInvestment { get; set; }
 
+        public List<AccName> Counterparties { get; set; }
+        public List<AccName> IncomeCategories { get; set; }
+        public List<AccName> ExpenseCategories { get; set; }
+        public List<AccName> AdditionalTags { get; set; }
+
         public ComboTreesProvider(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
@@ -44,12 +49,57 @@ namespace Keeper2018
 
         public void Initialize()
         {
+            InitializeCounterparties();
+            InitializeCategories();
+            InitializeAdditionalTags();
+
             InitializeListsForIncome();
             InitializeListsForExpense();
             InitializeListsForTransfer();
             InitializeListsForExchange();
             InitializeListForFilterTags();
             InitializeForInvestments();
+        }
+
+        private void InitializeCounterparties()
+        {
+            Counterparties = new List<AccName>();
+            var list = new List<int>() { 724, 723, 220, 183 };
+            foreach (var element in list)
+            {
+                var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
+                Counterparties.Add(root);
+            }
+        }
+
+        private void InitializeCategories()
+        {
+            IncomeCategories = new List<AccName>();
+            var list = new List<int>() { 185 };
+            foreach (var element in list)
+            {
+                var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
+                IncomeCategories.Add(root);
+            }
+
+            ExpenseCategories = new List<AccName>();
+            var list2 = new List<int>() { 189 };
+            foreach (var element in list2)
+            {
+                var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
+                ExpenseCategories.Add(root);
+            }
+        }
+
+        private void InitializeAdditionalTags()
+        {
+            AdditionalTags = new List<AccName>();
+            var list = new List<int>() { 1014 };
+            foreach (var element in list)
+            {
+                var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
+                AdditionalTags.Add(root);
+            }
         }
 
         private void InitializeListForFilterTags()

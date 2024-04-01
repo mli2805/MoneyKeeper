@@ -15,6 +15,8 @@
         public static readonly int IncomeTags = 185;
         public static readonly int ExpenseTags = 189;
 
+        public static readonly int OtherExpense = 256;
+
         public static bool IsTag(this AccountItemModel account) { return account.Is(IncomeTags) || account.Is(ExpenseTags); }
 
         public static bool IsMyAccount(this AccountItemModel account) { return account.Is(MyAccounts); }

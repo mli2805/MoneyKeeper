@@ -140,6 +140,22 @@ namespace Keeper2018
                 case 12:
                     selectedAccName = _comboTreesProvider.AccNamesForInvestment.FindThroughTheForestById(695);
                     return _comboTreesProvider.AccNamesForInvestment;
+
+                case 13:
+                    selectedAccName = _comboTreesProvider.AccNamesForIncomeTags.FindThroughTheForestById(443);
+                    return _comboTreesProvider.Counterparties;
+                case 14:
+                    selectedAccName = _comboTreesProvider.AccNamesForExpenseTags.FindThroughTheForestById(256);
+                    return _comboTreesProvider.Counterparties;
+                case 15:
+                    selectedAccName = _comboTreesProvider.IncomeCategories.FindThroughTheForestById(204);
+                    return _comboTreesProvider.IncomeCategories;
+                case 16:
+                    selectedAccName = _comboTreesProvider.ExpenseCategories.FindThroughTheForestById(257);
+                    return _comboTreesProvider.ExpenseCategories;
+                case 17:
+                    selectedAccName = _comboTreesProvider.AccNamesForExchangeTags.FindThroughTheForestById(477);
+                    return _comboTreesProvider.ExpenseCategories;
                 default:
                     selectedAccName = null;
                     return null;

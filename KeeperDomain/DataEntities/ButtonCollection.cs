@@ -26,7 +26,7 @@ namespace KeeperDomain
         {
             var substrings = s.Split(';');
             Id = int.Parse(substrings[0]);
-            Name = substrings[1];
+            Name = substrings[1].Trim();
             for (int i = 2; i < substrings.Length; i++)
             {
                 AccountIds.Add(int.Parse(substrings[i]));

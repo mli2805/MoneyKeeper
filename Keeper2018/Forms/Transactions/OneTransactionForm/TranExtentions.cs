@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using KeeperDomain;
 
 namespace Keeper2018
 {
@@ -17,6 +14,8 @@ namespace Keeper2018
                 PaymentWay = tran.PaymentWay,
                 MyAccount = tran.MyAccount,
                 MySecondAccount = tran.MySecondAccount,
+                Counterparty = tran.Counterparty,
+                Category = tran.Category,
                 Amount = tran.Amount,
                 Currency = tran.Currency,
                 AmountInReturn = tran.AmountInReturn,
@@ -42,6 +41,8 @@ namespace Keeper2018
             destinationTran.PaymentWay = tran.PaymentWay;
             destinationTran.MyAccount = tran.MyAccount;
             destinationTran.MySecondAccount = tran.MySecondAccount;
+            destinationTran.Counterparty = tran.Counterparty;
+            destinationTran.Category = tran.Category;
             destinationTran.Amount = tran.Amount;
             destinationTran.Currency = tran.Currency;
             destinationTran.AmountInReturn = tran.AmountInReturn;
@@ -60,36 +61,36 @@ namespace Keeper2018
         }
 
         // возвращает подробную категорию
-        private static AccountItemModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
-        {
-            var rootId = isIncome ? 185 : 189;
-            var category = tran.Tags.FirstOrDefault(t => t.Is(rootId));
-            if (category != null) return category;
-            MessageBox.Show(
-                batchProcessing
-                    ? $"Нет категории для проводки \n {tran.Timestamp} {tran.Amount} {tran.Currency.ToString().ToLower()}"
-                    : "Не задана категория!", "Ошибка!");
-            return null;
+        //private static AccountItemModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
+        //{
+        //    var rootId = isIncome ? 185 : 189;
+        //    var category = tran.Tags.FirstOrDefault(t => t.Is(rootId));
+        //    if (category != null) return category;
+        //    MessageBox.Show(
+        //        batchProcessing
+        //            ? $"Нет категории для проводки \n {tran.Timestamp} {tran.Amount} {tran.Currency.ToString().ToLower()}"
+        //            : "Не задана категория!", "Ошибка!");
+        //    return null;
 
-        }
+        //}
 
-        public static AccountItemModel GetExternalAccount(this TransactionModel tran)
-        {
-            var externalAccount = tran.Tags.FirstOrDefault(a => a.Is(157));
-            if (externalAccount == null)
-                MessageBox.Show(tran.Operation == OperationType.Расход 
-                    ? "Должен быть хотя бы один продавец/услугодатель" 
-                    : "Должен быть хотя бы один плательщик");
+        //public static AccountItemModel GetExternalAccount(this TransactionModel tran)
+        //{
+        //    var externalAccount = tran.Tags.FirstOrDefault(a => a.Is(157));
+        //    if (externalAccount == null)
+        //        MessageBox.Show(tran.Operation == OperationType.Расход 
+        //            ? "Должен быть хотя бы один продавец/услугодатель" 
+        //            : "Должен быть хотя бы один плательщик");
 
-            return externalAccount;
-        }
+        //    return externalAccount;
+        //}
 
-        public static bool HasntGotCategoryTagThoughItShould(this TransactionModel tran)
-        {
-            if (tran.Operation != OperationType.Доход && tran.Operation != OperationType.Расход) return false; // OK
-            return tran.GetExternalAccount() == null ||
-                   tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null;
-        }
+        //public static bool HasntGotCategoryTagThoughItShould(this TransactionModel tran)
+        //{
+        //    if (tran.Operation != OperationType.Доход && tran.Operation != OperationType.Расход) return false; // OK
+        //    return tran.GetExternalAccount() == null ||
+        //           tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null;
+        //}
 
     }
 }
