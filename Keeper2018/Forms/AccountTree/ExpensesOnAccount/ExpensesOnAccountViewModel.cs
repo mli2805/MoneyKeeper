@@ -59,14 +59,13 @@ namespace Keeper2018.ExpensesOnAccount
 
             foreach (var transaction in trans)
             {
-                var catId = transaction.GetTransactionBaseCategory(_dataModel, operationType);
-                var catAccount = _dataModel.AcMoDict[catId];
+                var catAccount = _dataModel.GetTopLevelCategory(transaction.Category, transaction.Operation == OperationType.Расход);
                 categoriesCollection.Add(catAccount.Name, transaction.Amount);
                 _transactions.Add(new TranLine()
                 {
                     Timestamp = transaction.Timestamp,
                     Category = catAccount.Name,
-                    CounterpartyName = transaction.GetCounterpartyName(_dataModel),
+                    CounterpartyName = transaction.Counterparty.Name,
                     Amount = transaction.Amount,
                     Currency = transaction.Currency,
                     Comment = transaction.Comment,

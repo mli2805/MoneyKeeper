@@ -27,7 +27,7 @@
                 <Button Name="AggregateButton" Content="{Binding AggregateButtonCaption}" Width="120" Margin="5"/>
             </StackPanel>
 
-            <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False">
+            <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.ItemContainerStyle>
                     <Style TargetType="{x:Type DataGridRow}">
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
@@ -49,7 +49,8 @@
             <oxy:PlotView  Model="{Binding MyPlotModel}" Background="Beige" />
             <DataGrid  Margin="60, 30, 0,0" Width="620" BorderThickness="0"
                 HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Opacity="1" Background="Beige"
-                ItemsSource="{Binding SalaryChanges}" AutoGenerateColumns="False" CanUserSortColumns="False"
+                ItemsSource="{Binding SalaryChanges}" 
+                AutoGenerateColumns="False" CanUserSortColumns="False" 
                 Visibility="{Binding SalaryChangesVisibility}">
                 <DataGrid.Resources>
                     <Style TargetType="{x:Type DataGridRow}">

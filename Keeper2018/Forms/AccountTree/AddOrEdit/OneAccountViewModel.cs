@@ -75,13 +75,13 @@ namespace Keeper2018
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Collapsed;
             }
-            else if (AccountItemInWork.IsTag())
+            else if (AccountItemInWork.IsCategory())
             {
                 MyAccNameSelectorVm.Visibility = Visibility.Visible;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Visible;
                 MyAccNameSelectorVm = _accNameSelectorForAssociations
-                    .InitializeForAssociation(AccountItemInWork.Is(185)
+                    .InitializeForAssociation(AccountItemInWork.Is(NickNames.IncomeCategoriesRoot)
                         ? AssociationEnum.ExternalForIncome
                         : AssociationEnum.ExternalForExpense, AccountItemInWork.AssociatedExternalId);
             }
@@ -115,7 +115,7 @@ namespace Keeper2018
             if (AccountItemInWork.IsMyAccount())
             {
             }
-            else if (AccountItemInWork.IsTag())
+            else if (AccountItemInWork.IsCategory())
             {
                 AccountItemInWork.AssociatedExternalId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
             }

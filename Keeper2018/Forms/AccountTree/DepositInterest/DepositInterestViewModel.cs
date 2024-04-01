@@ -154,18 +154,19 @@ namespace Keeper2018
                 .OrderBy(l => l.Timestamp)
                 .LastOrDefault();
             var timestamp = thisDateTrans?.Timestamp ?? MyDatePickerVm.SelectedDate;
-            var tranModel1 = new TransactionModel()
+            var tranModel1 = new TransactionModel
             {
                 Id = id,
                 Timestamp = timestamp.AddMinutes(1),
                 Operation = OperationType.Доход,
                 MyAccount = _accountItemModel,
+                Counterparty = _keeperDataModel.AcMoDict[_accountItemModel.BankAccount.BankId],
+                Category = IsPercent ? _keeperDataModel.PercentsTag() : _keeperDataModel.MoneyBackTag(),
                 Amount = Amount,
                 Currency = _accountItemModel.BankAccount.MainCurrency,
                 Tags = new List<AccountItemModel>() { _bank,  },
                 Comment = Comment,
             };
-            tranModel1.Tags.Add(IsPercent ? _keeperDataModel.PercentsTag() : _keeperDataModel.MoneyBackTag());
             _keeperDataModel.Transactions.Add(tranModel1.Id, tranModel1);
 
             if (IsTransferred)

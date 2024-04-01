@@ -264,7 +264,7 @@ namespace Keeper2018
 
         private AccountItemModel FindAssociated(AccountItemModel accountItemModel, OperationType opType)
         {
-            var associatedId = accountItemModel.IsTag()
+            var associatedId = accountItemModel.IsCategory()
                     ? accountItemModel.AssociatedExternalId
                     : opType == OperationType.Доход
                         ? accountItemModel.AssociatedIncomeId

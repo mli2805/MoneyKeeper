@@ -14,33 +14,33 @@ namespace Keeper2018
 
             var realIncomes = dataModel.Transactions.Values.Where(t => t.Operation == OperationType.Доход
                                                                         && t.Timestamp >= fromDate && t.Timestamp <= finishMoment).ToList();
-            var salaryAccountId = 204;
-            var prepaymentAccountId = 1008;
+            var salaryCategory = 204;
+            var prepaymentCategory = 1008;
             var iitAccountId = 443;
             var optixsoftAccountId = 172;
-            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
-                                      && t.Tags.Select(tt => tt.Id).Contains(iitAccountId)))
+            if (!realIncomes.Any(t => t.Category.Id == salaryCategory
+                                      && t.Counterparty.Id == iitAccountId))
             {
                 var salaryInUsdValue = 700;
                 list.Add($"зарплата ИИТ {salaryInUsdValue} usd");
                 total += salaryInUsdValue;
             }
-            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(salaryAccountId)
-                                      && t.Tags.Select(tt => tt.Id).Contains(optixsoftAccountId)))
+            if (!realIncomes.Any(t => t.Category.Id == salaryCategory
+                                      && t.Counterparty.Id == optixsoftAccountId))
             {
                 var salaryInUsdValue = 1100;
                 list.Add($"зарплата OptixSoft {salaryInUsdValue} usd");
                 total += salaryInUsdValue;
             }
-            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(prepaymentAccountId)
-                                                 && t.Tags.Select(tt => tt.Id).Contains(iitAccountId)))
+            if (!realIncomes.Any(t => t.Category.Id == prepaymentCategory
+                                                 && t.Counterparty.Id == iitAccountId))
             {
                 var salaryInUsdValue = 100;
                 list.Add($"аванс ИИТ {salaryInUsdValue} usd");
                 total += salaryInUsdValue;
             }
-            if (!realIncomes.Any(t => t.Tags.Select(tt => tt.Id).Contains(prepaymentAccountId)
-                                      && t.Tags.Select(tt => tt.Id).Contains(optixsoftAccountId)))
+            if (!realIncomes.Any(t => t.Category.Id == prepaymentCategory
+                                      && t.Counterparty.Id == optixsoftAccountId))
             {
                 var salaryInUsdValue = 100;
                 list.Add($"аванс OptixSoft {salaryInUsdValue} usd");

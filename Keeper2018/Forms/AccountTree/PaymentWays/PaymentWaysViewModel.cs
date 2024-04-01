@@ -128,17 +128,17 @@ namespace Keeper2018
             _sumFrom += StepTwo("Переведено на карты", transfersToCards, transactions.List, totalFrom.List, Brushes.Black);
 
 
-            var moneyBacks = monthTrans.Where(t => t.Operation == OperationType.Доход
-                                                            && t.MyAccount.Id == _cardAccountItemModel.Id
-                                                            && t.Tags.Contains(_dataModel.MoneyBackTag())).ToList();
-            var percents = monthTrans.Where(t => t.Operation == OperationType.Доход
-                                                                       && t.MyAccount.Id == _cardAccountItemModel.Id
-                                                                       && t.Tags.Contains(_dataModel.PercentsTag())).ToList();
-            var otherIncomes = monthTrans.Where(t => t.Operation == OperationType.Доход
+            var moneyBacks = monthTrans
+                .Where(t => t.MyAccount.Id == _cardAccountItemModel.Id && t.Category != null
+                                                            && t.Category.Id == NickNames.MoneyBack).ToList();
+            var percents = monthTrans
+                .Where(t => t.MyAccount.Id == _cardAccountItemModel.Id && t.Category != null
+                                                                       && t.Category.Id == NickNames.Percents).ToList();
+            var otherIncomes = monthTrans
+                .Where(t => t.Operation == OperationType.Доход && t.Category != null
                                                      && t.MyAccount.Id == _cardAccountItemModel.Id
-                                                     && !t.Tags.Contains(_dataModel.MoneyBackTag())
-                                                     && !t.Tags.Contains(_dataModel.PercentsTag())
-                                                     ).ToList();
+                                                     && t.Category.Id != NickNames.Percents
+                                                     && t.Category.Id != NickNames.MoneyBack).ToList();
 
             _sumTo += StepTwo("Манибэк", moneyBacks, transactions.List, totalTo.List, Brushes.Blue);
             _sumTo += StepTwo("Проценты", percents, transactions.List, totalTo.List, Brushes.Blue);

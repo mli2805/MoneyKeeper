@@ -29,8 +29,8 @@ namespace Keeper2018
         private bool _isWithIrregulars;
         private bool _isAggregated;
 
-        private readonly List<SalaryLineModel> _onlySalary = new List<SalaryLineModel>();
-        private readonly List<SalaryLineModel> _salaryAndIrregulars = new List<SalaryLineModel>();
+        private List<SalaryLineModel> _onlySalary;
+        private List<SalaryLineModel> _salaryAndIrregulars;
 
         private PlotModel _myPlotModel;
 
@@ -113,11 +113,9 @@ namespace Keeper2018
             SalaryChanges = _dataModel.SalaryChanges;
             Employers = _dataModel.AcMoDict[171].Children.Cast<AccountItemModel>().ToList();
 
-            var mySalaryFolder = _dataModel.AcMoDict[772];
-            BuildFor(mySalaryFolder, _onlySalary);
-
             var myEmployersFolder = _dataModel.AcMoDict[171];
-            BuildFor(myEmployersFolder, _salaryAndIrregulars);
+            _onlySalary = BuildFor(myEmployersFolder, false).ToList();
+            _salaryAndIrregulars = BuildFor(myEmployersFolder, true).ToList();
 
             Rows = _salaryAndIrregulars;
             _isWithIrregulars = true;
@@ -162,16 +160,18 @@ namespace Keeper2018
             myPlotModel.Series.Add(irregularSeries);
         }
 
-        private void BuildFor(AccountItemModel accountModelFolder, List<SalaryLineModel> result)
+        private IEnumerable<SalaryLineModel> BuildFor(AccountItemModel employersFolder, bool includeIrregulars)
         {
-            result.Clear();
-            var lines = _dataModel.Transactions
-                .Where(t => t.Value.Tags.Select(tt=>tt.Id).ToList()
-                    .Intersect(accountModelFolder.Children.Select(c => c.Id)).Any());
-            foreach (var keyValuePair in lines)
+            var transactionModels = _dataModel.Transactions.Values
+                .Where(t => t.Counterparty != null && t.Counterparty.Is(employersFolder));
+
+            if (!includeIrregulars)
             {
-                result.Add(ToSalaryLine(keyValuePair.Value));
+                // 772 - официальн зарплата
+                transactionModels = transactionModels.Where(t => t.Category.Is(772));
             }
+
+            return transactionModels.Select(ToSalaryLine);
         }
 
         private List<SalaryLineModel> Aggregate(List<SalaryLineModel> rows)
@@ -213,22 +213,11 @@ namespace Keeper2018
         {
             SalaryLineModel result = new SalaryLineModel();
             result.Timestamp = transaction.Timestamp;
-            result.Employer = GetEmployer(transaction.Tags);
+            result.Employer = transaction.Counterparty.Name;
             result.Amount = _dataModel.AmountInUsdString(transaction.Timestamp, transaction.Currency, transaction.Amount, out decimal amountInUsd);
             result.AmountInUsd = amountInUsd;
             result.Comment = transaction.Comment;
             return result;
-        }
-
-        private string GetEmployer(List<AccountItemModel> tags)
-        {
-            foreach (var tag in tags)
-            {
-                if (tag.IsTag())
-                    continue;
-                return tag.Name;
-            }
-            return "";
         }
 
         public void ToggleView()

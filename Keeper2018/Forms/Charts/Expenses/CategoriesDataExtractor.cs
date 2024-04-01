@@ -17,7 +17,7 @@ namespace Keeper2018
 
         public List<CategoriesDataElement> GetExpenseGrouppedByCategoryAndMonth()
         {
-            _expenseGroupsIds = _dataModel.AcMoDict[189].Children.Select(c=>c.Id).ToList();
+            _expenseGroupsIds = _dataModel.AcMoDict[NickNames.ExpenseCategoriesRoot].Children.Select(c=>c.Id).ToList();
             var result = new List<CategoriesDataElement>();
 
             var classifiedTrans = GetClassifiedTrans().ToList();
@@ -42,7 +42,7 @@ namespace Keeper2018
                 yield return new ClassifiedTran()
                 {
                     Timestamp = tr.Timestamp,
-                    CategoryId = tr.GetTransactionBaseCategory(_dataModel, _expenseGroupsIds),
+                    CategoryId = _dataModel.GetTopLevelCategory(tr.Category, true).Id,
                     AmountInUsd = tr.Currency == CurrencyCode.USD 
                         ? tr.Amount 
                         : _dataModel.AmountInUsd(tr.Timestamp, tr.Currency, tr.Amount),

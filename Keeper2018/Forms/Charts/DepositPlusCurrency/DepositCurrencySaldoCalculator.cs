@@ -54,7 +54,7 @@ namespace Keeper2018
                     case OperationType.Доход :
                         var inUsd = _dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
                         incomeUsd += inUsd;
-                        if (tran.Tags.Contains(_dataModel.PercentsTag()))
+                        if (tran.Category.Id == NickNames.Percents)
                             depositIncomeUsd += inUsd;
                         balance.Add(tran.Currency, tran.Amount);
                         break;

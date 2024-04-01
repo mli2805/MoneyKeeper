@@ -59,38 +59,5 @@ namespace Keeper2018
             }
             destinationTran.Comment = tran.Comment;
         }
-
-        // возвращает подробную категорию
-        //private static AccountItemModel GetTranArticle(this TransactionModel tran, bool isIncome, bool batchProcessing = true)
-        //{
-        //    var rootId = isIncome ? 185 : 189;
-        //    var category = tran.Tags.FirstOrDefault(t => t.Is(rootId));
-        //    if (category != null) return category;
-        //    MessageBox.Show(
-        //        batchProcessing
-        //            ? $"Нет категории для проводки \n {tran.Timestamp} {tran.Amount} {tran.Currency.ToString().ToLower()}"
-        //            : "Не задана категория!", "Ошибка!");
-        //    return null;
-
-        //}
-
-        //public static AccountItemModel GetExternalAccount(this TransactionModel tran)
-        //{
-        //    var externalAccount = tran.Tags.FirstOrDefault(a => a.Is(157));
-        //    if (externalAccount == null)
-        //        MessageBox.Show(tran.Operation == OperationType.Расход 
-        //            ? "Должен быть хотя бы один продавец/услугодатель" 
-        //            : "Должен быть хотя бы один плательщик");
-
-        //    return externalAccount;
-        //}
-
-        //public static bool HasntGotCategoryTagThoughItShould(this TransactionModel tran)
-        //{
-        //    if (tran.Operation != OperationType.Доход && tran.Operation != OperationType.Расход) return false; // OK
-        //    return tran.GetExternalAccount() == null ||
-        //           tran.GetTranArticle(tran.Operation == OperationType.Доход, false) == null;
-        //}
-
     }
 }

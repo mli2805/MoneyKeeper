@@ -10,8 +10,8 @@ namespace Keeper2018
             var gap = section.AddParagraph();
             gap.Format.SpaceBefore = Unit.FromCentimeter(0.7);
 
-            var total = carReportData.Tags.Sum(t => t.Table.Sum(r => r.AmountInUsd));
-            var totalFuelling = carReportData.Tags.FirstOrDefault(t => t.English == "car fuel")?.Table
+            var total = carReportData.Categories.Sum(t => t.Table.Sum(r => r.AmountInUsd));
+            var totalFuelling = carReportData.Categories.FirstOrDefault(t => t.English == "car fuel")?.Table
                 .Sum(r => r.AmountInUsd);
             var table = section.AddTable();
             table.Style = "Table";

@@ -51,19 +51,15 @@ namespace Keeper2018
 
             foreach (var tran in expenseTrans)
             {
-                foreach (var tag in tran.Tags)
-                {
-                    var expenseArticle = (AccountItemModel)tag.IsC(dataModel.ExpenseRoot());
-                    if (expenseArticle == null) continue;
+                var expenseArticle = dataModel.GetTopLevelCategory(tran.Category, true);
 
-                    var amountInUsd = dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
-                    if (byCategories.ContainsKey(expenseArticle))
-                        byCategories[expenseArticle] += amountInUsd;
-                    else byCategories.Add(expenseArticle, amountInUsd);
+                var amountInUsd = dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
+                if (byCategories.ContainsKey(expenseArticle))
+                    byCategories[expenseArticle] += amountInUsd;
+                else byCategories.Add(expenseArticle, amountInUsd);
 
-                    if (Math.Abs(amountInUsd) >= largeExpenseThreshold)
-                        largeExpenses.Add(new Tuple<AccountItemModel, decimal, TransactionModel>(expenseArticle, amountInUsd, tran));
-                }
+                if (Math.Abs(amountInUsd) >= largeExpenseThreshold)
+                    largeExpenses.Add(new Tuple<AccountItemModel, decimal, TransactionModel>(expenseArticle, amountInUsd, tran));
             }
         }
 

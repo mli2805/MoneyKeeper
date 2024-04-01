@@ -7,19 +7,19 @@ namespace Keeper2018
     {
         private static void DrawTagTables(this Section section, CarReportData carReportData, bool isByTags, bool isBynInReport)
         {
-            section.DrawOneTagTable(carReportData.Tags[0], isBynInReport);
-            section.DrawOneTagTable(carReportData.Tags[1], isBynInReport);
+            section.DrawOneTagTable(carReportData.Categories[0], isBynInReport);
+            section.DrawOneTagTable(carReportData.Categories[1], isBynInReport);
             section.AddPageBreak();
             if (isByTags)
             {
-                section.DrawOneTagTable(carReportData.Tags[2], isBynInReport);
-                section.DrawOneTagTable(carReportData.Tags[3], isBynInReport);
+                section.DrawOneTagTable(carReportData.Categories[2], isBynInReport);
+                section.DrawOneTagTable(carReportData.Categories[3], isBynInReport);
                 section.AddPageBreak();
-                section.DrawOneTagTable(carReportData.Tags[4], isBynInReport);
+                section.DrawOneTagTable(carReportData.Categories[4], isBynInReport);
             }
             else
             {
-                section.DrawOneTagTable(carReportData.Tags[4], isBynInReport);
+                section.DrawOneTagTable(carReportData.Categories[4], isBynInReport);
             }
         }
 

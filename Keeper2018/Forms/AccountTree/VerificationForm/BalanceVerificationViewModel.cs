@@ -63,7 +63,7 @@ namespace Keeper2018
             {
                 Amount = tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = tr.GetCounterpartyName(_dataModel),
+                Counterparty = tr.Counterparty.Name,
                 OperationType = OperationType.Доход,
                 Text = tr.Comment,
             });
@@ -102,7 +102,7 @@ namespace Keeper2018
             {
                 Amount = -tr.Amount,
                 Date = tr.Timestamp.ToString("dd/MMM"),
-                Counterparty = tr.GetCounterpartyName(_dataModel),
+                Counterparty = tr.Counterparty.Name,
                 OperationType = OperationType.Расход,
                 Text = tr.Comment,
             };

@@ -52,7 +52,7 @@ namespace Keeper2018
 
             var carAccountModel = _dataModel.AcMoDict[_carModel.CarAccountId];
             var trans = _dataModel.Transactions.Values.OrderBy(t => t.Timestamp)
-                .Where(m => m.Tags.Any(tag => tag.Is(carAccountModel))).ToList();
+                .Where(m => m.Category != null && m.Category.Is(carAccountModel)).ToList();
 
             DailyOwnershipCostPlotModel = new PlotModel();
             SetAxis(DailyOwnershipCostPlotModel);

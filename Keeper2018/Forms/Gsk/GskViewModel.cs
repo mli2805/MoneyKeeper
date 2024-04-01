@@ -46,14 +46,13 @@ namespace Keeper2018
         {
             Rows = new ObservableCollection<PaymentLineModel>();
             var list = _dataModel.Transactions.Values
-                .Where(t => t.Tags.Select(tt=>tt.Id)
-                    .Contains(285)).ToList(); // погашение кредита ЖСК
+                .Where(t => t.Category != null && t.Category.Id == 285).ToList(); // погашение кредита ЖСК
             foreach (var tr in list)
             {
                 var paymentLine = new PaymentLineModel()
                 {
                     Date = tr.Timestamp.ToShortDateString(),
-                    Sum = _dataModel.AmountInUsdString(tr.Timestamp, tr.Currency, tr.Amount,  out decimal amountIsUsd),
+                    Sum = _dataModel.AmountInUsdString(tr.Timestamp, tr.Currency, tr.Amount, out decimal amountIsUsd),
                 };
                 Rows.Add(paymentLine);
                 PaidAmountInUsd += amountIsUsd;
@@ -61,7 +60,7 @@ namespace Keeper2018
             NumberOfMadePayments = list.Count;
 
             NumberOfFuturePayments = TotalNumberOfPayments - NumberOfMadePayments;
-            ForecastAmountInUsd = NumberOfFuturePayments 
+            ForecastAmountInUsd = NumberOfFuturePayments
                                         * _dataModel.AmountInUsd(DateTime.Today, CurrencyCode.BYN, 9);
             TotalAmountInUsd = PaidAmountInUsd + ForecastAmountInUsd;
 

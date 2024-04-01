@@ -16,19 +16,18 @@ namespace Keeper2018
             foreach (var tran in incomeTrans)
             {
                 var amStr = dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount, out decimal amountInUsd, false);
-                var tag = tran.Tags.First(t => t.Is(185)); // один тэг тип доходов, другой контрагент
 
-                if (tag.Is(186) || tag.Is(212)) // зарплата (+иррациональные)
+                if (tran.Category.Is(186) || tran.Category.Is(212)) // зарплата (+иррациональные)
                 {
                     result.Add(IncomeCategories.Зарплата,
                         $"{amStr} {BuildCommentForIncomeTransaction(tran, true)} {tran.Timestamp:dd MMM}", amountInUsd);
                 }
-                else if (tag.Id == 208 || tag.Id == 209) // %% по вкладу (по карточкам тоже) или дивиденды (траст)
+                else if (tran.Category.Id == 208 || tran.Category.Id == 209) // %% по вкладу (по карточкам тоже) или дивиденды (траст)
                 {
                     var depo = tran.MyAccount.ShortName ?? tran.MyAccount.Name;
                     result.Add(IncomeCategories.Депозиты, $"{amStr} {depo} {tran.Comment} {tran.Timestamp:dd MMM}", amountInUsd);
                 }
-                else if (tag.Id == 701) // manyback
+                else if (tran.Category.Id == 701) // manyback
                 {
                     result.Add(IncomeCategories.Манибэк, 
                         $"{amStr} {tran.MyAccount.ShortName} {tran.Comment} {tran.Timestamp:dd MMM}", amountInUsd);
@@ -59,10 +58,10 @@ namespace Keeper2018
         {
             try
             {
-                var comment = tran.Tags.First(t => t.Is(157)).Name;
+                var comment = tran.Counterparty.Name;
 
                 if (!isSalary)
-                    comment += ";  " + tran.Tags.First(t => t.Is(NickNames.IncomeTags)).Name;
+                    comment += ";  " + tran.Category.Name;
 
                 if (!string.IsNullOrEmpty(tran.Comment))
                     comment += ";  " + tran.Comment;

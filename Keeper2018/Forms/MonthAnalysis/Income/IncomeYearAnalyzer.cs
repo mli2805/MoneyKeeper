@@ -16,24 +16,23 @@ namespace Keeper2018
             foreach (var tran in incomeTrans)
             {
                 var amountInUsd = dataModel.AmountInUsd(tran.Timestamp, tran.Currency, tran.Amount);
-                var tag = tran.Tags.First(t => t.Is(185)); // один тэг тип доходов, другой контрагент
 
-                if (tag.Is(186) || tag.Is(212)) // зарплата (+иррациональные)
+                if (tran.Category.Is(186) || tran.Category.Is(212)) // зарплата (+иррациональные)
                 {
-                    result.Employers.CreateNewOrSumValue(tran.Tags.First(t => t != tag), amountInUsd);
+                    result.Employers.CreateNewOrSumValue(tran.Category, amountInUsd);
                 }
-                else if (tag.Id == 208 || tag.Id == 209) // %% по вкладу (по карточкам тоже) или дивиденды (траст)
+                else if (tran.Category.Id == 208 || tran.Category.Id == 209) // %% по вкладу (по карточкам тоже) или дивиденды (траст)
                 {
                     result.DepoByCurrency.CreateNewOrSumValue(tran.Currency, amountInUsd);
                 }
-                else if (tag.Id == 701) // manyback
+                else if (tran.Category.Id == 701) // manyback
                 {
                     result.Cards.CreateNewOrSumValue(tran.MyAccount, amountInUsd);
                 }
                 else  // остальные типы доходов
                 {
 
-                    result.Rests.CreateNewOrSumValue(tag, amountInUsd);
+                    result.Rests.CreateNewOrSumValue(tran.Category, amountInUsd);
                     // result.Rests.CreateNewOrSumValue(tran.Tags.First(t => t != tag), amountInUsd);
                 }
             }

@@ -18,7 +18,7 @@ namespace Keeper2018
             chart3.Height = Unit.FromCentimeter(16);
             XSeries pieXSeries = chart3.XValues.AddXSeries();
 
-            foreach (var tag in carReportData.Tags)
+            foreach (var tag in carReportData.Categories)
             {
                 pieSeries.Add(Math.Round((double)-tag.Table.Sum(r => r.AmountInUsd)));
                 pieXSeries.Add(tag.English);
@@ -54,8 +54,8 @@ namespace Keeper2018
             column = table.AddColumn("3cm");
             column.Format.Alignment = ParagraphAlignment.Right;
 
-            var total = carReportData.Tags.Sum(t => t.Table.Sum(r => r.AmountInUsd));
-            foreach (var tag in carReportData.Tags)
+            var total = carReportData.Categories.Sum(t => t.Table.Sum(r => r.AmountInUsd));
+            foreach (var tag in carReportData.Categories)
             {
                 var row = table.AddRow();
                 row.Cells[0].AddParagraph($"{tag.Russian}");

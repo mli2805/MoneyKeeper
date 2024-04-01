@@ -8,33 +8,33 @@ namespace Keeper2018
 {
     public static class CarReportDataProvider
     {
-        private static readonly string[] TagRussianNames =
+        private static readonly string[] CategoryRussianNames =
             { "покупка-продажа", "государство", "авто ремонт", "ремонт ДТП", "регулярн обслуживание", "авто топливо", "авто прочее" };
 
-        private static readonly string[] TagRussianNamesOther =
+        private static readonly string[] CategoryRussianNamesOther =
               { "покупка-продажа", "государство", "авто топливо", "авто прочее" };
 
-        private static readonly string[] TagRussianNamesRepair =
+        private static readonly string[] CategoryRussianNamesRepair =
              { "авто ремонт", "ремонт ДТП", "регулярн обслуживание" };
 
-        private static readonly string[] TagEnglishNames =
+        private static readonly string[] CategoryEnglishNames =
             { "buy-sell", "state", "car repair", "accident repair", "expendables", "car fuel", "other stuff" };
 
-        private static readonly string[] TagEnglishNamesOther =
+        private static readonly string[] CategoryEnglishNamesOther =
                  { "buy-sell", "state", "car fuel", "other stuff" };
 
-        // private static readonly string[] TagEnglishNamesRepair =
+        // private static readonly string[] CategoryEnglishNamesRepair =
         //          { "car repair", "accident repair", "expendables" };
 
 
-        public static CarReportData ExtractCarReportData(this KeeperDataModel dataModel, CarModel car, bool isByTags)
+        public static CarReportData ExtractCarReportData(this KeeperDataModel dataModel, CarModel car, bool isByCategories)
         {
             var isCurrentCar = dataModel.Cars.Last().Id == car.Id;
 
-            var carReportData = dataModel.ExtractCarData(car.CarAccountId, isByTags);
+            var carReportData = dataModel.ExtractCarData(car.CarAccountId, isByCategories);
             if (isCurrentCar)
             {
-                carReportData.Tags[0].Table.Add(new CarReportTableRow()
+                carReportData.Categories[0].Table.Add(new CarReportTableRow()
                 {
                     Date = DateTime.Today,
                     AmountInUsd = car.SupposedSalePrice,
@@ -42,57 +42,59 @@ namespace Keeper2018
                     Comment = "предполагаемая продажа",
                 });
             }
-            carReportData.FinishDate = carReportData.Tags[0].Table.Last().Date;
+            carReportData.FinishDate = carReportData.Categories[0].Table.Last().Date;
             return carReportData;
         }
 
-        private static CarReportData ExtractCarData(this KeeperDataModel dataModel, int carAccountId, bool isByTags)
+        private static CarReportData ExtractCarData(this KeeperDataModel dataModel, int carAccountId, bool isByCategories)
         {
             var result = new CarReportData();
             var carAccount = dataModel.AcMoDict[carAccountId];
 
-            if (isByTags)
-                for (int i = 0; i < TagRussianNames.Length; i++)
+            if (isByCategories)
+                for (int i = 0; i < CategoryRussianNames.Length; i++)
                 {
-                    // get Tag by name
-                    var tag = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNames[i]));
-                    // get rows for Tag
-                    var rows = dataModel.GetTableForOneTag(tag);
-                    result.Tags.Add(new CarReportTable(TagRussianNames[i], TagEnglishNames[i], rows));
+                    // get Category by name
+                    var category = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(CategoryRussianNames[i]));
+                    // get rows for Category
+                    var rows = dataModel.GetTableForOneCategory(category);
+                    result.Categories.Add(new CarReportTable(CategoryRussianNames[i], CategoryEnglishNames[i], rows));
                 }
             else
             {
-                for (int i = 0; i < TagRussianNamesOther.Length; i++)
+                for (int i = 0; i < CategoryRussianNamesOther.Length; i++)
                 {
-                    // get Tag by name
-                    var tag = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesOther[i]));
-                    // get rows for Tag
-                    var rowsOther = dataModel.GetTableForOneTag(tag);
-                    result.Tags.Add(new CarReportTable(TagRussianNamesOther[i], TagEnglishNamesOther[i], rowsOther));
+                    // get Category by name
+                    var category = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(CategoryRussianNamesOther[i]));
+                    // get rows for Category
+                    var rowsOther = dataModel.GetTableForOneCategory(category);
+                    result.Categories.Add(new CarReportTable(CategoryRussianNamesOther[i], CategoryEnglishNamesOther[i], rowsOther));
                 }
 
-                var tagR0 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[0]));
-                var rowsRepair = dataModel.GetTableForOneTag(tagR0);
-                var tagR1 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[1]));
-                rowsRepair.AddRange(dataModel.GetTableForOneTag(tagR1));
-                var tagR2 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(TagRussianNamesRepair[2]));
-                rowsRepair.AddRange(dataModel.GetTableForOneTag(tagR2));
+                var tagR0 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(CategoryRussianNamesRepair[0]));
+                var rowsRepair = dataModel.GetTableForOneCategory(tagR0);
+                var tagR1 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(CategoryRussianNamesRepair[1]));
+                rowsRepair.AddRange(dataModel.GetTableForOneCategory(tagR1));
+                var tagR2 = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains(CategoryRussianNamesRepair[2]));
+                rowsRepair.AddRange(dataModel.GetTableForOneCategory(tagR2));
 
-                result.Tags.Add(
+                result.Categories.Add(
                     new CarReportTable("обслуживание и ремонт", "expendables and repair",
                     rowsRepair.OrderBy(r => r.Date).ToList()));
             }
 
-            result.StartDate = result.Tags[0].Table[0].Date;
+            result.StartDate = result.Categories[0].Table[0].Date;
             return result;
         }
 
-        private static List<CarReportTableRow> GetTableForOneTag(this KeeperDataModel dataModel, AccountItemModel tag)
+        private static List<CarReportTableRow> GetTableForOneCategory(this KeeperDataModel dataModel, AccountItemModel category)
         {
             var rows = new List<CarReportTableRow>();
-            foreach (var transaction in dataModel.Transactions.Values.OrderBy(t => t.Timestamp))
+            foreach (var transaction in dataModel.Transactions.Values
+                         .Where(t=>t.Category != null && t.Category.Id == category.Id)
+                         .OrderBy(t => t.Timestamp))
             {
-                var balanceForTag = transaction.BalanceForTag(dataModel, tag.Id);
+                var balanceForTag = transaction.BalanceForCategory();
                 if (balanceForTag == null) continue;
                 var row = new CarReportTableRow
                 {

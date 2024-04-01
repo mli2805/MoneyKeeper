@@ -234,15 +234,17 @@ namespace Keeper2018
         private TransactionModel CreateFuellingTran(FuellingInputVm vm)
         {
             var carAccount = _dataModel.AcMoDict[vm.CarAccountId];
-            var account = carAccount.Children.First(c => c.Name.Contains("авто топливо"));
+            var thisCarFuel = (AccountItemModel)carAccount.Children.First(c => c.Name.Contains("авто топливо"));
             var azs = _dataModel.AcMoDict[272];
             return new TransactionModel()
             {
                 Operation = OperationType.Расход,
                 Timestamp = vm.Timestamp,
+                Counterparty = azs,
+                Category = thisCarFuel,
                 Amount = vm.Amount,
                 Currency = vm.Currency,
-                Tags = new List<AccountItemModel>() { (AccountItemModel)account, azs, },
+                Tags = new List<AccountItemModel>(),
                 Comment = $"{vm.Volume} л {vm.FuelType} ({vm.Comment})",
             };
         }

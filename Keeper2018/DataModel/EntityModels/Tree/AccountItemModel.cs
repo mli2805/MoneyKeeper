@@ -47,9 +47,9 @@
                 return "../../Resources/tree16/account4.png";
             if (Is(NickNames.MyAccounts))
                 return "../../Resources/tree16/wallet2.png";
-            if (Is(NickNames.IncomeTags))
+            if (Is(NickNames.IncomeCategoriesRoot))
                 return "../../Resources/tree16/plus3.png";
-            if (Is(NickNames.ExpenseTags))
+            if (Is(NickNames.ExpenseCategoriesRoot))
                 return "../../Resources/tree16/minus3.png";
 
             return "../../Resources/tree16/counterparty.png";

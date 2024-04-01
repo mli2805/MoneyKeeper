@@ -43,5 +43,15 @@ namespace Keeper2018
                 .OrderBy(d => d.BankAccount.FinishDate);
         }
 
+        public static AccountItemModel GetTopLevelCategory(this KeeperDataModel dataModel, AccountItemModel category, bool isExpense)
+        {
+            var root = isExpense ? NickNames.ExpenseCategoriesRoot : NickNames.IncomeCategoriesRoot;
+            while (category.Parent.Id != root)
+            {
+                category = dataModel.AcMoDict[category.Parent.Id];
+            }
+            return category;
+        }
+
     }
 }

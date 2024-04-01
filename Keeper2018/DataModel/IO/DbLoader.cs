@@ -90,6 +90,7 @@ namespace Keeper2018
                 _keeperDataModel.Transactions.Add(transaction.Id, transaction.Map(_keeperDataModel.AcMoDict)); 
             
             //MoveCounterpartyAndCategory();
+            //FreeLanceFee();
 
             _keeperDataModel.FuellingJoinTransaction(bin.Fuellings);
 
@@ -105,6 +106,19 @@ namespace Keeper2018
                 .Select(b => b.Map(_keeperDataModel.AcMoDict)).ToList();
             _keeperDataModel.SalaryChanges = bin.SalaryChanges;
             _keeperDataModel.LargeExpenseThresholds = bin.LargeExpenseThresholds;
+        }
+
+        private void FreeLanceFee()
+        {
+            foreach (var tran in _keeperDataModel.Transactions.Values)
+            {
+                if (tran.Operation == OperationType.Расход && tran.Category.Id == 661)
+                {
+                    tran.Operation = OperationType.Доход;
+                    tran.Category = _keeperDataModel.AcMoDict[1063];
+                    tran.Amount = -tran.Amount;
+                }
+            }
         }
 
         private void MoveCounterpartyAndCategory()
