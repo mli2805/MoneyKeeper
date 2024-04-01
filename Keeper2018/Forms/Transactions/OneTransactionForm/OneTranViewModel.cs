@@ -244,7 +244,7 @@ namespace Keeper2018
                 Category = thisCarFuel,
                 Amount = vm.Amount,
                 Currency = vm.Currency,
-                Tags = new List<AccountItemModel>(),
+                Tags = new List<AccountItemModel>(){ _dataModel.AcMoDict[1066]},
                 Comment = $"{vm.Volume} л {vm.FuelType} ({vm.Comment})",
             };
         }

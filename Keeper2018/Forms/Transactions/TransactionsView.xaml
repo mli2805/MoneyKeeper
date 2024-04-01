@@ -135,11 +135,10 @@
                                     Binding="{Binding Tran.Timestamp, StringFormat='dd-MM-yyyy HH:mm'}" />
                 <DataGridTextColumn Header="R" Width="10" Binding="{Binding Tran.Receipt}" />
                 <DataGridTextColumn Header="  Мой счет" Width="350*" Binding="{Binding AccountForDataGrid}" />
-                <DataGridTextColumn Header="  Контрагент" Width="200*" Binding="{Binding Tran.Counterparty}" />
+                <DataGridTextColumn Header="  Контрагент" Width="175*" Binding="{Binding Tran.Counterparty}" />
                 <DataGridTextColumn Header="  Категория" Width="200*" Binding="{Binding Tran.Category}" />
                 <DataGridTextColumn Header="  Сколько" Width="120*" Binding="{Binding AmountForDataGrid}" />
-                <DataGridTextColumn Header="  Тэги" Width="200*" Binding="{Binding TagsForDataGrid}" />
-                <DataGridTextColumn Header="  Коментарий" Width="250*" Binding="{Binding Tran.Comment}" />
+                <DataGridTextColumn Header="  Тэги и коммент" Width="300*" Binding="{Binding TagsAndCommentForDataGrid}" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

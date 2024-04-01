@@ -20,7 +20,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange(nameof(TransactionFontColor));
                 NotifyOfPropertyChange(nameof(AccountForDataGrid));
                 NotifyOfPropertyChange(nameof(AmountForDataGrid));
-                NotifyOfPropertyChange(nameof(TagsForDataGrid));
+                NotifyOfPropertyChange(nameof(TagsAndCommentForDataGrid));
             }
         }
 
@@ -31,7 +31,7 @@ namespace Keeper2018
 
         public string AccountForDataGrid => GetAccountForDataGrid();
         public string AmountForDataGrid => GetAmountForDataGrid();
-        public string TagsForDataGrid => GetTagsForDataGrid();
+        public string TagsAndCommentForDataGrid => GetTagsAndCommentForDataGrid();
 
         private string GetAccountForDataGrid()
         {
@@ -49,12 +49,18 @@ namespace Keeper2018
                 ? $" {amount:#,0} {currency.ToString().ToLower()}"
                 : $" {amount:#,0.00} {currency.ToString().ToLower()}";
         }
-        private string GetTagsForDataGrid()
+        private string GetTagsAndCommentForDataGrid()
         {
             string result = "";
-            if (Tran.Tags.Count > 0) result = Tran.Tags[0].ToString();
-            for (int i = 1; i < Tran.Tags.Count; i++)
-                result = result + ";  " + Tran.Tags[i];
+            if (Tran.Tags.Count > 0)
+            {
+                result = "#" + Tran.Tags[0];
+                for (int i = 1; i < Tran.Tags.Count; i++)
+                    result = result + ";  #" + Tran.Tags[i];
+                if (!string.IsNullOrEmpty(Tran.Comment))
+                    result += "\n";
+            }
+            result += Tran.Comment;
             return result;
         }
         private bool IsOneAccountTransaction()
