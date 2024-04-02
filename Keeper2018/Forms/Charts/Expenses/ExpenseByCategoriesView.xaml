@@ -19,11 +19,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <oxy:PlotView Grid.Column="0" Grid.ColumnSpan="2" Model="{Binding MyPlotModel}" Margin="5"/>
-        <ListBox Name="LegendListBox" Grid.Row="0" Grid.Column="2" Margin="0,20,10,0" ItemsSource="{Binding LegendBindingSource}" 
+        <oxy:PlotView Grid.Column="0" Grid.ColumnSpan="2" 
+                      Model="{Binding MyPlotModel}" Margin="5"/>
+        <ListBox Name="LegendListBox" Grid.Row="0" Grid.Column="2" Margin="0,20,10,0" 
+                 ItemsSource="{Binding LegendBindingSource}" 
                  HorizontalContentAlignment="Right" BorderThickness="0"/>
 
-        <local:PeriodChoiceControl x:Name="PeriodChoiceControl" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,10,10"
-                                   Interval="{Binding MyPeriod, Mode=TwoWay}" IntervalMode="{Binding MyIntervalMode, Mode=TwoWay}"/>
+        <local:PeriodChoiceControl x:Name="PeriodChoiceControl" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" 
+                                   Margin="0,0,10,10"
+                                   Interval="{Binding MyPeriod, Mode=TwoWay}" 
+                                   IntervalMode="{Binding MyIntervalMode, Mode=TwoWay}"/>
     </Grid>
 </Window>
