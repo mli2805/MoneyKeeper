@@ -10,7 +10,7 @@
         Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
     <Window.Resources>
         <ResourceDictionary>
-             <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
+            <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -26,7 +26,8 @@
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(1)]"/>
                 <TextBlock Padding="5">Тип операции</TextBlock>
             </StackPanel>
-            <ComboBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0" ItemsSource="{Binding FilterModel.OperationTypes}" 
+            <ComboBox Width="200" HorizontalAlignment="Left" Margin="5,0,0,0"
+                      ItemsSource="{Binding FilterModel.OperationTypes}" 
                       SelectedItem="{Binding FilterModel.MyOperationType, Mode=TwoWay}"/>
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Height="25" Margin="5">
@@ -34,9 +35,11 @@
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(2)]"/>
                     <TextBlock Padding="5">Мой счет</TextBlock>
                 </StackPanel>
-                <keeper2018:ComboBoxTreeView Height="25" Width="200" HorizontalAlignment="Left" Margin="5,0,0,0"  Background="White" 
-                      VerticalAlignment="Top" ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="True"
-                      ItemsSource="{Binding FilterModel.AvailableAccNames}" SelectedItem="{Binding FilterModel.MyAccName, Mode=TwoWay}" />
+                <keeper2018:ComboBoxTreeView Height="25" Width="200" HorizontalAlignment="Left" 
+                      Margin="5,0,0,0"  Background="White" VerticalAlignment="Top" 
+                      ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="True"
+                      ItemsSource="{Binding FilterModel.AvailableAccNames}" 
+                      SelectedItem="{Binding FilterModel.MyAccName, Mode=TwoWay}" />
                 <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
                     <RadioButton GroupName="AccNamePosition" Content="1" 
                                  IsChecked="{Binding FilterModel.IsAccNamePosition1}" Margin="15,0,0,0"/>
@@ -46,6 +49,33 @@
                                  IsChecked="{Binding FilterModel.IsAccNamePosition12}"  Margin="15,0,0,0"/>
                 </StackPanel>
             </StackPanel>
+
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                    <Button Width="20"  Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}"
+                            cal:Message.Attach="[Event Click] = [Action CleanProperty(11)]"/>
+                    <TextBlock Padding="5">Контрагент</TextBlock>
+                </StackPanel>
+                <keeper2018:ComboBoxTreeView Height="25" Width="200" HorizontalAlignment="Left" 
+                     Margin="5,0,0,0"  Background="White" VerticalAlignment="Top" 
+                     ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="True"
+                     ItemsSource="{Binding FilterModel.AvailableCounterparties}" 
+                     SelectedItem="{Binding FilterModel.Counterparty, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="25" Margin="5">
+                    <Button Width="20"  Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}"
+                            cal:Message.Attach="[Event Click] = [Action CleanProperty(12)]"/>
+                    <TextBlock Padding="5">Категория</TextBlock>
+                </StackPanel>
+                <keeper2018:ComboBoxTreeView Height="25" Width="200" HorizontalAlignment="Left" 
+                     Margin="5,0,0,0"  Background="White" VerticalAlignment="Top" 
+                     ItemTemplate="{StaticResource ComboBoxTreeViewDataTemplate}" IsBranchSelectionEnabled="True"
+                     ItemsSource="{Binding FilterModel.AvailableCategories}" 
+                     SelectedItem="{Binding FilterModel.Category, Mode=TwoWay}" />
+            </StackPanel>
+
             <StackPanel Orientation="Horizontal" Height="25" Margin="5">
                 <Button Width="20" Margin="0,3,5,0" Content="x" Style="{StaticResource MyButtonStyle}"
                         cal:Message.Attach="[Event Click] = [Action CleanProperty(3)]"/>

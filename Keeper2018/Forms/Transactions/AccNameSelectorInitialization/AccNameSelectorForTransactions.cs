@@ -128,12 +128,8 @@ namespace Keeper2018
 
         public AccNameSelectorVm ForFilter()
         {
-
             return Build("", new Dictionary<string, int>(),
-                _comboTreesProvider.AccNamesForFilterTags, 256);
+                _comboTreesProvider.AdditionalTags, 256);
         }
-
-
-
     }
 }

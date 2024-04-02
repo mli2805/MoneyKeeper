@@ -14,7 +14,7 @@
 
         public static readonly int IncomeCategoriesRoot = 185;
         public static readonly int ExpenseCategoriesRoot = 189;
-        
+
         public static readonly int Percents = 208;
         public static readonly int MoneyBack = 701;
 
@@ -26,6 +26,11 @@
         public static AccountItemModel MineRoot(this KeeperDataModel dataModel)
         {
             return dataModel.AcMoDict[158];
+        }
+
+        public static AccountItemModel ExternalRoot(this KeeperDataModel dataModel)
+        {
+            return dataModel.AcMoDict[157];
         }
 
         public static bool IsCategory(this AccountItemModel account) // one of Income or Expense

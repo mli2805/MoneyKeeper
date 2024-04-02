@@ -11,6 +11,7 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _dataModel;
         private readonly AccNameSelector _accNameSelectionControlInitializer;
+
         public List<OperationTypesFilter> OperationTypes { get; set; } = InitOperationTypesFilter();
         private OperationTypesFilter _myOperationType;
         public OperationTypesFilter MyOperationType
@@ -21,6 +22,11 @@ namespace Keeper2018
                 if (value == _myOperationType) return;
                 _myOperationType = value;
                 NotifyOfPropertyChange();
+
+                ChangeAvailableCategories(value);
+                Category = AvailableCategories.FirstOrDefault();
+                NotifyOfPropertyChange(nameof(AvailableCategories));
+                NotifyOfPropertyChange(nameof(Category));
             }
         }
         private static List<OperationTypesFilter> InitOperationTypesFilter()
@@ -34,6 +40,27 @@ namespace Keeper2018
                             select new OperationTypesFilter(operationType));
             return result;
         }
+
+        private void ChangeAvailableCategories(OperationTypesFilter newOperationTypesFilter)
+        {
+            if (!newOperationTypesFilter.IsOn || newOperationTypesFilter.Operation == OperationType.Перенос
+                                              || newOperationTypesFilter.Operation == OperationType.Обмен)
+            {
+                AvailableCategories = new List<AccName>();
+                return;
+            }
+
+            var rootId = newOperationTypesFilter.Operation == OperationType.Доход
+                ? NickNames.IncomeCategoriesRoot
+                : NickNames.ExpenseCategoriesRoot;
+            AvailableCategories = new List<AccName>()
+                {
+                    new AccName().PopulateFromAccount(_dataModel.AcMoDict[rootId], new List<int>())
+                };
+        }
+
+
+        #region MyAccount
 
         private List<AccName> _availableAccNames;
         public List<AccName> AvailableAccNames
@@ -95,6 +122,37 @@ namespace Keeper2018
             }
         }
 
+        #endregion
+
+        public List<AccName> AvailableCounterparties { get; set; }
+
+        private AccName _counterparty;
+        public AccName Counterparty
+        {
+            get => _counterparty;
+            set
+            {
+                if (value == _counterparty) return;
+                _counterparty = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public List<AccName> AvailableCategories { get; set; }
+
+        private AccName _category;
+        public AccName Category
+        {
+            get => _category;
+            set
+            {
+                if (value == _category) return;
+                _category = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        #region Amount = < >
         private string _amount;
         public string Amount
         {
@@ -142,6 +200,10 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+        #endregion
+
+        #region Currency  To, From or Both
+
         public List<CurrencyCodesFilter> Currencies { get; set; } = InitCurrencyCodesFilter();
 
         private CurrencyCodesFilter _myCurrency;
@@ -203,6 +265,11 @@ namespace Keeper2018
             return result;
         }
 
+        #endregion
+
+
+        #region Tags && or ||
+
         private bool _isTagsJoinedByAnd;
         public bool IsTagsJoinedByAnd
         {
@@ -215,11 +282,6 @@ namespace Keeper2018
             }
         }
 
-        public ObservableCollection<AccName> MyTags { get; set; } = new ObservableCollection<AccName>();
-
-        public TagPickerVm MyTagPickerVm { get; set; }
-
-
         private bool _isTagsJoinedByOr;
         public bool IsTagsJoinedByOr
         {
@@ -231,9 +293,14 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+        public ObservableCollection<AccName> MyTags { get; set; } = new ObservableCollection<AccName>();
+
+        public TagPickerVm MyTagPickerVm { get; set; }
+
+        #endregion
+
 
         private string _myComment;
-
         public string MyComment
         {
             get => _myComment;
@@ -253,15 +320,27 @@ namespace Keeper2018
 
         public void Initialize()
         {
+            MyOperationType = OperationTypes.First();
             AvailableAccNames = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], new List<int>())
+                new AccName().PopulateFromAccount(_dataModel.MineRoot(), new List<int>())
             };
             IsAccNamePosition12 = true;
+
+            AvailableCounterparties = new List<AccName>()
+            {
+                new AccName().PopulateFromAccount(_dataModel.ExternalRoot(), new List<int>())
+            };
+            AvailableCategories = new List<AccName>();
+
             AmountEqualTo = true;
             IsCurrencyPosition12 = true;
-            MyTagPickerVm = new TagPickerVm { TagSelectorVm = _accNameSelectionControlInitializer.ForFilter(), Tags = MyTags };
-            IsTagsJoinedByAnd = true;
+            MyTagPickerVm = new TagPickerVm
+            {
+                TagSelectorVm = _accNameSelectionControlInitializer.ForFilter(),
+                Tags = MyTags
+            };
+            IsTagsJoinedByOr = true;
             CleanAll();
             MyTags.CollectionChanged += MyTags_CollectionChanged;
         }
@@ -275,6 +354,8 @@ namespace Keeper2018
         {
             MyOperationType = OperationTypes.FirstOrDefault();
             MyAccName = AvailableAccNames.FirstOrDefault();
+            Counterparty = AvailableCounterparties.FirstOrDefault();
+            Category = AvailableCategories.FirstOrDefault();
             Amount = null;
             MyCurrency = Currencies.FirstOrDefault();
             MyTagPickerVm.Tags.Clear();
@@ -286,6 +367,8 @@ namespace Keeper2018
             {
                 case 1: MyOperationType = OperationTypes.FirstOrDefault(); return;
                 case 2: MyAccName = AvailableAccNames.FirstOrDefault(); return;
+                case 11: Counterparty = AvailableCounterparties.FirstOrDefault(); return;
+                case 12: Category = AvailableCategories.FirstOrDefault(); return;
                 case 3: Amount = null; return;
                 case 4: MyCurrency = Currencies.FirstOrDefault(); return;
                 case 5: MyTagPickerVm.Tags.Clear(); return;

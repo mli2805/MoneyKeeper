@@ -11,7 +11,8 @@ namespace Keeper2018
             _wrappedTran = wrappedTran;
             if (filterModel == null) return true;
             _filterModel = filterModel;
-            return FilterOperationType() && FilterAccount() && FilterAmount() && FilterCurrency() && FilterTags() && FilterComment();
+            return FilterOperationType() && FilterAccount() && FilterCounterparty() 
+                   && FilterCategory() && FilterAmount() && FilterCurrency() && FilterTags() && FilterComment();
         }
 
         private bool FilterOperationType()
@@ -23,11 +24,23 @@ namespace Keeper2018
         {
             if (_filterModel.MyAccName == null) return true;
             if (_filterModel.IsAccNamePosition1) return _wrappedTran.Tran.MyAccount.Is(_filterModel.MyAccName.Id);
-            if (_filterModel.IsAccNamePosition2) 
+            if (_filterModel.IsAccNamePosition2)
                 return _wrappedTran.Tran.MySecondAccount != null && _wrappedTran.Tran.MySecondAccount.Is(_filterModel.MyAccName.Id);
             // if (_filterModel.IsAccNamePosition12)
             return _wrappedTran.Tran.MyAccount.Is(_filterModel.MyAccName.Id) ||
                    _wrappedTran.Tran.MySecondAccount != null && _wrappedTran.Tran.MySecondAccount.Is(_filterModel.MyAccName.Id);
+        }
+
+        private bool FilterCounterparty()
+        {
+            if (_filterModel.Counterparty == null) return true;
+            return _wrappedTran.Tran.Counterparty != null && _wrappedTran.Tran.Counterparty.Is(_filterModel.Counterparty.Id);
+        }
+
+        private bool FilterCategory()
+        {
+            if (_filterModel.Category == null) return true;
+            return _wrappedTran.Tran.Category != null && _wrappedTran.Tran.Category.Is(_filterModel.Category.Id);
         }
 
         private bool FilterAmount()

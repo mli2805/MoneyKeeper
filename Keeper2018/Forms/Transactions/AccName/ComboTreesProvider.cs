@@ -21,7 +21,7 @@ namespace Keeper2018
         public List<AccName> MyAccNamesForExchange { get; set; }
         public List<AccName> AccNamesForExchangeTags { get; set; }
 
-        public List<AccName> AccNamesForFilterTags { get; set; }
+        //public List<AccName> AccNamesForFilterTags { get; set; }
 
         public List<AccName> AccNamesForInvestmentExpense { get; set; }
         public List<AccName> AccNamesForInvestmentIncome { get; set; }
@@ -57,7 +57,7 @@ namespace Keeper2018
             InitializeListsForExpense();
             InitializeListsForTransfer();
             InitializeListsForExchange();
-            InitializeListForFilterTags();
+            //InitializeListForFilterTags();
             InitializeForInvestments();
         }
 
@@ -102,17 +102,17 @@ namespace Keeper2018
             }
         }
 
-        private void InitializeListForFilterTags()
-        {
-            // All Tags
-            AccNamesForFilterTags = new List<AccName>();
-            var list = new List<int>() { 157, 185, 189 };
-            foreach (var element in list)
-            {
-                var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
-                AccNamesForFilterTags.Add(root);
-            }
-        }
+        //private void InitializeListForFilterTags()
+        //{
+        //    // All Tags
+        //    AccNamesForFilterTags = new List<AccName>();
+        //    var list = new List<int>() { 157, 185, 189 };
+        //    foreach (var element in list)
+        //    {
+        //        var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
+        //        AccNamesForFilterTags.Add(root);
+        //    }
+        //}
         private void InitializeListsForIncome()
         {
             // Income
