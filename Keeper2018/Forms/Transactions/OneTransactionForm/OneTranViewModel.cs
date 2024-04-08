@@ -114,9 +114,8 @@ namespace Keeper2018
                 TranInWork.CurrencyInReturn = (TranInWork.Currency == CurrencyCode.BYN) ? CurrencyCode.USD : CurrencyCode.BYN;
         }
 
-        private bool IsValid()
+        private void CleanUnneccessaryProperties()
         {
-            //if (ReceiptList == null && TranInWork.HasntGotCategoryTagThoughItShould()) return false;
             if (TranInWork.Operation == OperationType.Доход || TranInWork.Operation == OperationType.Расход)
             {
                 TranInWork.MySecondAccount = null;
@@ -127,6 +126,17 @@ namespace Keeper2018
                 TranInWork.CurrencyInReturn = null;
             }
 
+            if (TranInWork.Operation == OperationType.Перенос || TranInWork.Operation == OperationType.Обмен)
+            {
+                TranInWork.Counterparty = null;
+                TranInWork.Category = null;
+            }
+        }
+
+        private bool IsValid()
+        {
+            //if (ReceiptList == null && TranInWork.HasntGotCategoryTagThoughItShould()) return false;
+          
             if (TranInWork.Operation == OperationType.Расход && TranInWork.PaymentWay == PaymentWay.НеЗадано)
             {
                 MessageBox.Show("Не задан способ оплаты!", "Ошибка!");
@@ -146,6 +156,7 @@ namespace Keeper2018
         public void Save()
         {
             if (!IsValid()) return;
+            CleanUnneccessaryProperties();
             TryClose(true);
         }
 

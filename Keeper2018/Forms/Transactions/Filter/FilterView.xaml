@@ -7,7 +7,7 @@
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
         Title="FilterView" SizeToContent="Height" Width="{Binding Width, Mode=TwoWay}" 
-        Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}">
+        Left="{Binding Left, Mode=TwoWay}" Top="{Binding Top, Mode=TwoWay}" d:DataContext="{d:DesignData FilterViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <keeper2018:DoubleToStringConverter x:Key="DoubleToStringConverter"/>

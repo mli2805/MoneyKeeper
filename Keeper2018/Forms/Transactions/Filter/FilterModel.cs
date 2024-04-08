@@ -22,43 +22,19 @@ namespace Keeper2018
                 if (value == _myOperationType) return;
                 _myOperationType = value;
                 NotifyOfPropertyChange();
-
-                ChangeAvailableCategories(value);
-                Category = AvailableCategories.FirstOrDefault();
-                NotifyOfPropertyChange(nameof(AvailableCategories));
-                NotifyOfPropertyChange(nameof(Category));
             }
         }
         private static List<OperationTypesFilter> InitOperationTypesFilter()
         {
-            var result = new List<OperationTypesFilter>();
-            // <no filter>
-            result.Add(new OperationTypesFilter());
+            var result = new List<OperationTypesFilter> {
+                new OperationTypesFilter() // <no filter>
+            };
             // filters for every operation type
             var operationTypes = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
             result.AddRange(from operationType in operationTypes
                             select new OperationTypesFilter(operationType));
             return result;
         }
-
-        private void ChangeAvailableCategories(OperationTypesFilter newOperationTypesFilter)
-        {
-            if (!newOperationTypesFilter.IsOn || newOperationTypesFilter.Operation == OperationType.Перенос
-                                              || newOperationTypesFilter.Operation == OperationType.Обмен)
-            {
-                AvailableCategories = new List<AccName>();
-                return;
-            }
-
-            var rootId = newOperationTypesFilter.Operation == OperationType.Доход
-                ? NickNames.IncomeCategoriesRoot
-                : NickNames.ExpenseCategoriesRoot;
-            AvailableCategories = new List<AccName>()
-                {
-                    new AccName().PopulateFromAccount(_dataModel.AcMoDict[rootId], new List<int>())
-                };
-        }
-
 
         #region MyAccount
 
@@ -329,9 +305,15 @@ namespace Keeper2018
 
             AvailableCounterparties = new List<AccName>()
             {
+                new AccName(){ Name = "no filter"},
                 new AccName().PopulateFromAccount(_dataModel.ExternalRoot(), new List<int>())
             };
-            AvailableCategories = new List<AccName>();
+            AvailableCategories = new List<AccName>()
+            {
+                new AccName(){ Name = "no filter"},
+                new AccName().PopulateFromAccount(_dataModel.IncomeRoot(), new List<int>()),
+                new AccName().PopulateFromAccount(_dataModel.ExpensesRoot(), new List<int>()),
+            };
 
             AmountEqualTo = true;
             IsCurrencyPosition12 = true;
@@ -354,7 +336,7 @@ namespace Keeper2018
         {
             MyOperationType = OperationTypes.FirstOrDefault();
             MyAccName = AvailableAccNames.FirstOrDefault();
-            Counterparty = AvailableCounterparties.FirstOrDefault();
+            Counterparty = AvailableCounterparties.FirstOrDefault(); // если поставить корень Внешних - это сразу отфильтрует все Переносы
             Category = AvailableCategories.FirstOrDefault();
             Amount = null;
             MyCurrency = Currencies.FirstOrDefault();

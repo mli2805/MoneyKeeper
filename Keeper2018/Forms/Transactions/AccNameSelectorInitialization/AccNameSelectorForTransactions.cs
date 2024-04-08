@@ -129,7 +129,7 @@ namespace Keeper2018
         public AccNameSelectorVm ForFilter()
         {
             return Build("", new Dictionary<string, int>(),
-                _comboTreesProvider.AdditionalTags, 256);
+                _comboTreesProvider.AdditionalTags, NickNames.TagsRoot);
         }
     }
 }

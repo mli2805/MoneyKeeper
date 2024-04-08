@@ -33,13 +33,13 @@ namespace Keeper2018
 
         private bool FilterCounterparty()
         {
-            if (_filterModel.Counterparty == null) return true;
+            if (_filterModel.Counterparty.Name == "no filter") return true;
             return _wrappedTran.Tran.Counterparty != null && _wrappedTran.Tran.Counterparty.Is(_filterModel.Counterparty.Id);
         }
 
         private bool FilterCategory()
         {
-            if (_filterModel.Category == null) return true;
+            if (_filterModel.Category.Name == "no filter") return true;
             return _wrappedTran.Tran.Category != null && _wrappedTran.Tran.Category.Is(_filterModel.Category.Id);
         }
 

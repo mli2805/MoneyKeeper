@@ -14,12 +14,10 @@
 
         public static readonly int IncomeCategoriesRoot = 185;
         public static readonly int ExpenseCategoriesRoot = 189;
+        public static readonly int TagsRoot = 1014;
 
         public static readonly int Percents = 208;
         public static readonly int MoneyBack = 701;
-
-
-        public static readonly int OtherExpense = 256;
 
         public static bool IsMyAccount(this AccountItemModel account) { return account.Is(MyAccounts); }
 
@@ -31,6 +29,16 @@
         public static AccountItemModel ExternalRoot(this KeeperDataModel dataModel)
         {
             return dataModel.AcMoDict[157];
+        }
+
+        public static AccountItemModel IncomeRoot(this KeeperDataModel dataModel)
+        {
+            return dataModel.AcMoDict[185];
+        }
+
+        public static AccountItemModel ExpensesRoot(this KeeperDataModel dataModel)
+        {
+            return dataModel.AcMoDict[189];
         }
 
         public static bool IsCategory(this AccountItemModel account) // one of Income or Expense
