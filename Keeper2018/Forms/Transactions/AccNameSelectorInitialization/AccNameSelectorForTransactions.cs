@@ -70,7 +70,7 @@ namespace Keeper2018
         {
             return Build("Дополнительные тэги",
                 new Dictionary<string, int>(),
-                _comboTreesProvider.AdditionalTags, tran.Tags?.FirstOrDefault()?.Id ?? 1019);
+                _comboTreesProvider.AdditionalTags, tran.Tags?.FirstOrDefault()?.Id ?? NickNames.TagsRoot);
         }
 
         public AccNameSelectorVm ForMySecondAccount(TransactionModel tran)

@@ -26,7 +26,7 @@ namespace Keeper2018
         private readonly AccNameSelector _accNameSelectionControlInitializer;
         private readonly BalanceDuringTransactionHinter _balanceDuringTransactionHinter;
 
-
+        #region TranInWork Properties
         public TransactionModel TranInWork { get; set; } = new TransactionModel();
 
         private AccNameSelectorVm _myAccNameSelectorVm;
@@ -154,6 +154,7 @@ namespace Keeper2018
                 NotifyOfPropertyChange();
             }
         }
+        #endregion
 
         public UniversalControlVm(KeeperDataModel dataModel, BalanceDuringTransactionHinter balanceDuringTransactionHinter,
                  AccNameSelector accNameSelectionControlInitializer)
@@ -178,9 +179,13 @@ namespace Keeper2018
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
 
             CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+            if (TranInWork.Counterparty == null)
+                TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
             CounterpartySelectorVm.PropertyChanged += CounterpartySelectorVm_PropertyChanged;
 
             CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
+            if (TranInWork.Category == null)
+                TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
             CategorySelectorVm.PropertyChanged += CategorySelectorVm_PropertyChanged;
 
             MySecondAccNameSelectorVm = _accNameSelectionControlInitializer.ForMySecondAccount(TranInWork);

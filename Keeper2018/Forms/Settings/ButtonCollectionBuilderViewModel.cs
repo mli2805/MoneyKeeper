@@ -117,11 +117,9 @@ namespace Keeper2018
                 case 2:
                     selectedAccName = _comboTreesProvider.MyAccNamesForExpense.FindThroughTheForestById(781);
                     return _comboTreesProvider.MyAccNamesForExpense;
-                case 3:
                 case 8:
                     selectedAccName = _comboTreesProvider.AccNamesForIncomeTags.FindThroughTheForestById(443);
                     return _comboTreesProvider.AccNamesForIncomeTags;
-                case 4:
                 case 5:
                 case 9:
                     selectedAccName = _comboTreesProvider.AccNamesForExpenseTags.FindThroughTheForestById(256);

@@ -186,15 +186,6 @@ namespace Keeper2018
             MyExchangeControlVm.Visibility = opType == OperationType.Обмен ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        //private bool LeaveOneExternalAccountInTags()
-        //{
-        //    var externalAccount = TranInWork.GetExternalAccount();
-        //    if (externalAccount == null) return false;
-        //    TranInWork.Tags = new List<AccountItemModel>() { externalAccount };
-        //    InitControls();
-        //    return true;
-        //}
-
         public void Receipt()
         {
             //if (!LeaveOneExternalAccountInTags()) return;

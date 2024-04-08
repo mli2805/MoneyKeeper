@@ -35,12 +35,16 @@ namespace Keeper2018
             // если карточка то предполагаем по Контрагенту и Категории
             if (tran.MyAccount.Is(161) || tran.MyAccount.Is(830)) // карты и закрытые карты
             {
+                if (tran.Counterparty == null) return PaymentWay.НеЗадано;
+
                 if (Terminal.Any(grou => tran.Counterparty.Is(grou)))
                     return PaymentWay.КартаТерминал;
                 if (CardOther.Any(grou => tran.Counterparty.Is(grou)))
                     return PaymentWay.КартаДругое;
                 if (Erip.Any(grou => tran.Counterparty.Is(grou)))
                     return PaymentWay.КартаЕрип;
+
+                if (tran.Category == null) return PaymentWay.НеЗадано;
 
                 if (Terminal.Any(grou => tran.Category.Is(grou)))
                     return PaymentWay.КартаТерминал;
