@@ -33,11 +33,11 @@
                    Visibility="{Binding TextVisibility }"/>
         <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" Width="376" HorizontalAlignment="Left"
                                             Margin="9,0" Visibility="{Binding Visibility}"/>
-        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm2}" Width="326" HorizontalAlignment="Left"
+        <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm2}" Width="376" HorizontalAlignment="Left"
                                         Margin="9,0" Visibility="{Binding Visibility}"/>
         <TextBlock Margin="10, 0, 10, 10" TextWrapping="Wrap" TextAlignment="Center" 
                    Visibility="{Binding TextVisibility }"
-                   Text="Можно оставить пустой комбик, тогда при вводе соответстующей проводки надо будет выбрать тэг вручную"/>
+                   Text="Можно оставить пустой комбик, тогда при выборе данного Контрагента надо будет выбрать Категорию вручную"/>
 
         <StackPanel Height="40" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="Save" Content="Принять" Height="22" Width="100" Margin="5" IsDefault="True"/>

@@ -25,8 +25,6 @@ namespace Keeper2018
             var tagPickerVm = (TagPickerVm)DataContext;
             tagPickerVm.TagInWork = tagPickerVm.TagSelectorVm.MyAccName;
             tagPickerVm.Tags.Add(tagPickerVm.TagInWork);
-
-            if (tagPickerVm.AssociatedTag != null) tagPickerVm.Tags.Add(tagPickerVm.AssociatedTag);
         }
 
 

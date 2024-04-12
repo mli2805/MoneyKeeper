@@ -237,52 +237,52 @@ namespace Keeper2018
                 default: return "Сдал";
             }
         }
+
+        private void MyAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MyAccName")
+            {
+                TranInWork.MyAccount = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
+                MyAmountInputControlVm.Currency =
+                    _dataModel.Transactions.Values
+                        .LastOrDefault(t => t.MyAccount.Id == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
+                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
+            }
+        }
+
+        private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MyAccName")
+            {
+                TranInWork.MySecondAccount = _dataModel.AcMoDict[MySecondAccNameSelectorVm.MyAccName.Id];
+                MyAmountInReturnInputControlVm.Currency =
+                    _dataModel.Transactions.Values
+                        .LastOrDefault(t => t.MyAccount.Id == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
+            }
+        }
+
+        private void CounterpartySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "MyAccName") return;
+
+            TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
+            SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
+            var associatedCategory = FindAssociatedCategory(TranInWork.Counterparty, TranInWork.Operation);
+            if (associatedCategory != null)
+            {
+                TranInWork.Category = associatedCategory;
+                CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
+            }
+        }
+
+        #region Tags
+
         private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Remove) ReactOnRemove();
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                if (MyTagPickerVm.TagInWork != null)
-                    ReactOnUsersAdd();
-                else ReactOnAssociationAdd();
-            }
-
-            //SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-        }
-
-        private void ReactOnUsersAdd()
-        {
-            var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
-            TranInWork.Tags.Add(tag);
-
-            if (TranInWork.Operation == OperationType.Перенос || TranInWork.Operation == OperationType.Обмен)
-                return;
-
-            var associatedTag = FindAssociated(tag, TranInWork.Operation);
-            if (associatedTag != null && !TranInWork.Tags.Contains(associatedTag))
-            {
-                MyTagPickerVm.AssociatedTag = new AccName().PopulateFromAccount(associatedTag, null);
-            }
-
-            MyTagPickerVm.TagInWork = null;
-        }
-
-        private AccountItemModel FindAssociated(AccountItemModel accountItemModel, OperationType opType)
-        {
-            var associatedId = accountItemModel.IsCategory()
-                    ? accountItemModel.AssociatedExternalId
-                    : opType == OperationType.Доход
-                        ? accountItemModel.AssociatedIncomeId
-                        : accountItemModel.AssociatedExpenseId;
-            return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
-        }
-
-        private void ReactOnAssociationAdd()
-        {
-            var tag = _dataModel.AcMoDict[MyTagPickerVm.AssociatedTag.Id];
-            TranInWork.Tags.Add(tag);
-
-            MyTagPickerVm.AssociatedTag = null;
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+                ReactOnRemove();
+            if (e.Action == NotifyCollectionChangedAction.Add && MyTagPickerVm.TagInWork != null)
+                ReactOnUsersAdd();
         }
 
         private void ReactOnRemove()
@@ -290,6 +290,32 @@ namespace Keeper2018
             var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
             TranInWork.Tags.Remove(tag);
             MyTagPickerVm.TagInWork = null;
+        }
+
+        private void ReactOnUsersAdd()
+        {
+            var tag = _dataModel.AcMoDict[MyTagPickerVm.TagInWork.Id];
+            TranInWork.Tags.Add(tag);
+            MyTagPickerVm.TagInWork = null;
+        }
+
+        #endregion
+
+        private AccountItemModel FindAssociatedCategory(AccountItemModel counterparty, OperationType opType)
+        {
+            var associatedId = opType == OperationType.Доход
+                ? counterparty.AssociatedIncomeId
+                : counterparty.AssociatedExpenseId;
+            return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
+        }
+
+        private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MyAccName")
+            {
+                TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
+                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
+            }
         }
 
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -300,7 +326,6 @@ namespace Keeper2018
             int minute = 1;
             if (dayTransactions.Any())
                 minute = dayTransactions.Max(t => t.Timestamp.Minute) + 1;
-
 
             TranInWork.Timestamp = selectedDate.Date.AddMinutes(minute);
         }
@@ -320,46 +345,6 @@ namespace Keeper2018
         {
             if (e.PropertyName == "Amount") TranInWork.AmountInReturn = MyAmountInReturnInputControlVm.Amount;
             if (e.PropertyName == "Currency") TranInWork.CurrencyInReturn = MyAmountInReturnInputControlVm.Currency;
-        }
-
-        private void MyAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "MyAccName")
-            {
-                TranInWork.MyAccount = _dataModel.AcMoDict[MyAccNameSelectorVm.MyAccName.Id];
-                MyAmountInputControlVm.Currency =
-                    _dataModel.Transactions.Values.LastOrDefault(t => t.MyAccount.Id == TranInWork.MyAccount.Id)?.Currency ?? CurrencyCode.BYN;
-                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-            }
-        }
-
-        private void CounterpartySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "MyAccName")
-            {
-                TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
-                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-            }
-        }
-        private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "MyAccName")
-            {
-                TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
-                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-            }
-        }
-
-
-        private void MySecondAccNameSelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "MyAccName")
-            {
-                TranInWork.MySecondAccount = _dataModel.AcMoDict[MySecondAccNameSelectorVm.MyAccName.Id];
-                MyAmountInReturnInputControlVm.Currency =
-                    _dataModel.Transactions.Values
-                        .LastOrDefault(t => t.MyAccount.Id == TranInWork.MySecondAccount.Id)?.Currency ?? CurrencyCode.BYN;
-            }
         }
 
         private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
