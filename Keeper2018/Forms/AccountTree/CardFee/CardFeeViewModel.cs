@@ -57,12 +57,13 @@ namespace Keeper2018.CardFee
                 Timestamp = timestamp.AddMinutes(1),
                 Operation = OperationType.Расход,
                 MyAccount = _card,
+                Counterparty = _bank,
+                Category = _dataModel.CardFeeTag(),
                 Amount = Amount,
                 Currency = _card.BankAccount.MainCurrency,
-                Tags = new List<AccountItemModel>() { _bank },
+                Tags = new List<AccountItemModel>(),
                 Comment = Comment,
             };
-            tranModel1.Tags.Add(_dataModel.CardFeeTag());
             _dataModel.Transactions.Add(tranModel1.Id, tranModel1);
 
             _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
