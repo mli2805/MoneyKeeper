@@ -165,18 +165,19 @@ namespace Keeper2018
                 PopupValues.Add(tranModel.MyAccount.Name);
                 PopupValues.Add(tranModel.MySecondAccount.Name);
             }
+            else
+            {
+                PopupLabels.Add("Counterparty: ");
+                PopupValues.Add(tranModel.Counterparty.Name);
+                PopupLabels.Add("Catogory: ");
+                PopupValues.Add(tranModel.Category.Name);
+            }
 
             if (tranModel.Operation == OperationType.Обмен)
             {
                 PopupLabels.Add("");
                 PopupValues.Add($" ({_balanceDuringTransactionHinter.GetExchangeRate(tranModel)})");
             }
-
-            PopupLabels.Add("Counterparty: ");
-            PopupValues.Add(tranModel.Counterparty.Name);
-            PopupLabels.Add("Catogory: ");
-            PopupValues.Add(tranModel.Category.Name);
-
 
             PopupLabels.Add("Amount: ");
             var amount = _dataModel.AmountInUsdWithRate(tranModel.Timestamp, 
