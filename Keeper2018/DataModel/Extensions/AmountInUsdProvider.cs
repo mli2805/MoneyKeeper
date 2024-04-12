@@ -55,7 +55,7 @@ namespace Keeper2018
             {
                 case CurrencyCode.BYR:
                     rate = (decimal)exchangeRatesLine.BynToUsd;
-                    if (date == new DateTime(2016, 7, 1))
+                    if (date.Date == new DateTime(2016, 7, 1))
                         rate = rate * 10000;
                     return amount / rate;
                 case CurrencyCode.BYN:
