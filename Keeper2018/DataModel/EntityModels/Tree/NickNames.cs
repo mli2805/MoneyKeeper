@@ -20,6 +20,14 @@
         public static readonly int MoneyBack = 701;
 
         public static bool IsMyAccount(this AccountItemModel account) { return account.Is(MyAccounts); }
+        public static bool IsCategory(this AccountItemModel account) // one of Income or Expense
+        {
+            return account.Is(IncomeCategoriesRoot) || account.Is(ExpenseCategoriesRoot);
+        }
+
+        public static bool IsCounterparty(this AccountItemModel account) { return account.Is(External); }
+        public static bool IsTag(this AccountItemModel account) { return account.Is(TagsRoot); }
+
 
         public static AccountItemModel MineRoot(this KeeperDataModel dataModel)
         {
@@ -41,15 +49,7 @@
             return dataModel.AcMoDict[189];
         }
 
-        public static bool IsCategory(this AccountItemModel account) // one of Income or Expense
-        {
-            return account.Is(IncomeCategoriesRoot) || account.Is(ExpenseCategoriesRoot);
-        }
-
-        public static bool IsCounterparty(this AccountItemModel account)
-        {
-            return account.Is(157);
-        }
+       
 
         public static AccountItemModel MoneyBackCategory(this KeeperDataModel dataModel)
         {

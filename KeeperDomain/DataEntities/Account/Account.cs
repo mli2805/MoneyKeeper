@@ -12,9 +12,10 @@ namespace KeeperDomain
         public bool IsFolder;
         public bool IsExpanded;
 
-        public int AssociatedIncomeId { get; set; } // for external
-        public int AssociatedExpenseId { get; set; } // for external
-        public int AssociatedExternalId { get; set; } // for tag
+        public int AssociatedIncomeId { get; set; } // for counterparty
+        public int AssociatedExpenseId { get; set; } // for counterparty
+        public int AssociatedExternalId { get; set; } // for category
+        public int AssociatedTagId { get; set; } // for counterparty or category
 
         public string ShortName { get; set; }
         public string ButtonName { get; set; } // face of shortcut button (if exists)
@@ -24,7 +25,7 @@ namespace KeeperDomain
         public string Dump()
         {
             return Id.ToString().PadLeft(4) + " ; " + Name + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
-                   AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + 
+                   AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + AssociatedTagId + " ; " + 
                    ShortName + " ; " + ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");
         }
@@ -40,9 +41,10 @@ namespace KeeperDomain
             AssociatedIncomeId = int.Parse(substrings[5]);
             AssociatedExpenseId = int.Parse(substrings[6]);
             AssociatedExternalId = int.Parse(substrings[7]);
-            ShortName = substrings[8].Trim();
-            ButtonName = substrings[9].Trim();
-            Comment = substrings[10].Trim();
+            AssociatedTagId = int.Parse(substrings[8]);
+            ShortName = substrings[9].Trim();
+            ButtonName = substrings[10].Trim();
+            Comment = substrings[11].Trim();
             return this;
         }
     }

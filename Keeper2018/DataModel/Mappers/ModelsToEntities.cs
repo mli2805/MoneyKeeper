@@ -56,6 +56,7 @@ namespace Keeper2018
                 AssociatedIncomeId = model.AssociatedIncomeId,
                 AssociatedExpenseId = model.AssociatedExpenseId,
                 AssociatedExternalId = model.AssociatedExternalId,
+                AssociatedTagId = model.AssociatedTagId,
                 ShortName = model.ShortName,
                 ButtonName = model.ButtonName,
                 Comment = model.Comment,

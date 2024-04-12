@@ -36,14 +36,25 @@ namespace Keeper2018
             }
         }
 
-        public Visibility SelectorVisibility { get; set; }
-        public Visibility SelectorVisibility2 { get; set; }
+        private AccNameSelectorVm _accNameSelectorForTag = new AccNameSelectorVm();
+        public AccNameSelectorVm AccNameSelectorForTag
+        {
+            get => _accNameSelectorForTag;
+            set
+            {
+                if (Equals(value, _accNameSelectorForTag)) return;
+                _accNameSelectorForTag = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public Visibility TextVisibility { get; set; }
 
         public bool IsSavePressed { get; set; }
 
         public string Who { get; set; }
         public string TextIn { get; set; }
+        public string TextExp { get; set; }
 
         public OneAccountViewModel(ComboTreesProvider comboTreesProvider, AccNameSelector accNameSelectorForAssociations)
         {
@@ -60,6 +71,10 @@ namespace Keeper2018
             ParentFolder = AccountItemInWork.Parent == null ? "Корневой счет" : AccountItemInWork.Parent.Name;
             TextIn = (AccountItemInWork.Parent?.Parent?.Id ?? 0) == 161 // Счета и карты  
                 ? "В банке" : "В папке";
+            if (accountInWork.IsCategory())
+                TextExp = "Можно оставить пустой комбик, тогда при выборе данной Категории надо будет выбрать Контрагента вручную";
+            else if (accountInWork.IsCounterparty())
+                TextExp = "Можно оставить пустой комбик, тогда при выборе данного Контрагента надо будет выбрать Категорию вручную";
 
             _oldName = accountInWork.Name;
 
@@ -70,34 +85,41 @@ namespace Keeper2018
         {
             _comboTreesProvider.Initialize();
 
-            if (AccountItemInWork.IsMyAccount())
+            if (AccountItemInWork.IsMyAccount() || AccountItemInWork.IsTag())
             {
                 MyAccNameSelectorVm.Visibility = Visibility.Collapsed;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
+                AccNameSelectorForTag.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Collapsed;
                 Who = "Счёт";
             }
-            else if (AccountItemInWork.IsCategory())
-            {
-                MyAccNameSelectorVm.Visibility = Visibility.Visible;
-                MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
-                TextVisibility = Visibility.Visible;
-                MyAccNameSelectorVm = _accNameSelectorForAssociations
-                    .InitializeForAssociation(AccountItemInWork.Is(NickNames.IncomeCategoriesRoot)
-                        ? AssociationEnum.ExternalForIncome
-                        : AssociationEnum.ExternalForExpense, AccountItemInWork.AssociatedExternalId);
-                Who = "Категория";
-            }
             else
             {
-                MyAccNameSelectorVm.Visibility = Visibility.Visible;
-                MyAccNameSelectorVm2.Visibility = Visibility.Visible;
-                TextVisibility = Visibility.Visible;
-                MyAccNameSelectorVm = _accNameSelectorForAssociations
-                    .InitializeForAssociation(AssociationEnum.IncomeForExternal, AccountItemInWork.AssociatedIncomeId);
-                MyAccNameSelectorVm2 = _accNameSelectorForAssociations
-                    .InitializeForAssociation(AssociationEnum.ExpenseForExternal, AccountItemInWork.AssociatedExpenseId);
-                Who = "Контрагент";
+                if (AccountItemInWork.IsCategory())
+                {
+                    MyAccNameSelectorVm.Visibility = Visibility.Visible;
+                    MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
+                    TextVisibility = Visibility.Visible;
+                    MyAccNameSelectorVm = _accNameSelectorForAssociations
+                        .InitializeForAssociation(AccountItemInWork.Is(NickNames.IncomeCategoriesRoot)
+                            ? AssociationEnum.ExternalForIncome
+                            : AssociationEnum.ExternalForExpense, AccountItemInWork.AssociatedExternalId);
+                    Who = "Категория";
+                }
+                else // Counterparty
+                {
+                    MyAccNameSelectorVm.Visibility = Visibility.Visible;
+                    MyAccNameSelectorVm2.Visibility = Visibility.Visible;
+                    TextVisibility = Visibility.Visible;
+                    MyAccNameSelectorVm = _accNameSelectorForAssociations
+                        .InitializeForAssociation(AssociationEnum.IncomeForExternal, AccountItemInWork.AssociatedIncomeId);
+                    MyAccNameSelectorVm2 = _accNameSelectorForAssociations
+                        .InitializeForAssociation(AssociationEnum.ExpenseForExternal, AccountItemInWork.AssociatedExpenseId);
+                    Who = "Контрагент";
+                }
+
+                AccNameSelectorForTag =
+                    _accNameSelectorForAssociations.ForAssociatedTag(AccountItemInWork.AssociatedTagId);
             }
         }
 
@@ -116,17 +138,16 @@ namespace Keeper2018
 
         private void ApplyAssociation()
         {
-            if (AccountItemInWork.IsMyAccount())
-            {
-            }
-            else if (AccountItemInWork.IsCategory())
+            if (AccountItemInWork.IsCategory())
             {
                 AccountItemInWork.AssociatedExternalId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
+                AccountItemInWork.AssociatedTagId = AccNameSelectorForTag.MyAccName?.Id ?? 0;
             }
-            else
+            else if (AccountItemInWork.IsCounterparty())
             {
                 AccountItemInWork.AssociatedIncomeId = MyAccNameSelectorVm.MyAccName?.Id ?? 0;
                 AccountItemInWork.AssociatedExpenseId = MyAccNameSelectorVm2.MyAccName?.Id ?? 0;
+                AccountItemInWork.AssociatedTagId = AccNameSelectorForTag.MyAccName?.Id ?? 0;
             }
         }
 

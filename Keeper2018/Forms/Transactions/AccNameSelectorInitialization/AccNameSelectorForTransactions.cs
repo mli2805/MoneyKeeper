@@ -95,29 +95,29 @@ namespace Keeper2018
                 _comboTreesProvider.MyAccNamesForTransfer, 912);
         }
 
-        public AccNameSelectorVm ForTags(TransactionModel tran)
-        {
-            switch (tran.Operation)
-            {
-                case OperationType.Доход:
-                    return Build("Кто, за что",
-                        _dataModel.ButtonCollections.First(c => c.Id == 3).ToButtonsDictionary(),
-                        _comboTreesProvider.AccNamesForIncomeTags, tran.Tags?.FirstOrDefault()?.Id ?? 443);
-                case OperationType.Расход:
-                    return Build("Кому, за что",
-                        _dataModel.ButtonCollections.First(c => c.Id == 4).ToButtonsDictionary(),
-                        _comboTreesProvider.AccNamesForExpenseTags, tran.Tags?.FirstOrDefault()?.Id ?? 256);
-                case OperationType.Перенос:
-                    return Build("Теги",
-                        new Dictionary<string, int>(),
-                        _comboTreesProvider.AccNamesForTransferTags, tran.Tags?.FirstOrDefault()?.Id ?? 579);
-                case OperationType.Обмен:
-                default:
-                    return Build("Теги",
-                        new Dictionary<string, int>(),
-                        _comboTreesProvider.AccNamesForExchangeTags, tran.Tags?.FirstOrDefault()?.Id ?? 339);
-            }
-        }
+        //public AccNameSelectorVm ForTags(TransactionModel tran)
+        //{
+        //    switch (tran.Operation)
+        //    {
+        //        case OperationType.Доход:
+        //            return Build("Кто, за что",
+        //                _dataModel.ButtonCollections.First(c => c.Id == 3).ToButtonsDictionary(),
+        //                _comboTreesProvider.AccNamesForIncomeTags, tran.Tags?.FirstOrDefault()?.Id ?? 443);
+        //        case OperationType.Расход:
+        //            return Build("Кому, за что",
+        //                _dataModel.ButtonCollections.First(c => c.Id == 4).ToButtonsDictionary(),
+        //                _comboTreesProvider.AccNamesForExpenseTags, tran.Tags?.FirstOrDefault()?.Id ?? 256);
+        //        case OperationType.Перенос:
+        //            return Build("Теги",
+        //                new Dictionary<string, int>(),
+        //                _comboTreesProvider.AccNamesForTransferTags, tran.Tags?.FirstOrDefault()?.Id ?? 579);
+        //        case OperationType.Обмен:
+        //        default:
+        //            return Build("Теги",
+        //                new Dictionary<string, int>(),
+        //                _comboTreesProvider.AccNamesForExchangeTags, tran.Tags?.FirstOrDefault()?.Id ?? 339);
+        //    }
+        //}
 
         public AccNameSelectorVm ForReceipt(int initialAccountId)
         {

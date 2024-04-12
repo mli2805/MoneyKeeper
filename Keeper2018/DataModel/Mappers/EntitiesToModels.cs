@@ -20,6 +20,7 @@ namespace Keeper2018
                 AssociatedIncomeId = account.AssociatedIncomeId,
                 AssociatedExpenseId = account.AssociatedExpenseId,
                 AssociatedExternalId = account.AssociatedExternalId,
+                AssociatedTagId = account.AssociatedTagId,
                 ShortName = account.ShortName,
                 ButtonName = account.ButtonName,
                 Comment = account.Comment,

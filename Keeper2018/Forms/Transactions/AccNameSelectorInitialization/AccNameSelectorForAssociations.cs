@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Keeper2018
 {
@@ -27,6 +28,13 @@ namespace Keeper2018
                         _dataModel.ButtonCollections.First(c => c.Id == 9).ToButtonsDictionary(),
                         _comboTreesProvider.GetFullBranch(157), selectedId); 
             }
+        }
+
+        public AccNameSelectorVm ForAssociatedTag(int selectedTagId)
+        {
+            return Build("Связанный тэг",
+                new Dictionary<string, int>(),
+                _comboTreesProvider.AdditionalTags, selectedTagId);
         }
     }
 }
