@@ -58,7 +58,7 @@ namespace Keeper2018.CardFee
                 Operation = OperationType.Расход,
                 MyAccount = _card,
                 Counterparty = _bank,
-                Category = _dataModel.CardFeeTag(),
+                Category = _dataModel.CardFeeCategory(),
                 Amount = Amount,
                 Currency = _card.BankAccount.MainCurrency,
                 Tags = new List<AccountItemModel>(),

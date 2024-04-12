@@ -102,13 +102,13 @@ namespace Keeper2018
 
             var cardFees = monthTrans.Where(t => t.Operation == OperationType.Расход
                                               && t.MyAccount.Id == _cardAccountItemModel.Id
-                                              && t.Tags.Contains(_dataModel.CardFeeTag())
+                                              && t.Tags.Contains(_dataModel.CardFeeCategory())
                                               ).ToList();
             _sumTo += StepTwo("Комса с карты", cardFees, transactions.List, totalFrom.List, Brushes.Red);
 
             var otherExpenses = monthTrans.Where(t => t.Operation == OperationType.Расход
                                                       && t.MyAccount.Id == _cardAccountItemModel.Id
-                                                      && !t.Tags.Contains(_dataModel.CardFeeTag())
+                                                      && !t.Tags.Contains(_dataModel.CardFeeCategory())
                                                         ).ToList();
             foreach (var tran in otherExpenses.Where(t => t.PaymentWay == PaymentWay.НеЗадано))
                 tran.PaymentWay = PaymentGuess.GuessPaymentWay(tran);

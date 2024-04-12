@@ -161,7 +161,7 @@ namespace Keeper2018
                 Operation = OperationType.Доход,
                 MyAccount = _accountItemModel,
                 Counterparty = _keeperDataModel.AcMoDict[_accountItemModel.BankAccount.BankId],
-                Category = IsPercent ? _keeperDataModel.PercentsTag() : _keeperDataModel.MoneyBackTag(),
+                Category = IsPercent ? _keeperDataModel.PercentsCategory() : _keeperDataModel.MoneyBackCategory(),
                 Amount = Amount,
                 Currency = _accountItemModel.BankAccount.MainCurrency,
                 Tags = new List<AccountItemModel>(),

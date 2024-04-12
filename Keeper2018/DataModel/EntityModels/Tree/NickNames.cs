@@ -51,16 +51,16 @@
             return account.Is(157);
         }
 
-        public static AccountItemModel MoneyBackTag(this KeeperDataModel dataModel)
+        public static AccountItemModel MoneyBackCategory(this KeeperDataModel dataModel)
         {
             return dataModel.AcMoDict[701];
         }
 
-        public static AccountItemModel PercentsTag(this KeeperDataModel dataModel)
+        public static AccountItemModel PercentsCategory(this KeeperDataModel dataModel)
         {
             return dataModel.AcMoDict[208];
         }
-        public static AccountItemModel CardFeeTag(this KeeperDataModel dataModel)
+        public static AccountItemModel CardFeeCategory(this KeeperDataModel dataModel)
         {
             return dataModel.AcMoDict[847];
         }
