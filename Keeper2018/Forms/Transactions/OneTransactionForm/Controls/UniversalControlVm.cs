@@ -267,12 +267,55 @@ namespace Keeper2018
 
             TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
             SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-            var associatedCategory = FindAssociatedCategory(TranInWork.Counterparty, TranInWork.Operation);
+            var associatedCategory = FindAssociated(TranInWork.Counterparty, TranInWork.Operation);
             if (associatedCategory != null)
             {
                 TranInWork.Category = associatedCategory;
                 CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
             }
+        }
+
+        private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "MyAccName") return;
+
+            TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
+            SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
+            var associatedCounterparty = FindAssociated(TranInWork.Category, TranInWork.Operation);
+            if (associatedCounterparty != null)
+            {
+                TranInWork.Counterparty = associatedCounterparty;
+                CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+            }
+        }
+
+        private AccountItemModel FindAssociated(AccountItemModel account, OperationType opType)
+        {
+
+            var associatedId = account.IsCategory()
+                ? account.AssociatedExternalId
+                : opType == OperationType.Доход
+                    ? account.AssociatedIncomeId
+                    : account.AssociatedExpenseId;
+
+            return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
+        }
+
+        private void MyAmountInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputControlVm.Amount;
+            if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputControlVm.Currency;
+            if (e.PropertyName == "ButtonAllInPressed")
+            {
+                MyAmountInputControlVm.Amount =
+                    _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
+            }
+        }
+
+        private void MyAmountInReturnInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Amount") TranInWork.AmountInReturn = MyAmountInReturnInputControlVm.Amount;
+            if (e.PropertyName == "Currency") TranInWork.CurrencyInReturn = MyAmountInReturnInputControlVm.Currency;
         }
 
         #region Tags
@@ -301,23 +344,6 @@ namespace Keeper2018
 
         #endregion
 
-        private AccountItemModel FindAssociatedCategory(AccountItemModel counterparty, OperationType opType)
-        {
-            var associatedId = opType == OperationType.Доход
-                ? counterparty.AssociatedIncomeId
-                : counterparty.AssociatedExpenseId;
-            return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
-        }
-
-        private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "MyAccName")
-            {
-                TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
-                SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-            }
-        }
-
         private void MyDatePickerVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var selectedDate = MyDatePickerVm.SelectedDate;
@@ -328,23 +354,6 @@ namespace Keeper2018
                 minute = dayTransactions.Max(t => t.Timestamp.Minute) + 1;
 
             TranInWork.Timestamp = selectedDate.Date.AddMinutes(minute);
-        }
-
-        private void MyAmountInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Amount") TranInWork.Amount = MyAmountInputControlVm.Amount;
-            if (e.PropertyName == "Currency") TranInWork.Currency = MyAmountInputControlVm.Currency;
-            if (e.PropertyName == "ButtonAllInPressed")
-            {
-                MyAmountInputControlVm.Amount =
-                    _dataModel.Transactions.Values.Sum(a => a.AmountForAccount(TranInWork.MyAccount, TranInWork.Currency, TranInWork.Timestamp.AddMilliseconds(-1)));
-            }
-        }
-
-        private void MyAmountInReturnInputControlVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Amount") TranInWork.AmountInReturn = MyAmountInReturnInputControlVm.Amount;
-            if (e.PropertyName == "Currency") TranInWork.CurrencyInReturn = MyAmountInReturnInputControlVm.Currency;
         }
 
         private void TranInWork_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

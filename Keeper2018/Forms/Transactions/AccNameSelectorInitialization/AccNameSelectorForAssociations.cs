@@ -10,11 +10,11 @@ namespace Keeper2018
             switch (associationType)
             {
                 case AssociationEnum.IncomeForExternal:
-                    return Build("Для дохода", 
+                    return Build("Категория для дохода", 
                         _dataModel.ButtonCollections.First(c => c.Id == 10).ToButtonsDictionary(),
                         _comboTreesProvider.GetFullBranch(185), selectedId); 
                 case AssociationEnum.ExpenseForExternal:
-                    return Build("Для расхода", 
+                    return Build("Категория для расхода", 
                         _dataModel.ButtonCollections.First(c => c.Id == 11).ToButtonsDictionary(),
                         _comboTreesProvider.GetFullBranch(189), selectedId); 
                 case AssociationEnum.ExternalForIncome:

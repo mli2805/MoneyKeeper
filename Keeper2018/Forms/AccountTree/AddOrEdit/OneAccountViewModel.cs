@@ -42,6 +42,7 @@ namespace Keeper2018
 
         public bool IsSavePressed { get; set; }
 
+        public string Who { get; set; }
         public string TextIn { get; set; }
 
         public OneAccountViewModel(ComboTreesProvider comboTreesProvider, AccNameSelector accNameSelectorForAssociations)
@@ -74,6 +75,7 @@ namespace Keeper2018
                 MyAccNameSelectorVm.Visibility = Visibility.Collapsed;
                 MyAccNameSelectorVm2.Visibility = Visibility.Collapsed;
                 TextVisibility = Visibility.Collapsed;
+                Who = "Счёт";
             }
             else if (AccountItemInWork.IsCategory())
             {
@@ -84,6 +86,7 @@ namespace Keeper2018
                     .InitializeForAssociation(AccountItemInWork.Is(NickNames.IncomeCategoriesRoot)
                         ? AssociationEnum.ExternalForIncome
                         : AssociationEnum.ExternalForExpense, AccountItemInWork.AssociatedExternalId);
+                Who = "Категория";
             }
             else
             {
@@ -94,6 +97,7 @@ namespace Keeper2018
                     .InitializeForAssociation(AssociationEnum.IncomeForExternal, AccountItemInWork.AssociatedIncomeId);
                 MyAccNameSelectorVm2 = _accNameSelectorForAssociations
                     .InitializeForAssociation(AssociationEnum.ExpenseForExternal, AccountItemInWork.AssociatedExpenseId);
+                Who = "Контрагент";
             }
         }
 

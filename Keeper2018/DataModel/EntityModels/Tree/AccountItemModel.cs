@@ -12,9 +12,9 @@
         public bool IsCard => BankAccount != null && BankAccount.PayCard != null; // in XAML
 
         // my accounts do not use associations
-        public int AssociatedIncomeId { get; set; } // for external
-        public int AssociatedExpenseId { get; set; } // for external
-        public int AssociatedExternalId { get; set; } // for tag
+        public int AssociatedIncomeId { get; set; } // for counterparty
+        public int AssociatedExpenseId { get; set; } // for counterparty
+        public int AssociatedExternalId { get; set; } // for category
 
         public string ShortName { get; set; }
         public string ButtonName { get; set; } // face of shortcut button (if exists)
