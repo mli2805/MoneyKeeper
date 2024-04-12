@@ -164,7 +164,7 @@ namespace Keeper2018
                 Category = IsPercent ? _keeperDataModel.PercentsTag() : _keeperDataModel.MoneyBackTag(),
                 Amount = Amount,
                 Currency = _accountItemModel.BankAccount.MainCurrency,
-                Tags = new List<AccountItemModel>() { _bank,  },
+                Tags = new List<AccountItemModel>(),
                 Comment = Comment,
             };
             _keeperDataModel.Transactions.Add(tranModel1.Id, tranModel1);
