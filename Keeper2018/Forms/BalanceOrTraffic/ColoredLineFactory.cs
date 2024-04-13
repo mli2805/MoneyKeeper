@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using KeeperDomain;
 
@@ -11,7 +13,10 @@ namespace Keeper2018
             var amount = isInReturn ? tran.AmountInReturn : tran.Amount;
             var currency = isInReturn ? tran.CurrencyInReturn : tran.Currency;
             var shortLine = $@"{tran.Timestamp.Date.ToShortDateString()}  {dataModel.AmountInUsdString(tran.Timestamp, currency, amount * sign)}";
-            return new ListLine($"  {shortLine}   {GetPp(tran)} {tran.Comment}", GetColor(tran, sign));
+            return new ListLine($"  {shortLine}   {GetPp(tran)} {tran.Comment}", GetColor(tran, sign))
+            {
+                TooltipLines = dataModel.BuildTooltip(tran)
+            };
         }
 
         private static string GetPp(TransactionModel tran)
@@ -26,7 +31,10 @@ namespace Keeper2018
             var amount = isInReturn ? tran.AmountInReturn : tran.Amount;
             var currency = isInReturn ? tran.CurrencyInReturn : tran.Currency;
             var shortLine = $"{tran.Timestamp.Date.ToShortDateString()}  {dataModel.AmountInUsdString(tran.Timestamp, currency, amount * sign, out inUsd)}";
-            return new ListLine($"  {shortLine}   {tran.Comment}", GetColor(tran, sign));
+            return new ListLine($"  {shortLine}   {tran.Comment}", GetColor(tran, sign))
+            {
+                TooltipLines = dataModel.BuildTooltip(tran)
+            };
         }
 
         public static ListLine ColoredLineOneAccountExchange(this KeeperDataModel dataModel, TransactionModel tran)
@@ -34,22 +42,75 @@ namespace Keeper2018
             var minus = $"{dataModel.AmountInUsdString(tran.Timestamp, tran.Currency, tran.Amount * -1)}";
             var plus = $"{dataModel.AmountInUsdString(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn)}";
             var shortLine = $"{tran.Timestamp.Date.ToShortDateString()}  {minus} -> {plus}";
-            return new ListLine($"  {shortLine}   {tran.Comment}", Brushes.Black);
+            return new ListLine($"  {shortLine}   {tran.Comment}", Brushes.Black)
+            {
+                TooltipLines = dataModel.BuildTooltip(tran)
+            };
         }
 
         private static Brush GetColor(TransactionModel tran, int sign)
         {
-            if (tran.Operation == OperationType.Доход)
+            switch (tran.Operation)
             {
-                return Brushes.Blue;
+                case OperationType.Доход:
+                    return Brushes.Blue;
+                case OperationType.Расход:
+                    return Brushes.Red;
+                default:
+                    return sign == 1 ? Brushes.DarkBlue : Brushes.DarkRed;
+            }
+        }
+
+        private static List<TransactionTooltipLine> BuildTooltip(this KeeperDataModel dataModel, TransactionModel tran)
+        {
+            var result = new List<TransactionTooltipLine> {
+                new TransactionTooltipLine("Timestamp: ", tran.Timestamp.ToString("dd-MM-yyyy HH:mm"))
+            };
+
+            if (tran.Operation == OperationType.Перенос || tran.Operation == OperationType.Обмен)
+            {
+                result.Add(new TransactionTooltipLine($"{tran.Operation} с:", tran.MyAccount.Name));
+                result.Add(new TransactionTooltipLine(" на:", tran.MySecondAccount.Name));
+            }
+            else
+            {
+                result.Add(new TransactionTooltipLine("Counterparty: ", tran.Counterparty.Name));
+                result.Add(new TransactionTooltipLine("Catogory: ", tran.Category.Name));
             }
 
-            if (tran.Operation == OperationType.Расход)
-            {
-                return Brushes.Red;
-            }
+            if (tran.Operation == OperationType.Обмен)
+                result.Add(new TransactionTooltipLine("", GetRealExchangeRate(tran)));
 
-            return sign == 1 ? Brushes.DarkBlue : Brushes.DarkRed;
+            result.Add(new TransactionTooltipLine("Amount: ",
+                dataModel.AmountWithUsdAndRate(tran.Timestamp, tran.Currency, tran.Amount)));
+
+            if (tran.Operation == OperationType.Обмен)
+                result.Add(new TransactionTooltipLine("Amount in return: ",
+                    dataModel.AmountWithUsdAndRate(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn)));
+
+            if (tran.Tags.Any())
+                result.Add(new TransactionTooltipLine("Tags:",
+                    string.Join($"{Environment.NewLine}", tran.Tags.Select(t => t.Name))));
+
+            result.Add(new TransactionTooltipLine("Comment: ", tran.Comment));
+            return result;
+        }
+
+        private static string GetRealExchangeRate(TransactionModel tran)
+        {
+            decimal exchangeRate;
+            string currencies;
+            if (tran.Amount > tran.AmountInReturn)
+            {
+                exchangeRate = tran.Amount / tran.AmountInReturn;
+                currencies = $"{tran.Currency.ToString().ToLower()}/{tran.CurrencyInReturn.ToString().ToLower()}";
+            }
+            else
+            {
+                exchangeRate = tran.AmountInReturn / tran.Amount;
+                currencies = $"{tran.CurrencyInReturn.ToString().ToLower()}/{tran.Currency.ToString().ToLower()}";
+            }
+            return $" (Курс обмена {exchangeRate:F5} {currencies})";
         }
     }
 }

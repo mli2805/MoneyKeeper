@@ -274,7 +274,7 @@ namespace Keeper2018
                 CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
             }
 
-            AddTagIfAny(TranInWork.Counterparty.AssociatedTagId);
+            AddTagIfAssociated(TranInWork.Counterparty.AssociatedTagId);
         }
 
         private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -290,7 +290,7 @@ namespace Keeper2018
                 CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
             }
 
-            AddTagIfAny(TranInWork.Category.AssociatedTagId);
+            AddTagIfAssociated(TranInWork.Category.AssociatedTagId);
         }
 
         private AccountItemModel FindAssociated(AccountItemModel account, OperationType opType)
@@ -305,7 +305,7 @@ namespace Keeper2018
             return associatedId == 0 ? null : _dataModel.AcMoDict[associatedId];
         }
 
-        private void AddTagIfAny(int tagId)
+        private void AddTagIfAssociated(int tagId)
         {
             if (tagId == 0) return;
             if (MyTagPickerVm.Tags.Any(t => t.Id == tagId)) return;

@@ -1,8 +1,21 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Keeper2018
 {
+    public class TransactionTooltipLine
+    {
+        public string Label { get; set; }
+        public string Value { get; set; }
+
+        public TransactionTooltipLine(string label, string value)
+        {
+            Label = label;
+            Value = value;
+        }
+    }
+   
     public class ListLine
     {
         public string Line { get; set; }
@@ -10,6 +23,10 @@ namespace Keeper2018
         public int FontSize { get; set; } = 12;
         public int TextLineHeight { get; set; } = 16;
         public Brush Foreground { get; set; } = Brushes.Black;
+
+        // используется на BalanceOrTrafficView
+        public List<TransactionTooltipLine> TooltipLines { get; set; }
+        public bool IsTooltipEnabled => TooltipLines != null;
 
         public FontFamily FontFamily { get; set; } = new FontFamily("Lucida Sans Typewriter");
         // другие моноширинные

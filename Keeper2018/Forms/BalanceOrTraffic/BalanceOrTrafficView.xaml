@@ -9,6 +9,11 @@
              d:DesignHeight="450" d:DesignWidth="400" 
              cal:Bind.ModelWithoutContext="{Binding .}"
              d:DataContext="{d:DesignInstance keeper2018:BalanceOrTrafficViewModel}">
+    <UserControl.Resources>
+        <Style x:Key="MyHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </UserControl.Resources>
     <Border BorderBrush="Gray" BorderThickness="1">
         <DockPanel>
             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Total}"  Margin="5"/>
@@ -20,12 +25,36 @@
                       AutoGenerateColumns="False" CanUserSortColumns="False" BorderThickness="0,0,0,1" Margin="5,5,5,5">
                 <DataGrid.Resources>
                     <DataTemplate x:Key="LineTemplate" DataType="{x:Type keeper2018:ListLine}">
-                        <TextBlock Text="{Binding Line}" Foreground="{Binding Foreground}"></TextBlock>
+                        <TextBlock Text="{Binding Line}" ToolTipService.ShowDuration="60000"  
+                                   ToolTipService.IsEnabled="{Binding IsTooltipEnabled}"
+                                   Foreground="{Binding Foreground}">
+                            <TextBlock.ToolTip>
+                                <ToolTip Background="AliceBlue">
+                                    <ListView ItemsSource="{Binding TooltipLines}" 
+                                          Background="AliceBlue" BorderThickness="0" Margin="0">
+                                        <ListView.View>
+                                            <GridView ColumnHeaderContainerStyle="{StaticResource MyHeaderStyle}">
+                                                <GridViewColumn DisplayMemberBinding="{Binding Label}" Width="100"/>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Value}">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding }"  
+                                                                         Width="200" TextWrapping="Wrap"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </ToolTip>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
                     </DataTemplate>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
                                      Color="#B6E6FF"/>
                 </DataGrid.Resources>
-               
+
                 <DataGrid.Columns>
                     <DataGridTemplateColumn CellTemplate="{StaticResource LineTemplate}" Width="*">
                         <DataGridTemplateColumn.Header>
@@ -35,13 +64,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <Popup Name="PopupWindow" Placement="Mouse" IsOpen="{Binding IsPopupOpen}">
-                <StackPanel Orientation="Horizontal" Background="AliceBlue">
-                    <ListBox ItemsSource="{Binding PopupLabels}" Background="AliceBlue" BorderThickness="0" Margin="5"/>
-                    <ListBox ItemsSource="{Binding PopupValues}" Background="AliceBlue" BorderThickness="0" Margin="5"/>
-                </StackPanel>
-            </Popup>
         </DockPanel>
     </Border>
 </UserControl>
