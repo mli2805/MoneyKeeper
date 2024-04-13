@@ -26,6 +26,7 @@ namespace Keeper2018
         public override string ToString() => Name;
 
         public string ToolTip => GetToolTip();
+        public bool IsTooltipEnabled => !string.IsNullOrEmpty(ToolTip);
         private string GetToolTip()
         {
             if (!IsCard) return !string.IsNullOrEmpty(Comment) ? Comment : null;

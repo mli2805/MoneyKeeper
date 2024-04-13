@@ -31,8 +31,15 @@
                                Width="16"
                                Height="16"
                                SnapsToDevicePixels="True"/>
-                        <TextBlock Text="{Binding Path=Name}" 
-                                   ToolTip="{Binding ToolTip}" Margin="5,0"/>
+                        <TextBlock Text="{Binding Path=Name}" Margin="5,0" 
+                                   ToolTipService.ShowDuration="60000"  
+                                   ToolTipService.IsEnabled="{Binding IsTooltipEnabled}">
+                            <TextBlock.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <TextBlock Text="{Binding ToolTip}" TextWrapping="Wrap"/>
+                                </ToolTip>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
