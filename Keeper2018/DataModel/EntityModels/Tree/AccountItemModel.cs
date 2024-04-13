@@ -1,4 +1,6 @@
-﻿namespace Keeper2018
+﻿using System;
+
+namespace Keeper2018
 {
     public class AccountItemModel : TreeViewItemModel
     {
@@ -23,8 +25,15 @@
 
         public override string ToString() => Name;
 
-        public string GetToolTip => IsCard ? BankAccount.PayCard.CardNumber : null;
+        public string ToolTip => GetToolTip();
+        private string GetToolTip()
+        {
+            if (!IsCard) return !string.IsNullOrEmpty(Comment) ? Comment : null;
 
+            var result = BankAccount.PayCard.CardNumber;
+            if (!string.IsNullOrEmpty(Comment)) result += Environment.NewLine + Comment;
+            return result;
+        }
 
         public AccountItemModel(int id, string name, TreeViewItemModel parent) : base(id, name, parent)
         {

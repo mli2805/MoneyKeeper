@@ -33,15 +33,14 @@ namespace Keeper2018
                 out decimal _);
         }
 
-        public static string AmountInUsdWithRate(this KeeperDataModel dataModel, DateTime date,
-            CurrencyCode? currency, decimal amount, out decimal rate)
+        public static string AmountWithUsdAndRate(this KeeperDataModel dataModel, DateTime date,
+            CurrencyCode? currency, decimal amount)
         {
-            rate = 1;
             var shortLine = $"{amount:#,#.00} {currency.ToString().ToLower()}";
             if (currency == CurrencyCode.USD) return shortLine;
 
-            var amountInUsd = dataModel.AmountInUsd(date, currency, amount, out rate);
-            return shortLine + $" ({amountInUsd:#,0.00}$)";
+            var amountInUsd = dataModel.AmountInUsd(date, currency, amount, out decimal rate);
+            return shortLine + $" ({amountInUsd:#,0.00}$  rate {rate:0.####})";
         }
 
         private static decimal AmountInUsd(this KeeperDataModel dataModel, DateTime date,
