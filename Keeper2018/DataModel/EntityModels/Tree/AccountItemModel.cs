@@ -62,6 +62,8 @@ namespace Keeper2018
                 return "../../Resources/tree16/plus3.png";
             if (Is(NickNames.ExpenseCategoriesRoot))
                 return "../../Resources/tree16/minus3.png";
+            if (Is(NickNames.TagsRoot))
+                return "../../Resources/tree16/tag.png";
 
             return "../../Resources/tree16/counterparty.png";
         }
