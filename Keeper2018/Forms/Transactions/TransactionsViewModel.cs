@@ -48,7 +48,7 @@ namespace Keeper2018
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Проводки";
-            Model.IsCollectionChanged = false;
+            //Model.IsCollectionChanged = false;
         }
 
         public void Initialize()

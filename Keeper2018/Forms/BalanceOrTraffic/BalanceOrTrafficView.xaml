@@ -20,7 +20,6 @@
             <DataGrid Width="Auto" ItemsSource="{Binding ColoredLines}" 
                       SelectedItem="{Binding SelectedColoredLine}" 
                       Background="White" IsReadOnly="True"
-                      cal:Message.Attach="[Event MouseDoubleClick] = [Action ShowTransaction]"
                       HorizontalGridLinesBrush="LavenderBlush" VerticalGridLinesBrush="LavenderBlush"
                       AutoGenerateColumns="False" CanUserSortColumns="False" BorderThickness="0,0,0,1" Margin="5,5,5,5">
                 <DataGrid.Resources>

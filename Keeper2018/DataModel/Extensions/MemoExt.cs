@@ -25,6 +25,16 @@ namespace Keeper2018
             var balance = accountCalculator.EvaluateBalance();
             memo.CurrentBalance = balance.Currencies.TryGetValue(CurrencyCode.BYN, out var currency) ? currency : 0;
 
+           
+
+        }
+
+        public static void GetCardCurrentExpense(this KeeperDataModel keeperDataModel, CardBalanceMemoModel memo)
+        {
+            var period = DateTime.Today.GetFullMonthForDate();
+            var expenseTrans = keeperDataModel.Transactions.Values
+                .Where(t => period.Includes(t.Timestamp) && t.MyAccount == memo.Account && t.Operation == OperationType.Расход);
+            memo.CurrentExpense = expenseTrans.Sum(t => t.Amount);
         }
     }
 }

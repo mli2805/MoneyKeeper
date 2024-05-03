@@ -30,5 +30,21 @@ namespace Keeper2018
                 }
             }
         }
+
+        private void MainDataGrid_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Selector selector = sender as Selector;
+            if ( selector is DataGrid dataGrid && selector.SelectedItem != null && dataGrid.SelectedIndex >= 0 )
+            {
+                try
+                {
+                    dataGrid.ScrollIntoView( selector.SelectedItem );
+                }
+                catch (Exception exception)
+                {
+                    File.WriteAllText(@"c:\temp\scroll.exp", $@"{exception.Message}");
+                }
+            }
+        }
     }
 }
