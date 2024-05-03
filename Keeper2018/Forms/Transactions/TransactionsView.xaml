@@ -64,7 +64,7 @@
             <Button Height="24" Margin="5,0,0,0" ToolTip="Go to the end"
                     Style="{StaticResource MyButtonStyle}"
                     cal:Message.Attach="[Event Click] = [Action ActionsMethod(12)]">
-                            <Image Source="../../Resources/misc/to_end.png" Width="16" Height="16" Margin="2,0"/>
+                <Image Source="../../Resources/misc/to_end.png" Width="16" Height="16" Margin="2,0"/>
             </Button>
 
             <Button Name="ButtonFilter" Margin="100,0,0,0" ToolTip="Filter"
@@ -84,7 +84,7 @@
                   SelectedItem="{Binding Model.SelectedTranWrappedForDataGrid, Mode=TwoWay}"
                   cal:Message.Attach="[Event MouseDoubleClick] = [Action ActionsMethod(1)]"
                   IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" 
-                  SelectionChanged="OnSelectionChanged">
+                  SelectionChanged="OnSelectionChanged" Loaded="MainDataGrid_Loaded">
             <i:Interaction.Behaviors>
                 <keeper2018:ScrollToBottomOnAddBehavior />
                 <keeper2018:ScrollToBottomOnLoadBehavior />
@@ -138,7 +138,13 @@
                 <DataGridTextColumn Header="  Контрагент" Width="175*" Binding="{Binding Tran.Counterparty}" />
                 <DataGridTextColumn Header="  Категория" Width="200*" Binding="{Binding Tran.Category}" />
                 <DataGridTextColumn Header="  Сколько" Width="120*" Binding="{Binding AmountForDataGrid}" />
-                <DataGridTextColumn Header="  Тэги и коммент" Width="300*" Binding="{Binding TagsAndCommentForDataGrid}" />
+                <DataGridTextColumn Header="  Тэги и коммент" Width="300*" Binding="{Binding TagsAndCommentForDataGrid}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

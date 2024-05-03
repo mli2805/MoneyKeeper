@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:borderedList="clr-namespace:Keeper2018.BorderedList"
         mc:Ignorable="d"
-        Height="550" Width="800">
+        Height="550" Width="840">
     <DockPanel Margin="0,0,3,0">
         <DockPanel DockPanel.Dock="Bottom" Margin="5">
             <Border BorderBrush="DarkGray" BorderThickness="1" CornerRadius="1">
@@ -31,6 +31,8 @@
             <borderedList:BorderedListView DataContext="{Binding TotalFrom}"/>
             <borderedList:BorderedListView Grid.Column="1" DataContext="{Binding TotalTo}"/> 
         </Grid>
-        <borderedList:BorderedListView DataContext="{Binding Transactions}"/>
+        <ScrollViewer>
+            <borderedList:BorderedListView DataContext="{Binding Transactions}" />
+        </ScrollViewer>
     </DockPanel>
 </Window>

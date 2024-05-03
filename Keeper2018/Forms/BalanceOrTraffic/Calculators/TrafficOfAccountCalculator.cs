@@ -173,5 +173,11 @@ namespace Keeper2018
             }
         }
 
+        public decimal GetOnlyExpenseByns()
+        {
+            var r = _balanceWithTurnover.Currencies.TryGetValue(CurrencyCode.BYN, out TrafficPair byns);
+            return r ? byns.Minus : 0; // переносы со счета тоже попадут
+        }
+
     }
 }

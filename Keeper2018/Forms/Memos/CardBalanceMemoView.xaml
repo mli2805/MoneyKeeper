@@ -6,10 +6,22 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:keeper2018="clr-namespace:Keeper2018"
              mc:Ignorable="d" 
+             Width="1000" Height="400"
              cal:Bind.ModelWithoutContext="{Binding .}" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance keeper2018:CardBalanceMemoViewModel}">
+             d:DataContext="{d:DesignInstance keeper2018:CardBalanceMemoViewModel}">
     <StackPanel>
         <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False">
+            <DataGrid.Resources>
+                <Style x:Key="WrappedColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
@@ -35,8 +47,17 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="Карточка" Width="240" Binding="{Binding Account}"/>
-                <DataGridTextColumn Header="Нижний порог" Width="100" Binding="{Binding BalanceThreshold}"/>
-                <DataGridTextColumn Header="Текущий остаток" Width="100" Binding="{Binding CurrentBalance}"/>
+                <DataGridTextColumn Header="Нижний порог" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
+                                    Width="70" Binding="{Binding BalanceThreshold}"/>
+                <DataGridTextColumn Header="Текущий остаток" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
+                                    Width="80" Binding="{Binding CurrentBalance}"/>
+                <DataGridTextColumn Header="Расходов не меньше" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
+                                    Width="70" Binding="{Binding ExpenseNotLess}"/>
+                <DataGridTextColumn Header="Расходов не больше" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
+                                    Width="70" Binding="{Binding ExpenseNotMore}"/>
+                <DataGridTextColumn Header="Расходов за период" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
+                                    Width="80" Binding="{Binding CurrentExpense}"/>
+                <DataGridTextColumn Header="Примечание" Width="300" Binding="{Binding Comment}"/>
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>

@@ -166,8 +166,15 @@ namespace Keeper2018
             PaymentWays = Enum.GetValues(typeof(PaymentWay)).OfType<PaymentWay>().ToList();
         }
 
+        // if true should not be changed by associations
+        private bool _counterpartyChangedManually; 
+        private bool _categoryChangedManually;
+
         public void SetTran(TransactionModel tran)
         {
+            _counterpartyChangedManually = false;
+            _categoryChangedManually = false;
+
             TranInWork = tran;
             TranInWork.PropertyChanged += TranInWork_PropertyChanged;
 
@@ -264,14 +271,19 @@ namespace Keeper2018
         private void CounterpartySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "MyAccName") return;
+            _counterpartyChangedManually = true;
 
             TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
             SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-            var associatedCategory = FindAssociated(TranInWork.Counterparty, TranInWork.Operation);
-            if (associatedCategory != null)
+
+            if (!_categoryChangedManually)
             {
-                TranInWork.Category = associatedCategory;
-                CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
+                var associatedCategory = FindAssociated(TranInWork.Counterparty, TranInWork.Operation);
+                if (associatedCategory != null)
+                {
+                    TranInWork.Category = associatedCategory;
+                    CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
+                }
             }
 
             AddTagIfAssociated(TranInWork.Counterparty.AssociatedTagId);
@@ -280,14 +292,19 @@ namespace Keeper2018
         private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "MyAccName") return;
+            _categoryChangedManually = true;
 
             TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
             SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
-            var associatedCounterparty = FindAssociated(TranInWork.Category, TranInWork.Operation);
-            if (associatedCounterparty != null)
+
+            if (!_counterpartyChangedManually)
             {
-                TranInWork.Counterparty = associatedCounterparty;
-                CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+                var associatedCounterparty = FindAssociated(TranInWork.Category, TranInWork.Operation);
+                if (associatedCounterparty != null)
+                {
+                    TranInWork.Counterparty = associatedCounterparty;
+                    CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+                }
             }
 
             AddTagIfAssociated(TranInWork.Category.AssociatedTagId);
