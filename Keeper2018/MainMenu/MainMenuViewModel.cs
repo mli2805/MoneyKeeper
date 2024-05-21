@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 
@@ -69,7 +70,7 @@ namespace Keeper2018
 
         public void SetBellPath()
         {
-            var hasAlarm = _keeperDataModel.HasAlarm();
+            var hasAlarm = _keeperDataModel.HasLowBalanceAlarm();
             BellPath = hasAlarm ? "../../Resources/mainmenu/yellow-bell.png" : "../../Resources/mainmenu/white-bell.png";
             ReminderWaitIconVisibility = Visibility.Collapsed;
             ReminderIconVisibility = Visibility.Visible;
@@ -149,12 +150,12 @@ namespace Keeper2018
         }
 
         // for short-cuts
-        public void ActionMethod(MainMenuAction action)
+        public async Task ActionMethod(MainMenuAction action)
         {
             switch (action)
             {
                 case MainMenuAction.ShowTransactionsForm:
-                    ShowTransactionsForm();
+                    await ShowTransactionsForm();
                     break;
                 case MainMenuAction.ShowOfficialRatesForm:
                     ShowRatesForm();
@@ -184,7 +185,7 @@ namespace Keeper2018
             }
         }
 
-        public void ShowTransactionsForm()
+        public async Task ShowTransactionsForm()
         {
             try
             {
@@ -200,8 +201,7 @@ namespace Keeper2018
             if (_transactionsViewModel.Model.IsCollectionChanged)
             {
                 _shellPartsBinder.JustToForceBalanceRecalculation = DateTime.Now;
-                _keeperDataModel.CardBalanceMemoModels
-                    .ForEach(m => _keeperDataModel.CheckCardThreshold(m));
+                await _keeperDataModel.RefreshCardBalances();
                 SetBellPath();
                 SaveAllDb();
             }
@@ -320,9 +320,9 @@ namespace Keeper2018
             System.Diagnostics.Process.Start("calc");
         }
 
-        public void ShowRemindersForm()
+        public async Task ShowRemindersForm()
         {
-            _memosViewModel.Initialize();
+            await _memosViewModel.Initialize();
             _windowManager.ShowDialog(_memosViewModel);
         }
 

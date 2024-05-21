@@ -21,13 +21,20 @@ namespace KeeperDomain
 
         public Duration DepositTerm { get; set; }
 
+        // Для карточек 
+        // иногда задан минимум при котором не берется плата за обслуживание или начисляется манибэк
+        // иногда задат максимум после которого манибэк не начисляется
+        public int MonthPaymentsMinimum { get; set; }
+        public int MonthPaymentsMaximum { get; set; }
+
         public string Comment { get; set; }
 
         public string Dump()
         {
             return Id + " ; " + BankId + " ; " + Title + " ; " + IsNotRevocable + " ; " +
                    RateType + " ; " + IsAddLimited + " ; " + AddLimitInDays + " ; " +
-                   MainCurrency + " ; " + (DepositTerm?.Dump() ?? new Duration().Dump()) + " ; " + Comment;
+                   MainCurrency + " ; " + (DepositTerm?.Dump() ?? new Duration().Dump()) + " ; " + 
+                   MonthPaymentsMinimum + " ; " + MonthPaymentsMaximum + " ; " + Comment;
         }
 
         public DepositOffer FromString(string s)
@@ -42,7 +49,9 @@ namespace KeeperDomain
             AddLimitInDays = int.Parse(substrings[6]);
             MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]);
             DepositTerm = DurationFromStrings(substrings[8], substrings[9], substrings[10]);
-            Comment = substrings[11].Trim();
+            MonthPaymentsMinimum = int.Parse(substrings[11]);
+            MonthPaymentsMaximum = int.Parse(substrings[12]);
+            Comment = substrings[13].Trim();
             return this;
         }
 

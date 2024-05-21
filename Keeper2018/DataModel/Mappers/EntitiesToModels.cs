@@ -40,6 +40,8 @@ namespace Keeper2018
                 AddLimitInDays = depositOffer.AddLimitInDays,
                 MainCurrency = depositOffer.MainCurrency,
                 DepositTerm = depositOffer.DepositTerm.Map(),
+                MonthPaymentsMinimum = depositOffer.MonthPaymentsMinimum,
+                MonthPaymentsMaximum = depositOffer.MonthPaymentsMaximum,
                 Comment = depositOffer.Comment,
             };
         }

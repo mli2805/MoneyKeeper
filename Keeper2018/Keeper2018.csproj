@@ -349,6 +349,11 @@
       <DependentUpon>TrustAccountsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Investments\TrustAccount\TrustAccountsViewModel.cs" />
+    <Compile Include="Forms\Memos\CardPaymentsLimitsModel.cs" />
+    <Compile Include="Forms\Memos\CardPaymentsLimitsView.xaml.cs">
+      <DependentUpon>CardPaymentsLimitsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Memos\CardPaymentsLimitsViewModel.cs" />
     <Compile Include="Forms\Memos\MemosView.xaml.cs">
       <DependentUpon>MemosView.xaml</DependentUpon>
     </Compile>
@@ -891,6 +896,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\ListOfLinesControls\BorderedList\BorderedListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Memos\CardPaymentsLimitsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

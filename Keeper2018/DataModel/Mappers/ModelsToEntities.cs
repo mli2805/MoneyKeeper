@@ -63,23 +63,6 @@ namespace Keeper2018
             };
         }
 
-        // public static BankAccount Map(this BankAccountModel model)
-        // {
-        //     return new BankAccount()
-        //     {
-        //         Id = model.Id,
-        //         BankId = model.BankId,
-        //         DepositOfferId = model.DepositOfferId,
-        //         MainCurrency = model.MainCurrency,
-        //         AgreementNumber = model.AgreementNumber,
-        //         ReplenishDetails = model.ReplenishDetails,
-        //         StartDate = model.StartDate,
-        //         FinishDate = model.FinishDate,
-        //         IsMine = model.IsMine,
-        //     };
-        // }
-
-
         public static DepositOffer Map(this DepositOfferModel depositOfferModel)
         {
             return new DepositOffer()
@@ -93,6 +76,8 @@ namespace Keeper2018
                 AddLimitInDays = depositOfferModel.AddLimitInDays,
                 MainCurrency = depositOfferModel.MainCurrency,
                 DepositTerm = depositOfferModel.DepositTerm.Map(),
+                MonthPaymentsMinimum = depositOfferModel.MonthPaymentsMinimum,
+                MonthPaymentsMaximum = depositOfferModel.MonthPaymentsMaximum,
                 Comment = depositOfferModel.Comment,
             };
         }

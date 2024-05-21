@@ -64,7 +64,7 @@ namespace Keeper2018
 
         private async Task MemosInitializationLongOperation()
         {
-            await _keeperDataModel.RememberAll();
+            await _keeperDataModel.RefreshCardBalances();
             MainMenuViewModel.SetBellPath();
         }
 

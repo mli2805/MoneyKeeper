@@ -51,13 +51,7 @@
                                     Width="70" Binding="{Binding BalanceThreshold}"/>
                 <DataGridTextColumn Header="Текущий остаток" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
                                     Width="80" Binding="{Binding CurrentBalance}"/>
-                <DataGridTextColumn Header="Расходов не меньше" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
-                                    Width="70" Binding="{Binding ExpenseNotLess}"/>
-                <DataGridTextColumn Header="Расходов не больше" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
-                                    Width="70" Binding="{Binding ExpenseNotMore}"/>
-                <DataGridTextColumn Header="Расходов за период" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
-                                    Width="80" Binding="{Binding CurrentExpense}"/>
-                <DataGridTextColumn Header="Примечание" Width="300" Binding="{Binding Comment}"/>
+              
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>
