@@ -70,6 +70,7 @@ namespace Keeper2018
 
           
             builder.RegisterType<CardBalanceMemoViewModel>().SingleInstance();
+            builder.RegisterType<CardPaymentsLimitsViewModel>().SingleInstance();
             builder.RegisterType<DateMemoSetterViewModel>().SingleInstance();
             builder.RegisterType<MemosViewModel>().SingleInstance();
 

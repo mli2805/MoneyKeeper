@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -6,20 +7,18 @@ namespace Keeper2018
     public class CardBalanceMemoViewModel : PropertyChangedBase
     {
         private readonly KeeperDataModel _keeperDataModel;
-        public ObservableCollection<CardBalanceMemoModel> Rows { get; set; } = new ObservableCollection<CardBalanceMemoModel>();
+        public List<CardBalanceMemoModel> Rows { get; set; } = new List<CardBalanceMemoModel>();
 
         public CardBalanceMemoViewModel(KeeperDataModel keeperDataModel)
         {
             _keeperDataModel = keeperDataModel;
         }
 
-        public void Initialize()
+        public async Task Initialize()
         {
             Rows.Clear();
-            _keeperDataModel.CardBalanceMemoModels
-                .ForEach(m=> _keeperDataModel.CheckCardThreshold(m));
-            _keeperDataModel.CardBalanceMemoModels.ForEach(m=>_keeperDataModel.GetCardCurrentExpense(m));
-            _keeperDataModel.CardBalanceMemoModels.ForEach(m => Rows.Add(m));
+            await _keeperDataModel.RefreshCardBalances();
+            Rows.AddRange(_keeperDataModel.CardBalanceMemoModels);
         }
 
     }

@@ -70,6 +70,8 @@ namespace Keeper2018
         // only for newly opened deposits
         // Conditions are applied from some date - key in dictionary
         public Dictionary<DateTime, DepoCondsModel> CondsMap { get; private set; } = new Dictionary<DateTime, DepoCondsModel>();
+        public int MonthPaymentsMinimum { get; set; }
+        public int MonthPaymentsMaximum { get; set; }
         public string Comment { get; set; }
 
         public override string ToString()
@@ -91,6 +93,8 @@ namespace Keeper2018
                 MainCurrency = MainCurrency,
                 DepositTerm = DepositTerm.Clone(),
                 CondsMap = new Dictionary<DateTime, DepoCondsModel>(),
+                MonthPaymentsMinimum = MonthPaymentsMinimum,
+                MonthPaymentsMaximum = MonthPaymentsMaximum,
                 Comment = Comment,
                 BackgroundColor = BackgroundColor,
             };

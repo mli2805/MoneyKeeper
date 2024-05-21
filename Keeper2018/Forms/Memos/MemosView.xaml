@@ -5,12 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
-    <TabControl SelectedIndex="1">
+    <TabControl SelectedIndex="2">
         <TabItem Header="Напоминания об оплатах">
             <ContentControl x:Name="DateMemoSetterViewModel"/>
         </TabItem>
-        <TabItem Header="Нижние пределы по картам">
+        <TabItem Header="Нижний предел остатка по картам">
             <ContentControl x:Name="CardBalanceMemoViewModel"/>
+        </TabItem>
+        <TabItem Header="Пределы платежей по картам">
+            <ContentControl x:Name="CardPaymentsLimitsViewModel"/>
         </TabItem>
     </TabControl>
 </Window>

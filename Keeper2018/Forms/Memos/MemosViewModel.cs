@@ -1,15 +1,20 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace Keeper2018
 {
     public class MemosViewModel : Screen
     {
         public CardBalanceMemoViewModel CardBalanceMemoViewModel { get; }
+        public CardPaymentsLimitsViewModel CardPaymentsLimitsViewModel { get; }
         public DateMemoSetterViewModel DateMemoSetterViewModel { get; }
 
-        public MemosViewModel(CardBalanceMemoViewModel cardBalanceMemoViewModel, DateMemoSetterViewModel dateMemoSetterViewModel)
+        public MemosViewModel(CardBalanceMemoViewModel cardBalanceMemoViewModel, 
+            CardPaymentsLimitsViewModel cardPaymentsLimitsViewModel,
+            DateMemoSetterViewModel dateMemoSetterViewModel)
         {
             CardBalanceMemoViewModel = cardBalanceMemoViewModel;
+            CardPaymentsLimitsViewModel = cardPaymentsLimitsViewModel;
             DateMemoSetterViewModel = dateMemoSetterViewModel;
         }
 
@@ -18,9 +23,10 @@ namespace Keeper2018
             DisplayName = "Напоминалки";
         }
 
-        public void Initialize()
+        public async Task Initialize()
         {
-            CardBalanceMemoViewModel.Initialize();
+            await CardBalanceMemoViewModel.Initialize();
+            CardPaymentsLimitsViewModel.Initialize();
         }
 
     }
