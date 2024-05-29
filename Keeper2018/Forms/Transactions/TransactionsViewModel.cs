@@ -13,6 +13,18 @@ namespace Keeper2018
         private readonly TranSelectExecutor _tranSelectExecutor;
         private readonly ComboTreesProvider _comboTreesProvider;
 
+        private int _width = 1200;
+        public int Width
+        {
+            get => _width;
+            set
+            {
+                if (value == _width) return;
+                _width = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private int _left;
         public int Left
         {
