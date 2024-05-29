@@ -7,7 +7,9 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
-        mc:Ignorable="d" Height="800" Width="1200" Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
+        mc:Ignorable="d" 
+        Height="800" Width="{Binding Width, Mode=TwoWay}" 
+        Top="{Binding Top, Mode=TwoWay}" Left="{Binding Left, Mode=TwoWay}"
         TextOptions.TextFormattingMode="Display" d:DataContext="{d:DesignData TransactionsViewModel}">
     <i:Interaction.Triggers>
         <ei:KeyTrigger Key="C">

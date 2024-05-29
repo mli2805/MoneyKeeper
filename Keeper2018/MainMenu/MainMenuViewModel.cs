@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 
 namespace Keeper2018
@@ -190,6 +191,13 @@ namespace Keeper2018
             try
             {
                 _transactionsViewModel.Initialize();
+                // после добавления переносов в поле комента стала криво рассчитывать отрисовку
+                // поэтому говорим диспетчеру, что когда он будет абсолютно свободен (т.е. отрисует форму)
+                // надо изменить ширину формы -  это заставит wpf перерисовать форму, на этот раз правильно
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new System.Action(() =>
+                {
+                    _transactionsViewModel.Width -= 1;
+                }));
                 _windowManager.ShowDialog(_transactionsViewModel);
             }
             catch (Exception e)
