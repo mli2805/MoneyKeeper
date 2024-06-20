@@ -235,8 +235,31 @@ namespace Keeper2018
             var dlg = new SaveFileDialog { InitialDirectory = dbPath, DefaultExt = "csv", Filter = "Csv files|*.csv" };
             if (dlg.ShowDialog() != true)
                 return;
-            File.WriteAllLines(dlg.FileName, Transactions.List.Lines.Select(l => l.Line));
+
+            ToCsv(dlg.FileName, true, Transactions.List.Lines.Select(l => l.Line));
         }
+
+
+        /// <summary>
+        /// задание BOM не рекомендовано, но если он задан Excel понимает что это utf-8
+        /// иначе надо открывать в Excele через загрузку данных
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="isBomNeeded"></param>
+        /// <param name="content"></param>
+        private void ToCsv(string filename, bool isBomNeeded, IEnumerable<string> content)
+        {
+            using (FileStream fs = File.Create(filename))
+            {
+                if (isBomNeeded)
+                {
+                    fs.WriteByte(239); fs.WriteByte(187); fs.WriteByte(191);
+                }
+            }
+
+            File.AppendAllLines(filename, content);
+        }
+
         public void Close() { TryClose(); }
 
         private List<string> ShrinkReceipts(List<TransactionModel> trans)

@@ -34,8 +34,24 @@ namespace Keeper2018
         {
             var period = DateTime.Today.GetFullMonthForDate();
             var expenseTrans = keeperDataModel.Transactions.Values
-                .Where(t => period.Includes(t.Timestamp) && t.MyAccount == account && t.Operation == OperationType.Расход);
+                .Where(t => period.Includes(t.Timestamp) 
+                            && t.MyAccount == account && t.Operation == OperationType.Расход
+                            && t.PaymentWay.IsPaymentByCard(account));
             return expenseTrans.Sum(t => t.Amount);
+        }
+
+        private static bool IsPaymentByCard(this PaymentWay paymentWay, AccountItemModel account)
+        {
+            if (account.Is(884))
+                return paymentWay == PaymentWay.КартаТерминал 
+                       || paymentWay == PaymentWay.ТелефонТерминал
+                       || paymentWay == PaymentWay.ПриложениеПродавца
+                       || paymentWay == PaymentWay.КартаЕрип; // для 123 есть ЕРИП
+
+
+            return paymentWay == PaymentWay.КартаТерминал 
+                   || paymentWay == PaymentWay.ТелефонТерминал
+                   || paymentWay == PaymentWay.ПриложениеПродавца;
         }
     }
 }
