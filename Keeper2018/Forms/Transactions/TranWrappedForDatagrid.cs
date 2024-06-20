@@ -30,6 +30,8 @@ namespace Keeper2018
         }
 
         public string AccountForDataGrid => GetAccountForDataGrid();
+
+        public string PaymentWayForDataGrid => GetPaymentWayFromDataGrid();
         public string AmountForDataGrid => GetAmountForDataGrid();
         public string TagsAndCommentForDataGrid => GetTagsAndCommentForDataGrid();
 
@@ -37,6 +39,24 @@ namespace Keeper2018
         {
             return IsOneAccountTransaction() ? Tran.MyAccount.Name : $"{Tran.MyAccount.Name} ->\n  {Tran.MySecondAccount.Name}";
         }
+
+        private string GetPaymentWayFromDataGrid()
+        {
+            switch (Tran.PaymentWay)
+            {
+                case PaymentWay.Наличные: return "наличные";
+                case PaymentWay.КартаТерминал: return "терминал";
+                case PaymentWay.ТелефонТерминал: return "телефон";
+                case PaymentWay.КартаЕрип: return "оплата_ерип";
+                case PaymentWay.ПереводПоЕрип: return "перев_ерип";
+                case PaymentWay.ПриложениеПродавца: return "прилага";
+                case PaymentWay.КартаДругое: return "другое";
+                case PaymentWay.БанкСписал: return "банк_списал";
+                default: return "-";
+            }
+        }
+
+
         private string GetAmountForDataGrid()
         {
             return IsOneAmountTransaction()

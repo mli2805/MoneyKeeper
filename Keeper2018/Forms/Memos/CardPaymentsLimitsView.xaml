@@ -47,7 +47,7 @@
                                 Width="80" Binding="{Binding CurrentBalance}"/>
             <DataGridTextColumn Header="не меньше" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
                                 Width="70" Binding="{Binding NotLess}"/>
-            <DataGridTextColumn Header="Расходов за период" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
+            <DataGridTextColumn Header="Оплат за период" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
                                 Width="80" Binding="{Binding CurrentExpense}" FontWeight="Bold"/>
             <DataGridTextColumn Header="не больше" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"
                                 Width="70" Binding="{Binding NotMore}"/>

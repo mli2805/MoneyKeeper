@@ -12,6 +12,8 @@ namespace Keeper2018
         public int Receipt { get; set; }
         public decimal Amount { get; set; }
         public CurrencyCode Currency { get; set; }
+        public AccountItemModel Counterparty;
+        public AccountItemModel Category;
         public List<int> Tags { get; set; }
         public string Comment { get; set; }
 
@@ -22,6 +24,8 @@ namespace Keeper2018
             Receipt = tr.Receipt;
             Amount = tr.Amount;
             Currency = tr.Currency;
+            Counterparty = tr.Counterparty;
+            Category = tr.Category;
             Tags = tr.Tags.Select(t=>t.Id).ToList();
             Comment = tr.Comment;
         }
@@ -29,7 +33,8 @@ namespace Keeper2018
         public string ToString(KeeperDataModel dataModel)
         {
             return Timestamp.ToString("dd/MM/yyyy HH:mm") + " ; " +
-                   Amount.ToString(new CultureInfo("en-US")) + " " + Currency + " ; " +
+                   Amount.ToString(new CultureInfo("en-US")).PadLeft(8) + " ; " + Currency + " ; " +
+                   Counterparty.Name + " " + Category.Name + " " + 
                    TagsToString(dataModel) + " ; " + Comment;
         }
 
