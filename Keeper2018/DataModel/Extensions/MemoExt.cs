@@ -46,7 +46,7 @@ namespace Keeper2018
                 return paymentWay == PaymentWay.КартаТерминал 
                        || paymentWay == PaymentWay.ТелефонТерминал
                        || paymentWay == PaymentWay.ПриложениеПродавца
-                       || paymentWay == PaymentWay.КартаЕрип; // для 123 есть ЕРИП
+                       || paymentWay == PaymentWay.ОплатаПоЕрип; // для 123 есть ЕРИП
 
 
             return paymentWay == PaymentWay.КартаТерминал 

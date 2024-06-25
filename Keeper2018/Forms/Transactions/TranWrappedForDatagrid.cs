@@ -45,9 +45,9 @@ namespace Keeper2018
             switch (Tran.PaymentWay)
             {
                 case PaymentWay.Наличные: return "наличные";
-                case PaymentWay.КартаТерминал: return "терминал";
-                case PaymentWay.ТелефонТерминал: return "телефон";
-                case PaymentWay.КартаЕрип: return "оплата_ерип";
+                case PaymentWay.КартаТерминал: return "карта_терм";
+                case PaymentWay.ТелефонТерминал: return "тлф_терм";
+                case PaymentWay.ОплатаПоЕрип: return "оплата_ерип";
                 case PaymentWay.ПереводПоЕрип: return "перев_ерип";
                 case PaymentWay.ПриложениеПродавца: return "прилага";
                 case PaymentWay.КартаДругое: return "другое";

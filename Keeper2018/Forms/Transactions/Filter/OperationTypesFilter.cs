@@ -28,4 +28,25 @@ namespace Keeper2018
             return IsOn ? Operation.ToString() : "<no filter>";
         }
     }
+    
+    public class PaymentWaysFilter
+    {
+        public bool IsOn { get; set; }
+        public PaymentWay PaymentWay { get; set; }
+
+       
+        public PaymentWaysFilter() { IsOn = false; }
+
+       
+        public PaymentWaysFilter(PaymentWay paymentWay)
+        {
+            IsOn = true;
+            PaymentWay = paymentWay;
+        }
+
+        public override string ToString()
+        {
+            return IsOn ? PaymentWay.ToString() : "<no filter>";
+        }
+    }
 }
