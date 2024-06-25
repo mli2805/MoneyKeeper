@@ -12,6 +12,8 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private readonly AccNameSelector _accNameSelectionControlInitializer;
 
+        #region OperationType
+
         public List<OperationTypesFilter> OperationTypes { get; set; } = InitOperationTypesFilter();
         private OperationTypesFilter _myOperationType;
         public OperationTypesFilter MyOperationType
@@ -32,9 +34,41 @@ namespace Keeper2018
             // filters for every operation type
             var operationTypes = Enum.GetValues(typeof(OperationType)).OfType<OperationType>().ToList();
             result.AddRange(from operationType in operationTypes
-                            select new OperationTypesFilter(operationType));
+                select new OperationTypesFilter(operationType));
             return result;
         }
+
+        #endregion
+
+        #region PaymentWay
+
+        public List<PaymentWaysFilter> PaymentWays { get; set; } = InitPaymentWaysFilter();
+       
+        private PaymentWaysFilter _myPaymentWay;
+        public PaymentWaysFilter MyPaymentWay
+        {
+            get => _myPaymentWay;
+            set
+            {
+                if (Equals(value, _myPaymentWay)) return;
+                _myPaymentWay = value;
+                NotifyOfPropertyChange(() => MyPaymentWay);
+            }
+        }
+      
+        private static List<PaymentWaysFilter> InitPaymentWaysFilter()
+        {
+            var result = new List<PaymentWaysFilter> {
+                new PaymentWaysFilter() // <no filter>
+            };
+            // filters for every operation type
+            var paymentWays = Enum.GetValues(typeof(PaymentWay)).OfType<PaymentWay>().ToList();
+            result.AddRange(from paymentWay in paymentWays
+                select new PaymentWaysFilter(paymentWay));
+            return result;
+        }
+
+        #endregion
 
         #region MyAccount
 
@@ -308,6 +342,9 @@ namespace Keeper2018
                 new AccName(){ Name = "no filter"},
                 new AccName().PopulateFromAccount(_dataModel.ExternalRoot(), new List<int>())
             };
+            
+            MyPaymentWay = PaymentWays.First();
+
             AvailableCategories = new List<AccName>()
             {
                 new AccName(){ Name = "no filter"},
@@ -337,6 +374,7 @@ namespace Keeper2018
             MyOperationType = OperationTypes.FirstOrDefault();
             MyAccName = AvailableAccNames.FirstOrDefault();
             Counterparty = AvailableCounterparties.FirstOrDefault(); // если поставить корень Внешних - это сразу отфильтрует все Переносы
+            MyPaymentWay = PaymentWays.First();
             Category = AvailableCategories.FirstOrDefault();
             Amount = null;
             MyCurrency = Currencies.FirstOrDefault();
@@ -350,6 +388,7 @@ namespace Keeper2018
                 case 1: MyOperationType = OperationTypes.FirstOrDefault(); return;
                 case 2: MyAccName = AvailableAccNames.FirstOrDefault(); return;
                 case 11: Counterparty = AvailableCounterparties.FirstOrDefault(); return;
+                case 7: MyPaymentWay = PaymentWays.First(); return;
                 case 12: Category = AvailableCategories.FirstOrDefault(); return;
                 case 3: Amount = null; return;
                 case 4: MyCurrency = Currencies.FirstOrDefault(); return;

@@ -125,7 +125,7 @@ namespace Keeper2018
                 .Where(t => (t.Operation == OperationType.Перенос || t.Operation == OperationType.Обмен)
                                                                             && t.MyAccount.Id == _cardAccountItemModel.Id
                                                                             && t.MySecondAccount.Is(161)).ToList();
-            _sumFrom += StepTwo("Переведено на карты", transfersToCards, transactions.List, totalFrom.List, Brushes.Black);
+            _sumFrom += StepTwo("Переведено на мои карты", transfersToCards, transactions.List, totalFrom.List, Brushes.Black);
 
 
             var moneyBacks = monthTrans
@@ -154,7 +154,7 @@ namespace Keeper2018
                 .Where(t => (t.Operation == OperationType.Перенос || t.Operation == OperationType.Обмен)
                                                                              && t.MySecondAccount.Id == _cardAccountItemModel.Id
                                                                              && t.MyAccount.Is(161)).ToList();
-            _sumTo += StepTwo("Пополнено с карт", transfersFromCards, transactions.List, totalTo.List, Brushes.Black);
+            _sumTo += StepTwo("Пополнено с моих карт", transfersFromCards, transactions.List, totalTo.List, Brushes.Black);
 
             Transactions = transactions;
             TotalFrom = totalFrom;

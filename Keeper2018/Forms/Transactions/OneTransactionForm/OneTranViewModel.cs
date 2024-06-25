@@ -131,6 +131,11 @@ namespace Keeper2018
                 TranInWork.Counterparty = null;
                 TranInWork.Category = null;
             }
+
+            if (TranInWork.Operation != OperationType.Расход)
+            {
+                TranInWork.PaymentWay = PaymentWay.НеЗадано;
+            }
         }
 
         private bool IsValid()

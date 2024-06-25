@@ -11,7 +11,7 @@ namespace Keeper2018
             _wrappedTran = wrappedTran;
             if (filterModel == null) return true;
             _filterModel = filterModel;
-            return FilterOperationType() && FilterAccount() && FilterCounterparty() 
+            return FilterOperationType() && FilterAccount() && FilterCounterparty() && FilterPaymentWay()
                    && FilterCategory() && FilterAmount() && FilterCurrency() && FilterTags() && FilterComment();
         }
 
@@ -35,6 +35,12 @@ namespace Keeper2018
         {
             if (_filterModel.Counterparty.Name == "no filter") return true;
             return _wrappedTran.Tran.Counterparty != null && _wrappedTran.Tran.Counterparty.Is(_filterModel.Counterparty.Id);
+        }
+
+        private bool FilterPaymentWay()
+        {
+            if (_filterModel.MyPaymentWay == null || !_filterModel.MyPaymentWay.IsOn) return true;
+            return _filterModel.MyPaymentWay.PaymentWay == _wrappedTran.Tran.PaymentWay;
         }
 
         private bool FilterCategory()

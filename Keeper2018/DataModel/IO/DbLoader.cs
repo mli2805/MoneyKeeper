@@ -88,7 +88,10 @@ namespace Keeper2018
 
             _keeperDataModel.Transactions = new Dictionary<int, TransactionModel>();
             foreach (var transaction in bin.Transactions)
-                _keeperDataModel.Transactions.Add(transaction.Id, transaction.Map(_keeperDataModel.AcMoDict));
+            {
+                var transactionModel = transaction.Map(_keeperDataModel.AcMoDict);
+                _keeperDataModel.Transactions.Add(transaction.Id, transactionModel);
+            }
 
             _keeperDataModel.FuellingJoinTransaction(bin.Fuellings);
 
