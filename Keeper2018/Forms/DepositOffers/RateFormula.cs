@@ -26,6 +26,7 @@ namespace Keeper2018
             return true;
         }
 
+        // changed in branch-diff
 
         public static double Calculate(string formula, double cp)
         {
