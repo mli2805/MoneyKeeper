@@ -26,10 +26,7 @@ namespace Keeper2018
             return true;
         }
 
-        // изменение сделано в ветке
-
-        // это изменение сделано в основной ветке (develop)
-        // изменение сделано в ветке
+        // почистили во вторичной ветке
 
 
         public static double Calculate(string formula, double cp)
@@ -45,5 +42,7 @@ namespace Keeper2018
             }
             return 0;
         }
+
+        // добавил во вторичн ветке
     }
 }
