@@ -26,6 +26,7 @@ namespace Keeper2018
             return true;
         }
 
+        // это изменение сделано в основной ветке (develop)
 
         public static double Calculate(string formula, double cp)
         {
