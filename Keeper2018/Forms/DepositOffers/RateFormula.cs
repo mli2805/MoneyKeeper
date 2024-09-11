@@ -27,6 +27,7 @@ namespace Keeper2018
         }
 
         // это изменение сделано в основной ветке (develop)
+        // changed in branch-diff
 
         public static double Calculate(string formula, double cp)
         {
