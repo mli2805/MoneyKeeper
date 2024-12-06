@@ -56,6 +56,8 @@ namespace Keeper2018
                     return Brushes.Blue;
                 case OperationType.Расход:
                     return Brushes.Red;
+                case OperationType.Обмен:
+                    return Brushes.DarkGreen;
                 default:
                     return sign == 1 ? Brushes.DarkBlue : Brushes.DarkRed;
             }
@@ -64,7 +66,7 @@ namespace Keeper2018
         private static List<TransactionTooltipLine> BuildTooltip(this KeeperDataModel dataModel, TransactionModel tran)
         {
             var result = new List<TransactionTooltipLine> {
-                new TransactionTooltipLine("Timestamp: ", tran.Timestamp.ToString("dd-MM-yyyy HH:mm"))
+                new TransactionTooltipLine("Когда: ", tran.Timestamp.ToString("dd-MM-yyyy HH:mm"))
             };
 
             if (tran.Operation == OperationType.Перенос || tran.Operation == OperationType.Обмен)
@@ -74,25 +76,28 @@ namespace Keeper2018
             }
             else
             {
-                result.Add(new TransactionTooltipLine("Counterparty: ", tran.Counterparty.Name));
-                result.Add(new TransactionTooltipLine("Catogory: ", tran.Category.Name));
+                result.Add(new TransactionTooltipLine(
+                    tran.Operation == OperationType.Доход ? "На:" : "С: ", tran.MyAccount.Name));
+                result.Add(new TransactionTooltipLine(
+                    tran.Operation == OperationType.Доход ? "Кто:" : "Кому:", tran.Counterparty.Name));
+                result.Add(new TransactionTooltipLine("За что: ", tran.Category.Name));
             }
 
             if (tran.Operation == OperationType.Обмен)
                 result.Add(new TransactionTooltipLine("", GetRealExchangeRate(tran)));
 
-            result.Add(new TransactionTooltipLine("Amount: ",
+            result.Add(new TransactionTooltipLine(tran.Operation == OperationType.Обмен ? "Сдал" : "Сколько: ",
                 dataModel.AmountWithUsdAndRate(tran.Timestamp, tran.Currency, tran.Amount)));
 
             if (tran.Operation == OperationType.Обмен)
-                result.Add(new TransactionTooltipLine("Amount in return: ",
+                result.Add(new TransactionTooltipLine("Получил: ",
                     dataModel.AmountWithUsdAndRate(tran.Timestamp, tran.CurrencyInReturn, tran.AmountInReturn)));
 
             if (tran.Tags.Any())
-                result.Add(new TransactionTooltipLine("Tags:",
+                result.Add(new TransactionTooltipLine("Тэги:",
                     string.Join($"{Environment.NewLine}", tran.Tags.Select(t => t.Name))));
 
-            result.Add(new TransactionTooltipLine("Comment: ", tran.Comment));
+            result.Add(new TransactionTooltipLine("Коментарий: ", tran.Comment));
             return result;
         }
 
