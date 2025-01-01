@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
@@ -57,7 +58,7 @@ namespace Keeper2018
 
         public OneTranViewModel(IWindowManager windowManager, KeeperDataModel dataModel,
             ReceiptViewModel receiptViewModel, FuellingInputViewModel fuellingInputViewModel,
-            UniversalControlVm myIncomeControlVm, NewExpenseControlVm myNewExpenseControlVm, UniversalControlVm myExpenseControlVm,
+            UniversalControlVm myIncomeControlVm, NewExpenseControlVm myNewExpenseControlVm, 
             UniversalControlVm myTransferControlVm, UniversalControlVm myExchangeControlVm)
         {
             _windowManager = windowManager;
@@ -67,6 +68,7 @@ namespace Keeper2018
 
             MyIncomeControlVm = myIncomeControlVm;
             MyNewExpenseControlVm = myNewExpenseControlVm;
+            MyNewExpenseControlVm.PropertyChanged += MyNewExpenseControlVmOnPropertyChanged;
             MyTransferControlVm = myTransferControlVm;
             MyExchangeControlVm = myExchangeControlVm;
         }
@@ -97,13 +99,38 @@ namespace Keeper2018
             OperationTypeViewModel.PropertyChanged += OperationTypeViewModel_PropertyChanged;
         }
 
-        private void OperationTypeViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OperationTypeViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             TranInWork.Operation = OperationTypeViewModel.SelectedOperationType;
             ValidateTranInWorkFieldsWithNewOperationType();
             InitControls();
             SetControlVisibilities(OperationTypeViewModel.SelectedOperationType);
         }
+
+        private void InitControls()
+        {
+            MyIncomeControlVm.SetTran(TranInWork);
+            MyNewExpenseControlVm.StartWith(TranInWork);
+            MyNewExpenseControlVm.IsAddMode = IsAddMode;
+            MyTransferControlVm.SetTran(TranInWork);
+            MyExchangeControlVm.SetTran(TranInWork);
+        }
+        
+        private void SetControlVisibilities(OperationType opType)
+        {
+            MyIncomeControlVm.Visibility = opType == OperationType.Доход ? Visibility.Visible : Visibility.Collapsed;
+            MyNewExpenseControlVm.Visibility = opType == OperationType.Расход ? Visibility.Visible : Visibility.Collapsed;
+            MyTransferControlVm.Visibility = opType == OperationType.Перенос ? Visibility.Visible : Visibility.Collapsed;
+            MyExchangeControlVm.Visibility = opType == OperationType.Обмен ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void MyNewExpenseControlVmOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "ForParentView") return;
+            if (MyNewExpenseControlVm.ForParentView == "Fuelling") Fuelling();
+            if (MyNewExpenseControlVm.ForParentView == "Receipt") Receipt();
+        }
+
 
         private void ValidateTranInWorkFieldsWithNewOperationType()
         {
@@ -176,27 +203,9 @@ namespace Keeper2018
             TryClose(false);
         }
 
-        private void InitControls()
-        {
-            MyIncomeControlVm.SetTran(TranInWork);
-            MyNewExpenseControlVm.StartWith(TranInWork);
-            MyNewExpenseControlVm.IsAddMode = IsAddMode;
-            MyTransferControlVm.SetTran(TranInWork);
-            MyExchangeControlVm.SetTran(TranInWork);
-        }
-        private void SetControlVisibilities(OperationType opType)
-        {
-            MyIncomeControlVm.Visibility = opType == OperationType.Доход ? Visibility.Visible : Visibility.Collapsed;
-            MyNewExpenseControlVm.Visibility = opType == OperationType.Расход ? Visibility.Visible : Visibility.Collapsed;
-            MyTransferControlVm.Visibility = opType == OperationType.Перенос ? Visibility.Visible : Visibility.Collapsed;
-            MyExchangeControlVm.Visibility = opType == OperationType.Обмен ? Visibility.Visible : Visibility.Collapsed;
-        }
-
         public void Receipt()
         {
-            InitControls();
-
-            Left = Left - 180;
+            if (Left > 600) Left -= 180;
             _receiptViewModel.Initialize(TranInWork.Amount, TranInWork.Currency, _dataModel.AcMoDict[256]);
             _receiptViewModel.PlaceIt(Top, Left + Width, Height);
 
@@ -208,7 +217,7 @@ namespace Keeper2018
 
         public void Fuelling()
         {
-            Left = Left - 180;
+            if (Left > 600) Left -= 180;
             if (_dataModel.Cars == null)
             {
                 MessageBox.Show("Cars должны быть заполнены!");
@@ -246,6 +255,7 @@ namespace Keeper2018
             return new TransactionModel()
             {
                 Operation = OperationType.Расход,
+                PaymentWay = PaymentWay.ПриложениеПродавца,
                 Timestamp = vm.Timestamp,
                 Counterparty = azs,
                 Category = thisCarFuel,

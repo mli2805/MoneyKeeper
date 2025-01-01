@@ -174,7 +174,7 @@ namespace Keeper2018
             CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
             if (TranInWork.Category == null)
                 TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
-            CategorySelectorVm.PropertyChanged += CategorySelectorVm_PropertyChanged;
+            CategorySelectorVm.PropertyChanged += NewCategorySelectorVm_PropertyChanged;
 
             MyAmountInputControlVm = new AmountInputControlVm
             {
@@ -199,6 +199,8 @@ namespace Keeper2018
             MyDatePickerVm = new DatePickerWithTrianglesVm() { SelectedDate = TranInWork.Timestamp };
             MyDatePickerVm.PropertyChanged += MyDatePickerVm_PropertyChanged;
         }
+
+     
 
         private string GetAmountActionLabel(TransactionModel tran)
         {
@@ -250,13 +252,14 @@ namespace Keeper2018
                 {
                     TranInWork.Category = associatedCategory;
                     CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
+                    CategorySelectorVm.PropertyChanged += NewCategorySelectorVm_PropertyChanged;
                 }
             }
 
             AddTagIfAssociated(TranInWork.Counterparty.AssociatedTagId);
         }
 
-        private void CategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void NewCategorySelectorVm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "MyAccName") return;
             _categoryChangedManually = true;
@@ -271,6 +274,7 @@ namespace Keeper2018
                 {
                     TranInWork.Counterparty = associatedCounterparty;
                     CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+                    CounterpartySelectorVm.PropertyChanged += CounterpartySelectorVm_PropertyChanged;
                 }
             }
 
@@ -360,5 +364,27 @@ namespace Keeper2018
             }
         }
 
+        #region Прокинуть наверх нажатия Чек и Заправка
+
+        private string _forParentView;
+        public string ForParentView
+        {
+            get => _forParentView;
+            set => _forParentView = value;
+        }
+
+        public void Receipt()
+        {
+            _forParentView = "Receipt";
+            NotifyOfPropertyChange(nameof(ForParentView));
+        }
+        
+        public void Fuelling()
+        {
+            _forParentView = "Fuelling";
+            NotifyOfPropertyChange(nameof(ForParentView));
+        }
+
+        #endregion
     }
 }

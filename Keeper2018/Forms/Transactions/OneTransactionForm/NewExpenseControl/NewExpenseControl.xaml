@@ -7,7 +7,7 @@
              xmlns:keeper2018="clr-namespace:Keeper2018"
              cal:Bind.ModelWithoutContext="{Binding .}"
              mc:Ignorable="d" 
-             d:DesignWidth="500">
+             d:DesignWidth="500" d:DataContext="{d:DesignData NewExpenseControlVm}">
     <Grid>
         <StackPanel Background="#FFFFF8F8">
             <keeper2018:AccNameSelectorView DataContext="{Binding MyAccNameSelectorVm}" 
