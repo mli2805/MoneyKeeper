@@ -283,6 +283,7 @@ namespace Keeper2018
                 {
                     TranInWork.Category = associatedCategory;
                     CategorySelectorVm = _accNameSelectionControlInitializer.ForCategory(TranInWork);
+                    CategorySelectorVm.PropertyChanged += CategorySelectorVm_PropertyChanged;
                 }
             }
 
@@ -304,6 +305,7 @@ namespace Keeper2018
                 {
                     TranInWork.Counterparty = associatedCounterparty;
                     CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+                    CounterpartySelectorVm.PropertyChanged += CounterpartySelectorVm_PropertyChanged;
                 }
             }
 
