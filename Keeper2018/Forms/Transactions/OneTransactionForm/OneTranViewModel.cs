@@ -49,7 +49,7 @@ namespace Keeper2018
         public bool IsOneMore { get; set; }
 
         public UniversalControlVm MyIncomeControlVm { get; set; }
-        public UniversalControlVm MyExpenseControlVm { get; set; }
+        public NewExpenseControlVm MyNewExpenseControlVm { get; set; }
         public UniversalControlVm MyTransferControlVm { get; set; }
         public UniversalControlVm MyExchangeControlVm { get; set; }
 
@@ -57,7 +57,7 @@ namespace Keeper2018
 
         public OneTranViewModel(IWindowManager windowManager, KeeperDataModel dataModel,
             ReceiptViewModel receiptViewModel, FuellingInputViewModel fuellingInputViewModel,
-            UniversalControlVm myIncomeControlVm, UniversalControlVm myExpenseControlVm,
+            UniversalControlVm myIncomeControlVm, NewExpenseControlVm myNewExpenseControlVm, UniversalControlVm myExpenseControlVm,
             UniversalControlVm myTransferControlVm, UniversalControlVm myExchangeControlVm)
         {
             _windowManager = windowManager;
@@ -66,7 +66,7 @@ namespace Keeper2018
             _fuellingInputViewModel = fuellingInputViewModel;
 
             MyIncomeControlVm = myIncomeControlVm;
-            MyExpenseControlVm = myExpenseControlVm;
+            MyNewExpenseControlVm = myNewExpenseControlVm;
             MyTransferControlVm = myTransferControlVm;
             MyExchangeControlVm = myExchangeControlVm;
         }
@@ -179,21 +179,21 @@ namespace Keeper2018
         private void InitControls()
         {
             MyIncomeControlVm.SetTran(TranInWork);
-            MyExpenseControlVm.SetTran(TranInWork);
+            MyNewExpenseControlVm.StartWith(TranInWork);
+            MyNewExpenseControlVm.IsAddMode = IsAddMode;
             MyTransferControlVm.SetTran(TranInWork);
             MyExchangeControlVm.SetTran(TranInWork);
         }
         private void SetControlVisibilities(OperationType opType)
         {
             MyIncomeControlVm.Visibility = opType == OperationType.Доход ? Visibility.Visible : Visibility.Collapsed;
-            MyExpenseControlVm.Visibility = opType == OperationType.Расход ? Visibility.Visible : Visibility.Collapsed;
+            MyNewExpenseControlVm.Visibility = opType == OperationType.Расход ? Visibility.Visible : Visibility.Collapsed;
             MyTransferControlVm.Visibility = opType == OperationType.Перенос ? Visibility.Visible : Visibility.Collapsed;
             MyExchangeControlVm.Visibility = opType == OperationType.Обмен ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void Receipt()
         {
-            //if (!LeaveOneExternalAccountInTags()) return;
             InitControls();
 
             Left = Left - 180;

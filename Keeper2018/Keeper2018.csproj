@@ -659,6 +659,11 @@
     </Compile>
     <Compile Include="Forms\Transactions\OneTransactionForm\FuellingInput\FuellingInputViewModel.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\FuellingInput\FuellingInputVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\NewExpenseControl\NewExpenseControl.xaml.cs">
+      <DependentUpon>NewExpenseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\OneTransactionForm\NewExpenseControl\NewExpenseControlVm.cs" />
+    <Compile Include="Forms\Transactions\OneTransactionForm\NewExpenseControl\NewExpenseModel.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml.cs">
       <DependentUpon>OneTranView.xaml</DependentUpon>
     </Compile>
@@ -1019,6 +1024,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Transactions\OneTransactionForm\NewExpenseControl\NewExpenseControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1213,6 +1222,7 @@
   <ItemGroup>
     <Resource Include="Resources\tree16\tag.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

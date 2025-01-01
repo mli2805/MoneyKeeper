@@ -39,8 +39,9 @@ namespace Keeper2018
         public int Top { get; set; }
 
         public int FilterViewWidth = 225;
+
+
         public TranModel Model { get; set; }
-        //public bool IsFirstLaunch = true; раньше, если не первая то упрощённая инициализация ради быстродействия
 
         public TransactionsViewModel(TranModel model, FilterModel filterModel, FilterViewModel filterViewModel,
             TranEditExecutor tranEditExecutor, TranMoveExecutor tranMoveExecutor, TranSelectExecutor tranSelectExecutor,
@@ -60,7 +61,6 @@ namespace Keeper2018
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Проводки";
-            //Model.IsCollectionChanged = false;
         }
 
         public void Initialize()
@@ -68,7 +68,6 @@ namespace Keeper2018
             _comboTreesProvider.Initialize();
             _filterModel.Initialize();
             Model.Initialize();
-            //IsFirstLaunch = false;
         }
 
         public void ButtonFilter()

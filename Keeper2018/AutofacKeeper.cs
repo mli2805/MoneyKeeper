@@ -53,6 +53,7 @@ namespace Keeper2018
             builder.RegisterType<ComboTreesProvider>().SingleInstance();
             builder.RegisterType<AccNameSelector>().SingleInstance();
             builder.RegisterType<BalanceDuringTransactionHinter>().SingleInstance();
+            builder.RegisterType<NewExpenseControlVm>();
             builder.RegisterType<UniversalControlVm>();
             builder.RegisterType<ReceiptViewModel>().SingleInstance();
             builder.RegisterType<OneTranViewModel>().SingleInstance();
