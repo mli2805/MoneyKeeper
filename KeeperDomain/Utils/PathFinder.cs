@@ -10,9 +10,9 @@ namespace KeeperDomain
     {
         public static string GetKeeper2018BasePath()
         {
-            //return Path.Combine(@"d:\Google Drive", @"Keeper2018");
+            return Path.Combine(@"d:\Google Drive", @"Keeper2018");
             // на время разработки новой фичи
-            return @"c:\VsGitProjects\Keeper\Keeper2018\bin\";
+            //return @"c:\VsGitProjects\Keeper\Keeper2018\bin\";
         }
 
         /// <summary>
