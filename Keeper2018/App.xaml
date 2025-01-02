@@ -11,8 +11,9 @@
                 </ResourceDictionary>
                 <ResourceDictionary>
                     <!-- ресурсы вставлять сюда-->
-                    <HierarchicalDataTemplate x:Key="ComboBoxTreeViewDataTemplate" ItemsSource="{Binding Children}" DataType="local:AccName">
-                        <TextBlock Text="{Binding Name}" />
+                    <HierarchicalDataTemplate x:Key="ComboBoxTreeViewDataTemplate" 
+                                              ItemsSource="{Binding Children}" DataType="local:AccName">
+                        <TextBlock Text="{Binding Name}" FontSize="12" />
                     </HierarchicalDataTemplate>
 
                     <Style x:Key="TextBoxCellTextStyle2" TargetType="{x:Type TextBox}">

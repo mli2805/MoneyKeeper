@@ -42,8 +42,8 @@ namespace Keeper2018
             }
         }
 
-        private AccNameSelectorVm _counterpartySelectorVm;
-        public AccNameSelectorVm CounterpartySelectorVm
+        private SellerSelectorVm _counterpartySelectorVm;
+        public SellerSelectorVm CounterpartySelectorVm
         {
             get => _counterpartySelectorVm;
             set
@@ -166,7 +166,7 @@ namespace Keeper2018
             MyAccNameSelectorVm = _accNameSelectionControlInitializer.ForMyAccount(TranInWork);
             MyAccNameSelectorVm.PropertyChanged += MyAccNameSelectorVm_PropertyChanged;
 
-            CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+            CounterpartySelectorVm = _accNameSelectionControlInitializer.SelectorForCounterparty(TranInWork);
             if (TranInWork.Counterparty == null)
                 TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
             CounterpartySelectorVm.PropertyChanged += CounterpartySelectorVm_PropertyChanged;
@@ -273,7 +273,7 @@ namespace Keeper2018
                 if (associatedCounterparty != null)
                 {
                     TranInWork.Counterparty = associatedCounterparty;
-                    CounterpartySelectorVm = _accNameSelectionControlInitializer.ForCounterparty(TranInWork);
+                    CounterpartySelectorVm = _accNameSelectionControlInitializer.SelectorForCounterparty(TranInWork);
                     CounterpartySelectorVm.PropertyChanged += CounterpartySelectorVm_PropertyChanged;
                 }
             }

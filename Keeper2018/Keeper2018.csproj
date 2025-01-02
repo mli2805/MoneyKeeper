@@ -583,6 +583,10 @@
     </Compile>
     <Compile Include="Forms\AccountTree\AskDragAccountActionViewModel.cs" />
     <Compile Include="AutofacKeeper.cs" />
+    <Compile Include="Forms\Transactions\AccNameSelectionControl\SellerSelectorControl.xaml.cs">
+      <DependentUpon>SellerSelectorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Transactions\AccNameSelectionControl\SellerSelectorVm.cs" />
     <Compile Include="Forms\Transactions\ComboboxTreeviewControl\ComboBoxTreeView.cs" />
     <Compile Include="Forms\Transactions\ComboboxTreeviewControl\ExtendedTreeView.cs" />
     <Compile Include="Forms\Transactions\ComboboxTreeviewControl\ITreeViewItemModel.cs" />
@@ -986,6 +990,10 @@
     <Page Include="Forms\Transactions\AccNameSelectionControl\AccNameSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Transactions\AccNameSelectionControl\SellerSelectorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Transactions\Actions\AskReceiptDeletionView.xaml">
       <SubType>Designer</SubType>

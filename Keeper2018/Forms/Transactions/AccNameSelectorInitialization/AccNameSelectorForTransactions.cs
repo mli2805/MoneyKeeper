@@ -6,6 +6,29 @@ namespace Keeper2018
 {
     public partial class AccNameSelector
     {
+        public SellerSelectorVm SelectorForCounterparty(TransactionModel tran)
+        {
+            var availableAccNames = _comboTreesProvider.Counterparties;
+            var counterpartyId = tran.Counterparty?.Id ?? 249;
+
+            return new SellerSelectorVm
+            {
+                ControlTitle = "Откуда",
+                Buttons = _dataModel.ButtonCollections.First(c => c.Id == 14).ToButtonsDictionary().Select(
+                    button => new AccNameButtonVm(button.Key,
+                        availableAccNames.FindThroughTheForestById(button.Value))).ToList(),
+                AvailableAccNames = availableAccNames,
+                Shops = _comboTreesProvider.Shops,
+                Meds = _comboTreesProvider.Meds,
+
+                MyAccName = availableAccNames.FindThroughTheForestById(counterpartyId),
+                SelectedShop = _comboTreesProvider.Shops.FirstOrDefault(s=>s.Id == counterpartyId) ?? 
+                               _comboTreesProvider.Shops.First(),
+                SelectedMed = _comboTreesProvider.Meds.FirstOrDefault(s => s.Id == counterpartyId) ??
+                              _comboTreesProvider.Meds.First()
+            };
+        }
+
         public AccNameSelectorVm ForMyAccount(TransactionModel tran)
         {
             switch (tran.Operation)

@@ -13,6 +13,8 @@ namespace Keeper2018
         public List<AccName> AccNamesForIncomeTags { get; set; }
 
         public List<AccName> MyAccNamesForExpense { get; set; }
+        public List<AccName> Shops { get; set; }
+        public List<AccName> Meds { get; set; }
         public List<AccName> AccNamesForExpenseTags { get; set; }
 
         public List<AccName> MyAccNamesForTransfer { get; set; }
@@ -144,6 +146,16 @@ namespace Keeper2018
             {
                 new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], new List<int> {166})
             };
+
+            var noShop = new AccName() { Id = -1, Name = "---", };
+            Shops = new List<AccName>() { noShop };
+            Shops.AddRange(_dataModel.AcMoDict[179].Children
+                .Select(c => new AccName().PopulateFromAccount((AccountItemModel)c, null)));
+
+            var noMed  = new AccName() { Id = -1, Name = "---", };
+            Meds = new List<AccName>() { noMed };
+            Meds.AddRange(_dataModel.AcMoDict[758].Children
+                .Select(c => new AccName().PopulateFromAccount((AccountItemModel)c, null)));
 
             // Expense Tags
             AccNamesForExpenseTags = new List<AccName>();
