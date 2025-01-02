@@ -110,10 +110,13 @@ namespace Keeper2018
         private void InitControls()
         {
             MyIncomeControlVm.SetTran(TranInWork);
+            MyIncomeControlVm.IsAddMode = IsAddMode;
             MyNewExpenseControlVm.StartWith(TranInWork);
             MyNewExpenseControlVm.IsAddMode = IsAddMode;
             MyTransferControlVm.SetTran(TranInWork);
+            MyTransferControlVm.IsAddMode = IsAddMode;
             MyExchangeControlVm.SetTran(TranInWork);
+            MyExchangeControlVm.IsAddMode = IsAddMode;
         }
         
         private void SetControlVisibilities(OperationType opType)

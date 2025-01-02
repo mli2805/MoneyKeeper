@@ -663,7 +663,6 @@
       <DependentUpon>NewExpenseControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Transactions\OneTransactionForm\NewExpenseControl\NewExpenseControlVm.cs" />
-    <Compile Include="Forms\Transactions\OneTransactionForm\NewExpenseControl\NewExpenseModel.cs" />
     <Compile Include="Forms\Transactions\OneTransactionForm\OneTranView.xaml.cs">
       <DependentUpon>OneTranView.xaml</DependentUpon>
     </Compile>

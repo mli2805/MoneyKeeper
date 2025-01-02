@@ -28,6 +28,7 @@ namespace Keeper2018
 
         #region TranInWork Properties
         public TransactionModel TranInWork { get; set; } = new TransactionModel();
+        public bool IsAddMode { get; set; }
 
         private AccNameSelectorVm _myAccNameSelectorVm;
         public AccNameSelectorVm MyAccNameSelectorVm
@@ -276,7 +277,7 @@ namespace Keeper2018
             TranInWork.Counterparty = _dataModel.AcMoDict[CounterpartySelectorVm.MyAccName.Id];
             SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
 
-            if (!_categoryChangedManually)
+            if (!_categoryChangedManually && IsAddMode)
             {
                 var associatedCategory = FindAssociated(TranInWork.Counterparty, TranInWork.Operation);
                 if (associatedCategory != null)
@@ -298,7 +299,7 @@ namespace Keeper2018
             TranInWork.Category = _dataModel.AcMoDict[CategorySelectorVm.MyAccName.Id];
             SelectedPaymentWay = PaymentGuess.GuessPaymentWay(TranInWork);
 
-            if (!_counterpartyChangedManually)
+            if (!_counterpartyChangedManually && IsAddMode)
             {
                 var associatedCounterparty = FindAssociated(TranInWork.Category, TranInWork.Operation);
                 if (associatedCounterparty != null)
