@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using Keeper2018.BorderedList;
 using KeeperDomain;
@@ -73,10 +74,11 @@ namespace Keeper2018
 
         private void FillIncomeForecastList(DateTime fromDate, DateTime finishMoment)
         {
-            var forecast = _dataModel.ForecastIncome(fromDate, finishMoment);
+            var forecast = _dataModel.ForecastIncome2(fromDate, finishMoment);
 
-            _monthAnalysisModel.IncomeForecastList = forecast.Item1;
-            _monthAnalysisModel.IncomeForecast = forecast.Item2;
+            _monthAnalysisModel.IncomeForecastList = 
+                forecast.OrderBy(i=>i.ExpectedAt).Select(l=>l.Title).ToList();
+            _monthAnalysisModel.IncomeForecast = forecast.Sum(l=>l.AmountUsd);
         }
 
         private void FillExpenseList(DateTime startDate, DateTime finishMoment)
