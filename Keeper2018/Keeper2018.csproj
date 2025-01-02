@@ -1134,9 +1134,6 @@
     <Resource Include="Resources\mainmenu\exchange3.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="docs\AccountIds.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\mainmenu\car.png" />
   </ItemGroup>
   <ItemGroup>

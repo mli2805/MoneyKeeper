@@ -138,7 +138,7 @@
                 <DataGridTextColumn Header="R" Width="10" Binding="{Binding Tran.Receipt}" />
                 <DataGridTextColumn Header="  Мой счет" Width="350*" Binding="{Binding AccountForDataGrid}" />
                 <DataGridTextColumn Header="  Контрагент" Width="175*" Binding="{Binding Tran.Counterparty}" />
-                <DataGridTextColumn Header=" с/о" Width="85" Binding="{Binding PaymentWayForDataGrid}" />
+                <DataGridTextColumn Header="способ опл." Width="85" Binding="{Binding PaymentWayForDataGrid}" />
                 <DataGridTextColumn Header="  Категория" Width="200*" Binding="{Binding Tran.Category}" />
                 <DataGridTextColumn Header="  Сколько" Width="120*" Binding="{Binding AmountForDataGrid}" />
                 <DataGridTextColumn Header="  Тэги и коммент" Width="300*" Binding="{Binding TagsAndCommentForDataGrid}">

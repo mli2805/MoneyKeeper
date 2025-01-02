@@ -57,7 +57,6 @@ namespace Keeper2018
             InitializeListsForExpense();
             InitializeListsForTransfer();
             InitializeListsForExchange();
-            //InitializeListForFilterTags();
             InitializeForInvestments();
         }
 
@@ -102,23 +101,12 @@ namespace Keeper2018
             }
         }
 
-        //private void InitializeListForFilterTags()
-        //{
-        //    // All Tags
-        //    AccNamesForFilterTags = new List<AccName>();
-        //    var list = new List<int>() { 157, 185, 189 };
-        //    foreach (var element in list)
-        //    {
-        //        var root = new AccName().PopulateFromAccount(_dataModel.AcMoDict[element], null);
-        //        AccNamesForFilterTags.Add(root);
-        //    }
-        //}
         private void InitializeListsForIncome()
         {
             // Income
             MyAccNamesForIncome = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], new List<int> {393, 235})
+                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], null)
             };
 
             // Income Tags
@@ -172,7 +160,7 @@ namespace Keeper2018
             // Transfer
             MyAccNamesForTransfer = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], new List<int> {393, 235,})
+                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], null)
             };
 
             // Transfer Tags
@@ -190,7 +178,7 @@ namespace Keeper2018
             // Exchange
             MyAccNamesForExchange = new List<AccName>
             {
-                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], new List<int> {393, 235,})
+                new AccName().PopulateFromAccount(_dataModel.AcMoDict[158], null)
             };
 
             // Exchange Tags
