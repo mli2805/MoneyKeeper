@@ -266,6 +266,7 @@
     <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.ChartAndAggregate.cs" />
     <Compile Include="Forms\Charts\CarReport\PdfCarReportFactory.Totals.cs" />
     <Compile Include="Forms\Charts\DepositPlusCurrency\DepositCurrencySaldoCalculator.cs" />
+    <Compile Include="Forms\CurrencyRates2\Charts\LeastSquares\LeastSquares.cs" />
     <Compile Include="Forms\CurrencyRates2\Exchange\ExchangeRatesView.xaml.cs">
       <DependentUpon>ExchangeRatesView.xaml</DependentUpon>
     </Compile>
