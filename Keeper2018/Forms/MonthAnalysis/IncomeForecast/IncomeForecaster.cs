@@ -21,10 +21,10 @@ namespace Keeper2018
 
         private const decimal IitSalary = 700;
         private const decimal OptixsoftSalary = 1100;
-        private const int SalaryDay = 25;
+        private const int SalaryDay = 5;
         private const decimal IitPrepayment = 100;
         private const decimal OptixsoftPrepayment = 100;
-        private const int PrepaymentDay = 5;
+        private const int PrepaymentDay = 25;
 
         public static List<ForeseenIncome> ForecastIncome2(
             this KeeperDataModel dataModel, DateTime fromDate, DateTime finishMoment)
