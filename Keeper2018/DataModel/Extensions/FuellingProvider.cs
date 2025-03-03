@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using KeeperDomain;
 
 namespace Keeper2018
@@ -19,7 +18,7 @@ namespace Keeper2018
                     Id = fuelling.Id,
                     Timestamp = tr.Timestamp,
                     Transaction = tr,
-                    CarAccountId = tr.Tags.Select(t => t.Id).Contains(718) ? 716 : 711,
+                    CarAccountId = fuelling.CarAccountId,
                     Amount = tr.Amount,
                     Currency = tr.Currency,
                     Volume = fuelling.Volume,
