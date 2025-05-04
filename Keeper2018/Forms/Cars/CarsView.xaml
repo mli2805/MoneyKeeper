@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance keeper2018:CarsViewModel}"
-        Width="754"  Height="550" WindowStartupLocation="CenterScreen">
+        Width="754"  Height="650" WindowStartupLocation="CenterScreen">
     <DockPanel Margin="5">
         <ListView DockPanel.Dock="Top" ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" 
                   Margin="5" SelectionMode="Single">
@@ -73,41 +73,97 @@
         </ListView>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
             <DockPanel DockPanel.Dock="Left" >
-                <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedCar.Title}" HorizontalAlignment="Left" Margin="5" Width="480"></TextBlock>
-                <DataGrid DockPanel.Dock="Left" ItemsSource="{Binding SelectedCar.YearsMileage}" 
-                          Margin="5,0,5,5" Width="264" AutoGenerateColumns="False"
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <TextBlock Text="{Binding SelectedCar.Title}" 
+                               HorizontalAlignment="Left" Margin="5" Width="200"/>
+                    <StackPanel  Orientation="Horizontal">
+                        <TextBlock Text="VIN:" Margin="20,5,5,5" Width="20"/>
+                        <TextBox IsReadOnly="true" BorderThickness="0" 
+                                 Text="{Binding SelectedCar.Vin}" Margin="5" Width="120"/>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal">
+                        <TextBlock Text="Номер:" Margin="20,5,5,5" Width="40"/>
+                        <TextBlock Text="{Binding SelectedCar.StateRegNumber}" Margin="5" Width="80"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding YearMileagesToShow}" 
+                          Margin="5,0,5,5"  AutoGenerateColumns="False"
                           HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LavenderBlush" >
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   TextWrapping="Wrap" 
+                                                   TextAlignment="Center"
+                                                   Padding="0"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" Width="30" Binding="{Binding YearNumber}"/>
-                        <DataGridTextColumn Header="год" Width="60" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="год" Width="150" Binding="{Binding FromTo}"/>
+                        <DataGridTextColumn Header="пробег за год" Width="60" Binding="{Binding Mileage}"/>
                         <DataGridTextColumn Header="одометр" Width="60" Binding="{Binding Odometer}"/>
-                        <DataGridTextColumn Header="пробег" Width="60" Binding="{Binding Mileage}"/>
+                        <DataGridTextColumn Header="$ сумма за год" Width="60" 
+                                            Binding="{Binding YearAmount, StringFormat={}{0:# ###.0}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Padding" Value="0,0,5,0"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="$ сумма в день" Width="60" Binding="{Binding DayAmount, StringFormat=N1}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Padding" Value="0,0,5,0"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+                <TextBlock DockPanel.Dock="Top"  Margin="5" Text="* суммы по годам без учета покупки-продажи"></TextBlock>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,5" Visibility="{Binding IsLastCarVisibility}">
+                    <TextBlock Text="Текущий пробег" Margin="5,0,5,3" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding SelectedCar.SaleMileage}" Width="70" VerticalAlignment="Center"/>
+                    <TextBlock Text="км. " Margin="5,0,5,3" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,5" Visibility="{Binding IsLastCarVisibility}">
+                    <TextBlock Text="Предполагаемая продажа " Margin="5,0,5,3" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding SelectedCar.SupposedSalePrice}" Width="70" VerticalAlignment="Center"/>
+                    <TextBlock Text="usd" Margin="5,0,5,3" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Итого:"/>
+                    <TextBlock Margin="10,0,0,0" Text="{Binding Total.FromTo}"/>
+                    <TextBlock Margin="15,0, 2,0" Text="{Binding Total.Mileage, StringFormat={}{0:# ###}}"/>
+                    <TextBlock Text="км"/>
+                    <TextBlock Margin="15,0, 2, 0" Text="{Binding Total.YearAmount, StringFormat={}{0:# ###}}"/>
+                    <TextBlock Text="$"/>
+                    <TextBlock Margin="15,0, 2, 0" Text="{Binding Total.DayAmount, StringFormat=N1}"/>
+                    <TextBlock Text="$ в день"/>
+                </StackPanel> 
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="С учетом покупки-продажи:"/>
+                    <TextBlock Margin="105,0, 2, 0" 
+                               Text="{Binding TotalPlus.YearAmount, StringFormat={}{0:# ###}}"/>
+                    <TextBlock Text="$"/>
+                    <TextBlock Margin="15,0, 2, 0" 
+                               Text="{Binding TotalPlus.DayAmount, StringFormat=N1}"/>
+                    <TextBlock Text="$ в день"/>
+                </StackPanel>
+
+
                 <DockPanel Margin="5">
-                    <Button Content="График стоимости владения" Name="ShowOwnershipCostChart" 
-                            DockPanel.Dock="Bottom" Height="24" Width="200" Margin="5" HorizontalAlignment="Right" />
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock Text="VIN:" Margin="5" Width="40"/>
-                        <TextBlock Text="{Binding SelectedCar.Vin}" Margin="5"/>
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock Text="Номер:" Margin="5" Width="40"/>
-                        <TextBlock Text="{Binding SelectedCar.StateRegNumber}" Margin="5"/>
-                    </StackPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <TextBlock Text="" Margin="5" Width="40"/>
                         <TextBlock Text="{Binding SelectedCar.Comment}" Height="40" TextWrapping="Wrap" Margin="5"/>
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,5" Visibility="{Binding IsLastCarVisibility}">
-                        <TextBlock Text="Конечный пробег" Margin="5,0,5,3" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SelectedCar.SaleMileage}" Width="70" VerticalAlignment="Center"/>
-                        <TextBlock Text="км. " Margin="5,0,5,3" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,5" Visibility="{Binding IsLastCarVisibility}">
-                        <TextBlock Text="Предполагаемая продажа " Margin="5,0,5,3" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SelectedCar.SupposedSalePrice}" Width="70" VerticalAlignment="Center"/>
-                        <TextBlock Text="usd" Margin="5,0,5,3" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel></StackPanel>
                 </DockPanel>
@@ -115,12 +171,16 @@
         </Border>
 
         <Button DockPanel.Dock="Bottom" Content="Закрыть" Width="120" Margin=" 5" Name="Close" HorizontalAlignment="Right"/>
+        <Button Name="ShowOwnershipCostChart" 
+                DockPanel.Dock="Bottom" Height="48" Width="120" Margin="5" HorizontalAlignment="Right" >
+            <TextBlock TextWrapping="Wrap" Text="График стоимости владения" TextAlignment="Center"/>
+        </Button>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical" Margin="5,5,5,50" HorizontalAlignment="Right">
             <CheckBox IsChecked="{Binding IsByTags}" Margin="5" Width="120">
-                    <TextBlock Text="Ремонты по категориям" TextWrapping="Wrap"/>
+                <TextBlock Text="Ремонты по категориям" TextWrapping="Wrap"/>
             </CheckBox>
             <CheckBox IsChecked="{Binding IsBynInReport}" Margin="5" Width="120">
-                    <TextBlock Text="Показывать суммы в рублях" TextWrapping="Wrap"/>
+                <TextBlock Text="Показывать суммы в рублях" TextWrapping="Wrap"/>
             </CheckBox>
             <Button Content="Авто отчет" Width="120" Margin="0,5" Name="ShowCarReport" />
         </StackPanel>

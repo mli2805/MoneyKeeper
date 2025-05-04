@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -21,15 +22,24 @@ namespace Keeper2018
 
         public CarModel SelectedCar
         {
-            get { return _selectedCar; }
+            get => _selectedCar;
             set
             {
                 if (Equals(value, _selectedCar)) return;
                 _selectedCar = value;
+                YearMileagesToShow = new List<YearMileageModel>(_selectedCar.YearsMileage);
+                EvaluateYearMileageToShow();
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(nameof(IsLastCarVisibility));
+                NotifyOfPropertyChange(nameof(YearMileagesToShow));
+                NotifyOfPropertyChange(nameof(Total));
+                NotifyOfPropertyChange(nameof(TotalPlus));
             }
         }
+
+        public List<YearMileageModel> YearMileagesToShow { get; set; }
+        public YearMileageModel Total { get; set; }
+        public YearMileageModel TotalPlus { get; set; }
 
         public Visibility IsLastCarVisibility => SelectedCar.Id == Cars.Last().Id
             ? Visibility.Visible : Visibility.Collapsed;
@@ -54,6 +64,78 @@ namespace Keeper2018
         protected override void OnViewLoaded(object view)
         {
             DisplayName = "Автомобили";
+        }
+
+        private void EvaluateYearMileageToShow()
+        {
+            var prevOdometer = SelectedCar.PurchaseMileage;
+            // меняем отдельную копию , а не то что хранится в базе
+            for (int i = 0; i < YearMileagesToShow.Count; i++)
+            {
+                var yearMileageModel = YearMileagesToShow[i];
+                Period period = new Period(SelectedCar.PurchaseDate.AddYears(i),
+                    SelectedCar.PurchaseDate.AddYears(i + 1).AddDays(-1));
+                if (period.FinishMoment > SelectedCar.SaleDate) period.FinishMoment = SelectedCar.SaleDate;
+                yearMileageModel.YearNumber = i + 1;
+                yearMileageModel.Period = period;
+
+                yearMileageModel.Mileage = yearMileageModel.Odometer - prevOdometer;
+                prevOdometer = yearMileageModel.Odometer;
+
+                EvaluateAmount(yearMileageModel);
+            }
+
+            if (SelectedCar == Cars.Last())
+            {
+                var lastYear = YearMileagesToShow.Last();
+                if (lastYear.Period.FinishMoment.Date < DateTime.Today)
+                {
+                    var currentYear = new YearMileageModel()
+                    {
+                        CarId = SelectedCar.CarAccountId,
+                        Period = new Period(lastYear.Period.FinishMoment.Date.AddDays(1), DateTime.Today),
+                        YearNumber = lastYear.YearNumber + 1,
+                        Odometer = SelectedCar.SaleMileage,
+                        Mileage = SelectedCar.SaleMileage - prevOdometer
+                    };
+                    EvaluateAmount(currentYear);
+                    YearMileagesToShow.Add(currentYear);
+                }
+            }
+
+            var fullPeriod = new Period(SelectedCar.PurchaseDate, YearMileagesToShow.Last().Period.FinishMoment);
+            Total = new YearMileageModel()
+            {
+                Mileage = YearMileagesToShow.Sum(y => y.Mileage),
+                Period = fullPeriod,
+                YearAmount = YearMileagesToShow.Sum(y => y.YearAmount),
+            };
+            Total.DayAmount = Total.YearAmount / fullPeriod.ToDays();
+            TotalPlus = new YearMileageModel()
+            {
+                CarId = SelectedCar.CarAccountId,
+                Mileage = YearMileagesToShow.Sum(y => y.Mileage),
+                Period = fullPeriod,
+                YearAmount = YearMileagesToShow.Sum(y => y.YearAmount),
+            };
+            EvaluateAmount(TotalPlus, true);
+        }
+
+        private void EvaluateAmount(YearMileageModel yearMileageModel, bool includePurchase = false)
+        {
+            yearMileageModel.YearAmount = _dataModel.Transactions.Values
+                .Where(t => yearMileageModel.Period.Includes(t.Timestamp) &&
+                            t.Operation == OperationType.Расход &&
+                            t.Category.Parent.Is(SelectedCar.CarAccountId) &&
+                            (t.Tags.All(tag => tag.Id != 1064) || includePurchase)) // тэг покупки-продажи авто
+                .Sum(t => t.GetAmountInUsd(_dataModel));
+
+            if (yearMileageModel.CarId == Cars.Last().CarAccountId && includePurchase)
+            {
+                yearMileageModel.YearAmount -= SelectedCar.SupposedSalePrice;
+            }
+
+            yearMileageModel.DayAmount = yearMileageModel.YearAmount / yearMileageModel.Period.ToDays();
         }
 
         public void AddNewCar()

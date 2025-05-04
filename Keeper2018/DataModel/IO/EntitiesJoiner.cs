@@ -16,13 +16,13 @@ namespace Keeper2018
             foreach (var car in result)
             {
                 var arr = bin.CarYearMileages.Where(l => l.CarId == car.Id).ToArray();
-                var prev = car.PurchaseMileage;
+                // var prev = car.PurchaseMileage;
                 foreach (var y in arr)
                 {
                     var cc = Mapper.Map<YearMileageModel>(y);
-                    cc.Mileage = y.Odometer - prev;
+                    // cc.Mileage = y.Odometer - prev;
                     car.YearsMileage.Add(cc);
-                    prev = y.Odometer;
+                    // prev = y.Odometer;
                 }
             }
             return result;

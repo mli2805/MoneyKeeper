@@ -126,7 +126,9 @@ namespace Keeper2018
                     DepositOffers = _keeperDataModel.DepositOffers.Select(o => o.Map()).ToList(),
 
                     Cars = _keeperDataModel.Cars.Select(c => Mapper.Map<Car>(c)).ToList(),
-                    CarYearMileages = _keeperDataModel.Cars.SelectMany(c => c.YearsMileage).Select(y => Mapper.Map<CarYearMileage>(y)).ToList(),
+                    CarYearMileages = _keeperDataModel.Cars
+                        .SelectMany(c => c.YearsMileage)
+                        .Select(y => Mapper.Map<CarYearMileage>(y)).ToList(),
 
                     Fuellings = _keeperDataModel.FuellingVms.Select(f => f.Map()).ToList(),
                     CardBalanceMemos = _keeperDataModel.CardBalanceMemoModels.Select(m => m.Map()).ToList(),

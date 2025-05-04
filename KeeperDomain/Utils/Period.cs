@@ -23,6 +23,11 @@ namespace KeeperDomain
             return timestamp > StartDate && timestamp < FinishMoment;
         }
 
+        public int ToDays()
+        {
+            return (FinishMoment - StartDate).Days;
+        }
+
         public override string ToString()
         {
             return $"{StartDate} - {FinishMoment}";
