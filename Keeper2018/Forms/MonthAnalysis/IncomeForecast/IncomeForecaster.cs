@@ -66,7 +66,7 @@ namespace Keeper2018
                 {
                     ExpectedAt = salaryDate,
                     AmountUsd = OptixsoftSalary,
-                    Title = $"{salaryDate:dd MMM} зарплата OptixSoft {IitSalary} usd"
+                    Title = $"{salaryDate:dd MMM} зарплата OptixSoft {OptixsoftSalary} usd"
                 };
             }
 
