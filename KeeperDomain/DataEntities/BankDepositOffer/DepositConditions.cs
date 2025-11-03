@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace KeeperDomain
@@ -17,7 +18,7 @@ namespace KeeperDomain
         public int DepositOfferId { get; set; } 
         public DateTime DateFrom { get; set; }
 
-        public string RateFormula { get; set; }
+        [MaxLength(20)] public string RateFormula { get; set; }
         public bool IsFactDays { get; set; } // true 28-31/365 false 30/360
         public bool EveryStartDay { get; set; }
         public bool EveryFirstDayOfMonth { get; set; } 
@@ -31,7 +32,7 @@ namespace KeeperDomain
         public bool HasAdditionalPercent { get; set; }
         public double AdditionalPercent { get; set; }
 
-        public string Comment { get; set; }
+        [MaxLength(100)] public string Comment { get; set; }
 
 
         public string Dump()

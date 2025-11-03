@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace KeeperDomain
 {
@@ -6,7 +7,7 @@ namespace KeeperDomain
     public class Account : IDumpable, IParsable<Account>
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        [MaxLength(50)] public string Name { get; set; }
         public int ParentId { get; set; }
 
         public bool IsFolder;
@@ -17,10 +18,10 @@ namespace KeeperDomain
         public int AssociatedExternalId { get; set; } // for category
         public int AssociatedTagId { get; set; } // for counterparty or category
 
-        public string ShortName { get; set; }
-        public string ButtonName { get; set; } // face of shortcut button (if exists)
+        [MaxLength(20)] public string ShortName { get; set; }
+        [MaxLength(5)] public string ButtonName { get; set; } // face of shortcut button (if exists)
 
-        public string Comment { get; set; }
+        [MaxLength(100)] public string Comment { get; set; }
 
         public string Dump()
         {

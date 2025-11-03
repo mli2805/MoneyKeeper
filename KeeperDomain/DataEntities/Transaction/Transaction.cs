@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace KeeperDomain
@@ -19,8 +20,8 @@ namespace KeeperDomain
         public decimal AmountInReturn { get; set; }
         public CurrencyCode Currency { get; set; }
         public CurrencyCode? CurrencyInReturn { get; set; }
-        public string Tags { get; set; }
-        public string Comment { get; set; }
+        [MaxLength(100)] public string Tags { get; set; }
+        [MaxLength(250)] public string Comment { get; set; }
 
         public string Dump()
         {

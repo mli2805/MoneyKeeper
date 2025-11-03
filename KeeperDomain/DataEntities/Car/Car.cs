@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace KeeperDomain
@@ -8,10 +9,10 @@ namespace KeeperDomain
     {
         public int Id { get; set; } //PK
         public int CarAccountId { get; set; }
-        public string Title { get; set; }
+        [MaxLength(100)] public string Title { get; set; }
         public int IssueYear { get; set; }
-        public string Vin { get; set; }
-        public string StateRegNumber { get; set; }
+        [MaxLength(25)] public string Vin { get; set; }
+        [MaxLength(15)] public string StateRegNumber { get; set; }
 
         public DateTime PurchaseDate { get; set; }
         public int PurchaseMileage { get; set; }
@@ -19,7 +20,7 @@ namespace KeeperDomain
         public int SaleMileage { get; set; }
 
         public int SupposedSalePrice { get; set; }
-        public string Comment { get; set; }
+        [MaxLength(100)] public string Comment { get; set; }
 
         public string Dump()
         {

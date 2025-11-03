@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace KeeperDomain
 {
@@ -6,7 +7,7 @@ namespace KeeperDomain
     public class DepositOffer : IDumpable, IParsable<DepositOffer>
     {
         public int Id { get; set; } //PK
-        public string Title { get; set; }
+        [MaxLength(100)] public string Title { get; set; }
         public bool IsNotRevocable { get; set; }
         public RateType RateType { get; set; }
         public bool IsAddLimited { get; set; }
@@ -27,7 +28,7 @@ namespace KeeperDomain
         public int MonthPaymentsMinimum { get; set; }
         public int MonthPaymentsMaximum { get; set; }
 
-        public string Comment { get; set; }
+        [MaxLength(250)] public string Comment { get; set; }
 
         public string Dump()
         {
