@@ -13,7 +13,7 @@ namespace Keeper2018
 
             return new SellerSelectorVm
             {
-                ControlTitle = "Откуда",
+                ControlTitle = "Кому",
                 Buttons = _dataModel.ButtonCollections.First(c => c.Id == 14).ToButtonsDictionary().Select(
                     button => new AccNameButtonVm(button.Key,
                         availableAccNames.FindThroughTheForestById(button.Value))).ToList(),

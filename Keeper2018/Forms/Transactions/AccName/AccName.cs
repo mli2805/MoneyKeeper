@@ -11,6 +11,7 @@ namespace Keeper2018
         public int Id { get; set; }
         public string Name { get; set; }
         public string ButtonName { get; set; }
+        public string Tooltip { get; set; }
         public AccName Parent { get; set; }
         public bool IsFolder;
         public List<AccName> Children { get; private set; } = new List<AccName>();
@@ -23,12 +24,19 @@ namespace Keeper2018
         /// <returns></returns>
         public AccName PopulateFromAccount(AccountItemModel account, List<int> cutBranches)
         {
-            var result = new AccName { Id = account.Id, Name = account.Name, ButtonName = account.ButtonName, IsFolder = account.IsFolder };
+            var result = new AccName
+            {
+                Id = account.Id,
+                Name = account.Name,
+                ButtonName = account.ButtonName,
+                IsFolder = account.IsFolder,
+                Tooltip = account.BankAccount?.PayCard?.CardNumber
+            };
 
             foreach (var child in account.Children)
             {
-                if (cutBranches != null && cutBranches.Any(b=>b == child.Id)) continue;
-                var resultChild =  PopulateFromAccount((AccountItemModel)child, cutBranches);
+                if (cutBranches != null && cutBranches.Any(b => b == child.Id)) continue;
+                var resultChild = PopulateFromAccount((AccountItemModel)child, cutBranches);
                 resultChild.Parent = result;
                 result.Children.Add(resultChild);
             }

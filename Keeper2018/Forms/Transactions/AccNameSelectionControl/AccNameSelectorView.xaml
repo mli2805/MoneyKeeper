@@ -27,7 +27,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="keeper2018:AccNameButtonVm">
-                        <Button Content="{Binding Name}"
+                        <Button Content="{Binding Name}" ToolTip="{Binding Tooltip}"
                             Margin="2" Padding="15,2" Style="{StaticResource RoundCorner}"
                             Click="ButtonBase_OnClick"/>
                     </DataTemplate>
