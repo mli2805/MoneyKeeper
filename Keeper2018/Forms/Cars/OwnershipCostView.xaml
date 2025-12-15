@@ -15,7 +15,7 @@
         </ei:KeyTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <oxy:PlotView Model="{Binding DailyOwnershipCostPlotModel}" Visibility="{Binding DailyVisibility}"/>
         <oxy:PlotView Model="{Binding MonthlyOwnershipCostPlotModel}" Visibility="{Binding MonthlyVisibility}"/>
+        <oxy:PlotView Model="{Binding AnnualOwnershipCostPlotModel}" Visibility="{Binding YearVisibility}"/>
     </Grid>
 </Window>

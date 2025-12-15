@@ -14,20 +14,8 @@ namespace Keeper2018
         private readonly KeeperDataModel _dataModel;
         private CarModel _carModel;
 
-        public PlotModel DailyOwnershipCostPlotModel { get; set; }
         public PlotModel MonthlyOwnershipCostPlotModel { get; set; }
-
-        private Visibility _dailyVisibility = Visibility.Visible;
-        public Visibility DailyVisibility
-        {
-            get => _dailyVisibility;
-            set
-            {
-                if (value == _dailyVisibility) return;
-                _dailyVisibility = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public PlotModel AnnualOwnershipCostPlotModel { get; set; }
 
         private Visibility _monthlyVisibility = Visibility.Collapsed;
         public Visibility MonthlyVisibility
@@ -41,6 +29,19 @@ namespace Keeper2018
             }
         }
 
+        private Visibility _yearVisibility = Visibility.Visible;
+        public Visibility YearVisibility
+        {
+            get => _yearVisibility;
+            set
+            {
+                if (value == _yearVisibility) return;
+                _yearVisibility = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+
         public OwnershipCostViewModel(KeeperDataModel dataModel)
         {
             _dataModel = dataModel;
@@ -51,16 +52,14 @@ namespace Keeper2018
             _carModel = carModel;
 
             var carAccountModel = _dataModel.AcMoDict[_carModel.CarAccountId];
+
+            // покупка, продажа, обмен авто не учитываются
+            var buySellIds = new List<int> { 707, 709, 713, 717 };
             var trans = _dataModel.Transactions.Values.OrderBy(t => t.Timestamp)
-                .Where(m => m.Category != null && m.Category.Is(carAccountModel)).ToList();
+                .Where(m => m.Category != null && m.Category.Is(carAccountModel) && !buySellIds.Contains(m.Category.Id)).ToList();
 
-            DailyOwnershipCostPlotModel = new PlotModel();
-            SetAxis(DailyOwnershipCostPlotModel);
-            DailyOwnershipCostPlotModel.Series.Add(OwnershipCostForDay(trans));
-
-            MonthlyOwnershipCostPlotModel = new PlotModel();
-            SetAxis(MonthlyOwnershipCostPlotModel);
-            MonthlyOwnershipCostPlotModel.Series.Add(OwnershipCostForMonth(trans));
+            MonthlyOwnershipCostPlotModel = InitializePlot(trans, "month");
+            AnnualOwnershipCostPlotModel = InitializePlot(trans, "year");
         }
 
         private void SetAxis(PlotModel plotModel)
@@ -82,77 +81,57 @@ namespace Keeper2018
             });
         }
 
-        private LineSeries OwnershipCostForMonth(List<TransactionModel> trans)
+        private PlotModel InitializePlot(List<TransactionModel> trans, string period)
         {
-            var mainSeries = new LineSeries()
+            var plotModel = new PlotModel();
+            var columnSeries = new ColumnSeries
             {
-                Title = "Стоимость владения в месяц",
-                Color = OxyColors.Blue,
+                Title = period == "year" ? "Расходы за год" : "Расходы за месяц",
+                FillColor = OxyColors.SteelBlue
             };
-
-            DateTime firstDate = trans.First().Timestamp.Date;
-            DateTime currentDate = firstDate;
-            decimal sumInUsd = 0;
-            foreach (var transactionModel in trans)
+            var lineSeries = new LineSeries
             {
-                while (Months(firstDate, transactionModel.Timestamp.Date) > Months(firstDate, currentDate.Date))
-                {
-                    var months = Months(firstDate.Date, currentDate.Date) + 1;
-                    var point = new DataPoint(DateTimeAxis.ToDouble(currentDate), (double)sumInUsd / months);
-                    mainSeries.Points.Add(point);
-                    currentDate = currentDate.AddMonths(1);
-                }
-
-                if (transactionModel.Timestamp.Date == currentDate)
-                {
-                    if (transactionModel.Tags.Any(tag => tag.Id == 707 || tag.Id == 709 || tag.Id == 713 || tag.Id == 717))
-                        continue;
-
-                    sumInUsd += transactionModel.GetAmountInUsd(_dataModel);
-                }
-            }
-
-            var monthsL = Months(firstDate.Date, currentDate.Date) + 1;
-            var pointL = new DataPoint(DateTimeAxis.ToDouble(currentDate), (double)sumInUsd / monthsL);
-            mainSeries.Points.Add(pointL);
-            return mainSeries;
-        }
-
-        private LineSeries OwnershipCostForDay(List<TransactionModel> trans)
-        {
-            var mainSeries = new LineSeries()
-            {
-                Title = "Стоимость владения в день",
-                Color = OxyColors.BlueViolet,
+                Title = "Среднее значение",
+                Color = OxyColors.Red,
+                MarkerType = MarkerType.Circle
             };
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Left };
 
-            DateTime firstDate = trans.First().Timestamp.Date;
-            DateTime currentDate = firstDate;
-            decimal sumInUsd = 0;
-            foreach (var transactionModel in trans)
+            // выичисление
+            DateTime currentDate = trans.First().Timestamp.Date;
+            var yearCount = 0;
+            var totalSum = 0m;
+            do
             {
-                while (transactionModel.Timestamp.Date > currentDate.Date)
+                DateTime nextPeriodStart = period == "year" ? currentDate.AddYears(1) : currentDate.AddMonths(1);
+                decimal sumInUsd = 0;
+
+                var yearTrans = trans
+                    .Where(t => t.Timestamp.Date >= currentDate.Date && t.Timestamp.Date < nextPeriodStart.Date)
+                    .ToList();
+                foreach (var transaction in yearTrans)
                 {
-                    var days = (currentDate.Date - firstDate.Date).Days + 1;
-                    var point = new DataPoint(DateTimeAxis.ToDouble(currentDate), (double)sumInUsd / days);
-                    mainSeries.Points.Add(point);
-                    currentDate = currentDate.AddDays(1);
+                    sumInUsd += transaction.GetAmountInUsd(_dataModel);
                 }
+                var item = new ColumnItem((double)sumInUsd);
+                columnSeries.Items.Add(item);
 
-                if (transactionModel.Timestamp.Date == currentDate)
-                {
-                    if (transactionModel.Tags.Any(tag => tag.Id == 707 || tag.Id == 709 || tag.Id == 713 || tag.Id == 717))
-                        continue;
+                currentDate = period == "year" ? currentDate.AddYears(1) : currentDate.AddMonths(1);
 
-                    sumInUsd += transactionModel.GetAmountInUsd(_dataModel);
-                }
-
+                totalSum += sumInUsd;
+                yearCount++;
+                var average = totalSum / yearCount;
+                lineSeries.Points.Add(new DataPoint(yearCount - 1, (double)average));
             }
+            while (currentDate <= trans.Last().Timestamp.Date);
 
-            var daysL = (currentDate.Date - firstDate.Date).Days + 1;
-            var pointL = new DataPoint(DateTimeAxis.ToDouble(currentDate), (double)sumInUsd / daysL);
-            mainSeries.Points.Add(pointL);
-            return mainSeries;
+            plotModel.Series.Add(columnSeries);
+            plotModel.Series.Add(lineSeries);
+            plotModel.Axes.Add(categoryAxis);
+            plotModel.Axes.Add(valueAxis);
+
+            return plotModel;
         }
 
         protected override void OnViewLoaded(object view)
@@ -163,30 +142,20 @@ namespace Keeper2018
         private int _model = 1;
         public void ToggleModel()
         {
-            if (_model == 1)
+            switch (_model)
             {
-                _model = 2;
-                DailyVisibility = Visibility.Collapsed;
-                MonthlyVisibility = Visibility.Visible;
+                case 1:
+                    _model = 2;
+                    YearVisibility = Visibility.Collapsed;
+                    MonthlyVisibility = Visibility.Visible;
+                    break;
+                default:
+                    _model = 1;
+                    YearVisibility = Visibility.Visible;
+                    MonthlyVisibility = Visibility.Collapsed;
+                    break;
             }
-            else
-            {
-                _model = 1;
-                DailyVisibility = Visibility.Visible;
-                MonthlyVisibility = Visibility.Collapsed;
-            }
-        }
 
-        private static int Months(DateTime firstDate, DateTime secondDate)
-        {
-            var count = 0;
-            var date = firstDate;
-            while (date < secondDate)
-            {
-                date = date.AddMonths(1);
-                count++;
-            }
-            return count;
         }
     }
 }
