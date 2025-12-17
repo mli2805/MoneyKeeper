@@ -58,30 +58,11 @@ namespace Keeper2018
             var trans = _dataModel.Transactions.Values.OrderBy(t => t.Timestamp)
                 .Where(m => m.Category != null && m.Category.Is(carAccountModel) && !buySellIds.Contains(m.Category.Id)).ToList();
 
-            MonthlyOwnershipCostPlotModel = InitializePlot(trans, "month");
-            AnnualOwnershipCostPlotModel = InitializePlot(trans, "year");
+            MonthlyOwnershipCostPlotModel = InitializePlot(trans, carModel.PurchaseDate, "month");
+            AnnualOwnershipCostPlotModel = InitializePlot(trans, carModel.PurchaseDate, "year");
         }
 
-        private void SetAxis(PlotModel plotModel)
-        {
-            plotModel.Axes.Add(new DateTimeAxis()
-            {
-                Position = AxisPosition.Bottom,
-                IntervalLength = 75,
-                MinorIntervalType = DateTimeIntervalType.Days,
-                IntervalType = DateTimeIntervalType.Days,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-            });
-            plotModel.Axes.Add(new LinearAxis()
-            {
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Automatic,
-                MinorGridlineStyle = LineStyle.Automatic,
-            });
-        }
-
-        private PlotModel InitializePlot(List<TransactionModel> trans, string period)
+        private PlotModel InitializePlot(List<TransactionModel> trans, DateTime purchaseDate, string period)
         {
             var plotModel = new PlotModel();
             var columnSeries = new ColumnSeries
@@ -98,10 +79,11 @@ namespace Keeper2018
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
             var valueAxis = new LinearAxis { Position = AxisPosition.Left };
 
-            // выичисление
-            DateTime currentDate = trans.First().Timestamp.Date;
+            // вычисление
+            DateTime currentDate = purchaseDate.Date;
             var yearCount = 0;
             var totalSum = 0m;
+            int columnIndex = 0;
             do
             {
                 DateTime nextPeriodStart = period == "year" ? currentDate.AddYears(1) : currentDate.AddMonths(1);
@@ -116,6 +98,13 @@ namespace Keeper2018
                 }
                 var item = new ColumnItem((double)sumInUsd);
                 columnSeries.Items.Add(item);
+                var label = period == "year" 
+                    ? currentDate.ToString("dd/MM/yy") + "-" + currentDate.AddYears(1).AddDays(-1).ToString("dd/MM/yy")
+                    : columnIndex % 5 == 0 
+                            ? currentDate.ToString("MMMyy") 
+                            : "";
+                categoryAxis.Labels.Add(label);
+                columnIndex++;
 
                 currentDate = period == "year" ? currentDate.AddYears(1) : currentDate.AddMonths(1);
 

@@ -73,7 +73,7 @@ namespace Keeper2018
             {
                 var yearMileageModel = YearMileagesToShow[i];
                 Period period = new Period(SelectedCar.PurchaseDate.AddYears(i),
-                    SelectedCar.PurchaseDate.AddYears(i + 1).AddDays(-1));
+                    SelectedCar.PurchaseDate.AddYears(i + 1).AddMilliseconds(-1));
                 if (period.FinishMoment > SelectedCar.SaleDate) period.FinishMoment = SelectedCar.SaleDate;
                 yearMileageModel.YearNumber = i + 1;
                 yearMileageModel.Period = period;
@@ -92,7 +92,7 @@ namespace Keeper2018
                     var currentYear = new YearMileageModel()
                     {
                         CarId = SelectedCar.CarAccountId,
-                        Period = new Period(lastYear.Period.FinishMoment.Date.AddDays(1), DateTime.Today),
+                        Period = new Period(lastYear.Period.FinishMoment.Date.AddDays(1), DateTime.Today.AddDays(1).AddMilliseconds(-1)),
                         YearNumber = lastYear.YearNumber + 1,
                         Odometer = SelectedCar.SaleMileage,
                         Mileage = SelectedCar.SaleMileage - prevOdometer
@@ -126,7 +126,7 @@ namespace Keeper2018
                 .Where(t => yearMileageModel.Period.Includes(t.Timestamp) &&
                             t.Operation == OperationType.Расход &&
                             t.Category.Parent.Is(SelectedCar.CarAccountId) &&
-                            (t.Tags.All(tag => tag.Id != 1064) || includePurchase)) // тэг покупки-продажи авто
+                            (t.Tags.All(tag => tag.Id != 1064) || includePurchase)) // 1064 тэг покупки-продажи авто
                 .Sum(t => t.GetAmountInUsd(_dataModel));
 
             if (yearMileageModel.CarId == Cars.Last().CarAccountId && includePurchase)
