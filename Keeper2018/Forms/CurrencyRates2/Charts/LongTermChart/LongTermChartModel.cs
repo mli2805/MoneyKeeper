@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using KeeperDomain;
 using KeeperDomain.Basket;
-using KeeperDomain.Exchange;
+using KeeperDomain;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;

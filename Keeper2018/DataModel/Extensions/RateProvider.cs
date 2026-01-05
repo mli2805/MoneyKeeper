@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using KeeperDomain;
-using KeeperDomain.Exchange;
 
 namespace Keeper2018
 {

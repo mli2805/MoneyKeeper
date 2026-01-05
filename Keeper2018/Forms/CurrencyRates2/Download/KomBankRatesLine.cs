@@ -1,5 +1,5 @@
 ﻿using System;
-using KeeperDomain.Exchange;
+using KeeperDomain;
 
 namespace Keeper2018
 {

@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
-using KeeperDomain.Exchange;
+using KeeperDomain;
 
 namespace Keeper2018
 {

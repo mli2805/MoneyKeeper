@@ -1,4 +1,4 @@
-﻿namespace KeeperDomain.Exchange
+﻿namespace KeeperDomain
 {
     public static class ExchangeRatesExt
     {
