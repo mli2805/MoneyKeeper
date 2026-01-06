@@ -10,7 +10,7 @@ namespace Keeper2018
     {
         private readonly KeeperDataModel _keeperDataModel;
         private string _aim;
-        public List<PeriodUnit> PeriodUnits { get; set; }
+        public List<Durations> DurationPeriods { get; set; }
         public List<StockMarket> StockMarkets { get; set; }
         public List<AssetType> AssetTypes { get; set; }
 
@@ -19,7 +19,7 @@ namespace Keeper2018
         public OneAssetViewModel(KeeperDataModel keeperDataModel)
         {
             _keeperDataModel = keeperDataModel;
-            PeriodUnits = Enum.GetValues(typeof(PeriodUnit)).OfType<PeriodUnit>().ToList();
+            DurationPeriods = Enum.GetValues(typeof(Durations)).OfType<Durations>().ToList();
             StockMarkets = Enum.GetValues(typeof(StockMarket)).OfType<StockMarket>().ToList();
             AssetTypes = Enum.GetValues(typeof(AssetType)).OfType<AssetType>().Take(2).ToList();
         }
@@ -39,7 +39,7 @@ namespace Keeper2018
                 AssetType = AssetType.Stock,
 
                 PreviousCouponDate = DateTime.Today.AddDays(-1),
-                BondCouponPeriod = new CalendarPeriod() { Value = 182, Unit = PeriodUnit.days },
+                BondCouponPeriod = new Duration(182, Durations.Days),
                 BondExpirationDate = DateTime.Today.AddYears(1),
             };
         }

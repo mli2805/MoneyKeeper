@@ -32,9 +32,10 @@ namespace KeeperDomain
 
         public string Dump()
         {
+            var durationDump = DepositTerm != null ? DepositTerm.Dump() : new Duration().Dump();
             return Id + " ; " + BankId + " ; " + Title + " ; " + IsNotRevocable + " ; " +
                    RateType + " ; " + IsAddLimited + " ; " + AddLimitInDays + " ; " +
-                   MainCurrency + " ; " + (DepositTerm?.Dump() ?? new Duration().Dump()) + " ; " + 
+                   MainCurrency + " ; " + durationDump + " ; " + 
                    MonthPaymentsMinimum + " ; " + MonthPaymentsMaximum + " ; " + Comment;
         }
 
@@ -49,16 +50,11 @@ namespace KeeperDomain
             IsAddLimited = bool.Parse(substrings[5].Trim());
             AddLimitInDays = int.Parse(substrings[6]);
             MainCurrency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[7]);
-            DepositTerm = DurationFromStrings(substrings[8], substrings[9], substrings[10]);
-            MonthPaymentsMinimum = int.Parse(substrings[11]);
-            MonthPaymentsMaximum = int.Parse(substrings[12]);
-            Comment = substrings[13].Trim();
+            DepositTerm = new Duration().FromString(substrings[8].Trim());
+            MonthPaymentsMinimum = int.Parse(substrings[9]);
+            MonthPaymentsMaximum = int.Parse(substrings[10]);
+            Comment = substrings[11].Trim();
             return this;
-        }
-
-        private Duration DurationFromStrings(string a, string b, string c)
-        {
-            return Convert.ToBoolean(a) ? new Duration() : new Duration(int.Parse(b), (Durations)Enum.Parse(typeof(Durations), c));
         }
     }
 }
