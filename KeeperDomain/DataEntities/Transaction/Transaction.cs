@@ -51,8 +51,8 @@ namespace KeeperDomain
             Currency = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[10]);
             AmountInReturn = Convert.ToDecimal(substrings[11], new CultureInfo("en-US"));
             CurrencyInReturn = substrings[12].Trim() != ""
-                ? (CurrencyCode)Enum.Parse(typeof(CurrencyCode), substrings[12])
-                : CurrencyCode.USD;
+                ? (CurrencyCode?)Enum.Parse(typeof(CurrencyCode), substrings[12])
+                : null;
             Tags = substrings[13].Trim();
             Comment = substrings[14].Trim();
             return this;
