@@ -1,4 +1,4 @@
-﻿namespace Keeper2018.BorderedList
+﻿namespace Keeper2018
 {
     /// <summary>
     /// Interaction logic for BorderedListView.xaml

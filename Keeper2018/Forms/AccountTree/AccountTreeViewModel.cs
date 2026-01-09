@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
-using Keeper2018.CardFee;
-using Keeper2018.ExpensesOnAccount;
 using KeeperDomain;
 
 namespace Keeper2018

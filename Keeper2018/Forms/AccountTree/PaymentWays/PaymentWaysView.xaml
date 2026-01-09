@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:borderedList="clr-namespace:Keeper2018.BorderedList"
+        xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
         Height="550" Width="840">
     <DockPanel Margin="0,0,3,0">
@@ -28,11 +28,11 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <borderedList:BorderedListView DataContext="{Binding TotalFrom}"/>
-            <borderedList:BorderedListView Grid.Column="1" DataContext="{Binding TotalTo}"/> 
+            <keeper2018:BorderedListView DataContext="{Binding TotalFrom}"/>
+            <keeper2018:BorderedListView Grid.Column="1" DataContext="{Binding TotalTo}"/> 
         </Grid>
         <ScrollViewer>
-            <borderedList:BorderedListView DataContext="{Binding Transactions}" />
+            <keeper2018:BorderedListView DataContext="{Binding Transactions}" />
         </ScrollViewer>
     </DockPanel>
 </Window>

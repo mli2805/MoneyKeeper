@@ -1,7 +1,5 @@
 ﻿using Autofac;
 using Caliburn.Micro;
-using Keeper2018.CardFee;
-using Keeper2018.ExpensesOnAccount;
 
 namespace Keeper2018
 {

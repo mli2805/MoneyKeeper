@@ -7,7 +7,6 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:keeper2018="clr-namespace:Keeper2018"
-        xmlns:borderedList="clr-namespace:Keeper2018.BorderedList"
         mc:Ignorable="d"
         Title="{Binding Model.MonthAnalysisViewCaption}" 
         SizeToContent="WidthAndHeight" ResizeMode="NoResize" 
@@ -47,13 +46,13 @@
             <TextBlock Text=" стрелки - месяц ;   +Shift - квартал ;   +Ctrl - год ;  Home/End - в начало/конец;  Esc - выход  "
                            Margin="2" Foreground="DarkGray" HorizontalAlignment="Right"/>
         </Border>
-        <borderedList:BorderedListView DataContext="{Binding Model.BeforeViewModel}"/>
-        <borderedList:BorderedListView DataContext="{Binding Model.IncomeViewModel}"/>
-        <borderedList:BorderedListView DataContext="{Binding Model.ExpenseViewModel}"/>
-        <borderedList:BorderedListView DataContext="{Binding Model.AfterViewModel}"/>
-        <borderedList:BorderedListView DataContext="{Binding Model.FinResultViewModel}"/>
+        <keeper2018:BorderedListView DataContext="{Binding Model.BeforeViewModel}"/>
+        <keeper2018:BorderedListView DataContext="{Binding Model.IncomeViewModel}"/>
+        <keeper2018:BorderedListView DataContext="{Binding Model.ExpenseViewModel}"/>
+        <keeper2018:BorderedListView DataContext="{Binding Model.AfterViewModel}"/>
+        <keeper2018:BorderedListView DataContext="{Binding Model.FinResultViewModel}"/>
         <DockPanel Visibility="{Binding Model.ForecastListVisibility}">
-            <borderedList:BorderedListView DataContext="{Binding Model.ForecastViewModel}"/>
+            <keeper2018:BorderedListView DataContext="{Binding Model.ForecastViewModel}"/>
         </DockPanel>
         <Button Name="CloseView" IsCancel="True" Height="1" Width="1"/>
     </DockPanel>

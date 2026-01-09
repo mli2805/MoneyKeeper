@@ -1,4 +1,4 @@
-﻿namespace Keeper2018.ExpensesOnAccount
+﻿namespace Keeper2018
 {
     /// <summary>
     /// Interaction logic for ExpensesOnAccountView.xaml

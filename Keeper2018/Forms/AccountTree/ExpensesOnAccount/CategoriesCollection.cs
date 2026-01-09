@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Keeper2018.ExpensesOnAccount
+namespace Keeper2018
 {
     public class CategoriesCollection
     {

@@ -1,4 +1,4 @@
-﻿namespace Keeper2018.BorderedList
+﻿namespace Keeper2018
 {
     public class BorderedListViewModel
     {

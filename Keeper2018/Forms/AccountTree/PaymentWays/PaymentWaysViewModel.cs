@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
-using Keeper2018.BorderedList;
 using KeeperDomain;
 using Microsoft.Win32;
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using Keeper2018.BorderedList;
 using KeeperDomain;
 
 namespace Keeper2018

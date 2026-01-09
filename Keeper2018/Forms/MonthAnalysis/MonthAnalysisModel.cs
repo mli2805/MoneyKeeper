@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Keeper2018.BorderedList;
 using KeeperDomain;
 
 namespace Keeper2018

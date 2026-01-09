@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-namespace Keeper2018.CardFee
+namespace Keeper2018
 {
     public class CardFeeViewModel : Screen
     {

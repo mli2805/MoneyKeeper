@@ -6,7 +6,7 @@
         xmlns:keeper2018="clr-namespace:Keeper2018"
         mc:Ignorable="d"
         Width="888" WindowStartupLocation="CenterScreen"
-        d:DataContext="{d:DesignInstance keeper2018:DepositReportViewModel}">
+         >
     <DockPanel>
         <StackPanel Name="Header" DockPanel.Dock="Top" Margin="5,5,5,15">
             <TextBlock Text="{Binding Model.DepositState}" Margin="5"/>

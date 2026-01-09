@@ -3,7 +3,7 @@ using System.Linq;
 using Caliburn.Micro;
 using KeeperDomain;
 
-namespace Keeper2018.ExpensesOnAccount
+namespace Keeper2018
 {
     public class ExpensesOnAccountViewModel : Screen
     {
