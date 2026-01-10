@@ -9,6 +9,8 @@ namespace KeeperDomain
         public int Id { get; set; }
         [MaxLength(50)] public string Name { get; set; }
         public int ParentId { get; set; }
+        public int ChildNumber { get; set; } // какой по счету ребенок у родителя,
+                                             // нужно будет в Keeper2026, здесь не используется, но DumpWithOffsets его заполняет
 
         public bool IsFolder;
         public bool IsExpanded;
@@ -25,7 +27,8 @@ namespace KeeperDomain
 
         public string Dump()
         {
-            return Id.ToString().PadLeft(4) + " ; " + Name + " ; " + ParentId + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
+            return Id.ToString().PadLeft(4) + " ; " + Name + " ; " + ParentId + " ; " +
+                   ChildNumber + " ; " + IsFolder + " ; " + IsExpanded + " ; " + 
                    AssociatedIncomeId + " ; " + AssociatedExpenseId + " ; " + AssociatedExternalId + " ; " + AssociatedTagId + " ; " + 
                    ShortName + " ; " + ButtonName + " ; " + 
                    (Comment?.Replace("\r\n", "|") ?? "");
@@ -37,15 +40,16 @@ namespace KeeperDomain
             Id = int.Parse(substrings[0]);
             Name = substrings[1].Trim();
             ParentId = int.Parse(substrings[2]);
-            IsFolder = Convert.ToBoolean(substrings[3]);
-            IsExpanded = Convert.ToBoolean(substrings[4]);
-            AssociatedIncomeId = int.Parse(substrings[5]);
-            AssociatedExpenseId = int.Parse(substrings[6]);
-            AssociatedExternalId = int.Parse(substrings[7]);
-            AssociatedTagId = int.Parse(substrings[8]);
-            ShortName = substrings[9].Trim();
-            ButtonName = substrings[10].Trim();
-            Comment = substrings[11].Trim();
+            ChildNumber = int.Parse(substrings[3]);
+            IsFolder = Convert.ToBoolean(substrings[4]);
+            IsExpanded = Convert.ToBoolean(substrings[5]);
+            AssociatedIncomeId = int.Parse(substrings[6]);
+            AssociatedExpenseId = int.Parse(substrings[7]);
+            AssociatedExternalId = int.Parse(substrings[8]);
+            AssociatedTagId = int.Parse(substrings[9]);
+            ShortName = substrings[10].Trim();
+            ButtonName = substrings[11].Trim();
+            Comment = substrings[12].Trim();
             return this;
         }
     }

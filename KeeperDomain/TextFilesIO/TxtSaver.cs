@@ -73,18 +73,18 @@ namespace KeeperDomain
         private static List<string> DumpWithOffsets(this List<Account> accountPlainList)
         {
             var result = new List<string>();
-            Stack<int> previousParents = new Stack<int>();
-            previousParents.Push(0);
+            var previousParents = new Stack<(int, int)>();
+            previousParents.Push((0, 0));
             var previousAccountId = 0;
             var level = 0;
             foreach (var account in accountPlainList)
             {
-                while (account.ParentId != previousParents.Peek())
+                while (account.ParentId != previousParents.Peek().Item1)
                 {
                     if (account.ParentId == previousAccountId)
                     {
                         level++;
-                        previousParents.Push(previousAccountId);
+                        previousParents.Push((previousAccountId, 0));
                     }
                     else
                     {
@@ -92,6 +92,12 @@ namespace KeeperDomain
                         previousParents.Pop();
                     }
                 }
+
+                var currentParent = previousParents.Pop();
+                currentParent.Item2++;
+                account.ChildNumber = currentParent.Item2;
+                previousParents.Push(currentParent);
+
 
                 var dump = account.Dump();
                 result.Add(dump.Insert(dump.IndexOf(';') + 1, new string(' ', level * 2)));
