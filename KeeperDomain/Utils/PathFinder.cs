@@ -10,9 +10,24 @@ namespace KeeperDomain
     {
         public static string GetKeeper2018BasePath()
         {
-            return Path.Combine(@"d:\Google Drive", @"Keeper2018");
+            var googleDrivePath = GetGoogleDrivePath();
+            return Path.Combine(googleDrivePath, "Keeper2018");
             // на время разработки новой фичи
             //return @"c:\VsGitProjects\Keeper\Keeper2018\bin\";
+        }
+
+        private static string GetGoogleDrivePath()
+        {
+            if (Directory.Exists(@"d:\Google Drive"))
+            {
+                return @"d:\Google Drive";
+            } 
+            if (Directory.Exists(@"c:\Google Drive"))
+            {
+                return @"c:\Google Drive";
+            }
+
+            throw new Exception("Папка Google Drive не найдена!");
         }
 
         /// <summary>
