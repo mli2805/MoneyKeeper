@@ -38,9 +38,7 @@ namespace Keeper2018
 
         protected override async void OnViewLoaded(object view)
         {
-
-
-            DisplayName = "Keeper 2018";
+            DisplayName = "Keeper 2018 (old)";
             _dbLoaded = await _dbLoader.LoadAndExpand();
             if (!_dbLoaded)
             {
